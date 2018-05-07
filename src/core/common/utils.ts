@@ -1,0 +1,355 @@
+/** zip two arrays, return an iterator */
+export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
+    for (let i = 0; i < a.length; i++) {
+        yield [a[i], b[i]];
+    }
+}
+
+/** zip two arrays, return a new array */
+export function zipArray<T1, T2>(a: T1[], b: T2[]): [T1, T2][] {
+    if (a.length < b.length) {
+        return a.map((elem, idx) => [elem, b[idx]] as [T1, T2]);
+    } else {
+        return b.map((elem, idx) => [a[idx], elem] as [T1, T2]);
+    }
+}
+
+/** Deep clone an object. The object must be JSON-serializable */
+export function deepClone<T>(obj: T): T {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+export function shallowClone<T>(obj: T): T {
+    let r = {} as T;
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            r[key] = obj[key];
+        }
+    }
+    return r;
+}
+
+export function max<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
+    // Credit: https://github.com/d3/d3-array/blob/master/src/max.js
+    let i: number = -1;
+    let n = array.length;
+    let value: number;
+    let max: number;
+    while (++i < n) {
+        if ((value = accessor(array[i], i, array)) != null && value >= value) {
+            max = value;
+            while (++i < n) {
+                if ((value = accessor(array[i], i, array)) != null && value > max) {
+                    max = value;
+                }
+            }
+        }
+    }
+    return max;
+}
+
+export function argMax<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
+    let i: number = -1;
+    let n = array.length;
+    let value: number;
+    let max: number;
+    let argmax: number = -1;
+    while (++i < n) {
+        if ((value = accessor(array[i], i, array)) != null && value >= value) {
+            max = value;
+            argmax = i;
+            while (++i < n) {
+                if ((value = accessor(array[i], i, array)) != null && value > max) {
+                    max = value;
+                    argmax = i;
+                }
+            }
+        }
+    }
+    return argmax;
+}
+
+export function min<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
+    // Credit: https://github.com/d3/d3-array/blob/master/src/min.js
+    let i: number = -1;
+    let n = array.length;
+    let value: number;
+    let min: number;
+    while (++i < n) {
+        if ((value = accessor(array[i], i, array)) != null && value >= value) {
+            min = value;
+            while (++i < n) {
+                if ((value = accessor(array[i], i, array)) != null && min > value) {
+                    min = value;
+                }
+            }
+        }
+    }
+    return min;
+}
+
+export function argMin<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
+    let i: number = -1;
+    let n = array.length;
+    let value: number;
+    let min: number;
+    let argmin: number;
+    while (++i < n) {
+        if ((value = accessor(array[i], i, array)) != null && value >= value) {
+            min = value;
+            argmin = i;
+            while (++i < n) {
+                if ((value = accessor(array[i], i, array)) != null && min > value) {
+                    min = value;
+                    argmin = i;
+                }
+            }
+        }
+    }
+    return argmin;
+}
+
+export function setField<ObjectType, ValueType>(obj: ObjectType, field: string | string[], value: ValueType): ObjectType {
+    let p = obj as any;
+    if (typeof (field) == "string") {
+        p[field] = value;
+    } else {
+        for (let i = 0; i < field.length - 1; i++) {
+            if (p[field[i]] == undefined) {
+                p[field[i]] = {};
+            }
+            p = p[field[i]];
+        }
+        p[field[field.length - 1]] = value;
+    }
+    return obj;
+}
+
+export function getField<ObjectType, ValueType>(obj: ObjectType, field: string | string[]): ObjectType {
+    let p = obj as any;
+    if (typeof (field) == "string") {
+        return p[field];
+    } else {
+        let fieldList = field; //.split(".");
+        for (let i = 0; i < fieldList.length - 1; i++) {
+            if (p[fieldList[i]] == undefined) return undefined;
+            p = p[fieldList[i]];
+        }
+        return p[fieldList[fieldList.length - 1]];
+    }
+}
+
+/** Fill default values into an object */
+export function fillDefaults<T extends {}>(obj: T, defaults: T): T {
+    if (obj == null) obj = {} as T;
+    for (let key in defaults) {
+        if (defaults.hasOwnProperty(key)) {
+            if (!obj.hasOwnProperty(key)) obj[key] = defaults[key];
+        }
+    }
+    return obj;
+}
+
+/** Find the index of the first element that satisfies the predicate, return -1 if not found */
+export function indexOf<T>(array: T[], predicate: (item: T, idx: number) => boolean) {
+    for (let i = 0; i < array.length; i++) {
+        if (predicate(array[i], i)) return i;
+    }
+    return -1;
+}
+
+/** Get the first element with element._id == id, return null if not found */
+export function getById<T extends { _id: string }>(array: T[], id: string): T {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i]._id == id) return array[i];
+    }
+    return null;
+}
+
+/** Get the index of the first element with element._id == id, return -1 if not found */
+export function getIndexById<T extends { _id: string }>(array: T[], id: string): number {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i]._id == id) return i;
+    }
+    return -1;
+}
+
+/** Get the first element with element.name == name, return null if not found */
+export function getByName<T extends { name: string }>(array: T[], name: string): T {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].name == name) return array[i];
+    }
+    return null;
+}
+
+/** Get the index of the first element with element.name == name, return -1 if not found */
+export function getIndexByName<T extends { name: string }>(array: T[], name: string): number {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].name == name) return i;
+    }
+    return -1;
+}
+
+export function gather<T>(array: T[], keyFunction: (item: T, index: number) => string): T[][] {
+    let map = new Map<string, T[]>();
+    array.forEach((item, index) => {
+        let key = keyFunction(item, index);
+        if (map.has(key)) {
+            map.get(key).push(item);
+        } else {
+            map.set(key, [item]);
+        }
+    });
+    let r: T[][] = [];
+    for (let array of map.values()) {
+        r.push(array);
+    }
+    return r;
+}
+
+/** Sort an array with compare function, make sure when compare(a, b) == 0,
+ * a and b are still in the original order (i.e., stable) */
+export function stableSort<T>(array: T[], compare: (a: T, b: T) => number): T[] {
+    return array
+        // Convert to [ item, index ]
+        .map((x, index) => [x, index] as [T, number])
+        // Sort by compare then by index to stabilize
+        .sort((a, b) => {
+            let c = compare(a[0], b[0]);
+            if (c != 0) {
+                return c;
+            } else {
+                return a[1] - b[1];
+            }
+        })
+        // Extract items back
+        .map(x => x[0]);
+}
+
+/** Sort an array by key given by keyFunction */
+export function sortBy<T>(array: T[], keyFunction: (a: T) => number | string, reverse: boolean = false): T[] {
+    if (reverse) {
+        return array.sort((a: T, b: T) => {
+            let ka = keyFunction(a);
+            let kb = keyFunction(b);
+            if (ka == kb) return 0;
+            return ka < kb ? +1 : -1;
+        });
+    } else {
+        return array.sort((a: T, b: T) => {
+            let ka = keyFunction(a);
+            let kb = keyFunction(b);
+            if (ka == kb) return 0;
+            return ka < kb ? -1 : +1;
+        });
+    }
+}
+
+/** Stable sort an array by key given by keyFunction */
+export function stableSortBy<T>(array: T[], keyFunction: (a: T) => number | string, reverse: boolean = false): T[] {
+    if (reverse) {
+        return stableSort(array, (a: T, b: T) => {
+            let ka = keyFunction(a);
+            let kb = keyFunction(b);
+            if (ka == kb) return 0;
+            return ka < kb ? +1 : -1;
+        });
+    } else {
+        return stableSort(array, (a: T, b: T) => {
+            let ka = keyFunction(a);
+            let kb = keyFunction(b);
+            if (ka == kb) return 0;
+            return ka < kb ? -1 : +1;
+        });
+    }
+}
+
+
+/** Map object that maps (Object, string) into ValueType */
+export class KeyNameMap<KeyType, ValueType> {
+    private mapping = new Map<KeyType, { [name: string]: ValueType }>();
+
+    /** Add a new entry to the map */
+    public add(key: KeyType, name: string, value: ValueType) {
+        if (this.mapping.has(key)) {
+            this.mapping.get(key)[name] = value;
+        } else {
+            let item: { [name: string]: ValueType } = {};
+            item[name] = value;
+            this.mapping.set(key, item);
+        }
+    }
+
+    /** Delete an entry (do nothing if not exist) */
+    public delete(key: KeyType, name: string) {
+        if (this.mapping.has(key)) {
+            delete this.mapping.get(key)[name];
+        }
+    }
+
+    /** Determine if the map has an entry */
+    public has(key: KeyType, name: string) {
+        if (this.mapping.has(key)) {
+            return this.mapping.get(key).hasOwnProperty(name);
+        }
+        return false;
+    }
+
+    /** Get the value corresponding to an entry, return null if not found */
+    public get(key: KeyType, name: string) {
+        if (this.mapping.has(key)) {
+            let m = this.mapping.get(key);
+            if (m.hasOwnProperty(name)) return m[name];
+            return null;
+        }
+        return null;
+    }
+
+    public forEach(callback: (value: ValueType, key: KeyType, name: string) => void) {
+        this.mapping.forEach((v, key) => {
+            for (let p in v) {
+                if (v.hasOwnProperty(p)) {
+                    callback(v[p], key, p);
+                }
+            }
+        });
+    }
+}
+
+export abstract class HashMap<KeyType, ValueType> {
+    private map = new Map<string, ValueType>();
+
+    /** Implement this hash function in your map */
+    protected abstract hash(key: KeyType): string;
+
+    public set(key: KeyType, value: ValueType) {
+        this.map.set(this.hash(key), value);
+    }
+
+    public get(key: KeyType) {
+        return this.map.get(this.hash(key));
+    }
+
+    public has(key: KeyType) {
+        return this.map.has(this.hash(key));
+    }
+
+    public delete(key: KeyType) {
+        this.map.delete(this.hash(key));
+    }
+
+    public clear() {
+        this.map.clear();
+    }
+
+    public values() {
+        return this.map.values();
+    }
+}
+
+export class MultistringHashMap<ValueType> extends HashMap<string[], ValueType> {
+    protected separator: string = Math.random().toString(36).substr(2);
+    protected hash(key: string[]): string {
+        return key.join(this.separator);
+    }
+}

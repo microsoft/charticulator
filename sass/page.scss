@@ -1,0 +1,77 @@
+@import "common/common.scss";
+
+body {
+    font-size: 14px;
+    @include font-main;
+}
+
+#content-wrapper {
+    margin: 20px 20px;
+}
+
+h1 {
+    font-size: 2em;
+    @include font-bold;
+    margin: 1em 0;
+    color: $gray-080;
+}
+
+h2 {
+    font-size: 1.5em;
+    @include font-bold;
+    margin: 1em 0;
+    color: $gray-080;
+}
+
+h3 {
+    font-size: 1.2em;
+    @include font-bold;
+    margin: 1em 0;
+}
+
+p {
+    margin: 1em 0;
+    line-height: 1.2em;
+}
+
+pre {
+    @include font-mono;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+strong {
+    @include font-bold;
+}
+
+a {
+    &, &:visited {
+        color: black;
+        text-decoration: underline;
+    }
+    &:hover, &:active {
+        color: $color-primary-dark;
+    }
+}
+
+.credit {
+    border-radius: 2px;
+    h3 {
+        margin: 0.5em 0;
+        padding: 0;
+    }
+    p, pre {
+        margin: 0.5em 0;
+    }
+    .description {
+        @include font-italic;
+        color: $gray-080;
+        font-size: 0.9em;
+    }
+    &:not(:last-child) {
+        border-bottom: 1px solid $gray-200;
+    }
+    padding: 10px 0;
+}

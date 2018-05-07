@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <style>
+        @keyframes rotate1 {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes rotate2 {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        .group1 {
+            transform-origin: 15.5px 15.5px;
+            animation: rotate1 1.5s linear infinite;
+        }
+        .group2 {
+            transform-origin: 15.5px 15.5px;
+            animation: rotate2 1.5s linear infinite;
+        }
+    </style>
+    <g class="group1">
+        <path d="M3.31836,16.5a1,1,0,0,1-1-1A13.19635,13.19635,0,0,1,15.5,2.31836a1,1,0,0,1,0,2A11.19436,11.19436,0,0,0,4.31836,15.5,1,1,0,0,1,3.31836,16.5Z"/>
+        <path d="M15.5,28.68164a1,1,0,0,1,0-2A11.19373,11.19373,0,0,0,26.68164,15.5a1,1,0,0,1,2,0A13.19635,13.19635,0,0,1,15.5,28.68164Z"/>
+    </g>
+    <g class="group2">
+        <path d="M15.5,25.03906A9.55008,9.55008,0,0,1,5.96045,15.5a1,1,0,0,1,2,0A7.54779,7.54779,0,0,0,15.5,23.03906a1,1,0,0,1,0,2Z" style="opacity:0.5"/>
+        <path d="M24.03906,16.5a.99974.99974,0,0,1-1-1A7.54779,7.54779,0,0,0,15.5,7.96045a1,1,0,0,1,0-2A9.55008,9.55008,0,0,1,25.03906,15.5.99973.99973,0,0,1,24.03906,16.5Z" style="opacity:0.5"/>
+    </g>
+</svg>

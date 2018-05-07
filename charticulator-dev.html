@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1200, user-scalable=no" />
+
+<link rel="stylesheet" href="dist/styles/app.css" type="text/css" />
+
+<title>Charticulator</title>
+
+<div id="container"></div>
+
+<script src="node_modules/react/umd/react.development.js"></script>
+<script src="node_modules/react-dom/umd/react-dom.development.js"></script>
+<script src="node_modules/react-dom/umd/react-dom-server.browser.development.js"></script>
+<script src="node_modules/d3/build/d3.js"></script>
+<script src="dist/data/config.js"></script>
+<script src="dist/scripts/app.bundle.js"></script>
+
+<script type="text/javascript">
+    let application = new Charticulator.Application();
+    application.initialize(CHARTICULATOR_CONFIG, "container", "./dist/scripts/worker.bundle.js");
+</script>
+<script type='text/javascript'>
+    // Include Lato and Inconsolata from Google fonts.
+    WebFontConfig = {
+        google: {
+            families: ['Lato:300,300i,400,400i,700,700i','Inconsolata:400,700']
+        }
+    };
+    (function(d) {
+        var wf = d.createElement('script'),
+            s = d.scripts[0];
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+    })(document);
+</script>

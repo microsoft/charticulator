@@ -1,0 +1,61 @@
+// 24-level grayscale (000 - 230)
+$gray-000: #000000;
+$gray-010: #0f0f0f;
+$gray-020: #191919;
+$gray-030: #222222;
+$gray-040: #2b2b2b;
+$gray-050: #343434;
+$gray-060: #3e3e3e;
+$gray-070: #484848;
+$gray-080: #525252;
+$gray-090: #5c5c5c;
+$gray-100: #676767;
+$gray-110: #717171;
+$gray-120: #7c7c7c;
+$gray-130: #888888;
+$gray-140: #939393;
+$gray-150: #9e9e9e;
+$gray-160: #aaaaaa;
+$gray-170: #b6b6b6;
+$gray-180: #c2c2c2;
+$gray-190: #cecece;
+$gray-200: #dadada;
+$gray-210: #e6e6e6;
+$gray-220: #f2f2f2;
+$gray-230: #ffffff;
+
+// Black and white
+$black: $gray-000;
+$white: $gray-230;
+
+
+$color-well: $gray-220;
+$color-border: $gray-180;
+
+// Colors
+$color-primary-light: #68b1f1;
+$color-primary:       #238af8;
+$color-primary-dark:  #035abd;
+
+$color-active-light:  #f5cd57;
+$color-active:        #fa9e13;
+$color-active-dark:   #b86a05;
+
+$color-secondary: #38BF23;
+
+// Shadows
+@mixin shadow-ambient {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+@mixin shadow-focused {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+@mixin shadow-focused-right {
+    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+@mixin shadow-focused-left {
+    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.3);
+}

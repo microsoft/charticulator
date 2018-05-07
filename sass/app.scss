@@ -1,0 +1,154 @@
+@import "common/common.scss";
+@import "editor/index.scss";
+
+@import "components/components.scss";
+
+// Application Layout Rules
+
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+    touch-action: none;
+    cursor: default;
+
+    @include disable-user-select;
+    @include font-main;
+}
+
+// CSS Rule format:
+// module__element-subelement--variant
+
+.charticulator {
+    &__application {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__menu-bar {
+        background: $gray-100;
+        border-top: 2px solid $gray-100;
+        border-bottom: 2px solid $gray-100;
+
+        display: flex;
+        flex-direction: row;
+        color: $gray-200;
+
+        &-left {
+            flex: 1;
+        }
+        &-right {
+            flex-shrink: 0;
+        }
+
+        &-separator {
+            height: 24px;
+            margin: 4px 0;
+            display: inline-block;
+            vertical-align: top;
+            width: 0px;
+            border-left: 1px solid $gray-080;
+        }
+    }
+
+    &__panel-container {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+
+        // Drop a shadow to the menu-bar
+        box-shadow: 0 0 5px black;
+        z-index: 5;
+        overflow: hidden;
+    }
+
+    &__panel {
+        $panel-color: $gray-210;
+        $panel-border-color: $gray-200;
+        $panel-border-width: 2px;
+
+        display: flex;
+        flex-direction: column;
+        background: $panel-color;
+
+        &-dataset {
+            flex-shrink: 0;
+            width: 200px;
+            overflow: hidden;
+            box-sizing: border-box;
+
+            border-right: $panel-border-width solid $panel-border-color;
+            // padding: 10px;
+            // overflow-y: scroll;
+            // z-index: 10;
+            // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        &-editor {
+            flex: 1;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+
+            &-toolbar {
+                padding: 10px;
+                background: $gray-210;
+                border-bottom: $panel-border-width solid $panel-border-color;
+                // z-index: 9;
+                // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+
+            &-panel-container {
+                display: flex;
+                flex: 1;
+                flex-direction: row;
+            }
+
+            &-panel {
+                overflow: hidden;
+
+                &-panes {
+                    width: 320px;
+                    flex-shrink: 0;
+                    border-right: $panel-border-width solid $panel-border-color;
+                    display: flex;
+                    flex-direction: column;
+                }
+                &-chart {
+                    flex: 1;
+                    display: flex;
+                }
+            }
+        }
+    }
+}
+
+.mark-editor-single-view {
+    width: 300px;
+
+    .mark-view-container {
+        background: white;
+    }
+}
+
+.chart-editor-canvas-view {
+    background: white;
+    flex: 1;
+    overflow: hidden;
+}
+
+.chart-editor-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
