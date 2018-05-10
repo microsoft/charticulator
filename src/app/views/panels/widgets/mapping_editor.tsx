@@ -233,7 +233,7 @@ export class MappingEditor extends React.Component<MappingEditorProps, MappingEd
                         <Button
                             active={false}
                             text="Conditioned by..."
-                            ref={(e) => ref = ReactDOM.findDOMNode(e)}
+                            ref={(e) => ref = ReactDOM.findDOMNode(e) as Element}
                             onClick={() => {
                                 this.beginDataFieldSelection(ref);
                             }}
@@ -244,7 +244,7 @@ export class MappingEditor extends React.Component<MappingEditorProps, MappingEd
                         <Button
                             active={false}
                             icon={boolean ? "checkbox/checked" : "checkbox/empty"}
-                            ref={(e) => ref = ReactDOM.findDOMNode(e)}
+                            ref={(e) => ref = ReactDOM.findDOMNode(e) as Element}
                             onClick={() => {
                                 this.setValueMapping(!boolean);
                             }}
@@ -401,7 +401,7 @@ export class MappingEditor extends React.Component<MappingEditorProps, MappingEd
                         {shouldShowBindData ? (
                             <Button
                                 icon={"general/bind-data"}
-                                ref={(e) => this.mappingButton = ReactDOM.findDOMNode(e)}
+                                ref={(e) => this.mappingButton = ReactDOM.findDOMNode(e) as Element}
                                 onClick={() => {
                                     this.beginDataFieldSelection();
                                 }}

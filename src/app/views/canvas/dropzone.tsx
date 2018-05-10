@@ -78,7 +78,7 @@ export class DropZoneView extends React.Component<DropZoneViewProps, DropZoneVie
         let p2a2 = Geometry.vectorSub(p2n, n2);
         return (
             <g className="dropzone-element-line">
-                <line x1={p1n.x} y1={p1n.y} x2={p2n.x} y2={p2n.y} style={{ strokeLineend: "butt" }} />
+                <line x1={p1n.x} y1={p1n.y} x2={p2n.x} y2={p2n.y} style={{ strokeLinecap: "butt" }} />
                 {arrow1 > 0 ? <path d={this.makeClosePath(p1a1, p1a2, p1)} /> : null},
                 {arrow2 > 0 ? <path d={this.makeClosePath(p2a1, p2a2, p2)} /> : null}
             </g>

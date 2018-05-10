@@ -2,8 +2,8 @@
     "compileOnSave": true,
     "compilerOptions": {
         "declaration": true,
-        "rootDir": ".",
-        "outDir": "../dist/scripts",
+        "rootDir": "./src",
+        "outDir": "./dist/scripts",
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "es6",

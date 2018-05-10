@@ -44,8 +44,8 @@ let COMMANDS = {
 
     // Compile sass files
     sass: [
-        "sass sass/app.scss:dist/styles/app.css",
-        "sass sass/page.scss:dist/styles/page.css"
+        "node-sass sass/app.scss -o dist/styles",
+        "node-sass sass/page.scss -o dist/styles"
     ],
 
     // Compile the PEGJS parser
@@ -54,7 +54,7 @@ let COMMANDS = {
     ],
 
     // Compile TypeScript
-    typescript: "tsc -p src",
+    typescript: "tsc",
 
     // Produce webpack bundles
     webpack: "webpack",
@@ -69,9 +69,9 @@ let COMMANDS = {
     server: "http-server . -a 127.0.0.1 -p 4000 -c-1 -s",
     public_server: "http-server . -a 0.0.0.0 -p 4000 -c-1 -s",
     watch: [
-        "tsc -p src -w",
+        "tsc -w",
         "webpack -w",
-        "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
+        "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
         () => multirun.run(COMMANDS["server"])
     ]
 };
