@@ -1,31 +1,34 @@
 {
-    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-    "rules": {
-        // Interfaces do not start with "I" in this project
-        "interface-name": [true, "never-prefix"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    // Interfaces do not start with "I" in this project
+    "interface-name": [true, "never-prefix"],
 
-        // This is more annoying than useful. Objects are often constructed in a semantically meaningful way.
-        // Insisting on alphabetical order is rather arbitrary.
-        "object-literal-sort-keys": false,
-        "ordered-imports": false,
+    // This is more annoying than useful. Objects are often constructed in a semantically meaningful way.
+    // Insisting on alphabetical order is rather arbitrary.
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
 
-        // TODO: Enable these rules when we have time to fix them
-        "ban-types": false,
-        "no-console": false,
-        "no-empty-interface": false,
-        "variable-name": false,
-        "one-variable-per-declaration": false,
-        "max-classes-per-file": false,
-        "triple-equals": false,
-        "member-ordering": false,
-        "no-empty": false,
-        "no-shadowed-variable": false,
-        "no-conditional-assignment": false,
-        "prefer-for-of": false,
-        "forin": false,
-        "no-namespace": false,
-        "no-bitwise": false,
-        "radix": false,
-        "no-var-requires": false
-    }
+    // TODO: Enable these rules when we have time to fix them
+    "ban-types": false,
+    "no-console": false,
+    "no-empty-interface": false,
+    "variable-name": false,
+    "one-variable-per-declaration": false,
+    "max-classes-per-file": false,
+    "triple-equals": false,
+    "member-ordering": false,
+    "no-empty": false,
+    "no-shadowed-variable": false,
+    "no-conditional-assignment": false,
+    "prefer-for-of": false,
+    "forin": false,
+    "no-namespace": false,
+    "no-bitwise": false,
+    "radix": false,
+    "no-var-requires": false,
+    "jsx-no-lambda": false,
+    "jsx-no-string-ref": false,
+    "jsx-key": false
+  }
 }

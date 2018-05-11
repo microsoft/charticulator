@@ -9,20 +9,13 @@ import * as Prototypes from "./prototypes";
 import * as Solver from "./solver";
 import * as Specification from "./specification";
 
-export {
-    Expression,
-    Specification,
-    Prototypes,
-    Solver,
-    Graphics,
-    Dataset
-};
+export { Expression, Specification, Prototypes, Solver, Graphics, Dataset };
 
 import { CharticulatorCoreConfig, setConfig } from "./config";
 
 import { initialize as initialize_WASMSolver } from "./solver/wasm_solver";
 
 export function initialize(config?: CharticulatorCoreConfig): Promise<void> {
-    setConfig(config);
-    return initialize_WASMSolver();
+  setConfig(config);
+  return initialize_WASMSolver();
 }

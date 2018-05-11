@@ -13,7 +13,18 @@ import * as Scales from "./scales";
 
 export * from "./common";
 
-export { Marks, Scales, Constraints, Glyphs, Charts, PlotSegments, Links, Guides, Legends, Dataflow };
+export {
+  Marks,
+  Scales,
+  Constraints,
+  Glyphs,
+  Charts,
+  PlotSegments,
+  Links,
+  Guides,
+  Legends,
+  Dataflow
+};
 export { ObjectClassCache } from "./cache";
 import { ObjectClass, ObjectClasses } from "./common";
 

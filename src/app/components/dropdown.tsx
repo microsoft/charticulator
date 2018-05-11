@@ -7,82 +7,106 @@ import * as globals from "../globals";
 import { PopupView, PopupContext } from "../controllers";
 
 export interface DropdownButtonProps {
-    url?: string;
-    title?: string;
-    text?: string;
+  url?: string;
+  title?: string;
+  text?: string;
 
-    list: { name: string, url?: string, text?: string }[];
+  list: Array<{ name: string; url?: string; text?: string }>;
 
-    className?: string;
+  className?: string;
 
-    onSelect?: (name: string) => void;
+  onSelect?: (name: string) => void;
 }
 
 export interface DropdownButtonState {
-    active: boolean;
+  active: boolean;
 }
 
-export class DropdownButton extends React.Component<DropdownButtonProps, DropdownButtonState> {
-    constructor(props: DropdownButtonProps) {
-        super(props);
-        this.state = {
+export class DropdownButton extends React.Component<
+  DropdownButtonProps,
+  DropdownButtonState
+> {
+  constructor(props: DropdownButtonProps) {
+    super(props);
+    this.state = {
+      active: false
+    };
+  }
+
+  private startDropdown() {
+    globals.popupController.popupAt(
+      context => {
+        context.addListener("close", () => {
+          this.setState({
             active: false
-        };
-    }
-
-    private startDropdown() {
-        globals.popupController.popupAt((context) => {
-            context.addListener("close", () => {
-                this.setState({
-                    active: false
-                });
-            });
-            return (
-                <PopupView context={context}>
-                    <DropdownListView list={this.props.list} context={context} onClick={this.props.onSelect} />
-                </PopupView>
-            );
-        }, { anchor: this.anchor });
-        this.setState({
-            active: true
+          });
         });
-    }
-    private _startDropdown = this.startDropdown.bind(this);
-    private anchor: HTMLSpanElement;
-
-    public render() {
-        let props = this.props;
         return (
-            <span className={classNames(this.props.className, "dropdown-button", ["active", this.state.active])} ref={(e) => this.anchor = e} onClick={this._startDropdown} title={props.title}>
-                {props.url != null ? <SVGImageIcon url={props.url} /> : null}
-                {props.text != null ? <span className="text">{props.text}</span> : null}
-                <SVGImageIcon url={getSVGIcon("general/dropdown")} />
-            </span>
+          <PopupView context={context}>
+            <DropdownListView
+              list={this.props.list}
+              context={context}
+              onClick={this.props.onSelect}
+            />
+          </PopupView>
         );
-    }
+      },
+      { anchor: this.anchor }
+    );
+    this.setState({
+      active: true
+    });
+  }
+  private _startDropdown = this.startDropdown.bind(this);
+  private anchor: HTMLSpanElement;
+
+  public render() {
+    const props = this.props;
+    return (
+      <span
+        className={classNames(this.props.className, "dropdown-button", [
+          "active",
+          this.state.active
+        ])}
+        ref={e => (this.anchor = e)}
+        onClick={this._startDropdown}
+        title={props.title}
+      >
+        {props.url != null ? <SVGImageIcon url={props.url} /> : null}
+        {props.text != null ? <span className="text">{props.text}</span> : null}
+        <SVGImageIcon url={getSVGIcon("general/dropdown")} />
+      </span>
+    );
+  }
 }
 
 export function DropdownListView<DataType>(props: {
-    list: { name: string, url?: string, text?: string, font?: string }[];
-    onClick?: (name: string) => void;
-    selected?: string;
-    context: PopupContext;
+  list: Array<{ name: string; url?: string; text?: string; font?: string }>;
+  onClick?: (name: string) => void;
+  selected?: string;
+  context: PopupContext;
 }) {
-    return (
-        <ul className="dropdown-list">
-            {props.list.map(item => (
-                <li
-                    key={item.name}
-                    className={props.selected == item.name ? "is-active" : null}
-                    onClick={() => {
-                        if (props.onClick) props.onClick(item.name);
-                        props.context.close();
-                    }}
-                >
-                    {item.url != null ? <SVGImageIcon url={item.url} /> : null}
-                    {item.text != null ? <span className="text" style={{ fontFamily: item.font }}>{item.text}</span> : null}
-                </li>
-            ))}
-        </ul>
-    );
+  return (
+    <ul className="dropdown-list">
+      {props.list.map(item => (
+        <li
+          key={item.name}
+          className={props.selected == item.name ? "is-active" : null}
+          onClick={() => {
+            if (props.onClick) {
+              props.onClick(item.name);
+            }
+            props.context.close();
+          }}
+        >
+          {item.url != null ? <SVGImageIcon url={item.url} /> : null}
+          {item.text != null ? (
+            <span className="text" style={{ fontFamily: item.font }}>
+              {item.text}
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  );
 }

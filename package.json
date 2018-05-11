@@ -8,12 +8,21 @@
     "url": "https://donghaoren.org"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "build": "node build.js",
     "server": "node build.js server",
     "public_server": "node build.js public_server",
     "start": "node build.js watch",
-    "lint": "tslint 'src/**/*.ts'",
-    "test": "NODE_PATH=. mocha dist/scripts/tests"
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "prettify": "prettier 'src/**/*.{ts,tsx}'",
+    "unit_test": "NODE_PATH=. mocha dist/scripts/tests",
+    "test": "run-s lint build unit_test"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "d3": "4.13.0",
@@ -36,12 +45,15 @@
     "file-loader": "1.1.11",
     "fs-extra": "5.0.0",
     "http-server": "0.11.1",
+    "husky": "^0.14.3",
     "js-yaml": "3.11.0",
+    "lint-staged": "^7.1.0",
     "mocha": "5.0.5",
     "multirun": "2.0.0",
     "node-sass": "^4.9.0",
     "npm-run-all": "^4.1.3",
     "pegjs": "0.10.0",
+    "prettier": "^1.12.1",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.12.0",
     "tslint-react": "^3.6.0",

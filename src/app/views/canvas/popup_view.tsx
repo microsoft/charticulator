@@ -63,99 +63,127 @@ import { DragData } from "../../actions";
 // }
 
 export interface ToggleControlViewProps {
-    icon: string;
-    active: boolean;
-    onChange: (active: boolean) => void;
+  icon: string;
+  active: boolean;
+  onChange: (active: boolean) => void;
 }
 
-export class ToggleControlView extends React.Component<ToggleControlViewProps, {}> {
-    public render() {
-        return (
-            <span className={classNames("button-toggle button-icon", ["active", this.props.active])}
-                onClick={() => this.props.onChange(!this.props.active)}
-            >
-                <SVGImageIcon url={R.getSVGIcon(this.props.icon)} />
-            </span>
-        )
-    }
+export class ToggleControlView extends React.Component<
+  ToggleControlViewProps,
+  {}
+> {
+  public render() {
+    return (
+      <span
+        className={classNames("button-toggle button-icon", [
+          "active",
+          this.props.active
+        ])}
+        onClick={() => this.props.onChange(!this.props.active)}
+      >
+        <SVGImageIcon url={R.getSVGIcon(this.props.icon)} />
+      </span>
+    );
+  }
 }
 
 export interface RadioControlViewProps {
-    icons: string[];
-    options: string[];
-    labels?: string[];
-    value: string;
-    onChange: (active: string) => void;
+  icons: string[];
+  options: string[];
+  labels?: string[];
+  value: string;
+  onChange: (active: string) => void;
 }
 
-export class RadioControlView extends React.Component<RadioControlViewProps, {}> {
-    public render() {
-        let currentIndex = this.props.options.indexOf(this.props.value);
-        return (
-            <span className="button-radio">
-                <DropdownButton
-                    url={R.getSVGIcon(this.props.icons[currentIndex])}
-                    list={this.props.options.map((x, i) => { return { url: R.getSVGIcon(this.props.icons[i]), name: x, text: this.props.labels ? this.props.labels[i] : null } })}
-                    onSelect={this.props.onChange}
-                />
-            </span>
-        )
-    }
+export class RadioControlView extends React.Component<
+  RadioControlViewProps,
+  {}
+> {
+  public render() {
+    const currentIndex = this.props.options.indexOf(this.props.value);
+    return (
+      <span className="button-radio">
+        <DropdownButton
+          url={R.getSVGIcon(this.props.icons[currentIndex])}
+          list={this.props.options.map((x, i) => {
+            return {
+              url: R.getSVGIcon(this.props.icons[i]),
+              name: x,
+              text: this.props.labels ? this.props.labels[i] : null
+            };
+          })}
+          onSelect={this.props.onChange}
+        />
+      </span>
+    );
+  }
 }
 
 export interface OrderControlViewProps {
-    value: Specification.Expression;
-    onChange: (order: Specification.Expression) => void;
+  value: Specification.Expression;
+  onChange: (order: Specification.Expression) => void;
 }
 
 export interface OrderControlViewState {
-    active: boolean;
+  active: boolean;
 }
 
-export class OrderControlView extends React.Component<OrderControlViewProps, OrderControlViewState> implements Droppable {
-    refs: {
-        container: HTMLSpanElement;
-    }
+export class OrderControlView
+  extends React.Component<OrderControlViewProps, OrderControlViewState>
+  implements Droppable {
+  public refs: {
+    container: HTMLSpanElement;
+  };
 
-    constructor(props: OrderControlViewProps) {
-        super(props);
-        this.state = {
-            active: false
-        };
-    }
+  constructor(props: OrderControlViewProps) {
+    super(props);
+    this.state = {
+      active: false
+    };
+  }
 
-    public onDragEnter(ctx: DragContext) {
-        if (ctx.data instanceof DragData.DataExpression) {
-            let data = ctx.data as DragData.DataExpression;
-            this.setState({ active: true });
-            ctx.onDrop(() => {
-                this.props.onChange(Expression.functionCall("sortBy", Expression.parse(data.lambdaExpression)).toString());
-            });
-            ctx.onLeave(() => {
-                this.setState({ active: false });
-            });
-            return true;
-        }
-        return false;
+  public onDragEnter(ctx: DragContext) {
+    if (ctx.data instanceof DragData.DataExpression) {
+      const data = ctx.data as DragData.DataExpression;
+      this.setState({ active: true });
+      ctx.onDrop(() => {
+        this.props.onChange(
+          Expression.functionCall(
+            "sortBy",
+            Expression.parse(data.lambdaExpression)
+          ).toString()
+        );
+      });
+      ctx.onLeave(() => {
+        this.setState({ active: false });
+      });
+      return true;
     }
+    return false;
+  }
 
-    public componentDidMount() {
-        globals.dragController.registerDroppable(this, this.refs.container);
-    }
+  public componentDidMount() {
+    globals.dragController.registerDroppable(this, this.refs.container);
+  }
 
-    public componentWillUnmount() {
-        globals.dragController.unregisterDroppable(this);
-    }
+  public componentWillUnmount() {
+    globals.dragController.unregisterDroppable(this);
+  }
 
-    public render() {
-        return (
-            <span className="button-order" ref="container">
-                <span className={classNames("button-icon", ["active", this.state.active || (this.props.value != null)])}>
-                    <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-                </span>
-            </span>
-        )
-    }
+  public render() {
+    return (
+      <span className="button-order" ref="container">
+        <span
+          className={classNames("button-icon", [
+            "active",
+            this.state.active || this.props.value != null
+          ])}
+        >
+          <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+        </span>
+      </span>
+    );
+  }
 }
 // export interface ControlsHandleViewProps extends HandleViewProps {
 //     handle: Prototypes.Handles.Controls;

@@ -14,90 +14,148 @@ import { CharticulatorAppConfig } from "./config";
 import { ExportTemplateTarget } from "./template";
 
 export class ApplicationExtensionContext implements ExtensionContext {
-    constructor(public app: Application) {
-    }
+  constructor(public app: Application) {}
 
-    getGlobalDispatcher(): Dispatcher<Action> {
-        return this.app.mainStore.dispatcher;
-    }
+  public getGlobalDispatcher(): Dispatcher<Action> {
+    return this.app.mainStore.dispatcher;
+  }
 
-    getMainStore(): MainStore {
-        return this.app.mainStore;
-    }
+  public getMainStore(): MainStore {
+    return this.app.mainStore;
+  }
 
-    getApplication(): Application {
-        return this.app;
-    }
+  public getApplication(): Application {
+    return this.app;
+  }
 }
 
 export class Application {
-    public worker: CharticulatorWorker;
-    public mainStore: MainStore;
-    public extensionContext: ApplicationExtensionContext;
+  public worker: CharticulatorWorker;
+  public mainStore: MainStore;
+  public extensionContext: ApplicationExtensionContext;
 
-    public async initialize(config: CharticulatorAppConfig, containerID: string, workerScriptURL: string) {
-        await initialize(config);
-        this.worker = new CharticulatorWorker(workerScriptURL);
-        await this.worker.initialize(config);
+  public async initialize(
+    config: CharticulatorAppConfig,
+    containerID: string,
+    workerScriptURL: string
+  ) {
+    await initialize(config);
+    this.worker = new CharticulatorWorker(workerScriptURL);
+    await this.worker.initialize(config);
 
-        let rows: any[] = [];
-        let monthIndex = 0;
-        for (let month of ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]) {
-            let cityIndex = 0;
-            for (let city of ["City1", "City2", "City3"]) {
-                let temperature = 50 + 30 * Math.sin((monthIndex + 0.5) * Math.PI / 12 + cityIndex * Math.PI / 2);
-                rows.push({
-                    _id: "ID" + rows.length,
-                    Month: month,
-                    City: city,
-                    Temperature: temperature
-                });
-                cityIndex += 1;
-            }
-            monthIndex += 1;
-        }
-        this.mainStore = new MainStore(
-            this.worker,
+    const rows: any[] = [];
+    let monthIndex = 0;
+    for (const month of [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]) {
+      let cityIndex = 0;
+      for (const city of ["City1", "City2", "City3"]) {
+        const temperature =
+          50 +
+          30 *
+            Math.sin(
+              (monthIndex + 0.5) * Math.PI / 12 + cityIndex * Math.PI / 2
+            );
+        rows.push({
+          _id: "ID" + rows.length,
+          Month: month,
+          City: city,
+          Temperature: temperature
+        });
+        cityIndex += 1;
+      }
+      monthIndex += 1;
+    }
+    this.mainStore = new MainStore(this.worker, {
+      tables: [
+        {
+          name: "Temperature",
+          columns: [
             {
-                tables: [{
-                    name: "Temperature",
-                    columns: [
-                        { name: "Month", type: "string", metadata: { kind: "categorical", order: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] } },
-                        { name: "City", type: "string", metadata: { kind: "categorical" } },
-                        { name: "Temperature", type: "number", metadata: { kind: "numerical", format: ".1f" } }
-                    ],
-                    rows: rows
-                }],
-                name: "demo"
+              name: "Month",
+              type: "string",
+              metadata: {
+                kind: "categorical",
+                order: [
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec"
+                ]
+              }
+            },
+            { name: "City", type: "string", metadata: { kind: "categorical" } },
+            {
+              name: "Temperature",
+              type: "number",
+              metadata: { kind: "numerical", format: ".1f" }
             }
-        );
-        (window as any)["mainStore"] = this.mainStore;
-        ReactDOM.render(<MainView store={this.mainStore} disableFileView={config.DisableFileView} />, document.getElementById(containerID));
-
-        this.extensionContext = new ApplicationExtensionContext(this);
-
-        // Load extensions if any
-        if (config.Extensions) {
-            config.Extensions.forEach((ext) => {
-                let scriptTag = document.createElement("script");
-                scriptTag.src = ext.script;
-                scriptTag.onload = () => {
-                    eval("(function() { return function(application) { " + ext.initialize + " } })()")(this);
-                };
-                document.body.appendChild(scriptTag);
-            });
+          ],
+          rows
         }
-    }
+      ],
+      name: "demo"
+    });
+    (window as any).mainStore = this.mainStore;
+    ReactDOM.render(
+      <MainView
+        store={this.mainStore}
+        disableFileView={config.DisableFileView}
+      />,
+      document.getElementById(containerID)
+    );
 
-    public addExtension(extension: Extension) {
-        extension.activate(this.extensionContext);
-    }
+    this.extensionContext = new ApplicationExtensionContext(this);
 
-    public registerExportTemplateTarget(name: string, ctor: () => ExportTemplateTarget) {
-        this.mainStore.registerExportTemplateTarget(name, ctor);
+    // Load extensions if any
+    if (config.Extensions) {
+      config.Extensions.forEach(ext => {
+        const scriptTag = document.createElement("script");
+        scriptTag.src = ext.script;
+        scriptTag.onload = () => {
+          // tslint:disable-next-line no-eval
+          eval(
+            "(function() { return function(application) { " +
+              ext.initialize +
+              " } })()"
+          )(this);
+        };
+        document.body.appendChild(scriptTag);
+      });
     }
+  }
 
-    public unregisterExportTemplateTarget(name: string) {
-        this.mainStore.unregisterExportTemplateTarget(name);
-    }
+  public addExtension(extension: Extension) {
+    extension.activate(this.extensionContext);
+  }
+
+  public registerExportTemplateTarget(
+    name: string,
+    ctor: () => ExportTemplateTarget
+  ) {
+    this.mainStore.registerExportTemplateTarget(name, ctor);
+  }
+
+  public unregisterExportTemplateTarget(name: string) {
+    this.mainStore.unregisterExportTemplateTarget(name);
+  }
 }
