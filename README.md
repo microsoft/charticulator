@@ -56,7 +56,7 @@ Development
 For a live development environment, keep the following command running:
 
 ```bash
-npm run watch
+npm start
 ```
 
 This command watches for any change in `src/` and `sass/`, and recompiles Charticulator automatically.
