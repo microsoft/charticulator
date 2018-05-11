@@ -1,6 +1,6 @@
 import {
-    Variable, FunctionCall, Operator, Expression, FieldAccess,
-    NumberValue, StringValue, BooleanValue, DateValue, LambdaFunction
+    BooleanValue, DateValue, Expression, FieldAccess, FunctionCall,
+    LambdaFunction, NumberValue, Operator, StringValue, Variable
 } from "./classes";
 
 import { parse } from "./parser";
@@ -10,7 +10,7 @@ export function variable(name: string): Variable {
 }
 
 export function functionCall(functionName: string, ...args: Expression[]): FunctionCall {
-    let fields = functionName.split(".");
+    const fields = functionName.split(".");
     if (fields.length == 1) {
         return new FunctionCall(new Variable(functionName), args);
     } else {
@@ -46,7 +46,7 @@ export class ExpressionCache {
         if (this.items.has(expr)) {
             return this.items.get(expr);
         } else {
-            let result = parse(expr);
+            const result = parse(expr);
             this.items.set(expr, result);
             return result;
         }

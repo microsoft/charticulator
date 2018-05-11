@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength, Variable } from "../../solver";
-import { ObjectClasses, AttributeDescription, DataMappingHints, Controls } from "../common";
 import { Scale } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "../../solver";
+import * as Specification from "../../specification";
+import { AttributeDescription, Controls, DataMappingHints, ObjectClasses } from "../common";
 import { ScaleClass } from "./index";
 
 
@@ -20,9 +20,9 @@ export class FormatScale extends ScaleClass {
     };
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let number = data as number;
+        const number = data as number;
         try {
-            let fmt = d3.format(this.object.properties.format);
+            const fmt = d3.format(this.object.properties.format);
             return fmt(number);
         } catch (e) {
             return number.toFixed(1);
@@ -41,7 +41,7 @@ export class FormatScale extends ScaleClass {
 
     public getAttributePanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {
         let n = 1;
-        let match = this.object.properties.format.match(/^\.(\d+)f$/);
+        const match = this.object.properties.format.match(/^\.(\d+)f$/);
         if (match) {
             n = parseInt(match[1]);
         }

@@ -1,4 +1,4 @@
-import { Point, Color } from "../common";
+import { Color, Point } from "../common";
 import { VariableStrength } from "../solver";
 import * as Specification from "../specification";
 
@@ -30,7 +30,7 @@ export interface TemplateParameters {
     inferences?: Specification.Template.Inference[];
 }
 
-export module DropZones {
+export namespace DropZones {
     export interface Description {
         type: string;
         /** If set, restrict the data that can be dropped */
@@ -100,7 +100,7 @@ export module DropZones {
     }
 }
 
-export module Handles {
+export namespace Handles {
 
     export interface Description {
         type: string;
@@ -206,7 +206,7 @@ export module Handles {
     }
 }
 
-export module BoundingBox {
+export namespace BoundingBox {
 
     export interface Description {
         type: string;
@@ -250,7 +250,7 @@ export module BoundingBox {
     }
 }
 
-export module SnappingGuides {
+export namespace SnappingGuides {
     export interface Description {
         type: string;
         visible: boolean;
@@ -270,10 +270,10 @@ export module SnappingGuides {
     }
 }
 
-export module LinkAnchor {
+export namespace LinkAnchor {
     export interface Description {
         element: string;
-        points: {
+        points: Array<{
             x: number;
             y: number;
             xAttribute: string;
@@ -282,11 +282,11 @@ export module LinkAnchor {
                 x: number;
                 y: number;
             };
-        }[];
+        }>;
     };
 }
 
-export module CreatingInteraction {
+export namespace CreatingInteraction {
     export interface Description {
         type: string;
         mapping: { [name: string]: string };
@@ -330,11 +330,11 @@ export module CreatingInteraction {
     }
 }
 
-export module TemplateMetadata {
+export namespace TemplateMetadata {
     export interface ChartMetadata {
         dataSlots: DataSlot[];
-        inference: { id: string, infer: Inference }[];
-        mappings: { id: string, attribute: string, slot: string }[];
+        inference: Array<{ id: string, infer: Inference }>;
+        mappings: Array<{ id: string, attribute: string, slot: string }>;
     }
 
     export interface DataSlot {

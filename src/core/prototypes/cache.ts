@@ -1,13 +1,13 @@
 import * as Specification from "../specification";
-import { ObjectClass, ObjectClasses } from "./object";
 import { ChartElementClass } from "./chart_element";
+import { ObjectClass, ObjectClasses } from "./object";
 
-import * as Marks from "./marks";
-import * as Scales from "./scales";
-import * as Glyphs from "./glyphs";
-import * as PlotSegments from "./plot_segments";
-import * as Constraints from "./constraints";
 import * as Charts from "./charts";
+import * as Constraints from "./constraints";
+import * as Glyphs from "./glyphs";
+import * as Marks from "./marks";
+import * as PlotSegments from "./plot_segments";
+import * as Scales from "./scales";
 
 export class ObjectClassCache {
     private cache = new WeakMap<Specification.ObjectState, ObjectClass>();
@@ -62,7 +62,7 @@ export class ObjectClassCache {
         return this.createClass(parent, object, state) as Charts.ChartClass;
     }
     public createClass(parent: ObjectClass, object: Specification.Object, state: Specification.ObjectState): ObjectClass {
-        let newClass = ObjectClasses.Create(parent, object, state);
+        const newClass = ObjectClasses.Create(parent, object, state);
         this.cache.set(state, newClass);
         return newClass;
     }

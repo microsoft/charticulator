@@ -1,5 +1,5 @@
-import { ValueType } from "./classes";
 import * as d3 from "d3";
+import { ValueType } from "./classes";
 import { fields } from "./helpers";
 
 export let intrinsics: { [name: string]: ValueType } = {};
@@ -27,33 +27,33 @@ export let precedences = {
 }
 
 // Math constants
-intrinsics["PI"] = Math.PI;
-intrinsics["E"] = Math.E;
+intrinsics.PI = Math.PI;
+intrinsics.E = Math.E;
 
 // Math functions
-intrinsics["abs"] = Math.abs;
-intrinsics["sign"] = Math.sign;
-intrinsics["floor"] = Math.floor;
-intrinsics["ceil"] = Math.ceil;
-intrinsics["exp"] = Math.exp;
-intrinsics["log"] = Math.log;
-intrinsics["log10"] = Math.log10;
-intrinsics["sin"] = Math.sin;
-intrinsics["cos"] = Math.cos;
-intrinsics["tan"] = Math.tan;
-intrinsics["asin"] = Math.asin;
-intrinsics["acos"] = Math.acos;
-intrinsics["atan"] = Math.atan;
-intrinsics["atan2"] = Math.atan2;
-intrinsics["tanh"] = Math.tanh;
-intrinsics["sqrt"] = Math.sqrt;
-intrinsics["pow"] = Math.pow;
+intrinsics.abs = Math.abs;
+intrinsics.sign = Math.sign;
+intrinsics.floor = Math.floor;
+intrinsics.ceil = Math.ceil;
+intrinsics.exp = Math.exp;
+intrinsics.log = Math.log;
+intrinsics.log10 = Math.log10;
+intrinsics.sin = Math.sin;
+intrinsics.cos = Math.cos;
+intrinsics.tan = Math.tan;
+intrinsics.asin = Math.asin;
+intrinsics.acos = Math.acos;
+intrinsics.atan = Math.atan;
+intrinsics.atan2 = Math.atan2;
+intrinsics.tanh = Math.tanh;
+intrinsics.sqrt = Math.sqrt;
+intrinsics.pow = Math.pow;
 
 // List and range
-intrinsics["array"] = (...args: any[]) => args;
-intrinsics["length"] = (...args: any[]) => args.length;
-intrinsics["range"] = (min: number, max: number, step: number = 1) => {
-    let opt: number[] = [];
+intrinsics.array = (...args: any[]) => args;
+intrinsics.length = (...args: any[]) => args.length;
+intrinsics.range = (min: number, max: number, step: number = 1) => {
+    const opt: number[] = [];
     for (let i = min; i <= max; i += step) {
         opt.push(i);
     }
@@ -61,16 +61,16 @@ intrinsics["range"] = (min: number, max: number, step: number = 1) => {
 }
 
 // Object and fields
-intrinsics["get"] = (obj: any, field: string) => obj[field];
+intrinsics.get = (obj: any, field: string) => obj[field];
 
 // Array functions
-intrinsics["map"] = (list: any[], func: Function) => list.map(item => func(item));
-intrinsics["filter"] = (list: any[], func: Function) => list.filter(item => func(item));
+intrinsics.map = (list: any[], func: Function) => list.map(item => func(item));
+intrinsics.filter = (list: any[], func: Function) => list.filter(item => func(item));
 
 // Statistics
-function stat_foreach(f: (x: number) => void, list: (number | number[])[]) {
+function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
     for (let i = 0; i < list.length; i++) {
-        let l = list[i];
+        const l = list[i];
         if (l instanceof Array) {
             for (let j = 0; j < l.length; j++) {
                 if (l[j] != null) {
@@ -84,7 +84,7 @@ function stat_foreach(f: (x: number) => void, list: (number | number[])[]) {
         }
     }
 }
-intrinsics["min"] = (...list: (number | number[])[]) => {
+intrinsics.min = (...list: Array<number | number[]>) => {
     let r: number = null;
     stat_foreach(x => {
         if (r == null || x < r) {
@@ -93,7 +93,7 @@ intrinsics["min"] = (...list: (number | number[])[]) => {
     }, list);
     return r;
 };
-intrinsics["max"] = (...list: (number | number[])[]) => {
+intrinsics.max = (...list: Array<number | number[]>) => {
     let r: number = null;
     stat_foreach(x => {
         if (r == null || x > r) {
@@ -102,22 +102,22 @@ intrinsics["max"] = (...list: (number | number[])[]) => {
     }, list);
     return r;
 };
-intrinsics["sum"] = (...list: (number | number[])[]) => {
+intrinsics.sum = (...list: Array<number | number[]>) => {
     let r = 0;
     stat_foreach(x => r += x, list);
     return r;
 };
-intrinsics["avg"] = (...list: (number | number[])[]) => {
+intrinsics.avg = (...list: Array<number | number[]>) => {
     let r = 0, c = 0;
     stat_foreach(x => {
         r += x;
         c += 1;
     }, list);
-    if (c == 0) return NaN;
+    if (c == 0) { return NaN; }
     return r / c;
 };
-intrinsics["mean"] = intrinsics["avg"];
-intrinsics["average"] = intrinsics["avg"];
+intrinsics.mean = intrinsics.avg;
+intrinsics.average = intrinsics.avg;
 
 
 // General operators
@@ -136,13 +136,13 @@ operators[">="] = (a: any, b: any) => a >= b;
 operators["=="] = (a: any, b: any) => a == b;
 operators["!="] = (a: any, b: any) => a != b;
 
-operators["and"] = (a: boolean, b: boolean) => a && b;
-operators["or"] = (a: boolean, b: boolean) => a || b;
+operators.and = (a: boolean, b: boolean) => a && b;
+operators.or = (a: boolean, b: boolean) => a || b;
 operators["unary:not"] = (a: boolean) => !a;
 
 
 // Date operations
-intrinsics["date"] = {
+intrinsics.date = {
     parse: (x: string) => new Date(x),
 
     year: d3.timeFormat("%Y"),          // year with century as a decimal number.
@@ -160,27 +160,27 @@ intrinsics["date"] = {
 };
 
 // JSON format
-intrinsics["json"] = {
+intrinsics.json = {
     parse: (x: string) => JSON.parse(x),
     stringify: (x: any) => JSON.stringify(x)
 };
 
 // Comparison
-intrinsics["sortBy"] = (fieldName: string | Function, reversed: boolean = false) => {
-    let SM = reversed ? 1 : -1;
-    let LG = reversed ? -1 : 1;
+intrinsics.sortBy = (fieldName: string | Function, reversed: boolean = false) => {
+    const SM = reversed ? 1 : -1;
+    const LG = reversed ? -1 : 1;
     if (typeof (fieldName) == "string") {
         return (a: any, b: any) => {
-            let fa = a[fieldName];
-            let fb = b[fieldName];
-            if (fa == fb) return 0;
+            const fa = a[fieldName];
+            const fb = b[fieldName];
+            if (fa == fb) { return 0; }
             return fa < fb ? SM : LG;
         };
     } else {
         return (a: any, b: any) => {
-            let fa = fieldName(a);
-            let fb = fieldName(b);
-            if (fa == fb) return 0;
+            const fa = fieldName(a);
+            const fb = fieldName(b);
+            if (fa == fb) { return 0; }
             return fa < fb ? SM : LG;
         };
     }

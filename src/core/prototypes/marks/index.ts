@@ -1,10 +1,10 @@
-import * as Specification from "../../specification";
-import * as Graphics from "../../graphics";
 import * as Expression from "../../expression";
+import * as Graphics from "../../graphics";
+import * as Specification from "../../specification";
 
-import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import { Point, uniqueID } from "../../common";
-import { ObjectClass, SnappingGuides, AttributeDescription, DropZones, Handles, BoundingBox, LinkAnchor, BuildConstraintsContext } from "../common";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import { AttributeDescription, BoundingBox, BuildConstraintsContext, DropZones, Handles, LinkAnchor, ObjectClass, SnappingGuides } from "../common";
 
 export interface CreationParameters {
     dropPoint: Point;
@@ -40,12 +40,12 @@ export abstract class MarkClass extends ObjectClass {
 }
 
 import "./anchor";
-import "./symbol";
-import "./rect";
-import "./line";
-import "./text";
 // import "./textbox";
 import "./dataAxis";
+import "./line";
+import "./rect";
+import "./symbol";
+import "./text";
 
 export { AnchorElementAttributes, AnchorElement } from "./anchor";
 export { SymbolElementAttributes, SymbolElement } from "./symbol";

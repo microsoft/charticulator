@@ -1,6 +1,6 @@
-import * as Specification from "../../specification";
 import * as Dataset from "../../dataset";
 import * as Expression from "../../expression";
+import * as Specification from "../../specification";
 
 
 export class DataflowTable implements Expression.Context {
@@ -9,7 +9,7 @@ export class DataflowTable implements Expression.Context {
 
     /** Implements Expression.Context */
     public getVariable(name: string) {
-        if (name == "rows") return this.rows;
+        if (name == "rows") { return this.rows; }
         return this.parent.getVariable(name);
     }
 
@@ -35,8 +35,8 @@ export class DataflowManager implements Expression.Context {
         this.cache = new Expression.ExpressionCache();
 
         this.tables = new Map<string, DataflowTable>();
-        for (let table of dataset.tables) {
-            let dfTable = new DataflowTable(this, table.name, table.rows);
+        for (const table of dataset.tables) {
+            const dfTable = new DataflowTable(this, table.name, table.rows);
             this.tables.set(table.name, dfTable);
         }
     }

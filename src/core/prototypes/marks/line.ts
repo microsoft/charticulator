@@ -1,9 +1,9 @@
-import * as Specification from "../../specification";
+import { Color, Point, uniqueID } from "../../common";
 import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
-import { Point, Color, uniqueID } from "../../common";
+import * as Specification from "../../specification";
 
-import { ObjectClasses, SnappingGuides, AttributeDescription, DropZones, Handles, BoundingBox, ObjectClassMetadata, CreatingInteraction, Controls } from "../common";
-import { MarkClass, CreationParameters } from "./index";
+import { AttributeDescription, BoundingBox, Controls, CreatingInteraction, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides } from "../common";
+import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
 
@@ -66,9 +66,9 @@ export class LineElement extends MarkClass {
 
     // Initialize the state of an element so that everything has a valid value
     public initializeState(): void {
-        let defaultWidth = 30;
-        let defaultHeight = 50;
-        let attrs = this.state.attributes;
+        const defaultWidth = 30;
+        const defaultHeight = 50;
+        const attrs = this.state.attributes;
         attrs.x1 = -defaultWidth / 2;
         attrs.y1 = -defaultHeight / 2;
         attrs.x2 = +defaultWidth / 2;
@@ -85,7 +85,7 @@ export class LineElement extends MarkClass {
 
     // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
     public buildConstraints(solver: ConstraintSolver): void {
-        let [x1, y1, x2, y2, cx, cy, dx, dy] = solver.attrs(this.state.attributes, ["x1", "y1", "x2", "y2", "cx", "cy", "dx", "dy"]);
+        const [x1, y1, x2, y2, cx, cy, dx, dy] = solver.attrs(this.state.attributes, ["x1", "y1", "x2", "y2", "cx", "cy", "dx", "dy"]);
         solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
         solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, dx]], [[1, x2], [-1, x1]]);
@@ -94,9 +94,9 @@ export class LineElement extends MarkClass {
 
     // Get the graphical element from the element
     public getGraphics(cs: Graphics.CoordinateSystem, offset: Point): Graphics.Element {
-        let attrs = this.state.attributes;
-        if (!attrs.visible || !this.object.properties.visible) return null;
-        let helper = new Graphics.CoordinateSystemHelper(cs);
+        const attrs = this.state.attributes;
+        if (!attrs.visible || !this.object.properties.visible) { return null; }
+        const helper = new Graphics.CoordinateSystemHelper(cs);
         return helper.line(attrs.x1 + offset.x, attrs.y1 + offset.y, attrs.x2 + offset.x, attrs.y2 + offset.y, {
             strokeColor: attrs.stroke,
             strokeOpacity: attrs.opacity,
@@ -106,33 +106,33 @@ export class LineElement extends MarkClass {
 
     // Get DropZones given current state
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes as LineElementAttributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let cx = x1;
-        let cy = y1;
+        const attrs = this.state.attributes as LineElementAttributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const cx = x1;
+        const cy = y1;
         return [
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x2, y: cy },
                 p2: { x: x1, y: cy },
                 title: "dx",
                 accept: { kind: "numerical" },
                 dropAction: { scaleInference: { attribute: "dx", attributeType: "number", hints: { autoRange: true } } }
-            },
-            <DropZones.Line>{
+            } as DropZones.Line,
+            {
                 type: "line",
                 p1: { x: cx, y: y1 },
                 p2: { x: cx, y: y2 },
                 title: "dy",
                 accept: { kind: "numerical" },
                 dropAction: { scaleInference: { attribute: "dy", attributeType: "number", hints: { autoRange: true } } }
-            }
+            } as DropZones.Line
         ];
     }
     // Get bounding rectangle given current state
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes as LineElementAttributes;
-        let { x1, y1, x2, y2, cx, cy } = attrs;
+        const attrs = this.state.attributes as LineElementAttributes;
+        const { x1, y1, x2, y2, cx, cy } = attrs;
         return [
             {
                 type: "point",
@@ -163,20 +163,20 @@ export class LineElement extends MarkClass {
 
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes as LineElementAttributes;
-        let { x1, y1, x2, y2 } = attrs;
-        return <BoundingBox.Line>{
+        const attrs = this.state.attributes as LineElementAttributes;
+        const { x1, y1, x2, y2 } = attrs;
+        return {
             type: "line",
             morphing: true,
-            x1: x1, y1: y1,
-            x2: x2, y2: y2
-        };
+            x1, y1,
+            x2, y2
+        } as BoundingBox.Line;
     }
 
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes as LineElementAttributes;
-        let { x1, y1, x2, y2, cx, cy } = attrs;
+        const attrs = this.state.attributes as LineElementAttributes;
+        const { x1, y1, x2, y2, cx, cy } = attrs;
         return [
             { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
             { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,

@@ -41,7 +41,7 @@ export abstract class ConstraintSolver {
     public abstract setValue(attr: Variable, value: number): void;
 
     /** Add a linear constraint */
-    public abstract addLinear(strength: ConstraintStrength, bias: number, lhs: [number, Variable][], rhs?: [number, Variable][]): void;
+    public abstract addLinear(strength: ConstraintStrength, bias: number, lhs: Array<[number, Variable]>, rhs?: Array<[number, Variable]>): void;
 
     /** Solve the constraints */
     public abstract solve(): [number, number];
@@ -60,9 +60,9 @@ export abstract class ConstraintSolver {
     }
 
     /** Get a linear value */
-    public getLinear(...items: [number, Variable][]) {
+    public getLinear(...items: Array<[number, Variable]>) {
         let s = 0;
-        for (let v of items) {
+        for (const v of items) {
             s += v[0] * this.getValue(v[1]);
         }
         return s;
@@ -78,7 +78,7 @@ export abstract class ConstraintSolver {
         this.addLinear(strength, value, [[-1, a]]);
     }
 
-    plugins: ConstraintPlugin[] = [];
+    public plugins: ConstraintPlugin[] = [];
 
     public addPlugin(plugin: ConstraintPlugin): void {
         this.plugins.push(plugin);

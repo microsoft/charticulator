@@ -6,7 +6,7 @@ export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
 }
 
 /** zip two arrays, return a new array */
-export function zipArray<T1, T2>(a: T1[], b: T2[]): [T1, T2][] {
+export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
     if (a.length < b.length) {
         return a.map((elem, idx) => [elem, b[idx]] as [T1, T2]);
     } else {
@@ -20,8 +20,8 @@ export function deepClone<T>(obj: T): T {
 }
 
 export function shallowClone<T>(obj: T): T {
-    let r = {} as T;
-    for (let key in obj) {
+    const r = {} as T;
+    for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
             r[key] = obj[key];
         }
@@ -32,7 +32,7 @@ export function shallowClone<T>(obj: T): T {
 export function max<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
     // Credit: https://github.com/d3/d3-array/blob/master/src/max.js
     let i: number = -1;
-    let n = array.length;
+    const n = array.length;
     let value: number;
     let max: number;
     while (++i < n) {
@@ -50,7 +50,7 @@ export function max<T>(array: T[], accessor: (val: T, index: number, array: T[])
 
 export function argMax<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
     let i: number = -1;
-    let n = array.length;
+    const n = array.length;
     let value: number;
     let max: number;
     let argmax: number = -1;
@@ -72,7 +72,7 @@ export function argMax<T>(array: T[], accessor: (val: T, index: number, array: T
 export function min<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
     // Credit: https://github.com/d3/d3-array/blob/master/src/min.js
     let i: number = -1;
-    let n = array.length;
+    const n = array.length;
     let value: number;
     let min: number;
     while (++i < n) {
@@ -90,7 +90,7 @@ export function min<T>(array: T[], accessor: (val: T, index: number, array: T[])
 
 export function argMin<T>(array: T[], accessor: (val: T, index: number, array: T[]) => number): number {
     let i: number = -1;
-    let n = array.length;
+    const n = array.length;
     let value: number;
     let min: number;
     let argmin: number;
@@ -130,9 +130,9 @@ export function getField<ObjectType, ValueType>(obj: ObjectType, field: string |
     if (typeof (field) == "string") {
         return p[field];
     } else {
-        let fieldList = field; //.split(".");
+        const fieldList = field; // .split(".");
         for (let i = 0; i < fieldList.length - 1; i++) {
-            if (p[fieldList[i]] == undefined) return undefined;
+            if (p[fieldList[i]] == undefined) { return undefined; }
             p = p[fieldList[i]];
         }
         return p[fieldList[fieldList.length - 1]];
@@ -141,10 +141,10 @@ export function getField<ObjectType, ValueType>(obj: ObjectType, field: string |
 
 /** Fill default values into an object */
 export function fillDefaults<T extends {}>(obj: T, defaults: T): T {
-    if (obj == null) obj = {} as T;
-    for (let key in defaults) {
+    if (obj == null) { obj = {} as T; }
+    for (const key in defaults) {
         if (defaults.hasOwnProperty(key)) {
-            if (!obj.hasOwnProperty(key)) obj[key] = defaults[key];
+            if (!obj.hasOwnProperty(key)) { obj[key] = defaults[key]; }
         }
     }
     return obj;
@@ -153,7 +153,7 @@ export function fillDefaults<T extends {}>(obj: T, defaults: T): T {
 /** Find the index of the first element that satisfies the predicate, return -1 if not found */
 export function indexOf<T>(array: T[], predicate: (item: T, idx: number) => boolean) {
     for (let i = 0; i < array.length; i++) {
-        if (predicate(array[i], i)) return i;
+        if (predicate(array[i], i)) { return i; }
     }
     return -1;
 }
@@ -161,7 +161,7 @@ export function indexOf<T>(array: T[], predicate: (item: T, idx: number) => bool
 /** Get the first element with element._id == id, return null if not found */
 export function getById<T extends { _id: string }>(array: T[], id: string): T {
     for (let i = 0; i < array.length; i++) {
-        if (array[i]._id == id) return array[i];
+        if (array[i]._id == id) { return array[i]; }
     }
     return null;
 }
@@ -169,7 +169,7 @@ export function getById<T extends { _id: string }>(array: T[], id: string): T {
 /** Get the index of the first element with element._id == id, return -1 if not found */
 export function getIndexById<T extends { _id: string }>(array: T[], id: string): number {
     for (let i = 0; i < array.length; i++) {
-        if (array[i]._id == id) return i;
+        if (array[i]._id == id) { return i; }
     }
     return -1;
 }
@@ -177,7 +177,7 @@ export function getIndexById<T extends { _id: string }>(array: T[], id: string):
 /** Get the first element with element.name == name, return null if not found */
 export function getByName<T extends { name: string }>(array: T[], name: string): T {
     for (let i = 0; i < array.length; i++) {
-        if (array[i].name == name) return array[i];
+        if (array[i].name == name) { return array[i]; }
     }
     return null;
 }
@@ -185,37 +185,39 @@ export function getByName<T extends { name: string }>(array: T[], name: string):
 /** Get the index of the first element with element.name == name, return -1 if not found */
 export function getIndexByName<T extends { name: string }>(array: T[], name: string): number {
     for (let i = 0; i < array.length; i++) {
-        if (array[i].name == name) return i;
+        if (array[i].name == name) { return i; }
     }
     return -1;
 }
 
 export function gather<T>(array: T[], keyFunction: (item: T, index: number) => string): T[][] {
-    let map = new Map<string, T[]>();
+    const map = new Map<string, T[]>();
     array.forEach((item, index) => {
-        let key = keyFunction(item, index);
+        const key = keyFunction(item, index);
         if (map.has(key)) {
             map.get(key).push(item);
         } else {
             map.set(key, [item]);
         }
     });
-    let r: T[][] = [];
-    for (let array of map.values()) {
+    const r: T[][] = [];
+    for (const array of map.values()) {
         r.push(array);
     }
     return r;
 }
 
-/** Sort an array with compare function, make sure when compare(a, b) == 0,
- * a and b are still in the original order (i.e., stable) */
+/** 
+ * Sort an array with compare function, make sure when compare(a, b) == 0,
+ * a and b are still in the original order (i.e., stable) 
+ */
 export function stableSort<T>(array: T[], compare: (a: T, b: T) => number): T[] {
     return array
         // Convert to [ item, index ]
         .map((x, index) => [x, index] as [T, number])
         // Sort by compare then by index to stabilize
         .sort((a, b) => {
-            let c = compare(a[0], b[0]);
+            const c = compare(a[0], b[0]);
             if (c != 0) {
                 return c;
             } else {
@@ -230,16 +232,16 @@ export function stableSort<T>(array: T[], compare: (a: T, b: T) => number): T[] 
 export function sortBy<T>(array: T[], keyFunction: (a: T) => number | string, reverse: boolean = false): T[] {
     if (reverse) {
         return array.sort((a: T, b: T) => {
-            let ka = keyFunction(a);
-            let kb = keyFunction(b);
-            if (ka == kb) return 0;
+            const ka = keyFunction(a);
+            const kb = keyFunction(b);
+            if (ka == kb) { return 0; }
             return ka < kb ? +1 : -1;
         });
     } else {
         return array.sort((a: T, b: T) => {
-            let ka = keyFunction(a);
-            let kb = keyFunction(b);
-            if (ka == kb) return 0;
+            const ka = keyFunction(a);
+            const kb = keyFunction(b);
+            if (ka == kb) { return 0; }
             return ka < kb ? -1 : +1;
         });
     }
@@ -249,16 +251,16 @@ export function sortBy<T>(array: T[], keyFunction: (a: T) => number | string, re
 export function stableSortBy<T>(array: T[], keyFunction: (a: T) => number | string, reverse: boolean = false): T[] {
     if (reverse) {
         return stableSort(array, (a: T, b: T) => {
-            let ka = keyFunction(a);
-            let kb = keyFunction(b);
-            if (ka == kb) return 0;
+            const ka = keyFunction(a);
+            const kb = keyFunction(b);
+            if (ka == kb) { return 0; }
             return ka < kb ? +1 : -1;
         });
     } else {
         return stableSort(array, (a: T, b: T) => {
-            let ka = keyFunction(a);
-            let kb = keyFunction(b);
-            if (ka == kb) return 0;
+            const ka = keyFunction(a);
+            const kb = keyFunction(b);
+            if (ka == kb) { return 0; }
             return ka < kb ? -1 : +1;
         });
     }
@@ -274,7 +276,7 @@ export class KeyNameMap<KeyType, ValueType> {
         if (this.mapping.has(key)) {
             this.mapping.get(key)[name] = value;
         } else {
-            let item: { [name: string]: ValueType } = {};
+            const item: { [name: string]: ValueType } = {};
             item[name] = value;
             this.mapping.set(key, item);
         }
@@ -298,8 +300,8 @@ export class KeyNameMap<KeyType, ValueType> {
     /** Get the value corresponding to an entry, return null if not found */
     public get(key: KeyType, name: string) {
         if (this.mapping.has(key)) {
-            let m = this.mapping.get(key);
-            if (m.hasOwnProperty(name)) return m[name];
+            const m = this.mapping.get(key);
+            if (m.hasOwnProperty(name)) { return m[name]; }
             return null;
         }
         return null;
@@ -307,7 +309,7 @@ export class KeyNameMap<KeyType, ValueType> {
 
     public forEach(callback: (value: ValueType, key: KeyType, name: string) => void) {
         this.mapping.forEach((v, key) => {
-            for (let p in v) {
+            for (const p in v) {
                 if (v.hasOwnProperty(p)) {
                     callback(v[p], key, p);
                 }

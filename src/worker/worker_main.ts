@@ -1,5 +1,5 @@
-import { WorkerHostProcess } from "./communication";
 import * as Core from "../core";
+import { WorkerHostProcess } from "./communication";
 
 class CharticulatorWorkerProcess extends WorkerHostProcess {
     constructor() {
@@ -12,10 +12,10 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
         await Core.initialize(config);
     }
 
-    public solveChartConstraints(chart: Core.Specification.Chart, chartState: Core.Specification.ChartState, dataset: Core.Dataset.Dataset, preSolveValues: [Core.Solver.ConstraintStrength, Core.Specification.AttributeMap, string, number][] = null, mappingOnly: boolean = false) {
+    public solveChartConstraints(chart: Core.Specification.Chart, chartState: Core.Specification.ChartState, dataset: Core.Dataset.Dataset, preSolveValues: Array<[Core.Solver.ConstraintStrength, Core.Specification.AttributeMap, string, number]> = null, mappingOnly: boolean = false) {
         if (preSolveValues != null && preSolveValues.length > 0) {
             return this.doSolveChartConstraints(chart, chartState, dataset, (solver) => {
-                for (let [strength, attrs, attr, value] of preSolveValues) {
+                for (const [strength, attrs, attr, value] of preSolveValues) {
                     solver.solver.addEqualToConstant(strength, solver.solver.attr(attrs, attr), value);
                 }
             }, mappingOnly);
@@ -25,10 +25,10 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     public doSolveChartConstraints(chart: Core.Specification.Chart, chartState: Core.Specification.ChartState, dataset: Core.Dataset.Dataset, additional: (solver: Core.Solver.ChartConstraintSolver) => void = null, mappingOnly: boolean = false) {
         let loss: { softLoss: number, hardLoss: number } = null;
         let iterations = additional != null ? 2 : 2;
-        if (mappingOnly) iterations = 1;
-        let chartManager = new Core.Prototypes.ChartStateManager(chart, dataset, chartState);
+        if (mappingOnly) { iterations = 1; }
+        const chartManager = new Core.Prototypes.ChartStateManager(chart, dataset, chartState);
         for (let i = 0; i < iterations; i++) {
-            let solver = new Core.Solver.ChartConstraintSolver();
+            const solver = new Core.Solver.ChartConstraintSolver();
             solver.setup(chartManager);
             if (additional) {
                 additional(solver);
@@ -44,4 +44,4 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     }
 }
 
-let worker = new CharticulatorWorkerProcess();
+const worker = new CharticulatorWorkerProcess();

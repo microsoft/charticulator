@@ -67,7 +67,7 @@ export interface SlotList extends Inference {
     type: "slot-list";
     property: string;
     fields?: string | string[];
-    slots: { slotName: string, slotKind: string }[];
+    slots: Array<{ slotName: string, slotKind: string }>;
 }
 
 /** Infer scale parameter, set to scale's domain property */

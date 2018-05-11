@@ -1,4 +1,4 @@
-import { EventEmitter, deepClone, Specification } from "../../core";
+import { deepClone, EventEmitter, Specification } from "../../core";
 import { Dispatcher } from "../../core";
 
 import { Actions } from "../actions";
@@ -12,13 +12,13 @@ import { Dataset } from "../../core";
 
 import { renderDataURLToPNG } from "../utils";
 
-import { renderChartToString, renderChartToLocalString } from "../views/canvas/chart_display";
+import { renderChartToLocalString, renderChartToString } from "../views/canvas/chart_display";
 
 import { saveAs } from "file-saver";
 
+import { CharticulatorWorker } from "../../worker";
 import { AbstractBackend, ItemData, ItemDescription, ItemMetadata } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexedDB";
-import { CharticulatorWorker } from "../../worker";
 import { ExportTemplateTarget } from "../template";
 
 export class HistoryManager<StateType> {
@@ -32,7 +32,7 @@ export class HistoryManager<StateType> {
 
     public undo(currentState: StateType): StateType {
         if (this.statesBefore.length > 0) {
-            let item = this.statesBefore.pop();
+            const item = this.statesBefore.pop();
             this.statesAfter.push(currentState);
             return item;
         } else {
@@ -42,7 +42,7 @@ export class HistoryManager<StateType> {
 
     public redo(currentState: StateType): StateType {
         if (this.statesAfter.length > 0) {
-            let item = this.statesAfter.pop();
+            const item = this.statesAfter.pop();
             this.statesBefore.push(currentState);
             return item;
         } else {
@@ -97,7 +97,7 @@ export class MainStore extends BaseStore {
                 getFileExtension: () => "json",
                 generate: () => {
                     return new Promise<string>((resolve, reject) => {
-                        let r = btoa(JSON.stringify(template, null, 2));
+                        const r = btoa(JSON.stringify(template, null, 2));
                         resolve(r);
                     });
                 }
@@ -113,7 +113,7 @@ export class MainStore extends BaseStore {
     }
 
     public saveDecoupledState(): MainStoreState {
-        let state = this.saveState();
+        const state = this.saveState();
         return deepClone(state);
     }
 
@@ -127,12 +127,12 @@ export class MainStore extends BaseStore {
     }
 
     public renderSVG() {
-        let svg = '<?xml version="1.0" standalone="no"?>' + renderChartToString(this.datasetStore.dataset, this.chartStore.chart, this.chartStore.chartState);
+        const svg = '<?xml version="1.0" standalone="no"?>' + renderChartToString(this.datasetStore.dataset, this.chartStore.chart, this.chartStore.chartState);
         return svg;
     }
 
     public async renderLocalSVG() {
-        let svg = await renderChartToLocalString(this.datasetStore.dataset, this.chartStore.chart, this.chartStore.chartState);
+        const svg = await renderChartToLocalString(this.datasetStore.dataset, this.chartStore.chart, this.chartStore.chartState);
         return '<?xml version="1.0" standalone="no"?>' + svg;
     }
 
@@ -145,20 +145,20 @@ export class MainStore extends BaseStore {
         //     this.emit(MainStore.EVENT_STATUSBAR);
         // }
         if (action instanceof Actions.Undo) {
-            let state = this.historyManager.undo(this.saveDecoupledState());
+            const state = this.historyManager.undo(this.saveDecoupledState());
             if (state) {
-                let ss = this.chartStore.saveSelectionState();
-                let dss = this.datasetStore.saveSelectionState();
+                const ss = this.chartStore.saveSelectionState();
+                const dss = this.datasetStore.saveSelectionState();
                 this.loadState(state);
                 this.datasetStore.loadSelectionState(dss);
                 this.chartStore.loadSelectionState(ss);
             }
         }
         if (action instanceof Actions.Redo) {
-            let state = this.historyManager.redo(this.saveDecoupledState());
+            const state = this.historyManager.redo(this.saveDecoupledState());
             if (state) {
-                let ss = this.chartStore.saveSelectionState();
-                let dss = this.datasetStore.saveSelectionState();
+                const ss = this.chartStore.saveSelectionState();
+                const dss = this.datasetStore.saveSelectionState();
                 this.loadState(state);
                 this.datasetStore.loadSelectionState(dss);
                 this.chartStore.loadSelectionState(ss);
@@ -167,13 +167,13 @@ export class MainStore extends BaseStore {
         if (action instanceof Actions.Export) {
             (async () => {
                 if (action.type == "svg") {
-                    let svg = await this.renderLocalSVG();
-                    let blob = new Blob([svg], { type: "image/svg;charset=utf-8" });
+                    const svg = await this.renderLocalSVG();
+                    const blob = new Blob([svg], { type: "image/svg;charset=utf-8" });
                     saveAs(blob, "charticulator.svg", true);
                 }
                 if (action.type == "png") {
 
-                    let svgDataURL = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+                    const svgDataURL = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
                     renderDataURLToPNG(svgDataURL, { mode: "scale", scale: action.options.scale || 2, background: "#ffffff" }).then((png) => {
                         png.toBlob((blob) => {
                             saveAs(blob, "charticulator.png", true);
@@ -184,8 +184,8 @@ export class MainStore extends BaseStore {
             })();
         }
         if (action instanceof Actions.Save) {
-            let state = this.saveState();
-            let blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/x-json;charset=utf-8" });
+            const state = this.saveState();
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/x-json;charset=utf-8" });
             saveAs(blob, "charticulator.json", true);
         }
         if (action instanceof Actions.Load) {
@@ -199,7 +199,7 @@ export class MainStore extends BaseStore {
     }
 
     public async backendOpenChart(id: string) {
-        let chart = await this.backend.get(id);
+        const chart = await this.backend.get(id);
         this.currentChartID = id;
         this.historyManager.clear();
         this.loadState(chart.data.state);
@@ -207,27 +207,27 @@ export class MainStore extends BaseStore {
 
     public async backendSaveChart() {
         if (this.currentChartID != null) {
-            let chart = await this.backend.get(this.currentChartID);
+            const chart = await this.backend.get(this.currentChartID);
             chart.data.state = this.saveState();
-            let svg = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
-            let png = await renderDataURLToPNG(svg, { mode: "thumbnail", thumbnail: [200, 150] });
+            const svg = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+            const png = await renderDataURLToPNG(svg, { mode: "thumbnail", thumbnail: [200, 150] });
             chart.metadata.thumbnail = png.toDataURL();
             await this.backend.put(chart.id, chart.data, chart.metadata);
         }
     }
 
     public async backendSaveChartAs(name: string) {
-        let state = this.saveState();
-        let svg = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
-        let png = await renderDataURLToPNG(svg, { mode: "thumbnail", thumbnail: [200, 150] });
-        let id = await this.backend.create(
+        const state = this.saveState();
+        const svg = "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+        const png = await renderDataURLToPNG(svg, { mode: "thumbnail", thumbnail: [200, 150] });
+        const id = await this.backend.create(
             "chart",
             {
-                state: state,
-                name: name
+                state,
+                name
             },
             {
-                name: name,
+                name,
                 dataset: this.datasetStore.dataset.name,
                 thumbnail: png.toDataURL()
             }
@@ -247,7 +247,7 @@ export class MainStore extends BaseStore {
     }
 
     public listExportTemplateTargets(): string[] {
-        let r: string[] = [];
+        const r: string[] = [];
         this.registeredExportTemplateTargets.forEach((x, i) => {
             r.push(i);
         });

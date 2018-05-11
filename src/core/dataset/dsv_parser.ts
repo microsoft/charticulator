@@ -1,15 +1,15 @@
 import * as d3 from "d3";
 
-import { ValueType, Dataset, Column, Row, Table } from "./dataset";
-import { inferColumnType, convertColumn, inferColumnMetadata } from "./data_types";
+import { convertColumn, inferColumnMetadata, inferColumnType } from "./data_types";
+import { Column, Dataset, Row, Table, ValueType } from "./dataset";
 
 export function parseHints(hints: string) {
-    let items = hints.match(/ *\*(.*)/);
+    const items = hints.match(/ *\*(.*)/);
     if (items) {
-        let entries = items[1].trim().split(";").map(x => x.trim()).filter(x => x != "");
-        let result: { [name: string]: string } = {};
-        for (let entry of entries) {
-            let items = entry.split(":").map(x => x.trim());
+        const entries = items[1].trim().split(";").map(x => x.trim()).filter(x => x != "");
+        const result: { [name: string]: string } = {};
+        for (const entry of entries) {
+            const items = entry.split(":").map(x => x.trim());
             if (items.length == 2) {
                 result[items[0]] = items[1];
             } else if (items.length == 1) {
@@ -41,38 +41,38 @@ export function parseDataset(fileName: string, content: string, type: "csv" | "t
     rows = rows.filter((row) => row.length > 0);
 
     if (rows.length > 0) {
-        let header = rows[0];
-        let columnHints: { [name: string]: string }[];
+        const header = rows[0];
+        let columnHints: Array<{ [name: string]: string }>;
         let data = rows.slice(1);
         if (data.length > 0 && data[0].every(x => /^ *\*/.test(x))) {
             columnHints = data[0].map(parseHints);
             data = data.slice(1);
         } else {
-            columnHints = header.map(x => { return {} });
+            columnHints = header.map(x => ({}));
         }
 
-        let columns = header.map((name, index) => {
-            let hints = columnHints[index] || {};
+        const columns = header.map((name, index) => {
+            const hints = columnHints[index] || {};
             console.log(hints);
             // Infer column type
-            let values = data.map((row) => row[index]);
-            let inferredType = hints.type || inferColumnType(values);
-            let [type, metadata] = inferColumnMetadata(inferredType, values, hints);
-            let column = {
-                name: name,
-                type: type,
-                metadata: metadata
+            const values = data.map((row) => row[index]);
+            const inferredType = hints.type || inferColumnType(values);
+            const [type, metadata] = inferColumnMetadata(inferredType, values, hints);
+            const column = {
+                name,
+                type,
+                metadata
             } as Column;
             return column;
         });
 
-        let columnValues = columns.map((c, index) => {
-            let values = data.map((row) => row[index]);
+        const columnValues = columns.map((c, index) => {
+            const values = data.map((row) => row[index]);
             return convertColumn(c.type, values);
         });
 
-        let outRows = data.map((row, rindex) => {
-            let out: Row = { _id: rindex.toString() };
+        const outRows = data.map((row, rindex) => {
+            const out: Row = { _id: rindex.toString() };
             columns.forEach((column, cindex) => {
                 out[column.name] = columnValues[cindex][rindex];
             });
@@ -81,7 +81,7 @@ export function parseDataset(fileName: string, content: string, type: "csv" | "t
 
         return {
             name: fileName,
-            columns: columns,
+            columns,
             rows: outRows,
         };
     } else {

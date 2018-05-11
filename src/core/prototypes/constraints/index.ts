@@ -1,6 +1,6 @@
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import { getIndexById } from "../../common";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import * as Specification from "../../specification";
 
 // Mark-level constraint
 export abstract class ConstraintTypeClass {
@@ -23,18 +23,18 @@ export abstract class ConstraintTypeClass {
 export class SnapConstraintClass {
     public type: string = "snap";
     public buildConstraints(constraint: Specification.Constraint, elements: Specification.Object[], states: Specification.ObjectState[], solver: ConstraintSolver): void {
-        let element = constraint.attributes["element"] as string;
-        let attribute = constraint.attributes["attribute"] as string;
-        let targetElement = constraint.attributes["targetElement"] as string;
-        let targetAttribute = constraint.attributes["targetAttribute"] as string;
-        let gap = constraint.attributes["gap"] as number;
-        if (gap == null) gap = 0;
+        const element = constraint.attributes.element as string;
+        const attribute = constraint.attributes.attribute as string;
+        const targetElement = constraint.attributes.targetElement as string;
+        const targetAttribute = constraint.attributes.targetAttribute as string;
+        let gap = constraint.attributes.gap as number;
+        if (gap == null) { gap = 0; }
 
-        let idxElement = getIndexById(elements, element);
-        let idxTargetElement = getIndexById(elements, targetElement);
+        const idxElement = getIndexById(elements, element);
+        const idxTargetElement = getIndexById(elements, targetElement);
 
-        let attr = solver.attr(states[idxElement].attributes, attribute);
-        let targetAttr = solver.attr(states[idxTargetElement].attributes, targetAttribute);
+        const attr = solver.attr(states[idxElement].attributes, attribute);
+        const targetAttr = solver.attr(states[idxTargetElement].attributes, targetAttribute);
         solver.addLinear(ConstraintStrength.HARD, gap, [[1, attr], [-1, targetAttr]]);
     }
 }

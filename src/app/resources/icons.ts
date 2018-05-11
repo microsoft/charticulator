@@ -1,8 +1,8 @@
-let iconRegistry = new Map<string, string>();
+const iconRegistry = new Map<string, string>();
 
 export function addSVGIcon(path: string | string[], svgDataURL: string) {
     if (path instanceof Array) {
-        for (let p of path) {
+        for (const p of path) {
             iconRegistry.set(p, svgDataURL);
         }
     } else {
@@ -11,7 +11,7 @@ export function addSVGIcon(path: string | string[], svgDataURL: string) {
 }
 
 export function getSVGIcon(path: string): string {
-    let r = iconRegistry.get(path);
+    const r = iconRegistry.get(path);
     if (r) {
         return r;
     } else {

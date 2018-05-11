@@ -52,13 +52,13 @@ export let dataTypes: { [name: string]: DataTypeDescription } = {
 }
 
 export function inferColumnType(values: string[]): string {
-    let candidates: string[] = ["boolean", "integer", "number", "date"];
+    const candidates: string[] = ["boolean", "integer", "number", "date"];
     for (let i = 0; i < values.length; i++) {
         let v = values[i];
         // skip empty values
-        if (v == null) continue;
+        if (v == null) { continue; }
         v = v.trim();
-        if (v == "") continue;
+        if (v == "") { continue; }
         // test for remaining candidates
         for (let j = 0; j < candidates.length; j++) {
             if (!dataTypes[candidates[j]].test(v)) {
@@ -68,23 +68,23 @@ export function inferColumnType(values: string[]): string {
             }
         }
         // if no types left, return "string"
-        if (candidates.length == 0) return "string";
+        if (candidates.length == 0) { return "string"; }
     }
     return candidates[0];
 }
 
 export function convertColumn(type: string, values: string[]): ValueType[] {
-    let converter = dataTypes[type].convert;
+    const converter = dataTypes[type].convert;
     return values.map(v => {
-        if (v == null) return null;
+        if (v == null) { return null; }
         return converter(v);
     });
 }
 
 export function getDistinctValues(values: string[]): string[] {
-    let result: string[] = [];
-    let seen = new Set<string>();
-    for (let v of values) {
+    const result: string[] = [];
+    const seen = new Set<string>();
+    for (const v of values) {
         if (!seen.has(v)) {
             result.push(v);
             seen.add(v);
@@ -94,12 +94,12 @@ export function getDistinctValues(values: string[]): string[] {
 }
 
 export function inferColumnMetadata(type: string, values: string[], hints: { [name: string]: string } = {}): [string, ColumnMetadata] {
-    let distinctValues = getDistinctValues(values.filter(x => x != null));
+    const distinctValues = getDistinctValues(values.filter(x => x != null));
 
     switch (type) {
         case "integer": {
             // Does it look all like years?
-            let distinctRatio = distinctValues.length / values.length;
+            const distinctRatio = distinctValues.length / values.length;
             if (values.every(x => +x >= 1970 && +x <= 2100)) {
                 // Treat as string, categorical; order by value ascending.
                 return ["string", {
@@ -117,9 +117,9 @@ export function inferColumnMetadata(type: string, values: string[], hints: { [na
             // Infer number value format
             let valuesFixed = values.map(d => +d).filter(d => !isNaN(d)).map(d => d.toFixed(10));
             valuesFixed = valuesFixed.map(d => {
-                let m = d.match(/\.([0-9]{10})$/);
-                if (m) return m[1];
-                else return "0000000000";
+                const m = d.match(/\.([0-9]{10})$/);
+                if (m) { return m[1]; }
+                else { return "0000000000"; }
             });
             let k: number;
             for (k = 10 - 1; k >= 0; k--) {
@@ -129,10 +129,10 @@ export function inferColumnMetadata(type: string, values: string[], hints: { [na
                     break;
                 }
             }
-            let format = `.${k + 1}f`;
+            const format = `.${k + 1}f`;
             return ["number", {
                 kind: "numerical",
-                format: format,
+                format,
                 unit: hints.unit
             }]
         }
@@ -144,7 +144,7 @@ export function inferColumnMetadata(type: string, values: string[], hints: { [na
             }];
         }
         case "string": {
-            let metadata: ColumnMetadata = { kind: "categorical", unit: hints.unit };
+            const metadata: ColumnMetadata = { kind: "categorical", unit: hints.unit };
             if (hints.order) {
                 metadata.order = hints.order.split(",");
             } else {

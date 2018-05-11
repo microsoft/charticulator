@@ -1,6 +1,6 @@
-import { Point, Dataset, Specification, Prototypes } from "../../core";
-import * as DragData from "./drag_data";
+import { Dataset, Point, Prototypes, Specification } from "../../core";
 import { Dispatcher } from "../../core";
+import * as DragData from "./drag_data";
 
 export class Action {
     public dispatch(dispatcher: Dispatcher<Action>) {

@@ -1,12 +1,12 @@
-import { Context } from "../expression";
-import { Dataset, Table, Column, Row } from "./dataset";
 import { getByName } from "../common";
+import { Context } from "../expression";
+import { Column, Dataset, Row, Table } from "./dataset";
 
 export class DatasetContext implements Context {
-    fields: { [name: string]: Row[] } = {};
+    public fields: { [name: string]: Row[] } = {};
 
     constructor(public dataset: Dataset) {
-        for (let table of dataset.tables) {
+        for (const table of dataset.tables) {
             this.fields[table.name] = table.rows;
         }
     }
@@ -21,10 +21,10 @@ export class DatasetContext implements Context {
 }
 
 export class TableContext {
-    fields: { [name: string]: Row[] } = {};
+    public fields: { [name: string]: Row[] } = {};
 
     constructor(public parent: DatasetContext, public table: Table) {
-        this.fields["table"] = table.rows;
+        this.fields.table = table.rows;
     }
 
     public getRowContext(row: Row) {
@@ -32,7 +32,7 @@ export class TableContext {
     }
 
     public getVariable(name: string) {
-        let r = this.fields[name];
+        const r = this.fields[name];
         if (r === undefined) {
             return this.parent.getVariable(name);
         }
@@ -44,7 +44,7 @@ export class RowContext {
     }
 
     public getVariable(name: string) {
-        let r = this.row[name];
+        const r = this.row[name];
         if (r === undefined) {
             return this.parent.getVariable(name);
         } else {

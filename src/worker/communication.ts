@@ -7,7 +7,7 @@ export class WorkerRPC {
     constructor(workerScriptURL: string) {
         this.worker = new Worker(workerScriptURL);
         this.worker.onmessage = (event) => {
-            let msg = event.data;
+            const msg = event.data;
             if (this.idCallbacks.has(msg.instanceID)) {
                 this.idCallbacks.get(msg.instanceID)(msg);
             } else {
@@ -22,7 +22,7 @@ export class WorkerRPC {
 
     public rpc(path: string, ...args: any[]): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            let msgID = this.newUniqueID();
+            const msgID = this.newUniqueID();
             this.idCallbacks.set(msgID, (message) => {
                 if (message.type == "rpc-result") {
                     this.idCallbacks.delete(msgID);
@@ -36,8 +36,8 @@ export class WorkerRPC {
             this.worker.postMessage({
                 type: "rpc-call",
                 instanceID: msgID,
-                path: path,
-                args: args
+                path,
+                args
             });
         });
     }
@@ -49,7 +49,7 @@ export class WorkerHostProcess {
 
     constructor() {
         onmessage = (event) => {
-            let message = event.data;
+            const message = event.data;
             this.handleMessage(message, event);
         };
     }
@@ -62,7 +62,7 @@ export class WorkerHostProcess {
         switch (message.type) {
             case "rpc-call": {
                 try {
-                    let method = this.rpcMethods.get(message.path);
+                    const method = this.rpcMethods.get(message.path);
                     if (!method) {
                         postMessage({
                             type: "rpc-error",
@@ -70,13 +70,13 @@ export class WorkerHostProcess {
                             errorMessage: `RPC method "${message.path}" not found`
                         }, undefined);
                     } else {
-                        let result = method(...message.args);
+                        const result = method(...message.args);
                         if (result instanceof Promise) {
                             result.then((returnValue) => {
                                 postMessage({
                                     type: "rpc-result",
                                     instanceID: message.instanceID,
-                                    returnValue: returnValue
+                                    returnValue
                                 }, undefined);
                             }).catch((error) => {
                                 postMessage({

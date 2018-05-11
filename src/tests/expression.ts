@@ -1,8 +1,8 @@
-import * as Expression from "../core/expression"
 import { expect } from "chai";
+import * as Expression from "../core/expression"
 
 describe("Expression", () => {
-    let test_cases: [string, any][] = [
+    const test_cases: Array<[string, any]> = [
         // Arithmetics
         [`1 - 2 - 3 - 4`, -8],
         [`12 * (3 + 6 - 5 + 4 * (3 + 7)) * 13 / 12`, 572],
@@ -32,7 +32,7 @@ describe("Expression", () => {
         [`sum(json.parse("[12,13,14,16,1,2,3]"))`, 61],
         [`average(map(data, x => x.value))`, 2]
     ];
-    let context = new Expression.SimpleContext();
+    const context = new Expression.SimpleContext();
     context.variables = {
         a: 1, b: 10,
         value: 8,
@@ -45,23 +45,23 @@ describe("Expression", () => {
     };
 
     it("getValue", () => {
-        test_cases.forEach(function (ci) {
-            let expr = ci[0];
-            let expected = ci[1];
-            let e = Expression.parse(expr);
-            let returned = e.getValue(context);
+        test_cases.forEach((ci) => {
+            const expr = ci[0];
+            const expected = ci[1];
+            const e = Expression.parse(expr);
+            const returned = e.getValue(context);
             expect(returned).deep.equals(expected, expr);
         });
     });
 
     it("toString", () => {
-        test_cases.forEach(function (ci) {
-            let expr = ci[0];
-            let expected = ci[1];
-            let e = Expression.parse(expr);
-            let es = e.toString();
-            let ep = Expression.parse(es);
-            let epreturned = e.getValue(context);
+        test_cases.forEach((ci) => {
+            const expr = ci[0];
+            const expected = ci[1];
+            const e = Expression.parse(expr);
+            const es = e.toString();
+            const ep = Expression.parse(es);
+            const epreturned = e.getValue(context);
             expect(epreturned).deep.equals(expected, expr);
         });
     });

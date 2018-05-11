@@ -1,12 +1,12 @@
-import { ConstraintSolver, ConstraintPlugin, Variable } from "../abstract";
 import * as d3 from "d3";
+import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 export class PackingPlugin extends ConstraintPlugin {
-    solver: ConstraintSolver;
-    cx: Variable; cy: Variable;
-    points: [Variable, Variable, number][];
+    public solver: ConstraintSolver;
+    public cx: Variable; public cy: Variable;
+    public points: Array<[Variable, Variable, number]>;
 
-    constructor(solver: ConstraintSolver, cx: Variable, cy: Variable, points: [Variable, Variable, number][]) {
+    constructor(solver: ConstraintSolver, cx: Variable, cy: Variable, points: Array<[Variable, Variable, number]>) {
         super();
         this.solver = solver;
         this.cx = cx;
@@ -15,9 +15,9 @@ export class PackingPlugin extends ConstraintPlugin {
     }
 
     public apply() {
-        let cx = this.solver.getValue(this.cx);
-        let cy = this.solver.getValue(this.cy);
-        let nodes = this.points.map(pt => {
+        const cx = this.solver.getValue(this.cx);
+        const cy = this.solver.getValue(this.cy);
+        const nodes = this.points.map(pt => {
             return {
                 x: this.solver.getValue(pt[0]) - cx,
                 y: this.solver.getValue(pt[1]) - cy,
@@ -25,12 +25,12 @@ export class PackingPlugin extends ConstraintPlugin {
             };
         });
 
-        let force = d3.forceSimulation(nodes);
+        const force = d3.forceSimulation(nodes);
         force.force("collision", d3.forceCollide<{ x: number, y: number, r: number }>(d => d.r));
         force.force("gravityX", d3.forceX().strength(0.1));
         force.force("gravityY", d3.forceY().strength(0.1));
         force.stop();
-        let n = Math.ceil(Math.log(force.alphaMin()) / Math.log(1 - force.alphaDecay()));
+        const n = Math.ceil(Math.log(force.alphaMin()) / Math.log(1 - force.alphaDecay()));
         for (let i = 0; i < n; i++) {
             force.tick();
         }

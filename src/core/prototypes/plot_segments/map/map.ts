@@ -1,14 +1,14 @@
-import * as Specification from "../../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
 import * as Graphics from "../../../graphics";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
+import * as Specification from "../../../specification";
 
-import { SnappingGuides, AttributeDescription, DropZones, Handles, Controls, ObjectClasses, ObjectClassMetadata, BoundingBox } from "../../common";
-import { Point, uniqueID, getById, max, zipArray } from "../../../common";
+import { getById, max, Point, uniqueID, zipArray } from "../../../common";
+import { AttributeDescription, BoundingBox, Controls, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides } from "../../common";
 
 import { PlotSegmentClass } from "../index";
 
-import { StaticMapService } from "./map_service";
 import { buildAxisWidgets } from "../axis";
+import { StaticMapService } from "./map_service";
 
 export type CartesianAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -62,7 +62,7 @@ export class MapPlotSegment extends PlotSegmentClass {
     public mapService: StaticMapService = StaticMapService.GetService();
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x1 = -100;
         attrs.x2 = 100;
         attrs.y1 = -100;
@@ -70,20 +70,20 @@ export class MapPlotSegment extends PlotSegmentClass {
     }
 
     public buildConstraints(solver: ConstraintSolver): void {
-        let [latitude, longitude, zoom] = this.getCenterZoom();
-        let longitudeData = this.object.properties.longitudeData;
-        let latitudeData = this.object.properties.latitudeData;
+        const [latitude, longitude, zoom] = this.getCenterZoom();
+        const longitudeData = this.object.properties.longitudeData;
+        const latitudeData = this.object.properties.latitudeData;
         if (latitudeData && longitudeData) {
-            let latExpr = this.parent.dataflow.cache.parse(latitudeData.expression);
-            let lngExpr = this.parent.dataflow.cache.parse(longitudeData.expression);
-            let table = this.parent.dataflow.getTable(this.object.table);
-            let [cx, cy] = this.mercatorProjection(latitude, longitude);
+            const latExpr = this.parent.dataflow.cache.parse(latitudeData.expression);
+            const lngExpr = this.parent.dataflow.cache.parse(longitudeData.expression);
+            const table = this.parent.dataflow.getTable(this.object.table);
+            const [cx, cy] = this.mercatorProjection(latitude, longitude);
 
-            for (let [glyphState, index] of zipArray(this.state.glyphs, this.state.dataRowIndices)) {
-                let row = table.getRowContext(index);
-                let lat = latExpr.getNumberValue(row);
-                let lng = lngExpr.getNumberValue(row);
-                let p = this.getProjectedPoints([[lat, lng]])[0];
+            for (const [glyphState, index] of zipArray(this.state.glyphs, this.state.dataRowIndices)) {
+                const row = table.getRowContext(index);
+                const lat = latExpr.getNumberValue(row);
+                const lng = lngExpr.getNumberValue(row);
+                const p = this.getProjectedPoints([[lat, lng]])[0];
                 solver.addLinear(ConstraintStrength.HARD, p[0], [], [[1, solver.attr(glyphState.attributes, "x")]]);
                 solver.addLinear(ConstraintStrength.HARD, p[1], [], [[1, solver.attr(glyphState.attributes, "y")]]);
             }
@@ -91,34 +91,34 @@ export class MapPlotSegment extends PlotSegmentClass {
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, x2, y1, y2 } = attrs;
-        return <BoundingBox.Rectangle>{
+        const attrs = this.state.attributes;
+        const { x1, x2, y1, y2 } = attrs;
+        return {
             type: "rectangle",
             cx: (x1 + x2) / 2,
             cy: (y1 + y2) / 2,
             width: Math.abs(x2 - x1),
             height: Math.abs(y2 - y1),
             rotation: 0
-        };
+        } as BoundingBox.Rectangle;
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
-            <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
-            <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
-            <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" }
+            { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
+            { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
+            { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
+            { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
         ];
     }
 
     public mercatorProjection(lat: number, lng: number): [number, number] {
         // WebMercator Projection:
         // x, y range: [0, 256]
-        let x = 128 / 180 * (180 + lng)
-        let y = 128 / 180 * (180 - 180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat / 180 * Math.PI / 2)));
+        const x = 128 / 180 * (180 + lng)
+        const y = 128 / 180 * (180 - 180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat / 180 * Math.PI / 2)));
 
         return [x, y];
 
@@ -132,14 +132,14 @@ export class MapPlotSegment extends PlotSegmentClass {
     }
 
     // Get (x, y) coordinates based on longitude and latitude
-    public getProjectedPoints(points: [number, number][]): [number, number][] {
-        let attrs = this.state.attributes;
-        let [cLatitude, cLongitude, zoom] = this.getCenterZoom();
-        let [cX, cY] = this.mercatorProjection(cLatitude, cLongitude);
-        let scale = Math.pow(2, zoom);
-        let { x1, y1, x2, y2 } = attrs;
+    public getProjectedPoints(points: Array<[number, number]>): Array<[number, number]> {
+        const attrs = this.state.attributes;
+        const [cLatitude, cLongitude, zoom] = this.getCenterZoom();
+        const [cX, cY] = this.mercatorProjection(cLatitude, cLongitude);
+        const scale = Math.pow(2, zoom);
+        const { x1, y1, x2, y2 } = attrs;
         return points.map((p) => {
-            let [x, y] = this.mercatorProjection(p[0], p[1]);
+            const [x, y] = this.mercatorProjection(p[0], p[1]);
             return [
                 (x - cX) * scale + (x1 + x2) / 2,
                 -(y - cY) * scale + (y1 + y2) / 2
@@ -148,8 +148,8 @@ export class MapPlotSegment extends PlotSegmentClass {
     }
 
     public getCenterZoom(): [number, number, number] {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
 
         let minLongitude = -180;
         let maxLongitude = 180;
@@ -165,92 +165,92 @@ export class MapPlotSegment extends PlotSegmentClass {
             maxLongitude = props.longitudeData.domainMax;
         }
 
-        let [xMin, yMin] = this.mercatorProjection(minLatitude, minLongitude);
-        let [xMax, yMax] = this.mercatorProjection(maxLatitude, maxLongitude);
+        const [xMin, yMin] = this.mercatorProjection(minLatitude, minLongitude);
+        const [xMax, yMax] = this.mercatorProjection(maxLatitude, maxLongitude);
         // Find the appropriate zoom level for the given box.
-        let scaleX = Math.abs(Math.abs(attrs.x2 - attrs.x1) / Math.abs(xMax - xMin));
-        let scaleY = Math.abs(Math.abs(attrs.y2 - attrs.y1) / Math.abs(yMax - yMin));
-        let scale = Math.min(scaleX, scaleY);
-        let zoom = Math.floor(Math.log2(scale));
-        let latitude = (minLatitude + maxLatitude) / 2;
-        let longitude = (minLongitude + maxLongitude) / 2;
+        const scaleX = Math.abs(Math.abs(attrs.x2 - attrs.x1) / Math.abs(xMax - xMin));
+        const scaleY = Math.abs(Math.abs(attrs.y2 - attrs.y1) / Math.abs(yMax - yMin));
+        const scale = Math.min(scaleX, scaleY);
+        const zoom = Math.floor(Math.log2(scale));
+        const latitude = (minLatitude + maxLatitude) / 2;
+        const longitude = (minLongitude + maxLongitude) / 2;
         return [latitude, longitude, zoom];
     }
 
     public getPlotSegmentGraphics(glyphGraphics: Graphics.Element): Graphics.Group {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let [latitude, longitude, zoom] = this.getCenterZoom();
-        let width = x2 - x1;
-        let height = y2 - y1;
-        let img = {
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const [latitude, longitude, zoom] = this.getCenterZoom();
+        const width = x2 - x1;
+        const height = y2 - y1;
+        const img = {
             type: "image",
             src: this.mapService.getImageryURLAtPoint({
                 center: {
-                    latitude: latitude,
-                    longitude: longitude
+                    latitude,
+                    longitude
                 },
                 type: this.object.properties.mapType,
-                zoom: zoom,
-                width: width,
-                height: height,
+                zoom,
+                width,
+                height,
                 resolution: "high"
             }),
             x: x1,
             y: y1,
-            width: width,
-            height: height
+            width,
+            height
         } as Graphics.Image;
         return Graphics.makeGroup([img, glyphGraphics]);
     }
 
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2, x, y } = attrs;
-        let zones: DropZones.Description[] = [];
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2, x, y } = attrs;
+        const zones: DropZones.Description[] = [];
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x2, y: y1 }, p2: { x: x1, y: y1 },
                 title: "Longitude",
                 dropAction: {
                     axisInference: { property: "longitudeData" }
                 }
-            }
+            } as DropZones.Line
         );
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x1, y: y1 }, p2: { x: x1, y: y2 },
                 title: "Latitude",
                 dropAction: {
                     axisInference: { property: "latitudeData" }
                 }
-            }
+            } as DropZones.Line
         );
         return zones;
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let rows = this.parent.dataflow.getTable(this.object.table).rows;
-        let { x1, x2, y1, y2 } = attrs;
-        let h: Handles.Description[] = [
-            <Handles.Line>{ type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] },
-            <Handles.Line>{ type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] }
+        const attrs = this.state.attributes;
+        const rows = this.parent.dataflow.getTable(this.object.table).rows;
+        const { x1, x2, y1, y2 } = attrs;
+        const h: Handles.Description[] = [
+            { type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] } as Handles.Line,
+            { type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] } as Handles.Line,
+            { type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
+            { type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point
         ];
         return h;
     }
 
     public getAttributePanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.object.properties;
-        let widgets: Controls.Widget[] = [
+        const props = this.object.properties;
+        const widgets: Controls.Widget[] = [
             ...buildAxisWidgets(props.latitudeData, "latitudeData", m, "Latitude"),
             ...buildAxisWidgets(props.longitudeData, "longitudeData", m, "Longitude"),
             m.sectionHeader("Map Style"),

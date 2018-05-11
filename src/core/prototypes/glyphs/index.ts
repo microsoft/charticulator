@@ -1,10 +1,10 @@
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
 import { Point, uniqueID } from "../../common";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
+import * as Specification from "../../specification";
 
 import * as Graphics from "../../graphics";
 
-import { ObjectClasses, ObjectClass, SnappingGuides, AttributeDescription, Handles, Controls, ObjectClassMetadata } from "../common";
+import { AttributeDescription, Controls, Handles, ObjectClass, ObjectClasses, ObjectClassMetadata, SnappingGuides } from "../common";
 
 export abstract class GlyphClass extends ObjectClass {
     public readonly object: Specification.Glyph;
@@ -24,7 +24,7 @@ export abstract class GlyphClass extends ObjectClass {
     public abstract getHandles(): Handles.Description[];
 
     public static createDefault(table: string): Specification.Glyph {
-        let glyph = super.createDefault() as Specification.Glyph;
+        const glyph = super.createDefault() as Specification.Glyph;
         glyph.table = table;
         glyph.constraints = [];
         glyph.marks = [];
@@ -73,7 +73,7 @@ class RectangleGlyph extends GlyphClass {
 
     // Initialize the state of a mark so that everything has a valid value
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x = 0;
         attrs.y = 0;
         attrs.width = 60;
@@ -92,7 +92,7 @@ class RectangleGlyph extends GlyphClass {
 
     // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
     public buildIntrinsicConstraints(solver: ConstraintSolver): void {
-        let [x1, y1, x2, y2, x, y, width, height, ix1, iy1, ix2, iy2, icx, icy] = solver.attrs(this.state.attributes, [
+        const [x1, y1, x2, y2, x, y, width, height, ix1, iy1, ix2, iy2, icx, icy] = solver.attrs(this.state.attributes, [
             "x1", "y1", "x2", "y2", "x", "y", "width", "height",
             "ix1", "iy1", "ix2", "iy2", "icx", "icy"
         ]);
@@ -110,42 +110,42 @@ class RectangleGlyph extends GlyphClass {
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, y]], [[0.5, y2], [0.5, y1], [1, solver.attr(this.state.marks[0].attributes, "y")]]);
     }
     public getAlignmentGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: attrs.ix1, attribute: "ix1", visible: true },
-            <SnappingGuides.Axis>{ type: "x", value: attrs.ix2, attribute: "ix2", visible: true },
-            <SnappingGuides.Axis>{ type: "x", value: attrs.icx, attribute: "icx", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.iy1, attribute: "iy1", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.iy2, attribute: "iy2", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.icy, attribute: "icy", visible: true }
+            { type: "x", value: attrs.ix1, attribute: "ix1", visible: true } as SnappingGuides.Axis,
+            { type: "x", value: attrs.ix2, attribute: "ix2", visible: true } as SnappingGuides.Axis,
+            { type: "x", value: attrs.icx, attribute: "icx", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.iy1, attribute: "iy1", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.iy2, attribute: "iy2", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.icy, attribute: "icy", visible: true } as SnappingGuides.Axis
         ]
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let { ix1, iy1, ix2, iy2 } = attrs;
-        let inf = [-10000, 10000];
+        const attrs = this.state.attributes;
+        const { ix1, iy1, ix2, iy2 } = attrs;
+        const inf = [-10000, 10000];
         return [
-            <Handles.Line>{
+            {
                 type: "line", axis: "x",
                 actions: [{ type: "attribute", attribute: "ix1" }],
                 value: ix1, span: inf
-            },
-            <Handles.Line>{
+            } as Handles.Line,
+            {
                 type: "line", axis: "x",
                 actions: [{ type: "attribute", attribute: "ix2" }],
                 value: ix2, span: inf
-            },
-            <Handles.Line>{
+            } as Handles.Line,
+            {
                 type: "line", axis: "y",
                 actions: [{ type: "attribute", attribute: "iy1" }],
                 value: iy1, span: inf
-            },
-            <Handles.Line>{
+            } as Handles.Line,
+            {
                 type: "line", axis: "y",
                 actions: [{ type: "attribute", attribute: "iy2" }],
                 value: iy2, span: inf
-            },
+            } as Handles.Line,
         ]
     }
 

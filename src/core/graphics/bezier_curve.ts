@@ -1,22 +1,24 @@
 import { Point } from "../common";
 
-/** Compute numerical integral y' = f(t, y), y(t0) = y0,
+/** 
+ * Compute numerical integral y' = f(t, y), y(t0) = y0,
  *  start from t0, step size h, with specified number of steps,
- *  with Runge-Kutta Method order 4 */
+ *  with Runge-Kutta Method order 4 
+ */
 export function RK4(f: (t: number, y: number) => number, y0: number, t0: number, h: number, steps: number, result: number[] = new Array<number>(steps)): number[] {
-    if (steps == 0) return result;
+    if (steps == 0) { return result; }
 
     result[0] = y0;
     let yp = y0;
     let tp = t0;
 
     for (let i = 1; i < steps; i++) {
-        let k1 = f(tp, yp);
-        let k2 = f(tp + h / 2, yp + h * k1 / 2);
-        let k3 = f(tp + h / 2, yp + h * k2 / 2);
-        let k4 = f(tp + h, yp + h * k3);
-        let yi = yp + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4);
-        let ti = tp + h;
+        const k1 = f(tp, yp);
+        const k2 = f(tp + h / 2, yp + h * k1 / 2);
+        const k3 = f(tp + h / 2, yp + h * k2 / 2);
+        const k4 = f(tp + h, yp + h * k3);
+        const yi = yp + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4);
+        const ti = tp + h;
         result[i] = yi;
         yp = yi;
         tp = ti;
@@ -27,7 +29,7 @@ export function RK4(f: (t: number, y: number) => number, y0: number, t0: number,
 
 export function linearApproximation(points: ArrayLike<number>, t: number): number {
     let i1: number, i2: number, k: number;
-    let w = t * (points.length - 1);
+    const w = t * (points.length - 1);
     i1 = Math.floor(w);
     i2 = i1 + 1;
     k = w - i1;
@@ -45,8 +47,8 @@ export function linearApproximation(points: ArrayLike<number>, t: number): numbe
 export function findSegment(bounds: number[], k: number): [number, number] {
     // Linear search
     for (let i = 0; i < bounds.length - 1; i++) {
-        let b1 = bounds[i];
-        let b2 = bounds[i + 1];
+        const b1 = bounds[i];
+        const b2 = bounds[i + 1];
         if (k >= b1 && k <= b2) {
             return [i, k - b1];
         }
@@ -60,19 +62,19 @@ export function findSegment(bounds: number[], k: number): [number, number] {
 }
 
 export function linearInvert(points: ArrayLike<number>, result: number[] = new Array<number>(points.length)): number[] {
-    let s0 = points[0];
-    let s1 = points[points.length - 1];
+    const s0 = points[0];
+    const s1 = points[points.length - 1];
     let ptr = 0;
     for (let i = 0; i < points.length; i++) {
-        let si = s0 + (s1 - s0) * i / (points.length - 1);
+        const si = s0 + (s1 - s0) * i / (points.length - 1);
         while (ptr + 2 < points.length && si >= points[ptr + 1]) {
             ptr += 1;
         }
-        let sA = points[ptr];
-        let tA = ptr / (points.length - 1);
-        let sB = points[ptr + 1];
-        let tB = (ptr + 1) / (points.length - 1);
-        let ti = (si - sA) / (sB - sA) * (tB - tA) + tA;
+        const sA = points[ptr];
+        const tA = ptr / (points.length - 1);
+        const sB = points[ptr + 1];
+        const tB = (ptr + 1) / (points.length - 1);
+        const ti = (si - sA) / (sB - sA) * (tB - tA) + tA;
         result[i] = ti;
     }
     return result;
@@ -86,7 +88,7 @@ export abstract class CurveParameterization {
     public abstract getLength(): number;
 
     public getNormalAtT(t: number) {
-        let tangent = this.getTangentAtT(t);
+        const tangent = this.getTangentAtT(t);
         return {
             x: -tangent.y,
             y: tangent.x
@@ -124,7 +126,7 @@ export class BezierCurveParameterization extends CurveParameterization {
         // Len = 8.080527392389182  10000
         //       8.080527036296594  100
         //       8.084824756247663  10
-        let steps = 100;
+        const steps = 100;
         this.tToS = RK4((t, y) => this.getDsDtAtT(t), 0, 0, 1 / (steps - 1), steps);
         this.len = this.tToS[steps - 1];
         this.sToT = linearInvert(this.tToS);
@@ -139,10 +141,10 @@ export class BezierCurveParameterization extends CurveParameterization {
 
     /** Get the tangent direction at t */
     public getTangentAtT(t: number) {
-        let t2 = t * t;
-        let dxdt = 3 * t2 * this.k3x + 2 * t * this.k2x + this.k1x;
-        let dydt = 3 * t2 * this.k3y + 2 * t * this.k2y + this.k1y;
-        let length = Math.sqrt(dxdt * dxdt + dydt * dydt);
+        const t2 = t * t;
+        const dxdt = 3 * t2 * this.k3x + 2 * t * this.k2x + this.k1x;
+        const dydt = 3 * t2 * this.k3y + 2 * t * this.k2y + this.k1y;
+        const length = Math.sqrt(dxdt * dxdt + dydt * dydt);
         return {
             x: dxdt / length,
             y: dydt / length
@@ -151,9 +153,9 @@ export class BezierCurveParameterization extends CurveParameterization {
 
     /** Get ds/dt at t */
     public getDsDtAtT(t: number) {
-        let t2 = t * t;
-        let dxdt = 3 * t2 * this.k3x + 2 * t * this.k2x + this.k1x;
-        let dydt = 3 * t2 * this.k3y + 2 * t * this.k2y + this.k1y;
+        const t2 = t * t;
+        const dxdt = 3 * t2 * this.k3x + 2 * t * this.k2x + this.k1x;
+        const dydt = 3 * t2 * this.k3y + 2 * t * this.k2y + this.k1y;
         return Math.sqrt(dxdt * dxdt + dydt * dydt);
     }
 
@@ -171,10 +173,10 @@ export class BezierCurveParameterization extends CurveParameterization {
 }
 
 export class LineSegmentParametrization extends CurveParameterization {
-    p1: Point;
-    p2: Point;
-    length: number;
-    tangent: Point;
+    public p1: Point;
+    public p2: Point;
+    public length: number;
+    public tangent: Point;
 
     constructor(p1: Point, p2: Point) {
         super();
@@ -228,29 +230,29 @@ export class MultiCurveParametrization {
     }
 
     private getSegmentAtS(s: number): [CurveParameterization, number] {
-        let [pi, ps] = findSegment(this.sBounds, s);
-        let p = this.segments[pi];
-        let pt = p.getTFromS(ps);
+        const [pi, ps] = findSegment(this.sBounds, s);
+        const p = this.segments[pi];
+        const pt = p.getTFromS(ps);
         return [p, pt];
     }
 
     public getPointAtS(s: number): Point {
-        let [p, t] = this.getSegmentAtS(s);
+        const [p, t] = this.getSegmentAtS(s);
         return p.getPointAtT(t);
     }
 
     public getTangentAtS(s: number): Point {
-        let [p, t] = this.getSegmentAtS(s);
+        const [p, t] = this.getSegmentAtS(s);
         return p.getTangentAtT(t);
     }
 
     public getNormalAtS(s: number): Point {
-        let [p, k] = this.getSegmentAtS(s);
+        const [p, k] = this.getSegmentAtS(s);
         return p.getNormalAtT(k);
     }
 
     public getFrameAtS(s: number): { p: Point, t: Point, n: Point } {
-        let [p, t] = this.getSegmentAtS(s);
+        const [p, t] = this.getSegmentAtS(s);
         return {
             p: p.getPointAtT(t),
             t: p.getTangentAtT(t),

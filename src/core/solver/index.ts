@@ -1,4 +1,4 @@
-import { ConstraintSolver, AttributeOptions, ConstraintStrength, VariableStrength, Variable, ConstraintPlugin } from "./abstract";
+import { AttributeOptions, ConstraintPlugin, ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "./abstract";
 import { ChartConstraintSolver, GlyphConstraintAnalyzer, GlyphConstraintSolver } from "./solver";
 // import { CGConstraintSolver, ConstraintCompiler } from "./cg_solver";
 

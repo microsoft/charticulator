@@ -1,12 +1,12 @@
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength, Variable, ConstraintPlugins } from "../../solver";
 import * as Graphics from "../../graphics";
+import { ConstraintPlugins, ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "../../solver";
+import * as Specification from "../../specification";
 
-import { SnappingGuides, AttributeDescription, DropZones, Handles, OrderDescription, BoundingBox } from "../common";
-import { Point, uniqueID, getById } from "../../common";
-import { ObjectClasses } from "../object";
+import { getById, Point, uniqueID } from "../../common";
 import { ChartElementClass } from "../chart_element";
+import { AttributeDescription, BoundingBox, DropZones, Handles, OrderDescription, SnappingGuides } from "../common";
 import { ObjectClassMetadata } from "../index";
+import { ObjectClasses } from "../object";
 
 export interface GuideAttributes extends Specification.AttributeMap {
     value: number;
@@ -46,20 +46,20 @@ export class GuideClass extends ChartElementClass {
 
     /** Get handles given current state */
     public getHandles(): Handles.Description[] {
-        let inf = [-1000, 1000];
+        const inf = [-1000, 1000];
         return [
-            <Handles.Line>{
+            {
                 type: "line", axis: this.getAxis(),
                 actions: [{ type: "attribute", attribute: "value" }],
                 value: this.state.attributes.value,
                 span: inf
-            }
+            } as Handles.Line
         ];
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
         return [
-            <SnappingGuides.Axis>{ type: this.getAxis(), value: this.state.attributes.value, attribute: "value", visible: true }
+            { type: this.getAxis(), value: this.state.attributes.value, attribute: "value", visible: true } as SnappingGuides.Axis
         ];
     }
 
@@ -98,7 +98,7 @@ export class GuideCoordinatorClass extends ChartElementClass {
     }
 
     public buildConstraints(solver: ConstraintSolver) {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         let t1: Variable, t2: Variable;
         if (this.getAxis() == "x") {
             t1 = solver.attr(attrs, "x1");
@@ -107,17 +107,17 @@ export class GuideCoordinatorClass extends ChartElementClass {
             t1 = solver.attr(attrs, "y1");
             t2 = solver.attr(attrs, "y2");
         }
-        let length = this.object.properties.count as number;
+        const length = this.object.properties.count as number;
         this.getValueNames().map((name, index) => {
-            let t = (1 + index) / (length + 1);
+            const t = (1 + index) / (length + 1);
             solver.addLinear(ConstraintStrength.HARD, 0, [[1 - t, t1], [t, t2]], [[1, solver.attr(attrs, name)]]);
         });
     }
 
     public getValueNames(): string[] {
-        let attrs = [];
+        const attrs = [];
         for (let i = 0; i < this.object.properties.count; i++) {
-            let name = `value${i}`;
+            const name = `value${i}`;
             attrs.push(name);
             if (this.state) {
                 if (this.state.attributes[name] == null) {
@@ -133,26 +133,26 @@ export class GuideCoordinatorClass extends ChartElementClass {
     }
 
     public get attributes(): { [name: string]: AttributeDescription } {
-        let r: { [name: string]: AttributeDescription } = {
+        const r: { [name: string]: AttributeDescription } = {
             x1: { name: "x1", type: "number", mode: "positional", strength: VariableStrength.NONE },
             y1: { name: "y1", type: "number", mode: "positional", strength: VariableStrength.NONE },
             x2: { name: "x2", type: "number", mode: "positional", strength: VariableStrength.NONE },
             y2: { name: "y2", type: "number", mode: "positional", strength: VariableStrength.NONE }
         };
         for (let i = 0; i < this.object.properties.count; i++) {
-            let name = `value${i}`;
-            r[name] = { name: name, type: "number", mode: "positional", strength: VariableStrength.NONE };
+            const name = `value${i}`;
+            r[name] = { name, type: "number", mode: "positional", strength: VariableStrength.NONE };
         }
         return r;
     }
 
     public initializeState() {
-        let v = this.attributeNames;
+        const v = this.attributeNames;
         this.state.attributes.x1 = -100;
         this.state.attributes.y1 = -100;
         this.state.attributes.x2 = 100;
         this.state.attributes.y2 = 100;
-        for (let name of this.getValueNames()) {
+        for (const name of this.getValueNames()) {
             if (this.state.attributes[name] == null) {
                 this.state.attributes[name] = 0;
             }
@@ -170,12 +170,12 @@ export class GuideCoordinatorClass extends ChartElementClass {
 
     public getSnappingGuides(): SnappingGuides.Description[] {
         return this.getValueNames().map(name => {
-            return <SnappingGuides.Axis>{
+            return {
                 type: this.getAxis(),
                 value: this.state.attributes[name],
                 attribute: name,
                 visible: true
-            };
+            } as SnappingGuides.Axis;
         });
     }
 

@@ -6,11 +6,11 @@ export function uuid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-let usedIDs = new Set<string>();
+const usedIDs = new Set<string>();
 /** Generate a unique ID in uuid format */
 export function uniqueID(): string {
     while (true) {
-        let id = Math.random().toString(36).substr(2);
+        const id = Math.random().toString(36).substr(2);
         if (!usedIDs.has(id)) {
             usedIDs.add(id);
             return id;
@@ -19,11 +19,11 @@ export function uniqueID(): string {
 }
 
 let hashIndex = 1;
-let objectHashs = new WeakMap<Object, string>();
+const objectHashs = new WeakMap<Object, string>();
 
 export function objectHash(o: Object): string {
-    if (objectHashs.has(o)) return objectHashs.get(o);
-    let newHash = `<#${hashIndex.toString()}>`;
+    if (objectHashs.has(o)) { return objectHashs.get(o); }
+    const newHash = `<#${hashIndex.toString()}>`;
     hashIndex += 1;
     objectHashs.set(o, newHash);
     return newHash;

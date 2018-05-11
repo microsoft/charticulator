@@ -1,12 +1,12 @@
-import * as Specification from "../../specification";
-import * as Graphics from "../../graphics";
 import * as Expression from "../../expression";
+import * as Graphics from "../../graphics";
+import * as Specification from "../../specification";
 import * as Scales from "../scales";
 
-import { ChartElementClass, BuildConstraintsContext } from "../chart_element";
-import { ObjectClassMetadata, AttributeDescription, ObjectClasses, Handles, BoundingBox, Controls } from "../common";
-import { VariableStrength, ConstraintSolver, ConstraintStrength } from "../../solver/abstract";
-import { indexOf, Color, interpolateColors } from "../../common";
+import { Color, indexOf, interpolateColors } from "../../common";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver/abstract";
+import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
+import { AttributeDescription, BoundingBox, Controls, Handles, ObjectClasses, ObjectClassMetadata } from "../common";
 import { AxisRenderer } from "../plot_segments/axis";
 
 export interface LegendAttributes extends Specification.AttributeMap {
@@ -56,14 +56,14 @@ export abstract class LegendClass extends ChartElementClass {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x = 0;
         attrs.y = 0;
     }
 
     public getLayoutBox(): { x1: number, y1: number, x2: number, y2: number } {
-        let { x, y } = this.state.attributes;
-        let [width, height] = this.getLegendSize();
+        const { x, y } = this.state.attributes;
+        const [width, height] = this.getLegendSize();
         let x1: number, y1: number, x2: number, y2: number;
         switch (this.object.properties.alignX) {
             case "start": x1 = x; x2 = x + width; break;
@@ -80,36 +80,36 @@ export abstract class LegendClass extends ChartElementClass {
 
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = this.getLayoutBox();
-        return <BoundingBox.Rectangle>{
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = this.getLayoutBox();
+        return {
             type: "rectangle",
             cx: (x1 + x2) / 2,
             cy: (y1 + y2) / 2,
             width: Math.abs(x2 - x1),
             height: Math.abs(y2 - y1),
             rotation: 0
-        };
+        } as BoundingBox.Rectangle;
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let { x, y } = attrs;
+        const attrs = this.state.attributes;
+        const { x, y } = attrs;
         return [
-            <Handles.Point>{
+            {
                 type: "point",
-                x: x, y: y,
+                x, y,
                 actions: [
                     { type: "attribute", source: "x", attribute: "x" },
                     { type: "attribute", source: "y", attribute: "y" }
                 ]
-            }
+            } as Handles.Point
         ]
     }
 
     public getScale(): [Specification.Scale, Specification.ScaleState] {
-        let scale = this.object.properties.scale;
-        let scaleIndex = indexOf(this.parent.object.scales, (x) => x._id == scale);
+        const scale = this.object.properties.scale;
+        const scaleIndex = indexOf(this.parent.object.scales, (x) => x._id == scale);
         if (scaleIndex >= 0) {
             return [this.parent.object.scales[scaleIndex], this.parent.state.scales[scaleIndex]];
         } else {
@@ -122,7 +122,7 @@ export abstract class LegendClass extends ChartElementClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             manager.sectionHeader("Alignment"),
             manager.row("Horizontal",
@@ -163,12 +163,12 @@ export class CategoricalLegendClass extends LegendClass {
     private textMeasure = new Graphics.TextMeasurer();
 
     public getLegendItems(): CategoricalLegendItem[] {
-        let scale = this.getScale();
+        const scale = this.getScale();
         if (scale) {
-            let [scaleObject, scaleState] = scale;
-            let mapping = scaleObject.properties.mapping as { [name: string]: Color };
-            let items: CategoricalLegendItem[] = [];
-            for (let key in mapping) {
+            const [scaleObject, scaleState] = scale;
+            const mapping = scaleObject.properties.mapping as { [name: string]: Color };
+            const items: CategoricalLegendItem[] = [];
+            for (const key in mapping) {
                 if (mapping.hasOwnProperty(key)) {
                     switch (scaleObject.classID) {
                         case "scale.categorical<string,boolean>": {
@@ -195,25 +195,25 @@ export class CategoricalLegendClass extends LegendClass {
     }
 
     public getLegendSize(): [number, number] {
-        let items = this.getLegendItems();
+        const items = this.getLegendItems();
         return [100, items.length * this.getLineHeight()];
     }
 
     public getGraphics(): Graphics.Element {
-        let fontFamily = this.object.properties.fontFamily;
-        let fontSize = this.object.properties.fontSize;
-        let lineHeight = this.getLineHeight();
+        const fontFamily = this.object.properties.fontFamily;
+        const fontSize = this.object.properties.fontSize;
+        const lineHeight = this.getLineHeight();
         this.textMeasure.setFontFamily(fontFamily);
         this.textMeasure.setFontSize(fontSize);
 
-        let g = Graphics.makeGroup([]);
-        let items = this.getLegendItems();
+        const g = Graphics.makeGroup([]);
+        const items = this.getLegendItems();
         for (let i = 0; i < items.length; i++) {
-            let item = items[i];
-            let metrics = this.textMeasure.measure(item.label);
-            let offsets = Graphics.TextMeasurer.ComputeTextPosition(lineHeight, lineHeight / 2, metrics, "left", "middle", 5, 0);
-            let textLabel = Graphics.makeText(offsets[0], offsets[1], item.label, fontFamily, fontSize, { fillColor: this.object.properties.textColor });
-            let gItem = Graphics.makeGroup([textLabel]);
+            const item = items[i];
+            const metrics = this.textMeasure.measure(item.label);
+            const offsets = Graphics.TextMeasurer.ComputeTextPosition(lineHeight, lineHeight / 2, metrics, "left", "middle", 5, 0);
+            const textLabel = Graphics.makeText(offsets[0], offsets[1], item.label, fontFamily, fontSize, { fillColor: this.object.properties.textColor });
+            const gItem = Graphics.makeGroup([textLabel]);
             switch (item.type) {
                 case "color": {
                     gItem.elements.push(
@@ -224,7 +224,7 @@ export class CategoricalLegendClass extends LegendClass {
             gItem.transform = { x: 0, y: lineHeight * (items.length - 1 - i), angle: 0 };
             g.elements.push(gItem);
         }
-        let { x1, y1 } = this.getLayoutBox();
+        const { x1, y1 } = this.getLayoutBox();
         g.transform = { x: x1, y: y1, angle: 0 };
         return g;
     }
@@ -239,35 +239,35 @@ export class NumericalColorLegendClass extends LegendClass {
     }
 
     public getGraphics(): Graphics.Element {
-        let fontFamily = this.object.properties.fontFamily;
-        let fontSize = this.object.properties.fontSize;
-        let height = this.getLegendSize()[1];
-        let marginLeft = 5;
-        let gradientWidth = 12;
+        const fontFamily = this.object.properties.fontFamily;
+        const fontSize = this.object.properties.fontSize;
+        const height = this.getLegendSize()[1];
+        const marginLeft = 5;
+        const gradientWidth = 12;
 
-        let scale = this.getScale();
-        if (!scale) return null;
+        const scale = this.getScale();
+        if (!scale) { return null; }
 
-        let range = scale[0].properties.range as Specification.Types.ColorGradient;
-        let domainMin = scale[0].properties.domainMin as number;
-        let domainMax = scale[0].properties.domainMax as number;
+        const range = scale[0].properties.range as Specification.Types.ColorGradient;
+        const domainMin = scale[0].properties.domainMin as number;
+        const domainMax = scale[0].properties.domainMax as number;
 
-        let axisRenderer = new AxisRenderer();
+        const axisRenderer = new AxisRenderer();
         axisRenderer.setLinearScale(domainMin, domainMax, 0, height);
-        let g = Graphics.makeGroup([]);
+        const g = Graphics.makeGroup([]);
         g.elements.push(axisRenderer.renderLine(marginLeft + gradientWidth + 2, 0, 90, 1));
 
-        let ticks = height * 2;
-        let interp = interpolateColors(range.colors, range.colorspace);
+        const ticks = height * 2;
+        const interp = interpolateColors(range.colors, range.colorspace);
         for (let i = 0; i < ticks; i++) {
-            let t = (i + 0.5) / ticks;
-            let color = interp(t);
-            let y1 = i / ticks * height;
-            let y2 = Math.min(height, (i + 1.5) / ticks * height);
+            const t = (i + 0.5) / ticks;
+            const color = interp(t);
+            const y1 = i / ticks * height;
+            const y2 = Math.min(height, (i + 1.5) / ticks * height);
             g.elements.push(Graphics.makeRect(marginLeft, y1, marginLeft + gradientWidth, y2, { fillColor: color }));
         }
 
-        let { x1, y1 } = this.getLayoutBox();
+        const { x1, y1 } = this.getLayoutBox();
         g.transform = { x: x1, y: y1, angle: 0 };
         return g;
     }
@@ -295,7 +295,7 @@ export class NumericalNumberLegendClass extends ChartElementClass {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x1 = 0;
         attrs.y1 = 0;
         attrs.x2 = 0;
@@ -303,8 +303,8 @@ export class NumericalNumberLegendClass extends ChartElementClass {
     }
 
     public getScale(): [Specification.Scale, Specification.ScaleState] {
-        let scale = this.object.properties.scale;
-        let scaleIndex = indexOf(this.parent.object.scales, (x) => x._id == scale);
+        const scale = this.object.properties.scale;
+        const scaleIndex = indexOf(this.parent.object.scales, (x) => x._id == scale);
         if (scaleIndex >= 0) {
             return [this.parent.object.scales[scaleIndex], this.parent.state.scales[scaleIndex]];
         } else {
@@ -313,54 +313,54 @@ export class NumericalNumberLegendClass extends ChartElementClass {
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        return <BoundingBox.Line>{
+        return {
             type: "line",
             x1: this.state.attributes.x1,
             y1: this.state.attributes.y1,
             x2: this.state.attributes.x2,
             y2: this.state.attributes.y2
-        };
+        } as BoundingBox.Line;
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
-            <Handles.Point>{
+            {
                 type: "point",
                 x: x1, y: y1,
                 actions: [
                     { type: "attribute", source: "x", attribute: "x1" },
                     { type: "attribute", source: "y", attribute: "y1" }
                 ]
-            },
-            <Handles.Point>{
+            } as Handles.Point,
+            {
                 type: "point",
                 x: x2, y: y2,
                 actions: [
                     { type: "attribute", source: "x", attribute: "x2" },
                     { type: "attribute", source: "y", attribute: "y2" }
                 ]
-            }
+            } as Handles.Point
         ]
     }
 
     public getGraphics(): Graphics.Element {
-        let scale = this.getScale();
-        if (!scale) return null;
+        const scale = this.getScale();
+        if (!scale) { return null; }
 
-        let rangeMin = scale[1].attributes.rangeMin as number;
-        let rangeMax = scale[1].attributes.rangeMax as number;
-        let domainMin = scale[0].properties.domainMin as number;
-        let domainMax = scale[0].properties.domainMax as number;
+        const rangeMin = scale[1].attributes.rangeMin as number;
+        const rangeMax = scale[1].attributes.rangeMax as number;
+        const domainMin = scale[0].properties.domainMin as number;
+        const domainMax = scale[0].properties.domainMax as number;
 
-        let dx = this.state.attributes.x2 as number - (this.state.attributes.x1 as number);
-        let dy = this.state.attributes.y2 as number - (this.state.attributes.y1 as number);
-        let length = Math.sqrt(dx * dx + dy * dy);
+        const dx = this.state.attributes.x2 as number - (this.state.attributes.x1 as number);
+        const dy = this.state.attributes.y2 as number - (this.state.attributes.y1 as number);
+        const length = Math.sqrt(dx * dx + dy * dy);
 
-        let renderer = new AxisRenderer();
+        const renderer = new AxisRenderer();
         // Extend/shrink range, and update the domain accordingly. Keep the scaling factor.
-        let scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
+        const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
         renderer.setLinearScale(domainMin, domainMin + (length - rangeMin) / scaling, rangeMin, length);
 
         return renderer.renderLine(this.state.attributes.x1 as number, this.state.attributes.y1 as number, Math.atan2(dy, dx) / Math.PI * 180, -1);

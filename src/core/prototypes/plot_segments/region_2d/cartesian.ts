@@ -1,16 +1,16 @@
-import * as Specification from "../../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
 import * as Graphics from "../../../graphics";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
+import * as Specification from "../../../specification";
 
-import { SnappingGuides, AttributeDescription, DropZones, Handles, Controls, ObjectClasses, ObjectClassMetadata, BoundingBox, TemplateParameters } from "../../common";
-import { Point, uniqueID, getById, max } from "../../../common";
+import { getById, max, Point, uniqueID } from "../../../common";
+import { AttributeDescription, BoundingBox, Controls, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides, TemplateParameters } from "../../common";
 
-import { PlotSegmentClass } from "../index";
-import { Region2DPlotSegment, Region2DAttributes, Region2DConstraintBuilder, Region2DConfiguration } from "./base";
-import { AxisRenderer } from "../axis";
-import { BuildConstraintsContext } from "../../chart_element";
 import { ChartStateManager } from "../..";
+import { BuildConstraintsContext } from "../../chart_element";
 import { DataflowTable } from "../../dataflow";
+import { AxisRenderer } from "../axis";
+import { PlotSegmentClass } from "../index";
+import { Region2DAttributes, Region2DConfiguration, Region2DConstraintBuilder, Region2DPlotSegment } from "./base";
 
 export type CartesianAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -96,7 +96,7 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x1 = -100;
         attrs.x2 = 100;
         attrs.y1 = -100;
@@ -108,55 +108,55 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     }
 
     public createBuilder(solver?: ConstraintSolver, context?: BuildConstraintsContext) {
-        let builder = new Region2DConstraintBuilder(this, cartesianTerminology, "x1", "x2", "y1", "y2", solver, context);
+        const builder = new Region2DConstraintBuilder(this, cartesianTerminology, "x1", "x2", "y1", "y2", solver, context);
         return builder;
     }
 
     public buildConstraints(solver: ConstraintSolver, context: BuildConstraintsContext): void {
-        let builder = this.createBuilder(solver, context);
+        const builder = this.createBuilder(solver, context);
         builder.build();
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, x2, y1, y2 } = attrs;
-        return <BoundingBox.Rectangle>{
+        const attrs = this.state.attributes;
+        const { x1, x2, y1, y2 } = attrs;
+        return {
             type: "rectangle",
             cx: (x1 + x2) / 2,
             cy: (y1 + y2) / 2,
             width: Math.abs(x2 - x1),
             height: Math.abs(y2 - y1),
             rotation: 0
-        };
+        } as BoundingBox.Rectangle;
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
-            <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
-            <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
-            <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" }
+            { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
+            { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
+            { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
+            { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
         ];
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let builder = this.createBuilder();
+        const builder = this.createBuilder();
         return [
             ...builder.buildPanelWidgets(manager)
         ];
     }
 
     public getPopupEditor(manager: Controls.WidgetManager): Controls.PopupEditor {
-        let builder = this.createBuilder();
-        let widgets = builder.buildPopupWidgets(manager);
-        if (widgets.length == 0) return null;
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let anchor = { x: attrs.x1, y: attrs.y2 };
+        const builder = this.createBuilder();
+        const widgets = builder.buildPopupWidgets(manager);
+        if (widgets.length == 0) { return null; }
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const anchor = { x: attrs.x1, y: attrs.y2 };
         return {
-            anchor: anchor,
+            anchor,
             widgets: [
                 ...widgets
             ]
@@ -164,26 +164,26 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     }
 
     public getGraphics(manager: ChartStateManager): Graphics.Group {
-        let builder = this.createBuilder();
-        let g = Graphics.makeGroup([]);
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let [xMode, yMode] = this.getAxisModes();
-        let getTickData = (axis: Specification.Types.AxisDataBinding) => {
-            let table = manager.getTable(this.object.table);
-            let axisExpression = manager.dataflow.cache.parse(axis.expression);
-            let tickDataExpression = manager.dataflow.cache.parse(axis.tickDataExpression);
-            let result = [];
+        const builder = this.createBuilder();
+        const g = Graphics.makeGroup([]);
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const [xMode, yMode] = this.getAxisModes();
+        const getTickData = (axis: Specification.Types.AxisDataBinding) => {
+            const table = manager.getTable(this.object.table);
+            const axisExpression = manager.dataflow.cache.parse(axis.expression);
+            const tickDataExpression = manager.dataflow.cache.parse(axis.tickDataExpression);
+            const result = [];
             for (let i = 0; i < table.rows.length; i++) {
-                let c = table.getRowContext(i);
-                let axisValue = axisExpression.getValue(c);
-                let tickData = tickDataExpression.getValue(c);
+                const c = table.getRowContext(i);
+                const axisValue = axisExpression.getValue(c);
+                const tickData = tickDataExpression.getValue(c);
                 result.push({ value: axisValue, tick: tickData });
             }
             return result;
         }
         if (props.xData && props.xData.visible) {
-            let axisRenderer = new AxisRenderer()
+            const axisRenderer = new AxisRenderer()
                 .setAxisDataBinding(props.xData, 0, attrs.x2 - attrs.x1, false);
             if (props.xData.tickDataExpression) {
                 axisRenderer.setTicksByData(getTickData(props.xData));
@@ -193,7 +193,7 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
             );
         }
         if (props.yData && props.yData.visible) {
-            let axisRenderer = new AxisRenderer()
+            const axisRenderer = new AxisRenderer()
                 .setAxisDataBinding(props.yData, 0, attrs.y2 - attrs.y1, false);
             if (props.yData.tickDataExpression) {
                 axisRenderer.setTicksByData(getTickData(props.yData));
@@ -206,79 +206,79 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     }
 
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2, x, y } = attrs;
-        let zones: DropZones.Description[] = [];
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2, x, y } = attrs;
+        const zones: DropZones.Description[] = [];
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["cartesian-y"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Add Y Scaffold"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["cartesian-x"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Add X Scaffold"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["polar"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Polar Coordinates"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["curve"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Curve Coordinates"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["map"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Map"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x2, y: y1 }, p2: { x: x1, y: y1 },
                 title: "X Axis",
                 dropAction: {
                     axisInference: { property: "xData" }
                 }
-            }
+            } as DropZones.Line
         );
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x1, y: y1 }, p2: { x: x1, y: y2 },
                 title: "Y Axis",
                 dropAction: {
                     axisInference: { property: "yData" }
                 }
-            }
+            } as DropZones.Line
         );
         return zones;
     }
 
     public getAxisModes(): [CartesianAxisMode, CartesianAxisMode] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             props.xData ? props.xData.type : "null",
             props.yData ? props.yData.type : "null"
@@ -286,24 +286,24 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let rows = this.parent.dataflow.getTable(this.object.table).rows;
-        let { x1, x2, y1, y2 } = attrs;
-        let h: Handles.Description[] = [
-            <Handles.Line>{ type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] },
-            <Handles.Line>{ type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] }
+        const attrs = this.state.attributes;
+        const rows = this.parent.dataflow.getTable(this.object.table).rows;
+        const { x1, x2, y1, y2 } = attrs;
+        const h: Handles.Description[] = [
+            { type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] } as Handles.Line,
+            { type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] } as Handles.Line,
+            { type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
+            { type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point
         ];
 
-        let builder = this.createBuilder();
+        const builder = this.createBuilder();
 
-        let handles = builder.getHandles();
-        for (let handle of handles) {
+        const handles = builder.getHandles();
+        for (const handle of handles) {
             h.push({
                 type: "gap-ratio",
                 axis: handle.gap.axis,
@@ -325,7 +325,7 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     }
 
     public getTemplateParameters(): TemplateParameters {
-        let r: Specification.Template.Inference[] = [];
+        const r: Specification.Template.Inference[] = [];
         if (this.object.properties.xData && this.object.properties.xData.type != "default") {
             r.push({
                 type: "axis",

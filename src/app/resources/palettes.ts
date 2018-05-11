@@ -8,15 +8,15 @@ export interface ColorPalette {
 }
 
 export let predefinedPalettes: ColorPalette[] = [];
-let converter = getColorConverter("sRGB", "sRGB");
+const converter = getColorConverter("sRGB", "sRGB");
 
 export function addPalette(name: string, type: "sequential" | "diverging" | "qualitative" | "palette", ...colors: string[][]) {
     predefinedPalettes.push({
-        name: name,
-        type: type,
+        name,
+        type,
         colors: colors.map(x => x.map(y => {
-            let c = colorFromHTMLColor(y);
-            let [r, g, b] = converter(c.r, c.g, c.b);
+            const c = colorFromHTMLColor(y);
+            const [r, g, b] = converter(c.r, c.g, c.b);
             return { r, g, b };
         }))
     });

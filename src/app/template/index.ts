@@ -1,4 +1,4 @@
-import { Specification, Prototypes, Dataset, deepClone } from "../../core";
+import { Dataset, deepClone, Prototypes, Specification } from "../../core";
 
 export interface ExportTemplateTargetProperty {
     displayName: string;
@@ -16,10 +16,10 @@ export interface ExportTemplateTarget {
 }
 
 export class ChartTemplateBuilder {
-    chart: Specification.Chart;
-    dataset: Dataset.Dataset;
-    manager: Prototypes.ChartStateManager;
-    template: Specification.Template.ChartTemplate;
+    public chart: Specification.Chart;
+    public dataset: Dataset.Dataset;
+    public manager: Prototypes.ChartStateManager;
+    public template: Specification.Template.ChartTemplate;
 
     private slots: { [name: string]: Specification.Template.DataSlot } = {};
     private objectVisited: { [id: string]: boolean } = {};
@@ -65,24 +65,24 @@ export class ChartTemplateBuilder {
 
     public addObject(table: string, objectClass: Prototypes.ObjectClass) {
         // Visit a object only once
-        if (this.objectVisited[objectClass.object._id]) return;
+        if (this.objectVisited[objectClass.object._id]) { return; }
         this.objectVisited[objectClass.object._id] = true;
 
-        let template = this.template;
+        const template = this.template;
 
         // Get template inference data
-        let params = objectClass.getTemplateParameters();
+        const params = objectClass.getTemplateParameters();
         if (params && params.inferences && params.inferences.length > 0) {
-            let inferences = params.inferences;
+            const inferences = params.inferences;
             template.inference[objectClass.object._id] = inferences;
-            for (let item of inferences) {
+            for (const item of inferences) {
                 switch (item.type) {
                     case "scale": {
-                        let scaleInference = item as Specification.Template.Scale;
+                        const scaleInference = item as Specification.Template.Scale;
                         // Find the first mapping that uses this scale
-                        for (let id in this.template.mappings) {
-                            if (!this.template.mappings.hasOwnProperty(id)) continue;
-                            for (let mapping of this.template.mappings[id]) {
+                        for (const id in this.template.mappings) {
+                            if (!this.template.mappings.hasOwnProperty(id)) { continue; }
+                            for (const mapping of this.template.mappings[id]) {
                                 if (mapping.scale == objectClass.object._id) {
                                     scaleInference.slotName = mapping.slotName;
                                 }
@@ -93,20 +93,20 @@ export class ChartTemplateBuilder {
                         }
                     } break;
                     case "axis": {
-                        let axisInference = item as Specification.Template.Axis;
+                        const axisInference = item as Specification.Template.Axis;
                         if (axisInference.slotName != null) {
                             this.addSlot(table, axisInference.slotName, axisInference.slotKind);
                         }
                     } break;
                     case "order": {
-                        let orderInference = item as Specification.Template.Order;
+                        const orderInference = item as Specification.Template.Order;
                         if (orderInference.slotName != null) {
                             this.addSlot(table, orderInference.slotName, orderInference.slotKind);
                         }
                     } break;
                     case "slot-list": {
-                        let slotListInference = item as Specification.Template.SlotList;
-                        for (let slot of slotListInference.slots) {
+                        const slotListInference = item as Specification.Template.SlotList;
+                        for (const slot of slotListInference.slots) {
                             this.addSlot(table, slot.slotName, slot.slotKind);
                         }
                     } break;
@@ -116,7 +116,7 @@ export class ChartTemplateBuilder {
         }
         if (params && params.properties && params.properties.length > 0) {
             template.properties[objectClass.object._id] = params.properties;
-            for (let property of params.properties) {
+            for (const property of params.properties) {
                 let pn = "";
                 if (property.mode == "attribute") {
                     pn = property.attribute;
@@ -137,20 +137,20 @@ export class ChartTemplateBuilder {
             }
         }
         // Get mappings
-        let mappings: Specification.Template.Mapping[] = [];
-        for (let attribute in objectClass.object.mappings) {
+        const mappings: Specification.Template.Mapping[] = [];
+        for (const attribute in objectClass.object.mappings) {
             if (objectClass.object.mappings.hasOwnProperty(attribute)) {
-                let item = objectClass.object.mappings[attribute];
+                const item = objectClass.object.mappings[attribute];
                 if (item.type == "scale") {
-                    let scaleMapping = item as Specification.ScaleMapping;
+                    const scaleMapping = item as Specification.ScaleMapping;
                     let kind = null;
                     // Resolve scale kind
                     if (scaleMapping.scale) {
-                        let scaleClass = this.manager.getClassById(scaleMapping.scale);
+                        const scaleClass = this.manager.getClassById(scaleMapping.scale);
                         if (scaleClass) {
-                            let params = scaleClass.getTemplateParameters();
+                            const params = scaleClass.getTemplateParameters();
                             if (params && params.inferences) {
-                                for (let infer of params.inferences) {
+                                for (const infer of params.inferences) {
                                     if (infer.type == "scale") {
                                         kind = (infer as Specification.Template.Scale).slotKind;
                                     }
@@ -160,7 +160,7 @@ export class ChartTemplateBuilder {
                     }
                     this.addSlot(table, scaleMapping.expression, kind);
                     mappings.push({
-                        attribute: attribute,
+                        attribute,
                         scale: scaleMapping.scale,
                         slotName: scaleMapping.expression
                     });
@@ -175,24 +175,24 @@ export class ChartTemplateBuilder {
     public build(): Specification.Template.ChartTemplate {
         this.reset();
 
-        let template = this.template;
+        const template = this.template;
         // Extract data tables
         template.tables = this.dataset.tables.map((table) => {
             return { name: table.name };
         });
 
-        for (let elementClass of this.manager.getElements()) {
+        for (const elementClass of this.manager.getElements()) {
             let table = null;
             if (Prototypes.isType(elementClass.object.classID, "plot-segment")) {
-                let plotSegment = elementClass.object as Specification.PlotSegment;
+                const plotSegment = elementClass.object as Specification.PlotSegment;
                 table = plotSegment.table;
             }
             this.addObject(table, elementClass);
             if (Prototypes.isType(elementClass.object.classID, "plot-segment")) {
-                let plotSegmentState = elementClass.state as Specification.PlotSegmentState;
-                for (let glyph of plotSegmentState.glyphs) {
+                const plotSegmentState = elementClass.state as Specification.PlotSegmentState;
+                for (const glyph of plotSegmentState.glyphs) {
                     this.addObject(table, this.manager.getClass(glyph));
-                    for (let mark of glyph.marks) {
+                    for (const mark of glyph.marks) {
                         this.addObject(table, this.manager.getClass(mark));
                     }
                     // Only one glyph is enough.
@@ -201,13 +201,13 @@ export class ChartTemplateBuilder {
             }
         }
 
-        for (let scaleState of this.manager.chartState.scales) {
+        for (const scaleState of this.manager.chartState.scales) {
             this.addObject(null, this.manager.getClass(scaleState));
         }
 
         this.addObject(null, this.manager.getChartClass(this.manager.chartState));
 
-        for (let slot in this.slots) {
+        for (const slot in this.slots) {
             if (this.slots.hasOwnProperty(slot)) {
                 template.dataSlots.push(this.slots[slot]);
             }

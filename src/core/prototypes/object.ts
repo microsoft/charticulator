@@ -1,9 +1,9 @@
-import * as Specification from "../specification";
+import { deepClone, uniqueID } from "../common";
 import { VariableStrength } from "../solver";
-import { uniqueID, deepClone } from "../common";
+import * as Specification from "../specification";
 
-import { CreatingInteraction, Controls } from "./common";
 import { TemplateParameters } from ".";
+import { Controls, CreatingInteraction } from "./common";
 
 export interface AttributeDescription {
     name: string;
@@ -83,8 +83,8 @@ export abstract class ObjectClass {
     /** Get the UI spec for property panel */
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
         // By default, we create the attribute controls based on attribute descriptions
-        let widgets: Controls.Widget[] = [];
-        for (let attr of this.attributeNames) {
+        const widgets: Controls.Widget[] = [];
+        for (const attr of this.attributeNames) {
             widgets.push(manager.mappingEditorTOFIX(attr));
         }
         return widgets;
@@ -96,18 +96,18 @@ export abstract class ObjectClass {
 
     /** Create a default object */
     public static createDefault(...args: any[]): Specification.Object {
-        let id = uniqueID();
-        let obj: Specification.Object = {
+        const id = uniqueID();
+        const obj: Specification.Object = {
             _id: id,
             classID: this.classID,
             properties: {},
             mappings: {}
         };
         obj.properties = deepClone(this.defaultProperties);
-        for (let attr in this.defaultMappingValues) {
+        for (const attr in this.defaultMappingValues) {
             if (this.defaultMappingValues.hasOwnProperty(attr)) {
-                let value = deepClone(this.defaultMappingValues[attr]);
-                obj.mappings[attr] = { type: "value", value: value } as Specification.ValueMapping;
+                const value = deepClone(this.defaultMappingValues[attr]);
+                obj.mappings[attr] = { type: "value", value } as Specification.ValueMapping;
             }
         }
         return obj;
@@ -135,7 +135,7 @@ export class ObjectClasses {
 
     /** Create a ObjectClass for a object and its state */
     public static Create(parent: ObjectClass, object: Specification.Object, state: Specification.ObjectState): ObjectClass {
-        let constructor = ObjectClasses.registeredObjectClasses.get(object.classID);
+        const constructor = ObjectClasses.registeredObjectClasses.get(object.classID);
         if (!constructor) {
             throw new Error(`undefined object class '${object.classID}'`);
         }
@@ -143,13 +143,13 @@ export class ObjectClasses {
     }
 
     public static CreateDefault(classID: string, ...args: any[]) {
-        let constructor = ObjectClasses.registeredObjectClasses.get(classID);
-        let obj = constructor.createDefault(...args);
+        const constructor = ObjectClasses.registeredObjectClasses.get(classID);
+        const obj = constructor.createDefault(...args);
         return obj;
     }
 
     public static GetMetadata(classID: string): ObjectClassMetadata {
-        let constructor = ObjectClasses.registeredObjectClasses.get(classID);
+        const constructor = ObjectClasses.registeredObjectClasses.get(classID);
         if (constructor) {
             return constructor.metadata || null;
         } else {
@@ -169,8 +169,8 @@ export class ObjectClasses {
     }
 
     public static isType(type: string, parentType: string): boolean {
-        if (type == parentType) return true;
-        let parents = ObjectClasses.type2Parents.get(type);
+        if (type == parentType) { return true; }
+        const parents = ObjectClasses.type2Parents.get(type);
         if (parents != null) {
             return parents.some(t => ObjectClasses.isType(t, parentType));
         } else {

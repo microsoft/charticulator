@@ -1,7 +1,7 @@
+import { Color, Scale } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "../../solver";
 import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength, Variable } from "../../solver";
-import { ObjectClasses, ObjectClass, AttributeDescription, Controls, DataMappingHints, TemplateParameters } from "../common";
-import { Scale, Color } from "../../common";
+import { AttributeDescription, Controls, DataMappingHints, ObjectClass, ObjectClasses, TemplateParameters } from "../common";
 
 import { ScaleClass } from "./index";
 
@@ -25,9 +25,9 @@ function parseHEX(s: string) {
     };
 }
 
-let brewer3 = ["#7fc97f", "#beaed4", "#fdc086"].map(parseHEX);
-let brewer6 = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c"].map(parseHEX);
-let brewer12 = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"].map(parseHEX);
+const brewer3 = ["#7fc97f", "#beaed4", "#fdc086"].map(parseHEX);
+const brewer6 = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c"].map(parseHEX);
+const brewer12 = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"].map(parseHEX);
 
 export function getDefaultColorPalette(count: number) {
     let r = brewer12;
@@ -62,29 +62,29 @@ class CategoricalScaleNumber extends ScaleClass {
     };
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let number = props.mapping[data.toString()];
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const number = props.mapping[data.toString()];
         return number * attrs.rangeScale;
     }
 
     public buildConstraint(data: Specification.DataValue, target: Variable, solver: ConstraintSolver) {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let k = props.mapping[data.toString()];
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const k = props.mapping[data.toString()];
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, target]], [[k, solver.attr(attrs, "rangeScale")]]);
     }
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.rangeScale = 10;
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let s = new Scale.CategoricalScale();
-        let values = column.filter(x => typeof (x) == "string") as string[];
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const s = new Scale.CategoricalScale();
+        const values = column.filter(x => typeof (x) == "string") as string[];
         s.inferParameters(values, "order");
 
         props.mapping = {};
@@ -102,10 +102,10 @@ class CategoricalScaleNumber extends ScaleClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let items: Controls.Widget[] = [];
-        let props = this.object.properties;
-        let keys: string[] = [];
-        for (let key in props.mapping) {
+        const items: Controls.Widget[] = [];
+        const props = this.object.properties;
+        const keys: string[] = [];
+        for (const key in props.mapping) {
             if (props.mapping.hasOwnProperty(key)) {
                 keys.push(key);
             }
@@ -134,7 +134,7 @@ class CategoricalScaleColor extends ScaleClass {
     };
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return props.mapping[data.toString()];
     }
 
@@ -142,9 +142,9 @@ class CategoricalScaleColor extends ScaleClass {
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let props = this.object.properties;
-        let s = new Scale.CategoricalScale();
-        let values = column.filter(x => typeof (x) == "string") as string[];
+        const props = this.object.properties;
+        const s = new Scale.CategoricalScale();
+        const values = column.filter(x => typeof (x) == "string") as string[];
         s.inferParameters(values, "order");
         props.mapping = {};
         let colorList = brewer12;
@@ -161,10 +161,10 @@ class CategoricalScaleColor extends ScaleClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let items: Controls.Widget[] = [];
-        let props = this.object.properties;
-        let keys: string[] = [];
-        for (let key in props.mapping) {
+        const items: Controls.Widget[] = [];
+        const props = this.object.properties;
+        const keys: string[] = [];
+        for (const key in props.mapping) {
             if (props.mapping.hasOwnProperty(key)) {
                 keys.push(key);
             }
@@ -208,7 +208,7 @@ class CategoricalScaleString extends ScaleClass {
     };
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return props.mapping[data.toString()];
     }
 
@@ -216,9 +216,9 @@ class CategoricalScaleString extends ScaleClass {
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let props = this.object.properties;
-        let s = new Scale.CategoricalScale();
-        let values = column.filter(x => typeof (x) == "string") as string[];
+        const props = this.object.properties;
+        const s = new Scale.CategoricalScale();
+        const values = column.filter(x => typeof (x) == "string") as string[];
         s.inferParameters(values, "order");
         props.mapping = {};
         s.domain.forEach((v, d) => {
@@ -231,10 +231,10 @@ class CategoricalScaleString extends ScaleClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let items: Controls.Widget[] = [];
-        let props = this.object.properties;
-        let keys: string[] = [];
-        for (let key in props.mapping) {
+        const items: Controls.Widget[] = [];
+        const props = this.object.properties;
+        const keys: string[] = [];
+        for (const key in props.mapping) {
             if (props.mapping.hasOwnProperty(key)) {
                 keys.push(key);
             }
@@ -264,7 +264,7 @@ class CategoricalScaleBoolean extends ScaleClass {
     };
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return props.mapping[data.toString()];
     }
 
@@ -272,9 +272,9 @@ class CategoricalScaleBoolean extends ScaleClass {
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let props = this.object.properties;
-        let s = new Scale.CategoricalScale();
-        let values = column.filter(x => typeof (x) == "string") as string[];
+        const props = this.object.properties;
+        const s = new Scale.CategoricalScale();
+        const values = column.filter(x => typeof (x) == "string") as string[];
         s.inferParameters(values, "order");
         props.mapping = {};
         s.domain.forEach((v, d) => {
@@ -283,11 +283,11 @@ class CategoricalScaleBoolean extends ScaleClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let items: Controls.Widget[] = [];
-        let props = this.object.properties;
-        let mappingALL: { [name: string]: boolean } = {};
-        let mappingNONE: { [name: string]: boolean } = {};
-        for (let key in props.mapping) {
+        const items: Controls.Widget[] = [];
+        const props = this.object.properties;
+        const mappingALL: { [name: string]: boolean } = {};
+        const mappingNONE: { [name: string]: boolean } = {};
+        for (const key in props.mapping) {
             if (props.mapping.hasOwnProperty(key)) {
                 items.push(
                     manager.inputBoolean({ property: "mapping", field: key }, { type: "checkbox", label: key })

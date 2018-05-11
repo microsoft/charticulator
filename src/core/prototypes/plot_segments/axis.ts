@@ -1,7 +1,7 @@
+import { Color, deepClone, fillDefaults, Scale } from "../../common";
 import * as Graphics from "../../graphics";
-import { Color, fillDefaults, Scale, deepClone } from "../../common";
-import { Controls } from "../common";
 import { Specification } from "../../index";
+import { Controls } from "../common";
 
 export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
     tickColor: { r: 0, g: 0, b: 0 },
@@ -46,12 +46,12 @@ export interface TickDescription {
 // }
 
 export class AxisRenderer {
-    ticks: TickDescription[] = [];
-    style: Specification.Types.AxisRenderingStyle = defaultAxisStyle;
-    rangeMin: number = 0;
-    rangeMax: number = 1;
-    valueToPosition: (value: any) => number;
-    oppositeSide: boolean = false;
+    public ticks: TickDescription[] = [];
+    public style: Specification.Types.AxisRenderingStyle = defaultAxisStyle;
+    public rangeMin: number = 0;
+    public rangeMax: number = 1;
+    public valueToPosition: (value: any) => number;
+    public oppositeSide: boolean = false;
 
     private static textMeasurer = new Graphics.TextMeasurer();
 
@@ -68,7 +68,7 @@ export class AxisRenderer {
         this.rangeMin = rangeMin;
         this.rangeMax = rangeMax;
 
-        if (!data) return this;
+        if (!data) { return this; }
         this.setStyle(data.style);
         this.oppositeSide = data.side == "opposite";
         switch (data.type) {
@@ -85,15 +85,15 @@ export class AxisRenderer {
         return this;
     }
 
-    ticksData: { tick: any, value: any }[];
-    public setTicksByData(ticks: { tick: any, value: any }[]) {
-        let position2Tick = new Map<number, string>();
-        for (let tick of ticks) {
-            let pos = this.valueToPosition(tick.value);
+    public ticksData: Array<{ tick: any, value: any }>;
+    public setTicksByData(ticks: Array<{ tick: any, value: any }>) {
+        const position2Tick = new Map<number, string>();
+        for (const tick of ticks) {
+            const pos = this.valueToPosition(tick.value);
             position2Tick.set(pos, tick.tick as string);
         }
         this.ticks = [];
-        for (let [pos, tick] of position2Tick.entries()) {
+        for (const [pos, tick] of position2Tick.entries()) {
             this.ticks.push({
                 position: pos,
                 label: tick
@@ -102,14 +102,14 @@ export class AxisRenderer {
     }
 
     public setLinearScale(domainMin: number, domainMax: number, rangeMin: number, rangeMax: number) {
-        let scale = new Scale.NumericalScale();
+        const scale = new Scale.NumericalScale();
         scale.domainMin = domainMin;
         scale.domainMax = domainMax;
-        let rangeLength = Math.abs(rangeMax - rangeMin);
-        let ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-        let r: TickDescription[] = [];
+        const rangeLength = Math.abs(rangeMax - rangeMin);
+        const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
+        const r: TickDescription[] = [];
         for (let i = 0; i < ticks.length; i++) {
-            let tx = (ticks[i] - domainMin) / (domainMax - domainMin) * (rangeMax - rangeMin) + rangeMin;
+            const tx = (ticks[i] - domainMin) / (domainMax - domainMin) * (rangeMax - rangeMin) + rangeMin;
             r.push({
                 position: tx,
                 label: ticks[i].toFixed(0)
@@ -122,8 +122,8 @@ export class AxisRenderer {
         return this;
     }
 
-    public setCategoricalScale(domain: string[], range: [number, number][], rangeMin: number, rangeMax: number) {
-        let r: TickDescription[] = [];
+    public setCategoricalScale(domain: string[], range: Array<[number, number]>, rangeMin: number, rangeMax: number) {
+        const r: TickDescription[] = [];
         for (let i = 0; i < domain.length; i++) {
             r.push({
                 position: (range[i][0] + range[i][1]) / 2 * (rangeMax - rangeMin) + rangeMin,
@@ -131,7 +131,7 @@ export class AxisRenderer {
             });
         }
         this.valueToPosition = (value) => {
-            let i = domain.indexOf(value);
+            const i = domain.indexOf(value);
             if (i >= 0) {
                 return (range[i][0] + range[i][1]) / 2 * (rangeMax - rangeMin) + rangeMin;
             } else {
@@ -145,35 +145,35 @@ export class AxisRenderer {
     }
 
     public renderLine(x: number, y: number, angle: number, side: number): Graphics.Group {
-        let g = Graphics.makeGroup([]);
-        let style = this.style;
-        let rangeMin = this.rangeMin;
-        let rangeMax = this.rangeMax;
-        let tickSize = style.tickSize;
-        let lineStyle: Graphics.Style = {
+        const g = Graphics.makeGroup([]);
+        const style = this.style;
+        const rangeMin = this.rangeMin;
+        const rangeMax = this.rangeMax;
+        const tickSize = style.tickSize;
+        const lineStyle: Graphics.Style = {
             strokeLinecap: "square",
             strokeColor: style.lineColor
         }
         AxisRenderer.textMeasurer.setFontFamily(style.fontFamily)
         AxisRenderer.textMeasurer.setFontSize(style.fontSize);
-        if (this.oppositeSide) side = -side;
+        if (this.oppositeSide) { side = -side; }
 
-        let cos = Math.cos(angle / 180 * Math.PI);
-        let sin = Math.sin(angle / 180 * Math.PI);
-        let x1 = x + rangeMin * cos;
-        let y1 = y + rangeMin * sin;
-        let x2 = x + rangeMax * cos;
-        let y2 = y + rangeMax * sin;
+        const cos = Math.cos(angle / 180 * Math.PI);
+        const sin = Math.sin(angle / 180 * Math.PI);
+        const x1 = x + rangeMin * cos;
+        const y1 = y + rangeMin * sin;
+        const x2 = x + rangeMax * cos;
+        const y2 = y + rangeMax * sin;
         // Base line
         g.elements.push(Graphics.makeLine(x1, y1, x2, y2, lineStyle));
         // Ticks
-        for (let tickPosition of this.ticks.map(x => x.position).concat([rangeMin, rangeMax])) {
-            let tx = x + tickPosition * cos, ty = y + tickPosition * sin;
-            let dx = side * tickSize * sin, dy = -side * tickSize * cos;
+        for (const tickPosition of this.ticks.map(x => x.position).concat([rangeMin, rangeMax])) {
+            const tx = x + tickPosition * cos, ty = y + tickPosition * sin;
+            const dx = side * tickSize * sin, dy = -side * tickSize * cos;
             g.elements.push(Graphics.makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
         }
         // Tick texts
-        let ticks = this.ticks.map(x => {
+        const ticks = this.ticks.map(x => {
             return {
                 position: x.position,
                 label: x.label,
@@ -188,14 +188,14 @@ export class AxisRenderer {
                 maxTickDistance = Math.max(maxTickDistance, Math.abs(ticks[i - 1].position - ticks[i].position));
             }
         }
-        for (let tick of ticks) {
-            let tx = x + tick.position * cos, ty = y + tick.position * sin;
-            let offset = 3;
-            let dx = side * (tickSize + offset) * sin, dy = -side * (tickSize + offset) * cos;
+        for (const tick of ticks) {
+            const tx = x + tick.position * cos, ty = y + tick.position * sin;
+            const offset = 3;
+            const dx = side * (tickSize + offset) * sin, dy = -side * (tickSize + offset) * cos;
 
             if (Math.abs(cos) < 0.5) { // 60 ~ 120 degree
-                let [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * sin < 0 ? "right" : "left", "middle", 0);
-                let gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
+                const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * sin < 0 ? "right" : "left", "middle", 0);
+                const gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
                 gText.transform = {
                     x: tx + dx,
                     y: ty + dy,
@@ -203,8 +203,8 @@ export class AxisRenderer {
                 };
                 g.elements.push(gText);
             } else if (Math.abs(cos) < Math.sqrt(3) / 2) {
-                let [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * sin < 0 ? "right" : "left", "middle", 0);
-                let gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
+                const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * sin < 0 ? "right" : "left", "middle", 0);
+                const gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
                 gText.transform = {
                     x: tx + dx,
                     y: ty + dy,
@@ -213,8 +213,8 @@ export class AxisRenderer {
                 g.elements.push(gText);
             } else {
                 if (maxTextWidth > maxTickDistance) {
-                    let [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * cos > 0 ? "right" : "left", side * cos > 0 ? "top" : "bottom", 0);
-                    let gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
+                    const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, side * cos > 0 ? "right" : "left", side * cos > 0 ? "top" : "bottom", 0);
+                    const gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
                     gText.transform = {
                         x: tx + dx,
                         y: ty + dy,
@@ -222,8 +222,8 @@ export class AxisRenderer {
                     };
                     g.elements.push(gText);
                 } else {
-                    let [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, "middle", side * cos > 0 ? "top" : "bottom", 0);
-                    let gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
+                    const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, tick.measure, "middle", side * cos > 0 ? "top" : "bottom", 0);
+                    const gText = Graphics.makeGroup([Graphics.makeText(px, py, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })]);
                     gText.transform = {
                         x: tx + dx,
                         y: ty + dy,
@@ -285,33 +285,33 @@ export class AxisRenderer {
     }
 
     public renderPolar(cx: number, cy: number, radius: number, side: number): Graphics.Group {
-        let style = this.style;
-        let rangeMin = this.rangeMin;
-        let rangeMax = this.rangeMax;
-        let tickSize = style.tickSize;
-        let lineStyle: Graphics.Style = {
+        const style = this.style;
+        const rangeMin = this.rangeMin;
+        const rangeMax = this.rangeMax;
+        const tickSize = style.tickSize;
+        const lineStyle: Graphics.Style = {
             strokeLinecap: "round",
             strokeColor: style.lineColor
         }
-        let g = Graphics.makeGroup([]);
+        const g = Graphics.makeGroup([]);
         g.transform.x = cx; g.transform.y = cy;
 
-        let hintStyle = {
+        const hintStyle = {
             strokeColor: { r: 0, g: 0, b: 0 },
             strokeOpacity: 0.1,
         };
         AxisRenderer.textMeasurer.setFontFamily(style.fontFamily)
         AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
-        for (let tick of this.ticks) {
-            let angle = tick.position;
-            let radians = angle / 180 * Math.PI;
-            let tx = Math.sin(radians) * radius;
-            let ty = Math.cos(radians) * radius;
+        for (const tick of this.ticks) {
+            const angle = tick.position;
+            const radians = angle / 180 * Math.PI;
+            const tx = Math.sin(radians) * radius;
+            const ty = Math.cos(radians) * radius;
 
-            let metrics = AxisRenderer.textMeasurer.measure(tick.label);
-            let [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(0, style.tickSize * side, metrics, "middle", side > 0 ? "bottom" : "top", 0, 2)
-            let gt = Graphics.makeGroup([
+            const metrics = AxisRenderer.textMeasurer.measure(tick.label);
+            const [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(0, style.tickSize * side, metrics, "middle", side > 0 ? "bottom" : "top", 0, 2)
+            const gt = Graphics.makeGroup([
                 Graphics.makeLine(0, 0, 0, style.tickSize * side, lineStyle),
                 Graphics.makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })
             ]);
@@ -325,30 +325,30 @@ export class AxisRenderer {
     }
 
     public renderCurve(coordinateSystem: Graphics.CoordinateSystem, y: number, side: number): Graphics.Group {
-        let style = this.style;
-        let rangeMin = this.rangeMin;
-        let rangeMax = this.rangeMax;
-        let tickSize = style.tickSize;
-        let lineStyle: Graphics.Style = {
+        const style = this.style;
+        const rangeMin = this.rangeMin;
+        const rangeMax = this.rangeMax;
+        const tickSize = style.tickSize;
+        const lineStyle: Graphics.Style = {
             strokeLinecap: "round",
             strokeColor: style.lineColor
         }
-        let g = Graphics.makeGroup([]);
+        const g = Graphics.makeGroup([]);
         g.transform = coordinateSystem.getBaseTransform();
 
-        let hintStyle = {
+        const hintStyle = {
             strokeColor: { r: 0, g: 0, b: 0 },
             strokeOpacity: 0.1,
         };
         AxisRenderer.textMeasurer.setFontFamily(style.fontFamily)
         AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
-        for (let tick of this.ticks) {
-            let tangent = tick.position;
+        for (const tick of this.ticks) {
+            const tangent = tick.position;
 
-            let metrics = AxisRenderer.textMeasurer.measure(tick.label);
-            let [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(0, -style.tickSize * side, metrics, "middle", side < 0 ? "bottom" : "top", 0, 2)
-            let gt = Graphics.makeGroup([
+            const metrics = AxisRenderer.textMeasurer.measure(tick.label);
+            const [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(0, -style.tickSize * side, metrics, "middle", side < 0 ? "bottom" : "top", 0, 2)
+            const gt = Graphics.makeGroup([
                 Graphics.makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
                 Graphics.makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor })
             ]);
@@ -364,7 +364,7 @@ export function getCategoricalAxis(data: Specification.Types.AxisDataBinding, en
     if (data.enablePrePostGap) {
         enablePrePostGap = true;
     }
-    let chunkSize = (1 - data.gapRatio) / data.categories.length;
+    const chunkSize = (1 - data.gapRatio) / data.categories.length;
     let preGap: number, postGap: number, gap: number, gapScale: number;
     if (enablePrePostGap) {
         gap = data.gapRatio / data.categories.length;
@@ -382,28 +382,28 @@ export function getCategoricalAxis(data: Specification.Types.AxisDataBinding, en
         preGap = 0;
         postGap = 0;
     }
-    let chunkRanges = data.categories.map((c, i) => {
+    const chunkRanges = data.categories.map((c, i) => {
         return [preGap + (gap + chunkSize) * i, preGap + (gap + chunkSize) * i + chunkSize] as [number, number];
     });
     return {
-        gap: gap,
-        preGap: preGap,
-        postGap: postGap,
-        gapScale: gapScale,
+        gap,
+        preGap,
+        postGap,
+        gapScale,
         ranges: chunkRanges
     };
 }
 
 export function buildAxisWidgets(data: Specification.Types.AxisDataBinding, axisProperty: string, m: Controls.WidgetManager, axisName: string): Controls.Widget[] {
-    let widgets = [];
-    let dropzoneOptions: Controls.RowOptions = {
+    const widgets = [];
+    const dropzoneOptions: Controls.RowOptions = {
         dropzone: {
             type: "axis-data-binding",
             attribute: axisProperty,
             prompt: axisName + ": drop here to assign data"
         }
     };
-    let makeAppearance = () => {
+    const makeAppearance = () => {
         if (data.visible) {
             return m.row("Visible", m.horizontal([0, 0, 1, 0],
                 m.inputBoolean({ property: axisProperty, field: "visible" }, { type: "checkbox" }),

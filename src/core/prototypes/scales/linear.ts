@@ -1,7 +1,7 @@
+import { Color, interpolateColor, interpolateColors, Scale } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "../../solver";
 import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength, Variable } from "../../solver";
-import { ObjectClasses, AttributeDescription, Controls, DataMappingHints, TemplateParameters } from "../common";
-import { Scale, Color, interpolateColor, interpolateColors } from "../../common";
+import { AttributeDescription, Controls, DataMappingHints, ObjectClasses, TemplateParameters } from "../common";
 
 import { ScaleClass } from "./index";
 
@@ -37,35 +37,35 @@ export class LinearScale extends ScaleClass {
     }
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let x1 = props.domainMin;
-        let x2 = props.domainMax;
-        let y1 = attrs.rangeMin;
-        let y2 = attrs.rangeMax;
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const x1 = props.domainMin;
+        const x2 = props.domainMax;
+        const y1 = attrs.rangeMin;
+        const y2 = attrs.rangeMax;
         return ((data as number) - x1) / (x2 - x1) * (y2 - y1) + y1;
     }
 
     public buildConstraint(data: Specification.DataValue, target: Variable, solver: ConstraintSolver) {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let x1 = props.domainMin;
-        let x2 = props.domainMax;
-        let k = ((data as number) - x1) / (x2 - x1);
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const x1 = props.domainMin;
+        const x2 = props.domainMax;
+        const k = ((data as number) - x1) / (x2 - x1);
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, target]], [[1 - k, solver.attr(attrs, "rangeMin")], [k, solver.attr(attrs, "rangeMax")]])
     }
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.rangeMin = 0;
         attrs.rangeMax = 100;
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let s = new Scale.NumericalScale();
-        let values = column.filter(x => typeof (x) == "number") as number[];
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const s = new Scale.NumericalScale();
+        const values = column.filter(x => typeof (x) == "number") as number[];
         s.inferParameters(values);
 
         props.domainMin = s.domainMin;
@@ -79,9 +79,9 @@ export class LinearScale extends ScaleClass {
             attrs.rangeMin = 0;
             attrs.rangeMax = 100;
         }
-        this.object.mappings.rangeMin = <Specification.ValueMapping>{ type: "value", value: 0 };
+        this.object.mappings.rangeMin = { type: "value", value: 0 } as Specification.ValueMapping;
         if (!hints.autoRange) {
-            this.object.mappings.rangeMax = <Specification.ValueMapping>{ type: "value", value: attrs.rangeMax };
+            this.object.mappings.rangeMax = { type: "value", value: attrs.rangeMax } as Specification.ValueMapping;
         }
     }
 
@@ -143,11 +143,11 @@ export class LinearColorScale extends ScaleClass {
     }
 
     public mapDataToAttribute(data: Specification.DataValue): Specification.AttributeValue {
-        let props = this.object.properties;
-        let x1 = props.domainMin;
-        let x2 = props.domainMax;
-        let t = ((data as number) - x1) / (x2 - x1);
-        let c = interpolateColors(props.range.colors, props.range.colorspace);
+        const props = this.object.properties;
+        const x1 = props.domainMin;
+        const x2 = props.domainMax;
+        const t = ((data as number) - x1) / (x2 - x1);
+        const c = interpolateColors(props.range.colors, props.range.colorspace);
         return c(t);
     }
 
@@ -155,14 +155,14 @@ export class LinearColorScale extends ScaleClass {
     }
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.range = getDefaultGradient();
     }
 
     public inferParameters(column: Specification.DataValue[], hints: DataMappingHints = {}): void {
-        let props = this.object.properties;
-        let s = new Scale.NumericalScale();
-        let values = column.filter(x => typeof (x) == "number") as number[];
+        const props = this.object.properties;
+        const s = new Scale.NumericalScale();
+        const values = column.filter(x => typeof (x) == "number") as number[];
         s.inferParameters(values);
 
         props.domainMin = s.domainMin;
@@ -171,7 +171,7 @@ export class LinearColorScale extends ScaleClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let range = this.object
+        const range = this.object
         return [
             manager.sectionHeader("Domain"),
             manager.row("Start", manager.inputNumber({ property: "domainMin" })),

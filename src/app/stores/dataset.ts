@@ -4,16 +4,16 @@ import { Dataset, Expression } from "../../core";
 
 import { Actions } from "../actions";
 
+import { ExpressionCache } from "../../core/expression/helpers";
 import { BaseStore } from "./base";
 import { MainStore } from "./main_store";
-import { ExpressionCache } from "../../core/expression/helpers";
 
 export class DatasetStoreState {
-    dataset: Dataset.Dataset;
+    public dataset: Dataset.Dataset;
 }
 
 export class DatasetStoreSelectionState {
-    selectedRowIndices: { [name: string]: number };
+    public selectedRowIndices: { [name: string]: number };
 }
 
 // DataView is a dataset with helper functions
@@ -86,7 +86,7 @@ export class DatasetStore extends BaseStore {
 
     public setDataset(dataset: Dataset.Dataset) {
         this.dataset = dataset;
-        for (let table of this.dataset.tables) {
+        for (const table of this.dataset.tables) {
             this.selectedRowMap.set(table, 0);
         }
         this.context = new Dataset.DatasetContext(this.dataset);
@@ -111,10 +111,10 @@ export class DatasetStore extends BaseStore {
     }
 
     public getExpressionVector(table: Dataset.Table, expression: string) {
-        let e = this.expressionCache.parse(expression);
-        let cTable = this.context.getTableContext(table);
+        const e = this.expressionCache.parse(expression);
+        const cTable = this.context.getTableContext(table);
         return table.rows.map(row => {
-            let cRow = cTable.getRowContext(row);
+            const cRow = cTable.getRowContext(row);
             return e.getValue(cRow) as Dataset.ValueType;
         });
     }
@@ -144,17 +144,17 @@ export class DatasetStore extends BaseStore {
     }
 
     public saveSelectionState(): DatasetStoreSelectionState {
-        let state: DatasetStoreSelectionState = {
+        const state: DatasetStoreSelectionState = {
             selectedRowIndices: {}
         };
-        for (let table of this.dataset.tables) {
+        for (const table of this.dataset.tables) {
             state.selectedRowIndices[table.name] = this.getSelectedRowIndex(table);
         }
         return state;
     }
 
     public loadSelectionState(state: DatasetStoreSelectionState) {
-        for (let table of this.dataset.tables) {
+        for (const table of this.dataset.tables) {
             this.setSelectedRowIndex(table, state.selectedRowIndices[table.name]);
         }
         this.emit(DatasetStore.EVENT_SELECTION);

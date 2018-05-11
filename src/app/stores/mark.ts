@@ -1,12 +1,12 @@
 import { EventEmitter } from "../../core";
 
-import { Specification, Prototypes, Solver, Dataset, indexOf, getByName } from "../../core";
+import { Dataset, getByName, indexOf, Prototypes, Solver, Specification } from "../../core";
 
 import { Actions } from "../actions";
 
 import { BaseStore } from "./base";
-import { DatasetStore } from "./dataset";
 import { ChartStore } from "./chart";
+import { DatasetStore } from "./dataset";
 
 /** Simple store that just refer to the chart store */
 export class GlyphStore extends BaseStore {
@@ -35,13 +35,13 @@ export class GlyphStore extends BaseStore {
     }
 
     public updateMarkState() {
-        let layoutIndex = indexOf(this.parent.chart.elements, e => (Prototypes.isType(e.classID, "plot-segment") && (e as Specification.PlotSegment).glyph == this.mark._id));
+        const layoutIndex = indexOf(this.parent.chart.elements, e => (Prototypes.isType(e.classID, "plot-segment") && (e as Specification.PlotSegment).glyph == this.mark._id));
         if (layoutIndex == -1) {
             this.markState = null;
             this.emit(GlyphStore.EVENT_STATE);
         } else {
-            let plotSegmentState = this.parent.chartState.elements[layoutIndex] as Specification.PlotSegmentState;
-            let glyphIndex = plotSegmentState.dataRowIndices.indexOf(this.parent.datasetStore.getSelectedRowIndex(this.table));
+            const plotSegmentState = this.parent.chartState.elements[layoutIndex] as Specification.PlotSegmentState;
+            const glyphIndex = plotSegmentState.dataRowIndices.indexOf(this.parent.datasetStore.getSelectedRowIndex(this.table));
             this.markState = plotSegmentState.glyphs[glyphIndex];
             this.emit(GlyphStore.EVENT_STATE);
         }

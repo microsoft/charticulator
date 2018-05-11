@@ -23,11 +23,11 @@ export abstract class StaticMapService {
 
     public getImageryAtPoint(options: GetImageryAtPointOptions): Promise<string> {
         return new Promise((resolve, reject) => {
-            let url = this.getImageryURLAtPoint(options);
-            let img = new Image();
+            const url = this.getImageryURLAtPoint(options);
+            const img = new Image();
             img.setAttribute("crossOrigin", "anonymous");
             img.onload = () => {
-                let canvas = document.createElement("canvas");
+                const canvas = document.createElement("canvas");
                 canvas.width = img.width;
                 canvas.height = img.height;
                 canvas.getContext("2d").drawImage(img, 0, 0);
@@ -43,7 +43,7 @@ export abstract class StaticMapService {
     private static cachedService: StaticMapService = null;
     public static GetService() {
         if (StaticMapService.cachedService == null) {
-            let config = getConfig();
+            const config = getConfig();
             if (config.MapService) {
                 switch (config.MapService.provider) {
                     case "Google": {
@@ -60,11 +60,12 @@ export abstract class StaticMapService {
 }
 
 function buildQueryParameters(options: { [name: string]: string }) {
-    let r: string[] = [];
-    for (let p in options)
+    const r: string[] = [];
+    for (const p in options) {
         if (options.hasOwnProperty(p)) {
             r.push(encodeURIComponent(p) + "=" + encodeURIComponent(options[p]));
         }
+    }
     return r.join("&");
 }
 
@@ -74,7 +75,7 @@ export class GoogleMapService extends StaticMapService {
     }
 
     public getImageryURLAtPoint(options: GetImageryAtPointOptions): string {
-        let params: { [name: string]: string } = {
+        const params: { [name: string]: string } = {
             center: `${options.center.latitude},${options.center.longitude}`,
             zoom: `${options.zoom}`,
             size: `${options.width}x${options.height}`,
@@ -82,11 +83,11 @@ export class GoogleMapService extends StaticMapService {
             format: "png"
         };
         if (options.resolution == "high") {
-            params["scale"] = "2";
+            params.scale = "2";
         }
-        if(options.type == "satellite") params["maptype"] = "satellite";
-        if(options.type == "hybrid") params["maptype"] = "hybrid";
-        if(options.type == "terrain") params["maptype"] = "terrain";
+        if(options.type == "satellite") { params.maptype = "satellite"; }
+        if(options.type == "hybrid") { params.maptype = "hybrid"; }
+        if(options.type == "terrain") { params.maptype = "terrain"; }
         let url = "https://maps.googleapis.com/maps/api/staticmap";
         url += "?" + buildQueryParameters(params);
         return url;
@@ -99,18 +100,18 @@ export class BingMapService extends StaticMapService {
     }
 
     public getImageryURLAtPoint(options: GetImageryAtPointOptions): string {
-        let params: { [name: string]: string } = {
+        const params: { [name: string]: string } = {
             mapSize: `${options.width},${options.height}`,
             key: this.apiKey,
             format: "png"
         };
         if (options.resolution == "high") {
-            params["dpi"] = "Large";
-            params["mapSize"] = `${options.width * 2},${options.height * 2}`;
+            params.dpi = "Large";
+            params.mapSize = `${options.width * 2},${options.height * 2}`;
         }
         let type = "Road";
-        if(options.type == "satellite") type = "Aerial";
-        if(options.type == "hybrid") type = "AerialWithLabels";
+        if(options.type == "satellite") { type = "Aerial"; }
+        if(options.type == "hybrid") { type = "AerialWithLabels"; }
         let url = `https://dev.virtualearth.net/REST/v1/Imagery/Map/${type}/`;
         url += `${options.center.latitude},${options.center.longitude}/${options.zoom + 1}`;
         url += "?" + buildQueryParameters(params);

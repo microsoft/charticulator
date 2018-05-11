@@ -29,7 +29,7 @@ export interface ZoomInfo {
 }
 
 /** General geometry functions */
-export module Geometry {
+export namespace Geometry {
     /** Return the length of a vector */
     export function vectorLength(p: Vector): number {
         return Math.sqrt(p.x * p.x + p.y * p.y);
@@ -42,7 +42,7 @@ export module Geometry {
 
     /** Return the normalized version of a vector */
     export function vectorNormalize(p: Vector): Vector {
-        let len = Math.sqrt(p.x * p.x + p.y * p.y);
+        const len = Math.sqrt(p.x * p.x + p.y * p.y);
         return { x: p.x / len, y: p.y / len };
     }
 

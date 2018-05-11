@@ -1,6 +1,6 @@
 import "./cartesian";
-import "./polar";
 import "./curve";
+import "./polar";
 
 export { Region2DAttributes } from "./base";
 export { CartesianPlotSegment } from "./cartesian";

@@ -1,9 +1,9 @@
-import * as Specification from "../../specification";
+import { Color, Point, uniqueID } from "../../common";
 import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
-import { Point, Color, uniqueID } from "../../common";
+import * as Specification from "../../specification";
 
-import { ObjectClasses, SnappingGuides, AttributeDescription, DropZones, Handles, BoundingBox, ObjectClassMetadata, CreatingInteraction, Controls, TemplateParameters } from "../common";
-import { MarkClass, CreationParameters } from "./index";
+import { AttributeDescription, BoundingBox, Controls, CreatingInteraction, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides, TemplateParameters } from "../common";
+import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
 
@@ -100,7 +100,7 @@ export class TextElement extends MarkClass {
 
     // Initialize the state of an element so that everything has a valid value
     public initializeState(): void {
-        let attrs = <TextElementAttributes>this.state.attributes;
+        const attrs = this.state.attributes as TextElementAttributes;
         attrs.x = 0;
         attrs.y = 0;
         attrs.text = "Text";
@@ -137,39 +137,39 @@ export class TextElement extends MarkClass {
 
     // Get the graphical element from the element
     public getGraphics(cs: Graphics.CoordinateSystem, offset: Point): Graphics.Element {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        if (!attrs.visible || !this.object.properties.visible) return null;
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        if (!attrs.visible || !this.object.properties.visible) { return null; }
         this.textMeasure.setFontFamily(attrs.fontFamily);
         this.textMeasure.setFontSize(attrs.fontSize);
-        let metrics = this.textMeasure.measure(attrs.text);
-        let [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
-        let p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
+        const metrics = this.textMeasure.measure(attrs.text);
+        const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
+        const p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
         p.angle += props.rotation;
-        let text = Graphics.makeText(dx, dy, attrs.text, attrs.fontFamily, attrs.fontSize, {
+        const text = Graphics.makeText(dx, dy, attrs.text, attrs.fontFamily, attrs.fontSize, {
             strokeColor: attrs.outline,
             fillColor: attrs.color,
             opacity: attrs.opacity
         });
-        let g = Graphics.makeGroup([text]);
+        const g = Graphics.makeGroup([text]);
         g.transform = p;
         return g;
     }
 
     // Get DropZones given current state
     public getDropZones(): DropZones.Description[] {
-        let props = this.object.properties;
-        let attrs = this.state.attributes;
+        const props = this.object.properties;
+        const attrs = this.state.attributes;
         this.textMeasure.setFontFamily(attrs.fontFamily);
         this.textMeasure.setFontSize(attrs.fontSize);
-        let metrics = this.textMeasure.measure(attrs.text);
-        let [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
-        let cx = dx + metrics.width / 2;
-        let cy = dy + metrics.middle;
+        const metrics = this.textMeasure.measure(attrs.text);
+        const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
+        const cx = dx + metrics.width / 2;
+        const cy = dy + metrics.middle;
 
-        let rotation = this.object.properties.rotation;
-        let cos = Math.cos(rotation / 180 * Math.PI);
-        let sin = Math.sin(rotation / 180 * Math.PI);
+        const rotation = this.object.properties.rotation;
+        const cos = Math.cos(rotation / 180 * Math.PI);
+        const sin = Math.sin(rotation / 180 * Math.PI);
         return [
             {
                 type: "rectangle",
@@ -190,26 +190,26 @@ export class TextElement extends MarkClass {
     }
     // Get bounding rectangle given current state
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let { x, y, x1, y1, x2, y2 } = attrs;
-        let bbox = this.getBoundingRectangle();
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const { x, y, x1, y1, x2, y2 } = attrs;
+        const bbox = this.getBoundingRectangle();
         return [
-            <Handles.Point>{
+            {
                 type: "point",
-                x: x, y: y,
+                x, y,
                 actions: [
                     { type: "attribute", source: "x", attribute: "x" },
                     { type: "attribute", source: "y", attribute: "y" }
                 ]
-            },
+            } as Handles.Point,
             // <Handles.TextInput>{
             //     type: "text-input",
             //     cx: bbox.cx, cy: bbox.cy, width: bbox.width, height: bbox.height, rotation: bbox.rotation,
             //     text: attrs.text,
             //     attribute: "text"
             // },
-            <Handles.TextAlignment>{
+            {
                 type: "text-alignment",
                 actions: [
                     { type: "property", source: "alignment", property: "alignment" },
@@ -223,35 +223,35 @@ export class TextElement extends MarkClass {
                 text: attrs.text,
                 alignment: props.alignment,
                 rotation: props.rotation
-            }
+            } as Handles.TextAlignment
         ]
     }
 
     public getBoundingRectangle() {
-        let props = this.object.properties;
-        let attrs = this.state.attributes;
+        const props = this.object.properties;
+        const attrs = this.state.attributes;
         this.textMeasure.setFontFamily(attrs.fontFamily);
         this.textMeasure.setFontSize(attrs.fontSize);
-        let metrics = this.textMeasure.measure(attrs.text);
-        let [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
-        let cx = dx + metrics.width / 2;
-        let cy = dy + metrics.middle;
+        const metrics = this.textMeasure.measure(attrs.text);
+        const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(0, 0, metrics, props.alignment.x, props.alignment.y, props.alignment.xMargin, props.alignment.yMargin);
+        const cx = dx + metrics.width / 2;
+        const cy = dy + metrics.middle;
 
-        let rotation = this.object.properties.rotation;
-        let cos = Math.cos(rotation / 180 * Math.PI);
-        let sin = Math.sin(rotation / 180 * Math.PI);
+        const rotation = this.object.properties.rotation;
+        const cos = Math.cos(rotation / 180 * Math.PI);
+        const sin = Math.sin(rotation / 180 * Math.PI);
         return {
             cx: attrs.x + cx * cos - cy * sin,
             cy: attrs.y + cx * sin + cy * cos,
             width: metrics.width,
             height: (metrics.middle - metrics.ideographicBaseline) * 2,
-            rotation: rotation
+            rotation
         };
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let rect = this.getBoundingRectangle();
-        let attrs = this.state.attributes;
+        const rect = this.getBoundingRectangle();
+        const attrs = this.state.attributes;
         return {
             type: "anchored-rectangle",
             anchorX: attrs.x,
@@ -265,16 +265,16 @@ export class TextElement extends MarkClass {
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
-        let { x, y, x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x, y, x1, y1, x2, y2 } = attrs;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
-            <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" }
+            { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
+            { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis
         ];
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             manager.sectionHeader("Text"),
             manager.mappingEditor("Text", "text", "string", {}),

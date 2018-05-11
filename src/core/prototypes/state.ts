@@ -1,19 +1,19 @@
-import * as Specification from "../specification";
+import { getById, uniqueID, zip, zipArray } from "../common";
 import * as Dataset from "../dataset";
-import * as Prototypes from "./index";
-import { getById, zip, zipArray, uniqueID } from "../common";
+import * as Specification from "../specification";
 import { ObjectClassCache } from "./cache";
+import * as Prototypes from "./index";
 import { ObjectClass, ObjectClasses } from "./object";
 
-import { DataflowTable, DataflowManager } from "./dataflow";
+import { DataflowManager, DataflowTable } from "./dataflow";
 
-import * as Marks from "./marks";
-import * as Scales from "./scales";
-import * as Glyphs from "./glyphs";
-import * as PlotSegments from "./plot_segments";
-import * as Constraints from "./constraints";
-import * as Charts from "./charts";
 import { ChartElementClass } from "./chart_element";
+import * as Charts from "./charts";
+import * as Constraints from "./constraints";
+import * as Glyphs from "./glyphs";
+import * as Marks from "./marks";
+import * as PlotSegments from "./plot_segments";
+import * as Scales from "./scales";
 
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
@@ -63,7 +63,7 @@ export class ChartStateManager {
 
     /** Get a chart-level element or scale by its id */
     public getClassById(id: string): ObjectClass {
-        let [object, state] = this.idIndex.get(id);
+        const [object, state] = this.idIndex.get(id);
         return this.classCache.getClass(state);
     }
 
@@ -76,12 +76,12 @@ export class ChartStateManager {
 
     /** Create an empty chart state using chart and dataset */
     private createChartState(): Specification.ChartState {
-        let chart = this.chart;
+        const chart = this.chart;
 
         // Build the state hierarchy
-        let elementStates = chart.elements.map((element) => {
+        const elementStates = chart.elements.map((element) => {
             // Initialie the element state
-            let elementState: Specification.ChartElementState = {
+            const elementState: Specification.ChartElementState = {
                 attributes: {}
             };
             // Special case for plot segment
@@ -91,10 +91,10 @@ export class ChartStateManager {
             return elementState;
         });
 
-        let scaleStates = chart.scales.map((scale) => {
-            let state = <Specification.ScaleState>{
+        const scaleStates = chart.scales.map((scale) => {
+            const state = {
                 attributes: {}
-            };
+            } as Specification.ScaleState;
             return state;
         });
 
@@ -109,15 +109,15 @@ export class ChartStateManager {
     public initializeCache() {
         this.classCache = new ObjectClassCache();
 
-        let chartClass = this.classCache.createChartClass(null, this.chart, this.chartState);
+        const chartClass = this.classCache.createChartClass(null, this.chart, this.chartState);
         chartClass.setDataflow(this.dataflow);
 
-        for (let [scale, scaleState] of zip(this.chart.scales, this.chartState.scales)) {
-            let scaleClass = this.classCache.createScaleClass(chartClass, scale, scaleState);
+        for (const [scale, scaleState] of zip(this.chart.scales, this.chartState.scales)) {
+            const scaleClass = this.classCache.createScaleClass(chartClass, scale, scaleState);
         }
 
-        for (let [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
-            let elementClass = this.classCache.createChartElementClass(chartClass, element, elementState);
+        for (const [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
+            const elementClass = this.classCache.createChartElementClass(chartClass, element, elementState);
             // For plot segment, handle data mapping
             if (Prototypes.isType(element.classID, "plot-segment")) {
                 this.initializePlotSegmentCache(element, elementState);
@@ -127,27 +127,27 @@ export class ChartStateManager {
 
     /** Enumerate all object classes */
     public enumerateClasses(callback: (cls: ObjectClass) => void) {
-        let chartClass = this.classCache.getChartClass(this.chartState);
+        const chartClass = this.classCache.getChartClass(this.chartState);
         callback(chartClass);
 
-        for (let [scale, scaleState] of zip(this.chart.scales, this.chartState.scales)) {
-            let scaleClass = this.classCache.getClass(scaleState);
+        for (const [scale, scaleState] of zip(this.chart.scales, this.chartState.scales)) {
+            const scaleClass = this.classCache.getClass(scaleState);
             callback(scaleClass);
         }
 
-        for (let [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
-            let elementClass = this.classCache.getClass(elementState);
+        for (const [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
+            const elementClass = this.classCache.getClass(elementState);
             callback(elementClass);
             // For plot segment, handle data mapping
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
-                let plotSegmentState = elementState as Specification.PlotSegmentState;
-                let glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
-                for (let glyphState of plotSegmentState.glyphs) {
-                    let glyphClass = this.classCache.getClass(glyphState);
+                const plotSegment = element as Specification.PlotSegment;
+                const plotSegmentState = elementState as Specification.PlotSegmentState;
+                const glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
+                for (const glyphState of plotSegmentState.glyphs) {
+                    const glyphClass = this.classCache.getClass(glyphState);
                     callback(glyphClass);
-                    for (let [mark, markState] of zip(glyph.marks, glyphState.marks)) {
-                        let markClass = this.classCache.getClass(markState);
+                    for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
+                        const markClass = this.classCache.getClass(markState);
                         callback(markClass);
                     }
                 }
@@ -165,8 +165,8 @@ export class ChartStateManager {
     }
 
     public enumeratePlotSegments(callback: (cls: PlotSegments.PlotSegmentClass) => void) {
-        for (let [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
-            let elementClass = this.classCache.getClass(elementState);
+        for (const [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
+            const elementClass = this.classCache.getClass(elementState);
             if (Prototypes.isType(element.classID, "plot-segment")) {
                 callback(elementClass as PlotSegments.PlotSegmentClass);
             }
@@ -192,17 +192,17 @@ export class ChartStateManager {
     private rebuildID2Object() {
         this.idIndex.clear();
         // Chart elements
-        for (let [element, elementState] of zipArray(this.chart.elements, this.chartState.elements)) {
+        for (const [element, elementState] of zipArray(this.chart.elements, this.chartState.elements)) {
             this.idIndex.set(element._id, [element, elementState]);
         }
         // Scales
-        for (let [scale, scaleState] of zipArray(this.chart.scales, this.chartState.scales)) {
+        for (const [scale, scaleState] of zipArray(this.chart.scales, this.chartState.scales)) {
             this.idIndex.set(scale._id, [scale, scaleState]);
         }
         // Glyphs
-        for (let glyph of this.chart.glyphs) {
+        for (const glyph of this.chart.glyphs) {
             this.idIndex.set(glyph._id, [glyph, null]);
-            for (let element of glyph.marks) {
+            for (const element of glyph.marks) {
                 this.idIndex.set(element._id, [element, null]);
             }
         }
@@ -210,22 +210,22 @@ export class ChartStateManager {
 
     /** Find an unused name given a prefix, will try prefix1, prefix2, and so on. */
     public findUnusedName(prefix: string) {
-        let chart = this.chart;
-        let names = new Set<string>();
-        for (let scale of chart.scales) {
+        const chart = this.chart;
+        const names = new Set<string>();
+        for (const scale of chart.scales) {
             names.add(scale.properties.name);
         }
-        for (let element of chart.elements) {
+        for (const element of chart.elements) {
             names.add(element.properties.name);
         }
-        for (let mark of chart.glyphs) {
+        for (const mark of chart.glyphs) {
             names.add(mark.properties.name);
-            for (let element of mark.marks) {
+            for (const element of mark.marks) {
                 names.add(element.properties.name);
             }
         }
         for (let i = 1; ; i++) {
-            let candidate = prefix + i.toString();
+            const candidate = prefix + i.toString();
             if (!names.has(candidate)) {
                 return candidate;
             }
@@ -235,28 +235,28 @@ export class ChartStateManager {
     /** Create a new object */
     public createObject(classID: string, ...args: any[]): Specification.Object {
         let namePrefix = "Object";
-        let metadata = ObjectClasses.GetMetadata(classID);
+        const metadata = ObjectClasses.GetMetadata(classID);
         if (metadata && metadata.displayName) {
             namePrefix = metadata.displayName;
         }
-        let object = ObjectClasses.CreateDefault(classID, ...args);
-        let name = this.findUnusedName(namePrefix);
+        const object = ObjectClasses.CreateDefault(classID, ...args);
+        const name = this.findUnusedName(namePrefix);
         object.properties.name = name;
         return object;
     }
 
     /** Add a new glyph */
     public addGlyph(classID: string, table: string): Specification.Glyph {
-        let newGlyph: Specification.Glyph = {
+        const newGlyph: Specification.Glyph = {
             _id: uniqueID(),
-            table: table,
-            classID: classID,
+            table,
+            classID,
             marks: [{
                 _id: uniqueID(),
                 classID: "mark.anchor",
                 mappings: {
-                    x: <Specification.ParentMapping>{ type: "parent", parentAttribute: "cx" },
-                    y: <Specification.ParentMapping>{ type: "parent", parentAttribute: "cy" }
+                    x: { type: "parent", parentAttribute: "cx" } as Specification.ParentMapping,
+                    y: { type: "parent", parentAttribute: "cy" } as Specification.ParentMapping
                 },
                 properties: { name: "Anchor" }
             }],
@@ -272,25 +272,25 @@ export class ChartStateManager {
     }
     /** Remove a glyph */
     public removeGlyph(glyph: Specification.Glyph) {
-        let idx = this.chart.glyphs.indexOf(glyph);
-        if (idx < 0) return;
+        const idx = this.chart.glyphs.indexOf(glyph);
+        if (idx < 0) { return; }
         this.idIndex.delete(glyph._id);
-        for (let element of glyph.marks) {
+        for (const element of glyph.marks) {
             this.idIndex.delete(element._id);
         }
         this.chart.glyphs.splice(idx, 1);
 
         // Delete all plot segments using this glyph
-        let elementsToDelete: Specification.PlotSegment[] = [];
-        for (let element of this.chart.elements) {
+        const elementsToDelete: Specification.PlotSegment[] = [];
+        for (const element of this.chart.elements) {
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
+                const plotSegment = element as Specification.PlotSegment;
                 if (plotSegment.glyph == glyph._id) {
                     elementsToDelete.push(plotSegment);
                 }
             }
         }
-        for (let plotSegment of elementsToDelete) {
+        for (const plotSegment of elementsToDelete) {
             this.removeChartElement(plotSegment);
         }
     }
@@ -302,13 +302,13 @@ export class ChartStateManager {
         // Create element state in all plot segments using this glyph
         this.enumeratePlotSegments((plotSegmentClass: PlotSegments.PlotSegmentClass) => {
             if (plotSegmentClass.object.glyph == glyph._id) {
-                for (let glyphState of plotSegmentClass.state.glyphs) {
-                    let glyphClass = this.classCache.getGlyphClass(glyphState);
-                    let markState: Specification.MarkState = {
+                for (const glyphState of plotSegmentClass.state.glyphs) {
+                    const glyphClass = this.classCache.getGlyphClass(glyphState);
+                    const markState: Specification.MarkState = {
                         attributes: {}
                     };
                     glyphState.marks.push(markState);
-                    let markClass = this.classCache.createMarkClass(glyphClass, mark, markState);
+                    const markClass = this.classCache.createMarkClass(glyphClass, mark, markState);
                     markClass.initializeState();
                 }
             }
@@ -317,8 +317,8 @@ export class ChartStateManager {
 
     /** Remove an element from a glyph */
     public removeMarkFromGlyph(mark: Specification.Element, glyph: Specification.Glyph): void {
-        let idx = glyph.marks.indexOf(mark);
-        if (idx < 0) return;
+        const idx = glyph.marks.indexOf(mark);
+        if (idx < 0) { return; }
         glyph.marks.splice(idx, 1);
         glyph.constraints = this.validateConstraints(glyph.constraints, glyph.marks);
         this.idIndex.delete(mark._id);
@@ -326,7 +326,7 @@ export class ChartStateManager {
         // Remove the element state from all elements using this glyph
         this.enumeratePlotSegments((plotSegmentClass: PlotSegments.PlotSegmentClass) => {
             if (plotSegmentClass.object.glyph == glyph._id) {
-                for (let glyphState of plotSegmentClass.state.glyphs) {
+                for (const glyphState of plotSegmentClass.state.glyphs) {
                     glyphState.marks.splice(idx, 1);
                 }
             }
@@ -335,7 +335,7 @@ export class ChartStateManager {
 
     /** Add a chart element */
     public addChartElement(element: Specification.ChartElement) {
-        let elementState: Specification.ChartElementState = {
+        const elementState: Specification.ChartElementState = {
             attributes: {}
         };
         if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -344,7 +344,7 @@ export class ChartStateManager {
         this.chart.elements.push(element);
         this.chartState.elements.push(elementState);
 
-        let elementClass = this.classCache.createChartElementClass(this.classCache.getChartClass(this.chartState), element, elementState);
+        const elementClass = this.classCache.createChartElementClass(this.classCache.getChartClass(this.chartState), element, elementState);
 
         if (Prototypes.isType(element.classID, "plot-segment")) {
             this.initializePlotSegmentCache(element, elementState);
@@ -360,7 +360,7 @@ export class ChartStateManager {
     }
 
     public reorderArray<T>(array: T[], fromIndex: number, toIndex: number) {
-        let x = array.splice(fromIndex, 1)[0];
+        const x = array.splice(fromIndex, 1)[0];
         if (fromIndex < toIndex) {
             array.splice(toIndex - 1, 0, x);
         } else {
@@ -369,19 +369,19 @@ export class ChartStateManager {
     }
 
     public reorderChartElement(fromIndex: number, toIndex: number) {
-        if (toIndex == fromIndex || toIndex == fromIndex + 1) return; // no effect
+        if (toIndex == fromIndex || toIndex == fromIndex + 1) { return; } // no effect
         this.reorderArray(this.chart.elements, fromIndex, toIndex);
         this.reorderArray(this.chartState.elements, fromIndex, toIndex);
     }
 
     public reorderGlyphElement(glyph: Specification.Glyph, fromIndex: number, toIndex: number) {
-        if (toIndex == fromIndex || toIndex == fromIndex + 1) return; // no effect
-        for (let [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
+        if (toIndex == fromIndex || toIndex == fromIndex + 1) { return; } // no effect
+        for (const [element, elementState] of zip(this.chart.elements, this.chartState.elements)) {
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
-                let plotSegmentState = elementState as Specification.PlotSegmentState;
+                const plotSegment = element as Specification.PlotSegment;
+                const plotSegmentState = elementState as Specification.PlotSegmentState;
                 if (plotSegment.glyph == glyph._id) {
-                    for (let glyphState of plotSegmentState.glyphs) {
+                    for (const glyphState of plotSegmentState.glyphs) {
                         this.reorderArray(glyphState.marks, fromIndex, toIndex);
                     }
                 }
@@ -391,44 +391,44 @@ export class ChartStateManager {
     }
 
     private mapPlotSegmentState(element: Specification.ChartElement, elementState: Specification.ChartElementState) {
-        let plotSegment = element as Specification.PlotSegment;
-        let plotSegmentState = elementState as Specification.PlotSegmentState;
-        let glyphObject = getById(this.chart.glyphs, plotSegment.glyph) as Specification.Glyph;
-        let table = this.getTable(glyphObject.table);
+        const plotSegment = element as Specification.PlotSegment;
+        const plotSegmentState = elementState as Specification.PlotSegmentState;
+        const glyphObject = getById(this.chart.glyphs, plotSegment.glyph) as Specification.Glyph;
+        const table = this.getTable(glyphObject.table);
         plotSegmentState.dataRowIndices = table.rows.map((r, i) => i);
         plotSegmentState.glyphs = table.rows.map((row, index) => {
-            let glyphState = <Specification.GlyphState>{
+            const glyphState = {
                 marks: glyphObject.marks.map(element => {
-                    let elementState = <Specification.MarkState>{
+                    const elementState = {
                         attributes: {}
-                    }
+                    } as Specification.MarkState
                     return elementState;
                 }),
                 attributes: {}
-            };
+            } as Specification.GlyphState;
             return glyphState;
         });
     }
     private initializePlotSegmentCache(element: Specification.ChartElement, elementState: Specification.ChartElementState) {
-        let plotSegment = element as Specification.PlotSegment;
-        let plotSegmentState = elementState as Specification.PlotSegmentState;
-        let plotSegmentClass = this.classCache.getPlotSegmentClass(plotSegmentState);
-        let glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
-        for (let glyphState of plotSegmentState.glyphs) {
-            let glyphClass = this.classCache.createGlyphClass(plotSegmentClass, glyph, glyphState);
-            for (let [mark, markState] of zip(glyph.marks, glyphState.marks)) {
-                let markClass = this.classCache.createMarkClass(glyphClass, mark, markState);
+        const plotSegment = element as Specification.PlotSegment;
+        const plotSegmentState = elementState as Specification.PlotSegmentState;
+        const plotSegmentClass = this.classCache.getPlotSegmentClass(plotSegmentState);
+        const glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
+        for (const glyphState of plotSegmentState.glyphs) {
+            const glyphClass = this.classCache.createGlyphClass(plotSegmentClass, glyph, glyphState);
+            for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
+                const markClass = this.classCache.createMarkClass(glyphClass, mark, markState);
             }
         }
     }
 
     private initializePlotSegmentState(plotSegmentClass: PlotSegments.PlotSegmentClass) {
-        let glyph = this.getObjectById(plotSegmentClass.object.glyph) as Specification.Glyph;
-        for (let glyphState of plotSegmentClass.state.glyphs) {
-            let glyphClass = this.classCache.getGlyphClass(glyphState);
+        const glyph = this.getObjectById(plotSegmentClass.object.glyph) as Specification.Glyph;
+        for (const glyphState of plotSegmentClass.state.glyphs) {
+            const glyphClass = this.classCache.getGlyphClass(glyphState);
             glyphClass.initializeState();
-            for (let [mark, markState] of zip(glyph.marks, glyphState.marks)) {
-                let markClass = this.classCache.getMarkClass(markState);
+            for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
+                const markClass = this.classCache.getMarkClass(markState);
                 markClass.initializeState();
             }
         }
@@ -436,8 +436,8 @@ export class ChartStateManager {
 
     /** Remove a chart element */
     public removeChartElement(element: Specification.ChartElement) {
-        let idx = this.chart.elements.indexOf(element);
-        if (idx < 0) return;
+        const idx = this.chart.elements.indexOf(element);
+        if (idx < 0) { return; }
         this.chart.elements.splice(idx, 1);
         this.chartState.elements.splice(idx, 1);
         this.idIndex.delete(element._id);
@@ -446,21 +446,21 @@ export class ChartStateManager {
 
     /** Add a new scale */
     public addScale(scale: Specification.Scale) {
-        let scaleState: Specification.ScaleState = {
+        const scaleState: Specification.ScaleState = {
             attributes: {}
         };
         this.chart.scales.push(scale);
         this.chartState.scales.push(scaleState);
 
-        let scaleClass = this.classCache.createScaleClass(this.classCache.getChartClass(this.chartState), scale, scaleState);
+        const scaleClass = this.classCache.createScaleClass(this.classCache.getChartClass(this.chartState), scale, scaleState);
         scaleClass.initializeState();
         this.idIndex.set(scale._id, [scale, scaleState]);
     }
 
     /** Remove a scale */
     public removeScale(scale: Specification.Scale) {
-        let idx = this.chart.scales.indexOf(scale);
-        if (idx < 0) return;
+        const idx = this.chart.scales.indexOf(scale);
+        if (idx < 0) { return; }
         this.chart.scales.splice(idx, 1);
         this.chartState.scales.splice(idx, 1);
         this.idIndex.delete(scale._id);
@@ -490,8 +490,8 @@ export class ChartStateManager {
 
     /** Remove constraints that relate to non-existant element */
     public validateConstraints(constraints: Specification.Constraint[], elements: Specification.Object[]): Specification.Constraint[] {
-        let elementIDs = new Set<string>();
-        for (let e of elements) {
+        const elementIDs = new Set<string>();
+        for (const e of elements) {
             elementIDs.add(e._id);
         }
         return constraints.filter(constraint => {

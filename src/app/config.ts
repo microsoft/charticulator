@@ -8,17 +8,17 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     /** Should we disable the file view */
     DisableFileView?: boolean;
     /** Load extensions */
-    Extensions?: {
+    Extensions?: Array<{
         script: string;
         style: string;
         initialize: string;
-    }[];
+    }>;
     /** Sample datasets to show */
-    SampleDatasets?: {
+    SampleDatasets?: Array<{
         name: string;
         description: string;
-        tables: { name: string, url: string, type: string }[];
-    }[];
+        tables: Array<{ name: string, url: string, type: string }>;
+    }>;
 }
 
 export function getConfig(): CharticulatorAppConfig {

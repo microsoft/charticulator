@@ -39,12 +39,12 @@ export abstract class Expression {
     }
 
     public getNumberValue(c: Context) {
-        let v = this.getValue(c);
+        const v = this.getValue(c);
         return v as number;
     }
 
     public getStringValue(c: Context) {
-        let v = this.getValue(c);
+        const v = this.getValue(c);
         return v.toString();
     }
 }
@@ -73,7 +73,7 @@ export class FieldAccess extends Expression {
 
     public getValue(c: Context) {
         let v = this.expr.getValue(c) as any;
-        for (let f of this.fields) {
+        for (const f of this.fields) {
             v = v[f];
         }
         return v;
@@ -99,7 +99,7 @@ export class FunctionCall extends Expression {
     }
 
     public getValue(c: Context) {
-        let callable = this.callable.getValue(c) as Function;
+        const callable = this.callable.getValue(c) as Function;
         return callable(...this.args.map(arg => arg.getValue(c)));
     }
 
@@ -124,9 +124,9 @@ export class Operator extends Expression {
     }
 
     public getValue(c: Context) {
-        let lhs = this.lhs.getValue(c);
+        const lhs = this.lhs.getValue(c);
         if (this.rhs != undefined) {
-            let rhs = this.rhs.getValue(c);
+            const rhs = this.rhs.getValue(c);
             return this.op(lhs, rhs);
         } else {
             return this.op(lhs);
@@ -134,7 +134,7 @@ export class Operator extends Expression {
     }
 
     public toString() {
-        let p = this.getMyPrecedence();
+        const p = this.getMyPrecedence();
         if (this.rhs != undefined) {
             return `${this.lhs.toStringPrecedence(p[1])} ${this.name} ${this.rhs.toStringPrecedence(p[2])}`;
         } else {
@@ -164,7 +164,7 @@ export class LambdaFunction extends Expression {
     }
     public getValue(c: Context) {
         return (...args: ValueType[]) => {
-            let lambdaContext = new ShadowContext(c);
+            const lambdaContext = new ShadowContext(c);
             for (let i = 0; i < this.argNames.length; i++) {
                 lambdaContext.shadows[this.argNames[i]] = args[i];
             }
@@ -184,7 +184,7 @@ export class LambdaFunction extends Expression {
 export class Variable extends Expression {
     constructor(public name: string) { super(); }
     public getValue(c: Context) {
-        let v = c.getVariable(this.name);
+        const v = c.getVariable(this.name);
         if (v === undefined) {
             return intrinsics[this.name];
         } else {

@@ -1,13 +1,13 @@
-import * as Specification from "../../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
 import * as Graphics from "../../../graphics";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
+import * as Specification from "../../../specification";
 
-import { SnappingGuides, AttributeDescription, DropZones, Handles, Controls, ObjectClasses, ObjectClassMetadata, BoundingBox, BuildConstraintsContext, TemplateParameters } from "../../common";
-import { Point, uniqueID, getById, max } from "../../../common";
+import { getById, max, Point, uniqueID } from "../../../common";
+import { AttributeDescription, BoundingBox, BuildConstraintsContext, Controls, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides, TemplateParameters } from "../../common";
 
-import { PlotSegmentClass } from "../index";
-import { Region2DPlotSegment, Region2DAttributes, Region2DConstraintBuilder, Region2DProperties, Region2DConfiguration } from "./base";
 import { AxisRenderer } from "../axis";
+import { PlotSegmentClass } from "../index";
+import { Region2DAttributes, Region2DConfiguration, Region2DConstraintBuilder, Region2DPlotSegment, Region2DProperties } from "./base";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -31,7 +31,7 @@ export interface CurveState extends Specification.PlotSegmentState {
 
 export interface CurveProperties extends Region2DProperties {
     /** The bezier curve specification in relative proportions (-1, +1) => (x1, x2) */
-    curve: [Point, Point, Point, Point][];
+    curve: Array<[Point, Point, Point, Point]>;
     normalStart: number;
     normalEnd: number;
 }
@@ -115,7 +115,7 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.tangent1 = 0;
         attrs.tangent2 = 360;
         attrs.normal1 = 10;
@@ -131,13 +131,13 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public createBuilder(solver?: ConstraintSolver, context?: BuildConstraintsContext) {
-        let props = this.object.properties;
-        let config = {
+        const props = this.object.properties;
+        const config = {
             terminology: curveTerminology,
             xAxisPrePostGap: false,
             yAxisPrePostGap: false
         };
-        let builder = new Region2DConstraintBuilder(this, config, "tangent1", "tangent2", "normal1", "normal2", solver, context);
+        const builder = new Region2DConstraintBuilder(this, config, "tangent1", "tangent2", "normal1", "normal2", solver, context);
         return builder;
     }
 
@@ -148,11 +148,11 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public buildConstraints(solver: ConstraintSolver, context: BuildConstraintsContext): void {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
 
-        let [x1, y1, x2, y2, tangent1, tangent2, normal1, normal2] = solver.attrs(attrs, ["x1", "y1", "x2", "y2", "tangent1", "tangent2", "normal1", "normal2"]);
-        let arcLength = this.getCurveArcLength();
+        const [x1, y1, x2, y2, tangent1, tangent2, normal1, normal2] = solver.attrs(attrs, ["x1", "y1", "x2", "y2", "tangent1", "tangent2", "normal1", "normal2"]);
+        const arcLength = this.getCurveArcLength();
 
         attrs.tangent1 = 0;
         solver.makeConstant(attrs, "tangent1");
@@ -164,45 +164,45 @@ export class CurvePlotSegment extends Region2DPlotSegment {
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, normal1]], [[props.normalStart / 2, x2], [-props.normalStart / 2, x1]]);
         solver.addLinear(ConstraintStrength.HARD, 0, [[1, normal2]], [[props.normalEnd / 2, x2], [-props.normalEnd / 2, x1]]);
 
-        let builder = this.createBuilder(solver, context);
+        const builder = this.createBuilder(solver, context);
         builder.build();
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, x2, y1, y2 } = attrs;
-        return <BoundingBox.Rectangle>{
+        const attrs = this.state.attributes;
+        const { x1, x2, y1, y2 } = attrs;
+        return {
             type: "rectangle",
             cx: (x1 + x2) / 2,
             cy: (y1 + y2) / 2,
             width: Math.abs(x2 - x1),
             height: Math.abs(y2 - y1),
             rotation: 0
-        };
+        } as BoundingBox.Rectangle;
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
-            <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
-            <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
-            <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" }
+            { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
+            { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
+            { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
+            { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
         ];
     }
 
     public getGraphics(): Graphics.Group {
-        let { x1, y1, x2, y2, tangent1, tangent2, normal1, normal2 } = this.state.attributes;
+        const { x1, y1, x2, y2, tangent1, tangent2, normal1, normal2 } = this.state.attributes;
 
-        let builder = this.createBuilder();
-        let g = Graphics.makeGroup([]);
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let cx = (attrs.x1 + attrs.x2) / 2;
-        let cy = (attrs.y1 + attrs.y2) / 2;
-        let [angularMode, radialMode] = this.getAxisModes();
-        let cs = this.getCoordinateSystem();
+        const builder = this.createBuilder();
+        const g = Graphics.makeGroup([]);
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const cx = (attrs.x1 + attrs.x2) / 2;
+        const cy = (attrs.y1 + attrs.y2) / 2;
+        const [angularMode, radialMode] = this.getAxisModes();
+        const cs = this.getCoordinateSystem();
 
         if (props.xData && props.xData.visible) {
             g.elements.push(
@@ -224,14 +224,14 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getCoordinateSystem(): Graphics.CoordinateSystem {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
-        let scaler = (x2 - x1) / 2;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
+        const scaler = (x2 - x1) / 2;
         return new Graphics.BezierCurveCoordinates(
             { x: cx, y: cy },
             new Graphics.MultiCurveParametrization(this.object.properties.curve.map(ps => {
-                let p = ps.map(p => { return { x: p.x * scaler, y: p.y * scaler } });
+                const p = ps.map(p => ({ x: p.x * scaler, y: p.y * scaler }));
                 return new Graphics.BezierCurveParameterization(
                     p[0], p[1], p[2], p[3]
                 );
@@ -240,28 +240,28 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes as CurveAttributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let cx = (x1 + x2) / 2;
-        let cy = (y1 + y2) / 2;
-        let zones: DropZones.Description[] = [];
+        const attrs = this.state.attributes as CurveAttributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const cx = (x1 + x2) / 2;
+        const cy = (y1 + y2) / 2;
+        const zones: DropZones.Description[] = [];
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["polar"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Polar Coordinates"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["cartesian-x", "cartesian-y"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Cartesian Coordinates"
-            },
+            } as DropZones.Region,
         );
         // zones.push(
         //     <DropZones.Line>{
@@ -289,7 +289,7 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getAxisModes(): [CurveAxisMode, CurveAxisMode] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             props.xData ? props.xData.type : "null",
             props.yData ? props.yData.type : "null"
@@ -297,35 +297,35 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let rows = this.parent.dataflow.getTable(this.object.table).rows;
-        let { x1, x2, y1, y2 } = attrs;
-        let radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-        let cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
-        let h: Handles.Description[] = [
-            <Handles.Line>{ type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] },
-            <Handles.Line>{ type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] },
-            <Handles.InputCurve>{ type: "input-curve", x1: x1, y1: y1, x2: x2, y2: y2, actions: [{ type: "property", property: "curve" }] }
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const rows = this.parent.dataflow.getTable(this.object.table).rows;
+        const { x1, x2, y1, y2 } = attrs;
+        const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
+        const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
+        const h: Handles.Description[] = [
+            { type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] } as Handles.Line,
+            { type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] } as Handles.Line,
+            { type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
+            { type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
+            { type: "input-curve", x1, y1, x2, y2, actions: [{ type: "property", property: "curve" }] } as Handles.InputCurve
         ];
         return h;
     }
 
     public getPopupEditor(manager: Controls.WidgetManager): Controls.PopupEditor {
-        let builder = this.createBuilder();
-        let widgets = builder.buildPopupWidgets(manager);
-        if (widgets.length == 0) return null;
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let anchor = { x: attrs.x1, y: attrs.y2 };
+        const builder = this.createBuilder();
+        const widgets = builder.buildPopupWidgets(manager);
+        if (widgets.length == 0) { return null; }
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const anchor = { x: attrs.x1, y: attrs.y2 };
         return {
-            anchor: anchor,
+            anchor,
             widgets: [
                 ...widgets
             ]
@@ -333,7 +333,7 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let builder = this.createBuilder();
+        const builder = this.createBuilder();
         return [
             manager.sectionHeader("Curve Coordinates"),
             manager.row("Normal", manager.horizontal([1, 0, 1],
@@ -352,7 +352,7 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     }
 
     public getTemplateParameters(): TemplateParameters {
-        let r: Specification.Template.Inference[] = [];
+        const r: Specification.Template.Inference[] = [];
         if (this.object.properties.xData && this.object.properties.xData.type != "default") {
             r.push({
                 type: "axis",

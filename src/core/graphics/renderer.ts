@@ -1,18 +1,18 @@
-import { Element, Style, Group, makeGroup, makeLine, makePolygon, makeRect } from "./elements";
-import { getById, getByName, zip, zipArray, indexOf, MultistringHashMap, Point, Color } from "../common";
+import { Color, getById, getByName, indexOf, MultistringHashMap, Point, zip, zipArray } from "../common";
 import * as Dataset from "../dataset";
-import * as Specification from "../specification";
 import * as Prototypes from "../prototypes";
-import { CoordinateSystem, CartesianCoordinates } from "./coordinate_system";
+import * as Specification from "../specification";
+import { CartesianCoordinates, CoordinateSystem } from "./coordinate_system";
+import { Element, Group, makeGroup, makeLine, makePolygon, makeRect, Style } from "./elements";
 
 export function facetRows(rows: Dataset.Row[], indices: number[], columns?: string[]): number[][] {
     if (columns == null) {
         return [indices];
     } else {
-        let facets = new MultistringHashMap<number[]>();
-        for (let index of indices) {
-            let row = rows[index];
-            let facetValues = columns.map(c => row[c] as string);
+        const facets = new MultistringHashMap<number[]>();
+        for (const index of indices) {
+            const row = rows[index];
+            const facetValues = columns.map(c => row[c] as string);
             if (facets.has(facetValues)) {
                 facets.get(facetValues).push(index);
             } else {
@@ -50,10 +50,10 @@ export class ChartRenderer {
     }
 
     private renderGlyph(coordinateSystem: CoordinateSystem, offset: Point, glyph: Specification.Glyph, state: Specification.GlyphState, index: number): Group {
-        let gs: Element[] = [];
-        for (let [mark, markState] of zip(glyph.marks, state.marks)) {
-            if (!mark.properties.visible) continue;
-            let g = this.manager.getMarkClass(markState).getGraphics(coordinateSystem, offset, index);
+        const gs: Element[] = [];
+        for (const [mark, markState] of zip(glyph.marks, state.marks)) {
+            if (!mark.properties.visible) { continue; }
+            const g = this.manager.getMarkClass(markState).getGraphics(coordinateSystem, offset, index);
             if (g != null) {
                 gs.push(g);
             }
@@ -62,22 +62,22 @@ export class ChartRenderer {
     }
 
     public renderChart(dataset: Dataset.Dataset, chart: Specification.Chart, chartState: Specification.ChartState): Group {
-        let graphics: Element[] = [];
+        const graphics: Element[] = [];
 
         // Chart background
-        let bg = this.manager.getChartClass(chartState).getBackgroundGraphics();
+        const bg = this.manager.getChartClass(chartState).getBackgroundGraphics();
         if (bg) {
             graphics.push(bg);
         }
 
-        let linkGroup = makeGroup([]);
+        const linkGroup = makeGroup([]);
 
-        let chartLinks = chart.elements.filter(x => Prototypes.isType(x.classID, "links")) as Specification.Links[];
-        let plotSegments = chart.elements.filter(x => Prototypes.isType(x.classID, "plot-segment")) as Specification.PlotSegment[];
+        const chartLinks = chart.elements.filter(x => Prototypes.isType(x.classID, "links")) as Specification.Links[];
+        const plotSegments = chart.elements.filter(x => Prototypes.isType(x.classID, "plot-segment")) as Specification.PlotSegment[];
 
         graphics.push(linkGroup);
 
-        let elementsAndStates = zipArray(chart.elements, chartState.elements);
+        const elementsAndStates = zipArray(chart.elements, chartState.elements);
         // Enforce an order: links gets rendered first.
         elementsAndStates.sort((a, b) => {
             let pa = 0, pb = 0;
@@ -91,43 +91,43 @@ export class ChartRenderer {
         });
 
         // Render layout graphics
-        for (let [element, elementState] of elementsAndStates) {
-            if (!element.properties.visible) continue;
+        for (const [element, elementState] of elementsAndStates) {
+            if (!element.properties.visible) { continue; }
             // Render marks if this is a plot segment
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
-                let plotSegmentState = elementState as Specification.PlotSegmentState;
-                let mark = getById(chart.glyphs, plotSegment.glyph);
-                let plotSegmentClass = this.manager.getPlotSegmentClass(plotSegmentState);
-                let coordinateSystem = plotSegmentClass.getCoordinateSystem();
-                let glyphElements: Element[] = [];
-                for (let [glyphIndex, glyphState] of plotSegmentState.glyphs.entries()) {
-                    let anchorX = (glyphState.marks[0].attributes["x"] as number);
-                    let anchorY = (glyphState.marks[0].attributes["y"] as number);
-                    let offsetX = (glyphState.attributes["x"] as number) - anchorX;
-                    let offsetY = (glyphState.attributes["y"] as number) - anchorY;
-                    let g = this.renderGlyph(coordinateSystem, { x: offsetX, y: offsetY }, mark, glyphState, glyphIndex);
+                const plotSegment = element as Specification.PlotSegment;
+                const plotSegmentState = elementState as Specification.PlotSegmentState;
+                const mark = getById(chart.glyphs, plotSegment.glyph);
+                const plotSegmentClass = this.manager.getPlotSegmentClass(plotSegmentState);
+                const coordinateSystem = plotSegmentClass.getCoordinateSystem();
+                const glyphElements: Element[] = [];
+                for (const [glyphIndex, glyphState] of plotSegmentState.glyphs.entries()) {
+                    const anchorX = (glyphState.marks[0].attributes.x as number);
+                    const anchorY = (glyphState.marks[0].attributes.y as number);
+                    const offsetX = (glyphState.attributes.x as number) - anchorX;
+                    const offsetY = (glyphState.attributes.y as number) - anchorY;
+                    const g = this.renderGlyph(coordinateSystem, { x: offsetX, y: offsetY }, mark, glyphState, glyphIndex);
                     glyphElements.push(g);
                 }
-                let gGlyphs = makeGroup(glyphElements);
+                const gGlyphs = makeGroup(glyphElements);
                 gGlyphs.transform = coordinateSystem.getBaseTransform();
-                let gElement = makeGroup([]);
-                let g = plotSegmentClass.getPlotSegmentGraphics(gGlyphs, this.manager);
+                const gElement = makeGroup([]);
+                const g = plotSegmentClass.getPlotSegmentGraphics(gGlyphs, this.manager);
                 gElement.elements.push(g);
                 gElement.key = element._id;
                 graphics.push(gElement);
             } else if (Prototypes.isType(element.classID, "mark")) {
-                let cs = new CartesianCoordinates({ x: 0, y: 0 });
-                let gElement = makeGroup([]);
-                let elementClass = this.manager.getMarkClass(elementState);
-                let g = elementClass.getGraphics(cs, { x: 0, y: 0 });
+                const cs = new CartesianCoordinates({ x: 0, y: 0 });
+                const gElement = makeGroup([]);
+                const elementClass = this.manager.getMarkClass(elementState);
+                const g = elementClass.getGraphics(cs, { x: 0, y: 0 });
                 gElement.elements.push(g);
                 gElement.key = element._id;
                 graphics.push(gElement);
             } else {
-                let gElement = makeGroup([]);
-                let elementClass = this.manager.getChartElementClass(elementState);
-                let g = elementClass.getGraphics(this.manager);
+                const gElement = makeGroup([]);
+                const elementClass = this.manager.getChartElementClass(elementState);
+                const g = elementClass.getGraphics(this.manager);
                 gElement.elements.push(g);
                 gElement.key = element._id;
                 graphics.push(gElement);
@@ -152,12 +152,12 @@ export interface TextMeasurement {
 }
 
 export class TextMeasurer {
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    fontFamily: string;
-    fontSize: number;
+    public canvas: HTMLCanvasElement;
+    public context: CanvasRenderingContext2D;
+    public fontFamily: string;
+    public fontSize: number;
 
-    static parameters = {
+    public static parameters = {
         "hangingBaseline": [
             0.7245381636743151,
             -0.005125313493913097
@@ -206,8 +206,8 @@ export class TextMeasurer {
     }
 
     public static ComputeTextPosition(x: number, y: number, metrics: TextMeasurement, alignX: "left" | "middle" | "right" = "left", alignY: "top" | "middle" | "bottom" = "middle", xMargin: number = 0, yMargin: number = 0): [number, number] {
-        let cwidth = metrics.width;
-        let cheight = (metrics.middle - metrics.ideographicBaseline) * 2;
+        const cwidth = metrics.width;
+        const cheight = (metrics.middle - metrics.ideographicBaseline) * 2;
 
         let cx: number = cwidth / 2, cy: number = cheight / 2;
         if (alignX == "left") {

@@ -1,11 +1,11 @@
 // Special element: Anchor
 
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
 import { Point, uniqueID } from "../../common";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
+import * as Specification from "../../specification";
 
-import { ObjectClasses, ObjectClassMetadata, SnappingGuides, AttributeDescription, DropZones, Handles, LinkAnchor, Controls } from "../common";
-import { MarkClass, CreationParameters } from "./index";
+import { AttributeDescription, Controls, DropZones, Handles, LinkAnchor, ObjectClasses, ObjectClassMetadata, SnappingGuides } from "../common";
+import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
 
@@ -38,7 +38,7 @@ export class AnchorElement extends MarkClass {
 
     // Initialize the state of an element so that everything has a valid value
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.x = 0;
         attrs.y = 0;
     }
@@ -71,14 +71,14 @@ export class AnchorElement extends MarkClass {
     // }
 
     public static createDefault(glyph: Specification.Glyph): Specification.Element {
-        let element = super.createDefault(glyph);
-        element.mappings.x = <Specification.ParentMapping>{ type: "parent", parentAttribute: "icx" };
-        element.mappings.y = <Specification.ParentMapping>{ type: "parent", parentAttribute: "icy" };
+        const element = super.createDefault(glyph);
+        element.mappings.x = { type: "parent", parentAttribute: "icx" } as Specification.ParentMapping;
+        element.mappings.y = { type: "parent", parentAttribute: "icy" } as Specification.ParentMapping;
         return element;
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [manager.label("(drag the anchor in the glyph editor)")];
     }
 }

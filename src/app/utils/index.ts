@@ -1,6 +1,6 @@
-import { ZoomInfo, prettyNumber } from "../../core";
+import { prettyNumber, ZoomInfo } from "../../core";
 
-export function classNames(...args: (string | [string, boolean])[]) {
+export function classNames(...args: Array<string | [string, boolean]>) {
     return args.filter(x => x != null && (typeof (x) == "string" || x[1] == true))
         .map(x => typeof (x) == "string" ? x : x[0]).join(" ");
 }
@@ -22,13 +22,13 @@ export interface RenderDataURLToPNGOptions {
 
 export function renderDataURLToPNG(dataurl: string, options: RenderDataURLToPNGOptions): Promise<HTMLCanvasElement> {
     return new Promise<HTMLCanvasElement>((resolve, reject) => {
-        let img = new Image();
+        const img = new Image();
         img.src = dataurl;
         img.onload = () => {
-            let width = img.width;
-            let height = img.height;
-            let canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
+            const width = img.width;
+            const height = img.height;
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
             switch (options.mode) {
                 case "scale": {
                     canvas.width = width * options.scale;
@@ -47,7 +47,7 @@ export function renderDataURLToPNG(dataurl: string, options: RenderDataURLToPNGO
                         ctx.fillStyle = options.background;
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
                     }
-                    let maxScale = Math.max(canvas.width / width, canvas.height / height);
+                    const maxScale = Math.max(canvas.width / width, canvas.height / height);
                     ctx.scale(maxScale, maxScale);
                     ctx.drawImage(img, 0, 0);
                 } break;

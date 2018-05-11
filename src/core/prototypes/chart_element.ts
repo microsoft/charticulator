@@ -1,13 +1,13 @@
 import * as Dataset from "../dataset";
-import * as Specification from "../specification";
-import * as Graphics from "../graphics";
 import * as Expression from "../expression";
-import { ObjectClass } from "./object";
+import * as Graphics from "../graphics";
 import { ConstraintSolver } from "../solver";
+import * as Specification from "../specification";
 import { ChartClass } from "./charts";
 import { Handles } from "./common";
-import { BoundingBox, SnappingGuides, DropZones } from "./common";
+import { BoundingBox, DropZones, SnappingGuides } from "./common";
 import { Controls } from "./common";
+import { ObjectClass } from "./object";
 import { ChartStateManager } from "./state";
 
 export interface BuildConstraintsContext {
@@ -53,7 +53,7 @@ export abstract class ChartElementClass extends ObjectClass {
     }
 
     public static createDefault(...args: any[]): Specification.ChartElement {
-        let element = super.createDefault(...args) as Specification.ChartElement;
+        const element = super.createDefault(...args) as Specification.ChartElement;
         return element;
     }
 }

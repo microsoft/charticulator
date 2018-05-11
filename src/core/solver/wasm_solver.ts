@@ -1,7 +1,7 @@
-import { ConstraintSolver, Variable, AttributeOptions, ConstraintStrength } from "./abstract";
-import { AttributeMap } from "../specification";
-import { KeyNameMap } from "../common";
 import * as LSCGSolver from "lscg-solver";
+import { KeyNameMap } from "../common";
+import { AttributeMap } from "../specification";
+import { AttributeOptions, ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 
 export function initialize() {
     return LSCGSolver.initialize();
@@ -16,9 +16,9 @@ export interface WASMSolverVariable extends Variable {
 }
 
 export class WASMSolver extends ConstraintSolver {
-    solver: LSCGSolver.ConstraintSolver
-    variables: KeyNameMap<AttributeMap, WASMSolverVariable>;
-    currentIndex: number = 0;
+    public solver: LSCGSolver.ConstraintSolver
+    public variables: KeyNameMap<AttributeMap, WASMSolverVariable>;
+    public currentIndex: number = 0;
 
     constructor() {
         super();
@@ -36,7 +36,7 @@ export class WASMSolver extends ConstraintSolver {
             return this.variables.get(map, name);
         } else {
             this.currentIndex++;
-            let item: WASMSolverVariable = { index: this.currentIndex, map: map, name: name };
+            const item: WASMSolverVariable = { index: this.currentIndex, map, name };
             this.variables.add(map, name, item);
             this.solver.addVariable(this.currentIndex, map[name] as number, true);
             return item;
@@ -52,7 +52,7 @@ export class WASMSolver extends ConstraintSolver {
     }
 
     /** Add a linear constraint */
-    public addLinear(strength: ConstraintStrength, bias: number, lhs: [number, WASMSolverVariable][], rhs?: [number, WASMSolverVariable][]): void {
+    public addLinear(strength: ConstraintStrength, bias: number, lhs: Array<[number, WASMSolverVariable]>, rhs?: Array<[number, WASMSolverVariable]>): void {
         let st = 0;
         switch (strength) {
             case ConstraintStrength.HARD: {
@@ -71,14 +71,14 @@ export class WASMSolver extends ConstraintSolver {
                 st = LSCGSolver.ConstraintSolver.STRENGTH_WEAKER;
             } break;
         }
-        let weights = [];
-        let variable_names = [];
-        for (let item of lhs) {
+        const weights = [];
+        const variable_names = [];
+        for (const item of lhs) {
             weights.push(item[0]);
             variable_names.push(item[1].index);
         }
         if (rhs) {
-            for (let item of rhs) {
+            for (const item of rhs) {
                 weights.push(-item[0]);
                 variable_names.push(item[1].index);
             }

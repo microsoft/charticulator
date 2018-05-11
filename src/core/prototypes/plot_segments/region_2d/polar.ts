@@ -1,13 +1,13 @@
-import * as Specification from "../../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
 import * as Graphics from "../../../graphics";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../../solver";
+import * as Specification from "../../../specification";
 
-import { SnappingGuides, AttributeDescription, DropZones, Handles, Controls, ObjectClasses, ObjectClassMetadata, BoundingBox, BuildConstraintsContext, TemplateParameters } from "../../common";
-import { Point, uniqueID, getById, max } from "../../../common";
+import { getById, max, Point, uniqueID } from "../../../common";
+import { AttributeDescription, BoundingBox, BuildConstraintsContext, Controls, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides, TemplateParameters } from "../../common";
 
-import { PlotSegmentClass } from "../index";
-import { Region2DPlotSegment, Region2DAttributes, Region2DConstraintBuilder, Region2DProperties, Region2DConfiguration } from "./base";
 import { AxisRenderer } from "../axis";
+import { PlotSegmentClass } from "../index";
+import { Region2DAttributes, Region2DConfiguration, Region2DConstraintBuilder, Region2DPlotSegment, Region2DProperties } from "./base";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -110,7 +110,7 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.angle1 = 0;
         attrs.angle2 = 360;
         attrs.radial1 = 10;
@@ -126,29 +126,29 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public createBuilder(solver?: ConstraintSolver, context?: BuildConstraintsContext) {
-        let props = this.object.properties;
-        let config = {
+        const props = this.object.properties;
+        const config = {
             terminology: polarTerminology,
             xAxisPrePostGap: (props.endAngle - props.startAngle) % 360 == 0,
             yAxisPrePostGap: false
         };
-        let builder = new Region2DConstraintBuilder(this, config, "angle1", "angle2", "radial1", "radial2", solver, context);
+        const builder = new Region2DConstraintBuilder(this, config, "angle1", "angle2", "radial1", "radial2", solver, context);
         return builder;
     }
 
     public buildConstraints(solver: ConstraintSolver, context: BuildConstraintsContext): void {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
 
-        let [x1, y1, x2, y2, innerRadius, outerRadius, angle1, angle2] = solver.attrs(attrs, ["x1", "y1", "x2", "y2", "radial1", "radial2", "angle1", "angle2"]);
+        const [x1, y1, x2, y2, innerRadius, outerRadius, angle1, angle2] = solver.attrs(attrs, ["x1", "y1", "x2", "y2", "radial1", "radial2", "angle1", "angle2"]);
 
         attrs.angle1 = props.startAngle;
         attrs.angle2 = props.endAngle;
         solver.makeConstant(attrs, "angle1");
         solver.makeConstant(attrs, "angle2");
 
-        let minRatio = Math.min(props.innerRatio, props.outerRatio);
-        let maxRatio = Math.max(props.innerRatio, props.outerRatio);
+        const minRatio = Math.min(props.innerRatio, props.outerRatio);
+        const maxRatio = Math.max(props.innerRatio, props.outerRatio);
 
         if (attrs.x2 - attrs.x1 < attrs.y2 - attrs.y1) {
             solver.addLinear(ConstraintStrength.HARD, 0, [[props.innerRatio, x2], [-props.innerRatio, x1]], [[2, innerRadius]]);
@@ -158,48 +158,48 @@ export class PolarPlotSegment extends Region2DPlotSegment {
             solver.addLinear(ConstraintStrength.HARD, 0, [[props.outerRatio, y2], [-props.outerRatio, y1]], [[2, outerRadius]]);
         }
 
-        let builder = this.createBuilder(solver, context);
+        const builder = this.createBuilder(solver, context);
         builder.build();
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, x2, y1, y2 } = attrs;
-        return <BoundingBox.Rectangle>{
+        const attrs = this.state.attributes;
+        const { x1, x2, y1, y2 } = attrs;
+        return {
             type: "rectangle",
             cx: (x1 + x2) / 2,
             cy: (y1 + y2) / 2,
             width: Math.abs(x2 - x1),
             height: Math.abs(y2 - y1),
             rotation: 0
-        };
+        } as BoundingBox.Rectangle;
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
-            <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
-            <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
-            <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" }
+            { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
+            { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
+            { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
+            { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
         ];
     }
 
     public getGraphics(): Graphics.Group {
-        let builder = this.createBuilder();
-        let g = Graphics.makeGroup([]);
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let cx = (attrs.x1 + attrs.x2) / 2;
-        let cy = (attrs.y1 + attrs.y2) / 2;
-        let [angularMode, radialMode] = this.getAxisModes();
-        let radialData = props.yData;
-        let angularData = props.xData;
-        let angleStart = props.startAngle;
-        let angleEnd = props.endAngle;
-        let innerRadius = attrs.radial1;
-        let outerRadius = attrs.radial2;
+        const builder = this.createBuilder();
+        const g = Graphics.makeGroup([]);
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const cx = (attrs.x1 + attrs.x2) / 2;
+        const cy = (attrs.y1 + attrs.y2) / 2;
+        const [angularMode, radialMode] = this.getAxisModes();
+        const radialData = props.yData;
+        const angularData = props.xData;
+        const angleStart = props.startAngle;
+        const angleEnd = props.endAngle;
+        const innerRadius = attrs.radial1;
+        const outerRadius = attrs.radial2;
         if (radialData && radialData.visible) {
             g.elements.push(
                 new AxisRenderer()
@@ -218,8 +218,8 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public getCoordinateSystem(): Graphics.CoordinateSystem {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return new Graphics.PolarCoordinates({
             x: (x1 + x2) / 2,
             y: (y1 + y2) / 2
@@ -227,50 +227,50 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes as PolarAttributes;
-        let { x1, y1, x2, y2, radial1, radial2 } = attrs;
-        let cx = (x1 + x2) / 2;
-        let cy = (y1 + y2) / 2;
-        let zones: DropZones.Description[] = [];
+        const attrs = this.state.attributes as PolarAttributes;
+        const { x1, y1, x2, y2, radial1, radial2 } = attrs;
+        const cx = (x1 + x2) / 2;
+        const cy = (y1 + y2) / 2;
+        const zones: DropZones.Description[] = [];
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["polar"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Add Angular Scaffold"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["curve"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Curve Coordinates"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Region>{
+            {
                 type: "region",
                 accept: { scaffolds: ["cartesian-x", "cartesian-y"] },
                 dropAction: { extendPlotSegment: {} },
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Convert to Cartesian Coordinates"
-            },
+            } as DropZones.Region,
         );
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: cx + radial1, y: cy }, p2: { x: cx + radial2, y: cy },
                 title: "Radial Axis",
                 dropAction: {
                     axisInference: { property: "yData" }
                 }
-            }
+            } as DropZones.Line
         );
         zones.push(
-            <DropZones.Arc>{
+            {
                 type: "arc",
                 center: { x: cx, y: cy },
                 radius: radial2,
@@ -279,13 +279,13 @@ export class PolarPlotSegment extends Region2DPlotSegment {
                 dropAction: {
                     axisInference: { property: "xData" }
                 }
-            }
+            } as DropZones.Arc
         );
         return zones;
     }
 
     public getAxisModes(): [PolarAxisMode, PolarAxisMode] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             props.xData ? props.xData.type : "null",
             props.yData ? props.yData.type : "null"
@@ -293,22 +293,22 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let rows = this.parent.dataflow.getTable(this.object.table).rows;
-        let { x1, x2, y1, y2 } = attrs;
-        let radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-        let cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
-        let builder = this.createBuilder();
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const rows = this.parent.dataflow.getTable(this.object.table).rows;
+        const { x1, x2, y1, y2 } = attrs;
+        const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
+        const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
+        const builder = this.createBuilder();
         return [
-            <Handles.Line>{ type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] },
-            <Handles.Line>{ type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] },
-            <Handles.Line>{ type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] },
-            <Handles.Point>{ type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] },
-            <Handles.Point>{ type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] },
+            { type: "line", axis: "y", value: y1, span: [x1, x2], actions: [{ type: "attribute", attribute: "y1" }] } as Handles.Line,
+            { type: "line", axis: "y", value: y2, span: [x1, x2], actions: [{ type: "attribute", attribute: "y2" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x1, span: [y1, y2], actions: [{ type: "attribute", attribute: "x1" }] } as Handles.Line,
+            { type: "line", axis: "x", value: x2, span: [y1, y2], actions: [{ type: "attribute", attribute: "x2" }] } as Handles.Line,
+            { type: "point", x: x1, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x2, y: y1, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y1" }] } as Handles.Point,
+            { type: "point", x: x1, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x1" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
+            { type: "point", x: x2, y: y2, actions: [{ type: "attribute", source: "x", attribute: "x2" }, { type: "attribute", source: "y", attribute: "y2" }] } as Handles.Point,
             ...builder.getHandles().map(handle => {
                 return {
                     type: "gap-ratio",
@@ -326,48 +326,48 @@ export class PolarPlotSegment extends Region2DPlotSegment {
                     }]
                 } as Handles.GapRatio
             }),
-            <Handles.Angle>{
+            {
                 type: "angle",
                 actions: [{ type: "property", property: "endAngle" }],
-                cx: cx, cy: cy, radius: radius * Math.max(props.innerRatio, props.outerRatio),
+                cx, cy, radius: radius * Math.max(props.innerRatio, props.outerRatio),
                 value: props.endAngle,
                 clipAngles: [props.startAngle, null],
                 icon: "<"
-            },
-            <Handles.Angle>{
+            } as Handles.Angle,
+            {
                 type: "angle",
                 actions: [{ type: "property", property: "startAngle" }],
-                cx: cx, cy: cy, radius: radius * Math.max(props.innerRatio, props.outerRatio),
+                cx, cy, radius: radius * Math.max(props.innerRatio, props.outerRatio),
                 value: props.startAngle,
                 clipAngles: [null, props.endAngle],
                 icon: ">"
-            },
-            <Handles.DistanceRatio>{
+            } as Handles.Angle,
+            {
                 type: "distance-ratio",
                 actions: [{ type: "property", property: "outerRatio" }],
                 cx, cy,
                 value: props.outerRatio, startDistance: 0, endDistance: radius,
                 startAngle: props.startAngle, endAngle: props.endAngle, clipRange: [props.innerRatio + 0.01, 1]
-            },
-            <Handles.DistanceRatio>{
+            } as Handles.DistanceRatio,
+            {
                 type: "distance-ratio",
                 actions: [{ type: "property", property: "innerRatio" }],
                 cx, cy,
                 value: props.innerRatio, startDistance: 0, endDistance: radius,
                 startAngle: props.startAngle, endAngle: props.endAngle, clipRange: [0, props.outerRatio - 0.01]
-            }
+            } as Handles.DistanceRatio
         ];
     }
 
     public getPopupEditor(manager: Controls.WidgetManager): Controls.PopupEditor {
-        let builder = this.createBuilder();
-        let widgets = builder.buildPopupWidgets(manager);
-        if (widgets.length == 0) return null;
-        let attrs = this.state.attributes;
-        let props = this.object.properties;
-        let anchor = { x: attrs.x1, y: attrs.y2 };
+        const builder = this.createBuilder();
+        const widgets = builder.buildPopupWidgets(manager);
+        if (widgets.length == 0) { return null; }
+        const attrs = this.state.attributes;
+        const props = this.object.properties;
+        const anchor = { x: attrs.x1, y: attrs.y2 };
         return {
-            anchor: anchor,
+            anchor,
             widgets: [
                 ...widgets
             ]
@@ -375,7 +375,7 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let builder = this.createBuilder();
+        const builder = this.createBuilder();
         return [
             manager.sectionHeader("Polar Coordinates"),
             manager.row("Angle", manager.horizontal([1, 0, 1],
@@ -395,7 +395,7 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     }
 
     public getTemplateParameters(): TemplateParameters {
-        let r: Specification.Template.Inference[] = [];
+        const r: Specification.Template.Inference[] = [];
         if (this.object.properties.xData && this.object.properties.xData.type != "default") {
             r.push({
                 type: "axis",

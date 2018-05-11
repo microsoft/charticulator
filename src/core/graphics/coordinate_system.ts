@@ -1,6 +1,6 @@
+import { Element, makeCircle, makeLine, makePath, makeRect, MultiCurveParametrization, PathMaker } from ".";
+import { Geometry, Point } from "../common";
 import { RigidTransform, Style } from "./elements";
-import { Point, Geometry } from "../common";
-import { MultiCurveParametrization, makePath, makeRect, makeCircle, makeLine, Element, PathMaker } from ".";
 
 export abstract class CoordinateSystem {
     /** Get the transform of the whole coordinate system (in the final Cartesian system) */
@@ -30,7 +30,7 @@ export class CartesianCoordinates extends CoordinateSystem {
         };
     }
     public transformPoint(x: number, y: number): Point {
-        return { x: x, y: y };
+        return { x, y };
     }
 
     public transformDirectionAtPoint(x: number, y: number, dx: number, dy: number): Point {
@@ -47,8 +47,8 @@ export class CartesianCoordinates extends CoordinateSystem {
 
     public getLocalTransform(x: number, y: number): RigidTransform {
         return {
-            x: x,
-            y: y,
+            x,
+            y,
             angle: 0
         };
     }
@@ -79,7 +79,7 @@ export class PolarCoordinates extends CoordinateSystem {
     }
 
     public inverseTransformRadial(distance: number) {
-        let y = distance / sqrt60;
+        const y = distance / sqrt60;
         return y * y;
     }
 
@@ -91,7 +91,7 @@ export class PolarCoordinates extends CoordinateSystem {
     }
 
     public transformDirectionAtPoint(angle: number, radial: number, dx: number, dy: number): Point {
-        let t = -angle * (Math.PI / 180);
+        const t = -angle * (Math.PI / 180);
         return {
             x: dx * Math.cos(t) - dy * Math.sin(t),
             y: dx * Math.sin(t) + dy * Math.cos(t)
@@ -99,7 +99,7 @@ export class PolarCoordinates extends CoordinateSystem {
     }
 
     public getLocalTransform(angle: number, radial: number): RigidTransform {
-        let t = angle * (Math.PI / 180);
+        const t = angle * (Math.PI / 180);
         return {
             x: this.transformRadial(radial) * Math.sin(t),
             y: this.transformRadial(radial) * Math.cos(t),
@@ -108,7 +108,7 @@ export class PolarCoordinates extends CoordinateSystem {
     }
 
     public transformPointWithBase(angle: number, radial: number): Point {
-        let t = angle * (Math.PI / 180);
+        const t = angle * (Math.PI / 180);
         return {
             x: this.transformRadial(radial) * Math.sin(t) + this.origin.x,
             y: this.transformRadial(radial) * Math.cos(t) + this.origin.y,
@@ -116,7 +116,7 @@ export class PolarCoordinates extends CoordinateSystem {
     }
 
     public transformDirectionAtPointWithBase(angle: number, radial: number, dx: number, dy: number): Point {
-        let t = -angle * (Math.PI / 180);
+        const t = -angle * (Math.PI / 180);
         return {
             x: dx * Math.cos(t) - dy * Math.sin(t),
             y: dx * Math.sin(t) + dy * Math.cos(t)
@@ -143,7 +143,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     }
 
     public transformPoint(x: number, y: number): Point {
-        let frame = this.curve.getFrameAtS(x);
+        const frame = this.curve.getFrameAtS(x);
         return {
             x: frame.p.x + y * frame.n.x,
             y: frame.p.y + y * frame.n.y,
@@ -151,7 +151,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     }
 
     public transformDirectionAtPoint(x: number, y: number, dx: number, dy: number): Point {
-        let frame = this.curve.getFrameAtS(x);
+        const frame = this.curve.getFrameAtS(x);
         return {
             x: dx * frame.t.x + dy * frame.n.x,
             y: dx * frame.t.y + dy * frame.n.y
@@ -159,17 +159,17 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     }
 
     public getLocalTransform(x: number, y: number): RigidTransform {
-        let frame = this.curve.getFrameAtS(x);
-        let angle = Math.atan2(frame.t.y, frame.t.x) / Math.PI * 180;
+        const frame = this.curve.getFrameAtS(x);
+        const angle = Math.atan2(frame.t.y, frame.t.x) / Math.PI * 180;
         return {
             x: frame.p.x + y * frame.n.x,
             y: frame.p.y + y * frame.n.y,
-            angle: angle
+            angle
         };
     }
 
     public transformPointWithBase(x: number, y: number): Point {
-        let p = this.transformPoint(x, y);
+        const p = this.transformPoint(x, y);
         return {
             x: p.x + this.origin.x,
             y: p.y + this.origin.y
@@ -194,11 +194,11 @@ export class CoordinateSystemHelper {
     }
 
     public rect(x1: number, y1: number, x2: number, y2: number, style: Style = {}): Element {
-        let cs = this.coordinateSystem;
+        const cs = this.coordinateSystem;
         if (cs instanceof CartesianCoordinates) {
             return makeRect(x1, y1, x2, y2, style);
         } else {
-            let path = makePath(style);
+            const path = makePath(style);
             this.lineTo(path, x1, y1, x1, y2, true);
             this.lineTo(path, x1, y2, x2, y2, false);
             this.lineTo(path, x2, y2, x2, y1, false);
@@ -209,20 +209,20 @@ export class CoordinateSystemHelper {
     }
 
     public line(x1: number, y1: number, x2: number, y2: number, style: Style = {}): Element {
-        let cs = this.coordinateSystem;
+        const cs = this.coordinateSystem;
         if (cs instanceof CartesianCoordinates) {
             return makeLine(x1, y1, x2, y2, style);
         } else {
-            let path = makePath(style);
+            const path = makePath(style);
             this.lineTo(path, x1, y1, x2, y2, true);
             return path.path;
         }
     }
 
     public lineTo(path: PathMaker, x1: number, y1: number, x2: number, y2: number, newPath: boolean) {
-        let cs = this.coordinateSystem;
+        const cs = this.coordinateSystem;
         if (newPath) {
-            let p = cs.transformPoint(x1, y1);
+            const p = cs.transformPoint(x1, y1);
             path.moveTo(p.x, p.y);
         }
         if (cs instanceof CartesianCoordinates) {
@@ -233,19 +233,19 @@ export class CoordinateSystemHelper {
         }
         if (cs instanceof BezierCurveCoordinates) {
             if (Math.abs(x1 - x2) < 1e-6) {
-                let p = cs.transformPoint(x2, y2);
+                const p = cs.transformPoint(x2, y2);
                 path.lineTo(p.x, p.y);
             } else {
                 let framePrevious = cs.getLocalTransform(x1, y1);
-                let direction = Math.atan2(y2 - y1, x2 - x1);
-                let segments = Math.max(2, Math.ceil(3 * cs.getCurve().getSegments().length * Math.abs(x2 - x1) / cs.getCurve().getLength()));
+                const direction = Math.atan2(y2 - y1, x2 - x1);
+                const segments = Math.max(2, Math.ceil(3 * cs.getCurve().getSegments().length * Math.abs(x2 - x1) / cs.getCurve().getLength()));
                 for (let i = 1; i <= segments; i++) {
-                    let t = i / segments;
-                    let frame = cs.getLocalTransform((x2 - x1) * t + x1, (y2 - y1) * t + y1);
+                    const t = i / segments;
+                    const frame = cs.getLocalTransform((x2 - x1) * t + x1, (y2 - y1) * t + y1);
 
-                    let len = Geometry.pointDistance(frame, framePrevious) / 3;
-                    let angle1 = framePrevious.angle / 180 * Math.PI + direction;
-                    let angle2 = frame.angle / 180 * Math.PI + direction;
+                    const len = Geometry.pointDistance(frame, framePrevious) / 3;
+                    const angle1 = framePrevious.angle / 180 * Math.PI + direction;
+                    const angle2 = frame.angle / 180 * Math.PI + direction;
 
                     path.cubicBezierCurveTo(
                         framePrevious.x + Math.cos(angle1) * len,

@@ -1,5 +1,5 @@
+import { CharticulatorCoreConfig, Dataset, Prototypes, Solver, Specification, zipArray } from "../core";
 import { WorkerRPC } from "./communication";
-import { Specification, zipArray, Prototypes, CharticulatorCoreConfig, Solver, Dataset } from "../core";
 
 /** The representation of the background worker. This is used from the main process. */
 export class CharticulatorWorker extends WorkerRPC {
@@ -11,8 +11,8 @@ export class CharticulatorWorker extends WorkerRPC {
         await this.rpc("initialize", config);
     }
 
-    public async solveChartConstraints(chart: Specification.Chart, chartState: Specification.ChartState, dataset: Dataset.Dataset, preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][], mappingOnly: boolean = false) {
-        let result: Specification.ChartState = await this.rpc("solveChartConstraints", chart, chartState, dataset, preSolveValues, mappingOnly);
+    public async solveChartConstraints(chart: Specification.Chart, chartState: Specification.ChartState, dataset: Dataset.Dataset, preSolveValues: Array<[Solver.ConstraintStrength, Specification.AttributeMap, string, number]>, mappingOnly: boolean = false) {
+        const result: Specification.ChartState = await this.rpc("solveChartConstraints", chart, chartState, dataset, preSolveValues, mappingOnly);
         // Copy all attributes from result to chartState
         // let isValidObject = (x: any) => x !== null && typeof (x) == "object";
         // let copyAttributes = (dest: any, src: any) => {
@@ -47,8 +47,8 @@ export class CharticulatorWorker extends WorkerRPC {
         // copyAttributes(chartState, result);
 
         // Copy only attributes
-        let shallowCopyAttributes = (dest: Specification.AttributeMap, src: Specification.AttributeMap) => {
-            for (let key in src) {
+        const shallowCopyAttributes = (dest: Specification.AttributeMap, src: Specification.AttributeMap) => {
+            for (const key in src) {
                 if (src.hasOwnProperty(key)) {
                     dest[key] = src[key];
                 }
@@ -56,22 +56,22 @@ export class CharticulatorWorker extends WorkerRPC {
         };
         shallowCopyAttributes(chartState.attributes, result.attributes);
         for (let i = 0; i < chartState.elements.length; i++) {
-            let elementState = chartState.elements[i];
-            let resultElementState = result.elements[i];
+            const elementState = chartState.elements[i];
+            const resultElementState = result.elements[i];
             shallowCopyAttributes(elementState.attributes, resultElementState.attributes);
             // Is this a plot segment
             if (Prototypes.isType(chart.elements[i].classID, "plot-segment")) {
-                let plotSegmentState = elementState as Specification.PlotSegmentState;
-                let resultPlotSegmentState = resultElementState as Specification.PlotSegmentState;
-                for (let [glyphState, resultGlyphState] of zipArray(plotSegmentState.glyphs, resultPlotSegmentState.glyphs)) {
+                const plotSegmentState = elementState as Specification.PlotSegmentState;
+                const resultPlotSegmentState = resultElementState as Specification.PlotSegmentState;
+                for (const [glyphState, resultGlyphState] of zipArray(plotSegmentState.glyphs, resultPlotSegmentState.glyphs)) {
                     shallowCopyAttributes(glyphState.attributes, resultGlyphState.attributes);
-                    for (let [markState, resultMarkState] of zipArray(glyphState.marks, resultGlyphState.marks)) {
+                    for (const [markState, resultMarkState] of zipArray(glyphState.marks, resultGlyphState.marks)) {
                         shallowCopyAttributes(markState.attributes, resultMarkState.attributes);
                     }
                 }
             }
         }
-        for (let [element, resultElement] of zipArray(chartState.scales, result.scales)) {
+        for (const [element, resultElement] of zipArray(chartState.scales, result.scales)) {
             shallowCopyAttributes(element.attributes, resultElement.attributes);
         }
         return chartState;

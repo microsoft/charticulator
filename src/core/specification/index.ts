@@ -1,7 +1,7 @@
 import { Color, Point } from "../common";
 
-import * as Types from "./types";
 import * as Template from "./template";
+import * as Types from "./types";
 export { Types, Template };
 
 // ===========================================================================

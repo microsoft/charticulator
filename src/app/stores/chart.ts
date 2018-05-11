@@ -1,15 +1,15 @@
-import { EventEmitter, setField, deepClone, Expression } from "../../core";
+import { deepClone, EventEmitter, Expression, setField } from "../../core";
 
-import { Specification, Prototypes, Dataset, uniqueID, indexOf, getById, getByName, zipArray } from "../../core";
-import { Graphics, Solver, Scale } from "../../core";
+import { Dataset, getById, getByName, indexOf, Prototypes, Specification, uniqueID, zipArray } from "../../core";
+import { Graphics, Scale, Solver } from "../../core";
 
 import { Actions } from "../actions";
 
+import { ChartTemplateBuilder } from "../template";
 import { BaseStore } from "./base";
 import { DatasetStore } from "./dataset";
-import { GlyphStore } from "./mark";
 import { MainStore } from "./main_store";
-import { ChartTemplateBuilder } from "../template";
+import { GlyphStore } from "./mark";
 
 export abstract class Selection {
 }
@@ -95,7 +95,7 @@ export class ChartStore extends BaseStore {
         this.updateMarkStores();
         this.solveConstraintsAndUpdateGraphics();
 
-        let token = this.datasetStore.addListener(DatasetStore.EVENT_CHANGED, () => {
+        const token = this.datasetStore.addListener(DatasetStore.EVENT_CHANGED, () => {
             this.newChartEmpty();
             this.updateMarkStores();
             this.emit(ChartStore.EVENT_CURRENT_TOOL);
@@ -156,25 +156,25 @@ export class ChartStore extends BaseStore {
     public loadSelectionState(selection: SelectionState) {
         if (selection != null) {
             if (selection.type == "chart-element") {
-                let originalID = selection.chartElementID;
-                let plotSegment = getById(this.chart.elements, originalID) as Specification.PlotSegment;
+                const originalID = selection.chartElementID;
+                const plotSegment = getById(this.chart.elements, originalID) as Specification.PlotSegment;
                 if (plotSegment) {
                     this.currentSelection = new ChartElementSelection(plotSegment);
                 }
             }
             if (selection.type == "glyph") {
-                let glyphID = selection.glyphID;
-                let glyph = getById(this.chart.glyphs, glyphID);
+                const glyphID = selection.glyphID;
+                const glyph = getById(this.chart.glyphs, glyphID);
                 if (glyph) {
                     this.currentSelection = new GlyphSelection(glyph);
                 }
             }
             if (selection.type == "mark") {
-                let glyphID = selection.glyphID;
-                let markID = selection.markID;
-                let glyph = getById(this.chart.glyphs, glyphID);
+                const glyphID = selection.glyphID;
+                const markID = selection.markID;
+                const glyph = getById(this.chart.glyphs, glyphID);
                 if (glyph) {
-                    let mark = getById(glyph.marks, markID);
+                    const mark = getById(glyph.marks, markID);
                     if (mark) {
                         this.currentSelection = new MarkSelection(glyph, mark);
                     }
@@ -189,12 +189,12 @@ export class ChartStore extends BaseStore {
     }
 
     public forAllGlyph(glyph: Specification.Glyph, callback: (glyphState: Specification.GlyphState, plotSegment: Specification.PlotSegment, plotSegmentState: Specification.PlotSegmentState) => void) {
-        for (let [element, elementState] of zipArray(this.chart.elements, this.chartState.elements)) {
+        for (const [element, elementState] of zipArray(this.chart.elements, this.chartState.elements)) {
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
-                let plotSegmentState = elementState as Specification.PlotSegmentState;
+                const plotSegment = element as Specification.PlotSegment;
+                const plotSegmentState = elementState as Specification.PlotSegmentState;
                 if (plotSegment.glyph == glyph._id) {
-                    for (let glyphState of plotSegmentState.glyphs) {
+                    for (const glyphState of plotSegmentState.glyphs) {
                         callback(glyphState, plotSegment, plotSegmentState);
                     }
                 }
@@ -202,7 +202,7 @@ export class ChartStore extends BaseStore {
         }
     }
 
-    public preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][] = [];
+    public preSolveValues: Array<[Solver.ConstraintStrength, Specification.AttributeMap, string, number]> = [];
     public addPresolveValue(strength: Solver.ConstraintStrength, state: Specification.AttributeMap, attr: string, value: number) {
         this.preSolveValues.push([strength, state, attr, value]);
     }
@@ -226,20 +226,20 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.AddMarkToGlyph) {
             this.parent.saveHistory();
 
-            let mark = this.chartManager.createObject(action.classID) as Specification.Element;
+            const mark = this.chartManager.createObject(action.classID) as Specification.Element;
 
-            for (let key in action.attributes) {
+            for (const key in action.attributes) {
                 mark.properties[key] = action.attributes[key];
             }
 
-            let isFirstMark = action.glyph.marks.length == 1;
+            const isFirstMark = action.glyph.marks.length == 1;
 
             this.chartManager.addMarkToGlyph(mark, action.glyph);
 
             let attributesSet = false;
-            for (let attr in action.mappings) {
+            for (const attr in action.mappings) {
                 if (action.mappings.hasOwnProperty(attr)) {
-                    let [value, mapping] = action.mappings[attr];
+                    const [value, mapping] = action.mappings[attr];
                     if (mapping != null) {
                         if (mapping.type == "_element") {
                             action.glyph.constraints.push({
@@ -257,7 +257,7 @@ export class ChartStore extends BaseStore {
                         }
                     }
                     if (value != null) {
-                        let idx = action.glyph.marks.indexOf(mark);
+                        const idx = action.glyph.marks.indexOf(mark);
                         this.forAllGlyph(action.glyph, (glyphState) => {
                             glyphState.marks[idx].attributes[attr] = value;
                             this.addPresolveValue(Solver.ConstraintStrength.STRONG, glyphState.marks[idx].attributes, attr, value);
@@ -270,29 +270,29 @@ export class ChartStore extends BaseStore {
             if (!attributesSet) {
                 switch (action.classID) {
                     case "mark.rect": {
-                        mark.mappings["x1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix1" };
-                        mark.mappings["y1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy1" };
-                        mark.mappings["x2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix2" };
-                        mark.mappings["y2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy2" };
+                        mark.mappings.x1 = { type: "parent", parentAttribute: "ix1" } as Specification.ParentMapping;
+                        mark.mappings.y1 = { type: "parent", parentAttribute: "iy1" } as Specification.ParentMapping;
+                        mark.mappings.x2 = { type: "parent", parentAttribute: "ix2" } as Specification.ParentMapping;
+                        mark.mappings.y2 = { type: "parent", parentAttribute: "iy2" } as Specification.ParentMapping;
                         // Move anchor to bottom
                         // action.glyph.marks[0].mappings["y"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy1" };
                     } break;
                     case "mark.line": {
-                        mark.mappings["x1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix1" };
-                        mark.mappings["y1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy1" };
-                        mark.mappings["x2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix2" };
-                        mark.mappings["y2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy2" };
+                        mark.mappings.x1 = { type: "parent", parentAttribute: "ix1" } as Specification.ParentMapping;
+                        mark.mappings.y1 = { type: "parent", parentAttribute: "iy1" } as Specification.ParentMapping;
+                        mark.mappings.x2 = { type: "parent", parentAttribute: "ix2" } as Specification.ParentMapping;
+                        mark.mappings.y2 = { type: "parent", parentAttribute: "iy2" } as Specification.ParentMapping;
                     } break;
                     case "mark.symbol":
                     case "mark.text": {
-                        mark.mappings["x"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "icx" };
-                        mark.mappings["y"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "icy" };
+                        mark.mappings.x = { type: "parent", parentAttribute: "icx" } as Specification.ParentMapping;
+                        mark.mappings.y = { type: "parent", parentAttribute: "icy" } as Specification.ParentMapping;
                     } break;
                     case "mark.data-axis": {
-                        mark.mappings["x1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix1" };
-                        mark.mappings["y1"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy1" };
-                        mark.mappings["x2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "ix1" };
-                        mark.mappings["y2"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy2" };
+                        mark.mappings.x1 = { type: "parent", parentAttribute: "ix1" } as Specification.ParentMapping;
+                        mark.mappings.y1 = { type: "parent", parentAttribute: "iy1" } as Specification.ParentMapping;
+                        mark.mappings.x2 = { type: "parent", parentAttribute: "ix1" } as Specification.ParentMapping;
+                        mark.mappings.y2 = { type: "parent", parentAttribute: "iy2" } as Specification.ParentMapping;
                     } break;
                 }
             }
@@ -306,7 +306,7 @@ export class ChartStore extends BaseStore {
             this.parent.saveHistory();
 
             // We never delete the anchor
-            if (action.mark.classID == "mark.anchor") return;
+            if (action.mark.classID == "mark.anchor") { return; }
 
             this.chartManager.removeMarkFromGlyph(action.mark, action.glyph);
 
@@ -319,23 +319,23 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.MapDataToMarkAttribute) {
             this.parent.saveHistory();
 
-            let attr = Prototypes.ObjectClasses.Create(null, action.mark, null).attributes[action.attribute];
-            let table = this.datasetStore.getTable(action.glyph.table);
-            let inferred = this.scaleInference(table, action.expression, action.valueType, action.attributeType, action.hints);
+            const attr = Prototypes.ObjectClasses.Create(null, action.mark, null).attributes[action.attribute];
+            const table = this.datasetStore.getTable(action.glyph.table);
+            const inferred = this.scaleInference(table, action.expression, action.valueType, action.attributeType, action.hints);
             if (inferred != null) {
-                action.mark.mappings[action.attribute] = <Specification.ScaleMapping>{
+                action.mark.mappings[action.attribute] = {
                     type: "scale",
                     expression: action.expression,
                     valueType: action.valueType,
                     scale: inferred
-                };
+                } as Specification.ScaleMapping;
             } else {
                 if (action.valueType == "string" && action.attributeType == "string") {
-                    action.mark.mappings[action.attribute] = <Specification.ScaleMapping>{
+                    action.mark.mappings[action.attribute] = {
                         type: "scale",
                         expression: action.expression,
                         valueType: action.valueType
-                    };
+                    } as Specification.ScaleMapping;
                 }
             }
 
@@ -343,23 +343,23 @@ export class ChartStore extends BaseStore {
         }
 
         if (action instanceof Actions.MapDataToChartElementAttribute) {
-            let attr = Prototypes.ObjectClasses.Create(null, action.chartElement, null).attributes[action.attribute];
-            let table = this.datasetStore.getTable(action.table);
-            let inferred = this.scaleInference(table, action.expression, action.valueType, action.attributeType, action.hints);
+            const attr = Prototypes.ObjectClasses.Create(null, action.chartElement, null).attributes[action.attribute];
+            const table = this.datasetStore.getTable(action.table);
+            const inferred = this.scaleInference(table, action.expression, action.valueType, action.attributeType, action.hints);
             if (inferred != null) {
-                action.chartElement.mappings[action.attribute] = <Specification.ScaleMapping>{
+                action.chartElement.mappings[action.attribute] = {
                     type: "scale",
                     expression: action.expression,
                     valueType: action.valueType,
                     scale: inferred
-                };
+                } as Specification.ScaleMapping;
             } else {
                 if (action.valueType == "string" && action.attributeType == "string") {
-                    action.chartElement.mappings[action.attribute] = <Specification.ScaleMapping>{
+                    action.chartElement.mappings[action.attribute] = {
                         type: "scale",
                         expression: action.expression,
                         valueType: action.valueType
-                    };
+                    } as Specification.ScaleMapping;
                 }
             }
 
@@ -381,13 +381,13 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.UpdateGlyphAttribute) {
             this.parent.saveHistory();
 
-            for (let key in action.updates) {
-                if (!action.updates.hasOwnProperty(key)) continue;
+            for (const key in action.updates) {
+                if (!action.updates.hasOwnProperty(key)) { continue; }
                 delete action.glyph.mappings[key];
             }
             this.forAllGlyph(action.glyph, (glyphState) => {
-                for (let key in action.updates) {
-                    if (!action.updates.hasOwnProperty(key)) continue;
+                for (const key in action.updates) {
+                    if (!action.updates.hasOwnProperty(key)) { continue; }
                     glyphState.attributes[key] = action.updates[key];
                     this.addPresolveValue(Solver.ConstraintStrength.STRONG, glyphState.attributes, key, action.updates[key] as number);
                 }
@@ -412,12 +412,12 @@ export class ChartStore extends BaseStore {
 
             this.chart.elements.forEach((element, index) => {
                 if (Prototypes.isType(element.classID, "plot-segment")) {
-                    let plotSegment = element as Specification.PlotSegment;
-                    let plotSegmentState = this.chartState.elements[index] as Specification.PlotSegmentState;
+                    const plotSegment = element as Specification.PlotSegment;
+                    const plotSegmentState = this.chartState.elements[index] as Specification.PlotSegmentState;
                     if (plotSegment.glyph == action.glyph._id) {
-                        for (let markState of plotSegmentState.glyphs) {
-                            for (let key in action.updates) {
-                                if (!action.updates.hasOwnProperty(key)) continue;
+                        for (const markState of plotSegmentState.glyphs) {
+                            for (const key in action.updates) {
+                                if (!action.updates.hasOwnProperty(key)) { continue; }
                                 markState.attributes[key] = action.updates[key];
                             }
                         }
@@ -427,12 +427,12 @@ export class ChartStore extends BaseStore {
 
             this.chart.elements.forEach((element, index) => {
                 if (Prototypes.isType(element.classID, "plot-segment")) {
-                    let plotSegment = element as Specification.PlotSegment;
-                    let plotSegmentState = this.chartState.elements[index] as Specification.PlotSegmentState;
+                    const plotSegment = element as Specification.PlotSegment;
+                    const plotSegmentState = this.chartState.elements[index] as Specification.PlotSegmentState;
                     if (plotSegment.glyph == action.glyph._id) {
-                        for (let markState of plotSegmentState.glyphs) {
-                            for (let key in action.updates) {
-                                if (!action.updates.hasOwnProperty(key)) continue;
+                        for (const markState of plotSegmentState.glyphs) {
+                            for (const key in action.updates) {
+                                if (!action.updates.hasOwnProperty(key)) { continue; }
                                 this.addPresolveValue(Solver.ConstraintStrength.STRONG, markState.attributes, key, action.updates[key] as number);
                             }
                         }
@@ -446,8 +446,8 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.AddPlotSegment) {
             this.parent.saveHistory();
 
-            let newPlotSegment = this.chartManager.createObject(action.classID, this.chart.glyphs[0]) as Specification.PlotSegment;
-            for (let key in action.properties) {
+            const newPlotSegment = this.chartManager.createObject(action.classID, this.chart.glyphs[0]) as Specification.PlotSegment;
+            for (const key in action.properties) {
                 newPlotSegment.properties[key] = action.properties[key];
             }
             // console.log(newPlotSegment);
@@ -458,12 +458,12 @@ export class ChartStore extends BaseStore {
 
             this.chartManager.addChartElement(newPlotSegment);
 
-            let idx = this.chart.elements.indexOf(newPlotSegment);
-            let elementClass = this.chartManager.getChartElementClass(this.chartState.elements[idx]);
+            const idx = this.chart.elements.indexOf(newPlotSegment);
+            const elementClass = this.chartManager.getChartElementClass(this.chartState.elements[idx]);
 
-            for (let key in action.mappings) {
+            for (const key in action.mappings) {
                 if (action.mappings.hasOwnProperty(key)) {
-                    let [value, mapping] = action.mappings[key];
+                    const [value, mapping] = action.mappings[key];
                     if (mapping != null) {
                         if (mapping.type == "_element") {
                             this.chartManager.chart.constraints.push({
@@ -481,7 +481,7 @@ export class ChartStore extends BaseStore {
                         }
                     }
                     if (value != null) {
-                        let idx = this.chart.elements.indexOf(newPlotSegment);
+                        const idx = this.chart.elements.indexOf(newPlotSegment);
                         this.chartState.elements[idx].attributes[key] = value;
                         if (!elementClass.attributes[key].solverExclude) {
                             this.addPresolveValue(Solver.ConstraintStrength.HARD, this.chartState.elements[idx].attributes, key, value as number);
@@ -496,16 +496,16 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.UpdateChartElementAttribute) {
             this.parent.saveHistory();
 
-            let idx = this.chart.elements.indexOf(action.chartElement);
-            if (idx < 0) return;
-            let layoutState = this.chartState.elements[idx];
-            for (let key in action.updates) {
-                if (!action.updates.hasOwnProperty(key)) continue;
+            const idx = this.chart.elements.indexOf(action.chartElement);
+            if (idx < 0) { return; }
+            const layoutState = this.chartState.elements[idx];
+            for (const key in action.updates) {
+                if (!action.updates.hasOwnProperty(key)) { continue; }
                 // Remove current mapping and any snapping constraint
                 delete action.chartElement.mappings[key];
                 this.chart.constraints = this.chart.constraints.filter(c => {
                     if (c.type == "snap") {
-                        if (c.attributes["element"] == action.chartElement._id && c.attributes["attribute"] == key) {
+                        if (c.attributes.element == action.chartElement._id && c.attributes.attribute == key) {
                             return false;
                         }
                     }
@@ -527,7 +527,7 @@ export class ChartStore extends BaseStore {
                 action.chartElement.mappings[action.attribute] = action.mapping;
                 this.chart.constraints = this.chart.constraints.filter(c => {
                     if (c.type == "snap") {
-                        if (c.attributes["element"] == action.chartElement._id && c.attributes["attribute"] == action.attribute) {
+                        if (c.attributes.element == action.chartElement._id && c.attributes.attribute == action.attribute) {
                             return false;
                         }
                     }
@@ -545,7 +545,7 @@ export class ChartStore extends BaseStore {
             // Remove any existing snapping
             this.chart.constraints = this.chart.constraints.filter(c => {
                 if (c.type == "snap") {
-                    if (c.attributes["element"] == action.element._id && c.attributes["attribute"] == action.attribute) {
+                    if (c.attributes.element == action.element._id && c.attributes.attribute == action.attribute) {
                         return false;
                     }
                 }
@@ -580,8 +580,8 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.UpdateChartAttribute) {
             this.parent.saveHistory();
 
-            for (let key in action.updates) {
-                if (!action.updates.hasOwnProperty(key)) continue;
+            for (const key in action.updates) {
+                if (!action.updates.hasOwnProperty(key)) { continue; }
                 this.chartState.attributes[key] = action.updates[key];
                 this.addPresolveValue(Solver.ConstraintStrength.STRONG, this.chartState.attributes, key, action.updates[key] as number);
             }
@@ -592,7 +592,7 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.BindDataToAxis) {
             this.parent.saveHistory();
 
-            let dataBinding: Specification.Types.AxisDataBinding = {
+            const dataBinding: Specification.Types.AxisDataBinding = {
                 type: "categorical",
                 expression: action.dataExpression.expression,
                 valueType: action.dataExpression.valueType,
@@ -615,8 +615,8 @@ export class ChartStore extends BaseStore {
                 action.object.properties[action.property] = dataBinding;
             }
 
-            let table = this.datasetStore.getTable(action.dataExpression.table.name);
-            let values = this.datasetStore.getExpressionVector(table, action.dataExpression.expression);
+            const table = this.datasetStore.getTable(action.dataExpression.table.name);
+            const values = this.datasetStore.getExpressionVector(table, action.dataExpression.expression);
 
             switch (action.dataExpression.metadata.kind) {
                 case "categorical": {
@@ -626,7 +626,7 @@ export class ChartStore extends BaseStore {
                     if (action.dataExpression.metadata.order) {
                         dataBinding.categories = action.dataExpression.metadata.order.slice();
                     } else {
-                        let scale = new Scale.CategoricalScale();
+                        const scale = new Scale.CategoricalScale();
                         let orderMode: "alphabetically" | "occurrence" | "order" = "alphabetically";
                         if (action.dataExpression.metadata.orderMode) {
                             orderMode = action.dataExpression.metadata.orderMode;
@@ -637,7 +637,7 @@ export class ChartStore extends BaseStore {
                     }
                 } break;
                 case "numerical": {
-                    let scale = new Scale.NumericalScale();
+                    const scale = new Scale.NumericalScale();
                     scale.inferParameters(values as number[]);
                     dataBinding.domainMin = scale.domainMin;
                     dataBinding.domainMax = scale.domainMax;
@@ -663,10 +663,10 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.SetChartSize) {
             this.parent.saveHistory();
 
-            this.chartState.attributes["width"] = action.width;
-            this.chartState.attributes["height"] = action.height;
-            this.chart.mappings["width"] = <Specification.ValueMapping>{ type: "value", value: action.width };
-            this.chart.mappings["height"] = <Specification.ValueMapping>{ type: "value", value: action.height };
+            this.chartState.attributes.width = action.width;
+            this.chartState.attributes.height = action.height;
+            this.chart.mappings.width = { type: "value", value: action.width } as Specification.ValueMapping;
+            this.chart.mappings.height = { type: "value", value: action.height } as Specification.ValueMapping;
 
             this.solveConstraintsAndUpdateGraphics();
         }
@@ -677,7 +677,7 @@ export class ChartStore extends BaseStore {
             if (action.field == null) {
                 action.object.properties[action.property] = action.value;
             } else {
-                let obj = action.object.properties[action.property];
+                const obj = action.object.properties[action.property];
                 action.object.properties[action.property] = setField(obj, action.field, action.value);
             }
 
@@ -691,8 +691,8 @@ export class ChartStore extends BaseStore {
         if (action instanceof Actions.ExtendPlotSegment) {
             this.parent.saveHistory();
 
-            let plotSegment = action.plotSegment as Specification.PlotSegment;
-            let plotSegmentState = this.chartState.elements[this.chart.elements.indexOf(plotSegment)] as Specification.PlotSegmentState;
+            const plotSegment = action.plotSegment as Specification.PlotSegment;
+            const plotSegmentState = this.chartState.elements[this.chart.elements.indexOf(plotSegment)] as Specification.PlotSegmentState;
 
             let newClassID: string;
             switch (action.extension) {
@@ -710,14 +710,14 @@ export class ChartStore extends BaseStore {
                 } break;
             }
             if (plotSegment.classID != newClassID) {
-                let originalAttributes = plotSegment.mappings;
+                const originalAttributes = plotSegment.mappings;
                 plotSegment.classID = newClassID;
                 plotSegment.mappings = {}
 
-                if (originalAttributes.x1) plotSegment.mappings.x1 = originalAttributes.x1;
-                if (originalAttributes.x2) plotSegment.mappings.x2 = originalAttributes.x2;
-                if (originalAttributes.y1) plotSegment.mappings.y1 = originalAttributes.y1;
-                if (originalAttributes.y2) plotSegment.mappings.y2 = originalAttributes.y2;
+                if (originalAttributes.x1) { plotSegment.mappings.x1 = originalAttributes.x1; }
+                if (originalAttributes.x2) { plotSegment.mappings.x2 = originalAttributes.x2; }
+                if (originalAttributes.y1) { plotSegment.mappings.y1 = originalAttributes.y1; }
+                if (originalAttributes.y2) { plotSegment.mappings.y2 = originalAttributes.y2; }
 
                 plotSegment.properties = {
                     name: plotSegment.properties.name,
@@ -744,7 +744,7 @@ export class ChartStore extends BaseStore {
                 }
 
                 this.chartManager.initializeCache();
-                let layoutClass = this.chartManager.getPlotSegmentClass(plotSegmentState);
+                const layoutClass = this.chartManager.getPlotSegmentClass(plotSegmentState);
                 plotSegmentState.attributes = {};
                 layoutClass.initializeState();
             } else {
@@ -791,7 +791,7 @@ export class ChartStore extends BaseStore {
 
             action.links.properties.name = this.chartManager.findUnusedName("Link");
             this.chartManager.addChartElement(action.links);
-            let selection = new ChartElementSelection(action.links, null);
+            const selection = new ChartElementSelection(action.links, null);
             this.currentSelection = selection;
 
             // Note: currently, links has no constraints to solve
@@ -800,7 +800,7 @@ export class ChartStore extends BaseStore {
         }
 
         if (action instanceof Actions.SelectChartElement) {
-            let selection = new ChartElementSelection(action.chartElement, action.glyphIndex);
+            const selection = new ChartElementSelection(action.chartElement, action.glyphIndex);
             this.currentSelection = selection;
             this.emit(ChartStore.EVENT_SELECTION);
         }
@@ -809,14 +809,14 @@ export class ChartStore extends BaseStore {
             if (action.dataRowIndex == null) {
                 action.dataRowIndex = this.datasetStore.getSelectedRowIndex(this.datasetStore.getTable(action.glyph.table));
             }
-            let selection = new MarkSelection(action.glyph, action.mark);
+            const selection = new MarkSelection(action.glyph, action.mark);
             this.currentSelection = selection;
             this.datasetStore.setSelectedRowIndex(this.datasetStore.getTable(action.glyph.table), action.dataRowIndex);
             this.emit(ChartStore.EVENT_SELECTION);
         }
 
         if (action instanceof Actions.SelectGlyph) {
-            let selection = new GlyphSelection(action.glyph);
+            const selection = new GlyphSelection(action.glyph);
             this.currentSelection = selection;
             this.emit(ChartStore.EVENT_SELECTION);
         }
@@ -847,13 +847,13 @@ export class ChartStore extends BaseStore {
 
     public handleMarkAction(action: Actions.MarkAction) {
         if (action instanceof Actions.UpdateMarkAttribute) {
-            for (let key in action.updates) {
-                if (!action.updates.hasOwnProperty(key)) continue;
+            for (const key in action.updates) {
+                if (!action.updates.hasOwnProperty(key)) { continue; }
                 delete action.mark.mappings[key];
 
                 action.glyph.constraints = action.glyph.constraints.filter(c => {
                     if (c.type == "snap") {
-                        if (c.attributes["element"] == action.mark._id && c.attributes["attribute"] == key) {
+                        if (c.attributes.element == action.mark._id && c.attributes.attribute == key) {
                             return false;
                         }
                     }
@@ -862,10 +862,10 @@ export class ChartStore extends BaseStore {
             }
 
             this.forAllGlyph(action.glyph, (glyphState) => {
-                for (let [mark, markState] of zipArray(action.glyph.marks, glyphState.marks)) {
+                for (const [mark, markState] of zipArray(action.glyph.marks, glyphState.marks)) {
                     if (mark == action.mark) {
-                        for (let key in action.updates) {
-                            if (!action.updates.hasOwnProperty(key)) continue;
+                        for (const key in action.updates) {
+                            if (!action.updates.hasOwnProperty(key)) { continue; }
                             markState.attributes[key] = action.updates[key];
                             this.addPresolveValue(Solver.ConstraintStrength.STRONG, markState.attributes, key, action.updates[key] as number);
                         }
@@ -878,7 +878,7 @@ export class ChartStore extends BaseStore {
             if (action.field == null) {
                 action.object.properties[action.property] = action.value;
             } else {
-                let obj = action.object.properties[action.property];
+                const obj = action.object.properties[action.property];
                 action.object.properties[action.property] = setField(obj, action.field, action.value);
             }
         }
@@ -890,7 +890,7 @@ export class ChartStore extends BaseStore {
                 action.mark.mappings[action.attribute] = action.mapping;
                 action.glyph.constraints = action.glyph.constraints.filter(c => {
                     if (c.type == "snap") {
-                        if (c.attributes["element"] == action.mark._id && c.attributes["attribute"] == action.attribute) {
+                        if (c.attributes.element == action.mark._id && c.attributes.attribute == action.attribute) {
                             return false;
                         }
                     }
@@ -904,11 +904,11 @@ export class ChartStore extends BaseStore {
         }
 
         if (action instanceof Actions.SnapMarks) {
-            let idx1 = action.glyph.marks.indexOf(action.mark);
-            if (idx1 < 0) return;
+            const idx1 = action.glyph.marks.indexOf(action.mark);
+            if (idx1 < 0) { return; }
             // let elementState = this.markState.elements[idx1];
-            let idx2 = action.glyph.marks.indexOf(action.targetMark);
-            if (idx2 < 0) return;
+            const idx2 = action.glyph.marks.indexOf(action.targetMark);
+            if (idx2 < 0) { return; }
             // let targetElementState = this.markState.elements[idx2];
             // elementState.attributes[action.attribute] = targetElementState.attributes[action.targetAttribute];
             // Remove any existing attribute mapping
@@ -916,7 +916,7 @@ export class ChartStore extends BaseStore {
             // Remove any existing snapping
             action.glyph.constraints = action.glyph.constraints.filter(c => {
                 if (c.type == "snap") {
-                    if (c.attributes["element"] == action.mark._id && c.attributes["attribute"] == action.attribute) {
+                    if (c.attributes.element == action.mark._id && c.attributes.attribute == action.attribute) {
                         return false;
                     }
                 }
@@ -935,15 +935,15 @@ export class ChartStore extends BaseStore {
 
             // Force the states to be equal
             this.forAllGlyph(action.glyph, (glyphState) => {
-                let elementState = glyphState.marks[idx1];
-                let targetElementState = glyphState.marks[idx2];
+                const elementState = glyphState.marks[idx1];
+                const targetElementState = glyphState.marks[idx2];
                 elementState.attributes[action.attribute] = targetElementState.attributes[action.targetAttribute]
                 this.addPresolveValue(Solver.ConstraintStrength.STRONG, elementState.attributes, action.attribute, targetElementState.attributes[action.targetAttribute] as number);
             });
         }
 
         if (action instanceof Actions.MarkActionGroup) {
-            for (let item of action.actions) {
+            for (const item of action.actions) {
                 this.handleMarkAction(item);
             }
         }
@@ -954,37 +954,37 @@ export class ChartStore extends BaseStore {
         // console.log("Scale inference", table, column, outputType, range);
         // If there is an existing scale on the same column in the table, return that one
         if (!hints.newScale) {
-            let getExpressionUnit = (expr: string) => {
-                let parsed = Expression.parse(expr);
+            const getExpressionUnit = (expr: string) => {
+                const parsed = Expression.parse(expr);
                 if (parsed instanceof Expression.Variable) {
-                    let column = getByName(table.columns, parsed.name);
+                    const column = getByName(table.columns, parsed.name);
                     if (column) {
                         return column.metadata.unit;
                     }
                 }
                 return null;
             };
-            for (let element of this.chart.elements) {
+            for (const element of this.chart.elements) {
                 if (Prototypes.isType(element.classID, "plot-segment")) {
-                    let plotSegment = element as Specification.PlotSegment;
-                    if (plotSegment.table != table.name) continue;
-                    let mark = getById(this.chart.glyphs, plotSegment.glyph);
-                    if (!mark) continue;
-                    for (let element of mark.marks) {
-                        for (let name in element.mappings) {
-                            if (!element.mappings.hasOwnProperty(name)) continue;
+                    const plotSegment = element as Specification.PlotSegment;
+                    if (plotSegment.table != table.name) { continue; }
+                    const mark = getById(this.chart.glyphs, plotSegment.glyph);
+                    if (!mark) { continue; }
+                    for (const element of mark.marks) {
+                        for (const name in element.mappings) {
+                            if (!element.mappings.hasOwnProperty(name)) { continue; }
                             if (element.mappings[name].type == "scale") {
-                                let scaleMapping = <Specification.ScaleMapping>element.mappings[name];
+                                const scaleMapping = element.mappings[name] as Specification.ScaleMapping;
                                 if (scaleMapping.scale != null) {
                                     if (scaleMapping.expression == expression) {
-                                        let scaleObject = getById(this.chart.scales, scaleMapping.scale);
+                                        const scaleObject = getById(this.chart.scales, scaleMapping.scale);
                                         if (scaleObject.outputType == outputType) {
                                             return scaleMapping.scale;
                                         }
                                     }
                                     // TODO: Fix this part
                                     if (getExpressionUnit(scaleMapping.expression) == getExpressionUnit(expression) && getExpressionUnit(scaleMapping.expression) != null) {
-                                        let scaleObject = getById(this.chart.scales, scaleMapping.scale);
+                                        const scaleObject = getById(this.chart.scales, scaleMapping.scale);
                                         if (scaleObject.outputType == outputType) {
                                             return scaleMapping.scale;
                                         }
@@ -997,7 +997,7 @@ export class ChartStore extends BaseStore {
             }
         }
         // Infer a new scale for this item
-        let newName = this.chartManager.findUnusedName("Scale");
+        const newName = this.chartManager.findUnusedName("Scale");
 
         let inputType = valueType;
 
@@ -1024,12 +1024,12 @@ export class ChartStore extends BaseStore {
         }
 
         if (scaleClassID != null) {
-            let newScale = this.chartManager.createObject(`${scaleClassID}<${inputType},${outputType}>`) as Specification.Scale;
+            const newScale = this.chartManager.createObject(`${scaleClassID}<${inputType},${outputType}>`) as Specification.Scale;
             newScale.properties.name = this.chartManager.findUnusedName("Scale");
             newScale.inputType = valueType;
             newScale.outputType = outputType;
             this.chartManager.addScale(newScale);
-            let scaleClass = this.chartManager.getClassById(newScale._id) as Prototypes.Scales.ScaleClass;
+            const scaleClass = this.chartManager.getClassById(newScale._id) as Prototypes.Scales.ScaleClass;
             scaleClass.inferParameters(this.datasetStore.getExpressionVector(table, expression), hints);
             // console.log(this.datasetStore.getExpressionVector(table, expression));
 
@@ -1041,7 +1041,7 @@ export class ChartStore extends BaseStore {
 
     public isLegendExistForScale(scale: string) {
         // See if we already have a legend
-        for (let element of this.chart.elements) {
+        for (const element of this.chart.elements) {
             if (Prototypes.isType(element.classID, "legend")) {
                 if (element.properties.scale == scale) {
                     return true;
@@ -1052,9 +1052,9 @@ export class ChartStore extends BaseStore {
     }
 
     public toggleLegendForScale(scale: string) {
-        let scaleObject = getById(this.chartManager.chart.scales, scale);
+        const scaleObject = getById(this.chartManager.chart.scales, scale);
         // See if we already have a legend
-        for (let element of this.chart.elements) {
+        for (const element of this.chart.elements) {
             if (Prototypes.isType(element.classID, "legend")) {
                 if (element.properties.scale == scale) {
                     this.chartManager.removeChartElement(element);
@@ -1064,7 +1064,7 @@ export class ChartStore extends BaseStore {
         }
         // Categorical-color scale
         if (scaleObject.classID == "scale.categorical<string,color>") {
-            let newLegend = this.chartManager.createObject(`legend.categorical`) as Specification.ChartElement;
+            const newLegend = this.chartManager.createObject(`legend.categorical`) as Specification.ChartElement;
             newLegend.properties.scale = scale;
             newLegend.mappings.x = { type: "parent", parentAttribute: "x2" } as Specification.ParentMapping;
             newLegend.mappings.y = { type: "parent", parentAttribute: "y2" } as Specification.ParentMapping;
@@ -1073,7 +1073,7 @@ export class ChartStore extends BaseStore {
         }
         // Numerical-color scale
         if (scaleObject.classID == "scale.linear<number,color>" || scaleObject.classID == "scale.linear<integer,color>") {
-            let newLegend = this.chartManager.createObject(`legend.numerical-color`) as Specification.ChartElement;
+            const newLegend = this.chartManager.createObject(`legend.numerical-color`) as Specification.ChartElement;
             newLegend.properties.scale = scale;
             newLegend.mappings.x = { type: "parent", parentAttribute: "x2" } as Specification.ParentMapping;
             newLegend.mappings.y = { type: "parent", parentAttribute: "y2" } as Specification.ParentMapping;
@@ -1082,7 +1082,7 @@ export class ChartStore extends BaseStore {
         }
         // Numerical-number scale
         if (scaleObject.classID == "scale.linear<number,number>" || scaleObject.classID == "scale.linear<integer,number>") {
-            let newLegend = this.chartManager.createObject(`legend.numerical-number`) as Specification.ChartElement;
+            const newLegend = this.chartManager.createObject(`legend.numerical-number`) as Specification.ChartElement;
             newLegend.properties.scale = scale;
             newLegend.mappings.x1 = { type: "parent", parentAttribute: "x1" } as Specification.ParentMapping;
             newLegend.mappings.y1 = { type: "parent", parentAttribute: "y1" } as Specification.ParentMapping;
@@ -1094,11 +1094,11 @@ export class ChartStore extends BaseStore {
 
     public getRepresentativeGlyphState(glyph: Specification.Glyph) {
         // Is there a plot segment using this glyph?
-        for (let element of this.chart.elements) {
+        for (const element of this.chart.elements) {
             if (Prototypes.isType(element.classID, "plot-segment")) {
-                let plotSegment = element as Specification.PlotSegment;
+                const plotSegment = element as Specification.PlotSegment;
                 if (plotSegment.glyph == glyph._id) {
-                    let state = this.chartManager.getClassById(plotSegment._id).state as Specification.PlotSegmentState;
+                    const state = this.chartManager.getClassById(plotSegment._id).state as Specification.PlotSegmentState;
                     return state.glyphs[0];
                 }
             }
@@ -1111,7 +1111,7 @@ export class ChartStore extends BaseStore {
             this.markStores.forEach(m => m.destroy());
         }
         this.markStores = this.chart.glyphs.map(m => {
-            let table = this.datasetStore.getTable(m.table);
+            const table = this.datasetStore.getTable(m.table);
             return new GlyphStore(this, this.datasetStore.getTable(m.table), m);
         });
     }
@@ -1168,10 +1168,10 @@ export class ChartStore extends BaseStore {
         this.currentTool = null;
         this.currentToolOptions = null;
 
-        let tableName = this.datasetStore.dataset.tables[0].name;
-        let rows = this.datasetStore.getTable(tableName).rows;
-        let myGlyphID = uniqueID();
-        this.chart = <Specification.Chart>{
+        const tableName = this.datasetStore.dataset.tables[0].name;
+        const rows = this.datasetStore.getTable(tableName).rows;
+        const myGlyphID = uniqueID();
+        this.chart = {
             _id: uniqueID(),
             classID: "chart.rectangle",
             properties: {
@@ -1180,10 +1180,10 @@ export class ChartStore extends BaseStore {
                 backgroundOpacity: 1
             },
             mappings: {
-                marginTop: <Specification.ValueMapping>{ type: "value", value: 80 }
+                marginTop: { type: "value", value: 80 } as Specification.ValueMapping
             },
             glyphs: [
-                <Specification.Glyph>{
+                {
                     _id: myGlyphID,
                     classID: "glyph.rectangle",
                     properties: { name: "Glyph" },
@@ -1194,27 +1194,27 @@ export class ChartStore extends BaseStore {
                             classID: "mark.anchor",
                             properties: { name: "Anchor" },
                             mappings: {
-                                x: <Specification.ParentMapping>{ type: "parent", parentAttribute: "icx" },
-                                y: <Specification.ParentMapping>{ type: "parent", parentAttribute: "icy" }
+                                x: { type: "parent", parentAttribute: "icx" } as Specification.ParentMapping,
+                                y: { type: "parent", parentAttribute: "icy" } as Specification.ParentMapping
                             }
                         }
                     ],
                     mappings: {},
                     constraints: []
-                }
+                } as Specification.Glyph
             ],
             elements: [
-                <Specification.PlotSegment>{
+                {
                     _id: uniqueID(),
                     classID: "plot-segment.cartesian",
                     glyph: myGlyphID,
                     table: tableName,
                     filter: null,
                     mappings: {
-                        x1: <Specification.ParentMapping>{ type: "parent", parentAttribute: "x1" },
-                        y1: <Specification.ParentMapping>{ type: "parent", parentAttribute: "y1" },
-                        x2: <Specification.ParentMapping>{ type: "parent", parentAttribute: "x2" },
-                        y2: <Specification.ParentMapping>{ type: "parent", parentAttribute: "y2" }
+                        x1: { type: "parent", parentAttribute: "x1" } as Specification.ParentMapping,
+                        y1: { type: "parent", parentAttribute: "y1" } as Specification.ParentMapping,
+                        x2: { type: "parent", parentAttribute: "x2" } as Specification.ParentMapping,
+                        y2: { type: "parent", parentAttribute: "y2" } as Specification.ParentMapping
                     },
                     properties: {
                         name: "PlotSegment1",
@@ -1237,8 +1237,8 @@ export class ChartStore extends BaseStore {
                             }
                         }
                     }
-                },
-                <Specification.ChartElement>{
+                } as Specification.PlotSegment,
+                {
                     _id: uniqueID(),
                     classID: "mark.text",
                     properties: {
@@ -1248,23 +1248,23 @@ export class ChartStore extends BaseStore {
                         rotation: 0
                     },
                     mappings: {
-                        x: <Specification.ParentMapping>{ type: "parent", parentAttribute: "cx" },
-                        y: <Specification.ParentMapping>{ type: "parent", parentAttribute: "oy2" },
-                        text: <Specification.ValueMapping>{ type: "value", value: this.datasetStore.dataset.name },
-                        fontSize: <Specification.ValueMapping>{ type: "value", value: 24 },
-                        color: <Specification.ValueMapping>{ type: "value", value: { r: 0, g: 0, b: 0 } }
+                        x: { type: "parent", parentAttribute: "cx" } as Specification.ParentMapping,
+                        y: { type: "parent", parentAttribute: "oy2" } as Specification.ParentMapping,
+                        text: { type: "value", value: this.datasetStore.dataset.name } as Specification.ValueMapping,
+                        fontSize: { type: "value", value: 24 } as Specification.ValueMapping,
+                        color: { type: "value", value: { r: 0, g: 0, b: 0 } } as Specification.ValueMapping
                     }
-                }
+                } as Specification.ChartElement
             ],
             scales: [],
             constraints: []
-        };
+        } as Specification.Chart;
         this.chartManager = new Prototypes.ChartStateManager(this.chart, this.datasetStore.dataset);
         this.chartState = this.chartManager.chartState;
     }
 
     public deleteSelection() {
-        let sel = this.currentSelection;
+        const sel = this.currentSelection;
         this.currentSelection = null;
         this.emit(ChartStore.EVENT_SELECTION);
         if (sel instanceof ChartElementSelection) {
@@ -1288,8 +1288,8 @@ export class ChartStore extends BaseStore {
 
 
     public buildChartTemplate(): Specification.Template.ChartTemplate {
-        let builder = new ChartTemplateBuilder(this.chart, this.datasetStore.dataset, this.chartManager);
-        let template = builder.build();
+        const builder = new ChartTemplateBuilder(this.chart, this.datasetStore.dataset, this.chartManager);
+        const template = builder.build();
         return template;
     }
 }

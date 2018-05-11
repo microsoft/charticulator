@@ -1,4 +1,4 @@
-import { ItemMetadata, ItemDescription, ItemData, AbstractBackend } from "./abstract";
+import { AbstractBackend, ItemData, ItemDescription, ItemMetadata } from "./abstract";
 
 function s4() {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -22,16 +22,16 @@ export class IndexedDBBackend {
             if (this.database) {
                 resolve();
             } else {
-                let request = indexedDB.open(this.databaseName, 2);
+                const request = indexedDB.open(this.databaseName, 2);
                 request.onupgradeneeded = () => {
                     this.database = request.result;
-                    let itemsStore = this.database.createObjectStore("items", { keyPath: "id" });
+                    const itemsStore = this.database.createObjectStore("items", { keyPath: "id" });
                     itemsStore.createIndex("TypeIndex", "type");
                     itemsStore.createIndex("DataIDIndex", "dataID");
                     itemsStore.createIndex("NameIndex", "metadata.name");
                     itemsStore.createIndex("TimeCreatedIndex", "metadata.timeCreated");
                     itemsStore.createIndex("TimeModifiedIndex", "metadata.timeModified");
-                    let dataStore = this.database.createObjectStore("data", { keyPath: "id" });
+                    const dataStore = this.database.createObjectStore("data", { keyPath: "id" });
                 };
                 request.onerror = () => {
                     reject(new Error("could not open database"));
@@ -47,14 +47,14 @@ export class IndexedDBBackend {
     public list(type: string, orderBy: string = "timeCreated", start: number = 0, count: number = 50): Promise<{ items: ItemDescription[], totalCount: number }> {
         return this.open().then(() =>
             new Promise<{ items: ItemDescription[], totalCount: number }>((resolve, reject) => {
-                let tx = this.database.transaction("items", "readonly");
-                let store = tx.objectStore("items");
-                let request = store.index("TypeIndex").openCursor(type);
-                let result: ItemDescription[] = [];
+                const tx = this.database.transaction("items", "readonly");
+                const store = tx.objectStore("items");
+                const request = store.index("TypeIndex").openCursor(type);
+                const result: ItemDescription[] = [];
                 request.onsuccess = () => {
-                    let cursor = request.result as IDBCursorWithValue;
+                    const cursor = request.result as IDBCursorWithValue;
                     if (cursor) {
-                        let value = cursor.value as ItemDescription;
+                        const value = cursor.value as ItemDescription;
                         result.push(value);
                         cursor.continue();
                     } else {
@@ -76,13 +76,13 @@ export class IndexedDBBackend {
     public get(id: string): Promise<ItemData> {
         return this.open().then(() =>
             new Promise<ItemData>((resolve, reject) => {
-                let tx = this.database.transaction(["items", "data"], "readonly");
-                let itemsStore = tx.objectStore("items");
-                let dataStore = tx.objectStore("data");
-                let request = itemsStore.get(id);
+                const tx = this.database.transaction(["items", "data"], "readonly");
+                const itemsStore = tx.objectStore("items");
+                const dataStore = tx.objectStore("data");
+                const request = itemsStore.get(id);
                 request.onsuccess = () => {
-                    let item = request.result;
-                    let request2 = dataStore.get(item.dataID);
+                    const item = request.result;
+                    const request2 = dataStore.get(item.dataID);
                     request2.onsuccess = () => {
                         item.data = request2.result.data;
                         resolve(item);
@@ -101,26 +101,26 @@ export class IndexedDBBackend {
     public put(id: string, data: any, metadata?: ItemMetadata): Promise<void> {
         return this.open().then(() =>
             new Promise<void>((resolve, reject) => {
-                let tx = this.database.transaction(["items", "data"], "readwrite");
-                let itemsStore = tx.objectStore("items");
-                let dataStore = tx.objectStore("data");
-                let req1 = itemsStore.get(id);
+                const tx = this.database.transaction(["items", "data"], "readwrite");
+                const itemsStore = tx.objectStore("items");
+                const dataStore = tx.objectStore("data");
+                const req1 = itemsStore.get(id);
                 req1.onerror = () => {
                     reject(new Error("could not write to the database"));
                 };
                 req1.onsuccess = () => {
-                    let original: ItemData = req1.result;
+                    const original: ItemData = req1.result;
                     metadata.timeCreated = original.metadata.timeCreated;
                     metadata.timeModified = new Date().getTime();
-                    let obj = {
-                        id: id,
+                    const obj = {
+                        id,
                         dataID: req1.result.dataID,
                         type: original.type,
-                        metadata: metadata
+                        metadata
                     };
-                    let dataObj = {
+                    const dataObj = {
                         id: req1.result.dataID,
-                        data: data
+                        data
                     };
                     dataStore.put(dataObj);
                     itemsStore.put(obj);
@@ -138,20 +138,20 @@ export class IndexedDBBackend {
     public create(type: string, data: any, metadata?: ItemMetadata): Promise<string> {
         return this.open().then(() =>
             new Promise<string>((resolve, reject) => {
-                let tx = this.database.transaction(["items", "data"], "readwrite");
-                let itemsStore = tx.objectStore("items");
-                let dataStore = tx.objectStore("data");
+                const tx = this.database.transaction(["items", "data"], "readwrite");
+                const itemsStore = tx.objectStore("items");
+                const dataStore = tx.objectStore("data");
                 metadata.timeCreated = new Date().getTime();
                 metadata.timeModified = metadata.timeCreated;
-                let obj = {
+                const obj = {
                     id: uuid(),
                     dataID: uuid(),
-                    type: type,
-                    metadata: metadata
+                    type,
+                    metadata
                 };
-                let dataObj = {
+                const dataObj = {
                     id: obj.dataID,
-                    data: data
+                    data
                 };
                 dataStore.put(dataObj);
                 itemsStore.put(obj);
@@ -168,12 +168,12 @@ export class IndexedDBBackend {
     public delete(id: string): Promise<void> {
         return this.open().then(() =>
             new Promise<void>((resolve, reject) => {
-                let tx = this.database.transaction(["items", "data"], "readwrite");
-                let itemsStore = tx.objectStore("items");
-                let dataStore = tx.objectStore("data");
-                let request = itemsStore.get(id);
+                const tx = this.database.transaction(["items", "data"], "readwrite");
+                const itemsStore = tx.objectStore("items");
+                const dataStore = tx.objectStore("data");
+                const request = itemsStore.get(id);
                 request.onsuccess = () => {
-                    let dataID = request.result.dataID;
+                    const dataID = request.result.dataID;
                     itemsStore.delete(id);
                     dataStore.delete(dataID);
                     tx.oncomplete = () => {

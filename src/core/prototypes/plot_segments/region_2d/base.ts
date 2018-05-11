@@ -1,15 +1,15 @@
-import * as Specification from "../../../specification";
 import * as Dataset from "../../../dataset";
-import * as Graphics from "../../../graphics";
 import * as Expression from "../../../expression";
+import * as Graphics from "../../../graphics";
+import * as Specification from "../../../specification";
 
-import { ConstraintSolver, ConstraintStrength, VariableStrength, Variable, ConstraintPlugins } from "../../../solver";
+import { getById, Point, uniqueID } from "../../../common";
+import { ConstraintPlugins, ConstraintSolver, ConstraintStrength, Variable, VariableStrength } from "../../../solver";
+import { AttributeDescription, BoundingBox, BuildConstraintsContext, Controls, DropZones, Handles, OrderDescription, SnappingGuides } from "../../common";
 import { DataflowManager, DataflowTable } from "../../dataflow/index";
-import { SnappingGuides, AttributeDescription, DropZones, Handles, OrderDescription, BoundingBox, Controls, BuildConstraintsContext } from "../../common";
-import { Point, uniqueID, getById } from "../../../common";
 
-import { PlotSegmentClass } from "../index";
 import { buildAxisWidgets, getCategoricalAxis } from "../axis";
+import { PlotSegmentClass } from "../index";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
     type: "dodge-x" | "dodge-y" | "grid" | "packing";
@@ -99,7 +99,7 @@ export interface Region2DConfiguration {
 export class CrossFitter {
     private solver: ConstraintSolver;
     private mode: "min" | "max";
-    private candidate: [number, Variable, [number, Variable][], number];
+    private candidate: [number, Variable, Array<[number, Variable]>, number];
 
     constructor(solver: ConstraintSolver, mode: "min" | "max") {
         this.solver = solver;
@@ -111,7 +111,7 @@ export class CrossFitter {
         return this.addComplex(value, src, [[1, dst]]);
     }
 
-    public addComplex(value: number, src: Variable, dst: [number, Variable][], dstBias: number = 0) {
+    public addComplex(value: number, src: Variable, dst: Array<[number, Variable]>, dstBias: number = 0) {
         if (this.candidate == null) {
             this.candidate = [value, src, dst, dstBias];
         } else {
@@ -157,11 +157,11 @@ export class DodgingFitters {
 }
 
 export class SublayoutGroup {
-    group: number[];
-    x1: Variable;
-    y1: Variable;
-    x2: Variable;
-    y2: Variable;
+    public group: number[];
+    public x1: Variable;
+    public y1: Variable;
+    public x2: Variable;
+    public y2: Variable;
 }
 
 export class Region2DConstraintBuilder {
@@ -188,11 +188,11 @@ export class Region2DConstraintBuilder {
         return this.plotSegment.parent.dataflow.cache.parse(expr);
     }
 
-    public groupMarksByCategories(categories: { expression: string, categories: string[] }[]): number[][] {
+    public groupMarksByCategories(categories: Array<{ expression: string, categories: string[] }>): number[][] {
         // Prepare categories
-        let category2Index = new Map<string, number>();
-        let categoriesParsed = categories.map(c => {
-            let imap = new Map<string, number>();
+        const category2Index = new Map<string, number>();
+        const categoriesParsed = categories.map(c => {
+            const imap = new Map<string, number>();
             for (let i = 0; i < c.categories.length; i++) {
                 imap.set(c.categories[i], i);
             }
@@ -205,26 +205,26 @@ export class Region2DConstraintBuilder {
         });
         let k = 1;
         for (let i = categoriesParsed.length - 1; i >= 0; i--) {
-            let c = categoriesParsed[i];
+            const c = categoriesParsed[i];
             c.stride = k;
             k *= c.categories.length;
         }
-        let totalLength = k;
+        const totalLength = k;
 
         // Gather result
-        let result = new Array<number[]>(totalLength);
+        const result = new Array<number[]>(totalLength);
         for (let i = 0; i < totalLength; i++) {
             result[i] = [];
         }
 
-        let dateRowIndices = this.plotSegment.state.dataRowIndices;
-        let table = this.getTableContext();
+        const dateRowIndices = this.plotSegment.state.dataRowIndices;
+        const table = this.getTableContext();
         // Gather places
         for (let i = 0; i < dateRowIndices.length; i++) {
-            let row = table.getRowContext(dateRowIndices[i]);
+            const row = table.getRowContext(dateRowIndices[i]);
             let place = 0;
-            for (let c of categoriesParsed) {
-                let value = c.expression.getStringValue(row);
+            for (const c of categoriesParsed) {
+                const value = c.expression.getStringValue(row);
                 place += c.indexMap.get(value) * c.stride;
             }
             // Make sure the place is valid
@@ -237,16 +237,16 @@ export class Region2DConstraintBuilder {
     }
 
     public orderMarkGroups(groups: SublayoutGroup[]) {
-        let order = this.plotSegment.object.properties.sublayout.order;
-        let dateRowIndices = this.plotSegment.state.dataRowIndices;
-        let table = this.getTableContext();
+        const order = this.plotSegment.object.properties.sublayout.order;
+        const dateRowIndices = this.plotSegment.state.dataRowIndices;
+        const table = this.getTableContext();
         // Sort results
         if (order != null) {
-            let orderLambda = this.getExpression(order).getValue(table) as Function;
-            let compare = (i: number, j: number) => {
-                let ri = table.getRow(dateRowIndices[i]);
-                let rj = table.getRow(dateRowIndices[j]);
-                let r = orderLambda(ri, rj) as number;
+            const orderLambda = this.getExpression(order).getValue(table) as Function;
+            const compare = (i: number, j: number) => {
+                const ri = table.getRow(dateRowIndices[i]);
+                const rj = table.getRow(dateRowIndices[j]);
+                const r = orderLambda(ri, rj) as number;
                 // Stable sort
                 if (r == 0) {
                     return i - j;
@@ -268,20 +268,20 @@ export class Region2DConstraintBuilder {
 
     /** Create common constraints for cartesian scale: mark rotation should be set to zero */
     public common() {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
         return this;
     }
 
     /** Make sure gapX correctly correspond to gapXRatio */
     public gapX(length: number, ratio: number) {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
-        let attrs = state.attributes;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
+        const attrs = state.attributes;
 
-        let [gapX, x1, x2] = solver.attrs(attrs, ["gapX", this.x1Name, this.x2Name]);
+        const [gapX, x1, x2] = solver.attrs(attrs, ["gapX", this.x1Name, this.x2Name]);
 
         solver.addLinear(ConstraintStrength.HARD, ratio * (props.marginX2 + props.marginX2),
             [[length - 1, gapX]],
@@ -291,12 +291,12 @@ export class Region2DConstraintBuilder {
 
     /** Make sure gapY correctly correspond to gapYRatio */
     public gapY(length: number, ratio: number) {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
-        let attrs = state.attributes;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
+        const attrs = state.attributes;
 
-        let [gapY, y1, y2] = solver.attrs(attrs, ["gapY", this.y1Name, this.y2Name]);
+        const [gapY, y1, y2] = solver.attrs(attrs, ["gapY", this.y1Name, this.y2Name]);
         solver.addLinear(ConstraintStrength.HARD, ratio * (props.marginX2 + props.marginX2),
             [[length - 1, gapY]],
             [[ratio, y2], [-ratio, y1]]
@@ -333,24 +333,24 @@ export class Region2DConstraintBuilder {
 
     /** Map elements according to numerical/categorical mapping */
     public numericalMapping(axis: "x" | "y"): void {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
-        let attrs = state.attributes;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
+        const attrs = state.attributes;
+        const dataIndices = state.dataRowIndices;
 
-        let table = this.getTableContext();
+        const table = this.getTableContext();
 
         switch (axis) {
             case "x": {
-                let data = props.xData;
+                const data = props.xData;
                 if (data.type == "numerical") {
-                    let [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
-                    let expr = this.getExpression(data.expression);
-                    for (let [index, markState] of state.glyphs.entries()) {
-                        let rowContext = table.getRowContext(dataIndices[index]);
-                        let value = expr.getNumberValue(rowContext);
-                        let t = (value - data.domainMin) / (data.domainMax - data.domainMin);
+                    const [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
+                    const expr = this.getExpression(data.expression);
+                    for (const [index, markState] of state.glyphs.entries()) {
+                        const rowContext = table.getRowContext(dataIndices[index]);
+                        const value = expr.getNumberValue(rowContext);
+                        const t = (value - data.domainMin) / (data.domainMax - data.domainMin);
                         solver.addLinear(ConstraintStrength.HARD, (1 - t) * props.marginX1 - t * props.marginX2,
                             [[1 - t, x1], [t, x2]],
                             [[1, solver.attr(markState.attributes, "x")]]
@@ -358,15 +358,15 @@ export class Region2DConstraintBuilder {
                     }
                 }
                 if (data.type == "categorical") {
-                    let [x1, x2, y1, y2, gapX] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapX"]);
-                    let expr = this.getExpression(data.expression);
-                    for (let [index, markState] of state.glyphs.entries()) {
-                        let rowContext = table.getRowContext(dataIndices[index]);
-                        let value = expr.getStringValue(rowContext);
+                    const [x1, x2, y1, y2, gapX] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapX"]);
+                    const expr = this.getExpression(data.expression);
+                    for (const [index, markState] of state.glyphs.entries()) {
+                        const rowContext = table.getRowContext(dataIndices[index]);
+                        const value = expr.getStringValue(rowContext);
 
                         this.gapX(data.categories.length, data.gapRatio);
 
-                        let i = data.categories.indexOf(value);
+                        const i = data.categories.indexOf(value);
                         solver.addLinear(ConstraintStrength.HARD, (data.categories.length - i - 0.5) * props.marginX1 - (i + 0.5) * props.marginX2,
                             [[i + 0.5, x2], [data.categories.length - i - 0.5, x1], [-data.categories.length / 2 + i + 0.5, gapX]],
                             [[data.categories.length, solver.attr(markState.attributes, "x")]]
@@ -376,14 +376,14 @@ export class Region2DConstraintBuilder {
                 // solver.addEquals(ConstraintWeight.HARD, x, x1);
             } break;
             case "y": {
-                let data = props.yData;
+                const data = props.yData;
                 if (data.type == "numerical") {
-                    let [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
-                    let expr = this.getExpression(data.expression);
-                    for (let [index, markState] of state.glyphs.entries()) {
-                        let rowContext = table.getRowContext(dataIndices[index]);
-                        let value = expr.getNumberValue(rowContext);
-                        let t = (value - data.domainMin) / (data.domainMax - data.domainMin);
+                    const [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
+                    const expr = this.getExpression(data.expression);
+                    for (const [index, markState] of state.glyphs.entries()) {
+                        const rowContext = table.getRowContext(dataIndices[index]);
+                        const value = expr.getNumberValue(rowContext);
+                        const t = (value - data.domainMin) / (data.domainMax - data.domainMin);
                         solver.addLinear(ConstraintStrength.HARD, (t - 1) * props.marginY2 + t * props.marginY1,
                             [[1 - t, y1], [t, y2]],
                             [[1, solver.attr(markState.attributes, "y")]]
@@ -391,15 +391,15 @@ export class Region2DConstraintBuilder {
                     }
                 }
                 if (data.type == "categorical") {
-                    let [x1, x2, y1, y2, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapY"]);
-                    let expr = this.getExpression(data.expression);
-                    for (let [index, markState] of state.glyphs.entries()) {
-                        let rowContext = table.getRowContext(dataIndices[index]);
-                        let value = expr.getStringValue(rowContext);
+                    const [x1, x2, y1, y2, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapY"]);
+                    const expr = this.getExpression(data.expression);
+                    for (const [index, markState] of state.glyphs.entries()) {
+                        const rowContext = table.getRowContext(dataIndices[index]);
+                        const value = expr.getStringValue(rowContext);
 
                         this.gapY(data.categories.length, data.gapRatio);
 
-                        let i = data.categories.indexOf(value);
+                        const i = data.categories.indexOf(value);
                         solver.addLinear(ConstraintStrength.HARD, (data.categories.length - i - 0.5) * props.marginY1 - (i + 0.5) * props.marginY2,
                             [[i + 0.5, y2], [data.categories.length - i - 0.5, y1], [-data.categories.length / 2 + i + 0.5, gapY]],
                             [[data.categories.length, solver.attr(markState.attributes, "y")]]
@@ -412,20 +412,20 @@ export class Region2DConstraintBuilder {
     }
 
     public groupMarksByCategoricalMapping(axis: "x" | "y" | "xy") {
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
         switch (axis) {
             case "x": {
-                let data = props.xData;
+                const data = props.xData;
                 return this.groupMarksByCategories([{ categories: data.categories, expression: data.expression }]);
             }
             case "y": {
-                let data = props.yData;
+                const data = props.yData;
                 return this.groupMarksByCategories([{ categories: data.categories, expression: data.expression }]);
             }
             case "xy": {
-                let xData = props.xData;
-                let yData = props.yData;
+                const xData = props.xData;
+                const yData = props.yData;
                 return this.groupMarksByCategories([
                     { categories: xData.categories, expression: xData.expression },
                     { categories: yData.categories, expression: yData.expression }
@@ -435,37 +435,37 @@ export class Region2DConstraintBuilder {
     }
 
     public categoricalMapping(axis: "x" | "y" | "xy", sublayout: boolean): void {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const dataIndices = state.dataRowIndices;
 
-        let categoryMarks = this.groupMarksByCategoricalMapping(axis);
+        const categoryMarks = this.groupMarksByCategoricalMapping(axis);
 
         switch (axis) {
             case "x": {
-                let data = props.xData;
-                let [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
+                const data = props.xData;
+                const [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
 
-                let axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
+                const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
 
-                let sublayoutGroups: SublayoutGroup[] = [];
+                const sublayoutGroups: SublayoutGroup[] = [];
                 for (let cindex = 0; cindex < data.categories.length; cindex++) {
-                    let [t1, t2] = axis.ranges[cindex];
+                    const [t1, t2] = axis.ranges[cindex];
 
-                    let vx1Expr = [[t1, x2], [1 - t1, x1]] as [number, Variable][];
-                    let vx2Expr = [[t2, x2], [1 - t2, x1]] as [number, Variable][];
+                    const vx1Expr = [[t1, x2], [1 - t1, x1]] as Array<[number, Variable]>;
+                    const vx2Expr = [[t2, x2], [1 - t2, x1]] as Array<[number, Variable]>;
 
-                    let vx1 = solver.attr({ value: solver.getLinear(...vx1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
-                    let vx2 = solver.attr({ value: solver.getLinear(...vx2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                    const vx1 = solver.attr({ value: solver.getLinear(...vx1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                    const vx2 = solver.attr({ value: solver.getLinear(...vx2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
 
                     solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
                     solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
 
                     sublayoutGroups.push({
                         group: categoryMarks[cindex],
-                        x1: vx1, y1: y1, x2: vx2, y2: y2
+                        x1: vx1, y1, x2: vx2, y2
                     });
                 }
                 if (sublayout) {
@@ -475,27 +475,27 @@ export class Region2DConstraintBuilder {
                 }
             } break;
             case "y": {
-                let data = props.yData;
-                let [x1, x2, y1, y2, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapY"]);
+                const data = props.yData;
+                const [x1, x2, y1, y2, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapY"]);
 
-                let axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
+                const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
 
-                let sublayoutGroups: SublayoutGroup[] = [];
+                const sublayoutGroups: SublayoutGroup[] = [];
                 for (let cindex = 0; cindex < data.categories.length; cindex++) {
-                    let [t1, t2] = axis.ranges[cindex];
+                    const [t1, t2] = axis.ranges[cindex];
 
-                    let vy1Expr = [[t1, y2], [1 - t1, y1]] as [number, Variable][];
-                    let vy2Expr = [[t2, y2], [1 - t2, y1]] as [number, Variable][];
+                    const vy1Expr = [[t1, y2], [1 - t1, y1]] as Array<[number, Variable]>;
+                    const vy2Expr = [[t2, y2], [1 - t2, y1]] as Array<[number, Variable]>;
 
-                    let vy1 = solver.attr({ value: solver.getLinear(...vy1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
-                    let vy2 = solver.attr({ value: solver.getLinear(...vy2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                    const vy1 = solver.attr({ value: solver.getLinear(...vy1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                    const vy2 = solver.attr({ value: solver.getLinear(...vy2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
 
                     solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
                     solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
 
                     sublayoutGroups.push({
                         group: categoryMarks[cindex],
-                        x1: x1, y1: vy1, x2: x2, y2: vy2
+                        x1, y1: vy1, x2, y2: vy2
                     });
                 }
                 if (sublayout) {
@@ -505,29 +505,29 @@ export class Region2DConstraintBuilder {
                 }
             } break;
             case "xy": {
-                let xData = props.xData;
-                let yData = props.yData;
-                let [x1, x2, y1, y2, gapX, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapX", "gapY"]);
+                const xData = props.xData;
+                const yData = props.yData;
+                const [x1, x2, y1, y2, gapX, gapY] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name, "gapX", "gapY"]);
 
-                let xAxis = getCategoricalAxis(xData, this.config.xAxisPrePostGap);
-                let yAxis = getCategoricalAxis(yData, this.config.yAxisPrePostGap);
+                const xAxis = getCategoricalAxis(xData, this.config.xAxisPrePostGap);
+                const yAxis = getCategoricalAxis(yData, this.config.yAxisPrePostGap);
 
-                let sublayoutGroups: SublayoutGroup[] = [];
+                const sublayoutGroups: SublayoutGroup[] = [];
                 for (let yIndex = 0; yIndex < yData.categories.length; yIndex++) {
-                    let [ty1, ty2] = yAxis.ranges[yIndex];
+                    const [ty1, ty2] = yAxis.ranges[yIndex];
                     for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
-                        let [tx1, tx2] = xAxis.ranges[xIndex];
+                        const [tx1, tx2] = xAxis.ranges[xIndex];
 
-                        let vx1Expr = [[tx1, x2], [1 - tx1, x1]] as [number, Variable][];
-                        let vx2Expr = [[tx2, x2], [1 - tx2, x1]] as [number, Variable][];
+                        const vx1Expr = [[tx1, x2], [1 - tx1, x1]] as Array<[number, Variable]>;
+                        const vx2Expr = [[tx2, x2], [1 - tx2, x1]] as Array<[number, Variable]>;
 
-                        let vy1Expr = [[ty1, y2], [1 - ty1, y1]] as [number, Variable][];
-                        let vy2Expr = [[ty2, y2], [1 - ty2, y1]] as [number, Variable][];
+                        const vy1Expr = [[ty1, y2], [1 - ty1, y1]] as Array<[number, Variable]>;
+                        const vy2Expr = [[ty2, y2], [1 - ty2, y1]] as Array<[number, Variable]>;
 
-                        let vx1 = solver.attr({ value: solver.getLinear(...vx1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
-                        let vx2 = solver.attr({ value: solver.getLinear(...vx2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
-                        let vy1 = solver.attr({ value: solver.getLinear(...vy1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
-                        let vy2 = solver.attr({ value: solver.getLinear(...vy2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                        const vx1 = solver.attr({ value: solver.getLinear(...vx1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                        const vx2 = solver.attr({ value: solver.getLinear(...vx2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                        const vy1 = solver.attr({ value: solver.getLinear(...vy1Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
+                        const vy2 = solver.attr({ value: solver.getLinear(...vy2Expr) }, "value", { strength: VariableStrength.NONE, edit: true });
 
                         solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
                         solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
@@ -551,17 +551,17 @@ export class Region2DConstraintBuilder {
 
     public categoricalHandles(axis: "x" | "y" | "xy", sublayout: boolean): Region2DHandleDescription[] {
         let handles: Region2DHandleDescription[] = [];
-        let props = this.plotSegment.object.properties;
-        let x1 = this.plotSegment.state.attributes[this.x1Name] as number;
-        let y1 = this.plotSegment.state.attributes[this.y1Name] as number;
-        let x2 = this.plotSegment.state.attributes[this.x2Name] as number;
-        let y2 = this.plotSegment.state.attributes[this.y2Name] as number;
+        const props = this.plotSegment.object.properties;
+        const x1 = this.plotSegment.state.attributes[this.x1Name] as number;
+        const y1 = this.plotSegment.state.attributes[this.y1Name] as number;
+        const x2 = this.plotSegment.state.attributes[this.x2Name] as number;
+        const y2 = this.plotSegment.state.attributes[this.y2Name] as number;
 
         // We are using sublayouts here
         if (sublayout) {
-            let categoryMarks = this.groupMarksByCategoricalMapping(axis);
-            let xAxis = (axis == "x" || axis == "xy") ? getCategoricalAxis(props.xData, this.config.xAxisPrePostGap) : null;
-            let yAxis = (axis == "y" || axis == "xy") ? getCategoricalAxis(props.yData, this.config.yAxisPrePostGap) : null;
+            const categoryMarks = this.groupMarksByCategoricalMapping(axis);
+            const xAxis = (axis == "x" || axis == "xy") ? getCategoricalAxis(props.xData, this.config.xAxisPrePostGap) : null;
+            const yAxis = (axis == "y" || axis == "xy") ? getCategoricalAxis(props.yData, this.config.yAxisPrePostGap) : null;
             handles = handles.concat(this.sublayoutHandles(categoryMarks.map((x, i) => {
                 let ix = i, iy = i;
                 if (axis == "xy") {
@@ -579,11 +579,11 @@ export class Region2DConstraintBuilder {
         }
 
         if (axis == "x" || axis == "xy") {
-            let data = props.xData;
-            let axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
+            const data = props.xData;
+            const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
             for (let i = 0; i < axis.ranges.length - 1; i++) {
-                let p1 = axis.ranges[i][1];
-                let p2 = axis.ranges[i + 1][0];
+                const p1 = axis.ranges[i][1];
+                const p2 = axis.ranges[i + 1][0];
                 handles.push({
                     type: "gap",
                     gap: {
@@ -598,11 +598,11 @@ export class Region2DConstraintBuilder {
             }
         }
         if (axis == "y" || axis == "xy") {
-            let data = props.yData;
-            let axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
+            const data = props.yData;
+            const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
             for (let i = 0; i < axis.ranges.length - 1; i++) {
-                let p1 = axis.ranges[i][1];
-                let p2 = axis.ranges[i + 1][0];
+                const p1 = axis.ranges[i][1];
+                const p2 = axis.ranges[i + 1][0];
                 handles.push({
                     type: "gap",
                     gap: {
@@ -620,63 +620,63 @@ export class Region2DConstraintBuilder {
     }
 
     public stacking(axis: "x" | "y"): void {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
-        let attrs = state.attributes;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
+        const attrs = state.attributes;
+        const dataIndices = state.dataRowIndices;
 
-        let [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
+        const [x1, x2, y1, y2] = solver.attrs(attrs, [this.x1Name, this.x2Name, this.y1Name, this.y2Name]);
 
-        let count = dataIndices.length;
+        const count = dataIndices.length;
 
-        let doStack = count <= 36;
+        const doStack = count <= 36;
 
-        for (let [index, markState] of state.glyphs.entries()) {
+        for (const [index, markState] of state.glyphs.entries()) {
             switch (axis) {
                 case "x": {
-                    let y = solver.attr(attrs, "y");
-                    let [gapX] = solver.attrs(attrs, ["gapX"]);
+                    const y = solver.attr(attrs, "y");
+                    const [gapX] = solver.attrs(attrs, ["gapX"]);
                     if (doStack) {
                         if (index > 0) {
-                            let x2Prev = solver.attr(state.glyphs[index - 1].attributes, "x2");
-                            let x1This = solver.attr(state.glyphs[index].attributes, "x1");
+                            const x2Prev = solver.attr(state.glyphs[index - 1].attributes, "x2");
+                            const x1This = solver.attr(state.glyphs[index].attributes, "x1");
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, x2Prev], [-1, x1This], [1, gapX]]);
                         }
                         if (index == 0) {
-                            let x1This = solver.attr(state.glyphs[index].attributes, "x1");
+                            const x1This = solver.attr(state.glyphs[index].attributes, "x1");
                             // solver.addEquals(ConstraintWeight.HARD, x1, x1This);
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, x1]], [[1, x1This]]);
                         }
                         if (index == state.glyphs.length - 1) {
-                            let x2This = solver.attr(state.glyphs[index].attributes, "x2");
+                            const x2This = solver.attr(state.glyphs[index].attributes, "x2");
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, x2]], [[1, x2This]]);
                         }
                     } else {
-                        let t = (index + 0.5) / count;
+                        const t = (index + 0.5) / count;
                         solver.addLinear(ConstraintStrength.HARD, 0, [[1 - t, x1], [t, x2]], [[1, solver.attr(markState.attributes, "x")]]);
                         solver.addLinear(ConstraintStrength.WEAK, 0, [[1, x2], [-1, x1]], [[count, solver.attr(markState.attributes, "width")], [count - 1, gapX]]);
                     }
                 } break;
                 case "y": {
-                    let x = solver.attr(attrs, "x");
-                    let [gapY] = solver.attrs(attrs, ["gapY"]);
+                    const x = solver.attr(attrs, "x");
+                    const [gapY] = solver.attrs(attrs, ["gapY"]);
                     if (doStack) {
                         if (index > 0) {
-                            let y2Prev = solver.attr(state.glyphs[index - 1].attributes, "y2");
-                            let y1This = solver.attr(state.glyphs[index].attributes, "y1");
+                            const y2Prev = solver.attr(state.glyphs[index - 1].attributes, "y2");
+                            const y1This = solver.attr(state.glyphs[index].attributes, "y1");
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, y2Prev], [-1, y1This], [1, gapY]]);
                         }
                         if (index == 0) {
-                            let y1This = solver.attr(state.glyphs[index].attributes, "y1");
+                            const y1This = solver.attr(state.glyphs[index].attributes, "y1");
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, y1]], [[1, y1This]]);
                         }
                         if (index == state.glyphs.length - 1) {
-                            let y2This = solver.attr(state.glyphs[index].attributes, "y2");
+                            const y2This = solver.attr(state.glyphs[index].attributes, "y2");
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, y2]], [[1, y2This]]);
                         }
                     } else {
-                        let t = (index + 0.5) / count;
+                        const t = (index + 0.5) / count;
                         solver.addLinear(ConstraintStrength.HARD, 0, [[1 - t, y2], [t, y1]], [[1, solver.attr(markState.attributes, "y")]]);
                         solver.addLinear(ConstraintStrength.WEAK, 0, [[1, y2], [-1, y1]], [[count, solver.attr(markState.attributes, "height")], [count - 1, gapY]]);
                     }
@@ -695,13 +695,13 @@ export class Region2DConstraintBuilder {
     }
 
     public alignment(axis: "x" | "y", mode: "start" | "middle" | "end") {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let [x1, y1, x2, y2] = solver.attrs(attrs, [this.x1Name, this.y1Name, this.x2Name, this.y2Name]);
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const [x1, y1, x2, y2] = solver.attrs(attrs, [this.x1Name, this.y1Name, this.x2Name, this.y2Name]);
         switch (axis) {
             case "x": {
-                for (let [index, markState] of state.glyphs.entries()) {
+                for (const [index, markState] of state.glyphs.entries()) {
                     switch (mode) {
                         case "start": {
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, x1]], [[1, solver.attr(markState.attributes, "x1")]]);
@@ -716,7 +716,7 @@ export class Region2DConstraintBuilder {
                 }
             } break;
             case "y": {
-                for (let [index, markState] of state.glyphs.entries()) {
+                for (const [index, markState] of state.glyphs.entries()) {
                     switch (mode) {
                         case "start": {
                             solver.addLinear(ConstraintStrength.HARD, 0, [[1, y1]], [[1, solver.attr(markState.attributes, "y1")]]);
@@ -734,13 +734,13 @@ export class Region2DConstraintBuilder {
     }
 
     public fitting(axis: "x" | "y"): void {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const dataIndices = state.dataRowIndices;
 
-        let minFitter = new CrossFitter(solver, "min");
-        let maxFitter = new CrossFitter(solver, "max");
+        const minFitter = new CrossFitter(solver, "min");
+        const maxFitter = new CrossFitter(solver, "max");
         let refMin: Variable, refMax: Variable;
         if (axis == "x") {
             refMin = solver.attr(attrs, this.x1Name);
@@ -749,14 +749,14 @@ export class Region2DConstraintBuilder {
             refMin = solver.attr(attrs, this.y1Name);
             refMax = solver.attr(attrs, this.y2Name);
         }
-        for (let [index, markState] of state.glyphs.entries()) {
+        for (const [index, markState] of state.glyphs.entries()) {
             let a1name = "x1", a2name = "x2";
             if (axis == "y") {
                 a1name = "y1";
                 a2name = "y2";
             }
-            let attr1 = markState.attributes[a1name] as number;
-            let attr2 = markState.attributes[a2name] as number;
+            const attr1 = markState.attributes[a1name] as number;
+            const attr2 = markState.attributes[a2name] as number;
             minFitter.add(attr1, solver.attr(markState.attributes, a1name), refMin);
             minFitter.add(attr2, solver.attr(markState.attributes, a2name), refMin);
             maxFitter.add(attr1, solver.attr(markState.attributes, a1name), refMax);
@@ -767,20 +767,20 @@ export class Region2DConstraintBuilder {
     }
 
     public fitGroups(groups: SublayoutGroup[], axis: "x" | "y" | "xy") {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let fitters = new DodgingFitters(solver);
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const fitters = new DodgingFitters(solver);
 
-        let alignment = props.sublayout.align;
+        const alignment = props.sublayout.align;
 
         groups.forEach(group => {
-            let markStates = group.group.map(index => state.glyphs[index]);
-            let { x1, y1, x2, y2 } = group;
+            const markStates = group.group.map(index => state.glyphs[index]);
+            const { x1, y1, x2, y2 } = group;
 
             for (let index = 0; index < markStates.length; index++) {
-                let m1 = markStates[index];
+                const m1 = markStates[index];
                 if (axis == "x" || axis == "xy") {
                     if (alignment.x == "start") {
                         solver.addEquals(ConstraintStrength.WEAK, solver.attr(m1.attributes, "x1"), x1);
@@ -819,12 +819,12 @@ export class Region2DConstraintBuilder {
 
     public sublayout(groups: SublayoutGroup[]) {
         this.orderMarkGroups(groups);
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
         let maxGroupLength = 0;
-        for (let g of groups) {
+        for (const g of groups) {
             if (g.group.length > maxGroupLength) {
                 maxGroupLength = g.group.length;
             }
@@ -844,18 +844,18 @@ export class Region2DConstraintBuilder {
     }
 
     public sublayoutDodging(groups: SublayoutGroup[], direction: "x" | "y", enablePrePostGap: boolean) {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const dataIndices = state.dataRowIndices;
 
-        let fitters = new DodgingFitters(solver);
+        const fitters = new DodgingFitters(solver);
 
-        let alignment = props.sublayout.align;
+        const alignment = props.sublayout.align;
 
         let maxCount = 0;
-        for (let g of groups) {
+        for (const g of groups) {
             maxCount = Math.max(maxCount, g.group.length);
         }
         let dodgeGapRatio: number = 0;
@@ -869,17 +869,17 @@ export class Region2DConstraintBuilder {
         }
 
         groups.forEach(group => {
-            let markStates = group.group.map(index => state.glyphs[index]);
-            let { x1, y1, x2, y2 } = group;
+            const markStates = group.group.map(index => state.glyphs[index]);
+            const { x1, y1, x2, y2 } = group;
 
-            let count = markStates.length;
+            const count = markStates.length;
             // If nothing there, skip
-            if (count == 0) return;
+            if (count == 0) { return; }
 
             for (let index = 0; index < markStates.length; index++) {
-                let m1 = markStates[index];
+                const m1 = markStates[index];
                 if (index > 0) {
-                    let m0 = markStates[index - 1];
+                    const m0 = markStates[index - 1];
                     switch (direction) {
                         case "x": {
                             solver.addLinear(ConstraintStrength.HARD, 0, [[dodgeGapRatio, x2], [-dodgeGapRatio, x1], [1, solver.attr(m0.attributes, "x2")], [-1, solver.attr(m1.attributes, "x1")]]);
@@ -900,7 +900,7 @@ export class Region2DConstraintBuilder {
                         if (alignment.y == "end") {
                             solver.addEquals(ConstraintStrength.HARD, solver.attr(m1.attributes, "y2"), y2);
                         } else {
-                            let presolveHeight = this.getGlyphPreSolveAttributes(dataIndices[group.group[index]]).height;
+                            const presolveHeight = this.getGlyphPreSolveAttributes(dataIndices[group.group[index]]).height;
                             if (presolveHeight == presolveHeight) {
                                 fitters.yMax.add(presolveHeight, solver.attr(m1.attributes, "y2"), y2);
                             } else {
@@ -928,12 +928,12 @@ export class Region2DConstraintBuilder {
                     } break;
                 }
             }
-            let m1 = markStates[0];
-            let mN = markStates[markStates.length - 1];
+            const m1 = markStates[0];
+            const mN = markStates[markStates.length - 1];
             switch (direction) {
                 case "x": {
-                    let x1WithGap: [number, Variable][] = [[1, x1], [dodgeGapOffset, x2], [-dodgeGapOffset, x1]];
-                    let x2WithGap: [number, Variable][] = [[1, x2], [dodgeGapOffset, x1], [-dodgeGapOffset, x2]];
+                    const x1WithGap: Array<[number, Variable]> = [[1, x1], [dodgeGapOffset, x2], [-dodgeGapOffset, x1]];
+                    const x2WithGap: Array<[number, Variable]> = [[1, x2], [dodgeGapOffset, x1], [-dodgeGapOffset, x2]];
                     if (alignment.x == "start") {
                         solver.addLinear(ConstraintStrength.HARD, 0, [[1, solver.attr(m1.attributes, "x1")]], x1WithGap);
                     } else {
@@ -949,8 +949,8 @@ export class Region2DConstraintBuilder {
                     }
                 } break;
                 case "y": {
-                    let y1WithGap: [number, Variable][] = [[1, y1], [dodgeGapOffset, y2], [-dodgeGapOffset, y1]];
-                    let y2WithGap: [number, Variable][] = [[1, y2], [dodgeGapOffset, y1], [-dodgeGapOffset, y2]];
+                    const y1WithGap: Array<[number, Variable]> = [[1, y1], [dodgeGapOffset, y2], [-dodgeGapOffset, y1]];
+                    const y2WithGap: Array<[number, Variable]> = [[1, y2], [dodgeGapOffset, y1], [-dodgeGapOffset, y2]];
                     if (alignment.y == "start") {
                         solver.addLinear(ConstraintStrength.HARD, 0, [[1, solver.attr(m1.attributes, "y1")]], y1WithGap);
                     } else {
@@ -972,30 +972,30 @@ export class Region2DConstraintBuilder {
     }
 
     public getGlyphPreSolveAttributes(rowIndex: number) {
-        let attrs = this.solverContext.getGlyphAttributes(this.plotSegment.object.glyph, this.plotSegment.object.table, rowIndex);
+        const attrs = this.solverContext.getGlyphAttributes(this.plotSegment.object.glyph, this.plotSegment.object.table, rowIndex);
         return attrs;
     }
 
     public sublayoutGrid(groups: SublayoutGroup[], directionOverride?: string) {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let props = this.plotSegment.object.properties;
-        let attrs = state.attributes;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const props = this.plotSegment.object.properties;
+        const attrs = state.attributes;
 
-        let fitters = new DodgingFitters(solver);
+        const fitters = new DodgingFitters(solver);
 
         let direction: string = props.sublayout.grid.direction;
         if (directionOverride != null) {
             direction = directionOverride;
         }
 
-        let alignX = props.sublayout.align.x;
-        let alignY = props.sublayout.align.y;
+        const alignX = props.sublayout.align.x;
+        const alignY = props.sublayout.align.y;
 
-        let xMinFitter = new CrossFitter(solver, "min");
-        let xMaxFitter = new CrossFitter(solver, "max");
-        let yMinFitter = new CrossFitter(solver, "min");
-        let yMaxFitter = new CrossFitter(solver, "max");
+        const xMinFitter = new CrossFitter(solver, "min");
+        const xMaxFitter = new CrossFitter(solver, "max");
+        const yMinFitter = new CrossFitter(solver, "min");
+        const yMaxFitter = new CrossFitter(solver, "max");
 
         let maxCount = 0;
         groups.forEach(group => {
@@ -1035,12 +1035,12 @@ export class Region2DConstraintBuilder {
             } break;
         }
 
-        let gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
-        let gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
+        const gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
+        const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
 
         groups.forEach(group => {
-            let markStates = group.group.map(index => state.glyphs[index]);
-            let { x1, y1, x2, y2 } = group;
+            const markStates = group.group.map(index => state.glyphs[index]);
+            const { x1, y1, x2, y2 } = group;
 
             let xMax: number, yMax: number;
             if (direction == "x" || direction == "x1") {
@@ -1074,11 +1074,11 @@ export class Region2DConstraintBuilder {
                 if (alignY == "middle") {
                     yi = yi + (yCount - yMax) / 2;
                 }
-                let cellX1: [number, Variable][] = [[xi / xCount * (1 + gapRatioX), x2], [1 - xi / xCount * (1 + gapRatioX), x1]];
-                let cellX2: [number, Variable][] = [[(xi + 1) / xCount * (1 + gapRatioX) - gapRatioX, x2], [1 - (xi + 1) / xCount * (1 + gapRatioX) + gapRatioX, x1]];
-                let cellY1: [number, Variable][] = [[yi / yCount * (1 + gapRatioY), y2], [1 - yi / yCount * (1 + gapRatioY), y1]];
-                let cellY2: [number, Variable][] = [[(yi + 1) / yCount * (1 + gapRatioY) - gapRatioY, y2], [1 - (yi + 1) / yCount * (1 + gapRatioY) + gapRatioY, y1]];
-                let state = markStates[i];
+                const cellX1: Array<[number, Variable]> = [[xi / xCount * (1 + gapRatioX), x2], [1 - xi / xCount * (1 + gapRatioX), x1]];
+                const cellX2: Array<[number, Variable]> = [[(xi + 1) / xCount * (1 + gapRatioX) - gapRatioX, x2], [1 - (xi + 1) / xCount * (1 + gapRatioX) + gapRatioX, x1]];
+                const cellY1: Array<[number, Variable]> = [[yi / yCount * (1 + gapRatioY), y2], [1 - yi / yCount * (1 + gapRatioY), y1]];
+                const cellY2: Array<[number, Variable]> = [[(yi + 1) / yCount * (1 + gapRatioY) - gapRatioY, y2], [1 - (yi + 1) / yCount * (1 + gapRatioY) + gapRatioY, y1]];
+                const state = markStates[i];
                 if (alignX == "start") {
                     solver.addLinear(ConstraintStrength.HARD, 0, [[1, solver.attr(state.attributes, "x1")]], cellX1);
                 } else {
@@ -1113,35 +1113,35 @@ export class Region2DConstraintBuilder {
         yMaxFitter.addConstraint(ConstraintStrength.MEDIUM);
     }
 
-    public sublayoutHandles(groups: { group: number[], x1: number, y1: number, x2: number, y2: number }[]) {
+    public sublayoutHandles(groups: Array<{ group: number[], x1: number, y1: number, x2: number, y2: number }>) {
         this.orderMarkGroups(groups);
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let dataIndices = state.dataRowIndices;
-        let handles: Region2DHandleDescription[] = [];
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const dataIndices = state.dataRowIndices;
+        const handles: Region2DHandleDescription[] = [];
         let maxCount = 0;
-        for (let g of groups) {
+        for (const g of groups) {
             maxCount = Math.max(maxCount, g.group.length);
         }
-        let fX = (x: number): number => (x - (state.attributes[this.x1Name] as number)) / (state.attributes[this.x2Name] as number - (state.attributes[this.x1Name] as number));
-        let fY = (y: number): number => (y - (state.attributes[this.y1Name] as number)) / (state.attributes[this.y2Name] as number - (state.attributes[this.y1Name] as number));
+        const fX = (x: number): number => (x - (state.attributes[this.x1Name] as number)) / (state.attributes[this.x2Name] as number - (state.attributes[this.x1Name] as number));
+        const fY = (y: number): number => (y - (state.attributes[this.y1Name] as number)) / (state.attributes[this.y2Name] as number - (state.attributes[this.y1Name] as number));
 
-        let x1 = this.plotSegment.state.attributes[this.x1Name] as number;
-        let y1 = this.plotSegment.state.attributes[this.y1Name] as number;
-        let x2 = this.plotSegment.state.attributes[this.x2Name] as number;
-        let y2 = this.plotSegment.state.attributes[this.y2Name] as number;
+        const x1 = this.plotSegment.state.attributes[this.x1Name] as number;
+        const y1 = this.plotSegment.state.attributes[this.y1Name] as number;
+        const x2 = this.plotSegment.state.attributes[this.x2Name] as number;
+        const y2 = this.plotSegment.state.attributes[this.y2Name] as number;
 
         if (props.sublayout.type == "dodge-x") {
-            let dodgeGapRatio = props.sublayout.ratioX / (maxCount - 1);
-            for (let group of groups) {
+            const dodgeGapRatio = props.sublayout.ratioX / (maxCount - 1);
+            for (const group of groups) {
                 for (let i = 0; i < group.group.length - 1; i++) {
-                    let state1 = state.glyphs[group.group[i]];
-                    let state2 = state.glyphs[group.group[i + 1]];
-                    let p1 = state1.attributes.x2 as number;
-                    let p2 = state2.attributes.x1 as number;
-                    let minY = Math.min(state1.attributes.y1 as number, state1.attributes.y2 as number, state2.attributes.y1 as number, state2.attributes.y2 as number);
-                    let maxY = Math.max(state1.attributes.y1 as number, state1.attributes.y2 as number, state2.attributes.y1 as number, state2.attributes.y2 as number);
+                    const state1 = state.glyphs[group.group[i]];
+                    const state2 = state.glyphs[group.group[i + 1]];
+                    const p1 = state1.attributes.x2 as number;
+                    const p2 = state2.attributes.x1 as number;
+                    const minY = Math.min(state1.attributes.y1 as number, state1.attributes.y2 as number, state2.attributes.y1 as number, state2.attributes.y2 as number);
+                    const maxY = Math.max(state1.attributes.y1 as number, state1.attributes.y2 as number, state2.attributes.y1 as number, state2.attributes.y2 as number);
                     handles.push({
                         type: "gap",
                         gap: {
@@ -1157,15 +1157,15 @@ export class Region2DConstraintBuilder {
             }
         }
         if (props.sublayout.type == "dodge-y") {
-            let dodgeGapRatio = props.sublayout.ratioY / (maxCount - 1);
-            for (let group of groups) {
+            const dodgeGapRatio = props.sublayout.ratioY / (maxCount - 1);
+            for (const group of groups) {
                 for (let i = 0; i < group.group.length - 1; i++) {
-                    let state1 = state.glyphs[group.group[i]];
-                    let state2 = state.glyphs[group.group[i + 1]];
-                    let p1 = state1.attributes.y2 as number;
-                    let p2 = state2.attributes.y1 as number;
-                    let minX = Math.min(state1.attributes.x1 as number, state1.attributes.x2 as number, state2.attributes.x1 as number, state2.attributes.x2 as number);
-                    let maxX = Math.max(state1.attributes.x1 as number, state1.attributes.x2 as number, state2.attributes.x1 as number, state2.attributes.x2 as number);
+                    const state1 = state.glyphs[group.group[i]];
+                    const state2 = state.glyphs[group.group[i + 1]];
+                    const p1 = state1.attributes.y2 as number;
+                    const p2 = state2.attributes.y1 as number;
+                    const minX = Math.min(state1.attributes.x1 as number, state1.attributes.x2 as number, state2.attributes.x1 as number, state2.attributes.x2 as number);
+                    const maxX = Math.max(state1.attributes.x1 as number, state1.attributes.x2 as number, state2.attributes.x1 as number, state2.attributes.x2 as number);
                     handles.push({
                         type: "gap",
                         gap: {
@@ -1189,29 +1189,29 @@ export class Region2DConstraintBuilder {
     }
 
     public sublayoutPacking(groups: SublayoutGroup[]) {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let dataIndices = state.dataRowIndices;
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const dataIndices = state.dataRowIndices;
 
         groups.forEach(group => {
-            let markStates = group.group.map(index => state.glyphs[index]);
-            let { x1, y1, x2, y2 } = group;
-            let centerState: Specification.AttributeMap = {
+            const markStates = group.group.map(index => state.glyphs[index]);
+            const { x1, y1, x2, y2 } = group;
+            const centerState: Specification.AttributeMap = {
                 cx: 0, cy: 0
             };
-            let cx = solver.attr(centerState, "cx", { edit: true, strength: VariableStrength.NONE });
-            let cy = solver.attr(centerState, "cy", { edit: true, strength: VariableStrength.NONE });
+            const cx = solver.attr(centerState, "cx", { edit: true, strength: VariableStrength.NONE });
+            const cy = solver.attr(centerState, "cy", { edit: true, strength: VariableStrength.NONE });
             solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
             solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
-            let points = markStates.map(state => {
+            const points = markStates.map(state => {
                 let radius = 0;
-                for (let e of state.marks) {
-                    if (e.attributes["size"] != null) {
-                        radius = Math.max(radius, Math.sqrt(e.attributes["size"] as number / Math.PI));
+                for (const e of state.marks) {
+                    if (e.attributes.size != null) {
+                        radius = Math.max(radius, Math.sqrt(e.attributes.size as number / Math.PI));
                     } else {
-                        let w = e.attributes["width"] as number;
-                        let h = e.attributes["height"] as number;
+                        const w = e.attributes.width as number;
+                        const h = e.attributes.height as number;
                         if (w != null && h != null) {
                             radius = Math.max(radius, Math.sqrt(w * w + h * h) / 2);
                         }
@@ -1227,14 +1227,14 @@ export class Region2DConstraintBuilder {
     }
 
     public getHandles(): Region2DHandleDescription[] {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let xMode = props.xData ? props.xData.type : "null";
-        let yMode = props.yData ? props.yData.type : "null";
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const xMode = props.xData ? props.xData.type : "null";
+        const yMode = props.yData ? props.yData.type : "null";
         let handles: Region2DHandleDescription[] = [];
-        let glyphs = this.plotSegment.state.glyphs;
+        const glyphs = this.plotSegment.state.glyphs;
 
         switch (xMode) {
             case "null": {
@@ -1285,12 +1285,12 @@ export class Region2DConstraintBuilder {
     }
 
     public build(): void {
-        let solver = this.solver;
-        let state = this.plotSegment.state;
-        let attrs = state.attributes;
-        let props = this.plotSegment.object.properties;
-        let xMode = props.xData ? props.xData.type : "null";
-        let yMode = props.yData ? props.yData.type : "null";
+        const solver = this.solver;
+        const state = this.plotSegment.state;
+        const attrs = state.attributes;
+        const props = this.plotSegment.object.properties;
+        const xMode = props.xData ? props.xData.type : "null";
+        const yMode = props.yData ? props.yData.type : "null";
 
         let placeXAxis = true;
         let placeYAxis = true;
@@ -1405,16 +1405,16 @@ export class Region2DConstraintBuilder {
     }
 
     public isSublayoutAppliable() {
-        let props = this.plotSegment.object.properties;
-        let xMode = props.xData ? props.xData.type : "null";
-        let yMode = props.yData ? props.yData.type : "null";
+        const props = this.plotSegment.object.properties;
+        const xMode = props.xData ? props.xData.type : "null";
+        const yMode = props.yData ? props.yData.type : "null";
         return (xMode == "null" || xMode == "categorical") && (yMode == "null" || yMode == "categorical");
     }
 
     public buildSublayoutWidgets(m: Controls.WidgetManager) {
-        let extra: Controls.Widget[] = [];
-        let props = this.plotSegment.object.properties;
-        let type = props.sublayout.type;
+        const extra: Controls.Widget[] = [];
+        const props = this.plotSegment.object.properties;
+        const type = props.sublayout.type;
         if (type == "dodge-x" || type == "dodge-y" || type == "grid") {
             extra.push(m.row("Align", m.horizontal([0, 0],
                 m.inputSelect({ property: "sublayout", field: ["align", "x"] }, {
@@ -1474,9 +1474,9 @@ export class Region2DConstraintBuilder {
     }
 
     public buildAxisWidgets(m: Controls.WidgetManager, axisName: string, axis: "x" | "y"): Controls.Widget[] {
-        let props = this.plotSegment.object.properties;
-        let data = axis == "x" ? props.xData : props.yData;
-        let axisProperty = axis == "x" ? "xData" : "yData";
+        const props = this.plotSegment.object.properties;
+        const data = axis == "x" ? props.xData : props.yData;
+        const axisProperty = axis == "x" ? "xData" : "yData";
         return buildAxisWidgets(data, axisProperty, m, axisName);
     }
 
@@ -1496,13 +1496,13 @@ export class Region2DConstraintBuilder {
     }
 
     public buildPopupWidgets(m: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.plotSegment.object.properties;
+        const props = this.plotSegment.object.properties;
         let sublayout: Controls.Widget[] = [];
 
         if (this.isSublayoutAppliable()) {
-            let extra: Controls.Widget[] = [];
+            const extra: Controls.Widget[] = [];
 
-            let type = props.sublayout.type;
+            const type = props.sublayout.type;
             if (type == "dodge-x" || type == "dodge-y" || type == "grid") {
                 extra.push(
                     m.inputSelect({ property: "sublayout", field: ["align", "x"] }, {
@@ -1547,8 +1547,8 @@ export class Region2DConstraintBuilder {
             ];
         }
 
-        let isXStackingOrNumerical = props.xData && (props.xData.type == "numerical" || props.xData.type == "default");
-        let isYStackingOrNumerical = props.yData && (props.yData.type == "numerical" || props.yData.type == "default");
+        const isXStackingOrNumerical = props.xData && (props.xData.type == "numerical" || props.xData.type == "default");
+        const isYStackingOrNumerical = props.yData && (props.yData.type == "numerical" || props.yData.type == "default");
         if (isXStackingOrNumerical && !isYStackingOrNumerical) {
             if (props.xData.type == "default") {
                 sublayout.push(m.label(this.terminology.xAxis + ": Stacking"));

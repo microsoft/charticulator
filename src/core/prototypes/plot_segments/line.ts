@@ -1,12 +1,12 @@
-import * as Specification from "../../specification";
-import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
 import * as Graphics from "../../graphics";
+import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
+import * as Specification from "../../specification";
 
-import { ObjectClasses, SnappingGuides, AttributeDescription, DropZones, Handles, BoundingBox, ObjectClassMetadata, Controls } from "../common";
-import { Point, uniqueID, getById } from "../../common";
+import { getById, Point, uniqueID } from "../../common";
+import { AttributeDescription, BoundingBox, Controls, DropZones, Handles, ObjectClasses, ObjectClassMetadata, SnappingGuides } from "../common";
 
+import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
 import { PlotSegmentClass } from "./index";
-import { buildAxisWidgets, getCategoricalAxis, AxisRenderer } from "./axis";
 
 export interface LineGuideAttributes extends Specification.AttributeMap {
     x1?: number; y1?: number;
@@ -56,7 +56,7 @@ export class LineGuide extends PlotSegmentClass {
     };
 
     public initializeState(): void {
-        let attrs = this.state.attributes as LineGuideAttributes;
+        const attrs = this.state.attributes as LineGuideAttributes;
         attrs.x1 = -100;
         attrs.x2 = 100;
         attrs.y1 = -100;
@@ -65,35 +65,35 @@ export class LineGuide extends PlotSegmentClass {
 
 
     public buildConstraints(solver: ConstraintSolver): void {
-        let chart = this.parent.object;
-        let props = this.object.properties;
-        let rows = this.parent.dataflow.getTable(this.object.table);
-        let [x1, y1, x2, y2] = solver.attrs(this.state.attributes, ["x1", "y1", "x2", "y2"]);
-        let attrs = this.state.attributes;
+        const chart = this.parent.object;
+        const props = this.object.properties;
+        const rows = this.parent.dataflow.getTable(this.object.table);
+        const [x1, y1, x2, y2] = solver.attrs(this.state.attributes, ["x1", "y1", "x2", "y2"]);
+        const attrs = this.state.attributes;
 
-        let count = this.state.dataRowIndices.length;
-        let dataIndices = this.state.dataRowIndices;
+        const count = this.state.dataRowIndices.length;
+        const dataIndices = this.state.dataRowIndices;
 
-        for (let [index, markState] of this.state.glyphs.entries()) {
+        for (const [index, markState] of this.state.glyphs.entries()) {
             let t = (0.5 + index) / count;
 
             if (props.axis == null) {
                 t = (0.5 + index) / count;
             } else {
-                let data = props.axis;
+                const data = props.axis;
                 switch (data.type) {
                     case "numerical": {
-                        let row = rows.getRowContext(dataIndices[index]);
-                        let expr = this.parent.dataflow.cache.parse(data.expression);
-                        let value = expr.getNumberValue(row);
+                        const row = rows.getRowContext(dataIndices[index]);
+                        const expr = this.parent.dataflow.cache.parse(data.expression);
+                        const value = expr.getNumberValue(row);
                         t = (value - data.domainMin) / (data.domainMax - data.domainMin);
                     } break;
                     case "categorical": {
-                        let axis = getCategoricalAxis(props.axis, false);
-                        let row = rows.getRowContext(dataIndices[index]);
-                        let expr = this.parent.dataflow.cache.parse(data.expression);
-                        let value = expr.getStringValue(row);
-                        let i = data.categories.indexOf(value);
+                        const axis = getCategoricalAxis(props.axis, false);
+                        const row = rows.getRowContext(dataIndices[index]);
+                        const expr = this.parent.dataflow.cache.parse(data.expression);
+                        const value = expr.getStringValue(row);
+                        const i = data.categories.indexOf(value);
                         t = (axis.ranges[i][0] + axis.ranges[i][1]) / 2;
                     } break;
                     case "default": {
@@ -108,25 +108,25 @@ export class LineGuide extends PlotSegmentClass {
     }
 
     public getDropZones(): DropZones.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let zones: DropZones.Description[] = [];
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const zones: DropZones.Description[] = [];
         zones.push(
-            <DropZones.Line>{
+            {
                 type: "line",
                 p1: { x: x1, y: y1 }, p2: { x: x2, y: y2 },
                 title: "Axis",
                 dropAction: {
                     axisInference: { property: "axis" }
                 }
-            }
+            } as DropZones.Line
         );
         return zones;
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
         return [
             {
                 type: "point",
@@ -148,19 +148,19 @@ export class LineGuide extends PlotSegmentClass {
     }
 
     public getBoundingBox(): BoundingBox.Description {
-        let attrs = this.state.attributes;
-        let { x1, x2, y1, y2 } = attrs;
-        return <BoundingBox.Line>{
+        const attrs = this.state.attributes;
+        const { x1, x2, y1, y2 } = attrs;
+        return {
             type: "line",
-            x1: x1, y1: y1, x2: x2, y2: y2
-        };
+            x1, y1, x2, y2
+        } as BoundingBox.Line;
     }
 
     public getGraphics(): Graphics.Element {
-        let attrs = this.state.attributes;
-        let { x1, y1, x2, y2 } = attrs;
-        let props = this.object.properties;
-        let length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        const attrs = this.state.attributes;
+        const { x1, y1, x2, y2 } = attrs;
+        const props = this.object.properties;
+        const length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         if (props.axis == null) {
             return Graphics.makeLine(x1, y1, x2, y2, {
                 strokeColor: { r: 0, g: 0, b: 0 },
@@ -168,15 +168,15 @@ export class LineGuide extends PlotSegmentClass {
             });
         }
         if (props.axis && props.axis.visible) {
-            let renderer = new AxisRenderer();
+            const renderer = new AxisRenderer();
             renderer.setAxisDataBinding(props.axis, 0, length, false);
-            let g = renderer.renderLine(x1, y1, Math.atan2(y2 - y1, x2 - x1) / Math.PI * 180, 1);
+            const g = renderer.renderLine(x1, y1, Math.atan2(y2 - y1, x2 - x1) / Math.PI * 180, 1);
             return g;
         }
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let props = this.object.properties;
+        const props = this.object.properties;
         return [
             ...buildAxisWidgets(props.axis, "axis", manager, "Axis")
         ];

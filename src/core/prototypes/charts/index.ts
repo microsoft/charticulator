@@ -1,15 +1,15 @@
-import * as Specification from "../../specification";
+import { indexOf, Point, uniqueID } from "../../common";
 import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
-import { Point, uniqueID, indexOf } from "../../common";
+import * as Specification from "../../specification";
 import { DataflowManager } from "../dataflow";
 
-import * as Graphics from "../../graphics";
 import * as Expression from "../../expression";
+import * as Graphics from "../../graphics";
 
-import { ObjectClass, ObjectClasses, SnappingGuides, AttributeDescription, Handles, Controls, ObjectClassMetadata, TemplateParameters } from "../common";
+import { AttributeDescription, Controls, Handles, ObjectClass, ObjectClasses, ObjectClassMetadata, SnappingGuides, TemplateParameters } from "../common";
 
-import * as Scales from "../scales";
 import { Color } from "../../common";
+import * as Scales from "../scales";
 
 export abstract class ChartClass extends ObjectClass {
     public readonly object: Specification.Chart;
@@ -32,14 +32,14 @@ export abstract class ChartClass extends ObjectClass {
     public resolveMapping<ValueType>(mapping: Specification.Mapping, defaultValue: Specification.AttributeValue): (row: Expression.Context) => Specification.AttributeValue {
         if (mapping) {
             if (mapping.type == "value") {
-                let value = (mapping as Specification.ValueMapping).value;
+                const value = (mapping as Specification.ValueMapping).value;
                 return () => value;
             }
             if (mapping.type == "scale") {
-                let scaleMapping = mapping as Specification.ScaleMapping;
-                let idx = indexOf(this.object.scales, x => x._id == scaleMapping.scale);
-                let scaleClass = ObjectClasses.Create(this.parent, this.object.scales[idx], this.state.scales[idx]) as Scales.ScaleClass;
-                let expr = this.dataflow.cache.parse(scaleMapping.expression);
+                const scaleMapping = mapping as Specification.ScaleMapping;
+                const idx = indexOf(this.object.scales, x => x._id == scaleMapping.scale);
+                const scaleClass = ObjectClasses.Create(this.parent, this.object.scales[idx], this.state.scales[idx]) as Scales.ScaleClass;
+                const expr = this.dataflow.cache.parse(scaleMapping.expression);
                 return (row: Expression.Context) => scaleClass.mapDataToAttribute(expr.getValue(row) as any);
             }
         }
@@ -116,7 +116,7 @@ class RectangleChart extends ChartClass {
 
     // Initialize the state of a mark so that everything has a valid value
     public initializeState(): void {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         attrs.width = 900;
         attrs.height = 600;
         attrs.marginLeft = 50;
@@ -136,7 +136,7 @@ class RectangleChart extends ChartClass {
     }
 
     public getBackgroundGraphics() {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         if (this.object.properties.backgroundColor != null) {
             return Graphics.makeRect(-attrs.width / 2, -attrs.height / 2, attrs.width / 2, attrs.height / 2, {
                 fillColor: this.object.properties.backgroundColor,
@@ -147,8 +147,8 @@ class RectangleChart extends ChartClass {
 
     // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
     public buildIntrinsicConstraints(solver: ConstraintSolver): void {
-        let attrs = this.state.attributes;
-        let [x1, y1, x2, y2, ox1, oy1, ox2, oy2, cx, cy, width, height, marginLeft, marginRight, marginTop, marginBottom] = solver.attrs(attrs, [
+        const attrs = this.state.attributes;
+        const [x1, y1, x2, y2, ox1, oy1, ox2, oy2, cx, cy, width, height, marginLeft, marginRight, marginTop, marginBottom] = solver.attrs(attrs, [
             "x1", "y1", "x2", "y2", "ox1", "oy1", "ox2", "oy2", "cx", "cy", "width", "height",
             "marginLeft", "marginRight", "marginTop", "marginBottom"
         ]);
@@ -172,50 +172,50 @@ class RectangleChart extends ChartClass {
     }
 
     public getSnappingGuides(): SnappingGuides.Description[] {
-        let attrs = this.state.attributes;
+        const attrs = this.state.attributes;
         return [
-            <SnappingGuides.Axis>{ type: "x", value: attrs.x1, attribute: "x1", visible: true },
-            <SnappingGuides.Axis>{ type: "x", value: attrs.x2, attribute: "x2", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.y1, attribute: "y1", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.y2, attribute: "y2", visible: true },
+            { type: "x", value: attrs.x1, attribute: "x1", visible: true } as SnappingGuides.Axis,
+            { type: "x", value: attrs.x2, attribute: "x2", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.y1, attribute: "y1", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.y2, attribute: "y2", visible: true } as SnappingGuides.Axis,
             // <SnappingGuides.Axis>{ type: "x", value: attrs.ox1, attribute: "ox1", visible: true },
             // <SnappingGuides.Axis>{ type: "x", value: attrs.ox2, attribute: "ox2", visible: true },
             // <SnappingGuides.Axis>{ type: "y", value: attrs.oy1, attribute: "oy1", visible: true },
             // <SnappingGuides.Axis>{ type: "y", value: attrs.oy2, attribute: "oy2", visible: true },
-            <SnappingGuides.Axis>{ type: "x", value: attrs.cx, attribute: "cx", visible: true },
-            <SnappingGuides.Axis>{ type: "y", value: attrs.cy, attribute: "cy", visible: true }
+            { type: "x", value: attrs.cx, attribute: "cx", visible: true } as SnappingGuides.Axis,
+            { type: "y", value: attrs.cy, attribute: "cy", visible: true } as SnappingGuides.Axis
         ];
     }
 
     public getHandles(): Handles.Description[] {
-        let attrs = this.state.attributes
-        let { x1, y1, x2, y2 } = attrs;
-        let inf = [-10000, 10000];
+        const attrs = this.state.attributes
+        const { x1, y1, x2, y2 } = attrs;
+        const inf = [-10000, 10000];
         return [
-            <Handles.RelativeLine>{
+            {
                 type: "relative-line", axis: "x",
                 actions: [{ type: "attribute-value-mapping", attribute: "marginLeft" }],
                 reference: x1 - attrs.marginLeft, sign: 1,
                 value: attrs.marginLeft, span: inf
-            },
-            <Handles.RelativeLine>{
+            } as Handles.RelativeLine,
+            {
                 type: "relative-line", axis: "x",
                 actions: [{ type: "attribute-value-mapping", attribute: "marginRight" }],
                 reference: x2 + attrs.marginRight, sign: -1,
                 value: attrs.marginRight, span: inf
-            },
-            <Handles.RelativeLine>{
+            } as Handles.RelativeLine,
+            {
                 type: "relative-line", axis: "y",
                 actions: [{ type: "attribute-value-mapping", attribute: "marginTop" }],
                 reference: y2 + attrs.marginTop, sign: -1,
                 value: attrs.marginTop, span: inf
-            },
-            <Handles.RelativeLine>{
+            } as Handles.RelativeLine,
+            {
                 type: "relative-line", axis: "y",
                 actions: [{ type: "attribute-value-mapping", attribute: "marginBottom" }],
                 reference: y1 - attrs.marginBottom, sign: 1,
                 value: attrs.marginBottom, span: inf
-            },
+            } as Handles.RelativeLine,
             // <Handles.RelativeLine>{
             //     type: "relative-line", axis: "x",
             //     value: attrs.width, sign: 1,
@@ -257,7 +257,7 @@ class RectangleChart extends ChartClass {
     }
 
     public getAttributePanelWidgets(manager: Controls.WidgetManager): Controls.Widget[] {
-        let result = [
+        const result = [
             manager.sectionHeader("Dimensions"),
             manager.mappingEditorTOFIX("width"),
             manager.mappingEditorTOFIX("height"),

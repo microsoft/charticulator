@@ -20,11 +20,11 @@ export class EventEmitter {
     private eventSubscriptions = new Map<string, { first: EventSubscription, last: EventSubscription }>();
 
     public addListener(event: string, listener: Function) {
-        let sub = new EventSubscription(this, event, listener);
+        const sub = new EventSubscription(this, event, listener);
         sub.prev = null;
         sub.next = null;
         if (this.eventSubscriptions.has(event)) {
-            let head = this.eventSubscriptions.get(event);
+            const head = this.eventSubscriptions.get(event);
             if (head.first == null) {
                 head.first = sub;
                 head.last = sub;
@@ -53,7 +53,7 @@ export class EventEmitter {
     }
 
     public removeSubscription(subscription: EventSubscription) {
-        let head = this.eventSubscriptions.get(subscription.event);
+        const head = this.eventSubscriptions.get(subscription.event);
         if (subscription.prev != null) {
             subscription.prev.next = subscription.next;
         } else {
@@ -102,7 +102,7 @@ export class Dispatcher<ActionType> {
             let items = Array.from(this.registeredItems.values());
             items = items.sort((a, b) => compareOrder(a.order, b.order));
             // Dispatch in the order
-            for (let item of items) {
+            for (const item of items) {
                 if (item.stage != 0) {
                     continue;
                 }
@@ -122,8 +122,8 @@ export class Dispatcher<ActionType> {
     }
 
     public register(callback: (action: ActionType) => void, priority: number = Dispatcher.PRIORITY_DEFAULT) {
-        let id = "ID" + (this.currentID++).toString();
-        this.registeredItems.set(id, { order: [priority, this.currentID], stage: 0, callback: callback });
+        const id = "ID" + (this.currentID++).toString();
+        this.registeredItems.set(id, { order: [priority, this.currentID], stage: 0, callback });
         return id;
     }
 
@@ -135,8 +135,8 @@ export class Dispatcher<ActionType> {
         ids = ids
             .filter(a => this.registeredItems.has(a))
             .sort((a, b) => compareOrder(this.registeredItems.get(a).order, this.registeredItems.get(b).order));
-        for (let id of ids) {
-            let item = this.registeredItems.get(id);
+        for (const id of ids) {
+            const item = this.registeredItems.get(id);
             if (item.stage == 1) {
                 console.warn("Dispatcher: circular dependency detected in waitFor " + id);
                 continue;

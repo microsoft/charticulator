@@ -2,12 +2,12 @@ export * from "./common";
 
 export { CharticulatorCoreConfig, getConfig } from "./config";
 
-import * as Expression from "./expression";
 import * as Dataset from "./dataset";
-import * as Specification from "./specification";
-import * as Solver from "./solver";
-import * as Prototypes from "./prototypes";
+import * as Expression from "./expression";
 import * as Graphics from "./graphics";
+import * as Prototypes from "./prototypes";
+import * as Solver from "./solver";
+import * as Specification from "./specification";
 
 export {
     Expression,
