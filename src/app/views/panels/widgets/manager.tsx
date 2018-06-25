@@ -424,7 +424,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                     {widget}
                     <Button
                         icon={"general/bind-data"}
-                        ref={(e) => refButton = ReactDOM.findDOMNode(e)}
+                        ref={(e) => refButton = ReactDOM.findDOMNode(e) as Element}
                         onClick={() => {
                             globals.popupController.popupAt((context) => {
                                 return (
@@ -652,7 +652,7 @@ export class DetailsButton extends React.Component<{
         let btn: Element;
         return (
             <Button icon={"general/more-horizontal"}
-                ref={(e) => btn = ReactDOM.findDOMNode(e)}
+                ref={(e) => btn = ReactDOM.findDOMNode(e) as Element}
                 onClick={() => {
                     globals.popupController.popupAt((context) => {
                         return (
