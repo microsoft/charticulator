@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import { timeFormat } from "d3-time-format";
 import { ValueType } from "./classes";
 import { fields } from "./helpers";
 
@@ -154,16 +154,16 @@ operators["unary:not"] = (a: boolean) => !a;
 intrinsics.date = {
   parse: (x: string) => new Date(x),
 
-  year: d3.timeFormat("%Y"), // year with century as a decimal number.
-  month: d3.timeFormat("%b"), // month as a string "Jan" - "Dec".
-  day: d3.timeFormat("%d"), // zero-padded day of the month as a decimal number [01,31].
-  weekOfYear: d3.timeFormat("%U"), // Sunday-based week of the year as a decimal number [00,53].
-  dayOfYear: d3.timeFormat("%j"), // day of the year as a decimal number [001,366].
-  weekday: d3.timeFormat("%a"), // abbreviated weekday name.
+  year: timeFormat("%Y"), // year with century as a decimal number.
+  month: timeFormat("%b"), // month as a string "Jan" - "Dec".
+  day: timeFormat("%d"), // zero-padded day of the month as a decimal number [01,31].
+  weekOfYear: timeFormat("%U"), // Sunday-based week of the year as a decimal number [00,53].
+  dayOfYear: timeFormat("%j"), // day of the year as a decimal number [001,366].
+  weekday: timeFormat("%a"), // abbreviated weekday name.
 
-  hour: d3.timeFormat("%H"), // hour (24-hour clock) as a decimal number [00,23].
-  minute: d3.timeFormat("%M"), // minute as a decimal number [00,59].
-  second: d3.timeFormat("%S"), // second as a decimal number [00,61].
+  hour: timeFormat("%H"), // hour (24-hour clock) as a decimal number [00,23].
+  minute: timeFormat("%M"), // minute as a decimal number [00,59].
+  second: timeFormat("%S"), // second as a decimal number [00,61].
 
   timestamp: (d: Date) => d.getTime() / 1000
 };

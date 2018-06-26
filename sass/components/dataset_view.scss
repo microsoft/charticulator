@@ -1,3 +1,5 @@
+@import "../theme.scss";
+
 .charticulator {
     &__dataset-view {
         .el-title {
@@ -16,7 +18,7 @@
         }
 
         .el-details {
-            color: $gray-100;
+            color: $theme-metadata-title-foreground;
             font-size: 12px;
             margin: 8px 0;
         }
@@ -26,6 +28,8 @@
             max-width: 700px;
             overflow: scroll;
             padding: 10px;
+            background: $theme-dataset-background;
+            color: $theme-primary-foreground;
             p {
                 font-size: 12px;
                 margin: 5px 0;
@@ -82,6 +86,7 @@
                 vertical-align: top;
                 margin-left: 2px;
                 text-overflow: ellipsis;
+                color: $theme-metadata-column-foreground;
                 overflow: hidden;
 
                 flex: 1;

@@ -15,7 +15,8 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 
 import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
@@ -244,6 +245,23 @@ export class LineGuide extends PlotSegmentClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     return [...buildAxisWidgets(props.axis, "axis", manager, "Axis")];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const r: Specification.Template.Inference[] = [];
+    if (
+      this.object.properties.axis &&
+      this.object.properties.axis.type != "default"
+    ) {
+      const axis = this.object.properties.axis;
+      r.push({
+        type: "axis",
+        slotName: axis.expression.replace(/`/g, ""),
+        slotKind: axis.type,
+        property: "axis"
+      } as Specification.Template.Axis);
+    }
+    return { inferences: r };
   }
 }
 

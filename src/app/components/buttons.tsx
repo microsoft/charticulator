@@ -107,7 +107,7 @@ export class AppButton extends BaseButton<ButtonProps> {
   public render() {
     return (
       <span
-        className="charticulator__button-menu-app"
+        className="charticulator__button-menu-app charticulator-title__button"
         title="Open file menu"
         onClick={this._doClick}
       >

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<meta charset="utf8" />
+<meta name="viewport" content="width=1200, user-scalable=no" />
+
+<link rel="stylesheet" href="styles/page.css" type="text/css" />
+
+<div id="content-wrapper">
+    <title>Charticulator</title>
+
+    <h1>About Charticulator</h1>
+    <p>Donghao Ren, Bongshin Lee, Matthew Brehmer</p>
+    <p>Microsoft Corporation, 2017-2018</p>
+    <p></p>
+    <p></p>
+
+    <h2>Third-Party Notices</h2>
+    <pre>
+This software incorporates material from third parties. Microsoft makes certain
+open source code available at http://3rdpartysource.microsoft.com, or you may
+send a check or money order for US $5.00, including the product name, the open
+source component name, and version number, to:
+
+Source Code Compliance Team
+Microsoft Corporation
+One Microsoft Way
+Redmond, WA 98052
+USA
+
+Notwithstanding any other terms, you may reverse engineer this software to the
+extent required to debug changes to any libraries licensed under the GNU Lesser
+General Public License.
+    </pre>
+
+    <div id="credits"></div>
+
+    <script type="text/javascript">
+        fetch("data/THIRD_PARTY.json").then(function (res) {
+            return res.json();
+        }).then(function (data) {
+            var creditsEle = document.getElementById("credits");
+            var creditsFrag = document.createDocumentFragment();
+            var nodes = data.map(function (item) {
+                var ele = createElement('div', { class: 'credit '});
+                ele.appendChild(createElement('h3', {}, item.name));
+                ele.appendChild(createElement('p', { class: 'authors' }, item.authors));
+                ele.appendChild(createElement('p', { class: 'description' }, "Version: " + item.version + ", URL: " + item.url));
+
+                var licenseContainer = createElement('p', { class: 'description' });
+                var link = createElement('a', { href: '#' }, 'Show License');
+                link.onclick = function() {
+                    licenseContainer.appendChild(createElement("pre", { class: 'license' }, item.license));
+                    licenseContainer.removeChild(link);
+                };
+
+                licenseContainer.appendChild(link);
+                ele.appendChild(licenseContainer)
+
+                creditsFrag.appendChild(ele);
+            })
+            creditsEle.appendChild(creditsFrag)
+        });
+
+        function createElement(name, attrs, text) {
+            var ele = document.createElement(name)
+            Object.keys(attrs).forEach(function (attr) {
+                var attrValue = attrs[attr];
+                ele.setAttribute(attr, attrValue);
+            })
+            if (text) {
+                ele.textContent = text;
+            }
+            return ele;
+        }
+    </script>
+</div>
+<script type='text/javascript'>
+    WebFontConfig = {
+        google: {
+            families: ['Lato:300,300i,400,400i,700,700i','Inconsolata:400,700']
+        }
+    };
+    (function(d) {
+        var wf = d.createElement('script'),
+            s = d.scripts[0];
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+    })(document);
+</script>

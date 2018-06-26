@@ -1,17 +1,13 @@
-import { color } from "d3";
 import {
   Color,
   Geometry,
   getById,
-  getByName,
   indexOf,
   MultistringHashMap,
-  Point,
-  uniqueID
+  Point
 } from "../../common";
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
-import { colorFromHTMLColor } from "../../index";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import { Controls, ObjectClassMetadata } from "../common";
@@ -19,7 +15,6 @@ import { DataflowTable } from "../dataflow";
 import { ChartStateManager } from "../index";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments/index";
-import * as Scales from "../scales";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";

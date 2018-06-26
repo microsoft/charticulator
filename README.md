@@ -17,13 +17,12 @@ Build
 Follow the following steps to prepare a development environment:
 
 - Install nodejs 8.0+: <https://nodejs.org/>
-- Install Ruby 2.5+: <https://www.ruby-lang.org/>
-- Install Ruby's sass package: `gem install sass`
+- Install yarnjs 1.7+: <https://yarnpkg.com/>
 
 Install node modules:
 
 ```bash
-npm install
+yarn
 ```
 
 Copy the template configuration file and edit its contents:
@@ -36,18 +35,18 @@ cp config.template.yml config.yml
 Run the following command to build Charticulator:
 
 ```bash
-npm run build
+yarn build
 ```
 
 Run a local web server to test Charticulator:
 
 ```bash
 # Serve Charticulator at http://localhost:4000
-npm run server
+yarn server
 
 # Serve Charticulator publicly at http://0.0.0.0:4000
 # Use this if you want to enable access from another computer
-npm run public_server
+yarn public_server
 ```
 
 Development
@@ -56,7 +55,7 @@ Development
 For a live development environment, keep the following command running:
 
 ```bash
-npm start
+yarn start
 ```
 
 This command watches for any change in `src/` and `sass/`, and recompiles Charticulator automatically.
@@ -70,7 +69,27 @@ The watch mode won't update when you change the following:
 - THIRD_PARTY.yml
 - webpack.config.js
 
-When you update these, please do `npm run build` again.
+When you update these, please do `yarn build` again.
+
+### Sample Datasets
+You can add custom sample datasets that can be used with Charticulator.  To do so, create a `datasets` folder at the root of the repository(if it doesn't exist), add your `.csv` (or `.tsv`) to that folder, and finally create a `files.json` file in the folder with the following contents:
+
+```
+[
+    {
+        "name": "<Your dataset display name>",
+        "description": "<Your dataset desription>",
+        "tables": [
+            {
+                "name": "<Your dataset file name without extension>",
+                "type": "<csv || tsv>",
+                "url": "<Your dataset file name with extension>"
+            }
+        ]
+    }
+]
+```
+ 
 
 Testing
 ----
@@ -78,7 +97,7 @@ Testing
 Charticulator currently include a rudimentary test code:
 
 ```bash
-npm run test
+yarn test
 ```
 
 More test cases are needed.

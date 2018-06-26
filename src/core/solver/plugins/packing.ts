@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 export class PackingPlugin extends ConstraintPlugin {
@@ -31,13 +31,13 @@ export class PackingPlugin extends ConstraintPlugin {
       };
     });
 
-    const force = d3.forceSimulation(nodes);
+    const force = forceSimulation(nodes);
     force.force(
       "collision",
-      d3.forceCollide<{ x: number; y: number; r: number }>(d => d.r)
+      forceCollide<{ x: number; y: number; r: number }>(d => d.r)
     );
-    force.force("gravityX", d3.forceX().strength(0.1));
-    force.force("gravityY", d3.forceY().strength(0.1));
+    force.force("gravityX", forceX().strength(0.1));
+    force.force("gravityY", forceY().strength(0.1));
     force.stop();
     const n = Math.ceil(
       Math.log(force.alphaMin()) / Math.log(1 - force.alphaDecay())

@@ -1,5 +1,15 @@
-import { Color, deepClone, fillDefaults, Scale } from "../../common";
-import * as Graphics from "../../graphics";
+import { deepClone, fillDefaults, Scale } from "../../common";
+import {
+  makeGroup,
+  makeLine,
+  makeText,
+  CoordinateSystem,
+  Group,
+  Style
+} from "../../graphics";
+
+// There is a loop in the graphics folder that requires this axis.ts
+import { TextMeasurer } from "../../graphics/renderer/textMeasurer";
 import { Specification } from "../../index";
 import { Controls } from "../common";
 
@@ -53,7 +63,7 @@ export class AxisRenderer {
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
 
-  private static textMeasurer = new Graphics.TextMeasurer();
+  private static textMeasurer = new TextMeasurer();
 
   public setStyle(style?: Specification.Types.AxisRenderingStyle) {
     if (!style) {
@@ -185,18 +195,13 @@ export class AxisRenderer {
     return this;
   }
 
-  public renderLine(
-    x: number,
-    y: number,
-    angle: number,
-    side: number
-  ): Graphics.Group {
-    const g = Graphics.makeGroup([]);
+  public renderLine(x: number, y: number, angle: number, side: number): Group {
+    const g = makeGroup([]);
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
     const tickSize = style.tickSize;
-    const lineStyle: Graphics.Style = {
+    const lineStyle: Style = {
       strokeLinecap: "square",
       strokeColor: style.lineColor
     };
@@ -213,7 +218,7 @@ export class AxisRenderer {
     const x2 = x + rangeMax * cos;
     const y2 = y + rangeMax * sin;
     // Base line
-    g.elements.push(Graphics.makeLine(x1, y1, x2, y2, lineStyle));
+    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
     for (const tickPosition of this.ticks
       .map(x => x.position)
@@ -222,7 +227,7 @@ export class AxisRenderer {
         ty = y + tickPosition * sin;
       const dx = side * tickSize * sin,
         dy = -side * tickSize * cos;
-      g.elements.push(Graphics.makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
     }
     // Tick texts
     const ticks = this.ticks.map(x => {
@@ -252,7 +257,7 @@ export class AxisRenderer {
 
       if (Math.abs(cos) < 0.5) {
         // 60 ~ 120 degree
-        const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(
+        const [px, py] = TextMeasurer.ComputeTextPosition(
           0,
           0,
           tick.measure,
@@ -260,15 +265,10 @@ export class AxisRenderer {
           "middle",
           0
         );
-        const gText = Graphics.makeGroup([
-          Graphics.makeText(
-            px,
-            py,
-            tick.label,
-            style.fontFamily,
-            style.fontSize,
-            { fillColor: style.tickColor }
-          )
+        const gText = makeGroup([
+          makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+            fillColor: style.tickColor
+          })
         ]);
         gText.transform = {
           x: tx + dx,
@@ -277,7 +277,7 @@ export class AxisRenderer {
         };
         g.elements.push(gText);
       } else if (Math.abs(cos) < Math.sqrt(3) / 2) {
-        const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(
+        const [px, py] = TextMeasurer.ComputeTextPosition(
           0,
           0,
           tick.measure,
@@ -285,15 +285,10 @@ export class AxisRenderer {
           "middle",
           0
         );
-        const gText = Graphics.makeGroup([
-          Graphics.makeText(
-            px,
-            py,
-            tick.label,
-            style.fontFamily,
-            style.fontSize,
-            { fillColor: style.tickColor }
-          )
+        const gText = makeGroup([
+          makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+            fillColor: style.tickColor
+          })
         ]);
         gText.transform = {
           x: tx + dx,
@@ -303,7 +298,7 @@ export class AxisRenderer {
         g.elements.push(gText);
       } else {
         if (maxTextWidth > maxTickDistance) {
-          const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(
+          const [px, py] = TextMeasurer.ComputeTextPosition(
             0,
             0,
             tick.measure,
@@ -311,15 +306,10 @@ export class AxisRenderer {
             side * cos > 0 ? "top" : "bottom",
             0
           );
-          const gText = Graphics.makeGroup([
-            Graphics.makeText(
-              px,
-              py,
-              tick.label,
-              style.fontFamily,
-              style.fontSize,
-              { fillColor: style.tickColor }
-            )
+          const gText = makeGroup([
+            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+              fillColor: style.tickColor
+            })
           ]);
           gText.transform = {
             x: tx + dx,
@@ -328,7 +318,7 @@ export class AxisRenderer {
           };
           g.elements.push(gText);
         } else {
-          const [px, py] = Graphics.TextMeasurer.ComputeTextPosition(
+          const [px, py] = TextMeasurer.ComputeTextPosition(
             0,
             0,
             tick.measure,
@@ -336,15 +326,10 @@ export class AxisRenderer {
             side * cos > 0 ? "top" : "bottom",
             0
           );
-          const gText = Graphics.makeGroup([
-            Graphics.makeText(
-              px,
-              py,
-              tick.label,
-              style.fontFamily,
-              style.fontSize,
-              { fillColor: style.tickColor }
-            )
+          const gText = makeGroup([
+            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+              fillColor: style.tickColor
+            })
           ]);
           gText.transform = {
             x: tx + dx,
@@ -358,11 +343,7 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderCartesian(
-    x: number,
-    y: number,
-    axis: "x" | "y"
-  ): Graphics.Group {
+  public renderCartesian(x: number, y: number, axis: "x" | "y"): Group {
     switch (axis) {
       case "x": {
         return this.renderLine(x, y, 0, 1);
@@ -375,35 +356,35 @@ export class AxisRenderer {
     // let rangeMin = this.rangeMin;
     // let rangeMax = this.rangeMax;
     // let tickSize = style.tickSize;
-    // let lineStyle: Graphics.Style = {
+    // let lineStyle: Style = {
     //     strokeLinecap: "square",
     //     strokeColor: style.axisColor
     // }
-    // let g = Graphics.makeGroup([]);
+    // let g = makeGroup([]);
     // g.transform.x = x; g.transform.y = y;
     // AxisRenderer.textMeasurer.setFontFamily(style.fontFamily)
     // AxisRenderer.textMeasurer.setFontSize(style.fontSize);
     // switch (axis) {
     //     case "x": {
-    //         g.elements.push(Graphics.makeLine(rangeMin, 0, rangeMax, 0, lineStyle));
-    //         g.elements.push(Graphics.makeLine(rangeMin, 0, rangeMin, -style.tickSize, lineStyle));
-    //         g.elements.push(Graphics.makeLine(rangeMax, 0, rangeMax, -style.tickSize, lineStyle));
+    //         g.elements.push(makeLine(rangeMin, 0, rangeMax, 0, lineStyle));
+    //         g.elements.push(makeLine(rangeMin, 0, rangeMin, -style.tickSize, lineStyle));
+    //         g.elements.push(makeLine(rangeMax, 0, rangeMax, -style.tickSize, lineStyle));
     //         for (let tick of this.ticks) {
     //             let metrics = AxisRenderer.textMeasurer.measure(tick.label);
     //             let dy = (metrics.middle - metrics.ideographicBaseline) * 2 - metrics.alphabeticBaseline;
-    //             g.elements.push(Graphics.makeLine(tick.position, 0, tick.position, -style.tickSize, lineStyle));
-    //             g.elements.push(Graphics.makeText(tick.position, -style.tickSize - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "middle" }));
+    //             g.elements.push(makeLine(tick.position, 0, tick.position, -style.tickSize, lineStyle));
+    //             g.elements.push(makeText(tick.position, -style.tickSize - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "middle" }));
     //         }
     //     } break;
     //     case "y": {
-    //         g.elements.push(Graphics.makeLine(0, rangeMin, 0, rangeMax, lineStyle));
-    //         g.elements.push(Graphics.makeLine(0, rangeMin, -style.tickSize, rangeMin, lineStyle));
-    //         g.elements.push(Graphics.makeLine(0, rangeMax, -style.tickSize, rangeMax, lineStyle));
+    //         g.elements.push(makeLine(0, rangeMin, 0, rangeMax, lineStyle));
+    //         g.elements.push(makeLine(0, rangeMin, -style.tickSize, rangeMin, lineStyle));
+    //         g.elements.push(makeLine(0, rangeMax, -style.tickSize, rangeMax, lineStyle));
     //         for (let tick of this.ticks) {
     //             let metrics = AxisRenderer.textMeasurer.measure(tick.label);
     //             let dy = metrics.middle - metrics.alphabeticBaseline;
-    //             g.elements.push(Graphics.makeLine(0, tick.position, -style.tickSize, tick.position, lineStyle));
-    //             g.elements.push(Graphics.makeText(-style.tickSize - 2, tick.position - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "end" }));
+    //             g.elements.push(makeLine(0, tick.position, -style.tickSize, tick.position, lineStyle));
+    //             g.elements.push(makeText(-style.tickSize - 2, tick.position - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "end" }));
     //         }
     //     } break;
     // }
@@ -415,16 +396,16 @@ export class AxisRenderer {
     cy: number,
     radius: number,
     side: number
-  ): Graphics.Group {
+  ): Group {
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
     const tickSize = style.tickSize;
-    const lineStyle: Graphics.Style = {
+    const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.lineColor
     };
-    const g = Graphics.makeGroup([]);
+    const g = makeGroup([]);
     g.transform.x = cx;
     g.transform.y = cy;
 
@@ -442,7 +423,7 @@ export class AxisRenderer {
       const ty = Math.cos(radians) * radius;
 
       const metrics = AxisRenderer.textMeasurer.measure(tick.label);
-      const [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(
+      const [textX, textY] = TextMeasurer.ComputeTextPosition(
         0,
         style.tickSize * side,
         metrics,
@@ -451,16 +432,11 @@ export class AxisRenderer {
         0,
         2
       );
-      const gt = Graphics.makeGroup([
-        Graphics.makeLine(0, 0, 0, style.tickSize * side, lineStyle),
-        Graphics.makeText(
-          textX,
-          textY,
-          tick.label,
-          style.fontFamily,
-          style.fontSize,
-          { fillColor: style.tickColor }
-        )
+      const gt = makeGroup([
+        makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+        makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
+          fillColor: style.tickColor
+        })
       ]);
 
       gt.transform.angle = -angle;
@@ -472,19 +448,19 @@ export class AxisRenderer {
   }
 
   public renderCurve(
-    coordinateSystem: Graphics.CoordinateSystem,
+    coordinateSystem: CoordinateSystem,
     y: number,
     side: number
-  ): Graphics.Group {
+  ): Group {
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
     const tickSize = style.tickSize;
-    const lineStyle: Graphics.Style = {
+    const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.lineColor
     };
-    const g = Graphics.makeGroup([]);
+    const g = makeGroup([]);
     g.transform = coordinateSystem.getBaseTransform();
 
     const hintStyle = {
@@ -498,7 +474,7 @@ export class AxisRenderer {
       const tangent = tick.position;
 
       const metrics = AxisRenderer.textMeasurer.measure(tick.label);
-      const [textX, textY] = Graphics.TextMeasurer.ComputeTextPosition(
+      const [textX, textY] = TextMeasurer.ComputeTextPosition(
         0,
         -style.tickSize * side,
         metrics,
@@ -507,16 +483,11 @@ export class AxisRenderer {
         0,
         2
       );
-      const gt = Graphics.makeGroup([
-        Graphics.makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
-        Graphics.makeText(
-          textX,
-          textY,
-          tick.label,
-          style.fontFamily,
-          style.fontSize,
-          { fillColor: style.tickColor }
-        )
+      const gt = makeGroup([
+        makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
+        makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
+          fillColor: style.tickColor
+        })
       ]);
 
       gt.transform = coordinateSystem.getLocalTransform(tangent, y);

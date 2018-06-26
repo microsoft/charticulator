@@ -1,26 +1,24 @@
 const webpack = require('webpack');
-const yaml = require("js-yaml");
-const fs = require("fs");
+const childProcess = require('child_process');
+const { version } = require("./package.json");
+const revision = childProcess.execSync('git rev-parse HEAD').toString().trim()
 
-class Definitions {
-    constructor(myName) {
-        Object.defineProperty(this, 'CHARTICULATOR_PACKAGE', {
-            enumerable: true,
-            get: function () {
-                let package_json = require("./package.json");
-                let git_revision = require('child_process').execSync('git rev-parse HEAD').toString().trim()
-                return JSON.stringify({
-                    version: package_json.version,
-                    buildTimestamp: new Date().getTime(),
-                    revision: git_revision
-                })
-            }
-        });
-    }
-}
+const plugins = [
+    new webpack.DefinePlugin({
+        CHARTICULATOR_PACKAGE: JSON.stringify({
+            version,
+            revision,
+            buildTimestamp: new Date().getTime(),
+        }),
+        "process.env": {
+            "NODE_ENV": JSON.stringify(process.env.NODE_ENV) 
+        }
+    })
+];
 
 module.exports = [
     {
+        // devtool: "eval",
         entry: {
             app: "./dist/scripts/app/index.js"
         },
@@ -31,21 +29,12 @@ module.exports = [
             libraryTarget: "var",
             library: "Charticulator"
         },
-        externals: {
-            // To switch to preact, comment the following 3 lines:
-            "react": "React",
-            "react-dom": "ReactDOM",
-            "react-dom/server": "ReactDOMServer",
-            "d3": "d3"
-        },
         resolve: {
             alias: {
                 "resources": __dirname + "/resources"
             }
         },
-        plugins: [
-            new webpack.DefinePlugin(new Definitions())
-        ]
+        plugins
     },
     {
         entry: {
@@ -60,9 +49,7 @@ module.exports = [
                 "resources": __dirname + "/resources"
             }
         },
-        plugins: [
-            new webpack.DefinePlugin(new Definitions())
-        ]
+        plugins
     },
     {
         entry: {
@@ -80,8 +67,6 @@ module.exports = [
                 "resources": __dirname + "/resources"
             }
         },
-        plugins: [
-            new webpack.DefinePlugin(new Definitions())
-        ]
+        plugins
     }
 ];

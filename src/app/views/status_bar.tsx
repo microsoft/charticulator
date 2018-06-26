@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as d3 from "d3";
+import { timeFormat } from "d3-time-format";
 import { MainStore } from "../stores";
 import { EventSubscription } from "../../core";
 
@@ -42,7 +42,7 @@ export class StatusBar extends React.Component<StatusBarProps, StatusBarState> {
       }
     }
     components.unshift(
-      `Build: ${d3.timeFormat("%b %d, %Y %H:%M:%S")(
+      `Build: ${timeFormat("%b %d, %Y %H:%M:%S")(
         new Date(CHARTICULATOR_PACKAGE.buildTimestamp)
       )}`
     );

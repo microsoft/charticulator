@@ -2,5 +2,6 @@ package-lock.json
 config.yml
 node_modules/
 extensions/
+datasets/
 dist/
 .sass-cache/

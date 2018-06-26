@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import { csvParseRows, tsvParseRows } from "d3-dsv";
 
 import {
   convertColumn,
@@ -39,12 +39,12 @@ export function parseDataset(
   switch (type) {
     case "csv":
       {
-        rows = d3.csvParseRows(content);
+        rows = csvParseRows(content);
       }
       break;
     case "tsv":
       {
-        rows = d3.tsvParseRows(content);
+        rows = tsvParseRows(content);
       }
       break;
     default:

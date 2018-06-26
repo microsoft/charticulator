@@ -10,14 +10,19 @@ function yamlToJSON(yamlFile, jsonFile) {
     });
 }
 
-function yamlToJavaScript(yamlFile, javascriptFile, variable) {
+function yamlToJavaScript(yamlFile, javascriptFile, variableName, addlConfig = {}) {
     return fs.readFile(yamlFile).then((contents) => {
-        let doc = jsyaml.safeLoad(contents);
+        let doc = {
+            ...(jsyaml.safeLoad(contents)),
+            ...addlConfig
+        };
         let json = JSON.stringify(doc);
-        let javascript = `var ${variable} = ${json};\n`;
+        let javascript = `var ${variableName} = ${json};\n`;
         return fs.writeFile(javascriptFile, new Buffer(javascript, "utf-8"));
     });
 }
+
+const isProd = process.env.NODE_ENV === 'production';
 
 let COMMANDS = {
 
@@ -33,14 +38,34 @@ let COMMANDS = {
 
     // Copy files
     copy: [
-        () => fs.copy("src/core/expression/parser.d.ts", "dist/scripts/core/expression/parser.d.ts")
+        () => fs.copy("src/core/expression/parser.d.ts", "dist/scripts/core/expression/parser.d.ts"),
+
+        // Copy all of the public files
+        () => fs.copy("./public", "./dist"),
+
+        // Copy all of the extensions
+        () => fs.copy("./extensions", "./dist/extensions"),
+
+        // Copy all of the datasets
+        () => fs.copy("./datasets", "./dist/datasets"),
     ],
 
     // Convert the THIRD_PARTY.yml to json
-    third_party_data: () => yamlToJSON("THIRD_PARTY.yml", "dist/data/third_party.json"),
+    third_party_data: () => yamlToJSON("THIRD_PARTY.yml", "dist/data/THIRD_PARTY.json"),
 
     // Convert the config.yml to config.js
-    config: () => yamlToJavaScript("config.yml", "dist/data/config.js", "CHARTICULATOR_CONFIG"),
+    config: () => {
+        let mixin = {};
+        if (fs.existsSync('datasets/files.json')) {
+            mixin.SampleDatasets = JSON.parse(fs.readFileSync('datasets/files.json'));
+            mixin.SampleDatasets.forEach(dataset => {
+                dataset.tables.forEach(table => {
+                    table.url = 'datasets/' + table.url;
+                });
+            });
+        }
+        yamlToJavaScript("config.yml", "dist/data/config.js", "CHARTICULATOR_CONFIG", mixin)
+    },
 
     // Compile sass files
     sass: [
@@ -57,20 +82,13 @@ let COMMANDS = {
     typescript: "tsc",
 
     // Produce webpack bundles
-    webpack: "webpack",
+    webpack: "webpack --mode=" + (isProd ? "production" : "development"),
 
-    // Uglify the bundles
-    uglify: [
-        "uglifyjs dist/scripts/app.bundle.js -o dist/scripts/app.bundle.min.js",
-        "uglifyjs dist/scripts/worker.bundle.js -o dist/scripts/worker.bundle.min.js",
-        "uglifyjs dist/scripts/container.bundle.js -o dist/scripts/container.bundle.min.js"
-    ],
-
-    server: "http-server . -a 127.0.0.1 -p 4000 -c-1 -s",
-    public_server: "http-server . -a 0.0.0.0 -p 4000 -c-1 -s",
+    server: "http-server ./dist -a 127.0.0.1 -p 4000 -c-1 -s",
+    public_server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
     watch: [
         "tsc -w",
-        "webpack -w",
+        "webpack -w --mode=" + (isProd ? "production" : "development"),
         "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
         () => multirun.run(COMMANDS["server"])
     ]
@@ -79,6 +97,6 @@ let COMMANDS = {
 // Execute the specified commands, with no args, run the default sequence
 let sequence = process.argv.slice(2);
 if (sequence.length == 0) {
-    sequence = ["cleanup", "makedirs", "copy", "third_party_data", "config", "pegjs", "typescript", "sass", "webpack", "uglify"];
+    sequence = ["cleanup", "makedirs", "copy", "third_party_data", "config", "pegjs", "typescript", "sass", "webpack"];
 }
 multirun.runCommands(COMMANDS, sequence, "Build");

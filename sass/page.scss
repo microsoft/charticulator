@@ -34,7 +34,7 @@ p {
     line-height: 1.2em;
 }
 
-pre {
+pre.license {
     @include font-mono;
     overflow-x: scroll;
     overflow-y: hidden;

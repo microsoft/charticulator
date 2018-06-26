@@ -1,3 +1,5 @@
+@import "../theme.scss";
+
 .charticulator__list-view {
     $item-height: 36px;
     $icon-shrink: 8px;
@@ -38,7 +40,8 @@
     &-tabs {
         flex-shrink: 0;
         width: 120px;
-        background: $gray-100;
+        background: $theme-primary-background;
+        color: $theme-primary-foreground;
 
         .el-sep {
             border-bottom: 1px solid $gray-110;
@@ -60,11 +63,13 @@
             transition: color $transition-default, background $transition-default;
 
             &:hover, &.active, &:active {
-                background: $gray-150;
+                background: $theme-hover-background;
+                color: $theme-hover-foreground;
             }
 
             &.active, &:active {
-                color: $gray-230;
+                color: $theme-active-foreground;
+                background: $theme-active-background;
             }
         }
 
@@ -105,6 +110,8 @@
         padding: 20px;
         overflow-x: hidden;
         overflow-y: scroll;
+        background: $theme-secondary-background;
+        color: $theme-secondary-foreground;
 
         &.is-fix-width {
             width: 480px;

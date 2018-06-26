@@ -1,0 +1,34 @@
+
+@import "./common/colors.scss";
+
+$theme: '';
+
+$theme-primary-background: $gray-100;
+$theme-primary-foreground: "";
+
+$theme-secondary-background: $gray-220;
+$theme-secondary-foreground: #333;
+
+$theme-hover-background: $gray-150;
+$theme-hover-foreground: "";
+
+$theme-active-foreground: $gray-230;
+$theme-active-background: "";
+
+$theme-header-background: $gray-100;
+$theme-header-foreground: $gray-200;
+
+$theme-dataset-background: $gray-210;
+
+$theme-editor-pane-background: $gray-210;
+$theme-editor-pane-foreground: "";
+
+$theme-metadata-title-foreground: $gray-100;
+$theme-metadata-column-foreground: "";
+
+$theme-font-family-main: "Lato", "Lucida Grande", "Segoe UI", sans-serif;
+$theme-font-family-mono: "Inconsolata", "Menlo", "Courier New", monospace;
+
+$theme-application-title-background: "";
+$theme-application-title-foreground: "";
+$theme-application-title-font-weight: "";

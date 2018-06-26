@@ -16,7 +16,7 @@ import { Action } from "./actions/actions";
 import { renderGraphicalElementSVG } from "./renderer/index";
 import { AxisRenderer } from "../core/prototypes/plot_segments/axis";
 import { ReorderListView } from "./views/panels/object_list_editor";
-import { TextMeasurer } from "../core/graphics/renderer";
+import { TextMeasurer } from "../core/graphics/renderer/textMeasurer";
 
 // export function TestBezierCurve(props: {}) {
 //     let curve: [Point, Point, Point, Point][] = [

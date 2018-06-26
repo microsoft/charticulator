@@ -1,3 +1,5 @@
+@import "../theme.scss";
+
 @mixin corner-x-top-left($height: 4px, $size: 16px, $color: $gray-100) {
     margin-top: $height;
     &:before {
@@ -102,12 +104,13 @@
 }
 
 .popup-view {
-    background: $gray-220;
+    background: $theme-secondary-background;
     border: 1px solid $gray-100;
     border-radius: 2px;
     // box-shadow: 0 0 3px $gray-100;
     @include shadow-focused;
     pointer-events: all;
+    color: $theme-secondary-foreground;
 
     position: relative;
 

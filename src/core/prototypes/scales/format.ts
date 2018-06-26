@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import { format } from "d3-format";
 
 import { Scale } from "../../common";
 import {
@@ -33,7 +33,7 @@ export class FormatScale extends ScaleClass {
   ): Specification.AttributeValue {
     const number = data as number;
     try {
-      const fmt = d3.format(this.object.properties.format);
+      const fmt = format(this.object.properties.format);
       return fmt(number);
     } catch (e) {
       return number.toFixed(1);

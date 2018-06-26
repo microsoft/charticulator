@@ -1,26 +1,25 @@
-$font-family-main: "Lato", "Lucida Grande", "Segoe UI", sans-serif;
-$font-family-mono: "Inconsolata", "Menlo", "Courier New", monospace;
+@import "../theme.scss";
 
 @mixin font-main {
-    font-family: $font-family-main;
+    font-family: $theme-font-family-main;
     font-weight: 400;
 }
 
 @mixin font-bold {
-    font-family: $font-family-main;
+    font-family: $theme-font-family-main;
     font-weight: 700;
 }
 
 @mixin font-italic {
-    font-family: $font-family-main;
+    font-family: $theme-font-family-main;
     font-style: italic;
 }
 
 @mixin font-light {
-    font-family: $font-family-main;
+    font-family: $theme-font-family-main;
     font-weight: 300;
 }
 
 @mixin font-mono {
-    font-family: $font-family-mono;
+    font-family: $theme-font-family-mono;
 }

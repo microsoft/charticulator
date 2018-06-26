@@ -1,15 +1,10 @@
 import * as React from "react";
-import * as d3 from "d3";
 
 import {
   Graphics,
-  Rect,
   Color,
-  Point,
   shallowClone,
-  prettyNumber
 } from "../../core";
-import { resolve } from "path";
 import { toSVGNumber } from "../utils";
 
 export { renderGraphicalElementCanvas } from "./canvas";
