@@ -1,21 +1,32 @@
 import * as Specification from "../specification";
 
-import * as Marks from "./marks";
-import * as Scales from "./scales";
-import * as Glyphs from "./glyphs";
-import * as PlotSegments from "./plot_segments";
-import * as Constraints from "./constraints";
 import * as Charts from "./charts";
-import * as Links from "./links";
+import * as Constraints from "./constraints";
+import * as Dataflow from "./dataflow";
+import * as Glyphs from "./glyphs";
 import * as Guides from "./guides";
 import * as Legends from "./legends";
-import * as Dataflow from "./dataflow";
+import * as Links from "./links";
+import * as Marks from "./marks";
+import * as PlotSegments from "./plot_segments";
+import * as Scales from "./scales";
 
 export * from "./common";
 
-export { Marks, Scales, Constraints, Glyphs, Charts, PlotSegments, Links, Guides, Legends, Dataflow };
+export {
+  Marks,
+  Scales,
+  Constraints,
+  Glyphs,
+  Charts,
+  PlotSegments,
+  Links,
+  Guides,
+  Legends,
+  Dataflow
+};
 export { ObjectClassCache } from "./cache";
-import { ObjectClasses, ObjectClass } from "./common";
+import { ObjectClass, ObjectClasses } from "./common";
 
 // Shortcuts
 

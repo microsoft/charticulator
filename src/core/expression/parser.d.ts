@@ -2,19 +2,30 @@
 
 import { Expression } from "./classes";
 export declare class Location {
-    offset: number;
-    line: number;
-    column: number;
+  public offset: number;
+  public line: number;
+  public column: number;
 }
 export declare class SyntaxError {
-    message: string;
-    expected: [{ type: string, description: string, parts: string[], inverted: boolean, ignoreCase: boolean }];
-    found: string;
-    location: {
-        start: Location,
-        end: Location
-    };
-    name: string;
+  public message: string;
+  public expected: [
+    {
+      type: string;
+      description: string;
+      parts: string[];
+      inverted: boolean;
+      ignoreCase: boolean;
+    }
+  ];
+  public found: string;
+  public location: {
+    start: Location;
+    end: Location;
+  };
+  public name: string;
 }
 
-export declare function parse(input: string, options?: { [name: string]: string }): Expression;
+export declare function parse(
+  input: string,
+  options?: { [name: string]: string }
+): Expression;

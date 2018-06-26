@@ -11,6 +11,6 @@ export { Core };
 
 export { Actions, DragData } from "./actions";
 export { ExtensionContext, Extension } from "./extension";
-export { Application, ApplicationExtensionContext} from "./application";
+export { Application, ApplicationExtensionContext } from "./application";
 
 export { TestApplication } from "./test";

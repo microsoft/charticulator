@@ -1,14 +1,14 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-        "declaration": true,
-        "rootDir": "./src",
-        "outDir": "./dist/scripts",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "es6",
-        "jsx": "react",
-        "noImplicitAny": true,
-        "sourceMap": true
-    }
+  "compileOnSave": true,
+  "compilerOptions": {
+    "declaration": true,
+    "rootDir": "./src",
+    "outDir": "./dist/scripts",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "jsx": "react",
+    "noImplicitAny": true,
+    "sourceMap": true
+  }
 }

@@ -1,6 +1,10 @@
-import { DragController, PopupController, ResizeListeners } from "./controllers";
-import { MainStore } from "./stores";
 import { Actions } from "./actions";
+import {
+  DragController,
+  PopupController,
+  ResizeListeners
+} from "./controllers";
+import { MainStore } from "./stores";
 
 import { IndexedDBBackend } from "./backend/indexedDB";
 
