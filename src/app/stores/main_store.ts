@@ -99,7 +99,7 @@ export class MainStore extends BaseStore {
 
     this.chartStore = new ChartStore(this);
 
-    if (process.env.NODE_ENV !== "development") {
+    if (process.env.NODE_ENV === "development") {
       // Only enable this if we are in the development environment
       this.registerExportTemplateTarget(
         "Charticulator Template",
