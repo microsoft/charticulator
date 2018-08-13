@@ -11,7 +11,7 @@ const plugins = [
             buildTimestamp: new Date().getTime(),
         }),
         "process.env": {
-            "NODE_ENV": JSON.stringify(process.env.NODE_ENV) 
+            "NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development") 
         }
     })
 ];
