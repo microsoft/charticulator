@@ -12,8 +12,8 @@ Project Team
 - [Matthew Brehmer](https://www.microsoft.com/en-us/research/people/mabrehme/)
 - [Nathan Evans](https://github.com/natoverse)
 - [Kate Lytvynets](https://github.com/katua)
-- [Chris Trevino](https://github.com/darthtrevino)
 - [David Tittsworth](https://github.com/stopyoukid)
+- [Chris Trevino](https://github.com/darthtrevino)
 
 Build
 ----
