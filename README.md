@@ -10,6 +10,10 @@ Project Team
 - [Donghao Ren](https://donghaoren.org/)
 - [Bongshin Lee](http://research.microsoft.com/en-us/um/people/bongshin/)
 - [Matthew Brehmer](https://www.microsoft.com/en-us/research/people/mabrehme/)
+- [Nathan Evans](https://github.com/natoverse)
+- [Kate Lytvynets](https://github.com/katua)
+- [David Tittsworth](https://github.com/stopyoukid)
+- [Chris Trevino](https://github.com/darthtrevino)
 
 Build
 ----
@@ -32,7 +36,7 @@ cp config.template.yml config.yml
 # (on windows, use copy instead of cp)
 ```
 
-Run the following command to build Charticulator:
+Run the following command to build Charticulator, which will create a self contained bundle in the `dist` folder:
 
 ```bash
 yarn build
@@ -59,7 +63,7 @@ yarn start
 ```
 
 This command watches for any change in `src/` and `sass/`, and recompiles Charticulator automatically.
-Once this up, open <http://localhost:4000/charticulator.html> or <http://localhost:4000/charticulator-dev.html> (for development)
+Once this up, open <http://localhost:4000/>
 to launch Charticulator. Now when you change the source code, the app can be updated by simply
 refreshing the browser page (you may need to disable browser cache).
 
