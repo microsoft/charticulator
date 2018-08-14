@@ -22,6 +22,12 @@ function yamlToJavaScript(yamlFile, javascriptFile, variableName, addlConfig = {
     });
 }
 
+function copyFolder(folder1, folder2) {
+    if (fs.existsSync(folder1)) {
+        fs.copy(folder1, folder2);
+    }
+}
+
 const isProd = process.env.NODE_ENV === 'production';
 
 let COMMANDS = {
@@ -41,13 +47,13 @@ let COMMANDS = {
         () => fs.copy("src/core/expression/parser.d.ts", "dist/scripts/core/expression/parser.d.ts"),
 
         // Copy all of the public files
-        () => fs.copy("./public", "./dist"),
+        () => copyFolder("./public", "./dist"),
 
         // Copy all of the extensions
-        () => fs.copy("./extensions", "./dist/extensions"),
+        () => copyFolder("./extensions", "./dist/extensions"),
 
         // Copy all of the datasets
-        () => fs.copy("./datasets", "./dist/datasets"),
+        () => copyFolder("./datasets", "./dist/datasets"),
     ],
 
     // Convert the THIRD_PARTY.yml to json
