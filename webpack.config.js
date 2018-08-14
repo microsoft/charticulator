@@ -2,22 +2,20 @@ const webpack = require('webpack');
 const childProcess = require('child_process');
 const { version } = require("./package.json");
 const revision = childProcess.execSync('git rev-parse HEAD').toString().trim()
-
-const plugins = [
-    new webpack.DefinePlugin({
-        CHARTICULATOR_PACKAGE: JSON.stringify({
-            version,
-            revision,
-            buildTimestamp: new Date().getTime(),
-        }),
-        "process.env": {
-            "NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development") 
-        }
-    })
-];
-
-module.exports = [
-    {
+module.exports = (env, { mode }) => {
+    const plugins = [
+        new webpack.DefinePlugin({
+            CHARTICULATOR_PACKAGE: JSON.stringify({
+                version,
+                revision,
+                buildTimestamp: new Date().getTime(),
+            }),
+            "process.env": {
+                "NODE_ENV": JSON.stringify(mode || "production")
+            }
+        })
+    ];
+    return [{
         // devtool: "eval",
         entry: {
             app: "./dist/scripts/app/index.js"
@@ -68,5 +66,5 @@ module.exports = [
             }
         },
         plugins
-    }
-];
+    }];
+};
