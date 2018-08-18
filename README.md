@@ -93,7 +93,6 @@ You can add custom sample datasets that can be used with Charticulator.  To do s
     }
 ]
 ```
- 
 
 Testing
 ----

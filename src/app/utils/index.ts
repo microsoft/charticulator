@@ -17,6 +17,27 @@ export function toSVGZoom(zoom: ZoomInfo) {
   )}) scale(${prettyNumber(zoom.scale)})`;
 }
 
+export function parseHashString(value: string) {
+  // Make sure value doesn't start with "#" or "#!"
+  if (value[0] == "#") {
+    value = value.substr(1);
+  }
+  if (value[0] == "!") {
+    value = value.substr(1);
+  }
+
+  // Split by & and parse each key=value pair
+  return value.split("&").reduce(
+    (prev, str) => {
+      const pair = str.split("=");
+      prev[decodeURIComponent(pair[0])] =
+        pair.length == 2 ? decodeURIComponent(pair[1]) : "";
+      return prev;
+    },
+    {} as { [key: string]: string }
+  );
+}
+
 export interface RenderDataURLToPNGOptions {
   mode: "scale" | "thumbnail";
   scale?: number;

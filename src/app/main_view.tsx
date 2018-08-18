@@ -54,8 +54,6 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
-
-    this.showFileModalWindow("new");
   }
 
   public static childContextTypes = {
@@ -165,6 +163,10 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       }
     };
     input.click();
+  }
+
+  public hideFileModalWindow(defaultTab: string = "open") {
+    globals.popupController.reset();
   }
 
   public showFileModalWindow(defaultTab: string = "open") {
