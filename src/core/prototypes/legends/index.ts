@@ -3,7 +3,7 @@ import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import * as Scales from "../scales";
 
-import { Color, indexOf, interpolateColors } from "../../common";
+import { Color, indexOf, interpolateColors, deepClone } from "../../common";
 import {
   ConstraintSolver,
   ConstraintStrength,
@@ -18,7 +18,12 @@ import {
   ObjectClasses,
   ObjectClassMetadata
 } from "../common";
-import { AxisRenderer } from "../plot_segments/axis";
+import {
+  AxisRenderer,
+  defaultAxisStyle,
+  buildAxisWidgets,
+  buildAxisAppearanceWidgets
+} from "../plot_segments/axis";
 
 export interface LegendAttributes extends Specification.AttributeMap {
   x: number;
@@ -374,7 +379,35 @@ export class NumericalColorLegendClass extends LegendClass {
   }
 }
 
+export interface NumericalNumberLegendAttributes
+  extends Specification.AttributeMap {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
+export interface NumericalNumberLegendProperties
+  extends Specification.AttributeMap {
+  axis: {
+    visible: boolean;
+    side: string;
+    style: Specification.Types.AxisRenderingStyle;
+  };
+}
+
+export interface NumericalNumberLegendState extends Specification.ObjectState {
+  attributes: NumericalNumberLegendAttributes;
+}
+
+export interface NumericalNumberLegendObject extends Specification.Object {
+  properties: NumericalNumberLegendProperties;
+}
+
 export class NumericalNumberLegendClass extends ChartElementClass {
+  public readonly object: NumericalNumberLegendObject;
+  public readonly state: NumericalNumberLegendState;
+
   public static classID: string = "legend.numerical-number";
   public static type: string = "legend";
 
@@ -384,7 +417,12 @@ export class NumericalNumberLegendClass extends ChartElementClass {
   };
 
   public static defaultProperties = {
-    visible: true
+    visible: true,
+    axis: {
+      side: "default",
+      visible: true,
+      style: deepClone(defaultAxisStyle)
+    }
   };
 
   public attributeNames: string[] = ["x1", "y1", "x2", "y2"];
@@ -477,6 +515,10 @@ export class NumericalNumberLegendClass extends ChartElementClass {
       return null;
     }
 
+    if (!this.object.properties.axis.visible) {
+      return null;
+    }
+
     const rangeMin = scale[1].attributes.rangeMin as number;
     const rangeMax = scale[1].attributes.rangeMax as number;
     const domainMin = scale[0].properties.domainMin as number;
@@ -499,6 +541,7 @@ export class NumericalNumberLegendClass extends ChartElementClass {
       rangeMin,
       length
     );
+    renderer.setStyle(this.object.properties.axis.style);
 
     return renderer.renderLine(
       this.state.attributes.x1 as number,
@@ -506,6 +549,17 @@ export class NumericalNumberLegendClass extends ChartElementClass {
       Math.atan2(dy, dx) / Math.PI * 180,
       -1
     );
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const props = this.object.properties;
+
+    return [
+      manager.sectionHeader("Axis"),
+      buildAxisAppearanceWidgets(props.axis.visible, "axis", manager)
+    ];
   }
 }
 
