@@ -36,6 +36,7 @@
     min-width: 600px;
     display: flex;
     flex-direction: row;
+    overflow: hidden;
 
     &-tabs {
         flex-shrink: 0;

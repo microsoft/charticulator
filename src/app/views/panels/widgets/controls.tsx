@@ -242,15 +242,17 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
   public render() {
     return (
       <span className="charticulator__widget-control-input-number">
-        <InputText
-          ref={e => (this.textInput = e)}
-          placeholder={this.props.placeholder}
-          defaultValue={this.formatNumber(this.props.defaultValue)}
-          onEnter={str => {
-            const num = this.parseNumber(str);
-            return this.reportValue(num);
-          }}
-        />
+        <div className="charticulator__widget-control-input-number-input">
+          <InputText
+            ref={e => (this.textInput = e)}
+            placeholder={this.props.placeholder}
+            defaultValue={this.formatNumber(this.props.defaultValue)}
+            onEnter={str => {
+              const num = this.parseNumber(str);
+              return this.reportValue(num);
+            }}
+          />
+        </div>
         {this.props.showSlider ? this.renderSlider() : null}
         {this.props.showUpdown ? this.renderUpdown() : null}
       </span>
