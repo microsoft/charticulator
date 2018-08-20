@@ -12,6 +12,10 @@ import { CharticulatorWorker } from "../worker";
 import { CharticulatorAppConfig } from "./config";
 
 import { ExportTemplateTarget } from "./template";
+import { parseHashString } from "./utils";
+import { Actions } from "./actions";
+import { DatasetLoader, Dataset } from "../core/dataset";
+import { DatasetSourceSpecification } from "../core/dataset/loader";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -32,6 +36,7 @@ export class ApplicationExtensionContext implements ExtensionContext {
 export class Application {
   public worker: CharticulatorWorker;
   public mainStore: MainStore;
+  public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
   public async initialize(
@@ -120,6 +125,7 @@ export class Application {
       <MainView
         store={this.mainStore}
         disableFileView={config.DisableFileView}
+        ref={e => (this.mainView = e)}
       />,
       document.getElementById(containerID)
     );
@@ -141,6 +147,36 @@ export class Application {
         };
         document.body.appendChild(scriptTag);
       });
+    }
+
+    await this.processHashString();
+  }
+
+  public async processHashString() {
+    // Load saved state or data from hash
+    const hashParsed = parseHashString(document.location.hash);
+
+    if (hashParsed.loadDataset) {
+      // Load from a dataset specification json format
+      const spec: DatasetSourceSpecification = JSON.parse(hashParsed.dataset);
+      const loader = new DatasetLoader();
+      const dataset = await loader.loadDatasetFromSourceSpecification(spec);
+      this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
+    } else if (hashParsed.loadCSV) {
+      // Quick load from one or two CSV files
+      const spec: DatasetSourceSpecification = {
+        tables: hashParsed.loadCSV.split("|").map(x => ({ url: x }))
+      };
+      const loader = new DatasetLoader();
+      const dataset = await loader.loadDatasetFromSourceSpecification(spec);
+      this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
+    } else if (hashParsed.load) {
+      // Load a saved state
+      const value = await fetch(hashParsed.load);
+      const json = await value.json();
+      this.mainStore.dispatcher.dispatch(new Actions.Load(json.state));
+    } else {
+      this.mainView.showFileModalWindow("new");
     }
   }
 
