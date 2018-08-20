@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import {
   MenuButton,
@@ -17,7 +18,12 @@ import {
 } from "./views";
 import { MainStore } from "./stores";
 
-import { DragStateView, PopupContainer, ModalView } from "./controllers";
+import {
+  DragStateView,
+  PopupContainer,
+  ModalView,
+  PopupView
+} from "./controllers";
 import * as globals from "./globals";
 
 import { Actions } from "./actions";
@@ -42,6 +48,7 @@ export interface MainViewState {}
 export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refs: {
     canvasViewContainer: HTMLDivElement;
+    helpButton: MenuButton;
   };
 
   constructor(props: MainViewProps) {
@@ -251,7 +258,69 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             />
           </div>
           <div className="charticulator__menu-bar-right">
-            {/* <MenuButton url={R.getSVGIcon("toolbar/help")} title="Open help page" /> */}
+            <MenuButton
+              url={R.getSVGIcon("toolbar/help")}
+              title="Help"
+              ref="helpButton"
+              onClick={() => {
+                globals.popupController.popupAt(
+                  context => {
+                    return (
+                      <PopupView
+                        context={context}
+                        className="charticulator__menu-popup"
+                      >
+                        <div className="charticulator__menu-dropdown">
+                          <div className="el-item">
+                            <a
+                              target="_blank"
+                              href="https://charticulator.com/docs/getting-started.html"
+                            >
+                              Getting Started
+                            </a>
+                          </div>
+                          <div className="el-item">
+                            <a
+                              target="_blank"
+                              href="https://charticulator.com/gallery/index.html"
+                            >
+                              Example Gallery
+                            </a>
+                          </div>
+                          <div className="el-item">
+                            <a
+                              target="_blank"
+                              href="https://github.com/Microsoft/charticulator/issues/new"
+                            >
+                              Report an Issue
+                            </a>
+                          </div>
+                          <div className="el-item">
+                            <a
+                              target="_blank"
+                              href="https://charticulator.com/"
+                            >
+                              Charticulator Home
+                            </a>
+                          </div>
+                          <div className="el-item">
+                            <a href="mailto:charticulator@microsoft.com">
+                              Contact Us
+                            </a>
+                          </div>
+                        </div>
+                      </PopupView>
+                    );
+                  },
+                  {
+                    anchor: ReactDOM.findDOMNode(
+                      this.refs.helpButton
+                    ) as Element,
+                    alignX: "end-inner"
+                  }
+                );
+              }}
+            />
           </div>
         </section>
         <section className="charticulator__panel-container">
