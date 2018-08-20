@@ -275,6 +275,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
 
 export class PopupView extends React.Component<
   {
+    className?: string;
     context: PopupContext;
   },
   {}
@@ -381,7 +382,11 @@ export class PopupView extends React.Component<
     }
     return (
       <div
-        className="popup-view-container"
+        className={
+          this.props.className
+            ? this.props.className + " popup-view-container"
+            : "popup-view-container"
+        }
         style={style}
         onMouseDownCapture={e => {
           newlyCreatedContexts = new WeakSet<PopupContext>();
