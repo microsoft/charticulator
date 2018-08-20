@@ -537,6 +537,81 @@ export function getCategoricalAxis(
   };
 }
 
+export function buildAxisAppearanceWidgets(
+  isVisible: boolean,
+  axisProperty: string,
+  m: Controls.WidgetManager
+) {
+  if (isVisible) {
+    return m.row(
+      "Visible",
+      m.horizontal(
+        [0, 0, 1, 0],
+        m.inputBoolean(
+          { property: axisProperty, field: "visible" },
+          { type: "checkbox" }
+        ),
+        m.label("Position:"),
+        m.inputSelect(
+          { property: axisProperty, field: "side" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: ["default", "opposite"],
+            labels: ["Default", "Opposite"]
+          }
+        ),
+        m.detailsButton(
+          m.sectionHeader("Axis Style"),
+          m.row(
+            "Line Color",
+            m.inputColor({
+              property: axisProperty,
+              field: ["style", "lineColor"]
+            })
+          ),
+          m.row(
+            "Tick Color",
+            m.inputColor({
+              property: axisProperty,
+              field: ["style", "tickColor"]
+            })
+          ),
+          m.row(
+            "Tick Size",
+            m.inputNumber({
+              property: axisProperty,
+              field: ["style", "tickSize"]
+            })
+          ),
+          m.row(
+            "Font Family",
+            m.inputText({
+              property: axisProperty,
+              field: ["style", "fontFamily"]
+            })
+          ),
+          m.row(
+            "Font Size",
+            m.inputNumber(
+              { property: axisProperty, field: ["style", "fontSize"] },
+              { showUpdown: true, updownStyle: "font", updownTick: 2 }
+            )
+          )
+        )
+      )
+    );
+  } else {
+    return m.row(
+      "Visible",
+      m.inputBoolean(
+        { property: axisProperty, field: "visible" },
+        { type: "checkbox" }
+      )
+    );
+  }
+}
+
 export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
@@ -552,74 +627,7 @@ export function buildAxisWidgets(
     }
   };
   const makeAppearance = () => {
-    if (data.visible) {
-      return m.row(
-        "Visible",
-        m.horizontal(
-          [0, 0, 1, 0],
-          m.inputBoolean(
-            { property: axisProperty, field: "visible" },
-            { type: "checkbox" }
-          ),
-          m.label("Position:"),
-          m.inputSelect(
-            { property: axisProperty, field: "side" },
-            {
-              type: "dropdown",
-              showLabel: true,
-              options: ["default", "opposite"],
-              labels: ["Default", "Opposite"]
-            }
-          ),
-          m.detailsButton(
-            m.sectionHeader("Axis Style"),
-            m.row(
-              "Line Color",
-              m.inputColor({
-                property: axisProperty,
-                field: ["style", "lineColor"]
-              })
-            ),
-            m.row(
-              "Tick Color",
-              m.inputColor({
-                property: axisProperty,
-                field: ["style", "tickColor"]
-              })
-            ),
-            m.row(
-              "Tick Size",
-              m.inputNumber({
-                property: axisProperty,
-                field: ["style", "tickSize"]
-              })
-            ),
-            m.row(
-              "Font Family",
-              m.inputText({
-                property: axisProperty,
-                field: ["style", "fontFamily"]
-              })
-            ),
-            m.row(
-              "Font Size",
-              m.inputNumber(
-                { property: axisProperty, field: ["style", "fontSize"] },
-                { showUpdown: true, updownStyle: "font", updownTick: 2 }
-              )
-            )
-          )
-        )
-      );
-    } else {
-      return m.row(
-        "Visible",
-        m.inputBoolean(
-          { property: axisProperty, field: "visible" },
-          { type: "checkbox" }
-        )
-      );
-    }
+    return buildAxisAppearanceWidgets(data.visible, axisProperty, m);
   };
   if (data != null) {
     switch (data.type) {
