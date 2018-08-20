@@ -32,12 +32,12 @@ body {
         top: 0;
         bottom: 0;
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
         color: $theme-primary-foreground;
     }
 
     &-title__button {
-        background: $theme-application-title-background; 
+        background: $theme-application-title-background;
         color: $theme-application-title-foreground;
         padding: 10px;
     }
@@ -131,6 +131,7 @@ body {
                 display: flex;
                 flex: 1;
                 flex-direction: row;
+                overflow: hidden;
             }
 
             &-panel {
