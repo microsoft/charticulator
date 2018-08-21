@@ -81,6 +81,11 @@ addSVGIcon(
 );
 
 addSVGIcon(
+  "general/copy",
+  require("url-loader!resources/icons/icons_popout.svg")
+);
+
+addSVGIcon(
   "general/zoom-in",
   require("url-loader!resources/icons/icons_zoom-in.svg")
 );
@@ -300,6 +305,18 @@ addSVGIcon(
 addSVGIcon(
   "mark/rect",
   require("url-loader!resources/icons/icons_element-rect.svg")
+);
+addSVGIcon(
+  "mark/oval",
+  require("url-loader!resources/icons/icons_element-oval.svg")
+);
+addSVGIcon(
+  "mark/triangle",
+  require("url-loader!resources/icons/icons_element-triangle.svg")
+);
+addSVGIcon(
+  "mark/image",
+  require("url-loader!resources/icons/icons_element-image.svg")
 );
 addSVGIcon(
   "mark/symbol",
