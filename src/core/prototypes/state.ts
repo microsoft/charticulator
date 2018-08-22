@@ -257,8 +257,8 @@ export class ChartStateManager {
     }
   }
 
-  /** Find an unused name given a prefix, will try prefix1, prefix2, and so on. */
-  public findUnusedName(prefix: string) {
+  /** Test if a name is already used */
+  public isNameUsed(candidate: string) {
     const chart = this.chart;
     const names = new Set<string>();
     for (const scale of chart.scales) {
@@ -273,9 +273,14 @@ export class ChartStateManager {
         names.add(element.properties.name);
       }
     }
+    return names.has(candidate);
+  }
+
+  /** Find an unused name given a prefix, will try prefix1, prefix2, and so on. */
+  public findUnusedName(prefix: string) {
     for (let i = 1; ; i++) {
       const candidate = prefix + i.toString();
-      if (!names.has(candidate)) {
+      if (!this.isNameUsed(candidate)) {
         return candidate;
       }
     }

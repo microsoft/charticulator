@@ -307,8 +307,8 @@ addSVGIcon(
   require("url-loader!resources/icons/icons_element-rect.svg")
 );
 addSVGIcon(
-  "mark/oval",
-  require("url-loader!resources/icons/icons_element-oval.svg")
+  "mark/ellipse",
+  require("url-loader!resources/icons/icons_element-ellipse.svg")
 );
 addSVGIcon(
   "mark/triangle",

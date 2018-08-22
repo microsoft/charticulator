@@ -1,4 +1,4 @@
-import { Color, Point, uniqueID } from "../../common";
+import { Color, Point } from "../../common";
 import {
   ConstraintSolver,
   ConstraintStrength,
@@ -10,7 +10,6 @@ import {
   AttributeDescription,
   BoundingBox,
   Controls,
-  CreatingInteraction,
   DropZones,
   Handles,
   LinkAnchor,
@@ -18,7 +17,7 @@ import {
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
+import { MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
 
@@ -36,6 +35,14 @@ export interface RectElementAttributes extends Specification.AttributeMap {
   strokeWidth: number;
   opacity: number;
   visible: boolean;
+}
+
+export interface RectElementProperties extends Specification.AttributeMap {
+  shape: "rectangle" | "ellipse" | "triangle";
+}
+
+export interface RectElementObject extends Specification.Element {
+  properties: RectElementProperties;
 }
 
 export interface RectElementState extends Specification.MarkState {
@@ -56,7 +63,8 @@ export class RectElement extends MarkClass {
   };
 
   public static defaultProperties: Specification.AttributeMap = {
-    visible: true
+    visible: true,
+    shape: "rectangle"
   };
 
   public static defaultMappingValues: Specification.AttributeMap = {
@@ -67,6 +75,7 @@ export class RectElement extends MarkClass {
   };
 
   public readonly state: RectElementState;
+  public readonly object: RectElementObject;
 
   // Get a list of elemnt attributes
   public attributeNames: string[] = [
@@ -207,7 +216,7 @@ export class RectElement extends MarkClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Rectangle"),
+      manager.sectionHeader("Size & Shape"),
       manager.mappingEditor("Width", "width", "number", {
         hints: { autoRange: true },
         acceptKinds: ["numerical"],
@@ -218,6 +227,19 @@ export class RectElement extends MarkClass {
         acceptKinds: ["numerical"],
         defaultAuto: true
       }),
+      manager.row(
+        "Shape",
+        manager.inputSelect(
+          { property: "shape" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
+            labels: ["Rectangle", "Triangle", "Ellipse"],
+            options: ["rectangle", "triangle", "ellipse"]
+          }
+        )
+      ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", "color", {}),
       manager.mappingEditor("Stroke", "stroke", "color", {})
@@ -276,19 +298,68 @@ export class RectElement extends MarkClass {
       return null;
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
-    return helper.rect(
-      attrs.x1 + offset.x,
-      attrs.y1 + offset.y,
-      attrs.x2 + offset.x,
-      attrs.y2 + offset.y,
-      {
-        strokeColor: attrs.stroke,
-        strokeWidth: attrs.strokeWidth,
-        strokeLinejoin: "miter",
-        fillColor: attrs.fill,
-        opacity: attrs.opacity
+    switch (this.object.properties.shape) {
+      case "ellipse": {
+        return helper.ellipse(
+          attrs.x1 + offset.x,
+          attrs.y1 + offset.y,
+          attrs.x2 + offset.x,
+          attrs.y2 + offset.y,
+          {
+            strokeColor: attrs.stroke,
+            strokeWidth: attrs.strokeWidth,
+            strokeLinejoin: "miter",
+            fillColor: attrs.fill,
+            opacity: attrs.opacity
+          }
+        );
       }
-    );
+      case "triangle": {
+        const pathMaker = new Graphics.PathMaker();
+        helper.lineTo(
+          pathMaker,
+          attrs.x1 + offset.x,
+          attrs.y1 + offset.y,
+          (attrs.x1 + attrs.x2) / 2 + offset.x,
+          attrs.y2 + offset.y,
+          true
+        );
+        helper.lineTo(
+          pathMaker,
+          (attrs.x1 + attrs.x2) / 2 + offset.x,
+          attrs.y2 + offset.y,
+          attrs.x2 + offset.x,
+          attrs.y1 + offset.y,
+          false
+        );
+        pathMaker.closePath();
+        const path = pathMaker.path;
+        path.style = {
+          strokeColor: attrs.stroke,
+          strokeWidth: attrs.strokeWidth,
+          strokeLinejoin: "miter",
+          fillColor: attrs.fill,
+          opacity: attrs.opacity
+        };
+        return path;
+      }
+      case "rectangle":
+      default: {
+        return helper.rect(
+          attrs.x1 + offset.x,
+          attrs.y1 + offset.y,
+          attrs.x2 + offset.x,
+          attrs.y2 + offset.y,
+          {
+            strokeColor: attrs.stroke,
+            strokeWidth: attrs.strokeWidth,
+            strokeLinejoin: "miter",
+            fillColor: attrs.fill,
+            opacity: attrs.opacity
+          }
+        );
+      }
+    }
   }
 
   /** Get link anchors for this mark */
