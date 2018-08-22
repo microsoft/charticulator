@@ -54,6 +54,7 @@ export interface ChartEditorViewState {
   snappingCandidates: ChartSnappableGuide[] | null;
   graphics: Graphics.Element;
   currentCreation?: string;
+  currentCreationOptions?: string;
   currentSelection: Selection;
   dropZoneData:
     | {
@@ -217,7 +218,10 @@ export class ChartEditorView
     );
     this.tokens.push(
       this.props.store.addListener(ChartStore.EVENT_CURRENT_TOOL, () => {
-        this.setState({ currentCreation: this.props.store.currentTool });
+        this.setState({
+          currentCreation: this.props.store.currentTool,
+          currentCreationOptions: this.props.store.currentToolOptions
+        });
       })
     );
 
@@ -370,6 +374,7 @@ export class ChartEditorView
     );
     if (metadata && metadata.creatingInteraction) {
       const classID = this.state.currentCreation;
+      const options = this.state.currentCreationOptions;
       return (
         <CreatingComponentFromCreatingInteraction
           width={this.state.viewWidth}
@@ -381,6 +386,12 @@ export class ChartEditorView
             new Actions.SetCurrentTool(null).dispatch(
               this.props.store.dispatcher
             );
+            const opt = JSON.parse(options);
+            for (const key in opt) {
+              if (opt.hasOwnProperty(key)) {
+                attributes[key] = opt[key];
+              }
+            }
             new Actions.AddPlotSegment(classID, mappings, attributes).dispatch(
               this.props.store.dispatcher
             );

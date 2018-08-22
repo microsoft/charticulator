@@ -2,7 +2,7 @@ import { Dataset } from "../../core";
 import { Value } from "../../core/expression/classes";
 
 export class ObjectType {
-  constructor(public classID: string) {}
+  constructor(public classID: string, public options: string = null) {}
 }
 
 export class ScaffoldType {

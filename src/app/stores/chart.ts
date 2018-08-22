@@ -90,7 +90,7 @@ export class ChartStore extends BaseStore {
 
   public currentSelection: Selection;
   public currentTool: string;
-  public currentToolOptions: { [name: string]: any };
+  public currentToolOptions: string;
 
   public chartManager: Prototypes.ChartStateManager;
 
@@ -269,8 +269,15 @@ export class ChartStore extends BaseStore {
         action.classID
       ) as Specification.Element;
 
-      for (const key in action.attributes) {
-        mark.properties[key] = action.attributes[key];
+      for (const key in action.properties) {
+        mark.properties[key] = action.properties[key];
+      }
+
+      // Make sure name don't duplicate
+      if (this.chartManager.isNameUsed(mark.properties.name)) {
+        mark.properties.name = this.chartManager.findUnusedName(
+          mark.properties.name
+        );
       }
 
       const isFirstMark = action.glyph.marks.length == 1;

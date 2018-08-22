@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import { ToolButton, SVGImageIcon } from "../components";
 import * as R from "../resources";
 import * as globals from "../globals";
@@ -9,6 +10,8 @@ import { ContextedComponent } from "../context_component";
 import { DatasetStore } from "../stores/dataset";
 import { PopupView } from "../controllers";
 import { LinkCreationPanel } from "./panels/link_creator";
+import { Button } from "./panels/widgets/controls";
+import { classNames } from "../utils";
 
 export interface ToolbarProps {
   store: ChartStore;
@@ -34,37 +37,37 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
     return (
       <div className="chartaccent__toolbar">
         <span className="chartaccent__toolbar-label">Marks</span>
-        <ObjectButton
-          classID="mark.rect"
-          title="Rectangle"
-          icon="mark/rect"
-          currentTool={this.props.store.currentTool}
+        <MultiObjectButton
+          tools={[
+            {
+              classID: "mark.rect",
+              title: "Rectangle",
+              icon: "mark/rect",
+              options: '{"shape":"rectangle"}'
+            },
+            {
+              classID: "mark.rect",
+              title: "Ellipse",
+              icon: "mark/ellipse",
+              options: '{"shape":"ellipse","name":"Ellipse"}'
+            },
+            {
+              classID: "mark.rect",
+              title: "Triangle",
+              icon: "mark/triangle",
+              options: '{"shape":"triangle","name":"Triangle"}'
+            }
+          ]}
         />
-        <ObjectButton
-          classID="mark.symbol"
-          title="Symbol"
-          icon="mark/symbol"
-          currentTool={this.props.store.currentTool}
-        />
-        <ObjectButton
-          classID="mark.line"
-          title="Line"
-          icon="mark/line"
-          currentTool={this.props.store.currentTool}
-        />
-        <ObjectButton
-          classID="mark.text"
-          title="Text"
-          icon="mark/text"
-          currentTool={this.props.store.currentTool}
-        />
+        <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
+        <ObjectButton classID="mark.line" title="Line" icon="mark/line" />
+        <ObjectButton classID="mark.text" title="Text" icon="mark/text" />
         {/* <ObjectButton classID="mark.textbox" title="Text" icon="mark/textbox" currentTool={this.props.store.currentTool} /> */}
         <span className="chartaccent__toolbar-separator" />
         <ObjectButton
           classID="mark.data-axis"
           title="Data Axis"
           icon="mark/data-axis"
-          currentTool={this.props.store.currentTool}
         />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
@@ -73,28 +76,24 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           classID="guide-y"
           title="Guide Y"
           icon="guide/x"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         <ObjectButton
           classID="guide-x"
           title="Guide X"
           icon="guide/y"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         <ObjectButton
           classID="guide-coordinator-y"
           title="Guide Y"
           icon="guide/coordinator-x"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         <ObjectButton
           classID="guide-coordinator-x"
           title="Guide Y"
           icon="guide/coordinator-y"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         <span className="chartaccent__toolbar-label">Plot Segments</span>
@@ -102,14 +101,12 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           classID="plot-segment.cartesian"
           title="2D Region"
           icon="plot/region"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         <ObjectButton
           classID="plot-segment.line"
           title="Line"
           icon="plot/line"
-          currentTool={this.props.store.currentTool}
           noDragging={true}
         />
         {/* <ScaffoldButton type="curve" title="Curve" icon="plot/curve" currentTool={this.props.store.currentTool} /> */}
@@ -144,39 +141,184 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
   }
 }
 
-export class ObjectButton extends ContextedComponent<
-  {
-    currentTool: string;
-    title: string;
-    classID: string;
-    icon: string;
-    options?: any;
-    noDragging?: boolean;
-  },
-  {}
-> {
+export interface ObjectButtonProps {
+  title: string;
+  classID: string;
+  icon: string;
+  options?: string;
+  noDragging?: boolean;
+  onClick?: () => void;
+}
+
+export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
+  public token: EventSubscription;
+
+  public getIsActive() {
+    return (
+      this.context.store.chartStore.currentTool == this.props.classID &&
+      this.context.store.chartStore.currentToolOptions == this.props.options
+    );
+  }
+
+  public componentDidMount() {
+    this.token = this.context.store.chartStore.addListener(
+      ChartStore.EVENT_CURRENT_TOOL,
+      () => {
+        this.forceUpdate();
+      }
+    );
+  }
+
+  public componentWillUnmount() {
+    this.token.remove();
+  }
+
   public render() {
     return (
       <ToolButton
         icon={R.getSVGIcon(this.props.icon)}
-        active={this.props.currentTool == this.props.classID}
+        active={this.getIsActive()}
         title={this.props.title}
         onClick={() => {
           this.dispatch(
-            new Actions.SetCurrentTool(
-              this.props.classID,
-              this.props.options || {}
-            )
+            new Actions.SetCurrentTool(this.props.classID, this.props.options)
           );
+          if (this.props.onClick) {
+            this.props.onClick();
+          }
         }}
         dragData={
           this.props.noDragging
             ? null
             : () => {
-                return new DragData.ObjectType(this.props.classID);
+                return new DragData.ObjectType(
+                  this.props.classID,
+                  this.props.options
+                );
               }
         }
       />
+    );
+  }
+}
+
+export class MultiObjectButton extends ContextedComponent<
+  {
+    tools: ObjectButtonProps[];
+  },
+  {
+    currentSelection: {
+      classID: string;
+      options: string;
+    };
+  }
+> {
+  public state = {
+    currentSelection: {
+      classID: this.props.tools[0].classID,
+      options: this.props.tools[0].options
+    }
+  };
+  private refButton: ObjectButton;
+  public token: EventSubscription;
+
+  public isActive() {
+    const store = this.context.store.chartStore;
+    for (const item of this.props.tools) {
+      if (
+        item.classID == store.currentTool &&
+        item.options == store.currentToolOptions
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+  public getSelectedTool() {
+    for (const item of this.props.tools) {
+      if (
+        item.classID == this.state.currentSelection.classID &&
+        item.options == this.state.currentSelection.options
+      ) {
+        return item;
+      }
+    }
+    return this.props.tools[0];
+  }
+
+  public componentDidMount() {
+    this.token = this.context.store.chartStore.addListener(
+      ChartStore.EVENT_CURRENT_TOOL,
+      () => {
+        for (const item of this.props.tools) {
+          // If the tool is within the tools defined here, we update the current selection
+          if (
+            this.context.store.chartStore.currentTool == item.classID &&
+            this.context.store.chartStore.currentToolOptions == item.options
+          ) {
+            this.setState({
+              currentSelection: {
+                classID: item.classID,
+                options: item.options
+              }
+            });
+            break;
+          }
+        }
+        this.forceUpdate();
+      }
+    );
+  }
+
+  public componentWillUnmount() {
+    this.token.remove();
+  }
+
+  public render() {
+    return (
+      <div
+        className={classNames("charticulator__button-multi-tool", [
+          "is-active",
+          this.isActive()
+        ])}
+      >
+        <ObjectButton
+          ref={e => (this.refButton = e)}
+          {...this.getSelectedTool()}
+        />
+        <span
+          className="el-dropdown"
+          onClick={() => {
+            globals.popupController.popupAt(
+              context => {
+                return (
+                  <PopupView context={context}>
+                    {this.props.tools.map((tool, index) => (
+                      <div
+                        key={index}
+                        className="charticulator__button-multi-tool-dropdown"
+                      >
+                        <ObjectButton
+                          {...tool}
+                          noDragging={true}
+                          onClick={() => context.close()}
+                        />
+                      </div>
+                    ))}
+                  </PopupView>
+                );
+              },
+              {
+                anchor: ReactDOM.findDOMNode(this.refButton) as Element,
+                alignX: "start-inner",
+                alignY: "end-outer"
+              }
+            );
+          }}
+        >
+          <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+        </span>
+      </div>
     );
   }
 }
