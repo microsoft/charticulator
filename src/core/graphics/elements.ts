@@ -1,4 +1,5 @@
 import { Color, Point } from "../common";
+import * as Specification from "../specification";
 
 // Internal graphics representation
 // Bridge the core components with the rendering system
@@ -49,6 +50,12 @@ export interface Style {
 export interface Element {
   type: string;
   style?: Style;
+}
+
+export interface MarkElement extends Element {
+  mark: Specification.Element;
+  glyph: Specification.Glyph;
+  dataRowIndex: number;
 }
 
 export interface Rect extends Element {

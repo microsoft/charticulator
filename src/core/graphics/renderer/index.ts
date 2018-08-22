@@ -19,7 +19,8 @@ import {
   makeLine,
   makePolygon,
   makeRect,
-  Style
+  Style,
+  MarkElement
 } from "../elements";
 
 export function facetRows(
@@ -87,13 +88,17 @@ export class ChartRenderer {
         .getMarkClass(markState)
         .getGraphics(coordinateSystem, offset, index);
       if (g != null) {
-        gs.push(g);
+        const me = g as MarkElement;
+        me.glyph = glyph;
+        me.mark = mark;
+        me.dataRowIndex = index;
+        gs.push(me);
       }
     }
     return makeGroup(gs);
   }
 
-  public renderChart(
+  private renderChart(
     dataset: Dataset.Dataset,
     chart: Specification.Chart,
     chartState: Specification.ChartState

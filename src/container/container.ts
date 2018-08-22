@@ -8,15 +8,17 @@ import {
   getByName,
   getField,
   Graphics,
-  initialize,
   Prototypes,
   Scale,
   setField,
   Solver,
-  Specification
+  Specification,
+  ClearSelection,
+  SelectMark,
+  Action
 } from "../core";
 import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
-import { CharticulatorWorker } from "../worker";
+import { ChartStore } from "./chartStore";
 
 export * from "../core";
 
@@ -308,47 +310,93 @@ export class ChartTemplate {
 }
 
 export class ChartContainer {
-  public chart: Specification.Chart;
-  public dataset: Dataset.Dataset;
-  public state: Specification.ChartState;
-  public manager: Prototypes.ChartStateManager;
+  public store: ChartStore;
 
+  // Needed for extensions
+  public chart: Specification.Chart;
+
+  private listenerMap: WeakMap<CanvasRenderingContext2D, any> = new WeakMap();
   constructor(specification: Specification.Chart, dataset: Dataset.Dataset) {
+    this.store = new ChartStore(specification, dataset);
     this.chart = specification;
-    this.dataset = dataset;
-    this.manager = new Prototypes.ChartStateManager(specification, dataset);
-    this.state = this.manager.chartState;
   }
 
   public update() {
     for (let i = 0; i < 2; i++) {
       const solver = new Solver.ChartConstraintSolver();
-      solver.setup(this.manager);
+      solver.setup(this.store.manager);
       solver.solve();
       solver.destroy();
     }
   }
 
   public resize(width: number, height: number) {
-    this.chart.mappings.width = {
+    this.store.chart.mappings.width = {
       type: "value",
       value: width
     } as Specification.ValueMapping;
-    this.chart.mappings.height = {
+    this.store.chart.mappings.height = {
       type: "value",
       value: height
     } as Specification.ValueMapping;
   }
 
   public render(context: CanvasRenderingContext2D) {
-    const renderer = new Graphics.ChartRenderer(this.manager);
+    const renderer = new Graphics.ChartRenderer(this.store.manager);
+
+    // Render the scene
     const graphics = renderer.render();
-    context.save();
-    context.translate(
-      (this.state.attributes.width as number) / 2,
-      (this.state.attributes.height as number) / 2
-    );
-    renderGraphicalElementCanvas(context, graphics);
-    context.restore();
+    const hitTest = renderGraphicalElementCanvas(context, graphics, {
+      width: this.store.state.attributes.width as any,
+      height: this.store.state.attributes.height as any,
+      hitTest: true,
+      selectedIndexes:
+        this.store.selectedDataRowIdx >= 0
+          ? [this.store.selectedDataRowIdx]
+          : []
+    });
+
+    const bounds = context.canvas.getBoundingClientRect();
+    let listener = this.listenerMap.get(context);
+    if (listener) {
+      context.canvas.removeEventListener("click", listener);
+    }
+    listener = (ev: MouseEvent) => {
+      const x = ev.clientX - bounds.left;
+      const y = ev.clientY - bounds.top;
+      const result = hitTest(x, y) as Graphics.MarkElement;
+      let action: Action;
+      let dataRowIndex: number;
+      let mark: Specification.Element;
+      let glyph: Specification.Glyph;
+      if (result && result.mark) {
+        dataRowIndex = result.dataRowIndex;
+        mark = result.mark;
+        glyph = result.glyph;
+      }
+
+      // There was something selected, but now there isn't or it is the same thing selected twice
+      if (
+        this.store.selectedDataRowIdx >= 0 &&
+        (dataRowIndex === undefined ||
+          dataRowIndex === this.store.selectedDataRowIdx)
+      ) {
+        action = new ClearSelection();
+
+        // Otherwise, the user selected some useful mark
+      } else if (dataRowIndex >= 0) {
+        action = new SelectMark(glyph, mark, dataRowIndex);
+      }
+
+      if (action) {
+        this.store.dispatcher.dispatch(action);
+
+        // Re-render as selection has changed.
+        this.render(context);
+      }
+    };
+
+    this.listenerMap.set(context, listener);
+    context.canvas.addEventListener("click", listener);
   }
 }

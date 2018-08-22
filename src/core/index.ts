@@ -8,6 +8,7 @@ import * as Graphics from "./graphics";
 import * as Prototypes from "./prototypes";
 import * as Solver from "./solver";
 import * as Specification from "./specification";
+export * from "./actions";
 
 export { Expression, Specification, Prototypes, Solver, Graphics, Dataset };
 

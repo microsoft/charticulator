@@ -1,22 +1,105 @@
 import { Graphics, Rect, Color, Point, prettyNumber } from "../../core";
+import { MarkElement } from "../../core/graphics";
 
-function renderColor(color: Color, opacity?: number): string {
+// adapted from https://stackoverflow.com/a/20820649
+function desaturate(color: Color, amount: number) {
+  const { r, g, b } = color;
+  const l = 0.3 * r + 0.6 * g + 0.1 * b;
+  return {
+    r: Math.min(r + amount * (l - r), 255),
+    g: Math.min(g + amount * (l - g), 255),
+    b: Math.min(b + amount * (l - b), 255)
+  };
+}
+
+function renderColor(
+  color: Color,
+  opacity?: number,
+  applyDesaturation = false
+): string {
+  if (applyDesaturation) {
+    color = desaturate(color, 0.7);
+  }
   return `rgba(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
     0
   )},${opacity != undefined ? prettyNumber(opacity) : 1})`;
 }
 
+export interface CanvasRenderOptions {
+  width: number;
+  height: number;
+  hitTest: boolean;
+  selectedIndexes: number[];
+}
+
+interface RenderState {
+  options: CanvasRenderOptions;
+  hit?: {
+    colorToElement: Map<string, Graphics.Element>;
+    elementToColor: Map<Graphics.Element, string>;
+  };
+}
+
+/**
+ * Returns a unique color for the given element to be used when rendering the hit target canvas
+ * @param renderState The current render state
+ * @param element The element to get the hit testing color for
+ */
+function getHitColor(
+  renderState: RenderState,
+  element: Graphics.Element
+): string {
+  const { elementToColor, colorToElement } = renderState.hit;
+  let color = elementToColor.get(element);
+  if (!color) {
+    // Preferring random here, cause it helps a lot with the false positives from anti-aliasing
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    color = `rgb(${r},${g},${b})`;
+
+    // If we already have this color, try again
+    if (colorToElement.has(color)) {
+      return getHitColor(renderState, element);
+    }
+    elementToColor.set(element, color);
+    colorToElement.set(color, element);
+  }
+  return color;
+}
+
 function renderWithStyle(
   context: CanvasRenderingContext2D,
-  style: Graphics.Style = {}
+  element: Graphics.Element,
+  renderState: RenderState
 ) {
+  const { style = {} } = element;
+  const { options } = renderState;
+  let applyDesaturation = true;
+  const me = element as MarkElement;
+
+  // We apply desaturation to all elements except for the selected ones
+  // or if there are no selected elements, we don't apply desaturation to any elements
+  if (
+    !options.hitTest &&
+    (options.selectedIndexes.length === 0 ||
+      options.selectedIndexes.indexOf(me.dataRowIndex) >= 0)
+  ) {
+    applyDesaturation = false;
+  }
+
   context.globalAlpha = style.opacity != undefined ? style.opacity : 1;
   if (style.fillColor) {
-    context.fillStyle = renderColor(style.fillColor, style.fillOpacity);
+    context.fillStyle = renderState.hit
+      ? getHitColor(renderState, element)
+      : renderColor(style.fillColor, style.fillOpacity, applyDesaturation);
+
     context.fill();
   }
   if (style.strokeColor) {
-    context.strokeStyle = renderColor(style.strokeColor, style.strokeOpacity);
+    context.strokeStyle = renderState.hit
+      ? getHitColor(renderState, element)
+      : renderColor(style.strokeColor, style.strokeOpacity, applyDesaturation);
     context.lineWidth = style.strokeWidth != undefined ? style.strokeWidth : 1;
     context.lineCap =
       style.strokeLinecap != undefined ? style.strokeLinecap : "round";
@@ -120,9 +203,10 @@ function drawSVGarcOnCanvas(
   ctx.translate(-centpX, -centpY);
 }
 
-export function renderGraphicalElementCanvas(
+function renderElement(
   context: CanvasRenderingContext2D,
-  element: Graphics.Element
+  element: Graphics.Element,
+  renderState: RenderState
 ) {
   switch (element.type) {
     case "rect":
@@ -135,7 +219,7 @@ export function renderGraphicalElementCanvas(
           Math.abs(rect.x1 - rect.x2),
           Math.abs(rect.y1 - rect.y2)
         );
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "circle":
@@ -143,7 +227,7 @@ export function renderGraphicalElementCanvas(
         const circle = element as Graphics.Circle;
         context.beginPath();
         context.arc(circle.cx, -circle.cy, circle.r, 0, Math.PI * 2);
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "ellipse":
@@ -159,7 +243,7 @@ export function renderGraphicalElementCanvas(
           0,
           Math.PI * 2
         );
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "line":
@@ -168,7 +252,7 @@ export function renderGraphicalElementCanvas(
         context.beginPath();
         context.moveTo(line.x1, -line.y1);
         context.lineTo(line.x2, -line.y2);
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "polygon":
@@ -184,7 +268,7 @@ export function renderGraphicalElementCanvas(
           }
         }
         context.closePath();
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "path":
@@ -262,7 +346,7 @@ export function renderGraphicalElementCanvas(
               break;
           }
         }
-        renderWithStyle(context, element.style);
+        renderWithStyle(context, element, renderState);
       }
       break;
     case "text":
@@ -306,9 +390,115 @@ export function renderGraphicalElementCanvas(
         context.rotate(-group.transform.angle / 180 * Math.PI);
       }
       for (const e of group.elements) {
-        renderGraphicalElementCanvas(context, e);
+        renderElement(context, e, renderState);
       }
       context.restore();
     }
+  }
+}
+
+const hitCanvases = new WeakMap<CanvasRenderingContext2D, HTMLCanvasElement>();
+export function renderGraphicalElementCanvas(
+  context: CanvasRenderingContext2D,
+  element: Graphics.Element,
+  options = {
+    width: 500,
+    height: 500,
+    hitTest: false,
+    selectedIndexes: [] as number[]
+  } as CanvasRenderOptions
+) {
+  // Save the transformation matrix
+  context.save();
+
+  // Translate to be center based drawing
+  context.translate(
+    (options.width as number) / 2,
+    (options.height as number) / 2
+  );
+
+  // Render the actual canvas
+  renderElement(context, element, {
+    options: {
+      ...options,
+      hitTest: false
+    }
+  });
+
+  // Restore the original matrix
+  // TODO: Noticed some oddity, if context.restore was at the bottom of the function
+  // it would not restore properly, presumably because of the cloneNode below.
+  context.restore();
+
+  // User wants hit testing
+  if (options.hitTest) {
+    // Attempt to reuse existing hit canvases
+    let hitCanvas = hitCanvases.get(context);
+    if (!hitCanvas) {
+      // Clone the current canvas
+      hitCanvas = context.canvas.cloneNode() as HTMLCanvasElement;
+      hitCanvases.set(context, hitCanvas);
+    }
+    const hitContext = hitCanvas.getContext("2d");
+
+    // Adjust the width and translation of the canvas
+    hitCanvas.width = context.canvas.width;
+    hitCanvas.height = context.canvas.height;
+    hitContext.translate(
+      (options.width as number) / 2,
+      (options.height as number) / 2
+    );
+
+    const colorToElement = new Map<string, Graphics.Element>();
+    const elementToColor = new Map<Graphics.Element, string>();
+
+    // Render everything to a hit map
+    renderElement(hitContext, element, {
+      hit: {
+        elementToColor,
+        colorToElement
+      },
+      options
+    });
+
+    /**
+     * Return a hit testing function that will return any graphical elements that exist at the given point
+     * @param x The x coordinate
+     * @param y The y coordinate
+     */
+    return (x: number, y: number) => {
+      const sampleSize = 4;
+      const { data, width, height } = hitContext.getImageData(
+        Math.min(Math.max(x - sampleSize / 2, 0), options.width),
+        Math.min(Math.max(y - sampleSize / 2, 0), options.height),
+        sampleSize,
+        sampleSize
+      );
+      const counts = new Map<Graphics.Element, number>();
+      let offset = 0;
+      for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+          const color = `rgb(${data[offset]},${data[offset + 1]},${
+            data[offset + 2]
+          })`;
+          const ele = colorToElement.get(color);
+          if (ele) {
+            counts.set(ele, (counts.get(ele) || 0) + 1);
+          }
+          // + 4 because r, g, b, a
+          offset += 4;
+        }
+      }
+
+      if (counts.size > 0) {
+        const [ele, count] = Array.from(counts.entries()).sort(
+          (a, b) => b[1] - a[1]
+        )[0];
+        // if (count > sampleSize / 2) {
+        //   return ele;
+        // }
+        return ele;
+      }
+    };
   }
 }
