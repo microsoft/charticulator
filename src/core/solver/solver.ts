@@ -104,6 +104,15 @@ export class BaseSolver {
           }
         }
         break;
+      case "text":
+        {
+          const textMapping = mapping as Specification.TextMapping;
+          const expr = this.expressionCache.parseTextExpression(
+            textMapping.textExpression
+          );
+          attrs[attr] = expr.getValue(rowContext);
+        }
+        break;
       case "value":
         {
           const valueMapping = mapping as Specification.ValueMapping;

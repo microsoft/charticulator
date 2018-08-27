@@ -77,6 +77,12 @@ export interface ScaleMapping extends Mapping {
   scale?: string;
 }
 
+/** Text mapping: map data to text */
+export interface TextMapping extends Mapping {
+  type: "text";
+  textExpression: string;
+}
+
 // /** Variable mapping: use a shared variable */
 // export interface VariableMapping extends Mapping {
 //     type: "variable";

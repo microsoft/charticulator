@@ -17,7 +17,8 @@ import {
   colorToHTMLColorHEX,
   colorFromHTMLColor,
   EventSubscription,
-  EventEmitter
+  EventEmitter,
+  Expression
 } from "../../../../core";
 import {
   SVGImageIcon,
@@ -351,6 +352,24 @@ export class MappingEditor extends React.Component<
           const valueMapping = mapping as Specification.ValueMapping;
           return this.renderValueEditor(valueMapping.value);
         }
+        case "text": {
+          const textMapping = mapping as Specification.TextMapping;
+          return (
+            <InputText
+              defaultValue={textMapping.textExpression}
+              onEnter={newValue => {
+                textMapping.textExpression = Expression.parseTextExpression(
+                  newValue
+                ).toString();
+                this.props.parent.onEditMappingHandler(
+                  this.props.attribute,
+                  textMapping
+                );
+                return true;
+              }}
+            />
+          );
+        }
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
           if (scaleMapping.scale) {
@@ -399,7 +418,7 @@ export class MappingEditor extends React.Component<
             );
           } else {
             return (
-              <span className="el-mapping-scale">
+              <span>
                 <span className="el-mapping-scale-scale is-left">=</span>
                 <svg width={6} height={20}>
                   <path d="M3.2514,10A17.37314,17.37314,0,0,1,6,0H0V20H6A17.37342,17.37342,0,0,1,3.2514,10Z" />

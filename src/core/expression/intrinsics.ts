@@ -1,4 +1,5 @@
 import { timeFormat } from "d3-time-format";
+import { format } from "d3-format";
 import { ValueType } from "./classes";
 import { fields } from "./helpers";
 
@@ -166,6 +167,10 @@ intrinsics.date = {
   second: timeFormat("%S"), // second as a decimal number [00,61].
 
   timestamp: (d: Date) => d.getTime() / 1000
+};
+
+intrinsics.format = (value: number, spec: string) => {
+  return format(spec)(value);
 };
 
 // JSON format
