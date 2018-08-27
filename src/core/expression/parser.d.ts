@@ -1,6 +1,6 @@
 // Declaration of the generated parser code
 
-import { Expression } from "./classes";
+import { Expression, TextExpression } from "./classes";
 export declare class Location {
   public offset: number;
   public line: number;
@@ -27,5 +27,5 @@ export declare class SyntaxError {
 
 export declare function parse(
   input: string,
-  options?: { [name: string]: string }
-): Expression;
+  options?: { startRule: "start" | "start_text" }
+): Expression | TextExpression;

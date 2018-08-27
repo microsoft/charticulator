@@ -8,10 +8,9 @@ import {
   NumberValue,
   Operator,
   StringValue,
-  Variable
+  Variable,
+  TextExpression
 } from "./classes";
-
-import { parse } from "./parser";
 
 export function variable(name: string): Variable {
   return new Variable(name);
@@ -68,16 +67,28 @@ export function date(v: Date) {
 
 export class ExpressionCache {
   private items = new Map<string, Expression>();
+  private textItems = new Map<string, TextExpression>();
   public clear() {
     this.items.clear();
+    this.textItems.clear();
   }
 
   public parse(expr: string): Expression {
     if (this.items.has(expr)) {
       return this.items.get(expr);
     } else {
-      const result = parse(expr);
+      const result = Expression.Parse(expr);
       this.items.set(expr, result);
+      return result;
+    }
+  }
+
+  public parseTextExpression(expr: string): TextExpression {
+    if (this.textItems.has(expr)) {
+      return this.textItems.get(expr);
+    } else {
+      const result = TextExpression.Parse(expr);
+      this.textItems.set(expr, result);
       return result;
     }
   }

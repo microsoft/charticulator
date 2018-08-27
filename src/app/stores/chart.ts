@@ -446,12 +446,21 @@ export class ChartStore extends BaseStore {
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
+        if (action.valueType == "number" && action.attributeType == "string") {
+          action.mark.mappings[action.attribute] = {
+            type: "text",
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression), format: ".1f" }
+            ]).toString()
+          } as Specification.TextMapping;
+        }
         if (action.valueType == "string" && action.attributeType == "string") {
           action.mark.mappings[action.attribute] = {
-            type: "scale",
-            expression: action.expression,
-            valueType: action.valueType
-          } as Specification.ScaleMapping;
+            type: "text",
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression) }
+            ]).toString()
+          } as Specification.TextMapping;
         }
       }
 
@@ -1331,9 +1340,9 @@ export class ChartStore extends BaseStore {
       scaleClassID = `scale.categorical`;
     }
     // Number to string: number formatting
-    if (valueType == "number" && outputType == "string") {
-      scaleClassID = `scale.format`;
-    }
+    // if (valueType == "number" && outputType == "string") {
+    //   scaleClassID = `scale.format`;
+    // }
     if (
       (valueType == "number" || valueType == "integer") &&
       outputType == "color"

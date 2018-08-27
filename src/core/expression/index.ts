@@ -1,5 +1,9 @@
+import { Expression, TextExpression } from "./classes";
+
 export {
   Expression,
+  TextExpression,
+  TextExpressionPart,
   Context,
   ShadowContext,
   SimpleContext,
@@ -12,7 +16,16 @@ export {
   StringValue,
   DateValue
 } from "./classes";
-export { SyntaxError, parse } from "./parser";
+
+export { SyntaxError } from "./parser";
+
+export function parse(str: string): Expression {
+  return Expression.Parse(str);
+}
+
+export function parseTextExpression(str: string): TextExpression {
+  return TextExpression.Parse(str);
+}
 
 export {
   variable,

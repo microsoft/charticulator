@@ -17,7 +17,8 @@ import {
   colorToHTMLColorHEX,
   colorFromHTMLColor,
   EventSubscription,
-  EventEmitter
+  EventEmitter,
+  Expression
 } from "../../../../core";
 import {
   SVGImageIcon,
@@ -371,6 +372,24 @@ export class MappingEditor extends React.Component<
         case "value": {
           const valueMapping = mapping as Specification.ValueMapping;
           return this.renderValueEditor(valueMapping.value);
+        }
+        case "text": {
+          const textMapping = mapping as Specification.TextMapping;
+          return (
+            <InputText
+              defaultValue={textMapping.textExpression}
+              onEnter={newValue => {
+                textMapping.textExpression = Expression.parseTextExpression(
+                  newValue
+                ).toString();
+                this.props.parent.onEditMappingHandler(
+                  this.props.attribute,
+                  textMapping
+                );
+                return true;
+              }}
+            />
+          );
         }
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
