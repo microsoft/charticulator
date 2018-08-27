@@ -26,7 +26,8 @@ import {
   InputFile,
   InputColor,
   InputColorGradient,
-  InputNumber
+  InputNumber,
+  InputImage
 } from "./controls";
 import { SVGImageIcon } from "../../../components/icons";
 import {
@@ -310,24 +311,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     }
   }
   public inputImage(property: Prototypes.Controls.Property) {
-    const currentImage = this.getPropertyValue(property) as {
-      fileName: string;
-      dataURL: string;
-    };
     return (
-      <span className="charticulator__widget-control-image">
-        <InputFile
-          fileName={currentImage ? currentImage.fileName : null}
-          accept={[".jpg", ".png", ".svg"]}
-          outputType="data-url"
-          onOpenFile={(fileName: string, dataURL: string) => {
-            this.emitSetProperty(property, {
-              fileName,
-              dataURL
-            });
-          }}
-        />
-      </span>
+      <InputImage
+        value={this.getPropertyValue(property) as string}
+        onChange={image => {
+          this.emitSetProperty(property, image);
+          return true;
+        }}
+      />
     );
   }
   public clearButton(property: Prototypes.Controls.Property, icon?: string) {

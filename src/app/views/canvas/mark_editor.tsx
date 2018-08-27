@@ -221,10 +221,10 @@ export class SingleMarkView
     let y2 = markState.attributes.iy2 as number;
     const dx = Math.abs(x2 - x1);
     const dy = Math.abs(y2 - y1);
-    x1 = -Math.min(dx, dy) / 2;
-    y1 = -Math.min(dx, dy) / 2;
-    x2 = Math.min(dx, dy) / 2;
-    y2 = Math.min(dx, dy) / 2;
+    x1 = -dx / 2;
+    y1 = -dy / 2;
+    x2 = dx / 2;
+    y2 = dy / 2;
     // Get bounding box for each element
     for (const elementState of this.props.store.markState.marks) {
       const cls = this.props.store.parent.chartManager.getMarkClass(
@@ -541,7 +541,9 @@ export class SingleMarkView
     );
     const graphics = elementClass.getGraphics(
       new Graphics.CartesianCoordinates(),
-      { x: 0, y: 0 }
+      { x: 0, y: 0 },
+      0,
+      this.props.store.parent.chartManager
     );
     if (!graphics) {
       return null;
