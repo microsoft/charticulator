@@ -77,6 +77,12 @@ export interface ScaleMapping extends Mapping {
   scale?: string;
 }
 
+/** Text mapping: map data to text */
+export interface TextMapping extends Mapping {
+  type: "text";
+  textExpression: string;
+}
+
 // /** Variable mapping: use a shared variable */
 // export interface VariableMapping extends Mapping {
 //     type: "variable";
@@ -172,6 +178,16 @@ export interface Links extends Object {}
 /** ChartElement is a PlotSegment or a Guide */
 export type ChartElement = PlotSegment | Guide | GuideCoordinator;
 
+/** Resource item */
+export interface Resource {
+  /** Resource item ID */
+  id: string;
+  /** Resource type: image */
+  type: string;
+  /** Resource data */
+  data: any;
+}
+
 /** A chart is a set of chart elements and constraints between them, with guides and scales */
 export interface Chart extends Object {
   /** Marks */
@@ -182,6 +198,8 @@ export interface Chart extends Object {
   elements: ChartElement[];
   /** Chart-level constraints */
   constraints: Constraint[];
+  /** Resources */
+  resources: Resource[];
 }
 
 // ===========================================================================

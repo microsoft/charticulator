@@ -5,7 +5,7 @@ import * as R from "../../../resources";
 import { DropZoneView, WidgetManager } from "./manager";
 import { DragData, Actions } from "../../../actions";
 import { classNames } from "../../../utils";
-import { Button, InputText, InputNumber } from "./controls";
+import { Button, InputText, InputNumber, InputImage } from "./controls";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { PopupView } from "../../../controllers";
 import {
@@ -17,7 +17,8 @@ import {
   colorToHTMLColorHEX,
   colorFromHTMLColor,
   EventSubscription,
-  EventEmitter
+  EventEmitter,
+  Expression
 } from "../../../../core";
 import {
   SVGImageIcon,
@@ -302,6 +303,23 @@ export class MappingEditor extends React.Component<
           );
         }
       }
+      case "image": {
+        const str = value as string;
+        const textInput = (
+          <InputImage
+            value={str}
+            onChange={newValue => {
+              if (newValue == "") {
+                this.clearMapping();
+              } else {
+                this.setValueMapping(newValue);
+              }
+              return true;
+            }}
+          />
+        );
+        return textInput;
+      }
     }
     return <span>(...)</span>;
   }
@@ -316,7 +334,11 @@ export class MappingEditor extends React.Component<
         return this.renderValueEditor(options.defaultValue);
       } else {
         let alwaysShowNoneAsValue = false;
-        if (this.props.type == "number" || this.props.type == "string") {
+        if (
+          this.props.type == "number" ||
+          this.props.type == "string" ||
+          this.props.type == "image"
+        ) {
           alwaysShowNoneAsValue = true;
         }
         if (this.state.showNoneAsValue || alwaysShowNoneAsValue) {
@@ -350,6 +372,24 @@ export class MappingEditor extends React.Component<
         case "value": {
           const valueMapping = mapping as Specification.ValueMapping;
           return this.renderValueEditor(valueMapping.value);
+        }
+        case "text": {
+          const textMapping = mapping as Specification.TextMapping;
+          return (
+            <InputText
+              defaultValue={textMapping.textExpression}
+              onEnter={newValue => {
+                textMapping.textExpression = Expression.parseTextExpression(
+                  newValue
+                ).toString();
+                this.props.parent.onEditMappingHandler(
+                  this.props.attribute,
+                  textMapping
+                );
+                return true;
+              }}
+            />
+          );
         }
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;

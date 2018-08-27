@@ -115,7 +115,7 @@ export class AddMarkToGlyph extends Action {
     public classID: string,
     public point: Point,
     public mappings: { [name: string]: [number, Specification.Mapping] } = {},
-    public attributes: Specification.AttributeMap = {}
+    public properties: Specification.AttributeMap = {}
   ) {
     super();
   }
@@ -126,7 +126,7 @@ export class AddMarkToGlyph extends Action {
       classID: this.classID,
       glyph: [this.glyph.classID, this.glyph._id],
       mappings: this.mappings,
-      attributes: this.attributes
+      properties: this.properties
     };
   }
 }
@@ -658,10 +658,7 @@ export class SelectChartElement extends Action {
 }
 
 export class SetCurrentTool extends Action {
-  constructor(
-    public tool: string,
-    public options: { [name: string]: any } = {}
-  ) {
+  constructor(public tool: string, public options: string = null) {
     super();
   }
 

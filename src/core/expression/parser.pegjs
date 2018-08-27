@@ -32,6 +32,18 @@
 start
   = expression
 
+start_text
+  = parts:text_part*
+    { return new Expression.TextExpression(parts); }
+
+text_part
+  = "${" expr:expression "}{" sp format:[0-9a-z\.]+ sp "}"
+    { return { expression: expr, format: flatten(format) }; }
+  / "${" expr:expression "}"
+    { return { expression: expr }; }
+  / str:[^$]+
+    { return { string: flatten(str) }; }
+
 expression
   = sp expr:level_expression sp
     { return expr; }

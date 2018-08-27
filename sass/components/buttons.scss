@@ -89,6 +89,68 @@
         }
     }
 
+    &-multi-tool {
+        margin-right: 4px;
+        @include shadow-ambient;
+        border-radius: 2px;
+        background: $color-well;
+
+        transition: box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
+
+        &:hover, &.is-active, &:active, &.dragging {
+            @include shadow-focused;
+        }
+
+        &.is-active, &:active, &.dragging {
+            background: $color-primary;
+            .el-svg-icon {
+                filter: invert(100%);
+            }
+            .el-text {
+                color: white;
+            }
+            .el-dropdown {
+                background: transparent;
+                &:hover, &.is-active, &:active, &.is-dragging {
+                    background: lighten($color-primary, 10%);
+                }
+            }
+        }
+
+        .charticulator__button-tool {
+            margin-right: 0;
+            box-shadow: none;
+        }
+        .el-dropdown {
+            @include button-base(32px);
+            @include icon-size(20px, 6px);
+            .el-svg-icon {
+                margin-left: -2px;
+                margin-right: 0;
+            }
+            vertical-align: top;
+
+            color: $gray-080;
+
+            transition: filter $transition-default, box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
+
+            &:hover, &.is-active, &:active, &.is-dragging {
+                background: lighten($color-well, 5%);
+            }
+
+            &.is-active, &:active, &.is-dragging {
+                background: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        &-dropdown {
+            padding: 2px;
+            .charticulator__button-tool {
+                margin-right: 0;
+            }
+        }
+    }
+
     &-raised {
         @include button-base(32px);
         @include icon-size(20px, 6px);

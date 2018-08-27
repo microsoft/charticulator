@@ -90,7 +90,7 @@ export class ChartStore extends BaseStore {
 
   public currentSelection: Selection;
   public currentTool: string;
-  public currentToolOptions: { [name: string]: any };
+  public currentToolOptions: string;
 
   public chartManager: Prototypes.ChartStateManager;
 
@@ -269,8 +269,15 @@ export class ChartStore extends BaseStore {
         action.classID
       ) as Specification.Element;
 
-      for (const key in action.attributes) {
-        mark.properties[key] = action.attributes[key];
+      for (const key in action.properties) {
+        mark.properties[key] = action.properties[key];
+      }
+
+      // Make sure name don't duplicate
+      if (this.chartManager.isNameUsed(mark.properties.name)) {
+        mark.properties.name = this.chartManager.findUnusedName(
+          mark.properties.name
+        );
       }
 
       const isFirstMark = action.glyph.marks.length == 1;
@@ -316,6 +323,7 @@ export class ChartStore extends BaseStore {
       if (!attributesSet) {
         switch (action.classID) {
           case "mark.rect":
+          case "mark.image":
             {
               mark.mappings.x1 = {
                 type: "parent",
@@ -438,12 +446,21 @@ export class ChartStore extends BaseStore {
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
+        if (action.valueType == "number" && action.attributeType == "string") {
+          action.mark.mappings[action.attribute] = {
+            type: "text",
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression), format: ".1f" }
+            ]).toString()
+          } as Specification.TextMapping;
+        }
         if (action.valueType == "string" && action.attributeType == "string") {
           action.mark.mappings[action.attribute] = {
-            type: "scale",
-            expression: action.expression,
-            valueType: action.valueType
-          } as Specification.ScaleMapping;
+            type: "text",
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression) }
+            ]).toString()
+          } as Specification.TextMapping;
         }
       }
 
@@ -1323,9 +1340,9 @@ export class ChartStore extends BaseStore {
       scaleClassID = `scale.categorical`;
     }
     // Number to string: number formatting
-    if (valueType == "number" && outputType == "string") {
-      scaleClassID = `scale.format`;
-    }
+    // if (valueType == "number" && outputType == "string") {
+    //   scaleClassID = `scale.format`;
+    // }
     if (
       (valueType == "number" || valueType == "integer") &&
       outputType == "color"
@@ -1338,6 +1355,9 @@ export class ChartStore extends BaseStore {
       outputType == "string" &&
       hints.stringBehavior == "categorical"
     ) {
+      scaleClassID = `scale.categorical`;
+    }
+    if (valueType == "string" && outputType == "image") {
       scaleClassID = `scale.categorical`;
     }
 
@@ -1666,7 +1686,8 @@ export class ChartStore extends BaseStore {
         } as Specification.ChartElement
       ],
       scales: [],
-      constraints: []
+      constraints: [],
+      resources: []
     } as Specification.Chart;
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,

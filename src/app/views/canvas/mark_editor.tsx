@@ -48,6 +48,7 @@ export interface MarkEditorViewProps {
 
 export interface MarkEditorViewState {
   currentCreation?: string;
+  currentCreationOptions?: string;
   currentSelection: Selection;
 }
 
@@ -72,7 +73,10 @@ export class MarkEditorView extends React.Component<
     );
     this.subs.push(
       this.props.store.addListener(ChartStore.EVENT_CURRENT_TOOL, () => {
-        this.setState({ currentCreation: this.props.store.currentTool });
+        this.setState({
+          currentCreation: this.props.store.currentTool,
+          currentCreationOptions: this.props.store.currentToolOptions
+        });
       })
     );
   }
@@ -154,6 +158,10 @@ export class MarkEditorView extends React.Component<
   public getCurrentCreation() {
     return this.state.currentCreation;
   }
+
+  public getCurrentCreationOptions() {
+    return this.state.currentCreationOptions;
+  }
 }
 
 export interface SingleMarkViewProps {
@@ -213,10 +221,10 @@ export class SingleMarkView
     let y2 = markState.attributes.iy2 as number;
     const dx = Math.abs(x2 - x1);
     const dy = Math.abs(y2 - y1);
-    x1 = -Math.min(dx, dy) / 2;
-    y1 = -Math.min(dx, dy) / 2;
-    x2 = Math.min(dx, dy) / 2;
-    y2 = Math.min(dx, dy) / 2;
+    x1 = -dx / 2;
+    y1 = -dy / 2;
+    x2 = dx / 2;
+    y2 = dy / 2;
     // Get bounding box for each element
     for (const elementState of this.props.store.markState.marks) {
       const cls = this.props.store.parent.chartManager.getMarkClass(
@@ -360,10 +368,19 @@ export class SingleMarkView
           this.setState({
             autoFitNextUpdate: true
           });
+          const attributes: Specification.AttributeMap = {};
+          const opt = JSON.parse(data.options);
+          for (const key in opt) {
+            if (opt.hasOwnProperty(key)) {
+              attributes[key] = opt[key];
+            }
+          }
           new Actions.AddMarkToGlyph(
             this.props.store.mark,
             data.classID,
-            Geometry.unapplyZoom(this.state.zoom, point)
+            Geometry.unapplyZoom(this.state.zoom, point),
+            {},
+            attributes
           ).dispatch(this.props.store.parent.dispatcher);
         });
         return true;
@@ -524,7 +541,9 @@ export class SingleMarkView
     );
     const graphics = elementClass.getGraphics(
       new Graphics.CartesianCoordinates(),
-      { x: 0, y: 0 }
+      { x: 0, y: 0 },
+      0,
+      this.props.store.parent.chartManager
     );
     if (!graphics) {
       return null;
@@ -1104,6 +1123,7 @@ export class SingleMarkView
 
   public renderCreatingComponent() {
     const currentCreation = this.props.parent.getCurrentCreation();
+    const currentCreationOptions = this.props.parent.getCurrentCreationOptions();
     if (currentCreation == null) {
       return null;
     }
@@ -1122,6 +1142,12 @@ export class SingleMarkView
             new Actions.SetCurrentTool(null).dispatch(
               this.props.store.dispatcher
             );
+            const opt = JSON.parse(currentCreationOptions);
+            for (const key in opt) {
+              if (opt.hasOwnProperty(key)) {
+                attributes[key] = opt[key];
+              }
+            }
             new Actions.AddMarkToGlyph(
               this.props.store.mark,
               classID,
@@ -1144,58 +1170,6 @@ export class SingleMarkView
       let mode: string = "point";
 
       switch (currentCreation) {
-        case "mark.rect":
-          {
-            mode = "rectangle";
-            onCreate = (x1, y1, x2, y2) => {
-              new Actions.AddMarkToGlyph(
-                this.props.store.mark,
-                "mark.rect",
-                { x: x1[0], y: y1[0] },
-                { x1, y1, x2, y2 }
-              ).dispatch(this.props.store.dispatcher);
-            };
-          }
-          break;
-        case "mark.line":
-          {
-            mode = "line";
-            onCreate = (x1, y1, x2, y2) => {
-              new Actions.AddMarkToGlyph(
-                this.props.store.mark,
-                "mark.line",
-                { x: x1[0], y: y1[0] },
-                { x1, y1, x2, y2 }
-              ).dispatch(this.props.store.dispatcher);
-            };
-          }
-          break;
-        case "mark.symbol":
-          {
-            mode = "point";
-            onCreate = (x, y) => {
-              new Actions.AddMarkToGlyph(
-                this.props.store.mark,
-                "mark.symbol",
-                { x: x[0], y: y[0] },
-                { x, y }
-              ).dispatch(this.props.store.dispatcher);
-            };
-          }
-          break;
-        case "mark.text":
-          {
-            mode = "point";
-            onCreate = (x, y) => {
-              new Actions.AddMarkToGlyph(
-                this.props.store.mark,
-                "mark.text",
-                { x: x[0], y: y[0] },
-                { x, y }
-              ).dispatch(this.props.store.dispatcher);
-            };
-          }
-          break;
         case "guide-x":
           {
             mode = "vline";

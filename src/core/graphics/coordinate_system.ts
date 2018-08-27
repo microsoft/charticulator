@@ -1,6 +1,5 @@
 import {
   Element,
-  makeCircle,
   makeLine,
   makePath,
   makeRect,
@@ -8,7 +7,7 @@ import {
   PathMaker
 } from ".";
 import { Geometry, Point } from "../common";
-import { RigidTransform, Style } from "./elements";
+import { RigidTransform, Style, makeEllipse } from "./elements";
 
 export abstract class CoordinateSystem {
   /** Get the transform of the whole coordinate system (in the final Cartesian system) */
@@ -268,6 +267,40 @@ export class CoordinateSystemHelper {
       this.lineTo(path, x1, y2, x2, y2, false);
       this.lineTo(path, x2, y2, x2, y1, false);
       this.lineTo(path, x2, y1, x1, y1, false);
+      path.closePath();
+      return path.path;
+    }
+  }
+
+  public ellipse(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    style: Style = {}
+  ): Element {
+    const cs = this.coordinateSystem;
+    if (cs instanceof CartesianCoordinates) {
+      return makeEllipse(x1, y1, x2, y2, style);
+    } else {
+      const path = makePath(style);
+      const cx = (x1 + x2) / 2,
+        cy = (y1 + y2) / 2;
+      const rx = Math.abs(x2 - x1) / 2,
+        ry = Math.abs(y2 - y1) / 2;
+      const N = 32;
+      for (let i = 0; i < N; i++) {
+        const theta1 = i / N * (Math.PI * 2);
+        const theta2 = (i + 1) / N * (Math.PI * 2);
+        this.lineTo(
+          path,
+          cx + rx * Math.cos(theta1),
+          cy + ry * Math.sin(theta1),
+          cx + rx * Math.cos(theta2),
+          cy + ry * Math.sin(theta2),
+          i == 0
+        );
+      }
       path.closePath();
       return path.path;
     }

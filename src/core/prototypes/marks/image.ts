@@ -1,4 +1,4 @@
-import { Color, Point } from "../../common";
+import { Color, Point, Geometry } from "../../common";
 import {
   ConstraintSolver,
   ConstraintStrength,
@@ -20,8 +20,9 @@ import {
 import { MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
+import { ChartStateManager } from "../state";
 
-export interface RectElementAttributes extends Specification.AttributeMap {
+export interface ImageElementAttributes extends Specification.AttributeMap {
   x1: number;
   y1: number;
   x2: number;
@@ -35,27 +36,31 @@ export interface RectElementAttributes extends Specification.AttributeMap {
   strokeWidth: number;
   opacity: number;
   visible: boolean;
+  image: string;
 }
 
-export interface RectElementProperties extends Specification.AttributeMap {
-  shape: "rectangle" | "ellipse" | "triangle";
+export interface ImageElementState extends Specification.MarkState {
+  attributes: ImageElementAttributes;
 }
 
-export interface RectElementObject extends Specification.Element {
-  properties: RectElementProperties;
+export interface ImageElementProperties extends Specification.AttributeMap {
+  imageMode: "letterbox" | "fill" | "stretch";
 }
 
-export interface RectElementState extends Specification.MarkState {
-  attributes: RectElementAttributes;
+const imagePlaceholder =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmljb25zPC90aXRsZT48cmVjdCB4PSI1LjE1MTI0IiB5PSI2LjY4NDYyIiB3aWR0aD0iMjEuNjk3NTIiIGhlaWdodD0iMTguNjEyNSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLXdpZHRoOjAuOTI2MTg0MTE3Nzk0MDM2OXB4Ii8+PHBvbHlnb24gcG9pbnRzPSIyMC4xNSAxMi45NDMgMTMuODExIDIxLjQwNCAxMC4xNTQgMTYuNDk4IDUuMTUxIDIzLjE3NiA1LjE1MSAyNS4zMDYgMTAuODg4IDI1LjMwNiAxNi43MTkgMjUuMzA2IDI2Ljg0OSAyNS4zMDYgMjYuODQ5IDIxLjkzIDIwLjE1IDEyLjk0MyIgc3R5bGU9ImZpbGwtb3BhY2l0eTowLjI7c3Ryb2tlOiMwMDA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS13aWR0aDowLjcwMDAwMDAwMDAwMDAwMDFweCIvPjxjaXJjbGUgY3g9IjExLjkyMDI3IiBjeT0iMTIuMzk5MjMiIHI9IjEuOTAyMTYiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4yO3N0cm9rZTojMDAwO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC43MDAwMDAwMDAwMDAwMDAxcHgiLz48L3N2Zz4=";
+
+export interface ImageElementObject extends Specification.Element {
+  properties: ImageElementProperties;
 }
 
-export class RectElement extends MarkClass {
-  public static classID = "mark.rect";
+export class ImageElement extends MarkClass {
+  public static classID = "mark.image";
   public static type = "mark";
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Rectangle",
-    iconPath: "mark/rect",
+    displayName: "Image",
+    iconPath: "mark/image",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
@@ -64,18 +69,17 @@ export class RectElement extends MarkClass {
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true,
-    shape: "rectangle"
+    imageMode: "letterbox"
   };
 
   public static defaultMappingValues: Specification.AttributeMap = {
-    fill: { r: 217, g: 217, b: 217 },
     strokeWidth: 1,
     opacity: 1,
     visible: true
   };
 
-  public readonly state: RectElementState;
-  public readonly object: RectElementObject;
+  public readonly state: ImageElementState;
+  public readonly object: ImageElementObject;
 
   // Get a list of elemnt attributes
   public attributeNames: string[] = [
@@ -91,7 +95,8 @@ export class RectElement extends MarkClass {
     "stroke",
     "strokeWidth",
     "opacity",
-    "visible"
+    "visible",
+    "image"
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -189,6 +194,14 @@ export class RectElement extends MarkClass {
       displayName: "Visible",
       solverExclude: true,
       defaultValue: true
+    },
+    image: {
+      name: "image",
+      type: "image",
+      category: "text",
+      displayName: "Text",
+      solverExclude: true,
+      defaultValue: ""
     }
   };
 
@@ -206,17 +219,18 @@ export class RectElement extends MarkClass {
     attrs.width = defaultWidth;
     attrs.height = defaultHeight;
     attrs.stroke = null;
-    attrs.fill = { r: 200, g: 200, b: 200 };
+    attrs.fill = null;
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
     attrs.visible = true;
+    attrs.image = "";
   }
 
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size & Shape"),
+      manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", "number", {
         hints: { autoRange: true },
         acceptKinds: ["numerical"],
@@ -227,16 +241,17 @@ export class RectElement extends MarkClass {
         acceptKinds: ["numerical"],
         defaultAuto: true
       }),
+      manager.sectionHeader("Image"),
+      manager.mappingEditor("Image", "image", "image", {}),
       manager.row(
-        "Shape",
+        "Resize Mode",
         manager.inputSelect(
-          { property: "shape" },
+          { property: "imageMode" },
           {
             type: "dropdown",
             showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Ellipse"],
-            options: ["rectangle", "triangle", "ellipse"]
+            labels: ["Letterbox", "Fill", "Stretch"],
+            options: ["letterbox", "fill", "stretch"]
           }
         )
       ),
@@ -291,75 +306,76 @@ export class RectElement extends MarkClass {
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
-    offset: Point
+    offset: Point,
+    glyphIndex: number,
+    manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
     const helper = new Graphics.CoordinateSystemHelper(cs);
-    switch (this.object.properties.shape) {
-      case "ellipse": {
-        return helper.ellipse(
+    const g = Graphics.makeGroup([]);
+    if (attrs.fill) {
+      g.elements.push(
+        helper.rect(
           attrs.x1 + offset.x,
           attrs.y1 + offset.y,
           attrs.x2 + offset.x,
           attrs.y2 + offset.y,
           {
-            strokeColor: attrs.stroke,
-            strokeWidth: attrs.strokeWidth,
-            strokeLinejoin: "miter",
-            fillColor: attrs.fill,
-            opacity: attrs.opacity
+            strokeColor: null,
+            fillColor: attrs.fill
           }
-        );
-      }
-      case "triangle": {
-        const pathMaker = new Graphics.PathMaker();
-        helper.lineTo(
-          pathMaker,
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          true
-        );
-        helper.lineTo(
-          pathMaker,
-          (attrs.x1 + attrs.x2) / 2 + offset.x,
-          attrs.y2 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y1 + offset.y,
-          false
-        );
-        pathMaker.closePath();
-        const path = pathMaker.path;
-        path.style = {
-          strokeColor: attrs.stroke,
-          strokeWidth: attrs.strokeWidth,
-          strokeLinejoin: "miter",
-          fillColor: attrs.fill,
-          opacity: attrs.opacity
-        };
-        return path;
-      }
-      case "rectangle":
-      default: {
-        return helper.rect(
-          attrs.x1 + offset.x,
-          attrs.y1 + offset.y,
-          attrs.x2 + offset.x,
-          attrs.y2 + offset.y,
-          {
-            strokeColor: attrs.stroke,
-            strokeWidth: attrs.strokeWidth,
-            strokeLinejoin: "miter",
-            fillColor: attrs.fill,
-            opacity: attrs.opacity
-          }
-        );
-      }
+        )
+      );
     }
+    const cx = (attrs.x1 + attrs.x2) / 2;
+    const cy = (attrs.y1 + attrs.y2) / 2;
+    const localWidth = Geometry.pointDistance(
+      cs.transformPoint(attrs.x1 + offset.x, cy + offset.y),
+      cs.transformPoint(attrs.x2 + offset.x, cy + offset.y)
+    );
+    const localHeight = Geometry.pointDistance(
+      cs.transformPoint(cx + offset.x, attrs.y1 + offset.y),
+      cs.transformPoint(cx + offset.x, attrs.y2 + offset.y)
+    );
+    const gImage = Graphics.makeGroup([
+      {
+        type: "image",
+        src:
+          attrs.image == "" || attrs.image == null
+            ? imagePlaceholder
+            : manager.resolveResource(attrs.image),
+        x: -localWidth / 2,
+        y: -localHeight / 2,
+        width: localWidth,
+        height: localHeight,
+        mode: this.object.properties.imageMode
+      } as Graphics.Image
+    ]);
+    gImage.transform = cs.getLocalTransform(cx + offset.x, cy + offset.y);
+    g.elements.push(gImage);
+    if (attrs.stroke) {
+      g.elements.push(
+        helper.rect(
+          attrs.x1 + offset.x,
+          attrs.y1 + offset.y,
+          attrs.x2 + offset.x,
+          attrs.y2 + offset.y,
+          {
+            strokeColor: attrs.stroke,
+            strokeWidth: attrs.strokeWidth,
+            strokeLinejoin: "miter",
+            fillColor: null
+          }
+        )
+      );
+    }
+    g.style = {
+      opacity: attrs.opacity
+    };
+    return g;
   }
 
   /** Get link anchors for this mark */
@@ -628,4 +644,4 @@ export class RectElement extends MarkClass {
   }
 }
 
-ObjectClasses.Register(RectElement);
+ObjectClasses.Register(ImageElement);

@@ -26,6 +26,8 @@ export class SimpleContext implements Context {
 }
 
 import { intrinsics, operators, precedences } from "./intrinsics";
+import { format } from "d3-format";
+import { parse } from "./parser";
 
 export abstract class Expression {
   public abstract getValue(context: Context): ValueType;
@@ -48,6 +50,63 @@ export abstract class Expression {
   public getStringValue(c: Context) {
     const v = this.getValue(c);
     return v.toString();
+  }
+
+  public static Parse(expr: string): Expression {
+    return parse(expr) as Expression;
+  }
+}
+
+export interface TextExpressionPart {
+  string?: string;
+  expression?: Expression;
+  format?: string;
+}
+
+/** Text expression is a special class, it cannot be used inside other expression */
+export class TextExpression {
+  public parts: TextExpressionPart[];
+
+  constructor(parts: TextExpressionPart[] = []) {
+    this.parts = parts;
+  }
+
+  public getValue(context: Context): string {
+    return this.parts
+      .map(part => {
+        if (part.string) {
+          return part.string;
+        } else if (part.expression) {
+          const val = part.expression.getValue(context);
+          if (part.format) {
+            return format(part.format)(+val);
+          } else {
+            return val;
+          }
+        }
+      })
+      .join("");
+  }
+
+  public toString(): string {
+    return this.parts
+      .map(part => {
+        if (part.string) {
+          return part.string;
+        } else if (part.expression) {
+          const str = part.expression.toString();
+          if (part.format) {
+            return "${" + str + "}{" + part.format + "}";
+          } else {
+            return "${" + str + "}";
+          }
+        }
+      })
+      .join("");
+  }
+
+  public static Parse(expr: string): TextExpression {
+    return parse(expr, { startRule: "start_text" }) as TextExpression;
   }
 }
 

@@ -81,7 +81,7 @@ let COMMANDS = {
 
     // Compile the PEGJS parser
     pegjs: [
-        "pegjs --format commonjs --allowed-start-rules start -o dist/scripts/core/expression/parser.js src/core/expression/parser.pegjs",
+        "pegjs --format commonjs --allowed-start-rules start,start_text -o dist/scripts/core/expression/parser.js src/core/expression/parser.pegjs",
     ],
 
     // Compile TypeScript

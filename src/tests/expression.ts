@@ -67,3 +67,38 @@ describe("Expression", () => {
     });
   });
 });
+
+describe("Text Expression", () => {
+  const test_cases: Array<[string, any]> = [
+    [
+      "Hello World, Temperature is ${Temperature}{.1f} degree",
+      "Hello World, Temperature is 70.0 degree"
+    ]
+  ];
+  const context = new Expression.SimpleContext();
+  context.variables = {
+    Temperature: 70
+  };
+
+  it("getValue", () => {
+    test_cases.forEach(ci => {
+      const expr = ci[0];
+      const expected = ci[1];
+      const e = Expression.parseTextExpression(expr);
+      const returned = e.getValue(context);
+      expect(returned).deep.equals(expected, expr);
+    });
+  });
+
+  it("toString", () => {
+    test_cases.forEach(ci => {
+      const expr = ci[0];
+      const expected = ci[1];
+      const e = Expression.parseTextExpression(expr);
+      const es = e.toString();
+      const ep = Expression.parseTextExpression(es);
+      const epreturned = e.getValue(context);
+      expect(epreturned).deep.equals(expected, expr);
+    });
+  });
+});
