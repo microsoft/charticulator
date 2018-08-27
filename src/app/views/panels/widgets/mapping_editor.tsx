@@ -418,7 +418,7 @@ export class MappingEditor extends React.Component<
             );
           } else {
             return (
-              <span>
+              <span className="el-mapping-scale">
                 <span className="el-mapping-scale-scale is-left">=</span>
                 <svg width={6} height={20}>
                   <path d="M3.2514,10A17.37314,17.37314,0,0,1,6,0H0V20H6A17.37342,17.37342,0,0,1,3.2514,10Z" />
