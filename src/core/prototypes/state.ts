@@ -648,4 +648,18 @@ export class ChartStateManager {
       }
     });
   }
+
+  public resolveResource(description: string) {
+    const m = description.match(/^resource\:([.*]+)$/);
+    if (m && this.chart.resources) {
+      const id = m[1];
+      for (const item of this.chart.resources) {
+        if (item.id == id) {
+          return item.data;
+        }
+      }
+    } else {
+      return description;
+    }
+  }
 }

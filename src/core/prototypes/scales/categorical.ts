@@ -405,7 +405,69 @@ class CategoricalScaleBoolean extends ScaleClass {
   }
 }
 
+class CategoricalScaleImage extends ScaleClass {
+  public static classID = "scale.categorical<string,image>";
+  public static type = "scale";
+
+  public readonly object: {
+    properties: CategoricalScaleProperties<string>;
+  } & Specification.Scale;
+
+  public attributeNames: string[] = [];
+  public attributes: { [name: string]: AttributeDescription } = {};
+
+  public mapDataToAttribute(
+    data: Specification.DataValue
+  ): Specification.AttributeValue {
+    const props = this.object.properties;
+    return props.mapping[data.toString()];
+  }
+
+  public initializeState(): void {}
+
+  public inferParameters(
+    column: Specification.DataValue[],
+    hints: DataMappingHints = {}
+  ): void {
+    const props = this.object.properties;
+    const s = new Scale.CategoricalScale();
+    const values = column.filter(x => typeof x == "string") as string[];
+    s.inferParameters(values, "order");
+    props.mapping = {};
+    s.domain.forEach((v, d) => {
+      if (hints.rangeString) {
+        props.mapping[d] = hints.rangeString[v % hints.rangeString.length];
+      } else {
+        props.mapping[d] = "";
+      }
+    });
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const items: Controls.Widget[] = [];
+    const props = this.object.properties;
+    const keys: string[] = [];
+    for (const key in props.mapping) {
+      if (props.mapping.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+    items.push(
+      manager.table(
+        keys.map(key => [
+          manager.text(key, "right"),
+          manager.inputImage({ property: "mapping", field: key })
+        ])
+      )
+    );
+    return [manager.sectionHeader("Image Mapping"), ...items];
+  }
+}
+
 ObjectClasses.Register(CategoricalScaleNumber);
 ObjectClasses.Register(CategoricalScaleColor);
 ObjectClasses.Register(CategoricalScaleBoolean);
 ObjectClasses.Register(CategoricalScaleString);
+ObjectClasses.Register(CategoricalScaleImage);

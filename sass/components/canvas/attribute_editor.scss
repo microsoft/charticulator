@@ -9,7 +9,6 @@
 
         display: flex;
         flex-direction: row;
-
         font-size: 14px;
         line-height: 24px;
         padding-bottom: 4px;
@@ -34,6 +33,7 @@
             line-height: $line-height;
         }
     }
+
     .attribute-item {
         display: flex;
         flex-direction: row;
@@ -221,6 +221,7 @@
                     & > .editor-row {
                         display: flex;
                         flex-direction: row;
+
                         & > label {
                             display: block;
                             width: 60px;
@@ -395,27 +396,32 @@
     }
 }
 
-
 .charticulator {
     &__reorder-list-view {
         &-item {
             position: relative;
+
             &-drag-hint {
                 position: absolute;
-                left: 0; right: 0;
-                top: 0; bottom: 0;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
                 z-index: 10;
                 border: 1px dashed $color-primary;
                 pointer-events: none;
             }
+
             &-hint {
                 position: absolute;
-                left: 0; right: 0;
+                left: 0;
+                right: 0;
                 height: 2px;
                 background: $color-primary;
                 bottom: -1px;
                 z-index: 10;
                 pointer-events: none;
+
                 &.is-top {
                     top: -1px;
                     bottom: none;
@@ -434,6 +440,7 @@
                 margin: 2px 2px;
                 font-size: 13px;
             }
+
             margin-left: 10px;
             margin-bottom: 5px;
         }
@@ -451,6 +458,7 @@
                 height: $height - 4px;
                 margin: 2px;
             }
+
             .el-text {
                 flex: 1;
                 margin-left: 4px;
@@ -465,8 +473,10 @@
             }
         }
     }
+
     &__object-list-editor {
         $height: 24px;
+
         font-size: 14px;
 
         &-title {
@@ -510,6 +520,7 @@
     &__widget-container {
         font-size: 14px;
     }
+
     &__widget {
         $line-height: 24px;
 
@@ -518,35 +529,86 @@
             display: flex;
             flex-direction: column;
         }
+
         &-horizontal {
             flex: 1 1;
             display: flex;
             flex-direction: row;
+
             .el-layout-item {
-                &:not(:last-child) { margin-right: 4px; }
+                &:not(:last-child) {
+                    margin-right: 4px;
+                }
             }
             .el-layout-item-col-0 {
                 flex-grow: 0;
                 flex-shrink: 0;
             }
-            .el-layout-item-col-1 { flex: 1 1; }
-            .el-layout-item-col-2 { flex: 2 2; }
-            .el-layout-item-col-3 { flex: 3 3; }
-            .el-layout-item-col-4 { flex: 4 4; }
-            .el-layout-item-col-5 { flex: 5 5; }
-            .el-layout-item-col-6 { flex: 6 6; }
-            .el-layout-item-col-7 { flex: 7 7; }
-            .el-layout-item-col-8 { flex: 8 8; }
-            .el-layout-item-col-9 { flex: 9 9; }
-            .el-layout-item-col-11 { flex: 11 11; }
-            .el-layout-item-col-12 { flex: 12 12; }
+
+            .el-layout-item-col-1 {
+                flex: 1 1;
+                overflow: hidden;
+            }
+
+            .el-layout-item-col-2 {
+                overflow: hidden;
+                flex: 2 2;
+            }
+
+            .el-layout-item-col-3 {
+                overflow: hidden;
+                flex: 3 3;
+            }
+
+            .el-layout-item-col-4 {
+                overflow: hidden;
+                flex: 4 4;
+            }
+
+            .el-layout-item-col-5 {
+                overflow: hidden;
+                flex: 5 5;
+            }
+
+            .el-layout-item-col-6 {
+                overflow: hidden;
+                flex: 6 6;
+            }
+
+            .el-layout-item-col-7 {
+                overflow: hidden;
+                flex: 7 7;
+            }
+
+            .el-layout-item-col-8 {
+                overflow: hidden;
+                flex: 8 8;
+            }
+
+            .el-layout-item-col-9 {
+                overflow: hidden;
+                flex: 9 9;
+            }
+
+            .el-layout-item-col-11 {
+                overflow: hidden;
+                flex: 11 11;
+            }
+
+            .el-layout-item-col-12 {
+                overflow: hidden;
+                flex: 12 12;
+            }
         }
+
         &-table {
             width: 100%;
             border-collapse: collapse;
+
             td {
                 height: $line-height;
                 line-height: $line-height;
+
                 & > .el-layout-item {
                     vertical-align: top;
                     width: 100%;
@@ -554,13 +616,16 @@
                     height: $line-height;
                     line-height: $line-height;
                 }
+
                 padding: 0 5px;
             }
         }
+
         &-row {
             display: flex;
             flex-direction: row;
             margin: 2px 0;
+
             &-label {
                 word-break: keep-all;
                 white-space: nowrap;
@@ -600,6 +665,7 @@
 
             &-dropzone {
                 transition: background $transition-default;
+
                 .el-dropzone-hint {
                     width: 100%;
                     outline: 1px dashed $color-primary;
@@ -608,15 +674,19 @@
                     line-height: $line-height;
                     border-radius: 2px;
                 }
+
                 &.is-in-session {
                     cursor: pointer;
+
                     .el-dropzone-hint {
                         background: transparentize($color-primary-light, 0.8);
                     }
                 }
+
                 &.is-dragging-over {
                     color: white;
                     cursor: pointer;
+
                     .el-dropzone-hint {
                         background: $color-active;
                         width: 100%;
@@ -632,6 +702,7 @@
             overflow: hidden;
             display: block;
             font-size: 12px;
+
             // padding: 0 4px;
             color: $gray-100;
             transition: background-color $transition-default;
@@ -644,6 +715,7 @@
             overflow: hidden;
             display: block;
             font-size: 14px;
+
             // padding: 0 4px;
             // text-align: center;
             transition: background-color $transition-default;
@@ -664,6 +736,7 @@
         &-control {
             &-input-field {
                 @include font-mono;
+
                 display: inline-block;
                 vertical-align: top;
                 margin: 0;
@@ -672,7 +745,9 @@
                 border: none;
                 background: none;
                 font-size: 14px;
+
                 @include font-mono;
+
                 height: $line-height;
                 padding-top: 1px;
                 line-height: $line-height;
@@ -691,9 +766,11 @@
                 display: flex;
                 flex-direction: row;
                 width: 100%;
+
                 &-input {
                     width: 100%;
                 }
+
                 & > *:not(:first-child) {
                     flex-shrink: 0;
                     flex-grow: 0;
@@ -704,6 +781,7 @@
                 display: flex;
                 flex-direction: row;
                 width: 100%;
+
                 .el-color-display {
                     cursor: pointer;
                     border-radius: 2px;
@@ -718,18 +796,79 @@
                 }
             }
 
+            &-input-image {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                cursor: pointer;
+                border-radius: 2px;
+                height: $line-height;
+                line-height: $line-height;
+                overflow: hidden;
+
+                .el-image {
+                    flex-shrink: 0;
+                    height: $line-height;
+                    border: 1px solid $gray-180;
+                    background: $gray-210;
+                    border-radius: 2px;
+                    box-sizing: border-box;
+                }
+
+                .el-text-wrapper {
+                    flex: 1 1;
+                    display: inline-block;
+                    overflow: hidden;
+                }
+                .el-text {
+                    text-overflow: ellipsis;
+                    vertical-align: top;
+                    height: $line-height;
+                    padding-left: 4px;
+                }
+
+                &.is-none .el-text {
+                    color: $gray-100;
+                }
+
+                &:hover {
+                    background: $color-primary;
+
+                    .el-image {
+                        border: 1px solid $color-primary-dark;
+                    }
+
+                    .el-text {
+                        color: $white;
+                    }
+                }
+
+                .el-drag-over {
+                    display: block;
+                    width: 100%;
+                    border: 1px solid $color-active;
+                    padding-left: 4px;
+                    background: lighten($color-active, 30%);
+                }
+            }
+
             &-input-color-gradient {
                 display: flex;
                 flex-direction: row;
                 width: 100%;
                 cursor: pointer;
+
                 .el-color-gradient-display {
                     display: inline-block;
                     width: 100%;
+
                     .gradient-view {
                         display: inline-block;
                         width: 100%;
-                        canvas { width: 100%; }
+
+                        canvas {
+                            width: 100%;
+                        }
                     }
                 }
             }
@@ -747,30 +886,37 @@
                 height: $line-height;
                 display: flex;
                 flex-direction: column;
+
                 .el-part {
                     display: block;
                     width: $line-height / 2;
                     height: $line-height / 2;
                     padding: 0 2px;
+
                     .el-svg-icon {
                         width: $line-height / 2;
                         height: $line-height / 2;
                         filter: invert(40%);
                     }
+
                     &:first-child {
                         .el-svg-icon {
                             margin-top: 2px;
                         }
                     }
+
                     &:last-child {
                         .el-svg-icon {
                             margin-top: -2px;
                         }
                     }
+
                     cursor: pointer;
                     border-radius: 2px;
+
                     &:hover {
                         background: $color-primary;
+
                         .el-svg-icon {
                             filter: invert(100%);
                         }
@@ -792,24 +938,30 @@
                     .svg-image-icon {
                         filter: invert(100%);
                     }
+
                     .el-text {
                         color: white;
                     }
                 }
+
                 &.is-active {
                     background-color: $gray-100;
+
                     .svg-image-icon {
                         filter: invert(100%);
                     }
                 }
+
                 .el-text {
                     height: $line-height;
                     line-height: $line-height;
                     margin-right: 6px;
+
                     &:first-child {
                         margin-left: 6px;
                     }
                 }
+
                 .svg-image-icon {
                     margin: $button-margin;
                     width: $line-height - $button-margin * 2;
@@ -887,38 +1039,48 @@
                     .svg-image-icon {
                         filter: invert(100%);
                     }
+
                     .el-text {
                         color: white;
                     }
                 }
+
                 &.is-active {
                     background-color: $gray-100;
+
                     .svg-image-icon {
                         filter: invert(100%);
                     }
                 }
+
                 .el-text {
                     height: $line-height;
                     line-height: $line-height;
                     margin-right: 6px;
+
                     &:first-child {
                         margin-left: 6px;
                     }
                 }
+
                 .svg-image-icon {
                     margin: $button-margin;
                     width: $line-height - $button-margin * 2;
                     height: $line-height - $button-margin * 2;
                 }
+
                 &.is-active {
                     background-color: $gray-100;
+
                     .svg-image-icon {
                         filter: invert(100%);
                     }
                 }
+
                 &.is-in-session {
                     border: 1px dashed $color-primary;
                     background: transparentize($color-primary-light, 0.8);
+
                     .svg-image-icon {
                         margin: $button-margin - 1px;
                         width: $line-height - $button-margin * 2;
@@ -926,9 +1088,11 @@
                         filter: none;
                     }
                 }
+
                 &.is-dragging-over {
                     border: none;
                     background-color: $color-active;
+
                     .svg-image-icon {
                         margin: $button-margin;
                         width: $line-height - $button-margin * 2;
@@ -952,6 +1116,7 @@
                     .svg-image-icon {
                         filter: invert(100%);
                     }
+
                     .el-text {
                         color: white;
                     }
@@ -968,6 +1133,7 @@
                         margin-left: -2px;
                         margin-right: 0;
                     }
+
                     margin: $button-margin;
                     width: $line-height - $button-margin * 2;
                     height: $line-height - $button-margin * 2;
@@ -982,25 +1148,31 @@
                 box-sizing: border-box;
                 border-radius: 2px;
                 transition: background-color $transition-default;
+
                 &:hover, &:active {
                     background-color: $color-primary;
 
                     .svg-image-icon {
                         filter: invert(100%);
                     }
+
                     .el-text {
                         color: white;
                     }
                 }
+
                 &.is-active {
                     background-color: $gray-100;
+
                     .svg-image-icon {
                         filter: invert(100%);
                     }
                 }
+
                 &.is-in-session {
                     outline: 1px dashed $color-primary;
                     background: transparentize($color-primary-light, 0.8);
+
                     // .svg-image-icon {
                     //     margin: $button-margin - 1px;
                     //     &:last-child {
@@ -1009,20 +1181,25 @@
                     //     }
                     //     filter: none;
                     // }
+
                 }
+
                 &.is-dragging-over {
                     outline: 1px solid $color-active;
                     background-color: $color-active;
+
                     .svg-image-icon {
                         margin: $button-margin;
                         filter: invert(100%);
                     }
                 }
+
                 .svg-image-icon {
                     &:last-child {
                         margin-left: -2px;
                         margin-right: 0;
                     }
+
                     margin: $button-margin;
                     width: $line-height - $button-margin * 2;
                     height: $line-height - $button-margin * 2;
@@ -1048,15 +1225,19 @@
                     color: $gray-100;
                     font-size: 12px;
                 }
+
                 &.is-in-session {
                     cursor: pointer;
+
                     .el-dropzone-hint {
                         background: transparentize($color-primary-light, 0.8);
                     }
                 }
+
                 &.is-dragging-over {
                     color: white;
                     cursor: pointer;
+
                     .el-dropzone-hint {
                         background: $color-active;
                         width: 100%;
@@ -1074,35 +1255,44 @@
                 border-radius: 2px;
                 background: $gray-200;
                 overflow: hidden;
+
                 &-item {
                     cursor: pointer;
                     display: inline-block;
                     height: $line-height;
                     border-radius: 2px;
+
                     &:hover {
                         background-color: $color-primary;
+
                         .svg-image-icon {
                             filter: invert(100%);
                         }
+
                         .el-text {
                             color: white;
                         }
                     }
+
                     &.is-active {
                         background-color: $gray-080;
+
                         .svg-image-icon {
                             filter: invert(100%);
                         }
+
                         .el-text {
                             color: white;
                         }
                     }
+
                     .el-text {
                         height: $line-height;
                         line-height: $line-height;
                         margin-right: 6px;
                         margin-left: 6px;
                     }
+
                     .svg-image-icon {
                         margin: $button-margin;
                         width: $line-height - $button-margin * 2;
@@ -1114,22 +1304,28 @@
             &-mapping-editor {
                 flex: 1 1;
                 position: relative;
+                overflow: hidden;
+
                 &.is-in-session {
                     border-radius: 2px;
                     cursor: pointer;
                     outline: 1px dashed $color-primary;
                     background: transparentize($color-primary-light, 0.8);
                 }
+
                 &.is-dragging-over {
                     outline: 1px solid $color-active;
                     background: $color-active;
+
                     & > * {
                         display: none;
                     }
+
                     &:after {
                         display: block;
                         position: absolute;
-                        left: 0; top: 0;
+                        left: 0;
+                        top: 0;
                         height: $line-height;
                         line-height: $line-height;
                         padding-left: 4px;
@@ -1137,6 +1333,7 @@
                         color: white;
                     }
                 }
+
                 // for (none), (auto)
                 .el-clickable-label {
                     display: inline-block;
@@ -1147,13 +1344,16 @@
                     color: $gray-100;
                     padding-left: 4px;
                     border-radius: 2px;
+
                     &:hover {
                         background: $gray-200;
                     }
                 }
+
                 .el-color-value {
                     display: flex;
                     flex-direction: row;
+
                     .el-color-item {
                         cursor: pointer;
                         border-radius: 2px;
@@ -1167,6 +1367,7 @@
                         border: 1px solid $white;
                     }
                 }
+
                 .el-mapping-scale {
                     display: inline-flex;
                     max-width: 130px;
@@ -1211,6 +1412,7 @@
                             overflow: hidden;
                             font-style: italic;
                             text-overflow: ellipsis;
+
                             .el-svg-icon {
                                 height: 20px;
                                 width: 20px;
@@ -1247,6 +1449,7 @@
                             background: $color-primary;
                             color: $white;
                         }
+
                         .el-mapping-scale-column {
                             color: $white;
                         }
@@ -1256,8 +1459,7 @@
         }
 
         &-popup {
-            &-order-widget {
-            }
+            &-order-widget {}
 
             &-details {
                 width: 300px;
@@ -1265,7 +1467,6 @@
                 overflow-x: hidden;
                 overflow-y: scroll;
                 padding: 10px;
-
             }
 
             &-reorder-widget {
@@ -1287,6 +1488,7 @@
                     line-height: 20px;
                     padding: 0 4px;
                     cursor: pointer;
+
                     &:hover {
                         background: $gray-200;
                     }
@@ -1298,28 +1500,35 @@
 
 .charticulator-panel-list-view {
     $height: 28px;
+
     display: block;
+
     .el-item {
         display: block;
         cursor: pointer;
         border-radius: 2px;
         line-height: $height;
         height: $height;
+
         .el-svg-icon {
             width: $height - 2px;
             height: $height - 2px;
             margin: 1px;
         }
+
         .el-text {
             padding-left: 4px;
             padding-right: 8px;
         }
+
         &:hover {
             background: $gray-230;
         }
+
         &.is-active {
             background: $gray-080;
             color: white;
+
             .el-svg-icon {
                 filter: invert(100%);
             }
@@ -1328,6 +1537,7 @@
 
     &.is-inline {
         display: inline-block;
+
         .el-item {
             display: inline-block;
         }
@@ -1336,8 +1546,9 @@
 
 .charticulator__data-mapping-and-scale-editor {
     position: relative;
-    & > .el-data-picker {
-    }
+
+    & > .el-data-picker {}
+
     & > .el-scale-editor {
         background: $gray-220;
         position: absolute;
@@ -1348,8 +1559,10 @@
         overflow-y: scroll;
         border: 1px solid $gray-100;
         border-radius: 2px;
+
         @include shadow-focused;
     }
+
     .action-buttons {
         text-align: right;
         margin-top: 10px;

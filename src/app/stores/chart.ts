@@ -323,6 +323,7 @@ export class ChartStore extends BaseStore {
       if (!attributesSet) {
         switch (action.classID) {
           case "mark.rect":
+          case "mark.image":
             {
               mark.mappings.x1 = {
                 type: "parent",
@@ -1356,6 +1357,9 @@ export class ChartStore extends BaseStore {
     ) {
       scaleClassID = `scale.categorical`;
     }
+    if (valueType == "string" && outputType == "image") {
+      scaleClassID = `scale.categorical`;
+    }
 
     if (scaleClassID != null) {
       const newScale = this.chartManager.createObject(
@@ -1682,7 +1686,8 @@ export class ChartStore extends BaseStore {
         } as Specification.ChartElement
       ],
       scales: [],
-      constraints: []
+      constraints: [],
+      resources: []
     } as Specification.Chart;
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,

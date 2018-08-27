@@ -85,7 +85,7 @@ export class ChartRenderer {
       }
       const g = this.manager
         .getMarkClass(markState)
-        .getGraphics(coordinateSystem, offset, index);
+        .getGraphics(coordinateSystem, offset, index, this.manager);
       if (g != null) {
         gs.push(g);
       }
@@ -177,7 +177,12 @@ export class ChartRenderer {
         const cs = new CartesianCoordinates({ x: 0, y: 0 });
         const gElement = makeGroup([]);
         const elementClass = this.manager.getMarkClass(elementState);
-        const g = elementClass.getGraphics(cs, { x: 0, y: 0 });
+        const g = elementClass.getGraphics(
+          cs,
+          { x: 0, y: 0 },
+          null,
+          this.manager
+        );
         gElement.elements.push(g);
         gElement.key = element._id;
         graphics.push(gElement);

@@ -1,6 +1,5 @@
 import {
   Element,
-  makeCircle,
   makeLine,
   makePath,
   makeRect,
