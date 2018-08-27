@@ -201,6 +201,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       <div
         className="charticulator__application"
         onDragOver={e => e.preventDefault()}
+        onDrop={e => e.preventDefault()}
       >
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">

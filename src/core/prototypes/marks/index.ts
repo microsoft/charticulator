@@ -36,7 +36,8 @@ export abstract class MarkClass extends ObjectClass {
   public getGraphics(
     coordinateSystem: Graphics.CoordinateSystem,
     offset: Point,
-    glyphIndex?: number
+    glyphIndex: number,
+    manager: ChartStateManager
   ): Graphics.Element {
     return null;
   }
@@ -74,6 +75,8 @@ import "./line";
 import "./rect";
 import "./symbol";
 import "./text";
+import "./image";
+import { ChartStateManager } from "../state";
 
 export { AnchorElementAttributes, AnchorElement } from "./anchor";
 export { SymbolElementAttributes, SymbolElement } from "./symbol";

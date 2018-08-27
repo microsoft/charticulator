@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import {
-  Graphics,
-  Color,
-  shallowClone,
-} from "../../core";
+import { Graphics, Color, shallowClone } from "../../core";
 import { toSVGNumber } from "../utils";
 
 export { renderGraphicalElementCanvas } from "./canvas";
@@ -230,11 +226,24 @@ export function renderGraphicalElementSVG(
     }
     case "image": {
       const image = element as Graphics.Image;
+      let preserveAspectRatio = null;
+      switch (image.mode) {
+        case "letterbox":
+          preserveAspectRatio = "xMidYMid meet";
+          break;
+        case "fill":
+          preserveAspectRatio = "xMidYMid slice";
+          break;
+        case "stretch":
+          preserveAspectRatio = "none";
+          break;
+      }
       return (
         <image
           key={options.key}
           className={options.className || null}
           style={style}
+          preserveAspectRatio={preserveAspectRatio}
           xlinkHref={
             options.externalResourceResolver
               ? options.externalResourceResolver(image.src)

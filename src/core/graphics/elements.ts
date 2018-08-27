@@ -108,6 +108,7 @@ export interface Image extends Element {
   y: number;
   width: number;
   height: number;
+  mode?: "letterbox" | "fill" | "stretch";
 }
 
 export interface Group extends Element {

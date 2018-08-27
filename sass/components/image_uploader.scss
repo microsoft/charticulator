@@ -1,0 +1,30 @@
+.charticulator__image-uploader {
+    display: inline-block;
+    .el-input, .el-text {
+        display: block;
+        min-width: 200px;
+        background: white;
+        border: none;
+        outline: none;
+        margin: 0;
+        padding: 10px;
+        font-size: 14px;
+        line-height: 24px;
+        border: 1px dashed $gray-200;
+        border-radius: 2px;
+    }
+    .el-input {
+        &:focus {
+            border: 1px solid $color-primary;
+        }
+    }
+    .el-text {
+        border: 2px solid $color-active;
+        background: lighten($color-active, 30%);
+        padding: 9px;
+    }
+}
+
+.charticulator__image-chooser {
+    margin: 10px;
+}
