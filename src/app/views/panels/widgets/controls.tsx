@@ -18,7 +18,8 @@ import {
   DropdownListView,
   ColorPicker,
   GradientView,
-  GradientPicker
+  GradientPicker,
+  ButtonFlatPanel
 } from "../../../components";
 import { PopupView } from "../../../controllers/popup_controller";
 import { ContextedComponent } from "../../../context_component";
@@ -821,10 +822,11 @@ export class InputImage extends ContextedComponent<
         ) : (
           [
             <img
+              key="image"
               className="el-image"
               src={isNone ? R.getSVGIcon("mark/image") : imageURL}
             />,
-            <span className="el-text-wrapper">
+            <span key="text" className="el-text-wrapper">
               <span className="el-text">
                 {isNone ? "(none)" : imageDisplayURL}
               </span>
@@ -971,7 +973,7 @@ export class ImageUploader extends React.Component<
     }
   };
 
-  protected handlePaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
+  protected handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     if (e.clipboardData.files.length > 0) {
       e.preventDefault();
       const result = ImageUploader.ParseFiles(e.clipboardData.files)
@@ -982,6 +984,19 @@ export class ImageUploader extends React.Component<
           this.showError(e);
         });
     }
+  };
+
+  protected handleOpenFile = () => {
+    const inputFile = document.createElement("input");
+    inputFile.setAttribute("type", "file");
+    inputFile.onchange = () => {
+      if (inputFile.files.length > 0) {
+        ImageUploader.ParseFiles(inputFile.files).then(r => {
+          this.emitOnUpload(r);
+        });
+      }
+    };
+    inputFile.click();
   };
 
   protected showError(error: any) {
@@ -1005,17 +1020,20 @@ export class ImageUploader extends React.Component<
         onDrop={this.handleDrop}
       >
         {this.state.dragOver ? (
-          <span className="el-text">Drop Image Here</span>
+          <span className="el-dropzone">Drop Image Here</span>
         ) : (
-          <input
-            ref={e => (this.refInput = e)}
-            className="el-input"
-            onPaste={this.handlePaste}
-            value=""
-            onChange={() => {}}
-            type="text"
-            placeholder="Drop/Paste Image"
-          />
+          <span className="el-input-wrapper">
+            <input
+              ref={e => (this.refInput = e)}
+              className="el-input"
+              onPaste={this.handlePaste}
+              value=""
+              onChange={() => {}}
+              type="text"
+              placeholder="Drop/Paste Image"
+            />
+            <Button icon={"toolbar/open"} onClick={this.handleOpenFile} />
+          </span>
         )}
       </div>
     );
