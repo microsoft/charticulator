@@ -262,6 +262,12 @@ export function renderGraphicalElementSVG(
         <g
           transform={renderTransform(group.transform)}
           key={group.key || options.key}
+          style={{
+            opacity:
+              group.style && group.style.opacity != null
+                ? group.style.opacity
+                : 1
+          }}
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
