@@ -1351,6 +1351,13 @@ export class ChartStore extends BaseStore {
       inputType = "number";
     }
     if (
+      (valueType == "number" || valueType == "integer") &&
+      outputType == "boolean"
+    ) {
+      scaleClassID = `scale.linear`;
+      inputType = "number";
+    }
+    if (
       valueType == "string" &&
       outputType == "string" &&
       hints.stringBehavior == "categorical"

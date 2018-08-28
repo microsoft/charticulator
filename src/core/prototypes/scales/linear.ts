@@ -247,5 +247,124 @@ export class LinearColorScale extends ScaleClass {
   }
 }
 
+export interface LinearBooleanScaleProperties extends LinearScaleProperties {
+  min: number;
+  max: number;
+  mode: "greater" | "less" | "interval";
+  inclusive: boolean;
+}
+
+export class LinearBooleanScale extends ScaleClass {
+  public static classID = "scale.linear<number,boolean>";
+  public static type = "scale";
+
+  public static defaultMappingValues: Specification.AttributeMap = {
+    min: 0,
+    max: 1,
+    mode: "interval",
+    inclusive: true
+  };
+
+  public readonly object: {
+    properties: LinearBooleanScaleProperties;
+  } & Specification.Scale;
+
+  public attributeNames: string[] = [];
+  public attributes: { [name: string]: AttributeDescription } = {};
+
+  public mapDataToAttribute(
+    data: Specification.DataValue
+  ): Specification.AttributeValue {
+    const props = this.object.properties;
+    const value = data as number;
+    if (props.inclusive) {
+      switch (props.mode) {
+        case "greater":
+          return value >= props.min;
+        case "less":
+          return value <= props.max;
+        case "interval":
+          return value <= props.max && value >= props.min;
+      }
+    } else {
+      switch (props.mode) {
+        case "greater":
+          return value > props.min;
+        case "less":
+          return value < props.max;
+        case "interval":
+          return value < props.max && value > props.min;
+      }
+    }
+  }
+
+  public buildConstraint(
+    data: Specification.DataValue,
+    target: Variable,
+    solver: ConstraintSolver
+  ) {}
+
+  public initializeState(): void {}
+
+  public inferParameters(
+    column: Specification.DataValue[],
+    hints: DataMappingHints = {}
+  ): void {
+    const props = this.object.properties;
+    const s = new Scale.NumericalScale();
+    const values = column.filter(x => typeof x == "number") as number[];
+    s.inferParameters(values);
+    props.min = s.domainMin;
+    props.max = s.domainMax;
+    props.mode = "interval";
+    props.inclusive = true;
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const range = this.object;
+    const props = this.object.properties;
+    const minMax = [];
+    if (props.mode == "greater" || props.mode == "interval") {
+      minMax.push(
+        manager.row(
+          props.inclusive ? ">=" : ">",
+          manager.inputNumber({ property: "min" })
+        )
+      );
+    }
+    if (props.mode == "less" || props.mode == "interval") {
+      minMax.push(
+        manager.row(
+          props.inclusive ? "<=" : "<",
+          manager.inputNumber({ property: "max" })
+        )
+      );
+    }
+    return [
+      manager.sectionHeader("Boolean"),
+      manager.row(
+        "Mode",
+        manager.inputSelect(
+          { property: "mode" },
+          {
+            type: "dropdown",
+            options: ["greater", "less", "interval"],
+            showLabel: true,
+            labels: ["Greater", "Less", "Interval"]
+          }
+        )
+      ),
+      manager.row(
+        "Inclusive",
+        manager.inputBoolean({ property: "inclusive" }, { type: "checkbox" })
+      ),
+      ...minMax
+    ];
+  }
+}
+
 ObjectClasses.Register(LinearScale);
 ObjectClasses.Register(LinearColorScale);
+ObjectClasses.Register(LinearBooleanScale);
