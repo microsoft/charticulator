@@ -1,4 +1,4 @@
-import { Color, Point, uniqueID } from "../../common";
+import { Color, Point } from "../../common";
 import {
   ConstraintSolver,
   ConstraintStrength,
@@ -7,10 +7,8 @@ import {
 import * as Specification from "../../specification";
 
 import {
-  AttributeDescription,
   BoundingBox,
   Controls,
-  CreatingInteraction,
   DropZones,
   Handles,
   LinkAnchor,
@@ -18,9 +16,12 @@ import {
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
+import { EmphasizableMarkClass } from "./emphasis";
+import { ObjectClass } from "../object";
+import attributes from "./symbol.attrs";
+import { ChartStateManager } from "../state";
 
 const symbolTypes: string[] = [
   "circle",
@@ -48,7 +49,7 @@ export interface SymbolElementState extends Specification.MarkState {
   attributes: SymbolElementAttributes;
 }
 
-export class SymbolElement extends MarkClass {
+export class SymbolElement extends EmphasizableMarkClass {
   public static classID = "mark.symbol";
   public static type = "mark";
 
@@ -73,94 +74,19 @@ export class SymbolElement extends MarkClass {
     visible: true
   };
 
+  constructor(
+    parent: ObjectClass,
+    object: Specification.Object,
+    state: Specification.ObjectState
+  ) {
+    super(parent, object, state, attributes);
+  }
+
   public readonly state: SymbolElementState;
 
-  public attributeNames: string[] = [
-    "x",
-    "y",
-    "size",
-    "fill",
-    "stroke",
-    "strokeWidth",
-    "opacity",
-    "visible",
-    "symbol"
-  ];
-  public attributes: { [name: string]: AttributeDescription } = {
-    x: {
-      name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    y: {
-      name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    size: {
-      name: "size",
-      type: "number",
-      mode: "intrinsic",
-      solverExclude: true,
-      category: "dimensions",
-      displayName: "Size",
-      defaultRange: [0, 200 * Math.PI],
-      defaultValue: 60,
-      strength: VariableStrength.NONE
-    },
-    fill: {
-      name: "fill",
-      type: "color",
-      category: "style",
-      displayName: "Fill",
-      solverExclude: true,
-      defaultValue: null
-    },
-    stroke: {
-      name: "stroke",
-      type: "color",
-      category: "style",
-      displayName: "Stroke",
-      solverExclude: true,
-      defaultValue: null
-    },
-    strokeWidth: {
-      name: "strokeWidth",
-      type: "number",
-      category: "style",
-      displayName: "Line Width",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 5]
-    },
-    opacity: {
-      name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 1]
-    },
-    visible: {
-      name: "visible",
-      type: "boolean",
-      category: "style",
-      displayName: "Visible",
-      solverExclude: true,
-      defaultValue: true
-    },
-    symbol: {
-      name: "symbol",
-      type: "string",
-      solverExclude: true,
-      defaultValue: "circle"
-    }
-  };
-
   public initializeState(): void {
+    super.initializeState();
+
     const attrs = this.state.attributes;
     attrs.x = 0;
     attrs.y = 0;
@@ -194,7 +120,10 @@ export class SymbolElement extends MarkClass {
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
-    offset: Point
+    offset: Point,
+    glyphIndex = 0,
+    manager: ChartStateManager,
+    emphasize?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     if (!attrs.visible || !this.object.properties.visible) {
@@ -208,7 +137,8 @@ export class SymbolElement extends MarkClass {
       strokeColor: attrs.stroke,
       strokeWidth: attrs.strokeWidth,
       fillColor: attrs.fill,
-      opacity: attrs.opacity
+      opacity: attrs.opacity,
+      ...this.generateEmphasisStyle(emphasize)
     };
 
     switch (attrs.symbol) {

@@ -1,13 +1,8 @@
 import { Color, Point } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 
 import {
-  AttributeDescription,
   BoundingBox,
   Controls,
   DropZones,
@@ -17,11 +12,15 @@ import {
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { MarkClass } from "./index";
-
+import { HasEmphasisAttributes, EmphasizableMarkClass } from "./emphasis";
+import attributes from "./rect.attrs";
 import * as Graphics from "../../graphics";
+import { ObjectClass } from "../object";
+import { ChartStateManager } from "../state";
 
-export interface RectElementAttributes extends Specification.AttributeMap {
+export interface RectElementAttributes
+  extends Specification.AttributeMap,
+    HasEmphasisAttributes {
   x1: number;
   y1: number;
   x2: number;
@@ -49,7 +48,7 @@ export interface RectElementState extends Specification.MarkState {
   attributes: RectElementAttributes;
 }
 
-export class RectElement extends MarkClass {
+export class RectElement extends EmphasizableMarkClass {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -77,123 +76,18 @@ export class RectElement extends MarkClass {
   public readonly state: RectElementState;
   public readonly object: RectElementObject;
 
-  // Get a list of elemnt attributes
-  public attributeNames: string[] = [
-    "x1",
-    "y1",
-    "x2",
-    "y2",
-    "cx",
-    "cy",
-    "width",
-    "height",
-    "fill",
-    "stroke",
-    "strokeWidth",
-    "opacity",
-    "visible"
-  ];
-  public attributes: { [name: string]: AttributeDescription } = {
-    x1: {
-      name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y1: {
-      name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    x2: {
-      name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y2: {
-      name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    cx: {
-      name: "cx",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    cy: {
-      name: "cy",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    width: {
-      name: "width",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Width",
-      defaultRange: [0, 200],
-      strength: VariableStrength.NONE
-    },
-    height: {
-      name: "height",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Height",
-      defaultRange: [0, 200],
-      strength: VariableStrength.NONE
-    },
-    fill: {
-      name: "fill",
-      type: "color",
-      category: "style",
-      displayName: "Fill",
-      solverExclude: true,
-      defaultValue: null
-    },
-    stroke: {
-      name: "stroke",
-      type: "color",
-      category: "style",
-      displayName: "Stroke",
-      solverExclude: true,
-      defaultValue: null
-    },
-    strokeWidth: {
-      name: "strokeWidth",
-      type: "number",
-      category: "style",
-      displayName: "Line Width",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 5]
-    },
-    opacity: {
-      name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 1]
-    },
-    visible: {
-      name: "visible",
-      type: "boolean",
-      category: "style",
-      displayName: "Visible",
-      solverExclude: true,
-      defaultValue: true
-    }
-  };
+  constructor(
+    parent: ObjectClass,
+    object: Specification.Object,
+    state: Specification.ObjectState
+  ) {
+    super(parent, object, state, attributes);
+  }
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
+    super.initializeState();
+
     const defaultWidth = 30;
     const defaultHeight = 50;
     const attrs = this.state.attributes;
@@ -291,7 +185,10 @@ export class RectElement extends MarkClass {
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
-    offset: Point
+    offset: Point,
+    glyphIndex = 0,
+    manager: ChartStateManager,
+    empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     if (!attrs.visible || !this.object.properties.visible) {
@@ -310,7 +207,8 @@ export class RectElement extends MarkClass {
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
             fillColor: attrs.fill,
-            opacity: attrs.opacity
+            opacity: attrs.opacity,
+            ...this.generateEmphasisStyle(empasized)
           }
         );
       }
@@ -339,7 +237,8 @@ export class RectElement extends MarkClass {
           strokeWidth: attrs.strokeWidth,
           strokeLinejoin: "miter",
           fillColor: attrs.fill,
-          opacity: attrs.opacity
+          opacity: attrs.opacity,
+          ...this.generateEmphasisStyle(empasized)
         };
         return path;
       }
@@ -355,7 +254,8 @@ export class RectElement extends MarkClass {
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
             fillColor: attrs.fill,
-            opacity: attrs.opacity
+            opacity: attrs.opacity,
+            ...this.generateEmphasisStyle(empasized)
           }
         );
       }

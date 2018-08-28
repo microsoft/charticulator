@@ -86,12 +86,18 @@ export class ChartRenderer {
       }
       const g = this.manager
         .getMarkClass(markState)
-        .getGraphics(coordinateSystem, offset, index, this.manager);
+        .getGraphics(
+          coordinateSystem,
+          offset,
+          index,
+          this.manager,
+          state.emphasized
+        );
       if (g != null) {
         const me = g as MarkElement;
         me.glyph = glyph;
+        me.glyphIndex = index;
         me.mark = mark;
-        me.dataRowIndex = index;
         gs.push(me);
       }
     }

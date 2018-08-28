@@ -1,4 +1,4 @@
-import { renderGraphicalElementCanvas } from "../app/renderer/canvas";
+import { renderGraphicalElementSVG } from "../app/renderer";
 import {
   Color,
   Dataset,
@@ -19,6 +19,8 @@ import {
 } from "../core";
 import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
 import { ChartStore } from "./chartStore";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export * from "../core";
 
@@ -310,15 +312,89 @@ export class ChartTemplate {
 }
 
 export class ChartContainer {
+  private containerElement: HTMLElement;
   public store: ChartStore;
 
   // Needed for extensions
   public chart: Specification.Chart;
+  private renderer: Graphics.ChartRenderer;
 
-  private listenerMap: WeakMap<CanvasRenderingContext2D, any> = new WeakMap();
+  // This cache should work for now
+  private plotSegments: Array<{
+    segment: Specification.PlotSegment;
+    state: Specification.PlotSegmentState;
+  }>;
+
   constructor(specification: Specification.Chart, dataset: Dataset.Dataset) {
     this.store = new ChartStore(specification, dataset);
     this.chart = specification;
+    this.renderer = new Graphics.ChartRenderer(this.store.manager);
+    this.plotSegments = this.chart.elements
+      .map((e, layoutIndex) => {
+        if (Prototypes.isType(e.classID, "plot-segment")) {
+          return {
+            segment: e as Specification.PlotSegment,
+            state: this.store.state.elements[
+              layoutIndex
+            ] as Specification.PlotSegmentState
+          };
+        }
+      })
+      .filter(n => !!n);
+    this.store.addListener(ChartStore.EVENT_SELECTION, this.onSelectionChanged);
+  }
+
+  /**
+   * Listens for when the selection changed within the store
+   */
+  private onSelectionChanged = () => {
+    // When the selection has changed, rerender
+    this.render(this.containerElement);
+  };
+
+  /**
+   * Listener for when an element is selected on the renderer
+   */
+  private onElementSelected = (element?: Graphics.MarkElement) => {
+    let action: Action;
+    // The user selected nothing, so clear the selection
+    if (!element || !element.mark) {
+      action = new ClearSelection();
+
+      // Otherwise, the user selected some useful mark
+    } else {
+      const { mark, glyph, glyphIndex } = element;
+      const pss = this.plotSegments.filter(
+        n => n.segment.glyph === glyph._id
+      )[0].state;
+      const dataRowIndex = pss.dataRowIndices[glyphIndex];
+      action = new SelectMark(glyph, mark, dataRowIndex);
+    }
+    if (action) {
+      this.store.dispatcher.dispatch(action);
+    }
+  };
+
+  /**
+   * Applies the current selection state to the glyphs
+   */
+  private applySelectionToGlyphs() {
+    const selection = this.store.currentSelection;
+    if (selection) {
+      this.plotSegments.forEach(({ state, segment }) =>
+        state.glyphs.forEach((gs, index) => {
+          // Mark all glyphs that have the same dataRowIndex as the one that was selected
+          gs.emphasized =
+            selection.dataIndex === state.dataRowIndices[index] &&
+            segment.table === selection.table;
+        })
+      );
+    } else {
+      // Reset the emphasized state on the glyphs, as nothing is emphasized anymore
+      this.plotSegments.forEach(({ state }) =>
+        state.glyphs.forEach(g => delete g.emphasized)
+      );
+    }
   }
 
   public update() {
@@ -341,62 +417,35 @@ export class ChartContainer {
     } as Specification.ValueMapping;
   }
 
-  public render(context: CanvasRenderingContext2D) {
-    const renderer = new Graphics.ChartRenderer(this.store.manager);
-
-    // Render the scene
-    const graphics = renderer.render();
-    const hitTest = renderGraphicalElementCanvas(context, graphics, {
-      width: this.store.state.attributes.width as any,
-      height: this.store.state.attributes.height as any,
-      hitTest: true,
-      selectedIndexes:
-        this.store.selectedDataRowIdx >= 0
-          ? [this.store.selectedDataRowIdx]
-          : []
-    });
-
-    const bounds = context.canvas.getBoundingClientRect();
-    let listener = this.listenerMap.get(context);
-    if (listener) {
-      context.canvas.removeEventListener("click", listener);
+  public render(containerElement: HTMLElement) {
+    if (!containerElement) {
+      throw new Error("Container element required");
     }
-    listener = (ev: MouseEvent) => {
-      const x = ev.clientX - bounds.left;
-      const y = ev.clientY - bounds.top;
-      const result = hitTest(x, y) as Graphics.MarkElement;
-      let action: Action;
-      let dataRowIndex: number;
-      let mark: Specification.Element;
-      let glyph: Specification.Glyph;
-      if (result && result.mark) {
-        dataRowIndex = result.dataRowIndex;
-        mark = result.mark;
-        glyph = result.glyph;
-      }
 
-      // There was something selected, but now there isn't or it is the same thing selected twice
-      if (
-        this.store.selectedDataRowIdx >= 0 &&
-        (dataRowIndex === undefined ||
-          dataRowIndex === this.store.selectedDataRowIdx)
-      ) {
-        action = new ClearSelection();
+    this.applySelectionToGlyphs();
 
-        // Otherwise, the user selected some useful mark
-      } else if (dataRowIndex >= 0) {
-        action = new SelectMark(glyph, mark, dataRowIndex);
-      }
+    this.containerElement = containerElement;
 
-      if (action) {
-        this.store.dispatcher.dispatch(action);
+    const { width, height } = this.store.chart.mappings as any;
 
-        // Re-render as selection has changed.
-        this.render(context);
-      }
-    };
+    const graphics = this.renderer.render();
+    const rendered = (
+      <svg
+        className="canvas-view"
+        x={0}
+        y={0}
+        width={width.value}
+        height={height.value}
+        onClick={() => this.onElementSelected()}
+      >
+        <g transform={`translate(${width.value / 2}, ${height.value / 2})`}>
+          {renderGraphicalElementSVG(graphics, {
+            onSelected: this.onElementSelected
+          })}
+        </g>
+      </svg>
+    );
 
-    this.listenerMap.set(context, listener);
-    context.canvas.addEventListener("click", listener);
+    ReactDOM.render(rendered, containerElement);
   }
 }

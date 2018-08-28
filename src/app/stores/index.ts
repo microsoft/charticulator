@@ -1,4 +1,4 @@
-export { BaseStore } from "./base";
+export { BaseStore } from "../../core/store/base";
 
 export { MainStore } from "./main_store";
 export { DatasetStore } from "./dataset";

@@ -5,7 +5,7 @@ import { Dataset, Expression } from "../../core";
 import { Actions } from "../actions";
 
 import { ExpressionCache } from "../../core/expression/helpers";
-import { BaseStore } from "./base";
+import { BaseStore } from "../../core/store/base";
 import { MainStore } from "./main_store";
 
 export class DatasetStoreState {

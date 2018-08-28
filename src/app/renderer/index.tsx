@@ -3,12 +3,25 @@ import * as React from "react";
 import { Graphics, Color, shallowClone } from "../../core";
 import { toSVGNumber } from "../utils";
 
-export { renderGraphicalElementCanvas } from "./canvas";
+// adapted from https://stackoverflow.com/a/20820649
+function desaturate(color: Color, amount: number) {
+  const { r, g, b } = color;
+  const l = 0.3 * r + 0.6 * g + 0.1 * b;
+  return {
+    r: Math.min(r + amount * (l - r), 255),
+    g: Math.min(g + amount * (l - g), 255),
+    b: Math.min(b + amount * (l - b), 255)
+  };
+}
 
-export function renderColor(color: Color): string {
+export function renderColor(color: Color, saturation?: number): string {
   if (!color) {
     return `rgb(0,0,0)`;
   }
+  if (saturation !== undefined && saturation < 1 && saturation >= 0) {
+    color = desaturate(color, saturation);
+  }
+
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
     0
   )})`;
@@ -19,14 +32,18 @@ export function renderStyle(style: Graphics.Style): React.CSSProperties {
     return {};
   }
   return {
-    stroke: style.strokeColor ? renderColor(style.strokeColor) : "none",
+    stroke: style.strokeColor
+      ? renderColor(style.strokeColor, style.saturation)
+      : "none",
     strokeOpacity: style.strokeOpacity != undefined ? style.strokeOpacity : 1,
     strokeWidth: style.strokeWidth != undefined ? style.strokeWidth : 1,
     strokeLinecap:
       style.strokeLinecap != undefined ? style.strokeLinecap : "round",
     strokeLinejoin:
       style.strokeLinejoin != undefined ? style.strokeLinejoin : "round",
-    fill: style.fillColor ? renderColor(style.fillColor) : "none",
+    fill: style.fillColor
+      ? renderColor(style.fillColor, style.saturation)
+      : "none",
     fillOpacity: style.fillOpacity != undefined ? style.fillOpacity : 1,
     textAnchor: style.textAnchor != undefined ? style.textAnchor : "start",
     opacity: style.opacity != undefined ? style.opacity : 1
@@ -80,6 +97,7 @@ export interface RenderGraphicalElementSVGOptions {
   className?: string;
   key?: string;
   externalResourceResolver?: (url: string) => string;
+  onSelected?: (element: Graphics.Element) => any;
 }
 
 export function renderGraphicalElementSVG(
@@ -92,6 +110,12 @@ export function renderGraphicalElementSVG(
   if (!options) {
     options = {};
   }
+  const onClick = (e: React.SyntheticEvent<any>) => {
+    if (options.onSelected) {
+      e.stopPropagation();
+      options.onSelected(element);
+    }
+  };
   const style = options.noStyle
     ? null
     : renderStyle(options.styleOverride || element.style);
@@ -101,6 +125,7 @@ export function renderGraphicalElementSVG(
       return (
         <rect
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           x={Math.min(rect.x1, rect.x2)}
@@ -115,6 +140,7 @@ export function renderGraphicalElementSVG(
       return (
         <circle
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           cx={circle.cx}
@@ -128,6 +154,7 @@ export function renderGraphicalElementSVG(
       return (
         <ellipse
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           cx={(ellipse.x1 + ellipse.x2) / 2}
@@ -142,6 +169,7 @@ export function renderGraphicalElementSVG(
       return (
         <line
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           x1={line.x1}
@@ -156,6 +184,7 @@ export function renderGraphicalElementSVG(
       return (
         <polygon
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           points={polygon.points
@@ -170,6 +199,7 @@ export function renderGraphicalElementSVG(
       return (
         <path
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           d={d}
@@ -185,6 +215,7 @@ export function renderGraphicalElementSVG(
         style2.fill = style.stroke;
         const e1 = (
           <text
+            onClick={onClick}
             className={options.className || null}
             style={style2}
             x={text.cx}
@@ -196,6 +227,7 @@ export function renderGraphicalElementSVG(
         style.stroke = "none";
         const e2 = (
           <text
+            onClick={onClick}
             className={options.className || null}
             style={style}
             x={text.cx}
@@ -214,6 +246,7 @@ export function renderGraphicalElementSVG(
         return (
           <text
             key={options.key}
+            onClick={onClick}
             className={options.className || null}
             style={style}
             x={text.cx}
@@ -241,6 +274,7 @@ export function renderGraphicalElementSVG(
       return (
         <image
           key={options.key}
+          onClick={onClick}
           className={options.className || null}
           style={style}
           preserveAspectRatio={preserveAspectRatio}
@@ -268,11 +302,13 @@ export function renderGraphicalElementSVG(
                 ? group.style.opacity
                 : 1
           }}
+          onClick={onClick}
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
               key: `m${index}`,
-              externalResourceResolver: options.externalResourceResolver
+              externalResourceResolver: options.externalResourceResolver,
+              onSelected: options.onSelected
             });
           })}
         </g>

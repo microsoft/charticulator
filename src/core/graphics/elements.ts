@@ -37,6 +37,8 @@ export interface Style {
   strokeLinejoin?: "round" | "miter" | "bevel";
   strokeLinecap?: "round" | "butt" | "square";
 
+  saturation?: number;
+
   fillColor?: Color;
   fillOpacity?: number;
 
@@ -55,7 +57,7 @@ export interface Element {
 export interface MarkElement extends Element {
   mark: Specification.Element;
   glyph: Specification.Glyph;
-  dataRowIndex: number;
+  glyphIndex: number;
 }
 
 export interface Rect extends Element {
