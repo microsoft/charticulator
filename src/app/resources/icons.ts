@@ -81,7 +81,7 @@ addSVGIcon(
 );
 
 addSVGIcon(
-  "general/copy",
+  "general/popout",
   require("url-loader!resources/icons/icons_popout.svg")
 );
 

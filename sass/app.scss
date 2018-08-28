@@ -181,24 +181,9 @@ body {
             }
         }
     }
-}
 
-.mark-editor-single-view {
-    width: 300px;
-
-    .mark-view-container {
-        background: white;
+    &__floating-panels {
+        position: absolute;
+        left: 0; top: 0;
     }
-}
-
-.chart-editor-canvas-view {
-    background: white;
-    flex: 1;
-    overflow: hidden;
-}
-
-.chart-editor-view {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
 }

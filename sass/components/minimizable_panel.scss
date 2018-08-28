@@ -12,8 +12,25 @@
         flex-direction: column;
 
         & > .header {
+            .buttons {
+                float: right;
+                vertical-align: top;
+                padding-right: 2px;
+                height: $header-height;
+                line-height: $header-height;
+
+                .charticulator__button-flat {
+                    .svg-image-icon {
+                        padding: 2px;
+                        margin: 3px;
+                    }
+                }
+            }
+
             background-color: $gray-220;
+
             @include shadow-ambient;
+
             // border-top: 1px solid $gray-160;
             // border-bottom: 1px solid $gray-160;
             color: $gray-100;
@@ -26,7 +43,7 @@
             .svg-image-icon {
                 display: inline-block;
                 vertical-align: top;
-                margin: ($header-height - 14px) / 2 4px;
+                margin: (($header-height - 14px) / 2) 4px;
                 width: 14px;
                 height: 14px;
                 filter: invert(30%);
@@ -34,27 +51,113 @@
 
             &:hover {
                 background-color: $gray-230;
+
                 @include shadow-focused;
             }
 
             transition: background-color $transition-default, box-shadow $transition-default;
         }
+
         & > .content {
             flex-shrink: 0;
             padding: 10px;
         }
+
         &.minimizable-pane-scrollable {
             & > .content {
                 overflow-y: scroll;
             }
         }
+
         &.minimizable-pane-autosize {
             flex: 1;
             overflow: hidden;
+
             & > .content {
                 flex: 1;
                 overflow-y: scroll;
             }
         }
+    }
+}
+
+.charticulator__floating-panel {
+    z-index: 10;
+    border: 1px solid $gray-100;
+    border-radius: 2px;
+    box-sizing: border-box;
+    background: $gray-210;
+    position: absolute;
+    width: 322px;
+    left: 100px;
+    top: 100px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    @include shadow-ambient;
+
+    &-content {
+        flex: 1 1;
+        padding: 10px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.is-scroll {
+        .charticulator__floating-panel-content {
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+    }
+
+    &-header {
+        flex-shrink: 0;
+
+        .title {
+            pointer-events: none;
+            margin-left: 4px;
+        }
+
+        $header-height: 28px;
+
+        background-color: $gray-220;
+
+        @include shadow-ambient;
+
+        // border-top: 1px solid $gray-160;
+        // border-bottom: 1px solid $gray-160;
+        color: $gray-100;
+        height: $header-height;
+        line-height: $header-height;
+        font-size: 14px;
+        padding-left: 5px;
+        cursor: move;
+
+        .buttons {
+            float: right;
+            vertical-align: top;
+            padding-right: 2px;
+            height: $header-height;
+            line-height: $header-height;
+        }
+    }
+
+    &-resizer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        background: transparent;
+        pointer-events: all;
+        cursor: nwse-resize;
+    }
+
+    &.is-focus {
+        z-index: 11;
+
+        @include shadow-focused;
     }
 }

@@ -44,27 +44,50 @@ import { classNames } from "../../utils";
 
 export interface MarkEditorViewProps {
   store: ChartStore;
+  height?: number;
 }
 
 export interface MarkEditorViewState {
   currentCreation?: string;
   currentCreationOptions?: string;
   currentSelection: Selection;
+  width: number;
+  height: number;
 }
 
 export class MarkEditorView extends React.Component<
   MarkEditorViewProps,
   MarkEditorViewState
 > {
+  protected refContainer: HTMLDivElement;
+  protected refSingleMarkView: SingleMarkView;
+  protected resizeListenerHandle: number;
+
   public subs: EventSubscription[] = [];
 
   constructor(props: MarkEditorViewProps) {
     super(props);
     this.state = {
       currentCreation: null,
-      currentSelection: null
+      currentSelection: null,
+      width: 300,
+      height: 300
     };
   }
+
+  public resize = () => {
+    const bbox = this.refContainer.getBoundingClientRect();
+    this.setState(
+      {
+        width: bbox.width,
+        height: this.props.height != null ? this.props.height : bbox.height
+      },
+      () => {
+        this.refSingleMarkView.doAutoFit();
+      }
+    );
+  };
+
   public componentDidMount() {
     this.subs.push(
       this.props.store.addListener(ChartStore.EVENT_GRAPHICS, () =>
@@ -79,12 +102,21 @@ export class MarkEditorView extends React.Component<
         });
       })
     );
+    this.resizeListenerHandle = globals.resizeListeners.addListener(
+      this.refContainer,
+      this.resize
+    );
+    this.resize();
   }
   public componentWillUnmount() {
     for (const sub of this.subs) {
       sub.remove();
     }
     this.subs = [];
+    globals.resizeListeners.removeListener(
+      this.refContainer,
+      this.resizeListenerHandle
+    );
   }
   public render() {
     const markStores = this.props.store.markStores;
@@ -139,14 +171,17 @@ export class MarkEditorView extends React.Component<
       }
     ];
     return (
-      <div className="mark-editor-view">
+      <div className="mark-editor-view" ref={e => (this.refContainer = e)}>
         {markStores.map(markStore => {
           return (
             <SingleMarkView
+              ref={e => {
+                this.refSingleMarkView = e;
+              }}
               key={`m${markStore._id}`}
               parent={this}
-              width={300}
-              height={300}
+              width={this.state.width}
+              height={this.state.height - 24}
               store={markStore}
             />
           );

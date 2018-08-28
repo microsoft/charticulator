@@ -6,7 +6,8 @@ import {
   SVGImageIcon,
   AppButton,
   ToolButton,
-  ErrorBoundary
+  ErrorBoundary,
+  FloatingPanel
 } from "./components";
 import * as R from "./resources";
 
@@ -43,7 +44,11 @@ export interface MainViewProps {
   disableFileView?: boolean;
 }
 
-export interface MainViewState {}
+export interface MainViewState {
+  glyphViewMaximized: boolean;
+  layersViewMaximized: boolean;
+  attributeViewMaximized: boolean;
+}
 
 export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refs: {
@@ -54,7 +59,11 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   constructor(props: MainViewProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      glyphViewMaximized: false,
+      layersViewMaximized: false,
+      attributeViewMaximized: false
+    };
 
     this.onKeyDown = this.onKeyDown.bind(this);
   }
@@ -339,23 +348,61 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               <Toolbar store={this.props.store.chartStore} />
             </div>
             <div className="charticulator__panel-editor-panel-container">
-              <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-panes">
+              <div
+                className="charticulator__panel-editor-panel charticulator__panel-editor-panel-panes"
+                style={{
+                  display:
+                    this.state.glyphViewMaximized &&
+                    this.state.attributeViewMaximized &&
+                    this.state.layersViewMaximized
+                      ? "none"
+                      : undefined
+                }}
+              >
                 <MinimizablePanelView>
-                  <MinimizablePane title="Glyph" scroll={false}>
-                    <ErrorBoundary>
-                      <MarkEditorView store={this.props.store.chartStore} />
-                    </ErrorBoundary>
-                  </MinimizablePane>
-                  <MinimizablePane title="Layers" scroll={true} maxHeight={200}>
-                    <ErrorBoundary>
-                      <ObjectListEditor />
-                    </ErrorBoundary>
-                  </MinimizablePane>
-                  <MinimizablePane title="Attributes" scroll={true}>
-                    <ErrorBoundary>
-                      <AttributePanel store={this.props.store.chartStore} />
-                    </ErrorBoundary>
-                  </MinimizablePane>
+                  {this.state.glyphViewMaximized ? null : (
+                    <MinimizablePane
+                      title="Glyph"
+                      scroll={false}
+                      onMaximize={() =>
+                        this.setState({ glyphViewMaximized: true })
+                      }
+                    >
+                      <ErrorBoundary>
+                        <MarkEditorView
+                          store={this.props.store.chartStore}
+                          height={300}
+                        />
+                      </ErrorBoundary>
+                    </MinimizablePane>
+                  )}
+                  {this.state.layersViewMaximized ? null : (
+                    <MinimizablePane
+                      title="Layers"
+                      scroll={true}
+                      maxHeight={200}
+                      onMaximize={() =>
+                        this.setState({ layersViewMaximized: true })
+                      }
+                    >
+                      <ErrorBoundary>
+                        <ObjectListEditor />
+                      </ErrorBoundary>
+                    </MinimizablePane>
+                  )}
+                  {this.state.attributeViewMaximized ? null : (
+                    <MinimizablePane
+                      title="Attributes"
+                      scroll={true}
+                      onMaximize={() =>
+                        this.setState({ attributeViewMaximized: true })
+                      }
+                    >
+                      <ErrorBoundary>
+                        <AttributePanel store={this.props.store.chartStore} />
+                      </ErrorBoundary>
+                    </MinimizablePane>
+                  )}
                 </MinimizablePanelView>
               </div>
               <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">
@@ -366,6 +413,43 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             </div>
           </div>
         </section>
+        <div className="charticulator__floating-panels">
+          {this.state.glyphViewMaximized ? (
+            <FloatingPanel
+              peerGroup="panels"
+              title="Glyph"
+              onClose={() => this.setState({ glyphViewMaximized: false })}
+            >
+              <ErrorBoundary>
+                <MarkEditorView store={this.props.store.chartStore} />
+              </ErrorBoundary>
+            </FloatingPanel>
+          ) : null}
+          {this.state.layersViewMaximized ? (
+            <FloatingPanel
+              scroll={true}
+              peerGroup="panels"
+              title="Layers"
+              onClose={() => this.setState({ layersViewMaximized: false })}
+            >
+              <ErrorBoundary>
+                <ObjectListEditor />
+              </ErrorBoundary>
+            </FloatingPanel>
+          ) : null}
+          {this.state.attributeViewMaximized ? (
+            <FloatingPanel
+              scroll={true}
+              peerGroup="panels"
+              title="Attributes"
+              onClose={() => this.setState({ attributeViewMaximized: false })}
+            >
+              <ErrorBoundary>
+                <AttributePanel store={this.props.store.chartStore} />
+              </ErrorBoundary>
+            </FloatingPanel>
+          ) : null}
+        </div>
         <PopupContainer controller={globals.popupController} />
         <DragStateView controller={globals.dragController} />
       </div>
