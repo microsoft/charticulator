@@ -2,7 +2,7 @@ import * as React from "react";
 import { WidgetManager } from "./manager";
 import { Prototypes, Specification, Expression } from "../../../../core";
 import { Actions } from "../../../actions";
-import { Button, Select, InputText } from "./controls";
+import { Button, Select, InputText, InputExpression } from "./controls";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 
 export interface FilterEditorProps {
@@ -62,12 +62,18 @@ export class FilterEditor extends React.Component<
           typedControls = [
             manager.row(
               "Expression",
-              <InputText
+              <InputExpression
+                validate={newValue =>
+                  manager.store.verifyUserExpressionWithTable(
+                    newValue,
+                    options.table,
+                    { expectedTypes: ["boolean"] }
+                  )
+                }
                 defaultValue={this.state.currentValue.expression}
                 onEnter={newValue => {
-                  const expr = Expression.parse(newValue).toString();
                   this.emitUpdateFilter({
-                    expression: expr
+                    expression: newValue
                   });
                   return true;
                 }}
@@ -128,28 +134,64 @@ export class FilterEditor extends React.Component<
               ? manager.row(
                   "Values",
                   <div className="charticulator__filter-editor-values-selector">
-                    {keysSorted.map(key => (
-                      <div key={key}>
-                        <Button
-                          icon={
-                            value.categories.values[key]
-                              ? "checkbox/checked"
-                              : "checkbox/empty"
+                    <div className="el-buttons">
+                      <Button
+                        text="Select All"
+                        onClick={() => {
+                          for (const key in value.categories.values) {
+                            if (value.categories.values.hasOwnProperty(key)) {
+                              value.categories.values[key] = true;
+                            }
                           }
-                          text={key}
-                          onClick={() => {
-                            value.categories.values[key] = !value.categories
-                              .values[key];
-                            this.emitUpdateFilter({
-                              categories: {
-                                column: value.categories.column,
-                                values: value.categories.values
-                              }
-                            });
-                          }}
-                        />
-                      </div>
-                    ))}
+                          this.emitUpdateFilter({
+                            categories: {
+                              column: value.categories.column,
+                              values: value.categories.values
+                            }
+                          });
+                        }}
+                      />
+                      <Button
+                        text="Clear"
+                        onClick={() => {
+                          for (const key in value.categories.values) {
+                            if (value.categories.values.hasOwnProperty(key)) {
+                              value.categories.values[key] = false;
+                            }
+                          }
+                          this.emitUpdateFilter({
+                            categories: {
+                              column: value.categories.column,
+                              values: value.categories.values
+                            }
+                          });
+                        }}
+                      />
+                    </div>
+                    <div className="el-list">
+                      {keysSorted.map(key => (
+                        <div key={key}>
+                          <Button
+                            icon={
+                              value.categories.values[key]
+                                ? "checkbox/checked"
+                                : "checkbox/empty"
+                            }
+                            text={key}
+                            onClick={() => {
+                              value.categories.values[key] = !value.categories
+                                .values[key];
+                              this.emitUpdateFilter({
+                                categories: {
+                                  column: value.categories.column,
+                                  values: value.categories.values
+                                }
+                              });
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )
               : null

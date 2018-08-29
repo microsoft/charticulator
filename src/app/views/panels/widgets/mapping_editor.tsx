@@ -5,7 +5,13 @@ import * as R from "../../../resources";
 import { DropZoneView, WidgetManager } from "./manager";
 import { DragData, Actions } from "../../../actions";
 import { classNames } from "../../../utils";
-import { Button, InputText, InputNumber, InputImage } from "./controls";
+import {
+  Button,
+  InputText,
+  InputNumber,
+  InputImage,
+  InputExpression
+} from "./controls";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { PopupView } from "../../../controllers";
 import {
@@ -220,14 +226,28 @@ export class MappingEditor extends React.Component<
       case "string": {
         const str = value as string;
         const textInput = (
-          <InputText
-            defaultValue={str}
+          <InputExpression
+            textExpression={true}
+            validate={value =>
+              parent.store.verifyUserExpressionWithTable(
+                value,
+                this.props.options.table,
+                { textExpression: true, expectedTypes: ["string"] }
+              )
+            }
+            defaultValue={new Expression.TextExpression([
+              { string: str }
+            ]).toString()}
             placeholder={placeholderText}
+            allowNull={true}
             onEnter={newValue => {
-              if (newValue.trim() == "") {
+              if (newValue == null || newValue.trim() == "") {
                 this.clearMapping();
               } else {
-                this.setValueMapping(newValue);
+                this.props.parent.onEditMappingHandler(this.props.attribute, {
+                  type: "text",
+                  textExpression: newValue
+                } as Specification.TextMapping);
               }
               return true;
             }}
@@ -376,16 +396,26 @@ export class MappingEditor extends React.Component<
         case "text": {
           const textMapping = mapping as Specification.TextMapping;
           return (
-            <InputText
+            <InputExpression
               defaultValue={textMapping.textExpression}
+              textExpression={true}
+              validate={value =>
+                parent.store.verifyUserExpressionWithTable(
+                  value,
+                  this.props.options.table,
+                  { textExpression: true, expectedTypes: ["string"] }
+                )
+              }
+              allowNull={true}
               onEnter={newValue => {
-                textMapping.textExpression = Expression.parseTextExpression(
-                  newValue
-                ).toString();
-                this.props.parent.onEditMappingHandler(
-                  this.props.attribute,
-                  textMapping
-                );
+                if (newValue == null || newValue.trim() == "") {
+                  this.clearMapping();
+                } else {
+                  this.props.parent.onEditMappingHandler(this.props.attribute, {
+                    type: "text",
+                    textExpression: newValue
+                  } as Specification.TextMapping);
+                }
                 return true;
               }}
             />

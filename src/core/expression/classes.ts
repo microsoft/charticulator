@@ -92,7 +92,7 @@ export class TextExpression {
     return this.parts
       .map(part => {
         if (part.string) {
-          return part.string;
+          return part.string.replace(/([\$\\])/g, "\\$1");
         } else if (part.expression) {
           const str = part.expression.toString();
           if (part.format) {

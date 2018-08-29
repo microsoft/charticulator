@@ -40,5 +40,8 @@ export {
   string,
   date,
   boolean,
-  ExpressionCache
+  ExpressionCache,
+  verifyUserExpression,
+  VerifyUserExpressionOptions,
+  VerifyUserExpressionReport
 } from "./helpers";

@@ -154,6 +154,9 @@ export class DataFieldSelector extends React.Component<
             {this.props.nullDescription}
           </div>
         ) : null}
+        {fields.length == 0 && !this.props.nullDescription ? (
+          <div className="el-item is-null">(no suitable column)</div>
+        ) : null}
         {fields.map(f => {
           return (
             <div

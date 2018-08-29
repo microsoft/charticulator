@@ -73,7 +73,8 @@ describe("Text Expression", () => {
     [
       "Hello World, Temperature is ${Temperature}{.1f} degree",
       "Hello World, Temperature is 70.0 degree"
-    ]
+    ],
+    ["\\$ ${Temperature}{.1f} \\\\F", "$ 70.0 \\F"]
   ];
   const context = new Expression.SimpleContext();
   context.variables = {
