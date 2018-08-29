@@ -37,7 +37,8 @@ export abstract class MarkClass extends ObjectClass {
     coordinateSystem: Graphics.CoordinateSystem,
     offset: Point,
     glyphIndex: number,
-    manager: ChartStateManager
+    manager: ChartStateManager,
+    emphasized?: boolean
   ): Graphics.Element {
     return null;
   }

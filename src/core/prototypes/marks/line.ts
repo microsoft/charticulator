@@ -1,44 +1,30 @@
-import { Color, Point, uniqueID } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { Point } from "../../common";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { attributes, LineElementAttributes } from "./line.attrs";
 
 import {
-  AttributeDescription,
   BoundingBox,
   Controls,
-  CreatingInteraction,
   DropZones,
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
+import { ObjectClass } from "../object";
+import { EmphasizableMarkClass } from "./emphasis";
+import { ChartStateManager } from "../state";
 
-export interface LineElementAttributes extends Specification.AttributeMap {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  cx: number;
-  cy: number;
-  stroke: Color;
-  strokeWidth: number;
-  opacity: number;
-  visible: boolean;
-}
+export { LineElementAttributes };
 
 export interface LineElementState extends Specification.ObjectState {
   attributes: LineElementAttributes;
 }
 
-export class LineElement extends MarkClass {
+export class LineElement extends EmphasizableMarkClass {
   public static classID = "mark.line";
   public static type = "mark";
 
@@ -50,6 +36,20 @@ export class LineElement extends MarkClass {
       mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" }
     }
   };
+
+  constructor(
+    parent: ObjectClass,
+    object: Specification.Object,
+    state: Specification.ObjectState
+  ) {
+    super(
+      parent,
+      object,
+      state,
+      attributes,
+      Specification.EmphasisMethod.Outline
+    );
+  }
 
   public static defaultProperties: Specification.AttributeMap = {
     visible: true
@@ -64,112 +64,10 @@ export class LineElement extends MarkClass {
 
   public readonly state: LineElementState;
 
-  // Get a list of elemnt attributes
-  public attributeNames: string[] = [
-    "x1",
-    "y1",
-    "x2",
-    "y2",
-    "cx",
-    "cy",
-    "dx",
-    "dy",
-    "stroke",
-    "strokeWidth",
-    "opacity",
-    "visible"
-  ];
-  public attributes: { [name: string]: AttributeDescription } = {
-    x1: {
-      name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y1: {
-      name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    x2: {
-      name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y2: {
-      name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    cx: {
-      name: "cx",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    cy: {
-      name: "cy",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    dx: {
-      name: "dx",
-      type: "number",
-      category: "dimensions",
-      displayName: "dX",
-      strength: VariableStrength.NONE,
-      defaultRange: [30, 100]
-    },
-    dy: {
-      name: "dy",
-      type: "number",
-      category: "dimensions",
-      displayName: "dY",
-      strength: VariableStrength.NONE,
-      defaultRange: [30, 100]
-    },
-    stroke: {
-      name: "stroke",
-      type: "color",
-      category: "style",
-      displayName: "Stroke",
-      solverExclude: true,
-      defaultValue: null
-    },
-    strokeWidth: {
-      name: "strokeWidth",
-      type: "number",
-      category: "style",
-      displayName: "Width",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 5]
-    },
-    opacity: {
-      name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 1]
-    },
-    visible: {
-      name: "visible",
-      type: "boolean",
-      category: "style",
-      displayName: "Visible",
-      solverExclude: true,
-      defaultValue: true
-    }
-  };
-
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
+    super.initializeState();
+
     const defaultWidth = 30;
     const defaultHeight = 50;
     const attrs = this.state.attributes;
@@ -212,7 +110,10 @@ export class LineElement extends MarkClass {
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
-    offset: Point
+    offset: Point,
+    glyphIndex = 0,
+    manager: ChartStateManager,
+    emphasize?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     if (!attrs.visible || !this.object.properties.visible) {
@@ -227,7 +128,8 @@ export class LineElement extends MarkClass {
       {
         strokeColor: attrs.stroke,
         strokeOpacity: attrs.opacity,
-        strokeWidth: attrs.strokeWidth
+        strokeWidth: attrs.strokeWidth,
+        ...this.generateEmphasisStyle(emphasize)
       }
     );
   }

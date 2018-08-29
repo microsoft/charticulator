@@ -11,7 +11,7 @@ import {
 
 import { Actions } from "../actions";
 
-import { BaseStore } from "./base";
+import { BaseStore } from "../../core/store/base";
 import { ChartStore } from "./chart";
 import { DatasetStore } from "./dataset";
 

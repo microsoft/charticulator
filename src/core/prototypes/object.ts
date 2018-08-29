@@ -71,11 +71,19 @@ export abstract class ObjectClass {
   constructor(
     parent: ObjectClass,
     object: Specification.Object,
-    state: Specification.ObjectState
+    state: Specification.ObjectState,
+    attributes?: { [name: string]: AttributeDescription }
   ) {
     this.parent = parent;
     this.object = object;
     this.state = state;
+
+    if (attributes) {
+      this.attributes = attributes;
+      this.attributeNames = Object.keys(attributes).map(
+        n => attributes[n].name
+      );
+    }
   }
 
   /** Initialize the state of the object */

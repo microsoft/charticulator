@@ -1,16 +1,16 @@
-import { Dataset, Point, Prototypes, Specification } from "../../core";
-import { Dispatcher } from "../../core";
+import {
+  Dataset,
+  Point,
+  Prototypes,
+  Specification,
+  Action,
+  SelectMark,
+  ClearSelection
+} from "../../core";
 import * as DragData from "./drag_data";
 
-export class Action {
-  public dispatch(dispatcher: Dispatcher<Action>) {
-    dispatcher.dispatch(this);
-  }
-
-  public digest() {
-    return { name: this.constructor.name };
-  }
-}
+// Reexport these actions so consumers don't need to pull from both core/actions and app/actions
+export { Action, SelectMark, ClearSelection };
 
 export class UIAction extends Action {}
 
@@ -628,25 +628,6 @@ export class ReorderGlyphMark extends Action {
   }
 }
 
-export class SelectMark extends Action {
-  constructor(
-    public glyph: Specification.Glyph,
-    public mark: Specification.Element,
-    public dataRowIndex: number = null
-  ) {
-    super();
-  }
-
-  public digest() {
-    return {
-      name: "SelectMark",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
-      dataRowIndex: this.dataRowIndex
-    };
-  }
-}
-
 export class SelectGlyph extends Action {
   constructor(public glyph: Specification.Glyph) {
     super();
@@ -672,14 +653,6 @@ export class SelectChartElement extends Action {
     return {
       name: "SelectChartElement",
       glyph: [this.chartElement.classID, this.chartElement._id]
-    };
-  }
-}
-
-export class ClearSelection extends Action {
-  public digest() {
-    return {
-      name: "ClearSelection"
     };
   }
 }

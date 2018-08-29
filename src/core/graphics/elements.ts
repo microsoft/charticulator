@@ -1,4 +1,5 @@
 import { Color, Point } from "../common";
+import * as Specification from "../specification";
 
 // Internal graphics representation
 // Bridge the core components with the rendering system
@@ -36,6 +37,8 @@ export interface Style {
   strokeLinejoin?: "round" | "miter" | "bevel";
   strokeLinecap?: "round" | "butt" | "square";
 
+  saturation?: number;
+
   fillColor?: Color;
   fillOpacity?: number;
 
@@ -49,6 +52,12 @@ export interface Style {
 export interface Element {
   type: string;
   style?: Style;
+}
+
+export interface MarkElement extends Element {
+  mark: Specification.Element;
+  glyph: Specification.Glyph;
+  glyphIndex: number;
 }
 
 export interface Rect extends Element {

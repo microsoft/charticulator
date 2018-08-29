@@ -1,4 +1,4 @@
-import { renderGraphicalElementCanvas } from "../app/renderer/canvas";
+import { renderGraphicalElementSVG } from "../app/renderer";
 import {
   Color,
   Dataset,
@@ -8,15 +8,19 @@ import {
   getByName,
   getField,
   Graphics,
-  initialize,
   Prototypes,
   Scale,
   setField,
   Solver,
-  Specification
+  Specification,
+  ClearSelection,
+  SelectMark,
+  Action
 } from "../core";
 import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
-import { CharticulatorWorker } from "../worker";
+import { ChartStore } from "./chartStore";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export * from "../core";
 
@@ -308,47 +312,140 @@ export class ChartTemplate {
 }
 
 export class ChartContainer {
+  private containerElement: HTMLElement;
+  public store: ChartStore;
+
+  // Needed for extensions
   public chart: Specification.Chart;
-  public dataset: Dataset.Dataset;
-  public state: Specification.ChartState;
-  public manager: Prototypes.ChartStateManager;
+  private renderer: Graphics.ChartRenderer;
+
+  // This cache should work for now
+  private plotSegments: Array<{
+    segment: Specification.PlotSegment;
+    state: Specification.PlotSegmentState;
+  }>;
 
   constructor(specification: Specification.Chart, dataset: Dataset.Dataset) {
+    this.store = new ChartStore(specification, dataset);
     this.chart = specification;
-    this.dataset = dataset;
-    this.manager = new Prototypes.ChartStateManager(specification, dataset);
-    this.state = this.manager.chartState;
+    this.renderer = new Graphics.ChartRenderer(this.store.manager);
+    this.plotSegments = this.chart.elements
+      .map((e, layoutIndex) => {
+        if (Prototypes.isType(e.classID, "plot-segment")) {
+          return {
+            segment: e as Specification.PlotSegment,
+            state: this.store.state.elements[
+              layoutIndex
+            ] as Specification.PlotSegmentState
+          };
+        }
+      })
+      .filter(n => !!n);
+    this.store.addListener(ChartStore.EVENT_SELECTION, this.onSelectionChanged);
+  }
+
+  /**
+   * Listens for when the selection changed within the store
+   */
+  private onSelectionChanged = () => {
+    // When the selection has changed, rerender
+    this.render(this.containerElement);
+  };
+
+  /**
+   * Listener for when an element is selected on the renderer
+   */
+  private onElementSelected = (element?: Graphics.MarkElement) => {
+    let action: Action;
+    // The user selected nothing, so clear the selection
+    if (!element || !element.mark) {
+      action = new ClearSelection();
+
+      // Otherwise, the user selected some useful mark
+    } else {
+      const { mark, glyph, glyphIndex } = element;
+      const pss = this.plotSegments.filter(
+        n => n.segment.glyph === glyph._id
+      )[0].state;
+      const dataRowIndex = pss.dataRowIndices[glyphIndex];
+      action = new SelectMark(glyph, mark, dataRowIndex);
+    }
+    if (action) {
+      this.store.dispatcher.dispatch(action);
+    }
+  };
+
+  /**
+   * Applies the current selection state to the glyphs
+   */
+  private applySelectionToGlyphs() {
+    const selection = this.store.currentSelection;
+    if (selection) {
+      this.plotSegments.forEach(({ state, segment }) =>
+        state.glyphs.forEach((gs, index) => {
+          // Mark all glyphs that have the same dataRowIndex as the one that was selected
+          gs.emphasized =
+            selection.dataIndex === state.dataRowIndices[index] &&
+            segment.table === selection.table;
+        })
+      );
+    } else {
+      // Reset the emphasized state on the glyphs, as nothing is emphasized anymore
+      this.plotSegments.forEach(({ state }) =>
+        state.glyphs.forEach(g => delete g.emphasized)
+      );
+    }
   }
 
   public update() {
     for (let i = 0; i < 2; i++) {
       const solver = new Solver.ChartConstraintSolver();
-      solver.setup(this.manager);
+      solver.setup(this.store.manager);
       solver.solve();
       solver.destroy();
     }
   }
 
   public resize(width: number, height: number) {
-    this.chart.mappings.width = {
+    this.store.chart.mappings.width = {
       type: "value",
       value: width
     } as Specification.ValueMapping;
-    this.chart.mappings.height = {
+    this.store.chart.mappings.height = {
       type: "value",
       value: height
     } as Specification.ValueMapping;
   }
 
-  public render(context: CanvasRenderingContext2D) {
-    const renderer = new Graphics.ChartRenderer(this.manager);
-    const graphics = renderer.render();
-    context.save();
-    context.translate(
-      (this.state.attributes.width as number) / 2,
-      (this.state.attributes.height as number) / 2
+  public render(containerElement: HTMLElement) {
+    if (!containerElement) {
+      throw new Error("Container element required");
+    }
+
+    this.applySelectionToGlyphs();
+
+    this.containerElement = containerElement;
+
+    const { width, height } = this.store.chart.mappings as any;
+
+    const graphics = this.renderer.render();
+    const rendered = (
+      <svg
+        className="canvas-view"
+        x={0}
+        y={0}
+        width={width.value}
+        height={height.value}
+        onClick={() => this.onElementSelected()}
+      >
+        <g transform={`translate(${width.value / 2}, ${height.value / 2})`}>
+          {renderGraphicalElementSVG(graphics, {
+            onSelected: this.onElementSelected
+          })}
+        </g>
+      </svg>
     );
-    renderGraphicalElementCanvas(context, graphics);
-    context.restore();
+
+    ReactDOM.render(rendered, containerElement);
   }
 }

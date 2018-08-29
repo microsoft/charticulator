@@ -3,7 +3,7 @@ import { Dispatcher } from "../../core";
 
 import { Actions } from "../actions";
 
-import { BaseStore } from "./base";
+import { BaseStore } from "../../core/store/base";
 
 import { ChartStore, ChartStoreState } from "./chart";
 import { DatasetStore, DatasetStoreState } from "./dataset";
