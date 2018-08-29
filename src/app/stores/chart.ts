@@ -660,6 +660,14 @@ export class ChartStore extends BaseStore {
       this.solveConstraintsAndUpdateGraphics();
     }
 
+    if (action instanceof Actions.SetPlotSegmentFilter) {
+      this.parent.saveHistory();
+      action.plotSegment.filter = action.filter;
+      // Filter updated, we need to regenerate some glyph states
+      this.chartManager.remapPlotSegmentGlyphs(action.plotSegment);
+      this.solveConstraintsAndUpdateGraphics();
+    }
+
     if (action instanceof Actions.UpdateChartElementAttribute) {
       this.parent.saveHistory();
 
@@ -1738,5 +1746,28 @@ export class ChartStore extends BaseStore {
     );
     const template = builder.build();
     return template;
+  }
+
+  public verifyUserExpressionWithTable(
+    inputString: string,
+    table: string,
+    options: Expression.VerifyUserExpressionOptions
+  ) {
+    if (table != null) {
+      const dfTable = this.chartManager.dataflow.getTable(table);
+      const rowIterator = function*() {
+        for (let i = 0; i < dfTable.rows.length; i++) {
+          yield dfTable.getRowContext(i);
+        }
+      };
+      return Expression.verifyUserExpression(inputString, {
+        data: rowIterator(),
+        ...options
+      });
+    } else {
+      return Expression.verifyUserExpression(inputString, {
+        ...options
+      });
+    }
   }
 }

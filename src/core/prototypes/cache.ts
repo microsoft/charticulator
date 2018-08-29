@@ -17,6 +17,10 @@ export class ObjectClassCache {
     this.cache = new WeakMap<Specification.ObjectState, ObjectClass>();
   }
 
+  public hasClass(state: Specification.ObjectState) {
+    return this.cache.has(state);
+  }
+
   public getMarkClass(state: Specification.MarkState): Marks.MarkClass {
     return this.getClass(state) as Marks.MarkClass;
   }

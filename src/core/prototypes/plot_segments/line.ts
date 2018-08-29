@@ -244,7 +244,10 @@ export class LineGuide extends PlotSegmentClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const props = this.object.properties;
-    return [...buildAxisWidgets(props.axis, "axis", manager, "Axis")];
+    return [
+      ...super.getAttributePanelWidgets(manager),
+      ...buildAxisWidgets(props.axis, "axis", manager, "Axis")
+    ];
   }
 
   public getTemplateParameters(): TemplateParameters {

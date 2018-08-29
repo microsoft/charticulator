@@ -21,7 +21,7 @@ export interface DataMappingHints {
   rangeNumber?: [number, number];
   autoRange?: boolean;
   rangeString?: string[];
-  stringBehavior?: "categorical" | "text";
+  stringBehavior?: "default" | "categorical" | "text";
   newScale?: boolean;
 }
 

@@ -41,6 +41,7 @@ import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ButtonRaised, GradientPicker } from "../../../components";
 import { ReorderListView } from "../object_list_editor";
 import { MappingEditor } from "./mapping_editor";
+import { FilterEditor } from "./filter_editor";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -624,6 +625,45 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public detailsButton(...widgets: JSX.Element[]): JSX.Element {
     return <DetailsButton widgets={widgets} manager={this} />;
+  }
+
+  public filterEditor(
+    options: Prototypes.Controls.FilterEditorOptions
+  ): JSX.Element {
+    switch (options.mode) {
+      case "button":
+        let button: Button;
+        return (
+          <Button
+            text="Filter by..."
+            ref={e => (button = e)}
+            onClick={() => {
+              globals.popupController.popupAt(
+                context => {
+                  return (
+                    <PopupView context={context}>
+                      <FilterEditor
+                        manager={this}
+                        value={options.value}
+                        options={options}
+                      />
+                    </PopupView>
+                  );
+                },
+                { anchor: ReactDOM.findDOMNode(button) as Element }
+              );
+            }}
+          />
+        );
+      case "panel":
+        return (
+          <FilterEditor
+            manager={this}
+            value={options.value}
+            options={options}
+          />
+        );
+    }
   }
 
   public row(title: string, widget?: JSX.Element) {

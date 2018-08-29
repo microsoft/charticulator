@@ -41,8 +41,14 @@ text_part
     { return { expression: expr, format: flatten(format) }; }
   / "${" expr:expression "}"
     { return { expression: expr }; }
-  / str:[^$]+
-    { return { string: flatten(str) }; }
+  / str:(text_plain)+
+    { return { string: str.join("") }; }
+
+text_plain
+  = str:[^$\\]+
+    { return flatten(str); }
+  / "\\" p:[$\\]
+    { return flatten(p); }
 
 expression
   = sp expr:level_expression sp

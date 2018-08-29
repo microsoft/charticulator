@@ -399,6 +399,22 @@ export class MapDataToChartElementAttribute extends Action {
   }
 }
 
+export class SetPlotSegmentFilter extends Action {
+  constructor(
+    public plotSegment: Specification.PlotSegment,
+    public filter: Specification.Types.Filter
+  ) {
+    super();
+  }
+  public digest() {
+    return {
+      name: "SetPlotSegmentFilter",
+      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      filter: this.filter
+    };
+  }
+}
+
 export class SetScaleAttribute extends Action {
   constructor(
     public scale: Specification.Scale,

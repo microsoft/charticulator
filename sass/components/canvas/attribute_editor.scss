@@ -5,7 +5,7 @@
     $line-height: 24px;
 
     .header {
-        @include font-bold;
+        @include font-main;
 
         display: flex;
         flex-direction: row;
@@ -14,6 +14,7 @@
         padding-bottom: 4px;
         margin-bottom: 0px;
         border-bottom: 1px solid $gray-180;
+        color: $black;
 
         .svg-image-icon {
             padding: 2px;
@@ -540,6 +541,7 @@
                     margin-right: 4px;
                 }
             }
+
             .el-layout-item-col-0 {
                 flex-grow: 0;
                 flex-shrink: 0;
@@ -762,6 +764,48 @@
                 width: 100%;
             }
 
+            &-input-expression {
+                width: 100%;
+                display: inline-block;
+                vertical-align: top;
+                &-error {
+                    display: block;
+                    margin-top: 4px;
+                    font-size: 12px;
+                }
+                &-input {
+                    @include font-mono;
+
+                    display: inline-block;
+                    vertical-align: top;
+                    margin: 0;
+                    padding: 0;
+                    outline: none;
+                    border: none;
+                    background: none;
+                    font-size: 14px;
+
+                    @include font-mono;
+
+                    height: $line-height;
+                    padding-top: 1px;
+                    line-height: $line-height;
+                    border-bottom: 1px solid $gray-190;
+
+                    &:hover, &:focus {
+                        border-bottom: 1px solid $color-primary;
+                    }
+
+                    &.is-error {
+                        border-bottom: 1px solid red;
+                    }
+
+                    box-sizing: border-box;
+                    transition: border-color $transition-default;
+                    width: 100%;
+                }
+            }
+
             &-input-number {
                 display: flex;
                 flex-direction: row;
@@ -820,6 +864,7 @@
                     display: inline-block;
                     overflow: hidden;
                 }
+
                 .el-text {
                     text-overflow: ellipsis;
                     vertical-align: top;
@@ -1587,3 +1632,29 @@
 //         }
 //     }
 // }
+
+.charticulator__filter-editor {
+    width: 300px;
+    padding: 10px;
+
+    &-column-selector {
+        width: 100%;
+        border: 1px solid $gray-200;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    &-values-selector {
+        width: 100%;
+        .el-list {
+            margin-top: 4px;
+            border: 1px solid $gray-200;
+            border-radius: 2px;
+            max-height: 150px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            .charticulator__widget-control-button {
+                display: block;
+            }
+        }
+    }
+}
