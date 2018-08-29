@@ -635,6 +635,7 @@ export class PolarPlotSegment extends Region2DPlotSegment {
   ): Controls.Widget[] {
     const builder = this.createBuilder();
     return [
+      ...super.getAttributePanelWidgets(manager),
       manager.sectionHeader("Polar Coordinates"),
       manager.row(
         "Angle",

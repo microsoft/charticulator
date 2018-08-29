@@ -82,6 +82,16 @@ export interface InputColorOptions {
 
 export interface TableOptions {}
 
+export interface FilterEditorOptions {
+  table: string;
+  target: {
+    plotSegment?: Specification.PlotSegment;
+    property?: Property;
+  };
+  value: Specification.Types.Filter;
+  mode: "button" | "panel";
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditorTOFIX(attribute: string): Widget;
@@ -135,6 +145,8 @@ export interface WidgetManager {
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
+
+  filterEditor(options: FilterEditorOptions): Widget;
 }
 
 export interface PopupEditor {

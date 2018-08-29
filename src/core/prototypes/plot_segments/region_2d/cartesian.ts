@@ -237,7 +237,10 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const builder = this.createBuilder();
-    return [...builder.buildPanelWidgets(manager)];
+    return [
+      ...super.getAttributePanelWidgets(manager),
+      ...builder.buildPanelWidgets(manager)
+    ];
   }
 
   public getPopupEditor(manager: Controls.WidgetManager): Controls.PopupEditor {

@@ -62,7 +62,11 @@ export class GlyphStore extends BaseStore {
       const glyphIndex = plotSegmentState.dataRowIndices.indexOf(
         this.parent.datasetStore.getSelectedRowIndex(this.table)
       );
-      this.markState = plotSegmentState.glyphs[glyphIndex];
+      if (glyphIndex < 0) {
+        this.markState = plotSegmentState.glyphs[0];
+      } else {
+        this.markState = plotSegmentState.glyphs[glyphIndex];
+      }
       this.emit(GlyphStore.EVENT_STATE);
     }
   }

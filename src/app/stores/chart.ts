@@ -660,6 +660,14 @@ export class ChartStore extends BaseStore {
       this.solveConstraintsAndUpdateGraphics();
     }
 
+    if (action instanceof Actions.SetPlotSegmentFilter) {
+      this.parent.saveHistory();
+      action.plotSegment.filter = action.filter;
+      // Filter updated, we need to regenerate some glyph states
+      this.chartManager.remapPlotSegmentGlyphs(action.plotSegment);
+      this.solveConstraintsAndUpdateGraphics();
+    }
+
     if (action instanceof Actions.UpdateChartElementAttribute) {
       this.parent.saveHistory();
 

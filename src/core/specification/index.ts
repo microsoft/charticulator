@@ -162,8 +162,8 @@ export interface PlotSegment extends Object {
   /** The data table to get data rows from */
   table: string;
   /** Filter applied to the data table */
-  filter?: Expression;
-  order?: Expression;
+  filter?: Types.Filter;
+  order?: Types.Order;
 }
 
 /** Guide */

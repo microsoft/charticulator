@@ -56,3 +56,20 @@ export interface LinkAnchorPoint extends AttributeMap {
   /** Link direction for curves */
   direction: { x: number; y: number };
 }
+
+/** Filter specification, specify one of categories or expression */
+export interface Filter extends AttributeMap {
+  /** Filter by a categorical variable */
+  categories?: {
+    /** The column to draw values from */
+    column: string;
+    /** The accepted values */
+    values: { [value: string]: boolean };
+  };
+  /** Filter by an arbitrary expression */
+  expression?: Expression;
+}
+
+export interface Order extends AttributeMap {
+  // TODO
+}

@@ -53,6 +53,22 @@ export abstract class PlotSegmentClass extends ChartElementClass {
     return null;
   }
 
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    return [
+      manager.row(
+        "Filter",
+        manager.filterEditor({
+          table: this.object.table,
+          target: { plotSegment: this.object },
+          value: this.object.filter,
+          mode: "button"
+        })
+      )
+    ];
+  }
+
   public static createDefault(
     glyph: Specification.Glyph
   ): Specification.PlotSegment {

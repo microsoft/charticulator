@@ -577,6 +577,7 @@ export class CurvePlotSegment extends Region2DPlotSegment {
   ): Controls.Widget[] {
     const builder = this.createBuilder();
     return [
+      ...super.getAttributePanelWidgets(manager),
       manager.sectionHeader("Curve Coordinates"),
       manager.row(
         "Normal",

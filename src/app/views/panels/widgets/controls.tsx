@@ -523,7 +523,7 @@ export class Button extends React.Component<ButtonProps, {}> {
 }
 
 export interface SelectProps {
-  icons: string[];
+  icons?: string[];
   options: string[];
   labels?: string[];
   showText?: boolean;
