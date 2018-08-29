@@ -1,6 +1,6 @@
 import { BaseStore } from "../core/store/base";
-import { Specification, Dataset, Prototypes, indexOf } from "../core";
-import { Actions } from "../app";
+import { Specification, Dataset, Prototypes } from "../core";
+import { SelectMark, ClearSelection, Action } from "../core/actions";
 
 export interface ChartSelection {
   table: string;
@@ -25,8 +25,8 @@ export class ChartStore extends BaseStore {
     this.state = this.manager.chartState;
   }
 
-  public handleAction(action: Actions.Action) {
-    if (action instanceof Actions.SelectMark) {
+  public handleAction(action: Action) {
+    if (action instanceof SelectMark) {
       const selection = this.currentSelection;
       // There was something selected, but now there isn't or it is the same thing selected twice
       if (
@@ -45,7 +45,7 @@ export class ChartStore extends BaseStore {
       }
 
       this.emit(ChartStore.EVENT_SELECTION);
-    } else if (action instanceof Actions.ClearSelection) {
+    } else if (action instanceof ClearSelection) {
       // No need to re-emit if it hasn't changed
       if (this.currentSelection !== undefined) {
         this.currentSelection = undefined;
