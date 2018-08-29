@@ -1,7 +1,7 @@
-import { Color, Point } from "../../common";
+import { Point } from "../../common";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
-import attributes from "./line.attrs";
+import { attributes, LineElementAttributes } from "./line.attrs";
 
 import {
   BoundingBox,
@@ -15,27 +15,10 @@ import {
 
 import * as Graphics from "../../graphics";
 import { ObjectClass } from "../object";
-import {
-  EmphasizableMarkClass,
-  HasEmphasisAttributes,
-  EmphasisMethod
-} from "./emphasis";
+import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
 
-export interface LineElementAttributes
-  extends Specification.AttributeMap,
-    HasEmphasisAttributes {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  cx: number;
-  cy: number;
-  stroke: Color;
-  strokeWidth: number;
-  opacity: number;
-  visible: boolean;
-}
+export { LineElementAttributes };
 
 export interface LineElementState extends Specification.ObjectState {
   attributes: LineElementAttributes;
@@ -59,7 +42,13 @@ export class LineElement extends EmphasizableMarkClass {
     object: Specification.Object,
     state: Specification.ObjectState
   ) {
-    super(parent, object, state, attributes, EmphasisMethod.Outline);
+    super(
+      parent,
+      object,
+      state,
+      attributes,
+      Specification.EmphasisMethod.Outline
+    );
   }
 
   public static defaultProperties: Specification.AttributeMap = {

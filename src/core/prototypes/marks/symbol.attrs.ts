@@ -1,8 +1,10 @@
 import { VariableStrength } from "../../solver";
 import { AttributeDescription } from "../object";
 import { styleAttrs } from "./attrs";
+import { AttributeMap } from "../../specification";
+import { Color } from "../../common";
 
-const attrs: { [name: string]: AttributeDescription } = {
+export const attributes: { [name: string]: AttributeDescription } = {
   x: {
     name: "x",
     type: "number",
@@ -35,4 +37,14 @@ const attrs: { [name: string]: AttributeDescription } = {
   }
 };
 
-export default attrs;
+export interface SymbolElementAttributes extends AttributeMap {
+  x: number;
+  y: number;
+  size: number;
+  fill: Color;
+  stroke: Color;
+  strokeWidth: number;
+  opacity: number;
+  visible: boolean;
+  symbol: string;
+}

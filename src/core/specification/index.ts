@@ -124,6 +124,7 @@ export interface ObjectProperties extends AttributeMap {
   /** The name of the object, used in UI */
   name?: string;
   visible?: boolean;
+  emphasisMethod?: EmphasisMethod;
 }
 
 /** General object */
@@ -248,4 +249,12 @@ export interface ChartState extends ObjectState {
   elements: ChartElementState[];
   /** Scale states corresponding to Chart.scales */
   scales: ScaleState[];
+}
+
+/**
+ * Represents the type of method to use when emphasizing an element
+ */
+export enum EmphasisMethod {
+  Saturation = "saturatation",
+  Outline = "outline"
 }

@@ -20,7 +20,7 @@ import {
 import * as Graphics from "../../graphics";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ObjectClass } from "../object";
-import attributes from "./symbol.attrs";
+import { attributes, SymbolElementAttributes } from "./symbol.attrs";
 import { ChartStateManager } from "../state";
 
 const symbolTypes: string[] = [
@@ -33,17 +33,7 @@ const symbolTypes: string[] = [
   "wye"
 ];
 
-export interface SymbolElementAttributes extends Specification.AttributeMap {
-  x: number;
-  y: number;
-  size: number;
-  fill: Color;
-  stroke: Color;
-  strokeWidth: number;
-  opacity: number;
-  visible: boolean;
-  symbol: string;
-}
+export { SymbolElementAttributes };
 
 export interface SymbolElementState extends Specification.MarkState {
   attributes: SymbolElementAttributes;

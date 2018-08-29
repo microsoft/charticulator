@@ -12,29 +12,13 @@ import {
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { HasEmphasisAttributes, EmphasizableMarkClass } from "./emphasis";
-import attributes from "./rect.attrs";
+import { EmphasizableMarkClass } from "./emphasis";
+import { attributes, RectElementAttributes } from "./rect.attrs";
 import * as Graphics from "../../graphics";
 import { ObjectClass } from "../object";
 import { ChartStateManager } from "../state";
 
-export interface RectElementAttributes
-  extends Specification.AttributeMap,
-    HasEmphasisAttributes {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  cx: number;
-  cy: number;
-  width: number;
-  height: number;
-  stroke: Color;
-  fill: Color;
-  strokeWidth: number;
-  opacity: number;
-  visible: boolean;
-}
+export { RectElementAttributes };
 
 export interface RectElementProperties extends Specification.AttributeMap {
   shape: "rectangle" | "ellipse" | "triangle";
