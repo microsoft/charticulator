@@ -1,4 +1,26 @@
 @import "attribute_editor.scss";
+.mark-editor-view {
+    flex: 1 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.mark-editor-single-view {
+    .mark-view-container {
+        background: white;
+    }
+}
+.chart-editor-canvas-view {
+    background: white;
+    flex: 1;
+    overflow: hidden;
+}
+
+.chart-editor-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
 .chart-editor-view {
     position: relative;
     .solving-hint {
