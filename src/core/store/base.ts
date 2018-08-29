@@ -1,8 +1,5 @@
-import { EventEmitter } from "../../core";
-import { Dispatcher } from "../../core";
-
-import { uniqueID } from "../../core";
-import { Actions } from "../actions";
+import { EventEmitter, Dispatcher, uniqueID } from "../common";
+import { Actions } from "../../app/actions";
 
 export class BaseStore extends EventEmitter {
   public readonly _id: string;

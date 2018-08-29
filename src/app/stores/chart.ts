@@ -15,7 +15,7 @@ import { Graphics, Scale, Solver } from "../../core";
 import { Actions } from "../actions";
 
 import { ChartTemplateBuilder } from "../template";
-import { BaseStore } from "./base";
+import { BaseStore } from "../../core/store/base";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
 import { GlyphStore } from "./mark";
