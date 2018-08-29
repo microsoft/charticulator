@@ -15,10 +15,11 @@ import {
   Specification,
   ClearSelection,
   SelectMark,
-  Action
+  Action,
+  EventSubscription
 } from "../core";
 import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
-import { ChartStore } from "./chartStore";
+import { ChartStore, ChartSelection } from "./chartStore";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -312,12 +313,12 @@ export class ChartTemplate {
 }
 
 export class ChartContainer {
-  private containerElement: HTMLElement;
-  public store: ChartStore;
-
   // Needed for extensions
   public chart: Specification.Chart;
+
   private renderer: Graphics.ChartRenderer;
+  private containerElement: HTMLElement;
+  private store: ChartStore;
 
   // This cache should work for now
   private plotSegments: Array<{
@@ -395,6 +396,38 @@ export class ChartContainer {
         state.glyphs.forEach(g => delete g.emphasized)
       );
     }
+  }
+
+  /**
+   * Gets the current selection
+   */
+  public get currentSelection(): ChartSelection | undefined {
+    return this.store.currentSelection;
+  }
+
+  /**
+   * Sets the current selection
+   * @param value The new selection
+   */
+  public set currentSelection(value: ChartSelection | undefined) {
+    this.store.setSelection(value);
+  }
+
+  /**
+   * Adds a listener to the chart container
+   * @param event The event to listen to
+   * @param listener The listener to add
+   */
+  public addListener(event: string, listener: Function) {
+    return this.store.addListener(event, listener);
+  }
+
+  /**
+   * Removes a subscribed listener
+   * @param sub The subscription
+   */
+  public removeSubscription(sub: EventSubscription) {
+    return this.store.removeSubscription(sub);
   }
 
   public update() {
