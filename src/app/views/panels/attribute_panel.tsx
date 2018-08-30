@@ -1,34 +1,17 @@
 import * as React from "react";
-import { EventEmitter, EventSubscription } from "../../../core";
-
-import {
-  Specification,
-  Prototypes,
-  zipArray,
-  zip,
-  Solver,
-  Point,
-  Geometry,
-  ZoomInfo,
-  indexOf
-} from "../../../core";
-
-import { Actions } from "../../actions";
-import {
-  ChartStore,
-  GlyphStore,
-  Selection,
-  MarkSelection,
-  GlyphSelection,
-  ChartElementSelection
-} from "../../stores";
-import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
 
-import { AttributeEditor } from "./attribute_editor";
+import { EventSubscription, Prototypes, Specification } from "../../../core";
+import { Actions } from "../../actions";
+import { EditableTextView, SVGImageIcon } from "../../components";
 
+import {
+  ChartElementSelection,
+  ChartStore,
+  GlyphSelection,
+  MarkSelection
+} from "../../stores";
 import { WidgetManager } from "./widgets/manager";
-import { EditableTextView } from "../../components";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(

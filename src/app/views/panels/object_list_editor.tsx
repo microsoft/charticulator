@@ -1,17 +1,18 @@
 import * as React from "react";
+import * as R from "../../resources";
+
+import { EventSubscription, Prototypes, Specification } from "../../../core";
+import { Actions } from "../../actions";
+import { SVGImageIcon } from "../../components";
+import { ContextedComponent } from "../../context_component";
 
 import {
-  ChartStore,
   ChartElementSelection,
+  ChartStore,
   GlyphSelection,
   MarkSelection
 } from "../../stores";
-import { Specification, Prototypes, EventSubscription } from "../../../core";
-import { SVGImageIcon, ButtonFlat } from "../../components";
-import * as R from "../../resources";
-import { Actions } from "../../actions";
 import { classNames } from "../../utils";
-import { ContextedComponent } from "../../context_component";
 import { Button } from "./widgets/controls";
 
 export class ObjectListEditor extends ContextedComponent<{}, {}> {

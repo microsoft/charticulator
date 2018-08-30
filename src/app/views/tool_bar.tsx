@@ -1,17 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ToolButton, SVGImageIcon } from "../components";
-import * as R from "../resources";
 import * as globals from "../globals";
-import { DragData, Actions } from "../actions";
-import { ChartStore } from "../stores";
-import { EventSubscription, Dispatcher } from "../../core";
+import * as R from "../resources";
+
+import { EventSubscription } from "../../core";
+import { Actions, DragData } from "../actions";
+import { SVGImageIcon, ToolButton } from "../components";
 import { ContextedComponent } from "../context_component";
-import { DatasetStore } from "../stores/dataset";
 import { PopupView } from "../controllers";
-import { LinkCreationPanel } from "./panels/link_creator";
-import { Button } from "./panels/widgets/controls";
+
+import { ChartStore } from "../stores";
 import { classNames } from "../utils";
+import { LinkCreationPanel } from "./panels/link_creator";
 
 export interface ToolbarProps {
   store: ChartStore;

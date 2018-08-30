@@ -1,47 +1,45 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import * as R from "../../../resources";
-import {
-  Prototypes,
-  Specification,
-  getField,
-  prettyNumber,
-  Point,
-  EventSubscription,
-  Expression,
-  Color,
-  ColorGradient
-} from "../../../../core";
-import { ChartStore } from "../../../stores";
-import { AttributeEditorItem } from "../attribute_editor";
-import { Actions, DragData } from "../../../actions";
 import * as globals from "../../../globals";
+import * as R from "../../../resources";
 
 import {
-  InputText,
-  Select,
-  Radio,
+  Color,
+  ColorGradient,
+  EventSubscription,
+  Expression,
+  getField,
+  Point,
+  Prototypes,
+  Specification
+} from "../../../../core";
+import { Actions, DragData } from "../../../actions";
+import { ButtonRaised, GradientPicker } from "../../../components";
+import { SVGImageIcon } from "../../../components/icons";
+import { PopupView } from "../../../controllers";
+import {
+  DragContext,
+  DragModifiers,
+  Droppable
+} from "../../../controllers/drag_controller";
+
+import { ChartStore } from "../../../stores";
+import { classNames } from "../../../utils/index";
+import { DataFieldSelector } from "../../dataset/data_field_selector";
+import { ReorderListView } from "../object_list_editor";
+import {
   Button,
-  InputFile,
   InputColor,
   InputColorGradient,
+  InputImage,
   InputNumber,
-  InputImage
+  InputText,
+  Radio,
+  Select
 } from "./controls";
-import { SVGImageIcon } from "../../../components/icons";
-import {
-  Droppable,
-  DragContext,
-  DragModifiers
-} from "../../../controllers/drag_controller";
-import { classNames } from "../../../utils/index";
-import { PopupView } from "../../../controllers";
-import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { ButtonRaised, GradientPicker } from "../../../components";
-import { ReorderListView } from "../object_list_editor";
-import { MappingEditor } from "./mapping_editor";
 import { FilterEditor } from "./filter_editor";
+import { MappingEditor } from "./mapping_editor";
 
 export type OnEditMappingHandler = (
   attribute: string,

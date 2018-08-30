@@ -1,28 +1,24 @@
 import * as React from "react";
 import * as R from "../../resources";
-import { ContextedComponent } from "../../context_component";
-import { DataFieldSelector } from "../dataset/data_field_selector";
+
 import {
-  ButtonRaised,
-  ToolButton,
-  ButtonFlatPanel,
-  SVGImageIcon
-} from "../../components";
-import { Radio } from "../panels/widgets/controls";
-import { classNames } from "../../utils";
-import { ReorderListView } from "./object_list_editor";
-import {
-  Specification,
-  Prototypes,
-  getById,
-  uniqueID,
-  Graphics,
   argMax,
-  Point,
   argMin,
-  Geometry
+  Geometry,
+  getById,
+  Graphics,
+  Point,
+  Prototypes,
+  Specification,
+  uniqueID
 } from "../../../core";
 import { Actions } from "../../actions";
+import { ButtonRaised, SVGImageIcon } from "../../components";
+import { ContextedComponent } from "../../context_component";
+
+import { classNames } from "../../utils";
+import { DataFieldSelector } from "../dataset/data_field_selector";
+import { ReorderListView } from "./object_list_editor";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;

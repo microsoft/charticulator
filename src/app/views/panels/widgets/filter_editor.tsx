@@ -1,9 +1,9 @@
 import * as React from "react";
-import { WidgetManager } from "./manager";
-import { Prototypes, Specification, Expression } from "../../../../core";
+import { Expression, Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
-import { Button, Select, InputText, InputExpression } from "./controls";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
+import { Button, InputExpression, Select } from "./controls";
+import { WidgetManager } from "./manager";
 
 export interface FilterEditorProps {
   manager: WidgetManager;
