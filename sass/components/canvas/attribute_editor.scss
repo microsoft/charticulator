@@ -764,15 +764,112 @@
                 width: 100%;
             }
 
+            &-combo-box {
+                display: inline-block;
+                width: 100%;
+                vertical-align: top;
+                display: flex;
+                flex-direction: row;
+                overflow: hidden;
+
+                & > .el-input {
+                    @include font-mono;
+
+                    flex: 1 1;
+                    vertical-align: top;
+                    margin: 0;
+                    padding: 0;
+                    outline: none;
+                    border: none;
+                    background: none;
+                    font-size: 14px;
+
+                    @include font-mono;
+
+                    height: $line-height;
+                    padding-top: 1px;
+                    line-height: $line-height;
+                    border-bottom: 1px solid $gray-190;
+
+                    &:hover, &:focus {
+                        border-bottom: 1px solid $color-primary;
+                    }
+
+                    box-sizing: border-box;
+                    transition: border-color $transition-default;
+                }
+
+                & > .el-dropdown {
+                    flex-shrink: 0;
+                    .svg-image-icon {
+                        width: 16px;
+                        height: 16px;
+                        margin: 3px 3px;
+                    }
+
+                    cursor: pointer;
+                    height: $line-height;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid $gray-190;
+                    border-radius: 2px 2px 0 0;
+                    transition: border-color $transition-default;
+
+                    &:hover, &:focus {
+                        background: $gray-200;
+                        border-bottom: 1px solid $color-primary;
+                    }
+                }
+
+                &:hover {
+                    & > .el-dropdown, & > .el-input {
+                        border-bottom: 1px solid $color-primary;
+                    }
+                }
+
+                &-suggestions {
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    overflow-y: scroll;
+                    max-height: 300px;
+
+                    &-option {
+                        display: block;
+                    }
+
+                    .el-default-option-item {
+                        text-overflow: ellipsis;
+                        width: 100%;
+                        font-size: 14px;
+                        cursor: pointer;
+                        display: block;
+                        line-height: $line-height;
+                        padding: 2px 8px;
+
+                        &:hover, &:focus {
+                            background: $gray-210;
+                        }
+
+                        &.is-active {
+                            background: $gray-210;
+                            background-color: $gray-100;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+
             &-input-expression {
                 width: 100%;
                 display: inline-block;
                 vertical-align: top;
+
                 &-error {
                     display: block;
                     margin-top: 4px;
                     font-size: 12px;
                 }
+
                 &-input {
                     @include font-mono;
 
@@ -1643,8 +1740,10 @@
         border-radius: 2px;
         overflow: hidden;
     }
+
     &-values-selector {
         width: 100%;
+
         .el-list {
             margin-top: 4px;
             border: 1px solid $gray-200;
@@ -1652,6 +1751,7 @@
             max-height: 150px;
             overflow-y: scroll;
             overflow-x: hidden;
+
             .charticulator__widget-control-button {
                 display: block;
             }

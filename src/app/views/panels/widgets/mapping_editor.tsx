@@ -30,7 +30,9 @@ import {
   InputExpression,
   InputImage,
   InputNumber,
-  InputText
+  InputText,
+  ComboBox,
+  ComboBoxFontFamily
 } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
 
@@ -222,6 +224,15 @@ export class MappingEditor extends React.Component<
         );
       }
       case "font-family":
+        return (
+          <ComboBoxFontFamily
+            defaultValue={value as string}
+            onEnter={value => {
+              this.setValueMapping(value);
+              return true;
+            }}
+          />
+        );
       case "string": {
         const str = value as string;
         const textInput = (

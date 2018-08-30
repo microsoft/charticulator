@@ -275,8 +275,9 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
 
 export class PopupView extends React.Component<
   {
-    className?: string;
     context: PopupContext;
+    className?: string;
+    width?: number;
   },
   {}
 > {
@@ -379,6 +380,9 @@ export class PopupView extends React.Component<
           style.top = position.top + position.height + marginY + "px";
         }
         break;
+    }
+    if (this.props.width != null) {
+      style.width = this.props.width + "px";
     }
     return (
       <div
