@@ -36,7 +36,9 @@ import {
   InputNumber,
   InputText,
   Radio,
-  Select
+  Select,
+  ComboBox,
+  ComboBoxFontFamily
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
@@ -171,6 +173,18 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public inputText(property: Prototypes.Controls.Property) {
     return (
       <InputText
+        defaultValue={this.getPropertyValue(property) as string}
+        onEnter={value => {
+          this.emitSetProperty(property, value);
+          return true;
+        }}
+      />
+    );
+  }
+
+  public inputFontFamily(property: Prototypes.Controls.Property) {
+    return (
+      <ComboBoxFontFamily
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={value => {
           this.emitSetProperty(property, value);

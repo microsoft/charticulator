@@ -586,7 +586,7 @@ export function buildAxisAppearanceWidgets(
           ),
           m.row(
             "Font Family",
-            m.inputText({
+            m.inputFontFamily({
               property: axisProperty,
               field: ["style", "fontFamily"]
             })

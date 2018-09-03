@@ -105,6 +105,7 @@ export interface WidgetManager {
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputText(property: Property): Widget;
+  inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property): Widget;

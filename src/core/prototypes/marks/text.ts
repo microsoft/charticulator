@@ -22,24 +22,6 @@ import { CreationParameters, MarkClass } from "./index";
 
 import * as Graphics from "../../graphics";
 
-const fontList = [
-  "Arial",
-  "Helvetica",
-  "Lato",
-  "Lucida Grande",
-  "Geneva",
-  "Verdana",
-  "Tahoma",
-  "Comic Sans MS",
-  "Impact",
-  "Georgia",
-  "Times",
-  "Palatino",
-  "Consolas",
-  "Lucida Console",
-  "Inconsolata"
-];
-
 export interface TextElementAttributes extends Specification.AttributeMap {
   x: number;
   y: number;
@@ -401,7 +383,6 @@ export class TextElement extends MarkClass {
       manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", "string", {}),
       manager.mappingEditor("Font", "fontFamily", "font-family", {
-        hints: { rangeString: fontList, stringBehavior: "categorical" },
         defaultValue: "Arial"
       }),
       manager.mappingEditor("Size", "fontSize", "number", {
