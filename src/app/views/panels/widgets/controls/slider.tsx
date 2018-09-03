@@ -1,79 +1,6 @@
-import * as React from "react";
-import * as R from "../../../resources";
 import * as Hammer from "hammerjs";
-
-import { classNames } from "../../../utils";
-import { prettyNumber } from "../../../../core";
-import { SVGImageIcon, DropdownButton } from "../../../components";
-
-export interface InputTextProps {
-  defaultValue?: string;
-  placeholder?: string;
-  onEnter?: (value: string) => boolean;
-  onCancel?: () => void;
-}
-
-export class InputText extends React.Component<InputTextProps, {}> {
-  public inputElement: HTMLInputElement;
-
-  public componentWillUpdate(newProps: InputTextProps) {
-    this.inputElement.value = newProps.defaultValue;
-  }
-
-  public doEnter() {
-    if (this.props.defaultValue == this.inputElement.value) {
-      return;
-    }
-    if (this.props.onEnter) {
-      const ret = this.props.onEnter(this.inputElement.value);
-      if (!ret) {
-        this.inputElement.value = this.props.defaultValue;
-      }
-    } else {
-      this.inputElement.value = this.props.defaultValue;
-    }
-  }
-
-  public doCancel() {
-    this.inputElement.value = this.props.defaultValue;
-    if (this.props.onCancel) {
-      this.props.onCancel();
-    }
-  }
-
-  public get value() {
-    return this.inputElement.value;
-  }
-
-  public set value(v: string) {
-    this.inputElement.value = v;
-  }
-
-  public render() {
-    return (
-      <input
-        type="text"
-        ref={e => (this.inputElement = e)}
-        defaultValue={this.props.defaultValue}
-        placeholder={this.props.placeholder}
-        onKeyDown={e => {
-          if (e.key == "Enter") {
-            this.doEnter();
-          }
-          if (e.key == "Escape") {
-            this.doCancel();
-          }
-        }}
-        onFocus={e => {
-          e.currentTarget.select();
-        }}
-        onBlur={() => {
-          this.doEnter();
-        }}
-      />
-    );
-  }
-}
+import * as React from "react";
+import { classNames } from "../../../../utils";
 
 export interface SliderProps {
   width: number;
@@ -112,7 +39,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   public niceValue(v: number) {
     const digits = Math.ceil(
-      Math.log(this.props.max - this.props.min) / Math.log(10) + 1
+      Math.log(this.props.max - this.props.min) / Math.log(10) + 2
     );
     v = parseFloat(v.toPrecision(digits));
     v = Math.min(this.props.max, Math.max(this.props.min, v));
@@ -174,8 +101,16 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         : (min + max) / 2
     );
     return (
-      <span className="slider-control">
-        <svg width={width} height={height} ref="svg">
+      <span className="charticulator__widget-control-slider">
+        <svg
+          width={width}
+          height={height}
+          ref="svg"
+          className={classNames(
+            ["invalid", this.state.currentValue == null],
+            ["active", this.state.dragging]
+          )}
+        >
           <line
             className="track"
             x1={margin}
@@ -183,22 +118,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             y1={y}
             y2={y}
           />
-          <g
-            className={classNames(
-              "knob",
-              ["invalid", this.state.currentValue == null],
-              ["active", this.state.dragging]
-            )}
-          >
-            <line
-              className="track-highlight"
-              x1={margin}
-              x2={px}
-              y1={y}
-              y2={y}
-            />
-            <circle className="indicator" cx={px} cy={y} r={height / 2 * 0.5} />
-          </g>
+          <line className="track-highlight" x1={margin} x2={px} y1={y} y2={y} />
+          <circle className="indicator" cx={px} cy={y} r={height / 2 * 0.5} />
         </svg>
       </span>
     );

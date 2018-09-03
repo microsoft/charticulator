@@ -2,38 +2,37 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
-import { DropZoneView, WidgetManager } from "./manager";
-import { DragData, Actions } from "../../../actions";
-import { classNames } from "../../../utils";
+
+import {
+  Color,
+  colorFromHTMLColor,
+  colorToHTMLColorHEX,
+  EventEmitter,
+  EventSubscription,
+  Expression,
+  getById,
+  Prototypes,
+  Specification
+} from "../../../../core";
+import { Actions, DragData } from "../../../actions";
+import {
+  ColorPicker,
+  DropdownListView,
+  SVGImageIcon
+} from "../../../components";
+import { ContextedComponent } from "../../../context_component";
+import { PopupView } from "../../../controllers";
+
+import { DataFieldSelector } from "../../dataset/data_field_selector";
+import { ScaleEditor } from "../scale_editor";
 import {
   Button,
-  InputText,
-  InputNumber,
+  InputExpression,
   InputImage,
-  InputExpression
+  InputNumber,
+  InputText
 } from "./controls";
-import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { PopupView } from "../../../controllers";
-import {
-  Prototypes,
-  Specification,
-  getById,
-  prettyNumber,
-  Color,
-  colorToHTMLColorHEX,
-  colorFromHTMLColor,
-  EventSubscription,
-  EventEmitter,
-  Expression
-} from "../../../../core";
-import {
-  SVGImageIcon,
-  ColorPicker,
-  DropdownListView
-} from "../../../components";
-import { ScaleEditor } from "../scale_editor";
-import { ContextedComponent } from "../../../context_component";
-import { ChartStore } from "../../../stores";
+import { DropZoneView, WidgetManager } from "./manager";
 
 export interface MappingEditorProps {
   parent: WidgetManager;

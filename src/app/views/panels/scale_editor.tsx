@@ -1,14 +1,12 @@
 import * as React from "react";
-import { Prototypes, Specification, Color, getById } from "../../../core";
 import * as R from "../../resources";
-import { ChartStore } from "../../stores";
-import { Actions } from "../../actions";
 
-import { AttributeEditor } from "./attribute_editor";
-import { EventSubscription } from "../../../core";
-import { EditableTextView } from "../../components";
+import { EventSubscription, Specification } from "../../../core";
+import { Actions } from "../../actions";
+import { ButtonRaised, EditableTextView } from "../../components";
+
+import { ChartStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
-import { ButtonRaised } from "../../components";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -35,7 +33,7 @@ export class ScaleEditor extends React.Component<
   }
 
   public render() {
-    const { scale, scaleMapping, store } = this.props;
+    const { scale, store } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
     const manager = new WidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
