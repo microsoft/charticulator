@@ -434,3 +434,39 @@ export class MultistringHashMap<ValueType> extends HashMap<
     return key.join(this.separator);
   }
 }
+
+/** Parsed semver version number */
+export interface ParsedVersion {
+  major: number;
+  minor: number;
+  patch: number;
+}
+
+/** Parse semver version string into a ParsedVersion */
+export function parseVersion(version: string) {
+  const m = version.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  return {
+    major: +m[1],
+    minor: +m[2],
+    patch: +m[3]
+  };
+}
+
+/**
+ * Compare two version strings
+ * @param version1 version number 1
+ * @param version2 version number 2
+ * @returns negative if version1 < version2, zero if version1 == version2, positive if version1 > version2
+ */
+export function compareVersion(version1: string, version2: string) {
+  const p1 = parseVersion(version1);
+  const p2 = parseVersion(version2);
+  // Compare major version first, then minor and patch.
+  if (p1.major != p2.major) {
+    return p1.major - p2.major;
+  }
+  if (p1.minor != p2.minor) {
+    return p1.minor - p2.minor;
+  }
+  return p1.patch - p2.patch;
+}

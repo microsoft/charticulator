@@ -431,6 +431,11 @@ export class ChartStore extends BaseStore {
       const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
         .attributes[action.attribute];
       const table = this.datasetStore.getTable(action.glyph.table);
+      if (action.valueType == "number" || action.valueType == "integer") {
+        action.expression = "avg(" + action.expression + ")";
+      } else {
+        action.expression = "first(" + action.expression + ")";
+      }
       const inferred = this.scaleInference(
         table,
         action.expression,
@@ -1069,15 +1074,17 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.SelectMark) {
       if (action.dataRowIndex == null) {
-        action.dataRowIndex = this.datasetStore.getSelectedRowIndex(
-          this.datasetStore.getTable(action.glyph.table)
-        );
+        action.dataRowIndex = [
+          this.datasetStore.getSelectedRowIndex(
+            this.datasetStore.getTable(action.glyph.table)
+          )
+        ];
       }
       const selection = new MarkSelection(action.glyph, action.mark);
       this.currentSelection = selection;
       this.datasetStore.setSelectedRowIndex(
         this.datasetStore.getTable(action.glyph.table),
-        action.dataRowIndex
+        action.dataRowIndex[0]
       );
       this.emit(ChartStore.EVENT_SELECTION);
     }

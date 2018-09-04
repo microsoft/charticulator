@@ -68,7 +68,7 @@ export class BaseSolver {
     attr: string,
     info: Prototypes.AttributeDescription,
     mapping: Specification.Mapping,
-    rowContext: Dataset.RowContext
+    rowContext: Expression.Context
   ) {
     switch (mapping.type) {
       case "scale":
@@ -140,7 +140,7 @@ export class BaseSolver {
     object: Specification.Object,
     objectState: Specification.ObjectState,
     parentState: Specification.ObjectState = null,
-    rowContext: Dataset.RowContext = null
+    rowContext: Expression.Context = null
   ) {
     const objectClass = this.manager.getClass(objectState);
     for (const attr of objectClass.attributeNames) {
@@ -205,7 +205,7 @@ export class BaseSolver {
   public addMark(
     layout: Specification.PlotSegment,
     mark: Specification.Glyph,
-    rowContext: Dataset.RowContext,
+    rowContext: Expression.Context,
     markState: Specification.GlyphState,
     element: Specification.Element,
     elementState: Specification.MarkState
@@ -267,7 +267,7 @@ export class BaseSolver {
 
   public addGlyph(
     layout: Specification.PlotSegment,
-    rowContext: Dataset.RowContext,
+    rowContext: Expression.Context,
     glyph: Specification.Glyph,
     glyphState: Specification.GlyphState
   ) {
@@ -371,8 +371,7 @@ export class BaseSolver {
         const layout = element as Specification.PlotSegment;
         const layoutState = elementState as Specification.PlotSegmentState;
         const mark = getById(chart.glyphs, layout.glyph);
-        const table = getByName(this.dataset.tables, layout.table);
-        const tableContext = this.datasetContext.getTableContext(table);
+        const tableContext = this.manager.dataflow.getTable(layout.table);
 
         for (const [dataRowIndex, markState] of zip(
           layoutState.dataRowIndices,
@@ -380,7 +379,7 @@ export class BaseSolver {
         )) {
           this.addGlyph(
             layout,
-            tableContext.getRowContext(table.rows[dataRowIndex]),
+            tableContext.getGroupedContext(dataRowIndex),
             mark,
             markState
           );
@@ -395,13 +394,13 @@ export class BaseSolver {
         getGlyphAttributes: (
           glyphID: string,
           table: string,
-          rowIndex: number
+          rowIndex: number[]
         ) => {
           const analyzed = this.getGlyphAnalyzeResult(
             getById(this.chart.glyphs, glyphID)
           );
           return analyzed.computeAttributes(
-            this.manager.dataflow.getTable(table).getRowContext(rowIndex)
+            this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
           );
         }
       });

@@ -70,6 +70,13 @@ export interface Filter extends AttributeMap {
   expression?: Expression;
 }
 
+/** GroupBy specification */
+export interface GroupBy extends AttributeMap {
+  /** Group by a string expression */
+  expression?: Expression;
+}
+
+/** Order expression */
 export interface Order extends AttributeMap {
   // TODO
 }

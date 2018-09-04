@@ -164,6 +164,9 @@ export interface PlotSegment extends Object {
   table: string;
   /** Filter applied to the data table */
   filter?: Types.Filter;
+  /** Group the data by a specified categorical column (filter is applied before grouping) */
+  groupBy?: Types.GroupBy;
+  /** Order the data (filter & groupBy is applied before order */
   order?: Types.Order;
 }
 
@@ -234,7 +237,7 @@ export interface PlotSegmentState extends ObjectState {
   // Mark states
   glyphs: GlyphState[];
   // Data row indices for the mark states
-  dataRowIndices: number[];
+  dataRowIndices: number[][];
 }
 
 /** Guide state */

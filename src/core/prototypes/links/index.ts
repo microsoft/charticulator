@@ -62,20 +62,20 @@ export interface LinksObject extends Specification.Links {
 
 export function facetRows(
   table: DataflowTable,
-  indices: number[],
+  indices: number[][],
   columns?: Expression.Expression[]
-): number[][] {
+): number[][][] {
   if (columns == null) {
     return [indices];
   } else {
-    const facets = new MultistringHashMap<number[]>();
-    for (const index of indices) {
-      const row = table.getRowContext(index);
+    const facets = new MultistringHashMap<number[][]>();
+    for (const g of indices) {
+      const row = table.getGroupedContext(g);
       const facetValues = columns.map(c => c.getStringValue(row));
       if (facets.has(facetValues)) {
-        facets.get(facetValues).push(index);
+        facets.get(facetValues).push(g);
       } else {
-        facets.set(facetValues, [index]);
+        facets.set(facetValues, [g]);
       }
     }
     return Array.from(facets.values());
@@ -726,23 +726,26 @@ export class SeriesLinksClass extends LinksClass {
     ] as Specification.PlotSegmentState;
     const layoutClass = manager.getPlotSegmentClass(layoutState);
     const table = this.parent.dataflow.getTable(layout.table);
-    const facets: number[][] = facetRows(
+    const facets = facetRows(
       table,
       layoutState.dataRowIndices,
       props.linkThrough.facetExpressions.map(x =>
         this.parent.dataflow.cache.parse(x)
       )
     );
-    const rowToMarkState = new Map<number, Specification.GlyphState>();
+    const rowToMarkState = new Map<string, Specification.GlyphState>();
     for (let i = 0; i < layoutState.dataRowIndices.length; i++) {
-      rowToMarkState.set(layoutState.dataRowIndices[i], layoutState.glyphs[i]);
+      rowToMarkState.set(
+        layoutState.dataRowIndices[i].join(","),
+        layoutState.glyphs[i]
+      );
     }
     const anchor1 = this.resolveLinkAnchorPoints(props.anchor1, mark);
     const anchor2 = this.resolveLinkAnchorPoints(props.anchor2, mark);
     const anchors = facets.map(facet =>
       facet.map(index => {
-        const markState = rowToMarkState.get(index);
-        const row = table.getRowContext(index);
+        const markState = rowToMarkState.get(index.join(","));
+        const row = table.getGroupedContext(index);
         if (markState) {
           return [
             this.getAnchorPoints(
@@ -834,7 +837,7 @@ export class LayoutsLinksClass extends LinksClass {
       const rowIndex = layoutStates[1].dataRowIndices[i1];
       if (rowIndicesMap.has(rowIndex)) {
         const i0 = rowIndicesMap.get(rowIndex);
-        const row = table.getRowContext(rowIndex);
+        const row = table.getGroupedContext(rowIndex);
         anchors.push([
           [
             this.getAnchorPoints(
@@ -923,15 +926,15 @@ export class TableLinksClass extends LinksClass {
     const linkTable = this.parent.dataflow.getTable(props.linkTable.table);
     const tables = layouts.map((layout, layoutIndex) => {
       const table = this.parent.dataflow.getTable(layout.table);
-      const id2RowGlyphIndex = new Map<string, [number, number]>();
+      const id2RowGlyphIndex = new Map<string, [number[], number]>();
       for (
         let i = 0;
         i < layoutStates[layoutIndex].dataRowIndices.length;
         i++
       ) {
         const rowIndex = layoutStates[layoutIndex].dataRowIndices[i];
-        const row = table.getRow(rowIndex);
-        id2RowGlyphIndex.set(row.id.toString(), [rowIndex, i]);
+        const rowIDs = rowIndex.map(i => table.getRow(i).id).join(",");
+        id2RowGlyphIndex.set(rowIDs, [rowIndex, i]);
       }
       return {
         table,
@@ -948,7 +951,7 @@ export class TableLinksClass extends LinksClass {
     const anchors: AnchorAttributes[][][] = [];
     for (let i = 0; i < rowIndices.length; i++) {
       const rowIndex = rowIndices[i];
-      const row = linkTable.getRowContext(rowIndex);
+      const row = linkTable.getGroupedContext([rowIndex]);
       const rowItem = linkTable.getRow(rowIndex);
 
       const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(

@@ -265,7 +265,7 @@ export class Region2DConstraintBuilder {
     const table = this.getTableContext();
     // Gather places
     for (let i = 0; i < dateRowIndices.length; i++) {
-      const row = table.getRowContext(dateRowIndices[i]);
+      const row = table.getGroupedContext(dateRowIndices[i]);
       let place = 0;
       for (const c of categoriesParsed) {
         const value = c.expression.getStringValue(row);
@@ -286,10 +286,11 @@ export class Region2DConstraintBuilder {
     const table = this.getTableContext();
     // Sort results
     if (order != null) {
+      // TODO: fixme
       const orderLambda = this.getExpression(order).getValue(table) as Function;
       const compare = (i: number, j: number) => {
-        const ri = table.getRow(dateRowIndices[i]);
-        const rj = table.getRow(dateRowIndices[j]);
+        const ri = table.getGroupedContext(dateRowIndices[i]);
+        const rj = table.getGroupedContext(dateRowIndices[j]);
         const r = orderLambda(ri, rj) as number;
         // Stable sort
         if (r == 0) {
@@ -410,7 +411,7 @@ export class Region2DConstraintBuilder {
             ]);
             const expr = this.getExpression(data.expression);
             for (const [index, markState] of state.glyphs.entries()) {
-              const rowContext = table.getRowContext(dataIndices[index]);
+              const rowContext = table.getGroupedContext(dataIndices[index]);
               const value = expr.getNumberValue(rowContext);
               const t =
                 (value - data.domainMin) / (data.domainMax - data.domainMin);
@@ -432,7 +433,7 @@ export class Region2DConstraintBuilder {
             ]);
             const expr = this.getExpression(data.expression);
             for (const [index, markState] of state.glyphs.entries()) {
-              const rowContext = table.getRowContext(dataIndices[index]);
+              const rowContext = table.getGroupedContext(dataIndices[index]);
               const value = expr.getStringValue(rowContext);
 
               this.gapX(data.categories.length, data.gapRatio);
@@ -470,7 +471,7 @@ export class Region2DConstraintBuilder {
           ]);
           const expr = this.getExpression(data.expression);
           for (const [index, markState] of state.glyphs.entries()) {
-            const rowContext = table.getRowContext(dataIndices[index]);
+            const rowContext = table.getGroupedContext(dataIndices[index]);
             const value = expr.getNumberValue(rowContext);
             const t =
               (value - data.domainMin) / (data.domainMax - data.domainMin);
@@ -492,7 +493,7 @@ export class Region2DConstraintBuilder {
           ]);
           const expr = this.getExpression(data.expression);
           for (const [index, markState] of state.glyphs.entries()) {
-            const rowContext = table.getRowContext(dataIndices[index]);
+            const rowContext = table.getGroupedContext(dataIndices[index]);
             const value = expr.getStringValue(rowContext);
 
             this.gapY(data.categories.length, data.gapRatio);
@@ -1528,11 +1529,11 @@ export class Region2DConstraintBuilder {
     fitters.addConstraint(ConstraintStrength.MEDIUM);
   }
 
-  public getGlyphPreSolveAttributes(rowIndex: number) {
+  public getGlyphPreSolveAttributes(rowIndices: number[]) {
     const attrs = this.solverContext.getGlyphAttributes(
       this.plotSegment.object.glyph,
       this.plotSegment.object.table,
-      rowIndex
+      rowIndices
     );
     return attrs;
   }

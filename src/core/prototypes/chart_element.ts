@@ -19,7 +19,7 @@ export interface BuildConstraintsContext {
   getGlyphAttributes?(
     glyph: string,
     table: string,
-    rowIndex: number
+    rowIndices: number[]
   ): { [name: string]: number };
 }
 

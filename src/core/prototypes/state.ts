@@ -513,7 +513,7 @@ export class ChartStateManager {
     ) as Specification.Glyph;
     const table = this.getTable(glyphObject.table);
     const index2ExistingGlyphState = new Map<
-      number,
+      string,
       Specification.GlyphState
     >();
     if (plotSegmentState.dataRowIndices) {
@@ -521,25 +521,44 @@ export class ChartStateManager {
         plotSegmentState.dataRowIndices,
         plotSegmentState.glyphs
       )) {
-        index2ExistingGlyphState.set(rowIndex, glyphState);
+        index2ExistingGlyphState.set(rowIndex.join(","), glyphState);
       }
     }
-    plotSegmentState.dataRowIndices = table.rows.map((r, i) => i);
+    let filteredIndices = table.rows.map((r, i) => i);
     if (plotSegment.filter) {
       const filter = new CompiledFilter(
         plotSegment.filter,
         this.dataflow.cache
       );
-      plotSegmentState.dataRowIndices = plotSegmentState.dataRowIndices.filter(
-        i => {
-          return filter.filter(table.getRowContext(i));
+      filteredIndices = filteredIndices.filter(i => {
+        return filter.filter(table.getRowContext(i));
+      });
+    }
+    if (plotSegment.groupBy) {
+      if (plotSegment.groupBy.expression) {
+        const expr = this.dataflow.cache.parse(plotSegment.groupBy.expression);
+        const groups = new Map<string, number[]>();
+        plotSegmentState.dataRowIndices = [];
+        for (const i of filteredIndices) {
+          const groupBy = expr.getStringValue(table.getRowContext(i));
+          if (groups.has(groupBy)) {
+            groups.get(groupBy).push(i);
+          } else {
+            const g = [i];
+            groups.set(groupBy, g);
+            plotSegmentState.dataRowIndices.push(g);
+          }
         }
-      );
+      } else {
+        // TODO: emit error
+      }
+    } else {
+      plotSegmentState.dataRowIndices = filteredIndices.map(i => [i]);
     }
     // Resolve filter
     plotSegmentState.glyphs = plotSegmentState.dataRowIndices.map(rowIndex => {
-      if (index2ExistingGlyphState.has(rowIndex)) {
-        return index2ExistingGlyphState.get(rowIndex);
+      if (index2ExistingGlyphState.has(rowIndex.join(","))) {
+        return index2ExistingGlyphState.get(rowIndex.join(","));
       } else {
         const glyphState = {
           marks: glyphObject.marks.map(element => {
