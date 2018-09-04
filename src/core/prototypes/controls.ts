@@ -1,7 +1,6 @@
 import { DataMappingHints } from ".";
-import { Color, Point } from "../common";
+import { Point } from "../common";
 import * as Specification from "../specification";
-import { AttributeDescription } from "./common";
 
 export type Widget = any;
 

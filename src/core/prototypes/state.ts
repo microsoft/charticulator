@@ -1,21 +1,18 @@
-import { getById, uniqueID, zip, zipArray } from "../common";
+import { gather, getById, uniqueID, zip, zipArray } from "../common";
 import * as Dataset from "../dataset";
 import * as Specification from "../specification";
-import { ObjectClassCache } from "./cache";
-import * as Prototypes from "./index";
-import { ObjectClass, ObjectClasses } from "./object";
-
-import { DataflowManager, DataflowTable } from "./dataflow";
-
-import { ChartElementClass } from "./chart_element";
 import * as Charts from "./charts";
-import * as Constraints from "./constraints";
 import * as Glyphs from "./glyphs";
+import * as Prototypes from "./index";
 import * as Marks from "./marks";
 import * as PlotSegments from "./plot_segments";
 import * as Scales from "./scales";
-import { Context } from "../expression";
+
+import { ObjectClassCache } from "./cache";
+import { ChartElementClass } from "./chart_element";
+import { DataflowManager, DataflowTable } from "./dataflow";
 import { CompiledFilter } from "./filter";
+import { ObjectClass, ObjectClasses } from "./object";
 
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
@@ -734,6 +731,31 @@ export class ChartStateManager {
       }
     } else {
       return description;
+    }
+  }
+
+  public getGroupedExpressionVector(
+    tableName: string,
+    groupBy: Specification.Types.GroupBy,
+    expression: string
+  ) {
+    const expr = this.dataflow.cache.parse(expression);
+    const table = this.dataflow.getTable(tableName);
+    if (!table) {
+      return [];
+    }
+    const indices: number[] = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      indices.push(i);
+    }
+    if (groupBy && groupBy.expression) {
+      const groupExpression = this.dataflow.cache.parse(groupBy.expression);
+      const groups = gather(indices, i =>
+        groupExpression.getStringValue(table.getRowContext(i))
+      );
+      return groups.map(g => expr.getValue(table.getGroupedContext(g)));
+    } else {
+      return indices.map(i => expr.getValue(table.getGroupedContext([i])));
     }
   }
 }

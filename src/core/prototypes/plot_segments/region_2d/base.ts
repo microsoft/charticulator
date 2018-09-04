@@ -1,9 +1,4 @@
-import * as Dataset from "../../../dataset";
 import * as Expression from "../../../expression";
-import * as Graphics from "../../../graphics";
-import * as Specification from "../../../specification";
-
-import { getById, Point, uniqueID } from "../../../common";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -11,18 +6,9 @@ import {
   Variable,
   VariableStrength
 } from "../../../solver";
-import {
-  AttributeDescription,
-  BoundingBox,
-  BuildConstraintsContext,
-  Controls,
-  DropZones,
-  Handles,
-  OrderDescription,
-  SnappingGuides
-} from "../../common";
-import { DataflowManager, DataflowTable } from "../../dataflow/index";
-
+import * as Specification from "../../../specification";
+import { BuildConstraintsContext, Controls } from "../../common";
+import { DataflowTable } from "../../dataflow/index";
 import { buildAxisWidgets, getCategoricalAxis } from "../axis";
 import { PlotSegmentClass } from "../index";
 

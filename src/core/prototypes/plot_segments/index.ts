@@ -1,18 +1,9 @@
-import { getById, Point, uniqueID } from "../../common";
+import { ChartStateManager } from "..";
 import * as Graphics from "../../graphics";
-import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
-
-import {
-  AttributeDescription,
-  BoundingBox,
-  Controls,
-  DropZones,
-  Handles,
-  ObjectClass,
-  SnappingGuides
-} from "../common";
+import { BoundingBox, Controls, DropZones, Handles } from "../common";
 
 export abstract class PlotSegmentClass extends ChartElementClass {
   public readonly object: Specification.PlotSegment;
@@ -88,16 +79,15 @@ export abstract class PlotSegmentClass extends ChartElementClass {
   }
 }
 
-import { ChartStateManager } from "..";
 import "./line";
 import "./map";
 import "./region_2d";
 
+export { defaultAxisStyle } from "./axis";
+export { LineGuideAttributes } from "./line";
 export {
-  Region2DAttributes,
   CartesianPlotSegment,
   CurvePlotSegment,
-  PolarPlotSegment
+  PolarPlotSegment,
+  Region2DAttributes
 } from "./region_2d";
-export { LineGuideAttributes } from "./line";
-export { defaultAxisStyle } from "./axis";

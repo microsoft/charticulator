@@ -1,12 +1,8 @@
+import { ChartStateManager } from "../..";
 import * as Graphics from "../../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../../solver";
+import { ConstraintSolver, VariableStrength } from "../../../solver";
 import * as Specification from "../../../specification";
-
-import { getById, max, Point, uniqueID } from "../../../common";
+import { BuildConstraintsContext } from "../../chart_element";
 import {
   AttributeDescription,
   BoundingBox,
@@ -18,12 +14,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../../common";
-
-import { ChartStateManager } from "../..";
-import { BuildConstraintsContext } from "../../chart_element";
-import { DataflowTable } from "../../dataflow";
 import { AxisRenderer } from "../axis";
-import { PlotSegmentClass } from "../index";
 import {
   Region2DAttributes,
   Region2DConfiguration,

@@ -5,8 +5,6 @@ import {
   VariableStrength
 } from "../../../solver";
 import * as Specification from "../../../specification";
-
-import { getById, max, Point, uniqueID } from "../../../common";
 import {
   AttributeDescription,
   BoundingBox,
@@ -19,9 +17,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../../common";
-
 import { AxisRenderer } from "../axis";
-import { PlotSegmentClass } from "../index";
 import {
   Region2DAttributes,
   Region2DConfiguration,

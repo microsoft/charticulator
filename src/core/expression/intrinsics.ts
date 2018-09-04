@@ -98,9 +98,11 @@ functions.range = (min: number, max: number, step: number = 1) => {
 };
 
 // Object and fields
-functions.get = (obj: any, field: string) => obj[field];
+functions.get = (obj: any, field: string | number) => obj[field];
 
 // Array functions
+functions.first = (list: any[]) => list[0];
+functions.last = (list: any[]) => list[list.length - 1];
 functions.map = (list: any[], func: Function) => list.map(item => func(item));
 functions.filter = (list: any[], func: Function) =>
   list.filter(item => func(item));

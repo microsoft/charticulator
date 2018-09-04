@@ -5,8 +5,6 @@ import {
   VariableStrength
 } from "../../solver";
 import * as Specification from "../../specification";
-
-import { getById, Point, uniqueID } from "../../common";
 import {
   AttributeDescription,
   BoundingBox,
@@ -15,10 +13,8 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides,
   TemplateParameters
 } from "../common";
-
 import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
 import { PlotSegmentClass } from "./index";
 

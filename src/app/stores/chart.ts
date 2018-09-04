@@ -807,9 +807,16 @@ export class ChartStore extends BaseStore {
     if (action instanceof Actions.BindDataToAxis) {
       this.parent.saveHistory();
 
+      let groupExpression = "first(" + action.dataExpression.expression + ")";
+      if (action.dataExpression.metadata.kind == "categorical") {
+        groupExpression = "first(" + action.dataExpression.expression + ")";
+      } else if (action.dataExpression.metadata.kind == "numerical") {
+        groupExpression = "avg(" + action.dataExpression.expression + ")";
+      }
+
       const dataBinding: Specification.Types.AxisDataBinding = {
         type: "categorical",
-        expression: action.dataExpression.expression,
+        expression: groupExpression,
         valueType: action.dataExpression.valueType,
         gapRatio: 0.1,
         visible: true,
@@ -819,12 +826,10 @@ export class ChartStore extends BaseStore {
 
       if (action.appendToProperty) {
         if (action.object.properties[action.appendToProperty] == null) {
-          action.object.properties[action.appendToProperty] = [
-            action.dataExpression.expression
-          ];
+          action.object.properties[action.appendToProperty] = [groupExpression];
         } else {
           (action.object.properties[action.appendToProperty] as string[]).push(
-            action.dataExpression.expression
+            groupExpression
           );
         }
         if (action.object.properties[action.property] == null) {
@@ -837,9 +842,10 @@ export class ChartStore extends BaseStore {
       const table = this.datasetStore.getTable(
         action.dataExpression.table.name
       );
-      const values = this.datasetStore.getExpressionVector(
-        table,
-        action.dataExpression.expression
+      const values = this.chartManager.getGroupedExpressionVector(
+        action.dataExpression.table.name,
+        {},
+        groupExpression
       );
 
       switch (action.dataExpression.metadata.kind) {
@@ -1290,6 +1296,16 @@ export class ChartStore extends BaseStore {
             return column.metadata.unit;
           }
         }
+        // In the case of a aggregation function
+        if (parsed instanceof Expression.FunctionCall) {
+          const args0 = parsed.args[0];
+          if (args0 instanceof Expression.Variable) {
+            const column = getByName(table.columns, args0.name);
+            if (column) {
+              return column.metadata.unit;
+            }
+          }
+        }
         return null;
       };
       for (const element of this.chart.elements) {
@@ -1406,7 +1422,11 @@ export class ChartStore extends BaseStore {
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
       scaleClass.inferParameters(
-        this.datasetStore.getExpressionVector(table, expression),
+        this.chartManager.getGroupedExpressionVector(
+          table.name,
+          groupBy,
+          expression
+        ) as Specification.DataValue[],
         hints
       );
       // console.log(this.datasetStore.getExpressionVector(table, expression));
