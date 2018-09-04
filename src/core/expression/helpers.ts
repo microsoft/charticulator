@@ -22,14 +22,7 @@ export function functionCall(
   ...args: Expression[]
 ): FunctionCall {
   const fields = functionName.split(".");
-  if (fields.length == 1) {
-    return new FunctionCall(new Variable(functionName), args);
-  } else {
-    return new FunctionCall(
-      new FieldAccess(new Variable(fields[0]), fields.slice(1)),
-      args
-    );
-  }
+  return new FunctionCall(fields, args);
 }
 
 export function lambda(names: string[], expression: Expression) {

@@ -438,6 +438,7 @@ export class ChartStore extends BaseStore {
       }
       const inferred = this.scaleInference(
         table,
+        {},
         action.expression,
         action.valueType,
         action.attributeType,
@@ -481,6 +482,7 @@ export class ChartStore extends BaseStore {
       const table = this.datasetStore.getTable(action.table);
       const inferred = this.scaleInference(
         table,
+        {},
         action.expression,
         action.valueType,
         action.attributeType,
@@ -668,6 +670,14 @@ export class ChartStore extends BaseStore {
     if (action instanceof Actions.SetPlotSegmentFilter) {
       this.parent.saveHistory();
       action.plotSegment.filter = action.filter;
+      // Filter updated, we need to regenerate some glyph states
+      this.chartManager.remapPlotSegmentGlyphs(action.plotSegment);
+      this.solveConstraintsAndUpdateGraphics();
+    }
+
+    if (action instanceof Actions.SetPlotSegmentGroupBy) {
+      this.parent.saveHistory();
+      action.plotSegment.groupBy = action.groupBy;
       // Filter updated, we need to regenerate some glyph states
       this.chartManager.remapPlotSegmentGlyphs(action.plotSegment);
       this.solveConstraintsAndUpdateGraphics();
@@ -1263,6 +1273,7 @@ export class ChartStore extends BaseStore {
 
   public scaleInference(
     table: Dataset.Table,
+    groupBy: Specification.Types.GroupBy,
     expression: string,
     valueType: string,
     outputType: string,
@@ -1552,32 +1563,6 @@ export class ChartStore extends BaseStore {
     };
     this.emit(ChartStore.EVENT_SOLVER_STATUS);
   }
-
-  // public solveConstraints_(additional?: (solver: Solver.ChartConstraintSolver) => void) {
-  //     if (this.preSolveValues.length > 0) {
-  //         let items = this.preSolveValues;
-  //         this.preSolveValues = [];
-  //         this.solveConstraints_((solver) => {
-  //             for (let [strength, attrs, attr, value] of items) {
-  //                 solver.solver.addEqualToConstant(strength, solver.solver.attr(attrs, attr), value);
-  //             }
-  //         });
-  //     }
-
-  //     let loss: { softLoss: number, hardLoss: number } = null;
-  //     let iterations = additional != null ? 2 : 2;
-  //     for (let i = 0; i < iterations; i++) {
-  //         let solver = new Solver.ChartConstraintSolver();
-  //         solver.setup(this.chartManager);
-  //         if (additional) {
-  //             additional(solver);
-  //             additional = null;
-  //         }
-  //         loss = solver.solve();
-  //         console.log("Loss", loss.hardLoss.toFixed(3), loss.softLoss.toFixed(3));
-  //         solver.destroy();
-  //     }
-  // }
 
   public newChartEmpty() {
     this.currentSelection = null;

@@ -58,13 +58,22 @@ export abstract class PlotSegmentClass extends ChartElementClass {
   ): Controls.Widget[] {
     return [
       manager.row(
-        "Filter",
-        manager.filterEditor({
-          table: this.object.table,
-          target: { plotSegment: this.object },
-          value: this.object.filter,
-          mode: "button"
-        })
+        "Data",
+        manager.horizontal(
+          [0, 1],
+          manager.filterEditor({
+            table: this.object.table,
+            target: { plotSegment: this.object },
+            value: this.object.filter,
+            mode: "button"
+          }),
+          manager.groupByEditor({
+            table: this.object.table,
+            target: { plotSegment: this.object },
+            value: this.object.groupBy,
+            mode: "button"
+          })
+        )
       )
     ];
   }

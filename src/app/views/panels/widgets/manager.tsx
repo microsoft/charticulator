@@ -42,6 +42,7 @@ import {
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
+import { GroupByEditor } from "./groupby_editor";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -396,10 +397,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                 const currentOrder = Expression.parse(currentOrderValue);
 
                 if (currentOrder instanceof Expression.FunctionCall) {
-                  if (
-                    currentOrder.callable instanceof Expression.Variable &&
-                    currentOrder.callable.name == "sortBy"
-                  ) {
+                  if (currentOrder.name == "sortBy") {
                     currentSortByLambdaExpression = currentOrder.args[0].toString();
                   }
                 }
@@ -645,9 +643,18 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     switch (options.mode) {
       case "button":
         let button: Button;
+        let text = "Filter by...";
+        if (options.value) {
+          if (options.value.categories) {
+            text = "Filter by " + options.value.categories.column;
+          }
+          if (options.value.expression) {
+            text = "Filter by " + options.value.expression;
+          }
+        }
         return (
           <Button
-            text="Filter by..."
+            text={text}
             ref={e => (button = e)}
             onClick={() => {
               globals.popupController.popupAt(
@@ -670,6 +677,51 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       case "panel":
         return (
           <FilterEditor
+            manager={this}
+            value={options.value}
+            options={options}
+          />
+        );
+    }
+  }
+
+  public groupByEditor(
+    options: Prototypes.Controls.GroupByEditorOptions
+  ): JSX.Element {
+    switch (options.mode) {
+      case "button":
+        let button: Button;
+        let text = "Group by...";
+        if (options.value) {
+          if (options.value.expression) {
+            text = "Group by " + options.value.expression;
+          }
+        }
+        return (
+          <Button
+            text={text}
+            ref={e => (button = e)}
+            onClick={() => {
+              globals.popupController.popupAt(
+                context => {
+                  return (
+                    <PopupView context={context}>
+                      <GroupByEditor
+                        manager={this}
+                        value={options.value}
+                        options={options}
+                      />
+                    </PopupView>
+                  );
+                },
+                { anchor: ReactDOM.findDOMNode(button) as Element }
+              );
+            }}
+          />
+        );
+      case "panel":
+        return (
+          <GroupByEditor
             manager={this}
             value={options.value}
             options={options}

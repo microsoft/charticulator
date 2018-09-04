@@ -124,6 +124,10 @@ funcitem
   / variable
   / braket_expression
 
+funcname
+  = name:variable_name names:("." variable_name)*
+    { return [name].concat(names.map(x => x[1])); }
+
 variable "variable"
   = name:variable_name { return new Expression.Variable(name); }
 
@@ -153,8 +157,8 @@ argitem_list
     { return []; }
 
 function_call
-  = funcitem:funcitem sp arglist:argitem_list
-    { return new Expression.FunctionCall(funcitem, arglist); }
+  = funcname:funcname sp arglist:argitem_list
+    { return new Expression.FunctionCall(funcname, arglist); }
 
 argnames
   = expr:variable_name sp comma sp other:argnames
