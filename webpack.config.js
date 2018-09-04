@@ -35,6 +35,17 @@ module.exports = (env, { mode }) => {
         plugins
     },
     {
+        // devtool: "eval",
+        entry: {
+            about: "./dist/scripts/about.js"
+        },
+        output: {
+            filename: "[name].bundle.js",
+            path: __dirname + "/dist/scripts"
+        },
+        plugins
+    },
+    {
         entry: {
             worker: "./dist/scripts/worker/worker_main.js"
         },
