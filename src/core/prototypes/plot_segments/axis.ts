@@ -620,7 +620,7 @@ export function buildAxisWidgets(
   const dropzoneOptions: Controls.RowOptions = {
     dropzone: {
       type: "axis-data-binding",
-      attribute: axisProperty,
+      property: axisProperty,
       prompt: axisName + ": drop here to assign data"
     }
   };

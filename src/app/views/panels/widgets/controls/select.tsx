@@ -56,7 +56,10 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
       active: true
     });
   }
-  private _startDropdown = this.startDropdown.bind(this);
+  private _startDropdown = (e: React.MouseEvent<HTMLSpanElement>) => {
+    e.stopPropagation();
+    this.startDropdown();
+  };
   private anchor: HTMLSpanElement;
 
   public render() {

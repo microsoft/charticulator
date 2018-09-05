@@ -165,7 +165,7 @@ export interface PlotSegment extends Object {
   /** Group the data by a specified categorical column (filter is applied before grouping) */
   groupBy?: Types.GroupBy;
   /** Order the data (filter & groupBy is applied before order */
-  order?: Types.Order;
+  order?: Types.SortBy;
 }
 
 /** Guide */

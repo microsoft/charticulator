@@ -687,12 +687,15 @@ export class PolarPlotSegment extends Region2DPlotSegment {
         slotName: this.object.properties.yData.expression
       } as Specification.Template.Axis);
     }
-    if (this.object.properties.sublayout.order) {
+    if (
+      this.object.properties.sublayout.order &&
+      this.object.properties.sublayout.order.expression
+    ) {
       r.push({
         type: "order",
         property: "sublayout",
         field: "order",
-        slotName: this.object.properties.sublayout.order
+        slotName: this.object.properties.sublayout.order.expression
       } as Specification.Template.Order);
     }
     return { inferences: r };

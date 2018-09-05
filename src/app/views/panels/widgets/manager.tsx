@@ -374,11 +374,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <DropZoneView
         filter={data => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
-          const expr = Expression.functionCall(
-            "sortBy",
-            Expression.parse(data.lambdaExpression)
-          ).toString();
-          this.emitSetProperty(property, expr);
+          this.emitSetProperty(property, { expression: data.expression });
         }}
         ref={e => (ref = e)}
         className={classNames("charticulator__widget-control-order-widget", [
@@ -389,18 +385,12 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           globals.popupController.popupAt(
             context => {
               let fieldSelector: DataFieldSelector;
-              let currentSortByLambdaExpression: string = null;
-              const currentOrderValue = this.getPropertyValue(
+              let currentExpression: string = null;
+              const currentSortBy = this.getPropertyValue(
                 property
-              ) as string;
-              if (currentOrderValue != null) {
-                const currentOrder = Expression.parse(currentOrderValue);
-
-                if (currentOrder instanceof Expression.FunctionCall) {
-                  if (currentOrder.name == "sortBy") {
-                    currentSortByLambdaExpression = currentOrder.args[0].toString();
-                  }
-                }
+              ) as Specification.Types.SortBy;
+              if (currentSortBy != null) {
+                currentExpression = currentSortBy.expression;
               }
               return (
                 <PopupView context={context}>
@@ -410,21 +400,20 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         ref={e => (fieldSelector = e)}
                         nullDescription="(default order)"
                         datasetStore={this.store.datasetStore}
+                        useAggregation={true}
                         defaultValue={
-                          currentSortByLambdaExpression
+                          currentExpression
                             ? {
                                 table: options.table,
-                                lambdaExpression: currentSortByLambdaExpression
+                                expression: currentExpression
                               }
                             : null
                         }
                         onChange={value => {
                           if (value != null) {
-                            const expr = Expression.functionCall(
-                              "sortBy",
-                              Expression.parse(value.lambdaExpression)
-                            ).toString();
-                            this.emitSetProperty(property, expr);
+                            this.emitSetProperty(property, {
+                              expression: value.expression
+                            });
                           } else {
                             this.emitSetProperty(property, null);
                           }
@@ -485,11 +474,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <DropZoneView
         filter={data => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
-          const expr = Expression.functionCall(
-            "sortBy",
-            Expression.parse(data.lambdaExpression)
-          ).toString();
-          this.emitSetProperty(options.property, expr);
+          this.emitSetProperty(options.property, {
+            expression: data.expression
+          });
         }}
         className={classNames("charticulator__widget-control-drop-target")}
         draggingHint={() => (
@@ -531,16 +518,16 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ) {
     if (options.dropzone && options.dropzone.type == "axis-data-binding") {
       let refButton: Element;
-      const current = this.getAttributeMapping(
-        options.dropzone.attribute
-      ) as Specification.Types.AxisDataBinding;
+      const current = this.getPropertyValue({
+        property: options.dropzone.property
+      }) as Specification.Types.AxisDataBinding;
       return (
         <DropZoneView
           filter={data => data instanceof DragData.DataExpression}
           onDrop={(data: DragData.DataExpression) => {
             new Actions.BindDataToAxis(
               this.objectClass.object as Specification.PlotSegment,
-              options.dropzone.attribute,
+              options.dropzone.property,
               null,
               data
             ).dispatch(this.store.dispatcher);
@@ -569,31 +556,30 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             ? { table: null, expression: current.expression }
                             : null
                         }
+                        useAggregation={true}
                         nullDescription={"(none)"}
                         nullNotHighlightable={true}
                         onChange={value => {
                           if (!value) {
                             this.emitSetProperty(
-                              { property: options.dropzone.attribute },
+                              { property: options.dropzone.property },
                               null
                             );
                           } else {
                             const data = new DragData.DataExpression(
                               this.store.datasetStore.getTable(value.table),
                               value.expression,
-                              value.lambdaExpression,
                               value.type,
                               value.metadata
                             );
                             new Actions.BindDataToAxis(
                               this.objectClass
                                 .object as Specification.PlotSegment,
-                              options.dropzone.attribute,
+                              options.dropzone.property,
                               null,
                               data
                             ).dispatch(this.store.dispatcher);
                           }
-                          context.close();
                         }}
                       />
                     </PopupView>

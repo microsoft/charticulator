@@ -5,7 +5,15 @@ import * as R from "../../resources";
 import { DatasetStore } from "../../stores";
 import { classNames } from "../../utils";
 import { kind2Icon, type2DerivedColumns } from "./common";
-import { Button } from "../panels/widgets/controls";
+import { Button, Select } from "../panels/widgets/controls";
+
+function defaultAggregations(type: string) {
+  if (type == "number" || type == "integer") {
+    return ["avg", "min", "max", "sum"];
+  } else {
+    return ["first", "last"];
+  }
+}
 
 export interface DataFieldSelectorProps {
   datasetStore: DatasetStore;
@@ -21,17 +29,19 @@ export interface DataFieldSelectorProps {
   /** Set a default value */
   defaultValue?: {
     table: string;
-    lambdaExpression?: string;
+    // lambdaExpression?: string;
     expression?: string;
   };
 
   onChange?: (newValue: DataFieldSelectorValue) => void;
+
+  useAggregation?: boolean;
 }
 
 export interface DataFieldSelectorValue {
   table: string;
   expression: string;
-  lambdaExpression: string;
+  // lambdaExpression: string;
   /** Only available if the expression refers to exactly a column */
   columnName?: string;
   type: string;
@@ -47,6 +57,7 @@ export interface DataFieldSelectorValueCandidate
 
 export interface DataFieldSelectorState {
   currentSelection: DataFieldSelectorValue;
+  currentSelectionAggregation: string;
 }
 
 export class DataFieldSelector extends React.Component<
@@ -55,36 +66,47 @@ export class DataFieldSelector extends React.Component<
 > {
   constructor(props: DataFieldSelectorProps) {
     super(props);
+    this.state = this.getDefaultState(props);
+  }
 
-    if (this.props.defaultValue) {
-      const fs = this.getAllFields().filter(x => {
-        if (
-          this.props.defaultValue.table != null &&
-          x.table != this.props.defaultValue.table
-        ) {
-          return false;
+  protected getDefaultState(
+    props: DataFieldSelectorProps
+  ): DataFieldSelectorState {
+    let expression = this.props.defaultValue
+      ? this.props.defaultValue.expression
+      : null;
+    let expressionAggregation: string = null;
+    if (props.useAggregation) {
+      if (expression != null) {
+        const parsed = Expression.parse(expression);
+        if (parsed instanceof Expression.FunctionCall) {
+          expression = parsed.args[0].toString();
+          expressionAggregation = parsed.name;
         }
-        if (this.props.defaultValue.lambdaExpression != null) {
-          return x.lambdaExpression == this.props.defaultValue.lambdaExpression;
-        }
-        if (this.props.defaultValue.expression != null) {
-          return x.expression == this.props.defaultValue.expression;
-        }
-      });
-      if (fs.length == 1) {
-        this.state = {
-          currentSelection: fs[0]
-        };
-      } else {
-        this.state = {
-          currentSelection: null
-        };
       }
-    } else {
-      this.state = {
-        currentSelection: null
-      };
     }
+    if (props.defaultValue) {
+      for (const f of this.getAllFields()) {
+        if (
+          props.defaultValue.table != null &&
+          f.table != props.defaultValue.table
+        ) {
+          continue;
+        }
+        if (expression != null) {
+          if (f.expression == expression) {
+            return {
+              currentSelection: f,
+              currentSelectionAggregation: expressionAggregation
+            };
+          }
+        }
+      }
+    }
+    return {
+      currentSelection: null,
+      currentSelectionAggregation: null
+    };
   }
 
   public get value() {
@@ -137,10 +159,6 @@ export class DataFieldSelector extends React.Component<
         table: store.getTables()[0].name,
         columnName: c.name,
         expression: Expression.variable(c.name).toString(),
-        lambdaExpression: Expression.lambda(
-          ["x"],
-          Expression.fields(Expression.variable("x"), c.name)
-        ).toString(),
         type: c.type,
         displayName: c.name,
         metadata: c.metadata,
@@ -156,13 +174,6 @@ export class DataFieldSelector extends React.Component<
             expression: Expression.functionCall(
               item.function,
               Expression.parse(r.expression)
-            ).toString(),
-            lambdaExpression: Expression.lambda(
-              ["x"],
-              Expression.functionCall(
-                item.function,
-                Expression.fields(Expression.variable("x"), c.name)
-              )
             ).toString(),
             type: item.type,
             metadata: item.metadata,
@@ -192,11 +203,96 @@ export class DataFieldSelector extends React.Component<
     return v1.expression == v2.expression && v1.table == v2.table;
   }
 
-  private selectItem(item: DataFieldSelectorValue) {
-    this.setState({ currentSelection: item });
-    if (this.props.onChange) {
-      this.props.onChange(item);
+  private selectItem(item: DataFieldSelectorValue, aggregation: string = null) {
+    if (this.props.useAggregation) {
+      if (aggregation == null) {
+        aggregation = defaultAggregations(item.type)[0];
+      }
     }
+    this.setState({
+      currentSelection: item,
+      currentSelectionAggregation: aggregation
+    });
+    if (this.props.onChange) {
+      const r = {
+        table: item.table,
+        expression: item.expression,
+        columnName: item.columnName,
+        type: item.type,
+        metadata: item.metadata
+      };
+      if (this.props.useAggregation) {
+        r.expression = Expression.functionCall(
+          aggregation,
+          Expression.parse(item.expression)
+        ).toString();
+      }
+      this.props.onChange(r);
+    }
+  }
+
+  public renderCandidate(item: DataFieldSelectorValueCandidate): JSX.Element {
+    let elDerived: HTMLElement;
+    return (
+      <div className="el-column-item" key={item.table + item.expression}>
+        <div
+          className={classNames(
+            "el-field-item",
+            ["is-active", this.isValueEqual(this.state.currentSelection, item)],
+            ["is-selectable", item.selectable]
+          )}
+          onClick={
+            item.selectable
+              ? () =>
+                  this.selectItem(
+                    item,
+                    this.isValueEqual(this.state.currentSelection, item)
+                      ? this.state.currentSelectionAggregation
+                      : null
+                  )
+              : null
+          }
+        >
+          <SVGImageIcon url={R.getSVGIcon(kind2Icon[item.metadata.kind])} />
+          <span className="el-text">{item.displayName}</span>
+          {this.props.useAggregation &&
+          this.isValueEqual(this.state.currentSelection, item) ? (
+            <Select
+              value={this.state.currentSelectionAggregation}
+              options={defaultAggregations(item.type)}
+              labels={defaultAggregations(item.type)}
+              showText={true}
+              onChange={newValue => {
+                this.selectItem(item, newValue);
+              }}
+            />
+          ) : null}
+          {item.derived && item.derived.length > 0 ? (
+            <Button
+              icon="general/more-vertical"
+              onClick={() => {
+                if (elDerived) {
+                  if (elDerived.style.display == "none") {
+                    elDerived.style.display = "block";
+                  } else {
+                    elDerived.style.display = "none";
+                  }
+                }
+              }}
+            />
+          ) : null}
+        </div>
+        {item.derived && item.derived.length > 0 ? (
+          <div
+            className="el-derived-fields"
+            style={{ display: "none" }}
+            ref={e => (elDerived = e)}
+          >
+            {item.derived.map(df => this.renderCandidate(df))}
+          </div>
+        ) : null}
+      </div>
+    );
   }
 
   public render() {
@@ -218,72 +314,7 @@ export class DataFieldSelector extends React.Component<
         {fields.length == 0 && !this.props.nullDescription ? (
           <div className="el-field-item is-null">(no suitable column)</div>
         ) : null}
-        {fields.map(f => {
-          let elDerived: HTMLElement;
-          return (
-            <div className="el-column-item" key={f.table + f.expression}>
-              <div
-                className={classNames(
-                  "el-field-item",
-                  [
-                    "is-active",
-                    this.isValueEqual(this.state.currentSelection, f)
-                  ],
-                  ["is-selectable", f.selectable]
-                )}
-                onClick={f.selectable ? () => this.selectItem(f) : null}
-              >
-                <SVGImageIcon url={R.getSVGIcon(kind2Icon[f.metadata.kind])} />
-                <span className="el-text">{f.displayName}</span>
-                {f.derived && f.derived.length > 0 ? (
-                  <Button
-                    icon="general/more-vertical"
-                    onClick={() => {
-                      if (elDerived) {
-                        if (elDerived.style.display == "none") {
-                          elDerived.style.display = "block";
-                        } else {
-                          elDerived.style.display = "none";
-                        }
-                      }
-                    }}
-                  />
-                ) : null}
-              </div>
-              {f.derived && f.derived.length > 0 ? (
-                <div
-                  className="el-derived-fields"
-                  style={{ display: "none" }}
-                  ref={e => (elDerived = e)}
-                >
-                  {f.derived.map(df => {
-                    return (
-                      <div
-                        key={df.table + df.expression}
-                        className={classNames(
-                          "el-field-item",
-                          [
-                            "is-active",
-                            this.isValueEqual(this.state.currentSelection, df)
-                          ],
-                          ["is-selectable", df.selectable]
-                        )}
-                        onClick={
-                          df.selectable ? () => this.selectItem(df) : null
-                        }
-                      >
-                        <SVGImageIcon
-                          url={R.getSVGIcon(kind2Icon[df.metadata.kind])}
-                        />
-                        <span className="el-text">{df.displayName}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
+        {fields.map(f => this.renderCandidate(f))}
       </div>
     );
   }

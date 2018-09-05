@@ -282,18 +282,27 @@
                 filter: invert(100%);
             }
         }
-        .el-svg-icon {
+        & > .el-svg-icon {
             flex-shrink: 0;
             width: 20px;
             height: 20px;
             margin: 2px;
         }
-        .el-text {
+        & > .el-text {
             flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
             padding-right: 8px;
         }
         .charticulator__widget-control-button {
             margin-right: 0;
+        }
+        .charticulator__widget-control-select {
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.2);
+            &:hover {
+                background: $color-primary;
+            }
         }
     }
 }

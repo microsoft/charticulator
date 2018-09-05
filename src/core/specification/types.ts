@@ -77,6 +77,6 @@ export interface GroupBy extends AttributeMap {
 }
 
 /** Order expression */
-export interface Order extends AttributeMap {
-  // TODO
+export interface SortBy extends AttributeMap {
+  expression?: Expression;
 }

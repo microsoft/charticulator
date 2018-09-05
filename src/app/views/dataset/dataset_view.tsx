@@ -179,6 +179,17 @@ export class ColumnView extends React.Component<
     );
   }
 
+  public applyAggregation(expr: string, type: string) {
+    let aggregation = "first";
+    if (type == "number" || type == "integer") {
+      aggregation = "avg";
+    }
+    return Expression.functionCall(
+      aggregation,
+      Expression.parse(expr)
+    ).toString();
+  }
+
   public renderColumnControl(
     label: string,
     icon: string,
@@ -200,8 +211,7 @@ export class ColumnView extends React.Component<
           this.setState({ isSelected: expr });
           const r = new DragData.DataExpression(
             this.props.table,
-            expr,
-            lambdaExpr,
+            this.applyAggregation(expr, type),
             type,
             metadata
           );

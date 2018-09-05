@@ -35,7 +35,7 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   };
 
   /** Order in sublayout objects */
-  order: Specification.Expression;
+  order: Specification.Types.SortBy;
   orderReversed: boolean;
 }
 
@@ -271,18 +271,22 @@ export class Region2DConstraintBuilder {
     const dateRowIndices = this.plotSegment.state.dataRowIndices;
     const table = this.getTableContext();
     // Sort results
-    if (order != null) {
+    if (order != null && order.expression) {
       // TODO: fixme
-      const orderLambda = this.getExpression(order).getValue(table) as Function;
+      const orderExpression = this.getExpression(order.expression);
       const compare = (i: number, j: number) => {
-        const ri = table.getGroupedContext(dateRowIndices[i]);
-        const rj = table.getGroupedContext(dateRowIndices[j]);
-        const r = orderLambda(ri, rj) as number;
-        // Stable sort
-        if (r == 0) {
-          return i - j;
+        const vi = orderExpression.getValue(
+          table.getGroupedContext(dateRowIndices[i])
+        );
+        const vj = orderExpression.getValue(
+          table.getGroupedContext(dateRowIndices[j])
+        );
+        if (vi < vj) {
+          return -1;
+        } else if (vi > vj) {
+          return 1;
         } else {
-          return r;
+          return 0;
         }
       };
       for (let i = 0; i < groups.length; i++) {

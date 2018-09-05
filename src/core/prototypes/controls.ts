@@ -30,7 +30,7 @@ export interface RowOptions {
   dropzone?: {
     type: "axis-data-binding";
     prompt?: string;
-    attribute?: string;
+    property?: string;
   };
 }
 

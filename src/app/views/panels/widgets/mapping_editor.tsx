@@ -32,7 +32,8 @@ import {
   InputNumber,
   InputText,
   ComboBox,
-  ComboBoxFontFamily
+  ComboBoxFontFamily,
+  Select
 } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
 
@@ -673,7 +674,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
 
   public renderDataPicker() {
     const options = this.props.options;
-    let currentExpression = null;
+    let currentExpression: string = null;
     const mapping = this.state.currentMapping;
 
     if (mapping != null && mapping.type == "scale") {
@@ -681,34 +682,36 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     }
 
     return (
-      <DataFieldSelector
-        datasetStore={this.datasetStore}
-        kinds={options.acceptKinds}
-        defaultValue={
-          currentExpression
-            ? { table: options.table, expression: currentExpression }
-            : null
-        }
-        nullDescription={"(none)"}
-        nullNotHighlightable={true}
-        onChange={value => {
-          if (value != null) {
-            this.props.parent.mapData(
-              new DragData.DataExpression(
-                this.datasetStore.getTable(value.table),
-                value.expression,
-                value.lambdaExpression,
-                value.type,
-                value.metadata
-              ),
-              options.hints
-            );
-          } else {
-            this.props.parent.clearMapping();
-            this.props.onClose();
+      <div>
+        <DataFieldSelector
+          datasetStore={this.datasetStore}
+          kinds={options.acceptKinds}
+          useAggregation={true}
+          defaultValue={
+            currentExpression
+              ? { table: options.table, expression: currentExpression }
+              : null
           }
-        }}
-      />
+          nullDescription={"(none)"}
+          nullNotHighlightable={true}
+          onChange={value => {
+            if (value != null) {
+              this.props.parent.mapData(
+                new DragData.DataExpression(
+                  this.datasetStore.getTable(value.table),
+                  value.expression,
+                  value.type,
+                  value.metadata
+                ),
+                options.hints
+              );
+            } else {
+              this.props.parent.clearMapping();
+              this.props.onClose();
+            }
+          }}
+        />
+      </div>
     );
   }
 

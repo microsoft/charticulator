@@ -520,7 +520,6 @@ export class BindDataToAxis extends Action {
       dataExpression: {
         table: this.dataExpression.table.name,
         expression: this.dataExpression.expression,
-        lambdaExpression: this.dataExpression.lambdaExpression,
         valueType: this.dataExpression.valueType,
         kind: this.dataExpression.metadata.kind
       }

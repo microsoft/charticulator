@@ -431,11 +431,6 @@ export class ChartStore extends BaseStore {
       const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
         .attributes[action.attribute];
       const table = this.datasetStore.getTable(action.glyph.table);
-      if (action.valueType == "number" || action.valueType == "integer") {
-        action.expression = "avg(" + action.expression + ")";
-      } else {
-        action.expression = "first(" + action.expression + ")";
-      }
       const inferred = this.scaleInference(
         table,
         {},
@@ -477,11 +472,6 @@ export class ChartStore extends BaseStore {
     }
 
     if (action instanceof Actions.MapDataToChartElementAttribute) {
-      if (action.valueType == "number" || action.valueType == "integer") {
-        action.expression = "avg(" + action.expression + ")";
-      } else {
-        action.expression = "first(" + action.expression + ")";
-      }
       const attr = Prototypes.ObjectClasses.Create(
         null,
         action.chartElement,
@@ -826,14 +816,7 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.BindDataToAxis) {
       this.parent.saveHistory();
-
-      let groupExpression = "first(" + action.dataExpression.expression + ")";
-      if (action.dataExpression.metadata.kind == "categorical") {
-        groupExpression = "first(" + action.dataExpression.expression + ")";
-      } else if (action.dataExpression.metadata.kind == "numerical") {
-        groupExpression = "avg(" + action.dataExpression.expression + ")";
-      }
-
+      const groupExpression = action.dataExpression.expression;
       const dataBinding: Specification.Types.AxisDataBinding = {
         type: "categorical",
         expression: groupExpression,
