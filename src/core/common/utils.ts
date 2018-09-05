@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 /** zip two arrays, return an iterator */
 export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
   for (let i = 0; i < a.length; i++) {

@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 // The entry JavaScript file for the web app.
 
 import * as React from "react";

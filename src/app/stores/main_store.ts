@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { deepClone, EventEmitter, Specification } from "../../core";
 import { Dispatcher } from "../../core";
 

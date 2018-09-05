@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { Dispatcher } from "../common";
 import { Glyph, Element } from "../specification";
 

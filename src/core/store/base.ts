@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { EventEmitter, Dispatcher, uniqueID } from "../common";
 import { Actions } from "../../app/actions";
 
