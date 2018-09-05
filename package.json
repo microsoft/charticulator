@@ -21,7 +21,8 @@
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prettify": "prettier 'src/**/*.{ts,tsx}'",
     "unit_test": "NODE_PATH=. mocha dist/scripts/tests",
-    "test": "run-s lint dev unit_test"
+    "test": "run-s lint dev unit_test",
+    "add_licenses": "license-check-and-add"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -40,6 +41,15 @@
     "react": "16.3.2",
     "react-dom": "16.3.2"
   },
+  "license-check-and-add-config": {
+      "folder": ".",
+      "license": "header.txt",
+      "exact_paths_method": "INCLUDE",
+      "exact_paths": ["src"],
+      "file_type_method": "INCLUDE",
+      "file_types": [".js", ".tsx", ".ts"],
+      "insert_license": true
+  },
   "devDependencies": {
     "@types/chai": "4.0.1",
     "@types/d3": "4.9.0",
@@ -56,6 +66,7 @@
     "http-server": "0.11.1",
     "husky": "^0.14.3",
     "js-yaml": "3.11.0",
+    "license-check-and-add": "^2.3.6",
     "lint-staged": "^7.1.0",
     "mocha": "5.0.5",
     "multirun": "2.0.0",
