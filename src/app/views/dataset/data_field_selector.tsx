@@ -204,30 +204,36 @@ export class DataFieldSelector extends React.Component<
   }
 
   private selectItem(item: DataFieldSelectorValue, aggregation: string = null) {
-    if (this.props.useAggregation) {
-      if (aggregation == null) {
-        aggregation = defaultAggregations(item.type)[0];
+    if (item == null) {
+      if (this.props.onChange) {
+        this.props.onChange(null);
       }
-    }
-    this.setState({
-      currentSelection: item,
-      currentSelectionAggregation: aggregation
-    });
-    if (this.props.onChange) {
-      const r = {
-        table: item.table,
-        expression: item.expression,
-        columnName: item.columnName,
-        type: item.type,
-        metadata: item.metadata
-      };
+    } else {
       if (this.props.useAggregation) {
-        r.expression = Expression.functionCall(
-          aggregation,
-          Expression.parse(item.expression)
-        ).toString();
+        if (aggregation == null) {
+          aggregation = defaultAggregations(item.type)[0];
+        }
       }
-      this.props.onChange(r);
+      this.setState({
+        currentSelection: item,
+        currentSelectionAggregation: aggregation
+      });
+      if (this.props.onChange) {
+        const r = {
+          table: item.table,
+          expression: item.expression,
+          columnName: item.columnName,
+          type: item.type,
+          metadata: item.metadata
+        };
+        if (this.props.useAggregation) {
+          r.expression = Expression.functionCall(
+            aggregation,
+            Expression.parse(item.expression)
+          ).toString();
+        }
+        this.props.onChange(r);
+      }
     }
   }
 

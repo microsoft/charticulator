@@ -432,8 +432,7 @@ export class ChartStore extends BaseStore {
         .attributes[action.attribute];
       const table = this.datasetStore.getTable(action.glyph.table);
       const inferred = this.scaleInference(
-        table,
-        {},
+        { glyph: action.glyph },
         action.expression,
         action.valueType,
         action.attributeType,
@@ -479,8 +478,7 @@ export class ChartStore extends BaseStore {
       ).attributes[action.attribute];
       const table = this.datasetStore.getTable(action.table);
       const inferred = this.scaleInference(
-        table,
-        {},
+        { chart: { table: action.table } },
         action.expression,
         action.valueType,
         action.attributeType,
@@ -845,9 +843,27 @@ export class ChartStore extends BaseStore {
       const table = this.datasetStore.getTable(
         action.dataExpression.table.name
       );
+      let groupBy: Specification.Types.GroupBy = null;
+      if (Prototypes.isType(action.object.classID, "plot-segment")) {
+        groupBy = (action.object as Specification.PlotSegment).groupBy;
+      } else {
+        // Find groupBy for data-driven guide
+        if (Prototypes.isType(action.object.classID, "mark")) {
+          for (const glyph of this.chart.glyphs) {
+            if (glyph.marks.indexOf(action.object) >= 0) {
+              // Found the glyph
+              this.chartManager.enumeratePlotSegments(cls => {
+                if (cls.object.glyph == glyph._id) {
+                  groupBy = cls.object.groupBy;
+                }
+              });
+            }
+          }
+        }
+      }
       const values = this.chartManager.getGroupedExpressionVector(
         action.dataExpression.table.name,
-        {},
+        groupBy,
         groupExpression
       );
 
@@ -1281,25 +1297,63 @@ export class ChartStore extends BaseStore {
   }
 
   public scaleInference(
-    table: Dataset.Table,
-    groupBy: Specification.Types.GroupBy,
+    context: { glyph?: Specification.Glyph; chart?: { table: string } },
     expression: string,
     valueType: string,
     outputType: string,
     hints: Prototypes.DataMappingHints = {}
   ): string {
-    // console.log("Scale inference", table, column, outputType, range);
+    console.log(
+      "Scale inference",
+      context,
+      expression,
+      valueType,
+      outputType,
+      hints
+    );
+    const r = this.scaleInferenceReal(
+      context,
+      expression,
+      valueType,
+      outputType,
+      hints
+    );
+    console.log("Result", r);
+    return r;
+  }
+
+  public scaleInferenceReal(
+    context: { glyph?: Specification.Glyph; chart?: { table: string } },
+    expression: string,
+    valueType: string,
+    outputType: string,
+    hints: Prototypes.DataMappingHints = {}
+  ): string {
+    // Figure out the source table
+    let tableName: string = null;
+    if (context.glyph) {
+      tableName = context.glyph.table;
+    }
+    if (context.chart) {
+      tableName = context.chart.table;
+    }
+    // Figure out the groupBy
+    let groupBy: Specification.Types.GroupBy = null;
+    if (context.glyph) {
+      // Find plot segments that use the glyph.
+      this.chartManager.enumeratePlotSegments(cls => {
+        if (cls.object.glyph == context.glyph._id) {
+          groupBy = cls.object.groupBy;
+        }
+      });
+    }
+    const table = this.datasetStore.getTable(tableName);
+
     // If there is an existing scale on the same column in the table, return that one
     if (!hints.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
-        if (parsed instanceof Expression.Variable) {
-          const column = getByName(table.columns, parsed.name);
-          if (column) {
-            return column.metadata.unit;
-          }
-        }
-        // In the case of a aggregation function
+        // In the case of an aggregation function
         if (parsed instanceof Expression.FunctionCall) {
           const args0 = parsed.args[0];
           if (args0 instanceof Expression.Variable) {
@@ -1309,7 +1363,7 @@ export class ChartStore extends BaseStore {
             }
           }
         }
-        return null;
+        return null; // unit is unknown
       };
       for (const element of this.chart.elements) {
         if (Prototypes.isType(element.classID, "plot-segment")) {
