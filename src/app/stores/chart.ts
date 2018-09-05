@@ -447,6 +447,7 @@ export class ChartStore extends BaseStore {
       if (inferred != null) {
         action.mark.mappings[action.attribute] = {
           type: "scale",
+          table: action.glyph.table,
           expression: action.expression,
           valueType: action.valueType,
           scale: inferred
@@ -455,6 +456,7 @@ export class ChartStore extends BaseStore {
         if (action.valueType == "number" && action.attributeType == "string") {
           action.mark.mappings[action.attribute] = {
             type: "text",
+            table: action.glyph.table,
             textExpression: new Expression.TextExpression([
               { expression: Expression.parse(action.expression), format: ".1f" }
             ]).toString()
@@ -463,6 +465,7 @@ export class ChartStore extends BaseStore {
         if (action.valueType == "string" && action.attributeType == "string") {
           action.mark.mappings[action.attribute] = {
             type: "text",
+            table: action.glyph.table,
             textExpression: new Expression.TextExpression([
               { expression: Expression.parse(action.expression) }
             ]).toString()
@@ -474,6 +477,11 @@ export class ChartStore extends BaseStore {
     }
 
     if (action instanceof Actions.MapDataToChartElementAttribute) {
+      if (action.valueType == "number" || action.valueType == "integer") {
+        action.expression = "avg(" + action.expression + ")";
+      } else {
+        action.expression = "first(" + action.expression + ")";
+      }
       const attr = Prototypes.ObjectClasses.Create(
         null,
         action.chartElement,
@@ -491,17 +499,29 @@ export class ChartStore extends BaseStore {
       if (inferred != null) {
         action.chartElement.mappings[action.attribute] = {
           type: "scale",
+          table: action.table,
           expression: action.expression,
           valueType: action.valueType,
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
+        if (action.valueType == "number" && action.attributeType == "string") {
+          action.chartElement.mappings[action.attribute] = {
+            type: "text",
+            table: action.table,
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression), format: ".1f" }
+            ]).toString()
+          } as Specification.TextMapping;
+        }
         if (action.valueType == "string" && action.attributeType == "string") {
           action.chartElement.mappings[action.attribute] = {
-            type: "scale",
-            expression: action.expression,
-            valueType: action.valueType
-          } as Specification.ScaleMapping;
+            type: "text",
+            table: action.table,
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression) }
+            ]).toString()
+          } as Specification.TextMapping;
         }
       }
 

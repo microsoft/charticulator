@@ -69,26 +69,24 @@ export interface Mapping {
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
   type: "scale";
+  /** The table to draw data from */
+  table: string;
   /** The data column */
-  expression?: Expression;
+  expression: Expression;
   /** Value type */
-  valueType?: string;
-  /** The id of the scale to use */
+  valueType: string;
+  /** The id of the scale to use. If null, use the expression directly */
   scale?: string;
 }
 
 /** Text mapping: map data to text */
 export interface TextMapping extends Mapping {
   type: "text";
+  /** The table to draw data from */
+  table: string;
+  /** The text expression */
   textExpression: string;
 }
-
-// /** Variable mapping: use a shared variable */
-// export interface VariableMapping extends Mapping {
-//     type: "variable";
-//     /** The name of the variable */
-//     variable: string;
-// }
 
 /** Value mapping: a constant value */
 export interface ValueMapping extends Mapping {

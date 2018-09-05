@@ -144,6 +144,14 @@ export class MappingEditor extends React.Component<
     this.updateEvents.emit("update");
   }
 
+  public getTableOrDefault() {
+    if (this.props.options.table) {
+      return this.props.options.table;
+    } else {
+      return this.props.parent.store.datasetStore.getTables()[0].name;
+    }
+  }
+
   private renderValueEditor(value: Specification.AttributeValue) {
     const parent = this.props.parent;
     let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
@@ -241,7 +249,7 @@ export class MappingEditor extends React.Component<
             validate={value =>
               parent.store.verifyUserExpressionWithTable(
                 value,
-                this.props.options.table,
+                this.getTableOrDefault(),
                 { textExpression: true, expectedTypes: ["string"] }
               )
             }
@@ -256,6 +264,7 @@ export class MappingEditor extends React.Component<
               } else {
                 this.props.parent.onEditMappingHandler(this.props.attribute, {
                   type: "text",
+                  table: this.getTableOrDefault(),
                   textExpression: newValue
                 } as Specification.TextMapping);
               }
@@ -412,7 +421,7 @@ export class MappingEditor extends React.Component<
               validate={value =>
                 parent.store.verifyUserExpressionWithTable(
                   value,
-                  this.props.options.table,
+                  textMapping.table,
                   { textExpression: true, expectedTypes: ["string"] }
                 )
               }
@@ -423,6 +432,7 @@ export class MappingEditor extends React.Component<
                 } else {
                   this.props.parent.onEditMappingHandler(this.props.attribute, {
                     type: "text",
+                    table: textMapping.table,
                     textExpression: newValue
                   } as Specification.TextMapping);
                 }

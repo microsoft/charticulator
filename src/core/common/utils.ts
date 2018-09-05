@@ -14,6 +14,15 @@ export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
   }
 }
 
+/** Generate a range of integers: [start, end) */
+export function makeRange(start: number, end: number) {
+  const r: number[] = [];
+  for (let i = start; i < end; i++) {
+    r.push(i);
+  }
+  return r;
+}
+
 /** Deep clone an object. The object must be JSON-serializable */
 export function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));

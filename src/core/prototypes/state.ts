@@ -1,5 +1,6 @@
-import { gather, getById, uniqueID, zip, zipArray } from "../common";
+import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
 import * as Dataset from "../dataset";
+import * as Expression from "../expression";
 import * as Specification from "../specification";
 import * as Charts from "./charts";
 import * as Glyphs from "./glyphs";
@@ -732,6 +733,39 @@ export class ChartStateManager {
     } else {
       return description;
     }
+  }
+
+  /** Get chart-level data context for a given table */
+  public getChartDataContext(tableName: string): Expression.Context {
+    const table = this.dataflow.getTable(tableName);
+    return table.getGroupedContext(makeRange(0, table.rows.length));
+  }
+
+  /** Get glyph-level data context for the glyphIndex-th glyph */
+  public getGlpyhDataContext(
+    plotSegment: Specification.PlotSegment,
+    glyphIndex: number
+  ): Expression.Context {
+    const table = this.dataflow.getTable(plotSegment.table);
+    const plotSegmentClass = this.getClassById(
+      plotSegment._id
+    ) as PlotSegments.PlotSegmentClass;
+    const indices = plotSegmentClass.state.dataRowIndices[glyphIndex];
+    return table.getGroupedContext(indices);
+  }
+
+  /** Get all glyph-level data contexts for a given plot segment */
+  public getGlpyhDataContexts(
+    plotSegment: Specification.PlotSegment,
+    glyphIndex: number
+  ): Expression.Context[] {
+    const table = this.dataflow.getTable(plotSegment.table);
+    const plotSegmentClass = this.getClassById(
+      plotSegment._id
+    ) as PlotSegments.PlotSegmentClass;
+    return plotSegmentClass.state.dataRowIndices.map(indices =>
+      table.getGroupedContext(indices)
+    );
   }
 
   public getGroupedExpressionVector(

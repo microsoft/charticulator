@@ -70,6 +70,15 @@ export class BaseSolver {
     mapping: Specification.Mapping,
     rowContext: Expression.Context
   ) {
+    if (
+      (rowContext == null && mapping.type == "scale") ||
+      mapping.type == "text"
+    ) {
+      const xMapping =
+        (mapping as Specification.ScaleMapping) ||
+        (mapping as Specification.TextMapping);
+      rowContext = this.manager.getChartDataContext(xMapping.table);
+    }
     switch (mapping.type) {
       case "scale":
         {
