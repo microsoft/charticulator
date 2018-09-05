@@ -1,3 +1,4 @@
+import { Point } from "../../../common";
 import * as Graphics from "../../../graphics";
 import {
   ConstraintSolver,
@@ -5,8 +6,6 @@ import {
   VariableStrength
 } from "../../../solver";
 import * as Specification from "../../../specification";
-
-import { getById, max, Point, uniqueID } from "../../../common";
 import {
   AttributeDescription,
   BoundingBox,
@@ -19,9 +18,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../../common";
-
 import { AxisRenderer } from "../axis";
-import { PlotSegmentClass } from "../index";
 import {
   Region2DAttributes,
   Region2DConfiguration,
@@ -622,12 +619,15 @@ export class CurvePlotSegment extends Region2DPlotSegment {
         slotName: this.object.properties.yData.expression
       } as Specification.Template.Axis);
     }
-    if (this.object.properties.sublayout.order) {
+    if (
+      this.object.properties.sublayout.order &&
+      this.object.properties.sublayout.order.expression
+    ) {
       r.push({
         type: "order",
         property: "sublayout",
         field: "order",
-        slotName: this.object.properties.sublayout.order
+        slotName: this.object.properties.sublayout.order.expression
       } as Specification.Template.Order);
     }
     return { inferences: r };

@@ -386,7 +386,7 @@ export class ChartContainer {
         state.glyphs.forEach((gs, index) => {
           // Mark all glyphs that have the same dataRowIndex as the one that was selected
           gs.emphasized =
-            selection.dataIndex === state.dataRowIndices[index] &&
+            state.dataRowIndices[index].indexOf(selection.dataIndex) >= 0 &&
             segment.table === selection.table;
         })
       );

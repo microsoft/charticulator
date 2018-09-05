@@ -2,6 +2,23 @@ import * as Dataset from "../../dataset";
 import * as Expression from "../../expression";
 import * as Specification from "../../specification";
 
+export class DataflowTableGroupedContext implements Expression.Context {
+  protected table: DataflowTable;
+  protected indices: number[];
+
+  constructor(table: DataflowTable, indices: number[]) {
+    this.table = table;
+    this.indices = indices;
+  }
+
+  public getVariable(name: string) {
+    if (this.table.rows[this.indices[0]].hasOwnProperty(name)) {
+      return this.indices.map(i => this.table.rows[i][name]);
+    }
+    return this.table.getVariable(name);
+  }
+}
+
 export class DataflowTable implements Expression.Context {
   constructor(
     public parent: DataflowManager,
@@ -25,6 +42,10 @@ export class DataflowTable implements Expression.Context {
   /** Get a row context with index */
   public getRowContext(index: number): Expression.Context {
     return new Expression.ShadowContext(this, this.rows[index]);
+  }
+
+  public getGroupedContext(rowIndices: number[]): Expression.Context {
+    return new DataflowTableGroupedContext(this, rowIndices);
   }
 }
 

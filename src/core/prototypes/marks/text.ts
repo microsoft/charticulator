@@ -1,16 +1,11 @@
-import { Color, Point, uniqueID } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { Color, Point } from "../../common";
+import * as Graphics from "../../graphics";
+import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
-
 import {
   AttributeDescription,
   BoundingBox,
   Controls,
-  CreatingInteraction,
   DropZones,
   Handles,
   ObjectClasses,
@@ -18,9 +13,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
-
-import * as Graphics from "../../graphics";
+import { MarkClass } from "./index";
 
 export interface TextElementAttributes extends Specification.AttributeMap {
   x: number;

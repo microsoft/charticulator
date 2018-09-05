@@ -5,8 +5,6 @@ import {
   VariableStrength
 } from "../../solver";
 import * as Specification from "../../specification";
-
-import { getById, Point, uniqueID } from "../../common";
 import {
   AttributeDescription,
   BoundingBox,
@@ -15,10 +13,8 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides,
   TemplateParameters
 } from "../common";
-
 import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
 import { PlotSegmentClass } from "./index";
 
@@ -124,7 +120,7 @@ export class LineGuide extends PlotSegmentClass {
         switch (data.type) {
           case "numerical":
             {
-              const row = rows.getRowContext(dataIndices[index]);
+              const row = rows.getGroupedContext(dataIndices[index]);
               const expr = this.parent.dataflow.cache.parse(data.expression);
               const value = expr.getNumberValue(row);
               t = (value - data.domainMin) / (data.domainMax - data.domainMin);
@@ -133,7 +129,7 @@ export class LineGuide extends PlotSegmentClass {
           case "categorical":
             {
               const axis = getCategoricalAxis(props.axis, false);
-              const row = rows.getRowContext(dataIndices[index]);
+              const row = rows.getGroupedContext(dataIndices[index]);
               const expr = this.parent.dataflow.cache.parse(data.expression);
               const value = expr.getStringValue(row);
               const i = data.categories.indexOf(value);

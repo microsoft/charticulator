@@ -1,7 +1,6 @@
 import { DataMappingHints } from ".";
-import { Color, Point } from "../common";
+import { Point } from "../common";
 import * as Specification from "../specification";
-import { AttributeDescription } from "./common";
 
 export type Widget = any;
 
@@ -31,7 +30,7 @@ export interface RowOptions {
   dropzone?: {
     type: "axis-data-binding";
     prompt?: string;
-    attribute?: string;
+    property?: string;
   };
 }
 
@@ -92,6 +91,16 @@ export interface FilterEditorOptions {
   mode: "button" | "panel";
 }
 
+export interface GroupByEditorOptions {
+  table: string;
+  target: {
+    plotSegment?: Specification.PlotSegment;
+    property?: Property;
+  };
+  value: Specification.Types.GroupBy;
+  mode: "button" | "panel";
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditorTOFIX(attribute: string): Widget;
@@ -148,6 +157,7 @@ export interface WidgetManager {
   table(rows: Widget[][], options?: TableOptions): Widget;
 
   filterEditor(options: FilterEditorOptions): Widget;
+  groupByEditor(options: GroupByEditorOptions): Widget;
 }
 
 export interface PopupEditor {

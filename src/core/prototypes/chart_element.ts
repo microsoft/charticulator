@@ -1,12 +1,15 @@
-import * as Dataset from "../dataset";
 import * as Expression from "../expression";
 import * as Graphics from "../graphics";
 import { ConstraintSolver } from "../solver";
 import * as Specification from "../specification";
 import { ChartClass } from "./charts";
-import { Handles } from "./common";
-import { BoundingBox, DropZones, SnappingGuides } from "./common";
-import { Controls } from "./common";
+import {
+  BoundingBox,
+  Controls,
+  DropZones,
+  Handles,
+  SnappingGuides
+} from "./common";
 import { ObjectClass } from "./object";
 import { ChartStateManager } from "./state";
 
@@ -19,7 +22,7 @@ export interface BuildConstraintsContext {
   getGlyphAttributes?(
     glyph: string,
     table: string,
-    rowIndex: number
+    rowIndices: number[]
   ): { [name: string]: number };
 }
 

@@ -6,6 +6,7 @@ export {
   TextExpressionPart,
   Context,
   ShadowContext,
+  LambdaFunction,
   SimpleContext,
   FieldAccess,
   FunctionCall,
