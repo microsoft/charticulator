@@ -1,19 +1,14 @@
 import * as React from "react";
-
-import { EventSubscription } from "../../../core";
-
-import { DatasetStore } from "../../stores";
 import { Dataset, Expression } from "../../../core";
-import * as globals from "../../globals";
-
-import { classNames } from "../../utils";
-import * as R from "../../resources";
-import { DraggableElement, SVGImageIcon } from "../../components";
-import { DragData, Actions } from "../../actions";
-
-import { DropdownButton, ButtonFlat } from "../../components";
-import { Button } from "../panels/widgets/controls";
+import { DragData } from "../../actions";
+import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
 import { PopupView } from "../../controllers";
+import * as globals from "../../globals";
+import * as R from "../../resources";
+import { DatasetStore } from "../../stores";
+import { classNames } from "../../utils";
+import { Button } from "../panels/widgets/controls";
+import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
 
 export interface DatasetViewProps {
@@ -64,114 +59,6 @@ export interface ColumnsViewProps {
 export interface ColumnsViewState {
   selectedColumn: string;
 }
-
-export interface DerivedColumnDescription {
-  name: string;
-  type: string;
-  function: string;
-  metadata: Dataset.ColumnMetadata;
-}
-
-function makeTwoDigitRange(start: number, end: number): string[] {
-  const r: string[] = [];
-  for (let i = start; i <= end; i++) {
-    let istr = i.toString();
-    while (istr.length < 2) {
-      istr = "0" + istr;
-    }
-    r.push(istr);
-  }
-  return r;
-}
-
-const type2DerivedColumns: { [name: string]: DerivedColumnDescription[] } = {
-  string: null,
-  number: null,
-  integer: null,
-  boolean: null,
-  date: [
-    {
-      name: "year",
-      type: "string",
-      function: "date.year",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
-    },
-    {
-      name: "month",
-      type: "string",
-      function: "date.month",
-      metadata: {
-        kind: "categorical",
-        order: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ]
-      }
-    },
-    {
-      name: "day",
-      type: "string",
-      function: "date.day",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
-    },
-    {
-      name: "weekOfYear",
-      type: "string",
-      function: "date.weekOfYear",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
-    },
-    {
-      name: "dayOfYear",
-      type: "string",
-      function: "date.dayOfYear",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
-    },
-    {
-      name: "weekday",
-      type: "string",
-      function: "date.weekday",
-      metadata: {
-        kind: "categorical",
-        order: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-      }
-    },
-    {
-      name: "hour",
-      type: "string",
-      function: "date.hour",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 24) }
-    },
-    {
-      name: "minute",
-      type: "string",
-      function: "date.minute",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 59) }
-    },
-    {
-      name: "second",
-      type: "string",
-      function: "date.second",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 59) }
-    }
-  ]
-};
-
-const kind2Icon: { [name: string]: string } = {
-  categorical: "type/categorical",
-  numerical: "type/numerical",
-  boolean: "type/boolean",
-  date: "type/numerical"
-};
 
 export class ColumnsView extends React.Component<
   ColumnsViewProps,

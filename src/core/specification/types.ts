@@ -61,8 +61,8 @@ export interface LinkAnchorPoint extends AttributeMap {
 export interface Filter extends AttributeMap {
   /** Filter by a categorical variable */
   categories?: {
-    /** The column to draw values from */
-    column: string;
+    /** The expression to draw values from */
+    expression: string;
     /** The accepted values */
     values: { [value: string]: boolean };
   };

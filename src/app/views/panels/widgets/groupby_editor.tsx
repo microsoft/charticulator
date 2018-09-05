@@ -73,11 +73,9 @@ export class GroupByEditor extends React.Component<
             if (field == null) {
               this.emitUpdateGroupBy(null);
             } else {
-              if (field.columnName) {
-                this.emitUpdateGroupBy({
-                  expression: field.expression
-                });
-              }
+              this.emitUpdateGroupBy({
+                expression: field.expression
+              });
             }
           }}
         />

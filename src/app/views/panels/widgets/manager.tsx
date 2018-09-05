@@ -646,7 +646,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         let text = "Filter by...";
         if (options.value) {
           if (options.value.categories) {
-            text = "Filter by " + options.value.categories.column;
+            text = "Filter by " + options.value.categories.expression;
           }
           if (options.value.expression) {
             text = "Filter by " + options.value.expression;
