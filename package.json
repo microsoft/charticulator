@@ -27,8 +27,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "tslint --fix",
-      "prettier --write"
-    ]
+      "prettier --write",
+      "license-check-and-add"
+    ],
+    "*.{js,jsx}": "license-check-and-add"
   },
   "dependencies": {
     "d3-dsv": "^1.0.8",
