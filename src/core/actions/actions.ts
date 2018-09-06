@@ -3,7 +3,7 @@ Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
 import { Dispatcher } from "../common";
-import { Glyph, Element } from "../specification";
+import { Glyph, Element, PlotSegment } from "../specification";
 
 export class Action {
   public dispatch(dispatcher: Dispatcher<Action>) {
@@ -17,9 +17,10 @@ export class Action {
 
 export class SelectMark extends Action {
   constructor(
+    public plotSegment: PlotSegment,
     public glyph: Glyph,
     public mark: Element,
-    public dataRowIndex: number[] = null
+    public glyphIndex: number = null
   ) {
     super();
   }
@@ -27,9 +28,10 @@ export class SelectMark extends Action {
   public digest() {
     return {
       name: "SelectMark",
+      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
       glyph: [this.glyph.classID, this.glyph._id],
       mark: [this.mark.classID, this.mark._id],
-      dataRowIndex: this.dataRowIndex
+      glyphIndex: this.glyphIndex
     };
   }
 }

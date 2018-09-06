@@ -184,10 +184,7 @@ export class ColumnView extends React.Component<
   }
 
   public applyAggregation(expr: string, type: string) {
-    let aggregation = "first";
-    if (type == "number" || type == "integer") {
-      aggregation = "avg";
-    }
+    const aggregation = Expression.getDefaultAggregationFunction(type);
     return Expression.functionCall(
       aggregation,
       Expression.parse(expr)

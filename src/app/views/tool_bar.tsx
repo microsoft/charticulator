@@ -68,6 +68,11 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
         <ObjectButton classID="mark.text" title="Text" icon="mark/text" />
         {/* <ObjectButton classID="mark.textbox" title="Text" icon="mark/textbox" currentTool={this.props.store.currentTool} /> */}
         <ObjectButton classID="mark.image" title="Image" icon="mark/image" />
+        <ObjectButton
+          classID="mark.nested-chart"
+          title="Image"
+          icon="mark/chart"
+        />
         <span className="chartaccent__toolbar-separator" />
         <ObjectButton
           classID="mark.data-axis"

@@ -77,6 +77,8 @@ export interface MainStoreState {
 
 export class MainStore extends BaseStore {
   public static EVENT_STATUSBAR = "status-bar";
+  public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
+  public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
 
   public readonly parent: null;
   public readonly worker: CharticulatorWorker;
@@ -85,6 +87,8 @@ export class MainStore extends BaseStore {
   public chartStore: ChartStore;
 
   public statusBar: { [name: string]: string };
+  public isNestedEditor: boolean = false;
+  public disableFileView: boolean = false;
 
   public historyManager: HistoryManager<MainStoreState>;
 
@@ -236,6 +240,10 @@ export class MainStore extends BaseStore {
       this.currentChartID = null;
       this.historyManager.clear();
     }
+    if (action instanceof Actions.ImportChartAndDataset) {
+      this.currentChartID = null;
+      this.historyManager.clear();
+    }
   }
 
   public async backendOpenChart(id: string) {
@@ -286,6 +294,17 @@ export class MainStore extends BaseStore {
     );
     this.currentChartID = id;
     return id;
+  }
+
+  public setupNestedEditor(
+    callback: (newSpecification: Specification.Chart) => void
+  ) {
+    this.isNestedEditor = true;
+    this.disableFileView = true;
+    this.emit(MainStore.EVENT_IS_NESTED_EDITOR);
+    this.addListener(MainStore.EVENT_NESTED_EDITOR_EDIT, () => {
+      callback(this.chartStore.chart);
+    });
   }
 
   private registeredExportTemplateTargets = new Map<

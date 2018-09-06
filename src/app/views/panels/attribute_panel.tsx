@@ -58,7 +58,13 @@ export class AttributePanel extends React.Component<
       if (selection instanceof GlyphSelection) {
         const glyph = selection.glyph;
         object = glyph;
-        objectClass = Prototypes.ObjectClasses.Create(null, object, null);
+        objectClass = this.props.store.chartManager.getGlyphClass(
+          this.props.store.chartManager.findGlyphState(
+            selection.plotSegment,
+            selection.glyph,
+            selection.glyphIndex
+          )
+        );
         manager = new WidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetGlyphAttribute(glyph, attribute, mapping).dispatch(
@@ -70,7 +76,14 @@ export class AttributePanel extends React.Component<
         const glyph = selection.glyph;
         const mark = selection.mark;
         object = mark;
-        objectClass = Prototypes.ObjectClasses.Create(null, mark, null);
+        objectClass = this.props.store.chartManager.getMarkClass(
+          this.props.store.chartManager.findMarkState(
+            selection.plotSegment,
+            selection.glyph,
+            selection.mark,
+            selection.glyphIndex
+          )
+        );
         manager = new WidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetMarkAttribute(
@@ -121,9 +134,7 @@ export class AttributePanel extends React.Component<
       }
     } else {
       const chart = this.props.store.chart;
-      const boundClass = Prototypes.ObjectClasses.Create(
-        null,
-        chart,
+      const boundClass = this.props.store.chartManager.getChartClass(
         this.props.store.chartState
       );
       object = chart;

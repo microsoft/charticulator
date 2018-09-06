@@ -33,20 +33,20 @@ export class ChartStore extends BaseStore {
     if (action instanceof SelectMark) {
       const selection = this.currentSelection;
       // There was something selected, but now there isn't or it is the same thing selected twice
-      if (
-        selection &&
-        (action.dataRowIndex === undefined ||
-          (action.dataRowIndex.indexOf(selection.dataIndex) >= 0 &&
-            action.glyph.table === selection.table))
-      ) {
-        this.currentSelection = undefined;
-        // Otherwise, the user selected some useful mark
-      } else if (action.dataRowIndex.length > 0) {
-        this.currentSelection = {
-          table: action.glyph.table,
-          dataIndex: action.dataRowIndex[0]
-        };
-      }
+      // if (
+      //   selection &&
+      //   (action.dataRowIndex === undefined ||
+      //     (action.dataRowIndex.indexOf(selection.dataIndex) >= 0 &&
+      //       action.glyph.table === selection.table))
+      // ) {
+      //   this.currentSelection = undefined;
+      //   // Otherwise, the user selected some useful mark
+      // } else if (action.dataRowIndex.length > 0) {
+      //   this.currentSelection = {
+      //     table: action.glyph.table,
+      //     dataIndex: action.dataRowIndex[0]
+      //   };
+      // }
 
       this.emit(ChartStore.EVENT_SELECTION);
     } else if (action instanceof ClearSelection) {

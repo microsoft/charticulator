@@ -8,7 +8,7 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { MainStore } from "./stores";
 
-import { CharticulatorCoreConfig, initialize, Dispatcher } from "../core";
+import { initialize, Dispatcher, Specification, Dataset } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -18,7 +18,6 @@ import { CharticulatorAppConfig } from "./config";
 import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
-import { DatasetLoader, Dataset } from "../core/dataset";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
 
 export class ApplicationExtensionContext implements ExtensionContext {
@@ -126,11 +125,7 @@ export class Application {
     });
     (window as any).mainStore = this.mainStore;
     ReactDOM.render(
-      <MainView
-        store={this.mainStore}
-        disableFileView={config.DisableFileView}
-        ref={e => (this.mainView = e)}
-      />,
+      <MainView store={this.mainStore} ref={e => (this.mainView = e)} />,
       document.getElementById(containerID)
     );
 
@@ -156,14 +151,49 @@ export class Application {
     await this.processHashString();
   }
 
+  public setupNestedEditor(id: string) {
+    window.addEventListener("message", (e: MessageEvent) => {
+      if (e.origin != document.location.origin || e.data.id != id) {
+        return;
+      }
+      const info: {
+        dataset: Dataset.Dataset;
+        specification: Specification.Chart;
+      } =
+        e.data;
+      this.mainStore.dispatcher.dispatch(
+        new Actions.ImportChartAndDataset(info.specification, info.dataset)
+      );
+      this.mainStore.setupNestedEditor(newSpecification => {
+        window.opener.postMessage(
+          {
+            id,
+            type: "save",
+            specification: newSpecification
+          },
+          document.location.origin
+        );
+      });
+    });
+    window.opener.postMessage(
+      {
+        id,
+        type: "initialized"
+      },
+      document.location.origin
+    );
+  }
+
   public async processHashString() {
     // Load saved state or data from hash
     const hashParsed = parseHashString(document.location.hash);
 
-    if (hashParsed.loadDataset) {
+    if (hashParsed.nestedEditor) {
+      this.setupNestedEditor(hashParsed.nestedEditor);
+    } else if (hashParsed.loadDataset) {
       // Load from a dataset specification json format
       const spec: DatasetSourceSpecification = JSON.parse(hashParsed.dataset);
-      const loader = new DatasetLoader();
+      const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);
       this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.loadCSV) {
@@ -171,7 +201,7 @@ export class Application {
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV.split("|").map(x => ({ url: x }))
       };
-      const loader = new DatasetLoader();
+      const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);
       this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.load) {
@@ -180,7 +210,7 @@ export class Application {
       const json = await value.json();
       this.mainStore.dispatcher.dispatch(new Actions.Load(json.state));
     } else {
-      this.mainView.showFileModalWindow("new");
+      this.mainView.refMenuBar.showFileModalWindow("new");
     }
   }
 

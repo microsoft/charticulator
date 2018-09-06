@@ -16,7 +16,8 @@ import {
   getField,
   Point,
   Prototypes,
-  Specification
+  Specification,
+  uniqueID
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -718,6 +719,54 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           />
         );
     }
+  }
+
+  public nestedChartEditor(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.NestedChartEditorOptions
+  ) {
+    return this.row(
+      "",
+      <ButtonRaised
+        text="Edit Nested Chart"
+        onClick={() => {
+          const editorID = uniqueID();
+          const newWindow = window.open(
+            "index.html#!nestedEditor=" + editorID,
+            "_blank",
+            "menubar=no,status=no,toolbar=no,location=no"
+          );
+          const listener = (e: MessageEvent) => {
+            if (e.origin == document.location.origin) {
+              const data = e.data;
+              if (data.id == editorID) {
+                switch (data.type) {
+                  case "initialized":
+                    {
+                      newWindow.postMessage(
+                        {
+                          id: editorID,
+                          type: "load",
+                          specification: options.specification,
+                          dataset: options.dataset
+                        },
+                        document.location.origin
+                      );
+                    }
+                    break;
+                  case "save":
+                    {
+                      this.emitSetProperty(property, data.specification);
+                    }
+                    break;
+                }
+              }
+            }
+          };
+          window.addEventListener("message", listener);
+        }}
+      />
+    );
   }
 
   public row(title: string, widget?: JSX.Element) {

@@ -4,6 +4,7 @@ Licensed under the MIT license.
 */
 import { Color, Point } from "../common";
 import * as Specification from "../specification";
+import * as Dataset from "../dataset";
 
 // Internal graphics representation
 // Bridge the core components with the rendering system
@@ -62,6 +63,16 @@ export interface MarkElement extends Element {
   mark: Specification.Element;
   glyph: Specification.Glyph;
   glyphIndex: number;
+}
+
+export interface ChartContainerElement {
+  type: "chart-container";
+  chart: Specification.Chart;
+  dataset: Dataset.Dataset;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface Rect extends Element {

@@ -663,9 +663,10 @@ export class ChartEditorView
               active={isMarkSelected}
               onClick={() => {
                 new Actions.SelectMark(
+                  plotSegment,
                   glyph,
                   mark,
-                  plotSegmentState.dataRowIndices[glyphIndex]
+                  glyphIndex
                 ).dispatch(this.props.store.dispatcher);
               }}
             />

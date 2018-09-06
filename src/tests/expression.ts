@@ -35,7 +35,10 @@ describe("Expression", () => {
     [`date.month(date.parse("2014-12-14 11:23:45"))`, "Dec"],
     [`sum(json.parse("[12,13,14,16,1,2,3]"))`, 61],
     [`average(map(data, x => x.value))`, 2],
-    [`array(1,2,3,4) + array(5,6,7,8)`, [6, 8, 10, 12]]
+    [`array(1,2,3,4) + array(5,6,7,8)`, [6, 8, 10, 12]],
+    [`stdev(list(100,150,100,125,125,150))`, 20.412414523193135],
+    [`variance(list(100,150,100,125,125,150))`, 416.66666666666606],
+    [`median(list(100,150,100,125,125,150))`, 137.5]
   ];
   const context = new Expression.SimpleContext();
   context.variables = {

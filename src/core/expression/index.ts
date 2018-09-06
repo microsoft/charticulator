@@ -24,10 +24,12 @@ export {
 
 export { SyntaxError } from "./parser";
 
+/** Shortcut to Expression.Parse */
 export function parse(str: string): Expression {
   return Expression.Parse(str);
 }
 
+/** Shortcut to TextExpression.Parse */
 export function parseTextExpression(str: string): TextExpression {
   return TextExpression.Parse(str);
 }
@@ -46,6 +48,10 @@ export {
   date,
   boolean,
   ExpressionCache,
+  getDefaultAggregationFunction,
+  getCompatibleAggregationFunctions,
+  aggregationFunctions,
+  AggregationFunctionDescription,
   verifyUserExpression,
   VerifyUserExpressionOptions,
   VerifyUserExpressionReport

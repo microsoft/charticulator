@@ -361,23 +361,22 @@ export class ChartContainer {
    * Listener for when an element is selected on the renderer
    */
   private onElementSelected = (element?: Graphics.MarkElement) => {
-    let action: Action;
-    // The user selected nothing, so clear the selection
-    if (!element || !element.mark) {
-      action = new ClearSelection();
-
-      // Otherwise, the user selected some useful mark
-    } else {
-      const { mark, glyph, glyphIndex } = element;
-      const pss = this.plotSegments.filter(
-        n => n.segment.glyph === glyph._id
-      )[0].state;
-      const dataRowIndex = pss.dataRowIndices[glyphIndex];
-      action = new SelectMark(glyph, mark, dataRowIndex);
-    }
-    if (action) {
-      this.store.dispatcher.dispatch(action);
-    }
+    // let action: Action;
+    // // The user selected nothing, so clear the selection
+    // if (!element || !element.mark) {
+    //   action = new ClearSelection();
+    //   // Otherwise, the user selected some useful mark
+    // } else {
+    //   const { mark, glyph, glyphIndex } = element;
+    //   const pss = this.plotSegments.filter(
+    //     n => n.segment.glyph === glyph._id
+    //   )[0].state;
+    //   const dataRowIndex = pss.dataRowIndices[glyphIndex];
+    //   action = new SelectMark(glyph, mark, dataRowIndex);
+    // }
+    // if (action) {
+    //   this.store.dispatcher.dispatch(action);
+    // }
   };
 
   /**

@@ -92,7 +92,7 @@ functions.pow = makeArrayCapable2(Math.pow);
 // List and range
 functions.array = (...args: any[]) => args;
 functions.list = functions.array;
-functions.length = (...args: any[]) => args.length;
+functions.length = (arg: any[]) => arg.length;
 functions.range = (min: number, max: number, step: number = 1) => {
   const opt: number[] = [];
   for (let i = min; i <= max; i += step) {
@@ -150,6 +150,49 @@ functions.sum = (...list: Array<number | number[]>) => {
   let r = 0;
   stat_foreach(x => (r += x), list);
   return r;
+};
+functions.count = (...list: Array<number | number[]>) => {
+  let r = 0;
+  stat_foreach(x => (r += 1), list);
+  return r;
+};
+functions.stdev = (...list: Array<number | number[]>) => {
+  let count = 0;
+  let sumX = 0;
+  let sumX2 = 0;
+  stat_foreach(x => {
+    count += 1;
+    sumX += x;
+    sumX2 += x * x;
+  }, list);
+  sumX2 /= count;
+  sumX /= count;
+  return Math.sqrt(sumX2 - sumX * sumX);
+};
+functions.variance = (...list: Array<number | number[]>) => {
+  let count = 0;
+  let sumX = 0;
+  let sumX2 = 0;
+  stat_foreach(x => {
+    count += 1;
+    sumX += x;
+    sumX2 += x * x;
+  }, list);
+  sumX2 /= count;
+  sumX /= count;
+  return sumX2 - sumX * sumX;
+};
+functions.median = (...list: Array<number | number[]>) => {
+  const values: number[] = [];
+  stat_foreach(x => {
+    values.push(x);
+  }, list);
+  values.sort((a, b) => a - b);
+  if (values.length % 2 == 0) {
+    return (values[values.length / 2] + values[values.length / 2 + 1]) / 2;
+  } else {
+    return values[(values.length - 1) / 2];
+  }
 };
 functions.avg = (...list: Array<number | number[]>) => {
   let r = 0,

@@ -87,7 +87,9 @@ export class MarkEditorView extends React.Component<
         height: this.props.height != null ? this.props.height : bbox.height
       },
       () => {
-        this.refSingleMarkView.doAutoFit();
+        if (this.refSingleMarkView) {
+          this.refSingleMarkView.doAutoFit();
+        }
       }
     );
   };
@@ -450,7 +452,7 @@ export class SingleMarkView
     pinch.recognizeWith(pan);
     this.hammer.add([pinch]);
     this.hammer.on("tap", () => {
-      new Actions.SelectGlyph(this.props.store.mark).dispatch(
+      new Actions.SelectGlyph(null, this.props.store.mark).dispatch(
         this.props.store.dispatcher
       );
     });
@@ -803,6 +805,7 @@ export class SingleMarkView
                 boundingBox={bbox}
                 onClick={() => {
                   new Actions.SelectMark(
+                    null,
                     this.props.store.mark,
                     element
                   ).dispatch(this.props.store.dispatcher);

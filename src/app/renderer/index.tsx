@@ -6,6 +6,7 @@ import * as React from "react";
 
 import { Graphics, Color, shallowClone } from "../../core";
 import { toSVGNumber } from "../utils";
+import { ChartComponent } from "../../container/chartComponent";
 
 // adapted from https://stackoverflow.com/a/20820649
 function desaturate(color: Color, amount: number) {
@@ -291,6 +292,18 @@ export function renderGraphicalElementSVG(
           y={-image.y - image.height}
           width={image.width}
           height={image.height}
+        />
+      );
+    }
+    case "chart-container": {
+      const component = element as Graphics.ChartContainerElement;
+      return (
+        <ChartComponent
+          chart={component.chart}
+          dataset={component.dataset}
+          width={component.width}
+          height={component.height}
+          rootElement="g"
         />
       );
     }

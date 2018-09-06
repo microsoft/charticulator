@@ -85,6 +85,19 @@ export class ImportDataset extends Action {
   }
 }
 
+export class ImportChartAndDataset extends Action {
+  constructor(
+    public specification: Specification.Chart,
+    public dataset: Dataset.Dataset
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ImportChartAndDataset" };
+  }
+}
+
 // Dataset actions
 
 export class AddTable extends Action {
@@ -664,14 +677,20 @@ export class ReorderGlyphMark extends Action {
 }
 
 export class SelectGlyph extends Action {
-  constructor(public glyph: Specification.Glyph) {
+  constructor(
+    public plotSegment: Specification.PlotSegment,
+    public glyph: Specification.Glyph,
+    public glyphIndex: number = null
+  ) {
     super();
   }
 
   public digest() {
     return {
       name: "SelectGlyph",
-      glyph: [this.glyph.classID, this.glyph._id]
+      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      glyph: [this.glyph.classID, this.glyph._id],
+      glyphIndex: this.glyphIndex
     };
   }
 }
@@ -687,7 +706,8 @@ export class SelectChartElement extends Action {
   public digest() {
     return {
       name: "SelectChartElement",
-      glyph: [this.chartElement.classID, this.chartElement._id]
+      glyph: [this.chartElement.classID, this.chartElement._id],
+      glyphIndex: this.glyphIndex
     };
   }
 }

@@ -73,6 +73,12 @@ export class DatasetStore extends BaseStore {
       this.dataset = action.dataset;
       this.emit(DatasetStore.EVENT_CHANGED);
     }
+    if (action instanceof Actions.ImportChartAndDataset) {
+      this.selectedRowMap = new WeakMap<Dataset.Table, number>();
+      this.emit(DatasetStore.EVENT_SELECTION);
+      this.dataset = action.dataset;
+      this.emit(DatasetStore.EVENT_CHANGED);
+    }
     // if (action instanceof Actions.LoadDataFromCSV) {
     //     this.selectedRowMap = new WeakMap<Dataset.Table, number>();
     //     this.emit(DatasetStore.EVENT_SELECTION);

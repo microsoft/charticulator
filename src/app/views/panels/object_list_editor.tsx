@@ -130,7 +130,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
             sel instanceof GlyphSelection && sel.glyph == glyph
           ])}
           onClick={() => {
-            this.dispatch(new Actions.SelectGlyph(glyph));
+            this.dispatch(new Actions.SelectGlyph(null, glyph));
           }}
         >
           <SVGImageIcon
@@ -157,7 +157,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 ])}
                 key={mark._id}
                 onClick={() => {
-                  this.dispatch(new Actions.SelectMark(glyph, mark));
+                  this.dispatch(new Actions.SelectMark(null, glyph, mark));
                 }}
               >
                 <SVGImageIcon

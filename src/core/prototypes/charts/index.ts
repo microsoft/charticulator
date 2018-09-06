@@ -27,11 +27,13 @@ import {
 
 import { Color } from "../../common";
 import * as Scales from "../scales";
+import { ChartStateManager } from "../state";
 
 export abstract class ChartClass extends ObjectClass {
   public readonly object: Specification.Chart;
   public readonly state: Specification.ChartState;
   public dataflow: DataflowManager;
+  public manager: ChartStateManager;
 
   public static metadata: ObjectClassMetadata = {
     iconPath: "chart",
@@ -40,6 +42,10 @@ export abstract class ChartClass extends ObjectClass {
 
   public setDataflow(dataflow: DataflowManager) {
     this.dataflow = dataflow;
+  }
+
+  public setManager(manager: ChartStateManager) {
+    this.manager = manager;
   }
 
   public getBackgroundGraphics(): Graphics.Element {
