@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import * as React from "react";
 
 import { Specification, Dataset, Prototypes, Graphics, Solver } from "../core";
@@ -58,25 +62,51 @@ export class ChartComponent extends React.Component<
   }
 
   public componentWillReceiveProps(newProps: ChartComponentProps) {
-    this.updateWithNewProps(newProps);
-    this.setState({ working: true });
-    this.scheduleUpdate();
+    if (this.updateWithNewProps(newProps)) {
+      this.setState({ working: true });
+      this.scheduleUpdate();
+    }
+  }
+
+  public isEqual<T>(a: T, b: T) {
+    if (a == b) {
+      return true;
+    }
+    return JSON.stringify(a) == JSON.stringify(b);
   }
 
   public updateWithNewProps(newProps: ChartComponentProps) {
-    if (newProps.chart != this.props.chart) {
+    let changed = false;
+    if (!this.isEqual(newProps.chart, this.props.chart)) {
       this.recreateManager(newProps);
-    } else if (newProps.dataset != this.props.dataset) {
+      changed = true;
+    } else if (!this.isEqual(newProps.dataset, this.props.dataset)) {
       this.manager.setDataset(newProps.dataset);
+      changed = true;
     }
-    this.manager.chart.mappings.width = {
-      type: "value",
-      value: newProps.width
-    } as Specification.ValueMapping;
-    this.manager.chart.mappings.height = {
-      type: "value",
-      value: newProps.height
-    } as Specification.ValueMapping;
+    if (
+      !this.manager.chart.mappings.width ||
+      newProps.width !=
+        (this.manager.chart.mappings.width as Specification.ValueMapping).value
+    ) {
+      this.manager.chart.mappings.width = {
+        type: "value",
+        value: newProps.width
+      } as Specification.ValueMapping;
+      changed = true;
+    }
+    if (
+      !this.manager.chart.mappings.height ||
+      newProps.height !=
+        (this.manager.chart.mappings.height as Specification.ValueMapping).value
+    ) {
+      this.manager.chart.mappings.height = {
+        type: "value",
+        value: newProps.height
+      } as Specification.ValueMapping;
+      changed = true;
+    }
+    return changed;
   }
 
   protected recreateManager(props: ChartComponentProps) {
@@ -100,7 +130,6 @@ export class ChartComponent extends React.Component<
   }
 
   public render() {
-    console.log(this.state);
     const gfx = renderGraphicalElementSVG(
       this.state.graphics,
       this.props.rendererOptions
@@ -118,7 +147,7 @@ export class ChartComponent extends React.Component<
             width={this.props.width}
             height={this.props.height}
             style={{
-              fill: "rgba(0, 0, 0, 0.2)",
+              fill: "rgba(0, 0, 0, 0.1)",
               stroke: "none"
             }}
           />

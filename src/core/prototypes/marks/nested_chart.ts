@@ -1,4 +1,8 @@
-import { Color, Point, uniqueID, getByName } from "../../common";
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
+import { Point, uniqueID, getByName, deepClone } from "../../common";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import { attributes, NestedChartElementAttributes } from "./nested_chart.attrs";
@@ -8,7 +12,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  LinkAnchor,
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides
@@ -18,8 +21,6 @@ import * as Graphics from "../../graphics";
 import { ObjectClass } from "../object";
 import { ChartStateManager } from "../state";
 import * as Dataset from "../../dataset";
-import { GlyphClass } from "../glyphs";
-import { PlotSegmentClass } from "../plot_segments";
 
 export interface NestedChartElementProperties
   extends Specification.AttributeMap {
@@ -188,7 +189,7 @@ export class NestedChartElement extends EmphasizableMarkClass {
       {
         type: "chart-container",
         dataset: this.getDataset(glyphIndex),
-        chart: this.object.properties.specification,
+        chart: deepClone(this.object.properties.specification),
         width: attrs.width,
         height: attrs.height
       } as Graphics.ChartContainerElement

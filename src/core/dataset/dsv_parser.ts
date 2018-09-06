@@ -74,7 +74,6 @@ export function parseDataset(
 
     const columns = header.map((name, index) => {
       const hints = columnHints[index] || {};
-      console.log(hints);
       // Infer column type
       const values = data.map(row => row[index]);
       const inferredType = hints.type || inferColumnType(values);

@@ -295,7 +295,6 @@ export class ChartEditorView
       this.setState({
         dropZoneData: { layout: data }
       });
-      console.log("drag enter");
       ctx.onLeave(() => {
         this.setState({
           dropZoneData: false
