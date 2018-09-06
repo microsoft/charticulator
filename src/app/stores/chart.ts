@@ -447,21 +447,17 @@ export class ChartStore extends BaseStore {
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
-        if (action.valueType == "number" && action.attributeType == "string") {
+        if (
+          (action.valueType == "number" || action.valueType == "string") &&
+          action.attributeType == "string"
+        ) {
+          // If the valueType is a number, use a format
+          const format = action.valueType == "number" ? ".1f" : undefined;
           action.mark.mappings[action.attribute] = {
             type: "text",
             table: action.glyph.table,
             textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression), format: ".1f" }
-            ]).toString()
-          } as Specification.TextMapping;
-        }
-        if (action.valueType == "string" && action.attributeType == "string") {
-          action.mark.mappings[action.attribute] = {
-            type: "text",
-            table: action.glyph.table,
-            textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression) }
+              { expression: Expression.parse(action.expression), format }
             ]).toString()
           } as Specification.TextMapping;
         }
@@ -493,21 +489,17 @@ export class ChartStore extends BaseStore {
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
-        if (action.valueType == "number" && action.attributeType == "string") {
+        if (
+          (action.valueType == "number" || action.valueType == "string") &&
+          action.attributeType == "string"
+        ) {
+          // If the valueType is a number, use a format
+          const format = action.valueType == "number" ? ".1f" : undefined;
           action.chartElement.mappings[action.attribute] = {
             type: "text",
             table: action.table,
             textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression), format: ".1f" }
-            ]).toString()
-          } as Specification.TextMapping;
-        }
-        if (action.valueType == "string" && action.attributeType == "string") {
-          action.chartElement.mappings[action.attribute] = {
-            type: "text",
-            table: action.table,
-            textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression) }
+              { expression: Expression.parse(action.expression), format }
             ]).toString()
           } as Specification.TextMapping;
         }
