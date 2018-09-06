@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import * as Charts from "./charts";
 import * as Constraints from "./constraints";
 import * as Dataflow from "./dataflow";

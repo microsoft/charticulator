@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { format } from "d3-format";
 
 import { Scale } from "../../common";

@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 export * from "./math";
 export * from "./color";
 export * from "./unique_id";

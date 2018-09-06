@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { Style } from "../../graphics";
 import { MarkClass } from "./index";
 import { ObjectClass } from "../object";

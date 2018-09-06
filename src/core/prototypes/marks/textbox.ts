@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 // import * as Specification from "../../specification";
 // import { ConstraintSolver, ConstraintStrength, VariableStrength } from "../../solver";
 // import { Point, uniqueID, Color } from "../../common";

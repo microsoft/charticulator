@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { AttributeMap } from "../specification";
 
 export enum ConstraintStrength {

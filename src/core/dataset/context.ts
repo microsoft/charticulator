@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { getByName } from "../common";
 import { Context } from "../expression";
 import { Column, Dataset, Row, Table } from "./dataset";

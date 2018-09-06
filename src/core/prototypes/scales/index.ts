@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { ConstraintSolver, Variable } from "../../solver";
 import * as Specification from "../../specification";
 import { DataMappingHints, ObjectClass } from "../common";
