@@ -36,15 +36,15 @@ export class ChartStore extends BaseStore {
       if (
         selection &&
         (action.dataRowIndex === undefined ||
-          (action.dataRowIndex === selection.dataIndex &&
+          (action.dataRowIndex.indexOf(selection.dataIndex) >= 0 &&
             action.glyph.table === selection.table))
       ) {
         this.currentSelection = undefined;
         // Otherwise, the user selected some useful mark
-      } else if (action.dataRowIndex >= 0) {
+      } else if (action.dataRowIndex.length > 0) {
         this.currentSelection = {
           table: action.glyph.table,
-          dataIndex: action.dataRowIndex
+          dataIndex: action.dataRowIndex[0]
         };
       }
 

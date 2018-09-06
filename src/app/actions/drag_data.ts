@@ -19,7 +19,6 @@ export class DataExpression extends DropZoneData {
   constructor(
     public table: Dataset.Table,
     public expression: string,
-    public lambdaExpression: string,
     public valueType: string,
     public metadata: Dataset.ColumnMetadata = null
   ) {

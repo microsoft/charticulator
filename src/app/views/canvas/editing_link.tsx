@@ -2,38 +2,22 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import * as React from "react";
 import * as Hammer from "hammerjs";
+import * as React from "react";
 
 import {
-  Point,
-  ZoomInfo,
   Geometry,
-  Specification,
-  Prototypes,
-  Dataset,
-  zipArray,
-  zip,
   getById,
-  getByName,
-  indexOf,
-  uniqueID,
+  getIndexById,
   Graphics,
-  getIndexById
+  Point,
+  Prototypes,
+  Specification,
+  ZoomInfo
 } from "../../../core";
-import { classNames } from "../../utils";
-import { SnappableGuide } from "./snapping";
-import {
-  renderTransform,
-  renderGraphicalElementSVG,
-  renderSVGPath
-} from "../../renderer";
-import { ChartStore } from "../../stores";
-import { ContextedComponent } from "../../context_component";
-import { DataFieldSelector } from "../dataset/data_field_selector";
-import { ButtonRaised, ToolButton } from "../../components";
-import { Radio } from "../panels/widgets/controls";
 import { Actions } from "../../actions";
+import { renderSVGPath } from "../../renderer";
+import { ChartStore } from "../../stores";
 
 export interface EditingLinkProps {
   width: number;
@@ -47,8 +31,6 @@ export interface EditingLinkProps {
 
 export interface MarkAnchorDescription {
   mode: "begin" | "end";
-  // plotSegmentIndex: number;
-  // glyphIndex?: number;
   markID: string;
   anchor: Prototypes.LinkAnchor.Description;
   offsetX: number;
@@ -62,14 +44,6 @@ export interface EditingLinkState {
   secondAnchor: MarkAnchorDescription;
   currentMouseLocation: Point;
 }
-
-// function isSameAnchor(anchor1: MarkAnchorDescription, anchor2: MarkAnchorDescription) {
-//     if (anchor1 == null || anchor2 == null) return false;
-//     if (anchor1.plotSegmentIndex != anchor2.plotSegmentIndex) return false;
-//     if (anchor1.glyphIndex != anchor2.glyphIndex) return false;
-//     if (anchor1.markIndex != anchor2.markIndex) return false;
-//     return true;
-// }
 
 export class EditingLink extends React.Component<
   EditingLinkProps,
@@ -145,61 +119,11 @@ export class EditingLink extends React.Component<
         new Actions.ClearSelection().dispatch(this.props.store.dispatcher);
       }
     });
-    // this.hammer.on("panstart", (e) => {
-    //     let pageX = e.center.x - e.deltaX;
-    //     let pageY = e.center.y - e.deltaY;
-    //     let startMarkInfo = this.getMarkAtPoint(pageX, pageY);
-    //     if (startMarkInfo) {
-    //         this.setState({
-    //             stage: "select-target",
-    //             firstAnchor: startMarkInfo
-    //         });
-    //     } else {
-    //         // this.props.onCancel();
-    //     }
-    // });
-    // this.hammer.on("pan", (e) => {
-    //     let info = this.getMarkAtPoint(e.center.x, e.center.y);
-    //     this.setState({
-    //         secondAnchor: info
-    //     });
-    // });
-    // this.hammer.on("panend", (e) => {
-
-    // });
   }
 
   public componentWillUnmount() {
     this.hammer.destroy();
   }
-
-  // private getAnchorContext(anchor: MarkAnchorDescription) {
-  //     let plotSegment = this.props.store.chart.elements[anchor.plotSegmentIndex] as Specification.PlotSegment;
-  //     let plotSegmentState = this.props.store.chartState.elements[anchor.plotSegmentIndex] as Specification.PlotSegmentState;
-  //     let glyph = getById(this.props.store.chart.glyphs, plotSegment.glyph);
-  //     let mark = glyph.marks[anchor.markIndex];
-  //     let glyphState = plotSegmentState.glyphs[anchor.glyphIndex];
-  //     let markState = glyphState.marks[anchor.markIndex];
-  //     return { plotSegment, plotSegmentState, glyphState, markState, glyph, mark };
-  // }
-
-  // private getAnchorData(anchor: MarkAnchorDescription): [Dataset.Table, number] {
-  //     let ctx = this.getAnchorContext(anchor);
-  //     let idx = ctx.plotSegmentState.dataRowIndices[anchor.glyphIndex];
-  //     let table = getByName(this.props.store.datasetStore.dataset.tables, ctx.plotSegment.table);
-  //     return [table, idx];
-  // }
-
-  // public getAnchorLinkAnchors(anchor: MarkAnchorDescription): Specification.Types.LinkAnchorPoint[] {
-  //     let ctx = this.getAnchorContext(anchor);
-  //     return anchor.anchor.points.map(p => {
-  //         return {
-  //             x: { element: ctx.mark._id, attribute: p.xAttribute },
-  //             y: { element: ctx.mark._id, attribute: p.yAttribute },
-  //             direction: p.direction
-  //         };
-  //     });
-  // }
 
   private renderAnchor(
     coordinateSystem: Graphics.CoordinateSystem,
@@ -295,14 +219,14 @@ export class EditingLink extends React.Component<
             manager.chart.glyphs,
             plotSegmentClass.object.glyph
           );
-          const rowToMarkState = new Map<number, Specification.GlyphState>();
+          const rowToMarkState = new Map<string, Specification.GlyphState>();
           for (
             let i = 0;
             i < plotSegmentClass.state.dataRowIndices.length;
             i++
           ) {
             rowToMarkState.set(
-              plotSegmentClass.state.dataRowIndices[i],
+              plotSegmentClass.state.dataRowIndices[i].join(","),
               plotSegmentClass.state.glyphs[i]
             );
           }
@@ -316,12 +240,16 @@ export class EditingLink extends React.Component<
             glyphs = [
               {
                 glyph,
-                glyphState: rowToMarkState.get(facets[firstNonEmptyFacet][0]),
+                glyphState: rowToMarkState.get(
+                  facets[firstNonEmptyFacet][0].join(",")
+                ),
                 coordinateSystem
               },
               {
                 glyph,
-                glyphState: rowToMarkState.get(facets[firstNonEmptyFacet][1]),
+                glyphState: rowToMarkState.get(
+                  facets[firstNonEmptyFacet][1].join(",")
+                ),
                 coordinateSystem
               }
             ];
@@ -371,15 +299,15 @@ export class EditingLink extends React.Component<
             const table = this.props.store.chartManager.dataflow.getTable(
               plotSegmentClass.object.table
             );
-            const id2RowGlyphIndex = new Map<string, [number, number]>();
+            const id2RowGlyphIndex = new Map<string, [number[], number]>();
             for (
               let i = 0;
               i < plotSegmentClass.state.dataRowIndices.length;
               i++
             ) {
               const rowIndex = plotSegmentClass.state.dataRowIndices[i];
-              const row = table.getRow(rowIndex);
-              id2RowGlyphIndex.set(row.id.toString(), [rowIndex, i]);
+              const rowIDs = rowIndex.map(i => table.getRow(i).id).join(",");
+              id2RowGlyphIndex.set(rowIDs, [rowIndex, i]);
             }
             return {
               table,
@@ -555,112 +483,6 @@ export class EditingLink extends React.Component<
     );
   }
 
-  // public renderLinkHint() {
-  //     let lineElements: JSX.Element = null;
-  //     if (this.state.firstAnchor && this.state.secondAnchor) {
-  //         let { linkType, reverseAnchor2 } = this.determineLinkType();
-  //         let points1 = this.state.firstAnchor.anchor.points.map(point => {
-  //             let tr = this.state.firstAnchor.coordinateSystem.getLocalTransform(point.x + this.state.firstAnchor.offsetX, point.y + this.state.firstAnchor.offsetY);
-  //             tr = Graphics.concatTransform(this.state.firstAnchor.coordinateSystem.getBaseTransform(), tr);
-  //             let dir = Graphics.transform({ x: 0, y: 0, angle: tr.angle }, point.direction);
-  //             return {
-  //                 x: tr.x, y: tr.y,
-  //                 direction: dir
-  //             };
-  //         });
-  //         let points2 = this.state.secondAnchor.anchor.points.map(point => {
-  //             let tr = this.state.secondAnchor.coordinateSystem.getLocalTransform(point.x + this.state.secondAnchor.offsetX, point.y + this.state.secondAnchor.offsetY);
-  //             tr = Graphics.concatTransform(this.state.secondAnchor.coordinateSystem.getBaseTransform(), tr);
-  //             let dir = Graphics.transform({ x: 0, y: 0, angle: tr.angle }, point.direction);
-  //             return {
-  //                 x: tr.x, y: tr.y,
-  //                 direction: dir
-  //             };
-  //         });
-  //         if (reverseAnchor2) {
-  //             points2.reverse();
-  //         }
-  //         let linkElement: Graphics.Element;
-  //         let className: string;
-  //         switch (linkType) {
-  //             case "line": {
-  //                 linkElement = Graphics.makeLineLink(points1[0], points2[0]);
-  //                 className = "link-hint-line";
-  //             } break;
-  //             case "bezier": {
-  //                 linkElement = Graphics.makeBezierLink(points1[0], points2[0]);
-  //                 className = "link-hint-line";
-  //             } break;
-  //             case "circle": {
-  //                 linkElement = Graphics.makeCircleLink(points1[0], points2[0]);
-  //                 className = "link-hint-line";
-  //             } break;
-  //             case "line-band": {
-  //                 linkElement = Graphics.makeLineLinkBand(points1[0], points1[1], points2[0], points2[1]);
-  //                 className = "link-hint-band";
-  //             } break;
-  //             case "bezier-band": {
-  //                 linkElement = Graphics.makeBezierLinkBand(points1[0], points1[1], points2[0], points2[1]);
-  //                 className = "link-hint-band";
-  //             } break;
-  //             case "circle-band": {
-  //                 linkElement = Graphics.makeCircleLinkBand(points1[0], points1[1], points2[0], points2[1]);
-  //                 className = "link-hint-band";
-  //             } break;
-  //         }
-  //         lineElements = (
-  //             <g>
-  //                 {renderGraphicalElementSVG(linkElement, { className: className })}
-  //             </g>
-  //         );
-  //     } else if (this.state.firstAnchor) {
-  //         let points1 = this.state.firstAnchor.anchor.points.map(point => {
-  //             let tr = this.state.firstAnchor.coordinateSystem.getLocalTransform(point.x + this.state.firstAnchor.offsetX, point.y + this.state.firstAnchor.offsetY);
-  //             tr = Graphics.concatTransform(this.state.firstAnchor.coordinateSystem.getBaseTransform(), tr);
-  //             let dir = Graphics.transform({ x: 0, y: 0, angle: tr.angle }, point.direction);
-  //             return {
-  //                 x: tr.x, y: tr.y,
-  //                 direction: dir
-  //             };
-  //         });
-  //         let points1Center: Point = { x: 0, y: 0 };
-  //         for (let i = 0; i < points1.length; i++) {
-  //             points1Center.x += points1[i].x / points1.length;
-  //             points1Center.y += points1[i].y / points1.length;
-  //         }
-  //         let points2 = points1.map(p => {
-  //             return {
-  //                 x: p.x - points1Center.x + this.state.currentMouseLocation.x,
-  //                 y: p.y - points1Center.y + this.state.currentMouseLocation.y,
-  //                 direction: { x: 0, y: 0 }
-  //             }
-  //         });
-  //         let linkElement: Graphics.Element;
-  //         let className: string;
-  //         switch (points1.length) {
-  //             case 1: {
-  //                 linkElement = Graphics.makeBezierLink(points1[0], points2[0]);
-  //                 className = "link-hint-line is-dashed";
-  //             } break;
-  //             case 2: {
-  //                 linkElement = Graphics.makeBezierLinkBand(points1[0], points1[1], points2[0], points2[1]);
-  //                 className = "link-hint-band is-dashed";
-  //             } break;
-  //         }
-  //         lineElements = (
-  //             <g>
-  //                 {renderGraphicalElementSVG(linkElement, { className: className })}
-  //             </g>
-  //         );
-  //     }
-  //     let transform = `translate(${this.props.zoom.centerX},${this.props.zoom.centerY}) scale(${this.props.zoom.scale})`;
-  //     return (
-  //         <g transform={transform}>
-  //             {lineElements}
-  //         </g>
-  //     );
-  // }
-
   public getPointFromEvent(point: Point): Point {
     const r = this.refs.handler.getBoundingClientRect();
     const p = Geometry.unapplyZoom(this.props.zoom, {
@@ -673,13 +495,6 @@ export class EditingLink extends React.Component<
   public render() {
     return (
       <g className="creating-link" ref="container">
-        {/* Block regular canvas interactions */}
-        {/* <rect className="interaction-handler"
-                    style={{ cursor: "default" }}
-                    ref="handler"
-                    x={0} y={0}
-                    width={this.props.width} height={this.props.height}
-                /> */}
         {this.renderMarkPlaceholders()}
       </g>
     );

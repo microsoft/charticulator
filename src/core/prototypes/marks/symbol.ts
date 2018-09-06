@@ -2,14 +2,9 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import { Color, Point } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { Point } from "../../common";
+import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
-
 import {
   BoundingBox,
   Controls,
@@ -20,12 +15,10 @@ import {
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-
-import * as Graphics from "../../graphics";
-import { EmphasizableMarkClass } from "./emphasis";
 import { ObjectClass } from "../object";
-import { attributes, SymbolElementAttributes } from "./symbol.attrs";
 import { ChartStateManager } from "../state";
+import { EmphasizableMarkClass } from "./emphasis";
+import { attributes, SymbolElementAttributes } from "./symbol.attrs";
 
 const symbolTypes: string[] = [
   "circle",

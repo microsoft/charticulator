@@ -508,10 +508,10 @@ export class LinkCreationPanel extends ContextedComponent<
         );
 
         const layoutState = plotSegmentClass.state;
-        const rowToMarkState = new Map<number, Specification.GlyphState>();
+        const rowToMarkState = new Map<string, Specification.GlyphState>();
         for (let i = 0; i < layoutState.dataRowIndices.length; i++) {
           rowToMarkState.set(
-            layoutState.dataRowIndices[i],
+            layoutState.dataRowIndices[i].join(","),
             layoutState.glyphs[i]
           );
         }
@@ -528,9 +528,9 @@ export class LinkCreationPanel extends ContextedComponent<
           "link-through",
           plotSegmentClass.getCoordinateSystem(),
           glyph,
-          rowToMarkState.get(facets[0][0]),
+          rowToMarkState.get(facets[0][0].join(",")),
           glyph,
-          rowToMarkState.get(facets[0][1])
+          rowToMarkState.get(facets[0][1].join(","))
         );
 
         const links: Specification.Links = {

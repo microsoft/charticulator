@@ -104,29 +104,27 @@ export class FilterEditor extends React.Component<
                 <DataFieldSelector
                   defaultValue={{
                     table: options.table,
-                    expression: Expression.variable(
-                      this.state.currentValue.categories.column
-                    ).toString()
+                    expression: this.state.currentValue.categories.expression
                   }}
                   table={options.table}
                   datasetStore={this.props.manager.store.datasetStore}
                   kinds={["categorical"]}
                   onChange={field => {
                     // Enumerate all values of this field
-                    if (field.columnName) {
+                    if (field.expression) {
+                      const parsed = Expression.parse(field.expression);
                       const table = this.props.manager.store.chartManager.dataflow.getTable(
                         field.table
                       );
-                      const values: { [value: string]: boolean } = {};
-                      for (const row of table.rows) {
-                        if (row.hasOwnProperty(field.columnName)) {
-                          values[row[field.columnName].toString()] = true;
-                        }
+                      const exprValues: { [value: string]: boolean } = {};
+                      for (let i = 0; i < table.rows.length; i++) {
+                        const rowContext = table.getRowContext(i);
+                        exprValues[parsed.getStringValue(rowContext)] = true;
                       }
                       this.emitUpdateFilter({
                         categories: {
-                          column: field.columnName,
-                          values: { ...values }
+                          expression: field.expression,
+                          values: exprValues
                         }
                       });
                     }
@@ -149,7 +147,7 @@ export class FilterEditor extends React.Component<
                           }
                           this.emitUpdateFilter({
                             categories: {
-                              column: value.categories.column,
+                              expression: value.categories.expression,
                               values: value.categories.values
                             }
                           });
@@ -165,7 +163,7 @@ export class FilterEditor extends React.Component<
                           }
                           this.emitUpdateFilter({
                             categories: {
-                              column: value.categories.column,
+                              expression: value.categories.expression,
                               values: value.categories.values
                             }
                           });
@@ -187,7 +185,7 @@ export class FilterEditor extends React.Component<
                                 .values[key];
                               this.emitUpdateFilter({
                                 categories: {
-                                  column: value.categories.column,
+                                  expression: value.categories.expression,
                                   values: value.categories.values
                                 }
                               });
@@ -221,7 +219,7 @@ export class FilterEditor extends React.Component<
                         currentValue: {
                           expression: "",
                           categories: {
-                            column: "",
+                            expression: "",
                             values: {}
                           }
                         }

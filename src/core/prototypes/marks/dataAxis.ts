@@ -4,15 +4,14 @@ Licensed under the MIT license.
 */
 // This implements Data-Driven Guides (straight line guide)
 
-import { Point, uniqueID } from "../../common";
-import * as Expression from "../../expression";
+import { Point } from "../../common";
+import * as Graphics from "../../graphics";
 import {
   ConstraintSolver,
   ConstraintStrength,
   VariableStrength
 } from "../../solver";
 import * as Specification from "../../specification";
-
 import {
   AttributeDescription,
   BoundingBox,
@@ -20,16 +19,13 @@ import {
   Controls,
   DropZones,
   Handles,
-  LinkAnchor,
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
-
-import * as Graphics from "../../graphics";
 import { AxisRenderer, buildAxisWidgets } from "../plot_segments/axis";
+import { MarkClass } from "./index";
 
 export interface DataAxisAttributes extends Specification.AttributeMap {
   // anchor0, anchor1, ... that corresponds to the data

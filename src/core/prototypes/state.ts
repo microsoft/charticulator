@@ -2,24 +2,22 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import { getById, uniqueID, zip, zipArray } from "../common";
+import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
 import * as Dataset from "../dataset";
+import * as Expression from "../expression";
 import * as Specification from "../specification";
-import { ObjectClassCache } from "./cache";
-import * as Prototypes from "./index";
-import { ObjectClass, ObjectClasses } from "./object";
-
-import { DataflowManager, DataflowTable } from "./dataflow";
-
-import { ChartElementClass } from "./chart_element";
 import * as Charts from "./charts";
-import * as Constraints from "./constraints";
 import * as Glyphs from "./glyphs";
+import * as Prototypes from "./index";
 import * as Marks from "./marks";
 import * as PlotSegments from "./plot_segments";
 import * as Scales from "./scales";
-import { Context } from "../expression";
+
+import { ObjectClassCache } from "./cache";
+import { ChartElementClass } from "./chart_element";
+import { DataflowManager, DataflowTable } from "./dataflow";
 import { CompiledFilter } from "./filter";
+import { ObjectClass, ObjectClasses } from "./object";
 
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
@@ -517,7 +515,7 @@ export class ChartStateManager {
     ) as Specification.Glyph;
     const table = this.getTable(glyphObject.table);
     const index2ExistingGlyphState = new Map<
-      number,
+      string,
       Specification.GlyphState
     >();
     if (plotSegmentState.dataRowIndices) {
@@ -525,25 +523,44 @@ export class ChartStateManager {
         plotSegmentState.dataRowIndices,
         plotSegmentState.glyphs
       )) {
-        index2ExistingGlyphState.set(rowIndex, glyphState);
+        index2ExistingGlyphState.set(rowIndex.join(","), glyphState);
       }
     }
-    plotSegmentState.dataRowIndices = table.rows.map((r, i) => i);
+    let filteredIndices = table.rows.map((r, i) => i);
     if (plotSegment.filter) {
       const filter = new CompiledFilter(
         plotSegment.filter,
         this.dataflow.cache
       );
-      plotSegmentState.dataRowIndices = plotSegmentState.dataRowIndices.filter(
-        i => {
-          return filter.filter(table.getRowContext(i));
+      filteredIndices = filteredIndices.filter(i => {
+        return filter.filter(table.getRowContext(i));
+      });
+    }
+    if (plotSegment.groupBy) {
+      if (plotSegment.groupBy.expression) {
+        const expr = this.dataflow.cache.parse(plotSegment.groupBy.expression);
+        const groups = new Map<string, number[]>();
+        plotSegmentState.dataRowIndices = [];
+        for (const i of filteredIndices) {
+          const groupBy = expr.getStringValue(table.getRowContext(i));
+          if (groups.has(groupBy)) {
+            groups.get(groupBy).push(i);
+          } else {
+            const g = [i];
+            groups.set(groupBy, g);
+            plotSegmentState.dataRowIndices.push(g);
+          }
         }
-      );
+      } else {
+        // TODO: emit error
+      }
+    } else {
+      plotSegmentState.dataRowIndices = filteredIndices.map(i => [i]);
     }
     // Resolve filter
     plotSegmentState.glyphs = plotSegmentState.dataRowIndices.map(rowIndex => {
-      if (index2ExistingGlyphState.has(rowIndex)) {
-        return index2ExistingGlyphState.get(rowIndex);
+      if (index2ExistingGlyphState.has(rowIndex.join(","))) {
+        return index2ExistingGlyphState.get(rowIndex.join(","));
       } else {
         const glyphState = {
           marks: glyphObject.marks.map(element => {
@@ -719,6 +736,64 @@ export class ChartStateManager {
       }
     } else {
       return description;
+    }
+  }
+
+  /** Get chart-level data context for a given table */
+  public getChartDataContext(tableName: string): Expression.Context {
+    const table = this.dataflow.getTable(tableName);
+    return table.getGroupedContext(makeRange(0, table.rows.length));
+  }
+
+  /** Get glyph-level data context for the glyphIndex-th glyph */
+  public getGlpyhDataContext(
+    plotSegment: Specification.PlotSegment,
+    glyphIndex: number
+  ): Expression.Context {
+    const table = this.dataflow.getTable(plotSegment.table);
+    const plotSegmentClass = this.getClassById(
+      plotSegment._id
+    ) as PlotSegments.PlotSegmentClass;
+    const indices = plotSegmentClass.state.dataRowIndices[glyphIndex];
+    return table.getGroupedContext(indices);
+  }
+
+  /** Get all glyph-level data contexts for a given plot segment */
+  public getGlpyhDataContexts(
+    plotSegment: Specification.PlotSegment,
+    glyphIndex: number
+  ): Expression.Context[] {
+    const table = this.dataflow.getTable(plotSegment.table);
+    const plotSegmentClass = this.getClassById(
+      plotSegment._id
+    ) as PlotSegments.PlotSegmentClass;
+    return plotSegmentClass.state.dataRowIndices.map(indices =>
+      table.getGroupedContext(indices)
+    );
+  }
+
+  public getGroupedExpressionVector(
+    tableName: string,
+    groupBy: Specification.Types.GroupBy,
+    expression: string
+  ) {
+    const expr = this.dataflow.cache.parse(expression);
+    const table = this.dataflow.getTable(tableName);
+    if (!table) {
+      return [];
+    }
+    const indices: number[] = [];
+    for (let i = 0; i < table.rows.length; i++) {
+      indices.push(i);
+    }
+    if (groupBy && groupBy.expression) {
+      const groupExpression = this.dataflow.cache.parse(groupBy.expression);
+      const groups = gather(indices, i =>
+        groupExpression.getStringValue(table.getRowContext(i))
+      );
+      return groups.map(g => expr.getValue(table.getGroupedContext(g)));
+    } else {
+      return indices.map(i => expr.getValue(table.getGroupedContext([i])));
     }
   }
 }

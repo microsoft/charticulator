@@ -8,9 +8,10 @@ import { ExpressionCache, Context } from "../expression";
 export class CompiledFilter {
   constructor(filter: Specification.Types.Filter, cache: ExpressionCache) {
     if (filter.categories) {
+      const expr = cache.parse(filter.categories.expression);
       const map = filter.categories.values;
       this.filter = context => {
-        const val = context.getVariable(filter.categories.column).toString();
+        const val = expr.getStringValue(context);
         return map.hasOwnProperty(val) && map[val] == true;
       };
     } else if (filter.expression) {

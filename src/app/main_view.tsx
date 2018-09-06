@@ -174,7 +174,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         const file = input.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-          const result: string = reader.result;
+          const result = reader.result as string;
           new Actions.Load(JSON.parse(result)).dispatch(
             this.props.store.dispatcher
           );

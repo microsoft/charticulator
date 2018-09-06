@@ -29,7 +29,7 @@ export class SimpleContext implements Context {
   }
 }
 
-import { intrinsics, operators, precedences } from "./intrinsics";
+import { constants, functions, operators, precedences } from "./intrinsics";
 import { format } from "d3-format";
 import { parse } from "./parser";
 
@@ -162,24 +162,35 @@ export class FieldAccess extends Expression {
 }
 
 export class FunctionCall extends Expression {
-  public callable: Expression;
+  public name: string;
+  public function: Function;
   public args: Expression[];
 
-  constructor(callable: Expression, args: Expression[]) {
+  constructor(parts: string[], args: Expression[]) {
     super();
-    this.callable = callable;
+    this.name = parts.join(".");
     this.args = args;
+    let v = functions as any;
+    for (const part of parts) {
+      if (v.hasOwnProperty(part)) {
+        v = v[part];
+      } else {
+        v = undefined;
+      }
+    }
+    if (v == undefined) {
+      throw new SyntaxError(`undefiend function ${this.name}`);
+    } else {
+      this.function = v;
+    }
   }
 
   public getValue(c: Context) {
-    const callable = this.callable.getValue(c) as Function;
-    return callable(...this.args.map(arg => arg.getValue(c)));
+    return this.function(...this.args.map(arg => arg.getValue(c)));
   }
 
   public toString() {
-    return `${this.callable.toStringPrecedence(
-      precedences.VALUE
-    )}(${this.args
+    return `${this.name}(${this.args
       .map(arg => arg.toStringPrecedence(precedences.FUNCTION_ARGUMENT))
       .join(", ")})`;
   }
@@ -273,7 +284,7 @@ export class Variable extends Expression {
   public getValue(c: Context) {
     const v = c.getVariable(this.name);
     if (v === undefined) {
-      return intrinsics[this.name];
+      return constants[this.name];
     } else {
       return v;
     }

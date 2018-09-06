@@ -4,15 +4,13 @@ Licensed under the MIT license.
 */
 import { deepClone, fillDefaults, Scale } from "../../common";
 import {
+  CoordinateSystem,
+  Group,
   makeGroup,
   makeLine,
   makeText,
-  CoordinateSystem,
-  Group,
   Style
 } from "../../graphics";
-
-// There is a loop in the graphics folder that requires this axis.ts
 import { TextMeasurer } from "../../graphics/renderer/textMeasurer";
 import { Specification } from "../../index";
 import { Controls } from "../common";
@@ -626,7 +624,7 @@ export function buildAxisWidgets(
   const dropzoneOptions: Controls.RowOptions = {
     dropzone: {
       type: "axis-data-binding",
-      attribute: axisProperty,
+      property: axisProperty,
       prompt: axisName + ": drop here to assign data"
     }
   };

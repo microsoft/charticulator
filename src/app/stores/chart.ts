@@ -436,7 +436,7 @@ export class ChartStore extends BaseStore {
         .attributes[action.attribute];
       const table = this.datasetStore.getTable(action.glyph.table);
       const inferred = this.scaleInference(
-        table,
+        { glyph: action.glyph },
         action.expression,
         action.valueType,
         action.attributeType,
@@ -445,24 +445,23 @@ export class ChartStore extends BaseStore {
       if (inferred != null) {
         action.mark.mappings[action.attribute] = {
           type: "scale",
+          table: action.glyph.table,
           expression: action.expression,
           valueType: action.valueType,
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
-        if (action.valueType == "number" && action.attributeType == "string") {
+        if (
+          (action.valueType == "number" || action.valueType == "string") &&
+          action.attributeType == "string"
+        ) {
+          // If the valueType is a number, use a format
+          const format = action.valueType == "number" ? ".1f" : undefined;
           action.mark.mappings[action.attribute] = {
             type: "text",
+            table: action.glyph.table,
             textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression), format: ".1f" }
-            ]).toString()
-          } as Specification.TextMapping;
-        }
-        if (action.valueType == "string" && action.attributeType == "string") {
-          action.mark.mappings[action.attribute] = {
-            type: "text",
-            textExpression: new Expression.TextExpression([
-              { expression: Expression.parse(action.expression) }
+              { expression: Expression.parse(action.expression), format }
             ]).toString()
           } as Specification.TextMapping;
         }
@@ -479,7 +478,7 @@ export class ChartStore extends BaseStore {
       ).attributes[action.attribute];
       const table = this.datasetStore.getTable(action.table);
       const inferred = this.scaleInference(
-        table,
+        { chart: { table: action.table } },
         action.expression,
         action.valueType,
         action.attributeType,
@@ -488,17 +487,25 @@ export class ChartStore extends BaseStore {
       if (inferred != null) {
         action.chartElement.mappings[action.attribute] = {
           type: "scale",
+          table: action.table,
           expression: action.expression,
           valueType: action.valueType,
           scale: inferred
         } as Specification.ScaleMapping;
       } else {
-        if (action.valueType == "string" && action.attributeType == "string") {
+        if (
+          (action.valueType == "number" || action.valueType == "string") &&
+          action.attributeType == "string"
+        ) {
+          // If the valueType is a number, use a format
+          const format = action.valueType == "number" ? ".1f" : undefined;
           action.chartElement.mappings[action.attribute] = {
-            type: "scale",
-            expression: action.expression,
-            valueType: action.valueType
-          } as Specification.ScaleMapping;
+            type: "text",
+            table: action.table,
+            textExpression: new Expression.TextExpression([
+              { expression: Expression.parse(action.expression), format }
+            ]).toString()
+          } as Specification.TextMapping;
         }
       }
 
@@ -672,6 +679,14 @@ export class ChartStore extends BaseStore {
       this.solveConstraintsAndUpdateGraphics();
     }
 
+    if (action instanceof Actions.SetPlotSegmentGroupBy) {
+      this.parent.saveHistory();
+      action.plotSegment.groupBy = action.groupBy;
+      // Filter updated, we need to regenerate some glyph states
+      this.chartManager.remapPlotSegmentGlyphs(action.plotSegment);
+      this.solveConstraintsAndUpdateGraphics();
+    }
+
     if (action instanceof Actions.UpdateChartElementAttribute) {
       this.parent.saveHistory();
 
@@ -795,10 +810,10 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.BindDataToAxis) {
       this.parent.saveHistory();
-
+      const groupExpression = action.dataExpression.expression;
       const dataBinding: Specification.Types.AxisDataBinding = {
         type: "categorical",
-        expression: action.dataExpression.expression,
+        expression: groupExpression,
         valueType: action.dataExpression.valueType,
         gapRatio: 0.1,
         visible: true,
@@ -808,12 +823,10 @@ export class ChartStore extends BaseStore {
 
       if (action.appendToProperty) {
         if (action.object.properties[action.appendToProperty] == null) {
-          action.object.properties[action.appendToProperty] = [
-            action.dataExpression.expression
-          ];
+          action.object.properties[action.appendToProperty] = [groupExpression];
         } else {
           (action.object.properties[action.appendToProperty] as string[]).push(
-            action.dataExpression.expression
+            groupExpression
           );
         }
         if (action.object.properties[action.property] == null) {
@@ -826,9 +839,28 @@ export class ChartStore extends BaseStore {
       const table = this.datasetStore.getTable(
         action.dataExpression.table.name
       );
-      const values = this.datasetStore.getExpressionVector(
-        table,
-        action.dataExpression.expression
+      let groupBy: Specification.Types.GroupBy = null;
+      if (Prototypes.isType(action.object.classID, "plot-segment")) {
+        groupBy = (action.object as Specification.PlotSegment).groupBy;
+      } else {
+        // Find groupBy for data-driven guide
+        if (Prototypes.isType(action.object.classID, "mark")) {
+          for (const glyph of this.chart.glyphs) {
+            if (glyph.marks.indexOf(action.object) >= 0) {
+              // Found the glyph
+              this.chartManager.enumeratePlotSegments(cls => {
+                if (cls.object.glyph == glyph._id) {
+                  groupBy = cls.object.groupBy;
+                }
+              });
+            }
+          }
+        }
+      }
+      const values = this.chartManager.getGroupedExpressionVector(
+        action.dataExpression.table.name,
+        groupBy,
+        groupExpression
       );
 
       switch (action.dataExpression.metadata.kind) {
@@ -1073,15 +1105,17 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.SelectMark) {
       if (action.dataRowIndex == null) {
-        action.dataRowIndex = this.datasetStore.getSelectedRowIndex(
-          this.datasetStore.getTable(action.glyph.table)
-        );
+        action.dataRowIndex = [
+          this.datasetStore.getSelectedRowIndex(
+            this.datasetStore.getTable(action.glyph.table)
+          )
+        ];
       }
       const selection = new MarkSelection(action.glyph, action.mark);
       this.currentSelection = selection;
       this.datasetStore.setSelectedRowIndex(
         this.datasetStore.getTable(action.glyph.table),
-        action.dataRowIndex
+        action.dataRowIndex[0]
       );
       this.emit(ChartStore.EVENT_SELECTION);
     }
@@ -1259,24 +1293,73 @@ export class ChartStore extends BaseStore {
   }
 
   public scaleInference(
-    table: Dataset.Table,
+    context: { glyph?: Specification.Glyph; chart?: { table: string } },
     expression: string,
     valueType: string,
     outputType: string,
     hints: Prototypes.DataMappingHints = {}
   ): string {
-    // console.log("Scale inference", table, column, outputType, range);
+    console.log(
+      "Scale inference",
+      context,
+      expression,
+      valueType,
+      outputType,
+      hints
+    );
+    const r = this.scaleInferenceReal(
+      context,
+      expression,
+      valueType,
+      outputType,
+      hints
+    );
+    console.log("Result", r);
+    return r;
+  }
+
+  public scaleInferenceReal(
+    context: { glyph?: Specification.Glyph; chart?: { table: string } },
+    expression: string,
+    valueType: string,
+    outputType: string,
+    hints: Prototypes.DataMappingHints = {}
+  ): string {
+    // Figure out the source table
+    let tableName: string = null;
+    if (context.glyph) {
+      tableName = context.glyph.table;
+    }
+    if (context.chart) {
+      tableName = context.chart.table;
+    }
+    // Figure out the groupBy
+    let groupBy: Specification.Types.GroupBy = null;
+    if (context.glyph) {
+      // Find plot segments that use the glyph.
+      this.chartManager.enumeratePlotSegments(cls => {
+        if (cls.object.glyph == context.glyph._id) {
+          groupBy = cls.object.groupBy;
+        }
+      });
+    }
+    const table = this.datasetStore.getTable(tableName);
+
     // If there is an existing scale on the same column in the table, return that one
     if (!hints.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
-        if (parsed instanceof Expression.Variable) {
-          const column = getByName(table.columns, parsed.name);
-          if (column) {
-            return column.metadata.unit;
+        // In the case of an aggregation function
+        if (parsed instanceof Expression.FunctionCall) {
+          const args0 = parsed.args[0];
+          if (args0 instanceof Expression.Variable) {
+            const column = getByName(table.columns, args0.name);
+            if (column) {
+              return column.metadata.unit;
+            }
           }
         }
-        return null;
+        return null; // unit is unknown
       };
       for (const element of this.chart.elements) {
         if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -1392,7 +1475,11 @@ export class ChartStore extends BaseStore {
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
       scaleClass.inferParameters(
-        this.datasetStore.getExpressionVector(table, expression),
+        this.chartManager.getGroupedExpressionVector(
+          table.name,
+          groupBy,
+          expression
+        ) as Specification.DataValue[],
         hints
       );
       // console.log(this.datasetStore.getExpressionVector(table, expression));
@@ -1549,32 +1636,6 @@ export class ChartStore extends BaseStore {
     };
     this.emit(ChartStore.EVENT_SOLVER_STATUS);
   }
-
-  // public solveConstraints_(additional?: (solver: Solver.ChartConstraintSolver) => void) {
-  //     if (this.preSolveValues.length > 0) {
-  //         let items = this.preSolveValues;
-  //         this.preSolveValues = [];
-  //         this.solveConstraints_((solver) => {
-  //             for (let [strength, attrs, attr, value] of items) {
-  //                 solver.solver.addEqualToConstant(strength, solver.solver.attr(attrs, attr), value);
-  //             }
-  //         });
-  //     }
-
-  //     let loss: { softLoss: number, hardLoss: number } = null;
-  //     let iterations = additional != null ? 2 : 2;
-  //     for (let i = 0; i < iterations; i++) {
-  //         let solver = new Solver.ChartConstraintSolver();
-  //         solver.setup(this.chartManager);
-  //         if (additional) {
-  //             additional(solver);
-  //             additional = null;
-  //         }
-  //         loss = solver.solve();
-  //         console.log("Loss", loss.hardLoss.toFixed(3), loss.softLoss.toFixed(3));
-  //         solver.destroy();
-  //     }
-  // }
 
   public newChartEmpty() {
     this.currentSelection = null;

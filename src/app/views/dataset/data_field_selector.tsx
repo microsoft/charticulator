@@ -3,18 +3,21 @@ Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
 import * as React from "react";
-import { Specification, Dataset, Expression } from "../../../core";
-import { DatasetStore } from "../../stores";
-import { classNames } from "../../utils";
+import { Dataset, Expression } from "../../../core";
 import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
+import { DatasetStore } from "../../stores";
+import { classNames } from "../../utils";
+import { kind2Icon, type2DerivedColumns } from "./common";
+import { Button, Select } from "../panels/widgets/controls";
 
-const kind2Icon: { [name: string]: string } = {
-  categorical: "type/categorical",
-  numerical: "type/numerical",
-  boolean: "type/boolean",
-  date: "type/numerical"
-};
+function defaultAggregations(type: string) {
+  if (type == "number" || type == "integer") {
+    return ["avg", "min", "max", "sum"];
+  } else {
+    return ["first", "last"];
+  }
+}
 
 export interface DataFieldSelectorProps {
   datasetStore: DatasetStore;
@@ -30,24 +33,35 @@ export interface DataFieldSelectorProps {
   /** Set a default value */
   defaultValue?: {
     table: string;
-    lambdaExpression?: string;
+    // lambdaExpression?: string;
     expression?: string;
   };
 
   onChange?: (newValue: DataFieldSelectorValue) => void;
+
+  useAggregation?: boolean;
 }
 
 export interface DataFieldSelectorValue {
   table: string;
   expression: string;
-  lambdaExpression: string;
+  // lambdaExpression: string;
+  /** Only available if the expression refers to exactly a column */
   columnName?: string;
   type: string;
   metadata: Dataset.ColumnMetadata;
 }
 
+export interface DataFieldSelectorValueCandidate
+  extends DataFieldSelectorValue {
+  selectable: boolean;
+  displayName: string;
+  derived?: DataFieldSelectorValueCandidate[];
+}
+
 export interface DataFieldSelectorState {
   currentSelection: DataFieldSelectorValue;
+  currentSelectionAggregation: string;
 }
 
 export class DataFieldSelector extends React.Component<
@@ -56,72 +70,130 @@ export class DataFieldSelector extends React.Component<
 > {
   constructor(props: DataFieldSelectorProps) {
     super(props);
+    this.state = this.getDefaultState(props);
+  }
 
-    if (this.props.defaultValue) {
-      const fs = this.getFields().filter(x => {
-        if (
-          this.props.defaultValue.table != null &&
-          x.table != this.props.defaultValue.table
-        ) {
-          return false;
+  protected getDefaultState(
+    props: DataFieldSelectorProps
+  ): DataFieldSelectorState {
+    let expression = this.props.defaultValue
+      ? this.props.defaultValue.expression
+      : null;
+    let expressionAggregation: string = null;
+    if (props.useAggregation) {
+      if (expression != null) {
+        const parsed = Expression.parse(expression);
+        if (parsed instanceof Expression.FunctionCall) {
+          expression = parsed.args[0].toString();
+          expressionAggregation = parsed.name;
         }
-        if (this.props.defaultValue.lambdaExpression != null) {
-          return x.lambdaExpression == this.props.defaultValue.lambdaExpression;
-        }
-        if (this.props.defaultValue.expression != null) {
-          return x.expression == this.props.defaultValue.expression;
-        }
-      });
-      if (fs.length == 1) {
-        this.state = {
-          currentSelection: fs[0]
-        };
-      } else {
-        this.state = {
-          currentSelection: null
-        };
       }
-    } else {
-      this.state = {
-        currentSelection: null
-      };
     }
+    if (props.defaultValue) {
+      for (const f of this.getAllFields()) {
+        if (
+          props.defaultValue.table != null &&
+          f.table != props.defaultValue.table
+        ) {
+          continue;
+        }
+        if (expression != null) {
+          if (f.expression == expression) {
+            return {
+              currentSelection: f,
+              currentSelectionAggregation: expressionAggregation
+            };
+          }
+        }
+      }
+    }
+    return {
+      currentSelection: null,
+      currentSelectionAggregation: null
+    };
   }
 
   public get value() {
     return this.state.currentSelection;
   }
 
+  private getAllFields() {
+    const fields = this.getFields();
+    const r: DataFieldSelectorValue[] = [];
+    for (const item of fields) {
+      r.push(item);
+      if (item.derived) {
+        for (const ditem of item.derived) {
+          r.push(ditem);
+        }
+      }
+    }
+    return r;
+  }
+
   private getFields() {
     const store = this.props.datasetStore;
     const columns = store.getTables()[0].columns;
-    let candidates = columns.map(c => {
-      return {
-        table: store.getTables()[0].name,
-        columnName: c.name,
-        expression: Expression.variable(c.name).toString(),
-        lambdaExpression: Expression.lambda(
-          ["x"],
-          Expression.fields(Expression.variable("x"), c.name)
-        ).toString(),
-        type: c.type,
-        metadata: c.metadata
-      };
-    });
+    const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
     if (this.props.table) {
-      candidates = candidates.filter(x => x.table == this.props.table);
+      columnFilters.push(x => x.table == this.props.table);
     }
     if (this.props.kinds) {
-      candidates = candidates.filter(
+      columnFilters.push(
         x =>
           x.metadata != null && this.props.kinds.indexOf(x.metadata.kind) >= 0
       );
     }
     if (this.props.types) {
-      candidates = candidates.filter(
+      columnFilters.push(
         x => x.metadata != null && this.props.types.indexOf(x.type) >= 0
       );
     }
+    const columnFilter = (x: DataFieldSelectorValue) => {
+      for (const f of columnFilters) {
+        if (!f(x)) {
+          return false;
+        }
+      }
+      return true;
+    };
+    let candidates = columns.map(c => {
+      const r: DataFieldSelectorValueCandidate = {
+        selectable: true,
+        table: store.getTables()[0].name,
+        columnName: c.name,
+        expression: Expression.variable(c.name).toString(),
+        type: c.type,
+        displayName: c.name,
+        metadata: c.metadata,
+        derived: []
+      };
+      // Compute derived columns.
+      const derivedColumns = type2DerivedColumns[r.type];
+      if (derivedColumns) {
+        for (const item of derivedColumns) {
+          const ditem: DataFieldSelectorValueCandidate = {
+            table: store.getTables()[0].name,
+            columnName: null,
+            expression: Expression.functionCall(
+              item.function,
+              Expression.parse(r.expression)
+            ).toString(),
+            type: item.type,
+            metadata: item.metadata,
+            displayName: item.name,
+            selectable: true
+          };
+          if (columnFilter(ditem)) {
+            r.derived.push(ditem);
+          }
+        }
+      }
+      r.selectable = columnFilter(r);
+      return r;
+    });
+    // Make sure we only show good ones
+    candidates = candidates.filter(x => x.derived.length > 0 || x.selectable);
     return candidates;
   }
 
@@ -135,11 +207,102 @@ export class DataFieldSelector extends React.Component<
     return v1.expression == v2.expression && v1.table == v2.table;
   }
 
-  private selectItem(item: DataFieldSelectorValue) {
-    this.setState({ currentSelection: item });
-    if (this.props.onChange) {
-      this.props.onChange(item);
+  private selectItem(item: DataFieldSelectorValue, aggregation: string = null) {
+    if (item == null) {
+      if (this.props.onChange) {
+        this.props.onChange(null);
+      }
+    } else {
+      if (this.props.useAggregation) {
+        if (aggregation == null) {
+          aggregation = defaultAggregations(item.type)[0];
+        }
+      }
+      this.setState({
+        currentSelection: item,
+        currentSelectionAggregation: aggregation
+      });
+      if (this.props.onChange) {
+        const r = {
+          table: item.table,
+          expression: item.expression,
+          columnName: item.columnName,
+          type: item.type,
+          metadata: item.metadata
+        };
+        if (this.props.useAggregation) {
+          r.expression = Expression.functionCall(
+            aggregation,
+            Expression.parse(item.expression)
+          ).toString();
+        }
+        this.props.onChange(r);
+      }
     }
+  }
+
+  public renderCandidate(item: DataFieldSelectorValueCandidate): JSX.Element {
+    let elDerived: HTMLElement;
+    return (
+      <div className="el-column-item" key={item.table + item.expression}>
+        <div
+          className={classNames(
+            "el-field-item",
+            ["is-active", this.isValueEqual(this.state.currentSelection, item)],
+            ["is-selectable", item.selectable]
+          )}
+          onClick={
+            item.selectable
+              ? () =>
+                  this.selectItem(
+                    item,
+                    this.isValueEqual(this.state.currentSelection, item)
+                      ? this.state.currentSelectionAggregation
+                      : null
+                  )
+              : null
+          }
+        >
+          <SVGImageIcon url={R.getSVGIcon(kind2Icon[item.metadata.kind])} />
+          <span className="el-text">{item.displayName}</span>
+          {this.props.useAggregation &&
+          this.isValueEqual(this.state.currentSelection, item) ? (
+            <Select
+              value={this.state.currentSelectionAggregation}
+              options={defaultAggregations(item.type)}
+              labels={defaultAggregations(item.type)}
+              showText={true}
+              onChange={newValue => {
+                this.selectItem(item, newValue);
+              }}
+            />
+          ) : null}
+          {item.derived && item.derived.length > 0 ? (
+            <Button
+              icon="general/more-vertical"
+              onClick={() => {
+                if (elDerived) {
+                  if (elDerived.style.display == "none") {
+                    elDerived.style.display = "block";
+                  } else {
+                    elDerived.style.display = "none";
+                  }
+                }
+              }}
+            />
+          ) : null}
+        </div>
+        {item.derived && item.derived.length > 0 ? (
+          <div
+            className="el-derived-fields"
+            style={{ display: "none" }}
+            ref={e => (elDerived = e)}
+          >
+            {item.derived.map(df => this.renderCandidate(df))}
+          </div>
+        ) : null}
+      </div>
+    );
   }
 
   public render() {
@@ -148,7 +311,7 @@ export class DataFieldSelector extends React.Component<
       <div className="charticulator__data-field-selector">
         {this.props.nullDescription ? (
           <div
-            className={classNames("el-item", "is-null", [
+            className={classNames("el-field-item", "is-null", "is-selectable", [
               "is-active",
               !this.props.nullNotHighlightable &&
                 this.state.currentSelection == null
@@ -159,23 +322,9 @@ export class DataFieldSelector extends React.Component<
           </div>
         ) : null}
         {fields.length == 0 && !this.props.nullDescription ? (
-          <div className="el-item is-null">(no suitable column)</div>
+          <div className="el-field-item is-null">(no suitable column)</div>
         ) : null}
-        {fields.map(f => {
-          return (
-            <div
-              key={f.table + f.expression}
-              className={classNames("el-item", [
-                "is-active",
-                this.isValueEqual(this.state.currentSelection, f)
-              ])}
-              onClick={() => this.selectItem(f)}
-            >
-              <SVGImageIcon url={R.getSVGIcon(kind2Icon[f.metadata.kind])} />
-              {f.columnName || f.expression}
-            </div>
-          );
-        })}
+        {fields.map(f => this.renderCandidate(f))}
       </div>
     );
   }

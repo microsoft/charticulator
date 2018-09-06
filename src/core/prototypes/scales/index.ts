@@ -2,15 +2,9 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import { Scale } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  Variable,
-  VariableStrength
-} from "../../solver";
+import { ConstraintSolver, Variable } from "../../solver";
 import * as Specification from "../../specification";
-import { AttributeDescription, DataMappingHints, ObjectClass } from "../common";
+import { DataMappingHints, ObjectClass } from "../common";
 
 export abstract class ScaleClass extends ObjectClass {
   public readonly object: Specification.Scale;
@@ -32,6 +26,6 @@ export abstract class ScaleClass extends ObjectClass {
   ): void;
 }
 
-import "./linear";
 import "./categorical";
 import "./format";
+import "./linear";

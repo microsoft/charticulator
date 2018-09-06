@@ -2,21 +2,12 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import { getById, Point, uniqueID } from "../../common";
+import { ChartStateManager } from "..";
 import * as Graphics from "../../graphics";
-import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
-
-import {
-  AttributeDescription,
-  BoundingBox,
-  Controls,
-  DropZones,
-  Handles,
-  ObjectClass,
-  SnappingGuides
-} from "../common";
+import { BoundingBox, Controls, DropZones, Handles } from "../common";
 
 export abstract class PlotSegmentClass extends ChartElementClass {
   public readonly object: Specification.PlotSegment;
@@ -62,13 +53,22 @@ export abstract class PlotSegmentClass extends ChartElementClass {
   ): Controls.Widget[] {
     return [
       manager.row(
-        "Filter",
-        manager.filterEditor({
-          table: this.object.table,
-          target: { plotSegment: this.object },
-          value: this.object.filter,
-          mode: "button"
-        })
+        "Data",
+        manager.horizontal(
+          [0, 1],
+          manager.filterEditor({
+            table: this.object.table,
+            target: { plotSegment: this.object },
+            value: this.object.filter,
+            mode: "button"
+          }),
+          manager.groupByEditor({
+            table: this.object.table,
+            target: { plotSegment: this.object },
+            value: this.object.groupBy,
+            mode: "button"
+          })
+        )
       )
     ];
   }
@@ -83,16 +83,15 @@ export abstract class PlotSegmentClass extends ChartElementClass {
   }
 }
 
-import { ChartStateManager } from "..";
 import "./line";
 import "./map";
 import "./region_2d";
 
+export { defaultAxisStyle } from "./axis";
+export { LineGuideAttributes } from "./line";
 export {
-  Region2DAttributes,
   CartesianPlotSegment,
   CurvePlotSegment,
-  PolarPlotSegment
+  PolarPlotSegment,
+  Region2DAttributes
 } from "./region_2d";
-export { LineGuideAttributes } from "./line";
-export { defaultAxisStyle } from "./axis";

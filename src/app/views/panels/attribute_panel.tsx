@@ -107,19 +107,17 @@ export class AttributePanel extends React.Component<
             mapping
           ).dispatch(this.props.store.dispatcher);
         };
-        if (Prototypes.isType(layoutClass.object.classID, "links")) {
-          manager.onMapDataHandler = (attribute, data, hints) => {
-            new Actions.MapDataToChartElementAttribute(
-              markLayout,
-              attribute,
-              objectClass.attributes[attribute].type,
-              data.table.name,
-              data.expression,
-              data.valueType,
-              hints
-            ).dispatch(this.props.store.dispatcher);
-          };
-        }
+        manager.onMapDataHandler = (attribute, data, hints) => {
+          new Actions.MapDataToChartElementAttribute(
+            markLayout,
+            attribute,
+            objectClass.attributes[attribute].type,
+            data.table.name,
+            data.expression,
+            data.valueType,
+            hints
+          ).dispatch(this.props.store.dispatcher);
+        };
       }
     } else {
       const chart = this.props.store.chart;

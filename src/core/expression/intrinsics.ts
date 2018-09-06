@@ -5,9 +5,11 @@ Licensed under the MIT license.
 import { timeFormat } from "d3-time-format";
 import { format } from "d3-format";
 import { ValueType } from "./classes";
-import { fields } from "./helpers";
 
-export let intrinsics: { [name: string]: ValueType } = {};
+export let constants: { [name: string]: ValueType } = {};
+export let functions: {
+  [name: string]: Function | { [name: string]: Function };
+} = {};
 export let operators: { [name: string]: Function } = {};
 
 export let precedences = {
@@ -39,32 +41,59 @@ export let precedences = {
 };
 
 // Math constants
-intrinsics.PI = Math.PI;
-intrinsics.E = Math.E;
+constants.PI = Math.PI;
+constants.E = Math.E;
+
+/** Make a unary function capable of taking element-wise array input */
+function makeArrayCapable1<TA, TRet>(f: (a: TA) => TRet) {
+  return (a: TA | TA[]) => {
+    if (a instanceof Array) {
+      return a.map(f);
+    } else {
+      return f(a);
+    }
+  };
+}
+
+/** Make a binary function capable of taking element-wise array input */
+function makeArrayCapable2<TA, TB, TRet>(f: (a: TA, b: TB) => TRet) {
+  return (a: TA | TA[], b: TB | TB[]) => {
+    if (a instanceof Array && b instanceof Array) {
+      return a.map((ai, i) => f(ai, b[i]));
+    } else if (a instanceof Array) {
+      return a.map(ai => f(ai, b as TB));
+    } else if (b instanceof Array) {
+      return b.map(bi => f(a as TA, bi as TB));
+    } else {
+      return f(a, b);
+    }
+  };
+}
 
 // Math functions
-intrinsics.abs = Math.abs;
-intrinsics.sign = Math.sign;
-intrinsics.floor = Math.floor;
-intrinsics.ceil = Math.ceil;
-intrinsics.exp = Math.exp;
-intrinsics.log = Math.log;
-intrinsics.log10 = Math.log10;
-intrinsics.sin = Math.sin;
-intrinsics.cos = Math.cos;
-intrinsics.tan = Math.tan;
-intrinsics.asin = Math.asin;
-intrinsics.acos = Math.acos;
-intrinsics.atan = Math.atan;
-intrinsics.atan2 = Math.atan2;
-intrinsics.tanh = Math.tanh;
-intrinsics.sqrt = Math.sqrt;
-intrinsics.pow = Math.pow;
+functions.abs = makeArrayCapable1(Math.abs);
+functions.sign = makeArrayCapable1(Math.sign);
+functions.floor = makeArrayCapable1(Math.floor);
+functions.ceil = makeArrayCapable1(Math.ceil);
+functions.exp = makeArrayCapable1(Math.exp);
+functions.log = makeArrayCapable1(Math.log);
+functions.log10 = makeArrayCapable1(Math.log10);
+functions.sin = makeArrayCapable1(Math.sin);
+functions.cos = makeArrayCapable1(Math.cos);
+functions.tan = makeArrayCapable1(Math.tan);
+functions.asin = makeArrayCapable1(Math.asin);
+functions.acos = makeArrayCapable1(Math.acos);
+functions.atan = makeArrayCapable1(Math.atan);
+functions.atan2 = makeArrayCapable2(Math.atan2);
+functions.tanh = makeArrayCapable1(Math.tanh);
+functions.sqrt = makeArrayCapable1(Math.sqrt);
+functions.pow = makeArrayCapable2(Math.pow);
 
 // List and range
-intrinsics.array = (...args: any[]) => args;
-intrinsics.length = (...args: any[]) => args.length;
-intrinsics.range = (min: number, max: number, step: number = 1) => {
+functions.array = (...args: any[]) => args;
+functions.list = functions.array;
+functions.length = (...args: any[]) => args.length;
+functions.range = (min: number, max: number, step: number = 1) => {
   const opt: number[] = [];
   for (let i = min; i <= max; i += step) {
     opt.push(i);
@@ -73,11 +102,13 @@ intrinsics.range = (min: number, max: number, step: number = 1) => {
 };
 
 // Object and fields
-intrinsics.get = (obj: any, field: string) => obj[field];
+functions.get = (obj: any, field: string | number) => obj[field];
 
 // Array functions
-intrinsics.map = (list: any[], func: Function) => list.map(item => func(item));
-intrinsics.filter = (list: any[], func: Function) =>
+functions.first = (list: any[]) => list[0];
+functions.last = (list: any[]) => list[list.length - 1];
+functions.map = (list: any[], func: Function) => list.map(item => func(item));
+functions.filter = (list: any[], func: Function) =>
   list.filter(item => func(item));
 
 // Statistics
@@ -97,7 +128,7 @@ function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
     }
   }
 }
-intrinsics.min = (...list: Array<number | number[]>) => {
+functions.min = (...list: Array<number | number[]>) => {
   let r: number = null;
   stat_foreach(x => {
     if (r == null || x < r) {
@@ -106,7 +137,7 @@ intrinsics.min = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-intrinsics.max = (...list: Array<number | number[]>) => {
+functions.max = (...list: Array<number | number[]>) => {
   let r: number = null;
   stat_foreach(x => {
     if (r == null || x > r) {
@@ -115,12 +146,12 @@ intrinsics.max = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-intrinsics.sum = (...list: Array<number | number[]>) => {
+functions.sum = (...list: Array<number | number[]>) => {
   let r = 0;
   stat_foreach(x => (r += x), list);
   return r;
 };
-intrinsics.avg = (...list: Array<number | number[]>) => {
+functions.avg = (...list: Array<number | number[]>) => {
   let r = 0,
     c = 0;
   stat_foreach(x => {
@@ -132,59 +163,59 @@ intrinsics.avg = (...list: Array<number | number[]>) => {
   }
   return r / c;
 };
-intrinsics.mean = intrinsics.avg;
-intrinsics.average = intrinsics.avg;
+functions.mean = functions.avg;
+functions.average = functions.avg;
 
 // General operators
-operators["+"] = (a: any, b: any) => a + b;
-operators["-"] = (a: number, b: number) => a - b;
-operators["*"] = (a: number, b: number) => a * b;
-operators["/"] = (a: number, b: number) => a / b;
-operators["^"] = (a: number, b: number) => Math.pow(a, b);
-operators["unary:+"] = (a: number) => +a;
-operators["unary:-"] = (a: number) => -a;
+operators["+"] = makeArrayCapable2((a: any, b: any) => a + b);
+operators["-"] = makeArrayCapable2((a: number, b: number) => a - b);
+operators["*"] = makeArrayCapable2((a: number, b: number) => a * b);
+operators["/"] = makeArrayCapable2((a: number, b: number) => a / b);
+operators["^"] = makeArrayCapable2((a: number, b: number) => Math.pow(a, b));
+operators["unary:+"] = makeArrayCapable1((a: number) => +a);
+operators["unary:-"] = makeArrayCapable1((a: number) => -a);
 
-operators["<"] = (a: any, b: any) => a < b;
-operators[">"] = (a: any, b: any) => a > b;
-operators["<="] = (a: any, b: any) => a <= b;
-operators[">="] = (a: any, b: any) => a >= b;
-operators["=="] = (a: any, b: any) => a == b;
-operators["!="] = (a: any, b: any) => a != b;
+operators["<"] = makeArrayCapable2((a: any, b: any) => a < b);
+operators[">"] = makeArrayCapable2((a: any, b: any) => a > b);
+operators["<="] = makeArrayCapable2((a: any, b: any) => a <= b);
+operators[">="] = makeArrayCapable2((a: any, b: any) => a >= b);
+operators["=="] = makeArrayCapable2((a: any, b: any) => a == b);
+operators["!="] = makeArrayCapable2((a: any, b: any) => a != b);
 
-operators.and = (a: boolean, b: boolean) => a && b;
-operators.or = (a: boolean, b: boolean) => a || b;
-operators["unary:not"] = (a: boolean) => !a;
+operators.and = makeArrayCapable2((a: boolean, b: boolean) => a && b);
+operators.or = makeArrayCapable2((a: boolean, b: boolean) => a || b);
+operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 
 // Date operations
-intrinsics.date = {
-  parse: (x: string) => new Date(x),
+functions.date = {
+  parse: makeArrayCapable1((x: string) => new Date(x)),
 
-  year: timeFormat("%Y"), // year with century as a decimal number.
-  month: timeFormat("%b"), // month as a string "Jan" - "Dec".
-  day: timeFormat("%d"), // zero-padded day of the month as a decimal number [01,31].
-  weekOfYear: timeFormat("%U"), // Sunday-based week of the year as a decimal number [00,53].
-  dayOfYear: timeFormat("%j"), // day of the year as a decimal number [001,366].
-  weekday: timeFormat("%a"), // abbreviated weekday name.
+  year: makeArrayCapable1(timeFormat("%Y")), // year with century as a decimal number.
+  month: makeArrayCapable1(timeFormat("%b")), // month as a string "Jan" - "Dec".
+  day: makeArrayCapable1(timeFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
+  weekOfYear: makeArrayCapable1(timeFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
+  dayOfYear: makeArrayCapable1(timeFormat("%j")), // day of the year as a decimal number [001,366].
+  weekday: makeArrayCapable1(timeFormat("%a")), // abbreviated weekday name.
 
-  hour: timeFormat("%H"), // hour (24-hour clock) as a decimal number [00,23].
-  minute: timeFormat("%M"), // minute as a decimal number [00,59].
-  second: timeFormat("%S"), // second as a decimal number [00,61].
+  hour: makeArrayCapable1(timeFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
+  minute: makeArrayCapable1(timeFormat("%M")), // minute as a decimal number [00,59].
+  second: makeArrayCapable1(timeFormat("%S")), // second as a decimal number [00,61].
 
-  timestamp: (d: Date) => d.getTime() / 1000
+  timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000)
 };
 
-intrinsics.format = (value: number, spec: string) => {
+functions.format = makeArrayCapable2((value: number, spec: string) => {
   return format(spec)(value);
-};
+});
 
 // JSON format
-intrinsics.json = {
-  parse: (x: string) => JSON.parse(x),
-  stringify: (x: any) => JSON.stringify(x)
+functions.json = {
+  parse: makeArrayCapable1((x: string) => JSON.parse(x)),
+  stringify: makeArrayCapable1((x: any) => JSON.stringify(x))
 };
 
 // Comparison
-intrinsics.sortBy = (
+functions.sortBy = (
   fieldName: string | Function,
   reversed: boolean = false
 ) => {

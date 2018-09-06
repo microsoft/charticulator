@@ -249,13 +249,25 @@
 
 .charticulator__data-field-selector {
     font-size: 14px;
-    .el-item {
+    .el-derived-fields {
+        margin-left: 12px;
+        margin-bottom: 12px;
+        border-radius: 2px;
+        border: 1px solid $gray-200;
+        border-top: none;
+        border-right: none;
+    }
+    .el-field-item {
         height: 24px;
         line-height: 24px;
         padding: 0 4px;
         padding-left: 0;
-        padding-right: 8px;
-        cursor: pointer;
+        padding-right: 0;
+        cursor: not-allowed;
+        &.is-selectable {
+            cursor: pointer;
+        }
+        display: flex;
         &.is-null {
             color: $gray-140;
             padding-left: 24px;
@@ -270,10 +282,27 @@
                 filter: invert(100%);
             }
         }
-        .el-svg-icon {
+        & > .el-svg-icon {
+            flex-shrink: 0;
             width: 20px;
             height: 20px;
             margin: 2px;
+        }
+        & > .el-text {
+            flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 8px;
+        }
+        .charticulator__widget-control-button {
+            margin-right: 0;
+        }
+        .charticulator__widget-control-select {
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.2);
+            &:hover {
+                background: $color-primary;
+            }
         }
     }
 }

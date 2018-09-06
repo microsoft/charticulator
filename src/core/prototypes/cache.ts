@@ -7,7 +7,6 @@ import { ChartElementClass } from "./chart_element";
 import { ObjectClass, ObjectClasses } from "./object";
 
 import * as Charts from "./charts";
-import * as Constraints from "./constraints";
 import * as Glyphs from "./glyphs";
 import * as Marks from "./marks";
 import * as PlotSegments from "./plot_segments";

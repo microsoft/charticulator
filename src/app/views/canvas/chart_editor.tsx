@@ -644,8 +644,9 @@ export class ChartEditorView
             this.props.store.currentSelection.mark == mark
           ) {
             if (
-              plotSegmentState.dataRowIndices[glyphIndex] ==
-              this.props.store.datasetStore.getSelectedRowIndex(table)
+              plotSegmentState.dataRowIndices[glyphIndex].indexOf(
+                this.props.store.datasetStore.getSelectedRowIndex(table)
+              ) >= 0
             ) {
               isMarkSelected = true;
             }

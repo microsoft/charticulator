@@ -19,7 +19,7 @@ export class SelectMark extends Action {
   constructor(
     public glyph: Glyph,
     public mark: Element,
-    public dataRowIndex: number = null
+    public dataRowIndex: number[] = null
   ) {
     super();
   }

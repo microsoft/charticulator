@@ -126,7 +126,7 @@ export class MapPlotSegment extends PlotSegmentClass {
         this.state.glyphs,
         this.state.dataRowIndices
       )) {
-        const row = table.getRowContext(index);
+        const row = table.getGroupedContext(index);
         const lat = latExpr.getNumberValue(row);
         const lng = lngExpr.getNumberValue(row);
         const p = this.getProjectedPoints([[lat, lng]])[0];
