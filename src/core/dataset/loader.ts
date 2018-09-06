@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { Table, Dataset } from "./dataset";
 import { parseDataset } from "./dsv_parser";
 

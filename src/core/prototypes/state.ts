@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
 import * as Dataset from "../dataset";
 import * as Expression from "../expression";

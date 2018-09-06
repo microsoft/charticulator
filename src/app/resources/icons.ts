@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 const iconRegistry = new Map<string, string>();
 
 export function addSVGIcon(path: string | string[], svgDataURL: string) {

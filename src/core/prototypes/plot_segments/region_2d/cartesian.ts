@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { ChartStateManager } from "../..";
 import * as Graphics from "../../../graphics";
 import { ConstraintSolver, VariableStrength } from "../../../solver";

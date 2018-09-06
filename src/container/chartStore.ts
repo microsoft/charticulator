@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { BaseStore } from "../core/store/base";
 import { Specification, Dataset, Prototypes } from "../core";
 import { SelectMark, ClearSelection, Action } from "../core/actions";
