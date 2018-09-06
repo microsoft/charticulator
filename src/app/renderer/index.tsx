@@ -6,7 +6,7 @@ import * as React from "react";
 
 import { Graphics, Color, shallowClone } from "../../core";
 import { toSVGNumber } from "../utils";
-import { ChartComponent } from "../../container/chartComponent";
+import { ChartComponent } from "../../container/chart_component";
 
 // adapted from https://stackoverflow.com/a/20820649
 function desaturate(color: Color, amount: number) {
@@ -101,6 +101,7 @@ export interface RenderGraphicalElementSVGOptions {
   styleOverride?: Graphics.Style;
   className?: string;
   key?: string;
+  chartComponentSync?: boolean;
   externalResourceResolver?: (url: string) => string;
   onSelected?: (element: Graphics.Element) => any;
 }
@@ -299,11 +300,14 @@ export function renderGraphicalElementSVG(
       const component = element as Graphics.ChartContainerElement;
       return (
         <ChartComponent
+          key={options.key}
           chart={component.chart}
           dataset={component.dataset}
           width={component.width}
           height={component.height}
           rootElement="g"
+          sync={options ? options.chartComponentSync : false}
+          rendererOptions={options}
         />
       );
     }
@@ -324,6 +328,7 @@ export function renderGraphicalElementSVG(
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
               key: `m${index}`,
+              chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
               onSelected: options.onSelected
             });

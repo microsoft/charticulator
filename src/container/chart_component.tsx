@@ -1,7 +1,10 @@
 import * as React from "react";
 
 import { Specification, Dataset, Prototypes, Graphics, Solver } from "../core";
-import { renderGraphicalElementSVG } from "../app/renderer";
+import {
+  renderGraphicalElementSVG,
+  RenderGraphicalElementSVGOptions
+} from "../app/renderer";
 
 export interface ChartComponentProps {
   chart: Specification.Chart;
@@ -10,6 +13,11 @@ export interface ChartComponentProps {
   height: number;
   rootElement: "svg" | "g";
   className?: string;
+
+  /** Additional options for the SVG renderer */
+  rendererOptions?: RenderGraphicalElementSVGOptions;
+  /** Render the chart synchronously */
+  sync?: boolean;
 }
 
 export interface ChartComponentState {
@@ -25,18 +33,37 @@ export class ChartComponent extends React.Component<
   protected manager: Prototypes.ChartStateManager;
   protected renderer: Graphics.ChartRenderer;
 
-  public state: ChartComponentState = {
-    working: true,
-    graphics: null
-  };
-
   constructor(props: ChartComponentProps) {
     super(props);
     this.recreateManager(props);
-    this.componentWillReceiveProps(props);
+    this.updateWithNewProps(props);
+    if (props.sync) {
+      for (let i = 0; i < 2; i++) {
+        const solver = new Solver.ChartConstraintSolver();
+        solver.setup(this.manager);
+        solver.solve();
+        solver.destroy();
+      }
+      this.state = {
+        working: false,
+        graphics: this.renderer.render()
+      };
+    } else {
+      this.state = {
+        working: true,
+        graphics: null
+      };
+      this.scheduleUpdate();
+    }
   }
 
   public componentWillReceiveProps(newProps: ChartComponentProps) {
+    this.updateWithNewProps(newProps);
+    this.setState({ working: true });
+    this.scheduleUpdate();
+  }
+
+  public updateWithNewProps(newProps: ChartComponentProps) {
     if (newProps.chart != this.props.chart) {
       this.recreateManager(newProps);
     } else if (newProps.dataset != this.props.dataset) {
@@ -50,7 +77,6 @@ export class ChartComponent extends React.Component<
       type: "value",
       value: newProps.height
     } as Specification.ValueMapping;
-    this.scheduleUpdate();
   }
 
   protected recreateManager(props: ChartComponentProps) {
@@ -59,7 +85,6 @@ export class ChartComponent extends React.Component<
   }
 
   protected scheduleUpdate() {
-    this.setState({ working: true });
     setTimeout(() => {
       for (let i = 0; i < 2; i++) {
         const solver = new Solver.ChartConstraintSolver();
@@ -75,13 +100,29 @@ export class ChartComponent extends React.Component<
   }
 
   public render() {
-    const gfx = renderGraphicalElementSVG(this.state.graphics);
+    console.log(this.state);
+    const gfx = renderGraphicalElementSVG(
+      this.state.graphics,
+      this.props.rendererOptions
+    );
     const inner = (
       <g
         transform={`translate(${this.props.width / 2}, ${this.props.height /
           2})`}
       >
         {gfx}
+        {this.state.working ? (
+          <rect
+            x={-this.props.width / 2}
+            y={-this.props.height / 2}
+            width={this.props.width}
+            height={this.props.height}
+            style={{
+              fill: "rgba(0, 0, 0, 0.2)",
+              stroke: "none"
+            }}
+          />
+        ) : null}
       </g>
     );
     switch (this.props.rootElement) {

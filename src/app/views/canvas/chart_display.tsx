@@ -82,6 +82,7 @@ export function renderChartToLocalString(
   const urls = new Map<string, string>();
   const allTasks: Array<Promise<void>> = [];
   renderGraphicalElementSVG(graphics, {
+    chartComponentSync: true,
     externalResourceResolver: (url: string) => {
       const task = new Promise<string>((resolve, reject) => {
         const img = new Image();
@@ -122,6 +123,7 @@ export function renderChartToLocalString(
           ).toFixed(6)})`}
         >
           {renderGraphicalElementSVG(graphics, {
+            chartComponentSync: true,
             externalResourceResolver: (url: string) => urls.get(url)
           })}
         </g>
