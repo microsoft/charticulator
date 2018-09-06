@@ -92,7 +92,7 @@ export class WorkerHostProcess {
                       {
                         type: "rpc-error",
                         instanceID: message.instanceID,
-                        errorMessage: error.message
+                        errorMessage: error.message + "\n" + error.stack
                       },
                       undefined
                     );
@@ -113,7 +113,7 @@ export class WorkerHostProcess {
               {
                 type: "rpc-error",
                 instanceID: message.instanceID,
-                errorMessage: e.message
+                errorMessage: e.message + "\n" + e.stack
               },
               undefined
             );
