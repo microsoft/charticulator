@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { Dataset } from "../../../core";
 
 export const kind2Icon: { [name: string]: string } = {
