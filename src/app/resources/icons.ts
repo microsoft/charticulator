@@ -342,7 +342,10 @@ addSVGIcon(
   "mark/data-axis",
   require("url-loader!resources/icons/icons_data-axis.svg")
 );
-
+addSVGIcon(
+  "mark/nested-chart",
+  require("url-loader!resources/icons/icons_chart.svg")
+);
 // Handle icons
 addSVGIcon(
   "sublayout/dodge-x",

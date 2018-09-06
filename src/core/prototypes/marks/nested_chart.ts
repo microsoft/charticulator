@@ -40,7 +40,7 @@ export class NestedChartElement extends EmphasizableMarkClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "NestedChart",
-    iconPath: "mark/rect",
+    iconPath: "mark/nested-chart",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
