@@ -32,7 +32,8 @@ import {
   InputNumber,
   InputText,
   ComboBox,
-  ComboBoxFontFamily
+  ComboBoxFontFamily,
+  Select
 } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
 
@@ -144,6 +145,14 @@ export class MappingEditor extends React.Component<
     this.updateEvents.emit("update");
   }
 
+  public getTableOrDefault() {
+    if (this.props.options.table) {
+      return this.props.options.table;
+    } else {
+      return this.props.parent.store.datasetStore.getTables()[0].name;
+    }
+  }
+
   private renderValueEditor(value: Specification.AttributeValue) {
     const parent = this.props.parent;
     let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
@@ -241,7 +250,7 @@ export class MappingEditor extends React.Component<
             validate={value =>
               parent.store.verifyUserExpressionWithTable(
                 value,
-                this.props.options.table,
+                this.getTableOrDefault(),
                 { textExpression: true, expectedTypes: ["string"] }
               )
             }
@@ -256,6 +265,7 @@ export class MappingEditor extends React.Component<
               } else {
                 this.props.parent.onEditMappingHandler(this.props.attribute, {
                   type: "text",
+                  table: this.getTableOrDefault(),
                   textExpression: newValue
                 } as Specification.TextMapping);
               }
@@ -412,7 +422,7 @@ export class MappingEditor extends React.Component<
               validate={value =>
                 parent.store.verifyUserExpressionWithTable(
                   value,
-                  this.props.options.table,
+                  textMapping.table,
                   { textExpression: true, expectedTypes: ["string"] }
                 )
               }
@@ -423,6 +433,7 @@ export class MappingEditor extends React.Component<
                 } else {
                   this.props.parent.onEditMappingHandler(this.props.attribute, {
                     type: "text",
+                    table: textMapping.table,
                     textExpression: newValue
                   } as Specification.TextMapping);
                 }
@@ -663,7 +674,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
 
   public renderDataPicker() {
     const options = this.props.options;
-    let currentExpression = null;
+    let currentExpression: string = null;
     const mapping = this.state.currentMapping;
 
     if (mapping != null && mapping.type == "scale") {
@@ -671,34 +682,36 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     }
 
     return (
-      <DataFieldSelector
-        datasetStore={this.datasetStore}
-        kinds={options.acceptKinds}
-        defaultValue={
-          currentExpression
-            ? { table: options.table, expression: currentExpression }
-            : null
-        }
-        nullDescription={"(none)"}
-        nullNotHighlightable={true}
-        onChange={value => {
-          if (value != null) {
-            this.props.parent.mapData(
-              new DragData.DataExpression(
-                this.datasetStore.getTable(value.table),
-                value.expression,
-                value.lambdaExpression,
-                value.type,
-                value.metadata
-              ),
-              options.hints
-            );
-          } else {
-            this.props.parent.clearMapping();
-            this.props.onClose();
+      <div>
+        <DataFieldSelector
+          datasetStore={this.datasetStore}
+          kinds={options.acceptKinds}
+          useAggregation={true}
+          defaultValue={
+            currentExpression
+              ? { table: options.table, expression: currentExpression }
+              : null
           }
-        }}
-      />
+          nullDescription={"(none)"}
+          nullNotHighlightable={true}
+          onChange={value => {
+            if (value != null) {
+              this.props.parent.mapData(
+                new DragData.DataExpression(
+                  this.datasetStore.getTable(value.table),
+                  value.expression,
+                  value.type,
+                  value.metadata
+                ),
+                options.hints
+              );
+            } else {
+              this.props.parent.clearMapping();
+              this.props.onClose();
+            }
+          }}
+        />
+      </div>
     );
   }
 

@@ -28,6 +28,7 @@ import {
 } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexedDB";
 import { ExportTemplateTarget } from "../template";
+import { Migrator } from "./migrator";
 
 export class HistoryManager<StateType> {
   public statesBefore: StateType[] = [];
@@ -65,6 +66,7 @@ export class HistoryManager<StateType> {
 }
 
 export interface MainStoreState {
+  version: string;
   dataset: DatasetStoreState;
   chart: ChartStoreState;
 }
@@ -121,6 +123,7 @@ export class MainStore extends BaseStore {
 
   public saveState(): MainStoreState {
     return {
+      version: CHARTICULATOR_PACKAGE.version,
       dataset: this.datasetStore.saveState(),
       chart: this.chartStore.saveState()
     };
@@ -219,7 +222,11 @@ export class MainStore extends BaseStore {
     }
     if (action instanceof Actions.Load) {
       this.historyManager.clear();
-      this.loadState(action.projectData);
+      const state = new Migrator().migrate(
+        action.projectData,
+        CHARTICULATOR_PACKAGE.version
+      );
+      this.loadState(state);
     }
     if (action instanceof Actions.ImportDataset) {
       this.currentChartID = null;
@@ -231,7 +238,11 @@ export class MainStore extends BaseStore {
     const chart = await this.backend.get(id);
     this.currentChartID = id;
     this.historyManager.clear();
-    this.loadState(chart.data.state);
+    const state = new Migrator().migrate(
+      chart.data.state,
+      CHARTICULATOR_PACKAGE.version
+    );
+    this.loadState(state);
   }
 
   public async backendSaveChart() {

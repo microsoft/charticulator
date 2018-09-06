@@ -1511,8 +1511,8 @@
                 }
 
                 .el-mapping-scale {
+                    max-width: 100%;
                     display: inline-flex;
-                    max-width: 130px;
                     line-height: 20px;
                     height: 20px;
                     white-space: nowrap;
@@ -1576,6 +1576,7 @@
                         padding: 0 2px;
                         text-overflow: ellipsis;
                         transition: background $transition-default, color $transition-default;
+                        @include font-mono;
                     }
 
                     &:hover {

@@ -113,15 +113,6 @@ export class DatasetStore extends BaseStore {
     return table.rows.map(d => d[columnName]);
   }
 
-  public getExpressionVector(table: Dataset.Table, expression: string) {
-    const e = this.expressionCache.parse(expression);
-    const cTable = this.context.getTableContext(table);
-    return table.rows.map(row => {
-      const cRow = cTable.getRowContext(row);
-      return e.getValue(cRow) as Dataset.ValueType;
-    });
-  }
-
   public getSelectedRow(table: Dataset.Table): Dataset.Row {
     if (this.selectedRowMap.has(table)) {
       return table.rows[this.selectedRowMap.get(table)];

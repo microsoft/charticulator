@@ -1,13 +1,10 @@
-import { Color, Point } from "../common";
-import { VariableStrength } from "../solver";
-import * as Specification from "../specification";
-
+import { Point } from "../common";
 import * as Graphics from "../graphics";
-
-export * from "./object";
-export * from "./chart_element";
-
+import * as Specification from "../specification";
 import * as Controls from "./controls";
+export * from "./chart_element";
+export * from "./object";
+
 export { Controls };
 
 export interface OrderDescriptionItem extends Specification.AttributeMap {

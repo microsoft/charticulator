@@ -415,6 +415,22 @@ export class SetPlotSegmentFilter extends Action {
   }
 }
 
+export class SetPlotSegmentGroupBy extends Action {
+  constructor(
+    public plotSegment: Specification.PlotSegment,
+    public groupBy: Specification.Types.GroupBy
+  ) {
+    super();
+  }
+  public digest() {
+    return {
+      name: "SetPlotSegmentGroupBy",
+      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      groupBy: this.groupBy
+    };
+  }
+}
+
 export class SetScaleAttribute extends Action {
   constructor(
     public scale: Specification.Scale,
@@ -504,7 +520,6 @@ export class BindDataToAxis extends Action {
       dataExpression: {
         table: this.dataExpression.table.name,
         expression: this.dataExpression.expression,
-        lambdaExpression: this.dataExpression.lambdaExpression,
         valueType: this.dataExpression.valueType,
         kind: this.dataExpression.metadata.kind
       }

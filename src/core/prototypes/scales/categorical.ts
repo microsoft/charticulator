@@ -10,7 +10,6 @@ import {
   AttributeDescription,
   Controls,
   DataMappingHints,
-  ObjectClass,
   ObjectClasses,
   TemplateParameters
 } from "../common";
