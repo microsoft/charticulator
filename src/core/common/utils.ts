@@ -18,6 +18,26 @@ export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
   }
 }
 
+/** Transpose a matrix r[i][j] = matrix[j][i] */
+export function transpose<T>(matrix: T[][]): T[][] {
+  if (matrix == undefined) {
+    return undefined;
+  }
+  if (matrix.length == 0) {
+    return [];
+  }
+  const jLength = matrix[0].length;
+  const r: T[][] = [];
+  for (let j = 0; j < jLength; j++) {
+    const rj: T[] = [];
+    for (let i = 0; i < matrix.length; i++) {
+      rj.push(matrix[i][j]);
+    }
+    r.push(rj);
+  }
+  return r;
+}
+
 /** Generate a range of integers: [start, end) */
 export function makeRange(start: number, end: number) {
   const r: number[] = [];
