@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 import { MainStoreState } from "./main_store";
 import { compareVersion, zip, Prototypes, Specification } from "../../core";
 

@@ -1,3 +1,7 @@
+/*
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the MIT license.
+*/
 fetch("data/THIRD_PARTY.json")
   .then(res => res.json())
   .then(
