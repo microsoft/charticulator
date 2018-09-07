@@ -25,7 +25,7 @@ import {
   TemplateParameters
 } from "../common";
 import { AxisRenderer, buildAxisWidgets } from "../plot_segments/axis";
-import { MarkClass } from "./index";
+import { MarkClass } from ".";
 
 export interface DataAxisAttributes extends Specification.AttributeMap {
   // anchor0, anchor1, ... that corresponds to the data

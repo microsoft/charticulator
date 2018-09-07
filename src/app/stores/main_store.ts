@@ -30,7 +30,7 @@ import {
   ItemDescription,
   ItemMetadata
 } from "../backend/abstract";
-import { IndexedDBBackend } from "../backend/indexedDB";
+import { IndexedDBBackend } from "../backend/indexed_db";
 import { ExportTemplateTarget } from "../template";
 import { Migrator } from "./migrator";
 

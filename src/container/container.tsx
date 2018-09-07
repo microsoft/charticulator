@@ -23,7 +23,7 @@ import {
   EventSubscription
 } from "../core";
 import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
-import { ChartStore, ChartSelection } from "./chartStore";
+import { ChartStore, ChartSelection } from "./chart_store";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 

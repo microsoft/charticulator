@@ -2,12 +2,7 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import {
-  AbstractBackend,
-  ItemData,
-  ItemDescription,
-  ItemMetadata
-} from "./abstract";
+import { ItemData, ItemDescription, ItemMetadata } from "./abstract";
 
 function s4() {
   return Math.floor((1 + Math.random()) * 0x10000)
@@ -238,18 +233,3 @@ export class IndexedDBBackend {
     );
   }
 }
-
-// export function test() {
-//     let backend = new IndexedDBBackend();
-//     backend.open().then(() => {
-//         backend.listContent("test", "timeCreated", 0, 10).then((result) => {
-//             console.log(result);
-//         });
-//         backend.putContent("test", { a: 10, b: 20, t: new Date().getTime() }, { name: "MyName" }, true).then((id) => {
-//             console.log(id);
-//             backend.getContent(id).then((content) => {
-//                 console.log(id, content);
-//             });
-//         });
-//     });
-// }

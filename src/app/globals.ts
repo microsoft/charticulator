@@ -10,7 +10,7 @@ import {
 } from "./controllers";
 import { MainStore } from "./stores";
 
-import { IndexedDBBackend } from "./backend/indexedDB";
+import { IndexedDBBackend } from "./backend/indexed_db";
 
 export let dragController = new DragController();
 export let popupController = new PopupController();

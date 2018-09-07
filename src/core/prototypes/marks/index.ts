@@ -89,7 +89,7 @@ export abstract class MarkClass extends ObjectClass {
 
 import "./anchor";
 // import "./textbox";
-import "./dataAxis";
+import "./data_axis";
 import "./line";
 import "./rect";
 import "./symbol";
