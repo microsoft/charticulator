@@ -24,7 +24,10 @@ import * as Dataset from "../../dataset";
 
 export interface NestedChartElementProperties
   extends Specification.AttributeMap {
+  /** The chart specification */
   specification: any;
+  /** Map column names to nested chart column names */
+  columnNameMap: { [name: string]: string };
 }
 
 export interface NestedChartElementObject extends Specification.Element {
@@ -158,15 +161,35 @@ export class NestedChartElement extends EmphasizableMarkClass {
       manager.dataset.tables,
       plotSegmentClass.object.table
     );
+    let columnNameMap = this.object.properties.columnNameMap;
+    if (columnNameMap == null) {
+      columnNameMap = {};
+      for (const c of table.columns) {
+        columnNameMap[c.name] = c.name;
+      }
+    }
     const dataRows = plotSegmentClass.state.dataRowIndices[glyphIndex].map(
-      i => table.rows[i]
+      i => {
+        const data = table.rows[i];
+        const r: Dataset.Row = { _id: data._id };
+        for (const col in columnNameMap) {
+          r[columnNameMap[col]] = data[col];
+        }
+        return r;
+      }
     );
     return {
       name: "NestedData",
       tables: [
         {
           name: "MainTable",
-          columns: table.columns,
+          columns: table.columns.map(x => {
+            return {
+              name: columnNameMap[x.name],
+              type: x.type,
+              metadata: x.metadata
+            };
+          }),
           rows: dataRows
         }
       ]

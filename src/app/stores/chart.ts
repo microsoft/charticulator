@@ -349,6 +349,7 @@ export class ChartStore extends BaseStore {
       if (!attributesSet) {
         switch (action.classID) {
           case "mark.rect":
+          case "mark.nested-chart":
           case "mark.image":
             {
               mark.mappings.x1 = {
@@ -425,6 +426,16 @@ export class ChartStore extends BaseStore {
             }
             break;
         }
+      }
+
+      if (action.classID == "mark.nested-chart") {
+        // Add column names to the mark
+        const columnNameMap: { [name: string]: string } = {};
+        for (const column of this.datasetStore.getTable(action.glyph.table)
+          .columns) {
+          columnNameMap[column.name] = column.name;
+        }
+        mark.properties.columnNameMap = columnNameMap;
       }
 
       this.currentSelection = new MarkSelection(
