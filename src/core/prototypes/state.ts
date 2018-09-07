@@ -741,6 +741,9 @@ export class ChartStateManager {
 
   /** Get chart-level data context for a given table */
   public getChartDataContext(tableName: string): Expression.Context {
+    if (tableName == null) {
+      return null;
+    }
     const table = this.dataflow.getTable(tableName);
     return table.getGroupedContext(makeRange(0, table.rows.length));
   }

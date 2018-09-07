@@ -75,8 +75,8 @@ export class BaseSolver {
     rowContext: Expression.Context
   ) {
     if (
-      (rowContext == null && mapping.type == "scale") ||
-      mapping.type == "text"
+      rowContext == null &&
+      (mapping.type == "scale" || mapping.type == "text")
     ) {
       const xMapping =
         (mapping as Specification.ScaleMapping) ||
