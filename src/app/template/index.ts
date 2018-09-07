@@ -190,6 +190,9 @@ export class ChartTemplateBuilder {
             slotName: scaleMapping.expression
           });
         }
+        if (item.type == "text") {
+          // TODO: add text mapping
+        }
       }
     }
     if (mappings.length > 0) {

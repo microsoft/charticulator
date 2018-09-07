@@ -463,7 +463,7 @@ export class TextElement extends MarkClass {
   public getTemplateParameters(): TemplateParameters {
     if (
       this.object.mappings.text &&
-      this.object.mappings.text.type == "scale"
+      this.object.mappings.text.type != "value"
     ) {
       return null;
     } else {
