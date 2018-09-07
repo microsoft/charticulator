@@ -11,7 +11,7 @@ import {
   makeText,
   Style
 } from "../../graphics";
-import { TextMeasurer } from "../../graphics/renderer/textMeasurer";
+import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
 import { Controls } from "../common";
 

@@ -193,4 +193,4 @@ export class ChartRenderer {
   }
 }
 
-export * from "./textMeasurer";
+export * from "./text_measurer";
