@@ -344,7 +344,7 @@ addSVGIcon(
 );
 addSVGIcon(
   "mark/nested-chart",
-  require("url-loader!resources/icons/icons_chart.svg")
+  require("url-loader!resources/icons/icons_nested-chart.svg")
 );
 // Handle icons
 addSVGIcon(

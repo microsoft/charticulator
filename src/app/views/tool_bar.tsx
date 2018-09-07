@@ -70,18 +70,19 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
         <ObjectButton classID="mark.image" title="Image" icon="mark/image" />
         <span className="chartaccent__toolbar-separator" />
         <ObjectButton
-          classID="mark.nested-chart"
-          title="Image"
-          icon="mark/nested-chart"
-        />
-        <span className="chartaccent__toolbar-separator" />
-        <ObjectButton
           classID="mark.data-axis"
           title="Data Axis"
           icon="mark/data-axis"
         />
+        <ObjectButton
+          classID="mark.nested-chart"
+          title="Nested Chart"
+          icon="mark/nested-chart"
+        />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Guides</span>
         <ObjectButton
           classID="guide-y"
@@ -107,6 +108,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           icon="guide/coordinator-y"
           noDragging={true}
         />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Plot Segments</span>
         <ObjectButton
           classID="plot-segment.cartesian"
@@ -121,6 +123,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           noDragging={true}
         />
         {/* <ScaffoldButton type="curve" title="Curve" icon="plot/curve" currentTool={this.props.store.currentTool} /> */}
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Scaffolds</span>
         <ScaffoldButton
           type="cartesian-x"

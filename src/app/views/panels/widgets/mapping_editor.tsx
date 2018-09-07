@@ -600,6 +600,7 @@ export class MappingEditor extends React.Component<
             {shouldShowBindData ? (
               <Button
                 icon={"general/bind-data"}
+                title="Bind data"
                 ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
                 }

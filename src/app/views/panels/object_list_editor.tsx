@@ -92,6 +92,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                       ? "general/eye"
                       : "general/eye-faded"
                   }
+                  title="Toggle visibility"
                   active={false}
                   onClick={() => {
                     this.dispatch(
@@ -107,6 +108,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 />
                 <Button
                   icon="general/eraser"
+                  title="Remove"
                   active={false}
                   onClick={() => {
                     this.dispatch(new Actions.DeleteChartElement(element));
@@ -172,6 +174,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                       ? "general/eye"
                       : "general/eye-faded"
                   }
+                  title="Toggle visibility"
                   active={false}
                   onClick={() => {
                     this.dispatch(
@@ -188,6 +191,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 <Button
                   icon="general/eraser"
                   active={false}
+                  title="Remove"
                   onClick={() => {
                     this.dispatch(new Actions.RemoveMarkFromGlyph(glyph, mark));
                   }}
