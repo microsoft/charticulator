@@ -1625,6 +1625,7 @@ export class Region2DConstraintBuilder {
           yi = i % yCount;
           xi = Math.floor(i / yCount);
         }
+        yi = yCount - 1 - yi; // flip Y
         // Adjust xi, yi based on alignment settings
         if (alignX == "end") {
           xi = xi + xCount - xMax;

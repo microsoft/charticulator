@@ -20,7 +20,7 @@ import {
   uniqueID
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised, GradientPicker } from "../../../components";
+import { ButtonRaised, GradientPicker, ButtonFlat } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
 import { PopupView } from "../../../controllers";
 import {
@@ -940,6 +940,20 @@ export class ReorderStringsValue extends React.Component<
               </div>
             ))}
           </ReorderListView>
+        </div>
+        <div className="el-row">
+          <Button
+            text="Reverse"
+            onClick={() => {
+              this.setState({ items: this.state.items.reverse() });
+            }}
+          />{" "}
+          <Button
+            text="Sort"
+            onClick={() => {
+              this.setState({ items: this.state.items.sort() });
+            }}
+          />
         </div>
         <div className="el-row">
           <ButtonRaised
