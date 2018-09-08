@@ -154,22 +154,6 @@ export class LinearScale extends ScaleClass {
       manager.mappingEditor("End", "rangeMax", "number", { defaultAuto: true })
     ];
   }
-
-  public getTemplateParameters(): TemplateParameters {
-    return {
-      inferences: [
-        {
-          type: "scale",
-          slotKind: "numerical",
-          rangeType: "number",
-          properties: {
-            min: "domainMin",
-            max: "domainMax"
-          }
-        } as Specification.Template.Scale
-      ]
-    };
-  }
 }
 
 export interface LinearColorScaleProperties extends LinearScaleProperties {

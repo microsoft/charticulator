@@ -19,7 +19,12 @@ import {
   ObjectClassMetadata,
   TemplateParameters
 } from "../common";
-import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
+import {
+  AxisRenderer,
+  buildAxisWidgets,
+  getCategoricalAxis,
+  buildAxisInference
+} from "./axis";
 import { PlotSegmentClass } from "./index";
 
 export interface LineGuideAttributes extends Specification.AttributeMap {
@@ -252,17 +257,9 @@ export class LineGuide extends PlotSegmentClass {
 
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
-    if (
-      this.object.properties.axis &&
-      this.object.properties.axis.type != "default"
-    ) {
+    if (this.object.properties.axis) {
       const axis = this.object.properties.axis;
-      r.push({
-        type: "axis",
-        slotName: axis.expression.replace(/`/g, ""),
-        slotKind: axis.type,
-        property: "axis"
-      } as Specification.Template.Axis);
+      r.push(buildAxisInference(this.object, "axis"));
     }
     return { inferences: r };
   }

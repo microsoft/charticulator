@@ -731,3 +731,24 @@ export function buildAxisWidgets(
   }
   return widgets;
 }
+
+export function buildAxisInference(
+  plotSegment: Specification.PlotSegment,
+  property: string
+): Specification.Template.Inference {
+  const axis = plotSegment.properties[
+    property
+  ] as Specification.Types.AxisDataBinding;
+  return {
+    objectID: plotSegment._id,
+    dataSource: {
+      table: plotSegment.table,
+      groupBy: plotSegment.groupBy
+    },
+    axis: {
+      expression: axis.expression,
+      type: axis.type,
+      property
+    }
+  };
+}

@@ -355,25 +355,32 @@ export class DataAxis extends MarkClass {
 
   public getTemplateParameters(): TemplateParameters {
     const props = this.object.properties;
+    const dataSource: Specification.Template.Inference["dataSource"] = {
+      table: this.getGlyphClass().object.table,
+      groupBy: null // TODO: fixme
+    };
     if (props.dataExpressions && props.dataExpressions.length > 0) {
       return {
         inferences: [
           {
-            type: "axis",
-            slotName: props.dataExpressions[0],
-            slotKind: props.axis.type,
-            property: "axis"
-          } as Specification.Template.Axis,
-          {
-            type: "slot-list",
-            property: "dataExpressions",
-            slots: props.dataExpressions.map(x => {
-              return {
-                slotName: x,
-                slotKind: props.axis.type
-              };
-            })
-          } as Specification.Template.SlotList
+            objectID: this.object._id,
+            dataSource,
+            axis: {
+              expression: props.dataExpressions[0],
+              type: props.axis.type,
+              property: "axis"
+            }
+          },
+          ...props.dataExpressions.map((x, i) => {
+            return {
+              objectID: this.object._id,
+              dataSource,
+              expression: {
+                expression: x,
+                property: { property: "dataExpressions", field: i }
+              }
+            };
+          })
         ]
       };
     }

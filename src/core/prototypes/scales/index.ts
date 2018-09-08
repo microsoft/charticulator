@@ -4,7 +4,7 @@ Licensed under the MIT license.
 */
 import { ConstraintSolver, Variable } from "../../solver";
 import * as Specification from "../../specification";
-import { DataMappingHints, ObjectClass } from "../common";
+import { DataMappingHints, ObjectClass, TemplateParameters } from "../common";
 
 export abstract class ScaleClass extends ObjectClass {
   public readonly object: Specification.Scale;
@@ -24,6 +24,23 @@ export abstract class ScaleClass extends ObjectClass {
     column: Specification.DataValue[],
     hints?: DataMappingHints
   ): void;
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      inferences: [
+        {
+          objectID: this.object._id,
+          scale: {
+            classID: this.object.classID,
+            expressions: [],
+            properties: {
+              mapping: "mapping"
+            }
+          }
+        }
+      ]
+    };
+  }
 }
 
 import "./categorical";

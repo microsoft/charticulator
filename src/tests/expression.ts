@@ -5,7 +5,7 @@ Licensed under the MIT license.
 import { expect } from "chai";
 import * as Expression from "../core/expression";
 
-describe("Expression", () => {
+describe("Basic Expression", () => {
   const test_cases: Array<[string, any]> = [
     // Arithmetics
     [`1 - 2 - 3 - 4`, -8],
@@ -108,6 +108,41 @@ describe("Text Expression", () => {
       const ep = Expression.parseTextExpression(es);
       const epreturned = e.getValue(context);
       expect(epreturned).deep.equals(expected, expr);
+    });
+  });
+});
+
+describe("Expression Utilities", () => {
+  it("replace", () => {
+    const cases: any[][] = [
+      ["a + b + c + d", { a: "A", b: "B" }, "A + B + c + d"],
+      ["a + b * (c + d)", { a: "A", c: "C" }, "A + b * (C + d)"],
+      ["a", { a: "A", b: "B" }, "A"]
+    ];
+    cases.forEach(ci => {
+      expect(
+        Expression.parse(ci[0])
+          .replace(Expression.variableReplacer(ci[1]))
+          .toString()
+      ).equals(ci[2]);
+    });
+  });
+
+  it("list_variables", () => {
+    const cases: any[][] = [
+      ["a + b + c + d", ["a", "b", "c", "d"]],
+      ["a + b * (c + d)", ["a", "b", "c", "d"]],
+      ["a * (b + c) * d", ["a", "b", "c", "d"]]
+    ];
+    cases.forEach(ci => {
+      const vars = new Set<string>();
+      Expression.parse(ci[0]).replace((expr: Expression.Expression) => {
+        if (expr instanceof Expression.Variable) {
+          vars.add(expr.name);
+        }
+      });
+      const list = Array.from(vars).sort();
+      expect(list).deep.equals(ci[1]);
     });
   });
 });

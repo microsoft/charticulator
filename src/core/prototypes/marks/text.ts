@@ -470,11 +470,13 @@ export class TextElement extends MarkClass {
       return {
         properties: [
           {
-            mode: "attribute",
-            attribute: "text",
+            objectID: this.object._id,
+            target: {
+              attribute: "text"
+            },
             type: "string",
             default: this.state.attributes.text
-          } as Specification.Template.Property
+          }
         ]
       };
     }

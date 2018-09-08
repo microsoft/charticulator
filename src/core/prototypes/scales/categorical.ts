@@ -252,21 +252,6 @@ class CategoricalScaleColor extends ScaleClass {
     );
     return [manager.sectionHeader("Color Mapping"), ...items];
   }
-
-  public getTemplateParameters(): TemplateParameters {
-    return {
-      inferences: [
-        {
-          type: "scale",
-          slotKind: "categorical",
-          rangeType: "color",
-          properties: {
-            mapping: "mapping"
-          }
-        } as Specification.Template.Scale
-      ]
-    };
-  }
 }
 
 class CategoricalScaleString extends ScaleClass {

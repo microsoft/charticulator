@@ -154,13 +154,15 @@ export function argMin<T>(
   return argmin;
 }
 
+export type FieldType = string | number | ArrayLike<string | number>;
+
 export function setField<ObjectType, ValueType>(
   obj: ObjectType,
-  field: string | string[],
+  field: FieldType,
   value: ValueType
 ): ObjectType {
   let p = obj as any;
-  if (typeof field == "string") {
+  if (typeof field == "string" || typeof field == "number") {
     p[field] = value;
   } else {
     for (let i = 0; i < field.length - 1; i++) {
@@ -176,13 +178,13 @@ export function setField<ObjectType, ValueType>(
 
 export function getField<ObjectType, ValueType>(
   obj: ObjectType,
-  field: string | string[]
+  field: FieldType
 ): ObjectType {
   let p = obj as any;
-  if (typeof field == "string") {
+  if (typeof field == "string" || typeof field == "number") {
     return p[field];
   } else {
-    const fieldList = field; // .split(".");
+    const fieldList = field;
     for (let i = 0; i < fieldList.length - 1; i++) {
       if (p[fieldList[i]] == undefined) {
         return undefined;

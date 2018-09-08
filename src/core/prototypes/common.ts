@@ -2,7 +2,7 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import { Point } from "../common";
+import { Point, getById, setField, getField } from "../common";
 import * as Graphics from "../graphics";
 import * as Specification from "../specification";
 import * as Controls from "./controls";
@@ -379,5 +379,87 @@ export namespace TemplateMetadata {
     field?: string[];
 
     dataExpression: string;
+  }
+}
+
+export function findObjectById(
+  spec: Specification.Chart,
+  id: string
+): Specification.Object {
+  if (spec._id == id) {
+    return spec;
+  }
+  let obj =
+    getById(spec.scales, id) ||
+    getById(spec.elements, id) ||
+    getById(spec.glyphs, id);
+  if (obj != null) {
+    return obj;
+  }
+  for (const glyph of spec.glyphs) {
+    obj = getById(glyph.marks, id);
+    if (obj != null) {
+      return obj;
+    }
+  }
+  return null;
+}
+
+export interface ObjectItem {
+  kind: "chart" | "chart-element" | "glyph" | "mark" | "scale";
+  object: Specification.Object;
+
+  chartElement?: Specification.ChartElement;
+  glyph?: Specification.Glyph;
+  mark?: Specification.Element;
+  scale?: Specification.Scale;
+}
+
+export function* forEachObject(
+  chart: Specification.Chart
+): Iterable<ObjectItem> {
+  yield { kind: "chart", object: chart };
+  for (const chartElement of chart.elements) {
+    yield { kind: "chart-element", object: chartElement, chartElement };
+  }
+  for (const glyph of chart.glyphs) {
+    yield { kind: "glyph", object: glyph, glyph };
+    for (const mark of glyph.marks) {
+      yield { kind: "mark", object: mark, glyph, mark };
+    }
+  }
+  for (const scale of chart.scales) {
+    yield { kind: "scale", object: scale, scale };
+  }
+}
+
+export function* forEachMapping(
+  mappings: Specification.Mappings
+): Iterable<[string, Specification.Mapping]> {
+  for (const key of Object.keys(mappings)) {
+    yield [key, mappings[key]];
+  }
+}
+
+export function setProperty(
+  object: Specification.Object,
+  property: Specification.Template.PropertyField,
+  value: any
+) {
+  if (typeof property == "string") {
+    object.properties[property] = value;
+  } else {
+    setField(object.properties[property.property], property.field, value);
+  }
+}
+
+export function getProperty(
+  object: Specification.Object,
+  property: Specification.Template.PropertyField
+) {
+  if (typeof property == "string") {
+    return object.properties[property];
+  } else {
+    return getField(object.properties[property.property], property.field);
   }
 }

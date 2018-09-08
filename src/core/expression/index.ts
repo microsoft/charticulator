@@ -19,7 +19,8 @@ export {
   NumberValue,
   BooleanValue,
   StringValue,
-  DateValue
+  DateValue,
+  variableReplacer
 } from "./classes";
 
 export { SyntaxError } from "./parser";

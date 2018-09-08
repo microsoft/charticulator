@@ -547,33 +547,37 @@ class RectangleChart extends ChartClass {
       return {
         properties: [
           {
-            mode: "attribute",
-            attribute: "marginLeft",
-            displayName: "Margin Left",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginLeft"
+            },
             type: "string",
             default: this.state.attributes.marginLeft
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginRight",
-            displayName: "Margin Right",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginRight"
+            },
             type: "string",
             default: this.state.attributes.marginRight
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginTop",
-            displayName: "Margin Top",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginTop"
+            },
             type: "string",
             default: this.state.attributes.marginTop
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginBottom",
-            displayName: "Margin Bottom",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginBottom"
+            },
             type: "string",
             default: this.state.attributes.marginBottom
-          } as Specification.Template.Property
+          }
         ]
       };
     }
