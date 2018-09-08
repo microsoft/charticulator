@@ -9,7 +9,7 @@ import * as R from "../../resources";
 import { Actions } from "../../actions";
 import { ContextedComponent } from "../../context_component";
 import { CurrentChartView } from ".";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { ButtonRaised, SVGImageIcon, ErrorBoundary } from "../../components";
 import { classNames } from "../../utils";
 import { Specification, deepClone, getById } from "../../../core";
 import { ExportTemplateTarget } from "../../template";
@@ -92,9 +92,11 @@ export class FileViewExport extends ContextedComponent<
               ))}
             </div>
           </div>
-          {this.state.exportMode == "image"
-            ? this.renderExportImage()
-            : this.renderExportTemplate()}
+          <ErrorBoundary maxWidth={300}>
+            {this.state.exportMode == "image"
+              ? this.renderExportImage()
+              : this.renderExportTemplate()}
+          </ErrorBoundary>
         </div>
       </div>
     );

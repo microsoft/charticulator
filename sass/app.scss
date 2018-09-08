@@ -102,6 +102,13 @@ body {
                 }
             }
         }
+        .el-item-version {
+            font-size: 12px;
+            height: 24px;
+            line-height: 24px;
+            padding: 0 8px;
+            color: $gray-150;
+        }
     }
 
     &__panel-container {

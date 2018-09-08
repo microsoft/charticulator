@@ -31,7 +31,10 @@ export class HelpButton extends React.Component<{}, {}> {
                   context={context}
                   className="charticulator__menu-popup"
                 >
-                  <div className="charticulator__menu-dropdown">
+                  <div
+                    className="charticulator__menu-dropdown"
+                    onClick={() => context.close()}
+                  >
                     <div className="el-item">
                       <a
                         target="_blank"
@@ -65,6 +68,9 @@ export class HelpButton extends React.Component<{}, {}> {
                       <a href="mailto:charticulator@microsoft.com">
                         Contact Us
                       </a>
+                    </div>
+                    <div className="el-item-version">
+                      Version: {CHARTICULATOR_PACKAGE.version}
                     </div>
                   </div>
                 </PopupView>

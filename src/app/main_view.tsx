@@ -4,26 +4,24 @@ Licensed under the MIT license.
 */
 import * as React from "react";
 import * as globals from "./globals";
-import { Actions } from "./actions";
+
 import {
   ErrorBoundary,
   FloatingPanel,
-  MenuButton,
   MinimizablePane,
   MinimizablePanelView
 } from "./components";
-import { DragStateView, ModalView, PopupContainer } from "./controllers";
+import { DragStateView, PopupContainer } from "./controllers";
 import { MainStore } from "./stores";
 import {
   AttributePanel,
   ChartEditorView,
   DatasetView,
-  FileView,
   MarkEditorView
 } from "./views";
+import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
-import { MenuBar } from "./views/menubar";
 
 export interface MainViewProps {
   store: MainStore;

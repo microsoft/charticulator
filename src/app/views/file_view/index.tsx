@@ -16,7 +16,8 @@ import {
   SVGImageIcon,
   ButtonFlat,
   ButtonRaised,
-  EditableTextView
+  EditableTextView,
+  ErrorBoundary
 } from "../../components";
 import * as R from "../../resources";
 import { ImportDataView } from "./import_data_view";
@@ -164,7 +165,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
             About
           </div>
         </div>
-        {this.renderContent()}
+        <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
       </div>
     );
   }
