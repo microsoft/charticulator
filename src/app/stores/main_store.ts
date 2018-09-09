@@ -183,9 +183,7 @@ export class MainStore extends BaseStore {
       const state = this.historyManager.undo(this.saveDecoupledState());
       if (state) {
         const ss = this.chartStore.saveSelectionState();
-        const dss = this.datasetStore.saveSelectionState();
         this.loadState(state);
-        this.datasetStore.loadSelectionState(dss);
         this.chartStore.loadSelectionState(ss);
       }
     }
@@ -193,9 +191,7 @@ export class MainStore extends BaseStore {
       const state = this.historyManager.redo(this.saveDecoupledState());
       if (state) {
         const ss = this.chartStore.saveSelectionState();
-        const dss = this.datasetStore.saveSelectionState();
         this.loadState(state);
-        this.datasetStore.loadSelectionState(dss);
         this.chartStore.loadSelectionState(ss);
       }
     }

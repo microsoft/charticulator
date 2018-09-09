@@ -26,9 +26,6 @@ export class DatasetView extends React.Component<
   DatasetViewState
 > {
   public componentDidMount() {
-    this.props.store.addListener(DatasetStore.EVENT_SELECTION, () =>
-      this.forceUpdate()
-    );
     this.props.store.addListener(DatasetStore.EVENT_CHANGED, () =>
       this.forceUpdate()
     );

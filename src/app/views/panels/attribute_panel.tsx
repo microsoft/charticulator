@@ -62,7 +62,7 @@ export class AttributePanel extends React.Component<
           this.props.store.chartManager.findGlyphState(
             selection.plotSegment,
             selection.glyph,
-            selection.glyphIndex
+            this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
         manager = new WidgetManager(this.props.store, objectClass);
@@ -81,7 +81,7 @@ export class AttributePanel extends React.Component<
             selection.plotSegment,
             selection.glyph,
             selection.mark,
-            selection.glyphIndex
+            this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
         manager = new WidgetManager(this.props.store, objectClass);
