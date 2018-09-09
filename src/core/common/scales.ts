@@ -25,6 +25,9 @@ export namespace Scale {
     domainMax: number,
     count: number = 10
   ): [number, number] {
+    if (domainMax == domainMin) {
+      return [domainMin, domainMax];
+    }
     let step = tickIncrement(domainMin, domainMax, count);
     if (step > 0) {
       domainMin = Math.floor(domainMin / step) * step;
@@ -102,7 +105,7 @@ export namespace Scale {
     public inferParameters(values: number[]) {
       const [min, max] = nice(Math.min(...values), Math.max(...values), 10);
       this.domainMin = min;
-      this.domainMax = max;
+      this.domainMax = max != min ? max : max + 1;
     }
 
     public get(v: number) {
