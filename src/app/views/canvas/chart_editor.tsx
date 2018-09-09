@@ -599,7 +599,6 @@ export class ChartEditorView
       .getPlotSegmentClass(plotSegmentState)
       .getCoordinateSystem();
     const glyph = getById(this.props.store.chart.glyphs, plotSegment.glyph);
-    const table = this.props.store.datasetStore.getTable(glyph.table);
     plotSegmentState.glyphs.forEach((glyphState, glyphIndex) => {
       const offsetX = glyphState.attributes.x as number;
       const offsetY = glyphState.attributes.y as number;
@@ -610,6 +609,7 @@ export class ChartEditorView
         let isMarkSelected = false;
         if (this.props.store.currentSelection instanceof MarkSelection) {
           if (
+            this.props.store.currentSelection.plotSegment == plotSegment &&
             this.props.store.currentSelection.glyph == glyph &&
             this.props.store.currentSelection.mark == mark
           ) {

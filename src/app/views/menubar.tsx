@@ -140,10 +140,14 @@ export class MenuBar extends ContextedComponent<{}, {}> {
             break;
           case "save":
             {
-              if (this.context.store.currentChartID) {
-                this.context.store.backendSaveChart();
+              if (this.context.store.isNestedEditor) {
+                this.context.store.emit(MainStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
-                this.showFileModalWindow("save");
+                if (this.context.store.currentChartID) {
+                  this.context.store.backendSaveChart();
+                } else {
+                  this.showFileModalWindow("save");
+                }
               }
             }
             break;
@@ -206,6 +210,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
+        text="Save Nested Chart"
         title="Save (Ctrl-S)"
         onClick={() => {
           this.context.store.emit(MainStore.EVENT_NESTED_EDITOR_EDIT);

@@ -189,6 +189,7 @@ export class Application {
     const hashParsed = parseHashString(document.location.hash);
 
     if (hashParsed.nestedEditor) {
+      document.title = "Nested Chart | Charticulator";
       this.setupNestedEditor(hashParsed.nestedEditor);
     } else if (hashParsed.loadDataset) {
       // Load from a dataset specification json format

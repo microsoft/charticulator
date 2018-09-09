@@ -2,6 +2,7 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -12,7 +13,6 @@ import {
   Color,
   ColorGradient,
   EventSubscription,
-  Expression,
   getField,
   Point,
   Prototypes,
@@ -20,7 +20,7 @@ import {
   uniqueID
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised, GradientPicker, ButtonFlat } from "../../../components";
+import { ButtonRaised, GradientPicker } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
 import { PopupView } from "../../../controllers";
 import {
@@ -42,7 +42,6 @@ import {
   InputText,
   Radio,
   Select,
-  ComboBox,
   ComboBoxFontFamily
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
@@ -733,8 +732,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           const editorID = uniqueID();
           const newWindow = window.open(
             "index.html#!nestedEditor=" + editorID,
-            "_blank",
-            "menubar=no,status=no,toolbar=no,location=no"
+            "nested_chart_" + options.specification._id
           );
           const listener = (e: MessageEvent) => {
             if (e.origin == document.location.origin) {
