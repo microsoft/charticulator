@@ -4,26 +4,22 @@ Licensed under the MIT license.
 */
 
 import {
-  Color,
   Dataset,
   deepClone,
   Expression,
-  getByName,
+  getById,
+  makeRange,
   Prototypes,
   Scale,
-  Specification,
-  getById
+  Specification
 } from "../core";
-import { getDefaultColorPalette } from "../core/prototypes/scales/categorical";
-
 import {
   findObjectById,
-  forEachObject,
   forEachMapping,
+  forEachObject,
   getProperty,
   setProperty
 } from "../core/prototypes";
-
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 
 /** Represents a chart template */
@@ -81,6 +77,20 @@ export class ChartTemplate {
     return Expression.parseTextExpression(expr)
       .replace(Expression.variableReplacer(this.getVariableMap(table)))
       .toString();
+  }
+
+  public transformGroupBy(
+    groupBy: Specification.Types.GroupBy,
+    table: string
+  ): Specification.Types.GroupBy {
+    if (!groupBy) {
+      return null;
+    }
+    if (groupBy.expression) {
+      return {
+        expression: this.transformExpression(groupBy.expression, table)
+      };
+    }
   }
 
   public instantiate(dataset: Dataset.Dataset) {
@@ -180,8 +190,9 @@ export class ChartTemplate {
     ): any[] => {
       const expr = Expression.parse(expression);
       const tableContext = df.getTable(table);
-      const groupByCompiled = new CompiledGroupBy(groupBy, df.cache);
-      const indices = groupByCompiled.groupBy(tableContext);
+      const indices = groupBy
+        ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
+        : makeRange(0, tableContext.rows.length).map(x => [x]);
       return indices.map(is =>
         expr.getValue(tableContext.getGroupedContext(is))
       );
@@ -190,6 +201,13 @@ export class ChartTemplate {
     // Perform inferences
     for (const inference of this.template.inference) {
       const object = findObjectById(chart, inference.objectID);
+      if (inference.expression) {
+        const expr = this.transformExpression(
+          inference.expression.expression,
+          inference.dataSource.table
+        );
+        setProperty(object, inference.expression.property, expr);
+      }
       if (inference.axis) {
         const axis = inference.axis;
         if (axis.type == "default") {
@@ -201,170 +219,56 @@ export class ChartTemplate {
         );
         const vector = getExpressionVector(
           expression,
-          inference.dataSource.table,
-          inference.dataSource.groupBy
+          this.tableAssignment[inference.dataSource.table],
+          this.transformGroupBy(
+            inference.dataSource.groupBy,
+            inference.dataSource.table
+          )
         );
+        const axisDataBinding = getProperty(
+          object,
+          axis.property
+        ) as Specification.Types.AxisDataBinding;
+        axisDataBinding.expression = expression;
+        if (axisDataBinding.tickDataExpression) {
+          axisDataBinding.tickDataExpression = null; // TODO: fixme
+        }
         if (axis.type == "categorical") {
+          const scale = new Scale.CategoricalScale();
+          scale.inferParameters(vector, "order");
+          axisDataBinding.categories = new Array<string>(scale.domain.size);
+          scale.domain.forEach((index, key) => {
+            axisDataBinding.categories[index] = key;
+          });
         } else if (axis.type == "numerical") {
+          const scale = new Scale.NumericalScale();
+          scale.inferParameters(vector);
+          axisDataBinding.domainMin = scale.domainMin;
+          axisDataBinding.domainMax = scale.domainMax;
         }
-      } else if (inference.scale) {
-        const scale = inference.scale;
-        switch (
-          scale.classID
-          // TODO: add scale inference
-        ) {
-        }
-        //   const expression = this.transformExpression(
-        //     inference.scale.expression,
-        //     inference.dataSource.table
-        //   );
-        //   const vector = getExpressionVector(
-        //     expression,
-        //     inference.dataSource.table,
-        //     inference.dataSource.groupBy
-        //   );
-      } else if (inference.expression) {
-        const expr = this.transformExpression(
-          inference.expression.expression,
-          inference.dataSource.table
-        );
-        setProperty(object, inference.expression.property, expr);
       }
-      //   const axis = inference as Specification.Template.Axis;
-      //   const expression = this.slotAssignment[axis.slotName];
-      //   const slot = getByName(
-      //     this.template.dataSlots,
-      //     axis.slotName
-      //   );
-      //   if (expression == null || slot == null) {
-      //     continue;
-      //   }
-      //   const original = getProperty(
-      //     object,
-      //     axis.property,
-      //     axis.fields
-      //   ) as Specification.Types.AxisDataBinding;
-      //   original.expression = expression;
-      //   // Infer scale domain or mapping
-      //   const columnVector = getExpressionVector(
-      //     this.tableAssignment[slot.table],
-      //     expression
-      //   );
-      //   switch (original.type) {
-      //     case "categorical":
-      //       {
-      //         const scale = new Scale.CategoricalScale();
-      //         scale.inferParameters(columnVector, "order");
-      //         original.categories = new Array<string>(
-      //           scale.domain.size
-      //         );
-      //         scale.domain.forEach((index, key) => {
-      //           original.categories[index] = key;
-      //         });
-      //       }
-      //       break;
-      //     case "numerical":
-      //       {
-      //         const scale = new Scale.NumericalScale();
-      //         scale.inferParameters(columnVector);
-      //         original.domainMin = scale.domainMin;
-      //         original.domainMax = scale.domainMax;
-      //       }
-      //       break;
-      //   }
-
-      //   setProperty(
-      //     object,
-      //     axis.property,
-      //     axis.fields,
-      //     original
-      //   );
-      // }
-      // if (inference.scale) {
-      //   const scale = inference as Specification.Template.Scale;
-      //   const expression = this.slotAssignment[scale.slotName];
-      //   const slot = getByName(
-      //     this.template.dataSlots,
-      //     scale.slotName
-      //   );
-      //   // TODO: infer scale domain or mapping
-      //   const columnVector = getExpressionVector(
-      //     this.tableAssignment[slot.table],
-      //     expression
-      //   );
-      //   switch (scale.slotKind) {
-      //     case "numerical":
-      //       {
-      //         const s = new Scale.NumericalScale();
-      //         s.inferParameters(columnVector);
-      //         object.properties[scale.properties.min] = s.domainMin;
-      //         object.properties[scale.properties.max] = s.domainMax;
-      //         // Zero domain min for now.
-      //         object.properties[scale.properties.min] = 0;
-      //       }
-      //       break;
-      //     case "categorical":
-      //       {
-      //         const s = new Scale.CategoricalScale();
-      //         s.inferParameters(columnVector, "order");
-      //         switch (scale.rangeType) {
-      //           case "number":
-      //             {
-      //               const mapping: { [name: string]: number } = {};
-      //               s.domain.forEach((index, key) => {
-      //                 mapping[key] = index;
-      //               });
-      //               object.properties[
-      //                 scale.properties.mapping
-      //               ] = mapping;
-      //             }
-      //             break;
-      //           case "color": {
-      //             const mapping: { [name: string]: Color } = {};
-      //             const palette = getDefaultColorPalette(
-      //               s.domain.size
-      //             );
-      //             s.domain.forEach((index, key) => {
-      //               mapping[key] = palette[index % palette.length];
-      //             });
-      //             object.properties[
-      //               scale.properties.mapping
-      //             ] = mapping;
-      //           }
-      //         }
-      //       }
-      //       break;
-      //   }
-      // }
-      // if (inference.order) {
-      //   const order = inference as Specification.Template.Order;
-      //   const expression = this.slotAssignment[order.slotName];
-      //   const slot = getByName(
-      //     this.template.dataSlots,
-      //     order.slotName
-      //   );
-      //   setProperty(
-      //     object,
-      //     order.property,
-      //     order.field,
-      //     "sortBy((x) => x." + expression + ")"
-      //   );
-      // }
-      // if (inference.slotList) {
-      //   const slotList = inference as Specification.Template.SlotList;
-      //   const expressions = slotList.slots.map(slot => {
-      //     return this.slotAssignment[slot.slotName];
-      //   });
-      //   setProperty(
-      //     object,
-      //     slotList.property,
-      //     slotList.fields,
-      //     expressions
-      //   );
-      // }
-      // break;
+      if (inference.scale) {
+        const scale = inference.scale;
+        const expressions = scale.expressions.map(x =>
+          this.transformExpression(x, inference.dataSource.table)
+        );
+        const vectors = expressions.map(x =>
+          getExpressionVector(
+            x,
+            this.tableAssignment[inference.dataSource.table],
+            this.transformGroupBy(
+              inference.dataSource.groupBy,
+              inference.dataSource.table
+            )
+          )
+        );
+        const vector = vectors.reduce((a, b) => a.concat(b), []);
+        const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
+          attributes: {}
+        }) as Prototypes.Scales.ScaleClass;
+        scaleClass.inferParameters(vector);
+      }
     }
-
     return new ChartTemplateInstance(chart, dataset);
   }
 }

@@ -4,11 +4,27 @@ Licensed under the MIT license.
 */
 import * as React from "react";
 
-import { Specification, Dataset, Prototypes, Graphics, Solver } from "../core";
+import {
+  Specification,
+  Dataset,
+  Prototypes,
+  Graphics,
+  Solver,
+  zip
+} from "../core";
 import {
   renderGraphicalElementSVG,
   RenderGraphicalElementSVGOptions
 } from "../app/renderer";
+
+export interface DataSelection {
+  isSelected(table: string, rowIndices: number[]): boolean;
+}
+
+export type OnSelectGlyph = (
+  data: { table: string; rowIndices: number[] },
+  modifiers: { ctrlKey: boolean; shiftKey: boolean }
+) => void;
 
 export interface ChartComponentProps {
   chart: Specification.Chart;
@@ -22,6 +38,9 @@ export interface ChartComponentProps {
   rendererOptions?: RenderGraphicalElementSVGOptions;
   /** Render the chart synchronously */
   sync?: boolean;
+
+  selection?: DataSelection;
+  onSelectGlyph?: OnSelectGlyph;
 }
 
 export interface ChartComponentState {
@@ -61,10 +80,33 @@ export class ChartComponent extends React.Component<
     }
   }
 
+  public applySelection(selection: DataSelection) {
+    this.manager.enumeratePlotSegments(cls => {
+      for (const [rowIndices, glyphState] of zip(
+        cls.state.dataRowIndices,
+        cls.state.glyphs
+      )) {
+        if (selection == null) {
+          glyphState.emphasized = true;
+        } else {
+          glyphState.emphasized = selection.isSelected(
+            cls.object.table,
+            rowIndices
+          );
+        }
+      }
+    });
+  }
+
   public componentWillReceiveProps(newProps: ChartComponentProps) {
     if (this.updateWithNewProps(newProps)) {
       this.setState({ working: true });
       this.scheduleUpdate();
+    } else if (newProps.selection != this.props.selection) {
+      this.applySelection(newProps.selection);
+      this.setState({
+        graphics: this.renderer.render()
+      });
     }
   }
 
@@ -122,6 +164,7 @@ export class ChartComponent extends React.Component<
         solver.solve();
         solver.destroy();
       }
+      this.applySelection(this.props.selection);
       this.setState({
         working: false,
         graphics: this.renderer.render()
@@ -130,15 +173,46 @@ export class ChartComponent extends React.Component<
   }
 
   public render() {
-    const gfx = renderGraphicalElementSVG(
-      this.state.graphics,
-      this.props.rendererOptions
-    );
+    const renderOptions = { ...this.props.rendererOptions };
+    if (this.props.onSelectGlyph) {
+      renderOptions.onSelected = (element, event) => {
+        // Find the data row indices
+        const cls = this.manager.getClassById(
+          element.plotSegment._id
+        ) as Prototypes.PlotSegments.PlotSegmentClass;
+        const rowIndices = cls.state.dataRowIndices[element.glyphIndex];
+        const modifiers = {
+          ctrlKey: event.ctrlKey,
+          shiftKey: event.shiftKey
+        };
+        this.props.onSelectGlyph(
+          { table: element.plotSegment.table, rowIndices },
+          modifiers
+        );
+      };
+    }
+    const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
     const inner = (
       <g
         transform={`translate(${this.props.width / 2}, ${this.props.height /
           2})`}
       >
+        {this.props.onSelectGlyph ? (
+          <rect
+            x={-this.props.width / 2}
+            y={-this.props.height / 2}
+            width={this.props.width}
+            height={this.props.height}
+            style={{
+              fill: "none",
+              pointerEvents: "all",
+              stroke: "none"
+            }}
+            onClick={() => {
+              this.props.onSelectGlyph(null, null);
+            }}
+          />
+        ) : null}
         {gfx}
         {this.state.working ? (
           <rect
@@ -163,6 +237,9 @@ export class ChartComponent extends React.Component<
             width={this.props.width}
             height={this.props.height}
             className={this.props.className}
+            style={{
+              userSelect: "none"
+            }}
           >
             {inner}
           </svg>

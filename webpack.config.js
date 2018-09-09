@@ -62,7 +62,7 @@ module.exports = (env, { mode }) => {
     },
     {
         entry: {
-            container: "./dist/scripts/container/container.js"
+            container: "./dist/scripts/container/index.js"
         },
         output: {
             filename: "[name].bundle.js",

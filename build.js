@@ -54,7 +54,9 @@ let COMMANDS = {
     () => fs.copy("src/core/expression/parser.d.ts", "dist/scripts/core/expression/parser.d.ts"),
 
     // Copy all of the public files
-    () => copyFolder("./public", "./dist"),
+    isProd
+      ? () => copyFolder("./public", "./dist")
+      : [() => copyFolder("./public", "./dist"), () => copyFolder("./public_test", "./dist")],
 
     // Copy all of the extensions
     () => copyFolder("./extensions", "./dist/extensions"),

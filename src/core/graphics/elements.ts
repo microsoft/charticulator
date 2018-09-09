@@ -57,12 +57,12 @@ export interface Style {
 export interface Element {
   type: string;
   style?: Style;
-}
-
-export interface MarkElement extends Element {
-  mark: Specification.Element;
-  glyph: Specification.Glyph;
-  glyphIndex: number;
+  selectable?: {
+    plotSegment: Specification.PlotSegment;
+    mark: Specification.Element;
+    glyph: Specification.Glyph;
+    glyphIndex: number;
+  };
 }
 
 export interface ChartContainerElement {

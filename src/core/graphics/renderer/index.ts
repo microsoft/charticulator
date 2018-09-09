@@ -15,7 +15,7 @@ import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
 import * as Specification from "../../specification";
 import { CartesianCoordinates, CoordinateSystem } from "../coordinate_system";
-import { Element, Group, makeGroup, MarkElement } from "../elements";
+import { Element, Group, makeGroup } from "../elements";
 
 export function facetRows(
   rows: Dataset.Row[],
@@ -51,6 +51,7 @@ export class ChartRenderer {
    * @returns an array of groups with the same size as glyph.marks
    */
   private renderGlyphMarks(
+    plotSegment: Specification.PlotSegment,
     coordinateSystem: CoordinateSystem,
     offset: Point,
     glyph: Specification.Glyph,
@@ -71,11 +72,13 @@ export class ChartRenderer {
           state.emphasized
         );
       if (g != null) {
-        const me = g as MarkElement;
-        me.glyph = glyph;
-        me.glyphIndex = index;
-        me.mark = mark;
-        return makeGroup([me]);
+        g.selectable = {
+          plotSegment,
+          glyph,
+          mark,
+          glyphIndex: index
+        };
+        return makeGroup([g]);
       } else {
         return null;
       }
@@ -138,6 +141,7 @@ export class ChartRenderer {
           const offsetX = (glyphState.attributes.x as number) - anchorX;
           const offsetY = (glyphState.attributes.y as number) - anchorY;
           const g = this.renderGlyphMarks(
+            plotSegment,
             coordinateSystem,
             { x: offsetX, y: offsetY },
             mark,

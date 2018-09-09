@@ -104,7 +104,6 @@ export class ChartTemplateBuilder {
             inference.dataSource.table,
             inference.axis.expression
           );
-          template.inference.push(inference);
         }
         if (inference.scale) {
           // Find all objects that use the scale
@@ -139,6 +138,7 @@ export class ChartTemplateBuilder {
               }
             }
           }
+          inference.scale.expressions = Array.from(expressions);
           if (!inference.dataSource) {
             inference.dataSource = {
               table,
@@ -151,8 +151,8 @@ export class ChartTemplateBuilder {
             inference.dataSource.table,
             inference.expression.expression
           );
-          template.inference.push(inference);
         }
+        template.inference.push(inference);
       }
     }
     if (params && params.properties) {

@@ -103,7 +103,10 @@ export interface RenderGraphicalElementSVGOptions {
   key?: string;
   chartComponentSync?: boolean;
   externalResourceResolver?: (url: string) => string;
-  onSelected?: (element: Graphics.Element) => any;
+  onSelected?: (
+    element: Graphics.Element["selectable"],
+    event: MouseEvent
+  ) => any;
 }
 
 export function renderGraphicalElementSVG(
@@ -113,18 +116,26 @@ export function renderGraphicalElementSVG(
   if (!element) {
     return null;
   }
+
   if (!options) {
     options = {};
   }
-  const onClick = (e: React.SyntheticEvent<any>) => {
-    if (options.onSelected) {
-      e.stopPropagation();
-      options.onSelected(element);
-    }
-  };
+
   const style = options.noStyle
     ? null
     : renderStyle(options.styleOverride || element.style);
+
+  // OnClick event handler
+  let onClick;
+  if (options.onSelected && element.selectable) {
+    onClick = (e: React.MouseEvent<Element>) => {
+      e.stopPropagation();
+      options.onSelected(element.selectable, e.nativeEvent);
+    };
+    style.cursor = "pointer";
+    style.pointerEvents = "all";
+  }
+
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
