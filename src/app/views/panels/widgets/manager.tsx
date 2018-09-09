@@ -798,15 +798,17 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ): JSX.Element {
     return (
       <table className="charticulator__widget-table">
-        {rows.map((row, index) => (
-          <tr key={index}>
-            {row.map((x, i) => (
-              <td key={i}>
-                <span className="el-layout-item">{x}</span>
-              </td>
-            ))}
-          </tr>
-        ))}
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((x, i) => (
+                <td key={i}>
+                  <span className="el-layout-item">{x}</span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
     );
   }
