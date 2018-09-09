@@ -2,18 +2,19 @@
 Copyright (c) Microsoft Corporation. All rights reserved.
 Licensed under the MIT license.
 */
-import * as React from "react";
-import * as FileSaver from "file-saver";
 
+import * as FileSaver from "file-saver";
+import * as React from "react";
 import * as R from "../../resources";
-import { Actions } from "../../actions";
-import { ContextedComponent } from "../../context_component";
+
 import { CurrentChartView } from ".";
-import { ButtonRaised, SVGImageIcon, ErrorBoundary } from "../../components";
-import { classNames } from "../../utils";
-import { Specification, deepClone, getById } from "../../../core";
-import { ExportTemplateTarget } from "../../template";
+import { deepClone, Specification } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
+import { Actions } from "../../actions";
+import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
+import { ContextedComponent } from "../../context_component";
+import { ExportTemplateTarget } from "../../template";
+import { classNames } from "../../utils";
 
 export interface FileViewExportState {
   exportMode: string;
@@ -182,7 +183,7 @@ export class ExportTemplateView extends ContextedComponent<
     return this.state.template.tables.map(table => (
       <div key={table.name}>
         {table.columns.map(column => (
-          <div key={table.name}>
+          <div key={column.name}>
             {this.renderInput(column.name, column.displayName, value => {
               column.displayName = value;
               this.setState({
@@ -196,24 +197,6 @@ export class ExportTemplateView extends ContextedComponent<
   }
 
   public renderExposedProperties() {
-    const getItemById = (id: string) => {
-      const r =
-        getById(this.state.template.specification.glyphs, id) ||
-        getById(this.state.template.specification.elements, id) ||
-        getById(this.state.template.specification.scales, id);
-      if (r) {
-        return r;
-      }
-      for (const glyph of this.state.template.specification.glyphs) {
-        const r = getById(glyph.marks, id);
-        if (r) {
-          return r;
-        }
-      }
-      if (this.state.template.specification._id == id) {
-        return this.state.template.specification;
-      }
-    };
     const result: JSX.Element[] = [];
     for (const p of this.state.template.properties) {
       const id = p.objectID;
@@ -245,10 +228,10 @@ export class ExportTemplateView extends ContextedComponent<
             "/" +
             (typeof pf.field == "string" || typeof pf.field == "number"
               ? pf.field
-              : new Array(pf.field).join("."));
+              : pf.field.join("."));
         }
         result.push(
-          <div key={id + pf}>
+          <div key={id + pfstr}>
             {this.renderInput(
               obj.properties.name + "/" + pfstr,
               p.displayName,

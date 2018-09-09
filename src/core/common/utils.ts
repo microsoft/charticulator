@@ -154,7 +154,7 @@ export function argMin<T>(
   return argmin;
 }
 
-export type FieldType = string | number | ArrayLike<string | number>;
+export type FieldType = string | number | Array<string | number>;
 
 export function setField<ObjectType, ValueType>(
   obj: ObjectType,
