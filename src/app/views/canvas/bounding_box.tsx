@@ -125,15 +125,15 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
           >
             <rect
               className="element-shape ghost"
-              x={-rect.width / 2 * zoom.scale - margin}
-              y={-rect.height / 2 * zoom.scale - margin}
+              x={(-rect.width / 2) * zoom.scale - margin}
+              y={(-rect.height / 2) * zoom.scale - margin}
               width={rect.width * zoom.scale + margin * 2}
               height={rect.height * zoom.scale + margin * 2}
             />
             <rect
               className="element-shape indicator"
-              x={-rect.width / 2 * zoom.scale}
-              y={-rect.height / 2 * zoom.scale}
+              x={(-rect.width / 2) * zoom.scale}
+              y={(-rect.height / 2) * zoom.scale}
               width={rect.width * zoom.scale}
               height={rect.height * zoom.scale}
             />

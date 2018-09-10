@@ -238,7 +238,7 @@ export class LineGuide extends PlotSegmentClass {
       const g = renderer.renderLine(
         x1,
         y1,
-        Math.atan2(y2 - y1, x2 - x1) / Math.PI * 180,
+        (Math.atan2(y2 - y1, x2 - x1) / Math.PI) * 180,
         1
       );
       return g;

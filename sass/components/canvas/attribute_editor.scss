@@ -1,1719 +1,1736 @@
 .attribute-editor {
+  font-size: 14px;
+  box-sizing: border-box;
+
+  $line-height: 24px;
+
+  &-unexpected {
+    color: $gray-100;
+  }
+
+  .header {
+    @include font-main;
+
+    display: flex;
+    flex-direction: row;
     font-size: 14px;
-    box-sizing: border-box;
+    line-height: 24px;
+    padding-bottom: 4px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid $gray-180;
+    color: $black;
 
-    $line-height: 24px;
+    .svg-image-icon {
+      padding: 2px;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 2px;
+    }
+  }
 
-    &-unexpected {
-        color: $gray-100;
+  .attribute-list {
+    label.category {
+      color: $gray-100;
+      font-size: 12px;
+      display: block;
+      height: $line-height;
+      line-height: $line-height;
+    }
+  }
+
+  .attribute-item {
+    display: flex;
+    flex-direction: row;
+    line-height: $line-height;
+    transition: background $transition-default;
+    border-radius: 2px;
+    overflow: hidden;
+
+    & > label {
+      flex-shrink: 0;
+      width: 70px;
+      font-size: 12px;
+      line-height: $line-height;
+      padding: 2px 0;
+      text-align: right;
+      padding-right: 4px;
+      margin-right: 4px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: background-color $transition-default;
     }
 
-    .header {
-        @include font-main;
+    & > .content {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      padding: 2px 0;
+      overflow: hidden;
+      line-height: $line-height;
 
+      &.editable {
+        &:hover {
+          background: $color-primary-light;
+          color: white;
+        }
+
+        cursor: pointer;
+      }
+
+      .mapping-scale {
         display: flex;
         flex-direction: row;
-        font-size: 14px;
-        line-height: 24px;
-        padding-bottom: 4px;
-        margin-bottom: 0px;
-        border-bottom: 1px solid $gray-180;
-        color: $black;
-
-        .svg-image-icon {
-            padding: 2px;
-            width: 20px;
-            height: 20px;
-            vertical-align: top;
-            margin-right: 2px;
-        }
-    }
-
-    .attribute-list {
-        label.category {
-            color: $gray-100;
-            font-size: 12px;
-            display: block;
-            height: $line-height;
-            line-height: $line-height;
-        }
-    }
-
-    .attribute-item {
-        display: flex;
-        flex-direction: row;
-        line-height: $line-height;
-        transition: background $transition-default;
-        border-radius: 2px;
+        line-height: 20px;
+        height: 20px;
+        white-space: nowrap;
+        word-break: keep-all;
+        margin: 2px 0;
         overflow: hidden;
+        border-radius: 2px;
+        background: $gray-200;
+        transition: background $transition-default;
 
-        & > label {
-            flex-shrink: 0;
-            width: 70px;
-            font-size: 12px;
-            line-height: $line-height;
-            padding: 2px 0;
-            text-align: right;
-            padding-right: 4px;
-            margin-right: 4px;
+        svg {
+          display: inline-block;
+          flex-shrink: 0;
+          vertical-align: top;
+          height: 20px;
+
+          path {
+            fill: $gray-190;
+            transition: fill $transition-default;
+          }
+        }
+
+        .mapping-scale-scale {
+          vertical-align: top;
+          line-height: 20px;
+          background: $gray-190;
+          transition: background $transition-default, color $transition-default;
+          height: 20px;
+          display: inline-block;
+
+          &.left {
+            // border-radius: 2px 0 0 2px;
+            padding-left: 4px;
+            flex-grow: 0;
+            flex-shrink: 1;
+            overflow: hidden;
             text-overflow: ellipsis;
-            overflow: hidden;
-            transition: background-color $transition-default;
+          }
+
+          box-sizing: border-box;
         }
 
-        & > .content {
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            padding: 2px 0;
-            overflow: hidden;
-            line-height: $line-height;
-
-            &.editable {
-                &:hover {
-                    background: $color-primary-light;
-                    color: white;
-                }
-
-                cursor: pointer;
-            }
-
-            .mapping-scale {
-                display: flex;
-                flex-direction: row;
-                line-height: 20px;
-                height: 20px;
-                white-space: nowrap;
-                word-break: keep-all;
-                margin: 2px 0;
-                overflow: hidden;
-                border-radius: 2px;
-                background: $gray-200;
-                transition: background $transition-default;
-
-                svg {
-                    display: inline-block;
-                    flex-shrink: 0;
-                    vertical-align: top;
-                    height: 20px;
-
-                    path {
-                        fill: $gray-190;
-                        transition: fill $transition-default;
-                    }
-                }
-
-                .mapping-scale-scale {
-                    vertical-align: top;
-                    line-height: 20px;
-                    background: $gray-190;
-                    transition: background $transition-default, color $transition-default;
-                    height: 20px;
-                    display: inline-block;
-
-                    &.left {
-                        // border-radius: 2px 0 0 2px;
-                        padding-left: 4px;
-                        flex-grow: 0;
-                        flex-shrink: 1;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    box-sizing: border-box;
-                }
-
-                .mapping-scale-column {
-                    vertical-align: top;
-                    line-height: 20px;
-                    height: 20px;
-                    display: inline-block;
-                    box-sizing: border-box;
-                    flex-grow: 0;
-                    flex-shrink: 0.5;
-                    overflow: hidden;
-                    padding: 0 2px;
-                    text-overflow: ellipsis;
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $color-primary;
-                        }
-                    }
-
-                    background: $color-primary-light;
-
-                    .mapping-scale-scale {
-                        background: $color-primary;
-                        color: $white;
-                    }
-                }
-            }
-
-            .value-mapping-editor {
-                outline: none;
-                cursor: pointer;
-                display: flex;
-                flex: 1;
-                line-height: $line-height;
-
-                .button-flat {
-                    flex-shrink: 0;
-                }
-
-                .type-number {
-                    @include font-mono;
-
-                    height: $line-height;
-                }
-
-                .type-color {
-                    display: inline-block;
-                    vertical-align: top;
-                    height: $line-height - 4px;
-                    width: $line-height;
-                    border-radius: 2px;
-                    margin: 2px 0;
-                    box-sizing: border-box;
-                    border: 1px solid $white;
-                }
-
-                .type-unknown {
-                    color: $gray-100;
-                }
-
-                .type-number-editor {
-                    // height: $line-height;
-                    display: flex;
-                    flex-direction: row;
-                    flex: 1;
-
-                    input {
-                        flex: 1;
-                        width: 80px;
-
-                        @include font-mono;
-                    }
-
-                    .slider-control {
-                        flex-shrink: 0;
-                        margin: 0 2px;
-                        height: $line-height;
-                    }
-                }
-
-                .type-text-alignment {
-                    @include icon-size(16px, 4px);
-                }
-
-                .type-string-editor {
-                    flex: 1;
-                }
-
-                .type-text-alignment-editor {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .type-map-editor {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-
-                    & > .editor-row {
-                        display: flex;
-                        flex-direction: row;
-
-                        & > label {
-                            display: block;
-                            width: 60px;
-                            text-align: right;
-                            margin-right: 5px;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-                    }
-                }
-
-                input {
-                    @include font-main;
-
-                    margin: 0;
-                    padding: 0;
-                    outline: none;
-                    border: none;
-                    background: none;
-                    font-size: 14px;
-                    height: $line-height;
-                    padding-top: 1px;
-                    line-height: $line-height;
-                    border-bottom: 1px solid transparent;
-
-                    &:hover, &:focus {
-                        border-bottom: 1px solid $color-primary;
-                    }
-
-                    box-sizing: border-box;
-                    transition: border-color $transition-default;
-                }
-            }
-        }
-
-        & > .buttons {
-            flex-shrink: 0;
-            height: $line-height;
-            line-height: $line-height;
-
-            .button {
-                display: inline-block;
-                cursor: pointer;
-                width: $line-height;
-                height: $line-height;
-                padding: 2px;
-                border-radius: 2px;
-                transition: background-color $transition-default;
-
-                &:hover, &:active {
-                    background-color: $color-primary;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-                }
-
-                .svg-image-icon {
-                    margin: 4px;
-                    width: 16px;
-                    height: 16px;
-                }
-            }
-        }
-
-        .fade {
-            color: $gray-100;
+        .mapping-scale-column {
+          vertical-align: top;
+          line-height: 20px;
+          height: 20px;
+          display: inline-block;
+          box-sizing: border-box;
+          flex-grow: 0;
+          flex-shrink: 0.5;
+          overflow: hidden;
+          padding: 0 2px;
+          text-overflow: ellipsis;
         }
 
         &:hover {
-            cursor: pointer;
-            background: $gray-200;
-
-            & > label {
-                background: $gray-190;
+          svg {
+            path {
+              fill: $color-primary;
             }
+          }
+
+          background: $color-primary-light;
+
+          .mapping-scale-scale {
+            background: $color-primary;
+            color: $white;
+          }
+        }
+      }
+
+      .value-mapping-editor {
+        outline: none;
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        line-height: $line-height;
+
+        .button-flat {
+          flex-shrink: 0;
         }
 
-        &.active {
-            cursor: pointer;
-            background: $color-primary-light;
+        .type-number {
+          @include font-mono;
+
+          height: $line-height;
+        }
+
+        .type-color {
+          display: inline-block;
+          vertical-align: top;
+          height: $line-height - 4px;
+          width: $line-height;
+          border-radius: 2px;
+          margin: 2px 0;
+          box-sizing: border-box;
+          border: 1px solid $white;
+        }
+
+        .type-unknown {
+          color: $gray-100;
+        }
+
+        .type-number-editor {
+          // height: $line-height;
+          display: flex;
+          flex-direction: row;
+          flex: 1;
+
+          input {
+            flex: 1;
+            width: 80px;
+
+            @include font-mono;
+          }
+
+          .slider-control {
+            flex-shrink: 0;
+            margin: 0 2px;
+            height: $line-height;
+          }
+        }
+
+        .type-text-alignment {
+          @include icon-size(16px, 4px);
+        }
+
+        .type-string-editor {
+          flex: 1;
+        }
+
+        .type-text-alignment-editor {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .type-map-editor {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+
+          & > .editor-row {
+            display: flex;
+            flex-direction: row;
 
             & > label {
-                background: $color-primary;
-                color: white;
+              display: block;
+              width: 60px;
+              text-align: right;
+              margin-right: 5px;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
-
-            & > .content {
-                opacity: 0;
-            }
-
-            & > .buttons {
-                opacity: 0;
-            }
-
-            position: relative;
-
-            &:after {
-                position: absolute;
-                content: "Drop data here";
-                opacity: 1;
-                line-height: 28px;
-                height: 28px;
-                left: 80px;
-                color: $color-primary-dark;
-            }
+          }
         }
+
+        input {
+          @include font-main;
+
+          margin: 0;
+          padding: 0;
+          outline: none;
+          border: none;
+          background: none;
+          font-size: 14px;
+          height: $line-height;
+          padding-top: 1px;
+          line-height: $line-height;
+          border-bottom: 1px solid transparent;
+
+          &:hover,
+          &:focus {
+            border-bottom: 1px solid $color-primary;
+          }
+
+          box-sizing: border-box;
+          transition: border-color $transition-default;
+        }
+      }
     }
+
+    & > .buttons {
+      flex-shrink: 0;
+      height: $line-height;
+      line-height: $line-height;
+
+      .button {
+        display: inline-block;
+        cursor: pointer;
+        width: $line-height;
+        height: $line-height;
+        padding: 2px;
+        border-radius: 2px;
+        transition: background-color $transition-default;
+
+        &:hover,
+        &:active {
+          background-color: $color-primary;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+        }
+
+        .svg-image-icon {
+          margin: 4px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .fade {
+      color: $gray-100;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background: $gray-200;
+
+      & > label {
+        background: $gray-190;
+      }
+    }
+
+    &.active {
+      cursor: pointer;
+      background: $color-primary-light;
+
+      & > label {
+        background: $color-primary;
+        color: white;
+      }
+
+      & > .content {
+        opacity: 0;
+      }
+
+      & > .buttons {
+        opacity: 0;
+      }
+
+      position: relative;
+
+      &:after {
+        position: absolute;
+        content: "Drop data here";
+        opacity: 1;
+        line-height: 28px;
+        height: 28px;
+        left: 80px;
+        color: $color-primary-dark;
+      }
+    }
+  }
 }
 
 .slider-control {
-    cursor: default;
+  cursor: default;
 
-    line.track {
-        stroke: $gray-180;
-        stroke-width: 2;
-        stroke-linecap: round;
-    }
+  line.track {
+    stroke: $gray-180;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .indicator {
+    transition: stroke $transition-default, fill $transition-default;
+  }
+
+  svg {
+    pointer-events: all;
+    cursor: pointer;
+  }
+
+  .knob {
+    cursor: pointer;
 
     .indicator {
-        transition: stroke $transition-default, fill $transition-default;
+      fill: $gray-140;
+      stroke: none;
+      stroke-width: 2;
+      pointer-events: none;
     }
 
-    svg {
-        pointer-events: all;
-        cursor: pointer;
+    .handle {
+      stroke: none;
+      fill: none;
+      pointer-events: fill;
     }
 
-    .knob {
+    .track-highlight {
+      stroke: $gray-140;
+      stroke-width: 2;
+      pointer-events: none;
+      stroke-linecap: round;
+    }
+
+    &.invalid {
+      .indicator {
+        fill: $gray-180;
+      }
+
+      .track-highlight {
+        stroke: none;
+      }
+    }
+
+    &.active,
+    &:hover {
+      .track-highlight {
+        stroke: $color-primary;
+      }
+
+      .indicator {
+        fill: $color-primary;
+        stroke: $color-primary;
+      }
+    }
+  }
+}
+
+.charticulator {
+  &__reorder-list-view {
+    &-item {
+      position: relative;
+
+      &-drag-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 10;
+        border: 1px dashed $color-primary;
+        pointer-events: none;
+      }
+
+      &-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: $color-primary;
+        bottom: -1px;
+        z-index: 10;
+        pointer-events: none;
+
+        &.is-top {
+          top: -1px;
+          bottom: none;
+        }
+      }
+    }
+  }
+
+  &__minimizable-tree-view {
+    $height: 24px;
+
+    .el-children {
+      & > span {
+        display: block;
+        color: $gray-100;
+        margin: 2px 2px;
+        font-size: 13px;
+      }
+
+      margin-left: 10px;
+      margin-bottom: 5px;
+    }
+
+    &-item {
+      display: flex;
+      flex-direction: row;
+      height: $height;
+      line-height: $height;
+      cursor: pointer;
+      border-radius: 2px;
+
+      .el-svg-icon {
+        width: $height - 4px;
+        height: $height - 4px;
+        margin: 2px;
+      }
+
+      .el-text {
+        flex: 1;
+        margin-left: 4px;
+      }
+
+      &:hover {
+        background: $gray-200;
+      }
+
+      &.is-active {
+        background: $gray-190;
+      }
+    }
+  }
+
+  &__object-list-editor {
+    $height: 24px;
+
+    font-size: 14px;
+
+    &-title {
+      height: $height;
+      line-height: $height;
+      border-bottom: 1px solid $gray-180;
+    }
+
+    .charticulator__reorder-list-view {
+      margin-left: 20px;
+    }
+
+    .el-object-item {
+      display: flex;
+      flex-direction: row;
+      height: $height;
+      line-height: $height;
+      cursor: pointer;
+      border-radius: 2px;
+
+      .el-svg-icon {
+        width: $height - 4px;
+        height: $height - 4px;
+        margin: 2px;
+      }
+
+      .el-text {
+        flex: 1;
+      }
+
+      &:hover {
+        background: $gray-200;
+      }
+
+      &.is-active {
+        background: $gray-190;
+      }
+    }
+  }
+
+  &__widget-container {
+    font-size: 14px;
+  }
+
+  &__widget {
+    $line-height: 24px;
+
+    // Vertical layout
+    &-vertical {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-horizontal {
+      flex: 1 1;
+      display: flex;
+      flex-direction: row;
+
+      .el-layout-item {
+        &:not(:last-child) {
+          margin-right: 4px;
+        }
+      }
+
+      .el-layout-item-col-0 {
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+
+      .el-layout-item-col-1 {
+        flex: 1 1;
+        overflow: hidden;
+      }
+
+      .el-layout-item-col-2 {
+        overflow: hidden;
+        flex: 2 2;
+      }
+
+      .el-layout-item-col-3 {
+        overflow: hidden;
+        flex: 3 3;
+      }
+
+      .el-layout-item-col-4 {
+        overflow: hidden;
+        flex: 4 4;
+      }
+
+      .el-layout-item-col-5 {
+        overflow: hidden;
+        flex: 5 5;
+      }
+
+      .el-layout-item-col-6 {
+        overflow: hidden;
+        flex: 6 6;
+      }
+
+      .el-layout-item-col-7 {
+        overflow: hidden;
+        flex: 7 7;
+      }
+
+      .el-layout-item-col-8 {
+        overflow: hidden;
+        flex: 8 8;
+      }
+
+      .el-layout-item-col-9 {
+        overflow: hidden;
+        flex: 9 9;
+      }
+
+      .el-layout-item-col-11 {
+        overflow: hidden;
+        flex: 11 11;
+      }
+
+      .el-layout-item-col-12 {
+        overflow: hidden;
+        flex: 12 12;
+      }
+    }
+
+    &-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      td {
+        height: $line-height;
+        line-height: $line-height;
+
+        & > .el-layout-item {
+          vertical-align: top;
+          width: 100%;
+          display: inline-block;
+          height: $line-height;
+          line-height: $line-height;
+        }
+
+        padding: 0 5px;
+      }
+    }
+
+    &-row {
+      display: flex;
+      flex-direction: row;
+      margin: 2px 0;
+
+      &-label {
+        word-break: keep-all;
+        white-space: nowrap;
+        font-size: 12px;
+        width: 70px;
+        flex: 0 0;
+        flex-basis: 70px;
+        line-height: $line-height;
+        text-align: right;
+        padding-right: 4px;
+        margin-right: 4px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        color: $gray-100;
+        transition: background-color $transition-default;
+      }
+    }
+
+    &-grid {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &-section-header {
+      color: $gray-100;
+      font-size: 12px;
+      height: $line-height;
+      line-height: $line-height;
+      display: flex;
+      flex-direction: row;
+      margin: 2px 0;
+
+      &-title {
+        flex: 1 1;
+      }
+
+      &-dropzone {
+        transition: background $transition-default;
+
+        .el-dropzone-hint {
+          width: 100%;
+          outline: 1px dashed $color-primary;
+          padding: 0 4px;
+          height: $line-height;
+          line-height: $line-height;
+          border-radius: 2px;
+        }
+
+        &.is-in-session {
+          cursor: pointer;
+
+          .el-dropzone-hint {
+            background: transparentize($color-primary-light, 0.8);
+          }
+        }
+
+        &.is-dragging-over {
+          color: white;
+          cursor: pointer;
+
+          .el-dropzone-hint {
+            background: $color-active;
+            width: 100%;
+            outline: 1px solid $color-active;
+          }
+        }
+      }
+    }
+
+    &-label {
+      line-height: $line-height;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: block;
+      font-size: 12px;
+
+      // padding: 0 4px;
+      color: $gray-100;
+      transition: background-color $transition-default;
+    }
+
+    &-text {
+      line-height: $line-height;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      font-size: 14px;
+
+      // padding: 0 4px;
+      // text-align: center;
+      transition: background-color $transition-default;
+    }
+
+    &-sep {
+      display: inline-block;
+      vertical-align: top;
+      border-left: 1px solid $gray-200;
+      line-height: $line-height - 4px;
+      height: $line-height - 4px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    $button-margin: 3px;
+
+    &-control {
+      &-input-field {
+        @include font-mono;
+
+        display: inline-block;
+        vertical-align: top;
+        margin: 0;
+        padding: 0;
+        outline: none;
+        border: none;
+        background: none;
+        font-size: 14px;
+
+        @include font-mono;
+
+        height: $line-height;
+        padding-top: 1px;
+        line-height: $line-height;
+        border-bottom: 1px solid $gray-190;
+
+        &:hover,
+        &:focus {
+          border-bottom: 1px solid $color-primary;
+        }
+
+        box-sizing: border-box;
+        transition: border-color $transition-default;
+        width: 100%;
+      }
+
+      &-combo-box {
+        display: inline-block;
+        width: 100%;
+        vertical-align: top;
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+
+        & > .el-input {
+          @include font-mono;
+
+          flex: 1 1;
+          vertical-align: top;
+          margin: 0;
+          padding: 0;
+          outline: none;
+          border: none;
+          background: none;
+          font-size: 14px;
+
+          @include font-mono;
+
+          height: $line-height;
+          padding-top: 1px;
+          line-height: $line-height;
+          border-bottom: 1px solid $gray-190;
+
+          &:hover,
+          &:focus {
+            border-bottom: 1px solid $color-primary;
+          }
+
+          box-sizing: border-box;
+          transition: border-color $transition-default;
+        }
+
+        & > .el-dropdown {
+          flex-shrink: 0;
+          .svg-image-icon {
+            width: 16px;
+            height: 16px;
+            margin: 3px 3px;
+          }
+
+          cursor: pointer;
+          height: $line-height;
+          box-sizing: border-box;
+          border-bottom: 1px solid $gray-190;
+          border-radius: 2px 2px 0 0;
+          transition: border-color $transition-default;
+
+          &:hover,
+          &:focus {
+            background: $gray-200;
+            border-bottom: 1px solid $color-primary;
+          }
+        }
+
+        &:hover {
+          & > .el-dropdown,
+          & > .el-input {
+            border-bottom: 1px solid $color-primary;
+          }
+        }
+
+        &-suggestions {
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          overflow-y: scroll;
+          max-height: 300px;
+
+          &-option {
+            display: block;
+          }
+
+          .el-default-option-item {
+            text-overflow: ellipsis;
+            width: 100%;
+            font-size: 14px;
+            cursor: pointer;
+            display: block;
+            line-height: $line-height;
+            padding: 2px 8px;
+
+            &:hover,
+            &:focus {
+              background: $gray-210;
+            }
+
+            &.is-active {
+              background: $gray-210;
+              background-color: $gray-100;
+              color: $white;
+            }
+          }
+        }
+      }
+
+      &-input-expression {
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+
+        &-error {
+          display: block;
+          margin-top: 4px;
+          font-size: 12px;
+        }
+
+        &-input {
+          @include font-mono;
+
+          display: inline-block;
+          vertical-align: top;
+          margin: 0;
+          padding: 0;
+          outline: none;
+          border: none;
+          background: none;
+          font-size: 14px;
+
+          @include font-mono;
+
+          height: $line-height;
+          padding-top: 1px;
+          line-height: $line-height;
+          border-bottom: 1px solid $gray-190;
+
+          &:hover,
+          &:focus {
+            border-bottom: 1px solid $color-primary;
+          }
+
+          &.is-error {
+            border-bottom: 1px solid red;
+          }
+
+          box-sizing: border-box;
+          transition: border-color $transition-default;
+          width: 100%;
+        }
+      }
+
+      &-input-number {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        &-input {
+          width: 100%;
+        }
+
+        & > *:not(:first-child) {
+          flex-shrink: 0;
+          flex-grow: 0;
+        }
+      }
+
+      &-input-color {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        .el-color-display {
+          cursor: pointer;
+          border-radius: 2px;
+          flex-shrink: 0;
+          display: inline-block;
+          width: $line-height - 4px;
+          height: $line-height - 4px;
+          vertical-align: top;
+          margin: 1px;
+          margin-right: 8px;
+          border: 1px solid $white;
+        }
+      }
+
+      &-input-image {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        cursor: pointer;
+        border-radius: 2px;
+        height: $line-height;
+        line-height: $line-height;
+        overflow: hidden;
+
+        .el-image {
+          flex-shrink: 0;
+          height: $line-height;
+          border: 1px solid $gray-180;
+          background: $gray-210;
+          border-radius: 2px;
+          box-sizing: border-box;
+        }
+
+        .el-text-wrapper {
+          flex: 1 1;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .el-text {
+          text-overflow: ellipsis;
+          vertical-align: top;
+          height: $line-height;
+          padding-left: 4px;
+        }
+
+        &.is-none .el-text {
+          color: $gray-100;
+        }
+
+        &:hover {
+          background: $color-primary;
+
+          .el-image {
+            border: 1px solid $color-primary-dark;
+          }
+
+          .el-text {
+            color: $white;
+          }
+        }
+
+        .el-drag-over {
+          display: block;
+          width: 100%;
+          border: 1px solid $color-active;
+          padding-left: 4px;
+          background: lighten($color-active, 30%);
+        }
+      }
+
+      &-input-color-gradient {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
         cursor: pointer;
 
-        .indicator {
+        .el-color-gradient-display {
+          display: inline-block;
+          width: 100%;
+
+          .gradient-view {
+            display: inline-block;
+            width: 100%;
+
+            canvas {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      &-input-color-gradient-inline {
+        display: block;
+        border-radius: 2px;
+        border: 1px solid $gray-200;
+      }
+
+      &-updown-button {
+        display: inline-block;
+        vertical-align: top;
+        width: calc($line-height / 2 + 4px);
+        height: $line-height;
+        display: flex;
+        flex-direction: column;
+
+        .el-part {
+          display: block;
+          width: $line-height / 2;
+          height: $line-height / 2;
+          padding: 0 2px;
+
+          .el-svg-icon {
+            width: $line-height / 2;
+            height: $line-height / 2;
+            filter: invert(40%);
+          }
+
+          &:first-child {
+            .el-svg-icon {
+              margin-top: 2px;
+            }
+          }
+
+          &:last-child {
+            .el-svg-icon {
+              margin-top: -2px;
+            }
+          }
+
+          cursor: pointer;
+          border-radius: 2px;
+
+          &:hover {
+            background: $color-primary;
+
+            .el-svg-icon {
+              filter: invert(100%);
+            }
+          }
+        }
+      }
+
+      &-button {
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        height: $line-height;
+        border-radius: 2px;
+        transition: background-color $transition-default;
+
+        &:hover,
+        &:active {
+          background-color: $color-primary;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+
+          .el-text {
+            color: white;
+          }
+        }
+
+        &.is-active {
+          background-color: $gray-100;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+        }
+
+        .el-text {
+          height: $line-height;
+          line-height: $line-height;
+          margin-right: 6px;
+
+          &:first-child {
+            margin-left: 6px;
+          }
+        }
+
+        .svg-image-icon {
+          margin: $button-margin;
+          width: $line-height - $button-margin * 2;
+          height: $line-height - $button-margin * 2;
+        }
+      }
+
+      &-slider {
+        cursor: default;
+        height: $line-height;
+
+        svg {
+          pointer-events: all;
+          cursor: pointer;
+
+          .indicator {
+            transition: stroke $transition-default, fill $transition-default;
+          }
+
+          .track {
+            stroke: $gray-180;
+            stroke-width: 2;
+            stroke-linecap: round;
+          }
+
+          .indicator {
             fill: $gray-140;
             stroke: none;
             stroke-width: 2;
             pointer-events: none;
-        }
+          }
 
-        .handle {
-            stroke: none;
-            fill: none;
-            pointer-events: fill;
-        }
-
-        .track-highlight {
+          .track-highlight {
             stroke: $gray-140;
             stroke-width: 2;
             pointer-events: none;
             stroke-linecap: round;
-        }
+          }
 
-        &.invalid {
+          &.invalid {
             .indicator {
-                fill: $gray-180;
+              fill: $gray-180;
             }
 
             .track-highlight {
-                stroke: none;
+              stroke: none;
             }
-        }
+          }
 
-        &.active, &:hover {
+          &.active,
+          &:hover {
             .track-highlight {
-                stroke: $color-primary;
+              stroke: $color-primary;
             }
 
             .indicator {
-                fill: $color-primary;
-                stroke: $color-primary;
+              fill: $color-primary;
+              stroke: $color-primary;
             }
+          }
         }
-    }
-}
-
-.charticulator {
-    &__reorder-list-view {
-        &-item {
-            position: relative;
-
-            &-drag-hint {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                z-index: 10;
-                border: 1px dashed $color-primary;
-                pointer-events: none;
-            }
-
-            &-hint {
-                position: absolute;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: $color-primary;
-                bottom: -1px;
-                z-index: 10;
-                pointer-events: none;
-
-                &.is-top {
-                    top: -1px;
-                    bottom: none;
-                }
-            }
-        }
-    }
-
-    &__minimizable-tree-view {
-        $height: 24px;
-
-        .el-children {
-            & > span {
-                display: block;
-                color: $gray-100;
-                margin: 2px 2px;
-                font-size: 13px;
-            }
-
-            margin-left: 10px;
-            margin-bottom: 5px;
-        }
-
-        &-item {
-            display: flex;
-            flex-direction: row;
-            height: $height;
-            line-height: $height;
-            cursor: pointer;
-            border-radius: 2px;
-
-            .el-svg-icon {
-                width: $height - 4px;
-                height: $height - 4px;
-                margin: 2px;
-            }
-
-            .el-text {
-                flex: 1;
-                margin-left: 4px;
-            }
-
-            &:hover {
-                background: $gray-200;
-            }
-
-            &.is-active {
-                background: $gray-190;
-            }
-        }
-    }
-
-    &__object-list-editor {
-        $height: 24px;
-
-        font-size: 14px;
-
-        &-title {
-            height: $height;
-            line-height: $height;
-            border-bottom: 1px solid $gray-180;
-        }
-
-        .charticulator__reorder-list-view {
-            margin-left: 20px;
-        }
-
-        .el-object-item {
-            display: flex;
-            flex-direction: row;
-            height: $height;
-            line-height: $height;
-            cursor: pointer;
-            border-radius: 2px;
-
-            .el-svg-icon {
-                width: $height - 4px;
-                height: $height - 4px;
-                margin: 2px;
-            }
-
-            .el-text {
-                flex: 1;
-            }
-
-            &:hover {
-                background: $gray-200;
-            }
-
-            &.is-active {
-                background: $gray-190;
-            }
-        }
-    }
-
-    &__widget-container {
-        font-size: 14px;
-    }
-
-    &__widget {
-        $line-height: 24px;
-
-        // Vertical layout
-        &-vertical {
-            display: flex;
-            flex-direction: column;
-        }
-
-        &-horizontal {
-            flex: 1 1;
-            display: flex;
-            flex-direction: row;
-
-            .el-layout-item {
-                &:not(:last-child) {
-                    margin-right: 4px;
-                }
-            }
-
-            .el-layout-item-col-0 {
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
-
-            .el-layout-item-col-1 {
-                flex: 1 1;
-                overflow: hidden;
-            }
-
-            .el-layout-item-col-2 {
-                overflow: hidden;
-                flex: 2 2;
-            }
-
-            .el-layout-item-col-3 {
-                overflow: hidden;
-                flex: 3 3;
-            }
-
-            .el-layout-item-col-4 {
-                overflow: hidden;
-                flex: 4 4;
-            }
-
-            .el-layout-item-col-5 {
-                overflow: hidden;
-                flex: 5 5;
-            }
-
-            .el-layout-item-col-6 {
-                overflow: hidden;
-                flex: 6 6;
-            }
-
-            .el-layout-item-col-7 {
-                overflow: hidden;
-                flex: 7 7;
-            }
-
-            .el-layout-item-col-8 {
-                overflow: hidden;
-                flex: 8 8;
-            }
-
-            .el-layout-item-col-9 {
-                overflow: hidden;
-                flex: 9 9;
-            }
-
-            .el-layout-item-col-11 {
-                overflow: hidden;
-                flex: 11 11;
-            }
-
-            .el-layout-item-col-12 {
-                overflow: hidden;
-                flex: 12 12;
-            }
-        }
-
-        &-table {
-            width: 100%;
-            border-collapse: collapse;
-
-            td {
-                height: $line-height;
-                line-height: $line-height;
-
-                & > .el-layout-item {
-                    vertical-align: top;
-                    width: 100%;
-                    display: inline-block;
-                    height: $line-height;
-                    line-height: $line-height;
-                }
-
-                padding: 0 5px;
-            }
-        }
-
-        &-row {
-            display: flex;
-            flex-direction: row;
-            margin: 2px 0;
-
-            &-label {
-                word-break: keep-all;
-                white-space: nowrap;
-                font-size: 12px;
-                width: 70px;
-                flex: 0 0;
-                flex-basis: 70px;
-                line-height: $line-height;
-                text-align: right;
-                padding-right: 4px;
-                margin-right: 4px;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: block;
-                color: $gray-100;
-                transition: background-color $transition-default;
-            }
-        }
-
-        &-grid {
-            display: flex;
-            flex-direction: row;
-        }
-
-        &-section-header {
-            color: $gray-100;
-            font-size: 12px;
-            height: $line-height;
-            line-height: $line-height;
-            display: flex;
-            flex-direction: row;
-            margin: 2px 0;
-
-            &-title {
-                flex: 1 1;
-            }
-
-            &-dropzone {
-                transition: background $transition-default;
-
-                .el-dropzone-hint {
-                    width: 100%;
-                    outline: 1px dashed $color-primary;
-                    padding: 0 4px;
-                    height: $line-height;
-                    line-height: $line-height;
-                    border-radius: 2px;
-                }
-
-                &.is-in-session {
-                    cursor: pointer;
-
-                    .el-dropzone-hint {
-                        background: transparentize($color-primary-light, 0.8);
-                    }
-                }
-
-                &.is-dragging-over {
-                    color: white;
-                    cursor: pointer;
-
-                    .el-dropzone-hint {
-                        background: $color-active;
-                        width: 100%;
-                        outline: 1px solid $color-active;
-                    }
-                }
-            }
-        }
-
-        &-label {
-            line-height: $line-height;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            display: block;
-            font-size: 12px;
-
-            // padding: 0 4px;
-            color: $gray-100;
-            transition: background-color $transition-default;
-        }
-
-        &-text {
-            line-height: $line-height;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            display: block;
-            font-size: 14px;
-
-            // padding: 0 4px;
-            // text-align: center;
-            transition: background-color $transition-default;
-        }
-
-        &-sep {
-            display: inline-block;
-            vertical-align: top;
-            border-left: 1px solid $gray-200;
-            line-height: $line-height - 4px;
-            height: $line-height - 4px;
-            margin-top: 2px;
-            margin-bottom: 2px;
-        }
-
-        $button-margin: 3px;
-
-        &-control {
-            &-input-field {
-                @include font-mono;
-
-                display: inline-block;
-                vertical-align: top;
-                margin: 0;
-                padding: 0;
-                outline: none;
-                border: none;
-                background: none;
-                font-size: 14px;
-
-                @include font-mono;
-
-                height: $line-height;
-                padding-top: 1px;
-                line-height: $line-height;
-                border-bottom: 1px solid $gray-190;
-
-                &:hover, &:focus {
-                    border-bottom: 1px solid $color-primary;
-                }
-
-                box-sizing: border-box;
-                transition: border-color $transition-default;
-                width: 100%;
-            }
-
-            &-combo-box {
-                display: inline-block;
-                width: 100%;
-                vertical-align: top;
-                display: flex;
-                flex-direction: row;
-                overflow: hidden;
-
-                & > .el-input {
-                    @include font-mono;
-
-                    flex: 1 1;
-                    vertical-align: top;
-                    margin: 0;
-                    padding: 0;
-                    outline: none;
-                    border: none;
-                    background: none;
-                    font-size: 14px;
-
-                    @include font-mono;
-
-                    height: $line-height;
-                    padding-top: 1px;
-                    line-height: $line-height;
-                    border-bottom: 1px solid $gray-190;
-
-                    &:hover, &:focus {
-                        border-bottom: 1px solid $color-primary;
-                    }
-
-                    box-sizing: border-box;
-                    transition: border-color $transition-default;
-                }
-
-                & > .el-dropdown {
-                    flex-shrink: 0;
-                    .svg-image-icon {
-                        width: 16px;
-                        height: 16px;
-                        margin: 3px 3px;
-                    }
-
-                    cursor: pointer;
-                    height: $line-height;
-                    box-sizing: border-box;
-                    border-bottom: 1px solid $gray-190;
-                    border-radius: 2px 2px 0 0;
-                    transition: border-color $transition-default;
-
-                    &:hover, &:focus {
-                        background: $gray-200;
-                        border-bottom: 1px solid $color-primary;
-                    }
-                }
-
-                &:hover {
-                    & > .el-dropdown, & > .el-input {
-                        border-bottom: 1px solid $color-primary;
-                    }
-                }
-
-                &-suggestions {
-                    overflow: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    overflow-y: scroll;
-                    max-height: 300px;
-
-                    &-option {
-                        display: block;
-                    }
-
-                    .el-default-option-item {
-                        text-overflow: ellipsis;
-                        width: 100%;
-                        font-size: 14px;
-                        cursor: pointer;
-                        display: block;
-                        line-height: $line-height;
-                        padding: 2px 8px;
-
-                        &:hover, &:focus {
-                            background: $gray-210;
-                        }
-
-                        &.is-active {
-                            background: $gray-210;
-                            background-color: $gray-100;
-                            color: $white;
-                        }
-                    }
-                }
-            }
-
-            &-input-expression {
-                width: 100%;
-                display: inline-block;
-                vertical-align: top;
-
-                &-error {
-                    display: block;
-                    margin-top: 4px;
-                    font-size: 12px;
-                }
-
-                &-input {
-                    @include font-mono;
-
-                    display: inline-block;
-                    vertical-align: top;
-                    margin: 0;
-                    padding: 0;
-                    outline: none;
-                    border: none;
-                    background: none;
-                    font-size: 14px;
-
-                    @include font-mono;
-
-                    height: $line-height;
-                    padding-top: 1px;
-                    line-height: $line-height;
-                    border-bottom: 1px solid $gray-190;
-
-                    &:hover, &:focus {
-                        border-bottom: 1px solid $color-primary;
-                    }
-
-                    &.is-error {
-                        border-bottom: 1px solid red;
-                    }
-
-                    box-sizing: border-box;
-                    transition: border-color $transition-default;
-                    width: 100%;
-                }
-            }
-
-            &-input-number {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-
-                &-input {
-                    width: 100%;
-                }
-
-                & > *:not(:first-child) {
-                    flex-shrink: 0;
-                    flex-grow: 0;
-                }
-            }
-
-            &-input-color {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-
-                .el-color-display {
-                    cursor: pointer;
-                    border-radius: 2px;
-                    flex-shrink: 0;
-                    display: inline-block;
-                    width: $line-height - 4px;
-                    height: $line-height - 4px;
-                    vertical-align: top;
-                    margin: 1px;
-                    margin-right: 8px;
-                    border: 1px solid $white;
-                }
-            }
-
-            &-input-image {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                cursor: pointer;
-                border-radius: 2px;
-                height: $line-height;
-                line-height: $line-height;
-                overflow: hidden;
-
-                .el-image {
-                    flex-shrink: 0;
-                    height: $line-height;
-                    border: 1px solid $gray-180;
-                    background: $gray-210;
-                    border-radius: 2px;
-                    box-sizing: border-box;
-                }
-
-                .el-text-wrapper {
-                    flex: 1 1;
-                    display: inline-block;
-                    overflow: hidden;
-                }
-
-                .el-text {
-                    text-overflow: ellipsis;
-                    vertical-align: top;
-                    height: $line-height;
-                    padding-left: 4px;
-                }
-
-                &.is-none .el-text {
-                    color: $gray-100;
-                }
-
-                &:hover {
-                    background: $color-primary;
-
-                    .el-image {
-                        border: 1px solid $color-primary-dark;
-                    }
-
-                    .el-text {
-                        color: $white;
-                    }
-                }
-
-                .el-drag-over {
-                    display: block;
-                    width: 100%;
-                    border: 1px solid $color-active;
-                    padding-left: 4px;
-                    background: lighten($color-active, 30%);
-                }
-            }
-
-            &-input-color-gradient {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                cursor: pointer;
-
-                .el-color-gradient-display {
-                    display: inline-block;
-                    width: 100%;
-
-                    .gradient-view {
-                        display: inline-block;
-                        width: 100%;
-
-                        canvas {
-                            width: 100%;
-                        }
-                    }
-                }
-            }
-
-            &-input-color-gradient-inline {
-                display: block;
-                border-radius: 2px;
-                border: 1px solid $gray-200;
-            }
-
-            &-updown-button {
-                display: inline-block;
-                vertical-align: top;
-                width: calc($line-height / 2 + 4px);
-                height: $line-height;
-                display: flex;
-                flex-direction: column;
-
-                .el-part {
-                    display: block;
-                    width: $line-height / 2;
-                    height: $line-height / 2;
-                    padding: 0 2px;
-
-                    .el-svg-icon {
-                        width: $line-height / 2;
-                        height: $line-height / 2;
-                        filter: invert(40%);
-                    }
-
-                    &:first-child {
-                        .el-svg-icon {
-                            margin-top: 2px;
-                        }
-                    }
-
-                    &:last-child {
-                        .el-svg-icon {
-                            margin-top: -2px;
-                        }
-                    }
-
-                    cursor: pointer;
-                    border-radius: 2px;
-
-                    &:hover {
-                        background: $color-primary;
-
-                        .el-svg-icon {
-                            filter: invert(100%);
-                        }
-                    }
-                }
-            }
-
-            &-button {
-                display: inline-block;
-                vertical-align: top;
-                cursor: pointer;
-                height: $line-height;
-                border-radius: 2px;
-                transition: background-color $transition-default;
-
-                &:hover, &:active {
-                    background-color: $color-primary;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-
-                    .el-text {
-                        color: white;
-                    }
-                }
-
-                &.is-active {
-                    background-color: $gray-100;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-                }
-
-                .el-text {
-                    height: $line-height;
-                    line-height: $line-height;
-                    margin-right: 6px;
-
-                    &:first-child {
-                        margin-left: 6px;
-                    }
-                }
-
-                .svg-image-icon {
-                    margin: $button-margin;
-                    width: $line-height - $button-margin * 2;
-                    height: $line-height - $button-margin * 2;
-                }
-            }
-
-            &-slider {
-                cursor: default;
-                height: $line-height;
-
-                svg {
-                    pointer-events: all;
-                    cursor: pointer;
-
-                    .indicator {
-                        transition: stroke $transition-default, fill $transition-default;
-                    }
-
-                    .track {
-                        stroke: $gray-180;
-                        stroke-width: 2;
-                        stroke-linecap: round;
-                    }
-
-                    .indicator {
-                        fill: $gray-140;
-                        stroke: none;
-                        stroke-width: 2;
-                        pointer-events: none;
-                    }
-
-                    .track-highlight {
-                        stroke: $gray-140;
-                        stroke-width: 2;
-                        pointer-events: none;
-                        stroke-linecap: round;
-                    }
-
-                    &.invalid {
-                        .indicator {
-                            fill: $gray-180;
-                        }
-
-                        .track-highlight {
-                            stroke: none;
-                        }
-                    }
-
-                    &.active, &:hover {
-                        .track-highlight {
-                            stroke: $color-primary;
-                        }
-
-                        .indicator {
-                            fill: $color-primary;
-                            stroke: $color-primary;
-                        }
-                    }
-                }
-            }
-
-            &-drop-button {
-                display: inline-block;
-                vertical-align: top;
-                cursor: pointer;
-                height: $line-height;
-                box-sizing: border-box;
-                border-radius: 2px;
-                transition: background-color $transition-default;
-
-                &:hover, &:active {
-                    background-color: $color-primary;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-
-                    .el-text {
-                        color: white;
-                    }
-                }
-
-                &.is-active {
-                    background-color: $gray-100;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-                }
-
-                .el-text {
-                    height: $line-height;
-                    line-height: $line-height;
-                    margin-right: 6px;
-
-                    &:first-child {
-                        margin-left: 6px;
-                    }
-                }
-
-                .svg-image-icon {
-                    margin: $button-margin;
-                    width: $line-height - $button-margin * 2;
-                    height: $line-height - $button-margin * 2;
-                }
-
-                &.is-active {
-                    background-color: $gray-100;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-                }
-
-                &.is-in-session {
-                    border: 1px dashed $color-primary;
-                    background: transparentize($color-primary-light, 0.8);
-
-                    .svg-image-icon {
-                        margin: $button-margin - 1px;
-                        width: $line-height - $button-margin * 2;
-                        height: $line-height - $button-margin * 2;
-                        filter: none;
-                    }
-                }
-
-                &.is-dragging-over {
-                    border: none;
-                    background-color: $color-active;
-
-                    .svg-image-icon {
-                        margin: $button-margin;
-                        width: $line-height - $button-margin * 2;
-                        height: $line-height - $button-margin * 2;
-                        filter: invert(100%);
-                    }
-                }
-            }
-
-            &-select {
-                display: inline-block;
-                vertical-align: top;
-                cursor: pointer;
-                height: $line-height;
-                border-radius: 2px;
-                transition: background-color $transition-default;
-
-                &:hover, &:active {
-                    background-color: $color-primary;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-
-                    .el-text {
-                        color: white;
-                    }
-                }
-
-                .el-text {
-                    line-height: $line-height;
-                    padding: 0 2px;
-                    padding-left: 4px;
-                }
-
-                .svg-image-icon {
-                    &:last-child {
-                        margin-left: -2px;
-                        margin-right: 0;
-                    }
-
-                    margin: $button-margin;
-                    width: $line-height - $button-margin * 2;
-                    height: $line-height - $button-margin * 2;
-                }
-            }
-
-            &-order-widget {
-                display: inline-block;
-                vertical-align: top;
-                cursor: pointer;
-                height: $line-height;
-                box-sizing: border-box;
-                border-radius: 2px;
-                transition: background-color $transition-default;
-
-                &:hover, &:active {
-                    background-color: $color-primary;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-
-                    .el-text {
-                        color: white;
-                    }
-                }
-
-                &.is-active {
-                    background-color: $gray-100;
-
-                    .svg-image-icon {
-                        filter: invert(100%);
-                    }
-                }
-
-                &.is-in-session {
-                    outline: 1px dashed $color-primary;
-                    background: transparentize($color-primary-light, 0.8);
-
-                    // .svg-image-icon {
-                    //     margin: $button-margin - 1px;
-                    //     &:last-child {
-                    //         margin-left: -1px;
-                    //         margin-right: -1px;
-                    //     }
-                    //     filter: none;
-                    // }
-
-                }
-
-                &.is-dragging-over {
-                    outline: 1px solid $color-active;
-                    background-color: $color-active;
-
-                    .svg-image-icon {
-                        margin: $button-margin;
-                        filter: invert(100%);
-                    }
-                }
-
-                .svg-image-icon {
-                    &:last-child {
-                        margin-left: -2px;
-                        margin-right: 0;
-                    }
-
-                    margin: $button-margin;
-                    width: $line-height - $button-margin * 2;
-                    height: $line-height - $button-margin * 2;
-                }
-            }
-
-            &-drop-target {
-                width: 100%;
-                display: inline-block;
-                vertical-align: top;
-                height: $line-height;
-                line-height: $line-height;
-
-                .el-dropzone-hint {
-                    display: block;
-                    width: 100%;
-                    border: 1px dashed $color-primary;
-                    box-sizing: border-box;
-                    padding: 0 4px;
-                    height: $line-height;
-                    line-height: $line-height - 2px;
-                    border-radius: 2px;
-                    color: $gray-100;
-                    font-size: 12px;
-                }
-
-                &.is-in-session {
-                    cursor: pointer;
-
-                    .el-dropzone-hint {
-                        background: transparentize($color-primary-light, 0.8);
-                    }
-                }
-
-                &.is-dragging-over {
-                    color: white;
-                    cursor: pointer;
-
-                    .el-dropzone-hint {
-                        background: $color-active;
-                        width: 100%;
-                        color: white;
-                        border: 1px dashed $color-active;
-                    }
-                }
-            }
-
-            &-radio {
-                box-sizing: border-box;
-                display: inline-block;
-                vertical-align: top;
-                height: $line-height;
-                border-radius: 2px;
-                background: $gray-200;
-                overflow: hidden;
-
-                &-item {
-                    cursor: pointer;
-                    display: inline-block;
-                    height: $line-height;
-                    border-radius: 2px;
-
-                    &:hover {
-                        background-color: $color-primary;
-
-                        .svg-image-icon {
-                            filter: invert(100%);
-                        }
-
-                        .el-text {
-                            color: white;
-                        }
-                    }
-
-                    &.is-active {
-                        background-color: $gray-080;
-
-                        .svg-image-icon {
-                            filter: invert(100%);
-                        }
-
-                        .el-text {
-                            color: white;
-                        }
-                    }
-
-                    .el-text {
-                        height: $line-height;
-                        line-height: $line-height;
-                        margin-right: 6px;
-                        margin-left: 6px;
-                    }
-
-                    .svg-image-icon {
-                        margin: $button-margin;
-                        width: $line-height - $button-margin * 2;
-                        height: $line-height - $button-margin * 2;
-                    }
-                }
-            }
-
-            &-mapping-editor {
-                flex: 1 1;
-                position: relative;
-                overflow: hidden;
-
-                &.is-in-session {
-                    border-radius: 2px;
-                    cursor: pointer;
-                    outline: 1px dashed $color-primary;
-                    background: transparentize($color-primary-light, 0.8);
-                }
-
-                &.is-dragging-over {
-                    outline: 1px solid $color-active;
-                    background: $color-active;
-
-                    & > * {
-                        display: none;
-                    }
-
-                    &:after {
-                        display: block;
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        height: $line-height;
-                        line-height: $line-height;
-                        padding-left: 4px;
-                        content: "Drop here to map data";
-                        color: white;
-                    }
-                }
-
-                // for (none), (auto)
-                .el-clickable-label {
-                    display: inline-block;
-                    width: 100%;
-                    cursor: pointer;
-                    height: $line-height;
-                    line-height: $line-height;
-                    color: $gray-100;
-                    padding-left: 4px;
-                    border-radius: 2px;
-
-                    &:hover {
-                        background: $gray-200;
-                    }
-                }
-
-                .el-color-value {
-                    display: flex;
-                    flex-direction: row;
-
-                    .el-color-item {
-                        cursor: pointer;
-                        border-radius: 2px;
-                        flex-shrink: 0;
-                        display: inline-block;
-                        width: $line-height - 4px;
-                        height: $line-height - 4px;
-                        vertical-align: top;
-                        margin: 1px;
-                        margin-right: 8px;
-                        border: 1px solid $white;
-                    }
-                }
-
-                .el-mapping-scale {
-                    max-width: 100%;
-                    display: inline-flex;
-                    line-height: 20px;
-                    height: 20px;
-                    white-space: nowrap;
-                    word-break: keep-all;
-                    margin: 2px 0;
-                    overflow: hidden;
-                    border-radius: 2px;
-                    background: $gray-200;
-                    transition: background $transition-default;
-                    cursor: pointer;
-
-                    svg {
-                        display: inline-block;
-                        flex-shrink: 0;
-                        flex-grow: 0;
-                        vertical-align: top;
-                        height: 20px;
-
-                        path {
-                            fill: $gray-190;
-                            transition: fill $transition-default;
-                        }
-                    }
-
-                    .el-mapping-scale-scale {
-                        vertical-align: top;
-                        line-height: 20px;
-                        background: $gray-190;
-                        transition: background $transition-default, color $transition-default;
-                        height: 20px;
-                        display: inline-block;
-                        text-overflow: ellipsis;
-
-                        &.is-left {
-                            // border-radius: 2px 0 0 2px;
-                            padding-left: 4px;
-                            flex-grow: 0;
-                            flex-shrink: 0;
-                            overflow: hidden;
-                            font-style: italic;
-                            text-overflow: ellipsis;
-
-                            .el-svg-icon {
-                                height: 20px;
-                                width: 20px;
-                            }
-                        }
-
-                        box-sizing: border-box;
-                    }
-
-                    .el-mapping-scale-column {
-                        vertical-align: top;
-                        line-height: 20px;
-                        height: 20px;
-                        display: inline-block;
-                        box-sizing: border-box;
-                        flex-grow: 0;
-                        flex-shrink: 1;
-                        overflow: hidden;
-                        padding: 0 2px;
-                        text-overflow: ellipsis;
-                        transition: background $transition-default, color $transition-default;
-                        @include font-mono;
-                    }
-
-                    &:hover {
-                        svg {
-                            path {
-                                fill: $color-primary;
-                            }
-                        }
-
-                        background: $color-primary-light;
-
-                        .el-mapping-scale-scale {
-                            background: $color-primary;
-                            color: $white;
-                        }
-
-                        .el-mapping-scale-column {
-                            color: $white;
-                        }
-                    }
-                }
-            }
-        }
-
-        &-popup {
-            &-order-widget {}
-
-            &-details {
-                width: 300px;
-                max-height: 500px;
-                overflow-x: hidden;
-                overflow-y: scroll;
-                padding: 10px;
-            }
-
-            &-reorder-widget {
-                padding: 0 10px;
-                min-width: 100px;
-
-                .el-row {
-                    margin: 10px 0;
-                }
-
-                .el-list-view {
-                    max-height: 500px;
-                    overflow-x: hidden;
-                    overflow-y: scroll;
-                }
-
-                .el-item {
-                    height: 20px;
-                    line-height: 20px;
-                    padding: 0 4px;
-                    cursor: pointer;
-
-                    &:hover {
-                        background: $gray-200;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.charticulator-panel-list-view {
-    $height: 28px;
-
-    display: block;
-
-    .el-item {
-        display: block;
+      }
+
+      &-drop-button {
+        display: inline-block;
+        vertical-align: top;
         cursor: pointer;
+        height: $line-height;
+        box-sizing: border-box;
         border-radius: 2px;
-        line-height: $height;
-        height: $height;
+        transition: background-color $transition-default;
 
-        .el-svg-icon {
-            width: $height - 2px;
-            height: $height - 2px;
-            margin: 1px;
-        }
+        &:hover,
+        &:active {
+          background-color: $color-primary;
 
-        .el-text {
-            padding-left: 4px;
-            padding-right: 8px;
-        }
+          .svg-image-icon {
+            filter: invert(100%);
+          }
 
-        &:hover {
-            background: $gray-230;
+          .el-text {
+            color: white;
+          }
         }
 
         &.is-active {
-            background: $gray-080;
-            color: white;
+          background-color: $gray-100;
 
-            .el-svg-icon {
-                filter: invert(100%);
-            }
+          .svg-image-icon {
+            filter: invert(100%);
+          }
         }
+
+        .el-text {
+          height: $line-height;
+          line-height: $line-height;
+          margin-right: 6px;
+
+          &:first-child {
+            margin-left: 6px;
+          }
+        }
+
+        .svg-image-icon {
+          margin: $button-margin;
+          width: $line-height - $button-margin * 2;
+          height: $line-height - $button-margin * 2;
+        }
+
+        &.is-active {
+          background-color: $gray-100;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+        }
+
+        &.is-in-session {
+          border: 1px dashed $color-primary;
+          background: transparentize($color-primary-light, 0.8);
+
+          .svg-image-icon {
+            margin: $button-margin - 1px;
+            width: $line-height - $button-margin * 2;
+            height: $line-height - $button-margin * 2;
+            filter: none;
+          }
+        }
+
+        &.is-dragging-over {
+          border: none;
+          background-color: $color-active;
+
+          .svg-image-icon {
+            margin: $button-margin;
+            width: $line-height - $button-margin * 2;
+            height: $line-height - $button-margin * 2;
+            filter: invert(100%);
+          }
+        }
+      }
+
+      &-select {
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        height: $line-height;
+        border-radius: 2px;
+        transition: background-color $transition-default;
+
+        &:hover,
+        &:active {
+          background-color: $color-primary;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+
+          .el-text {
+            color: white;
+          }
+        }
+
+        .el-text {
+          line-height: $line-height;
+          padding: 0 2px;
+          padding-left: 4px;
+        }
+
+        .svg-image-icon {
+          &:last-child {
+            margin-left: -2px;
+            margin-right: 0;
+          }
+
+          margin: $button-margin;
+          width: $line-height - $button-margin * 2;
+          height: $line-height - $button-margin * 2;
+        }
+      }
+
+      &-order-widget {
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        height: $line-height;
+        box-sizing: border-box;
+        border-radius: 2px;
+        transition: background-color $transition-default;
+
+        &:hover,
+        &:active {
+          background-color: $color-primary;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+
+          .el-text {
+            color: white;
+          }
+        }
+
+        &.is-active {
+          background-color: $gray-100;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+        }
+
+        &.is-in-session {
+          outline: 1px dashed $color-primary;
+          background: transparentize($color-primary-light, 0.8);
+
+          // .svg-image-icon {
+          //     margin: $button-margin - 1px;
+          //     &:last-child {
+          //         margin-left: -1px;
+          //         margin-right: -1px;
+          //     }
+          //     filter: none;
+          // }
+        }
+
+        &.is-dragging-over {
+          outline: 1px solid $color-active;
+          background-color: $color-active;
+
+          .svg-image-icon {
+            margin: $button-margin;
+            filter: invert(100%);
+          }
+        }
+
+        .svg-image-icon {
+          &:last-child {
+            margin-left: -2px;
+            margin-right: 0;
+          }
+
+          margin: $button-margin;
+          width: $line-height - $button-margin * 2;
+          height: $line-height - $button-margin * 2;
+        }
+      }
+
+      &-drop-target {
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+        height: $line-height;
+        line-height: $line-height;
+
+        .el-dropzone-hint {
+          display: block;
+          width: 100%;
+          border: 1px dashed $color-primary;
+          box-sizing: border-box;
+          padding: 0 4px;
+          height: $line-height;
+          line-height: $line-height - 2px;
+          border-radius: 2px;
+          color: $gray-100;
+          font-size: 12px;
+        }
+
+        &.is-in-session {
+          cursor: pointer;
+
+          .el-dropzone-hint {
+            background: transparentize($color-primary-light, 0.8);
+          }
+        }
+
+        &.is-dragging-over {
+          color: white;
+          cursor: pointer;
+
+          .el-dropzone-hint {
+            background: $color-active;
+            width: 100%;
+            color: white;
+            border: 1px dashed $color-active;
+          }
+        }
+      }
+
+      &-radio {
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        height: $line-height;
+        border-radius: 2px;
+        background: $gray-200;
+        overflow: hidden;
+
+        &-item {
+          cursor: pointer;
+          display: inline-block;
+          height: $line-height;
+          border-radius: 2px;
+
+          &:hover {
+            background-color: $color-primary;
+
+            .svg-image-icon {
+              filter: invert(100%);
+            }
+
+            .el-text {
+              color: white;
+            }
+          }
+
+          &.is-active {
+            background-color: $gray-080;
+
+            .svg-image-icon {
+              filter: invert(100%);
+            }
+
+            .el-text {
+              color: white;
+            }
+          }
+
+          .el-text {
+            height: $line-height;
+            line-height: $line-height;
+            margin-right: 6px;
+            margin-left: 6px;
+          }
+
+          .svg-image-icon {
+            margin: $button-margin;
+            width: $line-height - $button-margin * 2;
+            height: $line-height - $button-margin * 2;
+          }
+        }
+      }
+
+      &-mapping-editor {
+        flex: 1 1;
+        position: relative;
+        overflow: hidden;
+
+        &.is-in-session {
+          border-radius: 2px;
+          cursor: pointer;
+          outline: 1px dashed $color-primary;
+          background: transparentize($color-primary-light, 0.8);
+        }
+
+        &.is-dragging-over {
+          outline: 1px solid $color-active;
+          background: $color-active;
+
+          & > * {
+            display: none;
+          }
+
+          &:after {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: $line-height;
+            line-height: $line-height;
+            padding-left: 4px;
+            content: "Drop here to map data";
+            color: white;
+          }
+        }
+
+        // for (none), (auto)
+        .el-clickable-label {
+          display: inline-block;
+          width: 100%;
+          cursor: pointer;
+          height: $line-height;
+          line-height: $line-height;
+          color: $gray-100;
+          padding-left: 4px;
+          border-radius: 2px;
+
+          &:hover {
+            background: $gray-200;
+          }
+        }
+
+        .el-color-value {
+          display: flex;
+          flex-direction: row;
+
+          .el-color-item {
+            cursor: pointer;
+            border-radius: 2px;
+            flex-shrink: 0;
+            display: inline-block;
+            width: $line-height - 4px;
+            height: $line-height - 4px;
+            vertical-align: top;
+            margin: 1px;
+            margin-right: 8px;
+            border: 1px solid $white;
+          }
+        }
+
+        .el-mapping-scale {
+          max-width: 100%;
+          display: inline-flex;
+          line-height: 20px;
+          height: 20px;
+          white-space: nowrap;
+          word-break: keep-all;
+          margin: 2px 0;
+          overflow: hidden;
+          border-radius: 2px;
+          background: $gray-200;
+          transition: background $transition-default;
+          cursor: pointer;
+
+          svg {
+            display: inline-block;
+            flex-shrink: 0;
+            flex-grow: 0;
+            vertical-align: top;
+            height: 20px;
+
+            path {
+              fill: $gray-190;
+              transition: fill $transition-default;
+            }
+          }
+
+          .el-mapping-scale-scale {
+            vertical-align: top;
+            line-height: 20px;
+            background: $gray-190;
+            transition: background $transition-default,
+              color $transition-default;
+            height: 20px;
+            display: inline-block;
+            text-overflow: ellipsis;
+
+            &.is-left {
+              // border-radius: 2px 0 0 2px;
+              padding-left: 4px;
+              flex-grow: 0;
+              flex-shrink: 0;
+              overflow: hidden;
+              font-style: italic;
+              text-overflow: ellipsis;
+
+              .el-svg-icon {
+                height: 20px;
+                width: 20px;
+              }
+            }
+
+            box-sizing: border-box;
+          }
+
+          .el-mapping-scale-column {
+            vertical-align: top;
+            line-height: 20px;
+            height: 20px;
+            display: inline-block;
+            box-sizing: border-box;
+            flex-grow: 0;
+            flex-shrink: 1;
+            overflow: hidden;
+            padding: 0 2px;
+            text-overflow: ellipsis;
+            transition: background $transition-default,
+              color $transition-default;
+            @include font-mono;
+          }
+
+          &:hover {
+            svg {
+              path {
+                fill: $color-primary;
+              }
+            }
+
+            background: $color-primary-light;
+
+            .el-mapping-scale-scale {
+              background: $color-primary;
+              color: $white;
+            }
+
+            .el-mapping-scale-column {
+              color: $white;
+            }
+          }
+        }
+      }
     }
 
-    &.is-inline {
-        display: inline-block;
+    &-popup {
+      &-order-widget {
+      }
+
+      &-details {
+        width: 300px;
+        max-height: 500px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 10px;
+      }
+
+      &-reorder-widget {
+        padding: 0 10px;
+        min-width: 100px;
+
+        .el-row {
+          margin: 10px 0;
+        }
+
+        .el-list-view {
+          max-height: 500px;
+          overflow-x: hidden;
+          overflow-y: scroll;
+        }
 
         .el-item {
-            display: inline-block;
+          height: 20px;
+          line-height: 20px;
+          padding: 0 4px;
+          cursor: pointer;
+
+          &:hover {
+            background: $gray-200;
+          }
         }
+      }
     }
+  }
+}
+
+.charticulator-panel-list-view {
+  $height: 28px;
+
+  display: block;
+
+  .el-item {
+    display: block;
+    cursor: pointer;
+    border-radius: 2px;
+    line-height: $height;
+    height: $height;
+
+    .el-svg-icon {
+      width: $height - 2px;
+      height: $height - 2px;
+      margin: 1px;
+    }
+
+    .el-text {
+      padding-left: 4px;
+      padding-right: 8px;
+    }
+
+    &:hover {
+      background: $gray-230;
+    }
+
+    &.is-active {
+      background: $gray-080;
+      color: white;
+
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  &.is-inline {
+    display: inline-block;
+
+    .el-item {
+      display: inline-block;
+    }
+  }
 }
 
 .charticulator__data-mapping-and-scale-editor {
-    position: relative;
+  position: relative;
 
-    & > .el-data-picker {}
+  & > .el-data-picker {
+  }
 
-    & > .el-scale-editor {
-        background: $gray-220;
-        position: absolute;
-        left: calc(100% + 5px);
-        bottom: 0;
-        max-height: 400px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        border: 1px solid $gray-100;
-        border-radius: 2px;
+  & > .el-scale-editor {
+    background: $gray-220;
+    position: absolute;
+    left: calc(100% + 5px);
+    bottom: 0;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border: 1px solid $gray-100;
+    border-radius: 2px;
 
-        @include shadow-focused;
-    }
+    @include shadow-focused;
+  }
 
-    .action-buttons {
-        text-align: right;
-        margin-top: 10px;
-    }
+  .action-buttons {
+    text-align: right;
+    margin-top: 10px;
+  }
 }
 
 // .charticulator__plot-segment-selector {
@@ -1736,30 +1753,30 @@
 // }
 
 .charticulator__filter-editor {
-    width: 300px;
-    padding: 10px;
+  width: 300px;
+  padding: 10px;
 
-    &-column-selector {
-        width: 100%;
-        border: 1px solid $gray-200;
-        border-radius: 2px;
-        overflow: hidden;
+  &-column-selector {
+    width: 100%;
+    border: 1px solid $gray-200;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &-values-selector {
+    width: 100%;
+
+    .el-list {
+      margin-top: 4px;
+      border: 1px solid $gray-200;
+      border-radius: 2px;
+      max-height: 150px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+
+      .charticulator__widget-control-button {
+        display: block;
+      }
     }
-
-    &-values-selector {
-        width: 100%;
-
-        .el-list {
-            margin-top: 4px;
-            border: 1px solid $gray-200;
-            border-radius: 2px;
-            max-height: 150px;
-            overflow-y: scroll;
-            overflow-x: hidden;
-
-            .charticulator__widget-control-button {
-                display: block;
-            }
-        }
-    }
+  }
 }

@@ -1,732 +1,745 @@
 @import "attribute_editor.scss";
 
 .mark-editor-view {
-    flex: 1 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .mark-editor-single-view {
-    .mark-view-container {
-        background: white;
-        position: relative;
-        .mark-view-container-notice {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            padding: 20px;
-            font-size: 14px;
-            color: $gray-100;
-            background: $gray-220;
-        }
+  .mark-view-container {
+    background: white;
+    position: relative;
+    .mark-view-container-notice {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px;
+      font-size: 14px;
+      color: $gray-100;
+      background: $gray-220;
     }
+  }
 }
 
 .chart-editor-canvas-view {
-    background: white;
-    flex: 1;
-    overflow: hidden;
+  background: white;
+  flex: 1;
+  overflow: hidden;
 }
 
 .chart-editor-view {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .chart-editor-view {
-    position: relative;
+  position: relative;
 
-    .solving-hint {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.1);
-        pointer-events: all;
-        cursor: progress;
+  .solving-hint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: all;
+    cursor: progress;
 
-        .el-box {
-            line-height: 24px;
-            text-align: center;
-            padding: 1em;
-            margin: 0 0;
-            background: $white;
+    .el-box {
+      line-height: 24px;
+      text-align: center;
+      padding: 1em;
+      margin: 0 0;
+      background: $white;
 
-            @include shadow-ambient;
+      @include shadow-ambient;
 
-            img {
-                vertical-align: top;
-                display: inline-block;
-                width: 24px;
-                height: 24px;
-                margin-right: 0.5em;
-            }
-        }
+      img {
+        vertical-align: top;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 0.5em;
+      }
     }
+  }
 }
 
 .canvas-controls {
-    background: $gray-210;
-    line-height: 24px;
-    height: 24px;
-    font-size: 12px;
-    text-align: right;
+  background: $gray-210;
+  line-height: 24px;
+  height: 24px;
+  font-size: 12px;
+  text-align: right;
 }
 
 .chart-editor-canvas-view {
-    position: relative;
+  position: relative;
 
-    .canvas-view {
-        position: absolute;
-        left: 0;
-        top: 0;
+  .canvas-view {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .canvas-popups {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+
+    .canvas-popup {
+      pointer-events: auto;
+      position: absolute;
+      white-space: nowrap;
+      background: $gray-220;
+      border: 1px solid $gray-100;
+
+      @include shadow-focused;
+
+      border-radius: 2px;
+      padding: 2px;
+
+      .popup-attribute-editor > span:not(:last-child) {
+        margin-right: 2px;
+      }
     }
 
-    .canvas-popups {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        pointer-events: none;
-
-        .canvas-popup {
-            pointer-events: auto;
-            position: absolute;
-            white-space: nowrap;
-            background: $gray-220;
-            border: 1px solid $gray-100;
-
-            @include shadow-focused;
-
-            border-radius: 2px;
-            padding: 2px;
-
-            .popup-attribute-editor > span:not(:last-child) {
-                margin-right: 2px;
-            }
-        }
-
-        .button-radio, .button-toggle {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .button-icon {
-            display: inline-block;
-            vertical-align: top;
-            width: 24px;
-            height: 24px;
-            pointer-events: all;
-            cursor: pointer;
-
-            .svg-image-icon {
-                width: 18px;
-                height: 18px;
-                margin: 3px;
-
-                @include disable-user-drag;
-            }
-
-            &:hover, &.active {
-                background: $gray-180;
-            }
-        }
+    .button-radio,
+    .button-toggle {
+      display: inline-block;
+      vertical-align: top;
     }
+
+    .button-icon {
+      display: inline-block;
+      vertical-align: top;
+      width: 24px;
+      height: 24px;
+      pointer-events: all;
+      cursor: pointer;
+
+      .svg-image-icon {
+        width: 18px;
+        height: 18px;
+        margin: 3px;
+
+        @include disable-user-drag;
+      }
+
+      &:hover,
+      &.active {
+        background: $gray-180;
+      }
+    }
+  }
 }
 
 .canvas-view {
-    display: block;
-    background: $gray-220;
+  display: block;
+  background: $gray-220;
 
-    .drop-indicator {
-        fill: transparentize($color-primary, 0.95);
+  .drop-indicator {
+    fill: transparentize($color-primary, 0.95);
+    stroke: $color-primary;
+    stroke-width: 3;
+    stroke-dasharray: 10 5;
+
+    &.active {
+      fill: transparentize($color-active, 0.9);
+      stroke: $color-active;
+    }
+  }
+
+  &.canvas-view-mark {
+    background: #ffffff;
+  }
+
+  .canvas-region {
+    fill: #ffffff;
+    stroke: none;
+    pointer-events: none;
+  }
+
+  .canvas-region-outer {
+    fill: $gray-150;
+    stroke: none;
+    pointer-events: none;
+  }
+
+  .canvas-region-outer2 {
+    fill: $gray-210;
+    stroke: none;
+    pointer-events: none;
+  }
+
+  .graphics {
+    rect,
+    g,
+    circle,
+    polygon,
+    line,
+    text {
+      transition: all $transition-default;
+    }
+  }
+
+  .interaction-handler {
+    cursor: -webkit-grab;
+    cursor: grab;
+    fill: none;
+    stroke: none;
+    pointer-events: fill;
+  }
+
+  .marquee-selection {
+    fill: $color-primary-light;
+    fill-opacity: 0.2;
+    stroke: $color-primary;
+  }
+
+  .snapping-guide-label {
+    circle {
+      stroke: $color-primary;
+      fill: white;
+    }
+
+    text {
+      fill: $color-primary;
+      font-size: 10px;
+    }
+  }
+
+  .dropzone {
+    .dropzone-element-line {
+      line {
         stroke: $color-primary;
-        stroke-width: 3;
-        stroke-dasharray: 10 5;
+      }
 
-        &.active {
-            fill: transparentize($color-active, 0.9);
-            stroke: $color-active;
-        }
-    }
-
-    &.canvas-view-mark {
-        background: #ffffff;
-    }
-
-    .canvas-region {
-        fill: #ffffff;
+      path {
         stroke: none;
-        pointer-events: none;
+        fill: $color-primary;
+      }
     }
 
-    .canvas-region-outer {
-        fill: $gray-150;
+    .dropzone-element-arc {
+      stroke: transparentize($color-primary, 0.5);
+      fill: none;
+    }
+
+    .dropzone-element-dashline {
+      stroke: $color-primary;
+      stroke-opacity: 0.5;
+      fill: none;
+      stroke-dasharray: 2 1;
+    }
+
+    .dropzone-element-solid {
+      stroke: none;
+      fill: transparentize($color-primary, 0.5);
+    }
+
+    .dropzone-highlighter {
+      stroke: none;
+      fill: transparentize($color-primary, 1);
+      pointer-events: fill;
+    }
+
+    .dropzone-highlighter-stroke {
+      stroke: none;
+      fill: none;
+      pointer-events: stroke;
+    }
+
+    .dropzone-element-text {
+      @include font-bold;
+
+      text-transform: uppercase;
+      font-size: 10px;
+      fill: $color-primary;
+    }
+
+    &.active {
+      cursor: pointer;
+
+      .dropzone-highlighter {
         stroke: none;
-        pointer-events: none;
-    }
 
-    .canvas-region-outer2 {
-        fill: $gray-210;
-        stroke: none;
-        pointer-events: none;
-    }
+        // fill: transparentize($color-active, 0.8);
+      }
 
-    .graphics {
-        rect, g, circle, polygon, line, text {
-            transition: all $transition-default;
-        }
-    }
-
-    .interaction-handler {
-        cursor: -webkit-grab;
-        cursor: grab;
-        fill: none;
-        stroke: none;
-        pointer-events: fill;
-    }
-
-    .marquee-selection {
-        fill: $color-primary-light;
-        fill-opacity: 0.2;
-        stroke: $color-primary;
-    }
-
-    .snapping-guide-label {
-        circle {
-            stroke: $color-primary;
-            fill: white;
+      .dropzone-element-line {
+        line {
+          stroke: $color-active;
         }
 
-        text {
-            fill: $color-primary;
-            font-size: 10px;
+        path {
+          stroke: none;
+          fill: $color-active;
         }
-    }
+      }
 
-    .dropzone {
-        .dropzone-element-line {
-            line {
-                stroke: $color-primary;
-            }
-
-            path {
-                stroke: none;
-                fill: $color-primary;
-            }
-        }
-
-        .dropzone-element-arc {
-            stroke: transparentize($color-primary, 0.5);
-            fill: none;
-        }
-
-        .dropzone-element-dashline {
-            stroke: $color-primary;
-            stroke-opacity: 0.5;
-            fill: none;
-            stroke-dasharray: 2 1;
-        }
-
-        .dropzone-element-solid {
-            stroke: none;
-            fill: transparentize($color-primary, 0.5);
-        }
-
-        .dropzone-highlighter {
-            stroke: none;
-            fill: transparentize($color-primary, 1);
-            pointer-events: fill;
-        }
-
-        .dropzone-highlighter-stroke {
-            stroke: none;
-            fill: none;
-            pointer-events: stroke;
-        }
-
-        .dropzone-element-text {
-            @include font-bold;
-
-            text-transform: uppercase;
-            font-size: 10px;
-            fill: $color-primary;
-        }
-
-        &.active {
-            cursor: pointer;
-
-            .dropzone-highlighter {
-                stroke: none;
-
-                // fill: transparentize($color-active, 0.8);
-
-            }
-
-            .dropzone-element-line {
-                line {
-                    stroke: $color-active;
-                }
-
-                path {
-                    stroke: none;
-                    fill: $color-active;
-                }
-            }
-
-            .dropzone-element-arc {
-                stroke: $color-active;
-                fill: none;
-            }
-
-            .dropzone-element-solid {
-                stroke: none;
-                fill: $color-active;
-            }
-
-            .dropzone-element-text {
-                fill: $color-active;
-            }
-
-            .dropzone-element-dashline {
-                stroke: $color-active;
-                stroke-opacity: 0.5;
-                fill: none;
-                stroke-dasharray: 2 1;
-            }
-        }
-    }
-
-    line.mark-guide {
-        stroke: $gray-200;
-        fill: none;
-    }
-
-    .handle {
-        &.handle-point {
-            cursor: move;
-        }
-
-        &.handle-line-x {
-            cursor: ew-resize;
-        }
-
-        &.handle-line-y {
-            cursor: ns-resize;
-        }
-
-        &.handle-line-angular {
-            cursor: move;
-        }
-
-        &.handle-line-radial {
-            cursor: move;
-        }
-
-        &.handle-gap-x {
-            cursor: ew-resize;
-        }
-
-        &.handle-gap-y {
-            cursor: ns-resize;
-        }
-
-        &.handle-angle {
-            cursor: move;
-        }
-
-        &.handle-distance {
-            cursor: move;
-        }
-
-        &.handle-text-input {
-            .element-text-rect {
-                cursor: pointer;
-            }
-
-            .element-rotation {
-                cursor: move;
-            }
-        }
-
-        .handle-button {
-            cursor: pointer;
-
-            rect {
-                fill: $gray-220;
-                stroke: $gray-210;
-            }
-
-            &:hover {
-                rect {
-                    fill: transparentize($color-primary, 0.9);
-                    stroke: $color-primary;
-                }
-            }
-        }
-
-        .element-line {
-            &.handle-ghost {
-                stroke: none;
-                fill: none;
-                pointer-events: stroke;
-                stroke-width: 10;
-                stroke-linecap: round;
-            }
-
-            &.handle-highlight {
-                stroke: none;
-                fill: none;
-                stroke-width: 1;
-
-                // stroke-dasharray: 5 5;
-
-            }
-
-            &.handle-dashed-highlight {
-                stroke: none;
-                fill: none;
-                stroke-width: 1;
-                stroke-dasharray: 5 5;
-            }
-
-            &.handle-hint {
-                stroke: $color-active;
-                fill: none;
-                stroke-width: 1;
-
-                // stroke-dasharray: 5 5;
-
-            }
-        }
-
-        .element-shape {
-            stroke-linejoin: round;
-
-            &.handle-ghost {
-                stroke: none;
-                fill: none;
-                pointer-events: fill;
-            }
-
-            &.handle-highlight {
-                stroke: none;
-                fill: none;
-            }
-
-            &.handle-hint {
-                stroke: $color-active;
-                fill: $white;
-            }
-        }
-
-        .element-region {
-            &.handle-ghost {
-                stroke: none;
-                fill: none;
-                pointer-events: fill;
-            }
-
-            &.handle-highlight {
-                stroke: none;
-                fill: none;
-            }
-
-            &.handle-hint {
-                stroke: none;
-                fill: $color-active;
-            }
-        }
-
-        &.visible {
-            .handle-highlight {
-                &.element-line {
-                    stroke: $color-primary;
-                }
-
-                &.element-shape {
-                    stroke: $color-primary;
-                    fill: $white;
-                }
-
-                &.element-solid {
-                    stroke: none;
-                    fill: $color-primary;
-                }
-
-                &.element-region {
-                    stroke: none;
-                    fill: transparentize($color-primary, 0.2);
-                }
-            }
-        }
-
-        &:hover, &.active {
-            .handle-highlight {
-                &.element-line {
-                    stroke: $color-primary;
-                    stroke-width: 2;
-                    stroke-dasharray: none;
-                }
-
-                &.element-shape {
-                    stroke: $color-primary;
-                    stroke-width: 2;
-                    fill: $white;
-                }
-
-                &.element-region {
-                    stroke: none;
-                    fill: transparentize($color-primary, 0.7);
-                }
-            }
-
-            .handle-dashed-highlight {
-                &.element-line {
-                    stroke: $color-primary;
-                    stroke-width: 1;
-                }
-            }
-        }
-
-        &.snapped {
-            $color-snapped: $color-secondary;
-
-            .handle-highlight {
-                &.element-line {
-                    stroke: $color-snapped;
-                    stroke-dasharray: none;
-                }
-
-                &.element-shape {
-                    stroke: $color-snapped;
-                    fill: $color-snapped;
-                }
-
-                &.element-region {
-                    stroke: none;
-                    fill: transparentize($color-snapped, 0.7);
-                }
-            }
-        }
-    }
-
-    .bounding-box {
-        cursor: default;
-
-        &.interactable {
-            cursor: pointer;
-        }
-
-        * {
-            vector-effect: non-scaling-stroke;
-            -webkit-vector-effect: non-scaling-stroke;
-            -moz-vector-effect: non-scaling-stroke;
-        }
-
-        .element-shape.ghost, .element-shape.ghost {
-            stroke: none;
-            fill: none;
-            pointer-events: none;
-        }
-
-        .element-line.ghost {
-            stroke: none;
-            fill: none;
-            pointer-events: none;
-            stroke-width: 10px;
-        }
-
-        .element-shape.indicator, .element-shape.indicator, .element-line.indicator {
-            stroke: none;
-            fill: none;
-            pointer-events: none;
-        }
-
-        &.interactable {
-            .element-shape.ghost, .element-shape.ghost {
-                pointer-events: fill;
-            }
-
-            .element-line.ghost {
-                pointer-events: stroke;
-            }
-        }
-
-        &.visible {
-            .element-shape.indicator, .element-shape.indicator {
-                stroke: $gray-180;
-                stroke-width: 1;
-            }
-
-            .element-line.indicator {
-                stroke: $gray-180;
-                stroke-width: 1;
-            }
-        }
-
-        &:hover, &.active {
-            .element-shape.indicator, .element-shape.indicator {
-                stroke: $color-primary;
-                stroke-width: 1;
-
-                // stroke-dasharray: 5 5;
-
-            }
-
-            .element-line.indicator {
-                stroke: $color-primary;
-                stroke-width: 1;
-
-                // stroke-dasharray: 5 5;
-
-            }
-        }
-    }
-
-    line.snapping-guide {
-        stroke-width: 1px;
+      .dropzone-element-arc {
         stroke: $color-active;
-        stroke-dasharray: 3 2;
+        fill: none;
+      }
+
+      .dropzone-element-solid {
+        stroke: none;
+        fill: $color-active;
+      }
+
+      .dropzone-element-text {
+        fill: $color-active;
+      }
+
+      .dropzone-element-dashline {
+        stroke: $color-active;
+        stroke-opacity: 0.5;
+        fill: none;
+        stroke-dasharray: 2 1;
+      }
+    }
+  }
+
+  line.mark-guide {
+    stroke: $gray-200;
+    fill: none;
+  }
+
+  .handle {
+    &.handle-point {
+      cursor: move;
     }
 
-    path.mark-anchor {
-        fill: transparentize($color-primary, 0.5);
-        stroke: $color-primary;
+    &.handle-line-x {
+      cursor: ew-resize;
     }
+
+    &.handle-line-y {
+      cursor: ns-resize;
+    }
+
+    &.handle-line-angular {
+      cursor: move;
+    }
+
+    &.handle-line-radial {
+      cursor: move;
+    }
+
+    &.handle-gap-x {
+      cursor: ew-resize;
+    }
+
+    &.handle-gap-y {
+      cursor: ns-resize;
+    }
+
+    &.handle-angle {
+      cursor: move;
+    }
+
+    &.handle-distance {
+      cursor: move;
+    }
+
+    &.handle-text-input {
+      .element-text-rect {
+        cursor: pointer;
+      }
+
+      .element-rotation {
+        cursor: move;
+      }
+    }
+
+    .handle-button {
+      cursor: pointer;
+
+      rect {
+        fill: $gray-220;
+        stroke: $gray-210;
+      }
+
+      &:hover {
+        rect {
+          fill: transparentize($color-primary, 0.9);
+          stroke: $color-primary;
+        }
+      }
+    }
+
+    .element-line {
+      &.handle-ghost {
+        stroke: none;
+        fill: none;
+        pointer-events: stroke;
+        stroke-width: 10;
+        stroke-linecap: round;
+      }
+
+      &.handle-highlight {
+        stroke: none;
+        fill: none;
+        stroke-width: 1;
+
+        // stroke-dasharray: 5 5;
+      }
+
+      &.handle-dashed-highlight {
+        stroke: none;
+        fill: none;
+        stroke-width: 1;
+        stroke-dasharray: 5 5;
+      }
+
+      &.handle-hint {
+        stroke: $color-active;
+        fill: none;
+        stroke-width: 1;
+
+        // stroke-dasharray: 5 5;
+      }
+    }
+
+    .element-shape {
+      stroke-linejoin: round;
+
+      &.handle-ghost {
+        stroke: none;
+        fill: none;
+        pointer-events: fill;
+      }
+
+      &.handle-highlight {
+        stroke: none;
+        fill: none;
+      }
+
+      &.handle-hint {
+        stroke: $color-active;
+        fill: $white;
+      }
+    }
+
+    .element-region {
+      &.handle-ghost {
+        stroke: none;
+        fill: none;
+        pointer-events: fill;
+      }
+
+      &.handle-highlight {
+        stroke: none;
+        fill: none;
+      }
+
+      &.handle-hint {
+        stroke: none;
+        fill: $color-active;
+      }
+    }
+
+    &.visible {
+      .handle-highlight {
+        &.element-line {
+          stroke: $color-primary;
+        }
+
+        &.element-shape {
+          stroke: $color-primary;
+          fill: $white;
+        }
+
+        &.element-solid {
+          stroke: none;
+          fill: $color-primary;
+        }
+
+        &.element-region {
+          stroke: none;
+          fill: transparentize($color-primary, 0.2);
+        }
+      }
+    }
+
+    &:hover,
+    &.active {
+      .handle-highlight {
+        &.element-line {
+          stroke: $color-primary;
+          stroke-width: 2;
+          stroke-dasharray: none;
+        }
+
+        &.element-shape {
+          stroke: $color-primary;
+          stroke-width: 2;
+          fill: $white;
+        }
+
+        &.element-region {
+          stroke: none;
+          fill: transparentize($color-primary, 0.7);
+        }
+      }
+
+      .handle-dashed-highlight {
+        &.element-line {
+          stroke: $color-primary;
+          stroke-width: 1;
+        }
+      }
+    }
+
+    &.snapped {
+      $color-snapped: $color-secondary;
+
+      .handle-highlight {
+        &.element-line {
+          stroke: $color-snapped;
+          stroke-dasharray: none;
+        }
+
+        &.element-shape {
+          stroke: $color-snapped;
+          fill: $color-snapped;
+        }
+
+        &.element-region {
+          stroke: none;
+          fill: transparentize($color-snapped, 0.7);
+        }
+      }
+    }
+  }
+
+  .bounding-box {
+    cursor: default;
+
+    &.interactable {
+      cursor: pointer;
+    }
+
+    * {
+      vector-effect: non-scaling-stroke;
+      -webkit-vector-effect: non-scaling-stroke;
+      -moz-vector-effect: non-scaling-stroke;
+    }
+
+    .element-shape.ghost,
+    .element-shape.ghost {
+      stroke: none;
+      fill: none;
+      pointer-events: none;
+    }
+
+    .element-line.ghost {
+      stroke: none;
+      fill: none;
+      pointer-events: none;
+      stroke-width: 10px;
+    }
+
+    .element-shape.indicator,
+    .element-shape.indicator,
+    .element-line.indicator {
+      stroke: none;
+      fill: none;
+      pointer-events: none;
+    }
+
+    &.interactable {
+      .element-shape.ghost,
+      .element-shape.ghost {
+        pointer-events: fill;
+      }
+
+      .element-line.ghost {
+        pointer-events: stroke;
+      }
+    }
+
+    &.visible {
+      .element-shape.indicator,
+      .element-shape.indicator {
+        stroke: $gray-180;
+        stroke-width: 1;
+      }
+
+      .element-line.indicator {
+        stroke: $gray-180;
+        stroke-width: 1;
+      }
+    }
+
+    &:hover,
+    &.active {
+      .element-shape.indicator,
+      .element-shape.indicator {
+        stroke: $color-primary;
+        stroke-width: 1;
+
+        // stroke-dasharray: 5 5;
+      }
+
+      .element-line.indicator {
+        stroke: $color-primary;
+        stroke-width: 1;
+
+        // stroke-dasharray: 5 5;
+      }
+    }
+  }
+
+  line.snapping-guide {
+    stroke-width: 1px;
+    stroke: $color-active;
+    stroke-dasharray: 3 2;
+  }
+
+  path.mark-anchor {
+    fill: transparentize($color-primary, 0.5);
+    stroke: $color-primary;
+  }
 }
 
 .creating-component {
-    line {
-        stroke: $color-primary;
-        stroke-width: 1;
-    }
+  line {
+    stroke: $color-primary;
+    stroke-width: 1;
+  }
 
-    circle {
-        fill: $color-primary;
-        stroke: none;
-    }
+  circle {
+    fill: $color-primary;
+    stroke: none;
+  }
 
-    rect {
-        stroke: $color-primary;
-        stroke-width: 1;
-        fill: transparentize($color-primary, 0.9);
-    }
+  rect {
+    stroke: $color-primary;
+    stroke-width: 1;
+    fill: transparentize($color-primary, 0.9);
+  }
 }
 
 .creating-link {
-    $anchor-color: $color-secondary;
+  $anchor-color: $color-secondary;
 
-    // .mark-placeholder {
-    //     cursor: crosshair;
-    //     pointer-events: all;
-    // }
-    // .element-fill {
-    //     fill: none; stroke: none;
-    //     pointer-events: fill;
-    // }
-    // .element-stroke {
-    //     fill: none; stroke: none;
-    //     stroke-width: 5px;
-    //     pointer-events: stroke;
-    // }
-    // .element-visible {
-    //     fill: $color-primary;
-    //     stroke: $color-primary;
-    //     fill-opacity: 0.1;
-    // }
-    .anchor {
-        cursor: pointer;
+  // .mark-placeholder {
+  //     cursor: crosshair;
+  //     pointer-events: all;
+  // }
+  // .element-fill {
+  //     fill: none; stroke: none;
+  //     pointer-events: fill;
+  // }
+  // .element-stroke {
+  //     fill: none; stroke: none;
+  //     stroke-width: 5px;
+  //     pointer-events: stroke;
+  // }
+  // .element-visible {
+  //     fill: $color-primary;
+  //     stroke: $color-primary;
+  //     fill-opacity: 0.1;
+  // }
+  .anchor {
+    cursor: pointer;
 
-        .element-stroke, .element-ghost-stroke {
-            fill: none;
-            stroke: none;
-            stroke-width: 10px;
-            stroke-linecap: round;
-            pointer-events: stroke;
-        }
-
-        .element-shape, .element-ghost-shape {
-            fill: none;
-            stroke: none;
-            pointer-events: fill;
-        }
-
-        .element-shape {
-            fill: $anchor-color;
-            fill-opacity: 0.5;
-            stroke: $anchor-color;
-            stroke-width: 1px;
-        }
-
-        .element-stroke {
-            stroke: $anchor-color;
-            stroke-dasharray: 5 5;
-            stroke-width: 2px;
-            stroke-opacity: 1;
-        }
-
-        &:hover, &.active {
-            .element-stroke {
-                stroke-dasharray: none;
-                stroke-width: 3px;
-            }
-
-            .element-shape {
-                stroke-dasharray: none;
-                stroke-opacity: 1;
-                fill-opacity: 1;
-                stroke-width: 2px;
-            }
-        }
+    .element-stroke,
+    .element-ghost-stroke {
+      fill: none;
+      stroke: none;
+      stroke-width: 10px;
+      stroke-linecap: round;
+      pointer-events: stroke;
     }
 
-    .link-hint-band {
-        // stroke: $anchor-color;
-        fill: $anchor-color;
-        fill-opacity: 0.3;
-        pointer-events: none;
-
-        &.is-dashed {
-            stroke-dasharray: 5 5;
-        }
+    .element-shape,
+    .element-ghost-shape {
+      fill: none;
+      stroke: none;
+      pointer-events: fill;
     }
 
-    .link-hint-line {
-        stroke: $anchor-color;
-
-        &.is-dashed {
-            stroke-dasharray: 5 5;
-        }
-
-        fill: none;
-        pointer-events: none;
+    .element-shape {
+      fill: $anchor-color;
+      fill-opacity: 0.5;
+      stroke: $anchor-color;
+      stroke-width: 1px;
     }
+
+    .element-stroke {
+      stroke: $anchor-color;
+      stroke-dasharray: 5 5;
+      stroke-width: 2px;
+      stroke-opacity: 1;
+    }
+
+    &:hover,
+    &.active {
+      .element-stroke {
+        stroke-dasharray: none;
+        stroke-width: 3px;
+      }
+
+      .element-shape {
+        stroke-dasharray: none;
+        stroke-opacity: 1;
+        fill-opacity: 1;
+        stroke-width: 2px;
+      }
+    }
+  }
+
+  .link-hint-band {
+    // stroke: $anchor-color;
+    fill: $anchor-color;
+    fill-opacity: 0.3;
+    pointer-events: none;
+
+    &.is-dashed {
+      stroke-dasharray: 5 5;
+    }
+  }
+
+  .link-hint-line {
+    stroke: $anchor-color;
+
+    &.is-dashed {
+      stroke-dasharray: 5 5;
+    }
+
+    fill: none;
+    pointer-events: none;
+  }
 }
 
 .charticulator__canvas-popup {
-    pointer-events: auto;
-    position: absolute;
-    white-space: nowrap;
-    background: $gray-220;
-    border: 1px solid $gray-100;
+  pointer-events: auto;
+  position: absolute;
+  white-space: nowrap;
+  background: $gray-220;
+  border: 1px solid $gray-100;
 
-    @include shadow-focused;
+  @include shadow-focused;
 
-    border-radius: 2px;
+  border-radius: 2px;
 
-    $line-height: 24px;
+  $line-height: 24px;
 
-    padding: 3px;
+  padding: 3px;
 }
 
 .handle-text-view-popup {
-    width: 300px;
-    padding: 5px;
+  width: 300px;
+  padding: 5px;
 }

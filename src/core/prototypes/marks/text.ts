@@ -256,8 +256,8 @@ export class TextElement extends MarkClass {
     const cy = dy + metrics.middle;
 
     const rotation = this.object.properties.rotation;
-    const cos = Math.cos(rotation / 180 * Math.PI);
-    const sin = Math.sin(rotation / 180 * Math.PI);
+    const cos = Math.cos((rotation / 180) * Math.PI);
+    const sin = Math.sin((rotation / 180) * Math.PI);
     return [
       {
         type: "rectangle",
@@ -337,8 +337,8 @@ export class TextElement extends MarkClass {
     const cy = dy + metrics.middle;
 
     const rotation = this.object.properties.rotation;
-    const cos = Math.cos(rotation / 180 * Math.PI);
-    const sin = Math.sin(rotation / 180 * Math.PI);
+    const cos = Math.cos((rotation / 180) * Math.PI);
+    const sin = Math.sin((rotation / 180) * Math.PI);
     return {
       cx: attrs.x + cx * cos - cy * sin,
       cy: attrs.y + cx * sin + cy * cos,

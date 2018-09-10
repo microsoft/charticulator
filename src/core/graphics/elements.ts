@@ -252,11 +252,11 @@ export class PathMaker {
   ) {
     const ticks = Math.ceil(Math.abs(thetaMax - thetaMin) / (Math.PI / 6)) + 1;
     for (let i = 0; i < ticks; i++) {
-      const theta1 = i / ticks * (thetaMax - thetaMin) + thetaMin;
+      const theta1 = (i / ticks) * (thetaMax - thetaMin) + thetaMin;
       const r1 = a + b * theta1;
       const x1 = r1 * Math.cos(theta1);
       const y1 = r1 * Math.sin(theta1);
-      const theta2 = (i + 1) / ticks * (thetaMax - thetaMin) + thetaMin;
+      const theta2 = ((i + 1) / ticks) * (thetaMax - thetaMin) + thetaMin;
       const r2 = a + b * theta2;
       const x2 = r2 * Math.cos(theta2);
       const y2 = r2 * Math.sin(theta2);
@@ -379,7 +379,7 @@ export function rotation(angle: number): RigidTransform {
 
 /** Concat two transforms, f(p) := a(b(p))  */
 export function concatTransform(a: RigidTransform, b: RigidTransform) {
-  const theta = a.angle / 180 * Math.PI;
+  const theta = (a.angle / 180) * Math.PI;
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {
@@ -390,7 +390,7 @@ export function concatTransform(a: RigidTransform, b: RigidTransform) {
 }
 
 export function transform(transform: RigidTransform, a: Point): Point {
-  const theta = transform.angle / 180 * Math.PI;
+  const theta = (transform.angle / 180) * Math.PI;
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {
@@ -400,7 +400,7 @@ export function transform(transform: RigidTransform, a: Point): Point {
 }
 
 export function transformDirection(transform: RigidTransform, a: Point): Point {
-  const theta = transform.angle / 180 * Math.PI;
+  const theta = (transform.angle / 180) * Math.PI;
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {

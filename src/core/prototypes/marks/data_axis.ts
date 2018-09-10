@@ -226,7 +226,8 @@ export class DataAxis extends MarkClass {
         const g = renderer.renderLine(
           0,
           0,
-          Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI * 180,
+          (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) *
+            180,
           -1
         );
         g.transform = cs.getLocalTransform(
@@ -250,7 +251,7 @@ export class DataAxis extends MarkClass {
       const g = renderer.renderLine(
         0,
         0,
-        Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI * 180,
+        (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) * 180,
         -1
       );
       g.transform = cs.getLocalTransform(

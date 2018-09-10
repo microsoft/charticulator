@@ -218,7 +218,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
 
   public getLocalTransform(x: number, y: number): RigidTransform {
     const frame = this.curve.getFrameAtS(x);
-    const angle = Math.atan2(frame.t.y, frame.t.x) / Math.PI * 180;
+    const angle = (Math.atan2(frame.t.y, frame.t.x) / Math.PI) * 180;
     return {
       x: frame.p.x + y * frame.n.x,
       y: frame.p.y + y * frame.n.y,
@@ -294,8 +294,8 @@ export class CoordinateSystemHelper {
         ry = Math.abs(y2 - y1) / 2;
       const N = 32;
       for (let i = 0; i < N; i++) {
-        const theta1 = i / N * (Math.PI * 2);
-        const theta2 = (i + 1) / N * (Math.PI * 2);
+        const theta1 = (i / N) * (Math.PI * 2);
+        const theta2 = ((i + 1) / N) * (Math.PI * 2);
         this.lineTo(
           path,
           cx + rx * Math.cos(theta1),
@@ -364,9 +364,7 @@ export class CoordinateSystemHelper {
         const segments = Math.max(
           2,
           Math.ceil(
-            3 *
-              cs.getCurve().getSegments().length *
-              Math.abs(x2 - x1) /
+            (3 * cs.getCurve().getSegments().length * Math.abs(x2 - x1)) /
               cs.getCurve().getLength()
           )
         );
@@ -378,8 +376,8 @@ export class CoordinateSystemHelper {
           );
 
           const len = Geometry.pointDistance(frame, framePrevious) / 3;
-          const angle1 = framePrevious.angle / 180 * Math.PI + direction;
-          const angle2 = frame.angle / 180 * Math.PI + direction;
+          const angle1 = (framePrevious.angle / 180) * Math.PI + direction;
+          const angle2 = (frame.angle / 180) * Math.PI + direction;
 
           path.cubicBezierCurveTo(
             framePrevious.x + Math.cos(angle1) * len,

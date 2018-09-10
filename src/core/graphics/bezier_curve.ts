@@ -27,10 +27,10 @@ export function RK4(
 
   for (let i = 1; i < steps; i++) {
     const k1 = f(tp, yp);
-    const k2 = f(tp + h / 2, yp + h * k1 / 2);
-    const k3 = f(tp + h / 2, yp + h * k2 / 2);
+    const k2 = f(tp + h / 2, yp + (h * k1) / 2);
+    const k3 = f(tp + h / 2, yp + (h * k2) / 2);
     const k4 = f(tp + h, yp + h * k3);
-    const yi = yp + h / 6 * (k1 + 2 * k2 + 2 * k3 + k4);
+    const yi = yp + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
     const ti = tp + h;
     result[i] = yi;
     yp = yi;
@@ -87,7 +87,7 @@ export function linearInvert(
   const s1 = points[points.length - 1];
   let ptr = 0;
   for (let i = 0; i < points.length; i++) {
-    const si = s0 + (s1 - s0) * i / (points.length - 1);
+    const si = s0 + ((s1 - s0) * i) / (points.length - 1);
     while (ptr + 2 < points.length && si >= points[ptr + 1]) {
       ptr += 1;
     }
@@ -95,7 +95,7 @@ export function linearInvert(
     const tA = ptr / (points.length - 1);
     const sB = points[ptr + 1];
     const tB = (ptr + 1) / (points.length - 1);
-    const ti = (si - sA) / (sB - sA) * (tB - tA) + tA;
+    const ti = ((si - sA) / (sB - sA)) * (tB - tA) + tA;
     result[i] = ti;
   }
   return result;

@@ -1,25 +1,25 @@
 @import "../theme.scss";
 
 @mixin font-main {
-    font-family: $theme-font-family-main;
-    font-weight: 400;
+  font-family: $theme-font-family-main;
+  font-weight: 400;
 }
 
 @mixin font-bold {
-    font-family: $theme-font-family-main;
-    font-weight: 700;
+  font-family: $theme-font-family-main;
+  font-weight: 700;
 }
 
 @mixin font-italic {
-    font-family: $theme-font-family-main;
-    font-style: italic;
+  font-family: $theme-font-family-main;
+  font-style: italic;
 }
 
 @mixin font-light {
-    font-family: $theme-font-family-main;
-    font-weight: 300;
+  font-family: $theme-font-family-main;
+  font-weight: 300;
 }
 
 @mixin font-mono {
-    font-family: $theme-font-family-mono;
+  font-family: $theme-font-family-mono;
 }

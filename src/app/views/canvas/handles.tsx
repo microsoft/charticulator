@@ -762,7 +762,7 @@ export class GapRatioHandleView extends React.Component<
       if (cs instanceof Graphics.PolarCoordinates) {
         if (this.props.handle.axis == "x") {
           const getAngle = (x: number, y: number) => {
-            return 90 - Math.atan2(y, x) / Math.PI * 180;
+            return 90 - (Math.atan2(y, x) / Math.PI) * 180;
           };
           const angle0 = getAngle(xStart, yStart);
           let angle1 = getAngle(xStart + dXIntegrate, yStart + dYIntegrate);
@@ -1292,8 +1292,7 @@ export class MarginHandleView extends React.Component<
         dXLast = e.deltaX;
         dYLast = e.deltaY;
         let newValue =
-          (this.props.handle.axis == "x" ? dXIntegrate : dYIntegrate) *
-            sign /
+          ((this.props.handle.axis == "x" ? dXIntegrate : dYIntegrate) * sign) /
             total +
           oldValue;
         if (this.props.handle.range) {
@@ -1315,8 +1314,7 @@ export class MarginHandleView extends React.Component<
         dXLast = e.deltaX;
         dYLast = e.deltaY;
         let newValue =
-          (this.props.handle.axis == "x" ? dXIntegrate : dYIntegrate) *
-            sign /
+          ((this.props.handle.axis == "x" ? dXIntegrate : dYIntegrate) * sign) /
             total +
           oldValue;
         if (this.props.handle.range) {
@@ -1474,7 +1472,7 @@ export class AngleHandleView extends React.Component<
         const px = e.center.x - (cc.left + cc.width / 2);
         const py = e.center.y - (cc.top + cc.height / 2);
         const newValue = this.clipAngle(
-          Math.atan2(-px, py) / Math.PI * 180 + 180
+          (Math.atan2(-px, py) / Math.PI) * 180 + 180
         );
         this.setState({
           newValue
@@ -1488,7 +1486,7 @@ export class AngleHandleView extends React.Component<
         const px = e.center.x - (cc.left + cc.width / 2);
         const py = e.center.y - (cc.top + cc.height / 2);
         const newValue = this.clipAngle(
-          Math.atan2(-px, py) / Math.PI * 180 + 180
+          (Math.atan2(-px, py) / Math.PI) * 180 + 180
         );
         // if (this.props.handle.range) {
         //     newValue = Math.min(this.props.handle.range[1], Math.max(newValue, this.props.handle.range[0]));
@@ -1758,11 +1756,11 @@ export class DistanceRatioHandleView extends React.Component<
       return renderSVGPath(path.path.cmds);
     };
     const px = (value: number) => {
-      const alpha = (90 - handle.startAngle) / 180 * Math.PI;
+      const alpha = ((90 - handle.startAngle) / 180) * Math.PI;
       return Math.cos(alpha) * fRadius(value);
     };
     const py = (value: number) => {
-      const alpha = (90 - handle.startAngle) / 180 * Math.PI;
+      const alpha = ((90 - handle.startAngle) / 180) * Math.PI;
       return -Math.sin(alpha) * fRadius(value);
     };
     return (
@@ -1890,8 +1888,8 @@ export class TextAlignmentHandleView extends React.Component<
         yMargin: previousAlignment.yMargin
       };
 
-      const cos = Math.cos(newRotation / 180 * Math.PI);
-      const sin = Math.sin(newRotation / 180 * Math.PI);
+      const cos = Math.cos((newRotation / 180) * Math.PI);
+      const sin = Math.sin((newRotation / 180) * Math.PI);
 
       const pdx = dx * cos + dy * sin;
       const pdy = -dx * sin + dy * cos;
@@ -1928,7 +1926,8 @@ export class TextAlignmentHandleView extends React.Component<
       );
       const ox = rect.cx - this.props.handle.anchorX;
       const oy = rect.cy - this.props.handle.anchorY;
-      let newRotation = Math.atan2(p1.y - oy, p1.x - ox) / Math.PI * 180 + 180;
+      let newRotation =
+        (Math.atan2(p1.y - oy, p1.x - ox) / Math.PI) * 180 + 180;
       newRotation = Math.round(newRotation / 15) * 15;
 
       const newAlignment = newStateFromMoveAndRotate(
@@ -2079,8 +2078,8 @@ export class TextAlignmentHandleView extends React.Component<
     alignment: Specification.Types.TextAlignment,
     rotation: number
   ) {
-    const cos = Math.cos(rotation / 180 * Math.PI);
-    const sin = Math.sin(rotation / 180 * Math.PI);
+    const cos = Math.cos((rotation / 180) * Math.PI);
+    const sin = Math.sin((rotation / 180) * Math.PI);
     let dx = 0,
       dy = 0;
     if (alignment.x == "left") {
@@ -2125,8 +2124,8 @@ export class TextAlignmentHandleView extends React.Component<
             transform={`translate(${p.x.toFixed(6)},${p.y.toFixed(
               6
             )})rotate(${-rect.rotation})`}
-            x={-rect.width / 2 * zoom.scale - margin}
-            y={-rect.height / 2 * zoom.scale - margin}
+            x={(-rect.width / 2) * zoom.scale - margin}
+            y={(-rect.height / 2) * zoom.scale - margin}
             width={rect.width * zoom.scale + margin * 2}
             height={rect.height * zoom.scale + margin * 2}
           />
@@ -2184,8 +2183,8 @@ export class TextAlignmentHandleView extends React.Component<
           transform={`translate(${p.x.toFixed(6)},${p.y.toFixed(
             6
           )})rotate(${-rect.rotation})`}
-          x={-rect.width / 2 * zoom.scale - margin}
-          y={-rect.height / 2 * zoom.scale - margin}
+          x={(-rect.width / 2) * zoom.scale - margin}
+          y={(-rect.height / 2) * zoom.scale - margin}
           width={rect.width * zoom.scale + margin * 2}
           height={rect.height * zoom.scale + margin * 2}
         />
@@ -2561,7 +2560,7 @@ export class InputCurveHandleView extends React.Component<
       let tx = 0,
         ty = 0;
       for (let k = -5; k <= 5; k++) {
-        let ks = s + k / 40 * lpLength / segments;
+        let ks = s + ((k / 40) * lpLength) / segments;
         ks = Math.max(0, Math.min(lpLength, ks));
         const t = lp.getTangentAtS(ks);
         tx += t.x;
@@ -2574,7 +2573,7 @@ export class InputCurveHandleView extends React.Component<
     let s0 = 0;
     const curves: Point[][] = [];
     for (let i = 1; i <= segments; i++) {
-      const s = i / segments * lpLength;
+      const s = (i / segments) * lpLength;
       const [pi, ti] = sampleAtS(s);
       const ds = (s - s0) / 3;
       curves.push([
@@ -2731,7 +2730,7 @@ export class InputCurveHandleView extends React.Component<
                             this.props.handle,
                             dragContext
                           );
-                          const thetaStart = startAngle / 180 * Math.PI;
+                          const thetaStart = (startAngle / 180) * Math.PI;
                           const thetaEnd = thetaStart + windings * Math.PI * 2;
                           const N = 64;
                           const a = 1 / thetaEnd; // r = a theta
@@ -2740,10 +2739,10 @@ export class InputCurveHandleView extends React.Component<
                           };
                           for (let i = 0; i < N; i++) {
                             const theta1 =
-                              thetaStart + i / N * (thetaEnd - thetaStart);
+                              thetaStart + (i / N) * (thetaEnd - thetaStart);
                             const theta2 =
                               thetaStart +
-                              (i + 1) / N * (thetaEnd - thetaStart);
+                              ((i + 1) / N) * (thetaEnd - thetaStart);
                             const scaler = 3 / (theta2 - theta1);
                             const r1 = a * theta1;
                             const r2 = a * theta2;
@@ -2758,29 +2757,29 @@ export class InputCurveHandleView extends React.Component<
                             const cp1 = {
                               x:
                                 p1.x +
-                                a *
+                                (a *
                                   (Math.cos(theta1) -
-                                    theta1 * Math.sin(theta1)) /
+                                    theta1 * Math.sin(theta1))) /
                                   scaler,
                               y:
                                 p1.y +
-                                a *
+                                (a *
                                   (Math.sin(theta1) +
-                                    theta1 * Math.cos(theta1)) /
+                                    theta1 * Math.cos(theta1))) /
                                   scaler
                             };
                             const cp2 = {
                               x:
                                 p2.x -
-                                a *
+                                (a *
                                   (Math.cos(theta2) -
-                                    theta2 * Math.sin(theta2)) /
+                                    theta2 * Math.sin(theta2))) /
                                   scaler,
                               y:
                                 p2.y -
-                                a *
+                                (a *
                                   (Math.sin(theta2) +
-                                    theta2 * Math.cos(theta2)) /
+                                    theta2 * Math.cos(theta2))) /
                                   scaler
                             };
                             curve.push([p1, cp1, cp2, p2].map(swapXY));

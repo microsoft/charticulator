@@ -1640,20 +1640,20 @@ export class Region2DConstraintBuilder {
           yi = yi + (yCount - yMax) / 2;
         }
         const cellX1: Array<[number, Variable]> = [
-          [xi / xCount * (1 + gapRatioX), x2],
-          [1 - xi / xCount * (1 + gapRatioX), x1]
+          [(xi / xCount) * (1 + gapRatioX), x2],
+          [1 - (xi / xCount) * (1 + gapRatioX), x1]
         ];
         const cellX2: Array<[number, Variable]> = [
-          [(xi + 1) / xCount * (1 + gapRatioX) - gapRatioX, x2],
-          [1 - (xi + 1) / xCount * (1 + gapRatioX) + gapRatioX, x1]
+          [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
+          [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1]
         ];
         const cellY1: Array<[number, Variable]> = [
-          [yi / yCount * (1 + gapRatioY), y2],
-          [1 - yi / yCount * (1 + gapRatioY), y1]
+          [(yi / yCount) * (1 + gapRatioY), y2],
+          [1 - (yi / yCount) * (1 + gapRatioY), y1]
         ];
         const cellY2: Array<[number, Variable]> = [
-          [(yi + 1) / yCount * (1 + gapRatioY) - gapRatioY, y2],
-          [1 - (yi + 1) / yCount * (1 + gapRatioY) + gapRatioY, y1]
+          [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
+          [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1]
         ];
         const state = markStates[i];
         if (alignX == "start") {
@@ -1802,7 +1802,7 @@ export class Region2DConstraintBuilder {
               property: { property: "sublayout", field: "ratioX" },
               reference: p1,
               value: props.sublayout.ratioX,
-              scale: 1 / (maxCount - 1) * (group.x2 - group.x1),
+              scale: (1 / (maxCount - 1)) * (group.x2 - group.x1),
               span: [minY, maxY]
             }
           });
@@ -1836,7 +1836,7 @@ export class Region2DConstraintBuilder {
               property: { property: "sublayout", field: "ratioY" },
               reference: p1,
               value: props.sublayout.ratioY,
-              scale: 1 / (maxCount - 1) * (group.y2 - group.y1),
+              scale: (1 / (maxCount - 1)) * (group.y2 - group.y1),
               span: [minX, maxX]
             }
           });

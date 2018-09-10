@@ -1,343 +1,349 @@
 @import "../theme.scss";
 
 .charticulator {
-    &__dataset-view {
-        .el-title {
-            margin: 8px 0;
-            margin-top: 4px;
-            display: flex;
-            line-height: 24px;
-            height: 24px;
-            .el-text {
-                @include font-bold;
-                flex: 1 1;
-            }
-            .charticulator__widget-control-button {
-                flex-shrink: 0;
-            }
-        }
-
-        .el-details {
-            color: $theme-metadata-title-foreground;
-            font-size: 12px;
-            margin: 8px 0;
-        }
-
-        &-detail {
-            max-height: 500px;
-            max-width: 700px;
-            overflow: scroll;
-            padding: 10px;
-            background: $theme-dataset-background;
-            color: $theme-primary-foreground;
-            p {
-                font-size: 12px;
-                margin: 5px 0;
-            }
-            .charticulator__dataset-table-view {
-                margin: 0;
-            }
-        }
-
-        &-controls {
-            margin-top: 5px;
-        }
-
-        $item-height: 24px;
-
-        &-derived-fields {
-            padding-left: 12px;
-            margin-bottom: 6px;
-            padding-right: 6px;
-            background: $gray-210;
-
-            .charticulator__dataset-view-column {
-                box-shadow: none;
-                background: none;
-            }
-
-            max-height: 200px;
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
-
-        &-columns {
-            margin-bottom: 16px;
-        }
-
-        &-column {
-            font-size: 14px;
-            display: flex !important;
-            overflow: hidden;
-            flex-direction: row;
-            height: $item-height;
-            line-height: $item-height;
-            @include shadow-ambient;
-            margin-bottom: 6px;
-            border-radius: 2px;
-            background: $color-well;
-
-            transition: box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
-
-            .el-text {
-                height: $item-height;
-                line-height: $item-height;
-                white-space: nowrap;
-                vertical-align: top;
-                margin-left: 2px;
-                text-overflow: ellipsis;
-                color: $theme-metadata-column-foreground;
-                overflow: hidden;
-
-                flex: 1;
-            }
-
-            .charticulator__button-flat {
-                height: $item-height;
-                width: $item-height;
-                border-radius: 0px;
-                .el-svg-icon {
-                    margin: 2px; padding: 0;
-                    width: $item-height - 4px;
-                    height: $item-height - 4px;
-                }
-            }
-
-            .el-svg-icon {
-                display: inline-block;
-                margin: 2px;
-                height: $item-height - 4px;
-                width: $item-height - 4px;
-                vertical-align: top;
-                flex-shrink: 0;
-                flex-grow: 0;
-            }
-
-            &:hover {
-                background: $gray-230;
-                @include shadow-focused;
-            }
-            &.is-active {
-                background: $color-primary;
-                @include shadow-focused;
-                color: $white;
-                .svg-image-icon {
-                    filter: invert(100%);
-                }
-            }
-        }
+  &__dataset-view {
+    .el-title {
+      margin: 8px 0;
+      margin-top: 4px;
+      display: flex;
+      line-height: 24px;
+      height: 24px;
+      .el-text {
+        @include font-bold;
+        flex: 1 1;
+      }
+      .charticulator__widget-control-button {
+        flex-shrink: 0;
+      }
     }
 
-    &__import-data-view {
-        width: 600px;
-        // padding: 0 20px;
-        padding-bottom: 20px;
-        h2 {
-            font-size: 20px;
-            margin: 1em 0;
-        }
-        .el-actions {
-            padding-top: 10px;
-            text-align: right;
-        }
+    .el-details {
+      color: $theme-metadata-title-foreground;
+      font-size: 12px;
+      margin: 8px 0;
     }
+
+    &-detail {
+      max-height: 500px;
+      max-width: 700px;
+      overflow: scroll;
+      padding: 10px;
+      background: $theme-dataset-background;
+      color: $theme-primary-foreground;
+      p {
+        font-size: 12px;
+        margin: 5px 0;
+      }
+      .charticulator__dataset-table-view {
+        margin: 0;
+      }
+    }
+
+    &-controls {
+      margin-top: 5px;
+    }
+
+    $item-height: 24px;
+
+    &-derived-fields {
+      padding-left: 12px;
+      margin-bottom: 6px;
+      padding-right: 6px;
+      background: $gray-210;
+
+      .charticulator__dataset-view-column {
+        box-shadow: none;
+        background: none;
+      }
+
+      max-height: 200px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    &-columns {
+      margin-bottom: 16px;
+    }
+
+    &-column {
+      font-size: 14px;
+      display: flex !important;
+      overflow: hidden;
+      flex-direction: row;
+      height: $item-height;
+      line-height: $item-height;
+      @include shadow-ambient;
+      margin-bottom: 6px;
+      border-radius: 2px;
+      background: $color-well;
+
+      transition: box-shadow $transition-default,
+        background-color $transition-default, border-color $transition-default;
+
+      .el-text {
+        height: $item-height;
+        line-height: $item-height;
+        white-space: nowrap;
+        vertical-align: top;
+        margin-left: 2px;
+        text-overflow: ellipsis;
+        color: $theme-metadata-column-foreground;
+        overflow: hidden;
+
+        flex: 1;
+      }
+
+      .charticulator__button-flat {
+        height: $item-height;
+        width: $item-height;
+        border-radius: 0px;
+        .el-svg-icon {
+          margin: 2px;
+          padding: 0;
+          width: $item-height - 4px;
+          height: $item-height - 4px;
+        }
+      }
+
+      .el-svg-icon {
+        display: inline-block;
+        margin: 2px;
+        height: $item-height - 4px;
+        width: $item-height - 4px;
+        vertical-align: top;
+        flex-shrink: 0;
+        flex-grow: 0;
+      }
+
+      &:hover {
+        background: $gray-230;
+        @include shadow-focused;
+      }
+      &.is-active {
+        background: $color-primary;
+        @include shadow-focused;
+        color: $white;
+        .svg-image-icon {
+          filter: invert(100%);
+        }
+      }
+    }
+  }
+
+  &__import-data-view {
+    width: 600px;
+    // padding: 0 20px;
+    padding-bottom: 20px;
+    h2 {
+      font-size: 20px;
+      margin: 1em 0;
+    }
+    .el-actions {
+      padding-top: 10px;
+      text-align: right;
+    }
+  }
 }
 
 .charticulator__dataset-table-view {
-    margin: 1em 0;
-    border-collapse: collapse;
-    font-size: 13px;
-    td, th {
-        border: 1px solid $gray-180;
-        padding: 4px 5px;
-    }
-    th {
-        font-weight: 700;
-        text-align: left;
-        background: $gray-140;
-        color: white;
-    }
-    td {
-        @include font-mono();
-        text-align: left;
-    }
-
+  margin: 1em 0;
+  border-collapse: collapse;
+  font-size: 13px;
+  td,
+  th {
+    border: 1px solid $gray-180;
+    padding: 4px 5px;
+  }
+  th {
+    font-weight: 700;
+    text-align: left;
+    background: $gray-140;
+    color: white;
+  }
+  td {
+    @include font-mono();
+    text-align: left;
+  }
 }
 
 .dragging-table-cell {
-    background-color: transparentize($color-well, 0.2);
-    display: inline-block;
-    border: 1px solid black;
-    border-radius: 2px;
-    font-size: 12px;
-    padding: 4px;
+  background-color: transparentize($color-well, 0.2);
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 12px;
+  padding: 4px;
 }
 
-
 .charticulator {
-    &__file-uploader {
-        $height: 80px;
-        $width: 400px;
+  &__file-uploader {
+    $height: 80px;
+    $width: 400px;
 
-        font-size: 16px;
-        display: inline-block;
-        height: $height;
-        width: $width;
-        border: 2px dashed $gray-190;
-        border-radius: 2px;
-        text-align: center;
-        color: $gray-100;
-        cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    height: $height;
+    width: $width;
+    border: 2px dashed $gray-190;
+    border-radius: 2px;
+    text-align: center;
+    color: $gray-100;
+    cursor: pointer;
 
-        transition: background-color $transition-default;
+    transition: background-color $transition-default;
 
-        &-filename {
-            display: block;
-            margin: 5px;
-            line-height: 20px;
-            margin-top: $height / 2 - 10;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        &-prompt {
-            display: block;
-            line-height: 20px;
-            margin-top: $height / 2 - 10;
-            .el-svg-icon {
-                height: 20px;
-                width: 20px;
-                margin-right: 5px;
-                filter: invert(40%);
-            }
-        }
-
-        &:hover {
-            background: white;
-            border: 2px solid white;
-            @include shadow-focused();
-        }
-
-        &.is-dragging-over, &.is-active {
-            background: $color-active;
-            border: 2px solid $color-active-dark;
-            color: white;
-            @include shadow-ambient();
-        }
+    &-filename {
+      display: block;
+      margin: 5px;
+      line-height: 20px;
+      margin-top: $height / 2 - 10;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
+    &-prompt {
+      display: block;
+      line-height: 20px;
+      margin-top: $height / 2 - 10;
+      .el-svg-icon {
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+        filter: invert(40%);
+      }
+    }
+
+    &:hover {
+      background: white;
+      border: 2px solid white;
+      @include shadow-focused();
+    }
+
+    &.is-dragging-over,
+    &.is-active {
+      background: $color-active;
+      border: 2px solid $color-active-dark;
+      color: white;
+      @include shadow-ambient();
+    }
+  }
 }
 
 .charticulator__credits {
-    border-top: 1px solid $gray-200;
-    margin: 2em 0;
-    padding-top: 1em;
-    font-size: 13px;
-    b, strong {
-        font-weight: 700;
-    }
-    a, a:visited {
-        color: $gray-100;
-    }
-    a:hover, a:active, a:focus {
-        color: $gray-000;
-    }
-    p {
-        line-height: 1.2em;
-        margin: 0.5em 0;
-    }
+  border-top: 1px solid $gray-200;
+  margin: 2em 0;
+  padding-top: 1em;
+  font-size: 13px;
+  b,
+  strong {
+    font-weight: 700;
+  }
+  a,
+  a:visited {
+    color: $gray-100;
+  }
+  a:hover,
+  a:active,
+  a:focus {
+    color: $gray-000;
+  }
+  p {
+    line-height: 1.2em;
+    margin: 0.5em 0;
+  }
 }
 
 .charticulator__data-field-selector {
-    font-size: 14px;
-    .el-derived-fields {
-        margin-left: 12px;
-        margin-bottom: 12px;
-        border-radius: 2px;
-        border: 1px solid $gray-200;
-        border-top: none;
-        border-right: none;
+  font-size: 14px;
+  .el-derived-fields {
+    margin-left: 12px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+    border: 1px solid $gray-200;
+    border-top: none;
+    border-right: none;
+  }
+  .el-field-item {
+    height: 24px;
+    line-height: 24px;
+    padding: 0 4px;
+    padding-left: 0;
+    padding-right: 0;
+    cursor: not-allowed;
+    &.is-selectable {
+      cursor: pointer;
     }
-    .el-field-item {
-        height: 24px;
-        line-height: 24px;
-        padding: 0 4px;
-        padding-left: 0;
-        padding-right: 0;
-        cursor: not-allowed;
-        &.is-selectable {
-            cursor: pointer;
-        }
-        display: flex;
-        &.is-null {
-            color: $gray-140;
-            padding-left: 24px;
-        }
-        &:hover {
-            background: $gray-210;
-        }
-        &.is-active {
-            background: $gray-080;
-            color: $white;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-        }
-        & > .el-svg-icon {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            margin: 2px;
-        }
-        & > .el-text {
-            flex: 1 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-right: 8px;
-        }
-        .charticulator__widget-control-button {
-            margin-right: 0;
-        }
-        .charticulator__widget-control-select {
-            flex-shrink: 0;
-            background: rgba(0, 0, 0, 0.2);
-            &:hover {
-                background: $color-primary;
-            }
-        }
+    display: flex;
+    &.is-null {
+      color: $gray-140;
+      padding-left: 24px;
     }
+    &:hover {
+      background: $gray-210;
+    }
+    &.is-active {
+      background: $gray-080;
+      color: $white;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+    & > .el-svg-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 2px;
+    }
+    & > .el-text {
+      flex: 1 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 8px;
+    }
+    .charticulator__widget-control-button {
+      margin-right: 0;
+    }
+    .charticulator__widget-control-select {
+      flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.2);
+      &:hover {
+        background: $color-primary;
+      }
+    }
+  }
 }
 
 .charticulator__sample-dataset-list {
-    max-height: 400px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 720px;
-    padding: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    &-item {
-        flex-shrink: 0;
-        flex-grow: 0;
-        vertical-align: top;
-        width: 200px;
-        margin: 5px;
-        padding: 10px;
-        background: $gray-230;
-        @include shadow-ambient;
-        cursor: pointer;
-        border-radius: 2px;
+  max-height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 720px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  &-item {
+    flex-shrink: 0;
+    flex-grow: 0;
+    vertical-align: top;
+    width: 200px;
+    margin: 5px;
+    padding: 10px;
+    background: $gray-230;
+    @include shadow-ambient;
+    cursor: pointer;
+    border-radius: 2px;
 
-        .el-title {
-            @include font-bold;
-            font-size: 14px;
-        }
-        .el-description {
-            margin-top: 4px;
-            font-size: 12px;
-        }
-
-        &:hover {
-            @include shadow-focused;
-        }
+    .el-title {
+      @include font-bold;
+      font-size: 14px;
     }
+    .el-description {
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    &:hover {
+      @include shadow-focused;
+    }
+  }
 }

@@ -97,7 +97,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     const { min, max, width } = this.props;
     const margin = height / 2 + 1;
     const scale = (v: number) =>
-      (v - min) / (max - min) * (width - margin - margin) + margin;
+      ((v - min) / (max - min)) * (width - margin - margin) + margin;
     const y = height / 2;
     const px = scale(
       this.state.currentValue != null
@@ -123,7 +123,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             y2={y}
           />
           <line className="track-highlight" x1={margin} x2={px} y1={y} y2={y} />
-          <circle className="indicator" cx={px} cy={y} r={height / 2 * 0.5} />
+          <circle className="indicator" cx={px} cy={y} r={(height / 2) * 0.5} />
         </svg>
       </span>
     );

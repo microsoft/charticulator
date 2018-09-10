@@ -7,190 +7,198 @@
 // Application Layout Rules
 
 html {
-    overflow: hidden;
-    height: 100%;
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
-    height: 100%;
-    overflow: auto;
-    touch-action: none;
-    cursor: default;
+  height: 100%;
+  overflow: auto;
+  touch-action: none;
+  cursor: default;
 
-    @include disable-user-select;
-    @include font-main;
+  @include disable-user-select;
+  @include font-main;
 }
 
 // CSS Rule format:
 // module__element-subelement--variant
 
 .charticulator {
-    &__application {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        color: $theme-primary-foreground;
+  &__application {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    color: $theme-primary-foreground;
+  }
+
+  &-title__button {
+    background: $theme-application-title-background;
+    color: $theme-application-title-foreground;
+    padding: 10px;
+  }
+
+  &-title__button .el-text {
+    font-weight: $theme-application-title-font-weight;
+  }
+
+  &__menu-bar {
+    background: $theme-header-background;
+
+    display: flex;
+    flex-direction: row;
+    color: $theme-header-foreground;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    &-right {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-right: 4px;
     }
 
-    &-title__button {
-        background: $theme-application-title-background;
-        color: $theme-application-title-foreground;
+    &-separator {
+      height: 24px;
+      margin: 4px 0;
+      display: inline-block;
+      vertical-align: top;
+      width: 0px;
+      border-left: 1px solid $gray-080;
+    }
+  }
+
+  &__menu-popup {
+    .popup-view {
+      // &:before {
+      //     // Remove the triangle
+      //     display: none
+      // };
+      margin: 0px;
+      margin-top: 8px;
+      margin-right: 5px;
+    }
+  }
+  &__menu-dropdown {
+    .el-item {
+      height: 32px;
+      line-height: 32px;
+      a {
+        display: block;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 8px;
+        &,
+        &:hover,
+        &:active,
+        &:focus {
+          text-decoration: none;
+        }
+        color: $black;
+        &:hover,
+        &:active {
+          background: $gray-200;
+        }
+      }
+    }
+    .el-item-version {
+      font-size: 12px;
+      height: 24px;
+      line-height: 24px;
+      padding: 0 8px;
+      color: $gray-150;
+    }
+  }
+
+  &__panel-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+
+    // Drop a shadow to the menu-bar
+    // box-shadow: 0 0 5px black;
+    z-index: 5;
+    overflow: hidden;
+  }
+
+  &__panel-editor,
+  &__panel-editor-panel {
+    background: $theme-editor-pane-background;
+    color: $theme-editor-pane-foreground;
+  }
+
+  &__panel {
+    $panel-color: $theme-primary-background;
+    $panel-border-color: $gray-200;
+    $panel-border-width: 2px;
+
+    display: flex;
+    flex-direction: column;
+    background: $panel-color;
+
+    &-dataset {
+      flex-shrink: 0;
+      width: 200px;
+      overflow: hidden;
+      box-sizing: border-box;
+      background: $theme-dataset-background;
+      border-right: $panel-border-width solid $panel-border-color;
+      // padding: 10px;
+      // overflow-y: scroll;
+      // z-index: 10;
+      // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    &-editor {
+      flex: 1;
+      overflow: hidden;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+
+      &-toolbar {
         padding: 10px;
-    }
+        background: $gray-210;
+        border-bottom: $panel-border-width solid $panel-border-color;
+        // z-index: 9;
+        // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      }
 
-    &-title__button .el-text {
-        font-weight: $theme-application-title-font-weight;
-    }
-
-    &__menu-bar {
-        background: $theme-header-background;
-
-        display: flex;
-        flex-direction: row;
-        color: $theme-header-foreground;
-
-        &-left {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-        &-right {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            margin-right: 4px;
-        }
-
-        &-separator {
-            height: 24px;
-            margin: 4px 0;
-            display: inline-block;
-            vertical-align: top;
-            width: 0px;
-            border-left: 1px solid $gray-080;
-        }
-    }
-
-    &__menu-popup {
-        .popup-view {
-            // &:before {
-            //     // Remove the triangle
-            //     display: none
-            // };
-            margin: 0px;
-            margin-top: 8px;
-            margin-right: 5px;
-        }
-    }
-    &__menu-dropdown {
-        .el-item {
-            height: 32px;
-            line-height: 32px;
-            a {
-                display: block;
-                height: 32px;
-                line-height: 32px;
-                padding: 0 8px;
-                &, &:hover, &:active, &:focus { text-decoration: none; }
-                color: $black;
-                &:hover, &:active {
-                    background: $gray-200;
-                }
-            }
-        }
-        .el-item-version {
-            font-size: 12px;
-            height: 24px;
-            line-height: 24px;
-            padding: 0 8px;
-            color: $gray-150;
-        }
-    }
-
-    &__panel-container {
+      &-panel-container {
         display: flex;
         flex: 1;
         flex-direction: row;
-
-        // Drop a shadow to the menu-bar
-        // box-shadow: 0 0 5px black;
-        z-index: 5;
         overflow: hidden;
-    }
+      }
 
-    &__panel-editor, &__panel-editor-panel {
-        background: $theme-editor-pane-background;
-        color: $theme-editor-pane-foreground;
-    }
+      &-panel {
+        overflow: hidden;
 
-    &__panel {
-        $panel-color: $theme-primary-background;
-        $panel-border-color: $gray-200;
-        $panel-border-width: 2px;
-
-        display: flex;
-        flex-direction: column;
-        background: $panel-color;
-
-        &-dataset {
-            flex-shrink: 0;
-            width: 200px;
-            overflow: hidden;
-            box-sizing: border-box;
-            background: $theme-dataset-background;
-            border-right: $panel-border-width solid $panel-border-color;
-            // padding: 10px;
-            // overflow-y: scroll;
-            // z-index: 10;
-            // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        &-panes {
+          width: 320px;
+          flex-shrink: 0;
+          border-right: $panel-border-width solid $panel-border-color;
+          display: flex;
+          flex-direction: column;
         }
-
-        &-editor {
-            flex: 1;
-            overflow: hidden;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-
-            &-toolbar {
-                padding: 10px;
-                background: $gray-210;
-                border-bottom: $panel-border-width solid $panel-border-color;
-                // z-index: 9;
-                // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            }
-
-            &-panel-container {
-                display: flex;
-                flex: 1;
-                flex-direction: row;
-                overflow: hidden;
-            }
-
-            &-panel {
-                overflow: hidden;
-
-                &-panes {
-                    width: 320px;
-                    flex-shrink: 0;
-                    border-right: $panel-border-width solid $panel-border-color;
-                    display: flex;
-                    flex-direction: column;
-                }
-                &-chart {
-                    flex: 1;
-                    display: flex;
-                }
-            }
+        &-chart {
+          flex: 1;
+          display: flex;
         }
+      }
     }
+  }
 
-    &__floating-panels {
-        position: absolute;
-        left: 0; top: 0;
-    }
+  &__floating-panels {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }

@@ -1163,7 +1163,8 @@ export class ChartEditorView
         {this.state.isSolving ? (
           <div className="solving-hint">
             <div className="el-box">
-              <img src={R.getSVGIcon("loading")} />Working...
+              <img src={R.getSVGIcon("loading")} />
+              Working...
             </div>
           </div>
         ) : null}

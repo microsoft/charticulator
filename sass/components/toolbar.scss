@@ -1,72 +1,73 @@
 .chartaccent__toolbar {
-    @include font-main;
-    $toolbar-height: 32px;
+  @include font-main;
+  $toolbar-height: 32px;
 
+  line-height: $toolbar-height;
+  white-space: nowrap;
+
+  display: flex;
+  flex-direction: row;
+
+  & > * {
+    height: 32px;
+  }
+
+  &-label {
+    margin: 0 10px;
+    margin-left: 2px;
+    font-size: 14px;
     line-height: $toolbar-height;
-    white-space: nowrap;
+    height: $toolbar-height;
+    display: inline-block;
+    vertical-align: top;
+  }
 
-    display: flex;
-    flex-direction: row;
+  &-separator {
+    display: inline-block;
+    line-height: $toolbar-height;
+    height: $toolbar-height - 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-right: 1px solid $gray-190;
+    width: 0px;
+    margin-left: 5px;
+    margin-right: 8px;
+  }
 
-    & > * {
-        height: 32px;
+  &-checkbox {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0 6px;
+    padding-left: 4px;
+    line-height: $toolbar-height;
+    font-size: 13px;
+
+    .el-svg-icon {
+      width: $toolbar-height - 12px;
+      height: $toolbar-height - 12px;
+      margin: 6px 0;
     }
 
-    &-label {
-        margin: 0 10px;
-        margin-left: 2px;
-        font-size: 14px;
-        line-height: $toolbar-height;
-        height: $toolbar-height;
-        display: inline-block;
-        vertical-align: top;
+    &:hover {
+      cursor: pointer;
+      @include shadow-ambient;
+      background: $gray-220;
     }
-
-    &-separator {
-        display: inline-block;
-        line-height: $toolbar-height;
-        height: $toolbar-height - 4px;
-        margin-top: 2px; margin-bottom: 2px;
-        border-right: 1px solid $gray-190;
-        width: 0px;
-        margin-left: 5px;
-        margin-right: 8px;
-    }
-
-    &-checkbox {
-        display: inline-block;
-        vertical-align: top;
-        padding: 0 6px;
-        padding-left: 4px;
-        line-height: $toolbar-height;
-        font-size: 13px;
-
-        .el-svg-icon {
-            width: $toolbar-height - 12px;
-            height: $toolbar-height - 12px;
-            margin: 6px 0;
-        }
-
-        &:hover {
-            cursor: pointer;
-            @include shadow-ambient;
-            background: $gray-220;
-        }
-    }
+  }
 }
 
 .charticulator__link-type-table {
-    margin: 10px;
-    h2 {
-        margin: 10px 0;
-        margin-top: 15px;
-    }
-    .el-row {
-        margin: 10px 0;
-    }
+  margin: 10px;
+  h2 {
+    margin: 10px 0;
+    margin-top: 15px;
+  }
+  .el-row {
+    margin: 10px 0;
+  }
 
-    .charticulator__data-field-selector {
-        border: 1px solid $gray-200;
-        border-radius: 2px;
-    }
+  .charticulator__data-field-selector {
+    border: 1px solid $gray-200;
+    border-radius: 2px;
+  }
 }

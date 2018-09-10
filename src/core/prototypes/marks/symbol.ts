@@ -183,7 +183,7 @@ export class SymbolElement extends EmphasizableMarkClass {
         path.moveTo(pc.x, pc.y - r);
         path.lineTo(pc.x + x, pc.y + y);
         for (let i = 1; i < 5; ++i) {
-          const a = Math.PI * 2 * i / 5,
+          const a = (Math.PI * 2 * i) / 5,
             c = Math.cos(a),
             s = Math.sin(a);
           path.lineTo(pc.x + s * r, pc.y - c * r);

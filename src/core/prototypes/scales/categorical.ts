@@ -156,7 +156,7 @@ class CategoricalScaleNumber extends ScaleClass {
 
     s.domain.forEach((v, d) => {
       props.mapping[d] =
-        v / (s.domain.size - 1) * (range[1] - range[0]) + range[0];
+        (v / (s.domain.size - 1)) * (range[1] - range[0]) + range[0];
     });
 
     attrs.rangeScale = range[1] as number;
