@@ -118,56 +118,6 @@ export class MarkEditorView extends React.Component<
   }
   public render() {
     const markStores = this.props.store.markStores;
-    const marks = [
-      {
-        name: "mark.rect",
-        displayName: "Rectangle",
-        icon: "mark/rect",
-        draggable: true
-      },
-      {
-        name: "mark.symbol",
-        displayName: "Symbol",
-        icon: "mark/symbol",
-        draggable: true
-      },
-      {
-        name: "mark.line",
-        displayName: "Line",
-        icon: "mark/line",
-        draggable: true
-      },
-      {
-        name: "mark.text",
-        displayName: "Text",
-        icon: "mark/text",
-        draggable: true
-      },
-      {
-        name: "guide-y",
-        displayName: "Guide Y",
-        icon: "guide/x",
-        draggable: false
-      },
-      {
-        name: "guide-x",
-        displayName: "Guide X",
-        icon: "guide/y",
-        draggable: false
-      },
-      {
-        name: "guide-coordinator-y",
-        displayName: "Guide Y",
-        icon: "guide/coordinator-x",
-        draggable: false
-      },
-      {
-        name: "guide-coordinator-x",
-        displayName: "Guide X",
-        icon: "guide/coordinator-y",
-        draggable: false
-      }
-    ];
     return (
       <div className="mark-editor-view" ref={e => (this.refContainer = e)}>
         {markStores.map(markStore => {
@@ -271,43 +221,43 @@ export class SingleMarkView
           case "anchored-rectangle":
             {
               const bboxRect = bbox as Prototypes.BoundingBox.AnchoredRectangle;
-              const cos = Math.cos(bboxRect.rotation / 180 * Math.PI);
-              const sin = Math.sin(bboxRect.rotation / 180 * Math.PI);
+              const cos = Math.cos((bboxRect.rotation / 180) * Math.PI);
+              const sin = Math.sin((bboxRect.rotation / 180) * Math.PI);
               xBounds = [
                 bboxRect.anchorX +
                   bboxRect.cx +
-                  bboxRect.width / 2 * cos +
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos +
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx -
-                  bboxRect.width / 2 * cos +
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos +
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx +
-                  bboxRect.width / 2 * cos -
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos -
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx -
-                  bboxRect.width / 2 * cos -
-                  bboxRect.height / 2 * sin
+                  (bboxRect.width / 2) * cos -
+                  (bboxRect.height / 2) * sin
               ];
               yBounds = [
                 bboxRect.anchorY +
                   bboxRect.cy +
-                  bboxRect.width / 2 * -sin +
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin +
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy -
-                  bboxRect.width / 2 * -sin +
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin +
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy +
-                  bboxRect.width / 2 * -sin -
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin -
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy -
-                  bboxRect.width / 2 * -sin -
-                  bboxRect.height / 2 * cos
+                  (bboxRect.width / 2) * -sin -
+                  (bboxRect.height / 2) * cos
               ];
             }
             break;
@@ -1313,6 +1263,9 @@ export class SingleMarkView
                 height={this.props.height}
               />
             </svg>
+            <div className="mark-view-container-notice">
+              To edit this glyph, please create a plot segment with it.
+            </div>
           </div>
         </div>
       );

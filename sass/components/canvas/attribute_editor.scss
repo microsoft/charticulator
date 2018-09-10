@@ -4,6 +4,10 @@
 
     $line-height: 24px;
 
+    &-unexpected {
+        color: $gray-100;
+    }
+
     .header {
         @include font-main;
 

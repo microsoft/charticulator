@@ -49,6 +49,14 @@ export class AttributePanel extends React.Component<
     this.tokens = [];
   }
 
+  public renderUnexpectedState(message: string) {
+    return (
+      <div className="attribute-editor charticulator__widget-container">
+        <div className="attribute-editor-unexpected">{message}</div>
+      </div>
+    );
+  }
+
   public render() {
     const selection = this.props.store.currentSelection;
     let object: Specification.Object;
@@ -56,6 +64,11 @@ export class AttributePanel extends React.Component<
     let manager: WidgetManager;
     if (selection) {
       if (selection instanceof GlyphSelection) {
+        if (!selection.plotSegment) {
+          return this.renderUnexpectedState(
+            "To edit this glyph, please create a plot segment with it."
+          );
+        }
         const glyph = selection.glyph;
         object = glyph;
         objectClass = this.props.store.chartManager.getGlyphClass(
@@ -73,6 +86,11 @@ export class AttributePanel extends React.Component<
         };
       }
       if (selection instanceof MarkSelection) {
+        if (!selection.plotSegment) {
+          return this.renderUnexpectedState(
+            "To edit this glyph, please create a plot segment with it."
+          );
+        }
         const glyph = selection.glyph;
         const mark = selection.mark;
         object = mark;
