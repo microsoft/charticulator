@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import * as R from "../../resources";
 import * as globals from "../../globals";
@@ -17,7 +15,7 @@ function readFileAsString(file: File): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
-      resolve(reader.result);
+      resolve(reader.result as string);
     };
     reader.onerror = () => {
       reject(new Error(`unable to read file ${file.name}`));
@@ -164,8 +162,8 @@ export class FileUploader extends React.Component<
         />
         {this.state.filename == null ? (
           <span className="charticulator__file-uploader-prompt">
-            <SVGImageIcon url={R.getSVGIcon("toolbar/import")} />Open or Drop
-            File
+            <SVGImageIcon url={R.getSVGIcon("toolbar/import")} />
+            Open or Drop File
           </span>
         ) : (
           <span className="charticulator__file-uploader-filename">
@@ -278,7 +276,8 @@ export class ImportDataView extends React.Component<
           </div>
         ) : null}
         <h2>
-          Data{this.state.dataTable ? ": " + this.state.dataTable.name : null}
+          Data
+          {this.state.dataTable ? ": " + this.state.dataTable.name : null}
         </h2>
         {this.state.dataTable ? (
           <div className="charticulator__import-data-view-table">
@@ -307,7 +306,8 @@ export class ImportDataView extends React.Component<
           />
         )}
         <h2>
-          Links{this.state.linkTable ? ": " + this.state.linkTable.name : null}
+          Links
+          {this.state.linkTable ? ": " + this.state.linkTable.name : null}
         </h2>
         {this.state.linkTable ? (
           <div className="charticulator__import-data-view-table">

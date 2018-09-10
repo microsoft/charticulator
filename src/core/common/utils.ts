@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 /** zip two arrays, return an iterator */
 export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
   for (let i = 0; i < a.length; i++) {
@@ -16,6 +14,26 @@ export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
   } else {
     return b.map((elem, idx) => [a[idx], elem] as [T1, T2]);
   }
+}
+
+/** Transpose a matrix r[i][j] = matrix[j][i] */
+export function transpose<T>(matrix: T[][]): T[][] {
+  if (matrix == undefined) {
+    return undefined;
+  }
+  if (matrix.length == 0) {
+    return [];
+  }
+  const jLength = matrix[0].length;
+  const r: T[][] = [];
+  for (let j = 0; j < jLength; j++) {
+    const rj: T[] = [];
+    for (let i = 0; i < matrix.length; i++) {
+      rj.push(matrix[i][j]);
+    }
+    r.push(rj);
+  }
+  return r;
 }
 
 /** Generate a range of integers: [start, end) */
@@ -134,13 +152,15 @@ export function argMin<T>(
   return argmin;
 }
 
+export type FieldType = string | number | Array<string | number>;
+
 export function setField<ObjectType, ValueType>(
   obj: ObjectType,
-  field: string | string[],
+  field: FieldType,
   value: ValueType
 ): ObjectType {
   let p = obj as any;
-  if (typeof field == "string") {
+  if (typeof field == "string" || typeof field == "number") {
     p[field] = value;
   } else {
     for (let i = 0; i < field.length - 1; i++) {
@@ -156,13 +176,13 @@ export function setField<ObjectType, ValueType>(
 
 export function getField<ObjectType, ValueType>(
   obj: ObjectType,
-  field: string | string[]
+  field: FieldType
 ): ObjectType {
   let p = obj as any;
-  if (typeof field == "string") {
+  if (typeof field == "string" || typeof field == "number") {
     return p[field];
   } else {
-    const fieldList = field; // .split(".");
+    const fieldList = field;
     for (let i = 0; i < fieldList.length - 1; i++) {
       if (p[fieldList[i]] == undefined) {
         return undefined;

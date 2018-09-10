@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { prettyNumber, ZoomInfo } from "../../core";
 
 export function classNames(...args: Array<string | [string, boolean]>) {

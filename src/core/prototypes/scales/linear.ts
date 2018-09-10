@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import {
   Color,
   interpolateColor,
@@ -79,7 +77,7 @@ export class LinearScale extends ScaleClass {
     const x2 = props.domainMax;
     const y1 = attrs.rangeMin;
     const y2 = attrs.rangeMax;
-    return ((data as number) - x1) / (x2 - x1) * (y2 - y1) + y1;
+    return (((data as number) - x1) / (x2 - x1)) * (y2 - y1) + y1;
   }
 
   public buildConstraint(
@@ -156,19 +154,25 @@ export class LinearScale extends ScaleClass {
   }
 
   public getTemplateParameters(): TemplateParameters {
-    return {
-      inferences: [
-        {
-          type: "scale",
-          slotKind: "numerical",
-          rangeType: "number",
-          properties: {
-            min: "domainMin",
-            max: "domainMax"
-          }
-        } as Specification.Template.Scale
-      ]
-    };
+    const parameters = super.getTemplateParameters();
+    if (!parameters.properties) {
+      parameters.properties = [];
+    }
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMin"
+      },
+      type: "number"
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMax"
+      },
+      type: "number"
+    });
+    return parameters;
   }
 }
 
@@ -248,6 +252,28 @@ export class LinearColorScale extends ScaleClass {
         true
       )
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const parameters = super.getTemplateParameters();
+    if (!parameters.properties) {
+      parameters.properties = [];
+    }
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMin"
+      },
+      type: "number"
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMax"
+      },
+      type: "number"
+    });
+    return parameters;
   }
 }
 

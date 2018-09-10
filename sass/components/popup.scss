@@ -1,177 +1,191 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 @import "../theme.scss";
 
 @mixin corner-x-top-left($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-top: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        left: 4px;
-        top: -$height - 1px;
-        border: 0 solid transparent;
-        border-bottom-color: $gray-100;
-        border-bottom-width: $height;
-        border-left-width: $size / 2;
-        border-right-width: $size / 2;
-    }
+  margin-top: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 4px;
+    top: -$height - 1px;
+    border: 0 solid transparent;
+    border-bottom-color: $gray-100;
+    border-bottom-width: $height;
+    border-left-width: $size / 2;
+    border-right-width: $size / 2;
+  }
 }
 @mixin corner-x-top-right($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-top: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        right: 4px;
-        top: -$height - 1px;
-        border: 0 solid transparent;
-        border-bottom-color: $gray-100;
-        border-bottom-width: $height;
-        border-left-width: $size / 2;
-        border-right-width: $size / 2;
-    }
+  margin-top: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: 4px;
+    top: -$height - 1px;
+    border: 0 solid transparent;
+    border-bottom-color: $gray-100;
+    border-bottom-width: $height;
+    border-left-width: $size / 2;
+    border-right-width: $size / 2;
+  }
 }
 @mixin corner-x-bottom-left($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-bottom: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        left: 4px;
-        bottom: -$height - 1px;
-        border: 0 solid transparent;
-        border-top-color: $gray-100;
-        border-top-width: $height;
-        border-left-width: $size / 2;
-        border-right-width: $size / 2;
-        border-bottom-width: 0;
-    }
+  margin-bottom: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 4px;
+    bottom: -$height - 1px;
+    border: 0 solid transparent;
+    border-top-color: $gray-100;
+    border-top-width: $height;
+    border-left-width: $size / 2;
+    border-right-width: $size / 2;
+    border-bottom-width: 0;
+  }
 }
 @mixin corner-x-bottom-right($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-bottom: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        right: 4px;
-        bottom: -$height - 1px;
-        border: 0 solid transparent;
-        border-top-color: $gray-100;
-        border-top-width: $height;
-        border-left-width: $size / 2;
-        border-right-width: $size / 2;
-        border-bottom-width: 0;
-    }
+  margin-bottom: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: 4px;
+    bottom: -$height - 1px;
+    border: 0 solid transparent;
+    border-top-color: $gray-100;
+    border-top-width: $height;
+    border-left-width: $size / 2;
+    border-right-width: $size / 2;
+    border-bottom-width: 0;
+  }
 }
 
 @mixin corner-y-top-left($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-left: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        top: 4px;
-        right: -$height - 1px;
-        border: 0 solid transparent;
-        border-left-color: $gray-100;
-        border-left-width: $height;
-        border-top-width: $size / 2;
-        border-bottom-width: $size / 2;
-        border-right-width: 0;
-    }
+  margin-left: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 4px;
+    right: -$height - 1px;
+    border: 0 solid transparent;
+    border-left-color: $gray-100;
+    border-left-width: $height;
+    border-top-width: $size / 2;
+    border-bottom-width: $size / 2;
+    border-right-width: 0;
+  }
 }
 
 @mixin corner-y-top-right($height: 4px, $size: 16px, $color: $gray-100) {
-    margin-left: $height;
-    &:before {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        top: 4px;
-        left: -$height - 1px;
-        border: 0 solid transparent;
-        border-right-color: $gray-100;
-        border-right-width: $height;
-        border-top-width: $size / 2;
-        border-bottom-width: $size / 2;
-        border-left-width: 0;
-    }
+  margin-left: $height;
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 4px;
+    left: -$height - 1px;
+    border: 0 solid transparent;
+    border-right-color: $gray-100;
+    border-right-width: $height;
+    border-top-width: $size / 2;
+    border-bottom-width: $size / 2;
+    border-left-width: 0;
+  }
 }
 
 .popup-view {
-    background: $theme-secondary-background;
-    border: 1px solid $gray-100;
-    border-radius: 2px;
-    // box-shadow: 0 0 3px $gray-100;
-    @include shadow-focused;
-    pointer-events: all;
-    color: $theme-secondary-foreground;
+  background: $theme-secondary-background;
+  border: 1px solid $gray-100;
+  border-radius: 2px;
+  // box-shadow: 0 0 3px $gray-100;
+  @include shadow-focused;
+  pointer-events: all;
+  color: $theme-secondary-foreground;
 
-    position: relative;
+  position: relative;
 
-    $corner-height: 5px;
-    $corner-size: 12px;
+  $corner-height: 5px;
+  $corner-size: 12px;
 
-    &.popup-x-top-left { @include corner-x-top-left($corner-height, $corner-size, $gray-100); }
-    &.popup-x-top-right { @include corner-x-top-right($corner-height, $corner-size, $gray-100); }
-    &.popup-x-bottom-left { @include corner-x-bottom-left($corner-height, $corner-size, $gray-100); }
-    &.popup-x-bottom-right { @include corner-x-bottom-right($corner-height, $corner-size, $gray-100); }
-    &.popup-y-top-left { @include corner-y-top-left($corner-height, $corner-size, $gray-100); }
-    &.popup-y-top-right { @include corner-y-top-right($corner-height, $corner-size, $gray-100); }
+  &.popup-x-top-left {
+    @include corner-x-top-left($corner-height, $corner-size, $gray-100);
+  }
+  &.popup-x-top-right {
+    @include corner-x-top-right($corner-height, $corner-size, $gray-100);
+  }
+  &.popup-x-bottom-left {
+    @include corner-x-bottom-left($corner-height, $corner-size, $gray-100);
+  }
+  &.popup-x-bottom-right {
+    @include corner-x-bottom-right($corner-height, $corner-size, $gray-100);
+  }
+  &.popup-y-top-left {
+    @include corner-y-top-left($corner-height, $corner-size, $gray-100);
+  }
+  &.popup-y-top-right {
+    @include corner-y-top-right($corner-height, $corner-size, $gray-100);
+  }
 }
 .popup-container {
-    cursor: default;
-    z-index: 1000;
+  cursor: default;
+  z-index: 1000;
 }
 .popup-container-modal {
-    background: transparentize($gray-200, 0.3);
-    backdrop-filter: blur(5px);
+  background: transparentize($gray-200, 0.3);
+  backdrop-filter: blur(5px);
 }
 
 .charticulator__modal {
-    &-default {
-        @include shadow-focused-right;
-        background: $gray-220;
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        &-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+  &-default {
+    @include shadow-focused-right;
+    background: $gray-220;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    &-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
+  }
 
-    &-center {
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        &-container {
-            display: block;
-            margin: 100px auto;
-            margin-top: 100px;
-            width: 900px;
-            max-height: 600px;
-            overflow: hidden;
-            overflow-y: scroll;
-            @include shadow-focused;
-            background: $gray-220;
-            border-radius: 4px;
-        }
+  &-center {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    &-container {
+      display: block;
+      margin: 100px auto;
+      margin-top: 100px;
+      width: 900px;
+      max-height: 600px;
+      overflow: hidden;
+      overflow-y: scroll;
+      @include shadow-focused;
+      background: $gray-220;
+      border-radius: 4px;
     }
+  }
 }
 
 .drag-state-view {
-    z-index: 1001;
+  z-index: 1001;
 }

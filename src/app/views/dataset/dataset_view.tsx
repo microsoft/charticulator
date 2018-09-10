@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import { Dataset, Expression } from "../../../core";
 import { DragData } from "../../actions";
@@ -26,9 +24,6 @@ export class DatasetView extends React.Component<
   DatasetViewState
 > {
   public componentDidMount() {
-    this.props.store.addListener(DatasetStore.EVENT_SELECTION, () =>
-      this.forceUpdate()
-    );
     this.props.store.addListener(DatasetStore.EVENT_CHANGED, () =>
       this.forceUpdate()
     );
@@ -184,10 +179,7 @@ export class ColumnView extends React.Component<
   }
 
   public applyAggregation(expr: string, type: string) {
-    let aggregation = "first";
-    if (type == "number" || type == "integer") {
-      aggregation = "avg";
-    }
+    const aggregation = Expression.getDefaultAggregationFunction(type);
     return Expression.functionCall(
       aggregation,
       Expression.parse(expr)

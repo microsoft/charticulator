@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import { Dataset, Expression } from "../../../core";
 import { SVGImageIcon } from "../../components";
@@ -10,14 +8,6 @@ import { DatasetStore } from "../../stores";
 import { classNames } from "../../utils";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { Button, Select } from "../panels/widgets/controls";
-
-function defaultAggregations(type: string) {
-  if (type == "number" || type == "integer") {
-    return ["avg", "min", "max", "sum"];
-  } else {
-    return ["first", "last"];
-  }
-}
 
 export interface DataFieldSelectorProps {
   datasetStore: DatasetStore;
@@ -215,7 +205,7 @@ export class DataFieldSelector extends React.Component<
     } else {
       if (this.props.useAggregation) {
         if (aggregation == null) {
-          aggregation = defaultAggregations(item.type)[0];
+          aggregation = Expression.getDefaultAggregationFunction(item.type);
         }
       }
       this.setState({
@@ -269,8 +259,12 @@ export class DataFieldSelector extends React.Component<
           this.isValueEqual(this.state.currentSelection, item) ? (
             <Select
               value={this.state.currentSelectionAggregation}
-              options={defaultAggregations(item.type)}
-              labels={defaultAggregations(item.type)}
+              options={Expression.getCompatibleAggregationFunctions(
+                item.type
+              ).map(x => x.name)}
+              labels={Expression.getCompatibleAggregationFunctions(
+                item.type
+              ).map(x => x.displayName)}
               showText={true}
               onChange={newValue => {
                 this.selectItem(item, newValue);

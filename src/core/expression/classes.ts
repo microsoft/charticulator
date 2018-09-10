@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 export type ValueType = number | boolean | string | Date | Object;
 
 export interface Context {
@@ -33,10 +31,23 @@ import { constants, functions, operators, precedences } from "./intrinsics";
 import { format } from "d3-format";
 import { parse } from "./parser";
 
+export type PatternReplacer = (expr: Expression) => Expression | void;
+
+export function variableReplacer(map: { [name: string]: string }) {
+  return (expr: Expression) => {
+    if (expr instanceof Variable) {
+      if (map.hasOwnProperty(expr.name)) {
+        return new Variable(map[expr.name]);
+      }
+    }
+  };
+}
+
 export abstract class Expression {
   public abstract getValue(context: Context): ValueType;
   public abstract toString(): string;
-  public abstract getPrecedence(): number;
+  protected abstract getPrecedence(): number;
+  protected abstract replaceChildren(r: PatternReplacer): Expression;
 
   public toStringPrecedence(parent: number) {
     if (this.getPrecedence() < parent) {
@@ -58,6 +69,17 @@ export abstract class Expression {
 
   public static Parse(expr: string): Expression {
     return parse(expr) as Expression;
+  }
+
+  public replace(replacer: PatternReplacer): Expression {
+    const r = replacer(this);
+    if (r) {
+      // If the expression matches the pattern, replace itself
+      return r;
+    } else {
+      // Otherwise, replace any pattern found inside
+      return this.replaceChildren(replacer);
+    }
   }
 }
 
@@ -92,6 +114,10 @@ export class TextExpression {
       .join("");
   }
 
+  public isTrivialString() {
+    return this.parts.every(x => x.string != null);
+  }
+
   public toString(): string {
     return this.parts
       .map(part => {
@@ -112,6 +138,25 @@ export class TextExpression {
   public static Parse(expr: string): TextExpression {
     return parse(expr, { startRule: "start_text" }) as TextExpression;
   }
+
+  public replace(r: PatternReplacer): TextExpression {
+    return new TextExpression(
+      this.parts.map(part => {
+        if (part.string) {
+          return { string: part.string };
+        } else if (part.expression) {
+          if (part.format) {
+            return { expression: part.expression.replace(r) };
+          } else {
+            return {
+              expression: part.expression.replace(r),
+              format: part.format
+            };
+          }
+        }
+      })
+    );
+  }
 }
 
 export class Value<T> extends Expression {
@@ -127,8 +172,12 @@ export class Value<T> extends Expression {
     return JSON.stringify(this.value);
   }
 
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return precedences.VALUE;
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    return new Value<T>(this.value);
   }
 }
 
@@ -156,8 +205,12 @@ export class FieldAccess extends Expression {
     )}.${this.fields.map(Variable.VariableNameToString).join(".")}`;
   }
 
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return precedences.FIELD_ACCESS;
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    return new FieldAccess(this.expr.replace(r), this.fields);
   }
 }
 
@@ -195,8 +248,15 @@ export class FunctionCall extends Expression {
       .join(", ")})`;
   }
 
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return precedences.FUNCTION_CALL;
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    return new FunctionCall(
+      this.name.split("."),
+      this.args.map(x => x.replace(r))
+    );
   }
 }
 
@@ -236,21 +296,30 @@ export class Operator extends Expression {
     }
   }
 
-  private getMyPrecedence(): number[] {
+  protected getMyPrecedence(): number[] {
     if (this.rhs != undefined) {
       return precedences.OPERATORS[this.name];
     } else {
       return precedences.OPERATORS["unary:" + this.name];
     }
   }
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return this.getMyPrecedence()[0];
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    return new Operator(
+      this.name,
+      this.lhs.replace(r),
+      this.rhs ? this.rhs.replace(r) : null
+    );
   }
 }
 
 export class LambdaFunction extends Expression {
-  public expr: Expression;
-  public argNames: string[];
+  public readonly expr: Expression;
+  public readonly argNames: string[];
+
   public constructor(expr: Expression, argNames: string[]) {
     super();
     this.expr = expr;
@@ -272,13 +341,25 @@ export class LambdaFunction extends Expression {
     )}`;
   }
 
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return precedences.LAMBDA_FUNCTION;
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    // Mask the argument variables in the lambda function
+    const rMasked = (expr: Expression) => {
+      if (expr instanceof Variable && this.argNames.indexOf(expr.name) >= 0) {
+        return undefined;
+      } else {
+        return r(expr);
+      }
+    };
+    return new LambdaFunction(this.expr.replace(rMasked), this.argNames);
   }
 }
 
 export class Variable extends Expression {
-  constructor(public name: string) {
+  constructor(public readonly name: string) {
     super();
   }
   public getValue(c: Context) {
@@ -292,7 +373,7 @@ export class Variable extends Expression {
   public toString() {
     return Variable.VariableNameToString(this.name);
   }
-  public getPrecedence(): number {
+  protected getPrecedence(): number {
     return precedences.VARIABLE;
   }
 
@@ -302,5 +383,9 @@ export class Variable extends Expression {
     } else {
       return JSON.stringify(name).replace(/^\"|\"$/g, "`");
     }
+  }
+
+  protected replaceChildren(r: PatternReplacer): Expression {
+    return new Variable(this.name);
   }
 }

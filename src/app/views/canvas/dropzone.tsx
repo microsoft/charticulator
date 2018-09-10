@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import { EventEmitter, EventSubscription } from "../../../core";
 
@@ -144,8 +142,8 @@ export class DropZoneView
     }
     return (
       <g
-        transform={`translate(${cx},${cy}) rotate(${(angle + Math.PI) /
-          Math.PI *
+        transform={`translate(${cx},${cy}) rotate(${((angle + Math.PI) /
+          Math.PI) *
           180}) translate(${dx},${dy}) ${extra}`}
       >
         <text
@@ -207,12 +205,12 @@ export class DropZoneView
         ) => {
           const angleOffset = -90;
           const start = [
-            x + radius * Math.cos((angleOffset + startAngle) * Math.PI / 180),
-            y + radius * Math.sin((angleOffset + startAngle) * Math.PI / 180)
+            x + radius * Math.cos(((angleOffset + startAngle) * Math.PI) / 180),
+            y + radius * Math.sin(((angleOffset + startAngle) * Math.PI) / 180)
           ];
           const end = [
-            x + radius * Math.cos((angleOffset + endAngle) * Math.PI / 180),
-            y + radius * Math.sin((angleOffset + endAngle) * Math.PI / 180)
+            x + radius * Math.cos(((angleOffset + endAngle) * Math.PI) / 180),
+            y + radius * Math.sin(((angleOffset + endAngle) * Math.PI) / 180)
           ];
           const largeArcFlag = endAngle - startAngle < 180 ? 0 : 1;
           return [
@@ -253,14 +251,14 @@ export class DropZoneView
           zcenter,
           Geometry.vectorRotate(
             { x: zradius + 5, y: 0 },
-            (-angleCenter + 1 + 90) / 180 * Math.PI
+            ((-angleCenter + 1 + 90) / 180) * Math.PI
           )
         );
         const p2 = Geometry.vectorAdd(
           zcenter,
           Geometry.vectorRotate(
             { x: zradius + 5, y: 0 },
-            (-angleCenter - 1 + 90) / 180 * Math.PI
+            ((-angleCenter - 1 + 90) / 180) * Math.PI
           )
         );
         return (

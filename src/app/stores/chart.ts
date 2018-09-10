@@ -1,25 +1,22 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
-import { deepClone, EventEmitter, Expression, setField } from "../../core";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 import {
-  Dataset,
+  deepClone,
+  Expression,
   getById,
   getByName,
-  indexOf,
   Prototypes,
+  Scale,
+  setField,
+  Solver,
   Specification,
   uniqueID,
   zipArray
 } from "../../core";
-import { Graphics, Scale, Solver } from "../../core";
-
-import { Actions } from "../actions";
-
-import { ChartTemplateBuilder } from "../template";
 import { BaseStore } from "../../core/store/base";
+import { Actions } from "../actions";
+import { ChartTemplateBuilder } from "../template";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
 import { GlyphStore } from "./mark";
@@ -32,18 +29,15 @@ export class ChartElementSelection extends Selection {
    * @param chartElement the selected mark layout
    * @param glyphIndex if specified, select the mark at the specified index
    */
-  constructor(
-    public chartElement: Specification.ChartElement,
-    public glyphIndex: number = null
-  ) {
+  constructor(public chartElement: Specification.ChartElement) {
     super();
   }
 }
 
 export class GlyphSelection extends Selection {
   constructor(
-    public glyph: Specification.Glyph,
-    public dataRowIndex: number = null
+    public plotSegment: Specification.PlotSegment,
+    public glyph: Specification.Glyph
   ) {
     super();
   }
@@ -51,6 +45,7 @@ export class GlyphSelection extends Selection {
 
 export class MarkSelection extends Selection {
   constructor(
+    public plotSegment: Specification.PlotSegment,
     public glyph: Specification.Glyph,
     public mark: Specification.Element
   ) {
@@ -93,6 +88,7 @@ export class ChartStore extends BaseStore {
   public markStores: GlyphStore[];
 
   public currentSelection: Selection;
+  protected selectedGlyphIndex: { [id: string]: number } = {};
   public currentTool: string;
   public currentToolOptions: string;
 
@@ -137,8 +133,7 @@ export class ChartStore extends BaseStore {
     if (this.currentSelection instanceof ChartElementSelection) {
       selection = {
         type: "chart-element",
-        chartElementID: this.currentSelection.chartElement._id,
-        glyphIndex: this.currentSelection.glyphIndex
+        chartElementID: this.currentSelection.chartElement._id
       };
     }
     if (this.currentSelection instanceof GlyphSelection) {
@@ -180,35 +175,67 @@ export class ChartStore extends BaseStore {
   public loadSelectionState(selection: SelectionState) {
     if (selection != null) {
       if (selection.type == "chart-element") {
-        const originalID = selection.chartElementID;
-        const plotSegment = getById(
+        const chartElement = getById(
           this.chart.elements,
-          originalID
-        ) as Specification.PlotSegment;
-        if (plotSegment) {
-          this.currentSelection = new ChartElementSelection(plotSegment);
+          selection.chartElementID
+        );
+        if (chartElement) {
+          this.currentSelection = new ChartElementSelection(chartElement);
         }
       }
       if (selection.type == "glyph") {
         const glyphID = selection.glyphID;
         const glyph = getById(this.chart.glyphs, glyphID);
-        if (glyph) {
-          this.currentSelection = new GlyphSelection(glyph);
+        const plotSegment = getById(
+          this.chart.elements,
+          selection.chartElementID
+        ) as Specification.PlotSegment;
+        if (plotSegment && glyph) {
+          this.currentSelection = new GlyphSelection(plotSegment, glyph);
         }
       }
       if (selection.type == "mark") {
         const glyphID = selection.glyphID;
         const markID = selection.markID;
         const glyph = getById(this.chart.glyphs, glyphID);
-        if (glyph) {
+        const plotSegment = getById(
+          this.chart.elements,
+          selection.chartElementID
+        ) as Specification.PlotSegment;
+        if (plotSegment && glyph) {
           const mark = getById(glyph.marks, markID);
           if (mark) {
-            this.currentSelection = new MarkSelection(glyph, mark);
+            this.currentSelection = new MarkSelection(plotSegment, glyph, mark);
           }
         }
       }
     }
     this.emit(ChartStore.EVENT_SELECTION);
+  }
+
+  public setSelectedGlyphIndex(plotSegmentID: string, glyphIndex: number) {
+    this.selectedGlyphIndex[plotSegmentID] = glyphIndex;
+  }
+
+  public getSelectedGlyphIndex(plotSegmentID: string) {
+    const plotSegment = this.chartManager.getClassById(
+      plotSegmentID
+    ) as Prototypes.PlotSegments.PlotSegmentClass;
+    if (!plotSegment) {
+      return 0;
+    }
+    if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
+      const idx = this.selectedGlyphIndex[plotSegmentID];
+      if (idx >= plotSegment.state.dataRowIndices.length) {
+        this.selectedGlyphIndex[plotSegmentID] = 0;
+        return 0;
+      } else {
+        return idx;
+      }
+    } else {
+      this.selectedGlyphIndex[plotSegmentID] = 0;
+      return 0;
+    }
   }
 
   public getMarkIndex(mark: Specification.Glyph) {
@@ -327,6 +354,7 @@ export class ChartStore extends BaseStore {
       if (!attributesSet) {
         switch (action.classID) {
           case "mark.rect":
+          case "mark.nested-chart":
           case "mark.image":
             {
               mark.mappings.x1 = {
@@ -405,7 +433,18 @@ export class ChartStore extends BaseStore {
         }
       }
 
+      if (action.classID == "mark.nested-chart") {
+        // Add column names to the mark
+        const columnNameMap: { [name: string]: string } = {};
+        for (const column of this.datasetStore.getTable(action.glyph.table)
+          .columns) {
+          columnNameMap[column.name] = column.name;
+        }
+        mark.properties.columnNameMap = columnNameMap;
+      }
+
       this.currentSelection = new MarkSelection(
+        this.findPlotSegmentForGlyph(action.glyph),
         action.glyph,
         action.glyph.marks[action.glyph.marks.length - 1]
       );
@@ -1086,7 +1125,7 @@ export class ChartStore extends BaseStore {
 
       action.links.properties.name = this.chartManager.findUnusedName("Link");
       this.chartManager.addChartElement(action.links);
-      const selection = new ChartElementSelection(action.links, null);
+      const selection = new ChartElementSelection(action.links);
       this.currentSelection = selection;
 
       // Note: currently, links has no constraints to solve
@@ -1095,33 +1134,43 @@ export class ChartStore extends BaseStore {
     }
 
     if (action instanceof Actions.SelectChartElement) {
-      const selection = new ChartElementSelection(
-        action.chartElement,
-        action.glyphIndex
-      );
+      const selection = new ChartElementSelection(action.chartElement);
+      if (Prototypes.isType(action.chartElement.classID, "plot-segment")) {
+        if (action.glyphIndex != null) {
+          this.setSelectedGlyphIndex(
+            action.chartElement._id,
+            action.glyphIndex
+          );
+        }
+      }
       this.currentSelection = selection;
       this.emit(ChartStore.EVENT_SELECTION);
     }
 
     if (action instanceof Actions.SelectMark) {
-      if (action.dataRowIndex == null) {
-        action.dataRowIndex = [
-          this.datasetStore.getSelectedRowIndex(
-            this.datasetStore.getTable(action.glyph.table)
-          )
-        ];
+      if (action.plotSegment == null) {
+        action.plotSegment = this.findPlotSegmentForGlyph(action.glyph);
       }
-      const selection = new MarkSelection(action.glyph, action.mark);
-      this.currentSelection = selection;
-      this.datasetStore.setSelectedRowIndex(
-        this.datasetStore.getTable(action.glyph.table),
-        action.dataRowIndex[0]
+      const selection = new MarkSelection(
+        action.plotSegment,
+        action.glyph,
+        action.mark
       );
+      if (action.glyphIndex != null) {
+        this.setSelectedGlyphIndex(action.plotSegment._id, action.glyphIndex);
+      }
+      this.currentSelection = selection;
       this.emit(ChartStore.EVENT_SELECTION);
     }
 
     if (action instanceof Actions.SelectGlyph) {
-      const selection = new GlyphSelection(action.glyph);
+      if (action.plotSegment == null) {
+        action.plotSegment = this.findPlotSegmentForGlyph(action.glyph);
+      }
+      const selection = new GlyphSelection(action.plotSegment, action.glyph);
+      if (action.glyphIndex != null) {
+        this.setSelectedGlyphIndex(action.plotSegment._id, action.glyphIndex);
+      }
       this.currentSelection = selection;
       this.emit(ChartStore.EVENT_SELECTION);
     }
@@ -1149,6 +1198,20 @@ export class ChartStore extends BaseStore {
       }
       this.chartManager.removeChartElement(action.chartElement);
 
+      this.solveConstraintsAndUpdateGraphics();
+    }
+    if (action instanceof Actions.ImportChartAndDataset) {
+      this.currentSelection = null;
+      this.emit(ChartStore.EVENT_SELECTION);
+
+      this.chart = action.specification;
+      this.chartManager = new Prototypes.ChartStateManager(
+        this.chart,
+        this.datasetStore.dataset
+      );
+      this.chartState = this.chartManager.chartState;
+
+      this.updateMarkStores();
       this.solveConstraintsAndUpdateGraphics();
     }
   }
@@ -1292,33 +1355,41 @@ export class ChartStore extends BaseStore {
     }
   }
 
-  public scaleInference(
-    context: { glyph?: Specification.Glyph; chart?: { table: string } },
-    expression: string,
-    valueType: string,
-    outputType: string,
-    hints: Prototypes.DataMappingHints = {}
-  ): string {
-    console.log(
-      "Scale inference",
-      context,
-      expression,
-      valueType,
-      outputType,
-      hints
-    );
-    const r = this.scaleInferenceReal(
-      context,
-      expression,
-      valueType,
-      outputType,
-      hints
-    );
-    console.log("Result", r);
-    return r;
+  /** Given the current selection, find a reasonable plot segment for a glyph */
+  public findPlotSegmentForGlyph(glyph: Specification.Glyph) {
+    if (
+      this.currentSelection instanceof MarkSelection ||
+      this.currentSelection instanceof GlyphSelection
+    ) {
+      if (this.currentSelection.glyph == glyph) {
+        return this.currentSelection.plotSegment;
+      }
+    }
+    if (this.currentSelection instanceof ChartElementSelection) {
+      if (
+        Prototypes.isType(
+          this.currentSelection.chartElement.classID,
+          "plot-segment"
+        )
+      ) {
+        const plotSegment = this.currentSelection
+          .chartElement as Specification.PlotSegment;
+        if (plotSegment.glyph == glyph._id) {
+          return plotSegment;
+        }
+      }
+    }
+    for (const elem of this.chart.elements) {
+      if (Prototypes.isType(elem.classID, "plot-segment")) {
+        const plotSegment = elem as Specification.PlotSegment;
+        if (plotSegment.glyph == glyph._id) {
+          return plotSegment;
+        }
+      }
+    }
   }
 
-  public scaleInferenceReal(
+  public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     expression: string,
     valueType: string,

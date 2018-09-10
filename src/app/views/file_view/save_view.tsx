@@ -1,15 +1,12 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
-import * as React from "react";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
+import * as React from "react";
 import * as R from "../../resources";
-import { Actions } from "../../actions";
-import { ContextedComponent } from "../../context_component";
-import { ImportDataView } from "./import_data_view";
+
 import { CurrentChartView } from ".";
 import { ButtonRaised } from "../../components";
+import { ContextedComponent } from "../../context_component";
 
 export class FileViewSaveAs extends ContextedComponent<
   {

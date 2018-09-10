@@ -1,31 +1,19 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import {
   Color,
   getById,
-  getByName,
-  indexOf,
   MultistringHashMap,
   Point,
   zip,
-  zipArray
+  zipArray,
+  transpose
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
 import * as Specification from "../../specification";
 import { CartesianCoordinates, CoordinateSystem } from "../coordinate_system";
-import {
-  Element,
-  Group,
-  makeGroup,
-  makeLine,
-  makePolygon,
-  makeRect,
-  Style,
-  MarkElement
-} from "../elements";
+import { Element, Group, makeGroup } from "../elements";
 
 export function facetRows(
   rows: Dataset.Row[],
@@ -49,26 +37,6 @@ export function facetRows(
   }
 }
 
-interface ResolvedLinkAnchorPoint {
-  anchorIndex: number;
-  x: { element: number; attribute: string };
-  y: { element: number; attribute: string };
-  direction: Point;
-  colorType: string;
-  colorValue?: Color;
-  colorScale?: {
-    class: Prototypes.Scales.ScaleClass;
-    column: string;
-  };
-}
-
-interface AnchorPoint {
-  x: number;
-  y: number;
-  direction: Point;
-  color: Color;
-}
-
 export class ChartRenderer {
   private manager: Prototypes.ChartStateManager;
 
@@ -76,17 +44,21 @@ export class ChartRenderer {
     this.manager = manager;
   }
 
-  private renderGlyph(
+  /**
+   * Render marks in a glyph
+   * @returns an array of groups with the same size as glyph.marks
+   */
+  private renderGlyphMarks(
+    plotSegment: Specification.PlotSegment,
     coordinateSystem: CoordinateSystem,
     offset: Point,
     glyph: Specification.Glyph,
     state: Specification.GlyphState,
     index: number
-  ): Group {
-    const gs: Element[] = [];
-    for (const [mark, markState] of zip(glyph.marks, state.marks)) {
+  ): Group[] {
+    return zipArray(glyph.marks, state.marks).map(([mark, markState]) => {
       if (!mark.properties.visible) {
-        continue;
+        return null;
       }
       const g = this.manager
         .getMarkClass(markState)
@@ -98,14 +70,17 @@ export class ChartRenderer {
           state.emphasized
         );
       if (g != null) {
-        const me = g as MarkElement;
-        me.glyph = glyph;
-        me.glyphIndex = index;
-        me.mark = mark;
-        gs.push(me);
+        g.selectable = {
+          plotSegment,
+          glyph,
+          mark,
+          glyphIndex: index
+        };
+        return makeGroup([g]);
+      } else {
+        return null;
       }
-    }
-    return makeGroup(gs);
+    });
   }
 
   private renderChart(
@@ -122,13 +97,6 @@ export class ChartRenderer {
     }
 
     const linkGroup = makeGroup([]);
-
-    const chartLinks = chart.elements.filter(x =>
-      Prototypes.isType(x.classID, "links")
-    ) as Specification.Links[];
-    const plotSegments = chart.elements.filter(x =>
-      Prototypes.isType(x.classID, "plot-segment")
-    ) as Specification.PlotSegment[];
 
     graphics.push(linkGroup);
 
@@ -160,7 +128,8 @@ export class ChartRenderer {
           plotSegmentState
         );
         const coordinateSystem = plotSegmentClass.getCoordinateSystem();
-        const glyphElements: Element[] = [];
+        // Render glyphs
+        const glyphArrays: Group[][] = [];
         for (const [
           glyphIndex,
           glyphState
@@ -169,15 +138,18 @@ export class ChartRenderer {
           const anchorY = glyphState.marks[0].attributes.y as number;
           const offsetX = (glyphState.attributes.x as number) - anchorX;
           const offsetY = (glyphState.attributes.y as number) - anchorY;
-          const g = this.renderGlyph(
+          const g = this.renderGlyphMarks(
+            plotSegment,
             coordinateSystem,
             { x: offsetX, y: offsetY },
             mark,
             glyphState,
             glyphIndex
           );
-          glyphElements.push(g);
+          glyphArrays.push(g);
         }
+        // Transpose glyphArrays so each mark is in a layer
+        const glyphElements = transpose(glyphArrays).map(x => makeGroup(x));
         const gGlyphs = makeGroup(glyphElements);
         gGlyphs.transform = coordinateSystem.getBaseTransform();
         const gElement = makeGroup([]);
@@ -223,4 +195,4 @@ export class ChartRenderer {
   }
 }
 
-export * from "./textMeasurer";
+export * from "./text_measurer";

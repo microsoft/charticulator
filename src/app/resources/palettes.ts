@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Color, colorFromHTMLColor, getColorConverter } from "../../core";
 
 /** A color scheme is a source of colors for categorical/ordinal/numerical scales */

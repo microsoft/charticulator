@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 const iconRegistry = new Map<string, string>();
 
 export function addSVGIcon(path: string | string[], svgDataURL: string) {
@@ -342,7 +340,10 @@ addSVGIcon(
   "mark/data-axis",
   require("url-loader!resources/icons/icons_data-axis.svg")
 );
-
+addSVGIcon(
+  "mark/nested-chart",
+  require("url-loader!resources/icons/icons_nested-chart.svg")
+);
 // Handle icons
 addSVGIcon(
   "sublayout/dodge-x",

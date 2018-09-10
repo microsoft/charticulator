@@ -2,6 +2,27 @@ const fs = require("fs-extra");
 const jsyaml = require("js-yaml");
 const multirun = require("multirun");
 
+let isProd = false;
+let sequence = [];
+process.argv.slice(2).forEach(arg => {
+  const m = arg.match(/^--([0-9a-zA-Z]+)\=(.*)$/);
+  if (m) {
+    const name = m[1], value = m[2];
+    if (name == "mode") {
+      isProd = value == "production";
+    }
+  } else {
+    sequence.push(arg);
+  }
+});
+
+async function fixDTSBundle(filename) {
+  let contents = await fs.readFile(filename, "utf-8");
+  // Single file imports causes errors
+  contents = contents.replace(/import +\".*?\";/g, "");
+  await fs.writeFile(filename, contents, "utf-8");
+}
+
 /** Convert a YAML file to JSON */
 function yamlToJSON(yamlFile, jsonFile) {
   return fs.readFile(yamlFile).then((contents) => {
@@ -31,11 +52,8 @@ function copyFolder(folder1, folder2) {
   }
 }
 
-// Parse environment variable
-const isProd = process.env.NODE_ENV === "production";
-
 // The default dev sequence
-const devSequence = ["cleanup", "makedirs", "copy", "third_party_data", "config", "pegjs", "typescript", "sass", "webpack"];
+const devSequence = ["cleanup", "makedirs", "copy", "third_party_data", "config", "pegjs", "typescript", "dtsBundle", "sass", "webpack"];
 
 let COMMANDS = {
 
@@ -49,12 +67,21 @@ let COMMANDS = {
     () => fs.mkdirs("dist/scripts/core/expression")
   ],
 
+  dtsBundle: [
+    "dts-bundle --name CharticulatorContainer --main dist/scripts/container/index.d.ts --baseDir dist/scripts --out ../../dist/scripts/container.bundle.d.ts",
+    () => fixDTSBundle("dist/scripts/container.bundle.d.ts"),
+    "dts-bundle --name Charticulator --main dist/scripts/app/index.d.ts --baseDir dist/scripts --out ../../dist/scripts/app.bundle.d.ts",
+    () => fixDTSBundle("dist/scripts/app.bundle.d.ts")
+  ],
+
   // Copy files
   copy: [
     () => fs.copy("src/core/expression/parser.d.ts", "dist/scripts/core/expression/parser.d.ts"),
 
     // Copy all of the public files
-    () => copyFolder("./public", "./dist"),
+    isProd
+      ? () => copyFolder("./public", "./dist")
+      : [() => copyFolder("./public", "./dist"), () => copyFolder("./public_test", "./dist")],
 
     // Copy all of the extensions
     () => copyFolder("./extensions", "./dist/extensions"),
@@ -122,7 +149,6 @@ async function runCommands(sequence) {
 }
 
 // Execute the specified commands, with no args, run the default sequence
-let sequence = process.argv.slice(2);
 if (sequence.length == 0) {
   sequence = devSequence;
 }

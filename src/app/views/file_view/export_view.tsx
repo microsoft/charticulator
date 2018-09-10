@@ -1,19 +1,18 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
-import * as React from "react";
-import * as FileSaver from "file-saver";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
+import * as FileSaver from "file-saver";
+import * as React from "react";
 import * as R from "../../resources";
-import { Actions } from "../../actions";
-import { ContextedComponent } from "../../context_component";
-import { ImportDataView } from "./import_data_view";
+
 import { CurrentChartView } from ".";
-import { ButtonRaised, SVGImageIcon } from "../../components";
-import { classNames } from "../../utils";
-import { Specification, deepClone, getById } from "../../../core";
+import { deepClone, Specification } from "../../../core";
+import { findObjectById } from "../../../core/prototypes";
+import { Actions } from "../../actions";
+import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
+import { ContextedComponent } from "../../context_component";
 import { ExportTemplateTarget } from "../../template";
+import { classNames } from "../../utils";
 
 export interface FileViewExportState {
   exportMode: string;
@@ -92,9 +91,11 @@ export class FileViewExport extends ContextedComponent<
               ))}
             </div>
           </div>
-          {this.state.exportMode == "image"
-            ? this.renderExportImage()
-            : this.renderExportTemplate()}
+          <ErrorBoundary maxWidth={300}>
+            {this.state.exportMode == "image"
+              ? this.renderExportImage()
+              : this.renderExportTemplate()}
+          </ErrorBoundary>
         </div>
       </div>
     );
@@ -119,21 +120,6 @@ export class ExportTemplateView extends ContextedComponent<
     const targetProperties: { [name: string]: string } = {};
     for (const property of target.getProperties()) {
       targetProperties[property.name] = property.default;
-    }
-    for (const slot of template.dataSlots) {
-      if (!slot.displayName) {
-        slot.displayName = slot.name;
-      }
-    }
-    for (const id in template.properties) {
-      if (!template.properties.hasOwnProperty(id)) {
-        continue;
-      }
-      for (const p of template.properties[id]) {
-        if (!p.displayName) {
-          p.displayName = p.name;
-        }
-      }
     }
     return {
       template,
@@ -189,89 +175,73 @@ export class ExportTemplateView extends ContextedComponent<
   }
 
   public renderSlots() {
-    if (this.state.template.dataSlots.length == 0) {
+    if (this.state.template.tables.length == 0) {
       return <p>(none)</p>;
     }
-    return this.state.template.dataSlots.map(slot => {
-      return (
-        <div key={slot.name}>
-          {this.renderInput(slot.name, slot.displayName, value => {
-            slot.displayName = value;
-            this.setState({
-              template: this.state.template
-            });
-          })}
-        </div>
-      );
-    });
+    return this.state.template.tables.map(table => (
+      <div key={table.name}>
+        {table.columns.map(column => (
+          <div key={column.name}>
+            {this.renderInput(column.name, column.displayName, value => {
+              column.displayName = value;
+              this.setState({
+                template: this.state.template
+              });
+            })}
+          </div>
+        ))}
+      </div>
+    ));
   }
 
   public renderExposedProperties() {
-    const getItemById = (id: string) => {
-      const r =
-        getById(this.state.template.specification.glyphs, id) ||
-        getById(this.state.template.specification.elements, id) ||
-        getById(this.state.template.specification.scales, id);
-      if (r) {
-        return r;
-      }
-      for (const glyph of this.state.template.specification.glyphs) {
-        const r = getById(glyph.marks, id);
-        if (r) {
-          return r;
-        }
-      }
-      if (this.state.template.specification._id == id) {
-        return this.state.template.specification;
-      }
-    };
     const result: JSX.Element[] = [];
-    for (const id in this.state.template.properties) {
-      if (!this.state.template.properties.hasOwnProperty(id)) {
-        continue;
+    for (const p of this.state.template.properties) {
+      const id = p.objectID;
+      const obj = findObjectById(this.state.template.specification, id);
+      if (p.target.attribute) {
+        result.push(
+          <div key={id + p.target.attribute}>
+            {this.renderInput(
+              obj.properties.name + "/" + p.target.attribute,
+              p.displayName,
+              value => {
+                p.displayName = value;
+                this.setState({
+                  template: this.state.template
+                });
+              }
+            )}
+          </div>
+        );
       }
-      const obj = getItemById(id);
-      for (const p of this.state.template.properties[id]) {
-        if (p.mode == "attribute") {
-          result.push(
-            <div key={id + p.attribute}>
-              {this.renderInput(
-                obj.properties.name + "/" + p.attribute,
-                p.displayName,
-                value => {
-                  p.displayName = value;
-                  this.setState({
-                    template: this.state.template
-                  });
-                }
-              )}
-            </div>
-          );
+      if (p.target.property) {
+        const pf = p.target.property;
+        let pfstr = null;
+        if (typeof pf == "string") {
+          pfstr = pf;
+        } else {
+          pfstr =
+            pf.property +
+            "/" +
+            (typeof pf.field == "string" || typeof pf.field == "number"
+              ? pf.field
+              : pf.field.join("."));
         }
-        if (p.mode == "property") {
-          let pf = p.property;
-          if (p.fields != null) {
-            if (typeof p.fields == "string") {
-              pf += p.fields;
-            } else {
-              pf += p.fields.join(".");
-            }
-          }
-          result.push(
-            <div key={id + pf}>
-              {this.renderInput(
-                obj.properties.name + "/" + pf,
-                p.displayName,
-                value => {
-                  p.displayName = value;
-                  this.setState({
-                    template: this.state.template
-                  });
-                }
-              )}
-            </div>
-          );
-        }
+        result.push(
+          <div key={id + pfstr}>
+            {this.renderInput(
+              obj.properties.name + "/" + pfstr,
+              p.displayName,
+              value => {
+                p.displayName = value;
+                this.setState({
+                  template: this.state.template
+                });
+              }
+            )}
+          </div>
+        );
       }
     }
     return result;

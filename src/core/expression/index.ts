@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Expression, TextExpression } from "./classes";
 
 export {
@@ -19,15 +17,18 @@ export {
   NumberValue,
   BooleanValue,
   StringValue,
-  DateValue
+  DateValue,
+  variableReplacer
 } from "./classes";
 
 export { SyntaxError } from "./parser";
 
+/** Shortcut to Expression.Parse */
 export function parse(str: string): Expression {
   return Expression.Parse(str);
 }
 
+/** Shortcut to TextExpression.Parse */
 export function parseTextExpression(str: string): TextExpression {
   return TextExpression.Parse(str);
 }
@@ -46,6 +47,10 @@ export {
   date,
   boolean,
   ExpressionCache,
+  getDefaultAggregationFunction,
+  getCompatibleAggregationFunctions,
+  aggregationFunctions,
+  AggregationFunctionDescription,
   verifyUserExpression,
   VerifyUserExpressionOptions,
   VerifyUserExpressionReport

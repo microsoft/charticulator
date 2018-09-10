@@ -1,100 +1,93 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+import { FieldType } from "../common";
+import * as Dataset from "../dataset";
 import { Chart } from "./index";
+import * as Types from "./types";
+
+export type PropertyField = string | { property: string; field: FieldType };
 
 export interface ChartTemplate {
+  /** The original chart specification */
   specification: Chart;
 
   /** Data tables */
   tables: Table[];
 
-  /** Slots to map data to */
-  dataSlots: DataSlot[];
-
   /** Infer attribute or property from data */
-  inference: { [id: string]: Inference[] };
-
-  /** Assign slots to data mappings */
-  mappings: { [id: string]: Mapping[] };
+  inference: Inference[];
 
   /** Expose property editor */
-  properties: { [id: string]: Property[] };
+  properties: Property[];
+}
+
+export interface Column {
+  displayName: string;
+  name: string;
+  type: string;
+  metadata: Dataset.ColumnMetadata;
 }
 
 export interface Table {
   name: string;
-}
-
-export interface DataSlot {
-  table: string;
-  name: string;
-  kind: string;
-  displayName?: string;
-}
-
-export interface Inference {
-  type: string;
-}
-
-export interface Mapping {
-  attribute: string;
-  slotName: string;
-  scale?: string;
+  columns: Column[];
 }
 
 export interface Property {
-  mode: "property" | "attribute";
-  name?: string;
+  objectID: string;
   displayName?: string;
-  property?: string;
-  fields?: string | string[];
-  attribute?: string;
+
+  target: {
+    property?: PropertyField;
+    attribute?: string;
+  };
 
   type: string;
   default?: string | number | boolean;
 }
 
-/** Infer axis parameter, set to axis property */
-export interface Axis extends Inference {
-  type: "axis";
-  slotName?: string;
-  slotKind?: string;
+/** Infer values from data */
+export interface Inference {
+  objectID: string;
+  dataSource?: {
+    table: string;
+    groupBy?: Types.GroupBy;
+  };
 
-  // Infer axis data and assign to this property
-  property: string;
-  fields?: string | string[];
+  axis?: AxisInference;
+  scale?: ScaleInference;
+  expression?: ExpressionInference;
 }
 
-export interface SlotList extends Inference {
-  type: "slot-list";
-  property: string;
-  fields?: string | string[];
-  slots: Array<{ slotName: string; slotKind: string }>;
+/** Infer axis parameter, set to axis property */
+export interface AxisInference {
+  /** Data expression for the axis */
+  expression: string;
+
+  /** Type */
+  type: "default" | "categorical" | "numerical";
+
+  /** Infer axis data and assign to this property */
+  property: PropertyField;
 }
 
 /** Infer scale parameter, set to scale's domain property */
-export interface Scale extends Inference {
-  type: "scale";
-  slotName?: string;
-  slotKind?: string;
+export interface ScaleInference {
+  classID: string;
 
-  rangeType: "number" | "color";
+  expressions: string[];
 
   properties: {
-    min?: string;
-    max?: string;
-    mapping?: string;
+    min?: PropertyField;
+    max?: PropertyField;
+    mapping?: PropertyField;
   };
 }
 
-/** Infer order parameter, set to orderBy */
-export interface Order extends Inference {
-  type: "order";
-  slotName?: string;
-  slotKind?: string;
+/** Fix expression */
+export interface ExpressionInference {
+  expression: string;
 
-  property: string;
-  field?: string | string[];
+  property: PropertyField;
 }

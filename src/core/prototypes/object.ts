@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { deepClone, uniqueID } from "../common";
 import { VariableStrength } from "../solver";
 import * as Specification from "../specification";

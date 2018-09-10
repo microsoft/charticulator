@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { deepClone, EventEmitter, Specification } from "../../core";
 import { Dispatcher } from "../../core";
 
@@ -30,7 +28,7 @@ import {
   ItemDescription,
   ItemMetadata
 } from "../backend/abstract";
-import { IndexedDBBackend } from "../backend/indexedDB";
+import { IndexedDBBackend } from "../backend/indexed_db";
 import { ExportTemplateTarget } from "../template";
 import { Migrator } from "./migrator";
 
@@ -77,6 +75,8 @@ export interface MainStoreState {
 
 export class MainStore extends BaseStore {
   public static EVENT_STATUSBAR = "status-bar";
+  public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
+  public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
 
   public readonly parent: null;
   public readonly worker: CharticulatorWorker;
@@ -85,6 +85,8 @@ export class MainStore extends BaseStore {
   public chartStore: ChartStore;
 
   public statusBar: { [name: string]: string };
+  public isNestedEditor: boolean = false;
+  public disableFileView: boolean = false;
 
   public historyManager: HistoryManager<MainStoreState>;
 
@@ -179,9 +181,7 @@ export class MainStore extends BaseStore {
       const state = this.historyManager.undo(this.saveDecoupledState());
       if (state) {
         const ss = this.chartStore.saveSelectionState();
-        const dss = this.datasetStore.saveSelectionState();
         this.loadState(state);
-        this.datasetStore.loadSelectionState(dss);
         this.chartStore.loadSelectionState(ss);
       }
     }
@@ -189,9 +189,7 @@ export class MainStore extends BaseStore {
       const state = this.historyManager.redo(this.saveDecoupledState());
       if (state) {
         const ss = this.chartStore.saveSelectionState();
-        const dss = this.datasetStore.saveSelectionState();
         this.loadState(state);
-        this.datasetStore.loadSelectionState(dss);
         this.chartStore.loadSelectionState(ss);
       }
     }
@@ -233,6 +231,10 @@ export class MainStore extends BaseStore {
       this.loadState(state);
     }
     if (action instanceof Actions.ImportDataset) {
+      this.currentChartID = null;
+      this.historyManager.clear();
+    }
+    if (action instanceof Actions.ImportChartAndDataset) {
       this.currentChartID = null;
       this.historyManager.clear();
     }
@@ -286,6 +288,17 @@ export class MainStore extends BaseStore {
     );
     this.currentChartID = id;
     return id;
+  }
+
+  public setupNestedEditor(
+    callback: (newSpecification: Specification.Chart) => void
+  ) {
+    this.isNestedEditor = true;
+    this.disableFileView = true;
+    this.emit(MainStore.EVENT_IS_NESTED_EDITOR);
+    this.addListener(MainStore.EVENT_NESTED_EDITOR_EDIT, () => {
+      callback(this.chartStore.chart);
+    });
   }
 
   private registeredExportTemplateTargets = new Map<

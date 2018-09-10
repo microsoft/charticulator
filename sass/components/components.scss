@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 @import "buttons.scss";
 @import "toolbar.scss";
 @import "popup.scss";
@@ -10,8 +12,7 @@
 @import "image_uploader.scss";
 
 .charticulator__error-boundary-report {
-    p {
-        margin: 0.5em 0;
-    }
+  p {
+    margin: 0.5em 0;
+  }
 }
-

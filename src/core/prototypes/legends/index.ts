@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -368,8 +366,8 @@ export class NumericalColorLegendClass extends LegendClass {
     for (let i = 0; i < ticks; i++) {
       const t = (i + 0.5) / ticks;
       const color = interp(t);
-      const y1 = i / ticks * height;
-      const y2 = Math.min(height, (i + 1.5) / ticks * height);
+      const y1 = (i / ticks) * height;
+      const y2 = Math.min(height, ((i + 1.5) / ticks) * height);
       g.elements.push(
         Graphics.makeRect(marginLeft, y1, marginLeft + gradientWidth, y2, {
           fillColor: color
@@ -550,7 +548,7 @@ export class NumericalNumberLegendClass extends ChartElementClass {
     return renderer.renderLine(
       this.state.attributes.x1 as number,
       this.state.attributes.y1 as number,
-      Math.atan2(dy, dx) / Math.PI * 180,
+      (Math.atan2(dy, dx) / Math.PI) * 180,
       -1
     );
   }

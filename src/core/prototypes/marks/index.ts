@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -18,6 +16,8 @@ import {
   ObjectClass,
   SnappingGuides
 } from "../common";
+
+import { ChartStateManager } from "../state";
 
 export interface CreationParameters {
   dropPoint: Point;
@@ -71,17 +71,32 @@ export abstract class MarkClass extends ObjectClass {
   public getSnappingGuides(): SnappingGuides.Description[] {
     return [];
   }
+
+  public getGlyphClass() {
+    return this.parent as GlyphClass;
+  }
+
+  public getPlotSegmentClass() {
+    return this.parent.parent as PlotSegmentClass;
+  }
+
+  public getChartClass() {
+    return this.parent.parent.parent as ChartClass;
+  }
 }
 
 import "./anchor";
 // import "./textbox";
-import "./dataAxis";
+import "./data_axis";
 import "./line";
 import "./rect";
 import "./symbol";
 import "./text";
 import "./image";
-import { ChartStateManager } from "../state";
+import "./nested_chart";
+import { GlyphClass } from "../glyphs";
+import { PlotSegmentClass } from "../plot_segments";
+import { ChartClass } from "../charts";
 
 export { AnchorElementAttributes, AnchorElement } from "./anchor";
 export { SymbolElementAttributes, SymbolElement } from "./symbol";

@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { deepClone, fillDefaults, Scale } from "../../common";
 import {
   CoordinateSystem,
@@ -11,7 +9,7 @@ import {
   makeText,
   Style
 } from "../../graphics";
-import { TextMeasurer } from "../../graphics/renderer/textMeasurer";
+import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
 import { Controls } from "../common";
 
@@ -149,8 +147,7 @@ export class AxisRenderer {
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
       const tx =
-        (ticks[i] - domainMin) /
-          (domainMax - domainMin) *
+        ((ticks[i] - domainMin) / (domainMax - domainMin)) *
           (rangeMax - rangeMin) +
         rangeMin;
       r.push({
@@ -159,7 +156,7 @@ export class AxisRenderer {
       });
     }
     this.valueToPosition = value =>
-      (value - domainMin) / (domainMax - domainMin) * (rangeMax - rangeMin) +
+      ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
       rangeMin;
     this.ticks = r;
     this.rangeMin = rangeMin;
@@ -177,7 +174,7 @@ export class AxisRenderer {
     for (let i = 0; i < domain.length; i++) {
       r.push({
         position:
-          (range[i][0] + range[i][1]) / 2 * (rangeMax - rangeMin) + rangeMin,
+          ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin,
         label: domain[i]
       });
     }
@@ -185,7 +182,7 @@ export class AxisRenderer {
       const i = domain.indexOf(value);
       if (i >= 0) {
         return (
-          (range[i][0] + range[i][1]) / 2 * (rangeMax - rangeMin) + rangeMin
+          ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin
         );
       } else {
         return 0;
@@ -213,8 +210,8 @@ export class AxisRenderer {
       side = -side;
     }
 
-    const cos = Math.cos(angle / 180 * Math.PI);
-    const sin = Math.sin(angle / 180 * Math.PI);
+    const cos = Math.cos((angle / 180) * Math.PI);
+    const sin = Math.sin((angle / 180) * Math.PI);
     const x1 = x + rangeMin * cos;
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
@@ -420,7 +417,7 @@ export class AxisRenderer {
 
     for (const tick of this.ticks) {
       const angle = tick.position;
-      const radians = angle / 180 * Math.PI;
+      const radians = (angle / 180) * Math.PI;
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
@@ -730,4 +727,25 @@ export function buildAxisWidgets(
     widgets.push(m.sectionHeader(axisName + ": (none)", null, dropzoneOptions));
   }
   return widgets;
+}
+
+export function buildAxisInference(
+  plotSegment: Specification.PlotSegment,
+  property: string
+): Specification.Template.Inference {
+  const axis = plotSegment.properties[
+    property
+  ] as Specification.Types.AxisDataBinding;
+  return {
+    objectID: plotSegment._id,
+    dataSource: {
+      table: plotSegment.table,
+      groupBy: plotSegment.groupBy
+    },
+    axis: {
+      expression: axis.expression,
+      type: axis.type,
+      property
+    }
+  };
 }

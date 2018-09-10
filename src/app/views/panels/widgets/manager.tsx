@@ -1,7 +1,6 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -12,11 +11,11 @@ import {
   Color,
   ColorGradient,
   EventSubscription,
-  Expression,
   getField,
   Point,
   Prototypes,
-  Specification
+  Specification,
+  uniqueID
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -41,7 +40,6 @@ import {
   InputText,
   Radio,
   Select,
-  ComboBox,
   ComboBoxFontFamily
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
@@ -720,6 +718,55 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     }
   }
 
+  public nestedChartEditor(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.NestedChartEditorOptions
+  ) {
+    return this.row(
+      "",
+      <ButtonRaised
+        text="Edit Nested Chart"
+        onClick={() => {
+          const editorID = uniqueID();
+          const newWindow = window.open(
+            "index.html#!nestedEditor=" + editorID,
+            "nested_chart_" + options.specification._id
+          );
+          const listener = (e: MessageEvent) => {
+            if (e.origin == document.location.origin) {
+              const data = e.data;
+              if (data.id == editorID) {
+                switch (data.type) {
+                  case "initialized":
+                    {
+                      newWindow.postMessage(
+                        {
+                          id: editorID,
+                          type: "load",
+                          specification: options.specification,
+                          dataset: options.dataset,
+                          width: options.width,
+                          height: options.height
+                        },
+                        document.location.origin
+                      );
+                    }
+                    break;
+                  case "save":
+                    {
+                      this.emitSetProperty(property, data.specification);
+                    }
+                    break;
+                }
+              }
+            }
+          };
+          window.addEventListener("message", listener);
+        }}
+      />
+    );
+  }
+
   public row(title: string, widget?: JSX.Element) {
     return (
       <div className="charticulator__widget-row">
@@ -749,15 +796,17 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ): JSX.Element {
     return (
       <table className="charticulator__widget-table">
-        {rows.map((row, index) => (
-          <tr key={index}>
-            {row.map((x, i) => (
-              <td key={i}>
-                <span className="el-layout-item">{x}</span>
-              </td>
-            ))}
-          </tr>
-        ))}
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((x, i) => (
+                <td key={i}>
+                  <span className="el-layout-item">{x}</span>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
     );
   }
@@ -891,6 +940,20 @@ export class ReorderStringsValue extends React.Component<
               </div>
             ))}
           </ReorderListView>
+        </div>
+        <div className="el-row">
+          <Button
+            text="Reverse"
+            onClick={() => {
+              this.setState({ items: this.state.items.reverse() });
+            }}
+          />{" "}
+          <Button
+            text="Sort"
+            onClick={() => {
+              this.setState({ items: this.state.items.sort() });
+            }}
+          />
         </div>
         <div className="el-row">
           <ButtonRaised

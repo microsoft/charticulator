@@ -1,32 +1,16 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
-import { MainStore } from "../../stores";
-import {
-  AbstractBackend,
-  ItemData,
-  ItemDescription,
-  ItemMetadata
-} from "../../backend/abstract";
-import { classNames, renderDataURLToPNG } from "../../utils";
-import { Actions } from "../../actions";
-import {
-  SVGImageIcon,
-  ButtonFlat,
-  ButtonRaised,
-  EditableTextView
-} from "../../components";
 import * as R from "../../resources";
-import { ImportDataView } from "./import_data_view";
 
-import * as FileSaver from "file-saver";
-
-import { FileViewOpen } from "./open_view";
-import { FileViewNew } from "./new_view";
-import { FileViewSaveAs } from "./save_view";
+import { AbstractBackend } from "../../backend/abstract";
+import { ErrorBoundary, SVGImageIcon } from "../../components";
+import { MainStore } from "../../stores";
+import { classNames } from "../../utils";
 import { FileViewExport } from "./export_view";
+import { FileViewNew } from "./new_view";
+import { FileViewOpen } from "./open_view";
+import { FileViewSaveAs } from "./save_view";
 
 export class CurrentChartView extends React.PureComponent<
   { store: MainStore },
@@ -164,7 +148,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
             About
           </div>
         </div>
-        {this.renderContent()}
+        <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
       </div>
     );
   }

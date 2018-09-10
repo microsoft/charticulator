@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { indexOf, Point, uniqueID } from "../../common";
 import {
   ConstraintSolver,
@@ -27,11 +25,13 @@ import {
 
 import { Color } from "../../common";
 import * as Scales from "../scales";
+import { ChartStateManager } from "../state";
 
 export abstract class ChartClass extends ObjectClass {
   public readonly object: Specification.Chart;
   public readonly state: Specification.ChartState;
   public dataflow: DataflowManager;
+  public manager: ChartStateManager;
 
   public static metadata: ObjectClassMetadata = {
     iconPath: "chart",
@@ -40,6 +40,10 @@ export abstract class ChartClass extends ObjectClass {
 
   public setDataflow(dataflow: DataflowManager) {
     this.dataflow = dataflow;
+  }
+
+  public setManager(manager: ChartStateManager) {
+    this.manager = manager;
   }
 
   public getBackgroundGraphics(): Graphics.Element {
@@ -541,33 +545,37 @@ class RectangleChart extends ChartClass {
       return {
         properties: [
           {
-            mode: "attribute",
-            attribute: "marginLeft",
-            displayName: "Margin Left",
-            type: "string",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginLeft"
+            },
+            type: "number",
             default: this.state.attributes.marginLeft
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginRight",
-            displayName: "Margin Right",
-            type: "string",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginRight"
+            },
+            type: "number",
             default: this.state.attributes.marginRight
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginTop",
-            displayName: "Margin Top",
-            type: "string",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginTop"
+            },
+            type: "number",
             default: this.state.attributes.marginTop
-          } as Specification.Template.Property,
+          },
           {
-            mode: "attribute",
-            attribute: "marginBottom",
-            displayName: "Margin Bottom",
-            type: "string",
+            objectID: this.object._id,
+            target: {
+              attribute: "marginBottom"
+            },
+            type: "number",
             default: this.state.attributes.marginBottom
-          } as Specification.Template.Property
+          }
         ]
       };
     }

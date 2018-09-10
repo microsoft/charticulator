@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
@@ -74,8 +72,15 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           title="Data Axis"
           icon="mark/data-axis"
         />
+        <ObjectButton
+          classID="mark.nested-chart"
+          title="Nested Chart"
+          icon="mark/nested-chart"
+        />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Guides</span>
         <ObjectButton
           classID="guide-y"
@@ -101,6 +106,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           icon="guide/coordinator-y"
           noDragging={true}
         />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Plot Segments</span>
         <ObjectButton
           classID="plot-segment.cartesian"
@@ -115,6 +121,7 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           noDragging={true}
         />
         {/* <ScaffoldButton type="curve" title="Curve" icon="plot/curve" currentTool={this.props.store.currentTool} /> */}
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Scaffolds</span>
         <ScaffoldButton
           type="cartesian-x"

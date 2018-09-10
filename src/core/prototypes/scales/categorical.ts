@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Color, Scale } from "../../common";
 import {
   ConstraintSolver,
@@ -156,7 +154,7 @@ class CategoricalScaleNumber extends ScaleClass {
 
     s.domain.forEach((v, d) => {
       props.mapping[d] =
-        v / (s.domain.size - 1) * (range[1] - range[0]) + range[0];
+        (v / (s.domain.size - 1)) * (range[1] - range[0]) + range[0];
     });
 
     attrs.rangeScale = range[1] as number;
@@ -251,21 +249,6 @@ class CategoricalScaleColor extends ScaleClass {
       )
     );
     return [manager.sectionHeader("Color Mapping"), ...items];
-  }
-
-  public getTemplateParameters(): TemplateParameters {
-    return {
-      inferences: [
-        {
-          type: "scale",
-          slotKind: "categorical",
-          rangeType: "color",
-          properties: {
-            mapping: "mapping"
-          }
-        } as Specification.Template.Scale
-      ]
-    };
   }
 }
 

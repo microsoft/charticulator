@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../../../globals";
@@ -267,11 +265,20 @@ export class MappingEditor extends React.Component<
               if (newValue == null || newValue.trim() == "") {
                 this.clearMapping();
               } else {
-                this.props.parent.onEditMappingHandler(this.props.attribute, {
-                  type: "text",
-                  table: this.getTableOrDefault(),
-                  textExpression: newValue
-                } as Specification.TextMapping);
+                if (
+                  Expression.parseTextExpression(newValue).isTrivialString()
+                ) {
+                  this.props.parent.onEditMappingHandler(this.props.attribute, {
+                    type: "value",
+                    value: newValue
+                  } as Specification.ValueMapping);
+                } else {
+                  this.props.parent.onEditMappingHandler(this.props.attribute, {
+                    type: "text",
+                    table: this.getTableOrDefault(),
+                    textExpression: newValue
+                  } as Specification.TextMapping);
+                }
               }
               return true;
             }}
@@ -435,11 +442,26 @@ export class MappingEditor extends React.Component<
                 if (newValue == null || newValue.trim() == "") {
                   this.clearMapping();
                 } else {
-                  this.props.parent.onEditMappingHandler(this.props.attribute, {
-                    type: "text",
-                    table: textMapping.table,
-                    textExpression: newValue
-                  } as Specification.TextMapping);
+                  if (
+                    Expression.parseTextExpression(newValue).isTrivialString()
+                  ) {
+                    this.props.parent.onEditMappingHandler(
+                      this.props.attribute,
+                      {
+                        type: "value",
+                        value: newValue
+                      } as Specification.ValueMapping
+                    );
+                  } else {
+                    this.props.parent.onEditMappingHandler(
+                      this.props.attribute,
+                      {
+                        type: "text",
+                        table: textMapping.table,
+                        textExpression: newValue
+                      } as Specification.TextMapping
+                    );
+                  }
                 }
                 return true;
               }}
@@ -600,6 +622,7 @@ export class MappingEditor extends React.Component<
             {shouldShowBindData ? (
               <Button
                 icon={"general/bind-data"}
+                title="Bind data"
                 ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
                 }

@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import {
   BooleanValue,
   DateValue,
@@ -61,6 +59,39 @@ export function boolean(v: boolean) {
 }
 export function date(v: Date) {
   return new DateValue(v);
+}
+
+export interface AggregationFunctionDescription {
+  name: string;
+  displayName: string;
+  /** Supported input types, if unspecified, any */
+  inputTypes?: string[];
+}
+export const aggregationFunctions: AggregationFunctionDescription[] = [
+  { name: "avg", displayName: "Average", inputTypes: ["number"] },
+  { name: "median", displayName: "Median", inputTypes: ["number"] },
+  { name: "sum", displayName: "Sum", inputTypes: ["number"] },
+  { name: "min", displayName: "Min", inputTypes: ["number"] },
+  { name: "max", displayName: "Max", inputTypes: ["number"] },
+  { name: "stdev", displayName: "Standard Deviation", inputTypes: ["number"] },
+  { name: "variance", displayName: "Variance", inputTypes: ["number"] },
+  { name: "first", displayName: "First" },
+  { name: "last", displayName: "Last" },
+  { name: "count", displayName: "Count" }
+];
+
+export function getCompatibleAggregationFunctions(inputType: string) {
+  return aggregationFunctions.filter(
+    x => x.inputTypes == null || x.inputTypes.indexOf(inputType) >= 0
+  );
+}
+
+export function getDefaultAggregationFunction(inputType: string) {
+  if (inputType == "number" || inputType == "integer") {
+    return "avg";
+  } else {
+    return "first";
+  }
 }
 
 export class ExpressionCache {

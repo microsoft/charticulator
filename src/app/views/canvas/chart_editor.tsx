@@ -1,51 +1,46 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 import * as React from "react";
-import { EventSubscription, stableSortBy } from "../../../core";
-
-import * as globals from "../../globals";
 import * as R from "../../resources";
+import * as globals from "../../globals";
 
 import {
-  Specification,
-  Prototypes,
-  Graphics,
-  zip,
-  zipArray,
-  getById,
-  ZoomInfo,
-  indexOf,
+  EventSubscription,
   Geometry,
+  getById,
+  Graphics,
   Point,
-  deepClone,
-  setField
+  Prototypes,
+  Specification,
+  stableSortBy,
+  zipArray,
+  ZoomInfo
 } from "../../../core";
-import {
-  ChartStore,
-  Selection,
-  ChartElementSelection,
-  MarkSelection
-} from "../../stores";
+import { Actions, DragData } from "../../actions";
+import { DragContext, Droppable } from "../../controllers";
 import { GraphicalElementDisplay } from "../../renderer";
+import {
+  ChartElementSelection,
+  ChartStore,
+  MarkSelection,
+  Selection
+} from "../../stores";
+import { Button } from "../panels/widgets/controls";
+import { WidgetManager } from "../panels/widgets/manager";
+import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,
   CreatingComponentFromCreatingInteraction
 } from "./creating_component";
-import { Droppable, DragContext } from "../../controllers";
+import { DropZoneView } from "./dropzone";
+import { EditingLink } from "./editing_link";
+import { HandlesView, ResizeHandleView } from "./handles";
 import {
-  ChartSnappingSession,
   ChartSnappableGuide,
+  ChartSnappingSession,
   MoveSnappingSession
 } from "./snapping";
-import { HandlesView, ResizeHandleView } from "./handles";
-import { Actions, DragData } from "../../actions";
-import { DropZoneView } from "./dropzone";
-import { BoundingBoxView } from "./bounding_box";
-import { WidgetManager } from "../panels/widgets/manager";
-import { EditingLink } from "./editing_link";
-import { Button } from "../panels/widgets/controls";
 
 export interface ChartEditorViewProps {
   store: ChartStore;
@@ -295,7 +290,6 @@ export class ChartEditorView
       this.setState({
         dropZoneData: { layout: data }
       });
-      console.log("drag enter");
       ctx.onLeave(() => {
         this.setState({
           dropZoneData: false
@@ -346,32 +340,6 @@ export class ChartEditorView
     if (this.state.currentCreation == null) {
       return null;
     }
-
-    // if (this.state.currentCreation == "link") {
-    //     let linkTable: string = null;
-    //     if (this.props.store.currentToolOptions && this.props.store.currentToolOptions.by == "table") {
-    //         if (this.props.store.datasetStore.dataset.tables.length >= 2) {
-    //             linkTable = this.props.store.datasetStore.dataset.tables[1].name;
-    //         }
-    //     }
-    //     return (
-    //         <CreatingLink width={this.state.viewWidth} height={this.state.viewHeight} zoom={this.state.zoom}
-    //             chart={this.props.store.chart}
-    //             chartState={this.props.store.chartState}
-    //             dataset={this.props.store.datasetStore.dataset}
-    //             lineMode={this.props.store.currentToolOptions.mode}
-    //             linkTable={linkTable}
-    //             store={this.props.store}
-    //             onCreate={(links) => {
-    //                 new Actions.AddLinks(links).dispatch(this.props.store.dispatcher);
-    //                 new Actions.SetCurrentTool(null).dispatch(this.props.store.dispatcher);
-    //             }}
-    //             onCancel={() => {
-    //                 new Actions.SetCurrentTool(null).dispatch(this.props.store.dispatcher);
-    //             }}
-    //         />
-    //     );
-    // }
 
     const metadata = Prototypes.ObjectClasses.GetMetadata(
       this.state.currentCreation
@@ -629,7 +597,6 @@ export class ChartEditorView
       .getPlotSegmentClass(plotSegmentState)
       .getCoordinateSystem();
     const glyph = getById(this.props.store.chart.glyphs, plotSegment.glyph);
-    const table = this.props.store.datasetStore.getTable(glyph.table);
     plotSegmentState.glyphs.forEach((glyphState, glyphIndex) => {
       const offsetX = glyphState.attributes.x as number;
       const offsetY = glyphState.attributes.y as number;
@@ -640,13 +607,13 @@ export class ChartEditorView
         let isMarkSelected = false;
         if (this.props.store.currentSelection instanceof MarkSelection) {
           if (
+            this.props.store.currentSelection.plotSegment == plotSegment &&
             this.props.store.currentSelection.glyph == glyph &&
             this.props.store.currentSelection.mark == mark
           ) {
             if (
-              plotSegmentState.dataRowIndices[glyphIndex].indexOf(
-                this.props.store.datasetStore.getSelectedRowIndex(table)
-              ) >= 0
+              glyphIndex ==
+              this.props.store.getSelectedGlyphIndex(plotSegment._id)
             ) {
               isMarkSelected = true;
             }
@@ -663,9 +630,10 @@ export class ChartEditorView
               active={isMarkSelected}
               onClick={() => {
                 new Actions.SelectMark(
+                  plotSegment,
                   glyph,
                   mark,
-                  plotSegmentState.dataRowIndices[glyphIndex]
+                  glyphIndex
                 ).dispatch(this.props.store.dispatcher);
               }}
             />
@@ -1193,7 +1161,8 @@ export class ChartEditorView
         {this.state.isSolving ? (
           <div className="solving-hint">
             <div className="el-box">
-              <img src={R.getSVGIcon("loading")} />Working...
+              <img src={R.getSVGIcon("loading")} />
+              Working...
             </div>
           </div>
         ) : null}

@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { csvParseRows, tsvParseRows } from "d3-dsv";
 
 import {
@@ -74,7 +72,6 @@ export function parseDataset(
 
     const columns = header.map((name, index) => {
       const hints = columnHints[index] || {};
-      console.log(hints);
       // Infer column type
       const values = data.map(row => row[index]);
       const inferredType = hints.type || inferColumnType(values);

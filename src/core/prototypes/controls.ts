@@ -1,10 +1,9 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { DataMappingHints } from ".";
 import { Point } from "../common";
 import * as Specification from "../specification";
+import * as Dataset from "../dataset";
 
 export type Widget = any;
 
@@ -105,6 +104,13 @@ export interface GroupByEditorOptions {
   mode: "button" | "panel";
 }
 
+export interface NestedChartEditorOptions {
+  specification: Specification.Chart;
+  dataset: Dataset.Dataset;
+  width: number;
+  height: number;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditorTOFIX(attribute: string): Widget;
@@ -162,6 +168,11 @@ export interface WidgetManager {
 
   filterEditor(options: FilterEditorOptions): Widget;
   groupByEditor(options: GroupByEditorOptions): Widget;
+
+  nestedChartEditor(
+    property: Property,
+    options: NestedChartEditorOptions
+  ): Widget;
 }
 
 export interface PopupEditor {

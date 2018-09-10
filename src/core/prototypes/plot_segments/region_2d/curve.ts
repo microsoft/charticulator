@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Point } from "../../../common";
 import * as Graphics from "../../../graphics";
 import {
@@ -22,7 +20,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../../common";
-import { AxisRenderer } from "../axis";
+import { AxisRenderer, buildAxisInference } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
@@ -601,38 +599,27 @@ export class CurvePlotSegment extends Region2DPlotSegment {
 
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
-    if (
-      this.object.properties.xData &&
-      this.object.properties.xData.type != "default"
-    ) {
-      r.push({
-        type: "axis",
-        property: "xData",
-        slotKind: this.object.properties.xData.type,
-        slotName: this.object.properties.xData.expression
-      } as Specification.Template.Axis);
+    if (this.object.properties.xData) {
+      r.push(buildAxisInference(this.object, "xData"));
     }
-    if (
-      this.object.properties.yData &&
-      this.object.properties.yData.type != "default"
-    ) {
-      r.push({
-        type: "axis",
-        property: "yData",
-        slotKind: this.object.properties.yData.type,
-        slotName: this.object.properties.yData.expression
-      } as Specification.Template.Axis);
+    if (this.object.properties.yData) {
+      r.push(buildAxisInference(this.object, "yData"));
     }
     if (
       this.object.properties.sublayout.order &&
       this.object.properties.sublayout.order.expression
     ) {
       r.push({
-        type: "order",
-        property: "sublayout",
-        field: "order",
-        slotName: this.object.properties.sublayout.order.expression
-      } as Specification.Template.Order);
+        objectID: this.object._id,
+        dataSource: {
+          table: this.object.table,
+          groupBy: this.object.groupBy
+        },
+        expression: {
+          expression: this.object.properties.sublayout.order.expression,
+          property: { property: "sublayout", field: ["order", "expression"] }
+        }
+      });
     }
     return { inferences: r };
   }

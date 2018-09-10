@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
 import * as Dataset from "../dataset";
 import * as Expression from "../expression";
@@ -131,6 +129,7 @@ export class ChartStateManager {
       this.chartState
     );
     chartClass.setDataflow(this.dataflow);
+    chartClass.setManager(this);
 
     for (const [scale, scaleState] of zip(
       this.chart.scales,
@@ -700,6 +699,30 @@ export class ChartStateManager {
   }
   public getClass(state: Specification.ObjectState): ObjectClass {
     return this.classCache.getClass(state);
+  }
+
+  public findGlyphState(
+    plotSegment: Specification.PlotSegment,
+    glyph: Specification.Glyph,
+    glyphIndex: number = 0
+  ): Specification.GlyphState {
+    if (glyphIndex == null) {
+      glyphIndex = 0;
+    }
+    const plotSegmentClass = this.getClassById(
+      plotSegment._id
+    ) as PlotSegments.PlotSegmentClass;
+    return plotSegmentClass.state.glyphs[glyphIndex];
+  }
+
+  public findMarkState(
+    plotSegment: Specification.PlotSegment,
+    glyph: Specification.Glyph,
+    mark: Specification.Element,
+    glyphIndex: number = 0
+  ): Specification.MarkState {
+    const markIndex = glyph.marks.indexOf(mark);
+    return this.findGlyphState(plotSegment, glyph, glyphIndex).marks[markIndex];
   }
 
   /** Remove constraints that relate to non-existant element */

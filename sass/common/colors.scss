@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 // 24-level grayscale (000 - 230)
 $gray-000: #000000;
 $gray-010: #0f0f0f;
@@ -28,34 +30,33 @@ $gray-230: #ffffff;
 $black: $gray-000;
 $white: $gray-230;
 
-
 $color-well: $gray-220;
 $color-border: $gray-180;
 
 // Colors
 $color-primary-light: #68b1f1;
-$color-primary:       #238af8;
-$color-primary-dark:  #035abd;
+$color-primary: #238af8;
+$color-primary-dark: #035abd;
 
-$color-active-light:  #f5cd57;
-$color-active:        #fa9e13;
-$color-active-dark:   #b86a05;
+$color-active-light: #f5cd57;
+$color-active: #fa9e13;
+$color-active-dark: #b86a05;
 
-$color-secondary: #38BF23;
+$color-secondary: #38bf23;
 
 // Shadows
 @mixin shadow-ambient {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 @mixin shadow-focused {
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 @mixin shadow-focused-right {
-    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 0 5px rgba(0, 0, 0, 0.3);
 }
 
 @mixin shadow-focused-left {
-    box-shadow: -3px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: -3px 0 5px rgba(0, 0, 0, 0.3);
 }

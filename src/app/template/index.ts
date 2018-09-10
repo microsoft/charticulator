@@ -1,8 +1,14 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
-import { Dataset, deepClone, Prototypes, Specification } from "../../core";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+import {
+  Dataset,
+  deepClone,
+  Expression,
+  getByName,
+  Prototypes,
+  Specification
+} from "../../core";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -10,8 +16,10 @@ export interface ExportTemplateTargetProperty {
   type: string;
   default: any;
 }
+
+/** Represents target chart template export format */
 export interface ExportTemplateTarget {
-  /** Get export format properties */
+  /** Get export format properties, such as template name, author */
   getProperties(): ExportTemplateTargetProperty[];
   /** Get the file extension */
   getFileExtension(): string;
@@ -20,49 +28,80 @@ export interface ExportTemplateTarget {
 }
 
 export class ChartTemplateBuilder {
-  public chart: Specification.Chart;
-  public dataset: Dataset.Dataset;
-  public manager: Prototypes.ChartStateManager;
-  public template: Specification.Template.ChartTemplate;
-
-  private slots: { [name: string]: Specification.Template.DataSlot } = {};
-  private objectVisited: { [id: string]: boolean } = {};
+  protected template: Specification.Template.ChartTemplate;
+  protected tableColumns: { [name: string]: Set<string> };
+  private objectVisited: { [id: string]: boolean };
 
   constructor(
-    chart: Specification.Chart,
-    dataset: Dataset.Dataset,
-    manager: Prototypes.ChartStateManager
-  ) {
-    this.chart = chart;
-    this.dataset = dataset;
-    this.manager = manager;
-  }
+    public readonly chart: Specification.Chart,
+    public readonly dataset: Dataset.Dataset,
+    public readonly manager: Prototypes.ChartStateManager
+  ) {}
 
   public reset() {
     this.template = {
       specification: deepClone(this.chart),
       tables: [],
-      dataSlots: [],
-      inference: {},
-      mappings: {},
-      properties: {}
+      inference: [],
+      properties: []
     };
-    this.slots = {};
+    this.tableColumns = {};
     this.objectVisited = {};
   }
 
-  public addSlot(slotTable: string, slotName: string, slotKind?: string) {
-    if (!this.slots[slotName]) {
-      this.slots[slotName] = {
-        table: slotTable,
-        name: slotName,
-        kind: slotKind
-      };
-    } else {
-      if (slotKind != null) {
-        this.slots[slotName].kind = slotKind;
+  public addColumn(table: string, column: string) {
+    if (table == null) {
+      table = this.dataset.tables[0].name;
+    }
+    const tableObject = getByName(this.dataset.tables, table);
+    if (tableObject) {
+      if (getByName(tableObject.columns, column)) {
+        if (this.tableColumns[table]) {
+          this.tableColumns[table].add(column);
+        } else {
+          this.tableColumns[table] = new Set([column]);
+        }
       }
     }
+  }
+
+  public addColumnsFromExpression(
+    table: string,
+    expr: string,
+    textExpression?: boolean
+  ) {
+    console.log(table, expr, textExpression);
+    let ex: Expression.Expression | Expression.TextExpression;
+    if (textExpression) {
+      ex = Expression.parseTextExpression(expr);
+    } else {
+      ex = Expression.parse(expr);
+    }
+    ex.replace((e: Expression.Expression) => {
+      if (e instanceof Expression.Variable) {
+        this.addColumn(table, e.name);
+      }
+    });
+  }
+
+  public propertyToString(property: Specification.Template.PropertyField) {
+    let pn: string;
+    if (typeof property == "string" || typeof property == "number") {
+      pn = property.toString();
+    } else {
+      pn = property.property;
+      if (property.field) {
+        if (
+          typeof property.field == "string" ||
+          typeof property.field == "number"
+        ) {
+          pn += "." + property.field.toString();
+        } else {
+          pn += "." + property.field.join(".");
+        }
+      }
+    }
+    return pn;
   }
 
   public addObject(table: string, objectClass: Prototypes.ObjectClass) {
@@ -76,124 +115,96 @@ export class ChartTemplateBuilder {
 
     // Get template inference data
     const params = objectClass.getTemplateParameters();
-    if (params && params.inferences && params.inferences.length > 0) {
-      const inferences = params.inferences;
-      template.inference[objectClass.object._id] = inferences;
-      for (const item of inferences) {
-        switch (item.type) {
-          case "scale":
-            {
-              const scaleInference = item as Specification.Template.Scale;
-              // Find the first mapping that uses this scale
-              for (const id in this.template.mappings) {
-                if (!this.template.mappings.hasOwnProperty(id)) {
-                  continue;
-                }
-                for (const mapping of this.template.mappings[id]) {
-                  if (mapping.scale == objectClass.object._id) {
-                    scaleInference.slotName = mapping.slotName;
+    if (params && params.inferences) {
+      for (const inference of params.inferences) {
+        if (inference.axis) {
+          this.addColumnsFromExpression(
+            inference.dataSource.table,
+            inference.axis.expression
+          );
+        }
+        if (inference.scale) {
+          // Find all objects that use the scale
+          const expressions = new Set<string>();
+          let table: string = null;
+          let groupBy: Specification.Types.GroupBy = null;
+          for (const item of Prototypes.forEachObject(
+            this.template.specification
+          )) {
+            for (const [, mapping] of Prototypes.forEachMapping(
+              item.object.mappings
+            )) {
+              if (mapping.type == "scale") {
+                const scaleMapping = mapping as Specification.ScaleMapping;
+                expressions.add(scaleMapping.expression);
+                if (item.kind == "glyph" || item.kind == "mark") {
+                  table = item.glyph.table;
+                  // Find the plot segment
+                  for (const ps of Prototypes.forEachObject(
+                    this.template.specification
+                  )) {
+                    if (
+                      ps.kind == "chart-element" &&
+                      Prototypes.isType(ps.object.classID, "plot-segment")
+                    ) {
+                      groupBy = (ps.chartElement as Specification.PlotSegment)
+                        .groupBy;
+                      break; // TODO: for now, we assume it's the first one
+                    }
                   }
                 }
               }
-              if (scaleInference.slotName != null) {
-                this.addSlot(
-                  table,
-                  scaleInference.slotName,
-                  scaleInference.slotKind
-                );
-              }
-            }
-            break;
-          case "axis":
-            {
-              const axisInference = item as Specification.Template.Axis;
-              if (axisInference.slotName != null) {
-                this.addSlot(
-                  table,
-                  axisInference.slotName,
-                  axisInference.slotKind
-                );
-              }
-            }
-            break;
-          case "order":
-            {
-              const orderInference = item as Specification.Template.Order;
-              if (orderInference.slotName != null) {
-                this.addSlot(
-                  table,
-                  orderInference.slotName,
-                  orderInference.slotKind
-                );
-              }
-            }
-            break;
-          case "slot-list":
-            {
-              const slotListInference = item as Specification.Template.SlotList;
-              for (const slot of slotListInference.slots) {
-                this.addSlot(table, slot.slotName, slot.slotKind);
-              }
-            }
-            break;
-        }
-      }
-    }
-    if (params && params.properties && params.properties.length > 0) {
-      template.properties[objectClass.object._id] = params.properties;
-      for (const property of params.properties) {
-        let pn = "";
-        if (property.mode == "attribute") {
-          pn = property.attribute;
-        } else {
-          pn = property.property;
-          if (property.fields) {
-            if (typeof property.fields == "string") {
-              pn += "." + property.fields;
-            } else {
-              pn += "." + property.fields.join(".");
             }
           }
+          inference.scale.expressions = Array.from(expressions);
+          if (!inference.dataSource) {
+            inference.dataSource = {
+              table,
+              groupBy
+            };
+          }
         }
-        if (!property.displayName) {
-          property.displayName = objectClass.object.properties.name + "/" + pn;
+        if (inference.expression) {
+          this.addColumnsFromExpression(
+            inference.dataSource.table,
+            inference.expression.expression
+          );
         }
-        property.name = property.displayName.replace(/[^0-9a-zA-Z\_]+/g, "_");
+        template.inference.push(inference);
+      }
+    }
+    if (params && params.properties) {
+      for (const property of params.properties) {
+        // Make a default display name
+        let pn = "";
+        if (property.target.property) {
+          pn = this.propertyToString(property.target.property);
+        } else if (property.target.attribute) {
+          pn = property.target.attribute;
+        }
+        property.displayName = objectClass.object.properties.name + "/" + pn;
+        template.properties.push(property);
       }
     }
     // Get mappings
-    const mappings: Specification.Template.Mapping[] = [];
-    for (const attribute in objectClass.object.mappings) {
-      if (objectClass.object.mappings.hasOwnProperty(attribute)) {
-        const item = objectClass.object.mappings[attribute];
-        if (item.type == "scale") {
-          const scaleMapping = item as Specification.ScaleMapping;
-          let kind = null;
-          // Resolve scale kind
-          if (scaleMapping.scale) {
-            const scaleClass = this.manager.getClassById(scaleMapping.scale);
-            if (scaleClass) {
-              const params = scaleClass.getTemplateParameters();
-              if (params && params.inferences) {
-                for (const infer of params.inferences) {
-                  if (infer.type == "scale") {
-                    kind = (infer as Specification.Template.Scale).slotKind;
-                  }
-                }
-              }
-            }
-          }
-          this.addSlot(table, scaleMapping.expression, kind);
-          mappings.push({
-            attribute,
-            scale: scaleMapping.scale,
-            slotName: scaleMapping.expression
-          });
-        }
+    for (const [, mapping] of Prototypes.forEachMapping(
+      objectClass.object.mappings
+    )) {
+      if (mapping.type == "scale") {
+        const scaleMapping = mapping as Specification.ScaleMapping;
+        this.addColumnsFromExpression(
+          scaleMapping.table,
+          scaleMapping.expression
+        );
       }
-    }
-    if (mappings.length > 0) {
-      template.mappings[objectClass.object._id] = mappings;
+      if (mapping.type == "text") {
+        const textMapping = mapping as Specification.TextMapping;
+        this.addColumnsFromExpression(
+          textMapping.table,
+          textMapping.textExpression,
+          true
+        );
+      }
     }
   }
 
@@ -201,10 +212,6 @@ export class ChartTemplateBuilder {
     this.reset();
 
     const template = this.template;
-    // Extract data tables
-    template.tables = this.dataset.tables.map(table => {
-      return { name: table.name };
-    });
 
     for (const elementClass of this.manager.getElements()) {
       let table = null;
@@ -232,11 +239,28 @@ export class ChartTemplateBuilder {
 
     this.addObject(null, this.manager.getChartClass(this.manager.chartState));
 
-    for (const slot in this.slots) {
-      if (this.slots.hasOwnProperty(slot)) {
-        template.dataSlots.push(this.slots[slot]);
-      }
-    }
+    // Extract data tables
+    template.tables = this.dataset.tables
+      .map(table => {
+        if (this.tableColumns.hasOwnProperty(table.name)) {
+          return {
+            name: table.name,
+            columns: table.columns
+              .filter(x => {
+                return this.tableColumns[table.name].has(x.name);
+              })
+              .map(x => ({
+                displayName: x.name,
+                name: x.name,
+                type: x.type,
+                metadata: x.metadata
+              }))
+          };
+        } else {
+          return null;
+        }
+      })
+      .filter(x => x != null);
 
     return template;
   }

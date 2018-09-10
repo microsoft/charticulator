@@ -1,11 +1,10 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 
 import { Graphics, Color, shallowClone } from "../../core";
 import { toSVGNumber } from "../utils";
+import { ChartComponent } from "../../container/chart_component";
 
 // adapted from https://stackoverflow.com/a/20820649
 function desaturate(color: Color, amount: number) {
@@ -100,8 +99,12 @@ export interface RenderGraphicalElementSVGOptions {
   styleOverride?: Graphics.Style;
   className?: string;
   key?: string;
+  chartComponentSync?: boolean;
   externalResourceResolver?: (url: string) => string;
-  onSelected?: (element: Graphics.Element) => any;
+  onSelected?: (
+    element: Graphics.Element["selectable"],
+    event: MouseEvent
+  ) => any;
 }
 
 export function renderGraphicalElementSVG(
@@ -111,18 +114,26 @@ export function renderGraphicalElementSVG(
   if (!element) {
     return null;
   }
+
   if (!options) {
     options = {};
   }
-  const onClick = (e: React.SyntheticEvent<any>) => {
-    if (options.onSelected) {
-      e.stopPropagation();
-      options.onSelected(element);
-    }
-  };
+
   const style = options.noStyle
     ? null
     : renderStyle(options.styleOverride || element.style);
+
+  // OnClick event handler
+  let onClick;
+  if (options.onSelected && element.selectable) {
+    onClick = (e: React.MouseEvent<Element>) => {
+      e.stopPropagation();
+      options.onSelected(element.selectable, e.nativeEvent);
+    };
+    style.cursor = "pointer";
+    style.pointerEvents = "all";
+  }
+
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
@@ -294,6 +305,21 @@ export function renderGraphicalElementSVG(
         />
       );
     }
+    case "chart-container": {
+      const component = element as Graphics.ChartContainerElement;
+      return (
+        <ChartComponent
+          key={options.key}
+          chart={component.chart}
+          dataset={component.dataset}
+          width={component.width}
+          height={component.height}
+          rootElement="g"
+          sync={options.chartComponentSync}
+          rendererOptions={options}
+        />
+      );
+    }
     case "group": {
       const group = element as Graphics.Group;
       return (
@@ -311,6 +337,7 @@ export function renderGraphicalElementSVG(
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
               key: `m${index}`,
+              chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
               onSelected: options.onSelected
             });

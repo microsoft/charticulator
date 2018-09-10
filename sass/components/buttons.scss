@@ -1,500 +1,544 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 .el-svg-icon {
-    vertical-align: top;
-    width: 24px;
-    height: 24px;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    display: inline-block;
-    @include disable-user-drag;
+  vertical-align: top;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: inline-block;
+  @include disable-user-drag;
 }
 
 @mixin icon-size($size, $margin: 0px) {
-    .el-svg-icon {
-        width: $size;
-        height: $size;
-        margin: $margin;
-    }
+  .el-svg-icon {
+    width: $size;
+    height: $size;
+    margin: $margin;
+  }
 }
 
-@mixin icon-invert($percentage:  100%) {
-    .el-svg-icon {
-        filter: invert($percentage);
-    }
+@mixin icon-invert($percentage: 100%) {
+  .el-svg-icon {
+    filter: invert($percentage);
+  }
 }
 
 @mixin button-base($height) {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
+  height: $height;
+  line-height: $height;
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 2px;
+  cursor: pointer;
+
+  .el-svg-icon ~ .el-text {
+    margin-left: 0px;
+  }
+
+  .el-text {
+    vertical-align: top;
     height: $height;
     line-height: $height;
     display: inline-block;
-    box-sizing: border-box;
-    border-radius: 2px;
-    cursor: pointer;
-
-    .el-svg-icon ~ .el-text {
-        margin-left: 0px;
-    }
-
-    .el-text {
-        vertical-align: top;
-        height: $height;
-        line-height: $height;
-        display: inline-block;
-        margin: 0 1em;
-    }
+    margin: 0 1em;
+  }
 }
 
 @mixin dropdown-button-base($height: 24px) {
-    @include button-base($height);
-    @include icon-size($height - 4px, 2px);
+  @include button-base($height);
+  @include icon-size($height - 4px, 2px);
 }
 
 .charticulator__button {
-    &-tool {
-        @include button-base(32px);
-        @include icon-size(24px);
-        @include shadow-ambient;
+  &-tool {
+    @include button-base(32px);
+    @include icon-size(24px);
+    @include shadow-ambient;
 
-        padding: 4px;
+    padding: 4px;
 
-        margin-right: 4px;
+    margin-right: 4px;
 
-        background: $color-well;
+    background: $color-well;
 
-        .el-text {
-            font-size: 14px;
-            height: 24px;
-            line-height: 24px;
-        }
-
-        &:hover {
-            background: lighten($color-well, 5%);
-        }
-
-        transition: box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
-
-        &:hover, &.is-active, &:active, &.dragging {
-            @include shadow-focused;
-        }
-
-        &.is-active, &:active, &.dragging {
-            background: $color-primary;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-            .el-text {
-                color: white;
-            }
-        }
+    .el-text {
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
     }
 
-    &-multi-tool {
-        margin-right: 4px;
-        @include shadow-ambient;
-        border-radius: 2px;
-        background: $color-well;
-
-        transition: box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
-
-        &:hover, &.is-active, &:active, &.dragging {
-            @include shadow-focused;
-        }
-
-        &.is-active, &:active, &.dragging {
-            background: $color-primary;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-            .el-text {
-                color: white;
-            }
-            .el-dropdown {
-                background: transparent;
-                &:hover, &.is-active, &:active, &.is-dragging {
-                    background: lighten($color-primary, 10%);
-                }
-            }
-        }
-
-        .charticulator__button-tool {
-            margin-right: 0;
-            box-shadow: none;
-        }
-        .el-dropdown {
-            @include button-base(32px);
-            @include icon-size(20px, 6px);
-            .el-svg-icon {
-                margin-left: -2px;
-                margin-right: 0;
-            }
-            vertical-align: top;
-
-            color: $gray-080;
-
-            transition: filter $transition-default, box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
-
-            &:hover, &.is-active, &:active, &.is-dragging {
-                background: lighten($color-well, 5%);
-            }
-
-            &.is-active, &:active, &.is-dragging {
-                background: rgba(0, 0, 0, 0.1);
-            }
-        }
-
-        &-dropdown {
-            padding: 2px;
-            .charticulator__button-tool {
-                margin-right: 0;
-            }
-        }
+    &:hover {
+      background: lighten($color-well, 5%);
     }
 
-    &-raised {
-        @include button-base(32px);
-        @include icon-size(20px, 6px);
-        @include shadow-ambient;
+    transition: box-shadow $transition-default,
+      background-color $transition-default, border-color $transition-default;
 
-        .el-text {
-            font-size: 14px;
+    &:hover,
+    &.is-active,
+    &:active,
+    &.dragging {
+      @include shadow-focused;
+    }
+
+    &.is-active,
+    &:active,
+    &.dragging {
+      background: $color-primary;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+      .el-text {
+        color: white;
+      }
+    }
+  }
+
+  &-multi-tool {
+    margin-right: 4px;
+    @include shadow-ambient;
+    border-radius: 2px;
+    background: $color-well;
+
+    transition: box-shadow $transition-default,
+      background-color $transition-default, border-color $transition-default;
+
+    &:hover,
+    &.is-active,
+    &:active,
+    &.dragging {
+      @include shadow-focused;
+    }
+
+    &.is-active,
+    &:active,
+    &.dragging {
+      background: $color-primary;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+      .el-text {
+        color: white;
+      }
+      .el-dropdown {
+        background: transparent;
+        &:hover,
+        &.is-active,
+        &:active,
+        &.is-dragging {
+          background: lighten($color-primary, 10%);
         }
+      }
+    }
 
+    .charticulator__button-tool {
+      margin-right: 0;
+      box-shadow: none;
+    }
+    .el-dropdown {
+      @include button-base(32px);
+      @include icon-size(20px, 6px);
+      .el-svg-icon {
+        margin-left: -2px;
+        margin-right: 0;
+      }
+      vertical-align: top;
+
+      color: $gray-080;
+
+      transition: filter $transition-default, box-shadow $transition-default,
+        background-color $transition-default, border-color $transition-default;
+
+      &:hover,
+      &.is-active,
+      &:active,
+      &.is-dragging {
+        background: lighten($color-well, 5%);
+      }
+
+      &.is-active,
+      &:active,
+      &.is-dragging {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &-dropdown {
+      padding: 2px;
+      .charticulator__button-tool {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &-raised {
+    @include button-base(32px);
+    @include icon-size(20px, 6px);
+    @include shadow-ambient;
+
+    .el-text {
+      font-size: 14px;
+    }
+
+    background: $gray-230;
+    color: $gray-040;
+
+    @include shadow-ambient;
+
+    &:hover {
+      background: lighten($color-well, 5%);
+    }
+
+    transition: box-shadow $transition-default,
+      background-color $transition-default, border-color $transition-default;
+
+    &:hover,
+    &.is-active,
+    &:active,
+    &.is-dragging {
+      @include shadow-focused;
+    }
+
+    &.is-active,
+    &:active,
+    &.is-dragging {
+      background: $color-primary-light;
+    }
+
+    &.is-disabled {
+      color: $gray-180;
+      cursor: not-allowed;
+      .el-svg-icon {
+        filter: invert(80%);
+      }
+      &:hover,
+      &:active {
         background: $gray-230;
-        color: $gray-040;
-
         @include shadow-ambient;
+      }
+    }
+  }
 
-        &:hover {
-            background: lighten($color-well, 5%);
-        }
+  &-flat {
+    @include button-base(24px);
+    @include icon-size(20px, 2px);
+    @include icon-invert(50%);
+    color: $gray-080;
 
-        transition: box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
+    transition: filter $transition-default, box-shadow $transition-default,
+      background-color $transition-default, border-color $transition-default;
 
-        &:hover, &.is-active, &:active, &.is-dragging {
-            @include shadow-focused;
-        }
-
-        &.is-active, &:active, &.is-dragging {
-            background: $color-primary-light;
-        }
-
-        &.is-disabled {
-            color: $gray-180;
-            cursor: not-allowed;
-            .el-svg-icon {
-                filter: invert(80%);
-            }
-            &:hover, &:active {
-                background: $gray-230;
-                @include shadow-ambient;
-            }
-        }
+    &:hover,
+    &.is-active,
+    &:active,
+    &.is-dragging {
+      background: rgba(0, 0, 0, 0.05);
+      @include icon-invert(0%);
+      color: $gray-000;
     }
 
-    &-flat {
-        @include button-base(24px);
-        @include icon-size(20px, 2px);
-        @include icon-invert(50%);
-        color: $gray-080;
+    &.is-active,
+    &:active,
+    &.is-dragging {
+      background: rgba(0, 0, 0, 0.1);
+      @include icon-invert(0%);
+      color: $gray-000;
+    }
+  }
 
-        transition: filter $transition-default, box-shadow $transition-default, background-color $transition-default, border-color $transition-default;
+  &-row {
+    display: block;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 18px;
 
-        &:hover, &.is-active, &:active, &.is-dragging {
-            background: rgba(0, 0, 0, 0.05);
-            @include icon-invert(0%);
-            color: $gray-000;
-        }
-
-        &.is-active, &:active, &.is-dragging {
-            background: rgba(0, 0, 0, 0.1);
-            @include icon-invert(0%);
-            color: $gray-000;
-        }
+    .el-svg-icon {
+      vertical-align: top;
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      @include disable-user-drag;
     }
 
-    &-row {
-        display: block;
-        font-size: 14px;
-        cursor: pointer;
-        padding: 4px;
-        line-height: 18px;
-
-        .el-svg-icon {
-            vertical-align: top;
-            width: 18px;
-            height: 18px;
-            display: inline-block;
-            @include disable-user-drag;
-        }
-
-        &:hover {
-            background: darken($color-well, 10%);
-        }
-
-        &.is-active, &:active, &.dragging {
-            border-color: darken($color-primary-light, 10%);
-            background: $color-primary-light;
-        }
+    &:hover {
+      background: darken($color-well, 10%);
     }
 
-    &-flat-panel {
-        font-size: 14px;
-        @include dropdown-button-base(24px);
-
-        // background: $gray-200;
-
-        .el-text {
-            margin-right: 8px;
-            margin-left: 8px;
-        }
-
-        &:hover {
-            background: $color-primary-light;
-        }
-        &.is-active {
-            background: $color-primary;
-            color: white;
-            .el-svg-icon:last-child {
-                filter: invert(100%);
-            }
-        }
+    &.is-active,
+    &:active,
+    &.dragging {
+      border-color: darken($color-primary-light, 10%);
+      background: $color-primary-light;
     }
+  }
 
-    &-menu {
-        $button-size: 20px;
-        width: $button-size;
-        height: $button-size;
-        padding: (32px - $button-size) / 2;
-        vertical-align: top;
-        display: inline-block;
-        .el-svg-icon {
-            width: $button-size;
-            height: $button-size;
-            display: inline-block;
-            vertical-align: top;
-            filter: invert(90%);
-
-            @include disable-user-drag;
-        }
-        pointer-events: all;
-        touch-action: none;
-        cursor: pointer;
-        &:hover {
-            background: $gray-070;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-        }
-        &.is-active, &:active {
-            background: $gray-020;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-        }
-    }
-
-    &-menu-text {
-        $button-size: 20px;
-        line-height: $button-size;
-        height: $button-size;
-        padding: (32px - $button-size) / 2;
-        vertical-align: top;
-        display: inline-block;
-
-        .el-text {
-            @include font-bold;
-            margin: 0 5px;
-        }
-
-        .el-svg-icon {
-            width: $button-size;
-            height: $button-size;
-            display: inline-block;
-            vertical-align: top;
-            filter: invert(90%);
-
-            @include disable-user-drag;
-        }
-
-        pointer-events: all;
-        touch-action: none;
-        cursor: pointer;
-
-        &:hover {
-            background: $gray-070;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-            color: $white;
-        }
-
-        &.is-active, &:active {
-            background: $gray-020;
-            .el-svg-icon {
-                filter: invert(100%);
-            }
-        }
-    }
-
-    &-menu-app {
-        $button-size: 20px;
-        line-height: $button-size;
-        height: $button-size;
-        padding: (32px - $button-size) / 2;
-        vertical-align: top;
-        display: inline-block;
-
-        .el-text {
-            @include font-bold;
-            margin: 0 5px;
-        }
-
-        .el-svg-icon {
-            width: $button-size;
-            height: $button-size;
-            display: inline-block;
-            vertical-align: top;
-
-            @include disable-user-drag;
-        }
-
-        pointer-events: all;
-        touch-action: none;
-        cursor: pointer;
-
-        &:hover {
-            background: $gray-070;
-            color: $white;
-        }
-        &.is-active, &:active {
-            background: $gray-020;
-        }
-    }
-}
-
-
-.dropdown-button {
+  &-flat-panel {
     font-size: 14px;
     @include dropdown-button-base(24px);
 
     // background: $gray-200;
 
-    .text {
-        margin-right: 2px;
-        margin-left: 8px;
+    .el-text {
+      margin-right: 8px;
+      margin-left: 8px;
     }
 
     &:hover {
-        background: $color-primary-light;
-    }
-    .el-svg-icon:last-child {
-        margin-left: -2px;
-        margin-right: -1px;
-        filter: invert(30%);
+      background: $color-primary-light;
     }
     &.is-active {
-        background: $color-primary;
-        color: white;
-        .el-svg-icon:last-child {
-            filter: invert(100%);
-        }
+      background: $color-primary;
+      color: white;
+      .el-svg-icon:last-child {
+        filter: invert(100%);
+      }
     }
+  }
+
+  &-menu {
+    $button-size: 20px;
+    width: $button-size;
+    height: $button-size;
+    padding: (32px - $button-size) / 2;
+    vertical-align: top;
+    display: inline-block;
+    .el-svg-icon {
+      width: $button-size;
+      height: $button-size;
+      display: inline-block;
+      vertical-align: top;
+      filter: invert(90%);
+
+      @include disable-user-drag;
+    }
+    pointer-events: all;
+    touch-action: none;
+    cursor: pointer;
+    &:hover {
+      background: $gray-070;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+    &.is-active,
+    &:active {
+      background: $gray-020;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  &-menu-text {
+    $button-size: 20px;
+    line-height: $button-size;
+    height: $button-size;
+    padding: (32px - $button-size) / 2;
+    vertical-align: top;
+    display: inline-block;
+
+    .el-text {
+      @include font-bold;
+      margin: 0 5px;
+    }
+
+    .el-svg-icon {
+      width: $button-size;
+      height: $button-size;
+      display: inline-block;
+      vertical-align: top;
+      filter: invert(90%);
+
+      @include disable-user-drag;
+    }
+
+    pointer-events: all;
+    touch-action: none;
+    cursor: pointer;
+
+    &:hover {
+      background: $gray-070;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+      color: $white;
+    }
+
+    &.is-active,
+    &:active {
+      background: $gray-020;
+      .el-svg-icon {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  &-menu-app {
+    $button-size: 20px;
+    line-height: $button-size;
+    height: $button-size;
+    padding: (32px - $button-size) / 2;
+    vertical-align: top;
+    display: inline-block;
+
+    .el-text {
+      @include font-bold;
+      margin: 0 5px;
+    }
+
+    .el-svg-icon {
+      width: $button-size;
+      height: $button-size;
+      display: inline-block;
+      vertical-align: top;
+
+      @include disable-user-drag;
+    }
+
+    pointer-events: all;
+    touch-action: none;
+    cursor: pointer;
+
+    &:hover {
+      background: $gray-070;
+      color: $white;
+    }
+    &.is-active,
+    &:active {
+      background: $gray-020;
+    }
+  }
+}
+
+.dropdown-button {
+  font-size: 14px;
+  @include dropdown-button-base(24px);
+
+  // background: $gray-200;
+
+  .text {
+    margin-right: 2px;
+    margin-left: 8px;
+  }
+
+  &:hover {
+    background: $color-primary-light;
+  }
+  .el-svg-icon:last-child {
+    margin-left: -2px;
+    margin-right: -1px;
+    filter: invert(30%);
+  }
+  &.is-active {
+    background: $color-primary;
+    color: white;
+    .el-svg-icon:last-child {
+      filter: invert(100%);
+    }
+  }
 }
 
 .dropdown-list {
-    $height: 24px;
-    font-size: 14px;
-    li {
-        line-height: $height;
-        height: $height;
-        @include icon-size($height - 2px, 1px);
-        padding: 2px 0;
+  $height: 24px;
+  font-size: 14px;
+  li {
+    line-height: $height;
+    height: $height;
+    @include icon-size($height - 2px, 1px);
+    padding: 2px 0;
 
-        transition: background-color $transition-default;
+    transition: background-color $transition-default;
 
-        .text {
-            margin-right: 10px;
-            margin-left: 10px;
-        }
-
-        .el-svg-icon ~ .text {
-            margin-left: 2px;
-        }
-
-        .el-svg-icon {
-            margin: 2px;
-            width: $height - 4px;
-            height: $height - 4px;
-        }
-
-        cursor: pointer;
-
-        &:hover, &:active {
-            background: $gray-200;
-        }
-
-        &.is-active {
-            background: $gray-100;
-            color: white;
-            @include icon-invert(100%);
-        }
+    .text {
+      margin-right: 10px;
+      margin-left: 10px;
     }
+
+    .el-svg-icon ~ .text {
+      margin-left: 2px;
+    }
+
+    .el-svg-icon {
+      margin: 2px;
+      width: $height - 4px;
+      height: $height - 4px;
+    }
+
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background: $gray-200;
+    }
+
+    &.is-active {
+      background: $gray-100;
+      color: white;
+      @include icon-invert(100%);
+    }
+  }
 }
 
 .editable-text-view {
-    $font-size: 14px;
-    $padding: 0;
-    $height: 24px;
+  $font-size: 14px;
+  $padding: 0;
+  $height: 24px;
 
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: $height;
+  @include font-main;
+  font-size: $font-size;
+
+  .button-flat {
+    margin-left: 5px;
+    margin-right: 0;
+  }
+
+  cursor: text;
+
+  .text {
+    flex: 1;
+    padding: $padding;
+    margin: 0;
     height: $height;
-    @include font-main;
-    font-size: $font-size;
+    line-height: $height;
+  }
 
-    .button-flat { margin-left: 5px; margin-right: 0; }
+  transition: border-color $transition-default;
 
-    cursor: text;
+  border-bottom: 2px solid transparent;
 
-    .text {
-        flex: 1;
-        padding: $padding;
-        margin: 0;
-        height: $height;
-        line-height: $height;
+  &:hover {
+    border-bottom: 2px solid $gray-210;
+  }
+
+  &.editable-text-view-editing {
+    border-bottom: 2px solid $color-primary;
+
+    input {
+      background: transparent;
+      height: $height;
+      line-height: $height;
+      @include font-main;
+      font-size: $font-size;
+      padding: $padding;
+      margin: 0;
+
+      flex: 1;
+
+      border: none;
+      outline: none;
     }
 
-    transition: border-color $transition-default;
-
-    border-bottom: 2px solid transparent;
-
-    &:hover {
-        border-bottom: 2px solid $gray-210;
+    .button-flat {
+      flex-shrink: 0;
+      flex-grow: 0;
     }
-
-    &.editable-text-view-editing {
-        border-bottom: 2px solid $color-primary;
-
-        input {
-            background: transparent;
-            height: $height;
-            line-height: $height;
-            @include font-main;
-            font-size: $font-size;
-            padding: $padding;
-            margin: 0;
-
-            flex: 1;
-
-            border: none;
-            outline: none;
-        }
-
-        .button-flat {
-            flex-shrink: 0;
-            flex-grow: 0;
-        }
-    }
+  }
 }

@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Color, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
@@ -256,8 +254,8 @@ export class TextElement extends MarkClass {
     const cy = dy + metrics.middle;
 
     const rotation = this.object.properties.rotation;
-    const cos = Math.cos(rotation / 180 * Math.PI);
-    const sin = Math.sin(rotation / 180 * Math.PI);
+    const cos = Math.cos((rotation / 180) * Math.PI);
+    const sin = Math.sin((rotation / 180) * Math.PI);
     return [
       {
         type: "rectangle",
@@ -337,8 +335,8 @@ export class TextElement extends MarkClass {
     const cy = dy + metrics.middle;
 
     const rotation = this.object.properties.rotation;
-    const cos = Math.cos(rotation / 180 * Math.PI);
-    const sin = Math.sin(rotation / 180 * Math.PI);
+    const cos = Math.cos((rotation / 180) * Math.PI);
+    const sin = Math.sin((rotation / 180) * Math.PI);
     return {
       cx: attrs.x + cx * cos - cy * sin,
       cy: attrs.y + cx * sin + cy * cos,
@@ -463,18 +461,20 @@ export class TextElement extends MarkClass {
   public getTemplateParameters(): TemplateParameters {
     if (
       this.object.mappings.text &&
-      this.object.mappings.text.type == "scale"
+      this.object.mappings.text.type != "value"
     ) {
       return null;
     } else {
       return {
         properties: [
           {
-            mode: "attribute",
-            attribute: "text",
+            objectID: this.object._id,
+            target: {
+              attribute: "text"
+            },
             type: "string",
             default: this.state.attributes.text
-          } as Specification.Template.Property
+          }
         ]
       };
     }

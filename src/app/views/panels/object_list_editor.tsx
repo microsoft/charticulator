@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import * as R from "../../resources";
 
@@ -92,6 +90,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                       ? "general/eye"
                       : "general/eye-faded"
                   }
+                  title="Toggle visibility"
                   active={false}
                   onClick={() => {
                     this.dispatch(
@@ -107,6 +106,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 />
                 <Button
                   icon="general/eraser"
+                  title="Remove"
                   active={false}
                   onClick={() => {
                     this.dispatch(new Actions.DeleteChartElement(element));
@@ -130,7 +130,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
             sel instanceof GlyphSelection && sel.glyph == glyph
           ])}
           onClick={() => {
-            this.dispatch(new Actions.SelectGlyph(glyph));
+            this.dispatch(new Actions.SelectGlyph(null, glyph));
           }}
         >
           <SVGImageIcon
@@ -157,7 +157,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 ])}
                 key={mark._id}
                 onClick={() => {
-                  this.dispatch(new Actions.SelectMark(glyph, mark));
+                  this.dispatch(new Actions.SelectMark(null, glyph, mark));
                 }}
               >
                 <SVGImageIcon
@@ -172,6 +172,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                       ? "general/eye"
                       : "general/eye-faded"
                   }
+                  title="Toggle visibility"
                   active={false}
                   onClick={() => {
                     this.dispatch(
@@ -188,6 +189,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 <Button
                   icon="general/eraser"
                   active={false}
+                  title="Remove"
                   onClick={() => {
                     this.dispatch(new Actions.RemoveMarkFromGlyph(glyph, mark));
                   }}

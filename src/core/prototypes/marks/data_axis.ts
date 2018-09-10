@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 // This implements Data-Driven Guides (straight line guide)
 
 import { Point } from "../../common";
@@ -25,7 +23,7 @@ import {
   TemplateParameters
 } from "../common";
 import { AxisRenderer, buildAxisWidgets } from "../plot_segments/axis";
-import { MarkClass } from "./index";
+import { MarkClass } from ".";
 
 export interface DataAxisAttributes extends Specification.AttributeMap {
   // anchor0, anchor1, ... that corresponds to the data
@@ -226,7 +224,8 @@ export class DataAxis extends MarkClass {
         const g = renderer.renderLine(
           0,
           0,
-          Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI * 180,
+          (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) *
+            180,
           -1
         );
         g.transform = cs.getLocalTransform(
@@ -250,7 +249,7 @@ export class DataAxis extends MarkClass {
       const g = renderer.renderLine(
         0,
         0,
-        Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI * 180,
+        (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) * 180,
         -1
       );
       g.transform = cs.getLocalTransform(
@@ -355,25 +354,32 @@ export class DataAxis extends MarkClass {
 
   public getTemplateParameters(): TemplateParameters {
     const props = this.object.properties;
+    const dataSource: Specification.Template.Inference["dataSource"] = {
+      table: this.getGlyphClass().object.table,
+      groupBy: null // TODO: fixme
+    };
     if (props.dataExpressions && props.dataExpressions.length > 0) {
       return {
         inferences: [
           {
-            type: "axis",
-            slotName: props.dataExpressions[0],
-            slotKind: props.axis.type,
-            property: "axis"
-          } as Specification.Template.Axis,
-          {
-            type: "slot-list",
-            property: "dataExpressions",
-            slots: props.dataExpressions.map(x => {
-              return {
-                slotName: x,
-                slotKind: props.axis.type
-              };
-            })
-          } as Specification.Template.SlotList
+            objectID: this.object._id,
+            dataSource,
+            axis: {
+              expression: props.dataExpressions[0],
+              type: props.axis.type,
+              property: "axis"
+            }
+          },
+          ...props.dataExpressions.map((x, i) => {
+            return {
+              objectID: this.object._id,
+              dataSource,
+              expression: {
+                expression: x,
+                property: { property: "dataExpressions", field: i }
+              }
+            };
+          })
         ]
       };
     }

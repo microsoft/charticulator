@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { EventEmitter } from "../../core";
 
 import {
@@ -16,7 +14,7 @@ import {
 import { Actions } from "../actions";
 
 import { BaseStore } from "../../core/store/base";
-import { ChartStore } from "./chart";
+import { ChartStore, MarkSelection, GlyphSelection } from "./chart";
 import { DatasetStore } from "./dataset";
 
 /** Simple store that just refer to the chart store */
@@ -26,21 +24,21 @@ export class GlyphStore extends BaseStore {
   public readonly parent: ChartStore;
 
   public table: Dataset.Table;
-  public mark: Specification.Glyph;
-  public markState: Specification.GlyphState;
+  public glyph: Specification.Glyph;
+  public glyphState: Specification.GlyphState;
 
   constructor(
     parent: ChartStore,
     table: Dataset.Table,
-    mark: Specification.Glyph
+    glyph: Specification.Glyph
   ) {
     super(parent);
     this.table = table;
-    this.mark = mark;
+    this.glyph = glyph;
 
     this.updateMarkState();
 
-    this.parent.datasetStore.addListener(DatasetStore.EVENT_SELECTION, () => {
+    this.parent.addListener(ChartStore.EVENT_SELECTION, () => {
       this.updateMarkState();
     });
 
@@ -50,34 +48,33 @@ export class GlyphStore extends BaseStore {
   }
 
   public updateMarkState() {
+    // Find the plot segment's index
     const layoutIndex = indexOf(
       this.parent.chart.elements,
       e =>
         Prototypes.isType(e.classID, "plot-segment") &&
-        (e as Specification.PlotSegment).glyph == this.mark._id
+        (e as Specification.PlotSegment).glyph == this.glyph._id
     );
+
     if (layoutIndex == -1) {
-      this.markState = null;
+      // Cannot find plot segment, set glyphState to null
+      this.glyphState = null;
       this.emit(GlyphStore.EVENT_STATE);
     } else {
+      // Find the selected glyph
       const plotSegmentState = this.parent.chartState.elements[
         layoutIndex
       ] as Specification.PlotSegmentState;
-      let glyphIndex = -1;
-      const selectedDataIndex = this.parent.datasetStore.getSelectedRowIndex(
-        this.table
+
+      const glyphIndex = this.parent.getSelectedGlyphIndex(
+        this.parent.chart.elements[layoutIndex]._id
       );
-      for (let i = 0; i < plotSegmentState.dataRowIndices.length; i++) {
-        if (
-          plotSegmentState.dataRowIndices[i].indexOf(selectedDataIndex) >= 0
-        ) {
-          glyphIndex = i;
-        }
-      }
+
+      // If found, use the glyph, otherwise fallback to the first glyph
       if (glyphIndex < 0) {
-        this.markState = plotSegmentState.glyphs[0];
+        this.glyphState = plotSegmentState.glyphs[0];
       } else {
-        this.markState = plotSegmentState.glyphs[glyphIndex];
+        this.glyphState = plotSegmentState.glyphs[glyphIndex];
       }
       this.emit(GlyphStore.EVENT_STATE);
     }

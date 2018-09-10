@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as Graphics from "../../../graphics";
 import {
   ConstraintSolver,
@@ -173,14 +171,12 @@ export class MapPlotSegment extends PlotSegmentClass {
   public mercatorProjection(lat: number, lng: number): [number, number] {
     // WebMercator Projection:
     // x, y range: [0, 256]
-    const x = 128 / 180 * (180 + lng);
+    const x = (128 / 180) * (180 + lng);
     const y =
-      128 /
-      180 *
+      (128 / 180) *
       (180 -
-        180 /
-          Math.PI *
-          Math.log(Math.tan(Math.PI / 4 + lat / 180 * Math.PI / 2)));
+        (180 / Math.PI) *
+          Math.log(Math.tan(Math.PI / 4 + ((lat / 180) * Math.PI) / 2)));
 
     return [x, y];
 

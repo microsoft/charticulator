@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as Graphics from "../../graphics";
 import {
   ConstraintSolver,
@@ -19,7 +17,12 @@ import {
   ObjectClassMetadata,
   TemplateParameters
 } from "../common";
-import { AxisRenderer, buildAxisWidgets, getCategoricalAxis } from "./axis";
+import {
+  AxisRenderer,
+  buildAxisWidgets,
+  getCategoricalAxis,
+  buildAxisInference
+} from "./axis";
 import { PlotSegmentClass } from "./index";
 
 export interface LineGuideAttributes extends Specification.AttributeMap {
@@ -233,7 +236,7 @@ export class LineGuide extends PlotSegmentClass {
       const g = renderer.renderLine(
         x1,
         y1,
-        Math.atan2(y2 - y1, x2 - x1) / Math.PI * 180,
+        (Math.atan2(y2 - y1, x2 - x1) / Math.PI) * 180,
         1
       );
       return g;
@@ -252,17 +255,9 @@ export class LineGuide extends PlotSegmentClass {
 
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
-    if (
-      this.object.properties.axis &&
-      this.object.properties.axis.type != "default"
-    ) {
+    if (this.object.properties.axis) {
       const axis = this.object.properties.axis;
-      r.push({
-        type: "axis",
-        slotName: axis.expression.replace(/`/g, ""),
-        slotKind: axis.type,
-        property: "axis"
-      } as Specification.Template.Axis);
+      r.push(buildAxisInference(this.object, "axis"));
     }
     return { inferences: r };
   }

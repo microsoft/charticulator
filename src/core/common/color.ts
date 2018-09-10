@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 /** Color in RGB */
 export interface Color {
   r: number;
@@ -99,14 +97,14 @@ function hcl_to_lab(
   c: number,
   l: number
 ): [number, number, number] {
-  const h = h_degree / 180 * Math.PI;
+  const h = (h_degree / 180) * Math.PI;
   return [l, c * Math.cos(h), c * Math.sin(h)];
 }
 
 function lab_to_hcl(l: number, a: number, b: number): [number, number, number] {
   const c = Math.sqrt(a * a + b * b);
-  let h_degree = Math.atan2(b, a) / Math.PI * 180;
-  h_degree = (h_degree % 360 + 360) % 360;
+  let h_degree = (Math.atan2(b, a) / Math.PI) * 180;
+  h_degree = ((h_degree % 360) + 360) % 360;
   return [h_degree, c, l];
 }
 

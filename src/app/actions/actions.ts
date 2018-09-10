@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import {
   Dataset,
   Point,
@@ -82,6 +80,19 @@ export class ImportDataset extends Action {
 
   public digest() {
     return { name: "ImportDataset", datasetName: this.dataset.name };
+  }
+}
+
+export class ImportChartAndDataset extends Action {
+  constructor(
+    public specification: Specification.Chart,
+    public dataset: Dataset.Dataset
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ImportChartAndDataset" };
   }
 }
 
@@ -664,14 +675,20 @@ export class ReorderGlyphMark extends Action {
 }
 
 export class SelectGlyph extends Action {
-  constructor(public glyph: Specification.Glyph) {
+  constructor(
+    public plotSegment: Specification.PlotSegment,
+    public glyph: Specification.Glyph,
+    public glyphIndex: number = null
+  ) {
     super();
   }
 
   public digest() {
     return {
       name: "SelectGlyph",
-      glyph: [this.glyph.classID, this.glyph._id]
+      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      glyph: [this.glyph.classID, this.glyph._id],
+      glyphIndex: this.glyphIndex
     };
   }
 }
@@ -687,7 +704,8 @@ export class SelectChartElement extends Action {
   public digest() {
     return {
       name: "SelectChartElement",
-      glyph: [this.chartElement.classID, this.chartElement._id]
+      glyph: [this.chartElement.classID, this.chartElement._id],
+      glyphIndex: this.glyphIndex
     };
   }
 }

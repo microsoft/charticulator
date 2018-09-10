@@ -1,50 +1,40 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 import * as React from "react";
-import { EventEmitter, EventSubscription, Graphics } from "../../../core";
-
-import {
-  Specification,
-  Prototypes,
-  zipArray,
-  zip,
-  Solver,
-  Point,
-  Geometry,
-  ZoomInfo,
-  indexOf
-} from "../../../core";
-
 import * as globals from "../../globals";
+
 import {
-  ChartStore,
-  GlyphStore,
-  Selection,
-  MarkSelection,
-  GlyphSelection
-} from "../../stores";
-import { DragData, Actions } from "../../actions";
-import { Droppable, DragContext, DragModifiers } from "../../controllers";
-import { ZoomableCanvas, ToolButton, SVGImageIcon } from "../../components";
+  EventSubscription,
+  Geometry,
+  Graphics,
+  indexOf,
+  Point,
+  Prototypes,
+  Specification,
+  zip,
+  zipArray,
+  ZoomInfo
+} from "../../../core";
+import { Actions, DragData } from "../../actions";
+import { ZoomableCanvas } from "../../components";
+import { DragContext, DragModifiers, Droppable } from "../../controllers";
+import { renderGraphicalElementSVG } from "../../renderer";
+import { ChartStore, GlyphStore, MarkSelection, Selection } from "../../stores";
+import { classNames } from "../../utils";
+import { Button } from "../panels/widgets/controls";
+import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,
   CreatingComponentFromCreatingInteraction
 } from "./creating_component";
 import { DropZoneView } from "./dropzone";
 import { HandlesView } from "./handles";
-import { renderGraphicalElementSVG } from "../../renderer";
-import { BoundingBoxView } from "./bounding_box";
-
 import {
-  MarkSnappingSession,
   MarkSnappableGuide,
+  MarkSnappingSession,
   MoveSnappingSession
 } from "./snapping";
-import { ObjectButton } from "../tool_bar";
-import { Button } from "../panels/widgets/controls";
-import { classNames } from "../../utils";
 
 export interface MarkEditorViewProps {
   store: ChartStore;
@@ -87,7 +77,9 @@ export class MarkEditorView extends React.Component<
         height: this.props.height != null ? this.props.height : bbox.height
       },
       () => {
-        this.refSingleMarkView.doAutoFit();
+        if (this.refSingleMarkView) {
+          this.refSingleMarkView.doAutoFit();
+        }
       }
     );
   };
@@ -124,56 +116,6 @@ export class MarkEditorView extends React.Component<
   }
   public render() {
     const markStores = this.props.store.markStores;
-    const marks = [
-      {
-        name: "mark.rect",
-        displayName: "Rectangle",
-        icon: "mark/rect",
-        draggable: true
-      },
-      {
-        name: "mark.symbol",
-        displayName: "Symbol",
-        icon: "mark/symbol",
-        draggable: true
-      },
-      {
-        name: "mark.line",
-        displayName: "Line",
-        icon: "mark/line",
-        draggable: true
-      },
-      {
-        name: "mark.text",
-        displayName: "Text",
-        icon: "mark/text",
-        draggable: true
-      },
-      {
-        name: "guide-y",
-        displayName: "Guide Y",
-        icon: "guide/x",
-        draggable: false
-      },
-      {
-        name: "guide-x",
-        displayName: "Guide X",
-        icon: "guide/y",
-        draggable: false
-      },
-      {
-        name: "guide-coordinator-y",
-        displayName: "Guide Y",
-        icon: "guide/coordinator-x",
-        draggable: false
-      },
-      {
-        name: "guide-coordinator-x",
-        displayName: "Guide X",
-        icon: "guide/coordinator-y",
-        draggable: false
-      }
-    ];
     return (
       <div className="mark-editor-view" ref={e => (this.refContainer = e)}>
         {markStores.map(markStore => {
@@ -250,7 +192,7 @@ export class SingleMarkView
   }
 
   public getFitViewZoom(width: number, height: number) {
-    const markState = this.props.store.markState;
+    const markState = this.props.store.glyphState;
     if (!markState) {
       return null;
     }
@@ -265,7 +207,7 @@ export class SingleMarkView
     x2 = dx / 2;
     y2 = dy / 2;
     // Get bounding box for each element
-    for (const elementState of this.props.store.markState.marks) {
+    for (const elementState of this.props.store.glyphState.marks) {
       const cls = this.props.store.parent.chartManager.getMarkClass(
         elementState
       );
@@ -277,43 +219,43 @@ export class SingleMarkView
           case "anchored-rectangle":
             {
               const bboxRect = bbox as Prototypes.BoundingBox.AnchoredRectangle;
-              const cos = Math.cos(bboxRect.rotation / 180 * Math.PI);
-              const sin = Math.sin(bboxRect.rotation / 180 * Math.PI);
+              const cos = Math.cos((bboxRect.rotation / 180) * Math.PI);
+              const sin = Math.sin((bboxRect.rotation / 180) * Math.PI);
               xBounds = [
                 bboxRect.anchorX +
                   bboxRect.cx +
-                  bboxRect.width / 2 * cos +
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos +
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx -
-                  bboxRect.width / 2 * cos +
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos +
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx +
-                  bboxRect.width / 2 * cos -
-                  bboxRect.height / 2 * sin,
+                  (bboxRect.width / 2) * cos -
+                  (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
                   bboxRect.cx -
-                  bboxRect.width / 2 * cos -
-                  bboxRect.height / 2 * sin
+                  (bboxRect.width / 2) * cos -
+                  (bboxRect.height / 2) * sin
               ];
               yBounds = [
                 bboxRect.anchorY +
                   bboxRect.cy +
-                  bboxRect.width / 2 * -sin +
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin +
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy -
-                  bboxRect.width / 2 * -sin +
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin +
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy +
-                  bboxRect.width / 2 * -sin -
-                  bboxRect.height / 2 * cos,
+                  (bboxRect.width / 2) * -sin -
+                  (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
                   bboxRect.cy -
-                  bboxRect.width / 2 * -sin -
-                  bboxRect.height / 2 * cos
+                  (bboxRect.width / 2) * -sin -
+                  (bboxRect.height / 2) * cos
               ];
             }
             break;
@@ -415,7 +357,7 @@ export class SingleMarkView
             }
           }
           new Actions.AddMarkToGlyph(
-            this.props.store.mark,
+            this.props.store.glyph,
             data.classID,
             Geometry.unapplyZoom(this.state.zoom, point),
             {},
@@ -450,7 +392,7 @@ export class SingleMarkView
     pinch.recognizeWith(pan);
     this.hammer.add([pinch]);
     this.hammer.on("tap", () => {
-      new Actions.SelectGlyph(this.props.store.mark).dispatch(
+      new Actions.SelectGlyph(null, this.props.store.glyph).dispatch(
         this.props.store.dispatcher
       );
     });
@@ -611,14 +553,14 @@ export class SingleMarkView
   public getSnappingGuides(): MarkSnappableGuide[] {
     let guides: MarkSnappableGuide[];
     guides = this.props.store.parent.chartManager
-      .getGlyphClass(this.props.store.markState)
+      .getGlyphClass(this.props.store.glyphState)
       .getAlignmentGuides()
       .map(g => {
         return { element: null, guide: g };
       });
     for (const [element, elementState] of zip(
-      this.props.store.mark.marks,
-      this.props.store.markState.marks
+      this.props.store.glyph.marks,
+      this.props.store.glyphState.marks
     )) {
       const elementClass = this.props.store.parent.chartManager.getMarkClass(
         elementState
@@ -684,7 +626,7 @@ export class SingleMarkView
 
   public renderMarkHandles() {
     const markClass = this.props.store.parent.chartManager.getGlyphClass(
-      this.props.store.markState
+      this.props.store.glyphState
     );
     const handles = markClass.getHandles();
     return handles.map((handle, index) => {
@@ -703,7 +645,7 @@ export class SingleMarkView
               const updates = session.getUpdates(session.handleEnd(e));
               if (updates) {
                 new Actions.UpdateGlyphAttribute(
-                  this.props.store.mark,
+                  this.props.store.glyph,
                   updates
                 ).dispatch(this.props.store.dispatcher);
               }
@@ -716,8 +658,8 @@ export class SingleMarkView
 
   public renderAnchorHandles() {
     return zipArray(
-      this.props.store.mark.marks,
-      this.props.store.markState.marks
+      this.props.store.glyph.marks,
+      this.props.store.glyphState.marks
     )
       .filter(x => x[0].classID == "mark.anchor")
       .map(([element, elementState], idx) => {
@@ -735,7 +677,7 @@ export class SingleMarkView
               const guides = this.getSnappingGuides();
               const session = new MarkSnappingSession(
                 guides,
-                this.props.store.mark,
+                this.props.store.glyph,
                 element,
                 elementState,
                 bound,
@@ -764,8 +706,8 @@ export class SingleMarkView
 
   public renderElementHandles() {
     return zipArray(
-      this.props.store.mark.marks,
-      this.props.store.markState.marks
+      this.props.store.glyph.marks,
+      this.props.store.glyphState.marks
     )
       .filter(x => x[0].classID != "mark.anchor")
       .sort((a, b) => {
@@ -782,8 +724,8 @@ export class SingleMarkView
           return -1;
         }
         return (
-          this.props.store.mark.marks.indexOf(a[0]) -
-          this.props.store.mark.marks.indexOf(b[0])
+          this.props.store.glyph.marks.indexOf(a[0]) -
+          this.props.store.glyph.marks.indexOf(b[0])
         );
       })
       .map(([element, elementState]) => {
@@ -803,7 +745,8 @@ export class SingleMarkView
                 boundingBox={bbox}
                 onClick={() => {
                   new Actions.SelectMark(
-                    this.props.store.mark,
+                    null,
+                    this.props.store.glyph,
                     element
                   ).dispatch(this.props.store.dispatcher);
                 }}
@@ -831,7 +774,7 @@ export class SingleMarkView
                 if (element.mappings[attribute] != null) {
                   return true;
                 }
-                for (const constraint of this.props.store.mark.constraints) {
+                for (const constraint of this.props.store.glyph.constraints) {
                   if (constraint.type == "snap") {
                     if (
                       constraint.attributes.element == element._id &&
@@ -853,7 +796,7 @@ export class SingleMarkView
                 const guides = this.getSnappingGuides();
                 const session = new MarkSnappingSession(
                   guides,
-                  this.props.store.mark,
+                  this.props.store.glyph,
                   element,
                   elementState,
                   handle,
@@ -986,7 +929,7 @@ export class SingleMarkView
                     zone.dropAction.scaleInference.hints.newScale =
                       modifiers.shiftKey;
                     new Actions.MapDataToMarkAttribute(
-                      this.props.store.mark,
+                      this.props.store.glyph,
                       element,
                       zone.dropAction.scaleInference.attribute,
                       zone.dropAction.scaleInference.attributeType,
@@ -1020,8 +963,8 @@ export class SingleMarkView
   public renderSnappingGuidesLabels() {
     const allLabels: Prototypes.SnappingGuides.Description[] = [];
     for (const [element, elementState] of zip(
-      this.props.store.mark.marks,
-      this.props.store.markState.marks
+      this.props.store.glyph.marks,
+      this.props.store.glyphState.marks
     )) {
       const elementClass = this.props.store.parent.chartManager.getMarkClass(
         elementState
@@ -1109,7 +1052,7 @@ export class SingleMarkView
 
   public renderMarkGuides() {
     const markClass = this.props.store.parent.chartManager.getGlyphClass(
-      this.props.store.markState
+      this.props.store.glyphState
     );
     const markGuides = markClass.getAlignmentGuides();
     return markGuides.map((theGuide, idx) => {
@@ -1143,11 +1086,11 @@ export class SingleMarkView
   }
 
   public renderAnchor() {
-    const { mark, markState } = this.props.store;
-    const anchorIndex = indexOf(mark.marks, x => x.classID == "mark.anchor");
+    const { glyph, glyphState } = this.props.store;
+    const anchorIndex = indexOf(glyph.marks, x => x.classID == "mark.anchor");
     let pt = {
-      x: markState.marks[anchorIndex].attributes.x as number,
-      y: -markState.marks[anchorIndex].attributes.y as number
+      x: glyphState.marks[anchorIndex].attributes.x as number,
+      y: -glyphState.marks[anchorIndex].attributes.y as number
     };
     pt = Geometry.applyZoom(this.state.zoom, pt);
     return (
@@ -1188,7 +1131,7 @@ export class SingleMarkView
               }
             }
             new Actions.AddMarkToGlyph(
-              this.props.store.mark,
+              this.props.store.glyph,
               classID,
               { x: 0, y: 0 },
               mappings,
@@ -1214,7 +1157,7 @@ export class SingleMarkView
             mode = "vline";
             onCreate = x => {
               new Actions.AddMarkToGlyph(
-                this.props.store.mark,
+                this.props.store.glyph,
                 "guide.guide",
                 { x: 0, y: 0 },
                 { value: x },
@@ -1228,7 +1171,7 @@ export class SingleMarkView
             mode = "hline";
             onCreate = y => {
               new Actions.AddMarkToGlyph(
-                this.props.store.mark,
+                this.props.store.glyph,
                 "guide.guide",
                 { x: 0, y: 0 },
                 { value: y },
@@ -1242,7 +1185,7 @@ export class SingleMarkView
             mode = "line";
             onCreate = (x1, y1, x2, y2) => {
               new Actions.AddMarkToGlyph(
-                this.props.store.mark,
+                this.props.store.glyph,
                 "guide.guide-coordinator",
                 { x: 0, y: 0 },
                 { x1, y1, x2, y2 },
@@ -1256,7 +1199,7 @@ export class SingleMarkView
             mode = "line";
             onCreate = (x1, y1, x2, y2) => {
               new Actions.AddMarkToGlyph(
-                this.props.store.mark,
+                this.props.store.glyph,
                 "guide.guide-coordinator",
                 { x: 0, y: 0 },
                 { x1, y1, x2, y2 },
@@ -1293,11 +1236,11 @@ export class SingleMarkView
   }
 
   public render() {
-    const { mark, markState } = this.props.store;
+    const { glyph, glyphState } = this.props.store;
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
     }) scale(${this.state.zoom.scale})`;
-    if (!markState) {
+    if (!glyphState) {
       return (
         <div className="mark-editor-single-view">
           <div className="mark-view-container">
@@ -1318,6 +1261,9 @@ export class SingleMarkView
                 height={this.props.height}
               />
             </svg>
+            <div className="mark-view-container-notice">
+              To edit this glyph, please create a plot segment with it.
+            </div>
           </div>
         </div>
       );
@@ -1344,7 +1290,7 @@ export class SingleMarkView
             />
             {this.renderBoundsGuides()}
             <g ref="zoomable" transform={transform} className="graphics">
-              {zipArray(mark.marks, markState.marks).map(
+              {zipArray(glyph.marks, glyphState.marks).map(
                 ([elements, elementState]) => {
                   return (
                     <g key={`m${elements._id}`}>
@@ -1360,7 +1306,7 @@ export class SingleMarkView
             <g>{!this.state.dataForDropZones ? this.renderHandles() : null}</g>
             <g>
               {this.state.dataForDropZones
-                ? zipArray(mark.marks, markState.marks).map(
+                ? zipArray(glyph.marks, glyphState.marks).map(
                     ([elements, elementState]) => {
                       return (
                         <g key={`m${elements._id}`}>

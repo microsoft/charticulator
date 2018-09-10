@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as React from "react";
 import { Dataset } from "../../../core";
 
@@ -22,18 +20,20 @@ export class TableView extends React.Component<TableViewProps, {}> {
     return (
       <table className="charticulator__dataset-table-view">
         <thead>
-          <tr>{table.columns.map(c => <th key={c.name}>{c.name}</th>)}</tr>
+          <tr>
+            {table.columns.map(c => (
+              <th key={c.name}>{c.name}</th>
+            ))}
+          </tr>
         </thead>
         <tbody>
-          {table.rows
-            .slice(0, maxRows)
-            .map(r => (
-              <tr key={r._id}>
-                {table.columns.map(c => (
-                  <td key={c.name}>{r[c.name].toString()}</td>
-                ))}
-              </tr>
-            ))}
+          {table.rows.slice(0, maxRows).map(r => (
+            <tr key={r._id}>
+              {table.columns.map(c => (
+                <td key={c.name}>{r[c.name].toString()}</td>
+              ))}
+            </tr>
+          ))}
           {table.rows.length > maxRows ? (
             <tr>
               {table.columns.map(

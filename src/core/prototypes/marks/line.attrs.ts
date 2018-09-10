@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { VariableStrength } from "../../solver";
 import { AttributeDescription } from "../object";
 import { lineAttrs, styleAttrs, centerAttrs } from "./attrs";

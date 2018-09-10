@@ -1,20 +1,13 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
-import * as React from "react";
-import * as FileSaver from "file-saver";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
+import * as FileSaver from "file-saver";
+import * as React from "react";
 import * as R from "../../resources";
-import { Actions } from "../../actions";
-import { ContextedComponent } from "../../context_component";
-import {
-  SVGImageIcon,
-  ButtonFlat,
-  ButtonRaised,
-  EditableTextView
-} from "../../components";
+
 import { ItemDescription } from "../../backend/abstract";
+import { ButtonFlat, EditableTextView, SVGImageIcon } from "../../components";
+import { ContextedComponent } from "../../context_component";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
