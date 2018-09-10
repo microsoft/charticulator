@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Color, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";

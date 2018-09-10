@@ -63,6 +63,13 @@
       ".scss",
       ".sass"
     ],
+    "license_formats": {
+      "ts|js|tsx|scss|sass": {
+        "eachLine": {
+          "prepend": "// "
+        }
+      }
+    },
     "insert_license": true
   },
   "devDependencies": {

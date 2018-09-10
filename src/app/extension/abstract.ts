@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { Dispatcher } from "../../core";
 import { Action } from "../actions/actions";
 import { MainStore } from "../stores/main_store";

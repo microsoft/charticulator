@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import * as Specification from "../specification";
 import { ExpressionCache, Context } from "../expression";
 import { DataflowTable } from "./dataflow";

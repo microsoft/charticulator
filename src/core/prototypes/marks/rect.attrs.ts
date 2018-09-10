@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { AttributeDescription } from "../object";
 import { lineAttrs, styleAttrs, sizeAttrs, centerAttrs } from "./attrs";
 import { Color } from "../../common";

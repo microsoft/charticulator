@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 // export * from "./canvas/canvas_view";
 export { DatasetView } from "./dataset/dataset_view";
 // export * from "./canvas/marks";

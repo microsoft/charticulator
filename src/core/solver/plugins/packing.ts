@@ -1,7 +1,5 @@
-/*
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the MIT license.
-*/
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
