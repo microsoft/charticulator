@@ -73,7 +73,7 @@ export class Application {
           50 +
           30 *
             Math.sin(
-              (monthIndex + 0.5) * Math.PI / 12 + cityIndex * Math.PI / 2
+              ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
             );
         rows.push({
           _id: "ID" + rows.length,
@@ -159,8 +159,7 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
-      } =
-        e.data;
+      } = e.data;
       this.mainStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset)
       );
@@ -221,7 +220,9 @@ export class Application {
 
   public registerExportTemplateTarget(
     name: string,
-    ctor: () => ExportTemplateTarget
+    ctor: (
+      template: Specification.Template.ChartTemplate
+    ) => ExportTemplateTarget
   ) {
     this.mainStore.registerExportTemplateTarget(name, ctor);
   }

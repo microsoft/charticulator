@@ -9,7 +9,8 @@ import {
   Dataset,
   EventEmitter,
   Specification,
-  EventSubscription
+  EventSubscription,
+  FieldType
 } from "../core";
 import {
   ChartComponent,
@@ -41,7 +42,14 @@ export class ChartContainerComponent extends React.Component<
     selection: null
   };
 
-  public setSelection(table: string, rowIndices: number[], union: boolean) {
+  public component: ChartComponent;
+
+  public setSelection(
+    table: string,
+    rowIndices: number[],
+    union: boolean = false,
+    emit: boolean = false
+  ) {
     const indicesSet = new Set(rowIndices);
     if (union && this.state.selection && this.state.selection.table == table) {
       for (const item of this.state.selection.indices) {
@@ -57,7 +65,7 @@ export class ChartContainerComponent extends React.Component<
         }
       }
     });
-    if (this.props.onSelectionChange) {
+    if (emit && this.props.onSelectionChange) {
       this.props.onSelectionChange({
         table,
         rowIndices: Array.from(indicesSet)
@@ -65,9 +73,9 @@ export class ChartContainerComponent extends React.Component<
     }
   }
 
-  public clearSelection() {
+  public clearSelection(emit: boolean = false) {
     this.setState({ selection: null });
-    if (this.props.onSelectionChange) {
+    if (emit && this.props.onSelectionChange) {
       this.props.onSelectionChange(null);
     }
   }
@@ -76,14 +84,45 @@ export class ChartContainerComponent extends React.Component<
     this.setState({ width, height });
   }
 
+  public getProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField
+  ): any {
+    return this.component.getProperty(objectID, property);
+  }
+
+  public setProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField,
+    value: any
+  ) {
+    return this.component.setProperty(objectID, property, value);
+  }
+
+  public getAttributeMapping(
+    objectID: string,
+    attribute: string
+  ): Specification.Mapping {
+    return this.component.getAttributeMapping(objectID, attribute);
+  }
+
+  public setAttributeMapping(
+    objectID: string,
+    attribute: string,
+    mapping: Specification.Mapping
+  ) {
+    return this.component.setAttributeMapping(objectID, attribute, mapping);
+  }
+
   protected handleSelectGlyph: OnSelectGlyph = (data, modifiers) => {
     if (data == null) {
-      this.clearSelection();
+      this.clearSelection(true);
     } else {
       this.setSelection(
         data.table,
         data.rowIndices,
-        modifiers.shiftKey || modifiers.ctrlKey
+        modifiers.shiftKey || modifiers.ctrlKey,
+        true
       );
     }
   };
@@ -91,6 +130,7 @@ export class ChartContainerComponent extends React.Component<
   public render() {
     return (
       <ChartComponent
+        ref={e => (this.component = e)}
         chart={this.props.chart}
         dataset={this.props.dataset}
         width={this.state.width}
@@ -130,12 +170,46 @@ export class ChartContainer extends EventEmitter {
 
   /** Set data selection and update the chart */
   public setSelection(table: string, rowIndices: number[]) {
-    this.component.setSelection(table, rowIndices, false);
+    this.component.setSelection(table, rowIndices);
   }
 
   /** Clear data selection and update the chart */
   public clearSelection() {
     this.component.clearSelection();
+  }
+
+  /** Get a property from the chart */
+  public getProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField
+  ): any {
+    return this.component.getProperty(objectID, property);
+  }
+
+  /** Set a property to the chart */
+  public setProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField,
+    value: any
+  ) {
+    return this.component.setProperty(objectID, property, value);
+  }
+
+  /** Get a attribute mapping */
+  public getAttributeMapping(
+    objectID: string,
+    attribute: string
+  ): Specification.Mapping {
+    return this.component.getAttributeMapping(objectID, attribute);
+  }
+
+  /** Set a attribute mapping */
+  public setAttributeMapping(
+    objectID: string,
+    attribute: string,
+    mapping: Specification.Mapping
+  ) {
+    return this.component.setAttributeMapping(objectID, attribute, mapping);
   }
 
   /** Mount the chart to a container element */

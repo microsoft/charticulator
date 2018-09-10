@@ -267,11 +267,20 @@ export class MappingEditor extends React.Component<
               if (newValue == null || newValue.trim() == "") {
                 this.clearMapping();
               } else {
-                this.props.parent.onEditMappingHandler(this.props.attribute, {
-                  type: "text",
-                  table: this.getTableOrDefault(),
-                  textExpression: newValue
-                } as Specification.TextMapping);
+                if (
+                  Expression.parseTextExpression(newValue).isTrivialString()
+                ) {
+                  this.props.parent.onEditMappingHandler(this.props.attribute, {
+                    type: "value",
+                    value: newValue
+                  } as Specification.ValueMapping);
+                } else {
+                  this.props.parent.onEditMappingHandler(this.props.attribute, {
+                    type: "text",
+                    table: this.getTableOrDefault(),
+                    textExpression: newValue
+                  } as Specification.TextMapping);
+                }
               }
               return true;
             }}
@@ -435,11 +444,26 @@ export class MappingEditor extends React.Component<
                 if (newValue == null || newValue.trim() == "") {
                   this.clearMapping();
                 } else {
-                  this.props.parent.onEditMappingHandler(this.props.attribute, {
-                    type: "text",
-                    table: textMapping.table,
-                    textExpression: newValue
-                  } as Specification.TextMapping);
+                  if (
+                    Expression.parseTextExpression(newValue).isTrivialString()
+                  ) {
+                    this.props.parent.onEditMappingHandler(
+                      this.props.attribute,
+                      {
+                        type: "value",
+                        value: newValue
+                      } as Specification.ValueMapping
+                    );
+                  } else {
+                    this.props.parent.onEditMappingHandler(
+                      this.props.attribute,
+                      {
+                        type: "text",
+                        table: textMapping.table,
+                        textExpression: newValue
+                      } as Specification.TextMapping
+                    );
+                  }
                 }
                 return true;
               }}

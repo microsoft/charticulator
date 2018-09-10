@@ -10,7 +10,8 @@ import {
   Prototypes,
   Graphics,
   Solver,
-  zip
+  zip,
+  deepClone
 } from "../core";
 import {
   renderGraphicalElementSVG,
@@ -152,12 +153,20 @@ export class ChartComponent extends React.Component<
   }
 
   protected recreateManager(props: ChartComponentProps) {
-    this.manager = new Prototypes.ChartStateManager(props.chart, props.dataset);
+    this.manager = new Prototypes.ChartStateManager(
+      deepClone(props.chart),
+      props.dataset
+    );
     this.renderer = new Graphics.ChartRenderer(this.manager);
   }
 
+  protected timer: any;
   protected scheduleUpdate() {
-    setTimeout(() => {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+      this.timer = null;
       for (let i = 0; i < 2; i++) {
         const solver = new Solver.ChartConstraintSolver();
         solver.setup(this.manager);
@@ -170,6 +179,62 @@ export class ChartComponent extends React.Component<
         graphics: this.renderer.render()
       });
     }, 10);
+  }
+
+  public getProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField
+  ): Specification.AttributeValue {
+    const obj = Prototypes.findObjectById(this.manager.chart, objectID);
+    if (!obj) {
+      return null;
+    }
+    return Prototypes.getProperty(obj, property);
+  }
+
+  public setProperty(
+    objectID: string,
+    property: Specification.Template.PropertyField,
+    value: Specification.AttributeValue
+  ) {
+    const obj = Prototypes.findObjectById(this.manager.chart, objectID);
+    if (!obj) {
+      return;
+    }
+    if (!this.isEqual(Prototypes.getProperty(obj, property), value)) {
+      Prototypes.setProperty(obj, property, deepClone(value));
+      this.setState({ working: true });
+      this.scheduleUpdate();
+      console.log("setProperty", property, value);
+    }
+  }
+
+  public getAttributeMapping(
+    objectID: string,
+    attribute: string
+  ): Specification.Mapping {
+    const obj = Prototypes.findObjectById(this.manager.chart, objectID);
+    if (!obj) {
+      return null;
+    }
+    return obj.mappings[attribute];
+  }
+
+  public setAttributeMapping(
+    objectID: string,
+    attribute: string,
+    mapping: Specification.Mapping
+  ) {
+    const obj = Prototypes.findObjectById(this.manager.chart, objectID);
+    if (!obj) {
+      return;
+    }
+    if (!this.isEqual(obj.mappings[attribute], mapping)) {
+      obj.mappings[attribute] = deepClone(mapping);
+      this.setState({ working: true });
+      this.scheduleUpdate();
+      console.log("setAttributeMapping", attribute, mapping);
+    }
   }
 
   public render() {

@@ -93,7 +93,7 @@ export class ChartTemplate {
     }
   }
 
-  public instantiate(dataset: Dataset.Dataset) {
+  public instantiate(dataset: Dataset.Dataset): Specification.Chart {
     // Make a copy of the chart spec so we won't touch the original template data
     const chart = deepClone(this.template.specification);
 
@@ -266,22 +266,56 @@ export class ChartTemplate {
         const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
           attributes: {}
         }) as Prototypes.Scales.ScaleClass;
-        scaleClass.inferParameters(vector);
+        scaleClass.inferParameters(vector, { autoRange: true });
       }
     }
-    return new ChartTemplateInstance(chart, dataset);
+    return chart;
   }
-}
 
-export class ChartTemplateInstance {
-  constructor(
-    public readonly chart: Specification.Chart,
-    public readonly dataset: Dataset.Dataset
-  ) {}
-
-  public getProperties() {}
-
-  public getProperty(id: string) {}
-
-  public setProperty(id: string, value: any) {}
+  public static SetChartProperty(
+    chart: Specification.Chart,
+    objectID: string,
+    property: Specification.Template.PropertyField,
+    value: Specification.AttributeValue
+  ) {
+    const obj = Prototypes.findObjectById(chart, objectID);
+    if (!obj) {
+      return;
+    }
+    Prototypes.setProperty(obj, property, value);
+  }
+  public static GetChartProperty(
+    chart: Specification.Chart,
+    objectID: string,
+    property: Specification.Template.PropertyField
+  ): Specification.AttributeValue {
+    const obj = Prototypes.findObjectById(chart, objectID);
+    if (!obj) {
+      return null;
+    }
+    return Prototypes.getProperty(obj, property);
+  }
+  public static SetChartAttributeMapping(
+    chart: Specification.Chart,
+    objectID: string,
+    attribute: string,
+    value: Specification.Mapping
+  ) {
+    const obj = Prototypes.findObjectById(chart, objectID);
+    if (!obj) {
+      return;
+    }
+    obj.mappings[attribute] = value;
+  }
+  public static GetChartAttributeMapping(
+    chart: Specification.Chart,
+    objectID: string,
+    attribute: string
+  ): any {
+    const obj = Prototypes.findObjectById(chart, objectID);
+    if (!obj) {
+      return null;
+    }
+    return obj.mappings[attribute];
+  }
 }

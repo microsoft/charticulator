@@ -79,7 +79,7 @@ export class LinearScale extends ScaleClass {
     const x2 = props.domainMax;
     const y1 = attrs.rangeMin;
     const y2 = attrs.rangeMax;
-    return ((data as number) - x1) / (x2 - x1) * (y2 - y1) + y1;
+    return (((data as number) - x1) / (x2 - x1)) * (y2 - y1) + y1;
   }
 
   public buildConstraint(
@@ -153,6 +153,28 @@ export class LinearScale extends ScaleClass {
       manager.mappingEditor("Start", "rangeMin", "number", { defaultValue: 0 }),
       manager.mappingEditor("End", "rangeMax", "number", { defaultAuto: true })
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const parameters = super.getTemplateParameters();
+    if (!parameters.properties) {
+      parameters.properties = [];
+    }
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMin"
+      },
+      type: "number"
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMax"
+      },
+      type: "number"
+    });
+    return parameters;
   }
 }
 
@@ -232,6 +254,28 @@ export class LinearColorScale extends ScaleClass {
         true
       )
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const parameters = super.getTemplateParameters();
+    if (!parameters.properties) {
+      parameters.properties = [];
+    }
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMin"
+      },
+      type: "number"
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        property: "domainMax"
+      },
+      type: "number"
+    });
+    return parameters;
   }
 }
 

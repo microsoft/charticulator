@@ -116,6 +116,10 @@ export class TextExpression {
       .join("");
   }
 
+  public isTrivialString() {
+    return this.parts.every(x => x.string != null);
+  }
+
   public toString(): string {
     return this.parts
       .map(part => {
