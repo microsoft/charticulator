@@ -31,7 +31,8 @@
       "license-check-and-add"
     ],
     "*.{scss,sass}": [
-      "prettier --write"
+      "prettier --write",
+      "license-check-and-add"
     ],
     "*.{js,jsx}": "license-check-and-add"
   },
@@ -51,13 +52,16 @@
     "license": "header.txt",
     "exact_paths_method": "INCLUDE",
     "exact_paths": [
-      "src"
+      "src",
+      "sass"
     ],
     "file_type_method": "INCLUDE",
     "file_types": [
       ".js",
       ".tsx",
-      ".ts"
+      ".ts",
+      ".scss",
+      ".sass"
     ],
     "insert_license": true
   },
