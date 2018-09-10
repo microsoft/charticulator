@@ -159,7 +159,17 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
+        width: number;
+        height: number;
       } = e.data;
+      info.specification.mappings.width = {
+        type: "value",
+        value: info.width
+      } as Specification.ValueMapping;
+      info.specification.mappings.height = {
+        type: "value",
+        value: info.height
+      } as Specification.ValueMapping;
       this.mainStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset)
       );

@@ -317,7 +317,7 @@ export function renderGraphicalElementSVG(
           width={component.width}
           height={component.height}
           rootElement="g"
-          sync={options ? options.chartComponentSync : false}
+          sync={options.chartComponentSync}
           rendererOptions={options}
         />
       );

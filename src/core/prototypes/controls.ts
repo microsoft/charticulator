@@ -109,6 +109,8 @@ export interface GroupByEditorOptions {
 export interface NestedChartEditorOptions {
   specification: Specification.Chart;
   dataset: Dataset.Dataset;
+  width: number;
+  height: number;
 }
 
 export interface WidgetManager {

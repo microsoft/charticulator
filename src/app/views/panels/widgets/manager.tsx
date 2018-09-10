@@ -746,7 +746,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                           id: editorID,
                           type: "load",
                           specification: options.specification,
-                          dataset: options.dataset
+                          dataset: options.dataset,
+                          width: options.width,
+                          height: options.height
                         },
                         document.location.origin
                       );

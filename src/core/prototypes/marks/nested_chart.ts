@@ -121,7 +121,9 @@ export class NestedChartElement extends EmphasizableMarkClass {
         { property: "specification" },
         {
           specification: this.object.properties.specification,
-          dataset: this.getDataset(0)
+          dataset: this.getDataset(0),
+          width: this.state.attributes.width,
+          height: this.state.attributes.height
         }
       )
     ]);
@@ -372,7 +374,13 @@ export class NestedChartElement extends EmphasizableMarkClass {
         backgroundOpacity: 1
       },
       mappings: {
-        marginTop: { type: "value", value: 80 } as Specification.ValueMapping
+        marginTop: { type: "value", value: 25 } as Specification.ValueMapping,
+        marginBottom: {
+          type: "value",
+          value: 10
+        } as Specification.ValueMapping,
+        marginLeft: { type: "value", value: 10 } as Specification.ValueMapping,
+        marginRight: { type: "value", value: 10 } as Specification.ValueMapping
       },
       glyphs: [
         {
@@ -456,7 +464,7 @@ export class NestedChartElement extends EmphasizableMarkClass {
           properties: {
             name: "Title",
             visible: true,
-            alignment: { x: "middle", y: "top", xMargin: 0, yMargin: 30 },
+            alignment: { x: "middle", y: "top", xMargin: 0, yMargin: 5 },
             rotation: 0
           },
           mappings: {
@@ -470,11 +478,11 @@ export class NestedChartElement extends EmphasizableMarkClass {
             } as Specification.ParentMapping,
             text: {
               type: "value",
-              value: "Hello World"
+              value: "Nested Chart"
             } as Specification.ValueMapping,
             fontSize: {
               type: "value",
-              value: 24
+              value: 12
             } as Specification.ValueMapping,
             color: {
               type: "value",

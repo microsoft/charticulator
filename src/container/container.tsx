@@ -245,7 +245,7 @@ export class ChartContainer extends EventEmitter {
     );
   }
 
-  /** Unmounr the chart */
+  /** Unmount the chart */
   public unmount() {
     if (this.container) {
       ReactDOM.unmountComponentAtNode(this.container);

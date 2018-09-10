@@ -86,6 +86,26 @@ export class ChartTemplateBuilder {
     });
   }
 
+  public propertyToString(property: Specification.Template.PropertyField) {
+    let pn: string;
+    if (typeof property == "string" || typeof property == "number") {
+      pn = property.toString();
+    } else {
+      pn = property.property;
+      if (property.field) {
+        if (
+          typeof property.field == "string" ||
+          typeof property.field == "number"
+        ) {
+          pn += "." + property.field.toString();
+        } else {
+          pn += "." + property.field.join(".");
+        }
+      }
+    }
+    return pn;
+  }
+
   public addObject(table: string, objectClass: Prototypes.ObjectClass) {
     // Visit a object only once
     if (this.objectVisited[objectClass.object._id]) {
@@ -160,24 +180,7 @@ export class ChartTemplateBuilder {
         // Make a default display name
         let pn = "";
         if (property.target.property) {
-          if (
-            typeof property.target.property == "string" ||
-            typeof property.target.property == "number"
-          ) {
-            pn = property.target.property.toString();
-          } else {
-            pn = property.target.property.property;
-            if (property.target.property.field) {
-              if (
-                typeof property.target.property.field == "string" ||
-                typeof property.target.property.field == "number"
-              ) {
-                pn += "." + property.target.property.field.toString();
-              } else {
-                pn += "." + property.target.property.field.join(".");
-              }
-            }
-          }
+          pn = this.propertyToString(property.target.property);
         } else if (property.target.attribute) {
           pn = property.target.attribute;
         }
