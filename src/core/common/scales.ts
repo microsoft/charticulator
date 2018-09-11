@@ -4,8 +4,17 @@ const e10 = Math.sqrt(50);
 const e5 = Math.sqrt(10);
 const e2 = Math.sqrt(2);
 
+import {
+  formatSpecifier,
+  formatPrefix,
+  format,
+  precisionPrefix,
+  precisionRound,
+  precisionFixed
+} from "d3-format";
+
 export namespace Scale {
-  /** D3's d3.tickIncrement function */
+  /** D3's tickIncrement function: https://github.com/d3/d3-array/blob/master/src/ticks.js */
   export function tickIncrement(start: number, stop: number, count: number) {
     const step = (stop - start) / Math.max(0, count);
     const power = Math.floor(Math.log(step) / Math.LN10);
@@ -17,7 +26,22 @@ export namespace Scale {
           (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
   }
 
-  /** Calculate nice scale boundaries */
+  /** D3's tickStep function: https://github.com/d3/d3-array/blob/master/src/ticks.js */
+  export function tickStep(start: number, stop: number, count: number) {
+    const step0 = Math.abs(stop - start) / Math.max(0, count);
+    let step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10));
+    const error = step0 / step1;
+    if (error >= e10) {
+      step1 *= 10;
+    } else if (error >= e5) {
+      step1 *= 5;
+    } else if (error >= e2) {
+      step1 *= 2;
+    }
+    return stop < start ? -step1 : step1;
+  }
+
+  /** D3's nice function: https://github.com/d3/d3-scale/blob/master/src/linear.js */
   export function nice(
     domainMin: number,
     domainMax: number,
@@ -46,6 +70,7 @@ export namespace Scale {
     return [domainMin, domainMax];
   }
 
+  /** D3's ticks function: https://github.com/d3/d3-array/blob/master/src/ticks.js */
   export function ticks(start: number, stop: number, count: number): number[] {
     const reverse = stop < start;
     let i = -1,
@@ -84,6 +109,63 @@ export namespace Scale {
     return ticks;
   }
 
+  /** D3's tickFormat function: https://github.com/d3/d3-scale/blob/master/src/tickFormat.js */
+  export function tickFormat(
+    start: number,
+    stop: number,
+    count: number,
+    specifier: string
+  ) {
+    const step = tickStep(start, stop, count == null ? 10 : count);
+    let precision;
+    const parsedSpecifier = formatSpecifier(
+      specifier == null ? ",f" : specifier
+    );
+    switch (parsedSpecifier.type) {
+      case "s": {
+        const value = Math.max(Math.abs(start), Math.abs(stop));
+        if (
+          parsedSpecifier.precision == null &&
+          !isNaN((precision = precisionPrefix(step, value)))
+        ) {
+          parsedSpecifier.precision = precision;
+        }
+        return formatPrefix(parsedSpecifier.toString(), value);
+      }
+      case "":
+      case "e":
+      case "g":
+      case "p":
+      case "r": {
+        if (
+          parsedSpecifier.precision == null &&
+          !isNaN(
+            (precision = precisionRound(
+              step,
+              Math.max(Math.abs(start), Math.abs(stop))
+            ))
+          )
+        ) {
+          parsedSpecifier.precision =
+            precision - (parsedSpecifier.type === "e" ? 1 : 0);
+        }
+        break;
+      }
+      case "f":
+      case "%": {
+        if (
+          parsedSpecifier.precision == null &&
+          !isNaN((precision = precisionFixed(step)))
+        ) {
+          parsedSpecifier.precision =
+            precision - (parsedSpecifier.type === "%" ? 1 : 0) * 2;
+        }
+        break;
+      }
+    }
+    return format(parsedSpecifier.toString());
+  }
+
   /** Base scale class */
   export abstract class BaseScale<InputType, OutputType> {
     /** Infer scale parameters given a list of values */
@@ -112,6 +194,10 @@ export namespace Scale {
 
     public ticks(n: number = 10) {
       return ticks(this.domainMin, this.domainMax, n);
+    }
+
+    public tickFormat(n: number = 10, specifier?: string) {
+      return tickFormat(this.domainMin, this.domainMax, n, specifier);
     }
   }
 

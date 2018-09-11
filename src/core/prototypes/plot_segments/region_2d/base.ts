@@ -556,7 +556,11 @@ export class Region2DConstraintBuilder {
             this.y2Name
           ]);
 
-          const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
+          const axis = getCategoricalAxis(
+            data,
+            this.config.xAxisPrePostGap,
+            false
+          );
 
           const sublayoutGroups: SublayoutGroup[] = [];
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
@@ -609,7 +613,11 @@ export class Region2DConstraintBuilder {
             "gapY"
           ]);
 
-          const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
+          const axis = getCategoricalAxis(
+            data,
+            this.config.yAxisPrePostGap,
+            true
+          );
 
           const sublayoutGroups: SublayoutGroup[] = [];
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
@@ -664,8 +672,16 @@ export class Region2DConstraintBuilder {
             "gapY"
           ]);
 
-          const xAxis = getCategoricalAxis(xData, this.config.xAxisPrePostGap);
-          const yAxis = getCategoricalAxis(yData, this.config.yAxisPrePostGap);
+          const xAxis = getCategoricalAxis(
+            xData,
+            this.config.xAxisPrePostGap,
+            false
+          );
+          const yAxis = getCategoricalAxis(
+            yData,
+            this.config.yAxisPrePostGap,
+            true
+          );
 
           const sublayoutGroups: SublayoutGroup[] = [];
           for (let yIndex = 0; yIndex < yData.categories.length; yIndex++) {
@@ -748,11 +764,11 @@ export class Region2DConstraintBuilder {
       const categoryMarks = this.groupMarksByCategoricalMapping(axis);
       const xAxis =
         axis == "x" || axis == "xy"
-          ? getCategoricalAxis(props.xData, this.config.xAxisPrePostGap)
+          ? getCategoricalAxis(props.xData, this.config.xAxisPrePostGap, false)
           : null;
       const yAxis =
         axis == "y" || axis == "xy"
-          ? getCategoricalAxis(props.yData, this.config.yAxisPrePostGap)
+          ? getCategoricalAxis(props.yData, this.config.yAxisPrePostGap, true)
           : null;
       handles = handles.concat(
         this.sublayoutHandles(
@@ -777,7 +793,7 @@ export class Region2DConstraintBuilder {
 
     if (axis == "x" || axis == "xy") {
       const data = props.xData;
-      const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap);
+      const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap, false);
       for (let i = 0; i < axis.ranges.length - 1; i++) {
         const p1 = axis.ranges[i][1];
         const p2 = axis.ranges[i + 1][0];
@@ -796,7 +812,7 @@ export class Region2DConstraintBuilder {
     }
     if (axis == "y" || axis == "xy") {
       const data = props.yData;
-      const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap);
+      const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap, true);
       for (let i = 0; i < axis.ranges.length - 1; i++) {
         const p1 = axis.ranges[i][1];
         const p2 = axis.ranges[i + 1][0];
