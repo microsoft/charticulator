@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1200, user-scalable=no" />
+
+  <link rel="stylesheet" href="styles/app.css" type="text/css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <title>Charticulator Test</title>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script src="data/config.js"></script>
+  <script src="scripts/test.bundle.js"></script>
+
+  <script type="text/javascript">
+    var application = new Charticulator.TestApplication();
+    application.initialize(CHARTICULATOR_CONFIG, "container", "./scripts/worker.bundle.js");
+  </script>
+  <script type='text/javascript'>
+    // Include Lato and Inconsolata from Google fonts.
+    WebFontConfig = {
+      google: {
+        families: ['Lato:300,300i,400,400i,700,700i', 'Inconsolata:400,700']
+      }
+    };
+    (function (d) {
+      var wf = d.createElement('script'),
+        s = d.scripts[0];
+      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+      wf.async = true;
+      s.parentNode.insertBefore(wf, s);
+    })(document);
+  </script>
+</body>
+
+</html>
