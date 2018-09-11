@@ -22,7 +22,7 @@ export interface DataSelection {
 
 export type OnSelectGlyph = (
   data: { table: string; rowIndices: number[] },
-  modifiers: { ctrlKey: boolean; shiftKey: boolean }
+  modifiers: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
 ) => void;
 
 export interface ChartComponentProps {
@@ -246,7 +246,8 @@ export class ChartComponent extends React.Component<
         const rowIndices = cls.state.dataRowIndices[element.glyphIndex];
         const modifiers = {
           ctrlKey: event.ctrlKey,
-          shiftKey: event.shiftKey
+          shiftKey: event.shiftKey,
+          metaKey: event.metaKey
         };
         this.props.onSelectGlyph(
           { table: element.plotSegment.table, rowIndices },

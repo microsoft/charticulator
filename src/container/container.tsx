@@ -119,7 +119,7 @@ export class ChartContainerComponent extends React.Component<
       this.setSelection(
         data.table,
         data.rowIndices,
-        modifiers.shiftKey || modifiers.ctrlKey,
+        modifiers.shiftKey || modifiers.ctrlKey || modifiers.metaKey,
         true
       );
     }

@@ -70,7 +70,6 @@ export class ChartTemplateBuilder {
     expr: string,
     textExpression?: boolean
   ) {
-    console.log(table, expr, textExpression);
     let ex: Expression.Expression | Expression.TextExpression;
     if (textExpression) {
       ex = Expression.parseTextExpression(expr);
@@ -169,6 +168,12 @@ export class ChartTemplateBuilder {
             inference.dataSource.table,
             inference.expression.expression
           );
+        }
+        if (inference.nestedChart) {
+          const { nestedChart } = inference;
+          Object.keys(nestedChart.columnNameMap).forEach(key => {
+            this.addColumn(inference.dataSource.table, key);
+          });
         }
         template.inference.push(inference);
       }

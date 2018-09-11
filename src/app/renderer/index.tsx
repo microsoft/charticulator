@@ -124,7 +124,7 @@ export function renderGraphicalElementSVG(
     : renderStyle(options.styleOverride || element.style);
 
   // OnClick event handler
-  let onClick;
+  let onClick: (e: React.MouseEvent<Element>) => void;
   if (options.onSelected && element.selectable) {
     onClick = (e: React.MouseEvent<Element>) => {
       e.stopPropagation();
@@ -316,7 +316,16 @@ export function renderGraphicalElementSVG(
           height={component.height}
           rootElement="g"
           sync={options.chartComponentSync}
-          rendererOptions={options}
+          rendererOptions={{
+            chartComponentSync: options.chartComponentSync,
+            externalResourceResolver: options.externalResourceResolver,
+            onSelected: options.onSelected
+              ? (_, nativeEvent) => {
+                  // For now, select the whole component, discard any info inside
+                  options.onSelected(element.selectable, nativeEvent);
+                }
+              : null
+          }}
         />
       );
     }
