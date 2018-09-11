@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { expect } from "chai";
-import * as Expression from "../core/expression";
+import * as Expression from "../../core/expression";
 
 describe("Basic Expression", () => {
   const test_cases: Array<[string, any]> = [

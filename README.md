@@ -70,6 +70,8 @@ Once this up, open <http://localhost:4000/>
 to launch Charticulator. Now when you change the source code, the app can be updated by simply
 refreshing the browser page (you may need to disable browser cache).
 
+In development mode, there is a test application for UI components, which can be accessed at <http://localhost:4000/test.html>.
+
 The watch mode won't update when you change the following:
 
 - config.yml
