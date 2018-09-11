@@ -42,7 +42,7 @@ export interface NumberModifier {
   multiply?: number;
   /** Add the amount to */
   add?: number;
-  /** Apply a s curve */
+  /** Apply a pow function to */
   pow?: number;
 }
 
