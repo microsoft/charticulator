@@ -78,7 +78,8 @@ export class AxisRenderer {
     data: Specification.Types.AxisDataBinding,
     rangeMin: number,
     rangeMax: number,
-    enablePrePostGap: boolean = false
+    enablePrePostGap: boolean,
+    reverse: boolean
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
@@ -103,7 +104,7 @@ export class AxisRenderer {
         {
           this.setCategoricalScale(
             data.categories,
-            getCategoricalAxis(data, enablePrePostGap).ranges,
+            getCategoricalAxis(data, enablePrePostGap, reverse).ranges,
             rangeMin,
             rangeMax
           );
@@ -498,7 +499,8 @@ export class AxisRenderer {
 
 export function getCategoricalAxis(
   data: Specification.Types.AxisDataBinding,
-  enablePrePostGap: boolean
+  enablePrePostGap: boolean,
+  reverse: boolean
 ) {
   if (data.enablePrePostGap) {
     enablePrePostGap = true;
@@ -527,6 +529,9 @@ export function getCategoricalAxis(
       preGap + (gap + chunkSize) * i + chunkSize
     ] as [number, number];
   });
+  if (reverse) {
+    chunkRanges.reverse();
+  }
   return {
     gap,
     preGap,

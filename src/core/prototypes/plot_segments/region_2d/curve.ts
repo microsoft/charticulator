@@ -343,30 +343,16 @@ export class CurvePlotSegment extends Region2DPlotSegment {
   }
 
   public getGraphics(): Graphics.Group {
-    const {
-      x1,
-      y1,
-      x2,
-      y2,
-      tangent1,
-      tangent2,
-      normal1,
-      normal2
-    } = this.state.attributes;
+    const { tangent1, tangent2, normal1, normal2 } = this.state.attributes;
 
-    const builder = this.createBuilder();
     const g = Graphics.makeGroup([]);
-    const attrs = this.state.attributes;
     const props = this.object.properties;
-    const cx = (attrs.x1 + attrs.x2) / 2;
-    const cy = (attrs.y1 + attrs.y2) / 2;
-    const [angularMode, radialMode] = this.getAxisModes();
     const cs = this.getCoordinateSystem();
 
     if (props.xData && props.xData.visible) {
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(props.xData, tangent1, tangent2)
+          .setAxisDataBinding(props.xData, tangent1, tangent2, false, false)
           .renderCurve(
             cs,
             props.xData.side == "opposite" ? normal2 : normal1,
@@ -382,12 +368,12 @@ export class CurvePlotSegment extends Region2DPlotSegment {
       tr = Graphics.concatTransform(cs.getBaseTransform(), tr);
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(props.yData, normal1, normal2, false)
+          .setAxisDataBinding(props.yData, normal1, normal2, false, true)
           .renderLine(
             tr.x,
             tr.y,
-            tr.angle - 90,
-            props.yData.side == "opposite" ? -1 : 1
+            tr.angle + 90,
+            props.yData.side == "opposite" ? 1 : -1
           )
       );
     }
@@ -419,8 +405,6 @@ export class CurvePlotSegment extends Region2DPlotSegment {
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes as CurveAttributes;
     const { x1, y1, x2, y2 } = attrs;
-    const cx = (x1 + x2) / 2;
-    const cy = (y1 + y2) / 2;
     const zones: DropZones.Description[] = [];
     zones.push({
       type: "region",
@@ -563,7 +547,6 @@ export class CurvePlotSegment extends Region2DPlotSegment {
       return null;
     }
     const attrs = this.state.attributes;
-    const props = this.object.properties;
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,
