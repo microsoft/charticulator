@@ -7,8 +7,7 @@ import {
   Dataset,
   EventEmitter,
   Specification,
-  EventSubscription,
-  FieldType
+  EventSubscription
 } from "../core";
 import {
   ChartComponent,
@@ -119,7 +118,7 @@ export class ChartContainerComponent extends React.Component<
       this.setSelection(
         data.table,
         data.rowIndices,
-        modifiers.shiftKey || modifiers.ctrlKey,
+        modifiers.shiftKey || modifiers.ctrlKey || modifiers.metaKey,
         true
       );
     }

@@ -58,6 +58,7 @@ export interface Inference {
   axis?: AxisInference;
   scale?: ScaleInference;
   expression?: ExpressionInference;
+  nestedChart?: NestedChartInference;
 }
 
 /** Infer axis parameter, set to axis property */
@@ -90,4 +91,9 @@ export interface ExpressionInference {
   expression: string;
 
   property: PropertyField;
+}
+
+/** Nested chart */
+export interface NestedChartInference {
+  columnNameMap: { [name: string]: string };
 }

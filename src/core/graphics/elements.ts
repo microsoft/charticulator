@@ -52,20 +52,22 @@ export interface Style {
   textAnchor?: "start" | "middle" | "end";
 }
 
+export interface Selectable {
+  plotSegment: Specification.PlotSegment;
+  glyphIndex: number;
+  rowIndices: number[];
+}
+
 export interface Element {
   type: string;
   style?: Style;
-  selectable?: {
-    plotSegment: Specification.PlotSegment;
-    mark: Specification.Element;
-    glyph: Specification.Glyph;
-    glyphIndex: number;
-  };
+  selectable?: Selectable;
 }
 
 export interface ChartContainerElement {
   type: "chart-container";
   chart: Specification.Chart;
+  selectable: Selectable;
   dataset: Dataset.Dataset;
   x: number;
   y: number;
