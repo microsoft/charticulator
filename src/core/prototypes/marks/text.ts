@@ -13,9 +13,13 @@ import {
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters
+  TemplateParameters,
+  ObjectClass
 } from "../common";
 import { MarkClass } from "./index";
+import { EmphasizableMarkClass } from "./emphasis";
+import { attributes } from "./text.attrs";
+import { ChartStateManager } from "../state";
 
 export interface TextElementAttributes extends Specification.AttributeMap {
   x: number;
@@ -42,7 +46,7 @@ export interface TextElementObject extends Specification.Element {
   properties: TextElementProperties;
 }
 
-export class TextElement extends MarkClass {
+export class TextElement extends EmphasizableMarkClass {
   public static classID = "mark.text";
   public static type = "mark";
 
@@ -54,6 +58,14 @@ export class TextElement extends MarkClass {
       mapping: { x: "x", y: "y" }
     }
   };
+
+  constructor(
+    parent: ObjectClass,
+    object: Specification.Object,
+    state: Specification.ObjectState
+  ) {
+    super(parent, object, state, attributes);
+  }
 
   public static defaultMappingValues: Specification.AttributeMap = {
     text: "Text",
@@ -87,68 +99,6 @@ export class TextElement extends MarkClass {
     "opacity",
     "visible"
   ];
-  public attributes: { [name: string]: AttributeDescription } = {
-    x: { name: "x", type: "number", mode: "positional" },
-    y: { name: "y", type: "number", mode: "positional" },
-    text: {
-      name: "text",
-      type: "string",
-      category: "text",
-      displayName: "Text",
-      solverExclude: true,
-      defaultValue: ""
-    },
-    fontFamily: {
-      name: "fontFamily",
-      type: "string",
-      category: "text",
-      displayName: "Font",
-      solverExclude: true,
-      defaultValue: "Arial"
-    },
-    fontSize: {
-      name: "fontSize",
-      type: "number",
-      category: "text",
-      displayName: "Size",
-      solverExclude: true,
-      defaultRange: [0, 24],
-      defaultValue: 14
-    },
-    color: {
-      name: "color",
-      type: "color",
-      category: "style",
-      displayName: "Color",
-      solverExclude: true,
-      defaultValue: null
-    },
-    outline: {
-      name: "outline",
-      type: "color",
-      category: "style",
-      displayName: "Outline",
-      solverExclude: true,
-      defaultValue: null
-    },
-    opacity: {
-      name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 1]
-    },
-    visible: {
-      name: "visible",
-      type: "boolean",
-      category: "style",
-      displayName: "Visible",
-      solverExclude: true,
-      defaultValue: true
-    }
-  };
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -196,7 +146,10 @@ export class TextElement extends MarkClass {
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
-    offset: Point
+    offset: Point,
+    glyphIndex = 0,
+    manager: ChartStateManager,
+    empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -226,7 +179,8 @@ export class TextElement extends MarkClass {
       {
         strokeColor: attrs.outline,
         fillColor: attrs.color,
-        opacity: attrs.opacity
+        opacity: attrs.opacity,
+        ...this.generateEmphasisStyle(empasized)
       }
     );
     const g = Graphics.makeGroup([text]);

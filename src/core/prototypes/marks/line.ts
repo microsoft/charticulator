@@ -44,13 +44,7 @@ export class LineElement extends EmphasizableMarkClass {
     object: Specification.Object,
     state: Specification.ObjectState
   ) {
-    super(
-      parent,
-      object,
-      state,
-      attributes,
-      Specification.EmphasisMethod.Outline
-    );
+    super(parent, object, state, attributes);
   }
 
   public static defaultProperties: Specification.AttributeMap = {

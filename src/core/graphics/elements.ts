@@ -33,6 +33,24 @@ export interface RigidTransform {
   angle: number;
 }
 
+/** Specify a modification to a numeric value: (v' = set) or (v' = (v * multiply + add) ^ pow) */
+export interface NumberModifier {
+  /** Set to a specific value */
+  set?: number;
+
+  /** Multiply a scaler to */
+  multiply?: number;
+  /** Add the amount to */
+  add?: number;
+  /** Apply a pow function to */
+  pow?: number;
+}
+
+export interface ColorFilter {
+  saturation?: NumberModifier;
+  lightness?: NumberModifier;
+}
+
 export interface Style {
   strokeColor?: Color;
   strokeOpacity?: number;
@@ -40,7 +58,7 @@ export interface Style {
   strokeLinejoin?: "round" | "miter" | "bevel";
   strokeLinecap?: "round" | "butt" | "square";
 
-  saturation?: number;
+  colorFilter?: ColorFilter;
 
   fillColor?: Color;
   fillOpacity?: number;

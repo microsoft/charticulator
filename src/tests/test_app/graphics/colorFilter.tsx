@@ -5,14 +5,15 @@ import { Graphics, colorFromHTMLColor } from "../../../core";
 import { renderGraphicalElementSVG } from "../../../app/renderer";
 import { makeRect, makeGroup } from "../../../core/graphics";
 
-export class DesaturateTestView extends React.Component<
+export class ColorFilterTestView extends React.Component<
   {},
-  { slider1: number }
+  { slider1: number; slider2: number }
 > {
   constructor(props: {}) {
     super(props);
     this.state = {
-      slider1: 700
+      slider1: 200,
+      slider2: 200
     };
   }
   public render() {
@@ -65,15 +66,17 @@ export class DesaturateTestView extends React.Component<
     const elements = colors.map((color, i) => {
       const x = (i % 4) * 150;
       const y = Math.floor(i / 4) * 50;
+      const style: Graphics.Style = {
+        fillColor: color
+      };
       return makeGroup([
-        makeRect(x, y, x + 60, y + 40, {
-          fillColor: color,
-          strokeColor: { r: 0, g: 0, b: 0 }
-        }),
+        makeRect(x, y, x + 60, y + 40, style),
         makeRect(x + 70, y, x + 130, y + 40, {
-          fillColor: color,
-          strokeColor: { r: 0, g: 0, b: 0 },
-          saturation: this.state.slider1 / 1000
+          ...style,
+          colorFilter: {
+            saturation: { multiply: this.state.slider1 / 1000 },
+            lightness: { add: 0.01, pow: this.state.slider2 / 1000 }
+          }
         })
       ]);
     });
@@ -84,14 +87,27 @@ export class DesaturateTestView extends React.Component<
           {"Saturation = "}
           <input
             type="range"
-            min={0}
-            max={999}
+            min={1}
+            max={1000}
             value={this.state.slider1}
             onChange={e => {
               this.setState({ slider1: +e.target.value });
             }}
           />
           {" " + (this.state.slider1 / 1000).toFixed(3)}
+        </div>
+        <div>
+          {"Lightness.pow = "}
+          <input
+            type="range"
+            min={0}
+            max={1000}
+            value={this.state.slider2}
+            onChange={e => {
+              this.setState({ slider2: +e.target.value });
+            }}
+          />
+          {" " + (this.state.slider2 / 1000).toFixed(3)}
         </div>
         <svg width={600} height={600}>
           <g transform="translate(0, 599)">
