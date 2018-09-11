@@ -7,8 +7,7 @@ import {
   Dataset,
   EventEmitter,
   Specification,
-  EventSubscription,
-  FieldType
+  EventSubscription
 } from "../core";
 import {
   ChartComponent,

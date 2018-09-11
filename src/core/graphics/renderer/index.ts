@@ -50,6 +50,7 @@ export class ChartRenderer {
    */
   private renderGlyphMarks(
     plotSegment: Specification.PlotSegment,
+    plotSegmentState: Specification.PlotSegmentState,
     coordinateSystem: CoordinateSystem,
     offset: Point,
     glyph: Specification.Glyph,
@@ -72,9 +73,8 @@ export class ChartRenderer {
       if (g != null) {
         g.selectable = {
           plotSegment,
-          glyph,
-          mark,
-          glyphIndex: index
+          glyphIndex: index,
+          rowIndices: plotSegmentState.dataRowIndices[index]
         };
         return makeGroup([g]);
       } else {
@@ -140,6 +140,7 @@ export class ChartRenderer {
           const offsetY = (glyphState.attributes.y as number) - anchorY;
           const g = this.renderGlyphMarks(
             plotSegment,
+            plotSegmentState,
             coordinateSystem,
             { x: offsetX, y: offsetY },
             mark,

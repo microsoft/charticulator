@@ -94,6 +94,10 @@ export function renderTransform(transform: Graphics.RigidTransform): string {
   }
 }
 
+export interface DataSelection {
+  isSelected(table: string, rowIndices: number[]): boolean;
+}
+
 export interface RenderGraphicalElementSVGOptions {
   noStyle?: boolean;
   styleOverride?: Graphics.Style;
@@ -103,8 +107,9 @@ export interface RenderGraphicalElementSVGOptions {
   externalResourceResolver?: (url: string) => string;
   onSelected?: (
     element: Graphics.Element["selectable"],
-    event: MouseEvent
+    event: { shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }
   ) => any;
+  selection?: DataSelection;
 }
 
 export function renderGraphicalElementSVG(
@@ -307,6 +312,21 @@ export function renderGraphicalElementSVG(
     }
     case "chart-container": {
       const component = element as Graphics.ChartContainerElement;
+      const subSelection = options.selection
+        ? {
+            isSelected: (table: string, rowIndices: number[]) => {
+              // Get parent row indices from component row indices
+              const parentRowIndices = rowIndices.map(
+                x => component.selectable.rowIndices[x]
+              );
+              // Query the selection with parent row indices
+              return options.selection.isSelected(
+                component.selectable.plotSegment.table,
+                parentRowIndices
+              );
+            }
+          }
+        : null;
       return (
         <ChartComponent
           key={options.key}
@@ -316,15 +336,34 @@ export function renderGraphicalElementSVG(
           height={component.height}
           rootElement="g"
           sync={options.chartComponentSync}
-          rendererOptions={{
-            chartComponentSync: options.chartComponentSync,
-            externalResourceResolver: options.externalResourceResolver,
-            onSelected: options.onSelected
-              ? (_, nativeEvent) => {
-                  // For now, select the whole component, discard any info inside
-                  options.onSelected(element.selectable, nativeEvent);
+          selection={subSelection}
+          onSelectGlyph={
+            options.onSelected
+              ? (s, parameters) => {
+                  if (s == null) {
+                    // Clicked inside the ChartComponent but not on a glyph,
+                    // in this case we select the whole thing
+                    options.onSelected(component.selectable, parameters);
+                  } else {
+                    // Clicked on a glyph of ChartComponent (or a sub-component)
+                    // in this case we translate the component's rowIndices its parent's
+                    options.onSelected(
+                      {
+                        plotSegment: component.selectable.plotSegment,
+                        glyphIndex: component.selectable.glyphIndex,
+                        rowIndices: s.rowIndices.map(
+                          i => component.selectable.rowIndices[i]
+                        )
+                      },
+                      parameters
+                    );
+                  }
                 }
               : null
+          }
+          rendererOptions={{
+            chartComponentSync: options.chartComponentSync,
+            externalResourceResolver: options.externalResourceResolver
           }}
         />
       );
@@ -348,7 +387,8 @@ export function renderGraphicalElementSVG(
               key: `m${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
-              onSelected: options.onSelected
+              onSelected: options.onSelected,
+              selection: options.selection
             });
           })}
         </g>

@@ -215,6 +215,13 @@ export class NestedChartElement extends EmphasizableMarkClass {
         type: "chart-container",
         dataset: this.getDataset(glyphIndex),
         chart: deepClone(this.object.properties.specification),
+        selectable: {
+          plotSegment: this.getPlotSegmentClass().object,
+          glyphIndex,
+          rowIndices: this.getPlotSegmentClass().state.dataRowIndices[
+            glyphIndex
+          ]
+        },
         width: attrs.width,
         height: attrs.height
       } as Graphics.ChartContainerElement
