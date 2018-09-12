@@ -369,7 +369,7 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     if (radialData && radialData.visible) {
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(radialData, innerRadius, outerRadius)
+          .setAxisDataBinding(radialData, innerRadius, outerRadius, false, true)
           .renderLine(
             cx,
             cy,
@@ -385,7 +385,8 @@ export class PolarPlotSegment extends Region2DPlotSegment {
             angularData,
             angleStart,
             angleEnd,
-            builder.config.xAxisPrePostGap
+            builder.config.xAxisPrePostGap,
+            false
           )
           .renderPolar(
             cx,

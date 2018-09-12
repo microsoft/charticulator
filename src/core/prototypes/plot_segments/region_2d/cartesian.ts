@@ -277,6 +277,7 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
         props.xData,
         0,
         attrs.x2 - attrs.x1,
+        false,
         false
       );
       if (props.xData.tickDataExpression) {
@@ -295,7 +296,8 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
         props.yData,
         0,
         attrs.y2 - attrs.y1,
-        false
+        false,
+        true
       );
       if (props.yData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.yData));

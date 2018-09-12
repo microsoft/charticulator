@@ -135,7 +135,7 @@ export class LineGuide extends PlotSegmentClass {
             break;
           case "categorical":
             {
-              const axis = getCategoricalAxis(props.axis, false);
+              const axis = getCategoricalAxis(props.axis, false, false);
               const row = rows.getGroupedContext(dataIndices[index]);
               const expr = this.parent.dataflow.cache.parse(data.expression);
               const value = expr.getStringValue(row);
@@ -232,7 +232,7 @@ export class LineGuide extends PlotSegmentClass {
     }
     if (props.axis && props.axis.visible) {
       const renderer = new AxisRenderer();
-      renderer.setAxisDataBinding(props.axis, 0, length, false);
+      renderer.setAxisDataBinding(props.axis, 0, length, false, false);
       const g = renderer.renderLine(
         x1,
         y1,

@@ -219,7 +219,9 @@ export class DataAxis extends MarkClass {
           Math.sqrt(
             (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
               (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
-          )
+          ),
+          false,
+          false
         );
         const g = renderer.renderLine(
           0,
@@ -244,7 +246,9 @@ export class DataAxis extends MarkClass {
         Math.sqrt(
           (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
             (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
-        )
+        ),
+        false,
+        false
       );
       const g = renderer.renderLine(
         0,

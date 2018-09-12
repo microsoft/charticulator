@@ -272,6 +272,15 @@ export class ChartTemplate {
         }) as Prototypes.Scales.ScaleClass;
         scaleClass.inferParameters(vector, { autoRange: true });
       }
+      if (inference.nestedChart) {
+        const { nestedChart } = inference;
+        const columnNameMap: { [name: string]: string } = {};
+        Object.keys(nestedChart.columnNameMap).forEach(key => {
+          const newKey = this.columnAssignment[inference.dataSource.table][key];
+          columnNameMap[newKey] = nestedChart.columnNameMap[key];
+        });
+        setProperty(object, "columnNameMap", columnNameMap);
+      }
     }
     return {
       chart,

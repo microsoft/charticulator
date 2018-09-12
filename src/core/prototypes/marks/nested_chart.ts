@@ -12,7 +12,8 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { EmphasizableMarkClass } from "./emphasis";
 import * as Graphics from "../../graphics";
@@ -167,6 +168,7 @@ export class NestedChartElement extends EmphasizableMarkClass {
       for (const c of table.columns) {
         columnNameMap[c.name] = c.name;
       }
+      this.object.properties.columnNameMap = columnNameMap;
     }
     const dataRows = plotSegmentClass.state.dataRowIndices[glyphIndex].map(
       i => {
@@ -213,6 +215,13 @@ export class NestedChartElement extends EmphasizableMarkClass {
         type: "chart-container",
         dataset: this.getDataset(glyphIndex),
         chart: deepClone(this.object.properties.specification),
+        selectable: {
+          plotSegment: this.getPlotSegmentClass().object,
+          glyphIndex,
+          rowIndices: this.getPlotSegmentClass().state.dataRowIndices[
+            glyphIndex
+          ]
+        },
         width: attrs.width,
         height: attrs.height
       } as Graphics.ChartContainerElement
@@ -494,6 +503,22 @@ export class NestedChartElement extends EmphasizableMarkClass {
       resources: []
     } as any;
     return obj;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      inferences: [
+        {
+          objectID: this.object._id,
+          dataSource: {
+            table: this.getGlyphClass().object.table
+          },
+          nestedChart: {
+            columnNameMap: this.object.properties.columnNameMap
+          }
+        }
+      ]
+    };
   }
 }
 

@@ -2,9 +2,10 @@
 // Licensed under the MIT license.
 import * as React from "react";
 
-import { Graphics, Color, shallowClone } from "../../core";
+import { Graphics, Color, shallowClone, getColorConverter } from "../../core";
 import { toSVGNumber } from "../utils";
 import { ChartComponent } from "../../container/chart_component";
+import { ColorFilter, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
 function desaturate(color: Color, amount: number) {
@@ -17,14 +18,53 @@ function desaturate(color: Color, amount: number) {
   };
 }
 
-export function renderColor(color: Color, saturation?: number): string {
+const srgb2lab = getColorConverter("sRGB", "lab");
+const lab2srgb = getColorConverter("lab", "sRGB");
+
+function modifyNumber(value: number, modifier: NumberModifier) {
+  if (modifier.set != null) {
+    return modifier.set;
+  } else {
+    if (modifier.multiply != null) {
+      value *= modifier.multiply;
+    }
+    if (modifier.add != null) {
+      value += modifier.add;
+    }
+    if (modifier.pow != null) {
+      value = Math.pow(value, modifier.pow);
+    }
+    return value;
+  }
+}
+
+export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
+  let [L, A, B] = srgb2lab(color.r, color.g, color.b);
+  if (colorFilter.saturation) {
+    const s = Math.sqrt(A * A + B * B);
+    const sPrime = modifyNumber(s, colorFilter.saturation);
+    if (s == 0) {
+      A = 0;
+      B = 0;
+    } else {
+      A *= sPrime / s;
+      B *= sPrime / s;
+    }
+  }
+  if (colorFilter.lightness) {
+    L = modifyNumber(L / 100, colorFilter.lightness) * 100;
+  }
+  const [r, g, b] = lab2srgb(L, A, B);
+  return { r, g, b };
+}
+
+export function renderColor(color: Color, colorFilter?: ColorFilter): string {
   if (!color) {
     return `rgb(0,0,0)`;
   }
-  if (saturation !== undefined && saturation < 1 && saturation >= 0) {
-    color = desaturate(color, saturation);
+  if (colorFilter) {
+    color = applyColorFilter(color, colorFilter);
   }
-
   return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
     0
   )})`;
@@ -36,7 +76,7 @@ export function renderStyle(style: Graphics.Style): React.CSSProperties {
   }
   return {
     stroke: style.strokeColor
-      ? renderColor(style.strokeColor, style.saturation)
+      ? renderColor(style.strokeColor, style.colorFilter)
       : "none",
     strokeOpacity: style.strokeOpacity != undefined ? style.strokeOpacity : 1,
     strokeWidth: style.strokeWidth != undefined ? style.strokeWidth : 1,
@@ -45,7 +85,7 @@ export function renderStyle(style: Graphics.Style): React.CSSProperties {
     strokeLinejoin:
       style.strokeLinejoin != undefined ? style.strokeLinejoin : "round",
     fill: style.fillColor
-      ? renderColor(style.fillColor, style.saturation)
+      ? renderColor(style.fillColor, style.colorFilter)
       : "none",
     fillOpacity: style.fillOpacity != undefined ? style.fillOpacity : 1,
     textAnchor: style.textAnchor != undefined ? style.textAnchor : "start",
@@ -94,6 +134,10 @@ export function renderTransform(transform: Graphics.RigidTransform): string {
   }
 }
 
+export interface DataSelection {
+  isSelected(table: string, rowIndices: number[]): boolean;
+}
+
 export interface RenderGraphicalElementSVGOptions {
   noStyle?: boolean;
   styleOverride?: Graphics.Style;
@@ -103,8 +147,9 @@ export interface RenderGraphicalElementSVGOptions {
   externalResourceResolver?: (url: string) => string;
   onSelected?: (
     element: Graphics.Element["selectable"],
-    event: MouseEvent
+    event: { shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }
   ) => any;
+  selection?: DataSelection;
 }
 
 export function renderGraphicalElementSVG(
@@ -124,7 +169,7 @@ export function renderGraphicalElementSVG(
     : renderStyle(options.styleOverride || element.style);
 
   // OnClick event handler
-  let onClick;
+  let onClick: (e: React.MouseEvent<Element>) => void;
   if (options.onSelected && element.selectable) {
     onClick = (e: React.MouseEvent<Element>) => {
       e.stopPropagation();
@@ -307,6 +352,21 @@ export function renderGraphicalElementSVG(
     }
     case "chart-container": {
       const component = element as Graphics.ChartContainerElement;
+      const subSelection = options.selection
+        ? {
+            isSelected: (table: string, rowIndices: number[]) => {
+              // Get parent row indices from component row indices
+              const parentRowIndices = rowIndices.map(
+                x => component.selectable.rowIndices[x]
+              );
+              // Query the selection with parent row indices
+              return options.selection.isSelected(
+                component.selectable.plotSegment.table,
+                parentRowIndices
+              );
+            }
+          }
+        : null;
       return (
         <ChartComponent
           key={options.key}
@@ -316,7 +376,35 @@ export function renderGraphicalElementSVG(
           height={component.height}
           rootElement="g"
           sync={options.chartComponentSync}
-          rendererOptions={options}
+          selection={subSelection}
+          onSelectGlyph={
+            options.onSelected
+              ? (s, parameters) => {
+                  if (s == null) {
+                    // Clicked inside the ChartComponent but not on a glyph,
+                    // in this case we select the whole thing
+                    options.onSelected(component.selectable, parameters);
+                  } else {
+                    // Clicked on a glyph of ChartComponent (or a sub-component)
+                    // in this case we translate the component's rowIndices its parent's
+                    options.onSelected(
+                      {
+                        plotSegment: component.selectable.plotSegment,
+                        glyphIndex: component.selectable.glyphIndex,
+                        rowIndices: s.rowIndices.map(
+                          i => component.selectable.rowIndices[i]
+                        )
+                      },
+                      parameters
+                    );
+                  }
+                }
+              : null
+          }
+          rendererOptions={{
+            chartComponentSync: options.chartComponentSync,
+            externalResourceResolver: options.externalResourceResolver
+          }}
         />
       );
     }
@@ -339,7 +427,8 @@ export function renderGraphicalElementSVG(
               key: `m${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
-              onSelected: options.onSelected
+              onSelected: options.onSelected,
+              selection: options.selection
             });
           })}
         </g>

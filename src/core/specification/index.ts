@@ -226,9 +226,7 @@ export interface GlyphState extends ObjectState {
   // Element states
   marks: MarkState[];
 
-  /**
-   * Should this specific glyph instance be emphasized
-   */
+  /** Should this specific glyph instance be emphasized */
   emphasized?: boolean;
 }
 

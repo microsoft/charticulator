@@ -13,16 +13,15 @@ import {
 } from "../core";
 import {
   renderGraphicalElementSVG,
-  RenderGraphicalElementSVGOptions
+  RenderGraphicalElementSVGOptions,
+  DataSelection
 } from "../app/renderer";
 
-export interface DataSelection {
-  isSelected(table: string, rowIndices: number[]): boolean;
-}
+export { DataSelection };
 
 export type OnSelectGlyph = (
   data: { table: string; rowIndices: number[] },
-  modifiers: { ctrlKey: boolean; shiftKey: boolean }
+  modifiers: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
 ) => void;
 
 export interface ChartComponentProps {
@@ -213,7 +212,6 @@ export class ChartComponent extends React.Component<
       Prototypes.setProperty(obj, property, deepClone(value));
       this.setState({ working: true });
       this.scheduleUpdate();
-      console.log("setProperty", property, value);
     }
   }
 
@@ -241,7 +239,6 @@ export class ChartComponent extends React.Component<
       obj.mappings[attribute] = deepClone(mapping);
       this.setState({ working: true });
       this.scheduleUpdate();
-      console.log("setAttributeMapping", attribute, mapping);
     }
   }
 
@@ -249,14 +246,11 @@ export class ChartComponent extends React.Component<
     const renderOptions = { ...this.props.rendererOptions };
     if (this.props.onSelectGlyph) {
       renderOptions.onSelected = (element, event) => {
-        // Find the data row indices
-        const cls = this.manager.getClassById(
-          element.plotSegment._id
-        ) as Prototypes.PlotSegments.PlotSegmentClass;
-        const rowIndices = cls.state.dataRowIndices[element.glyphIndex];
+        const rowIndices = element.rowIndices;
         const modifiers = {
           ctrlKey: event.ctrlKey,
-          shiftKey: event.shiftKey
+          shiftKey: event.shiftKey,
+          metaKey: event.metaKey
         };
         this.props.onSelectGlyph(
           { table: element.plotSegment.table, rowIndices },
@@ -264,6 +258,7 @@ export class ChartComponent extends React.Component<
         );
       };
     }
+    renderOptions.selection = this.props.selection;
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
     const inner = (
       <g
