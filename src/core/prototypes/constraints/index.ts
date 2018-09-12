@@ -59,4 +59,6 @@ export class SnapConstraintClass {
   }
 }
 
-ConstraintTypeClass.register(new SnapConstraintClass());
+export function registerClasses() {
+  ConstraintTypeClass.register(new SnapConstraintClass());
+}

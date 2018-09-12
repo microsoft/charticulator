@@ -1,66 +1,61 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AttributeDescription } from "../object";
 
-export const attributes = {
-  x: { name: "x", type: "number", mode: "positional" },
-  y: { name: "y", type: "number", mode: "positional" },
+import { Color } from "../../common";
+import { AttributeMap, AttributeType, Types } from "../../specification";
+import { AttrBuilder } from "../attrs";
+import { AttributeDescriptions } from "../object";
+
+export const textAttributes: AttributeDescriptions = {
+  ...AttrBuilder.point(),
   text: {
     name: "text",
-    type: "string",
-    category: "text",
-    displayName: "Text",
+    type: AttributeType.Text,
     solverExclude: true,
     defaultValue: ""
   },
   fontFamily: {
     name: "fontFamily",
-    type: "string",
-    category: "text",
-    displayName: "Font",
+    type: AttributeType.FontFamily,
     solverExclude: true,
     defaultValue: "Arial"
   },
   fontSize: {
     name: "fontSize",
-    type: "number",
-    category: "text",
-    displayName: "Size",
+    type: AttributeType.Number,
     solverExclude: true,
     defaultRange: [0, 24],
     defaultValue: 14
   },
   color: {
     name: "color",
-    type: "color",
-    category: "style",
-    displayName: "Color",
+    type: AttributeType.Color,
     solverExclude: true,
     defaultValue: null
   },
   outline: {
     name: "outline",
-    type: "color",
-    category: "style",
-    displayName: "Outline",
+    type: AttributeType.Color,
     solverExclude: true,
     defaultValue: null
   },
-  opacity: {
-    name: "opacity",
-    type: "number",
-    category: "style",
-    displayName: "Opacity",
-    solverExclude: true,
-    defaultValue: 1,
-    defaultRange: [0, 1]
-  },
-  visible: {
-    name: "visible",
-    type: "boolean",
-    category: "style",
-    displayName: "Visible",
-    solverExclude: true,
-    defaultValue: true
-  }
-} as { [name: string]: AttributeDescription };
+  ...AttrBuilder.opacity(),
+  ...AttrBuilder.visible()
+};
+
+export interface TextElementAttributes extends AttributeMap {
+  x: number;
+  y: number;
+  text: string;
+  fontFamily: string;
+  fontSize: number;
+  color: Color;
+  outline: Color;
+  opacity: number;
+  visible: boolean;
+}
+
+export interface TextElementProperties extends AttributeMap {
+  alignment: Types.TextAlignment;
+  rotation: number;
+}

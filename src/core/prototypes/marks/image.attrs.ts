@@ -6,24 +6,31 @@ import { AttributeMap } from "../../specification";
 import { Color } from "../../common";
 import { AttrBuilder } from "../attrs";
 
-export const lineAttributes: AttributeDescriptions = {
+export const imageAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
   ...AttrBuilder.center(),
-  ...AttrBuilder.dXdY(),
-  ...AttrBuilder.style()
+  ...AttrBuilder.size(),
+  ...AttrBuilder.style({ fill: true }),
+  ...AttrBuilder.image()
 };
 
-export interface LineElementAttributes extends AttributeMap {
+export interface ImageElementAttributes extends AttributeMap {
   x1: number;
   y1: number;
   x2: number;
   y2: number;
   cx: number;
   cy: number;
+  width: number;
+  height: number;
   stroke: Color;
+  fill: Color;
   strokeWidth: number;
   opacity: number;
   visible: boolean;
+  image: string;
 }
 
-export interface LineElementProperties extends AttributeMap {}
+export interface ImageElementProperties extends AttributeMap {
+  imageMode: "letterbox" | "fill" | "stretch";
+}

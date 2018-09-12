@@ -168,9 +168,10 @@ export class MapDataToMarkAttribute extends Action {
     public glyph: Specification.Glyph,
     public mark: Specification.Element,
     public attribute: string,
-    public attributeType: string,
+    public attributeType: Specification.AttributeType,
     public expression: string,
-    public valueType: string,
+    public valueType: Specification.DataType,
+    public valueMetadata: Dataset.ColumnMetadata,
     public hints: Prototypes.DataMappingHints
   ) {
     super();
@@ -392,10 +393,11 @@ export class MapDataToChartElementAttribute extends Action {
   constructor(
     public chartElement: Specification.ChartElement,
     public attribute: string,
-    public attributeType: string,
+    public attributeType: Specification.AttributeType,
     public table: string,
     public expression: string,
-    public valueType: string,
+    public valueType: Specification.DataType,
+    public valueMetadata: Dataset.ColumnMetadata,
     public hints: Prototypes.DataMappingHints
   ) {
     super();

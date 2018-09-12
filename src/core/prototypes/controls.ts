@@ -58,7 +58,7 @@ export interface MappingEditorOptions {
 
   /** Only allow mapping from one table */
   table?: string;
-  acceptKinds?: string[];
+  acceptKinds?: Specification.DataKind[];
 
   numberOptions?: InputNumberOptions;
 }
@@ -113,17 +113,20 @@ export interface NestedChartEditorOptions {
 
 export interface WidgetManager {
   // A row for value/data mapping.
-  mappingEditorTOFIX(attribute: string): Widget;
   mappingEditor(
     name: string,
     attribute: string,
-    type: string,
     options: MappingEditorOptions
   ): Widget;
 
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputText(property: Property): Widget;
+  inputComboBox(
+    property: Property,
+    values: string[],
+    valuesOnly?: boolean
+  ): Widget;
   inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;

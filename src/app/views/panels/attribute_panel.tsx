@@ -117,6 +117,7 @@ export class AttributePanel extends React.Component<
             objectClass.attributes[attribute].type,
             data.expression,
             data.valueType,
+            data.metadata,
             hints
           ).dispatch(this.props.store.dispatcher);
         };
@@ -144,6 +145,7 @@ export class AttributePanel extends React.Component<
             data.table.name,
             data.expression,
             data.valueType,
+            data.metadata,
             hints
           ).dispatch(this.props.store.dispatcher);
         };

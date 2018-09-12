@@ -2,16 +2,14 @@
 // Licensed under the MIT license.
 // This implements Data-Driven Guides (straight line guide)
 
+import { MarkClass } from "./mark";
 import { Point } from "../../common";
 import * as Graphics from "../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { AttrBuilder } from "../attrs";
 import {
-  AttributeDescription,
+  AttributeDescriptions,
   BoundingBox,
   BuildConstraintsContext,
   Controls,
@@ -22,32 +20,19 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../common";
-import { AxisRenderer, buildAxisWidgets } from "../plot_segments/axis";
-import { MarkClass } from ".";
+import {
+  AxisRenderer,
+  buildAxisWidgets,
+  getNumericalInterpolate
+} from "../plot_segments/axis";
+import { DataAxisAttributes, DataAxisProperties } from "./data_axis.attrs";
 
-export interface DataAxisAttributes extends Specification.AttributeMap {
-  // anchor0, anchor1, ... that corresponds to the data
-  [name: string]: number;
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-}
+export { DataAxisAttributes, DataAxisProperties };
 
-export interface DataAxisProperties extends Specification.AttributeMap {
-  axis: Specification.Types.AxisDataBinding;
-  dataExpressions: string[];
-}
-
-export interface DataAxisState extends Specification.MarkState {
-  attributes: DataAxisAttributes;
-}
-
-export interface DataAxisObject extends Specification.Element {
-  properties: DataAxisProperties;
-}
-
-export class DataAxis extends MarkClass {
+export class DataAxisClass extends MarkClass<
+  DataAxisProperties,
+  DataAxisAttributes
+> {
   public static classID = "mark.data-axis";
   public static type = "mark";
 
@@ -60,16 +45,12 @@ export class DataAxis extends MarkClass {
     }
   };
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<DataAxisProperties> = {
     dataExpressions: [],
     axis: null,
     visible: true
   };
 
-  public readonly state: DataAxisState;
-  public readonly object: DataAxisObject;
-
-  // Get a list of elemnt attributes
   public get attributeNames(): string[] {
     const r = ["x1", "y1", "x2", "y2"];
     for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
@@ -79,45 +60,18 @@ export class DataAxis extends MarkClass {
     return r;
   }
 
-  public get attributes(): { [name: string]: AttributeDescription } {
-    const r: { [name: string]: AttributeDescription } = {
-      x1: {
-        name: "x1",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
-      },
-      y1: {
-        name: "y1",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
-      },
-      x2: {
-        name: "x2",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
-      },
-      y2: {
-        name: "y2",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
-      }
+  public get attributes(): AttributeDescriptions {
+    const r: AttributeDescriptions = {
+      ...AttrBuilder.line()
     };
     for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
       r[`anchorX${i}`] = {
         name: `anchorX${i}`,
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       };
       r[`anchorY${i}`] = {
         name: `anchorY${i}`,
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       };
     }
     return r;
@@ -140,9 +94,8 @@ export class DataAxis extends MarkClass {
             props.dataExpressions[i],
             context.rowContext
           ) as number;
-          const t =
-            (expr - props.axis.domainMin) /
-            (props.axis.domainMax - props.axis.domainMin);
+          const interp = getNumericalInterpolate(props.axis);
+          const t = interp(expr);
           if (attrs[`anchorX${i}`] == null) {
             attrs[`anchorX${i}`] = attrs.x1;
           }
@@ -389,5 +342,3 @@ export class DataAxis extends MarkClass {
     }
   }
 }
-
-ObjectClasses.Register(DataAxis);

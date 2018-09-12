@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from "../common";
-import { AttributeMap, Expression } from "./index";
+import { AttributeMap, Expression, DataType } from "./index";
 
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
@@ -11,10 +11,10 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** Data mapping expression */
   expression?: Expression;
-  valueType?: string;
+  valueType?: DataType;
 
   /** Domain for linear/logarithm types */
-  numericalMode?: "linear" | "logarithm";
+  numericalMode?: "linear" | "logarithmic" | "temporal";
   domainMin?: number;
   domainMax?: number;
 

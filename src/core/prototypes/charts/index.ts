@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { indexOf, Point, uniqueID } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { indexOf } from "../../common";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import { DataflowManager } from "../dataflow";
 
@@ -156,104 +152,64 @@ class RectangleChart extends ChartClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     ox1: {
       name: "ox1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     oy1: {
       name: "oy1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     ox2: {
       name: "ox2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     oy2: {
       name: "oy2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     width: {
       name: "width",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Width",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 900
     },
     height: {
       name: "height",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Height",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 600
     },
     marginLeft: {
       name: "marginLeft",
-      type: "number",
-      mode: "intrinsic",
-      category: "margins",
-      displayName: "Left",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 50
     },
     marginRight: {
       name: "marginRight",
-      type: "number",
-      mode: "intrinsic",
-      category: "margins",
-      displayName: "Right",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 50
     },
     marginTop: {
       name: "marginTop",
-      type: "number",
-      mode: "intrinsic",
-      category: "margins",
-      displayName: "Top",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 50
     },
     marginBottom: {
       name: "marginBottom",
-      type: "number",
-      mode: "intrinsic",
-      category: "margins",
-      displayName: "Bottom",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 50
     }
   };
@@ -508,13 +464,13 @@ class RectangleChart extends ChartClass {
   ): Controls.Widget[] {
     const result = [
       manager.sectionHeader("Dimensions"),
-      manager.mappingEditorTOFIX("width"),
-      manager.mappingEditorTOFIX("height"),
+      manager.mappingEditor("Width", "width", {}),
+      manager.mappingEditor("Height", "height", {}),
       manager.sectionHeader("Margins"),
-      manager.mappingEditorTOFIX("marginLeft"),
-      manager.mappingEditorTOFIX("marginRight"),
-      manager.mappingEditorTOFIX("marginTop"),
-      manager.mappingEditorTOFIX("marginBottom"),
+      manager.mappingEditor("Left", "marginLeft", {}),
+      manager.mappingEditor("Right", "marginRight", {}),
+      manager.mappingEditor("Top", "marginTop", {}),
+      manager.mappingEditor("Bottom", "marginBottom", {}),
       manager.sectionHeader("Background"),
       manager.row(
         "Color",
@@ -582,4 +538,6 @@ class RectangleChart extends ChartClass {
   }
 }
 
-ObjectClasses.Register(RectangleChart);
+export function registerClasses() {
+  ObjectClasses.Register(RectangleChart);
+}

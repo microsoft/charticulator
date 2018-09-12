@@ -49,7 +49,12 @@ export class WASMSolver extends ConstraintSolver {
       this.currentIndex++;
       const item: WASMSolverVariable = { index: this.currentIndex, map, name };
       this.variables.add(map, name, item);
-      this.solver.addVariable(this.currentIndex, map[name] as number, true);
+      let value = +map[name];
+      // Safety check: the solver won't like NaNs
+      if (isNaN(value)) {
+        value = 0;
+      }
+      this.solver.addVariable(this.currentIndex, value, true);
       return item;
     }
   }

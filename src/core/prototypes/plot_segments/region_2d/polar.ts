@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Graphics from "../../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../../solver";
 import * as Specification from "../../../specification";
 import {
   AttributeDescription,
@@ -146,79 +142,53 @@ export class PolarPlotSegment extends Region2DPlotSegment {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     angle1: {
       name: "angle1",
-      type: "number",
-      category: "margins",
-      displayName: "Angle Start",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: -90
     },
     angle2: {
       name: "angle2",
-      type: "number",
-      category: "margins",
-      displayName: "Angle End",
-      strength: VariableStrength.NONE,
+      type: Specification.AttributeType.Number,
       defaultValue: 90
     },
     radial1: {
       name: "radial1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     radial2: {
       name: "radial2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapX: {
       name: "gapX",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapY: {
       name: "gapY",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -693,5 +663,3 @@ export class PolarPlotSegment extends Region2DPlotSegment {
     return { inferences: r };
   }
 }
-
-ObjectClasses.Register(PolarPlotSegment);

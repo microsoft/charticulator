@@ -2,27 +2,14 @@
 // Licensed under the MIT license.
 // Special element: Anchor
 
-import { Point, uniqueID } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
 import * as Specification from "../../specification";
-
 import {
   AttributeDescription,
   Controls,
-  DropZones,
   Handles,
-  LinkAnchor,
-  ObjectClasses,
-  ObjectClassMetadata,
-  SnappingGuides
+  ObjectClassMetadata
 } from "../common";
-import { CreationParameters, MarkClass } from "./index";
-
-import * as Graphics from "../../graphics";
+import { MarkClass } from "./mark";
 
 export interface AnchorElementAttributes extends Specification.AttributeMap {
   x: number;
@@ -49,15 +36,11 @@ export class AnchorElement extends MarkClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -117,5 +100,3 @@ export class AnchorElement extends MarkClass {
     return [manager.label("(drag the anchor in the glyph editor)")];
   }
 }
-
-ObjectClasses.Register(AnchorElement);

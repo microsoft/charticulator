@@ -1,26 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-  Color,
-  interpolateColor,
-  interpolateColors,
-  Scale
-} from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  Variable,
-  VariableStrength
-} from "../../solver";
+
+import { interpolateColors, Scale } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
 import {
   AttributeDescription,
   Controls,
   DataMappingHints,
-  ObjectClasses,
   TemplateParameters
 } from "../common";
-
 import { ScaleClass } from "./index";
 
 export interface LinearScaleProperties extends Specification.AttributeMap {
@@ -33,11 +22,10 @@ export interface LinearScaleAttributes extends Specification.AttributeMap {
   rangeMax: number;
 }
 
-export interface LinearScaleState extends Specification.ScaleState {
-  attributes: LinearScaleAttributes;
-}
-
-export class LinearScale extends ScaleClass {
+export class LinearScale extends ScaleClass<
+  LinearScaleProperties,
+  LinearScaleAttributes
+> {
   public static classID = "scale.linear<number,number>";
   public static type = "scale";
 
@@ -45,26 +33,16 @@ export class LinearScale extends ScaleClass {
     rangeMin: 0
   };
 
-  public readonly object: {
-    properties: LinearScaleProperties;
-  } & Specification.Scale;
-  public readonly state: LinearScaleState;
-
   public attributeNames: string[] = ["rangeMin", "rangeMax"];
   public attributes: { [name: string]: AttributeDescription } = {
     rangeMin: {
       name: "rangeMin",
-      type: "number",
-      category: "scale-range",
-      displayName: "Start",
+      type: Specification.AttributeType.Number,
       defaultValue: 0
     },
     rangeMax: {
       name: "rangeMax",
-      type: "number",
-      strength: VariableStrength.MEDIUM,
-      category: "scale-range",
-      displayName: "End"
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -113,7 +91,7 @@ export class LinearScale extends ScaleClass {
   ): void {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const s = new Scale.NumericalScale();
+    const s = new Scale.LinearScale();
     const values = column.filter(x => typeof x == "number") as number[];
     s.inferParameters(values);
 
@@ -148,8 +126,8 @@ export class LinearScale extends ScaleClass {
       manager.row("Start", manager.inputNumber({ property: "domainMin" })),
       manager.row("End", manager.inputNumber({ property: "domainMax" })),
       manager.sectionHeader("Range"),
-      manager.mappingEditor("Start", "rangeMin", "number", { defaultValue: 0 }),
-      manager.mappingEditor("End", "rangeMax", "number", { defaultAuto: true })
+      manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
+      manager.mappingEditor("End", "rangeMax", { defaultAuto: true })
     ];
   }
 
@@ -187,7 +165,10 @@ function getDefaultGradient(): Specification.Types.ColorGradient {
   };
 }
 
-export class LinearColorScale extends ScaleClass {
+export class LinearColorScale extends ScaleClass<
+  LinearColorScaleProperties,
+  {}
+> {
   public static classID = "scale.linear<number,color>";
   public static type = "scale";
 
@@ -219,17 +200,14 @@ export class LinearColorScale extends ScaleClass {
     solver: ConstraintSolver
   ) {}
 
-  public initializeState(): void {
-    const attrs = this.state.attributes;
-    attrs.range = getDefaultGradient();
-  }
+  public initializeState(): void {}
 
   public inferParameters(
     column: Specification.DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
-    const s = new Scale.NumericalScale();
+    const s = new Scale.LinearScale();
     const values = column.filter(x => typeof x == "number") as number[];
     s.inferParameters(values);
 
@@ -284,7 +262,10 @@ export interface LinearBooleanScaleProperties extends LinearScaleProperties {
   inclusive: boolean;
 }
 
-export class LinearBooleanScale extends ScaleClass {
+export class LinearBooleanScale extends ScaleClass<
+  LinearBooleanScaleProperties,
+  {}
+> {
   public static classID = "scale.linear<number,boolean>";
   public static type = "scale";
 
@@ -294,10 +275,6 @@ export class LinearBooleanScale extends ScaleClass {
     mode: "interval",
     inclusive: true
   };
-
-  public readonly object: {
-    properties: LinearBooleanScaleProperties;
-  } & Specification.Scale;
 
   public attributeNames: string[] = [];
   public attributes: { [name: string]: AttributeDescription } = {};
@@ -341,7 +318,7 @@ export class LinearBooleanScale extends ScaleClass {
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
-    const s = new Scale.NumericalScale();
+    const s = new Scale.LinearScale();
     const values = column.filter(x => typeof x == "number") as number[];
     s.inferParameters(values);
     props.min = s.domainMin;
@@ -394,7 +371,3 @@ export class LinearBooleanScale extends ScaleClass {
     ];
   }
 }
-
-ObjectClasses.Register(LinearScale);
-ObjectClasses.Register(LinearColorScale);
-ObjectClasses.Register(LinearBooleanScale);

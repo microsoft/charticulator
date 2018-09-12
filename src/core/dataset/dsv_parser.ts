@@ -2,12 +2,8 @@
 // Licensed under the MIT license.
 import { csvParseRows, tsvParseRows } from "d3-dsv";
 
-import {
-  convertColumn,
-  inferColumnMetadata,
-  inferColumnType
-} from "./data_types";
-import { Column, Dataset, Row, Table, ValueType } from "./dataset";
+import { inferAndConvertColumn } from "./data_types";
+import { Column, Row, Table } from "./dataset";
 
 export function parseHints(hints: string) {
   const items = hints.match(/ *\*(.*)/);
@@ -70,32 +66,24 @@ export function parseDataset(
       columnHints = header.map(x => ({}));
     }
 
-    const columns = header.map((name, index) => {
-      const hints = columnHints[index] || {};
-      // Infer column type
+    const columnValues = header.map((name, index) => {
       const values = data.map(row => row[index]);
-      const inferredType = hints.type || inferColumnType(values);
-      const [type, metadata] = inferColumnMetadata(inferredType, values, hints);
-      const column = {
-        name,
-        type,
-        metadata
-      } as Column;
-      return column;
-    });
-
-    const columnValues = columns.map((c, index) => {
-      const values = data.map(row => row[index]);
-      return convertColumn(c.type, values);
+      return inferAndConvertColumn(values);
     });
 
     const outRows = data.map((row, rindex) => {
       const out: Row = { _id: rindex.toString() };
-      columns.forEach((column, cindex) => {
-        out[column.name] = columnValues[cindex][rindex];
+      columnValues.forEach((column, cindex) => {
+        out[header[cindex]] = columnValues[cindex].values[rindex];
       });
       return out;
     });
+
+    const columns = columnValues.map((x, i) => ({
+      name: header[i],
+      type: x.type,
+      metadata: x.metadata
+    }));
 
     return {
       name: fileName,
@@ -106,28 +94,3 @@ export function parseDataset(
     return null;
   }
 }
-
-// export function getColumnsSummary(dataset: Dataset) {
-//     return dataset.columns.map((column) => {
-//         let values = dataset.rows.filter(row => row[column.name] != null).map(row => row[column.name].toString());
-//         let uniqueValues = getUniqueValues(values);
-//         return {
-//             name: column.name,
-//             type: column.type,
-//             format: column.format,
-//             values: values,
-//             uniqueValues: uniqueValues,
-//             isDistinctValues: isDistinctValues(values)
-//         }
-//     });
-// }
-
-// export function getColumnsForDistinctAxis(dataset: Dataset, maxUniqueValues: number = 1e10) {
-//     let summary = getColumnsSummary(dataset);
-//     let candidates = summary.filter(c => c.isDistinctValues && c.type == "string" && c.uniqueValues.length <= maxUniqueValues);
-//     return candidates.map(c => c.name);
-// }
-
-// export function getColumnsForContinuousAxis(dataset: Dataset) {
-//     let candidates = dataset.columns.filter(d => d.type == "integer" || d.type == "number");
-//     return candidates.map(c => c.name);

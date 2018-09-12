@@ -5,14 +5,17 @@ import {
   ConstraintPlugins,
   ConstraintSolver,
   ConstraintStrength,
-  Variable,
-  VariableStrength
+  Variable
 } from "../../../solver";
 import * as Specification from "../../../specification";
 import { BuildConstraintsContext, Controls } from "../../common";
-import { DataflowTable } from "../../dataflow/index";
-import { buildAxisWidgets, getCategoricalAxis } from "../axis";
-import { PlotSegmentClass } from "../index";
+import { DataflowTable } from "../../dataflow";
+import {
+  buildAxisWidgets,
+  getCategoricalAxis,
+  getNumericalInterpolate
+} from "../axis";
+import { PlotSegmentClass } from "../plot_segment";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   type: "dodge-x" | "dodge-y" | "grid" | "packing";
@@ -402,11 +405,11 @@ export class Region2DConstraintBuilder {
               this.y2Name
             ]);
             const expr = this.getExpression(data.expression);
+            const interp = getNumericalInterpolate(data);
             for (const [index, markState] of state.glyphs.entries()) {
               const rowContext = table.getGroupedContext(dataIndices[index]);
               const value = expr.getNumberValue(rowContext);
-              const t =
-                (value - data.domainMin) / (data.domainMax - data.domainMin);
+              const t = interp(value);
               solver.addLinear(
                 ConstraintStrength.HARD,
                 (1 - t) * props.marginX1 - t * props.marginX2,
@@ -462,11 +465,11 @@ export class Region2DConstraintBuilder {
             this.y2Name
           ]);
           const expr = this.getExpression(data.expression);
+          const interp = getNumericalInterpolate(data);
           for (const [index, markState] of state.glyphs.entries()) {
             const rowContext = table.getGroupedContext(dataIndices[index]);
             const value = expr.getNumberValue(rowContext);
-            const t =
-              (value - data.domainMin) / (data.domainMax - data.domainMin);
+            const t = interp(value);
             solver.addLinear(
               ConstraintStrength.HARD,
               (t - 1) * props.marginY2 + t * props.marginY1,
@@ -576,12 +579,12 @@ export class Region2DConstraintBuilder {
             const vx1 = solver.attr(
               { value: solver.getLinear(...vx1Expr) },
               "value",
-              { strength: VariableStrength.NONE, edit: true }
+              { edit: true }
             );
             const vx2 = solver.attr(
               { value: solver.getLinear(...vx2Expr) },
               "value",
-              { strength: VariableStrength.NONE, edit: true }
+              { edit: true }
             );
 
             solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
@@ -633,12 +636,12 @@ export class Region2DConstraintBuilder {
             const vy1 = solver.attr(
               { value: solver.getLinear(...vy1Expr) },
               "value",
-              { strength: VariableStrength.NONE, edit: true }
+              { edit: true }
             );
             const vy2 = solver.attr(
               { value: solver.getLinear(...vy2Expr) },
               "value",
-              { strength: VariableStrength.NONE, edit: true }
+              { edit: true }
             );
 
             solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
@@ -706,22 +709,22 @@ export class Region2DConstraintBuilder {
               const vx1 = solver.attr(
                 { value: solver.getLinear(...vx1Expr) },
                 "value",
-                { strength: VariableStrength.NONE, edit: true }
+                { edit: true }
               );
               const vx2 = solver.attr(
                 { value: solver.getLinear(...vx2Expr) },
                 "value",
-                { strength: VariableStrength.NONE, edit: true }
+                { edit: true }
               );
               const vy1 = solver.attr(
                 { value: solver.getLinear(...vy1Expr) },
                 "value",
-                { strength: VariableStrength.NONE, edit: true }
+                { edit: true }
               );
               const vy2 = solver.attr(
                 { value: solver.getLinear(...vy2Expr) },
                 "value",
-                { strength: VariableStrength.NONE, edit: true }
+                { edit: true }
               );
 
               solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
@@ -1879,12 +1882,10 @@ export class Region2DConstraintBuilder {
         cy: 0
       };
       const cx = solver.attr(centerState, "cx", {
-        edit: true,
-        strength: VariableStrength.NONE
+        edit: true
       });
       const cy = solver.attr(centerState, "cy", {
-        edit: true,
-        strength: VariableStrength.NONE
+        edit: true
       });
       solver.addLinear(
         ConstraintStrength.HARD,

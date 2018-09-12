@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-export type ValueType = string | number | Date | boolean;
 
-// ValueTypes:
-//   text
-//   number
-//   date
-//   reference - reference a row in another table, use row index number (zero-based) for storage
+import { DataValue, DataType, DataKind } from "../specification";
+
+export { DataValue, DataType, DataKind };
 
 export interface Dataset {
   /** Name of the dataset */
@@ -16,8 +13,8 @@ export interface Dataset {
 }
 
 export interface ColumnMetadata {
-  /** Conceptural data type: categorical (including ordinal), numerical, text, boolean */
-  kind: string;
+  /** Abstract data kind */
+  kind?: DataKind;
   /** The unit of the data type, used in scale inference when mapping multiple columns */
   unit?: string;
   /** Order of categories for categorical type */
@@ -28,11 +25,11 @@ export interface ColumnMetadata {
 }
 
 export interface Column {
-  /** Name of the column, used to address the entry from row */
+  /** Name, used to address the entry from row */
   name: string;
   /** Data type in memory (number, string, Date, boolean, etc) */
-  type: string;
-  /** Metadata on this column */
+  type: DataType;
+  /** Metadata */
   metadata: ColumnMetadata;
 }
 
@@ -40,7 +37,7 @@ export interface Row {
   /** Internal row ID, automatically assigned to be unique */
   _id: string;
   /** Row attributes */
-  [name: string]: ValueType;
+  [name: string]: DataValue;
 }
 
 export interface Table {

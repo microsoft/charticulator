@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { ChartStateManager } from "../..";
 import * as Graphics from "../../../graphics";
-import { ConstraintSolver, VariableStrength } from "../../../solver";
+import { ConstraintSolver } from "../../../solver";
 import * as Specification from "../../../specification";
 import { BuildConstraintsContext } from "../../chart_element";
 import {
@@ -117,51 +117,35 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapX: {
       name: "gapX",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapY: {
       name: "gapY",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -510,5 +494,3 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     return { inferences: r };
   }
 }
-
-ObjectClasses.Register(CartesianPlotSegment);

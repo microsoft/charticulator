@@ -1,88 +1,95 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+import * as Hammer from "hammerjs";
 import * as React from "react";
 import {
   Color,
   colorFromHTMLColor,
-  getColorConverter,
   colorToHTMLColor,
-  prettyNumber,
   colorToHTMLColorHEX,
-  ColorConverter
+  prettyNumber
 } from "../../core";
 import { DropdownButton } from "./dropdown";
-import { ButtonFlatPanel } from "./buttons";
-import * as Hammer from "hammerjs";
 
-export interface HCLColorPickerProps {
+export interface ColorSpaceDescription {
+  name: string;
+  description: string;
+  dimension1: { name: string; range: [number, number] };
+  dimension2: { name: string; range: [number, number] };
+  dimension3: { name: string; range: [number, number] };
+  toRGB: (
+    x1: number,
+    x2: number,
+    x3: number
+  ) => [number, number, number, boolean];
+  fromRGB: (r: number, g: number, b: number) => [number, number, number];
+}
+
+export interface ColorSpacePickerProps {
   defaultValue: Color;
   onChange?: (newValue: Color) => void;
+  colorSpaces: ColorSpaceDescription[];
 }
 
-export interface HCLColorPickerState {
-  zAxis: "h" | "c" | "l";
-  colorspace: string;
-  h: number;
-  c: number;
-  l: number;
+export interface ColorSpacePickerState {
+  desc: ColorSpaceDescription;
+  x1: number;
+  x2: number;
+  x3: number;
 }
 
-const C_MAX = 140;
-const L_MAX = 100;
-const H_MAX = 360;
+function clipToRange(num: number, range: [number, number]) {
+  if (range[0] < range[1]) {
+    return Math.max(range[0], Math.min(range[1], num));
+  } else {
+    return Math.max(range[1], Math.min(range[0], num));
+  }
+}
 
-export class HCLColorPicker extends React.Component<
-  HCLColorPickerProps,
-  HCLColorPickerState
+// A general three component color picker
+export class ColorSpacePicker extends React.Component<
+  ColorSpacePickerProps,
+  ColorSpacePickerState
 > {
   public pickerSize = 200;
 
-  public rgb2hcl: ColorConverter;
-  public hcl2rgb: ColorConverter;
-
-  constructor(props: HCLColorPickerProps) {
+  constructor(props: ColorSpacePickerProps) {
     super(props);
 
-    this.rgb2hcl = getColorConverter("sRGB", "hcl");
-    this.hcl2rgb = getColorConverter("hcl", "sRGB");
-    const [h, c, l] = this.rgb2hcl(
-      props.defaultValue.r,
-      props.defaultValue.g,
-      props.defaultValue.b
+    const defaultValue = props.defaultValue || { r: 0, g: 0, b: 0 };
+    const [x1, x2, x3] = props.colorSpaces[0].fromRGB(
+      defaultValue.r,
+      defaultValue.g,
+      defaultValue.b
     );
     this.state = {
-      colorspace: "sRGB",
-      zAxis: "l",
-      h,
-      c,
-      l
+      desc: props.colorSpaces[0],
+      x1,
+      x2,
+      x3
     };
   }
 
-  public componentWillUpdate() {
-    this.rgb2hcl = getColorConverter(this.state.colorspace, "hcl");
-    this.hcl2rgb = getColorConverter("hcl", this.state.colorspace);
-  }
+  public componentWillUpdate() {}
 
   public reset() {
     const props = this.props;
-    const [h, c, l] = this.rgb2hcl(
-      props.defaultValue.r,
-      props.defaultValue.g,
-      props.defaultValue.b
+    const defaultValue = props.defaultValue || { r: 0, g: 0, b: 0 };
+    const [x1, x2, x3] = this.state.desc.fromRGB(
+      defaultValue.r,
+      defaultValue.g,
+      defaultValue.b
     );
-    this.setState(
-      {
-        h,
-        c,
-        l
-      },
-      () => this.raiseChange()
-    );
+    this.setState({ x1, x2, x3 }, () => this.raiseChange());
   }
 
   public raiseChange() {
-    const currentColor = this.hcl2rgb(this.state.h, this.state.c, this.state.l);
+    const currentColor = this.state.desc.toRGB(
+      this.state.x1,
+      this.state.x2,
+      this.state.x3
+    );
     const rgb = { r: currentColor[0], g: currentColor[1], b: currentColor[2] };
     if (this.props.onChange) {
       this.props.onChange(rgb);
@@ -94,83 +101,30 @@ export class HCLColorPicker extends React.Component<
     const height = this.pickerSize;
     const cWidth = 5;
     const cHeight = this.pickerSize * 2;
-    switch (this.state.zAxis) {
-      case "h": {
-        return (
-          <ZCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={0}
-            hStrideZ={H_MAX}
-            cOffset={this.state.c}
-            cStrideZ={0}
-            lOffset={this.state.l}
-            lStrideZ={0}
-            pz={this.state.h / H_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(h, isEnd) => {
-              this.setState({ h: h * H_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-      case "c": {
-        return (
-          <ZCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={this.state.h}
-            hStrideZ={0}
-            cOffset={C_MAX}
-            cStrideZ={-C_MAX}
-            lOffset={this.state.l}
-            lStrideZ={0}
-            pz={1 - this.state.c / C_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(c, isEnd) => {
-              this.setState({ c: (1 - c) * C_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-      case "l": {
-        return (
-          <ZCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={this.state.h}
-            hStrideZ={0}
-            cOffset={this.state.c}
-            cStrideZ={0}
-            lOffset={L_MAX}
-            lStrideZ={-L_MAX}
-            pz={1 - this.state.l / L_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(l, isEnd) => {
-              this.setState({ l: (1 - l) * L_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-    }
+    const [x1Min, x1Max] = this.state.desc.dimension1.range;
+    return (
+      <ZCanvas
+        width={width}
+        height={height}
+        canvasWidth={cWidth}
+        canvasHeight={cHeight}
+        x1Offset={x1Min}
+        x1StrideZ={x1Max - x1Min}
+        x2Offset={this.state.x2}
+        x2StrideZ={0}
+        x3Offset={this.state.x3}
+        x3StrideZ={0}
+        pz={(this.state.x1 - x1Min) / (x1Max - x1Min)}
+        toRGB={this.state.desc.toRGB}
+        onMove={(value, isEnd) => {
+          this.setState({ x1: value * (x1Max - x1Min) + x1Min }, () => {
+            if (isEnd) {
+              this.raiseChange();
+            }
+          });
+        }}
+      />
+    );
   }
 
   public renderXY() {
@@ -178,98 +132,48 @@ export class HCLColorPicker extends React.Component<
     const height = this.pickerSize;
     const cWidth = this.pickerSize;
     const cHeight = this.pickerSize;
-    switch (this.state.zAxis) {
-      case "h": {
-        return (
-          <XYCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={this.state.h}
-            hStrideX={0}
-            hStrideY={0}
-            cOffset={0}
-            cStrideX={C_MAX}
-            cStrideY={0}
-            lOffset={L_MAX}
-            lStrideX={0}
-            lStrideY={-L_MAX}
-            px={this.state.c / C_MAX}
-            py={1 - this.state.l / L_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(c, l, isEnd) => {
-              this.setState({ c: c * C_MAX, l: (1 - l) * L_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-      case "c": {
-        return (
-          <XYCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={0}
-            hStrideX={H_MAX}
-            hStrideY={0}
-            cOffset={this.state.c}
-            cStrideX={0}
-            cStrideY={0}
-            lOffset={L_MAX}
-            lStrideX={0}
-            lStrideY={-L_MAX}
-            px={this.state.h / H_MAX}
-            py={1 - this.state.l / L_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(h, l, isEnd) => {
-              this.setState({ h: h * H_MAX, l: (1 - l) * L_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-      case "l": {
-        return (
-          <XYCanvas
-            width={width}
-            height={height}
-            canvasWidth={cWidth}
-            canvasHeight={cHeight}
-            hOffset={0}
-            hStrideX={H_MAX}
-            hStrideY={0}
-            cOffset={C_MAX}
-            cStrideX={0}
-            cStrideY={-C_MAX}
-            lOffset={this.state.l}
-            lStrideX={0}
-            lStrideY={0}
-            px={this.state.h / H_MAX}
-            py={1 - this.state.c / C_MAX}
-            colorspace={this.state.colorspace}
-            onMove={(h, c, isEnd) => {
-              this.setState({ h: h * H_MAX, c: (1 - c) * C_MAX }, () => {
-                if (isEnd) {
-                  this.raiseChange();
-                }
-              });
-            }}
-          />
-        );
-      }
-    }
+    const [x2Min, x2Max] = this.state.desc.dimension2.range;
+    const [x3Min, x3Max] = this.state.desc.dimension3.range;
+    return (
+      <XYCanvas
+        width={width}
+        height={height}
+        canvasWidth={cWidth}
+        canvasHeight={cHeight}
+        x1Offset={this.state.x1}
+        x1StrideX={0}
+        x1StrideY={0}
+        x2Offset={x2Min}
+        x2StrideX={x2Max - x2Min}
+        x2StrideY={0}
+        x3Offset={x3Min}
+        x3StrideX={0}
+        x3StrideY={x3Max - x3Min}
+        px={(this.state.x2 - x2Min) / (x2Max - x2Min)}
+        py={(this.state.x3 - x3Min) / (x3Max - x3Min)}
+        toRGB={this.state.desc.toRGB}
+        onMove={(v2, v3, isEnd) => {
+          this.setState(
+            {
+              x2: v2 * (x2Max - x2Min) + x2Min,
+              x3: v3 * (x3Max - x3Min) + x3Min
+            },
+            () => {
+              if (isEnd) {
+                this.raiseChange();
+              }
+            }
+          );
+        }}
+      />
+    );
   }
   public render() {
-    const currentColor = this.hcl2rgb(this.state.h, this.state.c, this.state.l);
+    const currentColor = this.state.desc.toRGB(
+      this.state.x1,
+      this.state.x2,
+      this.state.x3
+    );
     const rgb = { r: currentColor[0], g: currentColor[1], b: currentColor[2] };
     return (
       <div className="hcl-color-picker">
@@ -279,16 +183,23 @@ export class HCLColorPicker extends React.Component<
           <section className="values">
             <div className="row">
               <DropdownButton
-                text={
-                  { h: "Hue", c: "Chroma", l: "Lightness" }[this.state.zAxis]
-                }
-                list={[
-                  { name: "h", text: "Chroma, Lightness | Hue" },
-                  { name: "c", text: "Hue, Lightness | Chroma" },
-                  { name: "l", text: "Hue, Chroma | Lightness" }
-                ]}
-                onSelect={(v: "h" | "c" | "l") => {
-                  this.setState({ zAxis: v });
+                text={this.state.desc.name}
+                list={this.props.colorSpaces.map(x => ({
+                  name: x.name,
+                  text: x.description
+                }))}
+                onSelect={(v: string) => {
+                  for (const sp of this.props.colorSpaces) {
+                    if (sp.name == v) {
+                      const [r, g, b] = this.state.desc.toRGB(
+                        this.state.x1,
+                        this.state.x2,
+                        this.state.x3
+                      );
+                      const [x1, x2, x3] = sp.fromRGB(r, g, b);
+                      this.setState({ desc: sp, x1, x2, x3 });
+                    }
+                  }
                 }}
               />
             </div>
@@ -306,15 +217,12 @@ export class HCLColorPicker extends React.Component<
                     onEnter={v => {
                       const color = colorFromHTMLColor(v);
                       if (color) {
-                        const hcl = this.rgb2hcl(color.r, color.g, color.b);
-                        this.setState(
-                          {
-                            h: hcl[0],
-                            c: hcl[1],
-                            l: hcl[2]
-                          },
-                          () => this.raiseChange()
+                        const [x1, x2, x3] = this.state.desc.fromRGB(
+                          color.r,
+                          color.g,
+                          color.b
                         );
+                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
 
                         return true;
                       }
@@ -326,42 +234,51 @@ export class HCLColorPicker extends React.Component<
             <div className="columns">
               <div className="column">
                 <div className="row">
-                  <label>Hue</label>
+                  <label>{this.state.desc.dimension1.name}</label>
                   <InputField
-                    defaultValue={prettyNumber(this.state.h, 1)}
+                    defaultValue={prettyNumber(this.state.x1, 1)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
-                        num = Math.max(0, Math.min(H_MAX, num));
-                        this.setState({ h: num }, () => this.raiseChange());
+                        num = clipToRange(
+                          num,
+                          this.state.desc.dimension1.range
+                        );
+                        this.setState({ x1: num }, () => this.raiseChange());
                         return true;
                       }
                     }}
                   />
                 </div>
                 <div className="row">
-                  <label>Chroma</label>
+                  <label>{this.state.desc.dimension2.name}</label>
                   <InputField
-                    defaultValue={prettyNumber(this.state.c, 1)}
+                    defaultValue={prettyNumber(this.state.x2, 1)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
-                        num = Math.max(0, Math.min(C_MAX, num));
-                        this.setState({ c: num }, () => this.raiseChange());
+                        num = clipToRange(
+                          num,
+                          this.state.desc.dimension2.range
+                        );
+                        this.setState({ x2: num }, () => this.raiseChange());
                         return true;
                       }
                     }}
                   />
                 </div>
                 <div className="row">
-                  <label>Lightness</label>
+                  <label>{this.state.desc.dimension3.name}</label>
                   <InputField
-                    defaultValue={prettyNumber(this.state.l, 1)}
+                    defaultValue={prettyNumber(this.state.x3, 1)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
-                        num = Math.max(0, Math.min(L_MAX, num));
-                        this.setState({ l: num }, () => this.raiseChange());
+                        num = clipToRange(
+                          num,
+                          this.state.desc.dimension3.range
+                        );
+                        this.setState({ x3: num }, () => this.raiseChange());
                         return true;
                       }
                     }}
@@ -372,20 +289,17 @@ export class HCLColorPicker extends React.Component<
                 <div className="row">
                   <label>R</label>
                   <InputField
-                    defaultValue={prettyNumber(rgb.r, 1)}
+                    defaultValue={prettyNumber(rgb.r, 0)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
-                        const hcl = this.rgb2hcl(num, rgb.g, rgb.b);
-                        this.setState(
-                          {
-                            h: hcl[0],
-                            c: hcl[1],
-                            l: hcl[2]
-                          },
-                          () => this.raiseChange()
+                        const [x1, x2, x3] = this.state.desc.fromRGB(
+                          num,
+                          rgb.g,
+                          rgb.b
                         );
+                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
                         return true;
                       }
                     }}
@@ -394,20 +308,17 @@ export class HCLColorPicker extends React.Component<
                 <div className="row">
                   <label>G</label>
                   <InputField
-                    defaultValue={prettyNumber(rgb.g, 1)}
+                    defaultValue={prettyNumber(rgb.g, 0)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
-                        const hcl = this.rgb2hcl(rgb.r, num, rgb.b);
-                        this.setState(
-                          {
-                            h: hcl[0],
-                            c: hcl[1],
-                            l: hcl[2]
-                          },
-                          () => this.raiseChange()
+                        const [x1, x2, x3] = this.state.desc.fromRGB(
+                          rgb.r,
+                          num,
+                          rgb.b
                         );
+                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
                         return true;
                       }
                     }}
@@ -416,20 +327,17 @@ export class HCLColorPicker extends React.Component<
                 <div className="row">
                   <label>B</label>
                   <InputField
-                    defaultValue={prettyNumber(rgb.b, 1)}
+                    defaultValue={prettyNumber(rgb.b, 0)}
                     onEnter={v => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
-                        const hcl = this.rgb2hcl(rgb.r, rgb.g, num);
-                        this.setState(
-                          {
-                            h: hcl[0],
-                            c: hcl[1],
-                            l: hcl[2]
-                          },
-                          () => this.raiseChange()
+                        const [x1, x2, x3] = this.state.desc.fromRGB(
+                          rgb.r,
+                          rgb.g,
+                          num
                         );
+                        this.setState({ x1, x2, x3 }, () => this.raiseChange());
                         return true;
                       }
                     }}
@@ -518,17 +426,21 @@ interface XYCanvasProps {
   px: number;
   py: number;
 
-  hOffset: number;
-  hStrideX: number;
-  hStrideY: number;
-  cOffset: number;
-  cStrideX: number;
-  cStrideY: number;
-  lOffset: number;
-  lStrideX: number;
-  lStrideY: number;
+  x1Offset: number;
+  x1StrideX: number;
+  x1StrideY: number;
+  x2Offset: number;
+  x2StrideX: number;
+  x2StrideY: number;
+  x3Offset: number;
+  x3StrideX: number;
+  x3StrideY: number;
 
-  colorspace: string;
+  toRGB: (
+    x1: number,
+    x2: number,
+    x3: number
+  ) => [number, number, number, boolean];
 
   onMove: (nx: number, ny: number, isEnd: boolean) => void;
 }
@@ -537,8 +449,6 @@ class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
   public refs: {
     canvasElement: HTMLCanvasElement;
   };
-
-  public hcl2rgb: ColorConverter;
 
   private hammer: HammerManager;
 
@@ -572,32 +482,31 @@ class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
   }
 
   public renderCanvas() {
-    this.hcl2rgb = getColorConverter("hcl", this.props.colorspace);
     const canvas = this.refs.canvasElement;
     const width = canvas.width;
     const height = canvas.height;
     const ctx = canvas.getContext("2d");
     const data = ctx.getImageData(0, 0, width, height);
-    const { hOffset, cOffset, lOffset } = this.props;
-    let { hStrideX, hStrideY } = this.props;
-    let { cStrideX, cStrideY } = this.props;
-    let { lStrideX, lStrideY } = this.props;
-    hStrideX /= data.width - 1;
-    cStrideX /= data.width - 1;
-    lStrideX /= data.width - 1;
-    hStrideY /= data.height - 1;
-    cStrideY /= data.height - 1;
-    lStrideY /= data.height - 1;
+    const { x1Offset, x2Offset, x3Offset } = this.props;
+    let { x1StrideX, x1StrideY } = this.props;
+    let { x2StrideX, x2StrideY } = this.props;
+    let { x3StrideX, x3StrideY } = this.props;
+    x1StrideX /= data.width - 1;
+    x2StrideX /= data.width - 1;
+    x3StrideX /= data.width - 1;
+    x1StrideY /= data.height - 1;
+    x2StrideY /= data.height - 1;
+    x3StrideY /= data.height - 1;
     let ptr = 0;
     for (let j = 0; j < data.height; j++) {
-      const th = hOffset + j * hStrideY;
-      const tc = cOffset + j * cStrideY;
-      const tl = lOffset + j * lStrideY;
+      const th = x1Offset + j * x1StrideY;
+      const tc = x2Offset + j * x2StrideY;
+      const tl = x3Offset + j * x3StrideY;
       for (let i = 0; i < data.width; i++) {
-        const color = this.hcl2rgb(
-          th + i * hStrideX,
-          tc + i * cStrideX,
-          tl + i * lStrideX
+        const color = this.props.toRGB(
+          th + i * x1StrideX,
+          tc + i * x2StrideX,
+          tl + i * x3StrideX
         );
         data.data[ptr++] = color[0];
         data.data[ptr++] = color[1];
@@ -642,14 +551,18 @@ interface ZCanvasProps {
 
   pz: number;
 
-  hOffset: number;
-  hStrideZ: number;
-  cOffset: number;
-  cStrideZ: number;
-  lOffset: number;
-  lStrideZ: number;
+  x1Offset: number;
+  x1StrideZ: number;
+  x2Offset: number;
+  x2StrideZ: number;
+  x3Offset: number;
+  x3StrideZ: number;
 
-  colorspace: string;
+  toRGB: (
+    x1: number,
+    x2: number,
+    x3: number
+  ) => [number, number, number, boolean];
 
   onMove: (nz: number, isEnd: boolean) => void;
 }
@@ -659,12 +572,8 @@ class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
     canvasElement: HTMLCanvasElement;
   };
 
-  public hcl2rgb: ColorConverter;
-
   constructor(props: ZCanvasProps) {
     super(props);
-
-    this.hcl2rgb = getColorConverter("hcl", props.colorspace);
   }
 
   private hammer: HammerManager;
@@ -701,17 +610,17 @@ class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
     const height = canvas.height;
     const ctx = canvas.getContext("2d");
     const data = ctx.getImageData(0, 0, width, height);
-    const { hOffset, cOffset, lOffset } = this.props;
-    let { hStrideZ, cStrideZ, lStrideZ } = this.props;
-    hStrideZ /= data.height - 1;
-    cStrideZ /= data.height - 1;
-    lStrideZ /= data.height - 1;
+    const { x1Offset, x2Offset, x3Offset } = this.props;
+    let { x1StrideZ, x2StrideZ, x3StrideZ } = this.props;
+    x1StrideZ /= data.height - 1;
+    x2StrideZ /= data.height - 1;
+    x3StrideZ /= data.height - 1;
     let ptr = 0;
     for (let j = 0; j < data.height; j++) {
-      const th = hOffset + j * hStrideZ;
-      const tc = cOffset + j * cStrideZ;
-      const tl = lOffset + j * lStrideZ;
-      const color = this.hcl2rgb(th, tc, tl);
+      const th = x1Offset + j * x1StrideZ;
+      const tc = x2Offset + j * x2StrideZ;
+      const tl = x3Offset + j * x3StrideZ;
+      const color = this.props.toRGB(th, tc, tl);
       for (let i = 0; i < data.width; i++) {
         data.data[ptr++] = color[0];
         data.data[ptr++] = color[1];

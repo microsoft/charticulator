@@ -1,62 +1,36 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Point, Geometry } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
-import * as Specification from "../../specification";
 
+import { Geometry, Point } from "../../common";
+import * as Graphics from "../../graphics";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import * as Specification from "../../specification";
 import {
-  AttributeDescription,
   BoundingBox,
   Controls,
   DropZones,
   Handles,
   LinkAnchor,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { MarkClass } from "./index";
-
-import * as Graphics from "../../graphics";
 import { ChartStateManager } from "../state";
-
-export interface ImageElementAttributes extends Specification.AttributeMap {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
-  cx: number;
-  cy: number;
-  width: number;
-  height: number;
-  stroke: Color;
-  fill: Color;
-  strokeWidth: number;
-  opacity: number;
-  visible: boolean;
-  image: string;
-}
-
-export interface ImageElementState extends Specification.MarkState {
-  attributes: ImageElementAttributes;
-}
-
-export interface ImageElementProperties extends Specification.AttributeMap {
-  imageMode: "letterbox" | "fill" | "stretch";
-}
+import { EmphasizableMarkClass } from "./emphasis";
+import {
+  imageAttributes,
+  ImageElementAttributes,
+  ImageElementProperties
+} from "./image.attrs";
 
 const imagePlaceholder =
   "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmljb25zPC90aXRsZT48cmVjdCB4PSI1LjE1MTI0IiB5PSI2LjY4NDYyIiB3aWR0aD0iMjEuNjk3NTIiIGhlaWdodD0iMTguNjEyNSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLXdpZHRoOjAuOTI2MTg0MTE3Nzk0MDM2OXB4Ii8+PHBvbHlnb24gcG9pbnRzPSIyMC4xNSAxMi45NDMgMTMuODExIDIxLjQwNCAxMC4xNTQgMTYuNDk4IDUuMTUxIDIzLjE3NiA1LjE1MSAyNS4zMDYgMTAuODg4IDI1LjMwNiAxNi43MTkgMjUuMzA2IDI2Ljg0OSAyNS4zMDYgMjYuODQ5IDIxLjkzIDIwLjE1IDEyLjk0MyIgc3R5bGU9ImZpbGwtb3BhY2l0eTowLjI7c3Ryb2tlOiMwMDA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS13aWR0aDowLjcwMDAwMDAwMDAwMDAwMDFweCIvPjxjaXJjbGUgY3g9IjExLjkyMDI3IiBjeT0iMTIuMzk5MjMiIHI9IjEuOTAyMTYiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4yO3N0cm9rZTojMDAwO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC43MDAwMDAwMDAwMDAwMDAxcHgiLz48L3N2Zz4=";
 
-export interface ImageElementObject extends Specification.Element {
-  properties: ImageElementProperties;
-}
+export { ImageElementAttributes, ImageElementProperties };
 
-export class ImageElement extends MarkClass {
+export class ImageElementClass extends EmphasizableMarkClass<
+  ImageElementProperties,
+  ImageElementAttributes
+> {
   public static classID = "mark.image";
   public static type = "mark";
 
@@ -69,143 +43,19 @@ export class ImageElement extends MarkClass {
     }
   };
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<ImageElementProperties> = {
     visible: true,
     imageMode: "letterbox"
   };
 
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<ImageElementAttributes> = {
     strokeWidth: 1,
     opacity: 1,
     visible: true
   };
 
-  public readonly state: ImageElementState;
-  public readonly object: ImageElementObject;
-
-  // Get a list of elemnt attributes
-  public attributeNames: string[] = [
-    "x1",
-    "y1",
-    "x2",
-    "y2",
-    "cx",
-    "cy",
-    "width",
-    "height",
-    "fill",
-    "stroke",
-    "strokeWidth",
-    "opacity",
-    "visible",
-    "image"
-  ];
-  public attributes: { [name: string]: AttributeDescription } = {
-    x1: {
-      name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y1: {
-      name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    x2: {
-      name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    y2: {
-      name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.WEAKER
-    },
-    cx: {
-      name: "cx",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    cy: {
-      name: "cy",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
-    },
-    width: {
-      name: "width",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Width",
-      defaultRange: [0, 200],
-      strength: VariableStrength.NONE
-    },
-    height: {
-      name: "height",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Height",
-      defaultRange: [0, 200],
-      strength: VariableStrength.NONE
-    },
-    fill: {
-      name: "fill",
-      type: "color",
-      category: "style",
-      displayName: "Fill",
-      solverExclude: true,
-      defaultValue: null
-    },
-    stroke: {
-      name: "stroke",
-      type: "color",
-      category: "style",
-      displayName: "Stroke",
-      solverExclude: true,
-      defaultValue: null
-    },
-    strokeWidth: {
-      name: "strokeWidth",
-      type: "number",
-      category: "style",
-      displayName: "Line Width",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 5]
-    },
-    opacity: {
-      name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
-      solverExclude: true,
-      defaultValue: 1,
-      defaultRange: [0, 1]
-    },
-    visible: {
-      name: "visible",
-      type: "boolean",
-      category: "style",
-      displayName: "Visible",
-      solverExclude: true,
-      defaultValue: true
-    },
-    image: {
-      name: "image",
-      type: "image",
-      category: "text",
-      displayName: "Text",
-      solverExclude: true,
-      defaultValue: ""
-    }
-  };
+  public attributes = imageAttributes;
+  public attributeNames = Object.keys(imageAttributes);
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -233,18 +83,18 @@ export class ImageElement extends MarkClass {
   ): Controls.Widget[] {
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
-      manager.mappingEditor("Width", "width", "number", {
+      manager.mappingEditor("Width", "width", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
-      manager.mappingEditor("Height", "height", "number", {
+      manager.mappingEditor("Height", "height", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
       manager.sectionHeader("Image"),
-      manager.mappingEditor("Image", "image", "image", {}),
+      manager.mappingEditor("Image", "image", {}),
       manager.row(
         "Resize Mode",
         manager.inputSelect(
@@ -258,12 +108,12 @@ export class ImageElement extends MarkClass {
         )
       ),
       manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", "color", {}),
-      manager.mappingEditor("Stroke", "stroke", "color", {})
+      manager.mappingEditor("Fill", "fill", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", "number", {
+        manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
@@ -271,12 +121,12 @@ export class ImageElement extends MarkClass {
       );
     }
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ]);
@@ -522,11 +372,11 @@ export class ImageElement extends MarkClass {
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: "numerical" },
+        accept: { kind: Specification.DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "width",
-            attributeType: "number",
+            attributeType: Specification.AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -536,11 +386,11 @@ export class ImageElement extends MarkClass {
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: "numerical" },
+        accept: { kind: Specification.DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "height",
-            attributeType: "number",
+            attributeType: Specification.AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -550,7 +400,7 @@ export class ImageElement extends MarkClass {
   // Get bounding rectangle given current state
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy } = attrs;
+    const { x1, y1, x2, y2 } = attrs;
     return [
       {
         type: "line",
@@ -645,5 +495,3 @@ export class ImageElement extends MarkClass {
     ];
   }
 }
-
-ObjectClasses.Register(ImageElement);

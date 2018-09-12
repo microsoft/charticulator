@@ -4,6 +4,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { CharticulatorCoreConfig, initialize } from "../../core";
+import { popupController } from "../../app/globals";
+import { PopupContainer } from "../../app/controllers";
 
 const registeredTests: Array<{
   name: string;
@@ -61,12 +63,15 @@ export class TestApplicationView extends React.Component<
           >
             <option value="">(no test selected)</option>
             {registeredTests.map(test => (
-              <option value={test.name}>{test.name}</option>
+              <option key={test.name} value={test.name}>
+                {test.name}
+              </option>
             ))}
           </select>
         </div>
         <div style={{ padding: "10px" }}>
           {TestComponent ? <TestComponent /> : null}
+          <PopupContainer controller={popupController} />
         </div>
       </div>
     );
@@ -85,3 +90,4 @@ export class TestApplication {
 }
 
 require("./graphics").register(registerTest);
+require("./color_picker").register(registerTest);

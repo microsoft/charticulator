@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Point } from "../../common";
+
+import { Point } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import {
-  AttributeDescription,
   BoundingBox,
   Controls,
   DropZones,
@@ -13,40 +13,22 @@ import {
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
-  ObjectClass
+  TemplateParameters
 } from "../common";
-import { MarkClass } from "./index";
-import { EmphasizableMarkClass } from "./emphasis";
-import { attributes } from "./text.attrs";
 import { ChartStateManager } from "../state";
+import { EmphasizableMarkClass } from "./emphasis";
+import {
+  textAttributes,
+  TextElementAttributes,
+  TextElementProperties
+} from "./text.attrs";
 
-export interface TextElementAttributes extends Specification.AttributeMap {
-  x: number;
-  y: number;
-  text: string;
-  fontFamily: string;
-  fontSize: number;
-  color: Color;
-  outline: Color;
-  opacity: number;
-  visible: boolean;
-}
+export { TextElementAttributes, TextElementProperties };
 
-export interface TextElementProperties extends Specification.AttributeMap {
-  alignment: Specification.Types.TextAlignment;
-  rotation: number;
-}
-
-export interface TextElementState extends Specification.MarkState {
-  attributes: TextElementAttributes;
-}
-
-export interface TextElementObject extends Specification.Element {
-  properties: TextElementProperties;
-}
-
-export class TextElement extends EmphasizableMarkClass {
+export class TextElementClass extends EmphasizableMarkClass<
+  TextElementProperties,
+  TextElementAttributes
+> {
   public static classID = "mark.text";
   public static type = "mark";
 
@@ -59,15 +41,7 @@ export class TextElement extends EmphasizableMarkClass {
     }
   };
 
-  constructor(
-    parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState
-  ) {
-    super(parent, object, state, attributes);
-  }
-
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<TextElementAttributes> = {
     text: "Text",
     fontFamily: "Arial",
     fontSize: 14,
@@ -76,29 +50,16 @@ export class TextElement extends EmphasizableMarkClass {
     visible: true
   };
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<TextElementProperties> = {
     alignment: { x: "middle", y: "top", xMargin: 5, yMargin: 5 },
     rotation: 0,
     visible: true
   };
 
-  public readonly state: TextElementState;
-  public readonly object: TextElementObject;
+  public attributes = textAttributes;
+  public attributeNames = Object.keys(textAttributes);
 
   private textMeasure = new Graphics.TextMeasurer();
-
-  // Get a list of elemnt attributes
-  public attributeNames: string[] = [
-    "x",
-    "y",
-    "text",
-    "fontFamily",
-    "fontSize",
-    "color",
-    "outline",
-    "opacity",
-    "visible"
-  ];
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -216,7 +177,10 @@ export class TextElement extends EmphasizableMarkClass {
         ...this.getBoundingRectangle(),
         title: "text",
         dropAction: {
-          scaleInference: { attribute: "text", attributeType: "string" }
+          scaleInference: {
+            attribute: "text",
+            attributeType: Specification.AttributeType.Text
+          }
         }
       } as DropZones.Rectangle
     ];
@@ -330,11 +294,11 @@ export class TextElement extends EmphasizableMarkClass {
     const props = this.object.properties;
     return [
       manager.sectionHeader("Text"),
-      manager.mappingEditor("Text", "text", "string", {}),
-      manager.mappingEditor("Font", "fontFamily", "font-family", {
+      manager.mappingEditor("Text", "text", {}),
+      manager.mappingEditor("Font", "fontFamily", {
         defaultValue: "Arial"
       }),
-      manager.mappingEditor("Size", "fontSize", "number", {
+      manager.mappingEditor("Size", "fontSize", {
         hints: { rangeNumber: [0, 36] },
         defaultValue: 14,
         numberOptions: {
@@ -399,14 +363,14 @@ export class TextElement extends EmphasizableMarkClass {
       ),
       // manager.row("Rotation", manager.inputNumber({ property: "rotation" })),
       manager.sectionHeader("Style"),
-      manager.mappingEditor("Color", "color", "color", {}),
-      manager.mappingEditor("Outline", "outline", "color", {}),
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Color", "color", {}),
+      manager.mappingEditor("Outline", "outline", {}),
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ];
@@ -434,5 +398,3 @@ export class TextElement extends EmphasizableMarkClass {
     }
   }
 }
-
-ObjectClasses.Register(TextElement);

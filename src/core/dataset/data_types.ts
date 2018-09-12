@@ -1,63 +1,41 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { ValueType } from "./dataset";
-import { ColumnMetadata } from "./index";
+import { DataValue, DataType, DataKind, ColumnMetadata } from "./dataset";
+import { parseDate, testAndNormalizeMonthName, monthNames } from "./datetime";
 
 // Infer column type.
 // Adapted from datalib: https://github.com/vega/datalib/blob/master/src/import/type.js
 
 export interface DataTypeDescription {
   test: (v: string) => boolean;
-  convert: (v: string) => ValueType;
+  convert: (v: string) => DataValue;
 }
 
-export function parseDate(str: string) {
-  str = str.trim();
-  let m;
-  // YYYY-MM-DD
-  m = str.match(
-    /^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})( +([0-9]{1,2})\:([0-9]{1,2})(\:([0-9]{1,2}))?)?$/
-  );
-  if (m) {
-    if (m[5] != null) {
-      if (m[8] != null) {
-        return new Date(+m[1], +m[2] - 1, +m[3], +m[5], +m[6], 0, 0).getTime();
-      } else {
-        return new Date(
-          +m[1],
-          +m[2] - 1,
-          +m[3],
-          +m[5],
-          +m[6],
-          +m[8],
-          0
-        ).getTime();
-      }
-    } else {
-      return new Date(+m[1], +m[2] - 1, +m[3], 0, 0, 0, 0).getTime();
-    }
-  }
-  return null;
-}
-
-export let dataTypes: { [name: string]: DataTypeDescription } = {
+export let dataTypes: { [name in DataType]: DataTypeDescription } = {
   boolean: {
-    test: (x: string) =>
-      x.toLowerCase() === "true" || x.toLowerCase() === "false",
-    convert: (x: string) => (x.toLowerCase() === "true" ? true : false)
-  },
-  integer: {
-    test: (x: string) =>
-      !isNaN(+x.replace(/\,/g, "")) &&
-      +x.replace(/\,/g, "") === ~~+x.replace(/\,/g, ""),
-    convert: (x: string) => +x.replace(/\,/g, "")
+    test: (x: string) => {
+      const lx = x.toLowerCase();
+      return lx === "true" || lx === "false" || lx == "yes" || lx == "no";
+    },
+    convert: (x: string) => {
+      const lx = x.toLowerCase();
+      if (lx == "true" || lx == "yes") {
+        return true;
+      } else if (lx == "false" || lx == "no") {
+        return false;
+      } else {
+        return null;
+      }
+    }
   },
   number: {
     test: (x: string) => !isNaN(+x.replace(/\,/g, "")),
-    convert: (x: string) => +x.replace(/\,/g, "")
+    convert: (x: string) => {
+      const value = +x.replace(/\,/g, "");
+      return isNaN(value) ? null : value;
+    }
   },
   date: {
-    // date is represented as unix timestamp, in milliseconds
     test: (x: string) => parseDate(x) != null,
     convert: (x: string) => parseDate(x)
   },
@@ -67,14 +45,15 @@ export let dataTypes: { [name: string]: DataTypeDescription } = {
   }
 };
 
-export function inferColumnType(values: string[]): string {
-  const candidates: string[] = ["boolean", "integer", "number", "date"];
+/** Infer column type from a set of strings (not null) */
+export function inferColumnType(values: string[]): DataType {
+  const candidates: DataType[] = [
+    DataType.Boolean,
+    DataType.Number,
+    DataType.Date
+  ] as any;
   for (let i = 0; i < values.length; i++) {
     let v = values[i];
-    // skip empty values
-    if (v == null) {
-      continue;
-    }
     v = v.trim();
     if (v == "") {
       continue;
@@ -89,118 +68,149 @@ export function inferColumnType(values: string[]): string {
     }
     // if no types left, return "string"
     if (candidates.length == 0) {
-      return "string";
+      return DataType.String;
     }
   }
   return candidates[0];
 }
 
-export function convertColumn(type: string, values: string[]): ValueType[] {
+/** Convert strings to value type, null & non-convertibles are set as null */
+export function convertColumn(type: DataType, values: string[]): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map(v => {
-    if (v == null) {
-      return null;
-    }
-    return converter(v);
-  });
+  return values.map(v => (v != null ? converter(v) : null));
 }
 
-export function getDistinctValues(values: string[]): string[] {
-  const result: string[] = [];
-  const seen = new Set<string>();
+/** Get distinct values from a non-null array of basic types */
+export function getDistinctValues(values: DataValue[]): DataValue[] {
+  const seen = new Set<DataValue>();
   for (const v of values) {
-    if (!seen.has(v)) {
-      result.push(v);
-      seen.add(v);
-    }
+    seen.add(v);
   }
-  return result;
+  return Array.from(seen);
 }
 
-export function inferColumnMetadata(
-  type: string,
+/** Infer column metadata and update type if necessary */
+export function inferAndConvertColumn(
   values: string[],
-  hints: { [name: string]: string } = {}
-): [string, ColumnMetadata] {
-  const distinctValues = getDistinctValues(values.filter(x => x != null));
+  hints?: { [name: string]: string }
+): { values: DataValue[]; type: DataType; metadata: ColumnMetadata } {
+  const inferredType = inferColumnType(values.filter(x => x != null));
+  const convertedValues = convertColumn(inferredType, values);
+  if (hints == null) {
+    hints = {};
+  }
 
-  switch (type) {
-    case "integer": {
-      // Does it look all like years?
-      const distinctRatio = distinctValues.length / values.length;
-      if (values.every(x => +x >= 1970 && +x <= 2100)) {
-        // Treat as string, categorical; order by value ascending.
-        return [
-          "string",
-          {
-            kind: "categorical",
-            order: distinctValues.sort((a, b) => +a - +b),
-            unit: hints.unit
-          }
-        ];
-      }
-      return [
-        "number",
-        {
-          kind: "numerical",
-          unit: hints.unit
-        }
-      ];
-    }
-    case "number": {
-      // Infer number value format
-      let valuesFixed = values
-        .map(d => +d)
-        .filter(d => !isNaN(d))
-        .map(d => d.toFixed(10));
-      valuesFixed = valuesFixed.map(d => {
-        const m = d.match(/\.([0-9]{10})$/);
-        if (m) {
-          return m[1];
-        } else {
-          return "0000000000";
-        }
-      });
-      let k: number;
-      for (k = 10 - 1; k >= 0; k--) {
-        if (valuesFixed.every(v => v[k] == "0")) {
-          continue;
-        } else {
-          break;
+  switch (inferredType) {
+    case DataType.Number: {
+      const validValues = convertedValues.filter(x => x != null);
+      const minValue = Math.min(...(validValues as number[]));
+      const maxValue = Math.max(...(validValues as number[]));
+      if (validValues.every((x: number) => Math.round(x) == x)) {
+        // All integers
+        if (minValue >= 1900 && maxValue <= 2100) {
+          // Special case: Year
+          return {
+            type: DataType.String,
+            values: convertedValues.map(x => x.toString()),
+            metadata: {
+              unit: "__year",
+              kind: DataKind.Ordinal,
+              orderMode: "alphabetically"
+            }
+          };
         }
       }
-      const format = `.${k + 1}f`;
-      return [
-        "number",
-        {
-          kind: "numerical",
-          format,
+      // let valuesFixed = values
+      //   .map(d => +d)
+      //   .filter(d => !isNaN(d))
+      //   .map(d => d.toFixed(10));
+      // valuesFixed = valuesFixed.map(d => {
+      //   const m = d.match(/\.([0-9]{10})$/);
+      //   if (m) {
+      //     return m[1];
+      //   } else {
+      //     return "0000000000";
+      //   }
+      // });
+      // let k: number;
+      // for (k = 10 - 1; k >= 0; k--) {
+      //   if (valuesFixed.every(v => v[k] == "0")) {
+      //     continue;
+      //   } else {
+      //     break;
+      //   }
+      // }
+      // const format = `.${k + 1}f`;
+      return {
+        type: DataType.Number,
+        values: convertedValues,
+        metadata: {
+          kind: DataKind.Numerical,
           unit: hints.unit
         }
-      ];
+      };
     }
-    case "date": {
-      return [
-        "date",
-        {
-          kind: "numerical",
-          format: "%Y/%m/%d-%H:%M:%S",
+    case DataType.Boolean: {
+      return {
+        type: DataType.Boolean,
+        values: convertedValues,
+        metadata: {
+          kind: DataKind.Categorical
+        }
+      };
+    }
+    case DataType.Date: {
+      return {
+        type: DataType.Date,
+        values: convertedValues,
+        metadata: {
+          kind: DataKind.Temporal,
           unit: hints.unit
         }
-      ];
+      };
     }
-    case "string": {
+    case DataType.String: {
       const metadata: ColumnMetadata = {
-        kind: "categorical",
+        kind: DataKind.Categorical,
         unit: hints.unit
       };
+      const validValues = convertedValues.filter(x => x != null);
+      if (
+        validValues.every((x: string) => testAndNormalizeMonthName(x) != null)
+      ) {
+        // Special case: month names
+        // Return as ordinal column with month ordering, use normalized month names
+        return {
+          type: DataType.String,
+          values: convertedValues.map(
+            (x: string) => (x != null ? testAndNormalizeMonthName(x) : null)
+          ),
+          metadata: {
+            kind: DataKind.Ordinal,
+            order: monthNames,
+            unit: "__month"
+          }
+        };
+      }
       if (hints.order) {
         metadata.order = hints.order.split(",");
+        metadata.kind = DataKind.Ordinal;
       } else {
-        metadata.order = distinctValues;
+        metadata.orderMode = "alphabetically";
+        metadata.kind = DataKind.Categorical;
       }
-      return ["string", metadata];
+      return {
+        type: DataType.String,
+        values: convertedValues,
+        metadata
+      };
     }
   }
-  return [type, { kind: "categorical" }];
+  // We shouldn't get here.
+  console.warn("inferAndConvertColumn: inferredType is unexpected");
+  return {
+    type: inferredType,
+    values: convertedValues,
+    metadata: { kind: DataKind.Categorical }
+  };
 }
