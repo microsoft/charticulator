@@ -5,12 +5,16 @@ import { FieldType } from "../common";
 import * as Dataset from "../dataset";
 import { Chart } from "./index";
 import * as Types from "./types";
+import { DefaultAttributes } from "../prototypes";
 
 export type PropertyField = string | { property: string; field: FieldType };
 
 export interface ChartTemplate {
   /** The original chart specification */
   specification: Chart;
+
+  /** A set of default attributes to apply to the objects in the chart */
+  defaultAttributes: DefaultAttributes;
 
   /** Data tables */
   tables: Table[];

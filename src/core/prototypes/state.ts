@@ -17,6 +17,21 @@ import { DataflowManager, DataflowTable } from "./dataflow";
 import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
 
+/**
+ * Represents a set of default attributes
+ */
+export interface DefaultAttributes {
+  /* Maps between an object id and a set of attributes */
+  [objectId: string]: {
+    [attribute: string]: any;
+  };
+}
+
+export type ClassEnumerationCallback = (
+  cls: ObjectClass,
+  state: Specification.ObjectState
+) => void;
+
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
   public readonly chart: Specification.Chart;
@@ -33,14 +48,15 @@ export class ChartStateManager {
   constructor(
     chart: Specification.Chart,
     dataset: Dataset.Dataset,
-    state: Specification.ChartState = null
+    state: Specification.ChartState = null,
+    defaultAttributes: DefaultAttributes = {}
   ) {
     this.chart = chart;
     this.dataset = dataset;
     this.dataflow = new DataflowManager(dataset);
 
     if (state == null) {
-      this.initialize();
+      this.initialize(defaultAttributes);
     } else {
       this.setState(state);
     }
@@ -57,7 +73,7 @@ export class ChartStateManager {
   public setDataset(dataset: Dataset.Dataset): void {
     this.dataset = dataset;
     this.dataflow = new DataflowManager(dataset);
-    this.initialize();
+    this.initialize({});
   }
 
   /** Get data table by name */
@@ -86,7 +102,9 @@ export class ChartStateManager {
   }
 
   /** Create an empty chart state using chart and dataset */
-  private createChartState(): Specification.ChartState {
+  private createChartState(
+    defaultAttributes: DefaultAttributes
+  ): Specification.ChartState {
     const chart = this.chart;
 
     // Build the state hierarchy
@@ -99,7 +117,8 @@ export class ChartStateManager {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         this.mapPlotSegmentState(
           element as Specification.PlotSegment,
-          elementState as Specification.PlotSegmentState
+          elementState as Specification.PlotSegmentState,
+          defaultAttributes
         );
       }
       return elementState;
@@ -159,16 +178,16 @@ export class ChartStateManager {
   }
 
   /** Enumerate all object classes */
-  public enumerateClasses(callback: (cls: ObjectClass) => void) {
+  public enumerateClasses(callback: ClassEnumerationCallback) {
     const chartClass = this.classCache.getChartClass(this.chartState);
-    callback(chartClass);
+    callback(chartClass, this.chartState);
 
     for (const [scale, scaleState] of zip(
       this.chart.scales,
       this.chartState.scales
     )) {
       const scaleClass = this.classCache.getClass(scaleState);
-      callback(scaleClass);
+      callback(scaleClass, scaleState);
     }
 
     for (const [element, elementState] of zip(
@@ -176,7 +195,7 @@ export class ChartStateManager {
       this.chartState.elements
     )) {
       const elementClass = this.classCache.getClass(elementState);
-      callback(elementClass);
+      callback(elementClass, elementState);
       // For plot segment, handle data mapping
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegment = element as Specification.PlotSegment;
@@ -186,10 +205,10 @@ export class ChartStateManager {
         ) as Specification.Glyph;
         for (const glyphState of plotSegmentState.glyphs) {
           const glyphClass = this.classCache.getClass(glyphState);
-          callback(glyphClass);
+          callback(glyphClass, glyphState);
           for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
             const markClass = this.classCache.getClass(markState);
-            callback(markClass);
+            callback(markClass, markState);
           }
         }
       }
@@ -199,11 +218,11 @@ export class ChartStateManager {
   /** Enumerate classes, only return a specific type */
   public enumerateClassesByType(
     type: string,
-    callback: (cls: ObjectClass) => void
+    callback: ClassEnumerationCallback
   ) {
-    this.enumerateClasses(cls => {
+    this.enumerateClasses((cls, state) => {
       if (Prototypes.isType(cls.object.classID, type)) {
-        callback(cls);
+        callback(cls, state);
       }
     });
   }
@@ -230,8 +249,8 @@ export class ChartStateManager {
   }
 
   /** Recreate the chart state from scratch */
-  private initialize() {
-    this.chartState = this.createChartState();
+  private initialize(defaultAttributes: DefaultAttributes) {
+    this.chartState = this.createChartState(defaultAttributes);
     this.rebuildID2Object();
     this.initializeCache();
     this.initializeState();
@@ -506,7 +525,8 @@ export class ChartStateManager {
    */
   private mapPlotSegmentState(
     plotSegment: Specification.PlotSegment,
-    plotSegmentState: Specification.PlotSegmentState
+    plotSegmentState: Specification.PlotSegmentState,
+    defaultAttributes: DefaultAttributes = {}
   ) {
     const glyphObject = getById(
       this.chart.glyphs,
@@ -564,11 +584,15 @@ export class ChartStateManager {
         const glyphState = {
           marks: glyphObject.marks.map(element => {
             const elementState = {
-              attributes: {}
+              attributes: {
+                ...(defaultAttributes[element._id] || {})
+              }
             } as Specification.MarkState;
             return elementState;
           }),
-          attributes: {}
+          attributes: {
+            ...(defaultAttributes[plotSegment.glyph] || {})
+          }
         } as Specification.GlyphState;
         return glyphState;
       }

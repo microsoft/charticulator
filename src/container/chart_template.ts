@@ -16,9 +16,15 @@ import {
   forEachMapping,
   forEachObject,
   getProperty,
-  setProperty
+  setProperty,
+  DefaultAttributes
 } from "../core/prototypes";
 import { CompiledGroupBy } from "../core/prototypes/group_by";
+
+export interface TemplateInstance {
+  chart: Specification.Chart;
+  defaultAttributes: DefaultAttributes;
+}
 
 /** Represents a chart template */
 export class ChartTemplate {
@@ -91,7 +97,7 @@ export class ChartTemplate {
     }
   }
 
-  public instantiate(dataset: Dataset.Dataset): Specification.Chart {
+  public instantiate(dataset: Dataset.Dataset): TemplateInstance {
     // Make a copy of the chart spec so we won't touch the original template data
     const chart = deepClone(this.template.specification);
 
@@ -267,7 +273,10 @@ export class ChartTemplate {
         scaleClass.inferParameters(vector, { autoRange: true });
       }
     }
-    return chart;
+    return {
+      chart,
+      defaultAttributes: this.template.defaultAttributes
+    };
   }
 
   public static SetChartProperty(
