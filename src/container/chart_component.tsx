@@ -127,7 +127,9 @@ export class ChartComponent extends React.Component<
     } else if (!this.isEqual(newProps.dataset, this.props.dataset)) {
       this.manager.setDataset(newProps.dataset);
       changed = true;
-    } else if (!this.isEqual(newProps.defaultAttributes, this.props.defaultAttributes)) {
+    } else if (
+      !this.isEqual(newProps.defaultAttributes, this.props.defaultAttributes)
+    ) {
       this.recreateManager(newProps);
       changed = true;
     }

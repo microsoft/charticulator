@@ -150,13 +150,13 @@ export class ChartContainer extends EventEmitter {
   private defaultAttributes: Prototypes.DefaultAttributes;
 
   constructor(
-    public readonly chartData: Specification.Chart|TemplateInstance,
-    public readonly dataset: Dataset.Dataset,
+    public readonly chartData: Specification.Chart | TemplateInstance,
+    public readonly dataset: Dataset.Dataset
   ) {
     super();
 
     const ti = chartData as TemplateInstance;
-    if (ti.chart) { 
+    if (ti.chart) {
       this.chart = ti.chart;
       this.defaultAttributes = ti.defaultAttributes;
     } else {
@@ -249,7 +249,7 @@ export class ChartContainer extends EventEmitter {
         defaultHeight={height}
         defaultAttributes={this.defaultAttributes}
         onSelectionChange={data => {
-          if (data == null) { 
+          if (data == null) {
             this.emit("selection");
           } else {
             this.emit("selection", data.table, data.rowIndices);
