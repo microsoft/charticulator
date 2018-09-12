@@ -149,6 +149,7 @@ export class ChartContainer extends EventEmitter {
   private defaultAttributes: Prototypes.DefaultAttributes;
 
   constructor(
+    // TODO: Not sure I am a huge fan of this overloading
     public readonly chartData: Specification.Chart | TemplateInstance,
     public readonly dataset: Dataset.Dataset
   ) {
