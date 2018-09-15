@@ -261,8 +261,6 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
                 key={popup.id}
                 ref={ref => {
                   if (ref) {
-                    // Chrome has a weird bug, setting this here seems to fix it
-                    ref.style.margin = "0px";
                     popupViewMapping.set(ref, popup);
                   }
                 }}

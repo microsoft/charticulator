@@ -652,41 +652,46 @@ export class GradientView extends React.PureComponent<
   },
   {}
 > {
-  public refs: {
-    canvas: HTMLCanvasElement;
-  };
+  protected refCanvas: HTMLCanvasElement;
 
   public componentDidMount() {
     this.componentDidUpdate();
   }
 
   public componentDidUpdate() {
-    const ctx = this.refs.canvas.getContext("2d");
-    const width = this.refs.canvas.width;
-    const height = this.refs.canvas.height;
-    const scale = interpolateColors(
-      this.props.gradient.colors,
-      this.props.gradient.colorspace
-    );
-    const data = ctx.getImageData(0, 0, width, height);
-    for (let i = 0; i < data.width; i++) {
-      const t = i / (data.width - 1);
-      const c = scale(t);
-      for (let y = 0; y < data.height; y++) {
-        let ptr = (i + y * data.width) * 4;
-        data.data[ptr++] = c.r;
-        data.data[ptr++] = c.g;
-        data.data[ptr++] = c.b;
-        data.data[ptr++] = 255;
+    // Chrome doesn't like get/putImageData in this method
+    // Doing so will cause the popup editor to not layout, although any change in its style will fix
+    setImmediate(() => {
+      if (!this.refCanvas || !this.props.gradient) {
+        return;
       }
-    }
-    ctx.putImageData(data, 0, 0);
+      const ctx = this.refCanvas.getContext("2d");
+      const width = this.refCanvas.width;
+      const height = this.refCanvas.height;
+      const scale = interpolateColors(
+        this.props.gradient.colors,
+        this.props.gradient.colorspace
+      );
+      const data = ctx.getImageData(0, 0, width, height);
+      for (let i = 0; i < data.width; i++) {
+        const t = i / (data.width - 1);
+        const c = scale(t);
+        for (let y = 0; y < data.height; y++) {
+          let ptr = (i + y * data.width) * 4;
+          data.data[ptr++] = c.r;
+          data.data[ptr++] = c.g;
+          data.data[ptr++] = c.b;
+          data.data[ptr++] = 255;
+        }
+      }
+      ctx.putImageData(data, 0, 0);
+    });
   }
 
   public render() {
     return (
       <span className="gradient-view">
-        <canvas ref="canvas" width={50} height={2} />
+        <canvas ref={e => (this.refCanvas = e)} width={50} height={2} />
       </span>
     );
   }
