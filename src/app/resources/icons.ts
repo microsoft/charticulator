@@ -439,6 +439,10 @@ addSVGIcon(
   "type/ordinal",
   require("url-loader!resources/icons/icons_type-ordinal.svg")
 );
+addSVGIcon(
+  "type/temporal",
+  require("url-loader!resources/icons/icons_type-temporal.svg")
+);
 
 // Checkbox
 addSVGIcon(
