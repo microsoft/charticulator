@@ -1,0 +1,29 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+.charticulator__tabs-view {
+  $line-height: 24px;
+
+  border-bottom: 1px solid $gray-200;
+
+  &-tabs {
+  }
+
+  &-tab {
+    height: $line-height;
+    line-height: $line-height;
+    display: inline-block;
+    padding: 0 5px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+    }
+
+    border-radius: 2px 2px 0 0;
+
+    &:hover,
+    &:active,
+    &.is-active {
+      background: $gray-200;
+    }
+  }
+}

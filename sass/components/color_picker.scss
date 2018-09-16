@@ -101,17 +101,17 @@
 
 .gradient-picker {
   overflow: hidden;
-  display: flex;
-  height: 250px;
-  flex-direction: row;
+  width: 100%;
+  max-width: 300px;
   font-size: 13px;
+  display: flex;
+  flex-direction: column;
 
   & > section.palettes {
-    width: 140px;
+    padding-top: 5px;
     overflow-y: scroll;
     overflow-x: hidden;
-
-    @include shadow-ambient;
+    max-height: 200px;
 
     ul {
       list-style-type: none;
@@ -135,7 +135,7 @@
 
         label {
           cursor: pointer;
-          width: 50px;
+          width: 80px;
           margin-left: 5px;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -171,9 +171,7 @@
   }
 
   & > section.gradient-editor {
-    width: 180px;
     overflow: hidden;
-    background: $gray-210;
     display: flex;
     flex-direction: column;
 
@@ -205,6 +203,18 @@
       padding: 10px;
       overflow-y: scroll;
       overflow-x: hidden;
+      max-height: 250px;
+    }
+
+    .color-row {
+      border-radius: 2px;
+
+      &:hover {
+        background: $gray-210;
+      }
+    }
+    .controls-row {
+      margin-top: 2px;
     }
 
     .color-item {
