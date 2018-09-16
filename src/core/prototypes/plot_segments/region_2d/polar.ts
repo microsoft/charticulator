@@ -10,7 +10,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -20,9 +19,9 @@ import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DPlotSegment,
   Region2DProperties
 } from "./base";
+import { PlotSegmentClass } from "../plot_segment";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -82,7 +81,10 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
   packingIcon: "sublayout/packing"
 };
 
-export class PolarPlotSegment extends Region2DPlotSegment {
+export class PolarPlotSegment extends PlotSegmentClass<
+  PolarProperties,
+  PolarAttributes
+> {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 

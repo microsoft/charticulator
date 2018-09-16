@@ -11,7 +11,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -21,9 +20,9 @@ import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DPlotSegment,
   Region2DProperties
 } from "./base";
+import { PlotSegmentClass } from "../plot_segment";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -87,7 +86,10 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
   packingIcon: "sublayout/packing"
 };
 
-export class CurvePlotSegment extends Region2DPlotSegment {
+export class CurvePlotSegment extends PlotSegmentClass<
+  CurveProperties,
+  CurveAttributes
+> {
   public static classID = "plot-segment.curve";
   public static type = "plot-segment";
 

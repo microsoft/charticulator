@@ -7,9 +7,12 @@ import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 
-export abstract class PlotSegmentClass extends ChartElementClass {
-  public readonly object: Specification.PlotSegment;
-  public readonly state: Specification.PlotSegmentState;
+export abstract class PlotSegmentClass<
+  PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
+  AttributesType extends Specification.AttributeMap = Specification.AttributeMap
+> extends ChartElementClass<PropertiesType, AttributesType> {
+  public readonly object: Specification.PlotSegment<PropertiesType>;
+  public readonly state: Specification.PlotSegmentState<AttributesType>;
 
   /** Fill the layout's default state */
   public initializeState(): void {}

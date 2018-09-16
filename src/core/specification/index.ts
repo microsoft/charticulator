@@ -232,7 +232,12 @@ export interface Links<
 > extends Object<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
-export type ChartElement = PlotSegment | Guide | GuideCoordinator;
+export type ChartElement<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> =
+  | PlotSegment<PropertiesType>
+  | Guide<PropertiesType>
+  | GuideCoordinator<PropertiesType>;
 
 /** Resource item */
 export interface Resource {
@@ -304,7 +309,12 @@ export interface GuideState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 
 /** Chart element state, one of PlotSegmentState or GuideState */
-export type ChartElementState = PlotSegmentState | GuideState | MarkState;
+export type ChartElementState<
+  AttributesType extends AttributeMap = AttributeMap
+> =
+  | PlotSegmentState<AttributesType>
+  | GuideState<AttributesType>
+  | MarkState<AttributesType>;
 
 /** Chart state */
 export interface ChartState<AttributesType extends AttributeMap = AttributeMap>
