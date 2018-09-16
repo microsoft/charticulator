@@ -197,6 +197,7 @@ export class ColumnView extends React.Component<
   ) {
     return (
       <DraggableElement
+        key={expr}
         className={classNames("charticulator__dataset-view-column", [
           "is-active",
           this.state.isSelected == expr

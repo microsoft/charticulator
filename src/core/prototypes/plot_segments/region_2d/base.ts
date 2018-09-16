@@ -140,18 +140,22 @@ export class CrossFitter {
   ) {
     if (this.candidate == null) {
       this.candidate = [value, src, dst, dstBias];
+      return true;
     } else {
       if (this.mode == "min") {
         if (value < this.candidate[0]) {
           this.candidate = [value, src, dst, dstBias];
+          return true;
         }
       }
       if (this.mode == "max") {
         if (value > this.candidate[0]) {
           this.candidate = [value, src, dst, dstBias];
+          return true;
         }
       }
     }
+    return false;
   }
 
   public addConstraint(w: ConstraintStrength) {
@@ -1113,19 +1117,19 @@ export class Region2DConstraintBuilder {
       refMin = solver.attr(attrs, this.y1Name);
       refMax = solver.attr(attrs, this.y2Name);
     }
-    for (const [index, markState] of state.glyphs.entries()) {
-      let a1name = "x1",
-        a2name = "x2";
-      if (axis == "y") {
-        a1name = "y1";
-        a2name = "y2";
-      }
+    let a1name = "x1";
+    let a2name = "x2";
+    if (axis == "y") {
+      a1name = "y1";
+      a2name = "y2";
+    }
+    for (const [, markState] of state.glyphs.entries()) {
       const attr1 = markState.attributes[a1name] as number;
       const attr2 = markState.attributes[a2name] as number;
       minFitter.add(attr1, solver.attr(markState.attributes, a1name), refMin);
-      minFitter.add(attr2, solver.attr(markState.attributes, a2name), refMin);
-      maxFitter.add(attr1, solver.attr(markState.attributes, a1name), refMax);
+      // minFitter.add(attr2, solver.attr(markState.attributes, a2name), refMin);
       maxFitter.add(attr2, solver.attr(markState.attributes, a2name), refMax);
+      // maxFitter.add(attr1, solver.attr(markState.attributes, a1name), refMax);
     }
     minFitter.addConstraint(ConstraintStrength.MEDIUM);
     maxFitter.addConstraint(ConstraintStrength.MEDIUM);
