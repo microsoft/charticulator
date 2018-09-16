@@ -71,17 +71,10 @@ export class MarkEditorView extends React.Component<
 
   public resize = () => {
     const bbox = this.refContainer.getBoundingClientRect();
-    this.setState(
-      {
-        width: bbox.width,
-        height: this.props.height != null ? this.props.height : bbox.height
-      },
-      () => {
-        if (this.refSingleMarkView) {
-          this.refSingleMarkView.doAutoFit();
-        }
-      }
-    );
+    this.setState({
+      width: bbox.width,
+      height: this.props.height != null ? this.props.height : bbox.height
+    });
   };
 
   public componentDidMount() {
@@ -159,7 +152,6 @@ export interface SingleMarkViewState {
   showIndicatorActive: boolean;
   snappingCandidates: MarkSnappableGuide[] | null;
   zoom: ZoomInfo;
-  autoFitNextUpdate: boolean;
 
   currentSelection: Selection;
 }
@@ -173,6 +165,8 @@ export class SingleMarkView
     zoomable: ZoomableCanvas;
   };
 
+  private autoFitNextUpdates = 2;
+
   constructor(props: SingleMarkViewProps) {
     super(props);
     this.state = {
@@ -181,7 +175,6 @@ export class SingleMarkView
       dataForDropZones: false,
       selectedElement: null,
       snappingCandidates: null,
-      autoFitNextUpdate: false,
       zoom: {
         centerX: props.width / 2,
         centerY: props.height / 2,
@@ -192,25 +185,16 @@ export class SingleMarkView
   }
 
   public getFitViewZoom(width: number, height: number) {
-    const markState = this.props.store.glyphState;
-    if (!markState) {
+    const glyphState = this.props.store.glyphState;
+    const manager = this.props.store.parent.chartManager;
+    if (!glyphState) {
       return null;
     }
-    let x1 = markState.attributes.ix1 as number;
-    let y1 = markState.attributes.iy1 as number;
-    let x2 = markState.attributes.ix2 as number;
-    let y2 = markState.attributes.iy2 as number;
-    const dx = Math.abs(x2 - x1);
-    const dy = Math.abs(y2 - y1);
-    x1 = -dx / 2;
-    y1 = -dy / 2;
-    x2 = dx / 2;
-    y2 = dy / 2;
+    // First we compute the maximum bounding box for marks in the glyph
+    const boundingRects: Array<[number, number, number, number]> = [];
     // Get bounding box for each element
-    for (const elementState of this.props.store.glyphState.marks) {
-      const cls = this.props.store.parent.chartManager.getMarkClass(
-        elementState
-      );
+    for (const markState of glyphState.marks) {
+      const cls = manager.getMarkClass(markState);
       const bbox = cls.getBoundingBox();
       if (bbox) {
         let xBounds: number[] = [];
@@ -284,25 +268,56 @@ export class SingleMarkView
             ];
           }
         }
-        x1 = Math.min(x1, ...xBounds);
-        x2 = Math.max(x2, ...xBounds);
-        y1 = Math.min(y1, ...yBounds);
-        y2 = Math.max(y2, ...yBounds);
+        if (xBounds.length > 0) {
+          // y is the same size
+          boundingRects.push([
+            Math.min(...xBounds),
+            Math.max(...xBounds),
+            Math.min(...yBounds),
+            Math.max(...yBounds)
+          ]);
+        }
       }
     }
 
-    const cx = (x1 + x2) / 2;
-    const cy = (y1 + y2) / 2;
-    const overshoot = 0.4;
-    const scale1 = width / (1 + Math.abs(x2 - x1) * (1 + overshoot));
-    const scale2 = height / (1 + Math.abs(y2 - y1) * (1 + overshoot));
-    const scale = Math.min(scale1, scale2);
-    const zoom = {
-      centerX: width / 2 - cx * scale,
-      centerY: height / 2 + cy * scale,
-      scale
-    } as ZoomInfo;
-    return zoom;
+    // If there's no bounding rect found
+    if (boundingRects.length == 0) {
+      const cx = 0;
+      const cy = 0;
+      const { x1, x2, y1, y2 } = glyphState.attributes as {
+        x1: number;
+        y1: number;
+        x2: number;
+        y2: number;
+      };
+      const overshoot = 0.4;
+      const scale1 = width / (1 + Math.abs(x2 - x1) * (1 + overshoot));
+      const scale2 = height / (1 + Math.abs(y2 - y1) * (1 + overshoot));
+      const scale = Math.min(scale1, scale2);
+      const zoom = {
+        centerX: width / 2 - cx * scale,
+        centerY: height / 2 + cy * scale,
+        scale
+      } as ZoomInfo;
+      return zoom;
+    } else {
+      const x1 = Math.min(...boundingRects.map(b => b[0]));
+      const x2 = Math.max(...boundingRects.map(b => b[1]));
+      const y1 = Math.min(...boundingRects.map(b => b[2]));
+      const y2 = Math.max(...boundingRects.map(b => b[3]));
+      const cx = (x1 + x2) / 2;
+      const cy = (y1 + y2) / 2;
+      const overshoot = 0.4;
+      const scale1 = width / (1 + Math.abs(x2 - x1) * (1 + overshoot));
+      const scale2 = height / (1 + Math.abs(y2 - y1) * (1 + overshoot));
+      const scale = Math.min(scale1, scale2);
+      const zoom = {
+        centerX: width / 2 - cx * scale,
+        centerY: height / 2 + cy * scale,
+        scale
+      } as ZoomInfo;
+      return zoom;
+    }
   }
 
   public doAutoFit() {
@@ -310,12 +325,13 @@ export class SingleMarkView
     if (!newZoom) {
       return;
     }
-    const isFocusing =
-      this.props.store.parent.currentSelection instanceof MarkSelection;
-    if (this.state.autoFitNextUpdate || !isFocusing) {
+    // const isFocusing =
+    //   this.props.store.parent.currentSelection instanceof MarkSelection ||
+    //   this.props.store.parent.currentSelection instanceof GlyphSelection;
+    if (this.autoFitNextUpdates > 0) {
+      this.autoFitNextUpdates -= 1;
       this.setState({
-        zoom: newZoom,
-        autoFitNextUpdate: false
+        zoom: newZoom
       });
     }
   }
@@ -346,9 +362,9 @@ export class SingleMarkView
         });
         ctx.onDrop(point => {
           point = this.getRelativePoint(point);
-          this.setState({
-            autoFitNextUpdate: true
-          });
+          if (this.props.store.glyphState.marks.length <= 1) {
+            this.autoFitNextUpdates = 2;
+          }
           const attributes: Specification.AttributeMap = {};
           const opt = JSON.parse(data.options);
           for (const key in opt) {
@@ -1374,8 +1390,7 @@ export class SingleMarkView
                   return;
                 }
                 this.setState({
-                  zoom: newZoom,
-                  autoFitNextUpdate: false
+                  zoom: newZoom
                 });
               }}
             />
