@@ -165,7 +165,7 @@ export class SingleMarkView
     zoomable: ZoomableCanvas;
   };
 
-  private autoFitNextUpdates = 2;
+  private autoFitNextNUpdates = 2;
 
   constructor(props: SingleMarkViewProps) {
     super(props);
@@ -267,6 +267,11 @@ export class SingleMarkView
               bboxCircle.cy + bboxCircle.radius
             ];
           }
+          case "line": {
+            const bboxLine = bbox as Prototypes.BoundingBox.Line;
+            xBounds = [bboxLine.x1, bboxLine.x2];
+            yBounds = [bboxLine.y1, bboxLine.y2];
+          }
         }
         if (xBounds.length > 0) {
           // y is the same size
@@ -325,11 +330,8 @@ export class SingleMarkView
     if (!newZoom) {
       return;
     }
-    // const isFocusing =
-    //   this.props.store.parent.currentSelection instanceof MarkSelection ||
-    //   this.props.store.parent.currentSelection instanceof GlyphSelection;
-    if (this.autoFitNextUpdates > 0) {
-      this.autoFitNextUpdates -= 1;
+    if (this.autoFitNextNUpdates > 0) {
+      this.autoFitNextNUpdates -= 1;
       this.setState({
         zoom: newZoom
       });
@@ -363,7 +365,9 @@ export class SingleMarkView
         ctx.onDrop(point => {
           point = this.getRelativePoint(point);
           if (this.props.store.glyphState.marks.length <= 1) {
-            this.autoFitNextUpdates = 2;
+            // Do the auto fit next 2 updates because there'll be 2 after the AddMarkToGlyph action
+            // One is trigged by EVENT_SELECTION (sync), and the other one is by EVENT_STATE (async)
+            this.autoFitNextNUpdates = 2;
           }
           const attributes: Specification.AttributeMap = {};
           const opt = JSON.parse(data.options);
