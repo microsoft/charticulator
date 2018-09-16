@@ -16,6 +16,7 @@ import {
   getNumericalInterpolate
 } from "../axis";
 import { PlotSegmentClass } from "../plot_segment";
+import { argMax, argMin } from "../../../common";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   type: "dodge-x" | "dodge-y" | "grid" | "packing";
@@ -112,52 +113,43 @@ export interface Region2DConfiguration {
 export class CrossFitter {
   private solver: ConstraintSolver;
   private mode: "min" | "max";
-  private candidate: [number, Variable, Array<[number, Variable]>, number];
+  private candidates: Array<[Variable, Array<[number, Variable]>, number]>;
 
   constructor(solver: ConstraintSolver, mode: "min" | "max") {
     this.solver = solver;
     this.mode = mode;
-    this.candidate = null;
+    this.candidates = [];
   }
 
-  public add(value: number, src: Variable, dst: Variable) {
-    return this.addComplex(value, src, [[1, dst]]);
+  public add(src: Variable, dst: Variable) {
+    return this.addComplex(src, [[1, dst]]);
   }
 
   public addComplex(
-    value: number,
     src: Variable,
     dst: Array<[number, Variable]>,
     dstBias: number = 0
   ) {
-    if (this.candidate == null) {
-      this.candidate = [value, src, dst, dstBias];
-      return true;
-    } else {
-      if (this.mode == "min") {
-        if (value < this.candidate[0]) {
-          this.candidate = [value, src, dst, dstBias];
-          return true;
-        }
-      }
-      if (this.mode == "max") {
-        if (value > this.candidate[0]) {
-          this.candidate = [value, src, dst, dstBias];
-          return true;
-        }
-      }
-    }
-    return false;
+    this.candidates.push([src, dst, dstBias]);
   }
 
   public addConstraint(w: ConstraintStrength) {
-    if (this.candidate != null) {
-      this.solver.addLinear(
-        w,
-        -this.candidate[3],
-        [[1, this.candidate[1]]],
-        this.candidate[2]
-      );
+    if (this.candidates.length == 0) {
+      return;
+    }
+    for (const candidate of this.candidates) {
+      if (this.mode == "min") {
+        this.solver.addSoftInequality(
+          w,
+          -candidate[2],
+          [[1, candidate[0]]],
+          candidate[1]
+        );
+      } else {
+        this.solver.addSoftInequality(w, candidate[2], candidate[1], [
+          [1, candidate[0]]
+        ]);
+      }
     }
   }
 }
@@ -1057,11 +1049,9 @@ export class Region2DConstraintBuilder {
       a2name = "y2";
     }
     for (const [, markState] of state.glyphs.entries()) {
-      const attr1 = markState.attributes[a1name] as number;
-      const attr2 = markState.attributes[a2name] as number;
-      minFitter.add(attr1, solver.attr(markState.attributes, a1name), refMin);
+      minFitter.add(solver.attr(markState.attributes, a1name), refMin);
       // minFitter.add(attr2, solver.attr(markState.attributes, a2name), refMin);
-      maxFitter.add(attr2, solver.attr(markState.attributes, a2name), refMax);
+      maxFitter.add(solver.attr(markState.attributes, a2name), refMax);
       // maxFitter.add(attr1, solver.attr(markState.attributes, a1name), refMax);
     }
     minFitter.addConstraint(ConstraintStrength.MEDIUM);
@@ -1090,11 +1080,7 @@ export class Region2DConstraintBuilder {
               x1
             );
           } else {
-            fitters.xMin.add(
-              (m1.attributes.x1 as number) - solver.getValue(x1),
-              solver.attr(m1.attributes, "x1"),
-              x1
-            );
+            fitters.xMin.add(solver.attr(m1.attributes, "x1"), x1);
           }
           if (alignment.x == "end") {
             solver.addEquals(
@@ -1103,11 +1089,7 @@ export class Region2DConstraintBuilder {
               x2
             );
           } else {
-            fitters.xMax.add(
-              (m1.attributes.x2 as number) - solver.getValue(x2),
-              solver.attr(m1.attributes, "x2"),
-              x2
-            );
+            fitters.xMax.add(solver.attr(m1.attributes, "x2"), x2);
           }
           if (alignment.x == "middle") {
             solver.addLinear(
@@ -1129,11 +1111,7 @@ export class Region2DConstraintBuilder {
               y1
             );
           } else {
-            fitters.xMin.add(
-              (m1.attributes.y1 as number) - solver.getValue(y1),
-              solver.attr(m1.attributes, "y1"),
-              y1
-            );
+            fitters.xMin.add(solver.attr(m1.attributes, "y1"), y1);
           }
           if (alignment.y == "end") {
             solver.addEquals(
@@ -1142,11 +1120,7 @@ export class Region2DConstraintBuilder {
               y2
             );
           } else {
-            fitters.xMax.add(
-              (m1.attributes.y2 as number) - solver.getValue(y2),
-              solver.attr(m1.attributes, "y2"),
-              y2
-            );
+            fitters.xMax.add(solver.attr(m1.attributes, "y2"), y2);
           }
           if (alignment.y == "middle") {
             solver.addLinear(
@@ -1168,7 +1142,6 @@ export class Region2DConstraintBuilder {
 
   public sublayout(groups: SublayoutGroup[]) {
     this.orderMarkGroups(groups);
-    const state = this.plotSegment.state;
     const props = this.plotSegment.object.properties;
     let maxGroupLength = 0;
     for (const g of groups) {
@@ -1272,11 +1245,7 @@ export class Region2DConstraintBuilder {
                   y1
                 );
               } else {
-                fitters.yMin.add(
-                  (m1.attributes.y1 as number) - solver.getValue(y1),
-                  solver.attr(m1.attributes, "y1"),
-                  y1
-                );
+                fitters.yMin.add(solver.attr(m1.attributes, "y1"), y1);
               }
               if (alignment.y == "end") {
                 solver.addEquals(
@@ -1285,22 +1254,7 @@ export class Region2DConstraintBuilder {
                   y2
                 );
               } else {
-                const presolveHeight = this.getGlyphPreSolveAttributes(
-                  dataIndices[group.group[index]]
-                ).height;
-                if (presolveHeight == presolveHeight) {
-                  fitters.yMax.add(
-                    presolveHeight,
-                    solver.attr(m1.attributes, "y2"),
-                    y2
-                  );
-                } else {
-                  fitters.yMax.add(
-                    (m1.attributes.y2 as number) - solver.getValue(y2),
-                    solver.attr(m1.attributes, "y2"),
-                    y2
-                  );
-                }
+                fitters.yMax.add(solver.attr(m1.attributes, "y2"), y2);
               }
               if (alignment.y == "middle") {
                 solver.addLinear(
@@ -1324,11 +1278,7 @@ export class Region2DConstraintBuilder {
                   x1
                 );
               } else {
-                fitters.xMin.add(
-                  (m1.attributes.x1 as number) - solver.getValue(x1),
-                  solver.attr(m1.attributes, "x1"),
-                  x1
-                );
+                fitters.xMin.add(solver.attr(m1.attributes, "x1"), x1);
               }
               if (alignment.x == "end") {
                 solver.addEquals(
@@ -1337,11 +1287,7 @@ export class Region2DConstraintBuilder {
                   x2
                 );
               } else {
-                fitters.xMax.add(
-                  (m1.attributes.x2 as number) - solver.getValue(x2),
-                  solver.attr(m1.attributes, "x2"),
-                  x2
-                );
+                fitters.xMax.add(solver.attr(m1.attributes, "x2"), x2);
               }
               if (alignment.x == "middle") {
                 solver.addLinear(
@@ -1382,7 +1328,6 @@ export class Region2DConstraintBuilder {
               );
             } else {
               fitters.xMin.addComplex(
-                (m1.attributes.x1 as number) - solver.getValue(x1),
                 solver.attr(m1.attributes, "x1"),
                 x1WithGap
               );
@@ -1396,7 +1341,6 @@ export class Region2DConstraintBuilder {
               );
             } else {
               fitters.xMax.addComplex(
-                (mN.attributes.x2 as number) - solver.getValue(x2),
                 solver.attr(mN.attributes, "x2"),
                 x2WithGap
               );
@@ -1435,7 +1379,6 @@ export class Region2DConstraintBuilder {
               );
             } else {
               fitters.yMin.addComplex(
-                (m1.attributes.y1 as number) - solver.getValue(y1),
                 solver.attr(m1.attributes, "y1"),
                 y1WithGap
               );
@@ -1449,7 +1392,6 @@ export class Region2DConstraintBuilder {
               );
             } else {
               fitters.yMax.addComplex(
-                (mN.attributes.y2 as number) - solver.getValue(y2),
                 solver.attr(mN.attributes, "y2"),
                 y2WithGap
               );
@@ -1611,11 +1553,7 @@ export class Region2DConstraintBuilder {
             cellX1
           );
         } else {
-          xMinFitter.addComplex(
-            (state.attributes.x1 as number) - solver.getLinear(...cellX1),
-            solver.attr(state.attributes, "x1"),
-            cellX1
-          );
+          xMinFitter.addComplex(solver.attr(state.attributes, "x1"), cellX1);
         }
         if (alignX == "end") {
           solver.addLinear(
@@ -1625,11 +1563,7 @@ export class Region2DConstraintBuilder {
             cellX2
           );
         } else {
-          xMaxFitter.addComplex(
-            (state.attributes.x2 as number) - solver.getLinear(...cellX2),
-            solver.attr(state.attributes, "x2"),
-            cellX2
-          );
+          xMaxFitter.addComplex(solver.attr(state.attributes, "x2"), cellX2);
         }
         if (alignX == "middle") {
           solver.addLinear(
@@ -1650,11 +1584,7 @@ export class Region2DConstraintBuilder {
             cellY1
           );
         } else {
-          yMinFitter.addComplex(
-            (state.attributes.y1 as number) - solver.getLinear(...cellY1),
-            solver.attr(state.attributes, "y1"),
-            cellY1
-          );
+          yMinFitter.addComplex(solver.attr(state.attributes, "y1"), cellY1);
         }
         if (alignY == "end") {
           solver.addLinear(
@@ -1664,11 +1594,7 @@ export class Region2DConstraintBuilder {
             cellY2
           );
         } else {
-          yMaxFitter.addComplex(
-            (state.attributes.y2 as number) - solver.getLinear(...cellY2),
-            solver.attr(state.attributes, "y2"),
-            cellY2
-          );
+          yMaxFitter.addComplex(solver.attr(state.attributes, "y2"), cellY2);
         }
         if (alignY == "middle") {
           solver.addLinear(

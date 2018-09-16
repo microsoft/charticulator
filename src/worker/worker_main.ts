@@ -64,7 +64,7 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     mappingOnly: boolean = false
   ) {
     let loss: { softLoss: number; hardLoss: number } = null;
-    let iterations = additional != null ? 2 : 2;
+    let iterations = additional != null ? 2 : 1;
     if (mappingOnly) {
       iterations = 1;
     }

@@ -527,6 +527,22 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     ]);
   }
 
+  public addSoftInequality(
+    strength: ConstraintStrength,
+    bias: number,
+    lhs: Array<[number, { index: number }]>,
+    rhs: Array<[number, { index: number }]> = []
+  ) {
+    this.linears.push([
+      bias,
+      lhs
+        .map(([weight, obj]) => ({ weight, index: obj.index }))
+        .concat(
+          rhs.map(([weight, obj]) => ({ weight: -weight, index: obj.index }))
+        )
+    ]);
+  }
+
   public addInputAttribute(name: string, attr: { index: number }) {
     if (this.inputBiases.has(name)) {
       const idx = this.inputBiases.get(name).index;
