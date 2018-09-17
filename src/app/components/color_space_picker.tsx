@@ -486,35 +486,37 @@ class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
     const width = canvas.width;
     const height = canvas.height;
     const ctx = canvas.getContext("2d");
-    const data = ctx.getImageData(0, 0, width, height);
-    const { x1Offset, x2Offset, x3Offset } = this.props;
-    let { x1StrideX, x1StrideY } = this.props;
-    let { x2StrideX, x2StrideY } = this.props;
-    let { x3StrideX, x3StrideY } = this.props;
-    x1StrideX /= data.width - 1;
-    x2StrideX /= data.width - 1;
-    x3StrideX /= data.width - 1;
-    x1StrideY /= data.height - 1;
-    x2StrideY /= data.height - 1;
-    x3StrideY /= data.height - 1;
-    let ptr = 0;
-    for (let j = 0; j < data.height; j++) {
-      const th = x1Offset + j * x1StrideY;
-      const tc = x2Offset + j * x2StrideY;
-      const tl = x3Offset + j * x3StrideY;
-      for (let i = 0; i < data.width; i++) {
-        const color = this.props.toRGB(
-          th + i * x1StrideX,
-          tc + i * x2StrideX,
-          tl + i * x3StrideX
-        );
-        data.data[ptr++] = color[0];
-        data.data[ptr++] = color[1];
-        data.data[ptr++] = color[2];
-        data.data[ptr++] = color[3] ? 128 : 255;
+    setTimeout(() => {
+      const data = ctx.getImageData(0, 0, width, height);
+      const { x1Offset, x2Offset, x3Offset } = this.props;
+      let { x1StrideX, x1StrideY } = this.props;
+      let { x2StrideX, x2StrideY } = this.props;
+      let { x3StrideX, x3StrideY } = this.props;
+      x1StrideX /= data.width - 1;
+      x2StrideX /= data.width - 1;
+      x3StrideX /= data.width - 1;
+      x1StrideY /= data.height - 1;
+      x2StrideY /= data.height - 1;
+      x3StrideY /= data.height - 1;
+      let ptr = 0;
+      for (let j = 0; j < data.height; j++) {
+        const th = x1Offset + j * x1StrideY;
+        const tc = x2Offset + j * x2StrideY;
+        const tl = x3Offset + j * x3StrideY;
+        for (let i = 0; i < data.width; i++) {
+          const color = this.props.toRGB(
+            th + i * x1StrideX,
+            tc + i * x2StrideX,
+            tl + i * x3StrideX
+          );
+          data.data[ptr++] = color[0];
+          data.data[ptr++] = color[1];
+          data.data[ptr++] = color[2];
+          data.data[ptr++] = color[3] ? 128 : 255;
+        }
       }
-    }
-    ctx.putImageData(data, 0, 0);
+      ctx.putImageData(data, 0, 0);
+    }, 0);
   }
 
   public render() {
@@ -609,26 +611,28 @@ class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
     const width = canvas.width;
     const height = canvas.height;
     const ctx = canvas.getContext("2d");
-    const data = ctx.getImageData(0, 0, width, height);
-    const { x1Offset, x2Offset, x3Offset } = this.props;
-    let { x1StrideZ, x2StrideZ, x3StrideZ } = this.props;
-    x1StrideZ /= data.height - 1;
-    x2StrideZ /= data.height - 1;
-    x3StrideZ /= data.height - 1;
-    let ptr = 0;
-    for (let j = 0; j < data.height; j++) {
-      const th = x1Offset + j * x1StrideZ;
-      const tc = x2Offset + j * x2StrideZ;
-      const tl = x3Offset + j * x3StrideZ;
-      const color = this.props.toRGB(th, tc, tl);
-      for (let i = 0; i < data.width; i++) {
-        data.data[ptr++] = color[0];
-        data.data[ptr++] = color[1];
-        data.data[ptr++] = color[2];
-        data.data[ptr++] = color[3] ? 128 : 255;
+    setTimeout(() => {
+      const data = ctx.getImageData(0, 0, width, height);
+      const { x1Offset, x2Offset, x3Offset } = this.props;
+      let { x1StrideZ, x2StrideZ, x3StrideZ } = this.props;
+      x1StrideZ /= data.height - 1;
+      x2StrideZ /= data.height - 1;
+      x3StrideZ /= data.height - 1;
+      let ptr = 0;
+      for (let j = 0; j < data.height; j++) {
+        const th = x1Offset + j * x1StrideZ;
+        const tc = x2Offset + j * x2StrideZ;
+        const tl = x3Offset + j * x3StrideZ;
+        const color = this.props.toRGB(th, tc, tl);
+        for (let i = 0; i < data.width; i++) {
+          data.data[ptr++] = color[0];
+          data.data[ptr++] = color[1];
+          data.data[ptr++] = color[2];
+          data.data[ptr++] = color[3] ? 128 : 255;
+        }
       }
-    }
-    ctx.putImageData(data, 0, 0);
+      ctx.putImageData(data, 0, 0);
+    }, 0);
   }
 
   public render() {
