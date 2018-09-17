@@ -8,11 +8,11 @@ import * as Specification from "../specification";
 
 import { getById, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
-import { Matrix, WASMSolver as MyConstraintSolver } from "./wasm_solver";
+import { Matrix, WASMSolver } from "./wasm_solver";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
-  public solver: MyConstraintSolver;
+  public solver: WASMSolver;
   public stage: "chart" | "glyphs";
 
   public chart: Specification.Chart;
@@ -23,12 +23,13 @@ export class ChartConstraintSolver {
   public expressionCache: Expression.ExpressionCache;
 
   /** Create a ChartConstraintSolver
+   * - stage == "chart": disregard glyphs, solve chart-level constraints
+   * - stage == "glyphs": fix chart-level attributes, solve only glyphs
    * @param stage determines the scope of the variables to solve
    */
   constructor(stage: "chart" | "glyphs") {
-    this.solver = new MyConstraintSolver();
+    this.solver = new WASMSolver();
     this.stage = stage;
-    console.log("Solver: ", stage);
   }
 
   public setManager(manager: Prototypes.ChartStateManager) {
@@ -272,11 +273,11 @@ export class ChartConstraintSolver {
 
     const glyphClass = this.manager.getGlyphClass(glyphState);
     for (const attr of glyphClass.attributeNames) {
-      const info = glyphClass.attributes[attr];
-      if (info.solverExclude) {
-        continue;
-      }
-      this.addAttribute(glyphState.attributes, attr, true);
+      // const info = glyphClass.attributes[attr];
+      // if (info.solverExclude) {
+      //   continue;
+      // }
+      // this.addAttribute(glyphState.attributes, attr, true);
 
       // If width/height are not constrained, make them constant
       if (attr == "width" && glyphAnalyzed.widthFree) {

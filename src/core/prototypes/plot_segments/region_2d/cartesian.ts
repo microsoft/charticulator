@@ -118,7 +118,16 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public readonly state: CartesianState;
 
-  public attributeNames: string[] = ["x1", "x2", "y1", "y2", "gapX", "gapY"];
+  public attributeNames: string[] = [
+    "x1",
+    "x2",
+    "y1",
+    "y2",
+    "x",
+    "y",
+    "gapX",
+    "gapY"
+  ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",

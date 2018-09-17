@@ -77,6 +77,7 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
       const iterations = additional != null ? 2 : 1;
       for (let i = 0; i < iterations; i++) {
         {
+          const t1 = new Date().getTime();
           const solver = new Core.Solver.ChartConstraintSolver("chart");
           solver.setup(chartManager);
           if (additional) {
@@ -84,8 +85,11 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
           }
           loss = solver.solve();
           solver.destroy();
+          const t2 = new Date().getTime();
+          console.log("chart phase", t2 - t1);
         }
         {
+          const t1 = new Date().getTime();
           const solver = new Core.Solver.ChartConstraintSolver("glyphs");
           solver.setup(chartManager);
           if (additional) {
@@ -93,6 +97,8 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
           }
           loss = solver.solve();
           solver.destroy();
+          const t2 = new Date().getTime();
+          console.log("glyphs phase", t2 - t1);
         }
         additional = null;
       }

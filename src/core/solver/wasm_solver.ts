@@ -142,12 +142,24 @@ export class WASMSolver extends ConstraintSolver {
 
   /** Solve the constraints */
   public solve(): [number, number] {
+    const keeps: Array<[number, number]> = [];
     this.variables.forEach((value, map, key) => {
       this.solver.setValue(value.index, map[key] as number);
+      // Try to keep the original values of variables
+      const c = this.solver.addConstraint(
+        LSCGSolver.ConstraintSolver.STRENGTH_WEAKER,
+        map[key] as number,
+        [value.index],
+        [-1]
+      );
+      keeps.push([c, value.index]);
     });
 
     const maxIters = 10;
     for (let iter = 0; iter < maxIters; iter++) {
+      for (const [c, index] of keeps) {
+        this.solver.setConstraintBias(c, this.solver.getValue(index));
+      }
       this.solver.solve();
       let shouldReiterate = false;
       for (const soft of this.softInequalities) {
