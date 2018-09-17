@@ -279,7 +279,9 @@ export class ChartTemplate {
         const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
           attributes: {}
         }) as Prototypes.Scales.ScaleClass;
-        scaleClass.inferParameters(vector, { autoRange: true });
+        scaleClass.inferParameters(vector, {
+          reuseRange: true
+        });
       }
       if (inference.nestedChart) {
         const { nestedChart } = inference;

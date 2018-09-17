@@ -11,6 +11,13 @@ import {
 } from "../../specification";
 import { DataMappingHints, ObjectClass, TemplateParameters } from "../common";
 
+export interface InferParametersOptions extends DataMappingHints {
+  /** Whether to extend the scale domain/range with new data */
+  extendScale?: boolean;
+  /** Whether to reuse the existing range of the scale, applies to color and image */
+  reuseRange?: boolean;
+}
+
 export abstract class ScaleClass<
   PropertiesType extends AttributeMap = AttributeMap,
   AttributesType extends AttributeMap = AttributeMap
@@ -28,7 +35,7 @@ export abstract class ScaleClass<
 
   public abstract inferParameters(
     column: DataValue[],
-    hints?: DataMappingHints
+    options?: InferParametersOptions
   ): void;
 
   public getTemplateParameters(): TemplateParameters {
