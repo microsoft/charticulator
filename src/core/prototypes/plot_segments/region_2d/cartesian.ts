@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { ChartStateManager } from "../..";
 import * as Graphics from "../../../graphics";
-import { ConstraintSolver, VariableStrength } from "../../../solver";
+import { ConstraintSolver } from "../../../solver";
 import * as Specification from "../../../specification";
 import { BuildConstraintsContext } from "../../chart_element";
 import {
@@ -11,7 +11,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -21,14 +20,17 @@ import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DPlotSegment
+  Region2DProperties
 } from "./base";
+import { PlotSegmentClass } from "../plot_segment";
 
 export type CartesianAxisMode =
   | "null"
   | "default"
   | "numerical"
   | "categorical";
+
+export interface CartesianProperties extends Region2DProperties {}
 
 export interface CartesianAttributes extends Region2DAttributes {
   /** Cartesian plot segment region */
@@ -73,7 +75,10 @@ export let cartesianTerminology: Region2DConfiguration = {
   yAxisPrePostGap: false
 };
 
-export class CartesianPlotSegment extends Region2DPlotSegment {
+export class CartesianPlotSegment extends PlotSegmentClass<
+  CartesianProperties,
+  CartesianAttributes
+> {
   public static classID: string = "plot-segment.cartesian";
   public static type: string = "plot-segment";
 
@@ -117,51 +122,35 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapX: {
       name: "gapX",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapY: {
       name: "gapY",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -243,7 +232,6 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
       return null;
     }
     const attrs = this.state.attributes;
-    const props = this.object.properties;
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,
@@ -252,11 +240,9 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
-    const builder = this.createBuilder();
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const [xMode, yMode] = this.getAxisModes();
     const getTickData = (axis: Specification.Types.AxisDataBinding) => {
       const table = manager.getTable(this.object.table);
       const axisExpression = manager.dataflow.cache.parse(axis.expression);
@@ -315,7 +301,7 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
 
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, x, y } = attrs;
+    const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
     zones.push({
       type: "region",
@@ -388,7 +374,6 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2 } = attrs;
     const h: Handles.Description[] = [
       {
@@ -510,5 +495,3 @@ export class CartesianPlotSegment extends Region2DPlotSegment {
     return { inferences: r };
   }
 }
-
-ObjectClasses.Register(CartesianPlotSegment);

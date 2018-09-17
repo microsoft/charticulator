@@ -106,7 +106,7 @@ export class FilterEditor extends React.Component<
                   }}
                   table={options.table}
                   datasetStore={this.props.manager.store.datasetStore}
-                  kinds={["categorical"]}
+                  kinds={[Specification.DataKind.Categorical]}
                   onChange={field => {
                     // Enumerate all values of this field
                     if (field.expression) {

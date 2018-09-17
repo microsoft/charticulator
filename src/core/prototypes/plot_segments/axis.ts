@@ -30,31 +30,6 @@ export interface TickDescription {
   label: string;
 }
 
-// export function linearTicks(domainMin: number, domainMax: number, range: number): TickDescription[] {
-//     let scale = new Scale.NumericalScale();
-//     scale.domainMin = domainMin;
-//     scale.domainMax = domainMax;
-//     let ticks = scale.ticks(Math.round(Math.min(10, range / 20)));
-//     let r: TickDescription[] = [];
-//     for (let i = 0; i < ticks.length; i++) {
-//         let tx = (ticks[i] - domainMin) / (domainMax - domainMin) * range;
-//         r.push({
-//             position: tx,
-//             label: ticks[i].toFixed(0)
-//         });
-//     }
-//     return r;
-// }
-
-// export function categoricalTicks(info: CategoricalAxisInfo, names: string[], range: number): TickDescription[] {
-//     return names.map((name, index) => {
-//         return {
-//             position: (info.ranges[index][0] + info.ranges[index][1]) / 2 * range,
-//             label: name
-//         };
-//     });
-// }
-
 export class AxisRenderer {
   public ticks: TickDescription[] = [];
   public style: Specification.Types.AxisRenderingStyle = defaultAxisStyle;
@@ -92,12 +67,30 @@ export class AxisRenderer {
     switch (data.type) {
       case "numerical":
         {
-          this.setLinearScale(
-            data.domainMin,
-            data.domainMax,
-            rangeMin,
-            rangeMax
-          );
+          if (!data.numericalMode || data.numericalMode == "linear") {
+            this.setLinearScale(
+              data.domainMin,
+              data.domainMax,
+              rangeMin,
+              rangeMax
+            );
+          }
+          if (data.numericalMode == "logarithmic") {
+            this.setLogarithmicScale(
+              data.domainMin,
+              data.domainMax,
+              rangeMin,
+              rangeMax
+            );
+          }
+          if (data.numericalMode == "temporal") {
+            this.setTemporalScale(
+              data.domainMin,
+              data.domainMax,
+              rangeMin,
+              rangeMax
+            );
+          }
         }
         break;
       case "categorical":
@@ -140,7 +133,75 @@ export class AxisRenderer {
     rangeMin: number,
     rangeMax: number
   ) {
-    const scale = new Scale.NumericalScale();
+    const scale = new Scale.LinearScale();
+    scale.domainMin = domainMin;
+    scale.domainMax = domainMax;
+    const rangeLength = Math.abs(rangeMax - rangeMin);
+    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
+    const tickFormat = scale.tickFormat(
+      Math.round(Math.min(10, rangeLength / 40))
+    );
+    const r: TickDescription[] = [];
+    for (let i = 0; i < ticks.length; i++) {
+      const tx =
+        ((ticks[i] - domainMin) / (domainMax - domainMin)) *
+          (rangeMax - rangeMin) +
+        rangeMin;
+      r.push({
+        position: tx,
+        label: tickFormat(ticks[i])
+      });
+    }
+    this.valueToPosition = value =>
+      ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
+      rangeMin;
+    this.ticks = r;
+    this.rangeMin = rangeMin;
+    this.rangeMax = rangeMax;
+    return this;
+  }
+
+  public setLogarithmicScale(
+    domainMin: number,
+    domainMax: number,
+    rangeMin: number,
+    rangeMax: number
+  ) {
+    const scale = new Scale.LogarithmicScale();
+    scale.domainMin = domainMin;
+    scale.domainMax = domainMax;
+    const rangeLength = Math.abs(rangeMax - rangeMin);
+    const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
+    const tickFormat = scale.tickFormat(
+      Math.round(Math.min(10, rangeLength / 40))
+    );
+    const r: TickDescription[] = [];
+    for (let i = 0; i < ticks.length; i++) {
+      const tx =
+        ((ticks[i] - domainMin) / (domainMax - domainMin)) *
+          (rangeMax - rangeMin) +
+        rangeMin;
+      r.push({
+        position: tx,
+        label: tickFormat(ticks[i])
+      });
+    }
+    this.valueToPosition = value =>
+      ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
+      rangeMin;
+    this.ticks = r;
+    this.rangeMin = rangeMin;
+    this.rangeMax = rangeMax;
+    return this;
+  }
+
+  public setTemporalScale(
+    domainMin: number,
+    domainMax: number,
+    rangeMin: number,
+    rangeMax: number
+  ) {
+    const scale = new Scale.DateScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
@@ -355,43 +416,6 @@ export class AxisRenderer {
         return this.renderLine(x, y, 90, -1);
       }
     }
-    // let style = this.style;
-    // let rangeMin = this.rangeMin;
-    // let rangeMax = this.rangeMax;
-    // let tickSize = style.tickSize;
-    // let lineStyle: Style = {
-    //     strokeLinecap: "square",
-    //     strokeColor: style.axisColor
-    // }
-    // let g = makeGroup([]);
-    // g.transform.x = x; g.transform.y = y;
-    // AxisRenderer.textMeasurer.setFontFamily(style.fontFamily)
-    // AxisRenderer.textMeasurer.setFontSize(style.fontSize);
-    // switch (axis) {
-    //     case "x": {
-    //         g.elements.push(makeLine(rangeMin, 0, rangeMax, 0, lineStyle));
-    //         g.elements.push(makeLine(rangeMin, 0, rangeMin, -style.tickSize, lineStyle));
-    //         g.elements.push(makeLine(rangeMax, 0, rangeMax, -style.tickSize, lineStyle));
-    //         for (let tick of this.ticks) {
-    //             let metrics = AxisRenderer.textMeasurer.measure(tick.label);
-    //             let dy = (metrics.middle - metrics.ideographicBaseline) * 2 - metrics.alphabeticBaseline;
-    //             g.elements.push(makeLine(tick.position, 0, tick.position, -style.tickSize, lineStyle));
-    //             g.elements.push(makeText(tick.position, -style.tickSize - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "middle" }));
-    //         }
-    //     } break;
-    //     case "y": {
-    //         g.elements.push(makeLine(0, rangeMin, 0, rangeMax, lineStyle));
-    //         g.elements.push(makeLine(0, rangeMin, -style.tickSize, rangeMin, lineStyle));
-    //         g.elements.push(makeLine(0, rangeMax, -style.tickSize, rangeMax, lineStyle));
-    //         for (let tick of this.ticks) {
-    //             let metrics = AxisRenderer.textMeasurer.measure(tick.label);
-    //             let dy = metrics.middle - metrics.alphabeticBaseline;
-    //             g.elements.push(makeLine(0, tick.position, -style.tickSize, tick.position, lineStyle));
-    //             g.elements.push(makeText(-style.tickSize - 2, tick.position - dy, tick.label, style.fontFamily, style.fontSize, { fillColor: style.tickColor, textAnchor: "end" }));
-    //         }
-    //     } break;
-    // }
-    // return g;
   }
 
   public renderPolar(
@@ -544,6 +568,22 @@ export function getCategoricalAxis(
   };
 }
 
+export function getNumericalInterpolate(
+  data: Specification.Types.AxisDataBinding
+) {
+  if (data.numericalMode == "logarithmic") {
+    const p1 = Math.log(data.domainMin);
+    const p2 = Math.log(data.domainMax);
+    const pdiff = p2 - p1;
+    return (x: number) => (Math.log(x) - p1) / pdiff;
+  } else {
+    const p1 = data.domainMin;
+    const p2 = data.domainMax;
+    const pdiff = p2 - p1;
+    return (x: number) => (x - p1) / pdiff;
+  }
+}
+
 export function buildAxisAppearanceWidgets(
   isVisible: boolean,
   axisProperty: string,
@@ -664,6 +704,22 @@ export function buildAxisWidgets(
               )
             )
           );
+          if (data.numericalMode != "temporal") {
+            widgets.push(
+              m.row(
+                "Mode",
+                m.inputSelect(
+                  { property: axisProperty, field: "numericalMode" },
+                  {
+                    options: ["linear", "logarithmic"],
+                    labels: ["Linear", "Logarithmic"],
+                    showLabel: true,
+                    type: "dropdown"
+                  }
+                )
+              )
+            );
+          }
           widgets.push(
             m.row(
               "TickData",

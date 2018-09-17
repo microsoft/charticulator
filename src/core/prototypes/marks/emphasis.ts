@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Style, ColorFilter } from "../../graphics";
-import { MarkClass } from "./index";
+import { MarkClass } from "./mark";
 import { ObjectClass } from "../object";
-import { Object, ObjectState, EmphasisMethod } from "../../specification";
+import {
+  Object,
+  ObjectState,
+  EmphasisMethod,
+  AttributeMap
+} from "../../specification";
 
 const DEFAULT_EMPHASIS_DESATURATION: ColorFilter = {
   saturation: { multiply: 0.2 },
@@ -15,16 +20,18 @@ const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
 /**
  * Represents a mark class that is emphasizable
  */
-export class EmphasizableMarkClass extends MarkClass {
+export abstract class EmphasizableMarkClass<
+  PropertiesType extends AttributeMap = AttributeMap,
+  AttributesType extends AttributeMap = AttributeMap
+> extends MarkClass<PropertiesType, AttributesType> {
   private defaultMethod: EmphasisMethod;
   constructor(
     parent: ObjectClass,
-    object: Object,
-    state: ObjectState,
-    attributes: any,
+    object: Object<PropertiesType>,
+    state: ObjectState<AttributesType>,
     defaultMethod = EmphasisMethod.Saturation
   ) {
-    super(parent, object, state, attributes);
+    super(parent, object, state);
 
     this.defaultMethod = defaultMethod;
   }

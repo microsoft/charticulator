@@ -7,21 +7,31 @@
   flex-direction: row;
   font-size: 13px;
 
-  & > section.palettes {
+  &-left {
     width: 140px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+
     @include shadow-ambient;
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-palettes-list {
+    flex: 1 1;
+
     ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
+
       .label {
         line-height: 20px;
         padding: 0px 4px;
         font-size: 12px;
         color: $gray-100;
       }
+
       li.item {
         text-overflow: ellipsis;
         line-height: 20px;
@@ -49,6 +59,7 @@
   .color-grid {
     display: flex;
     flex-direction: row;
+
     .color-row {
       display: flex;
       flex-direction: column;
@@ -78,30 +89,42 @@
       border: 1px solid white;
     }
   }
+
+  &-null {
+    border-top: 1px solid $gray-210;
+
+    .charticulator__widget-control-button {
+      width: 100% !important;
+    }
+  }
 }
 
 .gradient-picker {
   overflow: hidden;
-  display: flex;
-  height: 250px;
-  flex-direction: row;
+  width: 100%;
+  max-width: 300px;
   font-size: 13px;
+  display: flex;
+  flex-direction: column;
 
   & > section.palettes {
-    width: 140px;
+    padding-top: 5px;
     overflow-y: scroll;
     overflow-x: hidden;
-    @include shadow-ambient;
+    max-height: 200px;
+
     ul {
       list-style-type: none;
       margin: 0;
       padding: 0;
+
       .label {
         line-height: 20px;
         padding: 0px 4px;
         font-size: 12px;
         color: $gray-100;
       }
+
       li.item {
         display: flex;
         flex-direction: row;
@@ -112,7 +135,7 @@
 
         label {
           cursor: pointer;
-          width: 50px;
+          width: 80px;
           margin-left: 5px;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -131,6 +154,7 @@
           height: 20px;
           line-height: 20px;
           flex: 1;
+
           canvas {
             display: inline-block;
             width: 100%;
@@ -147,25 +171,25 @@
   }
 
   & > section.gradient-editor {
-    width: 180px;
     overflow: hidden;
-    background: $gray-210;
-
     display: flex;
     flex-direction: column;
 
     .row {
       margin: 5px 10px;
       flex-shrink: 0;
+
       &:last-child {
         border-top: 1px solid $gray-200;
       }
     }
+
     .gradient-view {
       display: block;
       height: 30px;
       line-height: 30px;
       flex: 1;
+
       canvas {
         display: inline-block;
         width: 100%;
@@ -174,11 +198,25 @@
         border: 1px solid white;
       }
     }
+
     .colors-scroll {
       padding: 10px;
       overflow-y: scroll;
       overflow-x: hidden;
+      max-height: 250px;
     }
+
+    .color-row {
+      border-radius: 2px;
+
+      &:hover {
+        background: $gray-210;
+      }
+    }
+    .controls-row {
+      margin-top: 2px;
+    }
+
     .color-item {
       display: inline-block;
       vertical-align: top;
@@ -189,13 +227,17 @@
       margin-left: 0;
       cursor: pointer;
     }
+
     input {
       margin: 2px;
     }
   }
+
   input {
     width: 60px;
+
     @include font-mono;
+
     margin: 0;
     padding: 0;
     outline: none;
@@ -206,14 +248,16 @@
     padding-top: 1px;
     line-height: 20px;
     border-bottom: 1px solid $gray-180;
+
     &:hover,
     &:focus {
       border-bottom: 1px solid $color-primary;
     }
-    box-sizing: border-box;
 
+    box-sizing: border-box;
     transition: border-color $transition-default;
   }
+
   .part-buttons {
     text-align: right;
   }
@@ -226,13 +270,16 @@
   .row {
     margin-bottom: 5px;
   }
+
   .columns {
     display: flex;
     flex-direction: row;
+
     .column {
       margin-right: 10px;
     }
   }
+
   .part-picker {
     display: flex;
     flex-direction: row;
@@ -242,7 +289,6 @@
       background: $gray-190;
       border-radius: 2px;
       margin-right: 5px;
-
       position: relative;
 
       canvas {
@@ -253,17 +299,20 @@
         pointer-events: all;
         cursor: pointer;
       }
+
       svg {
         position: absolute;
         left: 0;
         top: 0;
         pointer-events: none;
+
         .bg {
           fill: none;
           stroke: rgba(0, 0, 0, 0.2);
           stroke-width: 3;
           pointer-events: none;
         }
+
         .fg {
           fill: none;
           stroke: white;
@@ -285,10 +334,12 @@
 
       .current-color {
         $size: 40px;
+
         display: inline-block;
         width: $size;
         height: $size;
         border: 1px solid white;
+
         span {
           display: inline-block;
           width: $size;
@@ -297,9 +348,12 @@
       }
     }
   }
+
   input {
     width: 60px;
+
     @include font-mono;
+
     margin: 0;
     padding: 0;
     outline: none;
@@ -310,14 +364,16 @@
     padding-top: 1px;
     line-height: 20px;
     border-bottom: 1px solid $gray-180;
+
     &:hover,
     &:focus {
       border-bottom: 1px solid $color-primary;
     }
-    box-sizing: border-box;
 
+    box-sizing: border-box;
     transition: border-color $transition-default;
   }
+
   .part-buttons {
     text-align: right;
   }
@@ -327,6 +383,7 @@
   display: inline-block;
   vertical-align: top;
   height: 20px;
+
   canvas {
     display: inline-block;
     vertical-align: top;

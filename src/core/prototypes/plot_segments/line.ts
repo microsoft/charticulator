@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Graphics from "../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import {
   AttributeDescription,
@@ -23,7 +19,7 @@ import {
   getCategoricalAxis,
   buildAxisInference
 } from "./axis";
-import { PlotSegmentClass } from "./index";
+import { PlotSegmentClass } from "./plot_segment";
 
 export interface LineGuideAttributes extends Specification.AttributeMap {
   x1?: number;
@@ -70,27 +66,19 @@ export class LineGuide extends PlotSegmentClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -262,5 +250,3 @@ export class LineGuide extends PlotSegmentClass {
     return { inferences: r };
   }
 }
-
-ObjectClasses.Register(LineGuide);

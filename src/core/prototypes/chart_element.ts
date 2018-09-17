@@ -28,9 +28,12 @@ export interface BuildConstraintsContext {
   ): { [name: string]: number };
 }
 
-export abstract class ChartElementClass extends ObjectClass {
-  public readonly object: Specification.ChartElement;
-  public readonly state: Specification.ChartElementState;
+export abstract class ChartElementClass<
+  PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
+  AttributesType extends Specification.AttributeMap = Specification.AttributeMap
+> extends ObjectClass<PropertiesType, AttributesType> {
+  public readonly object: Specification.ChartElement<PropertiesType>;
+  public readonly state: Specification.ChartElementState<AttributesType>;
   public readonly parent: ChartClass;
 
   /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */

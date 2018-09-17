@@ -6,7 +6,7 @@ import { ObjectClass, ObjectClasses } from "./object";
 
 import * as Charts from "./charts";
 import * as Glyphs from "./glyphs";
-import * as Marks from "./marks";
+import * as Marks from "./marks/mark";
 import * as PlotSegments from "./plot_segments";
 import * as Scales from "./scales";
 

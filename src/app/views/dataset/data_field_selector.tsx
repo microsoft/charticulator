@@ -6,7 +6,7 @@ import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
 import { DatasetStore } from "../../stores";
 import { classNames } from "../../utils";
-import { kind2Icon, type2DerivedColumns } from "./common";
+import { kind2Icon, type2DerivedColumns, isKindAcceptable } from "./common";
 import { Button, Select } from "../panels/widgets/controls";
 
 export interface DataFieldSelectorProps {
@@ -14,8 +14,8 @@ export interface DataFieldSelectorProps {
   /** Show fields only from a particular table */
   table?: string;
   /** Show fields only of certain kinds or types (categorical / numerical) */
-  kinds?: string[];
-  types?: string[];
+  kinds?: Dataset.DataKind[];
+  types?: Dataset.DataType[];
   /** Allow null selection and describe null as specified */
   nullDescription?: string;
   nullNotHighlightable?: boolean;
@@ -38,7 +38,7 @@ export interface DataFieldSelectorValue {
   // lambdaExpression: string;
   /** Only available if the expression refers to exactly a column */
   columnName?: string;
-  type: string;
+  type: Dataset.DataType;
   metadata: Dataset.ColumnMetadata;
 }
 
@@ -131,7 +131,8 @@ export class DataFieldSelector extends React.Component<
     if (this.props.kinds) {
       columnFilters.push(
         x =>
-          x.metadata != null && this.props.kinds.indexOf(x.metadata.kind) >= 0
+          x.metadata != null &&
+          isKindAcceptable(x.metadata.kind, this.props.kinds)
       );
     }
     if (this.props.types) {

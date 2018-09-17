@@ -11,4 +11,3 @@ export {
   ChartElementSelection,
   GlyphSelection
 } from "./chart";
-export { GlyphStore } from "./mark";

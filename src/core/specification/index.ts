@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color, Point } from "../common";
-
 import * as Template from "./template";
 import * as Types from "./types";
+
 export { Types, Template };
 
 // ===========================================================================
@@ -21,7 +21,31 @@ export interface Identifiable {
 // ===========================================================================
 
 /** Supported data value types */
-export type DataValue = number | string | boolean | Date;
+export type DataValue = number | string | boolean;
+
+/** Data type in memory */
+export enum DataType {
+  /** String data type, stored as string */
+  String = "string",
+  /** Number data type, stored as number */
+  Number = "number",
+  /** Boolean data type, stored as boolean */
+  Boolean = "boolean",
+  /** Date data type, stored as unix timestamps (ms) */
+  Date = "date"
+}
+
+/** Abstract data kind */
+export enum DataKind {
+  /** Ordinal data kind */
+  Ordinal = "ordinal",
+  /** Categorical data kind */
+  Categorical = "categorical",
+  /** Numerical data kind */
+  Numerical = "numerical",
+  /** Temporal data kind */
+  Temporal = "temporal"
+}
 
 /** Data row */
 export interface DataRow {
@@ -34,6 +58,18 @@ export type Expression = string;
 // ===========================================================================
 // Attributes
 // ===========================================================================
+
+export enum AttributeType {
+  Number = "number",
+  Enum = "enum",
+  Text = "text",
+  Boolean = "boolean",
+  FontFamily = "font-family",
+  Color = "color",
+  Image = "image",
+  Point = "point",
+  Object = "object"
+}
 
 /** Attribute value types */
 export type AttributeValue =
@@ -75,8 +111,8 @@ export interface ScaleMapping extends Mapping {
   table: string;
   /** The data column */
   expression: Expression;
-  /** Value type */
-  valueType: string;
+  /** Value type returned by the expression */
+  valueType: DataType;
   /** The id of the scale to use. If null, use the expression directly */
   scale?: string;
 }
@@ -128,20 +164,26 @@ export interface ObjectProperties extends AttributeMap {
 }
 
 /** General object */
-export interface Object extends Identifiable {
+export interface Object<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Identifiable {
   /** The class ID for the Object */
   classID: string;
   /** Attributes  */
-  properties: ObjectProperties;
+  properties: PropertiesType;
   /** Scale attribute mappings */
   mappings: Mappings;
 }
 
-/** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a single data row */
-export interface Element extends Object {}
+/** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a group of data rows */
+export interface Element<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {}
 
-/** Glyph: a compound of elements, with constraints between them; a glyph is driven by a single data row */
-export interface Glyph extends Object {
+/** Glyph: a compound of elements, with constraints between them; a glyph is driven by a group of data rows */
+export interface Glyph<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {
   /** The data table this mark correspond to */
   table: string;
   /** Elements within the mark */
@@ -151,13 +193,17 @@ export interface Glyph extends Object {
 }
 
 /** Scale */
-export interface Scale extends Object {
-  inputType: string;
-  outputType: string;
+export interface Scale<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {
+  inputType: DataType;
+  outputType: AttributeType;
 }
 
 /** MarkLayout: the "PlotSegment" */
-export interface PlotSegment extends Object {
+export interface PlotSegment<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {
   /** The mark to use */
   glyph: string;
   /** The data table to get data rows from */
@@ -171,16 +217,27 @@ export interface PlotSegment extends Object {
 }
 
 /** Guide */
-export interface Guide extends Object {}
+export interface Guide<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {}
 
 /** Guide Coordinator */
-export interface GuideCoordinator extends Object {}
+export interface GuideCoordinator<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {}
 
 /** Links */
-export interface Links extends Object {}
+export interface Links<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
-export type ChartElement = PlotSegment | Guide | GuideCoordinator;
+export type ChartElement<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> =
+  | PlotSegment<PropertiesType>
+  | Guide<PropertiesType>
+  | GuideCoordinator<PropertiesType>;
 
 /** Resource item */
 export interface Resource {
@@ -193,7 +250,9 @@ export interface Resource {
 }
 
 /** A chart is a set of chart elements and constraints between them, with guides and scales */
-export interface Chart extends Object {
+export interface Chart<
+  PropertiesType extends ObjectProperties = ObjectProperties
+> extends Object<PropertiesType> {
   /** Marks */
   glyphs: Glyph[];
   /** Scales */
@@ -211,18 +270,23 @@ export interface Chart extends Object {
 // ===========================================================================
 
 /** General object state */
-export interface ObjectState {
-  attributes: AttributeMap;
+export interface ObjectState<
+  AttributesType extends AttributeMap = AttributeMap
+> {
+  attributes: AttributesType;
 }
 
 /** Element state */
-export interface MarkState extends ObjectState {}
+export interface MarkState<AttributesType extends AttributeMap = AttributeMap>
+  extends ObjectState<AttributesType> {}
 
 /** Scale state */
-export interface ScaleState extends ObjectState {}
+export interface ScaleState<AttributesType extends AttributeMap = AttributeMap>
+  extends ObjectState<AttributesType> {}
 
 /** Glyph state */
-export interface GlyphState extends ObjectState {
+export interface GlyphState<AttributesType extends AttributeMap = AttributeMap>
+  extends ObjectState<AttributesType> {
   // Element states
   marks: MarkState[];
 
@@ -231,7 +295,9 @@ export interface GlyphState extends ObjectState {
 }
 
 /** PlotSegment state */
-export interface PlotSegmentState extends ObjectState {
+export interface PlotSegmentState<
+  AttributesType extends AttributeMap = AttributeMap
+> extends ObjectState<AttributesType> {
   // Mark states
   glyphs: GlyphState[];
   // Data row indices for the mark states
@@ -239,13 +305,20 @@ export interface PlotSegmentState extends ObjectState {
 }
 
 /** Guide state */
-export interface GuideState extends ObjectState {}
+export interface GuideState<AttributesType extends AttributeMap = AttributeMap>
+  extends ObjectState<AttributesType> {}
 
 /** Chart element state, one of PlotSegmentState or GuideState */
-export type ChartElementState = PlotSegmentState | GuideState;
+export type ChartElementState<
+  AttributesType extends AttributeMap = AttributeMap
+> =
+  | PlotSegmentState<AttributesType>
+  | GuideState<AttributesType>
+  | MarkState<AttributesType>;
 
 /** Chart state */
-export interface ChartState extends ObjectState {
+export interface ChartState<AttributesType extends AttributeMap = AttributeMap>
+  extends ObjectState<AttributesType> {
   /** Mark binding states corresponding to Chart.marks */
   elements: ChartElementState[];
   /** Scale states corresponding to Chart.scales */
@@ -256,6 +329,6 @@ export interface ChartState extends ObjectState {
  * Represents the type of method to use when emphasizing an element
  */
 export enum EmphasisMethod {
-  Saturation = "saturatation",
+  Saturation = "saturation",
   Outline = "outline"
 }

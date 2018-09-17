@@ -5,37 +5,16 @@ import * as R from "../../resources";
 import * as globals from "../../globals";
 import { getConfig } from "../../config";
 import { Dataset } from "../../../core";
-import { classNames } from "../../utils";
+import {
+  classNames,
+  getExtensionFromFileName,
+  readFileAsString,
+  getFileNameWithoutExtension
+} from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
-
-function readFileAsString(file: File): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(reader.result as string);
-    };
-    reader.onerror = () => {
-      reject(new Error(`unable to read file ${file.name}`));
-    };
-    reader.readAsText(file, "utf-8");
-  });
-}
-
-function getExtension(filename: string) {
-  const m = filename.match(/\.([^\.]+)$/);
-  if (m) {
-    return m[1].toLowerCase();
-  } else {
-    return null;
-  }
-}
-
-function getFileNameWithoutExtension(filename: string) {
-  return filename.replace(/\.([^\.]+)$/, "");
-}
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -96,7 +75,7 @@ export class FileUploader extends React.Component<
     if (dt && dt.items.length == 1) {
       if (dt.items[0].kind == "file") {
         const file = dt.items[0].getAsFile();
-        const ext = getExtension(file.name);
+        const ext = getExtensionFromFileName(file.name);
         if (this.props.extensions.indexOf(ext) >= 0) {
           return file;
         } else {
@@ -199,7 +178,7 @@ export class ImportDataView extends React.Component<
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
-      const ext = getExtension(file.name);
+      const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();
       switch (ext) {

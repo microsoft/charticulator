@@ -14,9 +14,9 @@ import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import { Controls, ObjectClassMetadata } from "../common";
 import { DataflowTable } from "../dataflow";
-import { ChartStateManager } from "../index";
+import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
-import { PlotSegmentClass } from "../plot_segments/index";
+import { PlotSegmentClass } from "../plot_segments";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -123,27 +123,21 @@ export abstract class LinksClass extends ChartElementClass {
   public attributes: { [name: string]: AttributeDescription } = {
     color: {
       name: "color",
-      type: "color",
-      category: "style",
-      displayName: "Color",
+      type: Specification.AttributeType.Color,
       solverExclude: true,
       defaultValue: null,
       stateExclude: true
     },
     strokeWidth: {
       name: "strokeWidth",
-      type: "number",
-      category: "style",
-      displayName: "Width",
+      type: Specification.AttributeType.Number,
       solverExclude: true,
       defaultValue: null,
       stateExclude: true
     },
     opacity: {
       name: "opacity",
-      type: "number",
-      category: "style",
-      displayName: "Opacity",
+      type: Specification.AttributeType.Number,
       solverExclude: true,
       defaultValue: 1,
       defaultRange: [0, 1],
@@ -662,10 +656,10 @@ export abstract class LinksClass extends ChartElementClass {
       );
     }
     widgets.push(manager.sectionHeader("Style"));
-    widgets.push(manager.mappingEditor("Color", "color", "color", {}));
+    widgets.push(manager.mappingEditor("Color", "color", {}));
     // if (props.linkType == "line") {
     widgets.push(
-      manager.mappingEditor("Width", "strokeWidth", "number", {
+      manager.mappingEditor("Width", "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
@@ -673,7 +667,7 @@ export abstract class LinksClass extends ChartElementClass {
     );
     // }
     widgets.push(
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
@@ -995,6 +989,8 @@ export class TableLinksClass extends LinksClass {
   }
 }
 
-ObjectClasses.Register(SeriesLinksClass);
-ObjectClasses.Register(LayoutsLinksClass);
-ObjectClasses.Register(TableLinksClass);
+export function registerClasses() {
+  ObjectClasses.Register(SeriesLinksClass);
+  ObjectClasses.Register(LayoutsLinksClass);
+  ObjectClasses.Register(TableLinksClass);
+}

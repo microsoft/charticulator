@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Graphics from "../../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../../solver";
 import * as Specification from "../../../specification";
 
 import { getById, max, Point, uniqueID, zipArray } from "../../../common";
@@ -20,7 +16,7 @@ import {
   SnappingGuides
 } from "../../common";
 
-import { PlotSegmentClass } from "../index";
+import { PlotSegmentClass } from "../plot_segment";
 
 import { buildAxisWidgets } from "../axis";
 import { StaticMapService } from "./map_service";
@@ -73,27 +69,19 @@ export class MapPlotSegment extends PlotSegmentClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -389,5 +377,3 @@ export class MapPlotSegment extends PlotSegmentClass {
     return widgets;
   }
 }
-
-ObjectClasses.Register(MapPlotSegment);

@@ -1,113 +1,44 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Scale } from "../../common";
+import { Color, Scale, getDefaultColorPalette } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import {
-  ConstraintSolver,
-  ConstraintStrength,
-  Variable,
-  VariableStrength
-} from "../../solver";
-import * as Specification from "../../specification";
-import {
-  AttributeDescription,
-  Controls,
-  DataMappingHints,
-  ObjectClasses,
-  TemplateParameters
-} from "../common";
+  DataValue,
+  AttributeValue,
+  AttributeMap,
+  AttributeType
+} from "../../specification";
+import { AttributeDescription, Controls, DataMappingHints } from "../common";
 
 import { ScaleClass } from "./index";
+import { AttributeDescriptions } from "../object";
 
-export interface CategoricalScaleProperties<
-  ValueType extends Specification.AttributeValue
-> extends Specification.AttributeMap {
+export interface CategoricalScaleProperties<ValueType extends AttributeValue>
+  extends AttributeMap {
   mapping: { [name: string]: ValueType };
+  defaultRange?: ValueType[];
 }
 
-export interface CategoricalScaleAttributes extends Specification.AttributeMap {
-  mapping: { [name: string]: Specification.AttributeValue };
-}
-
-export interface CategoricalScaleState extends Specification.ScaleState {
-  attributes: CategoricalScaleAttributes;
-}
-
-function parseHEX(s: string) {
-  return {
-    r: parseInt(s.substr(1, 2), 16),
-    g: parseInt(s.substr(3, 2), 16),
-    b: parseInt(s.substr(5, 2), 16)
-  };
-}
-
-const brewer3 = ["#7fc97f", "#beaed4", "#fdc086"].map(parseHEX);
-const brewer6 = [
-  "#a6cee3",
-  "#1f78b4",
-  "#b2df8a",
-  "#33a02c",
-  "#fb9a99",
-  "#e31a1c"
-].map(parseHEX);
-const brewer12 = [
-  "#a6cee3",
-  "#1f78b4",
-  "#b2df8a",
-  "#33a02c",
-  "#fb9a99",
-  "#e31a1c",
-  "#fdbf6f",
-  "#ff7f00",
-  "#cab2d6",
-  "#6a3d9a",
-  "#ffff99",
-  "#b15928"
-].map(parseHEX);
-
-export function getDefaultColorPalette(count: number) {
-  let r = brewer12;
-  if (count <= 3) {
-    r = brewer3;
-  } else if (count <= 6) {
-    r = brewer6;
-  } else {
-    r = brewer12;
-  }
-  return r;
-}
-
-export interface CategoricalScaleNumberAttributes
-  extends CategoricalScaleAttributes {
+export interface CategoricalScaleNumberAttributes extends AttributeMap {
   rangeScale?: number;
 }
 
-export interface CategoricalScaleNumberState extends CategoricalScaleState {
-  attributes: CategoricalScaleNumberAttributes;
-}
-
-class CategoricalScaleNumber extends ScaleClass {
+export class CategoricalScaleNumber extends ScaleClass<
+  CategoricalScaleProperties<number>,
+  CategoricalScaleNumberAttributes
+> {
   public static classID = "scale.categorical<string,number>";
   public static type = "scale";
-
-  public readonly object: {
-    properties: CategoricalScaleProperties<number>;
-  } & Specification.Scale;
-  public readonly state: CategoricalScaleNumberState;
 
   public attributeNames: string[] = ["rangeScale"];
   public attributes: { [name: string]: AttributeDescription } = {
     rangeScale: {
       name: "rangeScale",
-      type: "number",
-      displayName: "Scale",
-      category: "scale-range",
-      strength: VariableStrength.MEDIUM
+      type: AttributeType.Number
     }
   };
 
-  public mapDataToAttribute(
-    data: Specification.DataValue
-  ): Specification.AttributeValue {
+  public mapDataToAttribute(data: DataValue): AttributeValue {
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const number = props.mapping[data.toString()];
@@ -115,7 +46,7 @@ class CategoricalScaleNumber extends ScaleClass {
   }
 
   public buildConstraint(
-    data: Specification.DataValue,
+    data: DataValue,
     target: Variable,
     solver: ConstraintSolver
   ) {
@@ -136,7 +67,7 @@ class CategoricalScaleNumber extends ScaleClass {
   }
 
   public inferParameters(
-    column: Specification.DataValue[],
+    column: DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const attrs = this.state.attributes;
@@ -183,20 +114,17 @@ class CategoricalScaleNumber extends ScaleClass {
   }
 }
 
-class CategoricalScaleColor extends ScaleClass {
+export class CategoricalScaleColor extends ScaleClass<
+  CategoricalScaleProperties<Color>,
+  {}
+> {
   public static classID = "scale.categorical<string,color>";
   public static type = "scale";
 
-  public readonly object: {
-    properties: CategoricalScaleProperties<Color>;
-  } & Specification.Scale;
-
   public attributeNames: string[] = [];
-  public attributes: { [name: string]: AttributeDescription } = {};
+  public attributes: AttributeDescriptions = {};
 
-  public mapDataToAttribute(
-    data: Specification.DataValue
-  ): Specification.AttributeValue {
+  public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
     return props.mapping[data.toString()];
   }
@@ -204,7 +132,7 @@ class CategoricalScaleColor extends ScaleClass {
   public initializeState(): void {}
 
   public inferParameters(
-    column: Specification.DataValue[],
+    column: DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
@@ -212,15 +140,11 @@ class CategoricalScaleColor extends ScaleClass {
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
     props.mapping = {};
-    let colorList = brewer12;
-    if (s.length <= 3) {
-      colorList = brewer3;
-    } else if (s.length <= 6) {
-      colorList = brewer6;
-    } else {
-      colorList = brewer12;
-    }
+    // Find a good default color palette
+    const colorList = getDefaultColorPalette(s.length);
     s.domain.forEach((v, d) => {
+      // If we still don't have enough colors, reuse them
+      // TODO: fix this with a better method
       props.mapping[d] = colorList[v % colorList.length];
     });
   }
@@ -252,20 +176,17 @@ class CategoricalScaleColor extends ScaleClass {
   }
 }
 
-class CategoricalScaleString extends ScaleClass {
-  public static classID = "scale.categorical<string,string>";
+export class CategoricalScaleEnum extends ScaleClass<
+  CategoricalScaleProperties<string>,
+  {}
+> {
+  public static classID = "scale.categorical<string,enum>";
   public static type = "scale";
-
-  public readonly object: {
-    properties: CategoricalScaleProperties<string>;
-  } & Specification.Scale;
 
   public attributeNames: string[] = [];
   public attributes: { [name: string]: AttributeDescription } = {};
 
-  public mapDataToAttribute(
-    data: Specification.DataValue
-  ): Specification.AttributeValue {
+  public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
     return props.mapping[data.toString()];
   }
@@ -273,7 +194,7 @@ class CategoricalScaleString extends ScaleClass {
   public initializeState(): void {}
 
   public inferParameters(
-    column: Specification.DataValue[],
+    column: DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
@@ -281,9 +202,12 @@ class CategoricalScaleString extends ScaleClass {
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
     props.mapping = {};
+    if (hints.rangeEnum) {
+      props.defaultRange = hints.rangeEnum.slice();
+    }
     s.domain.forEach((v, d) => {
-      if (hints.rangeString) {
-        props.mapping[d] = hints.rangeString[v % hints.rangeString.length];
+      if (hints.rangeEnum) {
+        props.mapping[d] = hints.rangeEnum[v % hints.rangeEnum.length];
       } else {
         props.mapping[d] = d;
       }
@@ -305,7 +229,11 @@ class CategoricalScaleString extends ScaleClass {
       manager.table(
         keys.map(key => [
           manager.text(key, "right"),
-          manager.inputText({ property: "mapping", field: key })
+          manager.inputComboBox(
+            { property: "mapping", field: key },
+            props.defaultRange,
+            false
+          )
         ])
       )
     );
@@ -313,28 +241,17 @@ class CategoricalScaleString extends ScaleClass {
   }
 }
 
-class CategoricalScaleBoolean extends ScaleClass {
+export class CategoricalScaleBoolean extends ScaleClass<
+  CategoricalScaleProperties<boolean>,
+  {}
+> {
   public static classID = "scale.categorical<string,boolean>";
   public static type = "scale";
 
-  public readonly object: {
-    properties: CategoricalScaleProperties<boolean>;
-  } & Specification.Scale;
+  public attributeNames: string[] = [];
+  public attributes: { [name: string]: AttributeDescription } = {};
 
-  public attributeNames: string[] = ["mapping"];
-  public attributes: { [name: string]: AttributeDescription } = {
-    mapping: {
-      name: "mapping",
-      type: "map<string,boolean>",
-      displayName: "Mapping",
-      category: "scale-domain",
-      solverExclude: true
-    }
-  };
-
-  public mapDataToAttribute(
-    data: Specification.DataValue
-  ): Specification.AttributeValue {
+  public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
     return props.mapping[data.toString()];
   }
@@ -342,7 +259,7 @@ class CategoricalScaleBoolean extends ScaleClass {
   public initializeState(): void {}
 
   public inferParameters(
-    column: Specification.DataValue[],
+    column: DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
@@ -391,20 +308,17 @@ class CategoricalScaleBoolean extends ScaleClass {
   }
 }
 
-class CategoricalScaleImage extends ScaleClass {
+export class CategoricalScaleImage extends ScaleClass<
+  CategoricalScaleProperties<string>,
+  {}
+> {
   public static classID = "scale.categorical<string,image>";
   public static type = "scale";
-
-  public readonly object: {
-    properties: CategoricalScaleProperties<string>;
-  } & Specification.Scale;
 
   public attributeNames: string[] = [];
   public attributes: { [name: string]: AttributeDescription } = {};
 
-  public mapDataToAttribute(
-    data: Specification.DataValue
-  ): Specification.AttributeValue {
+  public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
     return props.mapping[data.toString()];
   }
@@ -412,7 +326,7 @@ class CategoricalScaleImage extends ScaleClass {
   public initializeState(): void {}
 
   public inferParameters(
-    column: Specification.DataValue[],
+    column: DataValue[],
     hints: DataMappingHints = {}
   ): void {
     const props = this.object.properties;
@@ -421,8 +335,8 @@ class CategoricalScaleImage extends ScaleClass {
     s.inferParameters(values, "order");
     props.mapping = {};
     s.domain.forEach((v, d) => {
-      if (hints.rangeString) {
-        props.mapping[d] = hints.rangeString[v % hints.rangeString.length];
+      if (hints.rangeImage) {
+        props.mapping[d] = hints.rangeImage[v % hints.rangeImage.length];
       } else {
         props.mapping[d] = "";
       }
@@ -451,9 +365,3 @@ class CategoricalScaleImage extends ScaleClass {
     return [manager.sectionHeader("Image Mapping"), ...items];
   }
 }
-
-ObjectClasses.Register(CategoricalScaleNumber);
-ObjectClasses.Register(CategoricalScaleColor);
-ObjectClasses.Register(CategoricalScaleBoolean);
-ObjectClasses.Register(CategoricalScaleString);
-ObjectClasses.Register(CategoricalScaleImage);

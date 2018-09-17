@@ -1,0 +1,50 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
+import { ConstraintSolver, Variable } from "../../solver";
+import {
+  DataValue,
+  Scale,
+  ScaleState,
+  AttributeValue,
+  AttributeMap
+} from "../../specification";
+import { DataMappingHints, ObjectClass, TemplateParameters } from "../common";
+
+export abstract class ScaleClass<
+  PropertiesType extends AttributeMap = AttributeMap,
+  AttributesType extends AttributeMap = AttributeMap
+> extends ObjectClass<PropertiesType, AttributesType> {
+  public readonly object: Scale<PropertiesType>;
+  public readonly state: ScaleState<AttributesType>;
+
+  public abstract mapDataToAttribute(data: DataValue): AttributeValue;
+
+  public buildConstraint(
+    data: DataValue,
+    target: Variable,
+    solver: ConstraintSolver
+  ): void {}
+
+  public abstract inferParameters(
+    column: DataValue[],
+    hints?: DataMappingHints
+  ): void;
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      inferences: [
+        {
+          objectID: this.object._id,
+          scale: {
+            classID: this.object.classID,
+            expressions: [],
+            properties: {
+              mapping: "mapping"
+            }
+          }
+        }
+      ]
+    };
+  }
+}

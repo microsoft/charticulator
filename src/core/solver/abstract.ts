@@ -10,19 +10,9 @@ export enum ConstraintStrength {
   WEAKER = 5
 }
 
-export enum VariableStrength {
-  NONE = 0,
-  WEAKER = 1,
-  WEAK = 2,
-  MEDIUM = 3,
-  STRONG = 4
-}
-
 export interface AttributeOptions {
   /** Attribute is editable, default: true */
   edit: boolean;
-  /** Attribute editing strength, default: WEAKER */
-  strength: VariableStrength;
 }
 
 export interface Variable {}

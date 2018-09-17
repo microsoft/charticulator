@@ -1,19 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import * as Dataset from "../dataset";
-// import * as Optimizers from "../optimizers";
 import * as Expression from "../expression";
 import * as Prototypes from "../prototypes";
 import * as Specification from "../specification";
 
-import { getById, getByName, KeyNameMap, uniqueID, zip } from "../common";
-import { RowContext } from "../dataset/context";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  Variable,
-  VariableStrength
-} from "./abstract";
+import { getById, KeyNameMap, uniqueID, zip } from "../common";
+import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver as MyConstraintSolver } from "./wasm_solver";
 
 export class BaseSolver {
@@ -88,7 +82,7 @@ export class BaseSolver {
           if (scaleMapping.scale != null) {
             // Apply the scale
             const expr = this.expressionCache.parse(scaleMapping.expression);
-            const dataValue = expr.getValue(rowContext) as Dataset.ValueType;
+            const dataValue = expr.getValue(rowContext) as Dataset.DataValue;
             const scaleClass = this.manager.getClassById(
               scaleMapping.scale
             ) as Prototypes.Scales.ScaleClass;
@@ -106,7 +100,7 @@ export class BaseSolver {
           } else {
             // No scale, map the column value directly
             const expr = this.expressionCache.parse(scaleMapping.expression);
-            const dataValue = expr.getValue(rowContext) as Dataset.ValueType;
+            const dataValue = expr.getValue(rowContext) as Dataset.DataValue;
             attrs[attr] = dataValue as Specification.AttributeValue;
             if (!info.solverExclude) {
               this.solver.makeConstant(attrs, attr);
@@ -206,8 +200,7 @@ export class BaseSolver {
       attr.value = defaultValue;
       this.supportVariables.add(key, name, attr);
       const variable = this.solver.attr(attr, "value", {
-        edit: true,
-        strength: VariableStrength.NONE
+        edit: true
       });
       return variable;
     }
@@ -359,8 +352,7 @@ export class BaseSolver {
     gradient: boolean
   ) {
     this.solver.attr(attrs, attr, {
-      edit: gradient,
-      strength: info.strength
+      edit: gradient
     });
     // this.registry.add(attrs, attr, gradient, info.priority);
   }

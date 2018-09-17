@@ -19,7 +19,6 @@ import { Actions } from "../actions";
 import { ChartTemplateBuilder } from "../template";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
-import { GlyphStore } from "./mark";
 
 export abstract class Selection {}
 
@@ -85,7 +84,6 @@ export class ChartStore extends BaseStore {
   public chart: Specification.Chart;
   public chartState: Specification.ChartState;
   public datasetStore: DatasetStore;
-  public markStores: GlyphStore[];
 
   public currentSelection: Selection;
   protected selectedGlyphIndex: { [id: string]: number } = {};
@@ -106,14 +104,12 @@ export class ChartStore extends BaseStore {
     };
 
     this.newChartEmpty();
-    this.updateMarkStores();
     this.solveConstraintsAndUpdateGraphics();
 
     const token = this.datasetStore.addListener(
       DatasetStore.EVENT_CHANGED,
       () => {
         this.newChartEmpty();
-        this.updateMarkStores();
         this.emit(ChartStore.EVENT_CURRENT_TOOL);
         this.emit(ChartStore.EVENT_SELECTION);
         this.solveConstraintsAndUpdateGraphics();
@@ -165,8 +161,6 @@ export class ChartStore extends BaseStore {
     );
     this.chartManager.setState(this.chartState);
     this.chartState = this.chartManager.chartState;
-
-    this.updateMarkStores();
 
     this.emit(ChartStore.EVENT_GRAPHICS);
     this.emit(ChartStore.EVENT_SELECTION);
@@ -288,7 +282,6 @@ export class ChartStore extends BaseStore {
       this.emit(ChartStore.EVENT_CURRENT_TOOL);
 
       this.newChartEmpty();
-      this.updateMarkStores();
 
       this.solveConstraintsAndUpdateGraphics();
     }
@@ -478,6 +471,7 @@ export class ChartStore extends BaseStore {
         { glyph: action.glyph },
         action.expression,
         action.valueType,
+        action.valueMetadata.kind,
         action.attributeType,
         action.hints
       );
@@ -491,11 +485,15 @@ export class ChartStore extends BaseStore {
         } as Specification.ScaleMapping;
       } else {
         if (
-          (action.valueType == "number" || action.valueType == "string") &&
-          action.attributeType == "string"
+          (action.valueType == Specification.DataType.String ||
+            action.valueType == Specification.DataType.Number) &&
+          action.attributeType == Specification.AttributeType.Text
         ) {
           // If the valueType is a number, use a format
-          const format = action.valueType == "number" ? ".1f" : undefined;
+          const format =
+            action.valueType == Specification.DataType.Number
+              ? ".1f"
+              : undefined;
           action.mark.mappings[action.attribute] = {
             type: "text",
             table: action.glyph.table,
@@ -520,6 +518,7 @@ export class ChartStore extends BaseStore {
         { chart: { table: action.table } },
         action.expression,
         action.valueType,
+        action.valueMetadata.kind,
         action.attributeType,
         action.hints
       );
@@ -533,11 +532,15 @@ export class ChartStore extends BaseStore {
         } as Specification.ScaleMapping;
       } else {
         if (
-          (action.valueType == "number" || action.valueType == "string") &&
-          action.attributeType == "string"
+          (action.valueType == Specification.DataType.String ||
+            action.valueType == Specification.DataType.Number) &&
+          action.attributeType == Specification.AttributeType.Text
         ) {
           // If the valueType is a number, use a format
-          const format = action.valueType == "number" ? ".1f" : undefined;
+          const format =
+            action.valueType == Specification.DataType.Number
+              ? ".1f"
+              : undefined;
           action.chartElement.mappings[action.attribute] = {
             type: "text",
             table: action.table,
@@ -600,9 +603,6 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.UpdateGlyphAttribute) {
       this.parent.saveHistory();
-
-      // Wait for stores to finish
-      this.dispatcher.waitFor(this.markStores.map(s => s.dispatcherID));
 
       this.chart.elements.forEach((element, index) => {
         if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -875,9 +875,6 @@ export class ChartStore extends BaseStore {
         action.object.properties[action.property] = dataBinding;
       }
 
-      const table = this.datasetStore.getTable(
-        action.dataExpression.table.name
-      );
       let groupBy: Specification.Types.GroupBy = null;
       if (Prototypes.isType(action.object.classID, "plot-segment")) {
         groupBy = (action.object as Specification.PlotSegment).groupBy;
@@ -903,10 +900,11 @@ export class ChartStore extends BaseStore {
       );
 
       switch (action.dataExpression.metadata.kind) {
-        case "categorical":
+        case Specification.DataKind.Categorical:
+        case Specification.DataKind.Ordinal:
           {
             dataBinding.type = "categorical";
-            dataBinding.valueType = "string";
+            dataBinding.valueType = Specification.DataType.String;
 
             if (action.dataExpression.metadata.order) {
               dataBinding.categories = action.dataExpression.metadata.order.slice();
@@ -925,13 +923,24 @@ export class ChartStore extends BaseStore {
             }
           }
           break;
-        case "numerical":
+        case Specification.DataKind.Numerical:
           {
-            const scale = new Scale.NumericalScale();
+            const scale = new Scale.LinearScale();
             scale.inferParameters(values as number[]);
             dataBinding.domainMin = scale.domainMin;
             dataBinding.domainMax = scale.domainMax;
             dataBinding.type = "numerical";
+            dataBinding.numericalMode = "linear";
+          }
+          break;
+        case Specification.DataKind.Temporal:
+          {
+            const scale = new Scale.DateScale();
+            scale.inferParameters(values as number[]);
+            dataBinding.domainMin = scale.domainMin;
+            dataBinding.domainMax = scale.domainMax;
+            dataBinding.type = "numerical";
+            dataBinding.numericalMode = "temporal";
           }
           break;
       }
@@ -1211,7 +1220,6 @@ export class ChartStore extends BaseStore {
       );
       this.chartState = this.chartManager.chartState;
 
-      this.updateMarkStores();
       this.solveConstraintsAndUpdateGraphics();
     }
   }
@@ -1392,8 +1400,9 @@ export class ChartStore extends BaseStore {
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     expression: string,
-    valueType: string,
-    outputType: string,
+    valueType: Specification.DataType,
+    valueKind: Specification.DataKind,
+    outputType: Specification.AttributeType,
     hints: Prototypes.DataMappingHints = {}
   ): string {
     // Figure out the source table
@@ -1483,60 +1492,15 @@ export class ChartStore extends BaseStore {
       }
     }
     // Infer a new scale for this item
-    const newName = this.chartManager.findUnusedName("Scale");
-
-    let inputType = valueType;
-
-    let scaleClassID = null;
-    // Number to number mapping: linear scale
-    if (
-      (valueType == "number" || valueType == "integer") &&
-      outputType == "number"
-    ) {
-      scaleClassID = `scale.linear`;
-      inputType = "number";
-    }
-    // String to number mapping: categorical stepwise scale
-    if (
-      valueType == "string" &&
-      (outputType == "number" ||
-        outputType == "color" ||
-        outputType == "boolean")
-    ) {
-      scaleClassID = `scale.categorical`;
-    }
-    // Number to string: number formatting
-    // if (valueType == "number" && outputType == "string") {
-    //   scaleClassID = `scale.format`;
-    // }
-    if (
-      (valueType == "number" || valueType == "integer") &&
-      outputType == "color"
-    ) {
-      scaleClassID = `scale.linear`;
-      inputType = "number";
-    }
-    if (
-      (valueType == "number" || valueType == "integer") &&
-      outputType == "boolean"
-    ) {
-      scaleClassID = `scale.linear`;
-      inputType = "number";
-    }
-    if (
-      valueType == "string" &&
-      outputType == "string" &&
-      hints.stringBehavior == "categorical"
-    ) {
-      scaleClassID = `scale.categorical`;
-    }
-    if (valueType == "string" && outputType == "image") {
-      scaleClassID = `scale.categorical`;
-    }
+    const scaleClassID = Prototypes.Scales.inferScaleType(
+      valueType,
+      valueKind,
+      outputType
+    );
 
     if (scaleClassID != null) {
       const newScale = this.chartManager.createObject(
-        `${scaleClassID}<${inputType},${outputType}>`
+        scaleClassID
       ) as Specification.Scale;
       newScale.properties.name = this.chartManager.findUnusedName("Scale");
       newScale.inputType = valueType;
@@ -1669,16 +1633,6 @@ export class ChartStore extends BaseStore {
       }
     }
     return null;
-  }
-
-  public updateMarkStores() {
-    if (this.markStores != null) {
-      this.markStores.forEach(m => m.destroy());
-    }
-    this.markStores = this.chart.glyphs.map(m => {
-      const table = this.datasetStore.getTable(m.table);
-      return new GlyphStore(this, this.datasetStore.getTable(m.table), m);
-    });
   }
 
   public solveConstraintsAndUpdateGraphics(mappingOnly: boolean = false) {

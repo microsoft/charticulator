@@ -128,7 +128,7 @@ export class LinkCreationPanel extends ContextedComponent<
             <div className="el-row">
               <DataFieldSelector
                 ref={e => (this.groupBySelector = e)}
-                kinds={["categorical"]}
+                kinds={[Specification.DataKind.Categorical]}
                 datasetStore={this.context.store.datasetStore}
                 nullDescription="(link all items)"
               />

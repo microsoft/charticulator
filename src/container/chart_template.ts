@@ -97,7 +97,10 @@ export class ChartTemplate {
     }
   }
 
-  public instantiate(dataset: Dataset.Dataset): TemplateInstance {
+  public instantiate(
+    dataset: Dataset.Dataset,
+    inference: boolean = true
+  ): TemplateInstance {
     // Make a copy of the chart spec so we won't touch the original template data
     const chart = deepClone(this.template.specification);
 
@@ -185,6 +188,12 @@ export class ChartTemplate {
         }
       }
     }
+    if (!inference) {
+      return {
+        chart,
+        defaultAttributes: this.template.defaultAttributes
+      };
+    }
 
     const df = new Prototypes.Dataflow.DataflowManager(dataset);
     const getExpressionVector = (
@@ -245,7 +254,7 @@ export class ChartTemplate {
             axisDataBinding.categories[index] = key;
           });
         } else if (axis.type == "numerical") {
-          const scale = new Scale.NumericalScale();
+          const scale = new Scale.LinearScale();
           scale.inferParameters(vector);
           axisDataBinding.domainMin = scale.domainMin;
           axisDataBinding.domainMax = scale.domainMax;

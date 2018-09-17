@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { deepClone, uniqueID } from "../common";
-import { VariableStrength } from "../solver";
 import * as Specification from "../specification";
 
 import { TemplateParameters } from ".";
@@ -9,27 +8,21 @@ import { Controls, CreatingInteraction } from "./common";
 
 export interface AttributeDescription {
   name: string;
-  type: string;
-
-  mode?: "intrinsic" | "positional";
-
-  /** Deprecated: Variable strength */
-  strength?: VariableStrength;
+  type: Specification.AttributeType;
 
   /** Exclude this from the constraint solver */
   solverExclude?: boolean;
   stateExclude?: boolean;
-
-  /** Display category */
-  category?: string;
-  /** Display name */
-  displayName?: string;
 
   /** Default value: used when nothing is specified for this attribute */
   defaultValue?: Specification.AttributeValue;
 
   /** Default range: hint for scale inference */
   defaultRange?: Specification.AttributeValue[];
+}
+
+export interface AttributeDescriptions {
+  [name: string]: AttributeDescription;
 }
 
 export interface ObjectClassMetadata {
@@ -43,7 +36,10 @@ export interface ObjectClassMetadata {
 }
 
 /** A ObjectClass contains the runtime info for a chart object */
-export abstract class ObjectClass {
+export abstract class ObjectClass<
+  PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
+  AttributesType extends Specification.AttributeMap = Specification.AttributeMap
+> {
   /** The static classID */
   public static classID: string = "object";
   /** The static type */
@@ -59,33 +55,25 @@ export abstract class ObjectClass {
   public static defaultMappingValues: Specification.AttributeMap = {};
 
   /** The stored object */
-  public readonly object: Specification.Object;
+  public readonly object: Specification.Object<PropertiesType>;
   /** The stored object state */
-  public readonly state: Specification.ObjectState;
+  public readonly state: Specification.ObjectState<AttributesType>;
   /** The parent object class */
   public readonly parent: ObjectClass;
 
-  /** Attribute names */
-  public attributeNames: string[];
-  /** Attribute descriptions */
-  public attributes: { [name: string]: AttributeDescription };
+  /** Attribute names, this can be a normal field or a dynamic property with a get method */
+  public abstract attributeNames: string[];
+  /** Attribute descriptions, this can be a normal field or a dynamic property with a get method */
+  public abstract attributes: AttributeDescriptions;
 
   constructor(
     parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState,
-    attributes?: { [name: string]: AttributeDescription }
+    object: Specification.Object<PropertiesType>,
+    state: Specification.ObjectState<AttributesType>
   ) {
     this.parent = parent;
     this.object = object;
     this.state = state;
-
-    if (attributes) {
-      this.attributes = attributes;
-      this.attributeNames = Object.keys(attributes).map(
-        n => attributes[n].name
-      );
-    }
   }
 
   /** Initialize the state of the object */
@@ -98,7 +86,7 @@ export abstract class ObjectClass {
     // By default, we create the attribute controls based on attribute descriptions
     const widgets: Controls.Widget[] = [];
     for (const attr of this.attributeNames) {
-      widgets.push(manager.mappingEditorTOFIX(attr));
+      widgets.push(manager.text("Not implemented yet"));
     }
     return widgets;
   }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import { Point } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -9,32 +10,24 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { ObjectClass } from "../object";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
-import { attributes, SymbolElementAttributes } from "./symbol.attrs";
+import {
+  symbolAttributes,
+  SymbolElementAttributes,
+  SymbolElementProperties,
+  symbolTypes
+} from "./symbol.attrs";
 
-const symbolTypes: string[] = [
-  "circle",
-  "cross",
-  "diamond",
-  "square",
-  "star",
-  "triangle",
-  "wye"
-];
+export { SymbolElementAttributes, SymbolElementProperties };
 
-export { SymbolElementAttributes };
-
-export interface SymbolElementState extends Specification.MarkState {
-  attributes: SymbolElementAttributes;
-}
-
-export class SymbolElement extends EmphasizableMarkClass {
+export class SymbolElementClass extends EmphasizableMarkClass<
+  SymbolElementProperties,
+  SymbolElementAttributes
+> {
   public static classID = "mark.symbol";
   public static type = "mark";
 
@@ -47,11 +40,11 @@ export class SymbolElement extends EmphasizableMarkClass {
     }
   };
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<SymbolElementProperties> = {
     visible: true
   };
 
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<SymbolElementAttributes> = {
     fill: { r: 217, g: 217, b: 217 },
     strokeWidth: 1,
     opacity: 1,
@@ -59,15 +52,8 @@ export class SymbolElement extends EmphasizableMarkClass {
     visible: true
   };
 
-  constructor(
-    parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState
-  ) {
-    super(parent, object, state, attributes);
-  }
-
-  public readonly state: SymbolElementState;
+  public attributes = symbolAttributes;
+  public attributeNames = Object.keys(symbolAttributes);
 
   public initializeState(): void {
     super.initializeState();
@@ -249,7 +235,10 @@ export class SymbolElement extends EmphasizableMarkClass {
         p2: { x: x - r, y },
         title: "size",
         dropAction: {
-          scaleInference: { attribute: "size", attributeType: "number" }
+          scaleInference: {
+            attribute: "size",
+            attributeType: Specification.AttributeType.Number
+          }
         }
       } as DropZones.Line
     ];
@@ -297,24 +286,24 @@ export class SymbolElement extends EmphasizableMarkClass {
   ): Controls.Widget[] {
     let widgets = [
       manager.sectionHeader("Symbol"),
-      manager.mappingEditor("Shape", "symbol", "string", {
-        acceptKinds: ["categorical"],
-        hints: { rangeString: symbolTypes, stringBehavior: "categorical" },
+      manager.mappingEditor("Shape", "symbol", {
+        acceptKinds: [Specification.DataKind.Categorical],
+        hints: { rangeEnum: symbolTypes },
         defaultValue: "circle"
       }),
-      manager.mappingEditor("Size", "size", "number", {
-        acceptKinds: ["numerical"],
+      manager.mappingEditor("Size", "size", {
+        acceptKinds: [Specification.DataKind.Numerical],
         hints: { rangeNumber: [0, 100] },
         defaultValue: 60,
         numberOptions: { showSlider: true, minimum: 0, sliderRange: [0, 500] }
       }),
       manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", "color", {}),
-      manager.mappingEditor("Stroke", "stroke", "color", {})
+      manager.mappingEditor("Fill", "fill", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", "number", {
+        manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
@@ -322,17 +311,15 @@ export class SymbolElement extends EmphasizableMarkClass {
       );
     }
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ]);
     return widgets;
   }
 }
-
-ObjectClasses.Register(SymbolElement);

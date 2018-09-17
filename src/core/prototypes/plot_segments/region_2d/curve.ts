@@ -2,11 +2,7 @@
 // Licensed under the MIT license.
 import { Point } from "../../../common";
 import * as Graphics from "../../../graphics";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../../solver";
+import { ConstraintSolver, ConstraintStrength } from "../../../solver";
 import * as Specification from "../../../specification";
 import {
   AttributeDescription,
@@ -15,7 +11,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -25,9 +20,9 @@ import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DPlotSegment,
   Region2DProperties
 } from "./base";
+import { PlotSegmentClass } from "../plot_segment";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -91,7 +86,10 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
   packingIcon: "sublayout/packing"
 };
 
-export class CurvePlotSegment extends Region2DPlotSegment {
+export class CurvePlotSegment extends PlotSegmentClass<
+  CurveProperties,
+  CurveAttributes
+> {
   public static classID = "plot-segment.curve";
   public static type = "plot-segment";
 
@@ -157,75 +155,51 @@ export class CurvePlotSegment extends Region2DPlotSegment {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     tangent1: {
       name: "tangent1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     tangent2: {
       name: "tangent2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     normal1: {
       name: "normal1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     normal2: {
       name: "normal2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapX: {
       name: "gapX",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     gapY: {
       name: "gapY",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -607,5 +581,3 @@ export class CurvePlotSegment extends Region2DPlotSegment {
     return { inferences: r };
   }
 }
-
-ObjectClasses.Register(CurvePlotSegment);

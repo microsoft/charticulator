@@ -1,14 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as globals from "../../../globals";
-import * as R from "../../../resources";
-
 import {
-  Color,
-  colorFromHTMLColor,
-  colorToHTMLColorHEX,
   EventEmitter,
   EventSubscription,
   Expression,
@@ -16,33 +11,23 @@ import {
   Prototypes,
   Specification
 } from "../../../../core";
-import { Actions, DragData } from "../../../actions";
-import {
-  ColorPicker,
-  DropdownListView,
-  SVGImageIcon
-} from "../../../components";
+import { DragData } from "../../../actions";
+import { ColorPicker, SVGImageIcon } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { PopupView } from "../../../controllers";
-
+import * as globals from "../../../globals";
+import * as R from "../../../resources";
+import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
-import {
-  Button,
-  InputExpression,
-  InputImage,
-  InputNumber,
-  InputText,
-  ComboBox,
-  ComboBoxFontFamily,
-  Select
-} from "./controls";
+import { Button, InputExpression } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
+import { ValueEditor } from "./value_editor";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
   attribute: string;
-  type: string;
+  type: Specification.AttributeType;
   options: Prototypes.Controls.MappingEditorOptions;
 }
 
@@ -91,7 +76,7 @@ export class MappingEditor extends React.Component<
     switch (this.props.type) {
       case "number":
       case "font-family":
-      case "string":
+      case "text":
         {
           this.setState({
             showNoneAsValue: true
@@ -108,9 +93,14 @@ export class MappingEditor extends React.Component<
               <PopupView context={context}>
                 <ColorPicker
                   defaultValue={null}
+                  allowNull={true}
                   onPick={color => {
-                    this.setValueMapping(color);
-                    context.close();
+                    if (color == null) {
+                      this.clearMapping();
+                      context.close();
+                    } else {
+                      this.setValueMapping(color);
+                    }
                   }}
                 />
               </PopupView>
@@ -156,223 +146,26 @@ export class MappingEditor extends React.Component<
   }
 
   private renderValueEditor(value: Specification.AttributeValue) {
-    const parent = this.props.parent;
     let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
-    switch (this.props.type) {
-      case "number": {
-        const number = value as number;
-        let numberOptions = this.props.options.numberOptions;
-        if (!numberOptions) {
-          numberOptions = {};
+    return (
+      <ValueEditor
+        value={value}
+        type={this.props.type}
+        placeholder={placeholderText}
+        onClear={() => this.clearMapping()}
+        onEmitValue={value => this.setValueMapping(value)}
+        onEmitMapping={mapping =>
+          this.props.parent.onEditMappingHandler(this.props.attribute, mapping)
         }
-        return (
-          <InputNumber
-            defaultValue={number}
-            placeholder={placeholderText}
-            {...numberOptions}
-            onEnter={newValue => {
-              if (newValue == null) {
-                this.clearMapping();
-                return true;
-              }
-              if (newValue == newValue) {
-                this.setValueMapping(newValue);
-                return true;
-              } else {
-                return false;
-              }
-            }}
-          />
-        );
-      }
-      case "color": {
-        const color = value as Color;
-        const hex = colorToHTMLColorHEX(color);
-        let colorItem: Element;
-        return (
-          <span className="el-color-value">
-            <span
-              className="el-color-item"
-              ref={e => (colorItem = e)}
-              style={{ backgroundColor: hex }}
-              onClick={() => {
-                globals.popupController.popupAt(
-                  context => (
-                    <PopupView context={context}>
-                      <ColorPicker
-                        defaultValue={color}
-                        onPick={color => {
-                          this.setValueMapping(color);
-                        }}
-                      />
-                    </PopupView>
-                  ),
-                  { anchor: colorItem }
-                );
-              }}
-            />
-            <InputText
-              defaultValue={hex}
-              onEnter={newValue => {
-                newValue = newValue.trim();
-                if (newValue == "") {
-                  this.clearMapping();
-                } else {
-                  const newColor = colorFromHTMLColor(newValue);
-                  if (newColor) {
-                    this.setValueMapping(newColor);
-                    return true;
-                  } else {
-                    return false;
-                  }
-                }
-              }}
-            />
-          </span>
-        );
-      }
-      case "font-family":
-        return (
-          <ComboBoxFontFamily
-            defaultValue={value as string}
-            onEnter={value => {
-              this.setValueMapping(value);
-              return true;
-            }}
-          />
-        );
-      case "string": {
-        const str = value as string;
-        const textInput = (
-          <InputExpression
-            textExpression={true}
-            validate={value =>
-              parent.store.verifyUserExpressionWithTable(
-                value,
-                this.getTableOrDefault(),
-                { textExpression: true, expectedTypes: ["string"] }
-              )
-            }
-            defaultValue={new Expression.TextExpression([
-              { string: str }
-            ]).toString()}
-            placeholder={placeholderText}
-            allowNull={true}
-            onEnter={newValue => {
-              if (newValue == null || newValue.trim() == "") {
-                this.clearMapping();
-              } else {
-                if (
-                  Expression.parseTextExpression(newValue).isTrivialString()
-                ) {
-                  this.props.parent.onEditMappingHandler(this.props.attribute, {
-                    type: "value",
-                    value: newValue
-                  } as Specification.ValueMapping);
-                } else {
-                  this.props.parent.onEditMappingHandler(this.props.attribute, {
-                    type: "text",
-                    table: this.getTableOrDefault(),
-                    textExpression: newValue
-                  } as Specification.TextMapping);
-                }
-              }
-              return true;
-            }}
-          />
-        );
-        if (this.props.options.hints && this.props.options.hints.rangeString) {
-          const strings = this.props.options.hints.rangeString;
-          let anchor: HTMLSpanElement;
-          return (
-            <span
-              style={{ display: "flex", width: "100%", flexDirection: "row" }}
-              ref={e => (anchor = e)}
-            >
-              {textInput}
-              <Button
-                icon="general/more-vertical"
-                onClick={() => {
-                  globals.popupController.popupAt(
-                    context => {
-                      return (
-                        <PopupView context={context}>
-                          <DropdownListView
-                            context={context}
-                            list={strings.map(x => {
-                              return {
-                                text: x,
-                                name: x,
-                                font:
-                                  this.props.type == "font-family" ? x : null
-                              };
-                            })}
-                            onClick={item => {
-                              this.setValueMapping(item);
-                            }}
-                          />
-                        </PopupView>
-                      );
-                    },
-                    { anchor }
-                  );
-                }}
-              />
-            </span>
-          );
-        } else {
-          return textInput;
-        }
-      }
-      case "boolean": {
-        const boolean = value as boolean;
-        let ref: Element;
-        if (this.props.parent.onMapDataHandler) {
-          return (
-            <Button
-              active={false}
-              text="Conditioned by..."
-              ref={e => (ref = ReactDOM.findDOMNode(e) as Element)}
-              onClick={() => {
-                this.beginDataFieldSelection(ref);
-              }}
-            />
-          );
-        } else {
-          return (
-            <Button
-              active={false}
-              icon={boolean ? "checkbox/checked" : "checkbox/empty"}
-              ref={e => (ref = ReactDOM.findDOMNode(e) as Element)}
-              onClick={() => {
-                this.setValueMapping(!boolean);
-              }}
-            />
-          );
-        }
-      }
-      case "image": {
-        const str = value as string;
-        const textInput = (
-          <InputImage
-            value={str}
-            onChange={newValue => {
-              if (newValue == "") {
-                this.clearMapping();
-              } else {
-                this.setValueMapping(newValue);
-              }
-              return true;
-            }}
-          />
-        );
-        return textInput;
-      }
-    }
-    return <span>(...)</span>;
+        onBeginDataFieldSelection={ref => this.beginDataFieldSelection(ref)}
+        getTable={() => this.getTableOrDefault()}
+        hints={this.props.options.hints}
+        numberOptions={this.props.options.numberOptions}
+      />
+    );
   }
 
   private renderCurrentAttributeMapping() {
@@ -387,7 +180,7 @@ export class MappingEditor extends React.Component<
         let alwaysShowNoneAsValue = false;
         if (
           this.props.type == "number" ||
-          this.props.type == "string" ||
+          this.props.type == "enum" ||
           this.props.type == "image"
         ) {
           alwaysShowNoneAsValue = true;
@@ -471,10 +264,6 @@ export class MappingEditor extends React.Component<
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
           if (scaleMapping.scale) {
-            const scaleObject = getById(
-              parent.store.chart.scales,
-              scaleMapping.scale
-            );
             let scaleIcon = <span>f</span>;
             if (this.props.type == "color") {
               scaleIcon = <SVGImageIcon url={R.getSVGIcon("scale/color")} />;
@@ -551,28 +340,17 @@ export class MappingEditor extends React.Component<
         options.defaultAuto);
     shouldShowEraser = shouldShowEraser || this.state.showNoneAsValue;
     const shouldShowBindData = parent.onMapDataHandler != null;
-    let shouldShowAddLegend =
-      currentMapping &&
-      currentMapping.type == "scale" &&
-      (currentMapping as Specification.ScaleMapping).scale != null;
     const isDataMapping =
       currentMapping != null && currentMapping.type == "scale";
     shouldShowEraser = isDataMapping;
-    shouldShowAddLegend = false; // we moved it to the scale panel.
     return (
       <DropZoneView
-        // ref={(e) => this.mappingButton = ReactDOM.findDOMNode(e)}
         filter={data => {
           if (!shouldShowBindData) {
             return false;
           }
           if (data instanceof DragData.DataExpression) {
-            if (options.acceptKinds != null) {
-              if (options.acceptKinds.indexOf(data.metadata.kind) < 0) {
-                return false;
-              }
-            }
-            return true;
+            return isKindAcceptable(data.metadata.kind, options.acceptKinds);
           } else {
             return false;
           }
@@ -590,20 +368,6 @@ export class MappingEditor extends React.Component<
           [1, 0],
           this.renderCurrentAttributeMapping(),
           <span>
-            {shouldShowAddLegend ? (
-              <Button
-                icon="legend/legend"
-                active={this.props.parent.store.isLegendExistForScale(
-                  (currentMapping as Specification.ScaleMapping).scale
-                )}
-                title="Toggle legend for scale"
-                onClick={() => {
-                  new Actions.ToggleLegendForScale(
-                    (currentMapping as Specification.ScaleMapping).scale
-                  ).dispatch(parent.store.dispatcher);
-                }}
-              />
-            ) : null}
             {shouldShowEraser ? (
               <Button
                 icon="general/eraser"

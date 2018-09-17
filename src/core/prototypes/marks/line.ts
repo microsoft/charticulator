@@ -3,7 +3,11 @@
 import { Point } from "../../common";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
-import { attributes, LineElementAttributes } from "./line.attrs";
+import {
+  lineAttributes,
+  LineElementAttributes,
+  LineElementProperties
+} from "./line.attrs";
 
 import {
   BoundingBox,
@@ -16,17 +20,15 @@ import {
 } from "../common";
 
 import * as Graphics from "../../graphics";
-import { ObjectClass } from "../object";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
 
-export { LineElementAttributes };
+export { LineElementAttributes, LineElementProperties };
 
-export interface LineElementState extends Specification.ObjectState {
-  attributes: LineElementAttributes;
-}
-
-export class LineElement extends EmphasizableMarkClass {
+export class LineElementClass extends EmphasizableMarkClass<
+  LineElementProperties,
+  LineElementAttributes
+> {
   public static classID = "mark.line";
   public static type = "mark";
 
@@ -39,26 +41,19 @@ export class LineElement extends EmphasizableMarkClass {
     }
   };
 
-  constructor(
-    parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState
-  ) {
-    super(parent, object, state, attributes);
-  }
-
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<LineElementProperties> = {
     visible: true
   };
 
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<LineElementAttributes> = {
     stroke: { r: 0, g: 0, b: 0 },
     strokeWidth: 1,
     opacity: 1,
     visible: true
   };
 
-  public readonly state: LineElementState;
+  public attributes = lineAttributes;
+  public attributeNames = Object.keys(lineAttributes);
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -233,33 +228,31 @@ export class LineElement extends EmphasizableMarkClass {
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Line"),
-      manager.mappingEditor("X Span", "dx", "number", {
+      manager.mappingEditor("X Span", "dx", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
-      manager.mappingEditor("Y Span", "dy", "number", {
+      manager.mappingEditor("Y Span", "dy", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
       manager.sectionHeader("Style"),
-      manager.mappingEditor("Stroke", "stroke", "color", {}),
-      manager.mappingEditor("Line Width", "strokeWidth", "number", {
+      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.mappingEditor("Line Width", "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
       }),
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ];
   }
 }
-
-ObjectClasses.Register(LineElement);
