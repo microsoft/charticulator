@@ -441,19 +441,21 @@ export class GradientView extends React.PureComponent<
       this.props.gradient.colors,
       this.props.gradient.colorspace
     );
-    const data = ctx.getImageData(0, 0, width, height);
-    for (let i = 0; i < data.width; i++) {
-      const t = i / (data.width - 1);
-      const c = scale(t);
-      for (let y = 0; y < data.height; y++) {
-        let ptr = (i + y * data.width) * 4;
-        data.data[ptr++] = c.r;
-        data.data[ptr++] = c.g;
-        data.data[ptr++] = c.b;
-        data.data[ptr++] = 255;
+    setImmediate(() => {
+      const data = ctx.getImageData(0, 0, width, height);
+      for (let i = 0; i < data.width; i++) {
+        const t = i / (data.width - 1);
+        const c = scale(t);
+        for (let y = 0; y < data.height; y++) {
+          let ptr = (i + y * data.width) * 4;
+          data.data[ptr++] = c.r;
+          data.data[ptr++] = c.g;
+          data.data[ptr++] = c.b;
+          data.data[ptr++] = 255;
+        }
       }
-    }
-    ctx.putImageData(data, 0, 0);
+      ctx.putImageData(data, 0, 0);
+    });
   }
 
   public render() {
