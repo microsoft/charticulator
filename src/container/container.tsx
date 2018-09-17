@@ -149,20 +149,12 @@ export class ChartContainer extends EventEmitter {
   private defaultAttributes: Prototypes.DefaultAttributes;
 
   constructor(
-    // TODO: Not sure I am a huge fan of this overloading
-    public readonly chartData: Specification.Chart | TemplateInstance,
+    public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset
   ) {
     super();
-
-    const ti = chartData as TemplateInstance;
-    if (ti.chart) {
-      this.chart = ti.chart;
-      this.defaultAttributes = ti.defaultAttributes;
-    } else {
-      this.chart = chartData as Specification.Chart;
-      this.defaultAttributes = {};
-    }
+    this.chart = instance.chart;
+    this.defaultAttributes = instance.defaultAttributes;
   }
 
   private container: Element;
