@@ -772,10 +772,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   template.assignColumn(tTable.name, column.name, column.name);
                 }
               }
-              this.emitSetProperty(property, template.instantiate(
+              const instance = template.instantiate(
                 options.dataset,
                 false // no scale inference
-              ) as any);
+              );
+              this.emitSetProperty(property, instance.chart as any);
             }}
           />
         </div>
