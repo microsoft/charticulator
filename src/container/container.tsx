@@ -7,17 +7,20 @@ import {
   Dataset,
   EventEmitter,
   Specification,
-  EventSubscription
+  EventSubscription,
+  Prototypes
 } from "../core";
 import {
   ChartComponent,
   DataSelection,
   OnSelectGlyph
 } from "./chart_component";
+import { TemplateInstance } from "./chart_template";
 
 export interface ChartContainerComponentProps {
   chart: Specification.Chart;
   dataset: Dataset.Dataset;
+  defaultAttributes?: Prototypes.DefaultAttributes;
   defaultWidth: number;
   defaultHeight: number;
   onSelectionChange?: (data: { table: string; rowIndices: number[] }) => void;
@@ -130,6 +133,7 @@ export class ChartContainerComponent extends React.Component<
         ref={e => (this.component = e)}
         chart={this.props.chart}
         dataset={this.props.dataset}
+        defaultAttributes={this.props.defaultAttributes}
         width={this.state.width}
         height={this.state.height}
         rootElement="svg"
@@ -141,11 +145,16 @@ export class ChartContainerComponent extends React.Component<
 }
 
 export class ChartContainer extends EventEmitter {
+  private chart: Specification.Chart;
+  private defaultAttributes: Prototypes.DefaultAttributes;
+
   constructor(
-    public readonly chart: Specification.Chart,
+    public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset
   ) {
     super();
+    this.chart = instance.chart;
+    this.defaultAttributes = instance.defaultAttributes;
   }
 
   private container: Element;
@@ -230,6 +239,7 @@ export class ChartContainer extends EventEmitter {
         dataset={this.dataset}
         defaultWidth={width}
         defaultHeight={height}
+        defaultAttributes={this.defaultAttributes}
         onSelectionChange={data => {
           if (data == null) {
             this.emit("selection");

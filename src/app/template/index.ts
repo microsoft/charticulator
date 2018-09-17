@@ -43,6 +43,7 @@ export class ChartTemplateBuilder {
   public reset() {
     this.template = {
       specification: deepClone(this.chart),
+      defaultAttributes: {},
       tables: [],
       inference: [],
       properties: []
@@ -269,6 +270,40 @@ export class ChartTemplateBuilder {
       })
       .filter(x => x != null);
 
+    this.computeDefaultAttributes();
+
     return template;
+  }
+
+  /**
+   * Computes the default attributes
+   */
+  private computeDefaultAttributes() {
+    const counts = {} as any;
+
+    // Go through all the mark instances
+    this.manager.enumerateClassesByType("mark", (cls, state) => {
+      const { _id } = cls.object;
+      // Basic idea is sum up the attributes for each mark object, and then average them at the end
+      const totals = (this.template.defaultAttributes[_id] =
+        this.template.defaultAttributes[_id] || {});
+
+      Object.keys(state.attributes).forEach(attribute => {
+        // Only support numbers for now
+        if (cls.attributes[attribute].type === "number") {
+          totals[attribute] = totals[attribute] || 0;
+          totals[attribute] += state.attributes[attribute] || 0;
+          counts[_id] = (counts[_id] || 0) + 1;
+        }
+      });
+    });
+
+    // The default attributes are currently totals, now divide each attribute by the count to average them
+    Object.keys(this.template.defaultAttributes).forEach(objId => {
+      const attribs = this.template.defaultAttributes[objId];
+      Object.keys(attribs).forEach(attribute => {
+        attribs[attribute] = attribs[attribute] / counts[objId];
+      });
+    });
   }
 }

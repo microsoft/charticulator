@@ -32,6 +32,9 @@ export interface ChartComponentProps {
   rootElement: "svg" | "g";
   className?: string;
 
+  /* A set of default attributes to use when rendering */
+  defaultAttributes?: Prototypes.DefaultAttributes;
+
   /** Additional options for the SVG renderer */
   rendererOptions?: RenderGraphicalElementSVGOptions;
   /** Render the chart synchronously */
@@ -123,6 +126,11 @@ export class ChartComponent extends React.Component<
     } else if (!this.isEqual(newProps.dataset, this.props.dataset)) {
       this.manager.setDataset(newProps.dataset);
       changed = true;
+    } else if (
+      !this.isEqual(newProps.defaultAttributes, this.props.defaultAttributes)
+    ) {
+      this.recreateManager(newProps);
+      changed = true;
     }
     if (
       !this.manager.chart.mappings.width ||
@@ -152,7 +160,9 @@ export class ChartComponent extends React.Component<
   protected recreateManager(props: ChartComponentProps) {
     this.manager = new Prototypes.ChartStateManager(
       deepClone(props.chart),
-      props.dataset
+      props.dataset,
+      null,
+      props.defaultAttributes
     );
     this.renderer = new Graphics.ChartRenderer(this.manager);
   }
