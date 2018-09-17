@@ -68,7 +68,14 @@ export class WASMSolver extends ConstraintSolver {
       if (isNaN(value)) {
         value = 0;
       }
-      this.solver.addVariable(this.currentIndex, value, true);
+      this.solver.addVariable(
+        this.currentIndex,
+        value,
+        options ? options.edit : false
+      );
+      if (!options) {
+        console.warn(`Creating new attr ${name} without options`);
+      }
       return item;
     }
   }

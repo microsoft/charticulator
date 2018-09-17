@@ -10,8 +10,10 @@ import { getById, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver as MyConstraintSolver } from "./wasm_solver";
 
-export class BaseSolver {
+/** Solves constraints in the scope of a chart */
+export class ChartConstraintSolver {
   public solver: MyConstraintSolver;
+  public stage: "chart" | "glyphs";
 
   public chart: Specification.Chart;
   public chartState: Specification.ChartState;
@@ -20,10 +22,13 @@ export class BaseSolver {
   public datasetContext: Dataset.DatasetContext;
   public expressionCache: Expression.ExpressionCache;
 
-  // public id2ItemState: Map<string, [any, any]>;
-
-  constructor() {
+  /** Create a ChartConstraintSolver
+   * @param stage determines the scope of the variables to solve
+   */
+  constructor(stage: "chart" | "glyphs") {
     this.solver = new MyConstraintSolver();
+    this.stage = stage;
+    console.log("Solver: ", stage);
   }
 
   public setManager(manager: Prototypes.ChartStateManager) {
@@ -33,11 +38,6 @@ export class BaseSolver {
     this.dataset = manager.dataset;
     this.datasetContext = new Dataset.DatasetContext(this.dataset);
     this.expressionCache = new Expression.ExpressionCache();
-    // this.id2ItemState = new Map<string, [any, any]>();
-
-    // for (let [scale, scaleState] of zip(chart.scales, state.scales)) {
-    //     this.id2ItemState.set(scale._id, [scale, scaleState]);
-    // }
   }
 
   public setDataset(dataset: Dataset.Dataset) {
@@ -144,8 +144,9 @@ export class BaseSolver {
   public addObject(
     object: Specification.Object,
     objectState: Specification.ObjectState,
-    parentState: Specification.ObjectState = null,
-    rowContext: Expression.Context = null
+    parentState: Specification.ObjectState,
+    rowContext: Expression.Context,
+    solve: boolean
   ) {
     const objectClass = this.manager.getClass(objectState);
     for (const attr of objectClass.attributeNames) {
@@ -154,7 +155,7 @@ export class BaseSolver {
         if (objectState.attributes[attr] == null) {
           objectState.attributes[attr] = 0;
         }
-        this.addAttribute(objectState.attributes, attr, info, true);
+        this.addAttribute(objectState.attributes, attr, solve);
       }
       if (!info.stateExclude) {
         if (object.mappings.hasOwnProperty(attr)) {
@@ -180,7 +181,7 @@ export class BaseSolver {
   public addScales(allowScaleParameterChange: boolean = true) {
     const { chart, chartState } = this;
     for (const [scale, scaleState] of zip(chart.scales, chartState.scales)) {
-      this.addObject(scale, scaleState);
+      this.addObject(scale, scaleState, null, null, allowScaleParameterChange);
     }
   }
 
@@ -214,19 +215,8 @@ export class BaseSolver {
     element: Specification.Element,
     elementState: Specification.MarkState
   ) {
-    this.addObject(element, elementState, markState, rowContext);
-    const glyphAnalyzed = this.getGlyphAnalyzeResult(mark);
+    this.addObject(element, elementState, markState, rowContext, true);
     const elementClass = this.manager.getMarkClass(elementState);
-    // for (let attr of elementClass.attributeNames) {
-    //     if (!element.mappings.hasOwnProperty(attr)) {
-    //         // if (attr == "width" || attr == "height") {
-    //         //     if(glyphAnalyzed.isAttributeFree(element, attr)) {
-    //         //         let variable = this.getSupportVariable(layout, element._id + "/" + attr, elementState.attributes[attr] as number);
-    //         //         this.solver.addEquals(ConstraintStrength.WEAK, variable, this.solver.attr(elementState.attributes, attr));
-    //         //     }
-    //         // }
-    //     }
-    // }
 
     elementClass.buildConstraints(this.solver, {
       rowContext,
@@ -276,7 +266,7 @@ export class BaseSolver {
     glyphState: Specification.GlyphState
   ) {
     // Mark attributes
-    this.addObject(glyph, glyphState, null, rowContext);
+    this.addObject(glyph, glyphState, null, rowContext, true);
 
     const glyphAnalyzed = this.getGlyphAnalyzeResult(glyph);
 
@@ -286,11 +276,7 @@ export class BaseSolver {
       if (info.solverExclude) {
         continue;
       }
-      if (glyph.properties.hasOwnProperty(attr)) {
-        this.addAttribute(glyphState.attributes, attr, info, true);
-      } else {
-        this.addAttribute(glyphState.attributes, attr, info, true);
-      }
+      this.addAttribute(glyphState.attributes, attr, true);
 
       // If width/height are not constrained, make them constant
       if (attr == "width" && glyphAnalyzed.widthFree) {
@@ -348,18 +334,14 @@ export class BaseSolver {
   public addAttribute(
     attrs: Specification.AttributeMap,
     attr: string,
-    info: Prototypes.AttributeDescription,
-    gradient: boolean
+    edit: boolean
   ) {
-    this.solver.attr(attrs, attr, {
-      edit: gradient
-    });
-    // this.registry.add(attrs, attr, gradient, info.priority);
+    this.solver.attr(attrs, attr, { edit });
   }
 
   public addChart() {
     const { chart, chartState } = this;
-    this.addObject(chart, chartState, null, null);
+    this.addObject(chart, chartState, null, null, this.stage == "chart");
     const boundsClass = this.manager.getChartClass(chartState);
     boundsClass.buildIntrinsicConstraints(this.solver);
 
@@ -367,7 +349,13 @@ export class BaseSolver {
       chart.elements,
       chartState.elements
     )) {
-      this.addObject(element, elementState, chartState);
+      this.addObject(
+        element,
+        elementState,
+        chartState,
+        null,
+        this.stage == "chart"
+      );
       const elementClass = this.manager.getChartElementClass(elementState);
 
       if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -376,37 +364,41 @@ export class BaseSolver {
         const mark = getById(chart.glyphs, layout.glyph);
         const tableContext = this.manager.dataflow.getTable(layout.table);
 
-        for (const [dataRowIndex, markState] of zip(
-          layoutState.dataRowIndices,
-          layoutState.glyphs
-        )) {
-          this.addGlyph(
-            layout,
-            tableContext.getGroupedContext(dataRowIndex),
-            mark,
-            markState
-          );
+        if (this.stage == "glyphs") {
+          for (const [dataRowIndex, markState] of zip(
+            layoutState.dataRowIndices,
+            layoutState.glyphs
+          )) {
+            this.addGlyph(
+              layout,
+              tableContext.getGroupedContext(dataRowIndex),
+              mark,
+              markState
+            );
+          }
         }
       }
-      elementClass.buildConstraints(this.solver, {
-        getExpressionValue: (expr: string, context: Expression.Context) => {
-          return this.manager.dataflow.cache
-            .parse(expr)
-            .getNumberValue(context);
-        },
-        getGlyphAttributes: (
-          glyphID: string,
-          table: string,
-          rowIndex: number[]
-        ) => {
-          const analyzed = this.getGlyphAnalyzeResult(
-            getById(this.chart.glyphs, glyphID)
-          );
-          return analyzed.computeAttributes(
-            this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
-          );
-        }
-      });
+      if (this.stage == "glyphs") {
+        elementClass.buildConstraints(this.solver, {
+          getExpressionValue: (expr: string, context: Expression.Context) => {
+            return this.manager.dataflow.cache
+              .parse(expr)
+              .getNumberValue(context);
+          },
+          getGlyphAttributes: (
+            glyphID: string,
+            table: string,
+            rowIndex: number[]
+          ) => {
+            const analyzed = this.getGlyphAnalyzeResult(
+              getById(this.chart.glyphs, glyphID)
+            );
+            return analyzed.computeAttributes(
+              this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
+            );
+          }
+        });
+      }
     }
 
     for (const constraint of chart.constraints) {
@@ -421,26 +413,12 @@ export class BaseSolver {
       );
     }
   }
-}
 
-/** Solves constraints in the scope of a chart */
-export class ChartConstraintSolver extends BaseSolver {
   public setup(manager: Prototypes.ChartStateManager) {
     this.setManager(manager);
     this.addScales(true);
     this.addChart();
   }
-}
-
-/** Solves constraints in the scope of a single glyph */
-export class GlyphConstraintSolver extends BaseSolver {
-  //     setup(chart: Specification.Chart, state: Specification.ChartState, dataset: Dataset.Dataset, glyph: Specification.Glyph, glyphState: Specification.GlyphState, dataRow: Specification.DataRow) {
-  //         this.setChart(chart, state);
-  //         this.setDataset(dataset);
-  //         let tempLayout = {} as Specification.PlotSegment;
-  //         this.addGlyph(tempLayout, dataRow, glyph, glyphState);
-  //         this.addScales(false);
-  //     }
 }
 
 /** Closed-form solution for single marks

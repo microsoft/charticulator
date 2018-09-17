@@ -64,27 +64,38 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     mappingOnly: boolean = false
   ) {
     let loss: { softLoss: number; hardLoss: number } = null;
-    let iterations = additional != null ? 2 : 1;
-    if (mappingOnly) {
-      iterations = 1;
-    }
     const chartManager = new Core.Prototypes.ChartStateManager(
       chart,
       dataset,
       chartState
     );
-    for (let i = 0; i < iterations; i++) {
-      const solver = new Core.Solver.ChartConstraintSolver();
+    if (mappingOnly) {
+      const solver = new Core.Solver.ChartConstraintSolver("glyphs");
       solver.setup(chartManager);
-      if (additional) {
-        additional(solver);
+      solver.destroy();
+    } else {
+      const iterations = additional != null ? 2 : 1;
+      for (let i = 0; i < iterations; i++) {
+        {
+          const solver = new Core.Solver.ChartConstraintSolver("chart");
+          solver.setup(chartManager);
+          if (additional) {
+            additional(solver);
+          }
+          loss = solver.solve();
+          solver.destroy();
+        }
+        {
+          const solver = new Core.Solver.ChartConstraintSolver("glyphs");
+          solver.setup(chartManager);
+          if (additional) {
+            additional(solver);
+          }
+          loss = solver.solve();
+          solver.destroy();
+        }
         additional = null;
       }
-      if (!mappingOnly) {
-        loss = solver.solve();
-        console.log("Loss", loss.hardLoss.toFixed(3), loss.softLoss.toFixed(3));
-      }
-      solver.destroy();
     }
     return chartState;
   }

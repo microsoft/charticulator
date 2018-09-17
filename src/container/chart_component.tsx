@@ -62,12 +62,19 @@ export class ChartComponent extends React.Component<
     this.recreateManager(props);
     this.updateWithNewProps(props);
     if (props.sync) {
-      for (let i = 0; i < 2; i++) {
-        const solver = new Solver.ChartConstraintSolver();
+      {
+        const solver = new Solver.ChartConstraintSolver("chart");
         solver.setup(this.manager);
         solver.solve();
         solver.destroy();
       }
+      {
+        const solver = new Solver.ChartConstraintSolver("glyphs");
+        solver.setup(this.manager);
+        solver.solve();
+        solver.destroy();
+      }
+
       this.state = {
         working: false,
         graphics: this.renderer.render()
@@ -174,8 +181,14 @@ export class ChartComponent extends React.Component<
     }
     this.timer = setTimeout(() => {
       this.timer = null;
-      for (let i = 0; i < 2; i++) {
-        const solver = new Solver.ChartConstraintSolver();
+      {
+        const solver = new Solver.ChartConstraintSolver("chart");
+        solver.setup(this.manager);
+        solver.solve();
+        solver.destroy();
+      }
+      {
+        const solver = new Solver.ChartConstraintSolver("glyphs");
         solver.setup(this.manager);
         solver.solve();
         solver.destroy();
