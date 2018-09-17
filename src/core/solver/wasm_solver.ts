@@ -133,15 +133,14 @@ export class WASMSolver extends ConstraintSolver {
     });
   }
 
-  private _count = 0;
-
   /** Solve the constraints */
   public solve(): [number, number] {
     this.variables.forEach((value, map, key) => {
       this.solver.setValue(value.index, map[key] as number);
     });
 
-    for (let iter = 0; iter < 10; iter++) {
+    const maxIters = 10;
+    for (let iter = 0; iter < maxIters; iter++) {
       this.solver.solve();
       let shouldReiterate = false;
       for (const soft of this.softInequalities) {
@@ -162,8 +161,10 @@ export class WASMSolver extends ConstraintSolver {
       if (!shouldReiterate) {
         break;
       }
-      if (iter == 9) {
-        console.warn("Soft inequalities didn't converge within 10 iterations");
+      if (iter == maxIters - 1) {
+        console.warn(
+          `Soft inequalities didn't converge within ${maxIters} iterations`
+        );
       }
     }
 
