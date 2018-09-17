@@ -113,10 +113,11 @@ export namespace Scale {
     ) {
       const vals = new Map<string, number>();
       const domain: string[] = [];
-      for (const v of values) {
+      for (let v of values) {
         if (v == null) {
           continue;
         }
+        v = v.toString();
         if (vals.has(v)) {
           vals.set(v, vals.get(v) + 1);
         } else {

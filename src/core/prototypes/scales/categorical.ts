@@ -8,10 +8,41 @@ import {
   AttributeMap,
   AttributeType
 } from "../../specification";
-import { AttributeDescription, Controls, DataMappingHints } from "../common";
+import { AttributeDescription, Controls } from "../common";
 
 import { ScaleClass } from "./index";
 import { AttributeDescriptions } from "../object";
+import { InferParametersOptions } from "./scale";
+
+function reuseMapping<T>(
+  domain: Map<string, any>,
+  existing: { [key: string]: T }
+): { [key: string]: T } {
+  const result: { [key: string]: T } = {};
+  const available: T[] = [];
+  for (const d of Object.keys(existing)) {
+    if (domain.has(d)) {
+      // Found one with the same key, reuse the color
+      result[d] = existing[d];
+    } else {
+      // Other, make the color available
+      available.push(existing[d]);
+    }
+  }
+  // Assign remaining keys from the domain
+  domain.forEach((v, d) => {
+    if (!result.hasOwnProperty(d)) {
+      if (available.length > 1) {
+        result[d] = available[0];
+        available.splice(0, 1);
+      } else {
+        // No available color left, fail
+        return null;
+      }
+    }
+  });
+  return result;
+}
 
 export interface CategoricalScaleProperties<ValueType extends AttributeValue>
   extends AttributeMap {
@@ -68,7 +99,7 @@ export class CategoricalScaleNumber extends ScaleClass<
 
   public inferParameters(
     column: DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -79,8 +110,8 @@ export class CategoricalScaleNumber extends ScaleClass<
     props.mapping = {};
 
     let range = [1, s.domain.size];
-    if (hints.rangeNumber) {
-      range = hints.rangeNumber;
+    if (options.rangeNumber) {
+      range = options.rangeNumber;
     }
 
     s.domain.forEach((v, d) => {
@@ -133,20 +164,27 @@ export class CategoricalScaleColor extends ScaleClass<
 
   public inferParameters(
     column: DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = {};
-    // Find a good default color palette
-    const colorList = getDefaultColorPalette(s.length);
-    s.domain.forEach((v, d) => {
-      // If we still don't have enough colors, reuse them
-      // TODO: fix this with a better method
-      props.mapping[d] = colorList[v % colorList.length];
-    });
+    props.mapping = null;
+    if (options.reuseRange && props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
+    }
+    if (props.mapping == null) {
+      // If we can't reuse existing colors, infer from scratch
+      props.mapping = {};
+      // Find a good default color palette
+      const colorList = getDefaultColorPalette(s.length);
+      s.domain.forEach((v, d) => {
+        // If we still don't have enough colors, reuse them
+        // TODO: fix this with a better method
+        props.mapping[d] = colorList[v % colorList.length];
+      });
+    }
   }
 
   public getAttributePanelWidgets(
@@ -195,23 +233,29 @@ export class CategoricalScaleEnum extends ScaleClass<
 
   public inferParameters(
     column: DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = {};
-    if (hints.rangeEnum) {
-      props.defaultRange = hints.rangeEnum.slice();
+    props.mapping = null;
+    if (options.reuseRange && props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
     }
-    s.domain.forEach((v, d) => {
-      if (hints.rangeEnum) {
-        props.mapping[d] = hints.rangeEnum[v % hints.rangeEnum.length];
-      } else {
-        props.mapping[d] = d;
+    if (props.mapping == null) {
+      props.mapping = {};
+      if (options.rangeEnum) {
+        props.defaultRange = options.rangeEnum.slice();
       }
-    });
+      s.domain.forEach((v, d) => {
+        if (options.rangeEnum) {
+          props.mapping[d] = options.rangeEnum[v % options.rangeEnum.length];
+        } else {
+          props.mapping[d] = d;
+        }
+      });
+    }
   }
 
   public getAttributePanelWidgets(
@@ -260,16 +304,22 @@ export class CategoricalScaleBoolean extends ScaleClass<
 
   public inferParameters(
     column: DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = {};
-    s.domain.forEach((v, d) => {
-      props.mapping[d] = true;
-    });
+    props.mapping = null;
+    if (options.reuseRange && props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
+    }
+    if (props.mapping == null) {
+      props.mapping = {};
+      s.domain.forEach((v, d) => {
+        props.mapping[d] = true;
+      });
+    }
   }
 
   public getAttributePanelWidgets(
@@ -327,20 +377,26 @@ export class CategoricalScaleImage extends ScaleClass<
 
   public inferParameters(
     column: DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = {};
-    s.domain.forEach((v, d) => {
-      if (hints.rangeImage) {
-        props.mapping[d] = hints.rangeImage[v % hints.rangeImage.length];
-      } else {
-        props.mapping[d] = "";
-      }
-    });
+    props.mapping = null;
+    if (options.reuseRange && props.mapping != null) {
+      props.mapping = reuseMapping(s.domain, props.mapping);
+    }
+    if (props.mapping == null) {
+      props.mapping = {};
+      s.domain.forEach((v, d) => {
+        if (options.rangeImage) {
+          props.mapping[d] = options.rangeImage[v % options.rangeImage.length];
+        } else {
+          props.mapping[d] = "";
+        }
+      });
+    }
   }
 
   public getAttributePanelWidgets(

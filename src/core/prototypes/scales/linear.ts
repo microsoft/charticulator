@@ -11,6 +11,7 @@ import {
   TemplateParameters
 } from "../common";
 import { ScaleClass } from "./index";
+import { InferParametersOptions } from "./scale";
 
 export interface LinearScaleProperties extends Specification.AttributeMap {
   domainMin: number;
@@ -87,7 +88,7 @@ export class LinearScale extends ScaleClass<
 
   public inferParameters(
     column: Specification.DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -97,24 +98,28 @@ export class LinearScale extends ScaleClass<
 
     props.domainMin = s.domainMin;
     props.domainMax = s.domainMax;
-    props.domainMin = 0;
-
-    if (hints.rangeNumber) {
-      attrs.rangeMin = hints.rangeNumber[0];
-      attrs.rangeMax = hints.rangeNumber[1];
-    } else {
-      attrs.rangeMin = 0;
-      attrs.rangeMax = 100;
+    if (props.domainMin > 0) {
+      props.domainMin = 0;
     }
-    this.object.mappings.rangeMin = {
-      type: "value",
-      value: 0
-    } as Specification.ValueMapping;
-    if (!hints.autoRange) {
-      this.object.mappings.rangeMax = {
+
+    if (!options.reuseRange) {
+      if (options.rangeNumber) {
+        attrs.rangeMin = options.rangeNumber[0];
+        attrs.rangeMax = options.rangeNumber[1];
+      } else {
+        attrs.rangeMin = 0;
+        attrs.rangeMax = 100;
+      }
+      this.object.mappings.rangeMin = {
         type: "value",
-        value: attrs.rangeMax
+        value: 0
       } as Specification.ValueMapping;
+      if (!options.autoRange) {
+        this.object.mappings.rangeMax = {
+          type: "value",
+          value: attrs.rangeMax
+        } as Specification.ValueMapping;
+      }
     }
   }
 
@@ -204,7 +209,7 @@ export class LinearColorScale extends ScaleClass<
 
   public inferParameters(
     column: Specification.DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
@@ -213,13 +218,15 @@ export class LinearColorScale extends ScaleClass<
 
     props.domainMin = s.domainMin;
     props.domainMax = s.domainMax;
-    props.range = getDefaultGradient();
+
+    if (!options.reuseRange) {
+      props.range = getDefaultGradient();
+    }
   }
 
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const range = this.object;
     return [
       manager.sectionHeader("Domain"),
       manager.row("Start", manager.inputNumber({ property: "domainMin" })),
@@ -315,7 +322,7 @@ export class LinearBooleanScale extends ScaleClass<
 
   public inferParameters(
     column: Specification.DataValue[],
-    hints: DataMappingHints = {}
+    options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
@@ -330,7 +337,6 @@ export class LinearBooleanScale extends ScaleClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const range = this.object;
     const props = this.object.properties;
     const minMax = [];
     if (props.mode == "greater" || props.mode == "interval") {
