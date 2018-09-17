@@ -21,8 +21,10 @@ export interface ExportTemplateTargetProperty {
 export interface ExportTemplateTarget {
   /** Get export format properties, such as template name, author */
   getProperties(): ExportTemplateTargetProperty[];
-  /** Get the file extension */
-  getFileExtension(): string;
+  /** Get the file name of the exported artifact */
+  getFileName?(properties: { [name: string]: any }): string;
+  /** Deprecated: get the file extension of the exported artifact */
+  getFileExtension?(properties: { [name: string]: any }): string;
   /** Generate the exported template, return a base64 string encoding the file */
   generate(properties: { [name: string]: any }): Promise<string>;
 }

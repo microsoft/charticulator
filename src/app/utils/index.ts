@@ -96,3 +96,44 @@ export function renderDataURLToPNG(
     };
   });
 }
+
+export function readFileAsString(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = () => {
+      reject(new Error(`unable to read file ${file.name}`));
+    };
+    reader.readAsText(file, "utf-8");
+  });
+}
+
+export function getExtensionFromFileName(filename: string) {
+  const m = filename.match(/\.([^\.]+)$/);
+  if (m) {
+    return m[1].toLowerCase();
+  } else {
+    return null;
+  }
+}
+
+export function getFileNameWithoutExtension(filename: string) {
+  return filename.replace(/\.([^\.]+)$/, "");
+}
+
+export function showOpenFileDialog(accept?: string[]): Promise<File> {
+  return new Promise<File>((resolve, reject) => {
+    const inputElement = document.createElement("input");
+    inputElement.type = "file";
+    inputElement.onchange = e => {
+      if (inputElement.files.length == 1) {
+        resolve(inputElement.files[0]);
+      } else {
+        reject();
+      }
+    };
+    inputElement.click();
+  });
+}

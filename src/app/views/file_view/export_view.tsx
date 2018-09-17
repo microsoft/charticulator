@@ -276,7 +276,14 @@ export class ExportTemplateView extends ContextedComponent<
                   });
                   FileSaver.saveAs(
                     blob,
-                    "charticulator." + this.state.target.getFileExtension()
+                    this.state.target.getFileName
+                      ? this.state.target.getFileName(
+                          this.state.targetProperties
+                        )
+                      : "charticulator." +
+                        this.state.target.getFileExtension(
+                          this.state.targetProperties
+                        )
                   );
                 });
             }}
