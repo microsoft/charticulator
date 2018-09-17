@@ -441,7 +441,9 @@ export class GradientView extends React.PureComponent<
       this.props.gradient.colors,
       this.props.gradient.colorspace
     );
-    setImmediate(() => {
+    // Somehow Chrome doesn't like get/putImageData here,
+    // it prevents any popout view containing it from showing
+    setTimeout(() => {
       const data = ctx.getImageData(0, 0, width, height);
       for (let i = 0; i < data.width; i++) {
         const t = i / (data.width - 1);
@@ -455,7 +457,7 @@ export class GradientView extends React.PureComponent<
         }
       }
       ctx.putImageData(data, 0, 0);
-    });
+    }, 0);
   }
 
   public render() {
