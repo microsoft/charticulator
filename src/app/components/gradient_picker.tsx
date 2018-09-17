@@ -257,7 +257,7 @@ export class GradientView extends React.PureComponent<
   public componentDidUpdate() {
     // Chrome doesn't like get/putImageData in this method
     // Doing so will cause the popup editor to not layout, although any change in its style will fix
-    setImmediate(() => {
+    setTimeout(() => {
       if (!this.refCanvas || !this.props.gradient) {
         return;
       }
@@ -281,7 +281,7 @@ export class GradientView extends React.PureComponent<
         }
       }
       ctx.putImageData(data, 0, 0);
-    });
+    }, 0);
   }
 
   public render() {

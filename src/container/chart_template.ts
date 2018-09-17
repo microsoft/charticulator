@@ -91,7 +91,10 @@ export class ChartTemplate {
     }
   }
 
-  public instantiate(dataset: Dataset.Dataset): Specification.Chart {
+  public instantiate(
+    dataset: Dataset.Dataset,
+    inference: boolean = true
+  ): Specification.Chart {
     // Make a copy of the chart spec so we won't touch the original template data
     const chart = deepClone(this.template.specification);
 
@@ -178,6 +181,9 @@ export class ChartTemplate {
           textMapping.table = this.tableAssignment[textMapping.table];
         }
       }
+    }
+    if (!inference) {
+      return chart;
     }
 
     const df = new Prototypes.Dataflow.DataflowManager(dataset);

@@ -107,24 +107,28 @@ export class MainStore extends BaseStore {
 
     this.chartStore = new ChartStore(this);
 
-    if (process.env.NODE_ENV === "development") {
-      // Only enable this if we are in the development environment
-      this.registerExportTemplateTarget(
-        "Charticulator Template",
-        (template: Specification.Template.ChartTemplate) => {
-          return {
-            getProperties: () => [],
-            getFileExtension: () => "json",
-            generate: () => {
-              return new Promise<string>((resolve, reject) => {
-                const r = btoa(JSON.stringify(template, null, 2));
-                resolve(r);
-              });
+    this.registerExportTemplateTarget(
+      "Charticulator Template",
+      (template: Specification.Template.ChartTemplate) => {
+        return {
+          getProperties: () => [
+            {
+              displayName: "Name",
+              name: "name",
+              type: "string",
+              default: "template"
             }
-          };
-        }
-      );
-    }
+          ],
+          getFileName: (props: { name: string }) => `${props.name}.json`,
+          generate: () => {
+            return new Promise<string>((resolve, reject) => {
+              const r = btoa(JSON.stringify(template, null, 2));
+              resolve(r);
+            });
+          }
+        };
+      }
+    );
   }
 
   public saveState(): MainStoreState {

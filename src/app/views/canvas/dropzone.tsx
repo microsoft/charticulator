@@ -1,24 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import * as React from "react";
-import { EventEmitter, EventSubscription } from "../../../core";
-
-import { classNames } from "../../utils";
-import { ChartStore, GlyphStore } from "../../stores";
-import { DragData, Actions } from "../../actions";
-import {
-  Specification,
-  Prototypes,
-  zipArray,
-  Solver,
-  Point,
-  Geometry,
-  ZoomInfo
-} from "../../../core";
-
+import { Geometry, Point, Prototypes, ZoomInfo } from "../../../core";
+import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import * as globals from "../../globals";
-import { Droppable, DragContext, DragModifiers } from "../../controllers";
-import { ZoomableCanvas } from "../../components";
+import { classNames } from "../../utils";
 
 export interface DropZoneViewProps {
   zone: Prototypes.DropZones.Description;

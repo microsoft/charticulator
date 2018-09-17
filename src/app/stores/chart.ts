@@ -19,7 +19,6 @@ import { Actions } from "../actions";
 import { ChartTemplateBuilder } from "../template";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
-import { GlyphStore } from "./mark";
 
 export abstract class Selection {}
 
@@ -85,7 +84,6 @@ export class ChartStore extends BaseStore {
   public chart: Specification.Chart;
   public chartState: Specification.ChartState;
   public datasetStore: DatasetStore;
-  public markStores: GlyphStore[];
 
   public currentSelection: Selection;
   protected selectedGlyphIndex: { [id: string]: number } = {};
@@ -106,14 +104,12 @@ export class ChartStore extends BaseStore {
     };
 
     this.newChartEmpty();
-    this.updateMarkStores();
     this.solveConstraintsAndUpdateGraphics();
 
     const token = this.datasetStore.addListener(
       DatasetStore.EVENT_CHANGED,
       () => {
         this.newChartEmpty();
-        this.updateMarkStores();
         this.emit(ChartStore.EVENT_CURRENT_TOOL);
         this.emit(ChartStore.EVENT_SELECTION);
         this.solveConstraintsAndUpdateGraphics();
@@ -165,8 +161,6 @@ export class ChartStore extends BaseStore {
     );
     this.chartManager.setState(this.chartState);
     this.chartState = this.chartManager.chartState;
-
-    this.updateMarkStores();
 
     this.emit(ChartStore.EVENT_GRAPHICS);
     this.emit(ChartStore.EVENT_SELECTION);
@@ -288,7 +282,6 @@ export class ChartStore extends BaseStore {
       this.emit(ChartStore.EVENT_CURRENT_TOOL);
 
       this.newChartEmpty();
-      this.updateMarkStores();
 
       this.solveConstraintsAndUpdateGraphics();
     }
@@ -610,9 +603,6 @@ export class ChartStore extends BaseStore {
 
     if (action instanceof Actions.UpdateGlyphAttribute) {
       this.parent.saveHistory();
-
-      // Wait for stores to finish
-      this.dispatcher.waitFor(this.markStores.map(s => s.dispatcherID));
 
       this.chart.elements.forEach((element, index) => {
         if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -1230,7 +1220,6 @@ export class ChartStore extends BaseStore {
       );
       this.chartState = this.chartManager.chartState;
 
-      this.updateMarkStores();
       this.solveConstraintsAndUpdateGraphics();
     }
   }
@@ -1644,16 +1633,6 @@ export class ChartStore extends BaseStore {
       }
     }
     return null;
-  }
-
-  public updateMarkStores() {
-    if (this.markStores != null) {
-      this.markStores.forEach(m => m.destroy());
-    }
-    this.markStores = this.chart.glyphs.map(m => {
-      const table = this.datasetStore.getTable(m.table);
-      return new GlyphStore(this, this.datasetStore.getTable(m.table), m);
-    });
   }
 
   public solveConstraintsAndUpdateGraphics(mappingOnly: boolean = false) {

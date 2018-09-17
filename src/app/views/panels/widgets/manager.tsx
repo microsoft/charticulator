@@ -28,7 +28,11 @@ import {
 } from "../../../controllers/drag_controller";
 
 import { ChartStore } from "../../../stores";
-import { classNames } from "../../../utils/index";
+import {
+  classNames,
+  showOpenFileDialog,
+  readFileAsString
+} from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
@@ -46,6 +50,7 @@ import {
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
+import { ChartTemplate } from "../../../../container";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -711,46 +716,70 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ) {
     return this.row(
       "",
-      <ButtonRaised
-        text="Edit Nested Chart"
-        onClick={() => {
-          const editorID = uniqueID();
-          const newWindow = window.open(
-            "index.html#!nestedEditor=" + editorID,
-            "nested_chart_" + options.specification._id
-          );
-          const listener = (e: MessageEvent) => {
-            if (e.origin == document.location.origin) {
-              const data = e.data;
-              if (data.id == editorID) {
-                switch (data.type) {
-                  case "initialized":
-                    {
-                      newWindow.postMessage(
-                        {
-                          id: editorID,
-                          type: "load",
-                          specification: options.specification,
-                          dataset: options.dataset,
-                          width: options.width,
-                          height: options.height
-                        },
-                        document.location.origin
-                      );
-                    }
-                    break;
-                  case "save":
-                    {
-                      this.emitSetProperty(property, data.specification);
-                    }
-                    break;
+      this.vertical(
+        <ButtonRaised
+          text="Edit Nested Chart..."
+          onClick={() => {
+            const editorID = uniqueID();
+            const newWindow = window.open(
+              "index.html#!nestedEditor=" + editorID,
+              "nested_chart_" + options.specification._id
+            );
+            const listener = (e: MessageEvent) => {
+              if (e.origin == document.location.origin) {
+                const data = e.data;
+                if (data.id == editorID) {
+                  switch (data.type) {
+                    case "initialized":
+                      {
+                        newWindow.postMessage(
+                          {
+                            id: editorID,
+                            type: "load",
+                            specification: options.specification,
+                            dataset: options.dataset,
+                            width: options.width,
+                            height: options.height
+                          },
+                          document.location.origin
+                        );
+                      }
+                      break;
+                    case "save":
+                      {
+                        this.emitSetProperty(property, data.specification);
+                      }
+                      break;
+                  }
                 }
               }
-            }
-          };
-          window.addEventListener("message", listener);
-        }}
-      />
+            };
+            window.addEventListener("message", listener);
+          }}
+        />,
+        <div style={{ marginTop: "5px" }}>
+          <ButtonRaised
+            text="Import Template..."
+            onClick={async () => {
+              const file = await showOpenFileDialog(["json"]);
+              const str = await readFileAsString(file);
+              const data = JSON.parse(str);
+              const template = new ChartTemplate(data);
+              for (const table of options.dataset.tables) {
+                const tTable = template.getDatasetSchema()[0];
+                template.assignTable(tTable.name, table.name);
+                for (const column of tTable.columns) {
+                  template.assignColumn(tTable.name, column.name, column.name);
+                }
+              }
+              this.emitSetProperty(property, template.instantiate(
+                options.dataset,
+                false // no scale inference
+              ) as any);
+            }}
+          />
+        </div>
+      )
     );
   }
 
