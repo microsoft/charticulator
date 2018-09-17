@@ -983,6 +983,7 @@ export class SingleMarkView
                         zone.dropAction.scaleInference.attributeType,
                         data.expression,
                         data.valueType,
+                        data.metadata,
                         zone.dropAction.scaleInference.hints
                       )
                     );

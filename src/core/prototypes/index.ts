@@ -26,3 +26,14 @@ export {
   Legends,
   Dataflow
 };
+
+Charts.registerClasses();
+Glyphs.registerClasses();
+Marks.registerClasses();
+Links.registerClasses();
+Legends.registerClasses();
+Guides.registerClasses();
+Scales.registerClasses();
+PlotSegments.registerClasses();
+
+Constraints.registerClasses();

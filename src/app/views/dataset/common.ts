@@ -2,16 +2,50 @@
 // Licensed under the MIT license.
 import { Dataset } from "../../../core";
 
-export const kind2Icon: { [name: string]: string } = {
+export const kind2Icon: { [name in Dataset.DataKind]: string } = {
   categorical: "type/categorical",
   numerical: "type/numerical",
-  boolean: "type/boolean",
-  date: "type/numerical"
+  ordinal: "type/ordinal",
+  temporal: "type/temporal"
 };
+
+export const kind2CompatibleKinds: {
+  [name in Dataset.DataKind]: Dataset.DataKind[]
+} = {
+  // Ordinal is compatible with categorical
+  categorical: [Dataset.DataKind.Ordinal],
+  // Temporal is compatible with numerical
+  numerical: [Dataset.DataKind.Temporal],
+  ordinal: [],
+  temporal: []
+};
+
+/** Determine if kind is acceptable, considering compatible kinds */
+export function isKindAcceptable(
+  kind: Dataset.DataKind,
+  acceptKinds?: Dataset.DataKind[]
+) {
+  if (acceptKinds == null) {
+    return true;
+  } else {
+    for (const item of acceptKinds) {
+      if (item == kind) {
+        return true;
+      }
+      if (kind2CompatibleKinds[item] != null) {
+        const compatibles = kind2CompatibleKinds[item];
+        if (compatibles.indexOf(kind) >= 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+}
 
 export interface DerivedColumnDescription {
   name: string;
-  type: string;
+  type: Dataset.DataType;
   function: string;
   metadata: Dataset.ColumnMetadata;
 }
@@ -29,25 +63,27 @@ function makeTwoDigitRange(start: number, end: number): string[] {
 }
 
 export const type2DerivedColumns: {
-  [name: string]: DerivedColumnDescription[];
+  [name in Dataset.DataType]: DerivedColumnDescription[]
 } = {
   string: null,
   number: null,
-  integer: null,
   boolean: null,
   date: [
     {
       name: "year",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.year",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "month",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.month",
       metadata: {
-        kind: "categorical",
+        kind: Dataset.DataKind.Categorical,
         order: [
           "Jan",
           "Feb",
@@ -66,48 +102,66 @@ export const type2DerivedColumns: {
     },
     {
       name: "day",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.day",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "weekOfYear",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.weekOfYear",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "dayOfYear",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.dayOfYear",
-      metadata: { kind: "categorical", orderMode: "alphabetically" }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "weekday",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.weekday",
       metadata: {
-        kind: "categorical",
+        kind: Dataset.DataKind.Categorical,
         order: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
       }
     },
     {
       name: "hour",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.hour",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 24) }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        order: makeTwoDigitRange(0, 24)
+      }
     },
     {
       name: "minute",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.minute",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 59) }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        order: makeTwoDigitRange(0, 59)
+      }
     },
     {
       name: "second",
-      type: "string",
+      type: Dataset.DataType.String,
       function: "date.second",
-      metadata: { kind: "categorical", order: makeTwoDigitRange(0, 59) }
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        order: makeTwoDigitRange(0, 59)
+      }
     }
   ]
 };

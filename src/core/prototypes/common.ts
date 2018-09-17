@@ -19,8 +19,8 @@ export type OrderDescription = OrderDescriptionItem[];
 export interface DataMappingHints {
   rangeNumber?: [number, number];
   autoRange?: boolean;
-  rangeString?: string[];
-  stringBehavior?: "default" | "categorical" | "text";
+  rangeEnum?: string[];
+  rangeImage?: string[];
   newScale?: boolean;
 }
 
@@ -42,7 +42,7 @@ export namespace DropZones {
     /** Only accept data from a certain table */
     table?: string;
     /** Only accept data with a certain kind */
-    kind?: string;
+    kind?: Specification.DataKind;
     /** Only accept certain scaffolds */
     scaffolds?: string[];
   }
@@ -51,7 +51,7 @@ export namespace DropZones {
     /** Map data using inferred scale */
     scaleInference?: {
       attribute: string;
-      attributeType: string;
+      attributeType: Specification.AttributeType;
       hints?: DataMappingHints;
     };
     /** Set AxisDataBinding to property */

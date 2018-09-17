@@ -324,3 +324,39 @@ export function interpolateColors(
     return { r, g, b };
   };
 }
+
+const brewer3 = ["#7fc97f", "#beaed4", "#fdc086"].map(colorFromHTMLColor);
+const brewer6 = [
+  "#a6cee3",
+  "#1f78b4",
+  "#b2df8a",
+  "#33a02c",
+  "#fb9a99",
+  "#e31a1c"
+].map(colorFromHTMLColor);
+const brewer12 = [
+  "#a6cee3",
+  "#1f78b4",
+  "#b2df8a",
+  "#33a02c",
+  "#fb9a99",
+  "#e31a1c",
+  "#fdbf6f",
+  "#ff7f00",
+  "#cab2d6",
+  "#6a3d9a",
+  "#ffff99",
+  "#b15928"
+].map(colorFromHTMLColor);
+
+export function getDefaultColorPalette(count: number) {
+  let r = brewer12;
+  if (count <= 3) {
+    r = brewer3;
+  } else if (count <= 6) {
+    r = brewer6;
+  } else {
+    r = brewer12;
+  }
+  return r;
+}

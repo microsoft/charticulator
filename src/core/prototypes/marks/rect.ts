@@ -1,40 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Point } from "../../common";
-import { ConstraintSolver, ConstraintStrength } from "../../solver";
-import * as Specification from "../../specification";
 
+import { Point } from "../../common";
+import * as Graphics from "../../graphics";
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
+import { DataKind, AttributeType } from "../../specification";
 import {
   BoundingBox,
   Controls,
   DropZones,
   Handles,
   LinkAnchor,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides
 } from "../common";
-import { EmphasizableMarkClass } from "./emphasis";
-import { attributes, RectElementAttributes } from "./rect.attrs";
-import * as Graphics from "../../graphics";
-import { ObjectClass } from "../object";
 import { ChartStateManager } from "../state";
+import { EmphasizableMarkClass } from "./emphasis";
+import {
+  rectAttributes,
+  RectElementAttributes,
+  RectElementProperties
+} from "./rect.attrs";
 
-export { RectElementAttributes };
+export { RectElementAttributes, RectElementProperties };
 
-export interface RectElementProperties extends Specification.AttributeMap {
-  shape: "rectangle" | "ellipse" | "triangle";
-}
-
-export interface RectElementObject extends Specification.Element {
-  properties: RectElementProperties;
-}
-
-export interface RectElementState extends Specification.MarkState {
-  attributes: RectElementAttributes;
-}
-
-export class RectElement extends EmphasizableMarkClass {
+export class RectElementClass extends EmphasizableMarkClass<
+  RectElementProperties,
+  RectElementAttributes
+> {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -47,28 +40,20 @@ export class RectElement extends EmphasizableMarkClass {
     }
   };
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
     shape: "rectangle"
   };
 
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<RectElementAttributes> = {
     fill: { r: 217, g: 217, b: 217 },
     strokeWidth: 1,
     opacity: 1,
     visible: true
   };
 
-  public readonly state: RectElementState;
-  public readonly object: RectElementObject;
-
-  constructor(
-    parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState
-  ) {
-    super(parent, object, state, attributes);
-  }
+  public attributes = rectAttributes;
+  public attributeNames = Object.keys(rectAttributes);
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -97,14 +82,14 @@ export class RectElement extends EmphasizableMarkClass {
   ): Controls.Widget[] {
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size & Shape"),
-      manager.mappingEditor("Width", "width", "number", {
+      manager.mappingEditor("Width", "width", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [DataKind.Numerical],
         defaultAuto: true
       }),
-      manager.mappingEditor("Height", "height", "number", {
+      manager.mappingEditor("Height", "height", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [DataKind.Numerical],
         defaultAuto: true
       }),
       manager.row(
@@ -121,12 +106,12 @@ export class RectElement extends EmphasizableMarkClass {
         )
       ),
       manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", "color", {}),
-      manager.mappingEditor("Stroke", "stroke", "color", {})
+      manager.mappingEditor("Fill", "fill", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", "number", {
+        manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
@@ -134,12 +119,12 @@ export class RectElement extends EmphasizableMarkClass {
       );
     }
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ]);
@@ -390,11 +375,11 @@ export class RectElement extends EmphasizableMarkClass {
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: "numerical" },
+        accept: { kind: DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "width",
-            attributeType: "number",
+            attributeType: AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -404,11 +389,11 @@ export class RectElement extends EmphasizableMarkClass {
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: "numerical" },
+        accept: { kind: DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "height",
-            attributeType: "number",
+            attributeType: AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -418,7 +403,7 @@ export class RectElement extends EmphasizableMarkClass {
   // Get bounding rectangle given current state
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy } = attrs;
+    const { x1, y1, x2, y2 } = attrs;
     return [
       {
         type: "line",
@@ -513,5 +498,3 @@ export class RectElement extends EmphasizableMarkClass {
     ];
   }
 }
-
-ObjectClasses.Register(RectElement);

@@ -81,7 +81,7 @@ export class DatasetStore extends BaseStore {
   public getColumnVector(
     table: Dataset.Table,
     columnName: string
-  ): Dataset.ValueType[] {
+  ): Dataset.DataValue[] {
     return table.rows.map(d => d[columnName]);
   }
 }

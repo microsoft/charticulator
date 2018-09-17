@@ -1,17 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as Expression from "../../expression";
+
+import { Color, deepClone, indexOf, interpolateColors } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
-import * as Scales from "../scales";
-
-import { Color, indexOf, interpolateColors, deepClone } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver/abstract";
-import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
+import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
   BoundingBox,
@@ -22,9 +15,8 @@ import {
 } from "../common";
 import {
   AxisRenderer,
-  defaultAxisStyle,
-  buildAxisWidgets,
-  buildAxisAppearanceWidgets
+  buildAxisAppearanceWidgets,
+  defaultAxisStyle
 } from "../plot_segments/axis";
 
 export interface LegendAttributes extends Specification.AttributeMap {
@@ -71,15 +63,11 @@ export abstract class LegendClass extends ChartElementClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -431,27 +419,19 @@ export class NumericalNumberLegendClass extends ChartElementClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -565,6 +545,8 @@ export class NumericalNumberLegendClass extends ChartElementClass {
   }
 }
 
-ObjectClasses.Register(CategoricalLegendClass);
-ObjectClasses.Register(NumericalColorLegendClass);
-ObjectClasses.Register(NumericalNumberLegendClass);
+export function registerClasses() {
+  ObjectClasses.Register(CategoricalLegendClass);
+  ObjectClasses.Register(NumericalColorLegendClass);
+  ObjectClasses.Register(NumericalNumberLegendClass);
+}

@@ -1,15 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Point, uniqueID } from "../../common";
-import {
-  ConstraintSolver,
-  ConstraintStrength,
-  VariableStrength
-} from "../../solver";
+
 import * as Specification from "../../specification";
-
-import * as Graphics from "../../graphics";
-
+import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import {
   AttributeDescription,
   Controls,
@@ -93,93 +86,61 @@ class RectangleGlyph extends GlyphClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     width: {
       name: "width",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Width",
-      defaultRange: [30, 200],
-      strength: VariableStrength.WEAKER
+      type: Specification.AttributeType.Number,
+      defaultRange: [30, 200]
     },
     height: {
       name: "height",
-      type: "number",
-      mode: "intrinsic",
-      category: "dimensions",
-      displayName: "Height",
-      defaultRange: [30, 200],
-      strength: VariableStrength.WEAKER
+      type: Specification.AttributeType.Number,
+      defaultRange: [30, 200]
     },
     ix1: {
       name: "ix1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     iy1: {
       name: "iy1",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     ix2: {
       name: "ix2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     iy2: {
       name: "iy2",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     icx: {
       name: "icx",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     },
     icy: {
       name: "icy",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -369,10 +330,12 @@ class RectangleGlyph extends GlyphClass {
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Dimensions"),
-      manager.mappingEditorTOFIX("width"),
-      manager.mappingEditorTOFIX("height")
+      manager.mappingEditor("Width", "width", {}),
+      manager.mappingEditor("Height", "height", {})
     ];
   }
 }
 
-ObjectClasses.Register(RectangleGlyph);
+export function registerClasses() {
+  ObjectClasses.Register(RectangleGlyph);
+}

@@ -245,7 +245,7 @@ export class ChartTemplate {
             axisDataBinding.categories[index] = key;
           });
         } else if (axis.type == "numerical") {
-          const scale = new Scale.NumericalScale();
+          const scale = new Scale.LinearScale();
           scale.inferParameters(vector);
           axisDataBinding.domainMin = scale.domainMin;
           axisDataBinding.domainMax = scale.domainMax;

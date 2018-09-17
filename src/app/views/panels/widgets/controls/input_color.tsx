@@ -43,8 +43,14 @@ export class InputColor extends React.Component<InputColorProps, {}> {
                 return (
                   <PopupView context={context}>
                     <ColorPicker
+                      allowNull={true}
                       onPick={color => {
-                        this.props.onEnter(color);
+                        if (color == null) {
+                          this.props.onEnter(null);
+                          context.close();
+                        } else {
+                          this.props.onEnter(color);
+                        }
                       }}
                     />
                   </PopupView>

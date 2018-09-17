@@ -87,7 +87,7 @@ export function getCompatibleAggregationFunctions(inputType: string) {
 }
 
 export function getDefaultAggregationFunction(inputType: string) {
-  if (inputType == "number" || inputType == "integer") {
+  if (inputType == "number" || inputType == "date") {
     return "avg";
   } else {
     return "first";

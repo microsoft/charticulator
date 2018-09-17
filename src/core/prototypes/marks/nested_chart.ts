@@ -1,43 +1,34 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Point, uniqueID, getByName, deepClone } from "../../common";
+
+import { deepClone, getByName, Point, uniqueID } from "../../common";
+import * as Dataset from "../../dataset";
+import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
-import { attributes, NestedChartElementAttributes } from "./nested_chart.attrs";
-
 import {
   BoundingBox,
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
 } from "../common";
-import { EmphasizableMarkClass } from "./emphasis";
-import * as Graphics from "../../graphics";
-import { ObjectClass } from "../object";
 import { ChartStateManager } from "../state";
-import * as Dataset from "../../dataset";
+import { EmphasizableMarkClass } from "./emphasis";
+import {
+  nestedChartAttributes,
+  NestedChartElementAttributes,
+  NestedChartElementProperties
+} from "./nested_chart.attrs";
 
-export interface NestedChartElementProperties
-  extends Specification.AttributeMap {
-  /** The chart specification */
-  specification: any;
-  /** Map column names to nested chart column names */
-  columnNameMap: { [name: string]: string };
-}
+export { NestedChartElementAttributes, NestedChartElementProperties };
 
-export interface NestedChartElementObject extends Specification.Element {
-  properties: NestedChartElementProperties;
-}
-
-export interface NestedChartElementState extends Specification.MarkState {
-  attributes: NestedChartElementAttributes;
-}
-
-export class NestedChartElement extends EmphasizableMarkClass {
+export class NestedChartElementClass extends EmphasizableMarkClass<
+  NestedChartElementProperties,
+  NestedChartElementAttributes
+> {
   public static classID = "mark.nested-chart";
   public static type = "mark";
 
@@ -50,25 +41,17 @@ export class NestedChartElement extends EmphasizableMarkClass {
     }
   };
 
-  public static defaultProperties = {
+  public static defaultProperties: Partial<NestedChartElementProperties> = {
     visible: true
   };
 
-  public static defaultMappingValues: Specification.AttributeMap = {
+  public static defaultMappingValues: Partial<NestedChartElementAttributes> = {
     opacity: 1,
     visible: true
   };
 
-  public readonly state: NestedChartElementState;
-  public readonly object: NestedChartElementObject;
-
-  constructor(
-    parent: ObjectClass,
-    object: Specification.Object,
-    state: Specification.ObjectState
-  ) {
-    super(parent, object, state, attributes);
-  }
+  public attributes = nestedChartAttributes;
+  public attributeNames = Object.keys(nestedChartAttributes);
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
@@ -94,24 +77,24 @@ export class NestedChartElement extends EmphasizableMarkClass {
   ): Controls.Widget[] {
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size & Shape"),
-      manager.mappingEditor("Width", "width", "number", {
+      manager.mappingEditor("Width", "width", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
-      manager.mappingEditor("Height", "height", "number", {
+      manager.mappingEditor("Height", "height", {
         hints: { autoRange: true },
-        acceptKinds: ["numerical"],
+        acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       })
     ];
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", "number", {
+      manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
-      manager.mappingEditor("Visibility", "visible", "boolean", {
+      manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
     ]);
@@ -154,10 +137,6 @@ export class NestedChartElement extends EmphasizableMarkClass {
   public getDataset(glyphIndex: number): Dataset.Dataset {
     const manager = this.getChartClass().manager;
     const plotSegmentClass = this.getPlotSegmentClass();
-    const subDataset: Dataset.Dataset = {
-      name: "NestedData",
-      tables: []
-    };
     const table = getByName(
       manager.dataset.tables,
       plotSegmentClass.object.table
@@ -245,11 +224,11 @@ export class NestedChartElement extends EmphasizableMarkClass {
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
         title: "width",
-        accept: { kind: "numerical" },
+        accept: { kind: Specification.DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "width",
-            attributeType: "number",
+            attributeType: Specification.AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -259,11 +238,11 @@ export class NestedChartElement extends EmphasizableMarkClass {
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
         title: "height",
-        accept: { kind: "numerical" },
+        accept: { kind: Specification.DataKind.Numerical },
         dropAction: {
           scaleInference: {
             attribute: "height",
-            attributeType: "number",
+            attributeType: Specification.AttributeType.Number,
             hints: { autoRange: true }
           }
         }
@@ -273,7 +252,7 @@ export class NestedChartElement extends EmphasizableMarkClass {
   // Get bounding rectangle given current state
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy } = attrs;
+    const { x1, y1, x2, y2 } = attrs;
     return [
       {
         type: "line",
@@ -369,7 +348,9 @@ export class NestedChartElement extends EmphasizableMarkClass {
   }
 
   public static createDefault(...args: any[]): Specification.Object {
-    const obj = super.createDefault(...args) as NestedChartElementObject;
+    const obj = super.createDefault(...args) as Specification.Element<
+      NestedChartElementProperties
+    >;
     const myGlyphID = uniqueID();
     const tableName = "MainTable";
     obj.properties.specification = {
@@ -521,5 +502,3 @@ export class NestedChartElement extends EmphasizableMarkClass {
     };
   }
 }
-
-ObjectClasses.Register(NestedChartElement);

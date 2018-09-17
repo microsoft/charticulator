@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { AttributeDescription } from "../object";
-import { lineAttrs, styleAttrs, sizeAttrs, centerAttrs } from "./attrs";
+
+import { AttributeDescriptions } from "../object";
 import { Color } from "../../common";
 import { AttributeMap } from "../../specification/index";
+import { AttrBuilder } from "../attrs";
 
-export const attributes = {
-  ...lineAttrs(),
-  ...centerAttrs(),
-  ...sizeAttrs(),
-  ...styleAttrs({ fill: true })
-} as { [name: string]: AttributeDescription };
+export const rectAttributes: AttributeDescriptions = {
+  ...AttrBuilder.line(),
+  ...AttrBuilder.center(),
+  ...AttrBuilder.size(),
+  ...AttrBuilder.style({ fill: true })
+};
 
 export interface RectElementAttributes extends AttributeMap {
   x1: number;
@@ -26,4 +27,8 @@ export interface RectElementAttributes extends AttributeMap {
   strokeWidth: number;
   opacity: number;
   visible: boolean;
+}
+
+export interface RectElementProperties extends AttributeMap {
+  shape: "rectangle" | "ellipse" | "triangle";
 }

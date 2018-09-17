@@ -5,8 +5,7 @@ import {
   ConstraintPlugin,
   ConstraintSolver,
   ConstraintStrength,
-  Variable,
-  VariableStrength
+  Variable
 } from "./abstract";
 import {
   ChartConstraintSolver,
@@ -22,7 +21,6 @@ export {
   ConstraintSolver,
   AttributeOptions,
   ConstraintStrength,
-  VariableStrength,
   Variable,
   ConstraintPlugin
 };

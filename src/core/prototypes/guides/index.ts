@@ -1,25 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as Graphics from "../../graphics";
-import {
-  ConstraintPlugins,
-  ConstraintSolver,
-  ConstraintStrength,
-  Variable,
-  VariableStrength
-} from "../../solver";
-import * as Specification from "../../specification";
 
-import { getById, Point, uniqueID } from "../../common";
+import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
+import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
-import {
-  AttributeDescription,
-  BoundingBox,
-  DropZones,
-  Handles,
-  OrderDescription,
-  SnappingGuides
-} from "../common";
+import { AttributeDescription, Handles, SnappingGuides } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
 
@@ -50,9 +35,7 @@ export class GuideClass extends ChartElementClass {
   public attributes: { [name: string]: AttributeDescription } = {
     value: {
       name: "value",
-      type: "number",
-      mode: "positional",
-      strength: VariableStrength.NONE
+      type: Specification.AttributeType.Number
     }
   };
 
@@ -94,8 +77,6 @@ export class GuideClass extends ChartElementClass {
   //     return null;
   // }
 }
-
-ObjectClasses.Register(GuideClass);
 
 export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
   x1: number;
@@ -168,36 +149,26 @@ export class GuideCoordinatorClass extends ChartElementClass {
     const r: { [name: string]: AttributeDescription } = {
       x1: {
         name: "x1",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       },
       y1: {
         name: "y1",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       },
       x2: {
         name: "x2",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       },
       y2: {
         name: "y2",
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       }
     };
     for (let i = 0; i < this.object.properties.count; i++) {
       const name = `value${i}`;
       r[name] = {
         name,
-        type: "number",
-        mode: "positional",
-        strength: VariableStrength.NONE
+        type: Specification.AttributeType.Number
       };
     }
     return r;
@@ -242,4 +213,7 @@ export class GuideCoordinatorClass extends ChartElementClass {
   // }
 }
 
-ObjectClasses.Register(GuideCoordinatorClass);
+export function registerClasses() {
+  ObjectClasses.Register(GuideClass);
+  ObjectClasses.Register(GuideCoordinatorClass);
+}

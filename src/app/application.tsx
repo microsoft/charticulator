@@ -18,6 +18,60 @@ import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
 
+function makeDefaultDataset(): Dataset.Dataset {
+  const rows: any[] = [];
+  const months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",");
+  let monthIndex = 0;
+  for (const month of months) {
+    let cityIndex = 0;
+    for (const city of ["City1", "City2", "City3"]) {
+      const value =
+        50 +
+        30 *
+          Math.sin(
+            ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
+          );
+      rows.push({
+        _id: "ID" + rows.length,
+        Month: month,
+        City: city,
+        Value: +value.toFixed(1)
+      });
+      cityIndex += 1;
+    }
+    monthIndex += 1;
+  }
+  return {
+    tables: [
+      {
+        name: "Temperature",
+        columns: [
+          {
+            name: "Month",
+            type: Dataset.DataType.String,
+            metadata: {
+              kind: Dataset.DataKind.Categorical,
+              order: months
+            }
+          },
+          {
+            name: "City",
+            type: Dataset.DataType.String,
+            metadata: { kind: Dataset.DataKind.Categorical }
+          },
+          {
+            name: "Value",
+            type: Dataset.DataType.Number,
+            metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" }
+          }
+        ],
+        rows
+      }
+    ],
+    name: "demo"
+  };
+}
+
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
 
@@ -49,78 +103,7 @@ export class Application {
     this.worker = new CharticulatorWorker(workerScriptURL);
     await this.worker.initialize(config);
 
-    const rows: any[] = [];
-    let monthIndex = 0;
-    for (const month of [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
-    ]) {
-      let cityIndex = 0;
-      for (const city of ["City1", "City2", "City3"]) {
-        const temperature =
-          50 +
-          30 *
-            Math.sin(
-              ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
-            );
-        rows.push({
-          _id: "ID" + rows.length,
-          Month: month,
-          City: city,
-          Temperature: temperature
-        });
-        cityIndex += 1;
-      }
-      monthIndex += 1;
-    }
-    this.mainStore = new MainStore(this.worker, {
-      tables: [
-        {
-          name: "Temperature",
-          columns: [
-            {
-              name: "Month",
-              type: "string",
-              metadata: {
-                kind: "categorical",
-                order: [
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec"
-                ]
-              }
-            },
-            { name: "City", type: "string", metadata: { kind: "categorical" } },
-            {
-              name: "Temperature",
-              type: "number",
-              metadata: { kind: "numerical", format: ".1f" }
-            }
-          ],
-          rows
-        }
-      ],
-      name: "demo"
-    });
+    this.mainStore = new MainStore(this.worker, makeDefaultDataset());
     (window as any).mainStore = this.mainStore;
     ReactDOM.render(
       <MainView store={this.mainStore} ref={e => (this.mainView = e)} />,

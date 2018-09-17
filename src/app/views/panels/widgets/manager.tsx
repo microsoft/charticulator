@@ -45,7 +45,7 @@ import {
   Radio,
   Select,
   ComboBoxFontFamily,
-  InputFile
+  ComboBox
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
@@ -76,51 +76,19 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
 
-  // A row for value/data mapping.
-  public mappingEditorTOFIX(attribute: string) {
-    const objectClass = this.objectClass;
-    const info = objectClass.attributes[attribute];
-    return this.mappingEditor(info.displayName, attribute, info.type, {
-      defaultValue: info.defaultValue,
-      defaultAuto: !info.solverExclude && !info.stateExclude,
-      hints: {
-        rangeNumber: info.defaultRange as [number, number]
-      }
-    });
-    // return (
-    //     <AttributeEditorItem
-    //         chart={this.store.chart}
-    //         attributeName={attribute}
-    //         attributeDescription={objectClass.attributes[attribute]}
-    //         mapping={objectClass.object.mappings[attribute]}
-    //         onEdit={(mapping) => {
-    //             if (this.onEditMappingHandler) {
-    //                 this.onEditMappingHandler(attribute, mapping);
-    //             }
-    //         }}
-    //         onMapData={(data) => {
-    //             if (this.onMapDataHandler) {
-    //                 this.onMapDataHandler(attribute, data, false);
-    //             }
-    //         }}
-    //         store={this.store}
-    //     />
-    // );
-  }
-
   public mappingEditor(
     name: string,
     attribute: string,
-    type: string,
     options: Prototypes.Controls.MappingEditorOptions
   ): JSX.Element {
-    const mapping = this.getAttributeMapping(attribute);
+    const objectClass = this.objectClass;
+    const info = objectClass.attributes[attribute];
     return this.row(
       name,
       <MappingEditor
         parent={this}
         attribute={attribute}
-        type={type}
+        type={info.type}
         options={options}
       />
     );
@@ -195,6 +163,24 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <ComboBoxFontFamily
         defaultValue={this.getPropertyValue(property) as string}
+        onEnter={value => {
+          this.emitSetProperty(property, value);
+          return true;
+        }}
+      />
+    );
+  }
+
+  public inputComboBox(
+    property: Prototypes.Controls.Property,
+    values: string[],
+    valuesOnly: boolean = false
+  ) {
+    return (
+      <ComboBox
+        defaultValue={this.getPropertyValue(property) as string}
+        options={values}
+        optionsOnly={valuesOnly}
         onEnter={value => {
           this.emitSetProperty(property, value);
           return true;
