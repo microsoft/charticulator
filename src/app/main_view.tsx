@@ -98,10 +98,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       }
                     >
                       <ErrorBoundary>
-                        <MarkEditorView
-                          store={this.props.store.chartStore}
-                          height={300}
-                        />
+                        <MarkEditorView height={300} />
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
@@ -150,7 +147,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               onClose={() => this.setState({ glyphViewMaximized: false })}
             >
               <ErrorBoundary>
-                <MarkEditorView store={this.props.store.chartStore} />
+                <MarkEditorView />
               </ErrorBoundary>
             </FloatingPanel>
           ) : null}
