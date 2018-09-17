@@ -102,9 +102,7 @@ export class ChartStateManager {
   }
 
   /** Create an empty chart state using chart and dataset */
-  private createChartState(
-    defaultAttributes: DefaultAttributes
-  ): Specification.ChartState {
+  private createChartState(): Specification.ChartState {
     const chart = this.chart;
 
     // Build the state hierarchy
@@ -117,8 +115,7 @@ export class ChartStateManager {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         this.mapPlotSegmentState(
           element as Specification.PlotSegment,
-          elementState as Specification.PlotSegmentState,
-          defaultAttributes
+          elementState as Specification.PlotSegmentState
         );
       }
       return elementState;
@@ -242,18 +239,26 @@ export class ChartStateManager {
   }
 
   /** Initialize the chart state with default parameters */
-  public initializeState() {
+  public initializeState(defaultAttributes: DefaultAttributes = {}) {
     this.enumerateClasses(cls => {
       cls.initializeState();
+
+      const attributesToAdd = defaultAttributes[cls.object._id];
+      if (attributesToAdd) {
+        cls.state.attributes = {
+          ...cls.state.attributes,
+          ...attributesToAdd
+        };
+      }
     });
   }
 
   /** Recreate the chart state from scratch */
   private initialize(defaultAttributes: DefaultAttributes) {
-    this.chartState = this.createChartState(defaultAttributes);
+    this.chartState = this.createChartState();
     this.rebuildID2Object();
     this.initializeCache();
-    this.initializeState();
+    this.initializeState(defaultAttributes);
   }
 
   /** Rebuild id to object map */
@@ -525,8 +530,7 @@ export class ChartStateManager {
    */
   private mapPlotSegmentState(
     plotSegment: Specification.PlotSegment,
-    plotSegmentState: Specification.PlotSegmentState,
-    defaultAttributes: DefaultAttributes = {}
+    plotSegmentState: Specification.PlotSegmentState
   ) {
     const glyphObject = getById(
       this.chart.glyphs,
@@ -582,17 +586,13 @@ export class ChartStateManager {
         return index2ExistingGlyphState.get(rowIndex.join(","));
       } else {
         const glyphState = {
-          marks: glyphObject.marks.map(element => {
+          marks: glyphObject.marks.map(() => {
             const elementState = {
-              attributes: {
-                ...(defaultAttributes[element._id] || {})
-              }
+              attributes: {}
             } as Specification.MarkState;
             return elementState;
           }),
-          attributes: {
-            ...(defaultAttributes[plotSegment.glyph] || {})
-          }
+          attributes: {}
         } as Specification.GlyphState;
         return glyphState;
       }
