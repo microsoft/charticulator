@@ -9,6 +9,7 @@ import {
   Prototypes,
   Specification
 } from "../../core";
+import { PlotSegment } from "../../core/specification";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -194,6 +195,22 @@ export class ChartTemplateBuilder {
         template.properties.push(property);
       }
     }
+
+    // Add filter
+    const plotSegmentObj = objectClass.object as PlotSegment<any>;
+    if (Prototypes.isType(plotSegmentObj.classID, "plot-segment")) {
+      const filter = plotSegmentObj.filter;
+      if (filter) {
+        const { categories, expression } = filter;
+        if (expression) {
+          this.addColumnsFromExpression(table, expression);
+        }
+        if (categories) {
+          this.addColumnsFromExpression(table, categories.expression);
+        }
+      }
+    }
+
     // Get mappings
     for (const [, mapping] of Prototypes.forEachMapping(
       objectClass.object.mappings
