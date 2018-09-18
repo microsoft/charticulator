@@ -69,6 +69,7 @@ export interface Inference {
 export interface AxisInference {
   /** Data expression for the axis */
   expression: string;
+  additionalExpressions?: string[];
 
   /** Type */
   type: "default" | "categorical" | "numerical";

@@ -101,7 +101,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public getPropertyValue(property: Prototypes.Controls.Property) {
     const prop = this.objectClass.object.properties[property.property];
     let value: Specification.AttributeValue;
-    if (property.field) {
+    if (property.field != null) {
       value = getField(prop, property.field);
     } else {
       value = prop;
@@ -457,6 +457,64 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           }}
         />
       </span>
+    );
+  }
+
+  public arrayWidget(
+    property: Prototypes.Controls.Property,
+    renderItem: (item: Prototypes.Controls.Property) => JSX.Element,
+    options: Prototypes.Controls.ArrayWidgetOptions = {
+      allowDelete: true,
+      allowReorder: true
+    }
+  ): JSX.Element {
+    const items = (this.getPropertyValue(property) as any[]).slice();
+    return (
+      <div className="charticulator__widget-array-view">
+        <ReorderListView
+          enabled={options.allowReorder}
+          onReorder={(dragIndex, dropIndex) => {
+            ReorderListView.ReorderArray(items, dragIndex, dropIndex);
+            this.emitSetProperty(property, items);
+          }}
+        >
+          {items.map((item, index) => {
+            return (
+              <div
+                key={index}
+                className="charticulator__widget-array-view-item"
+              >
+                {options.allowReorder ? (
+                  <span className="charticulator__widget-array-view-control charticulator__widget-array-view-order">
+                    <SVGImageIcon url={R.getSVGIcon("general/order")} />
+                  </span>
+                ) : null}
+                <span className="charticulator__widget-array-view-content">
+                  {renderItem({
+                    property: property.property,
+                    field: property.field
+                      ? property.field instanceof Array
+                        ? [...property.field, index]
+                        : [property.field, index]
+                      : index
+                  })}
+                </span>
+                {options.allowDelete ? (
+                  <span className="charticulator__widget-array-view-control">
+                    <Button
+                      icon="general/cross"
+                      onClick={() => {
+                        items.splice(index, 1);
+                        this.emitSetProperty(property, items);
+                      }}
+                    />
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
+        </ReorderListView>
+      </div>
     );
   }
 

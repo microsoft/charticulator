@@ -86,6 +86,10 @@ addSVGIcon(
   "general/popout",
   require("url-loader!resources/icons/icons_popout.svg")
 );
+addSVGIcon(
+  "general/order",
+  require("url-loader!resources/icons/icons_order.svg")
+);
 
 addSVGIcon(
   "general/zoom-in",
@@ -135,10 +139,6 @@ addSVGIcon(
 );
 
 // Toolbar icons
-addSVGIcon(
-  "toolbar/file",
-  require("url-loader!resources/icons/icons_toolbar-file.svg")
-);
 addSVGIcon(
   "toolbar/new",
   require("url-loader!resources/icons/icons_toolbar-new.svg")

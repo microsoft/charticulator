@@ -230,7 +230,7 @@ export class ChartTemplate {
           inference.axis.expression,
           inference.dataSource.table
         );
-        const vector = getExpressionVector(
+        let vector = getExpressionVector(
           expression,
           this.tableAssignment[inference.dataSource.table],
           this.transformGroupBy(
@@ -238,6 +238,24 @@ export class ChartTemplate {
             inference.dataSource.table
           )
         );
+        if (inference.axis.additionalExpressions) {
+          for (const item of inference.axis.additionalExpressions) {
+            const expr = this.transformExpression(
+              item,
+              inference.dataSource.table
+            );
+            vector = vector.concat(
+              getExpressionVector(
+                expr,
+                this.tableAssignment[inference.dataSource.table],
+                this.transformGroupBy(
+                  inference.dataSource.groupBy,
+                  inference.dataSource.table
+                )
+              )
+            );
+          }
+        }
         const axisDataBinding = getProperty(
           object,
           axis.property

@@ -9,7 +9,7 @@ export type Widget = any;
 
 export interface Property {
   property: string;
-  field?: string | string[];
+  field?: string | number | Array<string | number>;
   noUpdateState?: boolean;
   noComputeLayout?: boolean;
 }
@@ -111,6 +111,11 @@ export interface NestedChartEditorOptions {
   height: number;
 }
 
+export interface ArrayWidgetOptions {
+  allowReorder?: boolean;
+  allowDelete?: boolean;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -149,6 +154,12 @@ export interface WidgetManager {
 
   // Reorder widget: allow user to reorder the items in a property
   reorderWidget(property: Property): Widget;
+
+  arrayWidget(
+    property: Property,
+    item: (item: Property) => Widget,
+    options?: ArrayWidgetOptions
+  ): Widget;
 
   dropTarget(options: DropTargetOptions, widget: Widget): Widget;
 

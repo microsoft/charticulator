@@ -605,7 +605,7 @@ export class SetObjectProperty extends Action {
   constructor(
     public object: Specification.Object,
     public property: string,
-    public field: string | string[],
+    public field: number | string | Array<number | string>,
     public value: Specification.AttributeValue,
     public noUpdateState: boolean = false,
     public noComputeLayout: boolean = false
