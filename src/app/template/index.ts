@@ -208,6 +208,11 @@ export class ChartTemplateBuilder {
           this.addColumnsFromExpression(table, categories.expression);
         }
       }
+
+      const groupBy = plotSegmentObj.groupBy;
+      if (groupBy && groupBy.expression) {
+        this.addColumnsFromExpression(table, groupBy.expression);
+      }
     }
 
     // Get mappings
