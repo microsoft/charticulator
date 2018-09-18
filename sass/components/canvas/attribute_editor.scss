@@ -661,6 +661,30 @@
       flex-direction: row;
     }
 
+    &-array-view {
+      &-item {
+        display: flex;
+      }
+      &-control {
+        flex-shrink: 0;
+        &:first-child {
+          margin-right: 4px;
+        }
+        &:last-child {
+          margin-left: 4px;
+        }
+      }
+      &-order {
+        .el-svg-icon {
+          opacity: 0.2;
+        }
+        cursor: move;
+      }
+      &-content {
+        flex: 1 1;
+      }
+    }
+
     &-section-header {
       color: $gray-100;
       font-size: 12px;

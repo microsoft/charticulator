@@ -178,7 +178,8 @@ export class AxisRenderer {
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
       const tx =
-        ((ticks[i] - domainMin) / (domainMax - domainMin)) *
+        ((Math.log(ticks[i]) - Math.log(domainMin)) /
+          (Math.log(domainMax) - Math.log(domainMin))) *
           (rangeMax - rangeMin) +
         rangeMin;
       r.push({

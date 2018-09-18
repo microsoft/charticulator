@@ -15,7 +15,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -25,7 +24,11 @@ import {
   buildAxisWidgets,
   getNumericalInterpolate
 } from "../plot_segments/axis";
-import { DataAxisAttributes, DataAxisProperties } from "./data_axis.attrs";
+import {
+  DataAxisAttributes,
+  DataAxisProperties,
+  DataAxisExpression
+} from "./data_axis.attrs";
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -51,11 +54,16 @@ export class DataAxisClass extends MarkClass<
     visible: true
   };
 
+  public getAttributeNames(expr: DataAxisExpression) {
+    return [`anchorX${expr.name}`, `anchorY${expr.name}`];
+  }
+
   public get attributeNames(): string[] {
     const r = ["x1", "y1", "x2", "y2"];
-    for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
-      r.push(`anchorX${i}`);
-      r.push(`anchorY${i}`);
+    for (const item of this.object.properties.dataExpressions) {
+      const [xName, yName] = this.getAttributeNames(item);
+      r.push(xName);
+      r.push(yName);
     }
     return r;
   }
@@ -64,13 +72,14 @@ export class DataAxisClass extends MarkClass<
     const r: AttributeDescriptions = {
       ...AttrBuilder.line()
     };
-    for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
-      r[`anchorX${i}`] = {
-        name: `anchorX${i}`,
+    for (const item of this.object.properties.dataExpressions) {
+      const [xName, yName] = this.getAttributeNames(item);
+      r[xName] = {
+        name: xName,
         type: Specification.AttributeType.Number
       };
-      r[`anchorY${i}`] = {
-        name: `anchorY${i}`,
+      r[yName] = {
+        name: yName,
         type: Specification.AttributeType.Number
       };
     }
@@ -89,30 +98,31 @@ export class DataAxisClass extends MarkClass<
     const [x1, y1, x2, y2] = solver.attrs(attrs, ["x1", "y1", "x2", "y2"]);
     if (props.axis) {
       if (props.axis.type == "numerical") {
-        for (let i = 0; i < props.dataExpressions.length; i++) {
+        for (const item of props.dataExpressions) {
+          const [attrX, attrY] = this.getAttributeNames(item);
           const expr = context.getExpressionValue(
-            props.dataExpressions[i],
+            item.expression,
             context.rowContext
           ) as number;
           const interp = getNumericalInterpolate(props.axis);
           const t = interp(expr);
-          if (attrs[`anchorX${i}`] == null) {
-            attrs[`anchorX${i}`] = attrs.x1;
+          if (attrs[attrX] == null) {
+            attrs[attrX] = attrs.x1;
           }
-          if (attrs[`anchorY${i}`] == null) {
-            attrs[`anchorY${i}`] = attrs.y1;
+          if (attrs[attrY] == null) {
+            attrs[attrY] = attrs.y1;
           }
           solver.addLinear(
             ConstraintStrength.HARD,
             0,
             [[t, x2], [1 - t, x1]],
-            [[1, solver.attr(attrs, `anchorX${i}`)]]
+            [[1, solver.attr(attrs, attrX)]]
           );
           solver.addLinear(
             ConstraintStrength.HARD,
             0,
             [[t, y2], [1 - t, y1]],
-            [[1, solver.attr(attrs, `anchorY${i}`)]]
+            [[1, solver.attr(attrs, attrY)]]
           );
         }
       }
@@ -221,8 +231,8 @@ export class DataAxisClass extends MarkClass<
     const attrs = this.state.attributes;
     const guides: SnappingGuides.Description[] = [];
     if (attrs.x1 != attrs.x2) {
-      for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
-        const attr = `anchorX${i}`;
+      for (const item of this.object.properties.dataExpressions) {
+        const attr = this.getAttributeNames(item)[0];
         guides.push({
           type: "x",
           value: attrs[attr] as number,
@@ -231,8 +241,8 @@ export class DataAxisClass extends MarkClass<
       }
     }
     if (attrs.y1 != attrs.y2) {
-      for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
-        const attr = `anchorY${i}`;
+      for (const item of this.object.properties.dataExpressions) {
+        const attr = this.getAttributeNames(item)[1];
         guides.push({
           type: "y",
           value: attrs[attr] as number,
@@ -240,14 +250,13 @@ export class DataAxisClass extends MarkClass<
         } as SnappingGuides.Axis);
       }
     }
-    for (let i = 0; i < this.object.properties.dataExpressions.length; i++) {
-      const attrX = `anchorX${i}`;
-      const attrY = `anchorY${i}`;
+    for (const item of this.object.properties.dataExpressions) {
+      const [attrX, attrY] = this.getAttributeNames(item);
       guides.push({
         type: "label",
         x: attrs[attrX] as number,
         y: attrs[attrY] as number,
-        text: this.object.properties.dataExpressions[i]
+        text: item.expression
       } as SnappingGuides.Label);
     }
     return guides;
@@ -284,18 +293,6 @@ export class DataAxisClass extends MarkClass<
     ];
   }
 
-  // /** Get link anchors for this mark */
-  // public getLinkAnchors(): LinkAnchor.Description[] {
-  //     let attrs = this.state.attributes;
-  //     return [
-  //         {
-  //             points: [
-  //                 { x: attrs.x, y: attrs.y, xAttribute: "x", yAttribute: "y", direction: { x: 0, y: 1 } }
-  //             ]
-  //         }
-  //     ];
-  // }
-
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -306,7 +303,28 @@ export class DataAxisClass extends MarkClass<
       manager,
       "Data Axis"
     );
-    return [...axisWidgets];
+    const r = [...axisWidgets];
+    if (props.dataExpressions.length > 0) {
+      r.push(manager.sectionHeader("Data Expressions"));
+      r.push(
+        manager.arrayWidget(
+          { property: "dataExpressions" },
+          item =>
+            manager.inputExpression({
+              property: "dataExpressions",
+              field:
+                item.field instanceof Array
+                  ? [...item.field, "expression"]
+                  : [item.field, "expression"]
+            }),
+          {
+            allowDelete: true,
+            allowReorder: true
+          }
+        )
+      );
+    }
+    return r;
   }
 
   public getTemplateParameters(): TemplateParameters {
@@ -322,7 +340,7 @@ export class DataAxisClass extends MarkClass<
             objectID: this.object._id,
             dataSource,
             axis: {
-              expression: props.dataExpressions[0],
+              expression: props.dataExpressions[0].expression,
               type: props.axis.type,
               property: "axis"
             }
@@ -332,8 +350,11 @@ export class DataAxisClass extends MarkClass<
               objectID: this.object._id,
               dataSource,
               expression: {
-                expression: x,
-                property: { property: "dataExpressions", field: i }
+                expression: x.expression,
+                property: {
+                  property: "dataExpressions",
+                  field: [i, "expression"]
+                }
               }
             };
           })

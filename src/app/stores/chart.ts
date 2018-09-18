@@ -862,11 +862,14 @@ export class ChartStore extends BaseStore {
 
       if (action.appendToProperty) {
         if (action.object.properties[action.appendToProperty] == null) {
-          action.object.properties[action.appendToProperty] = [groupExpression];
+          action.object.properties[action.appendToProperty] = [
+            { name: uniqueID(), expression: groupExpression }
+          ];
         } else {
-          (action.object.properties[action.appendToProperty] as string[]).push(
-            groupExpression
-          );
+          (action.object.properties[action.appendToProperty] as any[]).push({
+            name: uniqueID(),
+            expression: groupExpression
+          });
         }
         if (action.object.properties[action.property] == null) {
           action.object.properties[action.property] = dataBinding;
