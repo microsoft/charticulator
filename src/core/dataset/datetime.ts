@@ -20,6 +20,13 @@
  */
 export function parseDate(str: string) {
   str = str.trim();
+
+  // Just try a simple parse first, then try regex matching
+  const date = Date.parse(str);
+  if (!isNaN(date)) {
+    return date;
+  }
+
   let m;
   // Overall pass
   m = str.match(

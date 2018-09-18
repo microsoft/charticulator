@@ -69,6 +69,18 @@ function makeArrayCapable2<TA, TB, TRet>(f: (a: TA, b: TB) => TRet) {
   };
 }
 
+function formattedDate(format: string) {
+  const formatter = utcFormat(format);
+  return (a: Date | string) => {
+    if (typeof a === "number") {
+      a = new Date(a);
+    } else if (!(a instanceof Date)) {
+      a = new Date(parseDate(a + ""));
+    }
+    return formatter(a);
+  };
+}
+
 // Math functions
 functions.abs = makeArrayCapable1(Math.abs);
 functions.sign = makeArrayCapable1(Math.sign);
@@ -232,16 +244,16 @@ operators["unary:not"] = makeArrayCapable1((a: boolean) => !a);
 functions.date = {
   parse: makeArrayCapable1((x: string) => parseDate(x)),
 
-  year: makeArrayCapable1(utcFormat("%Y")), // year with century as a decimal number.
-  month: makeArrayCapable1(utcFormat("%b")), // month as a string "Jan" - "Dec".
-  day: makeArrayCapable1(utcFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
-  weekOfYear: makeArrayCapable1(utcFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
-  dayOfYear: makeArrayCapable1(utcFormat("%j")), // day of the year as a decimal number [001,366].
-  weekday: makeArrayCapable1(utcFormat("%a")), // abbreviated weekday name.
+  year: makeArrayCapable1(formattedDate("%Y")), // year with century as a decimal number.
+  month: makeArrayCapable1(formattedDate("%b")), // month as a string "Jan" - "Dec".
+  day: makeArrayCapable1(formattedDate("%d")), // zero-padded day of the month as a decimal number [01,31].
+  weekOfYear: makeArrayCapable1(formattedDate("%U")), // Sunday-based week of the year as a decimal number [00,53].
+  dayOfYear: makeArrayCapable1(formattedDate("%j")), // day of the year as a decimal number [001,366].
+  weekday: makeArrayCapable1(formattedDate("%a")), // abbreviated weekday name.
 
-  hour: makeArrayCapable1(utcFormat("%H")), // hour (24-hour clock) as a decimal number [00,23].
-  minute: makeArrayCapable1(utcFormat("%M")), // minute as a decimal number [00,59].
-  second: makeArrayCapable1(utcFormat("%S")), // second as a decimal number [00,61].
+  hour: makeArrayCapable1(formattedDate("%H")), // hour (24-hour clock) as a decimal number [00,23].
+  minute: makeArrayCapable1(formattedDate("%M")), // minute as a decimal number [00,59].
+  second: makeArrayCapable1(formattedDate("%S")), // second as a decimal number [00,61].
 
   timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000)
 };
