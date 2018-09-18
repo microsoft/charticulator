@@ -1274,7 +1274,7 @@ export class ChartStore extends BaseStore {
               }
               markState.attributes[key] = action.updates[key];
               this.addPresolveValue(
-                Solver.ConstraintStrength.STRONG,
+                Solver.ConstraintStrength.WEAK,
                 markState.attributes,
                 key,
                 action.updates[key] as number

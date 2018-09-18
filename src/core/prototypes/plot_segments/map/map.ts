@@ -96,7 +96,7 @@ export class MapPlotSegment extends PlotSegmentClass {
     attrs.y2 = 100;
   }
 
-  public buildConstraints(solver: ConstraintSolver): void {
+  public buildGlyphConstraints(solver: ConstraintSolver): void {
     const [latitude, longitude, zoom] = this.getCenterZoom();
     const longitudeData = this.object.properties.longitudeData;
     const latitudeData = this.object.properties.latitudeData;

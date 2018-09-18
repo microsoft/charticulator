@@ -287,7 +287,12 @@ export class CurvePlotSegment extends PlotSegmentClass<
       [[1, normal2]],
       [[props.normalEnd / 2, x2], [-props.normalEnd / 2, x1]]
     );
+  }
 
+  public buildGlyphConstraints(
+    solver: ConstraintSolver,
+    context: BuildConstraintsContext
+  ): void {
     const builder = this.createBuilder(solver, context);
     builder.build();
   }
