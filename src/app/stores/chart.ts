@@ -19,6 +19,7 @@ import { Actions } from "../actions";
 import { ChartTemplateBuilder } from "../template";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
+import { ValueType } from "../../core/expression/classes";
 
 export abstract class Selection {}
 
@@ -850,7 +851,7 @@ export class ChartStore extends BaseStore {
     if (action instanceof Actions.BindDataToAxis) {
       this.parent.saveHistory();
       const groupExpression = action.dataExpression.expression;
-      const dataBinding: Specification.Types.AxisDataBinding = {
+      let dataBinding: Specification.Types.AxisDataBinding = {
         type: "categorical",
         expression: groupExpression,
         valueType: action.dataExpression.valueType,
@@ -860,16 +861,28 @@ export class ChartStore extends BaseStore {
         style: deepClone(Prototypes.PlotSegments.defaultAxisStyle)
       };
 
+      let expressions = [groupExpression];
+
       if (action.appendToProperty) {
         if (action.object.properties[action.appendToProperty] == null) {
-          action.object.properties[action.appendToProperty] = [groupExpression];
+          action.object.properties[action.appendToProperty] = [
+            { name: uniqueID(), expression: groupExpression }
+          ];
         } else {
-          (action.object.properties[action.appendToProperty] as string[]).push(
-            groupExpression
-          );
+          (action.object.properties[action.appendToProperty] as any[]).push({
+            name: uniqueID(),
+            expression: groupExpression
+          });
         }
+        expressions = (action.object.properties[
+          action.appendToProperty
+        ] as any[]).map(x => x.expression);
         if (action.object.properties[action.property] == null) {
           action.object.properties[action.property] = dataBinding;
+        } else {
+          dataBinding = action.object.properties[
+            action.property
+          ] as Specification.Types.AxisDataBinding;
         }
       } else {
         action.object.properties[action.property] = dataBinding;
@@ -893,11 +906,15 @@ export class ChartStore extends BaseStore {
           }
         }
       }
-      const values = this.chartManager.getGroupedExpressionVector(
-        action.dataExpression.table.name,
-        groupBy,
-        groupExpression
-      );
+      let values: ValueType[] = [];
+      for (const expr of expressions) {
+        const r = this.chartManager.getGroupedExpressionVector(
+          action.dataExpression.table.name,
+          groupBy,
+          expr
+        );
+        values = values.concat(r);
+      }
 
       switch (action.dataExpression.metadata.kind) {
         case Specification.DataKind.Categorical:
@@ -1257,7 +1274,7 @@ export class ChartStore extends BaseStore {
               }
               markState.attributes[key] = action.updates[key];
               this.addPresolveValue(
-                Solver.ConstraintStrength.STRONG,
+                Solver.ConstraintStrength.WEAK,
                 markState.attributes,
                 key,
                 action.updates[key] as number

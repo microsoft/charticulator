@@ -146,7 +146,6 @@ export class Migrator {
       for (const mark of glyph.marks) {
         if (Prototypes.isType(mark.classID, "mark.data-axis")) {
           const properties = mark.properties as any;
-          console.log(properties);
           const valueType: string = properties.axis.valueType;
           properties.axis.expression = this.addAggregationToExpression(
             properties.axis.expression,
@@ -154,7 +153,10 @@ export class Migrator {
           );
           if (properties.dataExpressions) {
             properties.dataExpressions = properties.dataExpressions.map(
-              (x: string) => this.addAggregationToExpression(x, valueType)
+              (x: string, index: number) => ({
+                name: index.toString(),
+                expression: this.addAggregationToExpression(x, valueType)
+              })
             );
           }
         }

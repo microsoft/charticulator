@@ -138,6 +138,8 @@ class RectangleChart extends ChartClass {
     "y1",
     "x2",
     "y2",
+    "cx",
+    "cy",
     "ox1",
     "oy1",
     "ox2",
@@ -164,6 +166,14 @@ class RectangleChart extends ChartClass {
     },
     y2: {
       name: "y2",
+      type: Specification.AttributeType.Number
+    },
+    cx: {
+      name: "cx",
+      type: Specification.AttributeType.Number
+    },
+    cy: {
+      name: "cy",
       type: Specification.AttributeType.Number
     },
     ox1: {
