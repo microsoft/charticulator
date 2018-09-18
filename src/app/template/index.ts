@@ -9,7 +9,6 @@ import {
   Prototypes,
   Specification
 } from "../../core";
-import { PlotSegment } from "../../core/specification";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -197,7 +196,7 @@ export class ChartTemplateBuilder {
     }
 
     // Add filter
-    const plotSegmentObj = objectClass.object as PlotSegment<any>;
+    const plotSegmentObj = objectClass.object as Specification.PlotSegment<any>;
     if (Prototypes.isType(plotSegmentObj.classID, "plot-segment")) {
       const filter = plotSegmentObj.filter;
       if (filter) {
