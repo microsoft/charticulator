@@ -181,18 +181,7 @@ export class ChartComponent extends React.Component<
     }
     this.timer = setTimeout(() => {
       this.timer = null;
-      {
-        const solver = new Solver.ChartConstraintSolver("chart");
-        solver.setup(this.manager);
-        solver.solve();
-        solver.destroy();
-      }
-      {
-        const solver = new Solver.ChartConstraintSolver("glyphs");
-        solver.setup(this.manager);
-        solver.solve();
-        solver.destroy();
-      }
+      this.manager.solveConstraints();
       this.applySelection(this.props.selection);
       this.setState({
         working: false,

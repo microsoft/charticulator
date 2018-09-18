@@ -63,46 +63,12 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
     additional: (solver: Core.Solver.ChartConstraintSolver) => void = null,
     mappingOnly: boolean = false
   ) {
-    let loss: { softLoss: number; hardLoss: number } = null;
     const chartManager = new Core.Prototypes.ChartStateManager(
       chart,
       dataset,
       chartState
     );
-    if (mappingOnly) {
-      const solver = new Core.Solver.ChartConstraintSolver("glyphs");
-      solver.setup(chartManager);
-      solver.destroy();
-    } else {
-      const iterations = additional != null ? 2 : 1;
-      for (let i = 0; i < iterations; i++) {
-        {
-          const t1 = new Date().getTime();
-          const solver = new Core.Solver.ChartConstraintSolver("chart");
-          solver.setup(chartManager);
-          if (additional) {
-            additional(solver);
-          }
-          loss = solver.solve();
-          solver.destroy();
-          const t2 = new Date().getTime();
-          console.log("chart phase", t2 - t1);
-        }
-        {
-          const t1 = new Date().getTime();
-          const solver = new Core.Solver.ChartConstraintSolver("glyphs");
-          solver.setup(chartManager);
-          if (additional) {
-            additional(solver);
-          }
-          loss = solver.solve();
-          solver.destroy();
-          const t2 = new Date().getTime();
-          console.log("glyphs phase", t2 - t1);
-        }
-        additional = null;
-      }
-    }
+    chartManager.solveConstraints(additional, mappingOnly);
     return chartState;
   }
 }

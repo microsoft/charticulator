@@ -9,6 +9,7 @@ import * as Specification from "../specification";
 import { getById, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver } from "./wasm_solver";
+import { PlotSegmentClass } from "../prototypes/plot_segments";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
@@ -359,13 +360,33 @@ export class ChartConstraintSolver {
       );
       const elementClass = this.manager.getChartElementClass(elementState);
 
-      if (Prototypes.isType(element.classID, "plot-segment")) {
-        const layout = element as Specification.PlotSegment;
-        const layoutState = elementState as Specification.PlotSegmentState;
-        const mark = getById(chart.glyphs, layout.glyph);
-        const tableContext = this.manager.dataflow.getTable(layout.table);
+      elementClass.buildConstraints(this.solver, {
+        getExpressionValue: (expr: string, context: Expression.Context) => {
+          return this.manager.dataflow.cache
+            .parse(expr)
+            .getNumberValue(context);
+        },
+        getGlyphAttributes: (
+          glyphID: string,
+          table: string,
+          rowIndex: number[]
+        ) => {
+          const analyzed = this.getGlyphAnalyzeResult(
+            getById(this.chart.glyphs, glyphID)
+          );
+          return analyzed.computeAttributes(
+            this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
+          );
+        }
+      });
 
-        if (this.stage == "glyphs") {
+      if (this.stage == "glyphs") {
+        if (Prototypes.isType(element.classID, "plot-segment")) {
+          const layout = element as Specification.PlotSegment;
+          const layoutState = elementState as Specification.PlotSegmentState;
+          const mark = getById(chart.glyphs, layout.glyph);
+          const tableContext = this.manager.dataflow.getTable(layout.table);
+
           for (const [dataRowIndex, markState] of zip(
             layoutState.dataRowIndices,
             layoutState.glyphs
@@ -377,28 +398,34 @@ export class ChartConstraintSolver {
               markState
             );
           }
+          (elementClass as PlotSegmentClass).buildGlyphConstraints(
+            this.solver,
+            {
+              getExpressionValue: (
+                expr: string,
+                context: Expression.Context
+              ) => {
+                return this.manager.dataflow.cache
+                  .parse(expr)
+                  .getNumberValue(context);
+              },
+              getGlyphAttributes: (
+                glyphID: string,
+                table: string,
+                rowIndex: number[]
+              ) => {
+                const analyzed = this.getGlyphAnalyzeResult(
+                  getById(this.chart.glyphs, glyphID)
+                );
+                return analyzed.computeAttributes(
+                  this.manager.dataflow
+                    .getTable(table)
+                    .getGroupedContext(rowIndex)
+                );
+              }
+            }
+          );
         }
-      }
-      if (this.stage == "glyphs") {
-        elementClass.buildConstraints(this.solver, {
-          getExpressionValue: (expr: string, context: Expression.Context) => {
-            return this.manager.dataflow.cache
-              .parse(expr)
-              .getNumberValue(context);
-          },
-          getGlyphAttributes: (
-            glyphID: string,
-            table: string,
-            rowIndex: number[]
-          ) => {
-            const analyzed = this.getGlyphAnalyzeResult(
-              getById(this.chart.glyphs, glyphID)
-            );
-            return analyzed.computeAttributes(
-              this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
-            );
-          }
-        });
       }
     }
 

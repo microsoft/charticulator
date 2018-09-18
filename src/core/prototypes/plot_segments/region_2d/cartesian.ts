@@ -192,7 +192,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return builder;
   }
 
-  public buildConstraints(
+  public buildGlyphConstraints(
     solver: ConstraintSolver,
     context: BuildConstraintsContext
   ): void {
