@@ -16,6 +16,14 @@ export function initialize() {
 
 export let Matrix = LSCGSolver.Matrix;
 
+const strengthMap: { [name in ConstraintStrength]: number } = {
+  [ConstraintStrength.HARD]: LSCGSolver.ConstraintSolver.STRENGTH_HARD,
+  [ConstraintStrength.STRONG]: LSCGSolver.ConstraintSolver.STRENGTH_STRONG,
+  [ConstraintStrength.MEDIUM]: LSCGSolver.ConstraintSolver.STRENGTH_MEDIUM,
+  [ConstraintStrength.WEAK]: LSCGSolver.ConstraintSolver.STRENGTH_WEAK,
+  [ConstraintStrength.WEAKER]: LSCGSolver.ConstraintSolver.STRENGTH_WEAKER
+};
+
 export interface WASMSolverVariable extends Variable {
   map: AttributeMap;
   name: string;
@@ -26,6 +34,12 @@ export class WASMSolver extends ConstraintSolver {
   public solver: LSCGSolver.ConstraintSolver;
   public variables: KeyNameMap<AttributeMap, WASMSolverVariable>;
   public currentIndex: number = 0;
+  public softInequalities: Array<{
+    id: number;
+    bias: number;
+    variable_names: number[];
+    weights: number[];
+  }> = [];
 
   constructor() {
     super();
@@ -54,7 +68,14 @@ export class WASMSolver extends ConstraintSolver {
       if (isNaN(value)) {
         value = 0;
       }
-      this.solver.addVariable(this.currentIndex, value, true);
+      this.solver.addVariable(
+        this.currentIndex,
+        value,
+        options ? options.edit : false
+      );
+      if (!options) {
+        console.warn(`Creating new attr ${name} without options`);
+      }
       return item;
     }
   }
@@ -74,34 +95,7 @@ export class WASMSolver extends ConstraintSolver {
     lhs: Array<[number, WASMSolverVariable]>,
     rhs?: Array<[number, WASMSolverVariable]>
   ): void {
-    let st = 0;
-    switch (strength) {
-      case ConstraintStrength.HARD:
-        {
-          st = LSCGSolver.ConstraintSolver.STRENGTH_HARD;
-        }
-        break;
-      case ConstraintStrength.STRONG:
-        {
-          st = LSCGSolver.ConstraintSolver.STRENGTH_STRONG;
-        }
-        break;
-      case ConstraintStrength.MEDIUM:
-        {
-          st = LSCGSolver.ConstraintSolver.STRENGTH_MEDIUM;
-        }
-        break;
-      case ConstraintStrength.WEAK:
-        {
-          st = LSCGSolver.ConstraintSolver.STRENGTH_WEAK;
-        }
-        break;
-      case ConstraintStrength.WEAKER:
-        {
-          st = LSCGSolver.ConstraintSolver.STRENGTH_WEAKER;
-        }
-        break;
-    }
+    const st = strengthMap[strength];
     const weights = [];
     const variable_names = [];
     for (const item of lhs) {
@@ -117,14 +111,72 @@ export class WASMSolver extends ConstraintSolver {
     this.solver.addConstraint(st, bias, variable_names, weights);
   }
 
-  private _count = 0;
+  /** Add a soft inequality constraint: bias + linear(lhs) >= linear(rhs) */
+  public addSoftInequality(
+    strength: ConstraintStrength,
+    bias: number,
+    lhs: Array<[number, WASMSolverVariable]>,
+    rhs?: Array<[number, WASMSolverVariable]>
+  ): void {
+    const st = strengthMap[strength];
+    const weights = [];
+    const variable_names = [];
+    for (const item of lhs) {
+      weights.push(item[0]);
+      variable_names.push(item[1].index);
+    }
+    if (rhs) {
+      for (const item of rhs) {
+        weights.push(-item[0]);
+        variable_names.push(item[1].index);
+      }
+    }
+    const id = this.solver.addConstraint(st, bias, variable_names, weights);
+    this.softInequalities.push({
+      id,
+      bias,
+      variable_names,
+      weights
+    });
+  }
 
   /** Solve the constraints */
   public solve(): [number, number] {
     this.variables.forEach((value, map, key) => {
       this.solver.setValue(value.index, map[key] as number);
     });
-    this.solver.solve();
+
+    this.solver.regularizerWeight = 0.001;
+
+    const maxIters = 10;
+    for (let iter = 0; iter < maxIters; iter++) {
+      this.solver.solve();
+      let shouldReiterate = false;
+      for (const soft of this.softInequalities) {
+        let value = soft.bias;
+        for (let i = 0; i < soft.variable_names.length; i++) {
+          value +=
+            this.solver.getValue(soft.variable_names[i]) * soft.weights[i];
+        }
+        if (value >= -1e-6) {
+          this.solver.setConstraintStrength(
+            soft.id,
+            LSCGSolver.ConstraintSolver.STRENGTH_DISABLED
+          );
+        } else {
+          shouldReiterate = true;
+        }
+      }
+      if (!shouldReiterate) {
+        break;
+      }
+      if (iter == maxIters - 1) {
+        console.warn(
+          `Soft inequalities didn't converge within ${maxIters} iterations`
+        );
+      }
+    }
+
     this.variables.forEach((value, map, key) => {
       map[key] = this.solver.getValue(value.index);
     });

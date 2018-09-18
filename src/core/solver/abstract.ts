@@ -35,8 +35,16 @@ export abstract class ConstraintSolver {
   /** Set the value of a variable */
   public abstract setValue(attr: Variable, value: number): void;
 
-  /** Add a linear constraint */
+  /** Add a linear constraint: bias + linear(lhs) == linear(rhs) */
   public abstract addLinear(
+    strength: ConstraintStrength,
+    bias: number,
+    lhs: Array<[number, Variable]>,
+    rhs?: Array<[number, Variable]>
+  ): void;
+
+  /** Add a soft inequality constraint: bias + linear(lhs) >= linear(rhs) */
+  public abstract addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
     lhs: Array<[number, Variable]>,

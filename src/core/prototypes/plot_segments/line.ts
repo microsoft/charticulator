@@ -90,7 +90,7 @@ export class LineGuide extends PlotSegmentClass {
     attrs.y2 = 100;
   }
 
-  public buildConstraints(solver: ConstraintSolver): void {
+  public buildGlyphConstraints(solver: ConstraintSolver): void {
     const chart = this.parent.object;
     const props = this.object.properties;
     const rows = this.parent.dataflow.getTable(this.object.table);

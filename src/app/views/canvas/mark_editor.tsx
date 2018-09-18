@@ -82,6 +82,11 @@ export class MarkEditorView extends ContextedComponent<
       )
     );
     this.subs.push(
+      chartStore.addListener(ChartStore.EVENT_SELECTION, () =>
+        this.forceUpdate()
+      )
+    );
+    this.subs.push(
       chartStore.addListener(ChartStore.EVENT_CURRENT_TOOL, () => {
         this.setState({
           currentCreation: chartStore.currentTool,

@@ -240,24 +240,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
-    const [
-      x1,
-      y1,
-      x2,
-      y2,
-      innerRadius,
-      outerRadius,
-      angle1,
-      angle2
-    ] = solver.attrs(attrs, [
+    const [x1, y1, x2, y2, innerRadius, outerRadius] = solver.attrs(attrs, [
       "x1",
       "y1",
       "x2",
       "y2",
       "radial1",
-      "radial2",
-      "angle1",
-      "angle2"
+      "radial2"
     ]);
 
     attrs.angle1 = props.startAngle;
@@ -265,10 +254,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
     solver.makeConstant(attrs, "angle1");
     solver.makeConstant(attrs, "angle2");
 
-    const minRatio = Math.min(props.innerRatio, props.outerRatio);
-    const maxRatio = Math.max(props.innerRatio, props.outerRatio);
-
     if (attrs.x2 - attrs.x1 < attrs.y2 - attrs.y1) {
+      attrs.radial1 = (props.innerRatio * (attrs.x2 - attrs.x1)) / 2;
+      attrs.radial2 = (props.outerRatio * (attrs.x2 - attrs.x1)) / 2;
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
@@ -282,6 +270,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     } else {
+      attrs.radial1 = (props.innerRatio * (attrs.y2 - attrs.y1)) / 2;
+      attrs.radial2 = (props.outerRatio * (attrs.y2 - attrs.y1)) / 2;
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
@@ -295,7 +285,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     }
+  }
 
+  public buildGlyphConstraints(
+    solver: ConstraintSolver,
+    context: BuildConstraintsContext
+  ): void {
     const builder = this.createBuilder(solver, context);
     builder.build();
   }

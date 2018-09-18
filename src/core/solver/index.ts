@@ -7,17 +7,11 @@ import {
   ConstraintStrength,
   Variable
 } from "./abstract";
-import {
-  ChartConstraintSolver,
-  GlyphConstraintAnalyzer,
-  GlyphConstraintSolver
-} from "./solver";
-// import { CGConstraintSolver, ConstraintCompiler } from "./cg_solver";
+import { ChartConstraintSolver, GlyphConstraintAnalyzer } from "./solver";
 
 export {
   ChartConstraintSolver,
   GlyphConstraintAnalyzer,
-  GlyphConstraintSolver,
   ConstraintSolver,
   AttributeOptions,
   ConstraintStrength,

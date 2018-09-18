@@ -16,6 +16,7 @@ import { ChartElementClass } from "./chart_element";
 import { DataflowManager, DataflowTable } from "./dataflow";
 import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
+import { ChartConstraintSolver } from "../solver";
 
 /**
  * Represents a set of default attributes
@@ -844,6 +845,32 @@ export class ChartStateManager {
       return groups.map(g => expr.getValue(table.getGroupedContext(g)));
     } else {
       return indices.map(i => expr.getValue(table.getGroupedContext([i])));
+    }
+  }
+
+  public solveConstraints(
+    additional: (solver: ChartConstraintSolver) => void = null,
+    mappingOnly: boolean = false
+  ) {
+    if (mappingOnly) {
+      const solver = new ChartConstraintSolver("glyphs");
+      solver.setup(this);
+      solver.destroy();
+    } else {
+      const iterations = additional != null ? 2 : 1;
+      const phases: Array<"chart" | "glyphs"> = ["chart", "glyphs"];
+      for (let i = 0; i < iterations; i++) {
+        for (const phase of phases) {
+          const solver = new ChartConstraintSolver(phase);
+          solver.setup(this);
+          if (additional) {
+            additional(solver);
+          }
+          solver.solve();
+          solver.destroy();
+        }
+        additional = null;
+      }
     }
   }
 }

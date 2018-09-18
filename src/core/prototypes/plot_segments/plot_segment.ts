@@ -17,8 +17,14 @@ export abstract class PlotSegmentClass<
   /** Fill the layout's default state */
   public initializeState(): void {}
 
-  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
+  /** Build intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(
+    solver: ConstraintSolver,
+    context: BuildConstraintsContext
+  ): void {}
+
+  /** Build constraints for glyphs within */
+  public buildGlyphConstraints(
     solver: ConstraintSolver,
     context: BuildConstraintsContext
   ): void {}
