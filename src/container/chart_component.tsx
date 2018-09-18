@@ -62,18 +62,7 @@ export class ChartComponent extends React.Component<
     this.recreateManager(props);
     this.updateWithNewProps(props);
     if (props.sync) {
-      {
-        const solver = new Solver.ChartConstraintSolver("chart");
-        solver.setup(this.manager);
-        solver.solve();
-        solver.destroy();
-      }
-      {
-        const solver = new Solver.ChartConstraintSolver("glyphs");
-        solver.setup(this.manager);
-        solver.solve();
-        solver.destroy();
-      }
+      this.manager.solveConstraints();
 
       this.state = {
         working: false,
