@@ -341,6 +341,9 @@ export class DataAxisClass extends MarkClass<
             dataSource,
             axis: {
               expression: props.dataExpressions[0].expression,
+              additionalExpressions: props.dataExpressions.map(
+                x => x.expression
+              ),
               type: props.axis.type,
               property: "axis"
             }
