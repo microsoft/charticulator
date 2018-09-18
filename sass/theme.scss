@@ -2,34 +2,66 @@
 // Licensed under the MIT license.
 @import "./common/colors.scss";
 
-$theme: "";
+/* Borrowed from WMF */
+@font-face
+{
+    font-family: 'SegoeUI';
+    src: local("'Segoe UI'"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff2') format("woff2"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff') format("woff"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf') format("ttf");
+    font-weight: 400
+}
+@font-face
+{
+    font-family: 'SegoeUI';
+    src: local("'Segoe UI'"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Light/latest.woff2') format("woff2"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Light/latest.woff') format("woff"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Light/latest.ttf') format("ttf");
+    font-weight: 100
+}
+@font-face
+{
+    font-family: 'SegoeUI';
+    src: local("'Segoe UI'"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semilight/latest.woff2') format("woff2"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semilight/latest.woff') format("woff"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semilight/latest.ttf') format("ttf");
+    font-weight: 200
+}
+@font-face
+{
+    font-family: 'SegoeUI';
+    src: local("'Segoe UI'"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semibold/latest.woff2') format("woff2"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semibold/latest.woff') format("woff"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Semibold/latest.ttf') format("ttf");
+    font-weight: 600
+}
+@font-face
+{
+    font-family: 'SegoeUI';
+    src: local("'Segoe UI'"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Bold/latest.woff2') format("woff2"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Bold/latest.woff') format("woff"),url('//c.s-microsoft.com/static/fonts/segoe-ui/west-european/Bold/latest.ttf') format("ttf");
+    font-weight: 700
+}/* line 65, src/mwf_styles/utilities/_typography.scss */
 
-$theme-primary-background: $gray-100;
-$theme-primary-foreground: "";
+$powerbi-yellow: #F2C811;
 
+$theme-primary-background: rgb(51, 51, 51);
+$theme-primary-foreground: #fff;
+ 
 $theme-secondary-background: $gray-220;
 $theme-secondary-foreground: #333;
-
-$theme-hover-background: $gray-150;
+ 
+$theme-hover-background: "";
 $theme-hover-foreground: "";
-
-$theme-active-foreground: $gray-230;
-$theme-active-background: "";
-
-$theme-header-background: $gray-100;
-$theme-header-foreground: $gray-200;
-
-$theme-dataset-background: $gray-210;
-
+ 
+$theme-active-foreground: #fff;
+$theme-active-background: #000;
+ 
+$theme-header-background: #000;
+$theme-header-foreground: #fff;
+ 
+$theme-dataset-background: rgb(51, 51, 51);
+ 
 $theme-editor-pane-background: $gray-210;
-$theme-editor-pane-foreground: "";
-
-$theme-metadata-title-foreground: $gray-100;
-$theme-metadata-column-foreground: "";
-
-$theme-font-family-main: "Lato", "Lucida Grande", "Segoe UI", sans-serif;
+$theme-editor-pane-foreground: #333;
+ 
+$theme-metadata-title-foreground: $gray-200;
+$theme-metadata-column-foreground: #333;
+ 
+$theme-font-family-main: "SegoeUI", sans-serif;
 $theme-font-family-mono: "Inconsolata", "Menlo", "Courier New", monospace;
-
-$theme-application-title-background: "";
-$theme-application-title-foreground: "";
-$theme-application-title-font-weight: "";
+ 
+$theme-application-title-background: $powerbi-yellow;
+$theme-application-title-foreground: #000;
+$theme-application-title-font-weight: 200;

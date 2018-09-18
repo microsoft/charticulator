@@ -114,7 +114,7 @@ export class AppButton extends BaseButton<ButtonProps> {
         onClick={this._doClick}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
-        <span className="el-text">Charticulator</span>
+        <span className="el-text">Custom visual creator for Power BI</span>
       </span>
     );
   }
