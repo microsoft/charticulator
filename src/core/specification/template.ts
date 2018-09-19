@@ -3,9 +3,9 @@
 
 import { FieldType } from "../common";
 import * as Dataset from "../dataset";
-import { Chart } from "./index";
-import * as Types from "./types";
 import { DefaultAttributes } from "../prototypes";
+import { Chart, DataType, AttributeType } from "./index";
+import * as Types from "./types";
 
 export type PropertyField = string | { property: string; field: FieldType };
 
@@ -29,7 +29,7 @@ export interface ChartTemplate {
 export interface Column {
   displayName: string;
   name: string;
-  type: string;
+  type: DataType;
   metadata: Dataset.ColumnMetadata;
 }
 
@@ -47,7 +47,7 @@ export interface Property {
     attribute?: string;
   };
 
-  type: string;
+  type: AttributeType;
   default?: string | number | boolean;
 }
 
