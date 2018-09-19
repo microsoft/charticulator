@@ -219,6 +219,9 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
   switch (type) {
     case DataType.Boolean: {
       return values.map(v => {
+        if (v == null) {
+          return null;
+        }
         if (typeof v == "boolean") {
           return v;
         }
@@ -231,15 +234,22 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
     }
     case DataType.Number: {
       return values.map(v => {
+        // Check for null as well, since +null == 0
+        if (v == null) {
+          return null;
+        }
         const n = +v;
         return isNaN(n) ? null : n;
       });
     }
     case DataType.String: {
-      return values.map(v => v.toString());
+      return values.map(v => (v == null ? "" : v.toString()));
     }
     case DataType.Date: {
       return values.map(v => {
+        if (v == null) {
+          return null;
+        }
         if (typeof v == "number") {
           return v;
         }
