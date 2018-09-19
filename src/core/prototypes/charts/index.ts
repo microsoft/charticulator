@@ -515,7 +515,7 @@ class RectangleChart extends ChartClass {
             target: {
               attribute: "marginLeft"
             },
-            type: "number",
+            type: Specification.AttributeType.Number,
             default: this.state.attributes.marginLeft
           },
           {
@@ -523,7 +523,7 @@ class RectangleChart extends ChartClass {
             target: {
               attribute: "marginRight"
             },
-            type: "number",
+            type: Specification.AttributeType.Number,
             default: this.state.attributes.marginRight
           },
           {
@@ -531,7 +531,7 @@ class RectangleChart extends ChartClass {
             target: {
               attribute: "marginTop"
             },
-            type: "number",
+            type: Specification.AttributeType.Number,
             default: this.state.attributes.marginTop
           },
           {
@@ -539,7 +539,7 @@ class RectangleChart extends ChartClass {
             target: {
               attribute: "marginBottom"
             },
-            type: "number",
+            type: Specification.AttributeType.Number,
             default: this.state.attributes.marginBottom
           }
         ]
