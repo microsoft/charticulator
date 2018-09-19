@@ -103,8 +103,20 @@ export function inferAndConvertColumn(
   switch (inferredType) {
     case DataType.Number: {
       const validValues = convertedValues.filter(x => x != null);
-      const minValue = Math.min(...(validValues as number[]));
-      const maxValue = Math.max(...(validValues as number[]));
+
+      // Important to not use Math.max(...validValues) here, on larger datasets
+      // it can cause infinite recursion
+      let maxValue = Number.MIN_VALUE;
+      let minValue = Number.MAX_VALUE;
+      for (const value of validValues) {
+        if (value > maxValue) {
+          maxValue = value as number;
+        }
+        if (value < minValue) {
+          minValue = value as number;
+        }
+      }
+
       if (validValues.every((x: number) => Math.round(x) == x)) {
         // All integers
         if (minValue >= 1900 && maxValue <= 2100) {
