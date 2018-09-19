@@ -52,6 +52,12 @@ export class ChartTemplateBuilder {
     this.objectVisited = {};
   }
 
+  public addTable(table: string) {
+    if (!this.tableColumns.hasOwnProperty(table)) {
+      this.tableColumns[table] = new Set();
+    }
+  }
+
   public addColumn(table: string, column: string) {
     if (table == null) {
       table = this.dataset.tables[0].name;
@@ -59,7 +65,7 @@ export class ChartTemplateBuilder {
     const tableObject = getByName(this.dataset.tables, table);
     if (tableObject) {
       if (getByName(tableObject.columns, column)) {
-        if (this.tableColumns[table]) {
+        if (this.tableColumns.hasOwnProperty(table)) {
           this.tableColumns[table].add(column);
         } else {
           this.tableColumns[table] = new Set([column]);
@@ -198,6 +204,7 @@ export class ChartTemplateBuilder {
     // Add filter
     const plotSegmentObj = objectClass.object as Specification.PlotSegment<any>;
     if (Prototypes.isType(plotSegmentObj.classID, "plot-segment")) {
+      this.addTable(plotSegmentObj.table);
       const filter = plotSegmentObj.filter;
       if (filter) {
         const { categories, expression } = filter;
