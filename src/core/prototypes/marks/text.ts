@@ -390,7 +390,7 @@ export class TextElementClass extends EmphasizableMarkClass<
             target: {
               attribute: "text"
             },
-            type: "string",
+            type: Specification.AttributeType.Text,
             default: this.state.attributes.text
           }
         ]

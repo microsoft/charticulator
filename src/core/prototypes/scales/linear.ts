@@ -146,14 +146,14 @@ export class LinearScale extends ScaleClass<
       target: {
         property: "domainMin"
       },
-      type: "number"
+      type: Specification.AttributeType.Number
     });
     parameters.properties.push({
       objectID: this.object._id,
       target: {
         property: "domainMax"
       },
-      type: "number"
+      type: Specification.AttributeType.Number
     });
     return parameters;
   }
@@ -249,14 +249,14 @@ export class LinearColorScale extends ScaleClass<
       target: {
         property: "domainMin"
       },
-      type: "number"
+      type: Specification.AttributeType.Number
     });
     parameters.properties.push({
       objectID: this.object._id,
       target: {
         property: "domainMax"
       },
-      type: "number"
+      type: Specification.AttributeType.Number
     });
     return parameters;
   }
