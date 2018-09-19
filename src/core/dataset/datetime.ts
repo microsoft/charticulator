@@ -21,6 +21,17 @@
 export function parseDate(str: string) {
   str = str.trim();
   let m;
+  // ISO8601 full date: https://stackoverflow.com/a/37563868
+  if (
+    str.match(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i)
+  ) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      return t;
+    } else {
+      return null;
+    }
+  }
   // Overall pass
   m = str.match(
     /^(((\d{4})-(\d{2})(-(\d{2}))?|(\d{2})(\/(\d{2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
