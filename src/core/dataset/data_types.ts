@@ -214,3 +214,37 @@ export function inferAndConvertColumn(
     metadata: { kind: DataKind.Categorical }
   };
 }
+
+export function convertColumnType(values: any[], type: DataType): DataValue[] {
+  switch (type) {
+    case DataType.Boolean: {
+      return values.map(v => {
+        if (typeof v == "boolean") {
+          return v;
+        }
+        if (typeof v == "number") {
+          return v > 0;
+        }
+        const l = v.toString().toLowerCase();
+        return l == "yes" || l == "true";
+      });
+    }
+    case DataType.Number: {
+      return values.map(v => {
+        const n = +v;
+        return isNaN(n) ? null : n;
+      });
+    }
+    case DataType.String: {
+      return values.map(v => v.toString());
+    }
+    case DataType.Date: {
+      return values.map(v => {
+        if (typeof v == "number") {
+          return v;
+        }
+        return parseDate(v.toString());
+      });
+    }
+  }
+}
