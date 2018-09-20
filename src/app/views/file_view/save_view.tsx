@@ -5,15 +5,24 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { CurrentChartView } from ".";
-import { ButtonRaised } from "../../components";
+import { ButtonRaised, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
+import { Actions } from "../../actions";
+
+export interface FileViewSaveAsProps {
+  onClose: () => void;
+}
+export interface FileViewSaveAsState {
+  saving?: boolean;
+  error?: string;
+}
 
 export class FileViewSaveAs extends ContextedComponent<
-  {
-    onClose: () => void;
-  },
-  {}
+  FileViewSaveAsProps,
+  FileViewSaveAsState
 > {
+  public state: FileViewSaveAsState = {};
+
   public render() {
     let inputSaveChartName: HTMLInputElement;
 
@@ -33,17 +42,41 @@ export class FileViewSaveAs extends ContextedComponent<
             <i className="bar" />
           </div>
           <div className="buttons">
+            <span className="el-progress">
+              {this.state.saving ? (
+                <SVGImageIcon url={R.getSVGIcon("loading")} />
+              ) : null}
+            </span>
             <ButtonRaised
               url={R.getSVGIcon("toolbar/save")}
               text="Save to My Charts"
               onClick={() => {
                 const name = inputSaveChartName.value.trim();
-                this.mainStore.backendSaveChartAs(name).then(() => {
-                  this.props.onClose();
-                });
+                this.setState(
+                  {
+                    saving: true
+                  },
+                  () => {
+                    this.dispatch(
+                      new Actions.SaveAs(name, error => {
+                        if (error) {
+                          this.setState({
+                            saving: true,
+                            error: error.message
+                          });
+                        } else {
+                          this.props.onClose();
+                        }
+                      })
+                    );
+                  }
+                );
               }}
             />
           </div>
+          {this.state.error ? (
+            <div className="error">{this.state.error}</div>
+          ) : null}
         </section>
       </section>
     );

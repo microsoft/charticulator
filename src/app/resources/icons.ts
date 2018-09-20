@@ -156,6 +156,10 @@ addSVGIcon(
   require("url-loader!resources/icons/icons_toolbar-copy.svg")
 );
 addSVGIcon(
+  "toolbar/download",
+  require("url-loader!resources/icons/icons_toolbar-download.svg")
+);
+addSVGIcon(
   "toolbar/export",
   require("url-loader!resources/icons/icons_toolbar-export.svg")
 );

@@ -217,8 +217,17 @@
     }
 
     .buttons {
+      .el-progress {
+        display: inline-block;
+        vertical-align: top;
+        margin: 4px;
+        margin-right: 10px;
+      }
       text-align: right;
       margin-bottom: 10px;
+    }
+    .error {
+      text-align: right;
     }
   }
 

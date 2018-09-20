@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as FileSaver from "file-saver";
 import * as React from "react";
-import * as R from "../../resources";
-
 import { CurrentChartView } from ".";
 import { deepClone, Specification } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
 import { Actions } from "../../actions";
 import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
+import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
 
@@ -261,31 +259,12 @@ export class ExportTemplateView extends ContextedComponent<
             text={this.props.exportKind}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
-              this.state.target
-                .generate(this.state.targetProperties)
-                .then(base64 => {
-                  const byteCharacters = atob(base64);
-                  const byteNumbers = new Array(byteCharacters.length);
-                  for (let i = 0; i < byteCharacters.length; i++) {
-                    byteNumbers[i] = byteCharacters.charCodeAt(i);
-                  }
-                  const byteArray = new Uint8Array(byteNumbers);
-
-                  const blob = new Blob([byteArray], {
-                    type: "application/x-binary"
-                  });
-                  FileSaver.saveAs(
-                    blob,
-                    this.state.target.getFileName
-                      ? this.state.target.getFileName(
-                          this.state.targetProperties
-                        )
-                      : "charticulator." +
-                        this.state.target.getFileExtension(
-                          this.state.targetProperties
-                        )
-                  );
-                });
+              this.dispatch(
+                new Actions.ExportTemplate(
+                  this.state.target,
+                  this.state.targetProperties
+                )
+              );
             }}
           />
         </div>
