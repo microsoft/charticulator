@@ -1,35 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { deepClone, EventEmitter, Specification } from "../../core";
-import { Dispatcher } from "../../core";
-
-import { Actions } from "../actions";
-
+import * as FileSaver from "file-saver";
+import { saveAs } from "file-saver";
+import { Dataset, deepClone, Specification } from "../../core";
 import { BaseStore } from "../../core/store/base";
-
-import { ChartStore, ChartStoreState } from "./chart";
-import { DatasetStore, DatasetStoreState } from "./dataset";
-
-import { Dataset } from "../../core";
-
+import { CharticulatorWorker } from "../../worker";
+import { Actions } from "../actions";
+import { AbstractBackend } from "../backend/abstract";
+import { IndexedDBBackend } from "../backend/indexed_db";
+import { ExportTemplateTarget } from "../template";
 import { renderDataURLToPNG } from "../utils";
-
 import {
   renderChartToLocalString,
   renderChartToString
 } from "../views/canvas/chart_display";
-
-import { saveAs } from "file-saver";
-
-import { CharticulatorWorker } from "../../worker";
-import {
-  AbstractBackend,
-  ItemData,
-  ItemDescription,
-  ItemMetadata
-} from "../backend/abstract";
-import { IndexedDBBackend } from "../backend/indexed_db";
-import { ExportTemplateTarget } from "../template";
+import { ChartStore, ChartStoreState } from "./chart";
+import { DatasetStore, DatasetStoreState } from "./dataset";
 import { Migrator } from "./migrator";
 
 export class HistoryManager<StateType> {
@@ -219,12 +205,65 @@ export class MainStore extends BaseStore {
         }
       })();
     }
-    if (action instanceof Actions.Save) {
-      const state = this.saveState();
-      const blob = new Blob([JSON.stringify(state, null, 2)], {
-        type: "application/x-json;charset=utf-8"
+    if (action instanceof Actions.ExportTemplate) {
+      action.target.generate(action.properties).then(base64 => {
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+
+        const blob = new Blob([byteArray], {
+          type: "application/x-binary"
+        });
+        FileSaver.saveAs(
+          blob,
+          action.target.getFileName
+            ? action.target.getFileName(action.properties)
+            : "charticulator." +
+              action.target.getFileExtension(action.properties)
+        );
       });
-      saveAs(blob, "charticulator.json", true);
+    }
+    if (action instanceof Actions.Save) {
+      this.backendSaveChart()
+        .then(() => {
+          if (action.onFinish) {
+            action.onFinish();
+          }
+        })
+        .catch((error: Error) => {
+          if (action.onFinish) {
+            action.onFinish(error);
+          }
+        });
+    }
+    if (action instanceof Actions.SaveAs) {
+      this.backendSaveChartAs(action.saveAs)
+        .then(() => {
+          if (action.onFinish) {
+            action.onFinish();
+          }
+        })
+        .catch((error: Error) => {
+          if (action.onFinish) {
+            action.onFinish(error);
+          }
+        });
+    }
+    if (action instanceof Actions.Open) {
+      this.backendOpenChart(action.id)
+        .then(() => {
+          if (action.onFinish) {
+            action.onFinish();
+          }
+        })
+        .catch((error: Error) => {
+          if (action.onFinish) {
+            action.onFinish(error);
+          }
+        });
     }
     if (action instanceof Actions.Load) {
       this.historyManager.clear();
@@ -244,7 +283,7 @@ export class MainStore extends BaseStore {
     }
   }
 
-  public async backendOpenChart(id: string) {
+  private async backendOpenChart(id: string) {
     const chart = await this.backend.get(id);
     this.currentChartID = id;
     this.historyManager.clear();
@@ -255,7 +294,7 @@ export class MainStore extends BaseStore {
     this.loadState(state);
   }
 
-  public async backendSaveChart() {
+  private async backendSaveChart() {
     if (this.currentChartID != null) {
       const chart = await this.backend.get(this.currentChartID);
       chart.data.state = this.saveState();
@@ -270,7 +309,7 @@ export class MainStore extends BaseStore {
     }
   }
 
-  public async backendSaveChartAs(name: string) {
+  private async backendSaveChartAs(name: string) {
     const state = this.saveState();
     const svg =
       "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
