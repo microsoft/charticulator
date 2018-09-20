@@ -261,6 +261,7 @@ export class ExportTemplateView extends ContextedComponent<
             onClick={() => {
               this.dispatch(
                 new Actions.ExportTemplate(
+                  this.props.exportKind,
                   this.state.target,
                   this.state.targetProperties
                 )
