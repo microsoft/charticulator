@@ -166,7 +166,6 @@ export class ChartTemplateBuilder {
               }
             }
           }
-          console.log(expressions);
           if (expressions.size == 0) {
             // Scale not used
             continue;
