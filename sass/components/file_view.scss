@@ -326,3 +326,21 @@
     }
   }
 }
+
+.charticulator__export-template-view {
+  .el-inference-item {
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    .el-svg-icon {
+      display: inline-block;
+      vertical-align: top;
+      margin: 4px;
+    }
+
+    cursor: pointer;
+    &:hover {
+      background: $gray-210;
+    }
+  }
+}

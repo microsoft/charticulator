@@ -192,6 +192,56 @@ export class ExportTemplateView extends ContextedComponent<
     ));
   }
 
+  public renderInferences() {
+    const template = this.state.template;
+    if (template.inference.length == 0) {
+      return <p>(none)</p>;
+    }
+    return (
+      template.inference
+        // Only show axis and scale inferences
+        .filter(inference => inference.axis || inference.scale)
+        .map((inference, index) => {
+          let description = inference.description;
+          if (!description) {
+            if (inference.scale) {
+              const scaleName = findObjectById(
+                template.specification,
+                inference.objectID
+              ).properties.name;
+              description = `Auto domain and range for ${scaleName}`;
+            }
+            if (inference.axis) {
+              const objectName = findObjectById(
+                template.specification,
+                inference.objectID
+              ).properties.name;
+              description = `Auto axis range for ${objectName}/${inference.axis.property.toString()}`;
+            }
+          }
+          return (
+            <div
+              key={index}
+              className="el-inference-item"
+              onClick={() => {
+                inference.disableAuto = !inference.disableAuto;
+                this.setState({ template });
+              }}
+            >
+              <SVGImageIcon
+                url={
+                  inference.disableAuto
+                    ? R.getSVGIcon("checkbox/empty")
+                    : R.getSVGIcon("checkbox/checked")
+                }
+              />
+              <span className="el-text">{description}</span>
+            </div>
+          );
+        })
+    );
+  }
+
   public renderExposedProperties() {
     const result: JSX.Element[] = [];
     for (const p of this.state.template.properties) {
@@ -247,9 +297,11 @@ export class ExportTemplateView extends ContextedComponent<
 
   public render() {
     return (
-      <div>
+      <div className="charticulator__export-template-view">
         <h2>Data Mapping Slots</h2>
         {this.renderSlots()}
+        <h2>Axes and Scales</h2>
+        {this.renderInferences()}
         <h2>Exposed Properties</h2>
         {this.renderExposedProperties()}
         <h2>{this.props.exportKind} Properties</h2>
