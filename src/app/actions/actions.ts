@@ -56,6 +56,7 @@ export class Export extends Action {
 
 export class ExportTemplate extends Action {
   constructor(
+    public kind: string,
     public target: ExportTemplateTarget,
     public properties: { [name: string]: string }
   ) {
