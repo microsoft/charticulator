@@ -116,7 +116,12 @@ export class Application {
     if (config.Extensions) {
       config.Extensions.forEach(ext => {
         const scriptTag = document.createElement("script");
-        scriptTag.src = ext.script;
+        if (typeof ext.script == "string") {
+          scriptTag.src = ext.script;
+        } else {
+          scriptTag.integrity = ext.script.integrity;
+          scriptTag.src = ext.script.src + "?sha256=" + ext.script.sha256;
+        }
         scriptTag.onload = () => {
           // tslint:disable-next-line no-eval
           eval(

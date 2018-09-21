@@ -6,8 +6,14 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { ItemDescription } from "../../backend/abstract";
-import { ButtonFlat, EditableTextView, SVGImageIcon } from "../../components";
+import {
+  ButtonFlat,
+  EditableTextView,
+  SVGImageIcon,
+  ButtonRaised
+} from "../../components";
 import { ContextedComponent } from "../../context_component";
+import { Actions } from "../../actions";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -60,9 +66,15 @@ export class FileViewOpen extends ContextedComponent<
                 <li
                   key={chart.id}
                   onClick={() => {
-                    store.backendOpenChart(chart.id).then(() => {
-                      this.props.onClose();
-                    });
+                    this.dispatch(
+                      new Actions.Open(chart.id, error => {
+                        if (error) {
+                          // TODO: add error reporting
+                        } else {
+                          this.props.onClose();
+                        }
+                      })
+                    );
                   }}
                 >
                   <div className="thumbnail">
@@ -123,8 +135,8 @@ export class FileViewOpen extends ContextedComponent<
                           }}
                         />
                         <ButtonFlat
-                          url={R.getSVGIcon("toolbar/export")}
-                          title="Export this chart"
+                          url={R.getSVGIcon("toolbar/download")}
+                          title="Download this chart"
                           stopPropagation={true}
                           onClick={() => {
                             backend.get(chart.id).then(chart => {

@@ -142,7 +142,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
                 this.context.store.emit(MainStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
                 if (this.context.store.currentChartID) {
-                  this.context.store.backendSaveChart();
+                  this.dispatch(new Actions.Save());
                 } else {
                   this.showFileModalWindow("save");
                 }
@@ -239,10 +239,17 @@ export class MenuBar extends ContextedComponent<{}, {}> {
           title="Save (Ctrl-S)"
           onClick={() => {
             if (this.context.store.currentChartID) {
-              this.context.store.backendSaveChart();
+              this.dispatch(new Actions.Save());
             } else {
               this.showFileModalWindow("save");
             }
+          }}
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/export")}
+          title="Export"
+          onClick={() => {
+            this.showFileModalWindow("export");
           }}
         />
       </>

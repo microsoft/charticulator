@@ -217,8 +217,17 @@
     }
 
     .buttons {
+      .el-progress {
+        display: inline-block;
+        vertical-align: top;
+        margin: 4px;
+        margin-right: 10px;
+      }
       text-align: right;
       margin-bottom: 10px;
+    }
+    .error {
+      text-align: right;
     }
   }
 
@@ -314,6 +323,24 @@
 
     img {
       width: 100%;
+    }
+  }
+}
+
+.charticulator__export-template-view {
+  .el-inference-item {
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    .el-svg-icon {
+      display: inline-block;
+      vertical-align: top;
+      margin: 4px;
+    }
+
+    cursor: pointer;
+    &:hover {
+      background: $gray-210;
     }
   }
 }

@@ -11,7 +11,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   DisableFileView?: boolean;
   /** Load extensions */
   Extensions?: Array<{
-    script: string;
+    script: string | { src: string; sha256: string; integrity: string };
     style: string;
     initialize: string;
   }>;

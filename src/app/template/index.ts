@@ -52,6 +52,12 @@ export class ChartTemplateBuilder {
     this.objectVisited = {};
   }
 
+  public addTable(table: string) {
+    if (!this.tableColumns.hasOwnProperty(table)) {
+      this.tableColumns[table] = new Set();
+    }
+  }
+
   public addColumn(table: string, column: string) {
     if (table == null) {
       table = this.dataset.tables[0].name;
@@ -59,7 +65,7 @@ export class ChartTemplateBuilder {
     const tableObject = getByName(this.dataset.tables, table);
     if (tableObject) {
       if (getByName(tableObject.columns, column)) {
-        if (this.tableColumns[table]) {
+        if (this.tableColumns.hasOwnProperty(table)) {
           this.tableColumns[table].add(column);
         } else {
           this.tableColumns[table] = new Set([column]);
@@ -138,25 +144,31 @@ export class ChartTemplateBuilder {
             )) {
               if (mapping.type == "scale") {
                 const scaleMapping = mapping as Specification.ScaleMapping;
-                expressions.add(scaleMapping.expression);
-                if (item.kind == "glyph" || item.kind == "mark") {
-                  table = item.glyph.table;
-                  // Find the plot segment
-                  for (const ps of Prototypes.forEachObject(
-                    this.template.specification
-                  )) {
-                    if (
-                      ps.kind == "chart-element" &&
-                      Prototypes.isType(ps.object.classID, "plot-segment")
-                    ) {
-                      groupBy = (ps.chartElement as Specification.PlotSegment)
-                        .groupBy;
-                      break; // TODO: for now, we assume it's the first one
+                if (scaleMapping.scale == inference.objectID) {
+                  expressions.add(scaleMapping.expression);
+                  if (item.kind == "glyph" || item.kind == "mark") {
+                    table = item.glyph.table;
+                    // Find the plot segment
+                    for (const ps of Prototypes.forEachObject(
+                      this.template.specification
+                    )) {
+                      if (
+                        ps.kind == "chart-element" &&
+                        Prototypes.isType(ps.object.classID, "plot-segment")
+                      ) {
+                        groupBy = (ps.chartElement as Specification.PlotSegment)
+                          .groupBy;
+                        break; // TODO: for now, we assume it's the first one
+                      }
                     }
                   }
                 }
               }
             }
+          }
+          if (expressions.size == 0) {
+            // Scale not used
+            continue;
           }
           inference.scale.expressions = Array.from(expressions);
           if (!inference.dataSource) {
@@ -198,6 +210,7 @@ export class ChartTemplateBuilder {
     // Add filter
     const plotSegmentObj = objectClass.object as Specification.PlotSegment<any>;
     if (Prototypes.isType(plotSegmentObj.classID, "plot-segment")) {
+      this.addTable(plotSegmentObj.table);
       const filter = plotSegmentObj.filter;
       if (filter) {
         const { categories, expression } = filter;

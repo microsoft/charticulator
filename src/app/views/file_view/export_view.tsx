@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import * as FileSaver from "file-saver";
 import * as React from "react";
-import * as R from "../../resources";
-
 import { CurrentChartView } from ".";
 import { deepClone, Specification } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
 import { Actions } from "../../actions";
 import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
+import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
 
@@ -194,6 +192,56 @@ export class ExportTemplateView extends ContextedComponent<
     ));
   }
 
+  public renderInferences() {
+    const template = this.state.template;
+    if (template.inference.length == 0) {
+      return <p>(none)</p>;
+    }
+    return (
+      template.inference
+        // Only show axis and scale inferences
+        .filter(inference => inference.axis || inference.scale)
+        .map((inference, index) => {
+          let description = inference.description;
+          if (!description) {
+            if (inference.scale) {
+              const scaleName = findObjectById(
+                template.specification,
+                inference.objectID
+              ).properties.name;
+              description = `Auto domain and range for ${scaleName}`;
+            }
+            if (inference.axis) {
+              const objectName = findObjectById(
+                template.specification,
+                inference.objectID
+              ).properties.name;
+              description = `Auto axis range for ${objectName}/${inference.axis.property.toString()}`;
+            }
+          }
+          return (
+            <div
+              key={index}
+              className="el-inference-item"
+              onClick={() => {
+                inference.disableAuto = !inference.disableAuto;
+                this.setState({ template });
+              }}
+            >
+              <SVGImageIcon
+                url={
+                  inference.disableAuto
+                    ? R.getSVGIcon("checkbox/empty")
+                    : R.getSVGIcon("checkbox/checked")
+                }
+              />
+              <span className="el-text">{description}</span>
+            </div>
+          );
+        })
+    );
+  }
+
   public renderExposedProperties() {
     const result: JSX.Element[] = [];
     for (const p of this.state.template.properties) {
@@ -249,9 +297,11 @@ export class ExportTemplateView extends ContextedComponent<
 
   public render() {
     return (
-      <div>
+      <div className="charticulator__export-template-view">
         <h2>Data Mapping Slots</h2>
         {this.renderSlots()}
+        <h2>Axes and Scales</h2>
+        {this.renderInferences()}
         <h2>Exposed Properties</h2>
         {this.renderExposedProperties()}
         <h2>{this.props.exportKind} Properties</h2>
@@ -261,31 +311,13 @@ export class ExportTemplateView extends ContextedComponent<
             text={this.props.exportKind}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
-              this.state.target
-                .generate(this.state.targetProperties)
-                .then(base64 => {
-                  const byteCharacters = atob(base64);
-                  const byteNumbers = new Array(byteCharacters.length);
-                  for (let i = 0; i < byteCharacters.length; i++) {
-                    byteNumbers[i] = byteCharacters.charCodeAt(i);
-                  }
-                  const byteArray = new Uint8Array(byteNumbers);
-
-                  const blob = new Blob([byteArray], {
-                    type: "application/x-binary"
-                  });
-                  FileSaver.saveAs(
-                    blob,
-                    this.state.target.getFileName
-                      ? this.state.target.getFileName(
-                          this.state.targetProperties
-                        )
-                      : "charticulator." +
-                        this.state.target.getFileExtension(
-                          this.state.targetProperties
-                        )
-                  );
-                });
+              this.dispatch(
+                new Actions.ExportTemplate(
+                  this.props.exportKind,
+                  this.state.target,
+                  this.state.targetProperties
+                )
+              );
             }}
           />
         </div>

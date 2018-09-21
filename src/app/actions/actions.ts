@@ -10,6 +10,10 @@ import {
   ClearSelection
 } from "../../core";
 import * as DragData from "./drag_data";
+import {
+  ExportTemplateTarget,
+  ExportTemplateTargetProperty
+} from "../template";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -49,11 +53,52 @@ export class Export extends Action {
     return { name: "Export", type: this.type, options: this.options };
   }
 }
+
+export class ExportTemplate extends Action {
+  constructor(
+    public kind: string,
+    public target: ExportTemplateTarget,
+    public properties: { [name: string]: string }
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ExportTemplate" };
+  }
+}
+
+export class Open extends Action {
+  constructor(public id: string, public onFinish?: (error?: Error) => void) {
+    super();
+  }
+  public digest() {
+    return { name: "Open", id: this.id };
+  }
+}
+
+/** Save the current chart */
 export class Save extends Action {
+  constructor(public onFinish?: (error?: Error) => void) {
+    super();
+  }
   public digest() {
     return { name: "Save" };
   }
 }
+
+export class SaveAs extends Action {
+  constructor(
+    public saveAs: string,
+    public onFinish?: (error?: Error) => void
+  ) {
+    super();
+  }
+  public digest() {
+    return { name: "SaveAs", saveAs: this.saveAs };
+  }
+}
+
 export class Load extends Action {
   constructor(public projectData: any) {
     super();
