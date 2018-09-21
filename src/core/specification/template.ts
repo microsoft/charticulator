@@ -58,6 +58,9 @@ export interface Inference {
     table: string;
     groupBy?: Types.GroupBy;
   };
+  description?: string;
+  /** Disable any automatic domain/range/axis behavior */
+  disableAuto?: boolean;
 
   axis?: AxisInference;
   scale?: ScaleInference;

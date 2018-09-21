@@ -230,32 +230,6 @@ export class ChartTemplate {
           inference.axis.expression,
           inference.dataSource.table
         );
-        let vector = getExpressionVector(
-          expression,
-          this.tableAssignment[inference.dataSource.table],
-          this.transformGroupBy(
-            inference.dataSource.groupBy,
-            inference.dataSource.table
-          )
-        );
-        if (inference.axis.additionalExpressions) {
-          for (const item of inference.axis.additionalExpressions) {
-            const expr = this.transformExpression(
-              item,
-              inference.dataSource.table
-            );
-            vector = vector.concat(
-              getExpressionVector(
-                expr,
-                this.tableAssignment[inference.dataSource.table],
-                this.transformGroupBy(
-                  inference.dataSource.groupBy,
-                  inference.dataSource.table
-                )
-              )
-            );
-          }
-        }
         const axisDataBinding = getProperty(
           object,
           axis.property
@@ -264,42 +238,72 @@ export class ChartTemplate {
         if (axisDataBinding.tickDataExpression) {
           axisDataBinding.tickDataExpression = null; // TODO: fixme
         }
-        if (axis.type == "categorical") {
-          const scale = new Scale.CategoricalScale();
-          scale.inferParameters(vector, "order");
-          axisDataBinding.categories = new Array<string>(scale.domain.size);
-          scale.domain.forEach((index, key) => {
-            axisDataBinding.categories[index] = key;
-          });
-        } else if (axis.type == "numerical") {
-          const scale = new Scale.LinearScale();
-          scale.inferParameters(vector);
-          axisDataBinding.domainMin = scale.domainMin;
-          axisDataBinding.domainMax = scale.domainMax;
-        }
-      }
-      if (inference.scale) {
-        const scale = inference.scale;
-        const expressions = scale.expressions.map(x =>
-          this.transformExpression(x, inference.dataSource.table)
-        );
-        const vectors = expressions.map(x =>
-          getExpressionVector(
-            x,
+        if (!inference.disableAuto) {
+          let vector = getExpressionVector(
+            expression,
             this.tableAssignment[inference.dataSource.table],
             this.transformGroupBy(
               inference.dataSource.groupBy,
               inference.dataSource.table
             )
-          )
-        );
-        const vector = vectors.reduce((a, b) => a.concat(b), []);
-        const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
-          attributes: {}
-        }) as Prototypes.Scales.ScaleClass;
-        scaleClass.inferParameters(vector, {
-          reuseRange: true
-        });
+          );
+          if (inference.axis.additionalExpressions) {
+            for (const item of inference.axis.additionalExpressions) {
+              const expr = this.transformExpression(
+                item,
+                inference.dataSource.table
+              );
+              vector = vector.concat(
+                getExpressionVector(
+                  expr,
+                  this.tableAssignment[inference.dataSource.table],
+                  this.transformGroupBy(
+                    inference.dataSource.groupBy,
+                    inference.dataSource.table
+                  )
+                )
+              );
+            }
+          }
+          if (axis.type == "categorical") {
+            const scale = new Scale.CategoricalScale();
+            scale.inferParameters(vector, "order");
+            axisDataBinding.categories = new Array<string>(scale.domain.size);
+            scale.domain.forEach((index, key) => {
+              axisDataBinding.categories[index] = key;
+            });
+          } else if (axis.type == "numerical") {
+            const scale = new Scale.LinearScale();
+            scale.inferParameters(vector);
+            axisDataBinding.domainMin = scale.domainMin;
+            axisDataBinding.domainMax = scale.domainMax;
+          }
+        }
+      }
+      if (inference.scale) {
+        if (!inference.disableAuto) {
+          const scale = inference.scale;
+          const expressions = scale.expressions.map(x =>
+            this.transformExpression(x, inference.dataSource.table)
+          );
+          const vectors = expressions.map(x =>
+            getExpressionVector(
+              x,
+              this.tableAssignment[inference.dataSource.table],
+              this.transformGroupBy(
+                inference.dataSource.groupBy,
+                inference.dataSource.table
+              )
+            )
+          );
+          const vector = vectors.reduce((a, b) => a.concat(b), []);
+          const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
+            attributes: {}
+          }) as Prototypes.Scales.ScaleClass;
+          scaleClass.inferParameters(vector, {
+            reuseRange: true
+          });
+        }
       }
       if (inference.nestedChart) {
         const { nestedChart } = inference;

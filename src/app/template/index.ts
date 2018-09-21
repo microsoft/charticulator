@@ -144,25 +144,32 @@ export class ChartTemplateBuilder {
             )) {
               if (mapping.type == "scale") {
                 const scaleMapping = mapping as Specification.ScaleMapping;
-                expressions.add(scaleMapping.expression);
-                if (item.kind == "glyph" || item.kind == "mark") {
-                  table = item.glyph.table;
-                  // Find the plot segment
-                  for (const ps of Prototypes.forEachObject(
-                    this.template.specification
-                  )) {
-                    if (
-                      ps.kind == "chart-element" &&
-                      Prototypes.isType(ps.object.classID, "plot-segment")
-                    ) {
-                      groupBy = (ps.chartElement as Specification.PlotSegment)
-                        .groupBy;
-                      break; // TODO: for now, we assume it's the first one
+                if (scaleMapping.scale == inference.objectID) {
+                  expressions.add(scaleMapping.expression);
+                  if (item.kind == "glyph" || item.kind == "mark") {
+                    table = item.glyph.table;
+                    // Find the plot segment
+                    for (const ps of Prototypes.forEachObject(
+                      this.template.specification
+                    )) {
+                      if (
+                        ps.kind == "chart-element" &&
+                        Prototypes.isType(ps.object.classID, "plot-segment")
+                      ) {
+                        groupBy = (ps.chartElement as Specification.PlotSegment)
+                          .groupBy;
+                        break; // TODO: for now, we assume it's the first one
+                      }
                     }
                   }
                 }
               }
             }
+          }
+          console.log(expressions);
+          if (expressions.size == 0) {
+            // Scale not used
+            continue;
           }
           inference.scale.expressions = Array.from(expressions);
           if (!inference.dataSource) {
