@@ -83,12 +83,7 @@ export abstract class ObjectClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    // By default, we create the attribute controls based on attribute descriptions
-    const widgets: Controls.Widget[] = [];
-    for (const attr of this.attributeNames) {
-      widgets.push(manager.text("Not implemented yet"));
-    }
-    return widgets;
+    return [manager.text("No editable attribute")];
   }
 
   public getTemplateParameters(): TemplateParameters {
