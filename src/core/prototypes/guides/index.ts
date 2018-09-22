@@ -132,11 +132,14 @@ export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
   y2: number;
 }
 
-export interface GuideCoordinatorState extends Specification.ObjectState {
-  attributes: GuideCoordinatorAttributes;
+export interface GuideCoordinatorProperties extends Specification.AttributeMap {
+  axis: "x" | "y";
 }
 
-export class GuideCoordinatorClass extends ChartElementClass {
+export class GuideCoordinatorClass extends ChartElementClass<
+  GuideCoordinatorProperties,
+  GuideCoordinatorAttributes
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
@@ -145,11 +148,9 @@ export class GuideCoordinatorClass extends ChartElementClass {
     iconPath: "guide/coordinator-x"
   };
 
-  public readonly state: GuideCoordinatorState;
-
-  public static defaultAttributes: Specification.AttributeMap = {
+  public static defaultAttributes: Partial<GuideCoordinatorAttributes> = {
     axis: "x",
-    count: 2
+    count: 4
   };
 
   public buildConstraints(solver: ConstraintSolver) {
@@ -235,7 +236,7 @@ export class GuideCoordinatorClass extends ChartElementClass {
   }
 
   private getAxis() {
-    return this.object.properties.axis as "x" | "y";
+    return this.object.properties.axis;
   }
 
   /** Get handles given current state */
