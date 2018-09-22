@@ -708,6 +708,9 @@ export class ChartStore extends BaseStore {
         }
       }
 
+      this.currentSelection = new ChartElementSelection(newPlotSegment);
+      this.emit(ChartStore.EVENT_SELECTION);
+
       this.solveConstraintsAndUpdateGraphics();
     }
 
@@ -813,6 +816,14 @@ export class ChartStore extends BaseStore {
           gap: 0
         }
       });
+
+      this.addPresolveValue(
+        Solver.ConstraintStrength.STRONG,
+        this.chartManager.getClassById(action.element._id).state.attributes,
+        action.attribute,
+        this.chartManager.getClassById(action.targetElement._id).state
+          .attributes[action.targetAttribute] as number
+      );
 
       this.solveConstraintsAndUpdateGraphics();
     }
