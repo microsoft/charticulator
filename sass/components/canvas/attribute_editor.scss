@@ -1111,6 +1111,11 @@
         cursor: pointer;
         height: $line-height;
         border-radius: 2px;
+
+        &.has-text {
+          background: $gray-200;
+        }
+
         transition: background-color $transition-default;
 
         &:hover,
@@ -1291,6 +1296,7 @@
         vertical-align: top;
         cursor: pointer;
         height: $line-height;
+        background: $gray-200;
         border-radius: 2px;
         transition: background-color $transition-default;
 

@@ -17,10 +17,12 @@ export class Button extends React.Component<ButtonProps, {}> {
   public render() {
     return (
       <span
-        className={classNames("charticulator__widget-control-button", [
-          "is-active",
-          this.props.active
-        ])}
+        className={classNames(
+          "charticulator__widget-control-button",
+          ["is-active", this.props.active],
+          ["has-text", this.props.text != null],
+          ["has-icon", this.props.icon != null]
+        )}
         title={this.props.title}
         onClick={e => {
           e.stopPropagation();
