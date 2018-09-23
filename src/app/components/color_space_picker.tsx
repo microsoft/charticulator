@@ -10,7 +10,7 @@ import {
   colorToHTMLColorHEX,
   prettyNumber
 } from "../../core";
-import { DropdownButton } from "./dropdown";
+import { Select } from "../views/panels/widgets/controls";
 
 export interface ColorSpaceDescription {
   name: string;
@@ -182,13 +182,12 @@ export class ColorSpacePicker extends React.Component<
           <section className="palette-z">{this.renderZ()}</section>
           <section className="values">
             <div className="row">
-              <DropdownButton
-                text={this.state.desc.name}
-                list={this.props.colorSpaces.map(x => ({
-                  name: x.name,
-                  text: x.description
-                }))}
-                onSelect={(v: string) => {
+              <Select
+                value={this.state.desc.name}
+                showText={true}
+                options={this.props.colorSpaces.map(x => x.name)}
+                labels={this.props.colorSpaces.map(x => x.description)}
+                onChange={v => {
                   for (const sp of this.props.colorSpaces) {
                     if (sp.name == v) {
                       const [r, g, b] = this.state.desc.toRGB(

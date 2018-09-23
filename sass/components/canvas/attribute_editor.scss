@@ -1296,9 +1296,12 @@
         vertical-align: top;
         cursor: pointer;
         height: $line-height;
-        background: $gray-200;
         border-radius: 2px;
         transition: background-color $transition-default;
+
+        &.has-text {
+          background: $gray-200;
+        }
 
         &:hover,
         &:active {
@@ -1316,7 +1319,13 @@
         .el-text {
           line-height: $line-height;
           padding: 0 2px;
-          padding-left: 4px;
+          padding-left: 6px;
+        }
+
+        &.has-icon {
+          .el-text {
+            padding-left: 0px;
+          }
         }
 
         .svg-image-icon {

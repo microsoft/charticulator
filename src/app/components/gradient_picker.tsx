@@ -15,9 +15,9 @@ import { ColorPalette, getSVGIcon, predefinedPalettes } from "../resources";
 import { ButtonFlatPanel } from "./buttons";
 import { ColorPicker, colorToCSS } from "./color_picker";
 import { InputField } from "./color_space_picker";
-import { DropdownButton } from "./dropdown";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
+import { Select } from "../views/panels/widgets/controls";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -220,15 +220,12 @@ export class GradientPicker extends React.Component<
               </div>
             </div>
             <div className="row">
-              <DropdownButton
-                text={
-                  this.state.currentGradient.colorspace == "lab" ? "Lab" : "HCL"
-                }
-                list={[
-                  { name: "hcl", text: "HCL" },
-                  { name: "lab", text: "Lab" }
-                ]}
-                onSelect={(v: "hcl" | "lab") => {
+              <Select
+                value={this.state.currentGradient.colorspace}
+                options={["hcl", "lab"]}
+                labels={["HCL", "LAB"]}
+                showText={true}
+                onChange={(v: "hcl" | "lab") => {
                   const newGradient = deepClone(this.state.currentGradient);
                   newGradient.colorspace = v;
                   this.selectGradient(newGradient, true);
