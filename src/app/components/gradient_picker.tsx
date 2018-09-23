@@ -17,7 +17,7 @@ import { ColorPicker, colorToCSS } from "./color_picker";
 import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
-import { Select } from "../views/panels/widgets/controls";
+import { Select, Button } from "../views/panels/widgets/controls";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -183,8 +183,8 @@ export class GradientPicker extends React.Component<
                           return true;
                         }}
                       />
-                      <ButtonFlatPanel
-                        url={getSVGIcon("general/cross")}
+                      <Button
+                        icon={"general/cross"}
                         onClick={() => {
                           if (this.state.currentGradient.colors.length > 1) {
                             const newGradient = deepClone(
@@ -199,31 +199,30 @@ export class GradientPicker extends React.Component<
                   );
                 })}
               </ReorderListView>
-              <div className="controls-row">
-                <ButtonFlatPanel
-                  url={getSVGIcon("general/plus")}
-                  text="Add"
-                  onClick={() => {
-                    const newGradient = deepClone(this.state.currentGradient);
-                    newGradient.colors.push({ r: 150, g: 150, b: 150 });
-                    this.selectGradient(newGradient, true);
-                  }}
-                />
-                <ButtonFlatPanel
-                  text="Reverse"
-                  onClick={() => {
-                    const newGradient = deepClone(this.state.currentGradient);
-                    newGradient.colors.reverse();
-                    this.selectGradient(newGradient, true);
-                  }}
-                />
-              </div>
             </div>
             <div className="row">
+              <Button
+                icon={"general/plus"}
+                text="Add"
+                onClick={() => {
+                  const newGradient = deepClone(this.state.currentGradient);
+                  newGradient.colors.push({ r: 150, g: 150, b: 150 });
+                  this.selectGradient(newGradient, true);
+                }}
+              />{" "}
+              <Button
+                icon={"general/order-reversed"}
+                text="Reverse"
+                onClick={() => {
+                  const newGradient = deepClone(this.state.currentGradient);
+                  newGradient.colors.reverse();
+                  this.selectGradient(newGradient, true);
+                }}
+              />{" "}
               <Select
                 value={this.state.currentGradient.colorspace}
                 options={["hcl", "lab"]}
-                labels={["HCL", "LAB"]}
+                labels={["HCL", "Lab"]}
                 showText={true}
                 onChange={(v: "hcl" | "lab") => {
                   const newGradient = deepClone(this.state.currentGradient);

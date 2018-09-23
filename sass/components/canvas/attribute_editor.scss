@@ -665,23 +665,40 @@
       &-item {
         display: flex;
       }
+
       &-control {
         flex-shrink: 0;
+
         &:first-child {
           margin-right: 4px;
         }
+
         &:last-child {
           margin-left: 4px;
         }
       }
+
       &-order {
         .el-svg-icon {
           opacity: 0.2;
         }
+
         cursor: move;
       }
+
       &-content {
         flex: 1 1;
+      }
+    }
+
+    &-scroll-list {
+      margin: 2px 0;
+      overflow-y: scroll;
+      border-radius: 2px;
+      border: 1px solid $gray-200;
+      max-height: 200px;
+      &-item:not(:last-child) {
+        margin-bottom: 2px;
       }
     }
 
@@ -836,6 +853,7 @@
 
         & > .el-dropdown {
           flex-shrink: 0;
+
           .svg-image-icon {
             width: 16px;
             height: 16px;
@@ -1057,7 +1075,7 @@
       &-input-color-gradient-inline {
         display: block;
         border-radius: 2px;
-        border: 1px solid $gray-200;
+        // border: 1px solid $gray-200;
       }
 
       &-updown-button {
@@ -1136,6 +1154,49 @@
 
           .svg-image-icon {
             filter: invert(100%);
+          }
+        }
+
+        .el-text {
+          height: $line-height;
+          line-height: $line-height;
+          margin-right: 6px;
+
+          &:first-child {
+            margin-left: 6px;
+          }
+        }
+
+        .svg-image-icon {
+          margin: $button-margin;
+          width: $line-height - $button-margin * 2;
+          height: $line-height - $button-margin * 2;
+        }
+      }
+
+      &-checkbox {
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+        height: $line-height;
+        border-radius: 2px;
+
+        &.is-fill-width {
+          width: 100%;
+        }
+
+        transition: background-color $transition-default;
+
+        &:hover,
+        &:active {
+          background-color: $color-primary;
+
+          .svg-image-icon {
+            filter: invert(100%);
+          }
+
+          .el-text {
+            color: white;
           }
         }
 
@@ -1636,6 +1697,7 @@
             text-overflow: ellipsis;
             transition: background $transition-default,
               color $transition-default;
+
             @include font-mono;
           }
 
@@ -1674,6 +1736,7 @@
       }
 
       &-reorder-widget {
+        font-size: 14px;
         padding: 0 10px;
         min-width: 100px;
 
@@ -1685,6 +1748,8 @@
           max-height: 500px;
           overflow-x: hidden;
           overflow-y: scroll;
+          border-radius: 2px;
+          border: 1px solid $gray-200;
         }
 
         .el-item {
