@@ -1045,6 +1045,7 @@ export class SingleMarkView
             <g
               transform={`translate(${x},${y})`}
               className="snapping-guide-label"
+              key={i}
             >
               <circle cx={0} cy={0} r={2} />
               <text x={5} y={5} transform={`rotate(45)`}>
