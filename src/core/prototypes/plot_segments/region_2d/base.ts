@@ -536,7 +536,7 @@ export class Region2DConstraintBuilder {
             });
           }
           if (sublayout) {
-            this.sublayout(sublayoutGroups);
+            this.sublayout(sublayoutGroups, false, false);
           } else {
             this.fitGroups(sublayoutGroups, "x");
           }
@@ -592,7 +592,7 @@ export class Region2DConstraintBuilder {
             });
           }
           if (sublayout) {
-            this.sublayout(sublayoutGroups);
+            this.sublayout(sublayoutGroups, false, false);
           } else {
             this.fitGroups(sublayoutGroups, "y");
           }
@@ -676,7 +676,7 @@ export class Region2DConstraintBuilder {
             }
           }
           if (sublayout) {
-            this.sublayout(sublayoutGroups);
+            this.sublayout(sublayoutGroups, false, false);
           } else {
             this.fitGroups(sublayoutGroups, "xy");
           }
@@ -723,7 +723,9 @@ export class Region2DConstraintBuilder {
               x2: xAxis ? xAxis.ranges[ix][1] * (x2 - x1) + x1 : x2,
               y2: yAxis ? yAxis.ranges[iy][1] * (y2 - y1) + y1 : y2
             };
-          })
+          }),
+          false,
+          false
         )
       );
     }
@@ -1140,7 +1142,11 @@ export class Region2DConstraintBuilder {
     fitters.addConstraint(ConstraintStrength.MEDIUM);
   }
 
-  public sublayout(groups: SublayoutGroup[]) {
+  public sublayout(
+    groups: SublayoutGroup[],
+    xAxisPrePostGap: boolean,
+    yAxisPrePostGap: boolean
+  ) {
     this.orderMarkGroups(groups);
     const props = this.plotSegment.object.properties;
     let maxGroupLength = 0;
@@ -1150,10 +1156,10 @@ export class Region2DConstraintBuilder {
       }
     }
     if (props.sublayout.type == "dodge-x") {
-      this.sublayoutDodging(groups, "x", this.config.xAxisPrePostGap);
+      this.sublayoutDodging(groups, "x", xAxisPrePostGap);
     }
     if (props.sublayout.type == "dodge-y") {
-      this.sublayoutDodging(groups, "y", this.config.yAxisPrePostGap);
+      this.sublayoutDodging(groups, "y", yAxisPrePostGap);
     }
     if (props.sublayout.type == "grid") {
       this.sublayoutGrid(groups);
@@ -1622,7 +1628,9 @@ export class Region2DConstraintBuilder {
       y1: number;
       x2: number;
       y2: number;
-    }>
+    }>,
+    enablePrePostGapX: boolean,
+    enablePrePostGapY: boolean
   ) {
     this.orderMarkGroups(groups);
     const state = this.plotSegment.state;
@@ -1658,7 +1666,9 @@ export class Region2DConstraintBuilder {
               property: { property: "sublayout", field: "ratioX" },
               reference: p1,
               value: props.sublayout.ratioX,
-              scale: (1 / (maxCount - 1)) * (group.x2 - group.x1),
+              scale:
+                (1 / (enablePrePostGapX ? maxCount : maxCount - 1)) *
+                (group.x2 - group.x1),
               span: [minY, maxY]
             }
           });
@@ -1690,7 +1700,9 @@ export class Region2DConstraintBuilder {
               property: { property: "sublayout", field: "ratioY" },
               reference: p1,
               value: props.sublayout.ratioY,
-              scale: (1 / (maxCount - 1)) * (group.y2 - group.y1),
+              scale:
+                (1 / (enablePrePostGapY ? maxCount : maxCount - 1)) *
+                (group.y2 - group.y1),
               span: [minX, maxX]
             }
           });
@@ -1779,15 +1791,19 @@ export class Region2DConstraintBuilder {
             case "null":
               {
                 handles = handles.concat(
-                  this.sublayoutHandles([
-                    {
-                      x1: state.attributes[this.x1Name] as number,
-                      y1: state.attributes[this.y1Name] as number,
-                      x2: state.attributes[this.x2Name] as number,
-                      y2: state.attributes[this.y2Name] as number,
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
-                  ])
+                  this.sublayoutHandles(
+                    [
+                      {
+                        x1: state.attributes[this.x1Name] as number,
+                        y1: state.attributes[this.y1Name] as number,
+                        x2: state.attributes[this.x2Name] as number,
+                        y2: state.attributes[this.y2Name] as number,
+                        group: state.dataRowIndices.map((x, i) => i)
+                      }
+                    ],
+                    this.config.xAxisPrePostGap,
+                    this.config.yAxisPrePostGap
+                  )
                 );
               }
               break;
@@ -1866,15 +1882,19 @@ export class Region2DConstraintBuilder {
             case "null":
               {
                 // null, null
-                this.sublayout([
-                  {
-                    x1: solver.attr(attrs, this.x1Name),
-                    y1: solver.attr(attrs, this.y1Name),
-                    x2: solver.attr(attrs, this.x2Name),
-                    y2: solver.attr(attrs, this.y2Name),
-                    group: state.dataRowIndices.map((x, i) => i)
-                  }
-                ]);
+                this.sublayout(
+                  [
+                    {
+                      x1: solver.attr(attrs, this.x1Name),
+                      y1: solver.attr(attrs, this.y1Name),
+                      x2: solver.attr(attrs, this.x2Name),
+                      y2: solver.attr(attrs, this.y2Name),
+                      group: state.dataRowIndices.map((x, i) => i)
+                    }
+                  ],
+                  this.config.xAxisPrePostGap,
+                  this.config.yAxisPrePostGap
+                );
               }
               break;
             case "default":
