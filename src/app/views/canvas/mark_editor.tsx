@@ -1250,7 +1250,7 @@ export class SingleMarkView
                   "guide.guide-coordinator",
                   { x: 0, y: 0 },
                   { x1, y1, x2, y2 },
-                  { axis: "x", count: 3 }
+                  { axis: "x", count: 4 }
                 )
               );
             };
@@ -1266,7 +1266,7 @@ export class SingleMarkView
                   "guide.guide-coordinator",
                   { x: 0, y: 0 },
                   { x1, y1, x2, y2 },
-                  { axis: "y", count: 3 }
+                  { axis: "y", count: 4 }
                 )
               );
             };

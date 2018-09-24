@@ -4,7 +4,13 @@
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
-import { AttributeDescription, Handles, SnappingGuides } from "../common";
+import {
+  AttributeDescription,
+  Handles,
+  SnappingGuides,
+  BoundingBox,
+  Controls
+} from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
 
@@ -12,11 +18,15 @@ export interface GuideAttributes extends Specification.AttributeMap {
   value: number;
 }
 
-export interface GuideState extends Specification.ObjectState {
-  attributes: GuideAttributes;
+export interface GuideProperties extends Specification.AttributeMap {
+  axis: "x" | "y";
+  gap: number;
 }
 
-export class GuideClass extends ChartElementClass {
+export class GuideClass extends ChartElementClass<
+  GuideProperties,
+  GuideAttributes
+> {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -25,32 +35,46 @@ export class GuideClass extends ChartElementClass {
     iconPath: "guide/x"
   };
 
-  public readonly state: GuideState;
-
-  public static defaultAttributes: Specification.AttributeMap = {
-    axis: "x"
+  public static defaultProperties: Partial<GuideProperties> = {
+    gap: 0
   };
 
-  public attributeNames: string[] = ["value"];
+  public attributeNames: string[] = ["value", "value2"];
   public attributes: { [name: string]: AttributeDescription } = {
     value: {
       name: "value",
+      type: Specification.AttributeType.Number
+    },
+    value2: {
+      name: "value2",
       type: Specification.AttributeType.Number
     }
   };
 
   public initializeState() {
     this.state.attributes.value = 0;
+    this.state.attributes.value2 = 0;
   }
 
   private getAxis() {
-    return this.object.properties.axis as "x" | "y";
+    return this.object.properties.axis;
+  }
+
+  public buildConstraints(solver: ConstraintSolver) {
+    const [value, value2] = solver.attrs(this.state.attributes, [
+      "value",
+      "value2"
+    ]);
+    solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
+      [1, value],
+      [-1, value2]
+    ]);
   }
 
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
-    return [
+    const r = [
       {
         type: "line",
         axis: this.getAxis(),
@@ -59,10 +83,20 @@ export class GuideClass extends ChartElementClass {
         span: inf
       } as Handles.Line
     ];
+    if (this.object.properties.gap > 0) {
+      r.push({
+        type: "line",
+        axis: this.getAxis(),
+        actions: [{ type: "attribute", attribute: "value2" }],
+        value: this.state.attributes.value2,
+        span: inf
+      } as Handles.Line);
+    }
+    return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    return [
+    const r = [
       {
         type: this.getAxis(),
         value: this.state.attributes.value,
@@ -70,12 +104,25 @@ export class GuideClass extends ChartElementClass {
         visible: true
       } as SnappingGuides.Axis
     ];
+    if (this.object.properties.gap > 0) {
+      r.push({
+        type: this.getAxis(),
+        value: this.state.attributes.value2,
+        attribute: "value2",
+        visible: true
+      } as SnappingGuides.Axis);
+    }
+    return r;
   }
 
-  // /** Get controls given current state */
-  // public getControls(): Controls.Popup {
-  //     return null;
-  // }
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    return [
+      manager.sectionHeader("Guide"),
+      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
+    ];
+  }
 }
 
 export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
@@ -85,11 +132,14 @@ export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
   y2: number;
 }
 
-export interface GuideCoordinatorState extends Specification.ObjectState {
-  attributes: GuideCoordinatorAttributes;
+export interface GuideCoordinatorProperties extends Specification.AttributeMap {
+  axis: "x" | "y";
 }
 
-export class GuideCoordinatorClass extends ChartElementClass {
+export class GuideCoordinatorClass extends ChartElementClass<
+  GuideCoordinatorProperties,
+  GuideCoordinatorAttributes
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
@@ -98,11 +148,9 @@ export class GuideCoordinatorClass extends ChartElementClass {
     iconPath: "guide/coordinator-x"
   };
 
-  public readonly state: GuideCoordinatorState;
-
-  public static defaultAttributes: Specification.AttributeMap = {
+  public static defaultAttributes: Partial<GuideCoordinatorAttributes> = {
     axis: "x",
-    count: 2
+    count: 4
   };
 
   public buildConstraints(solver: ConstraintSolver) {
@@ -188,12 +236,62 @@ export class GuideCoordinatorClass extends ChartElementClass {
   }
 
   private getAxis() {
-    return this.object.properties.axis as "x" | "y";
+    return this.object.properties.axis;
   }
 
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
-    return [];
+    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const { x1, y1, x2, y2 } = attrs;
+    const axis = this.getAxis();
+    return [
+      {
+        type: "point",
+        x: x1,
+        y: y1,
+        actions: [
+          { type: "attribute", source: "x", attribute: "x1" },
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
+      } as Handles.Point,
+      {
+        type: "point",
+        x: axis == "y" ? x1 : x2,
+        y: axis == "x" ? y1 : y2,
+        actions: [
+          {
+            type: "attribute",
+            source: "x",
+            attribute: axis == "y" ? "x1" : "x2"
+          },
+          {
+            type: "attribute",
+            source: "y",
+            attribute: axis == "x" ? "y1" : "y2"
+          }
+        ]
+      } as Handles.Point
+    ];
+  }
+
+  public getBoundingBox(): BoundingBox.Description {
+    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const { x1, y1 } = attrs;
+    let { x2, y2 } = attrs;
+    if (this.getAxis() == "x") {
+      y2 = y1;
+    } else {
+      x2 = x1;
+    }
+    return {
+      type: "line",
+      visible: true,
+      morphing: true,
+      x1,
+      y1,
+      x2,
+      y2
+    } as BoundingBox.Line;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
@@ -207,10 +305,27 @@ export class GuideCoordinatorClass extends ChartElementClass {
     });
   }
 
-  // /** Get controls given current state */
-  // public getControls(): Controls.Popup {
-  //     return null;
-  // }
+  /** Get controls given current state */
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    return [
+      manager.sectionHeader("Guide Coordinator"),
+      manager.row(
+        "Count",
+        manager.inputNumber(
+          { property: "count" },
+          {
+            showUpdown: true,
+            updownTick: 1,
+            updownRange: [1, 100],
+            minimum: 1,
+            maximum: 100
+          }
+        )
+      )
+    ];
+  }
 }
 
 export function registerClasses() {
