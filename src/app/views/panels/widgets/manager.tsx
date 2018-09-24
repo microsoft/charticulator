@@ -84,6 +84,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ): JSX.Element {
     const objectClass = this.objectClass;
     const info = objectClass.attributes[attribute];
+    if (options.defaultValue == null) {
+      options.defaultValue = info.defaultValue;
+    }
     return this.row(
       name,
       <MappingEditor
