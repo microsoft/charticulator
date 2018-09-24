@@ -46,7 +46,8 @@ import {
   Select,
   ComboBoxFontFamily,
   ComboBox,
-  CheckBox
+  CheckBox,
+  InputExpression
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
@@ -258,10 +259,16 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       }
     }
   }
-  public inputExpression(property: Prototypes.Controls.Property) {
+  public inputExpression(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputExpressionOptions = {}
+  ) {
     return (
-      <InputText
+      <InputExpression
         defaultValue={this.getPropertyValue(property) as string}
+        validate={value =>
+          this.store.verifyUserExpressionWithTable(value, options.table)
+        }
         placeholder="(none)"
         onEnter={value => {
           if (value.trim() == "") {
