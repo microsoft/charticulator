@@ -284,7 +284,7 @@ export class ImportDataView extends React.Component<
             }}
           />
         )}
-        <h2>
+        {/* <h2>
           Links
           {this.state.linkTable ? ": " + this.state.linkTable.name : null}
         </h2>
@@ -313,7 +313,7 @@ export class ImportDataView extends React.Component<
               });
             }}
           />
-        )}
+        )} */}
         <div className="el-actions">
           <ButtonRaised
             text="Done"
