@@ -196,6 +196,13 @@ export class ObjectClasses {
       return false;
     }
   }
+
+  /**
+   * Gets an interator of registered classes.
+   */
+  public static RegisteredClasses(): IterableIterator<ObjectClassConstructor> {
+    return this.registeredObjectClasses.values();
+  }
 }
 
 export let isType = ObjectClasses.isType;
