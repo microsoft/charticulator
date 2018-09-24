@@ -51,7 +51,8 @@ export class DataAxisClass extends MarkClass<
   public static defaultProperties: Partial<DataAxisProperties> = {
     dataExpressions: [],
     axis: null,
-    visible: true
+    visible: true,
+    visibleOn: "first"
   };
 
   public getAttributeNames(expr: DataAxisExpression) {
@@ -170,8 +171,27 @@ export class DataAxisClass extends MarkClass<
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    if (glyphIndex != 0) {
-      return null;
+    switch (props.visibleOn) {
+      case "all":
+        break;
+      case "last":
+        {
+          if (
+            glyphIndex !=
+            this.getPlotSegmentClass().state.glyphs.length - 1
+          ) {
+            return null;
+          }
+        }
+        break;
+      case "first":
+      default:
+        {
+          if (glyphIndex != 0) {
+            return null;
+          }
+        }
+        break;
     }
     if (props.axis) {
       if (props.axis.visible) {
@@ -304,19 +324,36 @@ export class DataAxisClass extends MarkClass<
       "Data Axis"
     );
     const r = [...axisWidgets];
+    r.push(
+      manager.row(
+        "Visible On",
+        manager.inputSelect(
+          { property: "visibleOn" },
+          {
+            labels: ["All", "First", "Last"],
+            showLabel: true,
+            options: ["all", "first", "last"],
+            type: "dropdown"
+          }
+        )
+      )
+    );
     if (props.dataExpressions.length > 0) {
       r.push(manager.sectionHeader("Data Expressions"));
       r.push(
         manager.arrayWidget(
           { property: "dataExpressions" },
           item =>
-            manager.inputExpression({
-              property: "dataExpressions",
-              field:
-                item.field instanceof Array
-                  ? [...item.field, "expression"]
-                  : [item.field, "expression"]
-            }),
+            manager.inputExpression(
+              {
+                property: "dataExpressions",
+                field:
+                  item.field instanceof Array
+                    ? [...item.field, "expression"]
+                    : [item.field, "expression"]
+              },
+              { table: this.getGlyphClass().object.table }
+            ),
           {
             allowDelete: true,
             allowReorder: true

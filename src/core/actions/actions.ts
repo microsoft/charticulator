@@ -2,6 +2,12 @@
 // Licensed under the MIT license.
 import { Dispatcher } from "../common";
 import { Glyph, Element, PlotSegment } from "../specification";
+import * as Specification from "../specification";
+
+// Helper functions for digest
+export function objectDigest(obj?: Specification.Object) {
+  return obj ? [obj.classID, obj._id] : null;
+}
 
 export class Action {
   public dispatch(dispatcher: Dispatcher<Action>) {
@@ -26,9 +32,9 @@ export class SelectMark extends Action {
   public digest() {
     return {
       name: "SelectMark",
-      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      plotSegment: objectDigest(this.plotSegment),
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       glyphIndex: this.glyphIndex
     };
   }
