@@ -1869,7 +1869,7 @@ export class ChartStore extends BaseStore {
   public verifyUserExpressionWithTable(
     inputString: string,
     table: string,
-    options: Expression.VerifyUserExpressionOptions
+    options: Expression.VerifyUserExpressionOptions = {}
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);

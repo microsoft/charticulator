@@ -121,6 +121,10 @@ export interface ScrollListOptions {
   maxHeight?: number;
 }
 
+export interface InputExpressionOptions {
+  table?: string;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -140,7 +144,7 @@ export interface WidgetManager {
   inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
-  inputExpression(property: Property): Widget;
+  inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputImage(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;
   inputColorGradient(property: Property, inline?: boolean): Widget;
