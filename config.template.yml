@@ -54,8 +54,7 @@ LegalNotices:
     <p>
       <b>A note about privacy:</b>
       We collect anonymous usage information such as the number of charts you create, the number of components in each chart, and the size of imported datasets. 
-      Except these statistics, your data remains on your machine and is not shared with Microsoft.  If you have privacy concerns, Charticulator can be built from source and hosted on your own server.
-      <a title="Microsoft" href="http://microsoft.com">Microsoft</a>.
+      Except these statistics, your data remains on your machine and is not shared with <a title="Microsoft" href="http://microsoft.com">Microsoft</a>.  If you have privacy concerns, Charticulator can be built from source and hosted on your own server.
       By using this service, you agree to
       <a title="Microsoft" href="http://microsoft.com">Microsoft</a>'s
       <a title="Privacy" href="https://go.microsoft.com/fwlink/?LinkId=521839">Privacy Statement</a>
