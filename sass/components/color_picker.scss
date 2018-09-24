@@ -9,8 +9,8 @@
 
   &-left {
     width: 140px;
-
-    @include shadow-ambient;
+    border-right: 1px solid $gray-210;
+    // @include shadow-ambient;
 
     height: 100%;
     display: flex;
@@ -53,7 +53,6 @@
   & > section.colors {
     padding: 5px;
     overflow-y: scroll;
-    background: $gray-210;
   }
 
   .color-grid {
@@ -95,6 +94,9 @@
 
     .charticulator__widget-control-button {
       width: 100% !important;
+      &:not(:hover):not(:active) {
+        background: none;
+      }
     }
   }
 }
@@ -112,6 +114,9 @@
     overflow-y: scroll;
     overflow-x: hidden;
     max-height: 200px;
+    border: 1px solid $gray-200;
+    border-radius: 0 0 2px 2px;
+    border-top: none;
 
     ul {
       list-style-type: none;
@@ -176,12 +181,8 @@
     flex-direction: column;
 
     .row {
-      margin: 5px 10px;
+      margin: 5px 0px;
       flex-shrink: 0;
-
-      &:last-child {
-        border-top: 1px solid $gray-200;
-      }
     }
 
     .gradient-view {
@@ -200,7 +201,9 @@
     }
 
     .colors-scroll {
-      padding: 10px;
+      padding: 4px;
+      border: 1px solid $gray-200;
+      border-radius: 2px;
       overflow-y: scroll;
       overflow-x: hidden;
       max-height: 250px;
