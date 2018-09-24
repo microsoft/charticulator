@@ -42,6 +42,15 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   },
   {
     input: {
+      type: [DataType.Number, DataType.Date],
+      kind: [DataKind.Numerical, DataKind.Temporal]
+    },
+    output: AttributeType.Boolean,
+    scale: "scale.linear<number,boolean>",
+    priority: 1
+  },
+  {
+    input: {
       type: DataType.String,
       kind: [DataKind.Categorical, DataKind.Ordinal]
     },
