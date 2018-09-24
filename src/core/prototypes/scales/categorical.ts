@@ -125,7 +125,6 @@ export class CategoricalScaleNumber extends ScaleClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const items: Controls.Widget[] = [];
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
@@ -133,15 +132,18 @@ export class CategoricalScaleNumber extends ScaleClass<
         keys.push(key);
       }
     }
-    items.push(
-      manager.table(
-        keys.map(key => [
-          manager.text(key, "right"),
-          manager.inputNumber({ property: "mapping", field: key })
-        ])
+    return [
+      manager.sectionHeader("Number Mapping"),
+      manager.scrollList(
+        keys.map(key =>
+          manager.horizontal(
+            [2, 3],
+            manager.text(key, "right"),
+            manager.inputNumber({ property: "mapping", field: key })
+          )
+        )
       )
-    );
-    return [manager.sectionHeader("Number Mapping"), ...items];
+    ];
   }
 }
 
@@ -190,7 +192,6 @@ export class CategoricalScaleColor extends ScaleClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const items: Controls.Widget[] = [];
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
@@ -198,19 +199,22 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.push(key);
       }
     }
-    items.push(
-      manager.table(
-        keys.map(key => [
-          manager.text(key, "right"),
-          manager.inputColor({
-            property: "mapping",
-            field: key,
-            noComputeLayout: true
-          })
-        ])
+    return [
+      manager.sectionHeader("Color Mapping"),
+      manager.scrollList(
+        keys.map(key =>
+          manager.horizontal(
+            [2, 3],
+            manager.text(key, "right"),
+            manager.inputColor({
+              property: "mapping",
+              field: key,
+              noComputeLayout: true
+            })
+          )
+        )
       )
-    );
-    return [manager.sectionHeader("Color Mapping"), ...items];
+    ];
   }
 }
 
@@ -261,7 +265,6 @@ export class CategoricalScaleEnum extends ScaleClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const items: Controls.Widget[] = [];
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
@@ -269,19 +272,22 @@ export class CategoricalScaleEnum extends ScaleClass<
         keys.push(key);
       }
     }
-    items.push(
-      manager.table(
-        keys.map(key => [
-          manager.text(key, "right"),
-          manager.inputComboBox(
-            { property: "mapping", field: key },
-            props.defaultRange,
-            false
+    return [
+      manager.sectionHeader("String Mapping"),
+      manager.scrollList(
+        keys.map(key =>
+          manager.horizontal(
+            [2, 3],
+            manager.text(key, "right"),
+            manager.inputComboBox(
+              { property: "mapping", field: key },
+              props.defaultRange,
+              false
+            )
           )
-        ])
+        )
       )
-    );
-    return [manager.sectionHeader("String Mapping"), ...items];
+    ];
   }
 }
 
@@ -334,7 +340,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
         items.push(
           manager.inputBoolean(
             { property: "mapping", field: key },
-            { type: "checkbox", label: key }
+            { type: "checkbox-fill-width", label: key }
           )
         );
         mappingALL[key] = true;
@@ -343,17 +349,20 @@ export class CategoricalScaleBoolean extends ScaleClass<
     }
     return [
       manager.sectionHeader("Boolean Mapping"),
-      manager.horizontal(
-        [0, 0],
-        manager.setButton(
-          { property: "mapping" },
-          mappingALL,
-          null,
-          "Select All"
-        ),
-        manager.setButton({ property: "mapping" }, mappingNONE, null, "Clear")
+      manager.row(
+        null,
+        manager.horizontal(
+          [0, 0],
+          manager.setButton(
+            { property: "mapping" },
+            mappingALL,
+            null,
+            "Select All"
+          ),
+          manager.setButton({ property: "mapping" }, mappingNONE, null, "Clear")
+        )
       ),
-      ...items
+      manager.scrollList(items)
     ];
   }
 }
@@ -402,7 +411,6 @@ export class CategoricalScaleImage extends ScaleClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const items: Controls.Widget[] = [];
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
@@ -410,14 +418,17 @@ export class CategoricalScaleImage extends ScaleClass<
         keys.push(key);
       }
     }
-    items.push(
-      manager.table(
-        keys.map(key => [
-          manager.text(key, "right"),
-          manager.inputImage({ property: "mapping", field: key })
-        ])
+    return [
+      manager.sectionHeader("Image Mapping"),
+      manager.scrollList(
+        keys.map(key =>
+          manager.horizontal(
+            [2, 3],
+            manager.text(key, "right"),
+            manager.inputImage({ property: "mapping", field: key })
+          )
+        )
       )
-    );
-    return [manager.sectionHeader("Image Mapping"), ...items];
+    ];
   }
 }

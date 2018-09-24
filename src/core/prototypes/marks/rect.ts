@@ -32,7 +32,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   public static type = "mark";
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Rectangle",
+    displayName: "Shape",
     iconPath: "mark/rect",
     creatingInteraction: {
       type: "rectangle",

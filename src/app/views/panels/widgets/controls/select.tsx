@@ -1,12 +1,45 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import * as R from "../../../../resources";
+import { SVGImageIcon } from "../../../../components";
+import {
+  PopupContext,
+  PopupView
+} from "../../../../controllers/popup_controller";
 import * as globals from "../../../../globals";
-
-import { DropdownListView, SVGImageIcon } from "../../../../components";
-import { PopupView } from "../../../../controllers/popup_controller";
+import * as R from "../../../../resources";
 import { classNames } from "../../../../utils";
+
+export function DropdownListView(props: {
+  list: Array<{ name: string; url?: string; text?: string; font?: string }>;
+  onClick?: (name: string) => void;
+  selected?: string;
+  context: PopupContext;
+}) {
+  return (
+    <ul className="dropdown-list">
+      {props.list.map(item => (
+        <li
+          key={item.name}
+          className={props.selected == item.name ? "is-active" : null}
+          onClick={() => {
+            if (props.onClick) {
+              props.onClick(item.name);
+            }
+            props.context.close();
+          }}
+        >
+          {item.url != null ? <SVGImageIcon url={item.url} /> : null}
+          {item.text != null ? (
+            <span className="text" style={{ fontFamily: item.font }}>
+              {item.text}
+            </span>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export interface SelectProps {
   icons?: string[];
@@ -45,7 +78,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
               selected={this.props.value}
               list={list}
               context={context}
-              onClick={value => {
+              onClick={(value: string) => {
                 this.props.onChange(value);
               }}
             />
@@ -69,10 +102,12 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
     const props = this.props;
     return (
       <span
-        className={classNames("charticulator__widget-control-select", [
-          "is-active",
-          this.state.active
-        ])}
+        className={classNames(
+          "charticulator__widget-control-select",
+          ["is-active", this.state.active],
+          ["has-text", this.props.labels != null && props.showText],
+          ["has-icon", this.props.icons != null]
+        )}
         ref={e => (this.anchor = e)}
         onClick={this._startDropdown}
       >

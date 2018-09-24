@@ -51,13 +51,13 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
               classID: "mark.rect",
               title: "Ellipse",
               icon: "mark/ellipse",
-              options: '{"shape":"ellipse","name":"Ellipse"}'
+              options: '{"shape":"ellipse"}'
             },
             {
               classID: "mark.rect",
               title: "Triangle",
               icon: "mark/triangle",
-              options: '{"shape":"triangle","name":"Triangle"}'
+              options: '{"shape":"triangle"}'
             }
           ]}
         />

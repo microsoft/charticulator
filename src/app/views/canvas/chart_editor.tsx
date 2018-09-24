@@ -425,7 +425,7 @@ export class ChartEditorView
               new Actions.AddPlotSegment(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "x", count: 3 }
+                { axis: "x", count: 4 }
               ).dispatch(this.props.store.dispatcher);
             };
           }
@@ -437,7 +437,7 @@ export class ChartEditorView
               new Actions.AddPlotSegment(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "y", count: 3 }
+                { axis: "y", count: 4 }
               ).dispatch(this.props.store.dispatcher);
             };
           }
