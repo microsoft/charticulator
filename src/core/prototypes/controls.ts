@@ -24,7 +24,7 @@ export interface InputSelectOptions {
 }
 
 export interface InputBooleanOptions {
-  type: "checkbox" | "highlight";
+  type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
   label?: string;
 }
@@ -116,6 +116,11 @@ export interface ArrayWidgetOptions {
   allowDelete?: boolean;
 }
 
+export interface ScrollListOptions {
+  height?: number;
+  maxHeight?: number;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -172,13 +177,14 @@ export interface WidgetManager {
 
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
-  row(title: string, widget?: Widget, options?: RowOptions): Widget;
+  row(title?: string, widget?: Widget, options?: RowOptions): Widget;
   detailsButton(...widgets: Widget[]): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
+  scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;
 
   filterEditor(options: FilterEditorOptions): Widget;
   groupByEditor(options: GroupByEditorOptions): Widget;

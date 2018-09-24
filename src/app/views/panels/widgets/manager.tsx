@@ -45,7 +45,8 @@ import {
   Radio,
   Select,
   ComboBoxFontFamily,
-  ComboBox
+  ComboBox,
+  CheckBox
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
@@ -229,19 +230,15 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     options: Prototypes.Controls.InputBooleanOptions
   ) {
     switch (options.type) {
+      case "checkbox-fill-width":
       case "checkbox": {
         return (
-          <Button
-            icon={
-              (this.getPropertyValue(property) as boolean)
-                ? "checkbox/checked"
-                : "checkbox/empty"
-            }
+          <CheckBox
+            value={this.getPropertyValue(property) as boolean}
             text={options.label}
-            active={false}
-            onClick={() => {
-              const v = this.getPropertyValue(property) as boolean;
-              this.emitSetProperty(property, !v);
+            fillWidth={options.type == "checkbox-fill-width"}
+            onChange={v => {
+              this.emitSetProperty(property, v);
             }}
           />
         );
@@ -334,14 +331,12 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   }
   public clearButton(property: Prototypes.Controls.Property, icon?: string) {
     return (
-      <span
-        className="charticulator__widget-control-button"
+      <Button
+        icon={icon || "general/eraser"}
         onClick={() => {
           this.emitSetProperty(property, null);
         }}
-      >
-        <SVGImageIcon url={R.getSVGIcon(icon || "general/eraser")} />
-      </span>
+      />
     );
   }
   public setButton(
@@ -351,15 +346,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     text?: string
   ) {
     return (
-      <span
-        className="charticulator__widget-control-button"
+      <Button
+        text={text}
+        icon={icon}
         onClick={() => {
           this.emitSetProperty(property, value);
         }}
-      >
-        {icon != null ? <SVGImageIcon url={R.getSVGIcon(icon)} /> : null}
-        {text != null ? <span className="el-text">{text}</span> : null}
-      </span>
+      />
     );
   }
   public orderByWidget(
@@ -845,12 +838,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public row(title: string, widget?: JSX.Element) {
+  public row(title?: string, widget?: JSX.Element) {
     return (
       <div className="charticulator__widget-row">
-        <span className="charticulator__widget-row-label el-layout-item">
-          {title}
-        </span>
+        {title != null ? (
+          <span className="charticulator__widget-row-label el-layout-item">
+            {title}
+          </span>
+        ) : null}
         {widget}
       </div>
     );
@@ -886,6 +881,27 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           ))}
         </tbody>
       </table>
+    );
+  }
+
+  public scrollList(
+    widgets: Prototypes.Controls.Widget[],
+    options: Prototypes.Controls.ScrollListOptions = {}
+  ): JSX.Element {
+    return (
+      <div
+        className="charticulator__widget-scroll-list"
+        style={{
+          maxHeight: options.maxHeight ? options.maxHeight + "px" : undefined,
+          height: options.height ? options.height + "px" : undefined
+        }}
+      >
+        {widgets.map((widget, i) => (
+          <div className="charticulator__widget-scroll-list-item" key={i}>
+            {widget}
+          </div>
+        ))}
+      </div>
     );
   }
 }
@@ -1021,12 +1037,14 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
+            icon={"general/order-reversed"}
             text="Reverse"
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });
             }}
           />{" "}
           <Button
+            icon={"general/sort"}
             text="Sort"
             onClick={() => {
               this.setState({ items: this.state.items.sort() });

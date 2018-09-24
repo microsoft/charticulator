@@ -17,10 +17,12 @@ export class Button extends React.Component<ButtonProps, {}> {
   public render() {
     return (
       <span
-        className={classNames("charticulator__widget-control-button", [
-          "is-active",
-          this.props.active
-        ])}
+        className={classNames(
+          "charticulator__widget-control-button",
+          ["is-active", this.props.active],
+          ["has-text", this.props.text != null],
+          ["has-icon", this.props.icon != null]
+        )}
         title={this.props.title}
         onClick={e => {
           e.stopPropagation();
@@ -55,4 +57,43 @@ export function UpdownButton(props: UpdownButtonProps) {
       </span>
     </span>
   );
+}
+
+export interface CheckBoxProps {
+  value: boolean;
+  text?: string;
+  title?: string;
+  fillWidth?: boolean;
+  onChange?: (newValue: boolean) => void;
+}
+
+export class CheckBox extends React.Component<CheckBoxProps, {}> {
+  public render() {
+    return (
+      <span
+        className={classNames(
+          "charticulator__widget-control-checkbox",
+          ["is-active", this.props.value],
+          ["is-fill-width", this.props.fillWidth],
+          ["has-text", this.props.text != null]
+        )}
+        title={this.props.title}
+        onClick={e => {
+          e.stopPropagation();
+          if (this.props.onChange) {
+            this.props.onChange(!this.props.value);
+          }
+        }}
+      >
+        <SVGImageIcon
+          url={R.getSVGIcon(
+            this.props.value ? "checkbox/checked" : "checkbox/empty"
+          )}
+        />
+        {this.props.text ? (
+          <span className="el-text">{this.props.text}</span>
+        ) : null}
+      </span>
+    );
+  }
 }
