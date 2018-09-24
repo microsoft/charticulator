@@ -7,13 +7,11 @@ import {
   Specification,
   Action,
   SelectMark,
-  ClearSelection
+  ClearSelection,
+  objectDigest
 } from "../../core";
 import * as DragData from "./drag_data";
-import {
-  ExportTemplateTarget,
-  ExportTemplateTargetProperty
-} from "../template";
+import { ExportTemplateTarget } from "../template";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -184,7 +182,7 @@ export class AddMarkToGlyph extends Action {
     return {
       name: "AddMarkToGlyph",
       classID: this.classID,
-      glyph: [this.glyph.classID, this.glyph._id],
+      glyph: objectDigest(this.glyph),
       mappings: this.mappings,
       properties: this.properties
     };
@@ -202,8 +200,8 @@ export class RemoveMarkFromGlyph extends Action {
   public digest() {
     return {
       name: "RemoveMarkFromGlyph",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id]
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark)
     };
   }
 }
@@ -225,8 +223,8 @@ export class MapDataToMarkAttribute extends Action {
   public digest() {
     return {
       name: "MapDataToMarkAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       attribute: this.attribute,
       attributeType: this.attributeType,
       expression: this.expression,
@@ -251,8 +249,8 @@ export class SetMarkAttribute extends MarkAction {
   public digest() {
     return {
       name: "SetMarkAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       attribute: this.attribute,
       mapping: this.mapping
     };
@@ -271,8 +269,8 @@ export class UnmapMarkAttribute extends MarkAction {
   public digest() {
     return {
       name: "UnmapMarkAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       attribute: this.attribute
     };
   }
@@ -290,8 +288,8 @@ export class UpdateMarkAttribute extends MarkAction {
   public digest() {
     return {
       name: "UpdateMarkAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       updates: this.updates
     };
   }
@@ -311,10 +309,10 @@ export class SnapMarks extends MarkAction {
   public digest() {
     return {
       name: "SnapMarks",
-      glyph: [this.glyph.classID, this.glyph._id],
-      mark: [this.mark.classID, this.mark._id],
+      glyph: objectDigest(this.glyph),
+      mark: objectDigest(this.mark),
       attribute: this.attribute,
-      targetMark: [this.targetMark.classID, this.targetMark._id],
+      targetMark: objectDigest(this.targetMark),
       targetAttribute: this.targetAttribute
     };
   }
@@ -349,7 +347,7 @@ export class SetGlyphAttribute extends Action {
   public digest() {
     return {
       name: "SetGlyphAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
+      glyph: objectDigest(this.glyph),
       attribute: this.attribute,
       mapping: this.mapping
     };
@@ -367,7 +365,7 @@ export class UpdateGlyphAttribute extends Action {
   public digest() {
     return {
       name: "UpdateGlyphAttribute",
-      glyph: [this.glyph.classID, this.glyph._id],
+      glyph: objectDigest(this.glyph),
       updates: this.updates
     };
   }
@@ -402,7 +400,7 @@ export class DeleteChartElement extends Action {
   public digest() {
     return {
       name: "DeleteChartElement",
-      chartElement: [this.chartElement.classID, this.chartElement._id]
+      chartElement: objectDigest(this.chartElement)
     };
   }
 }
@@ -427,7 +425,7 @@ export class SetChartElementMapping extends Action {
   public digest() {
     return {
       name: "SetChartElementMapping",
-      chartElement: [this.chartElement.classID, this.chartElement._id],
+      chartElement: objectDigest(this.chartElement),
       attribute: this.attribute,
       mapping: this.mapping
     };
@@ -451,7 +449,7 @@ export class MapDataToChartElementAttribute extends Action {
   public digest() {
     return {
       name: "MapChartElementkAttribute",
-      chartElement: [this.chartElement.classID, this.chartElement._id],
+      chartElement: objectDigest(this.chartElement),
       attribute: this.attribute,
       attributeType: this.attributeType,
       expression: this.expression,
@@ -471,7 +469,7 @@ export class SetPlotSegmentFilter extends Action {
   public digest() {
     return {
       name: "SetPlotSegmentFilter",
-      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      plotSegment: objectDigest(this.plotSegment),
       filter: this.filter
     };
   }
@@ -487,7 +485,7 @@ export class SetPlotSegmentGroupBy extends Action {
   public digest() {
     return {
       name: "SetPlotSegmentGroupBy",
-      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      plotSegment: objectDigest(this.plotSegment),
       groupBy: this.groupBy
     };
   }
@@ -505,7 +503,7 @@ export class SetScaleAttribute extends Action {
   public digest() {
     return {
       name: "SetScaleAttribute",
-      scale: [this.scale.classID, this.scale._id],
+      scale: objectDigest(this.scale),
       attribute: this.attribute,
       mapping: this.mapping
     };
@@ -536,7 +534,7 @@ export class UpdateChartElementAttribute extends Action {
   public digest() {
     return {
       name: "UpdateChartElementAttribute",
-      chartElement: [this.chartElement.classID, this.chartElement._id],
+      chartElement: objectDigest(this.chartElement),
       updates: this.updates
     };
   }
@@ -555,9 +553,9 @@ export class SnapChartElements extends Action {
   public digest() {
     return {
       name: "SnapChartElements",
-      element: [this.element.classID, this.element._id],
+      element: objectDigest(this.element),
       attribute: this.attribute,
-      targetElement: [this.targetElement.classID, this.targetElement._id],
+      targetElement: objectDigest(this.targetElement),
       targetAttribute: this.targetAttribute
     };
   }
@@ -576,7 +574,7 @@ export class BindDataToAxis extends Action {
   public digest() {
     return {
       name: "BindDataToAxis",
-      object: [this.object.classID, this.object._id],
+      object: objectDigest(this.object),
       property: this.property,
       appendToProperty: this.appendToProperty,
       dataExpression: {
@@ -661,7 +659,7 @@ export class SetObjectProperty extends Action {
   public digest() {
     return {
       name: "SetObjectProperty",
-      object: [this.object.classID, this.object._id],
+      object: objectDigest(this.object),
       property: this.property,
       field: this.field,
       value: this.value,
@@ -682,7 +680,7 @@ export class ExtendPlotSegment extends Action {
   public digest() {
     return {
       name: "ExtendPlotSegment",
-      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
+      plotSegment: objectDigest(this.plotSegment),
       extension: this.extension
     };
   }
@@ -714,7 +712,7 @@ export class ReorderGlyphMark extends Action {
   public digest() {
     return {
       name: "ReorderGlyphMark",
-      glyph: [this.glyph.classID, this.glyph._id],
+      glyph: objectDigest(this.glyph),
       fromIndex: this.fromIndex,
       toIndex: this.toIndex
     };
@@ -733,8 +731,8 @@ export class SelectGlyph extends Action {
   public digest() {
     return {
       name: "SelectGlyph",
-      plotSegment: [this.plotSegment.classID, this.plotSegment._id],
-      glyph: [this.glyph.classID, this.glyph._id],
+      plotSegment: objectDigest(this.plotSegment),
+      glyph: objectDigest(this.glyph),
       glyphIndex: this.glyphIndex
     };
   }
@@ -751,7 +749,7 @@ export class SelectChartElement extends Action {
   public digest() {
     return {
       name: "SelectChartElement",
-      glyph: [this.chartElement.classID, this.chartElement._id],
+      glyph: objectDigest(this.chartElement),
       glyphIndex: this.glyphIndex
     };
   }
