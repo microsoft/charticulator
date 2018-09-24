@@ -200,7 +200,7 @@ export class ObjectClasses {
   /**
    * Gets an interator of registered classes.
    */
-  public static RegisteredClasses(): Iterator<ObjectClassConstructor> {
+  public static RegisteredClasses(): IterableIterator<ObjectClassConstructor> {
     return this.registeredObjectClasses.values();
   }
 }
