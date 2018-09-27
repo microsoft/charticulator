@@ -328,9 +328,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public inputImage(property: Prototypes.Controls.Property) {
     return (
       <InputImage
-        value={this.getPropertyValue(property) as string}
+        value={this.getPropertyValue(property) as Specification.Types.Image}
         onChange={image => {
-          this.emitSetProperty(property, image);
+          this.emitSetProperty(property, image as Specification.Types.Image);
           return true;
         }}
       />

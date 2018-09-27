@@ -150,7 +150,8 @@ export interface Image extends Element {
   y: number;
   width: number;
   height: number;
-  mode?: "letterbox" | "fill" | "stretch";
+  /** Size mode, default to letterbox */
+  mode?: "letterbox" | "stretch";
 }
 
 export interface Group extends Element {

@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 import { AttributeDescriptions } from "../object";
-import { AttributeMap } from "../../specification";
+import { AttributeMap, ObjectProperties, Types } from "../../specification";
 import { Color } from "../../common";
 import { AttrBuilder } from "../attrs";
 
@@ -28,9 +28,13 @@ export interface ImageElementAttributes extends AttributeMap {
   strokeWidth: number;
   opacity: number;
   visible: boolean;
-  image: string;
+  image: Types.Image;
 }
 
-export interface ImageElementProperties extends AttributeMap {
-  imageMode: "letterbox" | "fill" | "stretch";
+export interface ImageElementProperties extends ObjectProperties {
+  imageMode: "letterbox" | "stretch";
+  paddingX: number;
+  paddingY: number;
+  alignX: "start" | "middle" | "end";
+  alignY: "start" | "middle" | "end";
 }

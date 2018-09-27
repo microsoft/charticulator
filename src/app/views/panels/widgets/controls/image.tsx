@@ -10,9 +10,15 @@ import { PopupView } from "../../../../controllers/popup_controller";
 import { classNames } from "../../../../utils";
 import { Button } from "./button";
 
+export interface ImageDescription {
+  src: string;
+  width: number;
+  height: number;
+}
+
 export interface InputImageProps {
-  value?: string;
-  onChange?: (value: string) => boolean;
+  value?: ImageDescription;
+  onChange?: (value: ImageDescription) => boolean;
 }
 
 export class InputImage extends ContextedComponent<
@@ -23,13 +29,17 @@ export class InputImage extends ContextedComponent<
 
   public element: HTMLSpanElement;
 
-  public resolveImage(value: string) {
+  public resolveImage(value: ImageDescription) {
     return value;
   }
 
   public emitOnChange(images: ImageUploaderItem[]) {
     if (images.length == 1) {
-      this.props.onChange(images[0].dataURL);
+      this.props.onChange({
+        src: images[0].dataURL,
+        width: images[0].width,
+        height: images[0].height
+      });
     }
   }
 
@@ -40,7 +50,7 @@ export class InputImage extends ContextedComponent<
           <PopupView context={context}>
             <ImageChooser
               value={this.props.value}
-              onChoose={(image: string) => {
+              onChoose={(image: ImageDescription) => {
                 context.close();
                 if (this.props.onChange) {
                   this.props.onChange(image);
@@ -89,11 +99,11 @@ export class InputImage extends ContextedComponent<
   };
 
   public render() {
-    const isNone = this.props.value == "" || this.props.value == null;
-    const imageURL = isNone ? null : this.resolveImage(this.props.value);
-    let imageDisplayURL = imageURL;
-    if (imageURL) {
-      if (imageURL.startsWith("data:")) {
+    const isNone = this.props.value == null;
+    const image = isNone ? null : this.resolveImage(this.props.value);
+    let imageDisplayURL = image ? image.src : null;
+    if (imageDisplayURL) {
+      if (imageDisplayURL.startsWith("data:")) {
         imageDisplayURL = "(data url)";
       }
     }
@@ -118,7 +128,7 @@ export class InputImage extends ContextedComponent<
             <img
               key="image"
               className="el-image"
-              src={isNone ? R.getSVGIcon("mark/image") : imageURL}
+              src={isNone ? R.getSVGIcon("mark/image") : image.src}
             />,
             <span key="text" className="el-text-wrapper">
               <span className="el-text">
@@ -133,8 +143,8 @@ export class InputImage extends ContextedComponent<
 }
 
 export interface ImageChooserProps {
-  value?: string;
-  onChoose?: (value: string) => void;
+  value?: ImageDescription;
+  onChoose?: (value: ImageDescription) => void;
 }
 
 export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
@@ -145,7 +155,11 @@ export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
           focusOnMount={true}
           onUpload={images => {
             if (images.length == 1) {
-              this.props.onChoose(images[0].dataURL);
+              this.props.onChoose({
+                src: images[0].dataURL,
+                width: images[0].width,
+                height: images[0].height
+              });
             }
           }}
         />
@@ -165,6 +179,8 @@ export interface ImageUploaderState {
 
 export interface ImageUploaderItem {
   name: string;
+  width: number;
+  height: number;
   dataURL: string;
 }
 
@@ -183,21 +199,32 @@ export class ImageUploader extends React.Component<
   }
   public componentWillUnmount() {}
 
+  public static ReadFileAsImage(
+    name: string,
+    file: File | Blob
+  ): Promise<ImageUploaderItem> {
+    return new Promise<ImageUploaderItem>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          resolve({
+            name,
+            width: img.width,
+            height: img.height,
+            dataURL: reader.result as string
+          });
+        };
+        img.src = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   public static ParseFiles(files: FileList): Promise<ImageUploaderItem[]> {
     const result: Array<Promise<ImageUploaderItem>> = [];
     const readFile = (file: File) => {
-      result.push(
-        new Promise<ImageUploaderItem>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            resolve({
-              name: file.name,
-              dataURL: reader.result as string
-            });
-          };
-          reader.readAsDataURL(file);
-        })
-      );
+      result.push(this.ReadFileAsImage(file.name, file));
     };
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -216,14 +243,7 @@ export class ImageUploader extends React.Component<
               if (!blob.type.startsWith("image/")) {
                 reject(new Error("not an image"));
               } else {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  resolve({
-                    name: uri,
-                    dataURL: reader.result as string
-                  });
-                };
-                reader.readAsDataURL(blob);
+                return this.ReadFileAsImage("blob", blob);
               }
             });
           })
