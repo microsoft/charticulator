@@ -402,7 +402,7 @@ export class CategoricalScaleImage extends ScaleClass<
         if (options.rangeImage) {
           props.mapping[d] = options.rangeImage[v % options.rangeImage.length];
         } else {
-          props.mapping[d] = "";
+          props.mapping[d] = null;
         }
       });
     }
