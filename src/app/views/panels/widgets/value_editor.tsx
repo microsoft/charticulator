@@ -263,21 +263,20 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
         }
       }
       case Specification.AttributeType.Image: {
-        const str = value as string;
-        const textInput = (
+        const str = value as Specification.Types.Image;
+        return (
           <InputImage
             value={str}
             onChange={newValue => {
-              if (newValue == "") {
+              if (newValue == null) {
                 this.emitClearValue();
               } else {
-                this.emitSetValue(newValue);
+                this.emitSetValue(newValue as Specification.Types.Image);
               }
               return true;
             }}
           />
         );
-        return textInput;
       }
     }
     return <span>(not implemented)</span>;

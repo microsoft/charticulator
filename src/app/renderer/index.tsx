@@ -322,10 +322,7 @@ export function renderGraphicalElementSVG(
       let preserveAspectRatio = null;
       switch (image.mode) {
         case "letterbox":
-          preserveAspectRatio = "xMidYMid meet";
-          break;
-        case "fill":
-          preserveAspectRatio = "xMidYMid slice";
+          preserveAspectRatio = "meet";
           break;
         case "stretch":
           preserveAspectRatio = "none";

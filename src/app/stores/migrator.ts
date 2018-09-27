@@ -29,6 +29,9 @@ export class Migrator {
       state = this.fixDataMappingExpressions(state);
     }
 
+    // After migration, set version to targetVersion
+    state.version = targetVersion;
+
     return state;
   }
 

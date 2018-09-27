@@ -22,8 +22,12 @@ import {
   ImageElementProperties
 } from "./image.attrs";
 
-const imagePlaceholder =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmljb25zPC90aXRsZT48cmVjdCB4PSI1LjE1MTI0IiB5PSI2LjY4NDYyIiB3aWR0aD0iMjEuNjk3NTIiIGhlaWdodD0iMTguNjEyNSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLXdpZHRoOjAuOTI2MTg0MTE3Nzk0MDM2OXB4Ii8+PHBvbHlnb24gcG9pbnRzPSIyMC4xNSAxMi45NDMgMTMuODExIDIxLjQwNCAxMC4xNTQgMTYuNDk4IDUuMTUxIDIzLjE3NiA1LjE1MSAyNS4zMDYgMTAuODg4IDI1LjMwNiAxNi43MTkgMjUuMzA2IDI2Ljg0OSAyNS4zMDYgMjYuODQ5IDIxLjkzIDIwLjE1IDEyLjk0MyIgc3R5bGU9ImZpbGwtb3BhY2l0eTowLjI7c3Ryb2tlOiMwMDA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS13aWR0aDowLjcwMDAwMDAwMDAwMDAwMDFweCIvPjxjaXJjbGUgY3g9IjExLjkyMDI3IiBjeT0iMTIuMzk5MjMiIHI9IjEuOTAyMTYiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4yO3N0cm9rZTojMDAwO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC43MDAwMDAwMDAwMDAwMDAxcHgiLz48L3N2Zz4=";
+const imagePlaceholder: Specification.Types.Image = {
+  src:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmljb25zPC90aXRsZT48cmVjdCB4PSI1LjE1MTI0IiB5PSI2LjY4NDYyIiB3aWR0aD0iMjEuNjk3NTIiIGhlaWdodD0iMTguNjEyNSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLXdpZHRoOjAuOTI2MTg0MTE3Nzk0MDM2OXB4Ii8+PHBvbHlnb24gcG9pbnRzPSIyMC4xNSAxMi45NDMgMTMuODExIDIxLjQwNCAxMC4xNTQgMTYuNDk4IDUuMTUxIDIzLjE3NiA1LjE1MSAyNS4zMDYgMTAuODg4IDI1LjMwNiAxNi43MTkgMjUuMzA2IDI2Ljg0OSAyNS4zMDYgMjYuODQ5IDIxLjkzIDIwLjE1IDEyLjk0MyIgc3R5bGU9ImZpbGwtb3BhY2l0eTowLjI7c3Ryb2tlOiMwMDA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS13aWR0aDowLjcwMDAwMDAwMDAwMDAwMDFweCIvPjxjaXJjbGUgY3g9IjExLjkyMDI3IiBjeT0iMTIuMzk5MjMiIHI9IjEuOTAyMTYiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4yO3N0cm9rZTojMDAwO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC43MDAwMDAwMDAwMDAwMDAxcHgiLz48L3N2Zz4=",
+  width: 100,
+  height: 100
+};
 
 export { ImageElementAttributes, ImageElementProperties };
 
@@ -45,7 +49,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
   public static defaultProperties: Partial<ImageElementProperties> = {
     visible: true,
-    imageMode: "letterbox"
+    imageMode: "letterbox",
+    paddingX: 0,
+    paddingY: 0,
+    alignX: "middle",
+    alignY: "middle"
   };
 
   public static defaultMappingValues: Partial<ImageElementAttributes> = {
@@ -75,7 +83,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
     attrs.visible = true;
-    attrs.image = "";
+    attrs.image = null;
   }
 
   public getAttributePanelWidgets(
@@ -102,9 +110,59 @@ export class ImageElementClass extends EmphasizableMarkClass<
           {
             type: "dropdown",
             showLabel: true,
-            labels: ["Letterbox", "Fill", "Stretch"],
-            options: ["letterbox", "fill", "stretch"]
+            labels: ["Letterbox", "Stretch"],
+            options: ["letterbox", "stretch"]
           }
+        )
+      ),
+      ...(this.object.properties.imageMode == "letterbox"
+        ? [
+            manager.row(
+              "Align",
+              manager.horizontal(
+                [0, 1],
+                manager.inputSelect(
+                  { property: "alignX" },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/left", "align/x-middle", "align/right"],
+                    labels: ["Left", "Middle", "Right"]
+                  }
+                ),
+                manager.inputSelect(
+                  { property: "alignY" },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/bottom", "align/y-middle", "align/top"],
+                    labels: ["Bottom", "Middle", "Top"]
+                  }
+                )
+              )
+            )
+          ]
+        : []),
+      manager.row(
+        "Padding",
+        manager.horizontal(
+          [0, 2, 0, 2],
+          manager.label("x:"),
+          manager.inputNumber(
+            { property: "paddingX" },
+            {
+              updownTick: 1,
+              showUpdown: true
+            }
+          ),
+          manager.label("y:"),
+          manager.inputNumber(
+            { property: "paddingY" },
+            {
+              updownTick: 1,
+              showUpdown: true
+            }
+          )
         )
       ),
       manager.sectionHeader("Style"),
@@ -163,11 +221,24 @@ export class ImageElementClass extends EmphasizableMarkClass<
     manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
+    const props = this.object.properties;
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
+    const paddingX = props.paddingX || 0;
+    const paddingY = props.paddingY || 0;
+    const alignX = props.alignX || "middle";
+    const alignY = props.alignY || "middle";
+    let image = attrs.image || imagePlaceholder;
+    if (typeof image == "string") {
+      // Be compatible with old version
+      image = { src: image, width: 100, height: 100 };
+    }
+
     const helper = new Graphics.CoordinateSystemHelper(cs);
     const g = Graphics.makeGroup([]);
+
+    // If fill color is specified, draw a background rect
     if (attrs.fill) {
       g.elements.push(
         helper.rect(
@@ -182,32 +253,85 @@ export class ImageElementClass extends EmphasizableMarkClass<
         )
       );
     }
+
+    // Center in local coordiantes
     const cx = (attrs.x1 + attrs.x2) / 2;
     const cy = (attrs.y1 + attrs.y2) / 2;
-    const localWidth = Geometry.pointDistance(
+
+    // Decide the width/height of the image area
+    // For special coordinate systems, use the middle lines' length as width/height
+    const containerWidth = Geometry.pointDistance(
       cs.transformPoint(attrs.x1 + offset.x, cy + offset.y),
       cs.transformPoint(attrs.x2 + offset.x, cy + offset.y)
     );
-    const localHeight = Geometry.pointDistance(
+    const containerHeight = Geometry.pointDistance(
       cs.transformPoint(cx + offset.x, attrs.y1 + offset.y),
       cs.transformPoint(cx + offset.x, attrs.y2 + offset.y)
     );
+
+    const boxWidth = Math.max(0, containerWidth - paddingX * 2);
+    const boxHeight = Math.max(0, containerHeight - paddingY * 2);
+
+    // Fit image into boxWidth x boxHeight, based on the specified option
+    let imageWidth: number;
+    let imageHeight: number;
+    switch (props.imageMode) {
+      case "stretch":
+        {
+          imageWidth = boxWidth;
+          imageHeight = boxHeight;
+        }
+        break;
+      case "letterbox":
+      default:
+        {
+          if (image.width / image.height > boxWidth / boxHeight) {
+            imageWidth = boxWidth;
+            imageHeight = (image.height / image.width) * boxWidth;
+          } else {
+            imageHeight = boxHeight;
+            imageWidth = (image.width / image.height) * boxHeight;
+          }
+        }
+        break;
+    }
+
+    // Decide the anchor position (px, py) in local coordinates
+    let px = cx;
+    let py = cy;
+    let imgX = -imageWidth / 2;
+    let imgY = -imageHeight / 2;
+    if (alignX == "start") {
+      px = attrs.x1;
+      imgX = paddingX;
+    } else if (alignX == "end") {
+      px = attrs.x2;
+      imgX = -imageWidth - paddingX;
+    }
+    if (alignY == "start") {
+      py = attrs.y1;
+      imgY = paddingY;
+    } else if (alignY == "end") {
+      py = attrs.y2;
+      imgY = -imageHeight - paddingY;
+    }
+
+    // Create the image element
     const gImage = Graphics.makeGroup([
       {
         type: "image",
-        src:
-          attrs.image == "" || attrs.image == null
-            ? imagePlaceholder
-            : manager.resolveResource(attrs.image),
-        x: -localWidth / 2,
-        y: -localHeight / 2,
-        width: localWidth,
-        height: localHeight,
-        mode: this.object.properties.imageMode
+        src: image.src,
+        x: imgX,
+        y: imgY,
+        width: imageWidth,
+        height: imageHeight,
+        mode: "stretch"
       } as Graphics.Image
     ]);
-    gImage.transform = cs.getLocalTransform(cx + offset.x, cy + offset.y);
+    gImage.transform = cs.getLocalTransform(px + offset.x, py + offset.y);
     g.elements.push(gImage);
+
+    // If stroke color is specified, stroke a foreground rect
     if (attrs.stroke) {
       g.elements.push(
         helper.rect(
@@ -224,6 +348,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         )
       );
     }
+
+    // Apply the opacity
     g.style = {
       opacity: attrs.opacity
     };

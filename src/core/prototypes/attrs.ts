@@ -110,7 +110,7 @@ export class AttrBuilder {
   public static image() {
     return this.attr("image", AttributeType.Image, {
       solverExclude: true,
-      defaultValue: ""
+      defaultValue: null
     });
   }
 
