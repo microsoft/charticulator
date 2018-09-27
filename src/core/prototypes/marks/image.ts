@@ -229,7 +229,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const paddingY = props.paddingY || 0;
     const alignX = props.alignX || "middle";
     const alignY = props.alignY || "middle";
-    const image = attrs.image || imagePlaceholder;
+    let image = attrs.image || imagePlaceholder;
+    if (typeof image == "string") {
+      // Be compatible with old version
+      image = { src: image, width: 100, height: 100 };
+    }
 
     const helper = new Graphics.CoordinateSystemHelper(cs);
     const g = Graphics.makeGroup([]);

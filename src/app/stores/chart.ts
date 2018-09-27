@@ -151,6 +151,7 @@ export class ChartStore extends BaseStore {
 
   public loadState(state: ChartStoreState) {
     this.currentSelection = null;
+    this.selectedGlyphIndex = {};
     this.emit(ChartStore.EVENT_SELECTION);
 
     this.chart = state.chart;
@@ -158,10 +159,9 @@ export class ChartStore extends BaseStore {
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
-      this.datasetStore.dataset
+      this.datasetStore.dataset,
+      this.chartState
     );
-    this.chartManager.setState(this.chartState);
-    this.chartState = this.chartManager.chartState;
 
     this.emit(ChartStore.EVENT_GRAPHICS);
     this.emit(ChartStore.EVENT_SELECTION);
@@ -1692,6 +1692,7 @@ export class ChartStore extends BaseStore {
 
   public newChartEmpty() {
     this.currentSelection = null;
+    this.selectedGlyphIndex = {};
     this.currentTool = null;
     this.currentToolOptions = null;
 
