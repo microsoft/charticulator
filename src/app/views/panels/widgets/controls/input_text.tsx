@@ -71,7 +71,12 @@ export class InputText extends React.Component<InputTextProps, {}> {
           }
         }}
         onFocus={e => {
-          this.inputElement.select();
+          // Select the text, with backward selection
+          this.inputElement.setSelectionRange(
+            0,
+            this.inputElement.value.length,
+            "backward"
+          );
         }}
         onBlur={() => {
           this.doEnter();
