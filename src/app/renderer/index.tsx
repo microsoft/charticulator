@@ -4,7 +4,10 @@ import * as React from "react";
 
 import { Graphics, Color, shallowClone, getColorConverter } from "../../core";
 import { toSVGNumber } from "../utils";
-import { ChartComponent } from "../../container/chart_component";
+import {
+  ChartComponent,
+  GlyphEventHandler
+} from "../../container/chart_component";
 import { ColorFilter, NumberModifier } from "../../core/graphics";
 
 // adapted from https://stackoverflow.com/a/20820649
@@ -138,6 +141,11 @@ export interface DataSelection {
   isSelected(table: string, rowIndices: number[]): boolean;
 }
 
+export type GraphicalElementEventHandler = (
+  element: Graphics.Element["selectable"],
+  event: { shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }
+) => any;
+
 export interface RenderGraphicalElementSVGOptions {
   noStyle?: boolean;
   styleOverride?: Graphics.Style;
@@ -145,10 +153,13 @@ export interface RenderGraphicalElementSVGOptions {
   key?: string;
   chartComponentSync?: boolean;
   externalResourceResolver?: (url: string) => string;
-  onSelected?: (
-    element: Graphics.Element["selectable"],
-    event: { shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }
-  ) => any;
+  /** Called when a glyph is clicked */
+  onClick?: GraphicalElementEventHandler;
+  /** Called when the mouse enters a glyph */
+  onMouseEnter?: GraphicalElementEventHandler;
+  /** Called when the mouse leaves a glyph */
+  onMouseLeave?: GraphicalElementEventHandler;
+
   selection?: DataSelection;
 }
 
@@ -169,14 +180,30 @@ export function renderGraphicalElementSVG(
     : renderStyle(options.styleOverride || element.style);
 
   // OnClick event handler
-  let onClick: (e: React.MouseEvent<Element>) => void;
-  if (options.onSelected && element.selectable) {
-    onClick = (e: React.MouseEvent<Element>) => {
-      e.stopPropagation();
-      options.onSelected(element.selectable, e.nativeEvent);
-    };
+  const mouseEvents: {
+    onClick?: (e: React.MouseEvent<Element>) => void;
+    onMouseEnter?: (e: React.MouseEvent<Element>) => void;
+    onMouseLeave?: (e: React.MouseEvent<Element>) => void;
+  } = {};
+  if (element.selectable) {
     style.cursor = "pointer";
     style.pointerEvents = "all";
+    if (options.onClick) {
+      mouseEvents.onClick = (e: React.MouseEvent<Element>) => {
+        e.stopPropagation();
+        options.onClick(element.selectable, e.nativeEvent);
+      };
+    }
+    if (options.onMouseEnter) {
+      mouseEvents.onMouseEnter = (e: React.MouseEvent<Element>) => {
+        options.onMouseEnter(element.selectable, e.nativeEvent);
+      };
+    }
+    if (options.onMouseLeave) {
+      mouseEvents.onMouseLeave = (e: React.MouseEvent<Element>) => {
+        options.onMouseLeave(element.selectable, e.nativeEvent);
+      };
+    }
   }
 
   switch (element.type) {
@@ -185,7 +212,7 @@ export function renderGraphicalElementSVG(
       return (
         <rect
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           x={Math.min(rect.x1, rect.x2)}
@@ -200,7 +227,7 @@ export function renderGraphicalElementSVG(
       return (
         <circle
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           cx={circle.cx}
@@ -214,7 +241,7 @@ export function renderGraphicalElementSVG(
       return (
         <ellipse
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           cx={(ellipse.x1 + ellipse.x2) / 2}
@@ -229,7 +256,7 @@ export function renderGraphicalElementSVG(
       return (
         <line
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           x1={line.x1}
@@ -244,7 +271,7 @@ export function renderGraphicalElementSVG(
       return (
         <polygon
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           points={polygon.points
@@ -259,7 +286,7 @@ export function renderGraphicalElementSVG(
       return (
         <path
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           d={d}
@@ -275,7 +302,7 @@ export function renderGraphicalElementSVG(
         style2.fill = style.stroke;
         const e1 = (
           <text
-            onClick={onClick}
+            {...mouseEvents}
             className={options.className || null}
             style={style2}
             x={text.cx}
@@ -287,7 +314,7 @@ export function renderGraphicalElementSVG(
         style.stroke = "none";
         const e2 = (
           <text
-            onClick={onClick}
+            {...mouseEvents}
             className={options.className || null}
             style={style}
             x={text.cx}
@@ -306,7 +333,7 @@ export function renderGraphicalElementSVG(
         return (
           <text
             key={options.key}
-            onClick={onClick}
+            {...mouseEvents}
             className={options.className || null}
             style={style}
             x={text.cx}
@@ -331,7 +358,7 @@ export function renderGraphicalElementSVG(
       return (
         <image
           key={options.key}
-          onClick={onClick}
+          {...mouseEvents}
           className={options.className || null}
           style={style}
           preserveAspectRatio={preserveAspectRatio}
@@ -364,6 +391,35 @@ export function renderGraphicalElementSVG(
             }
           }
         : null;
+
+      const convertEventHandler = (
+        handler: GraphicalElementEventHandler
+      ): GlyphEventHandler => {
+        if (!handler) {
+          return null;
+        }
+        return (s, parameters) => {
+          if (s == null) {
+            // Clicked inside the ChartComponent but not on a glyph,
+            // in this case we select the whole thing
+            handler(component.selectable, parameters);
+          } else {
+            // Clicked on a glyph of ChartComponent (or a sub-component)
+            // in this case we translate the component's rowIndices its parent's
+            handler(
+              {
+                plotSegment: component.selectable.plotSegment,
+                glyphIndex: component.selectable.glyphIndex,
+                rowIndices: s.rowIndices.map(
+                  i => component.selectable.rowIndices[i]
+                )
+              },
+              parameters
+            );
+          }
+        };
+      };
+
       return (
         <ChartComponent
           key={options.key}
@@ -374,30 +430,9 @@ export function renderGraphicalElementSVG(
           rootElement="g"
           sync={options.chartComponentSync}
           selection={subSelection}
-          onSelectGlyph={
-            options.onSelected
-              ? (s, parameters) => {
-                  if (s == null) {
-                    // Clicked inside the ChartComponent but not on a glyph,
-                    // in this case we select the whole thing
-                    options.onSelected(component.selectable, parameters);
-                  } else {
-                    // Clicked on a glyph of ChartComponent (or a sub-component)
-                    // in this case we translate the component's rowIndices its parent's
-                    options.onSelected(
-                      {
-                        plotSegment: component.selectable.plotSegment,
-                        glyphIndex: component.selectable.glyphIndex,
-                        rowIndices: s.rowIndices.map(
-                          i => component.selectable.rowIndices[i]
-                        )
-                      },
-                      parameters
-                    );
-                  }
-                }
-              : null
-          }
+          onGlyphClick={convertEventHandler(options.onClick)}
+          onGlyphMouseEnter={convertEventHandler(options.onMouseEnter)}
+          onGlyphMouseLeave={convertEventHandler(options.onMouseLeave)}
           rendererOptions={{
             chartComponentSync: options.chartComponentSync,
             externalResourceResolver: options.externalResourceResolver
@@ -417,14 +452,16 @@ export function renderGraphicalElementSVG(
                 ? group.style.opacity
                 : 1
           }}
-          onClick={onClick}
+          {...mouseEvents}
         >
           {group.elements.map((x, index) => {
             return renderGraphicalElementSVG(x, {
               key: `m${index}`,
               chartComponentSync: options.chartComponentSync,
               externalResourceResolver: options.externalResourceResolver,
-              onSelected: options.onSelected,
+              onClick: options.onClick,
+              onMouseEnter: options.onMouseEnter,
+              onMouseLeave: options.onMouseLeave,
               selection: options.selection
             });
           })}
