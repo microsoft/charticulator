@@ -196,13 +196,13 @@ export class MarkEditorView extends ContextedComponent<
             <Button
               icon="general/zoom-in"
               onClick={() => {
-                this.refSingleMarkView.doZoomIn();
+                this.refSingleMarkView.doZoom(1.1);
               }}
             />
             <Button
               icon="general/zoom-out"
               onClick={() => {
-                this.refSingleMarkView.doZoomOut();
+                this.refSingleMarkView.doZoom(1 / 1.1);
               }}
             />
             <Button
@@ -272,30 +272,13 @@ export class SingleMarkView
     };
   }
 
-  public doZoomIn() {
+  public doZoom(factor: number) {
     const { scale, centerX, centerY } = this.state.zoom;
     const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
       x: this.props.width / 2,
       y: this.props.height / 2
     });
-    let newScale = scale * 1.1;
-    newScale = Math.min(20, Math.max(0.05, newScale));
-    this.setState({
-      zoom: {
-        centerX: centerX + (scale - newScale) * fixPoint.x,
-        centerY: centerY + (scale - newScale) * fixPoint.y,
-        scale: newScale
-      }
-    });
-  }
-
-  public doZoomOut() {
-    const { scale, centerX, centerY } = this.state.zoom;
-    const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-      x: this.props.width / 2,
-      y: this.props.height / 2
-    });
-    let newScale = scale / 1.1;
+    let newScale = scale * factor;
     newScale = Math.min(20, Math.max(0.05, newScale));
     this.setState({
       zoom: {
