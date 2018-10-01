@@ -823,16 +823,17 @@ export class LayoutsLinksClass extends LinksClass {
     const glyphs = layouts.map(layout => getById(chart.glyphs, layout.glyph));
     const anchor1 = this.resolveLinkAnchorPoints(props.anchor1, glyphs[0]);
     const anchor2 = this.resolveLinkAnchorPoints(props.anchor2, glyphs[1]);
-    const rowIndicesMap = new Map();
+    const rowIndicesMap = new Map<string, number>();
     for (let i = 0; i < layoutStates[0].dataRowIndices.length; i++) {
-      rowIndicesMap.set(layoutStates[0].dataRowIndices[i], i);
+      rowIndicesMap.set(layoutStates[0].dataRowIndices[i].join(","), i);
     }
     const table = this.parent.dataflow.getTable(layouts[0].table);
     const anchors: AnchorAttributes[][][] = [];
     for (let i1 = 0; i1 < layoutStates[1].dataRowIndices.length; i1++) {
       const rowIndex = layoutStates[1].dataRowIndices[i1];
-      if (rowIndicesMap.has(rowIndex)) {
-        const i0 = rowIndicesMap.get(rowIndex);
+      const rowIndexJoined = rowIndex.join(",");
+      if (rowIndicesMap.has(rowIndexJoined)) {
+        const i0 = rowIndicesMap.get(rowIndexJoined);
         const row = table.getGroupedContext(rowIndex);
         anchors.push([
           [
@@ -916,8 +917,6 @@ export class TableLinksClass extends LinksClass {
     const glyphs = layouts.map(layout => getById(chart.glyphs, layout.glyph));
     const anchor1 = this.resolveLinkAnchorPoints(props.anchor1, glyphs[0]);
     const anchor2 = this.resolveLinkAnchorPoints(props.anchor2, glyphs[1]);
-
-    const rowIndicesMap = new Map();
 
     const linkTable = this.parent.dataflow.getTable(props.linkTable.table);
     const tables = layouts.map((layout, layoutIndex) => {
