@@ -364,7 +364,7 @@ export class ChartEditorView
                 attributes[key] = opt[key];
               }
             }
-            new Actions.AddPlotSegment(classID, mappings, attributes).dispatch(
+            new Actions.AddChartElement(classID, mappings, attributes).dispatch(
               this.props.store.dispatcher
             );
           }}
@@ -398,7 +398,7 @@ export class ChartEditorView
           {
             mode = "vline";
             onCreate = x => {
-              new Actions.AddPlotSegment(
+              new Actions.AddChartElement(
                 "guide.guide",
                 { value: x },
                 { axis: "x" }
@@ -410,7 +410,7 @@ export class ChartEditorView
           {
             mode = "hline";
             onCreate = y => {
-              new Actions.AddPlotSegment(
+              new Actions.AddChartElement(
                 "guide.guide",
                 { value: y },
                 { axis: "y" }
@@ -422,7 +422,7 @@ export class ChartEditorView
           {
             mode = "line";
             onCreate = (x1, y1, x2, y2) => {
-              new Actions.AddPlotSegment(
+              new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
                 { axis: "x", count: 4 }
@@ -434,7 +434,7 @@ export class ChartEditorView
           {
             mode = "line";
             onCreate = (x1, y1, x2, y2) => {
-              new Actions.AddPlotSegment(
+              new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
                 { axis: "y", count: 4 }
@@ -1104,59 +1104,62 @@ export class ChartEditorView
           {this.renderControls()}
         </div>
         <div className="canvas-controls">
-          <Button
-            icon="general/zoom-in"
-            onClick={() => {
-              const { scale, centerX, centerY } = this.state.zoom;
-              const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                x: this.state.viewWidth / 2,
-                y: this.state.viewHeight / 2
-              });
-              let newScale = scale * 1.1;
-              newScale = Math.min(20, Math.max(0.05, newScale));
-              this.setState({
-                zoom: {
-                  centerX: centerX + (scale - newScale) * fixPoint.x,
-                  centerY: centerY + (scale - newScale) * fixPoint.y,
-                  scale: newScale
+          <div className="canvas-controls-left" />
+          <div className="canvas-controls-right">
+            <Button
+              icon="general/zoom-in"
+              onClick={() => {
+                const { scale, centerX, centerY } = this.state.zoom;
+                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
+                  x: this.state.viewWidth / 2,
+                  y: this.state.viewHeight / 2
+                });
+                let newScale = scale * 1.1;
+                newScale = Math.min(20, Math.max(0.05, newScale));
+                this.setState({
+                  zoom: {
+                    centerX: centerX + (scale - newScale) * fixPoint.x,
+                    centerY: centerY + (scale - newScale) * fixPoint.y,
+                    scale: newScale
+                  }
+                });
+              }}
+            />
+            <Button
+              icon="general/zoom-out"
+              onClick={() => {
+                const { scale, centerX, centerY } = this.state.zoom;
+                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
+                  x: this.state.viewWidth / 2,
+                  y: this.state.viewHeight / 2
+                });
+                let newScale = scale / 1.1;
+                newScale = Math.min(20, Math.max(0.05, newScale));
+                this.setState({
+                  zoom: {
+                    centerX: centerX + (scale - newScale) * fixPoint.x,
+                    centerY: centerY + (scale - newScale) * fixPoint.y,
+                    scale: newScale
+                  }
+                });
+              }}
+            />
+            <Button
+              icon="general/zoom-auto"
+              onClick={() => {
+                const newZoom = this.getFitViewZoom(
+                  this.state.viewWidth,
+                  this.state.viewHeight
+                );
+                if (!newZoom) {
+                  return;
                 }
-              });
-            }}
-          />
-          <Button
-            icon="general/zoom-out"
-            onClick={() => {
-              const { scale, centerX, centerY } = this.state.zoom;
-              const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                x: this.state.viewWidth / 2,
-                y: this.state.viewHeight / 2
-              });
-              let newScale = scale / 1.1;
-              newScale = Math.min(20, Math.max(0.05, newScale));
-              this.setState({
-                zoom: {
-                  centerX: centerX + (scale - newScale) * fixPoint.x,
-                  centerY: centerY + (scale - newScale) * fixPoint.y,
-                  scale: newScale
-                }
-              });
-            }}
-          />
-          <Button
-            icon="general/zoom-auto"
-            onClick={() => {
-              const newZoom = this.getFitViewZoom(
-                this.state.viewWidth,
-                this.state.viewHeight
-              );
-              if (!newZoom) {
-                return;
-              }
-              this.setState({
-                zoom: newZoom
-              });
-            }}
-          />
+                this.setState({
+                  zoom: newZoom
+                });
+              }}
+            />
+          </div>
         </div>
         {this.state.isSolving ? (
           <div className="solving-hint">

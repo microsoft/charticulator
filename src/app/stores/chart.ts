@@ -20,6 +20,7 @@ import { ChartTemplateBuilder } from "../template";
 import { DatasetStore } from "./dataset";
 import { MainStore } from "./main_store";
 import { ValueType } from "../../core/expression/classes";
+import { createDefaultChart, createDefaultGlyph } from "./defaults";
 
 export abstract class Selection {}
 
@@ -87,6 +88,7 @@ export class ChartStore extends BaseStore {
   public datasetStore: DatasetStore;
 
   public currentSelection: Selection;
+  public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   public currentTool: string;
   public currentToolOptions: string;
@@ -187,6 +189,7 @@ export class ChartStore extends BaseStore {
         ) as Specification.PlotSegment;
         if (plotSegment && glyph) {
           this.currentSelection = new GlyphSelection(plotSegment, glyph);
+          this.currentGlyph = glyph;
         }
       }
       if (selection.type == "mark") {
@@ -201,6 +204,7 @@ export class ChartStore extends BaseStore {
           const mark = getById(glyph.marks, markID);
           if (mark) {
             this.currentSelection = new MarkSelection(plotSegment, glyph, mark);
+            this.currentGlyph = glyph;
           }
         }
       }
@@ -284,6 +288,23 @@ export class ChartStore extends BaseStore {
 
       this.newChartEmpty();
 
+      this.solveConstraintsAndUpdateGraphics();
+    }
+    if (action instanceof Actions.AddGlyph) {
+      this.parent.saveHistory();
+      const glyph = this.chartManager.addGlyph(
+        action.classID,
+        this.datasetStore.dataset.tables[0].name
+      );
+      this.currentSelection = new GlyphSelection(null, glyph);
+      this.currentGlyph = glyph;
+      this.solveConstraintsAndUpdateGraphics();
+    }
+    if (action instanceof Actions.RemoveGlyph) {
+      this.parent.saveHistory();
+      const glyph = this.chartManager.removeGlyph(action.glyph);
+      this.currentSelection = null;
+      this.currentGlyph = null;
       this.solveConstraintsAndUpdateGraphics();
     }
     // Inside glyph actions
@@ -442,6 +463,7 @@ export class ChartStore extends BaseStore {
         action.glyph,
         action.glyph.marks[action.glyph.marks.length - 1]
       );
+      this.currentGlyph = action.glyph;
       this.solveConstraintsAndUpdateGraphics();
       this.emit(ChartStore.EVENT_SELECTION);
     }
@@ -651,25 +673,30 @@ export class ChartStore extends BaseStore {
       this.solveConstraintsAndUpdateGraphics();
     }
 
-    if (action instanceof Actions.AddPlotSegment) {
+    if (action instanceof Actions.AddChartElement) {
       this.parent.saveHistory();
 
-      const newPlotSegment = this.chartManager.createObject(
+      let glyph = this.currentGlyph;
+      if (!glyph || this.chart.glyphs.indexOf(glyph) < 0) {
+        glyph = this.chart.glyphs[0];
+      }
+
+      const newChartElement = this.chartManager.createObject(
         action.classID,
-        this.chart.glyphs[0]
+        glyph
       ) as Specification.PlotSegment;
       for (const key in action.properties) {
-        newPlotSegment.properties[key] = action.properties[key];
+        newChartElement.properties[key] = action.properties[key];
       }
       // console.log(newPlotSegment);
       if (Prototypes.isType(action.classID, "plot-segment")) {
-        newPlotSegment.filter = null;
-        newPlotSegment.order = null;
+        newChartElement.filter = null;
+        newChartElement.order = null;
       }
 
-      this.chartManager.addChartElement(newPlotSegment);
+      this.chartManager.addChartElement(newChartElement);
 
-      const idx = this.chart.elements.indexOf(newPlotSegment);
+      const idx = this.chart.elements.indexOf(newChartElement);
       const elementClass = this.chartManager.getChartElementClass(
         this.chartState.elements[idx]
       );
@@ -682,7 +709,7 @@ export class ChartStore extends BaseStore {
               this.chartManager.chart.constraints.push({
                 type: "snap",
                 attributes: {
-                  element: newPlotSegment._id,
+                  element: newChartElement._id,
                   attribute: key,
                   targetElement: (mapping as any).element,
                   targetAttribute: (mapping as any).attribute,
@@ -690,11 +717,11 @@ export class ChartStore extends BaseStore {
                 }
               });
             } else {
-              newPlotSegment.mappings[key] = mapping;
+              newChartElement.mappings[key] = mapping;
             }
           }
           if (value != null) {
-            const idx = this.chart.elements.indexOf(newPlotSegment);
+            const idx = this.chart.elements.indexOf(newChartElement);
             this.chartState.elements[idx].attributes[key] = value;
             if (!elementClass.attributes[key].solverExclude) {
               this.addPresolveValue(
@@ -708,7 +735,7 @@ export class ChartStore extends BaseStore {
         }
       }
 
-      this.currentSelection = new ChartElementSelection(newPlotSegment);
+      this.currentSelection = new ChartElementSelection(newChartElement);
       this.emit(ChartStore.EVENT_SELECTION);
 
       this.solveConstraintsAndUpdateGraphics();
@@ -1173,12 +1200,14 @@ export class ChartStore extends BaseStore {
     if (action instanceof Actions.SelectChartElement) {
       const selection = new ChartElementSelection(action.chartElement);
       if (Prototypes.isType(action.chartElement.classID, "plot-segment")) {
+        const plotSegment = action.chartElement as Specification.PlotSegment;
         if (action.glyphIndex != null) {
           this.setSelectedGlyphIndex(
             action.chartElement._id,
             action.glyphIndex
           );
         }
+        this.currentGlyph = getById(this.chart.glyphs, plotSegment.glyph);
       }
       this.currentSelection = selection;
       this.emit(ChartStore.EVENT_SELECTION);
@@ -1196,6 +1225,7 @@ export class ChartStore extends BaseStore {
       if (action.glyphIndex != null) {
         this.setSelectedGlyphIndex(action.plotSegment._id, action.glyphIndex);
       }
+      this.currentGlyph = selection.glyph;
       this.currentSelection = selection;
       this.emit(ChartStore.EVENT_SELECTION);
     }
@@ -1209,6 +1239,7 @@ export class ChartStore extends BaseStore {
         this.setSelectedGlyphIndex(action.plotSegment._id, action.glyphIndex);
       }
       this.currentSelection = selection;
+      this.currentGlyph = selection.glyph;
       this.emit(ChartStore.EVENT_SELECTION);
     }
 
@@ -1696,133 +1727,7 @@ export class ChartStore extends BaseStore {
     this.currentTool = null;
     this.currentToolOptions = null;
 
-    const tableName = this.datasetStore.dataset.tables[0].name;
-    const rows = this.datasetStore.getTable(tableName).rows;
-    const myGlyphID = uniqueID();
-    this.chart = {
-      _id: uniqueID(),
-      classID: "chart.rectangle",
-      properties: {
-        name: "Chart",
-        backgroundColor: null,
-        backgroundOpacity: 1
-      },
-      mappings: {
-        marginTop: { type: "value", value: 80 } as Specification.ValueMapping
-      },
-      glyphs: [
-        {
-          _id: myGlyphID,
-          classID: "glyph.rectangle",
-          properties: { name: "Glyph" },
-          table: tableName,
-          marks: [
-            {
-              _id: uniqueID(),
-              classID: "mark.anchor",
-              properties: { name: "Anchor" },
-              mappings: {
-                x: {
-                  type: "parent",
-                  parentAttribute: "icx"
-                } as Specification.ParentMapping,
-                y: {
-                  type: "parent",
-                  parentAttribute: "icy"
-                } as Specification.ParentMapping
-              }
-            }
-          ],
-          mappings: {},
-          constraints: []
-        } as Specification.Glyph
-      ],
-      elements: [
-        {
-          _id: uniqueID(),
-          classID: "plot-segment.cartesian",
-          glyph: myGlyphID,
-          table: tableName,
-          filter: null,
-          mappings: {
-            x1: {
-              type: "parent",
-              parentAttribute: "x1"
-            } as Specification.ParentMapping,
-            y1: {
-              type: "parent",
-              parentAttribute: "y1"
-            } as Specification.ParentMapping,
-            x2: {
-              type: "parent",
-              parentAttribute: "x2"
-            } as Specification.ParentMapping,
-            y2: {
-              type: "parent",
-              parentAttribute: "y2"
-            } as Specification.ParentMapping
-          },
-          properties: {
-            name: "PlotSegment1",
-            visible: true,
-            marginX1: 0,
-            marginY1: 0,
-            marginX2: 0,
-            marginY2: 0,
-            sublayout: {
-              type: rows.length >= 100 ? "grid" : "dodge-x",
-              order: null,
-              ratioX: 0.1,
-              ratioY: 0.1,
-              align: {
-                x: "start",
-                y: "start"
-              },
-              grid: {
-                direction: "x",
-                xCount: null,
-                yCount: null
-              }
-            }
-          }
-        } as Specification.PlotSegment,
-        {
-          _id: uniqueID(),
-          classID: "mark.text",
-          properties: {
-            name: "Title",
-            visible: true,
-            alignment: { x: "middle", y: "top", xMargin: 0, yMargin: 30 },
-            rotation: 0
-          },
-          mappings: {
-            x: {
-              type: "parent",
-              parentAttribute: "cx"
-            } as Specification.ParentMapping,
-            y: {
-              type: "parent",
-              parentAttribute: "oy2"
-            } as Specification.ParentMapping,
-            text: {
-              type: "value",
-              value: this.datasetStore.dataset.name
-            } as Specification.ValueMapping,
-            fontSize: {
-              type: "value",
-              value: 24
-            } as Specification.ValueMapping,
-            color: {
-              type: "value",
-              value: { r: 0, g: 0, b: 0 }
-            } as Specification.ValueMapping
-          }
-        } as Specification.ChartElement
-      ],
-      scales: [],
-      constraints: [],
-      resources: []
-    } as Specification.Chart;
+    this.chart = createDefaultChart(this.datasetStore.dataset);
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.datasetStore.dataset
@@ -1843,6 +1748,9 @@ export class ChartStore extends BaseStore {
       new Actions.RemoveMarkFromGlyph(sel.glyph, sel.mark).dispatch(
         this.dispatcher
       );
+    }
+    if (sel instanceof GlyphSelection) {
+      new Actions.RemoveGlyph(sel.glyph).dispatch(this.dispatcher);
     }
   }
 
