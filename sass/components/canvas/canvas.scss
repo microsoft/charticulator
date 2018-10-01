@@ -24,6 +24,7 @@
         background: $gray-230;
       }
       margin-right: 1px;
+      transition: background-color $transition-default;
     }
   }
 }
