@@ -334,33 +334,32 @@ export class ChartStateManager {
   public addGlyph(classID: string, table: string): Specification.Glyph {
     const newGlyph: Specification.Glyph = {
       _id: uniqueID(),
-      table,
       classID,
+      properties: { name: this.findUnusedName("Glyph") },
+      table,
       marks: [
         {
           _id: uniqueID(),
           classID: "mark.anchor",
+          properties: { name: "Anchor" },
           mappings: {
             x: {
               type: "parent",
-              parentAttribute: "cx"
+              parentAttribute: "icx"
             } as Specification.ParentMapping,
             y: {
               type: "parent",
-              parentAttribute: "cy"
+              parentAttribute: "icy"
             } as Specification.ParentMapping
-          },
-          properties: { name: "Anchor" }
+          }
         }
       ],
-      properties: {
-        name: this.findUnusedName("Glyph")
-      },
       mappings: {},
       constraints: []
     };
     this.idIndex.set(newGlyph._id, [newGlyph, null]);
     this.idIndex.set(newGlyph.marks[0]._id, [newGlyph.marks[0], null]);
+    this.chart.glyphs.push(newGlyph);
     return newGlyph;
   }
   /** Remove a glyph */

@@ -165,6 +165,36 @@ export class SelectDataRow extends UIAction {
   }
 }
 
+// Glyph editing actions
+
+/** Add an empty glyph to the chart */
+export class AddGlyph extends Action {
+  constructor(public classID: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "AddGlyph",
+      classID: this.classID
+    };
+  }
+}
+
+/** Remove a glyph from the chart */
+export class RemoveGlyph extends Action {
+  constructor(public glyph: Specification.Glyph) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "RemoveGlyph",
+      glyph: objectDigest(this.glyph)
+    };
+  }
+}
+
 // Mark editing actions
 
 export class AddMarkToGlyph extends Action {
@@ -371,7 +401,7 @@ export class UpdateGlyphAttribute extends Action {
   }
 }
 
-export class AddPlotSegment extends Action {
+export class AddChartElement extends Action {
   constructor(
     public classID: string,
     public mappings: {
@@ -384,7 +414,7 @@ export class AddPlotSegment extends Action {
 
   public digest() {
     return {
-      name: "AddPlotSegment",
+      name: "AddChartElement",
       classID: this.classID,
       mappings: this.mappings,
       attribute: this.properties

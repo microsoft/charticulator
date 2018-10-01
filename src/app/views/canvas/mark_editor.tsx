@@ -145,23 +145,74 @@ export class MarkEditorView extends ContextedComponent<
 
   public render() {
     const chartStore = this.context.store.chartStore;
+    let currentGlyph = this.chartStore.currentGlyph;
+    if (
+      currentGlyph == null ||
+      this.chartStore.chart.glyphs.indexOf(currentGlyph) < 0
+    ) {
+      currentGlyph = this.chartStore.chart.glyphs[0];
+    }
     return (
       <div className="mark-editor-view" ref={e => (this.refContainer = e)}>
-        {chartStore.chart.glyphs.map((glyph, index) => {
-          return (
-            <SingleMarkView
-              ref={e => {
-                this.refSingleMarkView = e;
+        {currentGlyph ? (
+          <SingleMarkView
+            ref={e => {
+              this.refSingleMarkView = e;
+            }}
+            glyph={currentGlyph}
+            glyphState={this.getGlyphState(currentGlyph)}
+            parent={this}
+            width={this.state.width}
+            height={this.state.height - 24}
+          />
+        ) : null}
+        <div className="canvas-controls">
+          <div className="canvas-controls-left">
+            <span className="glyph-tabs">
+              {this.chartStore.chart.glyphs.map(glyph => (
+                <span
+                  className={classNames("el-item", [
+                    "is-active",
+                    glyph == currentGlyph
+                  ])}
+                  key={glyph._id}
+                  onClick={() => {
+                    this.dispatch(new Actions.SelectGlyph(null, glyph));
+                  }}
+                >
+                  {glyph.properties.name}
+                </span>
+              ))}
+            </span>
+            <Button
+              icon="general/plus"
+              title="New glyph"
+              onClick={() => {
+                this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
               }}
-              key={glyph._id}
-              glyph={glyph}
-              glyphState={this.getGlyphState(glyph)}
-              parent={this}
-              width={this.state.width}
-              height={this.state.height - 24}
             />
-          );
-        })}
+          </div>
+          <div className="canvas-controls-right">
+            <Button
+              icon="general/zoom-in"
+              onClick={() => {
+                this.refSingleMarkView.doZoomIn();
+              }}
+            />
+            <Button
+              icon="general/zoom-out"
+              onClick={() => {
+                this.refSingleMarkView.doZoomOut();
+              }}
+            />
+            <Button
+              icon="general/zoom-auto"
+              onClick={() => {
+                this.refSingleMarkView.doZoomAuto();
+              }}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -219,6 +270,50 @@ export class SingleMarkView
       },
       currentSelection: this.context.store.chartStore.currentSelection
     };
+  }
+
+  public doZoomIn() {
+    const { scale, centerX, centerY } = this.state.zoom;
+    const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
+      x: this.props.width / 2,
+      y: this.props.height / 2
+    });
+    let newScale = scale * 1.1;
+    newScale = Math.min(20, Math.max(0.05, newScale));
+    this.setState({
+      zoom: {
+        centerX: centerX + (scale - newScale) * fixPoint.x,
+        centerY: centerY + (scale - newScale) * fixPoint.y,
+        scale: newScale
+      }
+    });
+  }
+
+  public doZoomOut() {
+    const { scale, centerX, centerY } = this.state.zoom;
+    const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
+      x: this.props.width / 2,
+      y: this.props.height / 2
+    });
+    let newScale = scale / 1.1;
+    newScale = Math.min(20, Math.max(0.05, newScale));
+    this.setState({
+      zoom: {
+        centerX: centerX + (scale - newScale) * fixPoint.x,
+        centerY: centerY + (scale - newScale) * fixPoint.y,
+        scale: newScale
+      }
+    });
+  }
+
+  public doZoomAuto() {
+    const newZoom = this.getFitViewZoom(this.props.width, this.props.height);
+    if (!newZoom) {
+      return;
+    }
+    this.setState({
+      zoom: newZoom
+    });
   }
 
   public getFitViewZoom(width: number, height: number) {
@@ -1385,61 +1480,6 @@ export class SingleMarkView
             <g>{this.renderDropIndicator()}</g>
             {this.renderCreatingComponent()}
           </svg>
-          <div className="canvas-controls">
-            <Button
-              icon="general/zoom-in"
-              onClick={() => {
-                const { scale, centerX, centerY } = this.state.zoom;
-                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                  x: this.props.width / 2,
-                  y: this.props.height / 2
-                });
-                let newScale = scale * 1.1;
-                newScale = Math.min(20, Math.max(0.05, newScale));
-                this.setState({
-                  zoom: {
-                    centerX: centerX + (scale - newScale) * fixPoint.x,
-                    centerY: centerY + (scale - newScale) * fixPoint.y,
-                    scale: newScale
-                  }
-                });
-              }}
-            />
-            <Button
-              icon="general/zoom-out"
-              onClick={() => {
-                const { scale, centerX, centerY } = this.state.zoom;
-                const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
-                  x: this.props.width / 2,
-                  y: this.props.height / 2
-                });
-                let newScale = scale / 1.1;
-                newScale = Math.min(20, Math.max(0.05, newScale));
-                this.setState({
-                  zoom: {
-                    centerX: centerX + (scale - newScale) * fixPoint.x,
-                    centerY: centerY + (scale - newScale) * fixPoint.y,
-                    scale: newScale
-                  }
-                });
-              }}
-            />
-            <Button
-              icon="general/zoom-auto"
-              onClick={() => {
-                const newZoom = this.getFitViewZoom(
-                  this.props.width,
-                  this.props.height
-                );
-                if (!newZoom) {
-                  return;
-                }
-                this.setState({
-                  zoom: newZoom
-                });
-              }}
-            />
-          </div>
         </div>
       </div>
     );
