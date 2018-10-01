@@ -13,7 +13,7 @@ import {
 import {
   ChartComponent,
   DataSelection,
-  OnSelectGlyph
+  GlyphEventHandler
 } from "./chart_component";
 import { TemplateInstance } from "./chart_template";
 
@@ -24,6 +24,8 @@ export interface ChartContainerComponentProps {
   defaultWidth: number;
   defaultHeight: number;
   onSelectionChange?: (data: { table: string; rowIndices: number[] }) => void;
+  onMouseEnterGlyph?: (data: { table: string; rowIndices: number[] }) => void;
+  onMouseLeaveGlyph?: (data: { table: string; rowIndices: number[] }) => void;
 }
 
 export interface ChartContainerComponentState {
@@ -114,7 +116,7 @@ export class ChartContainerComponent extends React.Component<
     return this.component.setAttributeMapping(objectID, attribute, mapping);
   }
 
-  protected handleSelectGlyph: OnSelectGlyph = (data, modifiers) => {
+  protected handleGlyphClick: GlyphEventHandler = (data, modifiers) => {
     if (data == null) {
       this.clearSelection(true);
     } else {
@@ -124,6 +126,18 @@ export class ChartContainerComponent extends React.Component<
         modifiers.shiftKey || modifiers.ctrlKey || modifiers.metaKey,
         true
       );
+    }
+  };
+
+  protected handleGlyphMouseEnter: GlyphEventHandler = (data, modifiers) => {
+    if (this.props.onMouseEnterGlyph) {
+      this.props.onMouseEnterGlyph(data);
+    }
+  };
+
+  protected handleGlyphMouseLeave: GlyphEventHandler = (data, modifiers) => {
+    if (this.props.onMouseLeaveGlyph) {
+      this.props.onMouseLeaveGlyph(data);
     }
   };
 
@@ -138,10 +152,18 @@ export class ChartContainerComponent extends React.Component<
         height={this.state.height}
         rootElement="svg"
         selection={this.state.selection}
-        onSelectGlyph={this.handleSelectGlyph}
+        onGlyphClick={this.handleGlyphClick}
+        onGlyphMouseEnter={this.handleGlyphMouseEnter}
+        onGlyphMouseLeave={this.handleGlyphMouseLeave}
       />
     );
   }
+}
+
+export enum ChartContainerEvent {
+  Selection = "selection",
+  MouseEnter = "mouseenter",
+  MouseLeave = "mouseleave"
 }
 
 export class ChartContainer extends EventEmitter {
@@ -171,7 +193,19 @@ export class ChartContainer extends EventEmitter {
   public addSelectionListener(
     listener: (table: string, rowIndices: number[]) => void
   ): EventSubscription {
-    return this.addListener("selection", listener);
+    return this.addListener(ChartContainerEvent.Selection, listener);
+  }
+
+  public addMouseEnterListener(
+    listener: (table: string, rowIndices: number[]) => void
+  ): EventSubscription {
+    return this.addListener(ChartContainerEvent.MouseEnter, listener);
+  }
+
+  public addMouseLeaveListener(
+    listener: (table: string, rowIndices: number[]) => void
+  ): EventSubscription {
+    return this.addListener(ChartContainerEvent.MouseLeave, listener);
   }
 
   /** Set data selection and update the chart */
@@ -242,10 +276,28 @@ export class ChartContainer extends EventEmitter {
         defaultAttributes={this.defaultAttributes}
         onSelectionChange={data => {
           if (data == null) {
-            this.emit("selection");
+            this.emit(ChartContainerEvent.Selection);
           } else {
-            this.emit("selection", data.table, data.rowIndices);
+            this.emit(
+              ChartContainerEvent.Selection,
+              data.table,
+              data.rowIndices
+            );
           }
+        }}
+        onMouseEnterGlyph={data => {
+          this.emit(
+            ChartContainerEvent.MouseEnter,
+            data.table,
+            data.rowIndices
+          );
+        }}
+        onMouseLeaveGlyph={data => {
+          this.emit(
+            ChartContainerEvent.MouseLeave,
+            data.table,
+            data.rowIndices
+          );
         }}
       />,
       container
