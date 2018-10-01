@@ -14,12 +14,13 @@ import {
 import {
   renderGraphicalElementSVG,
   RenderGraphicalElementSVGOptions,
-  DataSelection
+  DataSelection,
+  GraphicalElementEventHandler
 } from "../app/renderer";
 
 export { DataSelection };
 
-export type OnSelectGlyph = (
+export type GlyphEventHandler = (
   data: { table: string; rowIndices: number[] },
   modifiers: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
 ) => void;
@@ -41,7 +42,9 @@ export interface ChartComponentProps {
   sync?: boolean;
 
   selection?: DataSelection;
-  onSelectGlyph?: OnSelectGlyph;
+  onGlyphClick?: GlyphEventHandler;
+  onGlyphMouseEnter?: GlyphEventHandler;
+  onGlyphMouseLeave?: GlyphEventHandler;
 }
 
 export interface ChartComponentState {
@@ -233,22 +236,34 @@ export class ChartComponent extends React.Component<
     }
   }
 
+  public convertGlyphEventHandler(
+    handler: GlyphEventHandler
+  ): GraphicalElementEventHandler {
+    if (handler == null) {
+      return null;
+    }
+    return (element, event) => {
+      const rowIndices = element.rowIndices;
+      const modifiers = {
+        ctrlKey: event.ctrlKey,
+        shiftKey: event.shiftKey,
+        metaKey: event.metaKey
+      };
+      handler({ table: element.plotSegment.table, rowIndices }, modifiers);
+    };
+  }
+
   public render() {
     const renderOptions = { ...this.props.rendererOptions };
-    if (this.props.onSelectGlyph) {
-      renderOptions.onSelected = (element, event) => {
-        const rowIndices = element.rowIndices;
-        const modifiers = {
-          ctrlKey: event.ctrlKey,
-          shiftKey: event.shiftKey,
-          metaKey: event.metaKey
-        };
-        this.props.onSelectGlyph(
-          { table: element.plotSegment.table, rowIndices },
-          modifiers
-        );
-      };
-    }
+    renderOptions.onClick = this.convertGlyphEventHandler(
+      this.props.onGlyphClick
+    );
+    renderOptions.onMouseEnter = this.convertGlyphEventHandler(
+      this.props.onGlyphMouseEnter
+    );
+    renderOptions.onMouseLeave = this.convertGlyphEventHandler(
+      this.props.onGlyphMouseLeave
+    );
     renderOptions.selection = this.props.selection;
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
     const inner = (
@@ -256,7 +271,7 @@ export class ChartComponent extends React.Component<
         transform={`translate(${this.props.width / 2}, ${this.props.height /
           2})`}
       >
-        {this.props.onSelectGlyph ? (
+        {this.props.onGlyphClick ? (
           <rect
             x={-this.props.width / 2}
             y={-this.props.height / 2}
@@ -268,7 +283,7 @@ export class ChartComponent extends React.Component<
               stroke: "none"
             }}
             onClick={() => {
-              this.props.onSelectGlyph(null, null);
+              this.props.onGlyphClick(null, null);
             }}
           />
         ) : null}
