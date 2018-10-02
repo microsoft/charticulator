@@ -45,6 +45,7 @@ fetch("data/THIRD_PARTY.json")
   );
 
 document.getElementById("version").innerText = CHARTICULATOR_PACKAGE.version;
+document.getElementById("revision").innerText = CHARTICULATOR_PACKAGE.revision;
 
 function createElement(name: string, attrs: any, text?: string) {
   const ele = document.createElement(name);

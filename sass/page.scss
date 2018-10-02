@@ -36,6 +36,10 @@ p {
   line-height: 1.2em;
 }
 
+p.small {
+  font-size: 12px;
+}
+
 pre.license {
   @include font-mono;
   overflow-x: scroll;
