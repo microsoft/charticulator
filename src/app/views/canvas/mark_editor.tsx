@@ -165,7 +165,19 @@ export class MarkEditorView extends ContextedComponent<
             width={this.state.width}
             height={this.state.height - 24}
           />
-        ) : null}
+        ) : (
+          <div className="mark-editor-single-view">
+            <div
+              className="mark-view-container"
+              style={{
+                width: this.state.width + "px",
+                height: this.state.height - 24 + "px"
+              }}
+            >
+              <div className="mark-view-container-notice">No glyph to edit</div>
+            </div>
+          </div>
+        )}
         <div className="canvas-controls">
           <div className="canvas-controls-left">
             <span className="glyph-tabs">
@@ -1375,7 +1387,16 @@ export class SingleMarkView
   }
 
   public render() {
-    const { glyph, glyphState } = this.props;
+    const glyph = this.props.glyph;
+    let glyphState = this.props.glyphState;
+    // When loading an existing chart, we may run into a weird problem:
+    //   glyphState exists but glyphClass hasn't been initialized yet
+    // This is a hotfix for now. Later we'll refactor the stores to make sure this scenario doesn't happen.
+    try {
+      const glyphClass = this.chartStore.chartManager.getGlyphClass(glyphState);
+    } catch (e) {
+      glyphState = null;
+    }
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
     }) scale(${this.state.zoom.scale})`;
