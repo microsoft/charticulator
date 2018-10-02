@@ -1,7 +1,15 @@
-const webpack = require('webpack');
-const childProcess = require('child_process');
+const webpack = require("webpack");
+const childProcess = require("child_process");
 const { version } = require("./package.json");
-const revision = childProcess.execSync('git rev-parse HEAD').toString().trim()
+
+let revision = "unknown";
+try {
+  revision = childProcess
+    .execSync("git rev-parse HEAD")
+    .toString()
+    .trim();
+} catch (e) {}
+
 module.exports = (env, { mode }) => {
   if (mode == null) {
     mode = "production";
@@ -11,10 +19,10 @@ module.exports = (env, { mode }) => {
       CHARTICULATOR_PACKAGE: JSON.stringify({
         version,
         revision,
-        buildTimestamp: new Date().getTime(),
+        buildTimestamp: new Date().getTime()
       }),
       "process.env": {
-        "NODE_ENV": JSON.stringify(mode)
+        NODE_ENV: JSON.stringify(mode)
       }
     })
   ];
@@ -24,12 +32,12 @@ module.exports = (env, { mode }) => {
       entry:
         mode == "production"
           ? {
-            app: "./dist/scripts/app/index.js"
-          }
+              app: "./dist/scripts/app/index.js"
+            }
           : {
-            app: "./dist/scripts/app/index.js",
-            test: "./dist/scripts/tests/test_app/index.js"
-          },
+              app: "./dist/scripts/app/index.js",
+              test: "./dist/scripts/tests/test_app/index.js"
+            },
       output: {
         filename: "[name].bundle.js",
         path: __dirname + "/dist/scripts",
@@ -39,7 +47,7 @@ module.exports = (env, { mode }) => {
       },
       resolve: {
         alias: {
-          "resources": __dirname + "/resources"
+          resources: __dirname + "/resources"
         }
       },
       plugins
@@ -61,11 +69,11 @@ module.exports = (env, { mode }) => {
       },
       output: {
         filename: "[name].bundle.js",
-        path: __dirname + "/dist/scripts",
+        path: __dirname + "/dist/scripts"
       },
       resolve: {
         alias: {
-          "resources": __dirname + "/resources"
+          resources: __dirname + "/resources"
         }
       },
       plugins
@@ -83,14 +91,14 @@ module.exports = (env, { mode }) => {
       },
       resolve: {
         alias: {
-          "resources": __dirname + "/resources",
-          'react': 'preact-compat',
-          'react-dom': 'preact-compat',
+          resources: __dirname + "/resources",
+          react: "preact-compat",
+          "react-dom": "preact-compat",
           // Not necessary unless you consume a module using `createClass`
-          'create-react-class': 'preact-compat/lib/create-react-class',
+          "create-react-class": "preact-compat/lib/create-react-class",
           // Not necessary unless you consume a module requiring `react-dom-factories`
-          'react-dom-factories': 'preact-compat/lib/react-dom-factories'
-        },
+          "react-dom-factories": "preact-compat/lib/react-dom-factories"
+        }
       },
       plugins
     }
