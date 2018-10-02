@@ -141,7 +141,7 @@ export class MappingEditor extends React.Component<
     if (this.props.options.table) {
       return this.props.options.table;
     } else {
-      return this.props.parent.store.datasetStore.getTables()[0].name;
+      return this.props.parent.store.getTables()[0].name;
     }
   }
 
@@ -448,14 +448,14 @@ export class DataMappAndScaleEditor extends ContextedComponent<
       const scaleMapping = mapping as Specification.ScaleMapping;
       if (scaleMapping.scale) {
         const scaleObject = getById(
-          this.chartStore.chart.scales,
+          this.store.chart.scales,
           scaleMapping.scale
         );
         return (
           <ScaleEditor
             scale={scaleObject}
             scaleMapping={scaleMapping}
-            store={this.chartStore}
+            store={this.store}
           />
         );
       }
@@ -475,7 +475,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     return (
       <div>
         <DataFieldSelector
-          datasetStore={this.datasetStore}
+          datasetStore={this.store}
           kinds={options.acceptKinds}
           useAggregation={true}
           defaultValue={
@@ -489,7 +489,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
             if (value != null) {
               this.props.parent.mapData(
                 new DragData.DataExpression(
-                  this.datasetStore.getTable(value.table),
+                  this.store.getTable(value.table),
                   value.expression,
                   value.type,
                   value.metadata

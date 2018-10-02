@@ -3,8 +3,9 @@
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { MainStoreState } from "../../app/stores/main_store";
+import { AppStoreState } from "../../app/stores";
 import { Prototypes, initialize } from "../../core";
+import { Migrator } from "../../app/stores/migrator";
 
 /** Test if a deep equals b with tolerance on numeric values */
 function expect_deep_approximately_equals(a: any, b: any, tol: number) {
@@ -54,13 +55,15 @@ describe("Chart Solver", () => {
       // The solver has to be initialized, other options can be omitted
       await initialize();
 
-      const state: MainStoreState = JSON.parse(
+      let state: AppStoreState = JSON.parse(
         fs.readFileSync(path.join(pathPrefix, filename), "utf-8")
       ).state;
 
+      state = new Migrator().migrate(state, "1.3.0");
+
       const manager = new Prototypes.ChartStateManager(
-        state.chart.chart,
-        state.dataset.dataset
+        state.chart,
+        state.dataset
       );
 
       manager.solveConstraints();
@@ -74,7 +77,7 @@ describe("Chart Solver", () => {
       manager.solveConstraints();
 
       const solvedState = manager.chartState;
-      const expectedState = state.chart.chartState;
+      const expectedState = state.chartState;
       // Test if solvedState deep equals expectedState with tolerance
       expect_deep_approximately_equals(solvedState, expectedState, 1e-5);
     });

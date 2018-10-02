@@ -1,17 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { MainStore } from "./stores/main_store";
+import { AppStore } from "./stores";
 import { Action } from "./actions/actions";
-import { ChartStore, DatasetStore } from "./stores";
 
 export interface MainContext {
-  store: MainStore;
+  store: AppStore;
 }
 
 export let MainContextTypes = {
   store: (props: any, propName: string, componentName: string) => {
-    if (props[propName] instanceof MainStore) {
+    if (props[propName] instanceof AppStore) {
       return null;
     } else {
       return new Error(`store not found in component ${componentName}`);
@@ -35,13 +34,7 @@ export class ContextedComponent<TProps, TState> extends React.Component<
     this.context.store.dispatcher.dispatch(action);
   }
 
-  public get mainStore(): MainStore {
+  public get store(): AppStore {
     return this.context.store;
-  }
-  public get chartStore(): ChartStore {
-    return this.context.store.chartStore;
-  }
-  public get datasetStore(): DatasetStore {
-    return this.context.store.datasetStore;
   }
 }

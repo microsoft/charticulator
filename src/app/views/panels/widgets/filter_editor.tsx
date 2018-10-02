@@ -4,7 +4,7 @@ import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { Button, InputExpression, Select } from "./controls";
+import { Button, InputExpression, Select, CheckBox } from "./controls";
 import { WidgetManager } from "./manager";
 
 export interface FilterEditorProps {
@@ -105,7 +105,7 @@ export class FilterEditor extends React.Component<
                     expression: this.state.currentValue.categories.expression
                   }}
                   table={options.table}
-                  datasetStore={this.props.manager.store.datasetStore}
+                  datasetStore={this.props.manager.store}
                   kinds={[Specification.DataKind.Categorical]}
                   onChange={field => {
                     // Enumerate all values of this field
@@ -150,7 +150,7 @@ export class FilterEditor extends React.Component<
                             }
                           });
                         }}
-                      />
+                      />{" "}
                       <Button
                         text="Clear"
                         onClick={() => {
@@ -171,16 +171,12 @@ export class FilterEditor extends React.Component<
                     <div className="el-list">
                       {keysSorted.map(key => (
                         <div key={key}>
-                          <Button
-                            icon={
-                              value.categories.values[key]
-                                ? "checkbox/checked"
-                                : "checkbox/empty"
-                            }
+                          <CheckBox
+                            value={value.categories.values[key]}
                             text={key}
-                            onClick={() => {
-                              value.categories.values[key] = !value.categories
-                                .values[key];
+                            fillWidth={true}
+                            onChange={newValue => {
+                              value.categories.values[key] = newValue;
                               this.emitUpdateFilter({
                                 categories: {
                                   expression: value.categories.expression,

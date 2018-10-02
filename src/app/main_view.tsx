@@ -10,7 +10,7 @@ import {
   MinimizablePanelView
 } from "./components";
 import { DragStateView, PopupContainer } from "./controllers";
-import { MainStore } from "./stores";
+import { AppStore } from "./stores";
 import {
   AttributePanel,
   ChartEditorView,
@@ -22,7 +22,7 @@ import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 
 export interface MainViewProps {
-  store: MainStore;
+  store: AppStore;
 }
 
 export interface MainViewState {
@@ -45,7 +45,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public static childContextTypes = {
-    store: (s: MainStore) => s instanceof MainStore
+    store: (s: AppStore) => s instanceof AppStore
   };
 
   public getChildContext() {
@@ -67,14 +67,14 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <MinimizablePanelView>
               <MinimizablePane title="Dataset" scroll={true} hideHeader={true}>
                 <ErrorBoundary>
-                  <DatasetView store={this.props.store.datasetStore} />
+                  <DatasetView store={this.props.store} />
                 </ErrorBoundary>
               </MinimizablePane>
             </MinimizablePanelView>
           </div>
           <div className="charticulator__panel charticulator__panel-editor">
             <div className="charticulator__panel-editor-toolbar">
-              <Toolbar store={this.props.store.chartStore} />
+              <Toolbar />
             </div>
             <div className="charticulator__panel-editor-panel-container">
               <div
@@ -125,7 +125,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       }
                     >
                       <ErrorBoundary>
-                        <AttributePanel store={this.props.store.chartStore} />
+                        <AttributePanel store={this.props.store} />
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
@@ -133,7 +133,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               </div>
               <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">
                 <ErrorBoundary>
-                  <ChartEditorView store={this.props.store.chartStore} />
+                  <ChartEditorView store={this.props.store} />
                 </ErrorBoundary>
               </div>
             </div>
@@ -171,7 +171,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               onClose={() => this.setState({ attributeViewMaximized: false })}
             >
               <ErrorBoundary>
-                <AttributePanel store={this.props.store.chartStore} />
+                <AttributePanel store={this.props.store} />
               </ErrorBoundary>
             </FloatingPanel>
           ) : null}

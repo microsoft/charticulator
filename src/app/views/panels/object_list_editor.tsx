@@ -10,7 +10,7 @@ import { ContextedComponent } from "../../context_component";
 
 import {
   ChartElementSelection,
-  ChartStore,
+  AppStore,
   GlyphSelection,
   MarkSelection
 } from "../../stores";
@@ -23,14 +23,10 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
   public componentDidMount() {
     this.tokens = [];
     this.tokens.push(
-      this.chartStore.addListener(ChartStore.EVENT_GRAPHICS, () =>
-        this.forceUpdate()
-      )
+      this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate())
     );
     this.tokens.push(
-      this.chartStore.addListener(ChartStore.EVENT_SELECTION, () =>
-        this.forceUpdate()
-      )
+      this.store.addListener(AppStore.EVENT_SELECTION, () => this.forceUpdate())
     );
   }
 
@@ -41,8 +37,8 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
   }
 
   public renderChart() {
-    const chart = this.chartStore.chart;
-    const sel = this.chartStore.currentSelection;
+    const chart = this.store.chart;
+    const sel = this.store.currentSelection;
     return (
       <div>
         <div
@@ -121,7 +117,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
   }
 
   public renderGlyph(glyph: Specification.Glyph) {
-    const sel = this.chartStore.currentSelection;
+    const sel = this.store.currentSelection;
     return (
       <div key={glyph._id}>
         <div
@@ -203,7 +199,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
   }
 
   public render() {
-    const chart = this.chartStore.chart;
+    const chart = this.store.chart;
     return (
       <div className="charticulator__object-list-editor">
         {this.renderChart()}

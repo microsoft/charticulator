@@ -36,7 +36,7 @@ export class FileViewOpen extends ContextedComponent<
   }
 
   public updateChartList() {
-    const store = this.mainStore;
+    const store = this.store;
     store.backend.list("chart", "timeCreated", 0, 1000).then(result => {
       this.setState({
         chartList: result.items,
@@ -46,7 +46,7 @@ export class FileViewOpen extends ContextedComponent<
   }
 
   public renderChartList() {
-    const store = this.mainStore;
+    const store = this.store;
     const backend = store.backend;
 
     if (this.state.chartList == null) {

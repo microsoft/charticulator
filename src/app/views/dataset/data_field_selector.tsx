@@ -4,13 +4,13 @@ import * as React from "react";
 import { Dataset, Expression } from "../../../core";
 import { SVGImageIcon } from "../../components";
 import * as R from "../../resources";
-import { DatasetStore } from "../../stores";
+import { AppStore } from "../../stores";
 import { classNames } from "../../utils";
 import { kind2Icon, type2DerivedColumns, isKindAcceptable } from "./common";
 import { Button, Select } from "../panels/widgets/controls";
 
 export interface DataFieldSelectorProps {
-  datasetStore: DatasetStore;
+  datasetStore: AppStore;
   /** Show fields only from a particular table */
   table?: string;
   /** Show fields only of certain kinds or types (categorical / numerical) */

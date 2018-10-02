@@ -11,24 +11,17 @@ import { SVGImageIcon, ToolButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import { PopupView } from "../controllers";
 
-import { ChartStore } from "../stores";
 import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
+import { AppStore } from "../stores";
 
-export interface ToolbarProps {
-  store: ChartStore;
-}
-
-export class Toolbar extends React.Component<ToolbarProps, {}> {
+export class Toolbar extends ContextedComponent<{}, {}> {
   public token: EventSubscription;
 
   public componentDidMount() {
-    this.token = this.props.store.addListener(
-      ChartStore.EVENT_CURRENT_TOOL,
-      () => {
-        this.forceUpdate();
-      }
-    );
+    this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
+      this.forceUpdate();
+    });
   }
 
   public componentWillUnmount() {
@@ -127,25 +120,25 @@ export class Toolbar extends React.Component<ToolbarProps, {}> {
           type="cartesian-x"
           title="Horizontal Line"
           icon="scaffold/cartesian-x"
-          currentTool={this.props.store.currentTool}
+          currentTool={this.store.currentTool}
         />
         <ScaffoldButton
           type="cartesian-y"
           title="Vertical Line"
           icon="scaffold/cartesian-y"
-          currentTool={this.props.store.currentTool}
+          currentTool={this.store.currentTool}
         />
         <ScaffoldButton
           type="polar"
           title="Polar"
           icon="scaffold/circle"
-          currentTool={this.props.store.currentTool}
+          currentTool={this.store.currentTool}
         />
         <ScaffoldButton
           type="curve"
           title="Custom Curve"
           icon="scaffold/curve"
-          currentTool={this.props.store.currentTool}
+          currentTool={this.store.currentTool}
         />
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
       </div>
@@ -167,14 +160,14 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
 
   public getIsActive() {
     return (
-      this.context.store.chartStore.currentTool == this.props.classID &&
-      this.context.store.chartStore.currentToolOptions == this.props.options
+      this.store.currentTool == this.props.classID &&
+      this.store.currentToolOptions == this.props.options
     );
   }
 
   public componentDidMount() {
-    this.token = this.context.store.chartStore.addListener(
-      ChartStore.EVENT_CURRENT_TOOL,
+    this.token = this.context.store.addListener(
+      AppStore.EVENT_CURRENT_TOOL,
       () => {
         this.forceUpdate();
       }
@@ -235,7 +228,7 @@ export class MultiObjectButton extends ContextedComponent<
   public token: EventSubscription;
 
   public isActive() {
-    const store = this.context.store.chartStore;
+    const store = this.store;
     for (const item of this.props.tools) {
       if (
         item.classID == store.currentTool &&
@@ -259,27 +252,24 @@ export class MultiObjectButton extends ContextedComponent<
   }
 
   public componentDidMount() {
-    this.token = this.context.store.chartStore.addListener(
-      ChartStore.EVENT_CURRENT_TOOL,
-      () => {
-        for (const item of this.props.tools) {
-          // If the tool is within the tools defined here, we update the current selection
-          if (
-            this.context.store.chartStore.currentTool == item.classID &&
-            this.context.store.chartStore.currentToolOptions == item.options
-          ) {
-            this.setState({
-              currentSelection: {
-                classID: item.classID,
-                options: item.options
-              }
-            });
-            break;
-          }
+    this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
+      for (const item of this.props.tools) {
+        // If the tool is within the tools defined here, we update the current selection
+        if (
+          this.store.currentTool == item.classID &&
+          this.store.currentToolOptions == item.options
+        ) {
+          this.setState({
+            currentSelection: {
+              classID: item.classID,
+              options: item.options
+            }
+          });
+          break;
         }
-        this.forceUpdate();
       }
-    );
+      this.forceUpdate();
+    });
   }
 
   public componentWillUnmount() {
@@ -370,7 +360,7 @@ export class LinkButton extends ContextedComponent<{}, {}> {
         <ToolButton
           title="Link"
           icon={R.getSVGIcon("link/tool")}
-          active={this.context.store.chartStore.currentTool == "link"}
+          active={this.store.currentTool == "link"}
           onClick={() => {
             globals.popupController.popupAt(
               context => (

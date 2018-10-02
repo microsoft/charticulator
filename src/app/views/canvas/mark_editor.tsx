@@ -20,7 +20,7 @@ import { Actions, DragData } from "../../actions";
 import { ZoomableCanvas } from "../../components";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import { renderGraphicalElementSVG } from "../../renderer";
-import { ChartStore, MarkSelection, Selection } from "../../stores";
+import { AppStore, MarkSelection, Selection } from "../../stores";
 import { classNames } from "../../utils";
 import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
@@ -75,19 +75,15 @@ export class MarkEditorView extends ContextedComponent<
   };
 
   public componentDidMount() {
-    const chartStore = this.context.store.chartStore;
+    const chartStore = this.store;
     this.subs.push(
-      chartStore.addListener(ChartStore.EVENT_GRAPHICS, () =>
-        this.forceUpdate()
-      )
+      chartStore.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate())
     );
     this.subs.push(
-      chartStore.addListener(ChartStore.EVENT_SELECTION, () =>
-        this.forceUpdate()
-      )
+      chartStore.addListener(AppStore.EVENT_SELECTION, () => this.forceUpdate())
     );
     this.subs.push(
-      chartStore.addListener(ChartStore.EVENT_CURRENT_TOOL, () => {
+      chartStore.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
         this.setState({
           currentCreation: chartStore.currentTool,
           currentCreationOptions: chartStore.currentToolOptions
@@ -112,7 +108,7 @@ export class MarkEditorView extends ContextedComponent<
   }
 
   public getGlyphState(glyph: Specification.Glyph) {
-    const chartStore = this.context.store.chartStore;
+    const chartStore = this.store;
     // Find the plot segment's index
     const layoutIndex = indexOf(
       chartStore.chart.elements,
@@ -144,13 +140,12 @@ export class MarkEditorView extends ContextedComponent<
   }
 
   public render() {
-    const chartStore = this.context.store.chartStore;
-    let currentGlyph = this.chartStore.currentGlyph;
+    let currentGlyph = this.store.currentGlyph;
     if (
       currentGlyph == null ||
-      this.chartStore.chart.glyphs.indexOf(currentGlyph) < 0
+      this.store.chart.glyphs.indexOf(currentGlyph) < 0
     ) {
-      currentGlyph = this.chartStore.chart.glyphs[0];
+      currentGlyph = this.store.chart.glyphs[0];
     }
     return (
       <div className="mark-editor-view" ref={e => (this.refContainer = e)}>
@@ -181,7 +176,7 @@ export class MarkEditorView extends ContextedComponent<
         <div className="canvas-controls">
           <div className="canvas-controls-left">
             <span className="glyph-tabs">
-              {this.chartStore.chart.glyphs.map(glyph => (
+              {this.store.chart.glyphs.map(glyph => (
                 <span
                   className={classNames("el-item", [
                     "is-active",
@@ -280,7 +275,7 @@ export class SingleMarkView
         centerY: this.props.height / 2,
         scale: 1
       },
-      currentSelection: this.context.store.chartStore.currentSelection
+      currentSelection: this.store.currentSelection
     };
   }
 
@@ -316,7 +311,7 @@ export class SingleMarkView
     if (!glyphState) {
       return null;
     }
-    const manager = this.chartStore.chartManager;
+    const manager = this.store.chartManager;
     // First we compute the maximum bounding box for marks in the glyph
     const boundingRects: Array<[number, number, number, number]> = [];
     // Get bounding box for each element
@@ -465,7 +460,7 @@ export class SingleMarkView
   }
 
   public scheduleAutoFit() {
-    const token = this.chartStore.addListener(ChartStore.EVENT_GRAPHICS, () => {
+    const token = this.store.addListener(AppStore.EVENT_GRAPHICS, () => {
       this.doAutoFit();
       token.remove();
     });
@@ -612,19 +607,6 @@ export class SingleMarkView
     };
 
     globals.dragController.registerDroppable(this, this.refs.canvas);
-    const chartStore = this.context.store.chartStore;
-    this.tokens.push(
-      chartStore.addListener(ChartStore.EVENT_GRAPHICS, () => {
-        this.forceUpdate();
-      })
-    );
-    this.tokens.push(
-      chartStore.addListener(ChartStore.EVENT_SELECTION, () => {
-        this.setState({
-          currentSelection: chartStore.currentSelection
-        });
-      })
-    );
     this.tokens.push(
       globals.dragController.addListener("sessionstart", () => {
         const session = globals.dragController.getSession();
@@ -666,7 +648,7 @@ export class SingleMarkView
     element: Specification.Element,
     elementState: Specification.MarkState
   ) {
-    const chartStore = this.context.store.chartStore;
+    const chartStore = this.store;
     const elementClass = chartStore.chartManager.getMarkClass(elementState);
     const graphics = elementClass.getGraphics(
       new Graphics.CartesianCoordinates(),
@@ -700,7 +682,7 @@ export class SingleMarkView
 
   public getSnappingGuides(): MarkSnappableGuide[] {
     let guides: MarkSnappableGuide[];
-    const chartStore = this.context.store.chartStore;
+    const chartStore = this.store;
     const glyphState = this.props.glyphState;
     if (!glyphState) {
       return [];
@@ -776,7 +758,7 @@ export class SingleMarkView
   }
 
   public renderMarkHandles() {
-    const chartStore = this.context.store.chartStore;
+    const chartStore = this.store;
     const glyphState = this.props.glyphState;
     const markClass = chartStore.chartManager.getGlyphClass(glyphState);
     const handles = markClass.getHandles();
@@ -810,9 +792,7 @@ export class SingleMarkView
     return zipArray(this.props.glyph.marks, this.props.glyphState.marks)
       .filter(x => x[0].classID == "mark.anchor")
       .map(([element, elementState], idx) => {
-        const elementClass = this.chartStore.chartManager.getMarkClass(
-          elementState
-        );
+        const elementClass = this.store.chartManager.getMarkClass(elementState);
         const bounds = elementClass.getHandles();
         return (
           <HandlesView
@@ -873,9 +853,7 @@ export class SingleMarkView
         );
       })
       .map(([element, elementState]) => {
-        const elementClass = this.chartStore.chartManager.getMarkClass(
-          elementState
-        );
+        const elementClass = this.store.chartManager.getMarkClass(elementState);
         const shouldRenderHandles =
           this.state.currentSelection instanceof MarkSelection &&
           this.state.currentSelection.mark == element;
@@ -1030,7 +1008,7 @@ export class SingleMarkView
     element: Specification.Element,
     state: Specification.MarkState
   ) {
-    const cls = this.chartStore.chartManager.getMarkClass(state);
+    const cls = this.store.chartManager.getMarkClass(state);
     return cls
       .getDropZones()
       .map((zone: Prototypes.DropZones.Description, idx) => {
@@ -1113,9 +1091,7 @@ export class SingleMarkView
       this.props.glyph.marks,
       this.props.glyphState.marks
     )) {
-      const elementClass = this.chartStore.chartManager.getMarkClass(
-        elementState
-      );
+      const elementClass = this.store.chartManager.getMarkClass(elementState);
       const guides = elementClass.getSnappingGuides();
       for (const item of guides) {
         if (item.type == "label") {
@@ -1199,7 +1175,7 @@ export class SingleMarkView
   }
 
   public renderMarkGuides() {
-    const markClass = this.chartStore.chartManager.getGlyphClass(
+    const markClass = this.store.chartManager.getGlyphClass(
       this.props.glyphState
     );
     const markGuides = markClass.getAlignmentGuides();
@@ -1387,16 +1363,7 @@ export class SingleMarkView
   }
 
   public render() {
-    const glyph = this.props.glyph;
-    let glyphState = this.props.glyphState;
-    // When loading an existing chart, we may run into a weird problem:
-    //   glyphState exists but glyphClass hasn't been initialized yet
-    // This is a hotfix for now. Later we'll refactor the stores to make sure this scenario doesn't happen.
-    try {
-      const glyphClass = this.chartStore.chartManager.getGlyphClass(glyphState);
-    } catch (e) {
-      glyphState = null;
-    }
+    const { glyph, glyphState } = this.props;
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
     }) scale(${this.state.zoom.scale})`;

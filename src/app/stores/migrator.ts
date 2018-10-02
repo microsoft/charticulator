@@ -1,24 +1,47 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { MainStoreState } from "./main_store";
+
+import { AppStoreState } from "./app_store";
 import {
   compareVersion,
   zip,
   Prototypes,
   Specification,
-  Expression
+  Expression,
+  Dataset
 } from "../../core";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
-  public migrate(state: MainStoreState, targetVersion: string): MainStoreState {
+  public migrate(state: AppStoreState, targetVersion: string): AppStoreState {
     // First, fix version if missing
     if (!state.version) {
       // Initially we didn't have the version field, so fix it.
       state.version = "1.0.0";
     }
 
-    console.log(`Migrate state from ${state.version} to ${targetVersion}`);
+    // console.log(`Migrate state from ${state.version} to ${targetVersion}`);
+
+    if (
+      compareVersion(state.version, "1.3.0") < 0 &&
+      compareVersion(targetVersion, "1.3.0") >= 0
+    ) {
+      // Major change at version 1.3.0: MainStoreState => AppStoreState
+      const stateOld = (state as any) as {
+        version: string;
+        dataset: { dataset: Dataset.Dataset };
+        chart: {
+          chart: Specification.Chart;
+          chartState: Specification.ChartState;
+        };
+      };
+      state = {
+        version: stateOld.version, // keep the old version, so the following code can run
+        dataset: stateOld.dataset.dataset,
+        chart: stateOld.chart.chart,
+        chartState: stateOld.chart.chartState
+      };
+    }
 
     if (
       compareVersion(state.version, "1.1.0") < 0 &&
@@ -35,11 +58,11 @@ export class Migrator {
     return state;
   }
 
-  public fixDataRowIndices(state: MainStoreState) {
+  public fixDataRowIndices(state: AppStoreState) {
     // Convert all data row indices in plot segment states to
     for (const [element, elementState] of zip(
-      state.chart.chart.elements,
-      state.chart.chartState.elements
+      state.chart.elements,
+      state.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegmentState = elementState as Specification.PlotSegmentState;
@@ -72,10 +95,10 @@ export class Migrator {
     );
   }
 
-  public fixDataMappingExpressions(state: MainStoreState) {
+  public fixDataMappingExpressions(state: AppStoreState) {
     for (const [element, elementState] of zip(
-      state.chart.chart.elements,
-      state.chart.chartState.elements
+      state.chart.elements,
+      state.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegment = element as Specification.PlotSegment;
@@ -125,7 +148,7 @@ export class Migrator {
       }
     }
     // Fix data mapping on glyphs/marks
-    for (const glyph of state.chart.chart.glyphs) {
+    for (const glyph of state.chart.glyphs) {
       for (const mark of glyph.marks) {
         for (const key in mark.mappings) {
           if (mark.mappings.hasOwnProperty(key)) {
@@ -145,7 +168,7 @@ export class Migrator {
       }
     }
     // Fix axis data mappings for data-axes
-    for (const glyph of state.chart.chart.glyphs) {
+    for (const glyph of state.chart.glyphs) {
       for (const mark of glyph.marks) {
         if (Prototypes.isType(mark.classID, "mark.data-axis")) {
           const properties = mark.properties as any;

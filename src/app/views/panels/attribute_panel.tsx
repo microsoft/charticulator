@@ -9,7 +9,7 @@ import { EditableTextView, SVGImageIcon } from "../../components";
 
 import {
   ChartElementSelection,
-  ChartStore,
+  AppStore,
   GlyphSelection,
   MarkSelection
 } from "../../stores";
@@ -23,7 +23,7 @@ function getObjectIcon(classID: string) {
 
 export class AttributePanel extends React.Component<
   {
-    store: ChartStore;
+    store: AppStore;
   },
   {}
 > {
@@ -31,12 +31,12 @@ export class AttributePanel extends React.Component<
 
   public componentDidMount() {
     this.tokens.push(
-      this.props.store.addListener(ChartStore.EVENT_GRAPHICS, () => {
+      this.props.store.addListener(AppStore.EVENT_GRAPHICS, () => {
         this.forceUpdate();
       })
     );
     this.tokens.push(
-      this.props.store.addListener(ChartStore.EVENT_SELECTION, () => {
+      this.props.store.addListener(AppStore.EVENT_SELECTION, () => {
         this.forceUpdate();
       })
     );

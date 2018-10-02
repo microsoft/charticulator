@@ -15,14 +15,14 @@ import {
 } from "../../../core";
 import { Actions } from "../../actions";
 import { renderSVGPath } from "../../renderer";
-import { ChartStore } from "../../stores";
+import { AppStore } from "../../stores";
 
 export interface EditingLinkProps {
   width: number;
   height: number;
   zoom: ZoomInfo;
 
-  store: ChartStore;
+  store: AppStore;
 
   link: Specification.Links;
 }

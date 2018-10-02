@@ -4,7 +4,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { MainView } from "./main_view";
-import { MainStore } from "./stores";
+import { AppStore } from "./stores";
 
 import { initialize, Dispatcher, Specification, Dataset } from "../core";
 import { ExtensionContext, Extension } from "./extension";
@@ -76,11 +76,12 @@ export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
 
   public getGlobalDispatcher(): Dispatcher<Action> {
-    return this.app.mainStore.dispatcher;
+    return this.app.appStore.dispatcher;
   }
 
-  public getMainStore(): MainStore {
-    return this.app.mainStore;
+  /** Get the store */
+  public getAppStore(): AppStore {
+    return this.app.appStore;
   }
 
   public getApplication(): Application {
@@ -90,7 +91,7 @@ export class ApplicationExtensionContext implements ExtensionContext {
 
 export class Application {
   public worker: CharticulatorWorker;
-  public mainStore: MainStore;
+  public appStore: AppStore;
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
@@ -103,10 +104,10 @@ export class Application {
     this.worker = new CharticulatorWorker(workerScriptURL);
     await this.worker.initialize(config);
 
-    this.mainStore = new MainStore(this.worker, makeDefaultDataset());
-    (window as any).mainStore = this.mainStore;
+    this.appStore = new AppStore(this.worker, makeDefaultDataset());
+    (window as any).mainStore = this.appStore;
     ReactDOM.render(
-      <MainView store={this.mainStore} ref={e => (this.mainView = e)} />,
+      <MainView store={this.appStore} ref={e => (this.mainView = e)} />,
       document.getElementById(containerID)
     );
 
@@ -156,10 +157,10 @@ export class Application {
         type: "value",
         value: info.height
       } as Specification.ValueMapping;
-      this.mainStore.dispatcher.dispatch(
+      this.appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset)
       );
-      this.mainStore.setupNestedEditor(newSpecification => {
+      this.appStore.setupNestedEditor(newSpecification => {
         window.opener.postMessage(
           {
             id,
@@ -191,7 +192,7 @@ export class Application {
       const spec: DatasetSourceSpecification = JSON.parse(hashParsed.dataset);
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);
-      this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
+      this.appStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.loadCSV) {
       // Quick load from one or two CSV files
       const spec: DatasetSourceSpecification = {
@@ -199,12 +200,12 @@ export class Application {
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);
-      this.mainStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
+      this.appStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.load) {
       // Load a saved state
       const value = await fetch(hashParsed.load);
       const json = await value.json();
-      this.mainStore.dispatcher.dispatch(new Actions.Load(json.state));
+      this.appStore.dispatcher.dispatch(new Actions.Load(json.state));
     } else {
       this.mainView.refMenuBar.showFileModalWindow("new");
     }
@@ -220,10 +221,10 @@ export class Application {
       template: Specification.Template.ChartTemplate
     ) => ExportTemplateTarget
   ) {
-    this.mainStore.registerExportTemplateTarget(name, ctor);
+    this.appStore.registerExportTemplateTarget(name, ctor);
   }
 
   public unregisterExportTemplateTarget(name: string) {
-    this.mainStore.unregisterExportTemplateTarget(name);
+    this.appStore.unregisterExportTemplateTarget(name);
   }
 }

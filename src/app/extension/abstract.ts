@@ -2,11 +2,11 @@
 // Licensed under the MIT license.
 import { Dispatcher } from "../../core";
 import { Action } from "../actions/actions";
-import { MainStore } from "../stores/main_store";
+import { AppStore } from "../stores";
 
 export interface ExtensionContext {
   getGlobalDispatcher(): Dispatcher<Action>;
-  getMainStore(): MainStore;
+  getAppStore(): AppStore;
 }
 
 export interface Extension {

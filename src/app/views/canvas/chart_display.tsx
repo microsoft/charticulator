@@ -2,20 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
-
-import {
-  Specification,
-  Prototypes,
-  Graphics,
-  zip,
-  zipArray,
-  getById,
-  ZoomInfo,
-  indexOf,
-  Geometry,
-  Point,
-  Dataset
-} from "../../../core";
+import { Dataset, Graphics, Prototypes, Specification } from "../../../core";
 import {
   GraphicalElementDisplay,
   renderGraphicalElementSVG
