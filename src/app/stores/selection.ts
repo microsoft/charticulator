@@ -33,12 +33,3 @@ export class MarkSelection extends Selection {
     super();
   }
 }
-
-export interface SelectionState {
-  type: string;
-  chartElementID?: string;
-  glyphID?: string;
-  markID?: string;
-  glyphIndex?: number;
-  currentGlyphID?: string;
-}

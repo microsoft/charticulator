@@ -35,12 +35,22 @@ import {
   ChartElementSelection,
   GlyphSelection,
   MarkSelection,
-  Selection,
-  SelectionState
+  Selection
 } from "./selection";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
+}
+
+export interface SelectionState {
+  selection?: {
+    type: string;
+    chartElementID?: string;
+    glyphID?: string;
+    markID?: string;
+    glyphIndex?: number;
+  };
+  currentGlyphID?: string;
 }
 
 export interface AppStoreState {
@@ -312,21 +322,21 @@ export class AppStore extends BaseStore {
   }
 
   public saveSelectionState(): SelectionState {
-    let selection: SelectionState = null;
+    const selection: SelectionState = {};
     if (this.currentSelection instanceof ChartElementSelection) {
-      selection = {
+      selection.selection = {
         type: "chart-element",
         chartElementID: this.currentSelection.chartElement._id
       };
     }
     if (this.currentSelection instanceof GlyphSelection) {
-      selection = {
+      selection.selection = {
         type: "glyph",
         glyphID: this.currentSelection.glyph._id
       };
     }
     if (this.currentSelection instanceof MarkSelection) {
-      selection = {
+      selection.selection = {
         type: "mark",
         glyphID: this.currentSelection.glyph._id,
         markID: this.currentSelection.mark._id
@@ -338,7 +348,11 @@ export class AppStore extends BaseStore {
     return selection;
   }
 
-  public loadSelectionState(selection: SelectionState) {
+  public loadSelectionState(selectionState: SelectionState) {
+    if (selectionState == null) {
+      return;
+    }
+    const selection = selectionState.selection;
     if (selection != null) {
       if (selection.type == "chart-element") {
         const chartElement = getById(
@@ -377,11 +391,11 @@ export class AppStore extends BaseStore {
           }
         }
       }
-      if (selection.currentGlyphID) {
-        const glyph = getById(this.chart.glyphs, selection.currentGlyphID);
-        if (glyph) {
-          this.currentGlyph = glyph;
-        }
+    }
+    if (selectionState.currentGlyphID) {
+      const glyph = getById(this.chart.glyphs, selectionState.currentGlyphID);
+      if (glyph) {
+        this.currentGlyph = glyph;
       }
     }
     this.emit(AppStore.EVENT_SELECTION);
