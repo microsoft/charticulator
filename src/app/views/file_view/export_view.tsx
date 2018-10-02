@@ -29,7 +29,7 @@ export class FileViewExport extends ContextedComponent<
   public renderExportImage() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.mainStore} />
+        <CurrentChartView store={this.store} />
         <div className="buttons">
           <ButtonRaised
             text="PNG"
@@ -52,7 +52,7 @@ export class FileViewExport extends ContextedComponent<
   public renderExportTemplate() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.mainStore} />
+        <CurrentChartView store={this.store} />
         <ExportTemplateView exportKind={this.state.exportMode} />
       </div>
     );
@@ -74,7 +74,7 @@ export class FileViewExport extends ContextedComponent<
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">Export as Image</span>
               </div>
-              {this.mainStore.listExportTemplateTargets().map(name => (
+              {this.store.listExportTemplateTargets().map(name => (
                 <div
                   key={name}
                   className={classNames("el-item", [
@@ -113,8 +113,8 @@ export class ExportTemplateView extends ContextedComponent<
   public state = this.getDefaultState(this.props.exportKind);
 
   public getDefaultState(kind: string): ExportTemplateViewState {
-    const template = deepClone(this.chartStore.buildChartTemplate());
-    const target = this.mainStore.createExportTemplateTarget(kind, template);
+    const template = deepClone(this.store.buildChartTemplate());
+    const target = this.store.createExportTemplateTarget(kind, template);
     const targetProperties: { [name: string]: string } = {};
     for (const property of target.getProperties()) {
       targetProperties[property.name] = property.default;

@@ -27,7 +27,7 @@ import {
   Droppable
 } from "../../../controllers/drag_controller";
 
-import { ChartStore } from "../../../stores";
+import { AppStore } from "../../../stores";
 import {
   classNames,
   showOpenFileDialog,
@@ -71,7 +71,7 @@ export type OnSetPropertyHandler = (
 
 export class WidgetManager implements Prototypes.Controls.WidgetManager {
   constructor(
-    public store: ChartStore,
+    public store: AppStore,
     public objectClass: Prototypes.ObjectClass
   ) {}
 
@@ -396,7 +396,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                       <DataFieldSelector
                         ref={e => (fieldSelector = e)}
                         nullDescription="(default order)"
-                        datasetStore={this.store.datasetStore}
+                        datasetStore={this.store}
                         useAggregation={true}
                         defaultValue={
                           currentExpression
@@ -605,7 +605,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   return (
                     <PopupView context={context}>
                       <DataFieldSelector
-                        datasetStore={this.store.datasetStore}
+                        datasetStore={this.store}
                         defaultValue={
                           current && current.expression
                             ? { table: null, expression: current.expression }
@@ -622,7 +622,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             );
                           } else {
                             const data = new DragData.DataExpression(
-                              this.store.datasetStore.getTable(value.table),
+                              this.store.getTable(value.table),
                               value.expression,
                               value.type,
                               value.metadata

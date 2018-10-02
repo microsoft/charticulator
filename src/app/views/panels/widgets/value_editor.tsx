@@ -165,7 +165,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             <InputExpression
               textExpression={true}
               validate={value =>
-                this.context.store.chartStore.verifyUserExpressionWithTable(
+                this.context.store.verifyUserExpressionWithTable(
                   value,
                   this.props.getTable(),
                   { textExpression: true, expectedTypes: ["string"] }

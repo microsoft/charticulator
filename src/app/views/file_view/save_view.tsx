@@ -30,13 +30,13 @@ export class FileViewSaveAs extends ContextedComponent<
       <section className="charticulator__file-view-content is-fix-width">
         <h1>Save As</h1>
         <section>
-          <CurrentChartView store={this.mainStore} />
+          <CurrentChartView store={this.store} />
           <div className="form-group">
             <input
               ref={e => (inputSaveChartName = e)}
               type="text"
               required={true}
-              defaultValue={this.mainStore.datasetStore.dataset.name}
+              defaultValue={this.store.dataset.name}
             />
             <label>Chart Name</label>
             <i className="bar" />

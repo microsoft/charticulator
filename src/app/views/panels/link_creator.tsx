@@ -43,8 +43,7 @@ export class LinkCreationPanel extends ContextedComponent<
   private groupBySelector: DataFieldSelector;
 
   private getDefaultState(): LinkCreationPanelState {
-    let plotSegments = this.context.store.chartStore.chart
-      .elements as Specification.PlotSegment[];
+    let plotSegments = this.store.chart.elements as Specification.PlotSegment[];
     plotSegments = plotSegments.filter(x =>
       Prototypes.isType(x.classID, "plot-segment")
     );
@@ -65,7 +64,7 @@ export class LinkCreationPanel extends ContextedComponent<
   }
 
   private isLinkDataPresent() {
-    return this.context.store.datasetStore.dataset.tables.length > 1;
+    return this.store.dataset.tables.length > 1;
   }
 
   public render() {
@@ -129,7 +128,7 @@ export class LinkCreationPanel extends ContextedComponent<
               <DataFieldSelector
                 ref={e => (this.groupBySelector = e)}
                 kinds={[Specification.DataKind.Categorical]}
-                datasetStore={this.context.store.datasetStore}
+                datasetStore={this.store}
                 nullDescription="(link all items)"
               />
             </div>
@@ -462,7 +461,7 @@ export class LinkCreationPanel extends ContextedComponent<
   }
 
   public getLinkObject() {
-    const manager = this.context.store.chartStore.chartManager;
+    const manager = this.store.chartManager;
     let defaultColor: Specification.ValueMapping;
     let defaultOpacity: Specification.ValueMapping;
     switch (this.state.linkType) {
@@ -633,7 +632,7 @@ export class LinkCreationPanel extends ContextedComponent<
             anchor1,
             anchor2,
             linkTable: {
-              table: this.context.store.datasetStore.dataset.tables[1].name,
+              table: this.store.dataset.tables[1].name,
               plotSegments: [
                 plotSegmentClasses[0].object._id,
                 plotSegmentClasses[0].object._id

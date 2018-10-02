@@ -105,7 +105,7 @@ export class FilterEditor extends React.Component<
                     expression: this.state.currentValue.categories.expression
                   }}
                   table={options.table}
-                  datasetStore={this.props.manager.store.datasetStore}
+                  datasetStore={this.props.manager.store}
                   kinds={[Specification.DataKind.Categorical]}
                   onChange={field => {
                     // Enumerate all values of this field

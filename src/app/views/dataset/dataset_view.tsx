@@ -7,14 +7,14 @@ import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
 import { PopupView } from "../../controllers";
 import * as globals from "../../globals";
 import * as R from "../../resources";
-import { DatasetStore } from "../../stores";
+import { AppStore } from "../../stores";
 import { classNames } from "../../utils";
 import { Button } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
 
 export interface DatasetViewProps {
-  store: DatasetStore;
+  store: AppStore;
 }
 
 export interface DatasetViewState {}
@@ -24,7 +24,7 @@ export class DatasetView extends React.Component<
   DatasetViewState
 > {
   public componentDidMount() {
-    this.props.store.addListener(DatasetStore.EVENT_CHANGED, () =>
+    this.props.store.addListener(AppStore.EVENT_DATASET, () =>
       this.forceUpdate()
     );
   }
@@ -50,7 +50,7 @@ export class DatasetView extends React.Component<
 }
 
 export interface ColumnsViewProps {
-  store: DatasetStore;
+  store: AppStore;
   table: Dataset.Table;
   isLinkTable: boolean;
 }
@@ -118,7 +118,7 @@ export class ColumnsView extends React.Component<
 }
 
 export class ColumnViewProps {
-  public store: DatasetStore;
+  public store: AppStore;
   public table: Dataset.Table;
   public column: Dataset.Column;
 }

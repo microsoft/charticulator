@@ -16,8 +16,6 @@ import { ExportTemplateTarget } from "../template";
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
 
-export class UIAction extends Action {}
-
 export class Undo extends Action {
   public digest() {
     return { name: "Undo" };
@@ -107,15 +105,6 @@ export class Load extends Action {
   }
 }
 
-// export class LoadDataFromCSV extends Action {
-//     constructor(
-//         public filename: string,
-//         public contents: string,
-//         public type: "csv" | "tsv"
-//     ) { super(); }
-
-// }
-
 export class ImportDataset extends Action {
   constructor(public dataset: Dataset.Dataset) {
     super();
@@ -136,32 +125,6 @@ export class ImportChartAndDataset extends Action {
 
   public digest() {
     return { name: "ImportChartAndDataset" };
-  }
-}
-
-// Dataset actions
-
-export class AddTable extends Action {
-  constructor(public table: Dataset.Table) {
-    super();
-  }
-
-  public digest() {
-    return { name: "AddTable", tableName: this.table.name };
-  }
-}
-
-export class SelectDataRow extends UIAction {
-  constructor(public table: Dataset.Table, public rowIndex: number) {
-    super();
-  }
-
-  public digest() {
-    return {
-      name: "SelectDataRow",
-      rowIndex: this.rowIndex,
-      tableName: this.table.name
-    };
   }
 }
 
@@ -431,14 +394,6 @@ export class DeleteChartElement extends Action {
     return {
       name: "DeleteChartElement",
       chartElement: objectDigest(this.chartElement)
-    };
-  }
-}
-
-export class DeleteSelection extends Action {
-  public digest() {
-    return {
-      name: "DeleteSelection"
     };
   }
 }

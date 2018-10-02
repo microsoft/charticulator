@@ -7,13 +7,13 @@ import { EventSubscription, Specification } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
 
-import { ChartStore } from "../../stores";
+import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
   scaleMapping: Specification.ScaleMapping;
-  store: ChartStore;
+  store: AppStore;
 }
 
 export interface ScaleEditorState {}
@@ -25,7 +25,7 @@ export class ScaleEditor extends React.Component<
   public token: EventSubscription;
 
   public componentDidMount() {
-    this.token = this.props.store.addListener(ChartStore.EVENT_GRAPHICS, () => {
+    this.token = this.props.store.addListener(AppStore.EVENT_GRAPHICS, () => {
       this.forceUpdate();
     });
   }

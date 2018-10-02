@@ -22,7 +22,7 @@ import { DragContext, Droppable } from "../../controllers";
 import { GraphicalElementDisplay } from "../../renderer";
 import {
   ChartElementSelection,
-  ChartStore,
+  AppStore,
   MarkSelection,
   Selection
 } from "../../stores";
@@ -43,7 +43,7 @@ import {
 } from "./snapping";
 
 export interface ChartEditorViewProps {
-  store: ChartStore;
+  store: AppStore;
 }
 
 export interface ChartEditorViewState {
@@ -205,18 +205,18 @@ export class ChartEditorView
 
     this.tokens.push(
       this.props.store.addListener(
-        ChartStore.EVENT_GRAPHICS,
+        AppStore.EVENT_GRAPHICS,
         this.updateGraphics.bind(this)
       )
     );
     this.tokens.push(
       this.props.store.addListener(
-        ChartStore.EVENT_SELECTION,
+        AppStore.EVENT_SELECTION,
         this.updateSelection.bind(this)
       )
     );
     this.tokens.push(
-      this.props.store.addListener(ChartStore.EVENT_CURRENT_TOOL, () => {
+      this.props.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
         this.setState({
           currentCreation: this.props.store.currentTool,
           currentCreationOptions: this.props.store.currentToolOptions
@@ -227,7 +227,7 @@ export class ChartEditorView
     // We display the working icon after 200ms.
     let newStateTimer: NodeJS.Timer = null;
     this.tokens.push(
-      this.props.store.addListener(ChartStore.EVENT_SOLVER_STATUS, () => {
+      this.props.store.addListener(AppStore.EVENT_SOLVER_STATUS, () => {
         const newState = this.props.store.solverStatus.solving;
         if (newState) {
           if (!newStateTimer) {

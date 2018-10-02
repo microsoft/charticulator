@@ -69,7 +69,7 @@ export class GroupByEditor extends React.Component<
           }
           table={options.table}
           nullDescription="(none)"
-          datasetStore={this.props.manager.store.datasetStore}
+          datasetStore={this.props.manager.store}
           kinds={[Specification.DataKind.Categorical]}
           onChange={field => {
             if (field == null) {

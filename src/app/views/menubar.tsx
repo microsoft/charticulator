@@ -11,8 +11,8 @@ import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import { ModalView, PopupView } from "../controllers";
 
-import { MainStore } from "../stores";
 import { FileView } from "./file_view";
+import { AppStore } from "../stores";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -91,7 +91,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
     this.subs = this.context.store.addListener(
-      MainStore.EVENT_IS_NESTED_EDITOR,
+      AppStore.EVENT_IS_NESTED_EDITOR,
       () => this.forceUpdate()
     );
   }
@@ -139,7 +139,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
           case "save":
             {
               if (this.context.store.isNestedEditor) {
-                this.context.store.emit(MainStore.EVENT_NESTED_EDITOR_EDIT);
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
                 if (this.context.store.currentChartID) {
                   this.dispatch(new Actions.Save());
@@ -166,12 +166,12 @@ export class MenuBar extends ContextedComponent<{}, {}> {
             break;
           case "delete":
             {
-              this.context.store.chartStore.deleteSelection();
+              this.store.deleteSelection();
             }
             break;
           case "escape":
             {
-              this.context.store.chartStore.handleEscapeKey();
+              this.store.handleEscapeKey();
             }
             break;
         }
@@ -211,7 +211,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
         text="Save Nested Chart"
         title="Save (Ctrl-S)"
         onClick={() => {
-          this.context.store.emit(MainStore.EVENT_NESTED_EDITOR_EDIT);
+          this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
       />
     );
