@@ -949,12 +949,15 @@ export class TableLinksClass extends LinksClass {
       const row = linkTable.getGroupedContext([rowIndex]);
       const rowItem = linkTable.getRow(rowIndex);
 
-      const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(
-        rowItem.source_id.toString()
-      );
-      const [iRow1, i1] = tables[1].id2RowGlyphIndex.get(
-        rowItem.target_id.toString()
-      );
+      const r1 = tables[0].id2RowGlyphIndex.get(rowItem.source_id.toString());
+      const r2 = tables[1].id2RowGlyphIndex.get(rowItem.target_id.toString());
+
+      if (!r1 || !r2) {
+        continue;
+      }
+
+      const [iRow0, i0] = r1;
+      const [iRow1, i1] = r2;
 
       anchors.push([
         [
