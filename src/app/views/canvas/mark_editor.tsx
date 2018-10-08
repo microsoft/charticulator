@@ -270,7 +270,7 @@ export class SingleMarkView
         centerX: this.props.width / 2,
         centerY: this.props.height / 2,
         scale: 1
-      },
+      }
     };
   }
 
