@@ -151,7 +151,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   MR.add(Actions.MarkActionGroup, function(action) {
     for (const item of action.actions) {
       // Recursively handle group actions
-      MR.handleAction(this, action);
+      MR.handleAction(this, item);
     }
   });
 

@@ -44,7 +44,6 @@ export interface MarkEditorViewProps {
 export interface MarkEditorViewState {
   currentCreation?: string;
   currentCreationOptions?: string;
-  currentSelection: Selection;
   width: number;
   height: number;
 }
@@ -61,7 +60,6 @@ export class MarkEditorView extends ContextedComponent<
 
   public state: MarkEditorViewState = {
     currentCreation: null,
-    currentSelection: null,
     width: 300,
     height: 300
   };
@@ -248,8 +246,6 @@ export interface SingleMarkViewState {
   showIndicatorActive: boolean;
   snappingCandidates: MarkSnappableGuide[] | null;
   zoom: ZoomInfo;
-
-  currentSelection: Selection;
 }
 
 export class SingleMarkView
@@ -274,8 +270,7 @@ export class SingleMarkView
         centerX: this.props.width / 2,
         centerY: this.props.height / 2,
         scale: 1
-      },
-      currentSelection: this.store.currentSelection
+      }
     };
   }
 
@@ -836,11 +831,11 @@ export class SingleMarkView
       .filter(x => x[0].classID != "mark.anchor")
       .sort((a, b) => {
         const aSelected =
-          this.state.currentSelection instanceof MarkSelection &&
-          this.state.currentSelection.mark == a[0];
+          this.store.currentSelection instanceof MarkSelection &&
+          this.store.currentSelection.mark == a[0];
         const bSelected =
-          this.state.currentSelection instanceof MarkSelection &&
-          this.state.currentSelection.mark == b[0];
+          this.store.currentSelection instanceof MarkSelection &&
+          this.store.currentSelection.mark == b[0];
         if (aSelected) {
           return +1;
         }
@@ -855,8 +850,8 @@ export class SingleMarkView
       .map(([element, elementState]) => {
         const elementClass = this.store.chartManager.getMarkClass(elementState);
         const shouldRenderHandles =
-          this.state.currentSelection instanceof MarkSelection &&
-          this.state.currentSelection.mark == element;
+          this.store.currentSelection instanceof MarkSelection &&
+          this.store.currentSelection.mark == element;
         if (!shouldRenderHandles) {
           const bbox = elementClass.getBoundingBox();
           if (bbox) {
