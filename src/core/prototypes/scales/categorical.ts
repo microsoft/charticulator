@@ -172,8 +172,13 @@ export class CategoricalScaleColor extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = null;
-    if (options.reuseRange && props.mapping != null) {
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
       props.mapping = reuseMapping(s.domain, props.mapping);
     }
     if (props.mapping == null) {
@@ -243,8 +248,13 @@ export class CategoricalScaleEnum extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = null;
-    if (options.reuseRange && props.mapping != null) {
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
       props.mapping = reuseMapping(s.domain, props.mapping);
     }
     if (props.mapping == null) {
@@ -316,8 +326,13 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = null;
-    if (options.reuseRange && props.mapping != null) {
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
       props.mapping = reuseMapping(s.domain, props.mapping);
     }
     if (props.mapping == null) {
@@ -392,8 +407,13 @@ export class CategoricalScaleImage extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column.filter(x => typeof x == "string") as string[];
     s.inferParameters(values, "order");
-    props.mapping = null;
-    if (options.reuseRange && props.mapping != null) {
+
+    // If we shouldn't reuse the range, then reset the mapping
+    if (!options.reuseRange) {
+      props.mapping = null;
+
+      // Otherwise, if we already have a mapping, try to reuse it
+    } else if (props.mapping != null) {
       props.mapping = reuseMapping(s.domain, props.mapping);
     }
     if (props.mapping == null) {
