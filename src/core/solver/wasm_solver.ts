@@ -46,6 +46,7 @@ export class WASMSolver extends ConstraintSolver {
     this.variables = new KeyNameMap<AttributeMap, WASMSolverVariable>();
     this.solver = new LSCGSolver.ConstraintSolver();
     this.solver.flags = LSCGSolver.ConstraintSolver.FLAG_REDUCE; // | LSCGSolver.ConstraintSolver.FLAG_LAGRANGE;
+    this.solver.tolerance = 1e-8;
   }
 
   public makeConstant(map: AttributeMap, name: string): void {
