@@ -2047,6 +2047,9 @@ export class TextAlignmentHandleView extends React.Component<
   }
 
   public handleClick() {
+    if (this.props.handle.text == null) {
+      return;
+    }
     globals.popupController.popupAt(
       context => {
         return (
