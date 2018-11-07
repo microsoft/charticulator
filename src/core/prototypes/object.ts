@@ -13,6 +13,7 @@ export interface AttributeDescription {
   /** Exclude this from the constraint solver */
   solverExclude?: boolean;
   stateExclude?: boolean;
+  editableInGlyphStage?: boolean;
 
   /** Default value: used when nothing is specified for this attribute */
   defaultValue?: Specification.AttributeValue;

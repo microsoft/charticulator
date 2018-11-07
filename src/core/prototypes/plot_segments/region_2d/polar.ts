@@ -186,11 +186,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
     },
     gapX: {
       name: "gapX",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
+      editableInGlyphStage: true
     },
     gapY: {
       name: "gapY",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
+      editableInGlyphStage: true
     }
   };
 

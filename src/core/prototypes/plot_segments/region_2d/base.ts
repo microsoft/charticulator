@@ -16,7 +16,6 @@ import {
   getNumericalInterpolate
 } from "../axis";
 import { PlotSegmentClass } from "../plot_segment";
-import { argMax, argMin } from "../../../common";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   type: "dodge-x" | "dodge-y" | "grid" | "packing";
