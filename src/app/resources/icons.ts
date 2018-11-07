@@ -325,6 +325,10 @@ addSVGIcon(
   require("url-loader!resources/icons/icons_element-image.svg")
 );
 addSVGIcon(
+  "mark/icon",
+  require("url-loader!resources/icons/icons_element-icon.svg")
+);
+addSVGIcon(
   "mark/symbol",
   require("url-loader!resources/icons/icons_element-symbol.svg")
 );

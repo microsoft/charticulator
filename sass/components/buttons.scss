@@ -114,7 +114,6 @@
     }
 
     &.is-active,
-    &:active,
     &.dragging {
       background: $color-primary;
       .el-svg-icon {

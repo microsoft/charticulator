@@ -10,7 +10,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters
@@ -77,28 +76,6 @@ export class TextElementClass extends EmphasizableMarkClass<
     attrs.visible = true;
     attrs.outline = null;
     attrs.opacity = 1;
-  }
-
-  public getCenterOffset(
-    alignment: Specification.Types.TextAlignment,
-    width: number,
-    height: number
-  ): [number, number] {
-    let cx: number = width / 2,
-      cy: number = height / 2;
-    if (alignment.x == "left") {
-      cx = -alignment.xMargin;
-    }
-    if (alignment.x == "right") {
-      cx = width + alignment.xMargin;
-    }
-    if (alignment.y == "top") {
-      cy = -alignment.yMargin;
-    }
-    if (alignment.y == "bottom") {
-      cy = height + alignment.yMargin;
-    }
-    return [cx, cy];
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
