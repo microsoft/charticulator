@@ -12,6 +12,7 @@ import { NestedChartElementClass } from "./nested_chart";
 import { RectElementClass } from "./rect";
 import { SymbolElementClass } from "./symbol";
 import { TextElementClass } from "./text";
+import { IconElementClass } from "./icon";
 
 export function registerClasses() {
   ObjectClasses.Register(AnchorElement);
@@ -20,6 +21,7 @@ export function registerClasses() {
   ObjectClasses.Register(SymbolElementClass);
   ObjectClasses.Register(TextElementClass);
   ObjectClasses.Register(ImageElementClass);
+  ObjectClasses.Register(IconElementClass);
   ObjectClasses.Register(NestedChartElementClass);
   ObjectClasses.Register(DataAxisClass);
 }
