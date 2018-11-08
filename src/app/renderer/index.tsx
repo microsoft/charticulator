@@ -2,7 +2,13 @@
 // Licensed under the MIT license.
 import * as React from "react";
 
-import { Graphics, Color, shallowClone, getColorConverter } from "../../core";
+import {
+  Graphics,
+  Color,
+  shallowClone,
+  getColorConverter,
+  uniqueID
+} from "../../core";
 import { toSVGNumber } from "../utils";
 import {
   ChartComponent,
@@ -163,6 +169,44 @@ export interface RenderGraphicalElementSVGOptions {
   selection?: DataSelection;
 }
 
+class TextOnPath extends React.PureComponent<{
+  text: string;
+  style: React.CSSProperties;
+  align: "start" | "middle" | "end";
+  cmds: any;
+}> {
+  private pathID: string = uniqueID();
+
+  public render() {
+    return (
+      <g>
+        <defs>
+          <path
+            id={this.pathID}
+            fill="none"
+            stroke="red"
+            d={renderSVGPath(this.props.cmds)}
+          />
+        </defs>
+        <text style={{ ...this.props.style, textAnchor: this.props.align }}>
+          <textPath
+            href={`#${this.pathID}`}
+            startOffset={
+              this.props.align == "start"
+                ? "0%"
+                : this.props.align == "middle"
+                  ? "50%"
+                  : "100%"
+            }
+          >
+            {this.props.text}
+          </textPath>
+        </text>
+      </g>
+    );
+  }
+}
+
 export function renderGraphicalElementSVG(
   element: Graphics.Element,
   options?: RenderGraphicalElementSVGOptions
@@ -290,6 +334,20 @@ export function renderGraphicalElementSVG(
           className={options.className || null}
           style={style}
           d={d}
+        />
+      );
+    }
+    case "text-on-path": {
+      const text = element as Graphics.TextOnPath;
+      style.fontFamily = text.fontFamily;
+      style.fontSize = text.fontSize + "px";
+      console.log(text);
+      return (
+        <TextOnPath
+          text={text.text}
+          style={style}
+          cmds={text.pathCmds}
+          align={text.align}
         />
       );
     }

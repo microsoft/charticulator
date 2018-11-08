@@ -1901,18 +1901,30 @@ export class TextAlignmentHandleView extends React.Component<
       } else if (npcy < 0) {
         newAlignment.y = "top";
         newAlignment.yMargin = -npcy - this.props.handle.textHeight / 2;
+        if (Math.abs(newAlignment.yMargin) < 5 / this.props.zoom.scale) {
+          newAlignment.yMargin = 0;
+        }
       } else {
         newAlignment.y = "bottom";
         newAlignment.yMargin = npcy - this.props.handle.textHeight / 2;
+        if (Math.abs(newAlignment.yMargin) < 5 / this.props.zoom.scale) {
+          newAlignment.yMargin = 0;
+        }
       }
       if (snapping && Math.abs(npcx) < 5 / this.props.zoom.scale) {
         newAlignment.x = "middle";
       } else if (npcx < 0) {
         newAlignment.x = "right";
         newAlignment.xMargin = -npcx - this.props.handle.textWidth / 2;
+        if (Math.abs(newAlignment.xMargin) < 5 / this.props.zoom.scale) {
+          newAlignment.xMargin = 0;
+        }
       } else {
         newAlignment.x = "left";
         newAlignment.xMargin = npcx - this.props.handle.textWidth / 2;
+        if (Math.abs(newAlignment.xMargin) < 5 / this.props.zoom.scale) {
+          newAlignment.xMargin = 0;
+        }
       }
       return [newAlignment, newRotation];
     };

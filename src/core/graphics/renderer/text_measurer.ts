@@ -59,6 +59,22 @@ export class TextMeasurer {
     };
   }
 
+  private static globalInstance: TextMeasurer = null;
+
+  public static GetGlobalInstance() {
+    if (this.globalInstance == null) {
+      this.globalInstance = new TextMeasurer();
+    }
+    return this.globalInstance;
+  }
+
+  public static Measure(text: string, family: string, size: number) {
+    const inst = this.GetGlobalInstance();
+    inst.setFontFamily(family);
+    inst.setFontSize(size);
+    return inst.measure(text);
+  }
+
   public static ComputeTextPosition(
     x: number,
     y: number,
