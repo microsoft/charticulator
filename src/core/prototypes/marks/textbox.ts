@@ -89,6 +89,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const props = this.object.properties;
     const widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", {
@@ -107,7 +108,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         defaultValue: "Arial"
       }),
       manager.row(
-        "Align",
+        "Align X",
         manager.horizontal(
           [0, 1],
           manager.inputSelect(
@@ -119,6 +120,25 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               labels: ["Left", "Middle", "Right"]
             }
           ),
+          props.alignX != "middle"
+            ? manager.horizontal(
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingX" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
+              )
+            : null
+        )
+      ),
+      manager.row(
+        "Align Y",
+        manager.horizontal(
+          [0, 1],
           manager.inputSelect(
             { property: "alignY" },
             {
@@ -127,29 +147,20 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               icons: ["align/bottom", "align/y-middle", "align/top"],
               labels: ["Bottom", "Middle", "Top"]
             }
-          )
-        )
-      ),
-      manager.row(
-        "Padding",
-        manager.horizontal(
-          [0, 2, 0, 2],
-          manager.label("x:"),
-          manager.inputNumber(
-            { property: "paddingX" },
-            {
-              updownTick: 1,
-              showUpdown: true
-            }
           ),
-          manager.label("y:"),
-          manager.inputNumber(
-            { property: "paddingY" },
-            {
-              updownTick: 1,
-              showUpdown: true
-            }
-          )
+          props.alignY != "middle"
+            ? manager.horizontal(
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingY" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
+              )
+            : null
         )
       ),
       manager.sectionHeader("Style"),

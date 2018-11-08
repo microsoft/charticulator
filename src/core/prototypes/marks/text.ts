@@ -311,7 +311,13 @@ export class TextElementClass extends EmphasizableMarkClass<
             ? manager.horizontal(
                 [0, 1],
                 manager.label("Margin:"),
-                manager.inputNumber({ property: "alignment", field: "xMargin" })
+                manager.inputNumber(
+                  { property: "alignment", field: "xMargin" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
             : null
         )
@@ -337,7 +343,13 @@ export class TextElementClass extends EmphasizableMarkClass<
             ? manager.horizontal(
                 [0, 1],
                 manager.label("Margin:"),
-                manager.inputNumber({ property: "alignment", field: "yMargin" })
+                manager.inputNumber(
+                  { property: "alignment", field: "yMargin" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
             : null
         )
