@@ -157,7 +157,11 @@ export class ChartConstraintSolver {
         if (objectState.attributes[attr] == null) {
           objectState.attributes[attr] = 0;
         }
-        this.addAttribute(objectState.attributes, attr, solve);
+        this.addAttribute(
+          objectState.attributes,
+          attr,
+          solve || info.editableInGlyphStage
+        );
       }
       if (!info.stateExclude) {
         if (object.mappings.hasOwnProperty(attr)) {
