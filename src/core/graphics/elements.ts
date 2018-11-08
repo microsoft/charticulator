@@ -143,6 +143,15 @@ export interface Text extends Element {
   fontSize: number;
 }
 
+export interface TextOnPath extends Element {
+  type: "text-on-path";
+  pathCmds: Path["cmds"];
+  align: "start" | "middle" | "end";
+  text: string;
+  fontFamily: string;
+  fontSize: number;
+}
+
 export interface Image extends Element {
   type: "image";
   src: string;

@@ -58,8 +58,6 @@ export class TextElementClass extends EmphasizableMarkClass<
   public attributes = textAttributes;
   public attributeNames = Object.keys(textAttributes);
 
-  private textMeasure = new Graphics.TextMeasurer();
-
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
     const attrs = this.state.attributes as TextElementAttributes;
@@ -94,9 +92,11 @@ export class TextElementClass extends EmphasizableMarkClass<
     if (!attrs.visible || !this.object.properties.visible) {
       return null;
     }
-    this.textMeasure.setFontFamily(attrs.fontFamily);
-    this.textMeasure.setFontSize(attrs.fontSize);
-    const metrics = this.textMeasure.measure(attrs.text);
+    const metrics = Graphics.TextMeasurer.Measure(
+      attrs.text,
+      attrs.fontFamily,
+      attrs.fontSize
+    );
     const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(
       0,
       0,
@@ -130,9 +130,11 @@ export class TextElementClass extends EmphasizableMarkClass<
   public getDropZones(): DropZones.Description[] {
     const props = this.object.properties;
     const attrs = this.state.attributes;
-    this.textMeasure.setFontFamily(attrs.fontFamily);
-    this.textMeasure.setFontSize(attrs.fontSize);
-    const metrics = this.textMeasure.measure(attrs.text);
+    const metrics = Graphics.TextMeasurer.Measure(
+      attrs.text,
+      attrs.fontFamily,
+      attrs.fontSize
+    );
     const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(
       0,
       0,
@@ -214,9 +216,11 @@ export class TextElementClass extends EmphasizableMarkClass<
   public getBoundingRectangle() {
     const props = this.object.properties;
     const attrs = this.state.attributes;
-    this.textMeasure.setFontFamily(attrs.fontFamily);
-    this.textMeasure.setFontSize(attrs.fontSize);
-    const metrics = this.textMeasure.measure(attrs.text);
+    const metrics = Graphics.TextMeasurer.Measure(
+      attrs.text,
+      attrs.fontFamily,
+      attrs.fontSize
+    );
     const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(
       0,
       0,

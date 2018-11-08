@@ -128,6 +128,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       switch (action.classID) {
         case "mark.rect":
         case "mark.nested-chart":
+        case "mark.textbox":
         case "mark.image":
           {
             mark.mappings.x1 = {
@@ -172,6 +173,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           break;
         case "mark.symbol":
         case "mark.text":
+        case "mark.icon":
           {
             mark.mappings.x = {
               type: "parent",
