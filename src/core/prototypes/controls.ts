@@ -71,6 +71,7 @@ export interface InputNumberOptions {
 
   showSlider?: boolean;
   sliderRange?: [number, number];
+  sliderFunction?: "linear" | "sqrt";
 
   showUpdown?: boolean;
   updownTick?: number;

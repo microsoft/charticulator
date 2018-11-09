@@ -9,8 +9,8 @@ import { AttrBuilder } from "../attrs";
 export const iconAttributes: AttributeDescriptions = {
   ...AttrBuilder.point(),
   ...AttrBuilder.number("size", false, {
-    defaultRange: [0, 200 * Math.PI],
-    defaultValue: 60
+    defaultRange: [0, 3600],
+    defaultValue: 400
   }),
   ...AttrBuilder.opacity(),
   ...AttrBuilder.visible(),

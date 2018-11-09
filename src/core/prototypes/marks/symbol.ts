@@ -293,9 +293,14 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       }),
       manager.mappingEditor("Size", "size", {
         acceptKinds: [Specification.DataKind.Numerical],
-        hints: { rangeNumber: [0, 100] },
+        hints: { rangeNumber: [0, 200 * Math.PI] },
         defaultValue: 60,
-        numberOptions: { showSlider: true, minimum: 0, sliderRange: [0, 500] }
+        numberOptions: {
+          showSlider: true,
+          minimum: 0,
+          sliderRange: [0, 3600],
+          sliderFunction: "sqrt"
+        }
       }),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),

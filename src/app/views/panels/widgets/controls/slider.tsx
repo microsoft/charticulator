@@ -11,6 +11,8 @@ export interface SliderProps {
   min: number;
   max: number;
 
+  mapping?: "linear" | "sqrt";
+
   onChange?: (value: number, final: boolean) => void;
 }
 
@@ -48,6 +50,27 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     return v;
   }
 
+  public valueToRatio(v: number) {
+    if (this.props.mapping == "sqrt") {
+      return (
+        (Math.sqrt(v) - Math.sqrt(this.props.min)) /
+        (Math.sqrt(this.props.max) - Math.sqrt(this.props.min))
+      );
+    } else {
+      return (v - this.props.min) / (this.props.max - this.props.min);
+    }
+  }
+  public ratioToValue(r: number) {
+    if (this.props.mapping == "sqrt") {
+      const f =
+        r * (Math.sqrt(this.props.max) - Math.sqrt(this.props.min)) +
+        Math.sqrt(this.props.min);
+      return f * f;
+    } else {
+      return r * (this.props.max - this.props.min) + this.props.min;
+    }
+  }
+
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.svg);
     this.hammer.add(new Hammer.Pan({ threshold: 0 }));
@@ -60,9 +83,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       const x = e.center.x - left;
       let pos = (x - margin) / (this.props.width - margin - margin);
       pos = Math.max(0, Math.min(1, pos));
-      const value = this.niceValue(
-        pos * (this.props.max - this.props.min) + this.props.min
-      );
+      const value = this.niceValue(this.ratioToValue(pos));
       this.setState({
         currentValue: value
       });
@@ -95,7 +116,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     const { min, max, width } = this.props;
     const margin = height / 2 + 1;
     const scale = (v: number) =>
-      ((v - min) / (max - min)) * (width - margin - margin) + margin;
+      this.valueToRatio(v) * (width - margin - margin) + margin;
     const y = height / 2;
     const px = scale(
       this.state.currentValue != null
