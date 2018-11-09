@@ -48,7 +48,7 @@ export class IconElementClass extends EmphasizableMarkClass<
 
   public static defaultMappingValues: Partial<IconElementAttributes> = {
     opacity: 1,
-    size: 60,
+    size: 400,
     visible: true
   };
 
@@ -61,7 +61,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     attrs.x = 0;
     attrs.y = 0;
-    attrs.size = 60;
+    attrs.size = 400;
     attrs.opacity = 1;
     attrs.visible = true;
     attrs.image = null;
@@ -272,8 +272,13 @@ export class IconElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Size", "size", {
         acceptKinds: [Specification.DataKind.Numerical],
         hints: { rangeNumber: [0, 100] },
-        defaultValue: 60,
-        numberOptions: { showSlider: true, minimum: 0, sliderRange: [0, 500] }
+        defaultValue: 400,
+        numberOptions: {
+          showSlider: true,
+          minimum: 0,
+          sliderRange: [0, 3600],
+          sliderFunction: "sqrt"
+        }
       })
     ];
 
