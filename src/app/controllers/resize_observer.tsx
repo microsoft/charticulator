@@ -42,7 +42,7 @@ class ElementInfo {
 }
 
 export class ResizeListeners {
-  private timer: number;
+  private timer: any;
   private entries = new Map<Element, ElementInfo>();
 
   constructor() {

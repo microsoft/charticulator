@@ -195,8 +195,8 @@ class TextOnPath extends React.PureComponent<{
               this.props.align == "start"
                 ? "0%"
                 : this.props.align == "middle"
-                  ? "50%"
-                  : "100%"
+                ? "50%"
+                : "100%"
             }
           >
             {this.props.text}

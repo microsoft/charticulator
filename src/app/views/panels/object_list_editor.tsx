@@ -142,57 +142,62 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
             this.dispatch(new Actions.ReorderGlyphMark(glyph, a + 1, b + 1));
           }}
         >
-          {glyph.marks.filter(x => x.classID != "mark.anchor").map(mark => {
-            return (
-              <div
-                className={classNames("el-object-item", [
-                  "is-active",
-                  sel instanceof MarkSelection &&
-                    sel.glyph == glyph &&
-                    sel.mark == mark
-                ])}
-                key={mark._id}
-                onClick={() => {
-                  this.dispatch(new Actions.SelectMark(null, glyph, mark));
-                }}
-              >
-                <SVGImageIcon
-                  url={R.getSVGIcon(
-                    Prototypes.ObjectClasses.GetMetadata(mark.classID).iconPath
-                  )}
-                />
-                <span className="el-text">{mark.properties.name}</span>
-                <Button
-                  icon={
-                    mark.properties.visible
-                      ? "general/eye"
-                      : "general/eye-faded"
-                  }
-                  title="Toggle visibility"
-                  active={false}
+          {glyph.marks
+            .filter(x => x.classID != "mark.anchor")
+            .map(mark => {
+              return (
+                <div
+                  className={classNames("el-object-item", [
+                    "is-active",
+                    sel instanceof MarkSelection &&
+                      sel.glyph == glyph &&
+                      sel.mark == mark
+                  ])}
+                  key={mark._id}
                   onClick={() => {
-                    this.dispatch(
-                      new Actions.SetObjectProperty(
-                        mark,
-                        "visible",
-                        null,
-                        !mark.properties.visible,
-                        true
-                      )
-                    );
+                    this.dispatch(new Actions.SelectMark(null, glyph, mark));
                   }}
-                />
-                <Button
-                  icon="general/eraser"
-                  active={false}
-                  title="Remove"
-                  onClick={() => {
-                    this.dispatch(new Actions.RemoveMarkFromGlyph(glyph, mark));
-                  }}
-                />
-              </div>
-            );
-          })}
+                >
+                  <SVGImageIcon
+                    url={R.getSVGIcon(
+                      Prototypes.ObjectClasses.GetMetadata(mark.classID)
+                        .iconPath
+                    )}
+                  />
+                  <span className="el-text">{mark.properties.name}</span>
+                  <Button
+                    icon={
+                      mark.properties.visible
+                        ? "general/eye"
+                        : "general/eye-faded"
+                    }
+                    title="Toggle visibility"
+                    active={false}
+                    onClick={() => {
+                      this.dispatch(
+                        new Actions.SetObjectProperty(
+                          mark,
+                          "visible",
+                          null,
+                          !mark.properties.visible,
+                          true
+                        )
+                      );
+                    }}
+                  />
+                  <Button
+                    icon="general/eraser"
+                    active={false}
+                    title="Remove"
+                    onClick={() => {
+                      this.dispatch(
+                        new Actions.RemoveMarkFromGlyph(glyph, mark)
+                      );
+                    }}
+                  />
+                </div>
+              );
+            })}
         </ReorderListView>
       </div>
     );

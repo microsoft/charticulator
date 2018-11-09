@@ -1005,8 +1005,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-            ? this.props.draggingHint()
-            : this.props.children}
+          ? this.props.draggingHint()
+          : this.props.children}
       </div>
     );
   }
