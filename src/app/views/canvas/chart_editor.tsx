@@ -225,7 +225,7 @@ export class ChartEditorView
     );
 
     // We display the working icon after 200ms.
-    let newStateTimer: NodeJS.Timer = null;
+    let newStateTimer: any = null;
     this.tokens.push(
       this.props.store.addListener(AppStore.EVENT_SOLVER_STATUS, () => {
         const newState = this.props.store.solverStatus.solving;
