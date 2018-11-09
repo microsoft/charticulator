@@ -331,6 +331,7 @@ export class IconElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
+      manager.sectionHeader("Style"),
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
