@@ -36,13 +36,12 @@ export class TableView extends React.Component<TableViewProps, {}> {
           ))}
           {table.rows.length > maxRows ? (
             <tr>
-              {table.columns.map(
-                (c, i) =>
-                  i == 0 ? (
-                    <td key={i}>({table.rows.length - maxRows} more rows)</td>
-                  ) : (
-                    <td key={i}>...</td>
-                  )
+              {table.columns.map((c, i) =>
+                i == 0 ? (
+                  <td key={i}>({table.rows.length - maxRows} more rows)</td>
+                ) : (
+                  <td key={i}>...</td>
+                )
               )}
             </tr>
           ) : null}

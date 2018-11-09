@@ -182,8 +182,8 @@ export function inferAndConvertColumn(
         // Return as ordinal column with month ordering, use normalized month names
         return {
           type: DataType.String,
-          values: convertedValues.map(
-            (x: string) => (x != null ? testAndNormalizeMonthName(x) : null)
+          values: convertedValues.map((x: string) =>
+            x != null ? testAndNormalizeMonthName(x) : null
           ),
           metadata: {
             kind: DataKind.Ordinal,
