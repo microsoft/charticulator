@@ -128,28 +128,6 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   // Get DropZones given current state
   public getDropZones(): DropZones.Description[] {
-    const props = this.object.properties;
-    const attrs = this.state.attributes;
-    const metrics = Graphics.TextMeasurer.Measure(
-      attrs.text,
-      attrs.fontFamily,
-      attrs.fontSize
-    );
-    const [dx, dy] = Graphics.TextMeasurer.ComputeTextPosition(
-      0,
-      0,
-      metrics,
-      props.alignment.x,
-      props.alignment.y,
-      props.alignment.xMargin,
-      props.alignment.yMargin
-    );
-    const cx = dx + metrics.width / 2;
-    const cy = dy + metrics.middle;
-
-    const rotation = this.object.properties.rotation;
-    const cos = Math.cos((rotation / 180) * Math.PI);
-    const sin = Math.sin((rotation / 180) * Math.PI);
     return [
       {
         type: "rectangle",
@@ -163,15 +141,6 @@ export class TextElementClass extends EmphasizableMarkClass<
         }
       } as DropZones.Rectangle
     ];
-    // return [
-    //     <DropZones.Line>{
-    //         type: "line",
-    //         p1: { x: x - cx, y: y + cy + metrics.ideographicBaseline },
-    //         p2: { x: x - cx + cwidth, y: y + cy + metrics.ideographicBaseline },
-    //         title: "text",
-    //         dropAction: { scaleInference: { attribute: "text", attributeType: "string" } },
-    //     }
-    // ];
   }
   // Get bounding rectangle given current state
   public getHandles(): Handles.Description[] {
@@ -189,12 +158,6 @@ export class TextElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "y", attribute: "y" }
         ]
       } as Handles.Point,
-      // <Handles.TextInput>{
-      //     type: "text-input",
-      //     cx: bbox.cx, cy: bbox.cy, width: bbox.width, height: bbox.height, rotation: bbox.rotation,
-      //     text: attrs.text,
-      //     attribute: "text"
-      // },
       {
         type: "text-alignment",
         actions: [

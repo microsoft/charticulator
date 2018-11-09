@@ -168,14 +168,10 @@ export class IconElementClass extends EmphasizableMarkClass<
 
   // Get DropZones given current state
   public getDropZones(): DropZones.Description[] {
-    const attrs = this.state.attributes;
-    const { x, y, size } = attrs;
-    const r = Math.sqrt(size);
     return [
       {
-        type: "line",
-        p1: { x: x + r, y },
-        p2: { x: x - r, y },
+        type: "rectangle",
+        ...this.getBoundingRectangle(),
         title: "size",
         dropAction: {
           scaleInference: {
@@ -183,7 +179,7 @@ export class IconElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Number
           }
         }
-      } as DropZones.Line
+      } as DropZones.Rectangle
     ];
   }
 
