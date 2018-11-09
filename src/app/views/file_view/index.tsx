@@ -6,7 +6,7 @@ import * as R from "../../resources";
 import { AbstractBackend } from "../../backend/abstract";
 import { ErrorBoundary, SVGImageIcon } from "../../components";
 import { AppStore } from "../../stores";
-import { classNames } from "../../utils";
+import { classNames, stringToDataURL } from "../../utils";
 import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
@@ -26,7 +26,7 @@ export class CurrentChartView extends React.PureComponent<
   public async renderImage() {
     const svg = await this.props.store.renderLocalSVG();
     this.setState({
-      svgDataURL: "data:image/svg+xml;base64," + btoa(svg)
+      svgDataURL: stringToDataURL("image/svg+xml", svg)
     });
   }
   public render() {

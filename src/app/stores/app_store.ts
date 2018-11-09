@@ -19,7 +19,11 @@ import { Actions } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
-import { renderDataURLToPNG } from "../utils";
+import {
+  renderDataURLToPNG,
+  b64EncodeUnicode,
+  stringToDataURL
+} from "../utils";
 import {
   renderChartToLocalString,
   renderChartToString
@@ -142,7 +146,7 @@ export class AppStore extends BaseStore {
           getFileName: (props: { name: string }) => `${props.name}.json`,
           generate: () => {
             return new Promise<string>((resolve, reject) => {
-              const r = btoa(JSON.stringify(template, null, 2));
+              const r = b64EncodeUnicode(JSON.stringify(template, null, 2));
               resolve(r);
             });
           }
@@ -223,8 +227,7 @@ export class AppStore extends BaseStore {
     if (this.currentChartID != null) {
       const chart = await this.backend.get(this.currentChartID);
       chart.data.state = this.saveState();
-      const svg =
-        "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+      const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
       const png = await renderDataURLToPNG(svg, {
         mode: "thumbnail",
         thumbnail: [200, 150]
@@ -236,8 +239,7 @@ export class AppStore extends BaseStore {
 
   public async backendSaveChartAs(name: string) {
     const state = this.saveState();
-    const svg =
-      "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+    const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
     const png = await renderDataURLToPNG(svg, {
       mode: "thumbnail",
       thumbnail: [200, 150]
