@@ -13,6 +13,7 @@ import { RectElementClass } from "./rect";
 import { SymbolElementClass } from "./symbol";
 import { TextElementClass } from "./text";
 import { IconElementClass } from "./icon";
+import { TextboxElementClass } from "./textbox";
 
 export function registerClasses() {
   ObjectClasses.Register(AnchorElement);
@@ -20,6 +21,7 @@ export function registerClasses() {
   ObjectClasses.Register(LineElementClass);
   ObjectClasses.Register(SymbolElementClass);
   ObjectClasses.Register(TextElementClass);
+  ObjectClasses.Register(TextboxElementClass);
   ObjectClasses.Register(ImageElementClass);
   ObjectClasses.Register(IconElementClass);
   ObjectClasses.Register(NestedChartElementClass);

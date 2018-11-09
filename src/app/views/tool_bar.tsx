@@ -56,8 +56,20 @@ export class Toolbar extends ContextedComponent<{}, {}> {
         />
         <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
         <ObjectButton classID="mark.line" title="Line" icon="mark/line" />
-        <ObjectButton classID="mark.text" title="Text" icon="mark/text" />
-        {/* <ObjectButton classID="mark.textbox" title="Text" icon="mark/textbox" currentTool={this.props.store.currentTool} /> */}
+        <MultiObjectButton
+          tools={[
+            {
+              classID: "mark.text",
+              title: "Text",
+              icon: "mark/text"
+            },
+            {
+              classID: "mark.textbox",
+              title: "Textbox",
+              icon: "mark/textbox"
+            }
+          ]}
+        />
         <MultiObjectButton
           tools={[
             {
@@ -72,7 +84,6 @@ export class Toolbar extends ContextedComponent<{}, {}> {
             }
           ]}
         />
-        {/* <ObjectButton classID="mark.image" title="Image" icon="mark/image" /> */}
         <span className="chartaccent__toolbar-separator" />
         <ObjectButton
           classID="mark.data-axis"
@@ -127,7 +138,6 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="plot/line"
           noDragging={true}
         />
-        {/* <ScaffoldButton type="curve" title="Curve" icon="plot/curve" currentTool={this.props.store.currentTool} /> */}
         <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Scaffolds</span>
         <ScaffoldButton
