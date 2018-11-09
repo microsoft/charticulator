@@ -21,6 +21,8 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     description: string;
     tables: Array<{ name: string; url: string; type: string }>;
   }>;
+  WorkerURL: string;
+  ContainerURL: string;
 }
 
 export function getConfig(): CharticulatorAppConfig {
