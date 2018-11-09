@@ -5,32 +5,86 @@ import * as FileSaver from "file-saver";
 import { saveAs } from "file-saver";
 import { Prototypes } from "../../../core";
 import { Actions } from "../../actions";
-import { renderDataURLToPNG } from "../../utils";
+import { renderDataURLToPNG, stringToDataURL } from "../../utils";
 import { AppStore } from "../app_store";
 import { Migrator } from "../migrator";
 import { ActionHandlerRegistry } from "./registry";
+import { getConfig } from "../../config";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
 export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.Export, function(action) {
     (async () => {
+      // Export as vector graphics
       if (action.type == "svg") {
         const svg = await this.renderLocalSVG();
         const blob = new Blob([svg], { type: "image/svg;charset=utf-8" });
         saveAs(blob, "charticulator.svg", true);
       }
-      if (action.type == "png") {
-        const svgDataURL =
-          "data:image/svg+xml;base64," + btoa(await this.renderLocalSVG());
+      // Export as bitmaps
+      if (action.type == "png" || action.type == "jpeg") {
+        const svgDataURL = stringToDataURL(
+          "image/svg+xml",
+          await this.renderLocalSVG()
+        );
         renderDataURLToPNG(svgDataURL, {
           mode: "scale",
           scale: action.options.scale || 2,
           background: "#ffffff"
         }).then(png => {
           png.toBlob(blob => {
-            saveAs(blob, "charticulator.png", true);
-          }, "image/png");
+            saveAs(
+              blob,
+              "charticulator." + (action.type == "png" ? "png" : "jpg"),
+              true
+            );
+          }, "image/" + action.type);
         });
+      }
+      // Export as interactive HTML
+      if (action.type == "html") {
+        const containerScriptText = await (await fetch(
+          getConfig().ContainerURL
+        )).text();
+        const htmlString = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8" />
+            <title>Charticulator HTML Export</title>
+            <script type="text/javascript">${containerScriptText}</script>
+            <style type="text/css">
+              #container {
+                display: block;
+                position: absolute;
+                left: 0; right: 0; top: 0; bottom: 0;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="container"></div>
+            <script type="text/javascript">
+              CharticulatorContainer.initialize().then(function() {
+                const chart = ${JSON.stringify(this.chart)};
+                const chartState = ${JSON.stringify(this.chartState)};
+                const dataset = ${JSON.stringify(this.dataset)};
+                const container = new CharticulatorContainer.ChartContainer({ chart: chart }, dataset);
+                const width = document.getElementById("container").getBoundingClientRect().width;
+                const height = document.getElementById("container").getBoundingClientRect().height;
+                container.mount("container", width, height);
+                window.addEventListener("resize", function() {
+                  container.resize(
+                    document.getElementById("container").getBoundingClientRect().width,
+                    document.getElementById("container").getBoundingClientRect().height
+                  );
+                });
+              });
+            </script>
+          </body>
+          </html>
+        `;
+        const blob = new Blob([htmlString]);
+        saveAs(blob, "charticulator.html", true);
       }
     })();
   });

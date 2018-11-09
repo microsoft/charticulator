@@ -12,6 +12,109 @@ import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
 
+export class InputGroup extends React.Component<
+  {
+    value: string;
+    label: string;
+    onChange: (newValue: string) => void;
+  },
+  {}
+> {
+  private ref: HTMLInputElement;
+
+  public render() {
+    return (
+      <div className="form-group">
+        <input
+          ref={e => (this.ref = e)}
+          type="text"
+          required={true}
+          value={this.props.value || ""}
+          onChange={e => {
+            this.props.onChange(this.ref.value);
+          }}
+        />
+        <label>{this.props.label}</label>
+        <i className="bar" />
+      </div>
+    );
+  }
+}
+
+export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
+  public state = { dpi: "144" };
+  public getScaler() {
+    let dpi = +this.state.dpi;
+    if (dpi < 1 || dpi != dpi) {
+      dpi = 144;
+    }
+    dpi = Math.max(Math.min(dpi, 1200), 36);
+    return dpi / 72;
+  }
+  public render() {
+    return (
+      <div className="el-horizontal-layout-item is-fix-width">
+        <CurrentChartView store={this.store} />
+        <InputGroup
+          label="DPI (for PNG/JPEG)"
+          value={this.state.dpi}
+          onChange={newValue => {
+            this.setState({
+              dpi: newValue
+            });
+          }}
+        />
+        <div className="buttons">
+          <ButtonRaised
+            text="PNG"
+            url={R.getSVGIcon("toolbar/export")}
+            onClick={() => {
+              this.dispatch(
+                new Actions.Export("png", { scale: this.getScaler() })
+              );
+            }}
+          />{" "}
+          <ButtonRaised
+            text="JPEG"
+            url={R.getSVGIcon("toolbar/export")}
+            onClick={() => {
+              this.dispatch(
+                new Actions.Export("jpeg", { scale: this.getScaler() })
+              );
+            }}
+          />{" "}
+          <ButtonRaised
+            text="SVG"
+            url={R.getSVGIcon("toolbar/export")}
+            onClick={() => {
+              this.dispatch(new Actions.Export("svg"));
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+}
+
+export class ExportHTMLView extends ContextedComponent<{}, {}> {
+  public render() {
+    return (
+      <div className="el-horizontal-layout-item is-fix-width">
+        <CurrentChartView store={this.store} />
+        <div className="buttons">
+          <ButtonRaised
+            text="HTML"
+            url={R.getSVGIcon("toolbar/export")}
+            onClick={() => {
+              this.dispatch(new Actions.Export("html"));
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+}
+
 export interface FileViewExportState {
   exportMode: string;
 }
@@ -26,29 +129,15 @@ export class FileViewExport extends ContextedComponent<
     exportMode: "image"
   };
 
-  public renderExportImage() {
-    return (
-      <div className="el-horizontal-layout-item is-fix-width">
-        <CurrentChartView store={this.store} />
-        <div className="buttons">
-          <ButtonRaised
-            text="PNG"
-            url={R.getSVGIcon("toolbar/export")}
-            onClick={() => {
-              this.dispatch(new Actions.Export("png"));
-            }}
-          />{" "}
-          <ButtonRaised
-            text="SVG"
-            url={R.getSVGIcon("toolbar/export")}
-            onClick={() => {
-              this.dispatch(new Actions.Export("svg"));
-            }}
-          />
-        </div>
-      </div>
-    );
+  public renderExportView(mode: "image" | "html") {
+    if (mode == "image") {
+      return <ExportImageView />;
+    }
+    if (mode == "html") {
+      return <ExportHTMLView />;
+    }
   }
+
   public renderExportTemplate() {
     return (
       <div className="el-horizontal-layout-item is-fix-width">
@@ -74,6 +163,16 @@ export class FileViewExport extends ContextedComponent<
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">Export as Image</span>
               </div>
+              <div
+                className={classNames("el-item", [
+                  "is-active",
+                  this.state.exportMode == "html"
+                ])}
+                onClick={() => this.setState({ exportMode: "html" })}
+              >
+                <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
+                <span className="el-text">Export as HTML</span>
+              </div>
               {this.store.listExportTemplateTargets().map(name => (
                 <div
                   key={name}
@@ -90,8 +189,8 @@ export class FileViewExport extends ContextedComponent<
             </div>
           </div>
           <ErrorBoundary maxWidth={300}>
-            {this.state.exportMode == "image"
-              ? this.renderExportImage()
+            {this.state.exportMode == "image" || this.state.exportMode == "html"
+              ? this.renderExportView(this.state.exportMode)
               : this.renderExportTemplate()}
           </ErrorBoundary>
         </div>

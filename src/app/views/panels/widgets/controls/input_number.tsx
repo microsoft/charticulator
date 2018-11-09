@@ -18,6 +18,7 @@ export interface InputNumberProps {
 
   showSlider?: boolean;
   sliderRange?: [number, number];
+  sliderFunction?: "linear" | "sqrt";
 
   showUpdown?: boolean;
   updownTick?: number;
@@ -100,6 +101,7 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
         min={sliderMin}
         max={sliderMax}
         defaultValue={this.props.defaultValue}
+        mapping={this.props.sliderFunction}
         onChange={(newValue, isFinished) => {
           this.textInput.value = this.formatNumber(newValue);
           if (isFinished) {

@@ -172,6 +172,11 @@ let COMMANDS = {
         const digest = digestFile(path.join("dist", doc.WorkerURL));
         doc.WorkerURL += "?sha256=" + digest.toString("hex");
       }
+      doc.ContainerURL = "./scripts/container.bundle.js";
+      if (isProd) {
+        const digest = digestFile(path.join("dist", doc.ContainerURL));
+        doc.ContainerURL += "?sha256=" + digest.toString("hex");
+      }
     };
     await yamlToJavaScript(
       "config.yml",
