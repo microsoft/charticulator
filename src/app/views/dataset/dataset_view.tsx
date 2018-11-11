@@ -118,20 +118,6 @@ export class ColumnsView extends React.Component<
                 };
                 reader.readAsText(file);
               });
-              // globals.popupController.popupAt(
-              //   context => (
-              //     <PopupView context={context}>
-              //       <div className="charticulator__dataset-view-detail">
-              //         <h2>{table.name}</h2>
-              //         <p>
-              //           {table.rows.length} rows, {table.columns.length} columns
-              //         </p>
-              //         <TableView table={table} />
-              //       </div>
-              //     </PopupView>
-              //   ),
-              //   { anchor, alignX: "outer", alignY: "start-inner" }
-              // );
             }}
           />
           <Button
