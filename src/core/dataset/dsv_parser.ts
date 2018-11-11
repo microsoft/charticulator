@@ -87,6 +87,7 @@ export function parseDataset(
 
     return {
       name: fileName,
+      displayName: fileName,
       columns,
       rows: outRows
     };

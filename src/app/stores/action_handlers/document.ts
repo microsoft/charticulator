@@ -188,6 +188,24 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
+  REG.add(Actions.ReplaceDataset, function(action) {
+    this.saveHistory();
+
+    this.currentChartID = null;
+    this.currentSelection = null;
+    this.dataset = action.dataset;
+
+    this.chartManager = new Prototypes.ChartStateManager(
+      this.chart,
+      this.dataset
+    );
+    this.chartState = this.chartManager.chartState;
+
+    this.solveConstraintsAndUpdateGraphics();
+    this.emit(AppStore.EVENT_DATASET);
+    this.emit(AppStore.EVENT_SELECTION);
+  });
+
   REG.add(Actions.Undo, function(action) {
     const state = this.historyManager.undo(this.saveDecoupledState());
     if (state) {

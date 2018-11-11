@@ -43,6 +43,8 @@ export interface Row {
 export interface Table {
   /** Table name */
   name: string;
+  /** The name to be shown to the user */
+  displayName: string;
   /** Columns in the table */
   columns: Column[];
   /** Rows in the table */
