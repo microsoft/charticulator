@@ -164,6 +164,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       tables: [
         {
           name: "MainTable",
+          displayName: "MainTable",
           columns: table.columns.map(x => {
             return {
               name: columnNameMap[x.name],

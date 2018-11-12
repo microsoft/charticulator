@@ -45,6 +45,7 @@ function makeDefaultDataset(): Dataset.Dataset {
     tables: [
       {
         name: "Temperature",
+        displayName: "Temperature",
         columns: [
           {
             name: "Month",

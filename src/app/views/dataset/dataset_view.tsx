@@ -2,13 +2,17 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { Dataset, Expression } from "../../../core";
-import { DragData } from "../../actions";
+import { DragData, Actions } from "../../actions";
 import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
 import { PopupView } from "../../controllers";
 import * as globals from "../../globals";
 import * as R from "../../resources";
 import { AppStore } from "../../stores";
-import { classNames } from "../../utils";
+import {
+  classNames,
+  showOpenFileDialog,
+  getFileNameWithoutExtension
+} from "../../utils";
 import { Button } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
@@ -83,14 +87,49 @@ export class ColumnsView extends React.Component<
             {this.props.isLinkTable ? "Link Data" : "Columns"}
           </span>
           <Button
+            icon="general/replace"
+            title="Replace data with CSV file"
+            active={false}
+            onClick={() => {
+              showOpenFileDialog(["csv"]).then(file => {
+                const loader = new Dataset.DatasetLoader();
+                const reader = new FileReader();
+                reader.onload = () => {
+                  const newTable = loader.loadCSVFromContents(
+                    table.name,
+                    reader.result as string
+                  );
+                  newTable.displayName = getFileNameWithoutExtension(file.name);
+                  newTable.name = table.name;
+                  const store = this.props.store;
+                  const newDataset: Dataset.Dataset = {
+                    name: store.dataset.name,
+                    tables: store.dataset.tables.map(x => {
+                      if (x.name == table.name) {
+                        return newTable;
+                      } else {
+                        return x;
+                      }
+                    })
+                  };
+                  store.dispatcher.dispatch(
+                    new Actions.ReplaceDataset(newDataset)
+                  );
+                };
+                reader.readAsText(file);
+              });
+            }}
+          />
+          <Button
             icon="general/more-horizontal"
+            title="Show data values"
             active={false}
             onClick={() => {
               globals.popupController.popupAt(
                 context => (
                   <PopupView context={context}>
                     <div className="charticulator__dataset-view-detail">
-                      <h2>{table.name}</h2>
+                      <h2>{table.displayName || table.name}</h2>
                       <p>
                         {table.rows.length} rows, {table.columns.length} columns
                       </p>
@@ -103,7 +142,7 @@ export class ColumnsView extends React.Component<
             }}
           />
         </h2>
-        <p className="el-details">{table.name}</p>
+        <p className="el-details">{table.displayName || table.name}</p>
         {table.columns.map((c, idx) => (
           <ColumnView
             key={`t${idx}`}

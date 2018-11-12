@@ -128,6 +128,16 @@ export class ImportChartAndDataset extends Action {
   }
 }
 
+export class ReplaceDataset extends Action {
+  constructor(public dataset: Dataset.Dataset) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ReplaceDataset", datasetName: this.dataset.name };
+  }
+}
+
 // Glyph editing actions
 
 /** Add an empty glyph to the chart */
