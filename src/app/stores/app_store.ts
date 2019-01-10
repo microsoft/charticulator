@@ -143,7 +143,7 @@ export class AppStore extends BaseStore {
               default: "template"
             }
           ],
-          getFileName: (props: { name: string }) => `${props.name}.json`,
+          getFileName: (props: { name: string }) => `${props.name}.tmplt`,
           generate: () => {
             return new Promise<string>((resolve, reject) => {
               const r = b64EncodeUnicode(JSON.stringify(template, null, 2));

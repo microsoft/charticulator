@@ -127,6 +127,9 @@ export function showOpenFileDialog(accept?: string[]): Promise<File> {
   return new Promise<File>((resolve, reject) => {
     const inputElement = document.createElement("input");
     inputElement.type = "file";
+    if (accept != null) {
+      inputElement.accept = accept.map(x => "." + x).join(",");
+    }
     inputElement.onchange = e => {
       if (inputElement.files.length == 1) {
         resolve(inputElement.files[0]);
