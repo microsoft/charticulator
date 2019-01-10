@@ -822,7 +822,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           <ButtonRaised
             text="Import Template..."
             onClick={async () => {
-              const file = await showOpenFileDialog(["json"]);
+              const file = await showOpenFileDialog(["tmplt"]);
               const str = await readFileAsString(file);
               const data = JSON.parse(str);
               const template = new ChartTemplate(data);

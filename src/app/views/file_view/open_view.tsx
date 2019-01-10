@@ -14,6 +14,7 @@ import {
 } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Actions } from "../../actions";
+import { showOpenFileDialog, readFileAsString } from "../../utils";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -148,7 +149,7 @@ export class FileViewOpen extends ContextedComponent<
                                 chart.metadata.name.replace(
                                   /[^0-9a-zA-Z\ \.\-\_]+/g,
                                   "_"
-                                ) + ".json"
+                                ) + ".chart"
                               );
                             });
                           }}
@@ -169,6 +170,20 @@ export class FileViewOpen extends ContextedComponent<
     return (
       <section className="charticulator__file-view-content is-fix-width">
         <h1>Open</h1>
+        <div style={{ marginBottom: "12px" }}>
+          <ButtonRaised
+            url={R.getSVGIcon("toolbar/open")}
+            text="Open Chart"
+            onClick={async () => {
+              const file = await showOpenFileDialog(["chart"]);
+              const str = await readFileAsString(file);
+              const data = JSON.parse(str);
+              this.dispatch(new Actions.Load(data.state));
+              this.props.onClose();
+            }}
+          />
+        </div>
+
         {this.renderChartList()}
       </section>
     );
