@@ -25,6 +25,7 @@ export interface AxisDataBinding extends AttributeMap {
   enablePrePostGap?: boolean;
 
   tickDataExpression?: Expression;
+  tickFormat?: string;
 
   style?: AxisRenderingStyle;
 }

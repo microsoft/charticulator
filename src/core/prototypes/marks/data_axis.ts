@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-// This implements Data-Driven Guides (straight line guide)
+
+// This implements Data-Driven Guides (straight line guide).
 
 import { MarkClass } from "./mark";
 import { Point } from "../../common";
