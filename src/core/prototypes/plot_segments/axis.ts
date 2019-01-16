@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import { deepClone, fillDefaults, Scale } from "../../common";
 import {
   CoordinateSystem,
@@ -12,6 +13,7 @@ import {
 import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
 import { Controls } from "../common";
+import { format } from "d3-format";
 
 export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -72,7 +74,8 @@ export class AxisRenderer {
               data.domainMin,
               data.domainMax,
               rangeMin,
-              rangeMax
+              rangeMax,
+              data.tickFormat
             );
           }
           if (data.numericalMode == "logarithmic") {
@@ -80,7 +83,8 @@ export class AxisRenderer {
               data.domainMin,
               data.domainMax,
               rangeMin,
-              rangeMax
+              rangeMax,
+              data.tickFormat
             );
           }
           if (data.numericalMode == "temporal") {
@@ -127,20 +131,40 @@ export class AxisRenderer {
     }
   }
 
+  public getTickFormat(
+    tickFormat: string,
+    defaultFormat: (d: number) => string
+  ) {
+    if (tickFormat == null || tickFormat == "") {
+      return defaultFormat;
+    } else {
+      // {.0%}
+      return (value: number) => {
+        return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
+          return format(spec)(value);
+        });
+      };
+    }
+  }
+
   public setLinearScale(
     domainMin: number,
     domainMax: number,
     rangeMin: number,
-    rangeMax: number
+    rangeMax: number,
+    tickFormat: string
   ) {
     const scale = new Scale.LinearScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
     const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const tickFormat = scale.tickFormat(
+    const defaultFormat = scale.tickFormat(
       Math.round(Math.min(10, rangeLength / 40))
     );
+
+    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
       const tx =
@@ -149,7 +173,7 @@ export class AxisRenderer {
         rangeMin;
       r.push({
         position: tx,
-        label: tickFormat(ticks[i])
+        label: resolvedFormat(ticks[i])
       });
     }
     this.valueToPosition = value =>
@@ -165,16 +189,20 @@ export class AxisRenderer {
     domainMin: number,
     domainMax: number,
     rangeMin: number,
-    rangeMax: number
+    rangeMax: number,
+    tickFormat: string
   ) {
     const scale = new Scale.LogarithmicScale();
     scale.domainMin = domainMin;
     scale.domainMax = domainMax;
     const rangeLength = Math.abs(rangeMax - rangeMin);
     const ticks = scale.ticks(Math.round(Math.min(10, rangeLength / 40)));
-    const tickFormat = scale.tickFormat(
+    const defaultFormat = scale.tickFormat(
       Math.round(Math.min(10, rangeLength / 40))
     );
+
+    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
       const tx =
@@ -184,7 +212,7 @@ export class AxisRenderer {
         rangeMin;
       r.push({
         position: tx,
-        label: tickFormat(ticks[i])
+        label: resolvedFormat(ticks[i])
       });
     }
     this.valueToPosition = value =>
@@ -688,12 +716,17 @@ export function buildAxisWidgets(
               dropzoneOptions
             )
           );
-          widgets.push(
-            m.row(
-              "Data",
-              m.inputExpression({ property: axisProperty, field: "expression" })
-            )
-          );
+          if (axisName != "Data Axis") {
+            widgets.push(
+              m.row(
+                "Data",
+                m.inputExpression({
+                  property: axisProperty,
+                  field: "expression"
+                })
+              )
+            );
+          }
           widgets.push(
             m.row(
               "Range",
@@ -723,11 +756,23 @@ export function buildAxisWidgets(
           }
           widgets.push(
             m.row(
-              "TickData",
+              "Tick Data",
               m.inputExpression({
                 property: axisProperty,
                 field: "tickDataExpression"
               })
+            )
+          );
+          widgets.push(
+            m.row(
+              "Tick Format",
+              m.inputText(
+                {
+                  property: axisProperty,
+                  field: "tickFormat"
+                },
+                "(auto)"
+              )
             )
           );
           widgets.push(makeAppearance());

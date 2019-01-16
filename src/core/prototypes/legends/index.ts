@@ -343,7 +343,7 @@ export class NumericalColorLegendClass extends LegendClass {
     const domainMax = scale[0].properties.domainMax as number;
 
     const axisRenderer = new AxisRenderer();
-    axisRenderer.setLinearScale(domainMin, domainMax, 0, height);
+    axisRenderer.setLinearScale(domainMin, domainMax, 0, height, null);
     const g = Graphics.makeGroup([]);
     g.elements.push(
       axisRenderer.renderLine(marginLeft + gradientWidth + 2, 0, 90, 1)
@@ -521,7 +521,8 @@ export class NumericalNumberLegendClass extends ChartElementClass {
       domainMin,
       domainMin + (length - rangeMin) / scaling,
       rangeMin,
-      length
+      length,
+      null
     );
     renderer.setStyle(this.object.properties.axis.style);
 

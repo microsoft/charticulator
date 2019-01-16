@@ -152,10 +152,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public inputText(property: Prototypes.Controls.Property) {
+  public inputText(
+    property: Prototypes.Controls.Property,
+    placeholder?: string
+  ) {
     return (
       <InputText
         defaultValue={this.getPropertyValue(property) as string}
+        placeholder={placeholder}
         onEnter={value => {
           this.emitSetProperty(property, value);
           return true;
