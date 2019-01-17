@@ -37,7 +37,7 @@ start_text
     { return new Expression.TextExpression(parts); }
 
 text_part
-  = "${" expr:expression "}{" sp format:[0-9a-z\.]+ sp "}"
+  = "${" expr:expression "}{" sp format:[^\}]+ sp "}"
     { return { expression: expr, format: flatten(format) }; }
   / "${" expr:expression "}"
     { return { expression: expr }; }
