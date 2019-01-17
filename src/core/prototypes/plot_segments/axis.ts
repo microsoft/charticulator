@@ -23,7 +23,9 @@ export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickSize: 5
 };
 
-function fillDefaultAxisStyle(style?: Specification.Types.AxisRenderingStyle) {
+function fillDefaultAxisStyle(
+  style?: Partial<Specification.Types.AxisRenderingStyle>
+) {
   return fillDefaults(style, defaultAxisStyle);
 }
 
@@ -42,7 +44,7 @@ export class AxisRenderer {
 
   private static textMeasurer = new TextMeasurer();
 
-  public setStyle(style?: Specification.Types.AxisRenderingStyle) {
+  public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
       this.style = defaultAxisStyle;
     } else {
