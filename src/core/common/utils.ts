@@ -194,7 +194,7 @@ export function getField<ObjectType, ValueType>(
 }
 
 /** Fill default values into an object */
-export function fillDefaults<T extends {}>(obj: T, defaults: T): T {
+export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
   if (obj == null) {
     obj = {} as T;
   }
@@ -205,7 +205,7 @@ export function fillDefaults<T extends {}>(obj: T, defaults: T): T {
       }
     }
   }
-  return obj;
+  return obj as T;
 }
 
 /** Find the index of the first element that satisfies the predicate, return -1 if not found */

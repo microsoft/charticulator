@@ -189,7 +189,7 @@ export abstract class LegendClass extends ChartElementClass {
         )
       ),
       manager.sectionHeader("Labels"),
-      manager.row("Font", manager.inputText({ property: "fontFamily" })),
+      manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
       manager.row(
         "Size",
         manager.inputNumber(
@@ -326,8 +326,6 @@ export class NumericalColorLegendClass extends LegendClass {
   }
 
   public getGraphics(): Graphics.Element {
-    const fontFamily = this.object.properties.fontFamily;
-    const fontSize = this.object.properties.fontSize;
     const height = this.getLegendSize()[1];
     const marginLeft = 5;
     const gradientWidth = 12;
@@ -344,6 +342,12 @@ export class NumericalColorLegendClass extends LegendClass {
 
     const axisRenderer = new AxisRenderer();
     axisRenderer.setLinearScale(domainMin, domainMax, 0, height, null);
+    axisRenderer.setStyle({
+      tickColor: this.object.properties.textColor,
+      fontSize: this.object.properties.fontSize,
+      fontFamily: this.object.properties.fontFamily,
+      lineColor: this.object.properties.textColor
+    });
     const g = Graphics.makeGroup([]);
     g.elements.push(
       axisRenderer.renderLine(marginLeft + gradientWidth + 2, 0, 90, 1)
@@ -386,18 +390,10 @@ export interface NumericalNumberLegendProperties
   };
 }
 
-export interface NumericalNumberLegendState extends Specification.ObjectState {
-  attributes: NumericalNumberLegendAttributes;
-}
-
-export interface NumericalNumberLegendObject extends Specification.Object {
-  properties: NumericalNumberLegendProperties;
-}
-
-export class NumericalNumberLegendClass extends ChartElementClass {
-  public readonly object: NumericalNumberLegendObject;
-  public readonly state: NumericalNumberLegendState;
-
+export class NumericalNumberLegendClass extends ChartElementClass<
+  NumericalNumberLegendProperties,
+  NumericalNumberLegendAttributes
+> {
   public static classID: string = "legend.numerical-number";
   public static type: string = "legend";
 
