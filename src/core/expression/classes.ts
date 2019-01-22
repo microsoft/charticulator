@@ -146,12 +146,12 @@ export class TextExpression {
           return { string: part.string };
         } else if (part.expression) {
           if (part.format) {
-            return { expression: part.expression.replace(r) };
-          } else {
             return {
               expression: part.expression.replace(r),
               format: part.format
             };
+          } else {
+            return { expression: part.expression.replace(r) };
           }
         }
       })
