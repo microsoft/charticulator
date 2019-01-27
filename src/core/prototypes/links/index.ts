@@ -823,45 +823,52 @@ export class LayoutsLinksClass extends LinksClass {
     const glyphs = layouts.map(layout => getById(chart.glyphs, layout.glyph));
     const anchor1 = this.resolveLinkAnchorPoints(props.anchor1, glyphs[0]);
     const anchor2 = this.resolveLinkAnchorPoints(props.anchor2, glyphs[1]);
-    const rowIndicesMap = new Map<string, number>();
-    for (let i = 0; i < layoutStates[0].dataRowIndices.length; i++) {
-      rowIndicesMap.set(layoutStates[0].dataRowIndices[i].join(","), i);
-    }
-    const table = this.parent.dataflow.getTable(layouts[0].table);
-    const anchors: AnchorAttributes[][][] = [];
-    for (let i1 = 0; i1 < layoutStates[1].dataRowIndices.length; i1++) {
-      const rowIndex = layoutStates[1].dataRowIndices[i1];
-      const rowIndexJoined = rowIndex.join(",");
-      if (rowIndicesMap.has(rowIndexJoined)) {
-        const i0 = rowIndicesMap.get(rowIndexJoined);
-        const row = table.getGroupedContext(rowIndex);
-        anchors.push([
-          [
-            this.getAnchorPoints(
-              renderState,
-              anchor1,
-              layoutClasses[0],
-              layoutStates[0].glyphs[i0],
-              row
-            ),
-            null
-          ],
-          [
-            null,
-            this.getAnchorPoints(
-              renderState,
-              anchor2,
-              layoutClasses[1],
-              layoutStates[1].glyphs[i1],
-              row
-            )
-          ]
-        ]);
+
+    for (let shift = 0; shift < layoutStates.length - 1; shift++) {
+      const rowIndicesMap = new Map<string, number>();
+      for (let i = 0; i < layoutStates[shift].dataRowIndices.length; i++) {
+        rowIndicesMap.set(layoutStates[shift].dataRowIndices[i].join(","), i);
       }
+      const table = this.parent.dataflow.getTable(layouts[0].table);
+      const anchors: AnchorAttributes[][][] = [];
+      for (
+        let i1 = 0;
+        i1 < layoutStates[shift + 1].dataRowIndices.length;
+        i1++
+      ) {
+        const rowIndex = layoutStates[shift + 1].dataRowIndices[i1];
+        const rowIndexJoined = rowIndex.join(",");
+        if (rowIndicesMap.has(rowIndexJoined)) {
+          const i0 = rowIndicesMap.get(rowIndexJoined);
+          const row = table.getGroupedContext(rowIndex);
+          anchors.push([
+            [
+              this.getAnchorPoints(
+                renderState,
+                anchor1,
+                layoutClasses[shift],
+                layoutStates[shift].glyphs[i0],
+                row
+              ),
+              null
+            ],
+            [
+              null,
+              this.getAnchorPoints(
+                renderState,
+                anchor2,
+                layoutClasses[shift + 1],
+                layoutStates[shift + 1].glyphs[i1],
+                row
+              )
+            ]
+          ]);
+        }
+      }
+      linkGroup.elements.push(
+        this.renderLinks(props.linkType, props.interpolationType, anchors)
+      );
     }
-    linkGroup.elements.push(
-      this.renderLinks(props.linkType, props.interpolationType, anchors)
-    );
 
     return linkGroup;
   }
