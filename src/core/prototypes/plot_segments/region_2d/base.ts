@@ -1515,13 +1515,18 @@ export class Region2DConstraintBuilder {
         if (direction == "x" || direction == "x1") {
           xi = i % xCount;
           if (alignY == "start") {
+            xi = xMax - 1 - ((markStates.length - 1 - i) % xCount);
             yi = Math.floor((markStates.length - 1 - i) / xCount);
           } else {
             yi = yMax - 1 - Math.floor(i / xCount);
           }
         } else {
-          yi = i % yCount;
+          yi = yMax - 1 - (i % yCount);
           xi = Math.floor(i / yCount);
+          if (alignX == "end") {
+            yi = (markStates.length - 1 - i) % yCount;
+            xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
+          }
         }
         // Adjust xi, yi based on alignment settings
         if (alignX == "end") {
