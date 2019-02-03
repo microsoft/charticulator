@@ -689,6 +689,91 @@ addPalette(
   ].reverse()
 );
 
+addPalette(
+  "Palette/Power BI",
+  "palette",
+  [
+    "#666666",
+    "#808080",
+    "#b3b3b3",
+    "#cccccc",
+    "#e6e6e6",
+    "#ffffff"
+  ].reverse(),
+  [
+    "#000000",
+    "#1a1a1a",
+    "#333333",
+    "#666666",
+    "#999999",
+    "#000000"
+  ].reverse(),
+  [
+    "#015c55",
+    "#018a80",
+    "#34c6bb",
+    "#67d4cc",
+    "#99e3dd",
+    "#01b8aa"
+  ].reverse(),
+  [
+    "#1c2325",
+    "#293537",
+    "#5f6b6d",
+    "#879092",
+    "#afb5b6",
+    "#374649"
+  ].reverse(),
+  [
+    "#7f312f",
+    "#be4a47",
+    "#fd817e",
+    "#fea19e",
+    "#fec0bf",
+    "#fd625e"
+  ].reverse(),
+  [
+    "#796408",
+    "#b6960b",
+    "#f5d33f",
+    "#f7de6f",
+    "#fae99f",
+    "#f2c80f"
+  ].reverse(),
+  [
+    "#303637",
+    "#475052",
+    "#7f898a",
+    "#9fa6a7",
+    "#bfc4c5",
+    "#5f6b6d"
+  ].reverse(),
+  [
+    "#456a76",
+    "#689fb0",
+    "#a1ddef",
+    "#b9e5f3",
+    "#d0eef7",
+    "#8ad4eb"
+  ].reverse(),
+  [
+    "#7f4b33",
+    "#bf714d",
+    "#feab85",
+    "#fec0a3",
+    "#ffd5c2",
+    "#fe9666"
+  ].reverse(),
+  [
+    "#53354d",
+    "#7d4f73",
+    "#b887ad",
+    "#caa5c2",
+    "#dbc3d6",
+    "#a66999"
+  ].reverse()
+);
+
 // Single hue
 addPalette("ColorBrewer/Reds", "sequential", [
   "#fff5f0",
