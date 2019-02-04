@@ -79,17 +79,19 @@ export class ChartTemplateBuilder {
     expr: string,
     textExpression?: boolean
   ) {
-    let ex: Expression.Expression | Expression.TextExpression;
-    if (textExpression) {
-      ex = Expression.parseTextExpression(expr);
-    } else {
-      ex = Expression.parse(expr);
-    }
-    ex.replace((e: Expression.Expression) => {
-      if (e instanceof Expression.Variable) {
-        this.addColumn(table, e.name);
+    if (expr) {
+      let ex: Expression.Expression | Expression.TextExpression;
+      if (textExpression) {
+        ex = Expression.parseTextExpression(expr);
+      } else {
+        ex = Expression.parse(expr);
       }
-    });
+      ex.replace((e: Expression.Expression) => {
+        if (e instanceof Expression.Variable) {
+          this.addColumn(table, e.name);
+        }
+      });
+    }
   }
 
   public propertyToString(property: Specification.Template.PropertyField) {
