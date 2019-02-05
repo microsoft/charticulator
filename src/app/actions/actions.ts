@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import {
   Dataset,
   Point,
@@ -24,7 +25,7 @@ export class Undo extends Action {
 
 export class Redo extends Action {
   public digest() {
-    return { name: "Undo" };
+    return { name: "Redo" };
   }
 }
 
