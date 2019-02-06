@@ -231,25 +231,49 @@ export class ExportTemplateView extends ContextedComponent<
 
   public renderInput(
     label: string,
-    value: string,
-    onChange: (value: string) => void
+    type: string,
+    value: any,
+    onChange: (value: any) => void
   ) {
     let ref: HTMLInputElement;
-    return (
-      <div className="form-group">
-        <input
-          ref={e => (ref = e)}
-          type="text"
-          required={true}
-          value={value || ""}
-          onChange={e => {
-            onChange(ref.value);
-          }}
-        />
-        <label>{label}</label>
-        <i className="bar" />
-      </div>
-    );
+    switch (type) {
+      case "string":
+        return (
+          <div className="form-group">
+            <input
+              ref={e => (ref = e)}
+              type="text"
+              required={true}
+              value={value || ""}
+              onChange={e => {
+                onChange(ref.value);
+              }}
+            />
+            <label>{label}</label>
+            <i className="bar" />
+          </div>
+        );
+
+      case "boolean":
+        const currentValue = value ? true : false;
+        return (
+          <div
+            className="el-inference-item"
+            onClick={() => {
+              onChange(!currentValue);
+            }}
+          >
+            <SVGImageIcon
+              url={
+                currentValue
+                  ? R.getSVGIcon("checkbox/checked")
+                  : R.getSVGIcon("checkbox/empty")
+              }
+            />
+            <span className="el-text">{label}</span>
+          </div>
+        );
+    }
   }
 
   public renderTargetProperties() {
@@ -258,6 +282,7 @@ export class ExportTemplateView extends ContextedComponent<
         <div key={property.name}>
           {this.renderInput(
             property.displayName,
+            property.type,
             this.state.targetProperties[property.name],
             value => {
               this.state.targetProperties[property.name] = value;
@@ -279,12 +304,17 @@ export class ExportTemplateView extends ContextedComponent<
       <div key={table.name}>
         {table.columns.map(column => (
           <div key={column.name}>
-            {this.renderInput(column.name, column.displayName, value => {
-              column.displayName = value;
-              this.setState({
-                template: this.state.template
-              });
-            })}
+            {this.renderInput(
+              column.name,
+              "string",
+              column.displayName,
+              value => {
+                column.displayName = value;
+                this.setState({
+                  template: this.state.template
+                });
+              }
+            )}
           </div>
         ))}
       </div>
@@ -351,6 +381,7 @@ export class ExportTemplateView extends ContextedComponent<
           <div key={id + p.target.attribute}>
             {this.renderInput(
               obj.properties.name + "/" + p.target.attribute,
+              "string",
               p.displayName,
               value => {
                 p.displayName = value;
@@ -379,6 +410,7 @@ export class ExportTemplateView extends ContextedComponent<
           <div key={id + pfstr}>
             {this.renderInput(
               obj.properties.name + "/" + pfstr,
+              "string",
               p.displayName,
               value => {
                 p.displayName = value;
