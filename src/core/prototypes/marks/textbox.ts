@@ -107,6 +107,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Font", "fontFamily", {
         defaultValue: "Arial"
       }),
+      manager.mappingEditor("Size", "fontSize", {
+        hints: { rangeNumber: [0, 36] },
+        defaultValue: 14,
+        numberOptions: {
+          showUpdown: true,
+          updownStyle: "font",
+          minimum: 0,
+          updownTick: 2
+        }
+      }),
       manager.row(
         "Align X",
         manager.horizontal(
