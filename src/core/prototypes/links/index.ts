@@ -17,6 +17,7 @@ import { DataflowTable } from "../dataflow";
 import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
+import { PointDirection } from "../../graphics";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -518,10 +519,18 @@ export abstract class LinksClass extends ChartElementClass {
             string,
             Array<[AnchorAttributes, AnchorAttributes]>
           >();
-          const hashAnchor = (points: Point[]) => {
-            return [points[0].x, points[0].y, points[1].x, points[1].y].join(
-              ","
-            );
+          const hashAnchor = (points: PointDirection[]) => {
+            const dx = points[0].x - points[1].x;
+            const dy = points[0].y - points[1].y;
+            const dirX = points[0].direction.x;
+            const dirY = points[0].direction.y;
+            return [
+              points[0].x,
+              points[0].y,
+              points[1].x,
+              points[1].y,
+              Math.sign(dx * dirY - dy * dirX)
+            ].join(",");
           };
           for (const anchors of anchorGroups) {
             for (let i = 0; i < anchors.length - 1; i++) {
