@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import {
-  Color,
   getById,
   MultistringHashMap,
   Point,
-  zip,
-  zipArray,
-  transpose
+  transpose,
+  zipArray
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
@@ -101,18 +100,6 @@ export class ChartRenderer {
     graphics.push(linkGroup);
 
     const elementsAndStates = zipArray(chart.elements, chartState.elements);
-    // Enforce an order: links gets rendered first.
-    elementsAndStates.sort((a, b) => {
-      let pa = 0,
-        pb = 0;
-      if (Prototypes.isType(a[0].classID, "links")) {
-        pa = -1;
-      }
-      if (Prototypes.isType(b[0].classID, "links")) {
-        pb = -1;
-      }
-      return pa - pb;
-    });
 
     // Render layout graphics
     for (const [element, elementState] of elementsAndStates) {

@@ -579,7 +579,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     action.links.properties.name = this.chartManager.findUnusedName("Link");
-    this.chartManager.addChartElement(action.links);
+    // Always add links to the back
+    this.chartManager.addChartElement(action.links, 0);
     const selection = new ChartElementSelection(action.links);
     this.currentSelection = selection;
 
