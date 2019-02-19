@@ -447,7 +447,10 @@ export class ChartStateManager {
   }
 
   /** Add a chart element */
-  public addChartElement(element: Specification.ChartElement) {
+  public addChartElement(
+    element: Specification.ChartElement,
+    index: number = null
+  ) {
     const elementState: Specification.ChartElementState = {
       attributes: {}
     };
@@ -457,8 +460,14 @@ export class ChartStateManager {
         elementState as Specification.PlotSegmentState
       );
     }
-    this.chart.elements.push(element);
-    this.chartState.elements.push(elementState);
+
+    if (index != null && index >= 0 && index <= this.chart.elements.length) {
+      this.chart.elements.splice(index, 0, element);
+      this.chartState.elements.splice(index, 0, elementState);
+    } else {
+      this.chart.elements.push(element);
+      this.chartState.elements.push(elementState);
+    }
 
     const elementClass = this.classCache.createChartElementClass(
       this.classCache.getChartClass(this.chartState),

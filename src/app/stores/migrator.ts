@@ -23,6 +23,14 @@ export class Migrator {
     // console.log(`Migrate state from ${state.version} to ${targetVersion}`);
 
     if (
+      compareVersion(state.version, "1.4.0") < 0 &&
+      compareVersion(targetVersion, "1.4.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.fixLinkOrder_v130(state);
+    }
+
+    if (
       compareVersion(state.version, "1.3.0") < 0 &&
       compareVersion(targetVersion, "1.3.0") >= 0
     ) {
@@ -188,6 +196,24 @@ export class Migrator {
         }
       }
     }
+    return state;
+  }
+
+  public fixLinkOrder_v130(state: AppStoreState) {
+    const linkIndices: number[] = [];
+    const otherIndices: number[] = [];
+    for (let i = 0; i < state.chart.elements.length; i++) {
+      if (Prototypes.isType(state.chart.elements[i].classID, "links")) {
+        linkIndices.push(i);
+      } else {
+        otherIndices.push(i);
+      }
+    }
+    const allIndices = linkIndices.concat(otherIndices);
+    state.chart.elements = allIndices.map(i => state.chart.elements[i]);
+    state.chartState.elements = allIndices.map(
+      i => state.chartState.elements[i]
+    );
     return state;
   }
 }
