@@ -170,7 +170,9 @@ export class CategoricalScaleColor extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter(x => typeof x == "string") as string[];
+    const values = column
+      .filter(x => x != null)
+      .map(x => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -246,7 +248,9 @@ export class CategoricalScaleEnum extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter(x => typeof x == "string") as string[];
+    const values = column
+      .filter(x => x != null)
+      .map(x => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -324,7 +328,9 @@ export class CategoricalScaleBoolean extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter(x => typeof x == "string") as string[];
+    const values = column
+      .filter(x => x != null)
+      .map(x => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -405,7 +411,9 @@ export class CategoricalScaleImage extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter(x => typeof x == "string") as string[];
+    const values = column
+      .filter(x => x != null)
+      .map(x => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping

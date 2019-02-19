@@ -1175,6 +1175,9 @@
       }
 
       &-checkbox {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         display: inline-block;
         vertical-align: top;
         cursor: pointer;
@@ -1201,6 +1204,7 @@
         }
 
         .el-text {
+          white-space: nowrap;
           height: $line-height;
           line-height: $line-height;
           margin-right: 6px;

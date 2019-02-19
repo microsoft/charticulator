@@ -51,7 +51,7 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   },
   {
     input: {
-      type: DataType.String,
+      type: [DataType.String, DataType.Boolean],
       kind: [DataKind.Categorical, DataKind.Ordinal]
     },
     output: AttributeType.Color,
@@ -60,7 +60,7 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   },
   {
     input: {
-      type: DataType.String,
+      type: [DataType.String, DataType.Boolean],
       kind: [DataKind.Categorical, DataKind.Ordinal]
     },
     output: AttributeType.Image,
@@ -69,7 +69,7 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   },
   {
     input: {
-      type: DataType.String,
+      type: [DataType.String, DataType.Boolean],
       kind: [DataKind.Categorical, DataKind.Ordinal]
     },
     output: AttributeType.Enum,
@@ -78,7 +78,7 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   },
   {
     input: {
-      type: DataType.String,
+      type: [DataType.String, DataType.Boolean],
       kind: [DataKind.Categorical, DataKind.Ordinal]
     },
     output: AttributeType.Boolean,

@@ -241,6 +241,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           <CheckBox
             value={this.getPropertyValue(property) as boolean}
             text={options.label}
+            title={options.label}
             fillWidth={options.type == "checkbox-fill-width"}
             onChange={v => {
               this.emitSetProperty(property, v);
