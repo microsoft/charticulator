@@ -1076,7 +1076,7 @@ export class Region2DConstraintBuilder {
         if (axis == "x" || axis == "xy") {
           if (alignment.x == "start") {
             solver.addEquals(
-              ConstraintStrength.WEAK,
+              ConstraintStrength.HARD,
               solver.attr(m1.attributes, "x1"),
               x1
             );
@@ -1085,7 +1085,7 @@ export class Region2DConstraintBuilder {
           }
           if (alignment.x == "end") {
             solver.addEquals(
-              ConstraintStrength.WEAK,
+              ConstraintStrength.HARD,
               solver.attr(m1.attributes, "x2"),
               x2
             );
@@ -1107,21 +1107,21 @@ export class Region2DConstraintBuilder {
         if (axis == "y" || axis == "xy") {
           if (alignment.y == "start") {
             solver.addEquals(
-              ConstraintStrength.WEAK,
+              ConstraintStrength.HARD,
               solver.attr(m1.attributes, "y1"),
               y1
             );
           } else {
-            fitters.xMin.add(solver.attr(m1.attributes, "y1"), y1);
+            fitters.yMin.add(solver.attr(m1.attributes, "y1"), y1);
           }
           if (alignment.y == "end") {
             solver.addEquals(
-              ConstraintStrength.WEAK,
+              ConstraintStrength.HARD,
               solver.attr(m1.attributes, "y2"),
               y2
             );
           } else {
-            fitters.xMax.add(solver.attr(m1.attributes, "y2"), y2);
+            fitters.yMax.add(solver.attr(m1.attributes, "y2"), y2);
           }
           if (alignment.y == "middle") {
             solver.addLinear(
