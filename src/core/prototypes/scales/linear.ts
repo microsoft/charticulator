@@ -95,12 +95,10 @@ export class LinearScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = column.filter(x => typeof x == "number") as number[];
     s.inferParameters(values);
+    s.adjustDomain(options);
 
     props.domainMin = s.domainMin;
     props.domainMax = s.domainMax;
-    if (props.domainMin > 0) {
-      props.domainMin = 0;
-    }
 
     if (!options.reuseRange) {
       if (options.rangeNumber) {
@@ -215,6 +213,7 @@ export class LinearColorScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = column.filter(x => typeof x == "number") as number[];
     s.inferParameters(values);
+    s.adjustDomain(options);
 
     props.domainMin = s.domainMin;
     props.domainMax = s.domainMax;

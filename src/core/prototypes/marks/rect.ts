@@ -83,12 +83,12 @@ export class RectElementClass extends EmphasizableMarkClass<
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size & Shape"),
       manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [DataKind.Numerical],
         defaultAuto: true
       }),
       manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [DataKind.Numerical],
         defaultAuto: true
       }),
@@ -380,7 +380,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: AttributeType.Number,
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line,
@@ -394,7 +394,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: AttributeType.Number,
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line

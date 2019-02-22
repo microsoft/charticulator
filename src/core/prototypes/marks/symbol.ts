@@ -237,7 +237,8 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         dropAction: {
           scaleInference: {
             attribute: "size",
-            attributeType: Specification.AttributeType.Number
+            attributeType: Specification.AttributeType.Number,
+            hints: { rangeNumber: [0, 200 * Math.PI] }
           }
         }
       } as DropZones.Line
