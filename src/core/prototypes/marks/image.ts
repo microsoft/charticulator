@@ -92,12 +92,12 @@ export class ImageElementClass extends EmphasizableMarkClass<
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
       manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
@@ -503,7 +503,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line,
@@ -517,7 +517,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line

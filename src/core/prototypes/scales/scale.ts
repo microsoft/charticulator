@@ -16,6 +16,8 @@ export interface InferParametersOptions extends DataMappingHints {
   extendScale?: boolean;
   /** Whether to reuse the existing range of the scale, applies to color and image */
   reuseRange?: boolean;
+  /** Whether to ensure the domainMin == 0 (for numeric scales) */
+  startWithZero?: "default" | "always" | "never";
 }
 
 export abstract class ScaleClass<
