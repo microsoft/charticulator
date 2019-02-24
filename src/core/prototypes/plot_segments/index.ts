@@ -16,7 +16,8 @@ export {
   CartesianPlotSegment,
   CurvePlotSegment,
   PolarPlotSegment,
-  Region2DAttributes
+  Region2DAttributes,
+  Region2DProperties
 } from "./region_2d";
 
 export { PlotSegmentClass } from "./plot_segment";

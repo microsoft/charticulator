@@ -222,7 +222,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const config = {
       terminology: polarTerminology,
       xAxisPrePostGap: (props.endAngle - props.startAngle) % 360 == 0,
-      yAxisPrePostGap: false
+      yAxisPrePostGap: false,
+      getXYScale: () => {
+        const radiusMiddle =
+          (this.state.attributes.radial1 + this.state.attributes.radial2) / 2;
+        return { x: 57.29577951308232 / radiusMiddle, y: 1 };
+      }
     };
     const builder = new Region2DConstraintBuilder(
       this,

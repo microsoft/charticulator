@@ -109,6 +109,8 @@ export interface Region2DConfiguration {
 
   xAxisPrePostGap: boolean;
   yAxisPrePostGap: boolean;
+
+  getXYScale?(): { x: number; y: number };
 }
 
 export class CrossFitter {
@@ -1598,10 +1600,8 @@ export class Region2DConstraintBuilder {
       }
     }
     if (props.sublayout.type == "grid") {
+      // TODO: implement grid sublayout handles
     }
-    // if (props.sublayout.type == "packing") {
-    // // packing has no handles
-    // }
     return handles;
   }
 
@@ -1660,7 +1660,14 @@ export class Region2DConstraintBuilder {
         ] as [Variable, Variable, number];
       });
       solver.addPlugin(
-        new ConstraintPlugins.PackingPlugin(solver, cx, cy, points, axisOnly)
+        new ConstraintPlugins.PackingPlugin(
+          solver,
+          cx,
+          cy,
+          points,
+          axisOnly,
+          this.config.getXYScale
+        )
       );
     });
   }
@@ -2034,29 +2041,35 @@ export class Region2DConstraintBuilder {
       type == "grid" ||
       type == "overlap"
     ) {
+      const isXFixed = props.xData && props.xData.type == "numerical";
+      const isYFixed = props.yData && props.yData.type == "numerical";
       extra.push(
         m.row(
           "Align",
           m.horizontal(
             [0, 0],
-            m.inputSelect(
-              { property: "sublayout", field: ["align", "x"] },
-              {
-                type: "radio",
-                options: ["start", "middle", "end"],
-                icons: ["align/left", "align/x-middle", "align/right"],
-                labels: ["Left", "Middle", "Right"]
-              }
-            ),
-            m.inputSelect(
-              { property: "sublayout", field: ["align", "y"] },
-              {
-                type: "radio",
-                options: ["start", "middle", "end"],
-                icons: ["align/bottom", "align/y-middle", "align/top"],
-                labels: ["Bottom", "Middle", "Top"]
-              }
-            )
+            isXFixed
+              ? null
+              : m.inputSelect(
+                  { property: "sublayout", field: ["align", "x"] },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/left", "align/x-middle", "align/right"],
+                    labels: ["Left", "Middle", "Right"]
+                  }
+                ),
+            isYFixed
+              ? null
+              : m.inputSelect(
+                  { property: "sublayout", field: ["align", "y"] },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/bottom", "align/y-middle", "align/top"],
+                    labels: ["Bottom", "Middle", "Top"]
+                  }
+                )
           )
         )
       );
@@ -2123,22 +2136,24 @@ export class Region2DConstraintBuilder {
           )
         );
       }
-      extra.push(
-        m.row(
-          "Order",
-          m.horizontal(
-            [0, 0],
-            m.orderByWidget(
-              { property: "sublayout", field: "order" },
-              { table: this.plotSegment.object.table }
-            ),
-            m.inputBoolean(
-              { property: "sublayout", field: "orderReversed" },
-              { type: "highlight", icon: "general/order-reversed" }
+      if (type != "overlap") {
+        extra.push(
+          m.row(
+            "Order",
+            m.horizontal(
+              [0, 0],
+              m.orderByWidget(
+                { property: "sublayout", field: "order" },
+                { table: this.plotSegment.object.table }
+              ),
+              m.inputBoolean(
+                { property: "sublayout", field: "orderReversed" },
+                { type: "highlight", icon: "general/order-reversed" }
+              )
             )
           )
-        )
-      );
+        );
+      }
     }
     const options = this.appliableSublayoutOptions();
     return [
@@ -2191,7 +2206,8 @@ export class Region2DConstraintBuilder {
 
     if (this.isSublayoutAppliable()) {
       const extra: Controls.Widget[] = [];
-
+      const isXFixed = props.xData && props.xData.type == "numerical";
+      const isYFixed = props.yData && props.yData.type == "numerical";
       const type = props.sublayout.type;
       if (
         type == "dodge-x" ||
@@ -2199,44 +2215,48 @@ export class Region2DConstraintBuilder {
         type == "grid" ||
         type == "overlap"
       ) {
-        extra.push(
-          m.inputSelect(
-            { property: "sublayout", field: ["align", "x"] },
-            {
-              type: "dropdown",
-              options: ["start", "middle", "end"],
-              icons: [
-                this.terminology.xMinIcon,
-                this.terminology.xMiddleIcon,
-                this.terminology.xMaxIcon
-              ],
-              labels: [
-                this.terminology.xMin,
-                this.terminology.xMiddle,
-                this.terminology.xMax
-              ]
-            }
-          )
-        );
-        extra.push(
-          m.inputSelect(
-            { property: "sublayout", field: ["align", "y"] },
-            {
-              type: "dropdown",
-              options: ["start", "middle", "end"],
-              icons: [
-                this.terminology.yMinIcon,
-                this.terminology.yMiddleIcon,
-                this.terminology.yMaxIcon
-              ],
-              labels: [
-                this.terminology.yMin,
-                this.terminology.yMiddle,
-                this.terminology.yMax
-              ]
-            }
-          )
-        );
+        if (!isXFixed) {
+          extra.push(
+            m.inputSelect(
+              { property: "sublayout", field: ["align", "x"] },
+              {
+                type: "dropdown",
+                options: ["start", "middle", "end"],
+                icons: [
+                  this.terminology.xMinIcon,
+                  this.terminology.xMiddleIcon,
+                  this.terminology.xMaxIcon
+                ],
+                labels: [
+                  this.terminology.xMin,
+                  this.terminology.xMiddle,
+                  this.terminology.xMax
+                ]
+              }
+            )
+          );
+        }
+        if (!isYFixed) {
+          extra.push(
+            m.inputSelect(
+              { property: "sublayout", field: ["align", "y"] },
+              {
+                type: "dropdown",
+                options: ["start", "middle", "end"],
+                icons: [
+                  this.terminology.yMinIcon,
+                  this.terminology.yMiddleIcon,
+                  this.terminology.yMaxIcon
+                ],
+                labels: [
+                  this.terminology.yMin,
+                  this.terminology.yMiddle,
+                  this.terminology.yMax
+                ]
+              }
+            )
+          );
+        }
         if (type == "grid") {
           extra.push(
             m.inputSelect(
@@ -2253,17 +2273,19 @@ export class Region2DConstraintBuilder {
             )
           );
         }
-        extra.push(m.sep());
-        extra.push(
-          m.orderByWidget(
-            { property: "sublayout", field: "order" },
-            { table: this.plotSegment.object.table }
-          ),
-          m.inputBoolean(
-            { property: "sublayout", field: "orderReversed" },
-            { type: "highlight", icon: "general/order-reversed" }
-          )
-        );
+        if (type != "overlap") {
+          extra.push(m.sep());
+          extra.push(
+            m.orderByWidget(
+              { property: "sublayout", field: "order" },
+              { table: this.plotSegment.object.table }
+            ),
+            m.inputBoolean(
+              { property: "sublayout", field: "orderReversed" },
+              { type: "highlight", icon: "general/order-reversed" }
+            )
+          );
+        }
       }
       const options = this.appliableSublayoutOptions();
       sublayout = [

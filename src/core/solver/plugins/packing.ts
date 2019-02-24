@@ -16,13 +16,15 @@ export class PackingPlugin extends ConstraintPlugin {
   public points: Array<[Variable, Variable, number]>;
   public xEnable: boolean;
   public yEnable: boolean;
+  public getXYScale: () => { x: number; y: number };
 
   constructor(
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
     points: Array<[Variable, Variable, number]>,
-    axisOnly?: "x" | "y"
+    axisOnly?: "x" | "y",
+    getXYScale?: () => { x: number; y: number }
   ) {
     super();
     this.solver = solver;
@@ -31,14 +33,22 @@ export class PackingPlugin extends ConstraintPlugin {
     this.points = points;
     this.xEnable = axisOnly == null || axisOnly == "x";
     this.yEnable = axisOnly == null || axisOnly == "y";
+    this.getXYScale = getXYScale;
   }
 
   public apply() {
+    let xScale = 1;
+    let yScale = 1;
+    if (this.getXYScale != null) {
+      const { x, y } = this.getXYScale();
+      xScale = x;
+      yScale = y;
+    }
     const cx = this.solver.getValue(this.cx);
     const cy = this.solver.getValue(this.cy);
     const nodes = this.points.map(pt => {
-      const x = this.solver.getValue(pt[0]) - cx;
-      const y = this.solver.getValue(pt[1]) - cy;
+      const x = (this.solver.getValue(pt[0]) - cx) / xScale;
+      const y = (this.solver.getValue(pt[1]) - cy) / yScale;
       // Use forceSimulation's default initialization
       return {
         fx: !this.xEnable ? x : undefined, // keep x unchanged if x is disabled
@@ -60,10 +70,10 @@ export class PackingPlugin extends ConstraintPlugin {
     }
     for (let i = 0; i < nodes.length; i++) {
       if (this.xEnable) {
-        this.solver.setValue(this.points[i][0], nodes[i].x + cx);
+        this.solver.setValue(this.points[i][0], nodes[i].x * xScale + cx);
       }
       if (this.yEnable) {
-        this.solver.setValue(this.points[i][1], nodes[i].y + cy);
+        this.solver.setValue(this.points[i][1], nodes[i].y * yScale + cy);
       }
     }
     return true;

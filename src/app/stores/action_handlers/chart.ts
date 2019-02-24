@@ -391,6 +391,24 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         break;
     }
 
+    // Adjust sublayout option if current option is not available
+    const props = action.object
+      .properties as Prototypes.PlotSegments.Region2DProperties;
+    if (props.sublayout) {
+      if (
+        props.sublayout.type == "dodge-x" ||
+        props.sublayout.type == "dodge-y" ||
+        props.sublayout.type == "grid"
+      ) {
+        if (props.xData && props.xData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+        if (props.yData && props.yData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+      }
+    }
+
     this.solveConstraintsAndUpdateGraphics();
   });
 
