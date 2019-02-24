@@ -83,7 +83,9 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
   gridDirectionX: "Tangent",
   gridDirectionY: "Normal",
   packing: "Packing",
-  packingIcon: "sublayout/packing"
+  packingIcon: "sublayout/packing",
+  overlap: "Overlap",
+  overlapIcon: "sublayout/overlap"
 };
 
 export class CurvePlotSegment extends PlotSegmentClass<

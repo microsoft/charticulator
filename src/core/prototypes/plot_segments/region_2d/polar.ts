@@ -78,7 +78,9 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
   gridDirectionX: "Angular",
   gridDirectionY: "Radial",
   packing: "Packing",
-  packingIcon: "sublayout/packing"
+  packingIcon: "sublayout/packing",
+  overlap: "Overlap",
+  overlapIcon: "sublayout/overlap"
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<

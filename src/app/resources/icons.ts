@@ -358,6 +358,10 @@ addSVGIcon(
 );
 // Handle icons
 addSVGIcon(
+  "sublayout/overlap",
+  require("url-loader!resources/icons/icons_sublayout-overlap.svg")
+);
+addSVGIcon(
   "sublayout/dodge-x",
   require("url-loader!resources/icons/icons_sublayout-dodge-horizontal.svg")
 );

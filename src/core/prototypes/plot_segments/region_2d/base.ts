@@ -18,7 +18,7 @@ import {
 import { PlotSegmentClass } from "../plot_segment";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
-  type: "dodge-x" | "dodge-y" | "grid" | "packing";
+  type: "overlap" | "dodge-x" | "dodge-y" | "grid" | "packing";
 
   /** Sublayout alignment (for dodge and grid) */
   align: {
@@ -103,6 +103,8 @@ export interface Region2DConfiguration {
     gridDirectionY: string;
     packing: string;
     packingIcon: string;
+    overlap: string;
+    overlapIcon: string;
   };
 
   xAxisPrePostGap: boolean;
@@ -180,6 +182,12 @@ export class SublayoutGroup {
   public y1: Variable;
   public x2: Variable;
   public y2: Variable;
+}
+
+export interface SublayoutContext {
+  mode: "default" | "x-only" | "y-only" | "disabled";
+  xAxisPrePostGap?: boolean;
+  yAxisPrePostGap?: boolean;
 }
 
 export class Region2DConstraintBuilder {
@@ -476,7 +484,10 @@ export class Region2DConstraintBuilder {
     }
   }
 
-  public categoricalMapping(axis: "x" | "y" | "xy", sublayout: boolean): void {
+  public categoricalMapping(
+    axis: "x" | "y" | "xy",
+    sublayoutContext: SublayoutContext
+  ): void {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const attrs = state.attributes;
@@ -534,11 +545,7 @@ export class Region2DConstraintBuilder {
               y2
             });
           }
-          if (sublayout) {
-            this.sublayout(sublayoutGroups, false, false);
-          } else {
-            this.fitGroups(sublayoutGroups, "x");
-          }
+          this.applySublayout(sublayoutGroups, "x", sublayoutContext);
         }
         break;
       case "y":
@@ -590,11 +597,7 @@ export class Region2DConstraintBuilder {
               y2: vy2
             });
           }
-          if (sublayout) {
-            this.sublayout(sublayoutGroups, false, false);
-          } else {
-            this.fitGroups(sublayoutGroups, "y");
-          }
+          this.applySublayout(sublayoutGroups, "y", sublayoutContext);
         }
         break;
       case "xy":
@@ -674,11 +677,7 @@ export class Region2DConstraintBuilder {
               });
             }
           }
-          if (sublayout) {
-            this.sublayout(sublayoutGroups, false, false);
-          } else {
-            this.fitGroups(sublayoutGroups, "xy");
-          }
+          this.applySublayout(sublayoutGroups, "xy", sublayoutContext);
         }
         break;
     }
@@ -932,133 +931,6 @@ export class Region2DConstraintBuilder {
     }
   }
 
-  public alignment(axis: "x" | "y", mode: "start" | "middle" | "end") {
-    const solver = this.solver;
-    const state = this.plotSegment.state;
-    const attrs = state.attributes;
-    const [x1, y1, x2, y2] = solver.attrs(attrs, [
-      this.x1Name,
-      this.y1Name,
-      this.x2Name,
-      this.y2Name
-    ]);
-    switch (axis) {
-      case "x":
-        {
-          for (const [, markState] of state.glyphs.entries()) {
-            switch (mode) {
-              case "start":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, x1]],
-                    [[1, solver.attr(markState.attributes, "x1")]]
-                  );
-                }
-                break;
-              case "end":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, x2]],
-                    [[1, solver.attr(markState.attributes, "x2")]]
-                  );
-                }
-                break;
-              case "middle":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, x1], [1, x2]],
-                    [
-                      [1, solver.attr(markState.attributes, "x1")],
-                      [1, solver.attr(markState.attributes, "x2")]
-                    ]
-                  );
-                }
-                break;
-            }
-          }
-        }
-        break;
-      case "y":
-        {
-          for (const [, markState] of state.glyphs.entries()) {
-            switch (mode) {
-              case "start":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, y1]],
-                    [[1, solver.attr(markState.attributes, "y1")]]
-                  );
-                }
-                break;
-              case "end":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, y2]],
-                    [[1, solver.attr(markState.attributes, "y2")]]
-                  );
-                }
-                break;
-              case "middle":
-                {
-                  solver.addLinear(
-                    ConstraintStrength.HARD,
-                    0,
-                    [[1, y1], [1, y2]],
-                    [
-                      [1, solver.attr(markState.attributes, "y1")],
-                      [1, solver.attr(markState.attributes, "y2")]
-                    ]
-                  );
-                }
-                break;
-            }
-          }
-        }
-        break;
-    }
-  }
-
-  public fitting(axis: "x" | "y"): void {
-    const solver = this.solver;
-    const state = this.plotSegment.state;
-    const attrs = state.attributes;
-
-    const minFitter = new CrossFitter(solver, "min");
-    const maxFitter = new CrossFitter(solver, "max");
-    let refMin: Variable, refMax: Variable;
-    if (axis == "x") {
-      refMin = solver.attr(attrs, this.x1Name);
-      refMax = solver.attr(attrs, this.x2Name);
-    } else {
-      refMin = solver.attr(attrs, this.y1Name);
-      refMax = solver.attr(attrs, this.y2Name);
-    }
-    let a1name = "x1";
-    let a2name = "x2";
-    if (axis == "y") {
-      a1name = "y1";
-      a2name = "y2";
-    }
-    for (const [, markState] of state.glyphs.entries()) {
-      minFitter.add(solver.attr(markState.attributes, a1name), refMin);
-      // minFitter.add(attr2, solver.attr(markState.attributes, a2name), refMin);
-      maxFitter.add(solver.attr(markState.attributes, a2name), refMax);
-      // maxFitter.add(attr1, solver.attr(markState.attributes, a1name), refMax);
-    }
-    minFitter.addConstraint(ConstraintStrength.MEDIUM);
-    maxFitter.addConstraint(ConstraintStrength.MEDIUM);
-  }
-
   public fitGroups(groups: SublayoutGroup[], axis: "x" | "y" | "xy") {
     const solver = this.solver;
     const state = this.plotSegment.state;
@@ -1141,30 +1013,39 @@ export class Region2DConstraintBuilder {
     fitters.addConstraint(ConstraintStrength.MEDIUM);
   }
 
-  public sublayout(
+  public applySublayout(
     groups: SublayoutGroup[],
-    xAxisPrePostGap: boolean,
-    yAxisPrePostGap: boolean
+    axis: "x" | "y" | "xy",
+    context: SublayoutContext
   ) {
-    this.orderMarkGroups(groups);
-    const props = this.plotSegment.object.properties;
-    let maxGroupLength = 0;
-    for (const g of groups) {
-      if (g.group.length > maxGroupLength) {
-        maxGroupLength = g.group.length;
+    if (!context || context.mode == "disabled") {
+      this.fitGroups(groups, axis);
+    } else {
+      this.orderMarkGroups(groups);
+      const props = this.plotSegment.object.properties;
+      if (context.mode == "x-only" || context.mode == "y-only") {
+        if (props.sublayout.type == "packing") {
+          this.sublayoutPacking(groups, context.mode == "x-only" ? "x" : "y");
+        } else {
+          this.fitGroups(groups, axis);
+        }
+      } else {
+        if (props.sublayout.type == "overlap") {
+          this.fitGroups(groups, "xy");
+        }
+        if (props.sublayout.type == "dodge-x") {
+          this.sublayoutDodging(groups, "x", context.xAxisPrePostGap);
+        }
+        if (props.sublayout.type == "dodge-y") {
+          this.sublayoutDodging(groups, "y", context.yAxisPrePostGap);
+        }
+        if (props.sublayout.type == "grid") {
+          this.sublayoutGrid(groups);
+        }
+        if (props.sublayout.type == "packing") {
+          this.sublayoutPacking(groups);
+        }
       }
-    }
-    if (props.sublayout.type == "dodge-x") {
-      this.sublayoutDodging(groups, "x", xAxisPrePostGap);
-    }
-    if (props.sublayout.type == "dodge-y") {
-      this.sublayoutDodging(groups, "y", yAxisPrePostGap);
-    }
-    if (props.sublayout.type == "grid") {
-      this.sublayoutGrid(groups);
-    }
-    if (props.sublayout.type == "packing") {
-      this.sublayoutPacking(groups);
     }
   }
 
@@ -1724,7 +1605,7 @@ export class Region2DConstraintBuilder {
     return handles;
   }
 
-  public sublayoutPacking(groups: SublayoutGroup[]) {
+  public sublayoutPacking(groups: SublayoutGroup[], axisOnly?: "x" | "y") {
     const solver = this.solver;
     const state = this.plotSegment.state;
 
@@ -1779,7 +1660,7 @@ export class Region2DConstraintBuilder {
         ] as [Variable, Variable, number];
       });
       solver.addPlugin(
-        new ConstraintPlugins.PackingPlugin(solver, cx, cy, points)
+        new ConstraintPlugins.PackingPlugin(solver, cx, cy, points, axisOnly)
       );
     });
   }
@@ -1879,9 +1760,6 @@ export class Region2DConstraintBuilder {
     const xMode = props.xData ? props.xData.type : "null";
     const yMode = props.yData ? props.yData.type : "null";
 
-    let placeXAxis = true;
-    let placeYAxis = true;
-
     switch (xMode) {
       case "null":
         {
@@ -1889,7 +1767,7 @@ export class Region2DConstraintBuilder {
             case "null":
               {
                 // null, null
-                this.sublayout(
+                this.applySublayout(
                   [
                     {
                       x1: solver.attr(attrs, this.x1Name),
@@ -1899,32 +1777,60 @@ export class Region2DConstraintBuilder {
                       group: state.dataRowIndices.map((x, i) => i)
                     }
                   ],
-                  this.config.xAxisPrePostGap,
-                  this.config.yAxisPrePostGap
+                  "xy",
+                  {
+                    mode: "default",
+                    xAxisPrePostGap: this.config.xAxisPrePostGap,
+                    yAxisPrePostGap: this.config.yAxisPrePostGap
+                  }
                 );
               }
               break;
             case "default":
               {
                 this.stacking("y");
-                this.fitting("x");
-                this.alignment("x", props.sublayout.align.x);
-                placeYAxis = false;
+                this.applySublayout(
+                  [
+                    {
+                      x1: solver.attr(attrs, this.x1Name),
+                      y1: solver.attr(attrs, this.y1Name),
+                      x2: solver.attr(attrs, this.x2Name),
+                      y2: solver.attr(attrs, this.y2Name),
+                      group: state.dataRowIndices.map((x, i) => i)
+                    }
+                  ],
+                  "x",
+                  {
+                    mode: "x-only"
+                  }
+                );
               }
               break;
             case "numerical":
               {
                 // null, numerical
                 this.numericalMapping("y");
-                this.alignment("x", props.sublayout.align.x);
-                this.fitting("x");
-                placeYAxis = false;
+                this.applySublayout(
+                  [
+                    {
+                      x1: solver.attr(attrs, this.x1Name),
+                      y1: solver.attr(attrs, this.y1Name),
+                      x2: solver.attr(attrs, this.x2Name),
+                      y2: solver.attr(attrs, this.y2Name),
+                      group: state.dataRowIndices.map((x, i) => i)
+                    }
+                  ],
+                  "x",
+                  {
+                    mode: "x-only"
+                  }
+                );
               }
               break;
             case "categorical":
               {
                 // null, categorical
-                this.categoricalMapping("y", true);
+                this.categoricalMapping("y", { mode: "default" });
               }
               break;
           }
@@ -1936,9 +1842,21 @@ export class Region2DConstraintBuilder {
             case "null":
               {
                 this.stacking("x");
-                this.fitting("y");
-                this.alignment("y", props.sublayout.align.y);
-                placeXAxis = false;
+                this.applySublayout(
+                  [
+                    {
+                      x1: solver.attr(attrs, this.x1Name),
+                      y1: solver.attr(attrs, this.y1Name),
+                      x2: solver.attr(attrs, this.x2Name),
+                      y2: solver.attr(attrs, this.y2Name),
+                      group: state.dataRowIndices.map((x, i) => i)
+                    }
+                  ],
+                  "y",
+                  {
+                    mode: "y-only"
+                  }
+                );
               }
               break;
             case "default":
@@ -1956,7 +1874,7 @@ export class Region2DConstraintBuilder {
             case "categorical":
               {
                 this.stacking("x");
-                this.categoricalMapping("y", false);
+                this.categoricalMapping("y", { mode: "disabled" });
               }
               break;
           }
@@ -1969,9 +1887,21 @@ export class Region2DConstraintBuilder {
               {
                 // numerical, null
                 this.numericalMapping("x");
-                this.alignment("y", props.sublayout.align.y);
-                this.fitting("y");
-                placeXAxis = false;
+                this.applySublayout(
+                  [
+                    {
+                      x1: solver.attr(attrs, this.x1Name),
+                      y1: solver.attr(attrs, this.y1Name),
+                      x2: solver.attr(attrs, this.x2Name),
+                      y2: solver.attr(attrs, this.y2Name),
+                      group: state.dataRowIndices.map((x, i) => i)
+                    }
+                  ],
+                  "y",
+                  {
+                    mode: "y-only"
+                  }
+                );
               }
               break;
             case "default":
@@ -1991,7 +1921,7 @@ export class Region2DConstraintBuilder {
               {
                 // numerical, categorical
                 this.numericalMapping("x");
-                this.categoricalMapping("y", false);
+                this.categoricalMapping("y", { mode: "y-only" });
               }
               break;
           }
@@ -2002,53 +1932,95 @@ export class Region2DConstraintBuilder {
           switch (yMode) {
             case "null":
               {
-                this.categoricalMapping("x", true);
+                this.categoricalMapping("x", { mode: "default" });
               }
               break;
             case "default":
               {
                 this.stacking("y");
-                this.categoricalMapping("x", false);
+                this.categoricalMapping("x", { mode: "disabled" });
               }
               break;
             case "numerical":
               {
                 this.numericalMapping("y");
-                this.categoricalMapping("x", false);
+                this.categoricalMapping("x", { mode: "x-only" });
               }
               break;
             case "categorical":
               {
-                this.categoricalMapping("xy", true);
+                this.categoricalMapping("xy", { mode: "default" });
               }
               break;
           }
         }
         break;
     }
-    if (placeYAxis) {
-      solver.addEquals(
-        ConstraintStrength.HARD,
-        solver.attr(attrs, "x"),
-        solver.attr(attrs, this.x1Name)
-      );
+    solver.addEquals(
+      ConstraintStrength.HARD,
+      solver.attr(attrs, "x"),
+      solver.attr(attrs, this.x1Name)
+    );
+    solver.addEquals(
+      ConstraintStrength.HARD,
+      solver.attr(attrs, "y"),
+      solver.attr(attrs, this.y1Name)
+    );
+  }
+
+  public appliableSublayoutOptions() {
+    const overlapOption = {
+      value: "overlap",
+      label: this.terminology.overlap,
+      icon: this.terminology.overlapIcon
+    };
+    const packingOption = {
+      value: "packing",
+      label: this.terminology.packing,
+      icon: this.terminology.packingIcon
+    };
+    const dodgeXOption = {
+      value: "dodge-x",
+      label: this.terminology.dodgeX,
+      icon: this.terminology.dodgeXIcon
+    };
+    const dodgeYOption = {
+      value: "dodge-y",
+      label: this.terminology.dodgeY,
+      icon: this.terminology.dodgeYIcon
+    };
+    const gridOption = {
+      value: "grid",
+      label: this.terminology.grid,
+      icon: this.terminology.gridIcon
+    };
+    const props = this.plotSegment.object.properties;
+    const xMode = props.xData ? props.xData.type : "null";
+    const yMode = props.yData ? props.yData.type : "null";
+    if (
+      (xMode == "null" || xMode == "categorical") &&
+      (yMode == "null" || yMode == "categorical")
+    ) {
+      return [
+        overlapOption,
+        dodgeXOption,
+        dodgeYOption,
+        gridOption,
+        packingOption
+      ];
     }
-    if (placeXAxis) {
-      solver.addEquals(
-        ConstraintStrength.HARD,
-        solver.attr(attrs, "y"),
-        solver.attr(attrs, this.y1Name)
-      );
-    }
+    return [overlapOption, packingOption];
   }
 
   public isSublayoutAppliable() {
     const props = this.plotSegment.object.properties;
     const xMode = props.xData ? props.xData.type : "null";
     const yMode = props.yData ? props.yData.type : "null";
+    // Sublayout is not appliable when one of x, y is scaffold ("default"), or both of them are numerical
     return (
-      (xMode == "null" || xMode == "categorical") &&
-      (yMode == "null" || yMode == "categorical")
+      xMode != "default" &&
+      yMode != "default" &&
+      (xMode != "numerical" || yMode != "numerical")
     );
   }
 
@@ -2056,7 +2028,12 @@ export class Region2DConstraintBuilder {
     const extra: Controls.Widget[] = [];
     const props = this.plotSegment.object.properties;
     const type = props.sublayout.type;
-    if (type == "dodge-x" || type == "dodge-y" || type == "grid") {
+    if (
+      type == "dodge-x" ||
+      type == "dodge-y" ||
+      type == "grid" ||
+      type == "overlap"
+    ) {
       extra.push(
         m.row(
           "Align",
@@ -2163,6 +2140,7 @@ export class Region2DConstraintBuilder {
         )
       );
     }
+    const options = this.appliableSublayoutOptions();
     return [
       m.sectionHeader("Sub-layout"),
       m.row(
@@ -2171,14 +2149,9 @@ export class Region2DConstraintBuilder {
           { property: "sublayout", field: "type" },
           {
             type: "radio",
-            options: ["dodge-x", "dodge-y", "grid", "packing"],
-            icons: [
-              "sublayout/dodge-x",
-              "sublayout/dodge-y",
-              "sublayout/grid",
-              "sublayout/packing"
-            ],
-            labels: ["Stack X", "Stack Y", "Grid", "Packing"]
+            options: options.map(x => x.value),
+            icons: options.map(x => x.icon),
+            labels: options.map(x => x.label)
           }
         )
       ),
@@ -2220,7 +2193,12 @@ export class Region2DConstraintBuilder {
       const extra: Controls.Widget[] = [];
 
       const type = props.sublayout.type;
-      if (type == "dodge-x" || type == "dodge-y" || type == "grid") {
+      if (
+        type == "dodge-x" ||
+        type == "dodge-y" ||
+        type == "grid" ||
+        type == "overlap"
+      ) {
         extra.push(
           m.inputSelect(
             { property: "sublayout", field: ["align", "x"] },
@@ -2287,37 +2265,24 @@ export class Region2DConstraintBuilder {
           )
         );
       }
+      const options = this.appliableSublayoutOptions();
       sublayout = [
         m.inputSelect(
           { property: "sublayout", field: "type" },
           {
             type: "dropdown",
-            options: ["dodge-x", "dodge-y", "grid", "packing"],
-            icons: [
-              this.terminology.dodgeXIcon,
-              this.terminology.dodgeYIcon,
-              this.terminology.gridIcon,
-              this.terminology.packingIcon
-            ],
-            labels: [
-              this.terminology.dodgeX,
-              this.terminology.dodgeY,
-              this.terminology.grid,
-              this.terminology.packing
-            ]
+            options: options.map(x => x.value),
+            icons: options.map(x => x.icon),
+            labels: options.map(x => x.label)
           }
         ),
         ...extra
       ];
     }
 
-    const isXStackingOrNumerical =
-      props.xData &&
-      (props.xData.type == "numerical" || props.xData.type == "default");
-    const isYStackingOrNumerical =
-      props.yData &&
-      (props.yData.type == "numerical" || props.yData.type == "default");
-    if (isXStackingOrNumerical && !isYStackingOrNumerical) {
+    const isXStacking = props.xData && props.xData.type == "default";
+    const isYStacking = props.yData && props.yData.type == "default";
+    if (isXStacking && !isYStacking) {
       if (props.xData.type == "default") {
         sublayout.push(m.label(this.terminology.xAxis + ": Stacking"));
       }
@@ -2341,7 +2306,7 @@ export class Region2DConstraintBuilder {
         )
       );
     }
-    if (isYStackingOrNumerical && !isXStackingOrNumerical) {
+    if (isYStacking && !isXStacking) {
       if (props.yData.type == "default") {
         sublayout.push(m.label(this.terminology.yAxis + ": Stacking"));
       }
@@ -2365,7 +2330,7 @@ export class Region2DConstraintBuilder {
         )
       );
     }
-    if (isXStackingOrNumerical && isYStackingOrNumerical) {
+    if (isXStacking && isYStacking) {
       if (props.yData.type == "default") {
         sublayout.push(
           m.label(
