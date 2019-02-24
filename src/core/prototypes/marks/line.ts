@@ -142,7 +142,7 @@ export class LineElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "dx",
             attributeType: "number",
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line,
@@ -156,7 +156,7 @@ export class LineElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "dy",
             attributeType: "number",
-            hints: { autoRange: true }
+            hints: { autoRange: true, startWithZero: "always" }
           }
         }
       } as DropZones.Line
@@ -229,12 +229,12 @@ export class LineElementClass extends EmphasizableMarkClass<
     return [
       manager.sectionHeader("Line"),
       manager.mappingEditor("X Span", "dx", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),
       manager.mappingEditor("Y Span", "dy", {
-        hints: { autoRange: true },
+        hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true
       }),

@@ -31,6 +31,18 @@ export namespace Scale {
       }
     }
 
+    public adjustDomain(options: {
+      startWithZero?: "default" | "always" | "never";
+    }) {
+      if (options.startWithZero == "default" || options.startWithZero == null) {
+        if (this.domainMin > 0) {
+          this.domainMin = 0;
+        }
+      } else if (options.startWithZero == "always") {
+        this.domainMin = 0;
+      }
+    }
+
     public get(v: number) {
       return (v - this.domainMin) / (this.domainMax - this.domainMin);
     }

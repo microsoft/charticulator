@@ -18,6 +18,8 @@ export type OrderDescription = OrderDescriptionItem[];
 
 export interface DataMappingHints {
   rangeNumber?: [number, number];
+  // Make the domain start with zero (default: when domainMin > 0, make it zero)
+  startWithZero?: "default" | "never" | "always";
   autoRange?: boolean;
   rangeEnum?: string[];
   rangeImage?: string[];
