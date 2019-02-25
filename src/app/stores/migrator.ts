@@ -23,14 +23,6 @@ export class Migrator {
     // console.log(`Migrate state from ${state.version} to ${targetVersion}`);
 
     if (
-      compareVersion(state.version, "1.4.0") < 0 &&
-      compareVersion(targetVersion, "1.4.0") >= 0
-    ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
-      state = this.fixLinkOrder_v130(state);
-    }
-
-    if (
       compareVersion(state.version, "1.3.0") < 0 &&
       compareVersion(targetVersion, "1.3.0") >= 0
     ) {
@@ -58,6 +50,14 @@ export class Migrator {
       // Major change in spec from 1.1.0: the dataRowIndices are changed from number[] to number[][]
       state = this.fixDataRowIndices(state);
       state = this.fixDataMappingExpressions(state);
+    }
+
+    if (
+      compareVersion(state.version, "1.4.0") < 0 &&
+      compareVersion(targetVersion, "1.4.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.fixLinkOrder_v130(state);
     }
 
     // After migration, set version to targetVersion

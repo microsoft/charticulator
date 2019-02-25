@@ -69,7 +69,9 @@ export let cartesianTerminology: Region2DConfiguration = {
     gridDirectionX: "X",
     gridDirectionY: "Y",
     packing: "Packing",
-    packingIcon: "sublayout/packing"
+    packingIcon: "sublayout/packing",
+    overlap: "Overlap",
+    overlapIcon: "sublayout/overlap"
   },
   xAxisPrePostGap: false,
   yAxisPrePostGap: false
