@@ -1975,7 +1975,7 @@ export class Region2DConstraintBuilder {
     );
   }
 
-  public appliableSublayoutOptions() {
+  public applicableSublayoutOptions() {
     const overlapOption = {
       value: "overlap",
       label: this.terminology.overlap,
@@ -2019,11 +2019,11 @@ export class Region2DConstraintBuilder {
     return [overlapOption, packingOption];
   }
 
-  public isSublayoutAppliable() {
+  public isSublayoutApplicable() {
     const props = this.plotSegment.object.properties;
     const xMode = props.xData ? props.xData.type : "null";
     const yMode = props.yData ? props.yData.type : "null";
-    // Sublayout is not appliable when one of x, y is scaffold ("default"), or both of them are numerical
+    // Sublayout is not applicable when one of x, y is scaffold ("default"), or both of them are numerical
     return (
       xMode != "default" &&
       yMode != "default" &&
@@ -2155,7 +2155,7 @@ export class Region2DConstraintBuilder {
         );
       }
     }
-    const options = this.appliableSublayoutOptions();
+    const options = this.applicableSublayoutOptions();
     return [
       m.sectionHeader("Sub-layout"),
       m.row(
@@ -2186,7 +2186,7 @@ export class Region2DConstraintBuilder {
   }
 
   public buildPanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {
-    if (this.isSublayoutAppliable()) {
+    if (this.isSublayoutApplicable()) {
       return [
         ...this.buildAxisWidgets(m, this.terminology.xAxis, "x"),
         ...this.buildAxisWidgets(m, this.terminology.yAxis, "y"),
@@ -2204,7 +2204,7 @@ export class Region2DConstraintBuilder {
     const props = this.plotSegment.object.properties;
     let sublayout: Controls.Widget[] = [];
 
-    if (this.isSublayoutAppliable()) {
+    if (this.isSublayoutApplicable()) {
       const extra: Controls.Widget[] = [];
       const isXFixed = props.xData && props.xData.type == "numerical";
       const isYFixed = props.yData && props.yData.type == "numerical";
@@ -2287,7 +2287,7 @@ export class Region2DConstraintBuilder {
           );
         }
       }
-      const options = this.appliableSublayoutOptions();
+      const options = this.applicableSublayoutOptions();
       sublayout = [
         m.inputSelect(
           { property: "sublayout", field: "type" },
