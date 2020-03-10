@@ -15,7 +15,7 @@ import {
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
-import { Actions } from "../actions";
+import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
@@ -918,5 +918,68 @@ export class AppStore extends BaseStore {
         ...options
       });
     }
+  }
+
+  public updatePlotSegments() {
+    // Get plot segments to update with new data
+    const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
+      element => Prototypes.isType(element.classID, "plot-segment")
+    ) as Specification.PlotSegment[];
+    console.log(plotSegments);
+    plotSegments.forEach(plot => {
+      const table = this.dataset.tables.find(
+        table => table.name === plot.table
+      );
+
+      // xData
+      const xDataProperty: any = plot.properties.xData;
+      if (xDataProperty) {
+        const xData = new DragData.DataExpression(
+          table,
+          xDataProperty.expression,
+          xDataProperty.valueType,
+          {
+            kind: xDataProperty.type
+          }
+        );
+
+        new Actions.BindDataToAxis(plot, "xData", null, xData).dispatch(
+          this.dispatcher
+        );
+      }
+
+      // yData
+      const yDataProperty: any = plot.properties.yData;
+      if (yDataProperty) {
+        const yData = new DragData.DataExpression(
+          table,
+          yDataProperty.expression,
+          yDataProperty.valueType,
+          {
+            kind: yDataProperty.type
+          }
+        );
+
+        new Actions.BindDataToAxis(plot, "yData", null, yData).dispatch(
+          this.dispatcher
+        );
+      }
+
+      const axis: any = plot.properties.axis;
+      if (axis) {
+        const axisData = new DragData.DataExpression(
+          table,
+          axis.expression,
+          axis.valueType,
+          {
+            kind: axis.type
+          }
+        );
+
+        new Actions.BindDataToAxis(plot, "axis", null, axisData).dispatch(
+          this.dispatcher
+        );
+      }
+    });
   }
 }
