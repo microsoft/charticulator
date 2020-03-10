@@ -264,9 +264,13 @@ export class ChartTemplateBuilder {
         table = plotSegment.table;
       }
       if (Prototypes.isType(elementClass.object.classID, "links")) {
-        const linksTableName = this.dataset.tables[1].name;
+        const linksTableName = (elementClass.object.properties
+          .linkTable as Specification.AttributeMap).table as string;
         this.addTable(linksTableName); // TODO get table by type
-        this.dataset.tables[1].columns.forEach(linksColumn =>
+        const linksTable = this.dataset.tables.find(
+          table => table.name === linksTableName
+        );
+        linksTable.columns.forEach(linksColumn =>
           this.addColumn(linksTableName, linksColumn.name)
         );
         const table = this.dataset.tables[0];
