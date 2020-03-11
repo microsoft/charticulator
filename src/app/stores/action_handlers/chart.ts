@@ -11,11 +11,11 @@ import {
   Specification,
   uniqueID
 } from "../../../core";
-import { ValueType } from "../../../core/expression/classes";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
+import { BindDataToAxis } from "../../actions/actions";
 
 export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function(action) {
@@ -278,138 +278,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.BindDataToAxis, function(action) {
-    this.saveHistory();
-    const groupExpression = action.dataExpression.expression;
-    let dataBinding: Specification.Types.AxisDataBinding = {
-      type: "categorical",
-      expression: groupExpression,
-      valueType: action.dataExpression.valueType,
-      gapRatio: 0.1,
-      visible: true,
-      side: "default",
-      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle)
-    };
-
-    let expressions = [groupExpression];
-
-    if (action.appendToProperty) {
-      if (action.object.properties[action.appendToProperty] == null) {
-        action.object.properties[action.appendToProperty] = [
-          { name: uniqueID(), expression: groupExpression }
-        ];
-      } else {
-        (action.object.properties[action.appendToProperty] as any[]).push({
-          name: uniqueID(),
-          expression: groupExpression
-        });
-      }
-      expressions = (action.object.properties[
-        action.appendToProperty
-      ] as any[]).map(x => x.expression);
-      if (action.object.properties[action.property] == null) {
-        action.object.properties[action.property] = dataBinding;
-      } else {
-        dataBinding = action.object.properties[
-          action.property
-        ] as Specification.Types.AxisDataBinding;
-      }
-    } else {
-      action.object.properties[action.property] = dataBinding;
-    }
-
-    let groupBy: Specification.Types.GroupBy = null;
-    if (Prototypes.isType(action.object.classID, "plot-segment")) {
-      groupBy = (action.object as Specification.PlotSegment).groupBy;
-    } else {
-      // Find groupBy for data-driven guide
-      if (Prototypes.isType(action.object.classID, "mark")) {
-        for (const glyph of this.chart.glyphs) {
-          if (glyph.marks.indexOf(action.object) >= 0) {
-            // Found the glyph
-            this.chartManager.enumeratePlotSegments(cls => {
-              if (cls.object.glyph == glyph._id) {
-                groupBy = cls.object.groupBy;
-              }
-            });
-          }
-        }
-      }
-    }
-    let values: ValueType[] = [];
-    for (const expr of expressions) {
-      const r = this.chartManager.getGroupedExpressionVector(
-        action.dataExpression.table.name,
-        groupBy,
-        expr
-      );
-      values = values.concat(r);
-    }
-
-    switch (action.dataExpression.metadata.kind) {
-      case Specification.DataKind.Categorical:
-      case Specification.DataKind.Ordinal:
-        {
-          dataBinding.type = "categorical";
-          dataBinding.valueType = Specification.DataType.String;
-
-          if (action.dataExpression.metadata.order) {
-            dataBinding.categories = action.dataExpression.metadata.order.slice();
-          } else {
-            const scale = new Scale.CategoricalScale();
-            let orderMode: "alphabetically" | "occurrence" | "order" =
-              "alphabetically";
-            if (action.dataExpression.metadata.orderMode) {
-              orderMode = action.dataExpression.metadata.orderMode;
-            }
-            scale.inferParameters(values as string[], orderMode);
-            dataBinding.categories = new Array<string>(scale.length);
-            scale.domain.forEach(
-              (index, x) => (dataBinding.categories[index] = x.toString())
-            );
-          }
-        }
-        break;
-      case Specification.DataKind.Numerical:
-        {
-          const scale = new Scale.LinearScale();
-          scale.inferParameters(values as number[]);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "linear";
-        }
-        break;
-      case Specification.DataKind.Temporal:
-        {
-          const scale = new Scale.DateScale();
-          scale.inferParameters(values as number[]);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "temporal";
-        }
-        break;
-    }
-
-    // Adjust sublayout option if current option is not available
-    const props = action.object
-      .properties as Prototypes.PlotSegments.Region2DProperties;
-    if (props.sublayout) {
-      if (
-        props.sublayout.type == "dodge-x" ||
-        props.sublayout.type == "dodge-y" ||
-        props.sublayout.type == "grid"
-      ) {
-        if (props.xData && props.xData.type == "numerical") {
-          props.sublayout.type = "overlap";
-        }
-        if (props.yData && props.yData.type == "numerical") {
-          props.sublayout.type = "overlap";
-        }
-      }
-    }
-
+  REG.add(Actions.BindDataToAxis, function(action: BindDataToAxis) {
+    this.bindDataToAxis(action);
     this.solveConstraintsAndUpdateGraphics();
   });
 

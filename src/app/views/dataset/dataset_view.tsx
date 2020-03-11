@@ -115,7 +115,6 @@ export class ColumnsView extends React.Component<
                   store.dispatcher.dispatch(
                     new Actions.ReplaceDataset(newDataset)
                   );
-                  store.updatePlotSegments();
                 };
                 reader.readAsText(file);
               });

@@ -259,7 +259,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       this.dataset
     );
     this.chartState = this.chartManager.chartState;
-
+    this.updatePlotSegments();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
