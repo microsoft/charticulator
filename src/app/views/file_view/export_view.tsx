@@ -385,7 +385,6 @@ export class ExportTemplateView extends ContextedComponent<
         id
       ) as Specification.ExposableObject;
 
-
       if (object && (p.target.attribute || p.target.property)) {
         if (object.exposed == undefined) {
           object.exposed = true;
