@@ -372,57 +372,94 @@ export class ExportTemplateView extends ContextedComponent<
   }
 
   public renderExposedProperties() {
+    const template = this.state.template;
     const result: JSX.Element[] = [];
+    const templateObjects = new Map<string, Specification.ExposableObject>();
     for (const p of this.state.template.properties) {
       const id = p.objectID;
-      const obj = findObjectById(this.state.template.specification, id);
-      if (p.target.attribute) {
-        result.push(
-          <div key={id + p.target.attribute}>
-            {this.renderInput(
-              obj.properties.name + "/" + p.target.attribute,
-              "string",
-              p.displayName,
-              value => {
-                p.displayName = value;
-                this.setState({
-                  template: this.state.template
-                });
-              }
-            )}
-          </div>
-        );
-      }
-      if (p.target.property) {
-        const pf = p.target.property;
-        let pfstr = null;
-        if (typeof pf == "string") {
-          pfstr = pf;
-        } else {
-          pfstr =
-            pf.property +
-            "/" +
-            (typeof pf.field == "string" || typeof pf.field == "number"
-              ? pf.field
-              : pf.field.join("."));
+      const object = findObjectById(
+        this.state.template.specification,
+        id
+      ) as Specification.ExposableObject;
+      if (object && (p.target.attribute || p.target.property)) {
+        if (object.exposed == undefined) {
+          object.exposed = true;
         }
-        result.push(
-          <div key={id + pfstr}>
-            {this.renderInput(
-              obj.properties.name + "/" + pfstr,
-              "string",
-              p.displayName,
-              value => {
-                p.displayName = value;
-                this.setState({
-                  template: this.state.template
-                });
-              }
-            )}
-          </div>
-        );
+        templateObjects.set(id, object as Specification.ExposableObject);
       }
     }
+    for (const [key, object] of templateObjects) {
+      result.push(
+        <div
+          key={key}
+          className="el-inference-item"
+          onClick={() => {
+            object.exposed = !object.exposed;
+            this.setState({ template });
+          }}
+        >
+          <SVGImageIcon
+            url={
+              !object.exposed
+                ? R.getSVGIcon("checkbox/empty")
+                : R.getSVGIcon("checkbox/checked")
+            }
+          />
+          <span className="el-text">{object.properties.name}</span>
+        </div>
+      );
+    }
+    // debugger;
+    // for (const p of this.state.template.properties) {
+    //   const id = p.objectID;
+    //   const obj = findObjectById(this.state.template.specification, id);
+    //   // if (obj && p.target.attribute) {
+    //   //   result.push(
+    //   //     <div key={id + p.target.attribute}>
+    //   //       {this.renderInput(
+    //   //         obj.properties.name + "/" + p.target.attribute,
+    //   //         "string",
+    //   //         p.displayName,
+    //   //         value => {
+    //   //           p.displayName = value;
+    //   //           this.setState({
+    //   //             template: this.state.template
+    //   //           });
+    //   //         }
+    //   //       )}
+    //   //     </div>
+    //   //   );
+    //   // }
+    //   if (obj && p.target.property) {
+    //     const pf = p.target.property;
+    //     let pfstr = null;
+    //     if (typeof pf == "string") {
+    //       pfstr = pf;
+    //     } else {
+    //       pfstr =
+    //         pf.property +
+    //         "/" +
+    //         (typeof pf.field == "string" || typeof pf.field == "number"
+    //           ? pf.field
+    //           : pf.field.join("."));
+    //     }
+    //     result.push(
+    //       <div key={id + pfstr}>
+    //         {this.renderInput(
+    //           obj.properties.name + "/" + pfstr,
+    //           "string",
+    //           p.displayName,
+    //           value => {
+    //             p.displayName = value;
+    //             this.setState({
+    //               template: this.state.template
+    //             });
+    //           }
+    //         )}
+    //       </div>
+    //     );
+    //   }
+    // }
     return result;
   }
 
@@ -433,7 +470,7 @@ export class ExportTemplateView extends ContextedComponent<
         {this.renderSlots()}
         <h2>Axes and Scales</h2>
         {this.renderInferences()}
-        <h2>Exposed Properties</h2>
+        <h2>Exposed objects</h2>
         {this.renderExposedProperties()}
         <h2>{this.props.exportKind} Properties</h2>
         {this.renderTargetProperties()}
