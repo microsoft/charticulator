@@ -15,7 +15,7 @@ import {
   SnappingGuides,
   TemplateParameters
 } from "../../common";
-import { AxisRenderer, buildAxisInference } from "../axis";
+import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
@@ -483,11 +483,14 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
+    let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
       r.push(buildAxisInference(this.object, "xData"));
+      p = p.concat(buildAxisProperties(this.object, "xData"));
     }
     if (this.object.properties.yData) {
       r.push(buildAxisInference(this.object, "yData"));
+      p = p.concat(buildAxisProperties(this.object, "yData"));
     }
     if (
       this.object.properties.sublayout.order &&
@@ -505,6 +508,6 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         }
       });
     }
-    return { inferences: r };
+    return { inferences: r, properties: p };
   }
 }

@@ -175,6 +175,10 @@ export interface Object<
   mappings: Mappings;
 }
 
+export interface ExposableObject extends Object {
+  exposed: boolean;
+}
+
 /** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a group of data rows */
 export interface Element<
   PropertiesType extends ObjectProperties = ObjectProperties
