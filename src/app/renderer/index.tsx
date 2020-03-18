@@ -68,7 +68,6 @@ export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
   return { r, g, b };
 }
 
-<<<<<<< HEAD
 /** Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
  * @param color {@Color} object or color string in HEX format (`#RRGGBB`)
  */
@@ -76,9 +75,6 @@ export function renderColor(
   color: Color | string,
   colorFilter?: ColorFilter
 ): string {
-=======
-export function renderColor(color: Color | string, colorFilter?: ColorFilter): string {
->>>>>>> Expose properties of marks
   if (!color) {
     return `rgb(0,0,0)`;
   }
@@ -89,7 +85,7 @@ export function renderColor(color: Color | string, colorFilter?: ColorFilter): s
     if (colorFilter) {
       color = applyColorFilter(color, colorFilter);
     }
-  
+
     return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
       0
     )})`;
