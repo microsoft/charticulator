@@ -7,7 +7,8 @@ import {
   Color,
   shallowClone,
   getColorConverter,
-  uniqueID
+  uniqueID,
+  hexToRgb
 } from "../../core";
 import { toSVGNumber } from "../utils";
 import {
@@ -67,16 +68,22 @@ export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
   return { r, g, b };
 }
 
-export function renderColor(color: Color, colorFilter?: ColorFilter): string {
+export function renderColor(color: Color | string, colorFilter?: ColorFilter): string {
   if (!color) {
     return `rgb(0,0,0)`;
   }
-  if (colorFilter) {
-    color = applyColorFilter(color, colorFilter);
+  if (typeof color === "string") {
+    color = hexToRgb(color);
   }
-  return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
-    0
-  )})`;
+  if (typeof color === "object") {
+    if (colorFilter) {
+      color = applyColorFilter(color, colorFilter);
+    }
+  
+    return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
+      0
+    )})`;
+  }
 }
 
 export function renderStyle(style: Graphics.Style): React.CSSProperties {

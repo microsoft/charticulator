@@ -6,13 +6,14 @@ import {
   getById,
   indexOf,
   MultistringHashMap,
-  Point
+  Point,
+  rgbToHex
 } from "../../common";
 import * as Expression from "../../expression";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
-import { Controls, ObjectClassMetadata } from "../common";
+import { Controls, ObjectClassMetadata, TemplateParameters } from "../common";
 import { DataflowTable } from "../dataflow";
 import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
@@ -683,6 +684,41 @@ export abstract class LinksClass extends ChartElementClass {
       })
     );
     return widgets;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    // debugger;
+    return {
+      properties: [
+        {
+          objectID: this.object._id,
+          target: {
+            property: "color"
+          },
+          type: Specification.AttributeType.Color,
+          default: rgbToHex((this.object.mappings
+            .color as Specification.ValueMapping).value as Color) // TODO fix it
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "strokeWidth"
+          },
+          type: Specification.AttributeType.Number,
+          default: (this.object.mappings
+            .strokeWidth as Specification.ValueMapping).value as number // TODO fix it
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "opacity"
+          },
+          type: Specification.AttributeType.Number,
+          default: (this.object.mappings.opacity as Specification.ValueMapping)
+            .value as number // TODO fix it
+        }
+      ]
+    };
   }
 }
 

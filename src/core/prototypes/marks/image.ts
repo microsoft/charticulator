@@ -12,7 +12,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -619,5 +620,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return null;
   }
 }

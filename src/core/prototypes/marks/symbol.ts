@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Point, Color, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import {
@@ -11,7 +11,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -327,5 +328,71 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       })
     ]);
     return widgets;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      properties: [
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "visible"
+          },
+          type: Specification.AttributeType.Boolean,
+          default: this.state.attributes.visible
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "fill"
+          },
+          type: Specification.AttributeType.Color,
+          default:
+            this.state.attributes.fill &&
+            rgbToHex(this.state.attributes.fill as Color)
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "strokeWidth"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.strokeWidth
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "stroke"
+          },
+          type: Specification.AttributeType.Color,
+          default:
+            this.state.attributes.stroke && rgbToHex(this.state.attributes.fill)
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "size"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.size
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "opacity"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.opacity
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "symbol"
+          },
+          type: Specification.AttributeType.Enum,
+          default: this.state.attributes.symbol
+        }
+      ]
+    };
   }
 }
