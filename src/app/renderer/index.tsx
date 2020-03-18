@@ -108,7 +108,8 @@ export function renderStyle(style: Graphics.Style): React.CSSProperties {
       : "none",
     fillOpacity: style.fillOpacity != undefined ? style.fillOpacity : 1,
     textAnchor: style.textAnchor != undefined ? style.textAnchor : "start",
-    opacity: style.opacity != undefined ? style.opacity : 1
+    opacity: style.opacity != undefined ? style.opacity : 1,
+    strokeDasharray: style.strokeDasharray != undefined ? style.strokeDasharray : null
   };
 }
 
