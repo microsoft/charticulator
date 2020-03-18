@@ -85,6 +85,7 @@ export function renderColor(
     if (colorFilter) {
       color = applyColorFilter(color, colorFilter);
     }
+  
     return `rgb(${color.r.toFixed(0)},${color.g.toFixed(0)},${color.b.toFixed(
       0
     )})`;
