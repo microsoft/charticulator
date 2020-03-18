@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
@@ -12,7 +12,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -571,5 +572,67 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    if (
+      this.object.mappings.text &&
+      this.object.mappings.text.type != "value"
+    ) {
+      return null;
+    } else {
+      return {
+        properties: [
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "text"
+            },
+            type: Specification.AttributeType.Text,
+            default: this.state.attributes.text
+          },
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "fontFamily"
+            },
+            type: Specification.AttributeType.FontFamily,
+            default: this.state.attributes.fontFamily
+          },
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "fontSize"
+            },
+            type: Specification.AttributeType.Number,
+            default: this.state.attributes.fontSize
+          },
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "color"
+            },
+            type: Specification.AttributeType.Color,
+            default: rgbToHex(this.state.attributes.color)
+          },
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "visible"
+            },
+            type: Specification.AttributeType.Boolean,
+            default: this.state.attributes.visible
+          },
+          {
+            objectID: this.object._id,
+            target: {
+              attribute: "opacity"
+            },
+            type: Specification.AttributeType.Number,
+            default: this.state.attributes.opacity
+          }
+        ]
+      };
+    }
   }
 }
