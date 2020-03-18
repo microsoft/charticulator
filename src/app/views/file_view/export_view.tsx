@@ -290,7 +290,7 @@ export class ExportTemplateView extends ContextedComponent<
             }>
               <InputImageProperty
                 value={value as Specification.Types.Image}
-                onChange={image => {
+                onChange={(image: any) => {
                   onChange(image);
                   return true;
                 }}
