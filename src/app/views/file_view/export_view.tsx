@@ -417,7 +417,6 @@ export class ExportTemplateView extends ContextedComponent<
         </div>
       );
     }
-
     return result;
   }
 
