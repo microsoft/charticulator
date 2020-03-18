@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -12,8 +12,9 @@ import {
 } from "../../graphics";
 import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
-import { Controls } from "../common";
+import { Controls, TemplateParameters } from "../common";
 import { format } from "d3-format";
+import { AttributeMap } from "../../specification";
 
 export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -857,7 +858,58 @@ export function buildAxisInference(
     axis: {
       expression: axis.expression,
       type: axis.type,
+      style: axis.style,
       property
     }
   };
+}
+
+export function buildAxisProperties(
+  plotSegment: Specification.PlotSegment,
+  property: string
+): Specification.Template.Property[] {
+  const axisObject = plotSegment.properties[property] as AttributeMap;
+  const style: any = axisObject.style;
+  return [
+    {
+      objectID: axisObject._id as string,
+      target: {
+        attribute: "tickSize"
+      },
+      type: Specification.AttributeType.Number,
+      default: style.tickSize
+    },
+    {
+      objectID: axisObject._id as string,
+      target: {
+        attribute: "fontSize"
+      },
+      type: Specification.AttributeType.Number,
+      default: style.fontSize
+    },
+    {
+      objectID: axisObject._id as string,
+      target: {
+        attribute: "fontFamily"
+      },
+      type: Specification.AttributeType.FontFamily,
+      default: style.fontFamily
+    },
+    {
+      objectID: axisObject._id as string,
+      target: {
+        attribute: "lineColor"
+      },
+      type: Specification.AttributeType.Color,
+      default: rgbToHex(style.lineColor)
+    },
+    {
+      objectID: axisObject._id as string,
+      target: {
+        attribute: "tickColor"
+      },
+      type: Specification.AttributeType.Color,
+      default: rgbToHex(style.tickColor)
+    }
+  ];
 }

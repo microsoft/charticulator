@@ -6,6 +6,7 @@ import * as Dataset from "../dataset";
 import { DefaultAttributes } from "../prototypes";
 import { Chart, DataType, AttributeType } from "./index";
 import * as Types from "./types";
+import { AxisRenderingStyle } from "./types";
 
 export type PropertyField = string | { property: string; field: FieldType };
 
@@ -76,7 +77,7 @@ export interface AxisInference {
 
   /** Type */
   type: "default" | "categorical" | "numerical";
-
+  style?: AxisRenderingStyle;
   /** Infer axis data and assign to this property */
   property: PropertyField;
 }
