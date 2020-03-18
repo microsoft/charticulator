@@ -693,7 +693,7 @@ export abstract class LinksClass extends ChartElementClass {
         {
           objectID: this.object._id,
           target: {
-            property: "color"
+            attribute: "color"
           },
           type: Specification.AttributeType.Color,
           default: rgbToHex((this.object.mappings
@@ -702,7 +702,7 @@ export abstract class LinksClass extends ChartElementClass {
         {
           objectID: this.object._id,
           target: {
-            property: "strokeWidth"
+            attribute: "strokeWidth"
           },
           type: Specification.AttributeType.Number,
           default: (this.object.mappings
@@ -711,7 +711,7 @@ export abstract class LinksClass extends ChartElementClass {
         {
           objectID: this.object._id,
           target: {
-            property: "opacity"
+            attribute: "opacity"
           },
           type: Specification.AttributeType.Number,
           default: (this.object.mappings.opacity as Specification.ValueMapping)
