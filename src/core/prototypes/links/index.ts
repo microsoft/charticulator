@@ -188,13 +188,13 @@ export abstract class LinksClass extends ChartElementClass {
         const x = (pt.x.element < 0
           ? glyphState.attributes[pt.x.attribute]
           : glyphState.marks[pt.x.element].attributes[
-              pt.x.attribute
-            ]) as number;
+          pt.x.attribute
+          ]) as number;
         const y = (pt.y.element < 0
           ? glyphState.attributes[pt.y.attribute]
           : glyphState.marks[pt.y.element].attributes[
-              pt.y.attribute
-            ]) as number;
+          pt.y.attribute
+          ]) as number;
         const px = dx + x;
         const py = dy + y;
         return {
@@ -698,35 +698,29 @@ export abstract class LinksClass extends ChartElementClass {
         {
           objectID: this.object._id,
           target: {
-            attribute: "color"
+            property: "color"
           },
           type: Specification.AttributeType.Color,
-          default:
-            this.object.mappings.color &&
-            rgbToHex((this.object.mappings.color as Specification.ValueMapping)
-              .value as Color) // TODO fix it
+          default: rgbToHex((this.object.mappings
+            .color as Specification.ValueMapping).value as Color) // TODO fix it
         },
         {
           objectID: this.object._id,
           target: {
-            attribute: "strokeWidth"
+            property: "strokeWidth"
           },
           type: Specification.AttributeType.Number,
-          default:
-            this.object.mappings.strokeWidth &&
-            ((this.object.mappings.strokeWidth as Specification.ValueMapping)
-              .value as number) // TODO fix it
+          default: (this.object.mappings
+            .strokeWidth as Specification.ValueMapping).value as number // TODO fix it
         },
         {
           objectID: this.object._id,
           target: {
-            attribute: "opacity"
+            property: "opacity"
           },
           type: Specification.AttributeType.Number,
-          default:
-            this.object.mappings.opacity &&
-            ((this.object.mappings.opacity as Specification.ValueMapping)
-              .value as number) // TODO fix it
+          default: (this.object.mappings.opacity as Specification.ValueMapping)
+            .value as number // TODO fix it
         }
       ]
     };

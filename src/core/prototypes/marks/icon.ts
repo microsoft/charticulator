@@ -28,7 +28,7 @@ export { IconElementAttributes, IconElementProperties };
 export class IconElementClass extends EmphasizableMarkClass<
   IconElementProperties,
   IconElementAttributes
-> {
+  > {
   public static classID = "mark.icon";
   public static type = "mark";
 
@@ -300,10 +300,10 @@ export class IconElementClass extends EmphasizableMarkClass<
           ),
           props.alignment.x != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber({ property: "alignment", field: "xMargin" })
-              )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber({ property: "alignment", field: "xMargin" })
+            )
             : null
         )
       ),
@@ -326,10 +326,10 @@ export class IconElementClass extends EmphasizableMarkClass<
           ),
           props.alignment.y != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber({ property: "alignment", field: "yMargin" })
-              )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber({ property: "alignment", field: "yMargin" })
+            )
             : null
         )
       ),

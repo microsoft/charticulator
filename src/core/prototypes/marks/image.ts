@@ -35,7 +35,7 @@ export { ImageElementAttributes, ImageElementProperties };
 export class ImageElementClass extends EmphasizableMarkClass<
   ImageElementProperties,
   ImageElementAttributes
-> {
+  > {
   public static classID = "mark.image";
   public static type = "mark";
 
@@ -118,31 +118,31 @@ export class ImageElementClass extends EmphasizableMarkClass<
       ),
       ...(this.object.properties.imageMode == "letterbox"
         ? [
-            manager.row(
-              "Align",
-              manager.horizontal(
-                [0, 1],
-                manager.inputSelect(
-                  { property: "alignX" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"]
-                  }
-                ),
-                manager.inputSelect(
-                  { property: "alignY" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"]
-                  }
-                )
+          manager.row(
+            "Align",
+            manager.horizontal(
+              [0, 1],
+              manager.inputSelect(
+                { property: "alignX" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: ["align/left", "align/x-middle", "align/right"],
+                  labels: ["Left", "Middle", "Right"]
+                }
+              ),
+              manager.inputSelect(
+                { property: "alignY" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: ["align/bottom", "align/y-middle", "align/top"],
+                  labels: ["Bottom", "Middle", "Top"]
+                }
               )
             )
-          ]
+          )
+        ]
         : []),
       manager.row(
         "Padding",
