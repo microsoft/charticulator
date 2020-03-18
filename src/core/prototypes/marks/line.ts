@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Point } from "../../common";
+import { Point, rgbToHex, Color } from "../../common";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import {
@@ -16,7 +16,8 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 
 import * as Graphics from "../../graphics";
@@ -254,5 +255,38 @@ export class LineElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      properties: [
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "visible"
+          },
+          type: Specification.AttributeType.Boolean,
+          default: this.state.attributes.visible
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "stroke"
+          },
+          type: Specification.AttributeType.Color,
+          default:
+            this.state.attributes.stroke &&
+            rgbToHex(this.state.attributes.stroke as Color)
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "strokeWidth"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.strokeWidth
+        }
+      ]
+    };
   }
 }
