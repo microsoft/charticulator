@@ -331,68 +331,102 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.fill &&
+      this.object.mappings.fill.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fill"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fill as Color)
+      });
+    }
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.stroke)
+      });
+    }
+    if (
+      this.object.mappings.size &&
+      this.object.mappings.size.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "size"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.size
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+    if (
+      this.object.mappings.symbol &&
+      this.object.mappings.symbol.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "symbol"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.state.attributes.symbol
+      });
+    }
+
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "visible"
-          },
-          type: Specification.AttributeType.Boolean,
-          default: this.state.attributes.visible
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "fill"
-          },
-          type: Specification.AttributeType.Color,
-          default:
-            this.state.attributes.fill &&
-            rgbToHex(this.state.attributes.fill as Color)
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "strokeWidth"
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.strokeWidth
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "stroke"
-          },
-          type: Specification.AttributeType.Color,
-          default:
-            this.state.attributes.stroke && rgbToHex(this.state.attributes.fill)
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "size"
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.size
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "opacity"
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.opacity
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "symbol"
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.state.attributes.symbol
-        }
-      ]
+      properties
     };
   }
 }

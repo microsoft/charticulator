@@ -209,7 +209,6 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getTemplateParameters(): TemplateParameters {
-    // debugger;
     return {
       properties: [
         {

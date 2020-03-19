@@ -258,35 +258,51 @@ export class LineElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+    if (this.object.mappings.visible.type !== "scale") {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (this.object.mappings.stroke.type !== "scale") {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default:
+          this.state.attributes.stroke &&
+          rgbToHex(this.state.attributes.stroke as Color)
+      });
+    }
+    if (this.object.mappings.strokeWidth.type !== "scale") {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (this.object.mappings.opacity.type !== "scale") {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "visible"
-          },
-          type: Specification.AttributeType.Boolean,
-          default: this.state.attributes.visible
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "stroke"
-          },
-          type: Specification.AttributeType.Color,
-          default:
-            this.state.attributes.stroke &&
-            rgbToHex(this.state.attributes.stroke as Color)
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "strokeWidth"
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.strokeWidth
-        }
-      ]
+      properties
     };
   }
 }
