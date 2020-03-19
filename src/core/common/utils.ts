@@ -517,6 +517,9 @@ function componentToHex(c: number) {
  * @returns Hex representation of color
  */
 export function rgbToHex(color: Color) {
+  if (!color) {
+    return null;
+  }
   return (
     "#" +
     componentToHex(color.r) +

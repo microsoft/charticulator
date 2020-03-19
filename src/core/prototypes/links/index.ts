@@ -687,7 +687,6 @@ export abstract class LinksClass extends ChartElementClass {
   }
 
   public getTemplateParameters(): TemplateParameters {
-    // debugger;
     return {
       properties: [
         {

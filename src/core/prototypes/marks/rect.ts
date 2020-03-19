@@ -80,51 +80,77 @@ export class RectElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
     if (
-      this.object.mappings.text &&
-      this.object.mappings.text.type != "value"
+      this.object.mappings.fill &&
+      this.object.mappings.fill.type === "value"
     ) {
-      return null;
-    } else {
-      return {
-        properties: [
-          {
-            objectID: this.object._id,
-            target: {
-              attribute: "fill"
-            },
-            type: Specification.AttributeType.Color,
-            default: rgbToHex(this.state.attributes.fill)
-          },
-          {
-            objectID: this.object._id,
-            target: {
-              attribute: "visible"
-            },
-            type: Specification.AttributeType.Boolean,
-            default: this.state.attributes.visible
-          },
-          {
-            objectID: this.object._id,
-            target: {
-              attribute: "stroke"
-            },
-            type: Specification.AttributeType.Color,
-            default:
-              this.state.attributes.stroke &&
-              rgbToHex(this.state.attributes.fill)
-          },
-          {
-            objectID: this.object._id,
-            target: {
-              attribute: "strokeWidth"
-            },
-            type: Specification.AttributeType.Number,
-            default: this.state.attributes.strokeWidth
-          }
-        ]
-      };
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fill"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fill)
+      });
     }
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.stroke)
+      });
+    }
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+
+    return {
+      properties
+    };
   }
 
   public getAttributePanelWidgets(

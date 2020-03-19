@@ -333,50 +333,72 @@ export class TextElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    // debugger;
-    const properties = [
-      {
+    const properties = [];
+    if (
+      this.object.mappings.fontFamily &&
+      this.object.mappings.fontFamily.type === "value"
+    ) {
+      properties.push({
         objectID: this.object._id,
         target: {
           attribute: "fontFamily"
         },
         type: Specification.AttributeType.FontFamily,
         default: this.state.attributes.fontFamily
-      },
-      {
+      });
+    }
+    if (
+      this.object.mappings.fontSize &&
+      this.object.mappings.fontSize.type === "value"
+    ) {
+      properties.push({
         objectID: this.object._id,
         target: {
           attribute: "fontSize"
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.fontSize
-      },
-      {
+      });
+    }
+    if (
+      this.object.mappings.color &&
+      this.object.mappings.color.type === "value"
+    ) {
+      properties.push({
         objectID: this.object._id,
         target: {
           attribute: "color"
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.state.attributes.color)
-      },
-      {
+      });
+    }
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
         objectID: this.object._id,
         target: {
           attribute: "visible"
         },
         type: Specification.AttributeType.Boolean,
         default: this.state.attributes.visible
-      },
-      {
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
         objectID: this.object._id,
         target: {
           attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.opacity
-      }
-    ];
-
+      });
+    }
     if (
       this.object.mappings.text &&
       this.object.mappings.text.type === "value"
