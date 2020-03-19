@@ -479,7 +479,6 @@ export class ExportTemplateView extends ContextedComponent<
         </div>
       );
     }
-    // debugger;
     // for (const p of this.state.template.properties) {
     //   const id = p.objectID;
     //   const obj = findObjectById(this.state.template.specification, id);

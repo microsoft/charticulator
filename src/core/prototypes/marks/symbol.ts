@@ -334,29 +334,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    const properties = [];
-
-    if (
-      this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
-    ) {
-      properties.push({
-        objectID: this.object._id,
-        target: {
-          attribute: "visible"
         },
-        type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible
-      });
-    }
-    if (
-      this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
-    ) {
-      properties.push({
-        objectID: this.object._id,
-        target: {
-          attribute: "fill"
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.state.attributes.fill as Color)
