@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Geometry, Point } from "../../common";
+import { Geometry, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
@@ -623,6 +623,87 @@ export class ImageElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    return null;
+    const properties = [];
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.image &&
+      this.object.mappings.image.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "image"
+        },
+        type: Specification.AttributeType.Image,
+        default: this.state.attributes.image.src
+      });
+    }
+    if (
+      this.object.mappings.fill &&
+      this.object.mappings.fill.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fill"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fill)
+      });
+    }
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.stroke)
+      });
+    }
+    return {
+      properties
+    };
   }
 }
