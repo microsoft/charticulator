@@ -156,6 +156,7 @@ export class AppStore extends BaseStore {
   }
 
   public saveState(): AppStoreState {
+    this.updateChartState();
     return {
       version: CHARTICULATOR_PACKAGE.version,
       dataset: this.dataset,
@@ -221,6 +222,44 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
+  }
+
+  // removes unused scale objecs
+  private updateChartState() {
+    function hasMappedProperty(
+      mappings: Specification.Mappings,
+      scaleId: string
+    ) {
+      for (const map in mappings) {
+        if (mappings[map].type === "scale") {
+          if ((mappings[map] as any).scale === scaleId) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    const chart = this.chart;
+    chart.scales = chart.scales.filter(scale => {
+      return (
+        chart.elements.find((element: any) => {
+          if ((element as Specification.Object).mappings) {
+            const mappings = (element as Specification.Object).mappings;
+            return hasMappedProperty(mappings, scale._id);
+          }
+          return false;
+        }) ||
+        chart.glyphs.find(glyph => {
+          return glyph.marks.find(mark => {
+            if ((mark as Specification.Object).mappings) {
+              const mappings = (mark as Specification.Object).mappings;
+              return hasMappedProperty(mappings, scale._id);
+            }
+            return false;
+          });
+        })
+      );
+    });
   }
 
   public async backendSaveChart() {
