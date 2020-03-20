@@ -248,15 +248,17 @@ export class AppStore extends BaseStore {
             return hasMappedProperty(mappings, scale._id);
           }
           return false;
-        }) ||
+        }) != null ||
         chart.glyphs.find(glyph => {
-          return glyph.marks.find(mark => {
-            if ((mark as Specification.Object).mappings) {
-              const mappings = (mark as Specification.Object).mappings;
-              return hasMappedProperty(mappings, scale._id);
-            }
-            return false;
-          });
+          return (
+            glyph.marks.find(mark => {
+              if ((mark as Specification.Object).mappings) {
+                const mappings = (mark as Specification.Object).mappings;
+                return hasMappedProperty(mappings, scale._id);
+              }
+              return false;
+            }) != null
+          );
         })
       );
     });
