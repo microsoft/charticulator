@@ -10,7 +10,7 @@ import { ImageElementClass } from "./image";
 import { LineElementClass } from "./line";
 import { NestedChartElementClass } from "./nested_chart";
 import { RectElementClass } from "./rect";
-import { SymbolElementClass } from "./symbol";
+import { SymbolElementClass, symbolTypesList } from "./symbol";
 import { TextElementClass } from "./text";
 import { IconElementClass } from "./icon";
 import { TextboxElementClass } from "./textbox";
@@ -28,4 +28,4 @@ export function registerClasses() {
   ObjectClasses.Register(DataAxisClass);
 }
 
-export { CreationParameters, MarkClass };
+export { CreationParameters, MarkClass, symbolTypesList };
