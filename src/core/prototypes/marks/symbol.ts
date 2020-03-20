@@ -12,7 +12,8 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters
+  TemplateParameters,
+  AttributeDescriptions
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -22,6 +23,8 @@ import {
   SymbolElementProperties,
   symbolTypes
 } from "./symbol.attrs";
+
+export const symbolTypesList = symbolTypes;
 
 export { SymbolElementAttributes, SymbolElementProperties };
 
@@ -53,7 +56,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     visible: true
   };
 
-  public attributes = symbolAttributes;
+  public attributes: AttributeDescriptions = symbolAttributes;
   public attributeNames = Object.keys(symbolAttributes);
 
   public initializeState(): void {
