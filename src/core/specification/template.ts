@@ -62,6 +62,10 @@ export interface Inference {
   description?: string;
   /** Disable any automatic domain/range/axis behavior */
   disableAuto?: boolean;
+  /** Disable any automatic domain/range/axis behavior for min of range */
+  disableAutoMin?: boolean;
+  /** Disable any automatic domain/range/axis behavior for max of range */
+  disableAutoMax?: boolean;
 
   axis?: AxisInference;
   scale?: ScaleInference;

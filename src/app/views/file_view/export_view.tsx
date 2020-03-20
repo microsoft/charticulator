@@ -331,41 +331,63 @@ export class ExportTemplateView extends ContextedComponent<
         // Only show axis and scale inferences
         .filter(inference => inference.axis || inference.scale)
         .map((inference, index) => {
-          let description = inference.description;
-          if (!description) {
+          let descriptionMin = inference.description;
+          let descriptionMax = inference.description;
+          if (!descriptionMin) {
             if (inference.scale) {
               const scaleName = findObjectById(
                 template.specification,
                 inference.objectID
               ).properties.name;
-              description = `Auto domain and range for ${scaleName}`;
+              descriptionMin = `Auto min domain and range for ${scaleName}`;
+              descriptionMax = `Auto max domain and range for ${scaleName}`;
             }
             if (inference.axis) {
               const objectName = findObjectById(
                 template.specification,
                 inference.objectID
               ).properties.name;
-              description = `Auto axis range for ${objectName}/${inference.axis.property.toString()}`;
+              descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
+              descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
           return (
-            <div
+            <>
+              <div
               key={index}
               className="el-inference-item"
               onClick={() => {
-                inference.disableAuto = !inference.disableAuto;
+                inference.disableAutoMin = !inference.disableAutoMin;
                 this.setState({ template });
               }}
             >
               <SVGImageIcon
                 url={
-                  inference.disableAuto
+                  inference.disableAutoMin
                     ? R.getSVGIcon("checkbox/empty")
                     : R.getSVGIcon("checkbox/checked")
                 }
               />
-              <span className="el-text">{description}</span>
+              <span className="el-text">{descriptionMin}</span>
             </div>
+            <div
+              key={index}
+              className="el-inference-item"
+              onClick={() => {
+                inference.disableAutoMax = !inference.disableAutoMax;
+                this.setState({ template });
+              }}
+            >
+              <SVGImageIcon
+                url={
+                  inference.disableAutoMax
+                    ? R.getSVGIcon("checkbox/empty")
+                    : R.getSVGIcon("checkbox/checked")
+                }
+              />
+              <span className="el-text">{descriptionMax}</span>
+            </div>
+            </>
           );
         })
     );
