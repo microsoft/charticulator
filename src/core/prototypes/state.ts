@@ -17,6 +17,7 @@ import { DataflowManager, DataflowTable } from "./dataflow";
 import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
 import { ChartConstraintSolver } from "../solver";
+import { ValueType } from "../expression/classes";
 
 /**
  * Represents a set of default attributes
@@ -835,7 +836,7 @@ export class ChartStateManager {
     tableName: string,
     groupBy: Specification.Types.GroupBy,
     expression: string
-  ) {
+  ): ValueType[] {
     const expr = this.dataflow.cache.parse(expression);
     const table = this.dataflow.getTable(tableName);
     if (!table) {
