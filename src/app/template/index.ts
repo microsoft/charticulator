@@ -164,6 +164,12 @@ export class ChartTemplateBuilder {
                       }
                     }
                   }
+                  if (
+                    item.kind == "chart-element" &&
+                    Prototypes.isType(item.chartElement.classID, "links")
+                  ) {
+                    table = (item.object.properties.linkTable as any).table;
+                  }
                 }
               }
             }
@@ -264,20 +270,23 @@ export class ChartTemplateBuilder {
         table = plotSegment.table;
       }
       if (Prototypes.isType(elementClass.object.classID, "links")) {
-        const linksTableName = (elementClass.object.properties
-          .linkTable as Specification.AttributeMap).table as string;
-        this.addTable(linksTableName); // TODO get table by type
-        const linksTable = this.dataset.tables.find(
-          table => table.name === linksTableName
-        );
-        linksTable.columns.forEach(linksColumn =>
-          this.addColumn(linksTableName, linksColumn.name)
-        );
-        const table = this.dataset.tables[0];
-        const idColumn =
-          table && table.columns.find(column => column.name === "id");
-        if (idColumn) {
-          this.addColumn(table.name, idColumn.name);
+        const linkTable = elementClass.object.properties
+          .linkTable as Specification.AttributeMap;
+        if (linkTable) {
+          const linksTableName = linkTable.table as string;
+          this.addTable(linksTableName); // TODO get table by type
+          const linksTable = this.dataset.tables.find(
+            table => table.name === linksTableName
+          );
+          linksTable.columns.forEach(linksColumn =>
+            this.addColumn(linksTableName, linksColumn.name)
+          );
+          const table = this.dataset.tables[0];
+          const idColumn =
+            table && table.columns.find(column => column.name === "id");
+          if (idColumn) {
+            this.addColumn(table.name, idColumn.name);
+          }
         }
       }
       this.addObject(table, elementClass);
