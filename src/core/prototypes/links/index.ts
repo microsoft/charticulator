@@ -665,13 +665,18 @@ export abstract class LinksClass extends ChartElementClass {
       );
     }
     widgets.push(manager.sectionHeader("Style"));
-    widgets.push(manager.mappingEditor("Color", "color", {}));
+    widgets.push(
+      manager.mappingEditor("Color", "color", {
+        table: props.linkTable && props.linkTable.table
+      })
+    );
     // if (props.linkType == "line") {
     widgets.push(
       manager.mappingEditor("Width", "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
+        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
+        table: props.linkTable && props.linkTable.table
       })
     );
     // }
@@ -679,7 +684,8 @@ export abstract class LinksClass extends ChartElementClass {
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        table: props.linkTable && props.linkTable.table
       })
     );
     return widgets;
