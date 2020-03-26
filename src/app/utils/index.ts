@@ -110,6 +110,19 @@ export function readFileAsString(file: File): Promise<string> {
   });
 }
 
+export function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = () => {
+      reject(new Error(`unable to read file ${file.name}`));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export function getExtensionFromFileName(filename: string) {
   const m = filename.match(/\.([^\.]+)$/);
   if (m) {

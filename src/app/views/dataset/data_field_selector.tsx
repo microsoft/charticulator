@@ -123,7 +123,11 @@ export class DataFieldSelector extends React.Component<
 
   private getFields() {
     const store = this.props.datasetStore;
-    const table = store.getTables().filter( table => table.name == this.props.table || this.props.table == null)[0];
+    const table = store
+      .getTables()
+      .filter(
+        table => table.name == this.props.table || this.props.table == null
+      )[0];
     const columns = table.columns;
     const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
     if (this.props.table) {
