@@ -10,7 +10,13 @@ import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
-import { classNames } from "../../utils";
+import {
+  classNames,
+  readFileAsString,
+  stringToDataURL,
+  readFileAsDataUrl
+} from "../../utils";
+import { FileUploader } from "./import_data_view";
 
 export class InputGroup extends React.Component<
   {
@@ -271,6 +277,20 @@ export class ExportTemplateView extends ContextedComponent<
               }
             />
             <span className="el-text">{label}</span>
+          </div>
+        );
+      case "file":
+        return (
+          <div className="form-group-file">
+            <label>{label}</label>
+            <FileUploader
+              extensions={["*"]}
+              onChange={async file => {
+                const fileContent = await readFileAsDataUrl(file);
+                onChange(fileContent);
+              }}
+            />
+            <i className="bar" />
           </div>
         );
     }
