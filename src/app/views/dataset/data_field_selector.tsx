@@ -123,7 +123,8 @@ export class DataFieldSelector extends React.Component<
 
   private getFields() {
     const store = this.props.datasetStore;
-    const columns = store.getTables()[0].columns;
+    const table = store.getTables().filter( table => table.name == this.props.table || this.props.table == null)[0];
+    const columns = table.columns;
     const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
     if (this.props.table) {
       columnFilters.push(x => x.table == this.props.table);
@@ -151,7 +152,7 @@ export class DataFieldSelector extends React.Component<
     let candidates = columns.map(c => {
       const r: DataFieldSelectorValueCandidate = {
         selectable: true,
-        table: store.getTables()[0].name,
+        table: table.name,
         columnName: c.name,
         expression: Expression.variable(c.name).toString(),
         type: c.type,
@@ -164,7 +165,7 @@ export class DataFieldSelector extends React.Component<
       if (derivedColumns) {
         for (const item of derivedColumns) {
           const ditem: DataFieldSelectorValueCandidate = {
-            table: store.getTables()[0].name,
+            table: table.name,
             columnName: null,
             expression: Expression.functionCall(
               item.function,

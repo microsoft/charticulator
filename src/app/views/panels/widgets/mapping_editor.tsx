@@ -475,6 +475,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     return (
       <div>
         <DataFieldSelector
+          table={mapping ? (mapping as any).table : options.table}
           datasetStore={this.store}
           kinds={options.acceptKinds}
           useAggregation={true}
