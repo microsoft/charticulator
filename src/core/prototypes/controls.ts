@@ -148,6 +148,7 @@ export interface WidgetManager {
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputImage(property: Property): Widget;
+  inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;
   inputColorGradient(property: Property, inline?: boolean): Widget;
 

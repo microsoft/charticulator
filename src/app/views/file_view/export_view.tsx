@@ -12,11 +12,8 @@ import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import {
   classNames,
-  readFileAsString,
-  stringToDataURL,
-  readFileAsDataUrl
 } from "../../utils";
-import { FileUploader } from "./import_data_view";
+import { InputImageProperty, Button } from "../panels/widgets/controls";
 
 export class InputGroup extends React.Component<
   {
@@ -239,6 +236,7 @@ export class ExportTemplateView extends ContextedComponent<
     label: string,
     type: string,
     value: any,
+    defaultValue: any,
     onChange: (value: any) => void
   ) {
     let ref: HTMLInputElement;
@@ -283,13 +281,27 @@ export class ExportTemplateView extends ContextedComponent<
         return (
           <div className="form-group-file">
             <label>{label}</label>
-            <FileUploader
-              extensions={["*"]}
-              onChange={async file => {
-                const fileContent = await readFileAsDataUrl(file);
-                onChange(fileContent);
-              }}
-            />
+            <div
+              style={
+              {
+                display: "flex",
+                flexDirection: "row"
+              }
+            }>
+              <InputImageProperty
+                value={value as Specification.Types.Image}
+                onChange={image => {
+                  onChange(image);
+                  return true;
+                }}
+              />
+              <Button
+                icon={"general/eraser"}
+                onClick={() => {
+                  onChange(defaultValue);
+                }}
+              />
+            </div>
             <i className="bar" />
           </div>
         );
@@ -298,14 +310,17 @@ export class ExportTemplateView extends ContextedComponent<
 
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
+      const displayName = this.store.getPropertyExportName(property.name);
       return (
         <div key={property.name}>
           {this.renderInput(
             property.displayName,
             property.type,
-            this.state.targetProperties[property.name],
+            displayName || this.state.targetProperties[property.name],
+            property.default,
             value => {
               this.state.targetProperties[property.name] = value;
+                  this.store.setPropertyExportName(property.name, value);
               this.setState({
                 targetProperties: this.state.targetProperties
               });
@@ -328,6 +343,7 @@ export class ExportTemplateView extends ContextedComponent<
               column.name,
               "string",
               column.displayName,
+              null,
               value => {
                 column.displayName = value;
                 this.setState({

@@ -19,6 +19,7 @@ import { PopupView } from "../../controllers";
 export interface FileUploaderProps {
   onChange: (file: File) => void;
   extensions: string[];
+  filename?: string;
 }
 
 export interface FileUploaderState {
@@ -36,7 +37,7 @@ export class FileUploader extends React.Component<
     super(props);
     this.state = {
       draggingOver: false,
-      filename: null
+      filename: props.filename
     };
   }
 
