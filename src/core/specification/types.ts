@@ -54,6 +54,7 @@ export interface Image extends AttributeMap {
   src: string;
   width: number;
   height: number;
+  name?: string;
 }
 
 /** LinkAnchor: specifies an anchor in a link */

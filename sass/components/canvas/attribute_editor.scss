@@ -187,7 +187,7 @@
         }
 
         .type-number-editor {
-          // height: $line-height;
+          height: $line-height;
           display: flex;
           flex-direction: row;
           flex: 1;
@@ -1011,6 +1011,19 @@
           background: $gray-210;
           border-radius: 2px;
           box-sizing: border-box;
+        }
+
+        .el-image2 {
+          // todo extend
+          flex-shrink: 0;
+          height: $line-height;
+          border: 1px solid $gray-180;
+          background: $gray-210;
+          border-radius: 2px;
+          box-sizing: border-box;
+
+          max-width: 34px;
+          min-width: 34px;
         }
 
         .el-text-wrapper {

@@ -451,9 +451,10 @@ export class CategoricalScaleImage extends ScaleClass<
       manager.scrollList(
         keys.map(key =>
           manager.horizontal(
-            [2, 3],
+            [2, 5],
             manager.text(key, "right"),
-            manager.inputImage({ property: "mapping", field: key })
+            manager.inputImageProperty({ property: "mapping", field: key }),
+            manager.clearButton({ property: "mapping", field: key }, "")
           )
         )
       )
