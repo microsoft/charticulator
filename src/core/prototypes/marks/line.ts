@@ -77,7 +77,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     attrs.visible = true;
   }
 
-  // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(solver: ConstraintSolver): void {
     const [x1, y1, x2, y2, cx, cy, dx, dy] = solver.attrs(
       this.state.attributes,
@@ -99,7 +99,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     );
   }
 
-  // Get the graphical element from the element
+  /** Get the graphical element from the element */
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
@@ -126,7 +126,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     );
   }
 
-  // Get DropZones given current state
+  /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes as LineElementAttributes;
     const { x1, y1, x2, y2 } = attrs;
@@ -163,7 +163,8 @@ export class LineElementClass extends EmphasizableMarkClass<
       } as DropZones.Line
     ];
   }
-  // Get bounding rectangle given current state
+
+  /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes as LineElementAttributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;

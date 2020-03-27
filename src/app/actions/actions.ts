@@ -210,6 +210,7 @@ export class RemoveGlyph extends Action {
 
 // Mark editing actions
 
+/** Add an mark to the glyph */
 export class AddMarkToGlyph extends Action {
   constructor(
     public glyph: Specification.Glyph,
@@ -232,6 +233,7 @@ export class AddMarkToGlyph extends Action {
   }
 }
 
+/** Remove an mark from the glyph */
 export class RemoveMarkFromGlyph extends Action {
   constructor(
     public glyph: Specification.Glyph,
@@ -249,7 +251,18 @@ export class RemoveMarkFromGlyph extends Action {
   }
 }
 
+/** Dispatches when user binds table coulmns to atrributes */
 export class MapDataToMarkAttribute extends Action {
+  /**
+   * @param glyph the glyph object where marks is
+   * @param mark mark object for which the attribute is being changed
+   * @param attribute name of the attribute that data is associated with
+   * @param attributeType attribute data type
+   * @param expression expression to fetch data from table. Usually contains name of column and aggregation function
+   * @param valueType type of data in the column
+   * @param valueMetadata additional data about column
+   * @param hints contains configuration of data mapping to attribute
+   */
   constructor(
     public glyph: Specification.Glyph,
     public mark: Specification.Element,

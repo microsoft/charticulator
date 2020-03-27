@@ -1,3 +1,12 @@
+/**
+ * The {@link ChartTemplateBuilder} creates tempate ({@link ChartTemplate}) from the current chart.
+ * {@link ChartTemplate} contains simplified version of {@link Chart} object in {@link ChartTemplate.specification} proerty.
+ * Tempate can be exported as *.chart file. It also uses on export to HTML file or on export as Power BI visual.
+ * 
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 

@@ -66,7 +66,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   public attributes = imageAttributes;
   public attributeNames = Object.keys(imageAttributes);
 
-  // Initialize the state of an element so that everything has a valid value
+  /** Initialize the state of an element so that everything has a valid value */
   public initializeState(): void {
     const defaultWidth = 30;
     const defaultHeight = 50;
@@ -192,7 +192,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     return widgets;
   }
 
-  // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(solver: ConstraintSolver): void {
     const [x1, y1, x2, y2, cx, cy, width, height] = solver.attrs(
       this.state.attributes,

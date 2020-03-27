@@ -223,6 +223,7 @@ class TextOnPath extends React.PureComponent<{
   }
 }
 
+/** The method renders all chart elements in SVG document */
 export function renderGraphicalElementSVG(
   element: Graphics.Element,
   options?: RenderGraphicalElementSVGOptions

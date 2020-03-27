@@ -1,5 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * The module contains coordinate systems and classes for rendering elements(See {@link ChartRenderer} for details)
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 export * from "./elements";
 export * from "./renderer";
 

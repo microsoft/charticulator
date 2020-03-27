@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * See {@link DatasetView} or {@link TableView}
+ * @packageDocumentation
+ * @preferred
+ */
+
 import * as React from "react";
 import { Dataset, Expression } from "../../../core";
 import { DragData, Actions } from "../../actions";
@@ -24,12 +31,16 @@ export interface DatasetViewProps {
   store: AppStore;
 }
 
-export interface DatasetViewState { }
+export interface DatasetViewState {}
 
+/** Component for displaying dataset on the left side of app
+ *
+ * ![Mark widgets](media://dataset_view.png)
+ */
 export class DatasetView extends React.Component<
   DatasetViewProps,
   DatasetViewState
-  > {
+> {
   public componentDidMount() {
     this.props.store.addListener(AppStore.EVENT_DATASET, () =>
       this.forceUpdate()
@@ -70,7 +81,7 @@ export interface ColumnsViewState {
 export class ColumnsView extends React.Component<
   ColumnsViewProps,
   ColumnsViewState
-  > {
+> {
   constructor(props: ColumnsViewProps) {
     super(props);
     this.state = {
@@ -145,7 +156,11 @@ export class ColumnsView extends React.Component<
                           const store = this.props.store;
 
                           store.dispatcher.dispatch(
-                            new Actions.ConvertColumnDataType(table.name, column, type as DataType)
+                            new Actions.ConvertColumnDataType(
+                              table.name,
+                              column,
+                              type as DataType
+                            )
                           );
                         }}
                       />
@@ -185,7 +200,7 @@ export class ColumnViewState {
 export class ColumnView extends React.Component<
   ColumnViewProps,
   ColumnViewState
-  > {
+> {
   constructor(props: ColumnViewProps) {
     super(props);
     this.state = {
@@ -226,7 +241,7 @@ export class ColumnView extends React.Component<
             type,
             null,
             desc.metadata
-          )
+          );
         })}
       </div>
     );
@@ -252,7 +267,8 @@ export class ColumnView extends React.Component<
   ) {
     let anchor: HTMLDivElement;
     return (
-      <div className="click-handler"
+      <div
+        className="click-handler"
         ref={e => (anchor = e)}
         onClick={() => {
           if (!onColumnKindChanged) {
@@ -269,7 +285,7 @@ export class ColumnView extends React.Component<
                         name: type.toString(),
                         text: type.toString(),
                         url: R.getSVGIcon(kind2Icon[type])
-                      }
+                      };
                     })}
                     context={context}
                     onClick={(value: string) => {

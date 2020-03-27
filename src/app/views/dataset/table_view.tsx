@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * See {@link DatasetView} or {@link TableView}
+ * @packageDocumentation
+ * @preferred
+ */
+
 import * as React from "react";
 import { Dataset } from "../../../core";
 import { Select } from "../panels/widgets/controls";
@@ -12,8 +19,13 @@ export interface TableViewProps {
   onTypeChange?: (column: string, type: string) => void;
 }
 
+/** Component for displaying data samples on loading or in context menu of {@link DatasetView}
+ *
+ * ![Table view](media://table_view.png)
+ *
+ * ![Table view](media://table_view_leftside.png)
+ */
 export class TableView extends React.Component<TableViewProps, {}> {
-
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;
@@ -36,7 +48,10 @@ export class TableView extends React.Component<TableViewProps, {}> {
           {onTypeChange && (
             <tr key={-1}>
               {table.columns.map(c => {
-                const convertableTypes = getConvertableTypes(c.type, table.rows.slice(0, 10).map(row => row[c.name]))
+                const convertableTypes = getConvertableTypes(
+                  c.type,
+                  table.rows.slice(0, 10).map(row => row[c.name])
+                );
                 return (
                   <td key={c.name}>
                     {
@@ -55,7 +70,7 @@ export class TableView extends React.Component<TableViewProps, {}> {
                       />
                     }
                   </td>
-                )
+                );
               })}
             </tr>
           )}
@@ -72,8 +87,8 @@ export class TableView extends React.Component<TableViewProps, {}> {
                 i == 0 ? (
                   <td key={i}>({table.rows.length - maxRows} more rows)</td>
                 ) : (
-                    <td key={i}>...</td>
-                  )
+                  <td key={i}>...</td>
+                )
               )}
             </tr>
           ) : null}

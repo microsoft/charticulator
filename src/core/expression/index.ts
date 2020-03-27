@@ -1,3 +1,13 @@
+/**
+ * Expressions
+ * 
+ * The module of exressions responsible for data binding or data fetching
+ * Grammar of expression described in [parser.pegjs file](\src\core\expression\index.ts)
+ * 
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Expression, TextExpression } from "./classes";
