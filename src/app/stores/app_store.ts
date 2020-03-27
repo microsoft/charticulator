@@ -240,8 +240,9 @@ export class AppStore extends BaseStore {
       return false;
     }
     const chart = this.chart;
-    chart.scales = chart.scales.filter(scale => {
-      return (
+
+    function scaleFilter(scale: any) {
+      return !(
         chart.elements.find((element: any) => {
           if ((element as Specification.Object).mappings) {
             const mappings = (element as Specification.Object).mappings;
@@ -261,7 +262,11 @@ export class AppStore extends BaseStore {
           );
         })
       );
-    });
+    }
+
+    chart.scales
+      .filter(scaleFilter)
+      .forEach(scale => this.chartManager.removeScale(scale));
   }
 
   public async backendSaveChart() {
