@@ -281,27 +281,13 @@ export class ExportTemplateView extends ContextedComponent<
         return (
           <div className="form-group-file">
             <label>{label}</label>
-            <div
-              style={
-              {
-                display: "flex",
-                flexDirection: "row"
-              }
-            }>
-              <InputImageProperty
-                value={value as Specification.Types.Image}
-                onChange={image => {
-                  onChange(image);
-                  return true;
-                }}
-              />
-              <Button
-                icon={"general/eraser"}
-                onClick={() => {
-                  onChange(defaultValue);
-                }}
-              />
-            </div>
+            <InputImageProperty
+              value={value as Specification.Types.Image}
+              onChange={image => {
+                onChange(image);
+                return true;
+              }}
+            />
             <i className="bar" />
           </div>
         );
@@ -310,7 +296,7 @@ export class ExportTemplateView extends ContextedComponent<
 
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
-      let displayName = this.store.getPropertyExportName(property.name);
+      const displayName = this.store.getPropertyExportName(property.name);
       return (
         <div key={property.name}>
           {this.renderInput(
