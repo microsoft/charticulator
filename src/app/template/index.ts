@@ -168,7 +168,9 @@ export class ChartTemplateBuilder {
                     item.kind == "chart-element" &&
                     Prototypes.isType(item.chartElement.classID, "links")
                   ) {
-                    table = (item.object.properties.linkTable as any).table;
+                    const linkTable = item.object.properties.linkTable as any;
+                    const defaultTable = this.dataset.tables[0];
+                    table = (linkTable && linkTable.table) || defaultTable.name;
                   }
                 }
               }
