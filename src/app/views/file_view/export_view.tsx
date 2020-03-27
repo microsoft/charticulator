@@ -479,56 +479,7 @@ export class ExportTemplateView extends ContextedComponent<
         </div>
       );
     }
-    // for (const p of this.state.template.properties) {
-    //   const id = p.objectID;
-    //   const obj = findObjectById(this.state.template.specification, id);
-    //   // if (obj && p.target.attribute) {
-    //   //   result.push(
-    //   //     <div key={id + p.target.attribute}>
-    //   //       {this.renderInput(
-    //   //         obj.properties.name + "/" + p.target.attribute,
-    //   //         "string",
-    //   //         p.displayName,
-    //   //         value => {
-    //   //           p.displayName = value;
-    //   //           this.setState({
-    //   //             template: this.state.template
-    //   //           });
-    //   //         }
-    //   //       )}
-    //   //     </div>
-    //   //   );
-    //   // }
-    //   if (obj && p.target.property) {
-    //     const pf = p.target.property;
-    //     let pfstr = null;
-    //     if (typeof pf == "string") {
-    //       pfstr = pf;
-    //     } else {
-    //       pfstr =
-    //         pf.property +
-    //         "/" +
-    //         (typeof pf.field == "string" || typeof pf.field == "number"
-    //           ? pf.field
-    //           : pf.field.join("."));
-    //     }
-    //     result.push(
-    //       <div key={id + pfstr}>
-    //         {this.renderInput(
-    //           obj.properties.name + "/" + pfstr,
-    //           "string",
-    //           p.displayName,
-    //           value => {
-    //             p.displayName = value;
-    //             this.setState({
-    //               template: this.state.template
-    //             });
-    //           }
-    //         )}
-    //       </div>
-    //     );
-    //   }
-    // }
+
     return result;
   }
 
