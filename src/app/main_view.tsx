@@ -20,6 +20,7 @@ import {
 import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
+import { ScalesPanel } from "./views/panels/scales_panel";
 
 export interface MainViewProps {
   store: AppStore;
@@ -29,6 +30,7 @@ export interface MainViewState {
   glyphViewMaximized: boolean;
   layersViewMaximized: boolean;
   attributeViewMaximized: boolean;
+  scaleViewMaximized: boolean;
 }
 
 export class MainView extends React.Component<MainViewProps, MainViewState> {
@@ -40,7 +42,8 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
     this.state = {
       glyphViewMaximized: false,
       layersViewMaximized: false,
-      attributeViewMaximized: false
+      attributeViewMaximized: false,
+      scaleViewMaximized: false
     };
   }
 
@@ -126,6 +129,19 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                     >
                       <ErrorBoundary>
                         <AttributePanel store={this.props.store} />
+                      </ErrorBoundary>
+                    </MinimizablePane>
+                  )}
+                  {this.state.attributeViewMaximized ? null : (
+                    <MinimizablePane
+                      title="Scales"
+                      scroll={true}
+                      onMaximize={() =>
+                        this.setState({ scaleViewMaximized: true })
+                      }
+                    >
+                      <ErrorBoundary>
+                        <ScalesPanel store={this.props.store} />
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}

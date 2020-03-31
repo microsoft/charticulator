@@ -9,6 +9,7 @@
     "target": "es6",
     "jsx": "react",
     "noImplicitAny": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [ "es2017", "dom", "esnext.array", ]
   }
 }

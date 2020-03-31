@@ -8,7 +8,8 @@ import {
   AttributeDescription,
   Controls,
   DataMappingHints,
-  TemplateParameters
+  TemplateParameters,
+  ObjectClassMetadata
 } from "../common";
 import { ScaleClass } from "./index";
 import { InferParametersOptions } from "./scale";
@@ -174,6 +175,11 @@ export class LinearColorScale extends ScaleClass<
 > {
   public static classID = "scale.linear<number,color>";
   public static type = "scale";
+
+  public static metadata: ObjectClassMetadata = {
+    displayName: "Scale",
+    iconPath: "scale/color"
+  };
 
   public static defaultMappingValues: Specification.AttributeMap = {
     range: getDefaultGradient()
