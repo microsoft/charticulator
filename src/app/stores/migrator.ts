@@ -60,9 +60,23 @@ export class Migrator {
       state = this.fixLinkOrder_v130(state);
     }
 
+    if (
+      compareVersion(state.version, "1.5.0") < 0 &&
+      compareVersion(targetVersion, "1.5.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.addScaleMappings(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
+    return state;
+  }
+
+  public addScaleMappings(state: AppStoreState) {
+    state.chart.scaleMappings = [];
+    // TODO append current mappings
     return state;
   }
 

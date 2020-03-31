@@ -9,7 +9,12 @@ import {
   AttributeValue,
   AttributeMap
 } from "../../specification";
-import { DataMappingHints, ObjectClass, TemplateParameters } from "../common";
+import {
+  DataMappingHints,
+  ObjectClass,
+  TemplateParameters,
+  ObjectClassMetadata
+} from "../common";
 
 export interface InferParametersOptions extends DataMappingHints {
   /** Whether to extend the scale domain/range with new data */
@@ -26,6 +31,11 @@ export abstract class ScaleClass<
 > extends ObjectClass<PropertiesType, AttributesType> {
   public readonly object: Scale<PropertiesType>;
   public readonly state: ScaleState<AttributesType>;
+
+  public static metadata: ObjectClassMetadata = {
+    displayName: "Scale",
+    iconPath: "scale/scale"
+  };
 
   public abstract mapDataToAttribute(data: DataValue): AttributeValue;
 

@@ -133,6 +133,7 @@ export class ChartStateManager {
     return {
       elements: elementStates,
       scales: scaleStates,
+      scaleMappings: chart.scaleMappings,
       attributes: {}
     };
   }
