@@ -158,7 +158,6 @@ export class AppStore extends BaseStore {
   }
 
   public saveState(): AppStoreState {
-    this.updateChartState();
     return {
       version: CHARTICULATOR_PACKAGE.version,
       dataset: this.dataset,
