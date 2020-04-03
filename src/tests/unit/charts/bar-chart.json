@@ -540,6 +540,8 @@
             "outputType": "color"
           }
         ],
+        "scaleMappings": [
+        ],
         "constraints": [],
         "resources": []
       },
@@ -2318,6 +2320,7 @@
             "attributes": {}
           }
         ],
+        "scaleMappings": [],
         "attributes": {
           "width": 900,
           "height": 600,
