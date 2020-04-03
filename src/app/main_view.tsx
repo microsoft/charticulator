@@ -99,6 +99,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   display:
                     this.state.glyphViewMaximized &&
                     this.state.attributeViewMaximized &&
+                    this.state.scaleViewMaximized &&
                     this.state.layersViewMaximized
                       ? "none"
                       : undefined
@@ -145,7 +146,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
-                  {this.state.attributeViewMaximized ? null : (
+                  {this.state.scaleViewMaximized ? null : (
                     <MinimizablePane
                       title="Scales"
                       scroll={true}
