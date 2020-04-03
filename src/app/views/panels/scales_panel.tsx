@@ -6,12 +6,9 @@ import * as R from "../../resources";
 import { EventSubscription, Prototypes } from "../../../core";
 import { SVGImageIcon } from "../../components";
 
-import {
-  AppStore,
-} from "../../stores";
+import { AppStore } from "../../stores";
 import { ReorderListView } from "./object_list_editor";
 import { ContextedComponent } from "../../context_component";
-import { classNames } from "../../utils";
 import {
   ScaleMapping,
   Glyph,
