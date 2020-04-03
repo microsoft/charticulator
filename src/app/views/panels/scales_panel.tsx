@@ -6,17 +6,16 @@ import * as R from "../../resources";
 import { EventSubscription, Prototypes } from "../../../core";
 import { SVGImageIcon } from "../../components";
 
-import {
-  AppStore,
-} from "../../stores";
+import { AppStore } from "../../stores";
 import { ReorderListView } from "./object_list_editor";
 import { ContextedComponent } from "../../context_component";
-import { classNames } from "../../utils";
 import {
   ScaleMapping,
   Glyph,
   ChartElement,
-  ObjectProperties
+  ObjectProperties,
+  Element,
+  Scale
 } from "../../../core/specification";
 
 function getObjectIcon(classID: string) {
@@ -47,7 +46,10 @@ export class ScalesPanel extends ContextedComponent<
     );
   }
 
-  public componentWillUnmount() {}
+  public componentWillUnmount() {
+    this.tokens.forEach(token => token.remove());
+    this.tokens = [];
+  }
 
   public renderUnexpectedState(message: string) {
     return (
@@ -57,9 +59,17 @@ export class ScalesPanel extends ContextedComponent<
     );
   }
 
+  private getPropertyDisplayName(name: string) {
+    let words = name.replace(/([a-z])([A-Z])/g, "$1 $2").split(" ");
+    words = words.map(w => w.toLowerCase());
+    words[0] = words[0][0].toUpperCase() + words[0].slice(1);
+
+    return words.join(" ");
+  }
+
   public render(): any {
     const store = this.props.store;
-    const scales = store.chart.scales;
+    let scales = store.chart.scales;
     const sel = this.store.currentSelection;
 
     const elementFilterPredicate = (scaleID: string) => (element: any) => {
@@ -86,59 +96,80 @@ export class ScalesPanel extends ContextedComponent<
 
     const mapToUI = (scaleID: string) => (element: any) => (key: string) => {
       return (
-        <div className="el-object-item" key={scaleID + "_" + element._id + "_" + key}>
+        <div
+          className="el-object-item"
+          key={scaleID + "_" + element._id + "_" + key}
+        >
           <SVGImageIcon
             url={R.getSVGIcon(
               Prototypes.ObjectClasses.GetMetadata(element.classID).iconPath
             )}
           />
-          <span className="el-text">{`${element.properties.name} / ${key}`}</span>
+          <span className="el-text">{`${
+            element.properties.name
+          }.${this.getPropertyDisplayName(key)}`}</span>
         </div>
       );
     };
 
+    scales = scales.sort(
+      (a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
+        const lengthA =
+          store.chart.elements.filter(elementFilterPredicate(a._id)).length +
+          store.chart.glyphs
+            .flatMap(
+              (glyph: Glyph): Array<Element<ObjectProperties>> => glyph.marks
+            )
+            .filter(elementFilterPredicate(a._id)).length;
+
+        const lengthB =
+          store.chart.elements.filter(elementFilterPredicate(b._id)).length +
+          store.chart.glyphs
+            .flatMap(
+              (glyph: any): Array<Element<ObjectProperties>> => glyph.marks
+            )
+            .filter(elementFilterPredicate(b._id)).length;
+
+        return lengthA > lengthB ? -1 : lengthB > lengthA ? 1 : 0;
+      }
+    );
+
     return (
       <div className="charticulator__object-list-editor">
-          {scales.map(scale => {
-            return (
-              <div>
-                <div
-                  key={scale._id}
-                  className="el-object-item"
-                >
-                  <SVGImageIcon
-                    url={R.getSVGIcon(
-                      Prototypes.ObjectClasses.GetMetadata(scale.classID)
-                        .iconPath
-                    )}
-                  />
-                  <span className="el-text">{scale.properties.name}</span>
-                </div>
-                <ReorderListView
-                  enabled={true}
-                  onReorder={(a, b) => {
-                    // this.dispatch(new Actions.ReorderChartElement(a, b));
-                  }}
-                >
-                  {store.chart.elements
-                    .filter(elementFilterPredicate(scale._id))
-                    .flatMap((element: ChartElement<ObjectProperties>) => {
-                      return elementFilterList(scale._id, element).map(
-                        mapToUI(scale._id)(element)
-                      );
-                    })}
-                  {store.chart.glyphs
-                    .flatMap((glyph: Glyph) => glyph.marks)
-                    .filter(elementFilterPredicate(scale._id))
-                    .flatMap((element: ChartElement<ObjectProperties>) => {
-                      return elementFilterList(scale._id, element).map(
-                        mapToUI(scale._id)(element)
-                      );
-                    })}
-                </ReorderListView>
+        {scales.map(scale => {
+          return (
+            <div key={scale._id}>
+              <div key={scale._id} className="el-object-item">
+                <SVGImageIcon
+                  url={R.getSVGIcon(
+                    Prototypes.ObjectClasses.GetMetadata(scale.classID).iconPath
+                  )}
+                />
+                <span className="el-text">{scale.properties.name}</span>
               </div>
-            );
-          })}
+              <ReorderListView enabled={true} onReorder={(a, b) => {}}>
+                {store.chart.elements
+                  .filter(elementFilterPredicate(scale._id))
+                  .flatMap((element: ChartElement<ObjectProperties>) => {
+                    return elementFilterList(scale._id, element).map(
+                      mapToUI(scale._id)(element)
+                    );
+                  })}
+                {store.chart.glyphs
+                  .flatMap(
+                    (glyph: Glyph): Array<Element<ObjectProperties>> =>
+                      glyph.marks
+                  )
+                  .filter(elementFilterPredicate(scale._id))
+                  .flatMap((element: ChartElement<ObjectProperties>) => {
+                    return elementFilterList(scale._id, element).map(
+                      mapToUI(scale._id)(element)
+                    );
+                  })}
+              </ReorderListView>
+            </div>
+          );
+        })}
       </div>
     );
   }

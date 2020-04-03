@@ -86,6 +86,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   display:
                     this.state.glyphViewMaximized &&
                     this.state.attributeViewMaximized &&
+                    this.state.scaleViewMaximized &&
                     this.state.layersViewMaximized
                       ? "none"
                       : undefined
@@ -132,7 +133,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
-                  {this.state.attributeViewMaximized ? null : (
+                  {this.state.scaleViewMaximized ? null : (
                     <MinimizablePane
                       title="Scales"
                       scroll={true}
@@ -188,6 +189,18 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             >
               <ErrorBoundary>
                 <AttributePanel store={this.props.store} />
+              </ErrorBoundary>
+            </FloatingPanel>
+          ) : null}
+          {this.state.scaleViewMaximized ? (
+            <FloatingPanel
+              scroll={true}
+              peerGroup="panels"
+              title="Scales"
+              onClose={() => this.setState({ scaleViewMaximized: false })}
+            >
+              <ErrorBoundary>
+                <ScalesPanel store={this.props.store} />
               </ErrorBoundary>
             </FloatingPanel>
           ) : null}

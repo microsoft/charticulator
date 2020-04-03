@@ -311,6 +311,7 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
 
