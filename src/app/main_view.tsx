@@ -146,19 +146,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
-                  {this.state.scaleViewMaximized ? null : (
-                    <MinimizablePane
-                      title="Scales"
-                      scroll={true}
-                      onMaximize={() =>
-                        this.setState({ scaleViewMaximized: true })
-                      }
-                    >
-                      <ErrorBoundary>
-                        <ScalesPanel store={this.props.store} />
-                      </ErrorBoundary>
-                    </MinimizablePane>
-                  )}
+                  
                 </MinimizablePanelView>
               </div>
               <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">
