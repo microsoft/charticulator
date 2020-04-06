@@ -99,7 +99,6 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   display:
                     this.state.glyphViewMaximized &&
                     this.state.attributeViewMaximized &&
-                    this.state.scaleViewMaximized &&
                     this.state.layersViewMaximized
                       ? "none"
                       : undefined
