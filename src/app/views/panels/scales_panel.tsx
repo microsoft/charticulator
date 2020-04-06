@@ -60,11 +60,7 @@ export class ScalesPanel extends ContextedComponent<
   }
 
   private getPropertyDisplayName(name: string) {
-    let words = name.replace(/([a-z])([A-Z])/g, "$1 $2").split(" ");
-    words = words.map(w => w.toLowerCase());
-    words[0] = words[0][0].toUpperCase() + words[0].slice(1);
-
-    return words.join(" ");
+    return name[0].toUpperCase() + name.slice(1);
   }
 
   public render(): any {
