@@ -3,7 +3,7 @@
 
 import * as FileSaver from "file-saver";
 import { saveAs } from "file-saver";
-import { Prototypes } from "../../../core";
+import { Prototypes, deepClone } from "../../../core";
 import { Actions } from "../../actions";
 import { renderDataURLToPNG, stringToDataURL } from "../../utils";
 import { AppStore } from "../app_store";
@@ -30,9 +30,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         renderDataURLToPNG(svgDataURL, {
           mode: "scale",
           scale: action.options.scale || 2,
-          background: "#ffffff"
-        }).then(png => {
-          png.toBlob(blob => {
+          background: "#ffffff",
+        }).then((png) => {
+          png.toBlob((blob) => {
             saveAs(
               blob,
               "charticulator." + (action.type == "png" ? "png" : "jpg"),
@@ -46,6 +46,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const containerScriptText = await (await fetch(
           getConfig().ContainerURL
         )).text();
+
+        const template = deepClone(this.buildChartTemplate());
+
         const htmlString = `
           <!DOCTYPE html>
           <html>
@@ -65,9 +68,65 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
             <div id="container"></div>
             <script type="text/javascript">
               CharticulatorContainer.initialize().then(function() {
-                const chart = ${JSON.stringify(this.chart)};
+                const currentChart = ${JSON.stringify(this.chart)};
                 const chartState = ${JSON.stringify(this.chartState)};
                 const dataset = ${JSON.stringify(this.dataset)};
+                const template = ${JSON.stringify(template)};
+                const chartTemplate = new CharticulatorContainer.ChartTemplate(
+                  template
+                );
+                chartTemplate.reset();
+
+                const defaultTable = dataset.tables[0];
+                const columns = defaultTable.columns;
+                chartTemplate.assignTable(defaultTable.name, defaultTable.name);
+                for (const column of columns) {
+                  chartTemplate.assignColumn(
+                    defaultTable.name,
+                    column.name,
+                    column.name
+                  );
+                }
+
+                // links table
+                const linksTable = dataset.tables[1];
+                const links = linksTable && (linksTable.columns);
+                if (links) {
+                  chartTemplate.assignTable(linksTable.name, linksTable.name);
+                  for (const column of links) {
+                    chartTemplate.assignColumn(
+                      linksTable.name,
+                      column.name,
+                      column.name
+                    );
+                  }
+                }
+                const instance = chartTemplate.instantiate(dataset);
+
+                const { chart } = instance;
+
+                for (const property of template.properties) {
+                  if (property.target.property) {
+                    CharticulatorContainer.ChartTemplate.SetChartProperty(
+                      chart,
+                      property.objectID,
+                      property.target.property,
+                      property.default
+                    );
+                  } else {
+                    CharticulatorContainer.ChartTemplate.SetChartAttributeMapping(
+                      chart,
+                      property.objectID,
+                      property.target.attribute,
+                      {
+                        type: "value",
+                        value: property.default,
+                      }
+                    );
+                  }
+                  
+                }
+
                 const container = new CharticulatorContainer.ChartContainer({ chart: chart }, dataset);
                 const width = document.getElementById("container").getBoundingClientRect().width;
                 const height = document.getElementById("container").getBoundingClientRect().height;
