@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { CurrentChartView } from ".";
-import { deepClone, Specification } from "../../../core";
+import { deepClone, Specification, Prototypes } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
 import { Actions } from "../../actions";
 import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
@@ -348,6 +348,9 @@ export class ExportTemplateView extends ContextedComponent<
               description = `Auto axis range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
+          if (inference.disableAuto === undefined) {
+            inference.disableAuto = true;
+          }
           return (
             <div
               key={index}
@@ -404,6 +407,11 @@ export class ExportTemplateView extends ContextedComponent<
                 ? R.getSVGIcon("checkbox/empty")
                 : R.getSVGIcon("checkbox/checked")
             }
+          />
+          <SVGImageIcon
+            url={R.getSVGIcon(
+              Prototypes.ObjectClasses.GetMetadata(object.classID).iconPath
+            )}
           />
           <span className="el-text">{object.properties.name}</span>
         </div>
