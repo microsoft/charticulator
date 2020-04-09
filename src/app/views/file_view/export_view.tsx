@@ -475,6 +475,11 @@ export class ExportTemplateView extends ContextedComponent<
                 : R.getSVGIcon("checkbox/checked")
             }
           />
+          <SVGImageIcon
+            url={R.getSVGIcon(
+              Prototypes.ObjectClasses.GetMetadata(object.classID).iconPath
+            )}
+          />
           <span className="el-text">{object.properties.name}</span>
         </div>
       );
