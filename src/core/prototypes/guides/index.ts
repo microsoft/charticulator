@@ -66,15 +66,13 @@ export class GuideClass extends ChartElementClass<
   }
 
   public buildConstraints(solver: ConstraintSolver) {
-    if (this.object.properties.name === "Guide2") {
-    }
     const [value, value2] = solver.attrs(this.object.properties, [
       "value",
-      "value2"
+      "value2",
     ]);
     solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
       [1, value],
-      [-1, value2]
+      [-1, value2],
     ]);
   }
 
@@ -128,9 +126,6 @@ export class GuideClass extends ChartElementClass<
     return [
       manager.sectionHeader("Guide"),
       manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {})),
-      manager.sectionHeader("Value"),
-      manager.row("Value", manager.inputNumber({ property: "value" }, {})),
-      manager.row("Value 2", manager.inputNumber({ property: "value2" }, {}))
     ];
   }
 
