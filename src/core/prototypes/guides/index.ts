@@ -66,7 +66,7 @@ export class GuideClass extends ChartElementClass<
   }
 
   public buildConstraints(solver: ConstraintSolver) {
-    const [value, value2] = solver.attrs(this.object.properties, [
+    const [value, value2] = solver.attrs(this.state.attributes, [
       "value",
       "value2",
     ]);
