@@ -51,7 +51,10 @@ export class ChartStateManager {
     chart: Specification.Chart,
     dataset: Dataset.Dataset,
     state: Specification.ChartState = null,
-    defaultAttributes: DefaultAttributes = {}
+    defaultAttributes: DefaultAttributes = {},
+    options: {
+      [key: string]: any;
+    } = {}
   ) {
     this.chart = chart;
     this.dataset = dataset;

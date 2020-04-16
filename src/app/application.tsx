@@ -17,6 +17,8 @@ import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
+import { string } from "../core/expression";
+import { TableType } from "../core/dataset";
 
 function makeDefaultDataset(): Dataset.Dataset {
   const rows: any[] = [];
@@ -66,7 +68,8 @@ function makeDefaultDataset(): Dataset.Dataset {
             metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" }
           }
         ],
-        rows
+        rows,
+        type: TableType.Main
       }
     ],
     name: "demo"
@@ -149,6 +152,10 @@ export class Application {
         specification: Specification.Chart;
         width: number;
         height: number;
+        filterCondition: {
+          column: string;
+          value: any;
+        }
       } = e.data;
       info.specification.mappings.width = {
         type: "value",
@@ -159,7 +166,9 @@ export class Application {
         value: info.height
       } as Specification.ValueMapping;
       this.appStore.dispatcher.dispatch(
-        new Actions.ImportChartAndDataset(info.specification, info.dataset)
+        new Actions.ImportChartAndDataset(info.specification, info.dataset, {
+          filterCondition: info.filterCondition
+        })
       );
       this.appStore.setupNestedEditor(newSpecification => {
         window.opener.postMessage(

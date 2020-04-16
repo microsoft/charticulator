@@ -30,9 +30,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         renderDataURLToPNG(svgDataURL, {
           mode: "scale",
           scale: action.options.scale || 2,
-          background: "#ffffff",
-        }).then((png) => {
-          png.toBlob((blob) => {
+          background: "#ffffff"
+        }).then(png => {
+          png.toBlob(blob => {
             saveAs(
               blob,
               "charticulator." + (action.type == "png" ? "png" : "jpg"),

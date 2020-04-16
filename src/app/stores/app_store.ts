@@ -41,6 +41,8 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
+import { DataflowTable } from "../../core/prototypes/dataflow";
+import { TableType } from "../../core/dataset";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -594,7 +596,7 @@ export class AppStore extends BaseStore {
         }
       });
     }
-    const table = this.getTable(tableName);
+    let table = this.getTable(tableName);
 
     // If there is an existing scale on the same column in the table, return that one
     if (!hints.newScale) {
@@ -700,6 +702,13 @@ export class AppStore extends BaseStore {
       const scaleClass = this.chartManager.getClassById(
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
+
+      const parentMainTable = this.getTables().find(
+        (table) => table.type === TableType.ParentMain
+      );
+      if (parentMainTable) {
+        table = parentMainTable;
+      }
 
       scaleClass.inferParameters(
         this.chartManager.getGroupedExpressionVector(

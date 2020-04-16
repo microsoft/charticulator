@@ -109,6 +109,10 @@ export interface GroupByEditorOptions {
 export interface NestedChartEditorOptions {
   specification: Specification.Chart;
   dataset: Dataset.Dataset;
+  filterCondition?: {
+    column: string;
+    value: any;
+  };
   width: number;
   height: number;
 }

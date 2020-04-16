@@ -49,4 +49,17 @@ export interface Table {
   columns: Column[];
   /** Rows in the table */
   rows: Row[];
+  /** Type of the table */
+  type: TableType;
+}
+
+export enum TableType {
+  /** The main table with data for the chart */
+  Main = "Main",
+  /** Table with source_id and target_id columns for links, can contain additional columns with data */
+  Links = "Links",
+  /** TelLs to nested chart that table is parent chart table with all data */
+  ParentMain = "ParentMain",
+  /** TelLs to nested chart that table is parent links table of the chart with all data */
+  ParentLinks = "ParentLinks",
 }
