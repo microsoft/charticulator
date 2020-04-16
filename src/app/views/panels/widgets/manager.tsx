@@ -817,7 +817,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             specification: options.specification,
                             dataset: options.dataset,
                             width: options.width,
-                            height: options.height
+                            height: options.height,
+                            filterCondition: options.filterCondition
                           },
                           document.location.origin
                         );

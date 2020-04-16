@@ -133,7 +133,10 @@ export class ImportDataset extends Action {
 export class ImportChartAndDataset extends Action {
   constructor(
     public specification: Specification.Chart,
-    public dataset: Dataset.Dataset
+    public dataset: Dataset.Dataset,
+    public options: {
+      [key: string]: any;
+    }
   ) {
     super();
   }

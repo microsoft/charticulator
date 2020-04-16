@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Table, Dataset } from "./dataset";
+import { Table, Dataset, TableType } from "./dataset";
 import { parseDataset } from "./dsv_parser";
 
 export interface TableSourceSpecification {
@@ -78,8 +78,12 @@ export class DatasetLoader {
   ) {
     // Load all tables
     const tables = await Promise.all(
-      spec.tables.map(table => this.loadTableFromSourceSpecification(table))
+      spec.tables.map((table) => this.loadTableFromSourceSpecification(table))
     );
+    tables[0].type = TableType.Main;
+    if (tables[1]) {
+      tables[1].type = TableType.Links;
+    }
     // Make dataset struct
     const dataset: Dataset = { name: spec.name, tables };
     if (!spec.name && tables.length > 0) {
