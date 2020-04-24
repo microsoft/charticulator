@@ -13,6 +13,10 @@ export class DataflowTableGroupedContext implements Expression.Context {
     this.indices = indices;
   }
 
+  public getTable() {
+    return this.table;
+  }
+
   public getVariable(name: string) {
     if (this.table.rows[this.indices[0]].hasOwnProperty(name)) {
       return this.indices.map(i => this.table.rows[i][name]);
@@ -25,13 +29,33 @@ export class DataflowTable implements Expression.Context {
   constructor(
     public parent: DataflowManager,
     public name: string,
-    public rows: Specification.DataRow[]
-  ) {}
+    public rows: Specification.DataRow[],
+    public columns: Specification.Template.Column[],
+    public options?: {
+      displayName: string;
+    }
+  ) { }
 
   /** Implements Expression.Context */
   public getVariable(name: string) {
     if (name == "rows") {
       return this.rows;
+    }
+    if (name == "columns") {
+      return this.columns;
+    }
+    if (
+      name.indexOf("TableName") > -1 &&
+      name.replace("TableName", "") === this.name
+    ) {
+      return (this.options && this.options.displayName) || this.name;
+    }
+    if (name.indexOf("ColumnName") > -1) {
+      const colName = name.replace("ColumnName", "");
+      const column = this.columns.find((col) => col.name === colName);
+      if (column) {
+        return column.displayName || column.name;
+      }
     }
     return this.parent.getVariable(name);
   }
@@ -63,7 +87,15 @@ export class DataflowManager implements Expression.Context {
 
     this.tables = new Map<string, DataflowTable>();
     for (const table of dataset.tables) {
-      const dfTable = new DataflowTable(this, table.name, table.rows);
+      const dfTable = new DataflowTable(
+        this,
+        table.name,
+        table.rows,
+        table.columns,
+        {
+          displayName: table.displayName,
+        }
+      );
       this.tables.set(table.name, dfTable);
     }
   }
@@ -76,7 +108,7 @@ export class DataflowManager implements Expression.Context {
   /** Implements Expression.Context */
   public getVariable(name: string) {
     if (this.tables.has(name)) {
-      return this.tables.get(name).rows;
+      return this.tables.get(name);
     }
   }
 }

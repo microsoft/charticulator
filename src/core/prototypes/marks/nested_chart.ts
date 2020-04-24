@@ -29,7 +29,7 @@ export { NestedChartElementAttributes, NestedChartElementProperties };
 export class NestedChartElementClass extends EmphasizableMarkClass<
   NestedChartElementProperties,
   NestedChartElementAttributes
-> {
+  > {
   public static classID = "mark.nested-chart";
   public static type = "mark";
 
@@ -149,9 +149,9 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
 
     return plotSegmentClass.object.groupBy
       ? {
-          column: plotSegmentClass.object.groupBy.expression,
-          value: data[plotSegmentClass.object.groupBy.expression]
-        }
+        column: plotSegmentClass.object.groupBy.expression,
+        value: data[plotSegmentClass.object.groupBy.expression]
+      }
       : null;
   }
 
@@ -194,6 +194,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           columns: table.columns.map((x) => {
             return {
               name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
               type: x.type,
               metadata: x.metadata,
             };
@@ -207,6 +208,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           columns: table.columns.map((x) => {
             return {
               name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
               type: x.type,
               metadata: x.metadata,
             };

@@ -930,11 +930,12 @@ export class AppStore extends BaseStore {
       };
       return Expression.verifyUserExpression(inputString, {
         data: rowIterator(),
-        ...options
+        table: dfTable,
+        ...options,
       });
     } else {
       return Expression.verifyUserExpression(inputString, {
-        ...options
+        ...options,
       });
     }
   }

@@ -27,6 +27,8 @@ export interface ColumnMetadata {
 export interface Column {
   /** Name, used to address the entry from row */
   name: string;
+  /** Name, used to display row name */
+  displayName: string;
   /** Data type in memory (number, string, Date, boolean, etc) */
   type: DataType;
   /** Metadata */

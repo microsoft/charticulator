@@ -110,7 +110,7 @@ export class InputExpression extends React.Component<
                 errorIndicator: false
               });
             } else {
-              const result = Expression.verifyUserExpression(newValue, {
+              const result = Expression.verifyUserExpression (newValue, {
                 textExpression: this.props.textExpression
               });
               this.setState({

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { csvParseRows, tsvParseRows } from "d3-dsv";
+import { dsvFormat, csvParseRows, tsvParseRows } from "d3-dsv";
 
 import { inferAndConvertColumn } from "./data_types";
 import { Column, Row, Table } from "./dataset";
@@ -28,6 +28,10 @@ export function parseHints(hints: string) {
   }
 }
 
+export function getLocalListSeparator(): string {
+  return ["", ""].toLocaleString();
+}
+
 export function parseDataset(
   fileName: string,
   content: string,
@@ -37,7 +41,7 @@ export function parseDataset(
   switch (type) {
     case "csv":
       {
-        rows = csvParseRows(content);
+        rows = dsvFormat(getLocalListSeparator()).parseRows(content);
       }
       break;
     case "tsv":
@@ -81,8 +85,9 @@ export function parseDataset(
 
     const columns = columnValues.map((x, i) => ({
       name: header[i],
+      displayName: header[i],
       type: x.type,
-      metadata: x.metadata
+      metadata: x.metadata,
     }));
 
     return {
