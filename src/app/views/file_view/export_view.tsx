@@ -384,6 +384,8 @@ export class ExportTemplateView extends ContextedComponent<
         this.state.template.specification,
         id
       ) as Specification.ExposableObject;
+
+
       if (object && (p.target.attribute || p.target.property)) {
         if (object.exposed == undefined) {
           object.exposed = true;
@@ -392,6 +394,11 @@ export class ExportTemplateView extends ContextedComponent<
       }
     }
     for (const [key, object] of templateObjects) {
+      
+      if (Prototypes.isType(object.classID, "guide")) {
+        continue;
+      }
+      
       result.push(
         <div
           key={key}

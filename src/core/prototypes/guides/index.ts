@@ -9,7 +9,8 @@ import {
   Handles,
   SnappingGuides,
   BoundingBox,
-  Controls
+  Controls,
+  TemplateParameters
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
@@ -21,6 +22,8 @@ export interface GuideAttributes extends Specification.AttributeMap {
 export interface GuideProperties extends Specification.AttributeMap {
   axis: "x" | "y";
   gap: number;
+  value: number;
+  value2: number;
 }
 
 export class GuideClass extends ChartElementClass<
@@ -36,7 +39,9 @@ export class GuideClass extends ChartElementClass<
   };
 
   public static defaultProperties: Partial<GuideProperties> = {
-    gap: 0
+    gap: 0,
+    value: 0,
+    value2: 0
   };
 
   public attributeNames: string[] = ["value", "value2"];
@@ -63,11 +68,11 @@ export class GuideClass extends ChartElementClass<
   public buildConstraints(solver: ConstraintSolver) {
     const [value, value2] = solver.attrs(this.state.attributes, [
       "value",
-      "value2"
+      "value2",
     ]);
     solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
       [1, value],
-      [-1, value2]
+      [-1, value2],
     ]);
   }
 
@@ -120,8 +125,39 @@ export class GuideClass extends ChartElementClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Guide"),
-      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
+      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {})),
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      properties: [
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "gap"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.object.properties.gap as number
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "value"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.value as number
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "value2"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.value2 as number
+        }
+      ]
+    };
   }
 }
 

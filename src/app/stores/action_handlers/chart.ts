@@ -172,6 +172,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
         return true;
       });
+      action.chartElement.properties[key] = action.updates[key];
       layoutState.attributes[key] = action.updates[key];
       this.addPresolveValue(
         Solver.ConstraintStrength.STRONG,
