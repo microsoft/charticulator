@@ -34,16 +34,11 @@ export class ScalesPanel extends ContextedComponent<
   private tokens: EventSubscription[];
 
   public componentDidMount() {
-    this.tokens = [];
-    this.tokens.push(
-      this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate())
-    );
-    this.tokens.push(
-      this.store.addListener(AppStore.EVENT_SELECTION, () => this.forceUpdate())
-    );
-    this.tokens.push(
+    this.tokens = [
+      this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate()),
+      this.store.addListener(AppStore.EVENT_SELECTION, () => this.forceUpdate()),
       this.store.addListener(AppStore.EVENT_SAVECHART, () => this.forceUpdate())
-    );
+   ]
   }
 
   public componentWillUnmount() {
