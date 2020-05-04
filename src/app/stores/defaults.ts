@@ -144,6 +144,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
       createDefaultTitle(dataset)
     ],
     scales: [],
+    scaleMappings: [],
     constraints: [],
     resources: []
   } as Specification.Chart;

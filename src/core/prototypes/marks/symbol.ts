@@ -31,7 +31,7 @@ export { SymbolElementAttributes, SymbolElementProperties };
 export class SymbolElementClass extends EmphasizableMarkClass<
   SymbolElementProperties,
   SymbolElementAttributes
-> {
+  > {
   public static classID = "mark.symbol";
   public static type = "mark";
 

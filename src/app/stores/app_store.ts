@@ -78,6 +78,8 @@ export class AppStore extends BaseStore {
   public static EVENT_CURRENT_TOOL = "current-tool";
   /** Fires when solver status changes */
   public static EVENT_SOLVER_STATUS = "solver-status";
+  /** Fires when the chart was saved */
+  public static EVENT_SAVECHART = "savechart";
 
   /** The WebWorker for solving constraints */
   public readonly worker: CharticulatorWorker;
@@ -156,7 +158,6 @@ export class AppStore extends BaseStore {
   }
 
   public saveState(): AppStoreState {
-    this.updateChartState();
     return {
       version: CHARTICULATOR_PACKAGE.version,
       dataset: this.dataset,
@@ -267,11 +268,16 @@ export class AppStore extends BaseStore {
     chart.scales
       .filter(scaleFilter)
       .forEach(scale => this.chartManager.removeScale(scale));
+
+    chart.scaleMappings = chart.scaleMappings.filter(scaleMapping =>
+      chart.scales.find(scale => scale._id === scaleMapping.scale)
+    );
   }
 
   public async backendSaveChart() {
     if (this.currentChartID != null) {
       const chart = await this.backend.get(this.currentChartID);
+      this.updateChartState();
       chart.data.state = this.saveState();
       const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
       const png = await renderDataURLToPNG(svg, {
@@ -280,10 +286,12 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
+      this.emit(AppStore.EVENT_SAVECHART);
     }
   }
 
   public async backendSaveChartAs(name: string) {
+    this.updateChartState();
     const state = this.saveState();
     const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
     const png = await renderDataURLToPNG(svg, {
@@ -303,6 +311,7 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
 
@@ -554,7 +563,8 @@ export class AppStore extends BaseStore {
     valueType: Specification.DataType,
     valueKind: Specification.DataKind,
     outputType: Specification.AttributeType,
-    hints: Prototypes.DataMappingHints = {}
+    hints: Prototypes.DataMappingHints = {},
+    markAttribute?: string
   ): string {
     // Figure out the source table
     let tableName: string = null;
@@ -612,7 +622,12 @@ export class AppStore extends BaseStore {
                   name
                 ] as Specification.ScaleMapping;
                 if (scaleMapping.scale != null) {
-                  if (scaleMapping.expression == expression) {
+                  if (
+                    scaleMapping.expression == expression &&
+                    (markAttribute == scaleMapping.attribute ||
+                      !markAttribute ||
+                      !scaleMapping.attribute)
+                  ) {
                     const scaleObject = getById(
                       this.chart.scales,
                       scaleMapping.scale
@@ -641,6 +656,21 @@ export class AppStore extends BaseStore {
           }
         }
       }
+      if (this.chart.scaleMappings) {
+        for (const scaleMapping of this.chart.scaleMappings) {
+          if (
+            scaleMapping.expression == expression &&
+            ((scaleMapping.attribute &&
+              scaleMapping.attribute === markAttribute) ||
+              !scaleMapping.attribute)
+          ) {
+            const scaleObject = getById(this.chart.scales, scaleMapping.scale);
+            if (scaleObject && scaleObject.outputType == outputType) {
+              return scaleMapping.scale;
+            }
+          }
+        }
+      }
     }
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
@@ -660,6 +690,7 @@ export class AppStore extends BaseStore {
       const scaleClass = this.chartManager.getClassById(
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
+
       scaleClass.inferParameters(
         this.chartManager.getGroupedExpressionVector(
           table.name,
@@ -668,7 +699,6 @@ export class AppStore extends BaseStore {
         ) as Specification.DataValue[],
         hints
       );
-      // console.log(this.datasetStore.getExpressionVector(table, expression));
 
       return newScale._id;
     } else {

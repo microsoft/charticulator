@@ -29,7 +29,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-> {
+  > {
   public static classID = "mark.rect";
   public static type = "mark";
 

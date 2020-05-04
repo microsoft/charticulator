@@ -177,7 +177,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       action.valueType,
       action.valueMetadata.kind,
       action.attributeType,
-      action.hints
+      action.hints,
+      action.attribute
     );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
@@ -185,8 +186,19 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         table: action.glyph.table,
         expression: action.expression,
         valueType: action.valueType,
-        scale: inferred
+        scale: inferred,
+        attribute: action.attribute
       } as Specification.ScaleMapping;
+      if (
+        !this.chart.scaleMappings.find(
+          scaleMapping => scaleMapping.scale === inferred
+        )
+      ) {
+        this.chart.scaleMappings.push({
+          ...action.mark.mappings[action.attribute],
+          attribute: action.attribute
+        } as Specification.ScaleMapping);
+      }
     } else {
       if (
         (action.valueType == Specification.DataType.String ||

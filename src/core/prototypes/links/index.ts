@@ -188,13 +188,13 @@ export abstract class LinksClass extends ChartElementClass {
         const x = (pt.x.element < 0
           ? glyphState.attributes[pt.x.attribute]
           : glyphState.marks[pt.x.element].attributes[
-              pt.x.attribute
-            ]) as number;
+          pt.x.attribute
+          ]) as number;
         const y = (pt.y.element < 0
           ? glyphState.attributes[pt.y.attribute]
           : glyphState.marks[pt.y.element].attributes[
-              pt.y.attribute
-            ]) as number;
+          pt.y.attribute
+          ]) as number;
         const px = dx + x;
         const py = dy + y;
         return {

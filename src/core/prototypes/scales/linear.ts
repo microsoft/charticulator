@@ -8,7 +8,8 @@ import {
   AttributeDescription,
   Controls,
   DataMappingHints,
-  TemplateParameters
+  TemplateParameters,
+  ObjectClassMetadata
 } from "../common";
 import { ScaleClass } from "./index";
 import { InferParametersOptions } from "./scale";
@@ -174,6 +175,11 @@ export class LinearColorScale extends ScaleClass<
 > {
   public static classID = "scale.linear<number,color>";
   public static type = "scale";
+
+  public static metadata: ObjectClassMetadata = {
+    displayName: "Scale",
+    iconPath: "scale/color"
+  };
 
   public static defaultMappingValues: Specification.AttributeMap = {
     range: getDefaultGradient()
@@ -374,5 +380,75 @@ export class LinearBooleanScale extends ScaleClass<
       ),
       ...minMax
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const parameters = super.getTemplateParameters();
+    if (!parameters.properties) {
+      parameters.properties = [];
+    }
+    if (this.object.properties.mode === "interval") {
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "min",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.min,
+      });
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "max",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.max,
+      });
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "inclusive",
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.object.properties.inclusive,
+      });
+    }
+    if (this.object.properties.mode === "greater") {
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "min",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.min,
+      });
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "inclusive",
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.object.properties.inclusive,
+      });
+    }
+    if (this.object.properties.mode === "less") {
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "max",
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.max,
+      });
+      parameters.properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "inclusive",
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.object.properties.inclusive,
+      });
+    }
+    return parameters;
   }
 }

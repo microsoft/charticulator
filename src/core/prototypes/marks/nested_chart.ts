@@ -481,6 +481,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         } as Specification.ChartElement
       ],
       scales: [],
+      scaleMappings: [],
       constraints: [],
       resources: []
     } as any;

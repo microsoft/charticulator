@@ -111,6 +111,8 @@ export interface ScaleMapping extends Mapping {
   table: string;
   /** The data column */
   expression: Expression;
+  /** Attribute of the mark */
+  attribute?: string;
   /** Value type returned by the expression */
   valueType: DataType;
   /** The id of the scale to use. If null, use the expression directly */
@@ -261,6 +263,7 @@ export interface Chart<
   glyphs: Glyph[];
   /** Scales */
   scales: Scale[];
+  scaleMappings: ScaleMapping[];
   /** Chart elements */
   elements: ChartElement[];
   /** Chart-level constraints */
@@ -327,6 +330,7 @@ export interface ChartState<AttributesType extends AttributeMap = AttributeMap>
   elements: ChartElementState[];
   /** Scale states corresponding to Chart.scales */
   scales: ScaleState[];
+  scaleMappings: ScaleMapping[];
 }
 
 /**

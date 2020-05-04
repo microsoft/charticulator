@@ -1163,6 +1163,8 @@
             "outputType": "enum"
           }
         ],
+        "scaleMappings": [
+        ],
         "constraints": [
           {
             "type": "snap",
@@ -4406,6 +4408,8 @@
           {
             "attributes": {}
           }
+        ],
+        "scaleMappings": [
         ],
         "attributes": {
           "width": 1000,
