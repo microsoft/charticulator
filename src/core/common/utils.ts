@@ -1,3 +1,5 @@
+import { Color } from "./color";
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 /** zip two arrays, return an iterator */
@@ -502,4 +504,42 @@ export function compareVersion(version1: string, version2: string) {
     return p1.minor - p2.minor;
   }
   return p1.patch - p2.patch;
+}
+
+function componentToHex(c: number) {
+  const hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+/**
+ * Converts Color object to Hex
+ * @param color Color object
+ * @returns Hex representation of color
+ */
+export function rgbToHex(color: Color) {
+  if (!color) {
+    return null;
+  }
+  return (
+    "#" +
+    componentToHex(color.r) +
+    componentToHex(color.g) +
+    componentToHex(color.b)
+  );
+}
+
+/**
+ * Converts Hex to Color object
+ * @param color Color object
+ * @returns Hex representation of color
+ */
+export function hexToRgb(hex: string): Color {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
+    : null;
 }

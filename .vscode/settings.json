@@ -13,5 +13,9 @@
     "**/.DS_Store": true,
     "dist/": true,
     "node_modules/": true
+  },
+  "files.associations": {
+    "*.chart": "json",
+    "*.tmplt": "json"
   }
 }

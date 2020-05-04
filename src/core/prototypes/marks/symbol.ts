@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Point, Color, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import {
@@ -11,7 +11,9 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters,
+  AttributeDescriptions
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -21,6 +23,8 @@ import {
   SymbolElementProperties,
   symbolTypes
 } from "./symbol.attrs";
+
+export const symbolTypesList = symbolTypes;
 
 export { SymbolElementAttributes, SymbolElementProperties };
 
@@ -52,7 +56,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     visible: true
   };
 
-  public attributes = symbolAttributes;
+  public attributes: AttributeDescriptions = symbolAttributes;
   public attributeNames = Object.keys(symbolAttributes);
 
   public initializeState(): void {
@@ -327,5 +331,105 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       })
     ]);
     return widgets;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.fill &&
+      this.object.mappings.fill.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fill"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fill as Color)
+      });
+    }
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.stroke)
+      });
+    }
+    if (
+      this.object.mappings.size &&
+      this.object.mappings.size.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "size"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.size
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+    if (
+      this.object.mappings.symbol &&
+      this.object.mappings.symbol.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "symbol"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.state.attributes.symbol
+      });
+    }
+
+    return {
+      properties
+    };
   }
 }

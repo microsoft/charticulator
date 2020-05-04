@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, deepClone, indexOf, interpolateColors } from "../../common";
+import {
+  Color,
+  deepClone,
+  indexOf,
+  interpolateColors,
+  rgbToHex
+} from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -11,7 +17,8 @@ import {
   Controls,
   Handles,
   ObjectClasses,
-  ObjectClassMetadata
+  ObjectClassMetadata,
+  TemplateParameters
 } from "../common";
 import {
   AxisRenderer,
@@ -199,6 +206,53 @@ export abstract class LegendClass extends ChartElementClass {
       ),
       manager.row("Color", manager.inputColor({ property: "textColor" }))
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    return {
+      properties: [
+        {
+          objectID: this.object._id,
+          target: {
+            property: "fontFamily"
+          },
+          type: Specification.AttributeType.FontFamily,
+          default: this.object.properties.fontFamily
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "fontSize"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.object.properties.fontSize
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "textColor"
+          },
+          type: Specification.AttributeType.Color,
+          default: rgbToHex(this.object.properties.textColor)
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "alignY"
+          },
+          type: Specification.AttributeType.Enum,
+          default: this.object.properties.alignY
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            property: "alignX"
+          },
+          type: Specification.AttributeType.Enum,
+          default: this.object.properties.alignX
+        }
+      ]
+    };
   }
 }
 

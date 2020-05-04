@@ -17,7 +17,8 @@ import {
   AxisRenderer,
   buildAxisWidgets,
   getCategoricalAxis,
-  buildAxisInference
+  buildAxisInference,
+  buildAxisProperties
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
 
@@ -243,10 +244,12 @@ export class LineGuide extends PlotSegmentClass {
 
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
+    let p: Specification.Template.Property[] = [];
     if (this.object.properties.axis) {
       const axis = this.object.properties.axis;
       r.push(buildAxisInference(this.object, "axis"));
+      p = p.concat(buildAxisProperties(this.object, "axis"));
     }
-    return { inferences: r };
+    return { inferences: r, properties: p };
   }
 }

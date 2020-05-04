@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
@@ -12,7 +12,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -571,5 +572,91 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+    if (
+      this.object.mappings.vistextible &&
+      this.object.mappings.text.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "text"
+        },
+        type: Specification.AttributeType.Text,
+        default: this.state.attributes.text
+      });
+    }
+    if (
+      this.object.mappings.fontFamily &&
+      this.object.mappings.fontFamily.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fontFamily"
+        },
+        type: Specification.AttributeType.FontFamily,
+        default: this.state.attributes.fontFamily
+      });
+    }
+    if (
+      this.object.mappings.fontSize &&
+      this.object.mappings.fontSize.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fontSize"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.fontSize
+      });
+    }
+    if (
+      this.object.mappings.color &&
+      this.object.mappings.color.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "color"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.color)
+      });
+    }
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+
+    return {
+      properties
+    };
   }
 }

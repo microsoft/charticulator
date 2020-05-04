@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import { DataKind, AttributeType } from "../../specification";
+import * as Specification from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -12,7 +13,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -75,6 +77,80 @@ export class RectElementClass extends EmphasizableMarkClass<
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
     attrs.visible = true;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
+    if (
+      this.object.mappings.fill &&
+      this.object.mappings.fill.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "fill"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.fill)
+      });
+    }
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "stroke"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.state.attributes.stroke)
+      });
+    }
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.strokeWidth
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+
+    return {
+      properties
+    };
   }
 
   public getAttributePanelWidgets(

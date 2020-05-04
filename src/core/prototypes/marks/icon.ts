@@ -11,7 +11,8 @@ import {
   Handles,
   LinkAnchor,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -343,5 +344,52 @@ export class IconElementClass extends EmphasizableMarkClass<
       })
     ]);
     return widgets;
+  }
+
+  public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "visible"
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.state.attributes.visible
+      });
+    }
+    if (
+      this.object.mappings.size &&
+      this.object.mappings.size.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "size"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.size
+      });
+    }
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.opacity
+      });
+    }
+    return {
+      properties
+    };
   }
 }
