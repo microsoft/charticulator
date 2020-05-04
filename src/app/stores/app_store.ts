@@ -244,8 +244,8 @@ export class AppStore extends BaseStore {
     function scaleFilter(scale: any) {
       return !(
         chart.elements.find((element: any) => {
-          if ((element as Specification.Object).mappings) {
-            const mappings = (element as Specification.Object).mappings;
+          const mappings = (element as Specification.Object).mappings;
+          if (mappings) {
             return hasMappedProperty(mappings, scale._id);
           }
           return false;
@@ -253,8 +253,8 @@ export class AppStore extends BaseStore {
         chart.glyphs.find(glyph => {
           return (
             glyph.marks.find(mark => {
-              if ((mark as Specification.Object).mappings) {
-                const mappings = (mark as Specification.Object).mappings;
+              const mappings = (mark as Specification.Object).mappings;
+              if (mappings) {
                 return hasMappedProperty(mappings, scale._id);
               }
               return false;
@@ -624,7 +624,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                      getExpressionUnit(expression) &&
+                    getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -874,7 +874,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function*() {
+      const rowIterator = function* () {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }

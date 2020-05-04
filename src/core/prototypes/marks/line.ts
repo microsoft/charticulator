@@ -29,7 +29,7 @@ export { LineElementAttributes, LineElementProperties };
 export class LineElementClass extends EmphasizableMarkClass<
   LineElementProperties,
   LineElementAttributes
-> {
+  > {
   public static classID = "mark.line";
   public static type = "mark";
 
@@ -259,7 +259,9 @@ export class LineElementClass extends EmphasizableMarkClass<
 
   public getTemplateParameters(): TemplateParameters {
     const properties = [];
-    if (this.object.mappings.visible.type !== "scale") {
+    if (
+      this.object.mappings.visible &&
+      this.object.mappings.visible.type !== "scale") {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -269,7 +271,9 @@ export class LineElementClass extends EmphasizableMarkClass<
         default: this.state.attributes.visible
       });
     }
-    if (this.object.mappings.stroke.type !== "scale") {
+    if (
+      this.object.mappings.stroke &&
+      this.object.mappings.stroke.type !== "scale") {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -281,7 +285,9 @@ export class LineElementClass extends EmphasizableMarkClass<
           rgbToHex(this.state.attributes.stroke as Color)
       });
     }
-    if (this.object.mappings.strokeWidth.type !== "scale") {
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type !== "scale") {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -291,7 +297,9 @@ export class LineElementClass extends EmphasizableMarkClass<
         default: this.state.attributes.strokeWidth
       });
     }
-    if (this.object.mappings.opacity.type !== "scale") {
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type !== "scale") {
       properties.push({
         objectID: this.object._id,
         target: {
