@@ -13,20 +13,22 @@ import {
   showOpenFileDialog,
   getFileNameWithoutExtension
 } from "../../utils";
-import { Button } from "../panels/widgets/controls";
+import { Button, Select, DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
+import { DataType, DataKind } from "../../../core/specification";
+import { lab } from "d3";
 
 export interface DatasetViewProps {
   store: AppStore;
 }
 
-export interface DatasetViewState {}
+export interface DatasetViewState { }
 
 export class DatasetView extends React.Component<
   DatasetViewProps,
   DatasetViewState
-> {
+  > {
   public componentDidMount() {
     this.props.store.addListener(AppStore.EVENT_DATASET, () =>
       this.forceUpdate()
@@ -66,7 +68,7 @@ export interface ColumnsViewState {
 export class ColumnsView extends React.Component<
   ColumnsViewProps,
   ColumnsViewState
-> {
+  > {
   constructor(props: ColumnsViewProps) {
     super(props);
     this.state = {
@@ -133,16 +135,16 @@ export class ColumnsView extends React.Component<
                       <p>
                         {table.rows.length} rows, {table.columns.length} columns
                       </p>
-                      <TableView table={table} onTypeChange={() => {
+                      <TableView
+                        table={table}
+                        onTypeChange={(column, type) => {
                           const store = this.props.store;
-                          const newDataset: Dataset.Dataset = {
-                          name: store.dataset.name,
-                          tables: store.dataset.tables
-                        };
-                        store.dispatcher.dispatch(
-                          new Actions.ReplaceDataset(newDataset)
-                        );
-                      }}/>
+
+                          store.dispatcher.dispatch(
+                            new Actions.ConvertColumnDataType(table.name, column, type as DataType)
+                          );
+                        }}
+                      />
                     </div>
                   </PopupView>
                 ),
@@ -179,7 +181,7 @@ export class ColumnViewState {
 export class ColumnView extends React.Component<
   ColumnViewProps,
   ColumnViewState
-> {
+  > {
   constructor(props: ColumnViewProps) {
     super(props);
     this.state = {
@@ -220,7 +222,7 @@ export class ColumnView extends React.Component<
             type,
             null,
             desc.metadata
-          );
+          )
         })}
       </div>
     );
@@ -241,36 +243,74 @@ export class ColumnView extends React.Component<
     lambdaExpr: string,
     type: Dataset.DataType,
     additionalElement: JSX.Element = null,
-    metadata: Dataset.ColumnMetadata
+    metadata: Dataset.ColumnMetadata,
+    onColumnKindChanged?: (column: string, type: string) => void
   ) {
+    let anchor: HTMLDivElement;
     return (
-      <DraggableElement
-        key={expr}
-        className={classNames("charticulator__dataset-view-column", [
-          "is-active",
-          this.state.isSelected == expr
-        ])}
-        onDragStart={() => this.setState({ isSelected: expr })}
-        onDragEnd={() => this.setState({ isSelected: null })}
-        dragData={() => {
-          this.setState({ isSelected: expr });
-          const r = new DragData.DataExpression(
-            this.props.table,
-            this.applyAggregation(expr, type),
-            type,
-            metadata
+      <div className="click-handler"
+        ref={e => (anchor = e)}
+        onClick={() => {
+          if (!onColumnKindChanged) {
+            return;
+          }
+          globals.popupController.popupAt(
+            context => (
+              <PopupView context={context}>
+                <div>
+                  <DropdownListView
+                    selected={type}
+                    list={[
+                      DataKind.Categorical,
+                      DataKind.Numerical,
+                      DataKind.Ordinal,
+                      DataKind.Temporal
+                    ].map(type => {
+                      return {
+                        name: type.toString(),
+                        text: type.toString()
+                      }
+                    })}
+                    context={context}
+                    onClick={(value: string) => {
+                      onColumnKindChanged(label, value);
+                    }}
+                  />
+                </div>
+              </PopupView>
+            ),
+            { anchor, alignX: "outer", alignY: "start-inner" }
           );
-          return r;
         }}
-        renderDragElement={() => [
-          <span className="dragging-table-cell">{expr}</span>,
-          { x: -10, y: -8 }
-        ]}
       >
-        <SVGImageIcon url={icon} />
-        <span className="el-text">{label}</span>
-        {additionalElement}
-      </DraggableElement>
+        <DraggableElement
+          key={expr}
+          className={classNames("charticulator__dataset-view-column", [
+            "is-active",
+            this.state.isSelected == expr
+          ])}
+          onDragStart={() => this.setState({ isSelected: expr })}
+          onDragEnd={() => this.setState({ isSelected: null })}
+          dragData={() => {
+            this.setState({ isSelected: expr });
+            const r = new DragData.DataExpression(
+              this.props.table,
+              this.applyAggregation(expr, type),
+              type,
+              metadata
+            );
+            return r;
+          }}
+          renderDragElement={() => [
+            <span className="dragging-table-cell">{expr}</span>,
+            { x: -10, y: -8 }
+          ]}
+        >
+          <SVGImageIcon url={icon} />
+          <span className="el-text">{label}</span>
+          {additionalElement}
+        </DraggableElement>
+      </div>
     );
   }
 
@@ -302,7 +342,11 @@ export class ColumnView extends React.Component<
                 this.setState({ isExpanded: !this.state.isExpanded });
               }}
             />,
-            c.metadata
+            c.metadata,
+            (column, type) => {
+              c.metadata.kind = type as DataKind;
+              this.forceUpdate();
+            }
           )}
           {this.state.isExpanded ? derivedColumnsControl : null}
         </div>
@@ -318,7 +362,11 @@ export class ColumnView extends React.Component<
         ).toString(),
         c.type,
         null,
-        c.metadata
+        c.metadata,
+        (column, type) => {
+          c.metadata.kind = type as DataKind;
+          this.forceUpdate();
+        }
       );
     }
   }

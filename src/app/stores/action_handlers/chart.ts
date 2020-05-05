@@ -17,8 +17,8 @@ import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 import { BindDataToAxis } from "../../actions/actions";
 
-export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.MapDataToChartElementAttribute, function(action) {
+export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.MapDataToChartElementAttribute, function (action) {
     const attr = Prototypes.ObjectClasses.Create(
       null,
       action.chartElement,
@@ -63,7 +63,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.AddChartElement, function(action) {
+  REG.add(Actions.AddChartElement, function (action) {
     this.saveHistory();
 
     let glyph = this.currentGlyph;
@@ -131,7 +131,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetPlotSegmentFilter, function(action) {
+  REG.add(Actions.SetPlotSegmentFilter, function (action) {
     this.saveHistory();
     action.plotSegment.filter = action.filter;
     // Filter updated, we need to regenerate some glyph states
@@ -139,7 +139,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetPlotSegmentGroupBy, function(action) {
+  REG.add(Actions.SetPlotSegmentGroupBy, function (action) {
     this.saveHistory();
     action.plotSegment.groupBy = action.groupBy;
     // Filter updated, we need to regenerate some glyph states
@@ -147,7 +147,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.UpdateChartElementAttribute, function(action) {
+  REG.add(Actions.UpdateChartElementAttribute, function (action) {
     this.saveHistory();
 
     const idx = this.chart.elements.indexOf(action.chartElement);
@@ -185,7 +185,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetChartElementMapping, function(action) {
+  REG.add(Actions.SetChartElementMapping, function (action) {
     this.saveHistory();
 
     if (action.mapping == null) {
@@ -208,7 +208,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SnapChartElements, function(action) {
+  REG.add(Actions.SnapChartElements, function (action) {
     this.saveHistory();
 
     delete action.element.mappings[action.attribute];
@@ -240,14 +240,14 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       this.chartManager.getClassById(action.element._id).state.attributes,
       action.attribute,
       this.chartManager.getClassById(action.targetElement._id).state.attributes[
-        action.targetAttribute
+      action.targetAttribute
       ] as number
     );
 
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetScaleAttribute, function(action) {
+  REG.add(Actions.SetScaleAttribute, function (action) {
     this.saveHistory();
 
     if (action.mapping == null) {
@@ -259,7 +259,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.UpdateChartAttribute, function(action) {
+  REG.add(Actions.UpdateChartAttribute, function (action) {
     this.saveHistory();
 
     for (const key in action.updates) {
@@ -278,12 +278,12 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.BindDataToAxis, function(action: BindDataToAxis) {
+  REG.add(Actions.BindDataToAxis, function (action: BindDataToAxis) {
     this.bindDataToAxis(action);
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetChartAttribute, function(action) {
+  REG.add(Actions.SetChartAttribute, function (action) {
     this.saveHistory();
 
     if (action.mapping == null) {
@@ -295,7 +295,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetChartSize, function(action) {
+  REG.add(Actions.SetChartSize, function (action) {
     this.saveHistory();
 
     this.chartState.attributes.width = action.width;
@@ -312,7 +312,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetObjectProperty, function(action) {
+  REG.add(Actions.SetObjectProperty, function (action) {
     this.saveHistory();
 
     if (action.field == null) {
@@ -333,7 +333,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.ExtendPlotSegment, function(action) {
+  REG.add(Actions.ExtendPlotSegment, function (action) {
     this.saveHistory();
 
     const plotSegment = action.plotSegment as Specification.PlotSegment;
@@ -436,7 +436,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.ReorderGlyphMark, function(action) {
+  REG.add(Actions.ReorderGlyphMark, function (action) {
     this.saveHistory();
 
     this.chartManager.reorderGlyphElement(
@@ -448,7 +448,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.ToggleLegendForScale, function(action) {
+  REG.add(Actions.ToggleLegendForScale, function (action) {
     this.saveHistory();
 
     this.toggleLegendForScale(action.scale);
@@ -456,7 +456,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.ReorderChartElement, function(action) {
+  REG.add(Actions.ReorderChartElement, function (action) {
     this.saveHistory();
 
     this.chartManager.reorderChartElement(action.fromIndex, action.toIndex);
@@ -464,7 +464,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.AddLinks, function(action) {
+  REG.add(Actions.AddLinks, function (action) {
     this.saveHistory();
 
     action.links.properties.name = this.chartManager.findUnusedName("Link");
@@ -478,7 +478,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.DeleteChartElement, function(action) {
+  REG.add(Actions.DeleteChartElement, function (action) {
     this.saveHistory();
 
     if (

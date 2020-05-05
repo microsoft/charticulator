@@ -12,6 +12,7 @@ export interface TableViewProps {
 }
 
 export class TableView extends React.Component<TableViewProps, {}> {
+
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;
@@ -31,28 +32,40 @@ export class TableView extends React.Component<TableViewProps, {}> {
           </tr>
         </thead>
         <tbody>
-          {
-            onTypeChange && (<tr key={-1}>
+          {onTypeChange && (
+            <tr key={-1}>
               {table.columns.map(c => (
-                <td key={c.name}>{
-                  <Select
-                    onChange={newType => {
-                      c.type = newType as DataType;
-                      onTypeChange(c.name, newType);
-                    }}
-                    value={c.type}
-                    options={[DataType.Boolean, DataType.Date, DataType.Number, DataType.String]}
-                    labels={[DataType.Boolean, DataType.Date, DataType.Number, DataType.String]}
-                    showText={true}
-                  />
-                }</td>
+                <td key={c.name}>
+                  {
+                    <Select
+                      onChange={newType => {
+                        onTypeChange(c.name, newType);
+                        this.forceUpdate();
+                      }}
+                      value={c.type}
+                      options={[
+                        DataType.Boolean,
+                        DataType.Date,
+                        DataType.Number,
+                        DataType.String
+                      ]}
+                      labels={[
+                        DataType.Boolean,
+                        DataType.Date,
+                        DataType.Number,
+                        DataType.String
+                      ]}
+                      showText={true}
+                    />
+                  }
+                </td>
               ))}
-            </tr>)
-          }
+            </tr>
+          )}
           {table.rows.slice(0, maxRows).map(r => (
             <tr key={r._id}>
               {table.columns.map(c => (
-                <td key={c.name}>{r[c.name].toString()}</td>
+                <td key={c.name}>{r[c.name] && r[c.name].toString()}</td>
               ))}
             </tr>
           ))}

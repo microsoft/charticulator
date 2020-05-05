@@ -8,7 +8,8 @@ import {
   Prototypes,
   Specification,
   Expression,
-  Dataset
+  Dataset,
+  deepClone
 } from "../../core";
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -68,15 +69,28 @@ export class Migrator {
       state = this.addScaleMappings(state);
     }
 
+    if (
+      compareVersion(state.version, "1.6.0") < 0 &&
+      compareVersion(targetVersion, "1.6.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.addOriginDataSet(state);
+    }
+
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
     return state;
   }
 
+  public addOriginDataSet(state: AppStoreState) {
+    state.originDataset = deepClone(state.dataset);
+    return state;
+  }
+
   public addScaleMappings(state: AppStoreState) {
     state.chart.scaleMappings = [];
-    // TODO append current mappings
     return state;
   }
 

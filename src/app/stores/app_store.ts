@@ -44,6 +44,7 @@ import {
   Selection
 } from "./selection";
 import { ValueType } from "../../core/expression/classes";
+import { DataKind } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -62,6 +63,7 @@ export interface SelectionState {
 
 export interface AppStoreState {
   version: string;
+  originDataset?: Dataset.Dataset;
   dataset: Dataset.Dataset;
   chart: Specification.Chart;
   chartState: Specification.ChartState;
@@ -92,6 +94,8 @@ export class AppStore extends BaseStore {
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
+  /** The dataset created on import */
+  public originDataset: Dataset.Dataset;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -179,6 +183,7 @@ export class AppStore extends BaseStore {
     this.selectedGlyphIndex = {};
 
     this.dataset = state.dataset;
+    this.originDataset = state.originDataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
 
@@ -1005,7 +1010,7 @@ export class AppStore extends BaseStore {
     const { object, property, appendToProperty, dataExpression } = options;
     const groupExpression = dataExpression.expression;
     let dataBinding: Specification.Types.AxisDataBinding = {
-      type: "categorical",
+      type: options.dataExpression.metadata.kind == DataKind.Numerical ? "numerical" : "categorical",
       expression: groupExpression,
       valueType: dataExpression.valueType,
       gapRatio: 0.1,

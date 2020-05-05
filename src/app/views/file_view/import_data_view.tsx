@@ -192,7 +192,10 @@ export class ImportDataView extends React.Component<
     });
   }
 
-  public renderTable(table: Dataset.Table, onTypeChange: (column: string, type: string) => void) {
+  public renderTable(
+    table: Dataset.Table,
+    onTypeChange: (column: string, type: string) => void
+  ) {
     return <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />;
   }
 
