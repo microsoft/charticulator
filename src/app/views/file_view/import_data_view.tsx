@@ -192,8 +192,8 @@ export class ImportDataView extends React.Component<
     });
   }
 
-  public renderTable(table: Dataset.Table) {
-    return <TableView table={table} maxRows={5} />;
+  public renderTable(table: Dataset.Table, onTypeChange: (column: string, type: string) => void) {
+    return <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />;
   }
 
   public render() {
@@ -260,7 +260,11 @@ export class ImportDataView extends React.Component<
         </h2>
         {this.state.dataTable ? (
           <div className="charticulator__import-data-view-table">
-            {this.renderTable(this.state.dataTable)}
+            {this.renderTable(this.state.dataTable, () => {
+              this.setState({
+                dataTable: this.state.dataTable
+              })
+            })}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}
@@ -290,7 +294,11 @@ export class ImportDataView extends React.Component<
         </h2>
         {this.state.linkTable ? (
           <div className="charticulator__import-data-view-table">
-            {this.renderTable(this.state.linkTable)}
+            {this.renderTable(this.state.linkTable, () => {
+              this.setState({
+                linkTable: this.state.linkTable
+              })
+            })}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}

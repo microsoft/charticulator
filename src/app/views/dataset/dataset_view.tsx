@@ -133,7 +133,16 @@ export class ColumnsView extends React.Component<
                       <p>
                         {table.rows.length} rows, {table.columns.length} columns
                       </p>
-                      <TableView table={table} />
+                      <TableView table={table} onTypeChange={() => {
+                          const store = this.props.store;
+                          const newDataset: Dataset.Dataset = {
+                          name: store.dataset.name,
+                          tables: store.dataset.tables
+                        };
+                        store.dispatcher.dispatch(
+                          new Actions.ReplaceDataset(newDataset)
+                        );
+                      }}/>
                     </div>
                   </PopupView>
                 ),
