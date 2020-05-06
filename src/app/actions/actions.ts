@@ -140,6 +140,17 @@ export class ReplaceDataset extends Action {
   }
 }
 
+/** Invokes updaes all plot segments on the chart,  */
+export class UpdatePlotSegments extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdatePlotSegments" };
+  }
+}
+
 export class ConvertColumnDataType extends Action {
   constructor(public tableName: string, public column: string, public type: DataType) {
     super();

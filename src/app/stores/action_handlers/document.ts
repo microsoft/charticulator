@@ -251,6 +251,15 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
+  REG.add(Actions.UpdatePlotSegments, function (action) {
+    this.saveHistory();
+
+    this.updatePlotSegments();
+    this.solveConstraintsAndUpdateGraphics();
+    this.emit(AppStore.EVENT_DATASET);
+    this.emit(AppStore.EVENT_SELECTION);
+  });
+
   REG.add(Actions.ReplaceDataset, function (action) {
     this.saveHistory();
 
@@ -290,7 +299,8 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
     }
 
-    const finilizeAction = () => {
+    const finalizeAction = () => {
+      this.updatePlotSegments();
       this.solveConstraintsAndUpdateGraphics();
       this.emit(AppStore.EVENT_DATASET);
       this.emit(AppStore.EVENT_SELECTION);
@@ -306,7 +316,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     if (originColumn.type === action.type) {
       columnValues = originTable.rows.map(row => row[column.name]);
       applyConvertedValues(table, column.name, columnValues);
-      finilizeAction();
+      finalizeAction();
 
       return;
     } else
@@ -314,7 +324,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       if (originColumn.type === DataType.Date && action.type === DataType.String) {
         const convertedValues = columnValues.map(value => new Date(value as number).toLocaleString());
         applyConvertedValues(table, column.name, convertedValues);
-        finilizeAction();
+        finalizeAction();
         return;
       } else {
         // convertColumn works with string input only
@@ -324,7 +334,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     try {
       const convertedValues = convertColumn(action.type, columnValues as any);
       applyConvertedValues(table, column.name, convertedValues);
-      finilizeAction();
+      finalizeAction();
       return;
     }
     catch (ex) {

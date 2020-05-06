@@ -346,6 +346,9 @@ export class ColumnView extends React.Component<
             (column, type) => {
               c.metadata.kind = type as DataKind;
               this.forceUpdate();
+              this.props.store.dispatcher.dispatch(
+                new Actions.UpdatePlotSegments()
+              );
             }
           )}
           {this.state.isExpanded ? derivedColumnsControl : null}
@@ -365,6 +368,9 @@ export class ColumnView extends React.Component<
         c.metadata,
         (column, type) => {
           c.metadata.kind = type as DataKind;
+          this.props.store.dispatcher.dispatch(
+            new Actions.UpdatePlotSegments()
+          );
           this.forceUpdate();
         }
       );
