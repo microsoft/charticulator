@@ -4,6 +4,7 @@ import * as React from "react";
 import { Dataset } from "../../../core";
 import { Select } from "../panels/widgets/controls";
 import { DataType } from "../../../core/specification";
+import { getConvertableTypes } from "../../utils";
 
 export interface TableViewProps {
   table: Dataset.Table;
@@ -34,7 +35,9 @@ export class TableView extends React.Component<TableViewProps, {}> {
         <tbody>
           {onTypeChange && (
             <tr key={-1}>
-              {table.columns.map(c => (
+              {table.columns.map(c => {
+                const convertableTypes = getConvertableTypes(c.type, table.rows.slice(0, 10).map(row => row[c.name]) )
+                return (
                 <td key={c.name}>
                   {
                     <Select
@@ -43,23 +46,17 @@ export class TableView extends React.Component<TableViewProps, {}> {
                         this.forceUpdate();
                       }}
                       value={c.type}
-                      options={[
-                        DataType.Boolean,
-                        DataType.Date,
-                        DataType.Number,
-                        DataType.String
-                      ]}
-                      labels={[
-                        DataType.Boolean,
-                        DataType.Date,
-                        DataType.Number,
-                        DataType.String
-                      ]}
+                      options={convertableTypes}
+                      labels={convertableTypes.map(type => {
+                        const str = type.toString();
+                        return str[0].toUpperCase() + str.slice(1);
+                      })}
                       showText={true}
                     />
                   }
                 </td>
-              ))}
+              )
+              })}
             </tr>
           )}
           {table.rows.slice(0, maxRows).map(r => (

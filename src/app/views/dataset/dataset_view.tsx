@@ -11,7 +11,8 @@ import { AppStore } from "../../stores";
 import {
   classNames,
   showOpenFileDialog,
-  getFileNameWithoutExtension
+  getFileNameWithoutExtension,
+  getConvertableDataKind
 } from "../../utils";
 import { Button, Select, DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
@@ -260,15 +261,11 @@ export class ColumnView extends React.Component<
                 <div>
                   <DropdownListView
                     selected={type}
-                    list={[
-                      DataKind.Categorical,
-                      DataKind.Numerical,
-                      DataKind.Ordinal,
-                      DataKind.Temporal
-                    ].map(type => {
+                    list={getConvertableDataKind(type).map(type => {
                       return {
                         name: type.toString(),
-                        text: type.toString()
+                        text: type.toString(),
+                        url: R.getSVGIcon(kind2Icon[type])
                       }
                     })}
                     context={context}
