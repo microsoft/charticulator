@@ -173,7 +173,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -212,7 +212,7 @@ export class AxisRenderer {
       const tx =
         ((Math.log(ticks[i]) - Math.log(domainMin)) /
           (Math.log(domainMax) - Math.log(domainMin))) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -246,7 +246,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -731,17 +731,36 @@ export function buildAxisWidgets(
               )
             );
           }
-          widgets.push(
-            m.row(
-              "Range",
-              m.horizontal(
-                [1, 0, 1],
-                m.inputNumber({ property: axisProperty, field: "domainMin" }),
-                m.label(" - "),
-                m.inputNumber({ property: axisProperty, field: "domainMax" })
+          if (data.valueType === "date") {
+            widgets.push(
+              m.row(
+                "Range",
+                m.vertical(
+                  m.horizontal([0, 1],
+                    m.label("start"),
+                    m.inputDate({ property: axisProperty, field: "domainMin" })
+                  ),
+                  m.horizontal([0, 1],
+                    m.label("end"),
+                    m.inputDate({ property: axisProperty, field: "domainMax" })
+                  )
+                )
               )
-            )
-          );
+            );
+          }
+          else {
+            widgets.push(
+              m.row(
+                "Range",
+                m.horizontal(
+                  [1, 0, 1],
+                  m.inputNumber({ property: axisProperty, field: "domainMin" }),
+                  m.label(" - "),
+                  m.inputNumber({ property: axisProperty, field: "domainMax" })
+                )
+              )
+            );
+          }
           if (data.numericalMode != "temporal") {
             widgets.push(
               m.row(

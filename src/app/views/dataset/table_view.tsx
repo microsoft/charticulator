@@ -36,26 +36,26 @@ export class TableView extends React.Component<TableViewProps, {}> {
           {onTypeChange && (
             <tr key={-1}>
               {table.columns.map(c => {
-                const convertableTypes = getConvertableTypes(c.type, table.rows.slice(0, 10).map(row => row[c.name]) )
+                const convertableTypes = getConvertableTypes(c.type, table.rows.slice(0, 10).map(row => row[c.name]))
                 return (
-                <td key={c.name}>
-                  {
-                    <Select
-                      onChange={newType => {
-                        onTypeChange(c.name, newType);
-                        this.forceUpdate();
-                      }}
-                      value={c.type}
-                      options={convertableTypes}
-                      labels={convertableTypes.map(type => {
-                        const str = type.toString();
-                        return str[0].toUpperCase() + str.slice(1);
-                      })}
-                      showText={true}
-                    />
-                  }
-                </td>
-              )
+                  <td key={c.name}>
+                    {
+                      <Select
+                        onChange={newType => {
+                          onTypeChange(c.name, newType);
+                          this.forceUpdate();
+                        }}
+                        value={c.type}
+                        options={convertableTypes}
+                        labels={convertableTypes.map(type => {
+                          const str = type.toString();
+                          return str[0].toUpperCase() + str.slice(1);
+                        })}
+                        showText={true}
+                      />
+                    }
+                  </td>
+                )
               })}
             </tr>
           )}
@@ -72,8 +72,8 @@ export class TableView extends React.Component<TableViewProps, {}> {
                 i == 0 ? (
                   <td key={i}>({table.rows.length - maxRows} more rows)</td>
                 ) : (
-                  <td key={i}>...</td>
-                )
+                    <td key={i}>...</td>
+                  )
               )}
             </tr>
           ) : null}

@@ -18,7 +18,6 @@ import { Button, Select, DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
 import { DataType, DataKind } from "../../../core/specification";
-import { lab } from "d3";
 
 export interface DatasetViewProps {
   store: AppStore;

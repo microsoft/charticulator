@@ -80,11 +80,17 @@ export interface InputNumberOptions {
   updownStyle?: "normal" | "font";
 }
 
+export interface InputDateOptions {
+  defaultValue?: number | Date;
+  placeholder?: string;
+  onEnter?: (value: number) => boolean;
+}
+
 export interface InputColorOptions {
   allowNull?: boolean;
 }
 
-export interface TableOptions {}
+export interface TableOptions { }
 
 export interface FilterEditorOptions {
   table: string;
@@ -137,6 +143,7 @@ export interface WidgetManager {
 
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
+  inputDate(property: Property, options?: InputDateOptions): Widget;
   inputText(property: Property, placeholder?: string): Widget;
   inputComboBox(
     property: Property,
