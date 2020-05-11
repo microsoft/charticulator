@@ -14,6 +14,7 @@ import {
   TextExpression,
   Context
 } from "./classes";
+import { DataflowTable } from "../prototypes/dataflow";
 
 export function variable(name: string): Variable {
   return new Variable(name);
@@ -126,6 +127,8 @@ export class ExpressionCache {
 export interface VerifyUserExpressionOptions {
   /** Specify this to verify expression against data */
   data?: Iterable<Context>;
+  /** Specify this to verify expression against table */
+  table?: DataflowTable;
   /** Specify this to verify return types */
   expectedTypes?: string[];
   textExpression?: boolean;
@@ -160,10 +163,19 @@ export function verifyUserExpression(
   } catch (error) {
     return {
       pass: false,
-      error: "Parse Error: " + error.message
+      error: "Parse Error: " + error.message,
     };
   }
-  if (options.data) {
+  if (options.table) {
+    try {
+      expr.getValue(options.table);
+    } catch (error) {
+      return {
+        pass: false,
+        error: "Evaluate Error: " + error.message,
+      };
+    }
+  } else if (options.data) {
     if (options.expectedTypes) {
       const expectedTypes = new Set(options.expectedTypes);
       try {

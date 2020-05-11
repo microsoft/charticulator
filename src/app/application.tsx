@@ -51,6 +51,7 @@ function makeDefaultDataset(): Dataset.Dataset {
         columns: [
           {
             name: "Month",
+            displayName: "Month",
             type: Dataset.DataType.String,
             metadata: {
               kind: Dataset.DataKind.Categorical,
@@ -59,11 +60,13 @@ function makeDefaultDataset(): Dataset.Dataset {
           },
           {
             name: "City",
+            displayName: "City",
             type: Dataset.DataType.String,
             metadata: { kind: Dataset.DataKind.Categorical }
           },
           {
             name: "Value",
+            displayName: "Value",
             type: Dataset.DataType.Number,
             metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" }
           }

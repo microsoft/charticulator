@@ -61,7 +61,6 @@ export class ScalesPanel extends ContextedComponent<
   public render(): any {
     const store = this.props.store;
     let scales = store.chart.scales;
-    const sel = this.store.currentSelection;
 
     const elementFilterPredicate = (scaleID: string) => (element: any) => {
       return (

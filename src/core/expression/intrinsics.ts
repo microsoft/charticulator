@@ -283,3 +283,12 @@ functions.sortBy = (
     };
   }
 };
+
+functions.columnName = (columns: any[] | any, name: string) => {
+  if (columns instanceof Array) {
+    const column = columns.find(column => column.name === name);
+    return column.displayName || column.name;
+  } else {
+    return columns.displayName || columns.name;
+  }
+}

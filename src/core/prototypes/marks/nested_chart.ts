@@ -172,11 +172,11 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     }
     const dataRowIndices = plotSegmentClass.state.dataRowIndices[glyphIndex];
     const allDataRowIndices = plotSegmentClass.state.dataRowIndices.flatMap(
-      index => index
+      (index) => index
     );
 
     const mapToRows = (dataRowIndices: number[]) =>
-      dataRowIndices.map(i => {
+      dataRowIndices.map((i) => {
         const data = table.rows[i];
         const r: Dataset.Row = { _id: data._id };
         for (const col in columnNameMap) {
@@ -191,11 +191,26 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         {
           name: "MainTable",
           displayName: "MainTable",
-          columns: table.columns.map(x => {
+          columns: table.columns.map((x) => {
             return {
               name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
               type: x.type,
-              metadata: x.metadata
+              metadata: x.metadata,
+            };
+          }),
+          rows: mapToRows(dataRowIndices),
+          type: TableType.Main,
+        },
+        {
+          name: "MainParentTable",
+          displayName: "MainParentTable",
+          columns: table.columns.map((x) => {
+            return {
+              name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
+              type: x.type,
+              metadata: x.metadata,
             };
           }),
           rows: mapToRows(dataRowIndices),
@@ -207,6 +222,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           columns: table.columns.map(x => {
             return {
               name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
               type: x.type,
               metadata: x.metadata
             };
@@ -214,7 +230,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           rows: mapToRows(allDataRowIndices),
           type: TableType.ParentMain
         }
-      ]
+      ],
     };
   }
 

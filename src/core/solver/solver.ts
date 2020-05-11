@@ -10,6 +10,7 @@ import { getById, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver } from "./wasm_solver";
 import { PlotSegmentClass } from "../prototypes/plot_segments";
+import { DataflowTableGroupedContext } from "../prototypes/dataflow";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
@@ -117,7 +118,7 @@ export class ChartConstraintSolver {
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
-          attrs[attr] = expr.getValue(rowContext);
+          attrs[attr] = expr.getValue((rowContext as DataflowTableGroupedContext).getTable());
         }
         break;
       case "value":
@@ -710,7 +711,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     this.glyphState = glyphState;
   }
 
-  public setValue() {}
+  public setValue() { }
   public getValue() {
     return 0;
   }
@@ -719,7 +720,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     console.warn("(unimplemented) Make Constant: ", attr);
   }
 
-  public destroy() {}
+  public destroy() { }
 
   private ker: Float64Array[];
   private X0: Float64Array[];

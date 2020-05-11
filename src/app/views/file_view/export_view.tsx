@@ -279,13 +279,27 @@ export class ExportTemplateView extends ContextedComponent<
         return (
           <div className="form-group-file">
             <label>{label}</label>
-            <InputImageProperty
-              value={value as Specification.Types.Image}
-              onChange={image => {
-                onChange(image);
-                return true;
-              }}
-            />
+            <div
+              style={
+              {
+                display: "flex",
+                flexDirection: "row"
+              }
+            }>
+              <InputImageProperty
+                value={value as Specification.Types.Image}
+                onChange={(image: any) => {
+                  onChange(image);
+                  return true;
+                }}
+              />
+              <Button
+                icon={"general/eraser"}
+                onClick={() => {
+                  onChange(defaultValue);
+                }}
+              />
+            </div>
             <i className="bar" />
           </div>
         );
@@ -439,6 +453,33 @@ export class ExportTemplateView extends ContextedComponent<
         continue;
       }
 
+      result.push(
+        <div
+          key={key}
+          className="el-inference-item"
+          onClick={() => {
+            object.exposed = !object.exposed;
+            this.setState({ template });
+          }}
+        >
+          <SVGImageIcon
+            url={
+              !object.exposed
+                ? R.getSVGIcon("checkbox/empty")
+                : R.getSVGIcon("checkbox/checked")
+            }
+          />
+          <SVGImageIcon
+            url={R.getSVGIcon(
+              Prototypes.ObjectClasses.GetMetadata(object.classID).iconPath
+            )}
+          />
+          <span className="el-text">{object.properties.name}</span>
+        </div>
+      );
+    }
+
+    for (const [key, object] of templateObjects) {
       result.push(
         <div
           key={key}
