@@ -41,6 +41,8 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
+import { DataflowTable } from "../../core/prototypes/dataflow";
+import { TableType } from "../../core/dataset";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -116,6 +118,8 @@ export class AppStore extends BaseStore {
 
   public actionHandlers = new ActionHandlerRegistry<AppStore, Actions.Action>();
 
+  private propertyExportName = new Map<string, string>();
+
   constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
     super(null);
 
@@ -155,6 +159,14 @@ export class AppStore extends BaseStore {
         };
       }
     );
+  }
+
+  public setPropertyExportName(propertyName: string, value: string) {
+    this.propertyExportName.set(`${propertyName}`, value);
+  }
+
+  public getPropertyExportName(propertyName: string) {
+    return this.propertyExportName.get(`${propertyName}`);
   }
 
   public saveState(): AppStoreState {
@@ -584,7 +596,7 @@ export class AppStore extends BaseStore {
         }
       });
     }
-    const table = this.getTable(tableName);
+    let table = this.getTable(tableName);
 
     // If there is an existing scale on the same column in the table, return that one
     if (!hints.newScale) {
@@ -639,7 +651,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                    getExpressionUnit(expression) &&
+                      getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -690,6 +702,13 @@ export class AppStore extends BaseStore {
       const scaleClass = this.chartManager.getClassById(
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
+
+      const parentMainTable = this.getTables().find(
+        table => table.type === TableType.ParentMain
+      );
+      if (parentMainTable) {
+        table = parentMainTable;
+      }
 
       scaleClass.inferParameters(
         this.chartManager.getGroupedExpressionVector(
@@ -904,7 +923,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function* () {
+      const rowIterator = function*() {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }

@@ -47,7 +47,8 @@ import {
   ComboBoxFontFamily,
   ComboBox,
   CheckBox,
-  InputExpression
+  InputExpression,
+  InputImageProperty
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
@@ -333,6 +334,17 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public inputImage(property: Prototypes.Controls.Property) {
     return (
       <InputImage
+        value={this.getPropertyValue(property) as Specification.Types.Image}
+        onChange={image => {
+          this.emitSetProperty(property, image as Specification.Types.Image);
+          return true;
+        }}
+      />
+    );
+  }
+  public inputImageProperty(property: Prototypes.Controls.Property) {
+    return (
+      <InputImageProperty
         value={this.getPropertyValue(property) as Specification.Types.Image}
         onChange={image => {
           this.emitSetProperty(property, image as Specification.Types.Image);
@@ -805,7 +817,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             specification: options.specification,
                             dataset: options.dataset,
                             width: options.width,
-                            height: options.height
+                            height: options.height,
+                            filterCondition: options.filterCondition
                           },
                           document.location.origin
                         );

@@ -15,10 +15,12 @@ import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
+import { TableType } from "../../../core/dataset";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
   extensions: string[];
+  filename?: string;
 }
 
 export interface FileUploaderState {
@@ -36,7 +38,7 @@ export class FileUploader extends React.Component<
     super(props);
     this.state = {
       draggingOver: false,
-      filename: null
+      filename: props.filename
     };
   }
 
@@ -277,6 +279,7 @@ export class ImportDataView extends React.Component<
             extensions={["csv", "tsv"]}
             onChange={file => {
               this.loadFileAsTable(file).then(table => {
+                table.type = TableType.Main;
                 this.setState({
                   dataTable: table
                 });
@@ -307,6 +310,7 @@ export class ImportDataView extends React.Component<
             extensions={["csv", "tsv"]}
             onChange={file => {
               this.loadFileAsTable(file).then(table => {
+                table.type = TableType.Links;
                 this.setState({
                   linkTable: table
                 });

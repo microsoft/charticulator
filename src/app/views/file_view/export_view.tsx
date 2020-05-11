@@ -11,6 +11,7 @@ import { ContextedComponent } from "../../context_component";
 import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
+import { InputImageProperty, Button } from "../panels/widgets/controls";
 
 export class InputGroup extends React.Component<
   {
@@ -233,6 +234,7 @@ export class ExportTemplateView extends ContextedComponent<
     label: string,
     type: string,
     value: any,
+    defaultValue: any,
     onChange: (value: any) => void
   ) {
     let ref: HTMLInputElement;
@@ -273,19 +275,36 @@ export class ExportTemplateView extends ContextedComponent<
             <span className="el-text">{label}</span>
           </div>
         );
+      case "file":
+        return (
+          <div className="form-group-file">
+            <label>{label}</label>
+            <InputImageProperty
+              value={value as Specification.Types.Image}
+              onChange={image => {
+                onChange(image);
+                return true;
+              }}
+            />
+            <i className="bar" />
+          </div>
+        );
     }
   }
 
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
+      const displayName = this.store.getPropertyExportName(property.name);
       return (
         <div key={property.name}>
           {this.renderInput(
             property.displayName,
             property.type,
-            this.state.targetProperties[property.name],
+            displayName || this.state.targetProperties[property.name],
+            property.default,
             value => {
               this.state.targetProperties[property.name] = value;
+              this.store.setPropertyExportName(property.name, value);
               this.setState({
                 targetProperties: this.state.targetProperties
               });
@@ -308,6 +327,7 @@ export class ExportTemplateView extends ContextedComponent<
               column.name,
               "string",
               column.displayName,
+              null,
               value => {
                 column.displayName = value;
                 this.setState({
@@ -385,7 +405,6 @@ export class ExportTemplateView extends ContextedComponent<
         id
       ) as Specification.ExposableObject;
 
-
       if (object && (p.target.attribute || p.target.property)) {
         if (object.exposed == undefined) {
           object.exposed = true;
@@ -394,11 +413,10 @@ export class ExportTemplateView extends ContextedComponent<
       }
     }
     for (const [key, object] of templateObjects) {
-      
       if (Prototypes.isType(object.classID, "guide")) {
         continue;
       }
-      
+
       result.push(
         <div
           key={key}
@@ -424,6 +442,7 @@ export class ExportTemplateView extends ContextedComponent<
         </div>
       );
     }
+
     return result;
   }
 

@@ -65,6 +65,20 @@ export class ExportTemplate extends Action {
   }
 }
 
+export class SaveExportTemplatePropertyName extends Action {
+  constructor(
+    public objectId: string,
+    public propertyName: string,
+    public value: string
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "SaveExportTemplatePropertyName" };
+  }
+}
+
 export class Open extends Action {
   constructor(public id: string, public onFinish?: (error?: Error) => void) {
     super();
@@ -119,7 +133,10 @@ export class ImportDataset extends Action {
 export class ImportChartAndDataset extends Action {
   constructor(
     public specification: Specification.Chart,
-    public dataset: Dataset.Dataset
+    public dataset: Dataset.Dataset,
+    public options: {
+      [key: string]: any;
+    }
   ) {
     super();
   }

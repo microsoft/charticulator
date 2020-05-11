@@ -16,6 +16,7 @@ import {
 import { Button } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
+import { TableType } from "../../../core/dataset";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -34,16 +35,18 @@ export class DatasetView extends React.Component<
   }
   public render() {
     const tables = this.props.store.getTables();
+    const mainTables = [TableType.Main, TableType.Links];
     return (
       <div className="charticulator__dataset-view">
-        {tables.map((table, idx) => (
-          <ColumnsView
-            key={`t${idx}`}
-            table={table}
-            store={this.props.store}
-            isLinkTable={idx == 1}
-          />
-        ))}
+        {tables
+          .filter(table => mainTables.find(m => m === table.type))
+          .map((table, idx) => (
+            <ColumnsView
+              key={`t${idx}`}
+              table={table}
+              store={this.props.store}
+            />
+          ))}
       </div>
     );
   }
@@ -56,7 +59,6 @@ export class DatasetView extends React.Component<
 export interface ColumnsViewProps {
   store: AppStore;
   table: Dataset.Table;
-  isLinkTable: boolean;
 }
 
 export interface ColumnsViewState {
@@ -84,7 +86,9 @@ export class ColumnsView extends React.Component<
       >
         <h2 className="el-title">
           <span className="el-text">
-            {this.props.isLinkTable ? "Link Data" : "Columns"}
+            {this.props.table.type === TableType.Links
+              ? "Link Data"
+              : "Columns"}
           </span>
           <Button
             icon="general/replace"

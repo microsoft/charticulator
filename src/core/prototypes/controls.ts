@@ -109,6 +109,10 @@ export interface GroupByEditorOptions {
 export interface NestedChartEditorOptions {
   specification: Specification.Chart;
   dataset: Dataset.Dataset;
+  filterCondition?: {
+    column: string;
+    value: any;
+  };
   width: number;
   height: number;
 }
@@ -148,6 +152,7 @@ export interface WidgetManager {
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputImage(property: Property): Widget;
+  inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
