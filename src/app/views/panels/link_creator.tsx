@@ -21,6 +21,7 @@ import { ContextedComponent } from "../../context_component";
 import { classNames } from "../../utils";
 import { DataFieldSelector } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
+import { LinkMarkType } from "../../../core/prototypes/links";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -539,6 +540,7 @@ export class LinkCreationPanel extends ContextedComponent<
           },
           properties: {
             name: "Link",
+            linkMarkType: "",
             visible: true,
             linkType,
             interpolationType,
@@ -583,6 +585,7 @@ export class LinkCreationPanel extends ContextedComponent<
           },
           properties: {
             name: "Link",
+            linkMarkType: "",
             visible: true,
             linkType,
             interpolationType,
@@ -626,6 +629,7 @@ export class LinkCreationPanel extends ContextedComponent<
           },
           properties: {
             name: "Link",
+            linkMarkType: "",
             visible: true,
             linkType,
             interpolationType,

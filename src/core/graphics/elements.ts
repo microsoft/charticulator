@@ -55,6 +55,7 @@ export interface Style {
   strokeColor?: Color;
   strokeOpacity?: number;
   strokeWidth?: number;
+  strokeDasharray?: string;
   strokeLinejoin?: "round" | "miter" | "bevel";
   strokeLinecap?: "round" | "butt" | "square";
 

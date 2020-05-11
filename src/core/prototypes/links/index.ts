@@ -22,9 +22,12 @@ import { PointDirection } from "../../graphics";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
+export type LinkMarkType = "" | "4" | "1 4";
+export const linkMarkTypes: string[] = ["solid", "dashed", "dotted"];
 
 export interface LinksProperties extends Specification.AttributeMap {
   linkType: LinkType;
+  linkMarkType?: LinkMarkType;
   interpolationType: InterpolationType;
 
   /** Start anchor */
@@ -123,6 +126,14 @@ export abstract class LinksClass extends ChartElementClass {
 
   public attributeNames: string[] = ["color", "opacity"];
   public attributes: { [name: string]: AttributeDescription } = {
+    linkMarkType: {
+      name: "linkMarkType",
+      type: Specification.AttributeType.Enum,
+      solverExclude: true,
+      defaultValue: "4 8",
+      stateExclude: true,
+      defaultRange: linkMarkTypes
+    },
     color: {
       name: "color",
       type: Specification.AttributeType.Color,
@@ -188,13 +199,13 @@ export abstract class LinksClass extends ChartElementClass {
         const x = (pt.x.element < 0
           ? glyphState.attributes[pt.x.attribute]
           : glyphState.marks[pt.x.element].attributes[
-          pt.x.attribute
-          ]) as number;
+              pt.x.attribute
+            ]) as number;
         const y = (pt.y.element < 0
           ? glyphState.attributes[pt.y.attribute]
           : glyphState.marks[pt.y.element].attributes[
-          pt.y.attribute
-          ]) as number;
+              pt.y.attribute
+            ]) as number;
         const px = dx + x;
         const py = dy + y;
         return {
@@ -487,7 +498,8 @@ export abstract class LinksClass extends ChartElementClass {
   protected renderLinks(
     linkGraphics: LinkType,
     lineType: InterpolationType,
-    anchorGroups: AnchorAttributes[][][]
+    anchorGroups: AnchorAttributes[][][],
+    strokeDashArray?: LinkMarkType
   ): Graphics.Group {
     switch (linkGraphics) {
       case "line": {
@@ -498,7 +510,8 @@ export abstract class LinksClass extends ChartElementClass {
               const path = Graphics.makePath({
                 strokeColor: anchors[i][0].color,
                 strokeOpacity: anchors[i][0].opacity,
-                strokeWidth: anchors[i][0].strokeWidth
+                strokeWidth: anchors[i][0].strokeWidth,
+                strokeDasharray: strokeDashArray
               });
               LinksClass.LinkPath(
                 path,
@@ -646,6 +659,18 @@ export abstract class LinksClass extends ChartElementClass {
             showLabel: true,
             options: ["line", "bezier", "circle"],
             labels: ["Line", "Bezier", "Arc"]
+          }
+        )
+      ),
+      manager.row(
+        "Line mark type",
+        manager.inputSelect(
+          { property: "linkMarkType" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            options: ["", "8", "1 10"],
+            labels: ["Solid", "Dashed", "Dotted"]
           }
         )
       )
@@ -822,7 +847,12 @@ export class SeriesLinksClass extends LinksClass {
     );
 
     linkGroup.elements.push(
-      this.renderLinks(props.linkType, props.interpolationType, anchors)
+      this.renderLinks(
+        props.linkType,
+        props.interpolationType,
+        anchors,
+        props.linkMarkType
+      )
     );
 
     return linkGroup;
@@ -922,7 +952,12 @@ export class LayoutsLinksClass extends LinksClass {
         }
       }
       linkGroup.elements.push(
-        this.renderLinks(props.linkType, props.interpolationType, anchors)
+        this.renderLinks(
+          props.linkType,
+          props.interpolationType,
+          anchors,
+          props.linkMarkType
+        )
       );
     }
 
@@ -1047,7 +1082,12 @@ export class TableLinksClass extends LinksClass {
     }
 
     linkGroup.elements.push(
-      this.renderLinks(props.linkType, props.interpolationType, anchors)
+      this.renderLinks(
+        props.linkType,
+        props.interpolationType,
+        anchors,
+        props.linkMarkType
+      )
     );
 
     return linkGroup;
