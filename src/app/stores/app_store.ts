@@ -11,11 +11,13 @@ import {
   setField,
   Solver,
   Specification,
-  zipArray
+  zipArray,
+  uniqueID,
+  Scale
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
-import { Actions } from "../actions";
+import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
@@ -43,6 +45,7 @@ import {
 } from "./selection";
 import { DataflowTable } from "../../core/prototypes/dataflow";
 import { TableType } from "../../core/dataset";
+import { ValueType } from "../../core/expression/classes";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -936,6 +939,217 @@ export class AppStore extends BaseStore {
       return Expression.verifyUserExpression(inputString, {
         ...options
       });
+    }
+  }
+
+  public updatePlotSegments() {
+    // Get plot segments to update with new data
+    const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
+      element => Prototypes.isType(element.classID, "plot-segment")
+    ) as Specification.PlotSegment[];
+    console.log(plotSegments);
+    plotSegments.forEach(plot => {
+      const table = this.dataset.tables.find(
+        table => table.name === plot.table
+      );
+
+      // xData
+      const xDataProperty: any = plot.properties.xData;
+      if (xDataProperty) {
+        const xData = new DragData.DataExpression(
+          table,
+          xDataProperty.expression,
+          xDataProperty.valueType,
+          {
+            kind: xDataProperty.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "xData",
+          dataExpression: xData,
+          object: plot,
+          appendToProperty: null
+        });
+      }
+
+      // yData
+      const yDataProperty: any = plot.properties.yData;
+      if (yDataProperty) {
+        const yData = new DragData.DataExpression(
+          table,
+          yDataProperty.expression,
+          yDataProperty.valueType,
+          {
+            kind: yDataProperty.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "yData",
+          dataExpression: yData,
+          object: plot,
+          appendToProperty: null
+        });
+      }
+
+      const axis: any = plot.properties.axis;
+      if (axis) {
+        const axisData = new DragData.DataExpression(
+          table,
+          axis.expression,
+          axis.valueType,
+          {
+            kind: axis.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "axis",
+          dataExpression: axisData,
+          object: plot,
+          appendToProperty: null
+        });
+      }
+    });
+  }
+
+  public bindDataToAxis(options: {
+    object: Specification.Object;
+    property?: string;
+    appendToProperty?: string;
+    dataExpression: DragData.DataExpression;
+  }) {
+    this.saveHistory();
+    const { object, property, appendToProperty, dataExpression } = options;
+    const groupExpression = dataExpression.expression;
+    let dataBinding: Specification.Types.AxisDataBinding = {
+      type: "categorical",
+      expression: groupExpression,
+      valueType: dataExpression.valueType,
+      gapRatio: 0.1,
+      visible: true,
+      side: "default",
+      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle)
+    };
+
+    let expressions = [groupExpression];
+
+    if (appendToProperty) {
+      if (object.properties[appendToProperty] == null) {
+        object.properties[appendToProperty] = [
+          { name: uniqueID(), expression: groupExpression }
+        ];
+      } else {
+        (object.properties[appendToProperty] as any[]).push({
+          name: uniqueID(),
+          expression: groupExpression
+        });
+      }
+      expressions = (object.properties[appendToProperty] as any[]).map(
+        x => x.expression
+      );
+      if (object.properties[property] == null) {
+        object.properties[property] = dataBinding;
+      } else {
+        dataBinding = object.properties[
+          property
+        ] as Specification.Types.AxisDataBinding;
+      }
+    } else {
+      object.properties[property] = dataBinding;
+    }
+
+    let groupBy: Specification.Types.GroupBy = null;
+    if (Prototypes.isType(object.classID, "plot-segment")) {
+      groupBy = (object as Specification.PlotSegment).groupBy;
+    } else {
+      // Find groupBy for data-driven guide
+      if (Prototypes.isType(object.classID, "mark")) {
+        for (const glyph of this.chart.glyphs) {
+          if (glyph.marks.indexOf(object) >= 0) {
+            // Found the glyph
+            this.chartManager.enumeratePlotSegments(cls => {
+              if (cls.object.glyph == glyph._id) {
+                groupBy = cls.object.groupBy;
+              }
+            });
+          }
+        }
+      }
+    }
+    let values: ValueType[] = [];
+    for (const expr of expressions) {
+      const r = this.chartManager.getGroupedExpressionVector(
+        dataExpression.table.name,
+        groupBy,
+        expr
+      );
+      values = values.concat(r);
+    }
+
+    switch (dataExpression.metadata.kind) {
+      case Specification.DataKind.Categorical:
+      case Specification.DataKind.Ordinal:
+        {
+          dataBinding.type = "categorical";
+          dataBinding.valueType = Specification.DataType.String;
+
+          if (dataExpression.metadata.order) {
+            dataBinding.categories = dataExpression.metadata.order.slice();
+          } else {
+            const scale = new Scale.CategoricalScale();
+            let orderMode: "alphabetically" | "occurrence" | "order" =
+              "alphabetically";
+            if (dataExpression.metadata.orderMode) {
+              orderMode = dataExpression.metadata.orderMode;
+            }
+            scale.inferParameters(values as string[], orderMode);
+            dataBinding.categories = new Array<string>(scale.length);
+            scale.domain.forEach(
+              (index: any, x: any) =>
+                (dataBinding.categories[index] = x.toString())
+            );
+          }
+        }
+        break;
+      case Specification.DataKind.Numerical:
+        {
+          const scale = new Scale.LinearScale();
+          scale.inferParameters(values as number[]);
+          dataBinding.domainMin = scale.domainMin;
+          dataBinding.domainMax = scale.domainMax;
+          dataBinding.type = "numerical";
+          dataBinding.numericalMode = "linear";
+        }
+        break;
+      case Specification.DataKind.Temporal:
+        {
+          const scale = new Scale.DateScale();
+          scale.inferParameters(values as number[]);
+          dataBinding.domainMin = scale.domainMin;
+          dataBinding.domainMax = scale.domainMax;
+          dataBinding.type = "numerical";
+          dataBinding.numericalMode = "temporal";
+        }
+        break;
+    }
+
+    // Adjust sublayout option if current option is not available
+    const props = object.properties as Prototypes.PlotSegments.Region2DProperties;
+    if (props.sublayout) {
+      if (
+        props.sublayout.type == "dodge-x" ||
+        props.sublayout.type == "dodge-y" ||
+        props.sublayout.type == "grid"
+      ) {
+        if (props.xData && props.xData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+        if (props.yData && props.yData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+      }
     }
   }
 }
