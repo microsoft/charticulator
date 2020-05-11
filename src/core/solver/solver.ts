@@ -118,7 +118,9 @@ export class ChartConstraintSolver {
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
-          attrs[attr] = expr.getValue((rowContext as DataflowTableGroupedContext).getTable());
+          attrs[attr] = expr.getValue(
+            (rowContext as DataflowTableGroupedContext).getTable()
+          );
         }
         break;
       case "value":
@@ -711,7 +713,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     this.glyphState = glyphState;
   }
 
-  public setValue() { }
+  public setValue() {}
   public getValue() {
     return 0;
   }
@@ -720,7 +722,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     console.warn("(unimplemented) Make Constant: ", attr);
   }
 
-  public destroy() { }
+  public destroy() {}
 
   private ker: Float64Array[];
   private X0: Float64Array[];

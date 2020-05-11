@@ -27,7 +27,7 @@ export { TextElementAttributes, TextElementProperties };
 export class TextElementClass extends EmphasizableMarkClass<
   TextElementProperties,
   TextElementAttributes
-  > {
+> {
   public static classID = "mark.text";
   public static type = "mark";
 
@@ -77,7 +77,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
-  public buildConstraints(solver: ConstraintSolver): void { }
+  public buildConstraints(solver: ConstraintSolver): void {}
 
   // Get the graphical element from the element
   public getGraphics(
@@ -272,16 +272,16 @@ export class TextElementClass extends EmphasizableMarkClass<
           ),
           props.alignment.x != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "alignment", field: "xMargin" },
-                {
-                  updownTick: 1,
-                  showUpdown: true
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "alignment", field: "xMargin" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
-            )
             : null
         )
       ),
@@ -304,16 +304,16 @@ export class TextElementClass extends EmphasizableMarkClass<
           ),
           props.alignment.y != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "alignment", field: "yMargin" },
-                {
-                  updownTick: 1,
-                  showUpdown: true
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "alignment", field: "yMargin" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
-            )
             : null
         )
       ),

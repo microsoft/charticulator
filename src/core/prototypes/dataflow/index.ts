@@ -34,7 +34,7 @@ export class DataflowTable implements Expression.Context {
     public options?: {
       displayName: string;
     }
-  ) { }
+  ) {}
 
   /** Implements Expression.Context */
   public getVariable(name: string) {
@@ -80,7 +80,7 @@ export class DataflowManager implements Expression.Context {
         table.rows,
         table.columns,
         {
-          displayName: table.displayName,
+          displayName: table.displayName
         }
       );
       this.tables.set(table.name, dfTable);

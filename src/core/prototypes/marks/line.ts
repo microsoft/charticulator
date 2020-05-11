@@ -29,7 +29,7 @@ export { LineElementAttributes, LineElementProperties };
 export class LineElementClass extends EmphasizableMarkClass<
   LineElementProperties,
   LineElementAttributes
-  > {
+> {
   public static classID = "mark.line";
   public static type = "mark";
 
@@ -261,7 +261,8 @@ export class LineElementClass extends EmphasizableMarkClass<
     const properties = [];
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type !== "scale") {
+      this.object.mappings.visible.type !== "scale"
+    ) {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -273,7 +274,8 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type !== "scale") {
+      this.object.mappings.stroke.type !== "scale"
+    ) {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -287,7 +289,8 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type !== "scale") {
+      this.object.mappings.strokeWidth.type !== "scale"
+    ) {
       properties.push({
         objectID: this.object._id,
         target: {
@@ -299,7 +302,8 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type !== "scale") {
+      this.object.mappings.opacity.type !== "scale"
+    ) {
       properties.push({
         objectID: this.object._id,
         target: {

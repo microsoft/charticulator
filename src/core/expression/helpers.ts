@@ -163,7 +163,7 @@ export function verifyUserExpression(
   } catch (error) {
     return {
       pass: false,
-      error: "Parse Error: " + error.message,
+      error: "Parse Error: " + error.message
     };
   }
   if (options.table) {
@@ -172,7 +172,7 @@ export function verifyUserExpression(
     } catch (error) {
       return {
         pass: false,
-        error: "Evaluate Error: " + error.message,
+        error: "Evaluate Error: " + error.message
       };
     }
   } else if (options.data) {

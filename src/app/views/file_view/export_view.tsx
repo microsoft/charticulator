@@ -280,12 +280,11 @@ export class ExportTemplateView extends ContextedComponent<
           <div className="form-group-file">
             <label>{label}</label>
             <div
-              style={
-              {
+              style={{
                 display: "flex",
                 flexDirection: "row"
-              }
-            }>
+              }}
+            >
               <InputImageProperty
                 value={value as Specification.Types.Image}
                 onChange={(image: any) => {
@@ -391,39 +390,39 @@ export class ExportTemplateView extends ContextedComponent<
           return (
             <>
               <div
-              key={index}
-              className="el-inference-item"
-              onClick={() => {
-                inference.disableAutoMin = !inference.disableAutoMin;
-                this.setState({ template });
-              }}
-            >
-              <SVGImageIcon
-                url={
-                  inference.disableAutoMin
-                    ? R.getSVGIcon("checkbox/empty")
-                    : R.getSVGIcon("checkbox/checked")
-                }
-              />
-              <span className="el-text">{descriptionMin}</span>
-            </div>
-            <div
-              key={index}
-              className="el-inference-item"
-              onClick={() => {
-                inference.disableAutoMax = !inference.disableAutoMax;
-                this.setState({ template });
-              }}
-            >
-              <SVGImageIcon
-                url={
-                  inference.disableAutoMax
-                    ? R.getSVGIcon("checkbox/empty")
-                    : R.getSVGIcon("checkbox/checked")
-                }
-              />
-              <span className="el-text">{descriptionMax}</span>
-            </div>
+                key={index}
+                className="el-inference-item"
+                onClick={() => {
+                  inference.disableAutoMin = !inference.disableAutoMin;
+                  this.setState({ template });
+                }}
+              >
+                <SVGImageIcon
+                  url={
+                    inference.disableAutoMin
+                      ? R.getSVGIcon("checkbox/empty")
+                      : R.getSVGIcon("checkbox/checked")
+                  }
+                />
+                <span className="el-text">{descriptionMin}</span>
+              </div>
+              <div
+                key={index}
+                className="el-inference-item"
+                onClick={() => {
+                  inference.disableAutoMax = !inference.disableAutoMax;
+                  this.setState({ template });
+                }}
+              >
+                <SVGImageIcon
+                  url={
+                    inference.disableAutoMax
+                      ? R.getSVGIcon("checkbox/empty")
+                      : R.getSVGIcon("checkbox/checked")
+                  }
+                />
+                <span className="el-text">{descriptionMax}</span>
+              </div>
             </>
           );
         })

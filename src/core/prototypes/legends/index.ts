@@ -447,7 +447,7 @@ export interface NumericalNumberLegendProperties
 export class NumericalNumberLegendClass extends ChartElementClass<
   NumericalNumberLegendProperties,
   NumericalNumberLegendAttributes
-  > {
+> {
   public static classID: string = "legend.numerical-number";
   public static type: string = "legend";
 

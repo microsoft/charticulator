@@ -87,7 +87,7 @@ export function parseDataset(
       name: header[i],
       displayName: header[i],
       type: x.type,
-      metadata: x.metadata,
+      metadata: x.metadata
     }));
 
     return {

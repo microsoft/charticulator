@@ -291,4 +291,4 @@ functions.columnName = (columns: any[] | any, name: string) => {
   } else {
     return columns.displayName || columns.name;
   }
-}
+};
