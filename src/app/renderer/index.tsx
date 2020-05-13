@@ -179,6 +179,8 @@ export interface RenderGraphicalElementSVGOptions {
   onMouseEnter?: GraphicalElementEventHandler;
   /** Called when the mouse leaves a glyph */
   onMouseLeave?: GraphicalElementEventHandler;
+  /** Called when a glyph context menu is clicked */
+  onContextMenu?: GraphicalElementEventHandler;
 
   selection?: DataSelection;
 }
@@ -242,6 +244,7 @@ export function renderGraphicalElementSVG(
     onClick?: (e: React.MouseEvent<Element>) => void;
     onMouseEnter?: (e: React.MouseEvent<Element>) => void;
     onMouseLeave?: (e: React.MouseEvent<Element>) => void;
+    onContextMenu?: (e: React.MouseEvent<Element>) => void;
   } = {};
   if (element.selectable) {
     style.cursor = "pointer";
@@ -260,6 +263,12 @@ export function renderGraphicalElementSVG(
     if (options.onMouseLeave) {
       mouseEvents.onMouseLeave = (e: React.MouseEvent<Element>) => {
         options.onMouseLeave(element.selectable, e.nativeEvent);
+      };
+    }
+    if (options.onContextMenu) {
+      mouseEvents.onContextMenu = (e: React.MouseEvent<Element>) => {
+        e.stopPropagation();
+        options.onContextMenu(element.selectable, e.nativeEvent);
       };
     }
   }
@@ -534,6 +543,7 @@ export function renderGraphicalElementSVG(
               onClick: options.onClick,
               onMouseEnter: options.onMouseEnter,
               onMouseLeave: options.onMouseLeave,
+              onContextMenu: options.onContextMenu,
               selection: options.selection
             });
           })}

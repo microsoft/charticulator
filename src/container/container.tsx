@@ -26,6 +26,10 @@ export interface ChartContainerComponentProps {
   onSelectionChange?: (data: { table: string; rowIndices: number[] }) => void;
   onMouseEnterGlyph?: (data: { table: string; rowIndices: number[] }) => void;
   onMouseLeaveGlyph?: (data: { table: string; rowIndices: number[] }) => void;
+  onMouseContextMenuClickGlyph?: (
+    data: { table: string; rowIndices: number[] },
+    modifiers: any
+  ) => void;
 }
 
 export interface ChartContainerComponentState {
@@ -129,6 +133,15 @@ export class ChartContainerComponent extends React.Component<
     }
   };
 
+  protected handleGlyphContextMenuClick: GlyphEventHandler = (
+    data,
+    modifiers
+  ) => {
+    if (this.props.onMouseContextMenuClickGlyph) {
+      this.props.onMouseContextMenuClickGlyph(data, modifiers);
+    }
+  };
+
   protected handleGlyphMouseEnter: GlyphEventHandler = (data, modifiers) => {
     if (this.props.onMouseEnterGlyph) {
       this.props.onMouseEnterGlyph(data);
@@ -155,6 +168,7 @@ export class ChartContainerComponent extends React.Component<
         onGlyphClick={this.handleGlyphClick}
         onGlyphMouseEnter={this.handleGlyphMouseEnter}
         onGlyphMouseLeave={this.handleGlyphMouseLeave}
+        onGlyphContextMenuClick={this.handleGlyphContextMenuClick}
       />
     );
   }
@@ -163,7 +177,8 @@ export class ChartContainerComponent extends React.Component<
 export enum ChartContainerEvent {
   Selection = "selection",
   MouseEnter = "mouseenter",
-  MouseLeave = "mouseleave"
+  MouseLeave = "mouseleave",
+  ContextMenu = "contextmenu"
 }
 
 export class ChartContainer extends EventEmitter {
@@ -196,6 +211,17 @@ export class ChartContainer extends EventEmitter {
     return this.addListener(ChartContainerEvent.Selection, listener);
   }
 
+  public addContextMenuListener(
+    listener: (
+      table: string,
+      rowIndices: number[],
+      clientX: number,
+      clientY: number
+    ) => void
+  ): EventSubscription {
+    return this.addListener(ChartContainerEvent.ContextMenu, listener);
+  }
+
   public addMouseEnterListener(
     listener: (table: string, rowIndices: number[]) => void
   ): EventSubscription {
@@ -203,7 +229,7 @@ export class ChartContainer extends EventEmitter {
   }
 
   public addMouseLeaveListener(
-    listener: (table: string, rowIndices: number[]) => void
+    listener: (table: string, rowIndices: number[], modifiers: any) => void
   ): EventSubscription {
     return this.addListener(ChartContainerEvent.MouseLeave, listener);
   }
@@ -297,6 +323,14 @@ export class ChartContainer extends EventEmitter {
             ChartContainerEvent.MouseLeave,
             data.table,
             data.rowIndices
+          );
+        }}
+        onMouseContextMenuClickGlyph={(data, modifiers) => {
+          this.emit(
+            ChartContainerEvent.ContextMenu,
+            data.table,
+            data.rowIndices,
+            modifiers
           );
         }}
       />,
