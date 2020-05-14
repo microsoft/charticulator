@@ -288,7 +288,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     const applyConvertedValues = (table: Table, columnName: string, convertedValues: Array<(string | number | boolean)>) => {
       table.rows.forEach((value: any, index: number) => {
-        table.rows[index][columnName] = convertedValues[index];
+        value[columnName] = convertedValues[index];
       });
     }
 

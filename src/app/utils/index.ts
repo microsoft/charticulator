@@ -177,7 +177,7 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
   switch (type) {
     case DataType.Boolean:
       for (const data of dataSample) {
-        if (data.toString() != "0" && data.toString() != "true" && data.toString() != "1" && data.toString() != "false") {
+        if (data && (data.toString() != "0" && data.toString() != "true" && data.toString() != "1" && data.toString() != "false")) {
           convertable = false;
           break;
         }
@@ -186,7 +186,7 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
     case DataType.Date:
       convertable = true;
       for (const data of dataSample) {
-        if (Number.isNaN(Date.parse(data.toString())) && Number.isNaN(new Date(+data.toString()).getDate())) {
+        if (data && Number.isNaN(Date.parse(data.toString())) && Number.isNaN(new Date(+data.toString()).getDate())) {
           convertable = false;
           break;
         }
@@ -195,7 +195,7 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
     case DataType.Number:
       convertable = true;
       for (const data of dataSample) {
-        if (Number.isNaN(Number.parseFloat(data.toString()))) {
+        if (data && Number.isNaN(Number.parseFloat(data.toString()))) {
           convertable = false;
           break;
         }

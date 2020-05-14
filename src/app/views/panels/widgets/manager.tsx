@@ -144,7 +144,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
-          } else if (value == value) {
+          } else {
             this.emitSetProperty(property, value);
             return true;
           }
@@ -167,7 +167,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
-          } else if (value == value) {
+          } else {
             this.emitSetProperty(property, value);
             return true;
           }
