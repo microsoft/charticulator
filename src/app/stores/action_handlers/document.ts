@@ -106,14 +106,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                 const { chart } = instance;
 
                 for (const property of template.properties) {
-                  if (property.target.property) {
-                    CharticulatorContainer.ChartTemplate.SetChartProperty(
-                      chart,
-                      property.objectID,
-                      property.target.property,
-                      property.default
-                    );
-                  } else {
+                  if (property.target.attribute) {
                     CharticulatorContainer.ChartTemplate.SetChartAttributeMapping(
                       chart,
                       property.objectID,
