@@ -81,6 +81,10 @@ export function createDefaultPlotSegment(
           direction: "x",
           xCount: null,
           yCount: null
+        },
+        packing: {
+          gravityX: 0.1,
+          gravityY: 0.1
         }
       }
     }
