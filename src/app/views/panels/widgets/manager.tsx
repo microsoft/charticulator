@@ -54,6 +54,7 @@ import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
+import { InputDate } from "./controls/input_date";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -137,6 +138,29 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const value = this.getPropertyValue(property) as number;
     return (
       <InputNumber
+        {...options}
+        defaultValue={value}
+        onEnter={value => {
+          if (value == null) {
+            this.emitSetProperty(property, null);
+            return true;
+          } else if (value == value) {
+            this.emitSetProperty(property, value);
+            return true;
+          }
+          return false;
+        }}
+      />
+    );
+  }
+
+  public inputDate(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputDateOptions = {}
+  ) {
+    const value = this.getPropertyValue(property) as number;
+    return (
+      <InputDate
         {...options}
         defaultValue={value}
         onEnter={value => {

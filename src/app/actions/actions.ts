@@ -13,6 +13,7 @@ import {
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
+import { DataType } from "../../core/dataset";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -156,6 +157,27 @@ export class ReplaceDataset extends Action {
   }
 }
 
+/** Invokes updaes all plot segments on the chart,  */
+export class UpdatePlotSegments extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdatePlotSegments" };
+  }
+}
+
+export class ConvertColumnDataType extends Action {
+  constructor(public tableName: string, public column: string, public type: DataType) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ConvertColumnDataType" };
+  }
+}
+
 // Glyph editing actions
 
 /** Add an empty glyph to the chart */
@@ -255,7 +277,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action {}
+export class MarkAction extends Action { }
 
 export class SetMarkAttribute extends MarkAction {
   constructor(

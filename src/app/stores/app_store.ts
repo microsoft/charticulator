@@ -46,6 +46,7 @@ import {
 import { DataflowTable } from "../../core/prototypes/dataflow";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
+import { DataKind } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -64,6 +65,7 @@ export interface SelectionState {
 
 export interface AppStoreState {
   version: string;
+  originDataset?: Dataset.Dataset;
   dataset: Dataset.Dataset;
   chart: Specification.Chart;
   chartState: Specification.ChartState;
@@ -94,6 +96,8 @@ export class AppStore extends BaseStore {
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
+  /** The dataset created on import */
+  public originDataset: Dataset.Dataset;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -192,6 +196,7 @@ export class AppStore extends BaseStore {
     this.selectedGlyphIndex = {};
 
     this.dataset = state.dataset;
+    this.originDataset = state.dataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
 
@@ -962,7 +967,7 @@ export class AppStore extends BaseStore {
           xDataProperty.expression,
           xDataProperty.valueType,
           {
-            kind: xDataProperty.type
+            kind: xDataProperty.type === "numerical" && xDataProperty.numericalMode === "temporal" ? DataKind.Temporal : xDataProperty.type
           }
         );
 
@@ -970,7 +975,9 @@ export class AppStore extends BaseStore {
           property: "xData",
           dataExpression: xData,
           object: plot,
-          appendToProperty: null
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: xDataProperty.numericalMode
         });
       }
 
@@ -982,7 +989,7 @@ export class AppStore extends BaseStore {
           yDataProperty.expression,
           yDataProperty.valueType,
           {
-            kind: yDataProperty.type
+            kind: yDataProperty.type === "numerical" && yDataProperty.numericalMode === "temporal" ? DataKind.Temporal : yDataProperty.type
           }
         );
 
@@ -990,7 +997,9 @@ export class AppStore extends BaseStore {
           property: "yData",
           dataExpression: yData,
           object: plot,
-          appendToProperty: null
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: yDataProperty.numericalMode
         });
       }
 
@@ -1001,7 +1010,7 @@ export class AppStore extends BaseStore {
           axis.expression,
           axis.valueType,
           {
-            kind: axis.type
+            kind: axis.type === "numerical" && axis.numericalMode === "temporal" ? DataKind.Temporal : axis.type
           }
         );
 
@@ -1009,10 +1018,24 @@ export class AppStore extends BaseStore {
           property: "axis",
           dataExpression: axisData,
           object: plot,
-          appendToProperty: null
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: axis.numericalMode
         });
       }
     });
+  }
+
+
+  private getBindingByDataKind(kind: DataKind) {
+    switch (kind) {
+      case DataKind.Numerical:
+        return "numerical";
+      case DataKind.Temporal:
+      case DataKind.Ordinal:
+      case DataKind.Categorical:
+        return "categorical";
+    }
   }
 
   public bindDataToAxis(options: {
@@ -1020,18 +1043,21 @@ export class AppStore extends BaseStore {
     property?: string;
     appendToProperty?: string;
     dataExpression: DragData.DataExpression;
+    type?: "default" | "numerical" | "categorical",
+    numericalMode?: "linear" | "logarithmic" | "temporal"
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
     const groupExpression = dataExpression.expression;
     let dataBinding: Specification.Types.AxisDataBinding = {
-      type: "categorical",
+      type: options.type || this.getBindingByDataKind(options.dataExpression.metadata.kind),
       expression: groupExpression,
       valueType: dataExpression.valueType,
       gapRatio: 0.1,
       visible: true,
       side: "default",
-      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle)
+      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
+      numericalMode: options.numericalMode
     };
 
     let expressions = [groupExpression];
