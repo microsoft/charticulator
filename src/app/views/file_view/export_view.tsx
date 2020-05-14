@@ -478,33 +478,6 @@ export class ExportTemplateView extends ContextedComponent<
       );
     }
 
-    for (const [key, object] of templateObjects) {
-      result.push(
-        <div
-          key={key}
-          className="el-inference-item"
-          onClick={() => {
-            object.exposed = !object.exposed;
-            this.setState({ template });
-          }}
-        >
-          <SVGImageIcon
-            url={
-              !object.exposed
-                ? R.getSVGIcon("checkbox/empty")
-                : R.getSVGIcon("checkbox/checked")
-            }
-          />
-          <SVGImageIcon
-            url={R.getSVGIcon(
-              Prototypes.ObjectClasses.GetMetadata(object.classID).iconPath
-            )}
-          />
-          <span className="el-text">{object.properties.name}</span>
-        </div>
-      );
-    }
-
     return result;
   }
 
