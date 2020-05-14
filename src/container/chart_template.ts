@@ -275,8 +275,12 @@ export class ChartTemplate {
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
-            axisDataBinding.domainMin = scale.domainMin;
-            axisDataBinding.domainMax = scale.domainMax;
+            if (!inference.disableAutoMin) {
+              axisDataBinding.domainMin = scale.domainMin;
+            }
+            if (!inference.disableAutoMax) {
+              axisDataBinding.domainMax = scale.domainMax;
+            }
           }
         }
       }
@@ -296,6 +300,13 @@ export class ChartTemplate {
               )
             )
           );
+
+          if (!inference.disableAutoMin) {
+            vectors.push([object.properties.domainMin]);
+          }
+          if (!inference.disableAutoMax) {
+            vectors.push([object.properties.domainMax]);
+          }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {}

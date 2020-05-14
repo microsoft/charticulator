@@ -391,62 +391,62 @@ export class LinearBooleanScale extends ScaleClass<
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "min",
+          property: "min"
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.min,
+        default: this.object.properties.min
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "max",
+          property: "max"
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.max,
+        default: this.object.properties.max
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive",
+          property: "inclusive"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
+        default: this.object.properties.inclusive
       });
     }
     if (this.object.properties.mode === "greater") {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "min",
+          property: "min"
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.min,
+        default: this.object.properties.min
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive",
+          property: "inclusive"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
+        default: this.object.properties.inclusive
       });
     }
     if (this.object.properties.mode === "less") {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "max",
+          property: "max"
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.max,
+        default: this.object.properties.max
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive",
+          property: "inclusive"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive,
+        default: this.object.properties.inclusive
       });
     }
     return parameters;

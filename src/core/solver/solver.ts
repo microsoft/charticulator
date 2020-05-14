@@ -10,6 +10,8 @@ import { getById, KeyNameMap, uniqueID, zip } from "../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "./abstract";
 import { Matrix, WASMSolver } from "./wasm_solver";
 import { PlotSegmentClass } from "../prototypes/plot_segments";
+import { DataflowTableGroupedContext } from "../prototypes/dataflow";
+import { FunctionCall } from "../expression";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
@@ -117,7 +119,15 @@ export class ChartConstraintSolver {
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
-          attrs[attr] = expr.getValue(rowContext);
+          if (expr.parts.find(part => part.expression instanceof FunctionCall && part.expression.name === "columnName")) {
+            attrs[attr] = expr.getValue(
+              (rowContext as DataflowTableGroupedContext).getTable()
+            );
+          } else {
+            attrs[attr] = expr.getValue(
+              rowContext
+            );
+          }
         }
         break;
       case "value":

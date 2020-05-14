@@ -11,11 +11,13 @@ import {
   setField,
   Solver,
   Specification,
-  zipArray
+  zipArray,
+  uniqueID,
+  Scale
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
-import { Actions } from "../actions";
+import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
@@ -41,6 +43,10 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
+import { DataflowTable } from "../../core/prototypes/dataflow";
+import { TableType } from "../../core/dataset";
+import { ValueType } from "../../core/expression/classes";
+import { DataKind } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -59,6 +65,7 @@ export interface SelectionState {
 
 export interface AppStoreState {
   version: string;
+  originDataset?: Dataset.Dataset;
   dataset: Dataset.Dataset;
   chart: Specification.Chart;
   chartState: Specification.ChartState;
@@ -89,6 +96,8 @@ export class AppStore extends BaseStore {
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
+  /** The dataset created on import */
+  public originDataset: Dataset.Dataset;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -115,6 +124,8 @@ export class AppStore extends BaseStore {
   public currentChartID: string;
 
   public actionHandlers = new ActionHandlerRegistry<AppStore, Actions.Action>();
+
+  private propertyExportName = new Map<string, string>();
 
   constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
     super(null);
@@ -157,7 +168,16 @@ export class AppStore extends BaseStore {
     );
   }
 
+  public setPropertyExportName(propertyName: string, value: string) {
+    this.propertyExportName.set(`${propertyName}`, value);
+  }
+
+  public getPropertyExportName(propertyName: string) {
+    return this.propertyExportName.get(`${propertyName}`);
+  }
+
   public saveState(): AppStoreState {
+    this.updateChartState();
     return {
       version: CHARTICULATOR_PACKAGE.version,
       dataset: this.dataset,
@@ -176,6 +196,7 @@ export class AppStore extends BaseStore {
     this.selectedGlyphIndex = {};
 
     this.dataset = state.dataset;
+    this.originDataset = state.dataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
 
@@ -584,7 +605,7 @@ export class AppStore extends BaseStore {
         }
       });
     }
-    const table = this.getTable(tableName);
+    let table = this.getTable(tableName);
 
     // If there is an existing scale on the same column in the table, return that one
     if (!hints.newScale) {
@@ -639,7 +660,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                    getExpressionUnit(expression) &&
+                      getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -690,6 +711,13 @@ export class AppStore extends BaseStore {
       const scaleClass = this.chartManager.getClassById(
         newScale._id
       ) as Prototypes.Scales.ScaleClass;
+
+      const parentMainTable = this.getTables().find(
+        table => table.type === TableType.ParentMain
+      );
+      if (parentMainTable) {
+        table = parentMainTable;
+      }
 
       scaleClass.inferParameters(
         this.chartManager.getGroupedExpressionVector(
@@ -904,7 +932,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function* () {
+      const rowIterator = function*() {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -917,6 +945,238 @@ export class AppStore extends BaseStore {
       return Expression.verifyUserExpression(inputString, {
         ...options
       });
+    }
+  }
+
+  public updatePlotSegments() {
+    // Get plot segments to update with new data
+    const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
+      element => Prototypes.isType(element.classID, "plot-segment")
+    ) as Specification.PlotSegment[];
+    console.log(plotSegments);
+    plotSegments.forEach(plot => {
+      const table = this.dataset.tables.find(
+        table => table.name === plot.table
+      );
+
+      // xData
+      const xDataProperty: any = plot.properties.xData;
+      if (xDataProperty) {
+        const xData = new DragData.DataExpression(
+          table,
+          xDataProperty.expression,
+          xDataProperty.valueType,
+          {
+            kind: xDataProperty.type === "numerical" && xDataProperty.numericalMode === "temporal" ? DataKind.Temporal : xDataProperty.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "xData",
+          dataExpression: xData,
+          object: plot,
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: xDataProperty.numericalMode
+        });
+      }
+
+      // yData
+      const yDataProperty: any = plot.properties.yData;
+      if (yDataProperty) {
+        const yData = new DragData.DataExpression(
+          table,
+          yDataProperty.expression,
+          yDataProperty.valueType,
+          {
+            kind: yDataProperty.type === "numerical" && yDataProperty.numericalMode === "temporal" ? DataKind.Temporal : yDataProperty.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "yData",
+          dataExpression: yData,
+          object: plot,
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: yDataProperty.numericalMode
+        });
+      }
+
+      const axis: any = plot.properties.axis;
+      if (axis) {
+        const axisData = new DragData.DataExpression(
+          table,
+          axis.expression,
+          axis.valueType,
+          {
+            kind: axis.type === "numerical" && axis.numericalMode === "temporal" ? DataKind.Temporal : axis.type
+          }
+        );
+
+        this.bindDataToAxis({
+          property: "axis",
+          dataExpression: axisData,
+          object: plot,
+          appendToProperty: null,
+          type: null, // TODO get type for column, from current dataset
+          numericalMode: axis.numericalMode
+        });
+      }
+    });
+  }
+
+
+  private getBindingByDataKind(kind: DataKind) {
+    switch (kind) {
+      case DataKind.Numerical:
+        return "numerical";
+      case DataKind.Temporal:
+      case DataKind.Ordinal:
+      case DataKind.Categorical:
+        return "categorical";
+    }
+  }
+
+  public bindDataToAxis(options: {
+    object: Specification.Object;
+    property?: string;
+    appendToProperty?: string;
+    dataExpression: DragData.DataExpression;
+    type?: "default" | "numerical" | "categorical",
+    numericalMode?: "linear" | "logarithmic" | "temporal"
+  }) {
+    this.saveHistory();
+    const { object, property, appendToProperty, dataExpression } = options;
+    const groupExpression = dataExpression.expression;
+    let dataBinding: Specification.Types.AxisDataBinding = {
+      type: options.type || this.getBindingByDataKind(options.dataExpression.metadata.kind),
+      expression: groupExpression,
+      valueType: dataExpression.valueType,
+      gapRatio: 0.1,
+      visible: true,
+      side: "default",
+      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
+      numericalMode: options.numericalMode
+    };
+
+    let expressions = [groupExpression];
+
+    if (appendToProperty) {
+      if (object.properties[appendToProperty] == null) {
+        object.properties[appendToProperty] = [
+          { name: uniqueID(), expression: groupExpression }
+        ];
+      } else {
+        (object.properties[appendToProperty] as any[]).push({
+          name: uniqueID(),
+          expression: groupExpression
+        });
+      }
+      expressions = (object.properties[appendToProperty] as any[]).map(
+        x => x.expression
+      );
+      if (object.properties[property] == null) {
+        object.properties[property] = dataBinding;
+      } else {
+        dataBinding = object.properties[
+          property
+        ] as Specification.Types.AxisDataBinding;
+      }
+    } else {
+      object.properties[property] = dataBinding;
+    }
+
+    let groupBy: Specification.Types.GroupBy = null;
+    if (Prototypes.isType(object.classID, "plot-segment")) {
+      groupBy = (object as Specification.PlotSegment).groupBy;
+    } else {
+      // Find groupBy for data-driven guide
+      if (Prototypes.isType(object.classID, "mark")) {
+        for (const glyph of this.chart.glyphs) {
+          if (glyph.marks.indexOf(object) >= 0) {
+            // Found the glyph
+            this.chartManager.enumeratePlotSegments(cls => {
+              if (cls.object.glyph == glyph._id) {
+                groupBy = cls.object.groupBy;
+              }
+            });
+          }
+        }
+      }
+    }
+    let values: ValueType[] = [];
+    for (const expr of expressions) {
+      const r = this.chartManager.getGroupedExpressionVector(
+        dataExpression.table.name,
+        groupBy,
+        expr
+      );
+      values = values.concat(r);
+    }
+
+    switch (dataExpression.metadata.kind) {
+      case Specification.DataKind.Categorical:
+      case Specification.DataKind.Ordinal:
+        {
+          dataBinding.type = "categorical";
+          dataBinding.valueType = Specification.DataType.String;
+
+          if (dataExpression.metadata.order) {
+            dataBinding.categories = dataExpression.metadata.order.slice();
+          } else {
+            const scale = new Scale.CategoricalScale();
+            let orderMode: "alphabetically" | "occurrence" | "order" =
+              "alphabetically";
+            if (dataExpression.metadata.orderMode) {
+              orderMode = dataExpression.metadata.orderMode;
+            }
+            scale.inferParameters(values as string[], orderMode);
+            dataBinding.categories = new Array<string>(scale.length);
+            scale.domain.forEach(
+              (index: any, x: any) =>
+                (dataBinding.categories[index] = x.toString())
+            );
+          }
+        }
+        break;
+      case Specification.DataKind.Numerical:
+        {
+          const scale = new Scale.LinearScale();
+          scale.inferParameters(values as number[]);
+          dataBinding.domainMin = scale.domainMin;
+          dataBinding.domainMax = scale.domainMax;
+          dataBinding.type = "numerical";
+          dataBinding.numericalMode = "linear";
+        }
+        break;
+      case Specification.DataKind.Temporal:
+        {
+          const scale = new Scale.DateScale();
+          scale.inferParameters(values as number[]);
+          dataBinding.domainMin = scale.domainMin;
+          dataBinding.domainMax = scale.domainMax;
+          dataBinding.type = "numerical";
+          dataBinding.numericalMode = "temporal";
+        }
+        break;
+    }
+
+    // Adjust sublayout option if current option is not available
+    const props = object.properties as Prototypes.PlotSegments.Region2DProperties;
+    if (props.sublayout) {
+      if (
+        props.sublayout.type == "dodge-x" ||
+        props.sublayout.type == "dodge-y" ||
+        props.sublayout.type == "grid"
+      ) {
+        if (props.xData && props.xData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+        if (props.yData && props.yData.type == "numerical") {
+          props.sublayout.type = "overlap";
+        }
+      }
     }
   }
 }

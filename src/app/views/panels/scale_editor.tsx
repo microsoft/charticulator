@@ -53,7 +53,7 @@ export class ScaleEditor extends React.Component<
     return (
       <div
         className="scale-editor-view"
-        style={{ width: "300px", padding: "10px" }}
+        style={{ width: "400px", padding: "10px" }}
       >
         <div className="attribute-editor">
           <section className="attribute-editor-element">

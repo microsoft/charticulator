@@ -28,7 +28,7 @@ export { TextboxElementAttributes, TextboxElementProperties };
 export class TextboxElementClass extends EmphasizableMarkClass<
   TextboxElementProperties,
   TextboxElementAttributes
-  > {
+> {
   public static classID = "mark.textbox";
   public static type = "mark";
 
@@ -133,16 +133,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignX != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "paddingX" },
-                {
-                  updownTick: 1,
-                  showUpdown: true
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingX" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
-            )
             : null
         )
       ),
@@ -161,16 +161,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignY != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "paddingY" },
-                {
-                  updownTick: 1,
-                  showUpdown: true
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingY" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true
+                  }
+                )
               )
-            )
             : null
         )
       ),

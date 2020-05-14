@@ -149,7 +149,7 @@ export class WASMSolver extends ConstraintSolver {
 
     this.solver.regularizerWeight = 0.001;
 
-    const maxIters = 10;
+    const maxIters = 20;
     for (let iter = 0; iter < maxIters; iter++) {
       this.solver.solve();
       let shouldReiterate = false;

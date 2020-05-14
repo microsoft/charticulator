@@ -216,6 +216,15 @@
       }
     }
 
+    .form-group-file {
+      @extend .form-group;
+      height: 80px;
+
+      label {
+        top: -15px;
+      }
+    }
+
     .buttons {
       .el-progress {
         display: inline-block;

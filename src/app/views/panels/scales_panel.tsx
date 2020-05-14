@@ -36,9 +36,11 @@ export class ScalesPanel extends ContextedComponent<
   public componentDidMount() {
     this.tokens = [
       this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate()),
-      this.store.addListener(AppStore.EVENT_SELECTION, () => this.forceUpdate()),
+      this.store.addListener(AppStore.EVENT_SELECTION, () =>
+        this.forceUpdate()
+      ),
       this.store.addListener(AppStore.EVENT_SAVECHART, () => this.forceUpdate())
-   ]
+    ];
   }
 
   public componentWillUnmount() {
@@ -61,7 +63,6 @@ export class ScalesPanel extends ContextedComponent<
   public render(): any {
     const store = this.props.store;
     let scales = store.chart.scales;
-    const sel = this.store.currentSelection;
 
     const elementFilterPredicate = (scaleID: string) => (element: any) => {
       return (

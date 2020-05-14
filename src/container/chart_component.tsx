@@ -45,6 +45,7 @@ export interface ChartComponentProps {
   onGlyphClick?: GlyphEventHandler;
   onGlyphMouseEnter?: GlyphEventHandler;
   onGlyphMouseLeave?: GlyphEventHandler;
+  onGlyphContextMenuClick?: GlyphEventHandler;
 }
 
 export interface ChartComponentState {
@@ -247,7 +248,10 @@ export class ChartComponent extends React.Component<
       const modifiers = {
         ctrlKey: event.ctrlKey,
         shiftKey: event.shiftKey,
-        metaKey: event.metaKey
+        metaKey: event.metaKey,
+        clientX: (event as any).clientX,
+        clientY: (event as any).clientY,
+        event
       };
       handler({ table: element.plotSegment.table, rowIndices }, modifiers);
     };
@@ -263,6 +267,9 @@ export class ChartComponent extends React.Component<
     );
     renderOptions.onMouseLeave = this.convertGlyphEventHandler(
       this.props.onGlyphMouseLeave
+    );
+    renderOptions.onContextMenu = this.convertGlyphEventHandler(
+      this.props.onGlyphContextMenuClick
     );
     renderOptions.selection = this.props.selection;
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);

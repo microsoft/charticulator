@@ -22,6 +22,7 @@ import {
   NestedChartElementAttributes,
   NestedChartElementProperties
 } from "./nested_chart.attrs";
+import { TableType } from "../../dataset";
 
 export { NestedChartElementAttributes, NestedChartElementProperties };
 
@@ -104,6 +105,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         {
           specification: this.object.properties.specification,
           dataset: this.getDataset(0),
+          filterCondition: this.getFilterCondition(),
           width: this.state.attributes.width,
           height: this.state.attributes.height
         }
@@ -134,7 +136,26 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
   }
 
-  public getDataset(glyphIndex: number): Dataset.Dataset {
+  public getFilterCondition(): any {
+    const glyphIndex: number = 0;
+    const manager = this.getChartClass().manager;
+    const plotSegmentClass = this.getPlotSegmentClass();
+    const table = getByName(
+      manager.dataset.tables,
+      plotSegmentClass.object.table
+    );
+    const rowIndex = plotSegmentClass.state.dataRowIndices[glyphIndex][0];
+    const data = table.rows[rowIndex];
+
+    return plotSegmentClass.object.groupBy
+      ? {
+          column: plotSegmentClass.object.groupBy.expression,
+          value: data[plotSegmentClass.object.groupBy.expression]
+        }
+      : null;
+  }
+
+  public getDataset(glyphIndex?: number): Dataset.Dataset {
     const manager = this.getChartClass().manager;
     const plotSegmentClass = this.getPlotSegmentClass();
     const table = getByName(
@@ -149,16 +170,21 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       }
       this.object.properties.columnNameMap = columnNameMap;
     }
-    const dataRows = plotSegmentClass.state.dataRowIndices[glyphIndex].map(
-      i => {
+    const dataRowIndices = plotSegmentClass.state.dataRowIndices[glyphIndex];
+    const allDataRowIndices = plotSegmentClass.state.dataRowIndices.flatMap(
+      index => index
+    );
+
+    const mapToRows = (dataRowIndices: number[]) =>
+      dataRowIndices.map(i => {
         const data = table.rows[i];
         const r: Dataset.Row = { _id: data._id };
         for (const col in columnNameMap) {
           r[columnNameMap[col]] = data[col];
         }
         return r;
-      }
-    );
+      });
+
     return {
       name: "NestedData",
       tables: [
@@ -168,11 +194,41 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           columns: table.columns.map(x => {
             return {
               name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
               type: x.type,
               metadata: x.metadata
             };
           }),
-          rows: dataRows
+          rows: mapToRows(dataRowIndices),
+          type: TableType.Main
+        },
+        {
+          name: "MainParentTable",
+          displayName: "MainParentTable",
+          columns: table.columns.map(x => {
+            return {
+              name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
+              type: x.type,
+              metadata: x.metadata
+            };
+          }),
+          rows: mapToRows(dataRowIndices),
+          type: TableType.Main
+        },
+        {
+          name: "MainParentTable",
+          displayName: "MainParentTable",
+          columns: table.columns.map(x => {
+            return {
+              name: columnNameMap[x.name],
+              displayName: columnNameMap[x.name],
+              type: x.type,
+              metadata: x.metadata
+            };
+          }),
+          rows: mapToRows(allDataRowIndices),
+          type: TableType.ParentMain
         }
       ]
     };

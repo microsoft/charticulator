@@ -8,8 +8,10 @@ import {
   Prototypes,
   Specification,
   Expression,
-  Dataset
+  Dataset,
+  deepClone
 } from "../../core";
+import { TableType } from "../../core/dataset";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -67,6 +69,22 @@ export class Migrator {
       // Major change at version 1.4.0: Links are not automatically sorted in rendering now
       state = this.addScaleMappings(state);
     }
+    if (
+      compareVersion(state.version, "1.5.1") < 0 &&
+      compareVersion(targetVersion, "1.5.1") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.addTableTypes(state);
+    }
+
+    if (
+      compareVersion(state.version, "1.6.0") < 0 &&
+      compareVersion(targetVersion, "1.6.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.addOriginDataSet(state);
+    }
+
 
     // After migration, set version to targetVersion
     state.version = targetVersion;
@@ -74,8 +92,21 @@ export class Migrator {
     return state;
   }
 
+  public addOriginDataSet(state: AppStoreState) {
+    state.originDataset = deepClone(state.dataset);
+    return state;
+  }
+
   public addScaleMappings(state: AppStoreState) {
     state.chart.scaleMappings = [];
+    return state;
+  }
+
+  public addTableTypes(state: AppStoreState) {
+    state.dataset.tables[0].type = TableType.Main;
+    if (state.dataset.tables[1]) {
+      state.dataset.tables[1].type = TableType.Links;
+    }
     // TODO append current mappings
     return state;
   }

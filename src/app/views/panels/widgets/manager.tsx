@@ -47,12 +47,14 @@ import {
   ComboBoxFontFamily,
   ComboBox,
   CheckBox,
-  InputExpression
+  InputExpression,
+  InputImageProperty
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
+import { InputDate } from "./controls/input_date";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -142,7 +144,30 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
-          } else if (value == value) {
+          } else {
+            this.emitSetProperty(property, value);
+            return true;
+          }
+          return false;
+        }}
+      />
+    );
+  }
+
+  public inputDate(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputDateOptions = {}
+  ) {
+    const value = this.getPropertyValue(property) as number;
+    return (
+      <InputDate
+        {...options}
+        defaultValue={value}
+        onEnter={value => {
+          if (value == null) {
+            this.emitSetProperty(property, null);
+            return true;
+          } else {
             this.emitSetProperty(property, value);
             return true;
           }
@@ -333,6 +358,17 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public inputImage(property: Prototypes.Controls.Property) {
     return (
       <InputImage
+        value={this.getPropertyValue(property) as Specification.Types.Image}
+        onChange={image => {
+          this.emitSetProperty(property, image as Specification.Types.Image);
+          return true;
+        }}
+      />
+    );
+  }
+  public inputImageProperty(property: Prototypes.Controls.Property) {
+    return (
+      <InputImageProperty
         value={this.getPropertyValue(property) as Specification.Types.Image}
         onChange={image => {
           this.emitSetProperty(property, image as Specification.Types.Image);
@@ -805,7 +841,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             specification: options.specification,
                             dataset: options.dataset,
                             width: options.width,
-                            height: options.height
+                            height: options.height,
+                            filterCondition: options.filterCondition
                           },
                           document.location.origin
                         );

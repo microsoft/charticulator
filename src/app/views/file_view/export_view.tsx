@@ -11,6 +11,7 @@ import { ContextedComponent } from "../../context_component";
 import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
 import { classNames } from "../../utils";
+import { InputImageProperty, Button } from "../panels/widgets/controls";
 
 export class InputGroup extends React.Component<
   {
@@ -233,6 +234,7 @@ export class ExportTemplateView extends ContextedComponent<
     label: string,
     type: string,
     value: any,
+    defaultValue: any,
     onChange: (value: any) => void
   ) {
     let ref: HTMLInputElement;
@@ -273,19 +275,49 @@ export class ExportTemplateView extends ContextedComponent<
             <span className="el-text">{label}</span>
           </div>
         );
+      case "file":
+        return (
+          <div className="form-group-file">
+            <label>{label}</label>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row"
+              }}
+            >
+              <InputImageProperty
+                value={value as Specification.Types.Image}
+                onChange={(image: any) => {
+                  onChange(image);
+                  return true;
+                }}
+              />
+              <Button
+                icon={"general/eraser"}
+                onClick={() => {
+                  onChange(defaultValue);
+                }}
+              />
+            </div>
+            <i className="bar" />
+          </div>
+        );
     }
   }
 
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
+      const displayName = this.store.getPropertyExportName(property.name);
       return (
         <div key={property.name}>
           {this.renderInput(
             property.displayName,
             property.type,
-            this.state.targetProperties[property.name],
+            displayName || this.state.targetProperties[property.name],
+            property.default,
             value => {
               this.state.targetProperties[property.name] = value;
+              this.store.setPropertyExportName(property.name, value);
               this.setState({
                 targetProperties: this.state.targetProperties
               });
@@ -308,6 +340,7 @@ export class ExportTemplateView extends ContextedComponent<
               column.name,
               "string",
               column.displayName,
+              null,
               value => {
                 column.displayName = value;
                 this.setState({
@@ -331,44 +364,66 @@ export class ExportTemplateView extends ContextedComponent<
         // Only show axis and scale inferences
         .filter(inference => inference.axis || inference.scale)
         .map((inference, index) => {
-          let description = inference.description;
-          if (!description) {
+          let descriptionMin = inference.description;
+          let descriptionMax = inference.description;
+          if (!descriptionMin) {
             if (inference.scale) {
               const scaleName = findObjectById(
                 template.specification,
                 inference.objectID
               ).properties.name;
-              description = `Auto domain and range for ${scaleName}`;
+              descriptionMin = `Auto min domain and range for ${scaleName}`;
+              descriptionMax = `Auto max domain and range for ${scaleName}`;
             }
             if (inference.axis) {
               const objectName = findObjectById(
                 template.specification,
                 inference.objectID
               ).properties.name;
-              description = `Auto axis range for ${objectName}/${inference.axis.property.toString()}`;
+              descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
+              descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
           if (inference.disableAuto === undefined) {
             inference.disableAuto = true;
           }
           return (
-            <div
-              key={index}
-              className="el-inference-item"
-              onClick={() => {
-                inference.disableAuto = !inference.disableAuto;
-                this.setState({ template });
-              }}
-            >
-              <SVGImageIcon
-                url={
-                  inference.disableAuto
-                    ? R.getSVGIcon("checkbox/empty")
-                    : R.getSVGIcon("checkbox/checked")
-                }
-              />
-              <span className="el-text">{description}</span>
-            </div>
+            <>
+              <div
+                key={index}
+                className="el-inference-item"
+                onClick={() => {
+                  inference.disableAutoMin = !inference.disableAutoMin;
+                  this.setState({ template });
+                }}
+              >
+                <SVGImageIcon
+                  url={
+                    inference.disableAutoMin
+                      ? R.getSVGIcon("checkbox/empty")
+                      : R.getSVGIcon("checkbox/checked")
+                  }
+                />
+                <span className="el-text">{descriptionMin}</span>
+              </div>
+              <div
+                key={index}
+                className="el-inference-item"
+                onClick={() => {
+                  inference.disableAutoMax = !inference.disableAutoMax;
+                  this.setState({ template });
+                }}
+              >
+                <SVGImageIcon
+                  url={
+                    inference.disableAutoMax
+                      ? R.getSVGIcon("checkbox/empty")
+                      : R.getSVGIcon("checkbox/checked")
+                  }
+                />
+                <span className="el-text">{descriptionMax}</span>
+              </div>
+            </>
           );
         })
     );
@@ -385,7 +440,6 @@ export class ExportTemplateView extends ContextedComponent<
         id
       ) as Specification.ExposableObject;
 
-
       if (object && (p.target.attribute || p.target.property)) {
         if (object.exposed == undefined) {
           object.exposed = true;
@@ -394,11 +448,10 @@ export class ExportTemplateView extends ContextedComponent<
       }
     }
     for (const [key, object] of templateObjects) {
-      
       if (Prototypes.isType(object.classID, "guide")) {
         continue;
       }
-      
+
       result.push(
         <div
           key={key}
@@ -424,6 +477,7 @@ export class ExportTemplateView extends ContextedComponent<
         </div>
       );
     }
+
     return result;
   }
 

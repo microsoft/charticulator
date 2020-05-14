@@ -13,6 +13,7 @@ import {
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
+import { DataType } from "../../core/dataset";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -62,6 +63,20 @@ export class ExportTemplate extends Action {
 
   public digest() {
     return { name: "ExportTemplate" };
+  }
+}
+
+export class SaveExportTemplatePropertyName extends Action {
+  constructor(
+    public objectId: string,
+    public propertyName: string,
+    public value: string
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "SaveExportTemplatePropertyName" };
   }
 }
 
@@ -119,7 +134,10 @@ export class ImportDataset extends Action {
 export class ImportChartAndDataset extends Action {
   constructor(
     public specification: Specification.Chart,
-    public dataset: Dataset.Dataset
+    public dataset: Dataset.Dataset,
+    public options: {
+      [key: string]: any;
+    }
   ) {
     super();
   }
@@ -136,6 +154,27 @@ export class ReplaceDataset extends Action {
 
   public digest() {
     return { name: "ReplaceDataset", datasetName: this.dataset.name };
+  }
+}
+
+/** Invokes updaes all plot segments on the chart,  */
+export class UpdatePlotSegments extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "UpdatePlotSegments" };
+  }
+}
+
+export class ConvertColumnDataType extends Action {
+  constructor(public tableName: string, public column: string, public type: DataType) {
+    super();
+  }
+
+  public digest() {
+    return { name: "ConvertColumnDataType" };
   }
 }
 
@@ -238,7 +277,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action {}
+export class MarkAction extends Action { }
 
 export class SetMarkAttribute extends MarkAction {
   constructor(

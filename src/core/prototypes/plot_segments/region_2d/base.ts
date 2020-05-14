@@ -42,6 +42,11 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   /** Order in sublayout objects */
   order: Specification.Types.SortBy;
   orderReversed: boolean;
+  /** packing options */
+  packing: {
+    gravityX: number;
+    gravityY: number;
+  }
 }
 
 export interface Region2DAttributes extends Specification.AttributeMap {
@@ -1608,6 +1613,7 @@ export class Region2DConstraintBuilder {
   public sublayoutPacking(groups: SublayoutGroup[], axisOnly?: "x" | "y") {
     const solver = this.solver;
     const state = this.plotSegment.state;
+    const packingProps = this.plotSegment.object.properties.sublayout.packing;
 
     groups.forEach(group => {
       const markStates = group.group.map(index => state.glyphs[index]);
@@ -1666,7 +1672,11 @@ export class Region2DConstraintBuilder {
           cy,
           points,
           axisOnly,
-          this.config.getXYScale
+          this.config.getXYScale,
+          {
+            gravityX: packingProps && packingProps.gravityX,
+            gravityY: packingProps && packingProps.gravityY,
+          }
         )
       );
     });
@@ -2154,6 +2164,26 @@ export class Region2DConstraintBuilder {
           )
         );
       }
+    }
+    if (type == "packing") {
+      extra.push(
+        m.row(
+          "Gravity",
+          m.horizontal(
+            [0, 1, 0, 1],
+            m.label("x: "),
+            m.inputNumber(
+              { property: "sublayout", field: ["packing", "gravityX"] },
+              { minimum: 0.1, maximum: 15 }
+            ),
+            m.label("y: "),
+            m.inputNumber(
+              { property: "sublayout", field: ["packing", "gravityY"] },
+              { minimum: 0.1, maximum: 15 }
+            )
+          )
+        )
+      );
     }
     const options = this.applicableSublayoutOptions();
     return [

@@ -74,18 +74,16 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                 </ErrorBoundary>
               </MinimizablePane>
               {this.state.scaleViewMaximized ? null : (
-                    <MinimizablePane
-                      title="Scales"
-                      scroll={true}
-                      onMaximize={() =>
-                        this.setState({ scaleViewMaximized: true })
-                      }
-                    >
-                      <ErrorBoundary>
-                        <ScalesPanel store={this.props.store} />
-                      </ErrorBoundary>
-                    </MinimizablePane>
-                  )}
+                <MinimizablePane
+                  title="Scales"
+                  scroll={true}
+                  onMaximize={() => this.setState({ scaleViewMaximized: true })}
+                >
+                  <ErrorBoundary>
+                    <ScalesPanel store={this.props.store} />
+                  </ErrorBoundary>
+                </MinimizablePane>
+              )}
             </MinimizablePanelView>
           </div>
           <div className="charticulator__panel charticulator__panel-editor">
@@ -99,6 +97,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   display:
                     this.state.glyphViewMaximized &&
                     this.state.attributeViewMaximized &&
+                    this.state.scaleViewMaximized &&
                     this.state.layersViewMaximized
                       ? "none"
                       : undefined
@@ -145,7 +144,6 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
-                  
                 </MinimizablePanelView>
               </div>
               <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">

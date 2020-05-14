@@ -68,11 +68,11 @@ export class GuideClass extends ChartElementClass<
   public buildConstraints(solver: ConstraintSolver) {
     const [value, value2] = solver.attrs(this.state.attributes, [
       "value",
-      "value2",
+      "value2"
     ]);
     solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
       [1, value],
-      [-1, value2],
+      [-1, value2]
     ]);
   }
 
@@ -125,7 +125,7 @@ export class GuideClass extends ChartElementClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Guide"),
-      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {})),
+      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
     ];
   }
 

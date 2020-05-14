@@ -9,6 +9,11 @@ interface NodeType {
   r: number;
 }
 
+export interface PackingPluginOptions {
+  gravityX: number;
+  gravityY: number;
+}
+
 export class PackingPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
@@ -17,6 +22,8 @@ export class PackingPlugin extends ConstraintPlugin {
   public xEnable: boolean;
   public yEnable: boolean;
   public getXYScale: () => { x: number; y: number };
+  public gravityX?: number;
+  public gravityY?: number;
 
   constructor(
     solver: ConstraintSolver,
@@ -24,7 +31,8 @@ export class PackingPlugin extends ConstraintPlugin {
     cy: Variable,
     points: Array<[Variable, Variable, number]>,
     axisOnly?: "x" | "y",
-    getXYScale?: () => { x: number; y: number }
+    getXYScale?: () => { x: number; y: number },
+    options?: PackingPluginOptions
   ) {
     super();
     this.solver = solver;
@@ -34,6 +42,9 @@ export class PackingPlugin extends ConstraintPlugin {
     this.xEnable = axisOnly == null || axisOnly == "x";
     this.yEnable = axisOnly == null || axisOnly == "y";
     this.getXYScale = getXYScale;
+    this.gravityX = options.gravityX;
+    this.gravityY = options.gravityY;
+    console.log("this.gravityX", this.gravityX, "this.gravityY", this.gravityY);
   }
 
   public apply() {
@@ -59,8 +70,8 @@ export class PackingPlugin extends ConstraintPlugin {
 
     const force = forceSimulation(nodes);
     force.force("collision", forceCollide<NodeType>(d => d.r));
-    force.force("gravityX", forceX().strength(0.1));
-    force.force("gravityY", forceY().strength(0.1));
+    force.force("gravityX", forceX().strength(this.gravityX || 0.1));
+    force.force("gravityY", forceY().strength(this.gravityY || 0.1));
     force.stop();
     const n = Math.ceil(
       Math.log(force.alphaMin()) / Math.log(1 - force.alphaDecay())

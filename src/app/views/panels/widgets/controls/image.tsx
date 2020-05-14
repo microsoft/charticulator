@@ -14,6 +14,7 @@ export interface ImageDescription {
   src: string;
   width: number;
   height: number;
+  name?: string;
 }
 
 export interface InputImageProps {
@@ -169,8 +170,10 @@ export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
 }
 
 export interface ImageUploaderProps {
+  placeholder?: string;
   focusOnMount: boolean;
   onUpload?: (images: ImageUploaderItem[]) => void;
+  onClear?: () => void;
 }
 
 export interface ImageUploaderState {
@@ -313,6 +316,12 @@ export class ImageUploader extends React.Component<
     inputFile.click();
   };
 
+  protected handleClearFile = () => {
+    if (this.props.onClear) {
+      this.props.onClear();
+    }
+  };
+
   protected showError(error: any) {
     // FIXME: ignore error for now
   }
@@ -344,12 +353,68 @@ export class ImageUploader extends React.Component<
               value=""
               onChange={() => {}}
               type="text"
-              placeholder="Drop/Paste Image"
+              placeholder={this.props.placeholder || "Drop/Paste Image"}
             />
             <Button icon={"toolbar/open"} onClick={this.handleOpenFile} />
           </span>
         )}
       </div>
+    );
+  }
+}
+
+export class InputImageProperty extends InputImage {
+  public render() {
+    const isNone = this.props.value == null;
+    const image = isNone ? null : this.resolveImage(this.props.value);
+    let imageDisplayURL = image ? image.name : null;
+    if (imageDisplayURL) {
+      if (imageDisplayURL.startsWith("data:")) {
+        imageDisplayURL = "(data url)";
+      }
+    }
+    return (
+      <span
+        className={classNames(
+          "charticulator__widget-control-input-image",
+          ["is-none", isNone],
+          ["is-drag-over", this.state.dragOver]
+        )}
+        ref={e => (this.element = e)}
+        onDragEnter={this.handleDragEnter}
+        onDragLeave={this.handleDragLeave}
+        onDragOver={this.handleDragOver}
+        onDrop={this.handleDrop}
+      >
+        {this.state.dragOver ? (
+          <span className="el-drag-over">Drop Image Here</span>
+        ) : (
+          [
+            <img
+              key="image"
+              className="el-image2"
+              src={isNone ? R.getSVGIcon("mark/image") : image.src}
+            />,
+            <ImageUploader
+              key={0}
+              placeholder={isNone ? "(none)" : imageDisplayURL}
+              focusOnMount={true}
+              onUpload={images => {
+                if (images.length == 1) {
+                  if (this.props.onChange) {
+                    this.props.onChange({
+                      src: images[0].dataURL,
+                      width: images[0].width,
+                      height: images[0].height,
+                      name: images[0].name
+                    });
+                  }
+                }
+              }}
+            />
+          ]
+        )}
+      </span>
     );
   }
 }

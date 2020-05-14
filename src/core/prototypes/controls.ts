@@ -80,11 +80,17 @@ export interface InputNumberOptions {
   updownStyle?: "normal" | "font";
 }
 
+export interface InputDateOptions {
+  defaultValue?: number | Date;
+  placeholder?: string;
+  onEnter?: (value: number) => boolean;
+}
+
 export interface InputColorOptions {
   allowNull?: boolean;
 }
 
-export interface TableOptions {}
+export interface TableOptions { }
 
 export interface FilterEditorOptions {
   table: string;
@@ -109,6 +115,10 @@ export interface GroupByEditorOptions {
 export interface NestedChartEditorOptions {
   specification: Specification.Chart;
   dataset: Dataset.Dataset;
+  filterCondition?: {
+    column: string;
+    value: any;
+  };
   width: number;
   height: number;
 }
@@ -137,6 +147,7 @@ export interface WidgetManager {
 
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
+  inputDate(property: Property, options?: InputDateOptions): Widget;
   inputText(property: Property, placeholder?: string): Widget;
   inputComboBox(
     property: Property,
@@ -148,6 +159,7 @@ export interface WidgetManager {
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputImage(property: Property): Widget;
+  inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;
   inputColorGradient(property: Property, inline?: boolean): Widget;
 

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { prettyNumber, ZoomInfo } from "../../core";
+import { DataType, DataKind } from "../../core/specification";
+import { convertColumn } from "../../core/dataset/data_types";
 
 export function classNames(...args: Array<string | [string, boolean]>) {
   return args
@@ -110,6 +112,19 @@ export function readFileAsString(file: File): Promise<string> {
   });
 }
 
+export function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = () => {
+      reject(new Error(`unable to read file ${file.name}`));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export function getExtensionFromFileName(filename: string) {
   const m = filename.match(/\.([^\.]+)$/);
   if (m) {
@@ -150,4 +165,122 @@ export function b64EncodeUnicode(str: string) {
 }
 export function stringToDataURL(mimeType: string, content: string) {
   return "data:" + mimeType + ";base64," + b64EncodeUnicode(content);
+}
+
+
+function checkConvertion(type: DataType, dataSample: Array<string | boolean | Date | number>) {
+  let convertable = true;
+  if (type === DataType.String) {
+    return convertable;
+  }
+
+  switch (type) {
+    case DataType.Boolean:
+      for (const data of dataSample) {
+        if (data && (data.toString() != "0" && data.toString() != "true" && data.toString() != "1" && data.toString() != "false")) {
+          convertable = false;
+          break;
+        }
+      }
+      return convertable;
+    case DataType.Date:
+      convertable = true;
+      for (const data of dataSample) {
+        if (data && Number.isNaN(Date.parse(data.toString())) && Number.isNaN(new Date(+data.toString()).getDate())) {
+          convertable = false;
+          break;
+        }
+      }
+      return convertable;
+    case DataType.Number:
+      convertable = true;
+      for (const data of dataSample) {
+        if (data && Number.isNaN(Number.parseFloat(data.toString()))) {
+          convertable = false;
+          break;
+        }
+      }
+      return convertable;
+    default:
+      return false;
+  }
+}
+
+export function getConvertableDataKind(type: DataType, dataSample?: Array<string | boolean | Date | number>): DataKind[] {
+  let types;
+  switch (type) {
+    case DataType.Boolean:
+      types = [
+        DataKind.Ordinal,
+        DataKind.Categorical,
+      ];
+      break;
+    case DataType.Date:
+      types = [
+        DataKind.Categorical,
+        DataKind.Ordinal,
+        DataKind.Temporal,
+      ];
+      break;
+    case DataType.String:
+      types = [
+        DataKind.Categorical,
+        DataKind.Ordinal
+      ];
+      break;
+    case DataType.Number:
+      types = [
+        DataKind.Categorical,
+        DataKind.Numerical,
+        DataKind.Ordinal,
+      ];
+      break;
+  }
+
+  return types;
+}
+
+export function getConvertableTypes(type: DataType, dataSample?: Array<string | boolean | Date | number>): DataType[] {
+  let types;
+  switch (type) {
+    case DataType.Boolean:
+      types = [
+        DataType.Number,
+        DataType.String,
+        DataType.Boolean
+      ];
+      break;
+    case DataType.Date:
+      types = [
+        DataType.Number,
+        DataType.String,
+        DataType.Date
+      ];
+      break;
+    case DataType.String:
+      types = [
+        DataType.Number,
+        DataType.String,
+        DataType.Boolean,
+        DataType.Date,
+      ];
+      break;
+    case DataType.Number:
+      types = [
+        DataType.Number,
+        DataType.String,
+        DataType.Boolean,
+        DataType.Date,
+      ];
+      break;
+  }
+
+  return types.filter(t => {
+    if (t == type) {
+      return true;
+    }
+    if (dataSample) {
+      return checkConvertion(t, dataSample.map(d => d.toString()));
+    }
+  });
 }
