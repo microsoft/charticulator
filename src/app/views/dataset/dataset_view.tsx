@@ -107,6 +107,7 @@ export class ColumnsView extends React.Component<
                   );
                   newTable.displayName = getFileNameWithoutExtension(file.name);
                   newTable.name = table.name;
+                  newTable.type = table.type
                   const store = this.props.store;
                   const newDataset: Dataset.Dataset = {
                     name: store.dataset.name,
