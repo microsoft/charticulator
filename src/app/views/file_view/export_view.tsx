@@ -217,7 +217,7 @@ export class ExportTemplateView extends ContextedComponent<
     const target = this.store.createExportTemplateTarget(kind, template);
     const targetProperties: { [name: string]: string } = {};
     for (const property of target.getProperties()) {
-      targetProperties[property.name] = property.default;
+      targetProperties[property.name] = this.store.getPropertyExportName(property.name) || property.default;
     }
     return {
       template,
@@ -308,18 +308,22 @@ export class ExportTemplateView extends ContextedComponent<
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
       const displayName = this.store.getPropertyExportName(property.name);
+      const targetProperties = this.state.targetProperties;
+
       return (
         <div key={property.name}>
           {this.renderInput(
             property.displayName,
             property.type,
-            displayName || this.state.targetProperties[property.name],
+            displayName || targetProperties[property.name],
             property.default,
             value => {
-              this.state.targetProperties[property.name] = value;
               this.store.setPropertyExportName(property.name, value);
               this.setState({
-                targetProperties: this.state.targetProperties
+                targetProperties: {
+                  ...targetProperties,
+                  [property.name]: value
+                }
               });
             }
           )}
