@@ -385,7 +385,7 @@ export class ExportTemplateView extends ContextedComponent<
             }
           }
           if (inference.disableAuto === undefined) {
-            inference.disableAuto = true;
+            inference.disableAuto = false;
           }
           return (
             <>
