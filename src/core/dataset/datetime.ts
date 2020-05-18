@@ -5,8 +5,8 @@
  *
  * Expected formats: DateFormat TimeFormat TimezoneFormat
  * - DateFormats:
- *   - YYYY-MM, YYYY-MM-DD
- *   - MM/YYYY, MM/DD/YYYY
+ *   - YYYY-MM, YYYY-MM-DD, YYYY-M, YYYY-M-D
+ *   - MM/YYYY, MM/DD/YYYY, M/YYYY, M/D/YYYY
  * - TimeFormats:
  *   - HH:MM, HH:MM:SS
  *   - HH:MM{am/pm}, HH:MM:SS{am/pm}
@@ -34,7 +34,7 @@ export function parseDate(str: string) {
   }
   // Overall pass
   m = str.match(
-    /^(((\d{4})-(\d{2})(-(\d{2}))?|(\d{2})(\/(\d{2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
+    /^(((\d{4})-(\d{1,2})(-(\d{1,2}))?|(\d{1,2})(\/(\d{1,2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
   );
   if (m) {
     let year = 1970,
