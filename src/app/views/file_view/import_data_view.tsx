@@ -223,12 +223,16 @@ export class ImportDataView extends React.Component<
                                 key={dataset.name}
                                 onClick={() => {
                                   Promise.all(
-                                    dataset.tables.map(table => {
+                                    dataset.tables.map((table, index) => {
                                       const loader = new Dataset.DatasetLoader();
                                       return loader
                                         .loadCSVFromURL(table.url)
                                         .then(r => {
                                           r.name = table.name;
+                                          r.type =
+                                            index == 0
+                                              ? TableType.Main
+                                              : TableType.Links; // assumes there are two tables only
                                           return r;
                                         });
                                     })
@@ -268,7 +272,7 @@ export class ImportDataView extends React.Component<
             {this.renderTable(this.state.dataTable, () => {
               this.setState({
                 dataTable: this.state.dataTable
-              })
+              });
             })}
             <ButtonRaised
               text="Remove"
@@ -303,7 +307,7 @@ export class ImportDataView extends React.Component<
             {this.renderTable(this.state.linkTable, () => {
               this.setState({
                 linkTable: this.state.linkTable
-              })
+              });
             })}
             <ButtonRaised
               text="Remove"
