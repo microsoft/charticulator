@@ -13,19 +13,41 @@ export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.style({ fill: true })
 };
 
+/** Properties of rectangle
+ *   -------------- y1
+ *   |            |     |
+ *   |            | yc  height
+ *   |            |     |
+ *   -------------- y2
+ *  x1     xc     x2
+ *  <----width---->
+ */
 export interface RectElementAttributes extends AttributeMap {
+  /** x value of left top point of rect */
   x1: number;
+  /** y value of left top point of rect */
   y1: number;
+  /** x value of right bottom point of rect */
   x2: number;
+  /** y value of right bottom point of rect */
   y2: number;
+  /** x value of center point of rect */
   cx: number;
+  /** y value of center point of rect */
   cy: number;
+  /** width of rectangle */
   width: number;
+  /** height of rectangle */
   height: number;
+  /** color of the rectangle border  */
   stroke: Color;
+  /** color of the rectangle  */
   fill: Color;
+  /** thickness of the rectangle border */
   strokeWidth: number;
+  /** opacity */
   opacity: number;
+  /** visual state of rectangle */
   visible: boolean;
 }
 

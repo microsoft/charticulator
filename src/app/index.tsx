@@ -36,6 +36,8 @@
  *
  * * {@link "app/views/panels/index"} TODO describe panels
  *
+ * * {@link "app/template/index"} contains class and interface for building chart template
+ *
  * @packageDocumentation
  * @preferred
  */

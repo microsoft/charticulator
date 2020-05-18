@@ -192,7 +192,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
     return widgets;
   }
 
-  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
+  /**
+   * Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+   * See description of {@link RectElementClass.buildConstraints} method for details. Image has the same shape, except center point.
+   */
   public buildConstraints(solver: ConstraintSolver): void {
     const [x1, y1, x2, y2, cx, cy, width, height] = solver.attrs(
       this.state.attributes,

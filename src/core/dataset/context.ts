@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * Context provideres for expression.
+ * @packageDocumentation
+ * @preferred
+ */
+
 import { getByName } from "../common";
 import { Context } from "../expression";
 import { Column, Dataset, Row, Table } from "./dataset";
