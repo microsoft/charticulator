@@ -472,10 +472,10 @@ export function strokeStyleToDashArray(strokeStyle: StrokeStyle) {
       return "8";
     }
     case "dotted": {
-      return "1 10"
+      return "1 10";
     }
     default: {
       return "";
     }
   }
-};
+}
