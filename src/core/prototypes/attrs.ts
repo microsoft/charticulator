@@ -121,10 +121,6 @@ export class AttrBuilder {
         defaultRange: [0, 5],
         defaultValue: 1
       }),
-      ...this.enum("strokeStyle", {
-        defaultRange: ["", "8", "1 10"],
-        defaultValue: ""
-      }),
       ...this.opacity(),
       ...this.visible()
     };
