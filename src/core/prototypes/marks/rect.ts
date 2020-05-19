@@ -30,7 +30,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-> {
+  > {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -203,7 +203,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             {
               type: "dropdown",
               showLabel: true,
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
               labels: ["Solid", "Dashed", "Dotted"],
               options: ["solid", "dashed", "dotted"]
             }
