@@ -209,30 +209,6 @@ export class RectElementClass extends EmphasizableMarkClass<
             }
           )
         )
-
-        /*
-        manager.mappingEditor("Line Style", "strokeStyle", {
-          //hints: { rangeNumber: [0, 5] },
-          hints: { rangeEnum: ["solid", "dashed", "dotted"] },
-          defaultValue: "solid",
-          //numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
-        })
-*/
-
-        /*        manager.row(
-                  "Line Style",
-                  manager.inputSelect(
-                    { property: "strokeStyle" },
-                    {
-                      type: "dropdown",
-                      showLabel: true,
-                      icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-                      labels: ["Solid", "Dashed", "Dotted"],
-                      options: ["solid", "dashed", "dotted"]
-                    }
-                  )
-                )
-          */
       );
     }
     widgets = widgets.concat([
@@ -341,7 +317,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
-            strokeDasharray: strokeStyleToDashArray(this.object.properties.strokeStyle),
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)
