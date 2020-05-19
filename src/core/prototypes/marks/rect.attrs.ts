@@ -25,6 +25,7 @@ export interface RectElementAttributes extends AttributeMap {
   stroke: Color;
   fill: Color;
   strokeWidth: number;
+  strokeStyle: "solid" | "dashed" | "dotted";
   opacity: number;
   visible: boolean;
 }

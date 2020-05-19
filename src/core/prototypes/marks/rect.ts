@@ -29,7 +29,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-> {
+  > {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -44,6 +44,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
+    strokeStyle: "",
     shape: "rectangle"
   };
 
@@ -192,6 +193,46 @@ export class RectElementClass extends EmphasizableMarkClass<
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
+      );
+      widgets.push(
+
+        manager.row(
+          "Line Style",
+          manager.inputSelect(
+            { property: "strokeStyle" },
+            {
+              icons: ["align/left", "align/x-middle", "align/right"],
+              type: "dropdown",
+              showLabel: true,
+              options: ["", "8", "1 10"],
+              labels: ["Solid", "Dashed", "Dotted"]
+            }
+          )
+        )
+
+        /*
+        manager.mappingEditor("Line Style", "strokeStyle", {
+          //hints: { rangeNumber: [0, 5] },
+          hints: { rangeEnum: ["solid", "dashed", "dotted"] },
+          defaultValue: "solid",
+          //numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
+        })
+*/
+
+        /*        manager.row(
+                  "Line Style",
+                  manager.inputSelect(
+                    { property: "strokeStyle" },
+                    {
+                      type: "dropdown",
+                      showLabel: true,
+                      icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
+                      labels: ["Solid", "Dashed", "Dotted"],
+                      options: ["solid", "dashed", "dotted"]
+                    }
+                  )
+                )
+          */
       );
     }
     widgets = widgets.concat([
