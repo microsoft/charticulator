@@ -14,6 +14,7 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
+  strokeStyleToDashArray,
   TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
@@ -44,7 +45,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
-    strokeStyle: "",
+    strokeStyle: "solid",
     shape: "rectangle"
   };
 
@@ -195,17 +196,16 @@ export class RectElementClass extends EmphasizableMarkClass<
         })
       );
       widgets.push(
-
         manager.row(
           "Line Style",
           manager.inputSelect(
             { property: "strokeStyle" },
             {
-              icons: ["align/left", "align/x-middle", "align/right"],
               type: "dropdown",
               showLabel: true,
-              options: ["", "8", "1 10"],
-              labels: ["Solid", "Dashed", "Dotted"]
+              icons: ["align/left", "align/x-middle", "align/right"],
+              labels: ["Solid", "Dashed", "Dotted"],
+              options: ["solid", "dashed", "dotted"]
             }
           )
         )
@@ -341,6 +341,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(this.object.properties.strokeStyle),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)
