@@ -463,3 +463,19 @@ export function getProperty(
     return getField(object.properties[property.property], property.field);
   }
 }
+
+export type StrokeStyle = "solid" | "dashed" | "dotted";
+
+export function strokeStyleToDashArray(strokeStyle: StrokeStyle) {
+  switch (strokeStyle) {
+    case "dashed": {
+      return "8";
+    }
+    case "dotted": {
+      return "1 10";
+    }
+    default: {
+      return "";
+    }
+  }
+}

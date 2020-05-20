@@ -14,6 +14,7 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
+  strokeStyleToDashArray,
   TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
@@ -29,7 +30,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-> {
+  > {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -44,6 +45,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
+    strokeStyle: "solid",
     shape: "rectangle"
   };
 
@@ -193,6 +195,21 @@ export class RectElementClass extends EmphasizableMarkClass<
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
       );
+      widgets.push(
+        manager.row(
+          "Line Style",
+          manager.inputSelect(
+            { property: "strokeStyle" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+              labels: ["Solid", "Dashed", "Dotted"],
+              options: ["solid", "dashed", "dotted"]
+            }
+          )
+        )
+      );
     }
     widgets = widgets.concat([
       manager.mappingEditor("Opacity", "opacity", {
@@ -253,6 +270,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)
@@ -283,6 +303,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           strokeColor: attrs.stroke,
           strokeWidth: attrs.strokeWidth,
           strokeLinejoin: "miter",
+          strokeDasharray: strokeStyleToDashArray(
+            this.object.properties.strokeStyle
+          ),
           fillColor: attrs.fill,
           opacity: attrs.opacity,
           ...this.generateEmphasisStyle(empasized)
@@ -300,6 +323,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)

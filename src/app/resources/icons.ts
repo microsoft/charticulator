@@ -356,6 +356,19 @@ addSVGIcon(
   "mark/nested-chart",
   require("url-loader!resources/icons/icons_nested-chart.svg")
 );
+addSVGIcon(
+  "stroke/dashed",
+  require("url-loader!resources/icons/icons_stroke-dashed.svg")
+);
+addSVGIcon(
+  "stroke/dotted",
+  require("url-loader!resources/icons/icons_stroke-dotted.svg")
+);
+addSVGIcon(
+  "stroke/solid",
+  require("url-loader!resources/icons/icons_stroke-solid.svg")
+);
+
 // Handle icons
 addSVGIcon(
   "sublayout/overlap",

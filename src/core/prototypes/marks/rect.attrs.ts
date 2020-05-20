@@ -5,6 +5,7 @@ import { AttributeDescriptions } from "../object";
 import { Color } from "../../common";
 import { AttributeMap } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
+import { StrokeStyle } from "../common";
 
 export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -31,4 +32,5 @@ export interface RectElementAttributes extends AttributeMap {
 
 export interface RectElementProperties extends AttributeMap {
   shape: "rectangle" | "ellipse" | "triangle";
+  strokeStyle: StrokeStyle;
 }
