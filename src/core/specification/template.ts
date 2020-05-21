@@ -8,7 +8,9 @@ import { Chart, DataType, AttributeType } from "./index";
 import * as Types from "./types";
 import { AxisRenderingStyle } from "./types";
 
-export type PropertyField = string | { property: string; field: FieldType };
+export type PropertyField =
+  | string
+  | { property: string; field: FieldType; subfield?: FieldType };
 
 export interface ChartTemplate {
   /** The original chart specification */
@@ -49,7 +51,7 @@ export interface Property {
   };
 
   type: AttributeType;
-  default?: string | number | boolean;
+  default?: string | number | boolean | object;
 }
 
 /** Infer values from data */

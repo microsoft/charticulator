@@ -508,6 +508,22 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         }
       });
     }
+    if (
+      this.object.properties.sublayout.order &&
+      this.object.properties.sublayout.order.expression
+    ) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "sublayout",
+            field: "order"
+          }
+        },
+        type: Specification.AttributeType.Object,
+        default: this.object.properties.sublayout.order
+      });
+    }
     return { inferences: r, properties: p };
   }
 }
