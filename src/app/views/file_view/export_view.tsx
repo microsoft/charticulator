@@ -217,7 +217,8 @@ export class ExportTemplateView extends ContextedComponent<
     const target = this.store.createExportTemplateTarget(kind, template);
     const targetProperties: { [name: string]: string } = {};
     for (const property of target.getProperties()) {
-      targetProperties[property.name] = this.store.getPropertyExportName(property.name) || property.default;
+      targetProperties[property.name] =
+        this.store.getPropertyExportName(property.name) || property.default;
     }
     return {
       template,
@@ -392,9 +393,8 @@ export class ExportTemplateView extends ContextedComponent<
             inference.disableAuto = false;
           }
           return (
-            <>
+            <React.Fragment key={index}>
               <div
-                key={index}
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMin = !inference.disableAutoMin;
@@ -411,7 +411,6 @@ export class ExportTemplateView extends ContextedComponent<
                 <span className="el-text">{descriptionMin}</span>
               </div>
               <div
-                key={index}
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMax = !inference.disableAutoMax;
@@ -427,7 +426,7 @@ export class ExportTemplateView extends ContextedComponent<
                 />
                 <span className="el-text">{descriptionMax}</span>
               </div>
-            </>
+            </React.Fragment>
           );
         })
     );
