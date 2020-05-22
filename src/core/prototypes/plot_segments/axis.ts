@@ -173,7 +173,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -212,7 +212,7 @@ export class AxisRenderer {
       const tx =
         ((Math.log(ticks[i]) - Math.log(domainMin)) /
           (Math.log(domainMax) - Math.log(domainMin))) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -246,7 +246,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -891,6 +891,9 @@ export function buildAxisProperties(
 ): Specification.Template.Property[] {
   const axisObject = plotSegment.properties[property] as AttributeMap;
   const style: any = axisObject.style;
+  if (!style) {
+    return [];
+  }
   return [
     {
       objectID: plotSegment._id as string,
