@@ -468,10 +468,14 @@ export function getProperty(
   if (typeof property == "string") {
     return object.properties[property];
   } else {
-    return getField(
-      (object.properties[property.property] as any)[property.field as string],
-      property.subfield
-    );
+    if (property.subfield) {
+      return getField(
+        (object.properties[property.property] as any)[property.field as string],
+        property.subfield
+      );
+    } else {
+      return getField(object.properties[property.property], property.field);
+    }
   }
 }
 
