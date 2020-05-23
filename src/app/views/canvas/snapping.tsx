@@ -12,6 +12,7 @@ import {
 } from "../../../core";
 import { HandlesDragEvent } from "./handles";
 import { Actions } from "../../actions";
+import { GuideClass } from "../../../core/prototypes/guides";
 
 export interface SnappableGuide<ElementType> {
   element: ElementType;
@@ -325,7 +326,18 @@ export class MarkSnappingSession extends SnappingSession<
     bound: Prototypes.Handles.Description,
     threshold: number
   ) {
-    super(guides.filter(x => x.element != element), bound, threshold);
+    super(guides.filter(x => {
+      //element cannot snap to itself
+      if (x.element === element) return false;
+      //special rules for guides
+      if (element.classID === GuideClass.classID) {
+        //guide cannot snap to a mark
+        if (x.element && x.element.classID.startsWith("mark.")) {
+          return false;
+        }
+      }
+      return true;
+    }), bound, threshold);
 
     this.mark = mark;
     this.element = element;
