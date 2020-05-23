@@ -326,18 +326,24 @@ export class MarkSnappingSession extends SnappingSession<
     bound: Prototypes.Handles.Description,
     threshold: number
   ) {
-    super(guides.filter(x => {
-      //element cannot snap to itself
-      if (x.element === element) return false;
-      //special rules for guides
-      if (element.classID === GuideClass.classID) {
-        //guide cannot snap to a mark
-        if (x.element && x.element.classID.startsWith("mark.")) {
+    super(
+      guides.filter(x => {
+        // element cannot snap to itself
+        if (x.element === element) {
           return false;
         }
-      }
-      return true;
-    }), bound, threshold);
+        // special rules for guides
+        if (element.classID === GuideClass.classID) {
+          // guide cannot snap to a mark
+          if (x.element && x.element.classID.startsWith("mark.")) {
+            return false;
+          }
+        }
+        return true;
+      }),
+      bound,
+      threshold
+    );
 
     this.mark = mark;
     this.element = element;
