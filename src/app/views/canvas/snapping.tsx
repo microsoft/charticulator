@@ -315,7 +315,7 @@ export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
 export class MarkSnappingSession extends SnappingSession<
   Specification.Element
-  > {
+> {
   public mark: Specification.Glyph;
   public element: Specification.Element;
 
@@ -432,7 +432,7 @@ export type ChartSnappableGuide = SnappableGuide<Specification.ChartElement>;
 
 export class ChartSnappingSession extends SnappingSession<
   Specification.ChartElement
-  > {
+> {
   public markLayout: Specification.ChartElement;
 
   constructor(
