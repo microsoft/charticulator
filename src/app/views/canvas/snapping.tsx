@@ -13,6 +13,7 @@ import {
 import { HandlesDragEvent } from "./handles";
 import { Actions } from "../../actions";
 import { GuideClass } from "../../../core/prototypes/guides";
+import { isType } from "../../../core/prototypes";
 
 export interface SnappableGuide<ElementType> {
   element: ElementType;
@@ -314,7 +315,7 @@ export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
 export class MarkSnappingSession extends SnappingSession<
   Specification.Element
-> {
+  > {
   public mark: Specification.Glyph;
   public element: Specification.Element;
 
@@ -335,7 +336,7 @@ export class MarkSnappingSession extends SnappingSession<
         // special rules for guides
         if (element.classID === GuideClass.classID) {
           // guide cannot snap to a mark
-          if (x.element && x.element.classID.startsWith("mark.")) {
+          if (x.element && isType(x.element.classID, "mark")) {
             return false;
           }
         }
@@ -431,7 +432,7 @@ export type ChartSnappableGuide = SnappableGuide<Specification.ChartElement>;
 
 export class ChartSnappingSession extends SnappingSession<
   Specification.ChartElement
-> {
+  > {
   public markLayout: Specification.ChartElement;
 
   constructor(
