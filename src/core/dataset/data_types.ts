@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { DataValue, DataType, DataKind, ColumnMetadata } from "./dataset";
-import { parseDate, testAndNormalizeMonthName, monthNames } from "./datetime";
+import {
+  parseDate,
+  testAndNormalizeMonthName,
+  monthNames,
+  getDateFormat
+} from "./datetime";
 
 // Infer column type.
 // Adapted from datalib: https://github.com/vega/datalib/blob/master/src/import/type.js
@@ -93,7 +98,12 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 export function inferAndConvertColumn(
   values: string[],
   hints?: { [name: string]: string }
-): { values: DataValue[]; type: DataType; metadata: ColumnMetadata } {
+): {
+  values: DataValue[];
+  rawValues?: string[] | DataValue[];
+  type: DataType;
+  metadata: ColumnMetadata;
+} {
   const inferredType = inferColumnType(values.filter(x => x != null));
   const convertedValues = convertColumn(inferredType, values);
   if (hints == null) {
@@ -154,6 +164,7 @@ export function inferAndConvertColumn(
       return {
         type: DataType.Boolean,
         values: convertedValues,
+        rawValues: values.map(v => v && v.toLowerCase()),
         metadata: {
           kind: DataKind.Categorical
         }
@@ -163,9 +174,11 @@ export function inferAndConvertColumn(
       return {
         type: DataType.Date,
         values: convertedValues,
+        rawValues: values,
         metadata: {
           kind: DataKind.Temporal,
-          unit: hints.unit
+          unit: hints.unit,
+          format: getDateFormat(values[0])
         }
       };
     }

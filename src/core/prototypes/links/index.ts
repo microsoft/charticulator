@@ -768,11 +768,11 @@ export abstract class LinksClass extends ChartElementClass {
           this.object.mappings.opacity &&
           ((this.object.mappings.opacity as Specification.ValueMapping)
             .value as number) // TODO fix it
-      })
+      });
     }
 
     return {
-      properties,
+      properties
     };
   }
 }

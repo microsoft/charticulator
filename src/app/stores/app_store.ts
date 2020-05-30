@@ -966,7 +966,11 @@ export class AppStore extends BaseStore {
           xDataProperty.expression,
           xDataProperty.valueType,
           {
-            kind: xDataProperty.type === "numerical" && xDataProperty.numericalMode === "temporal" ? DataKind.Temporal : xDataProperty.type
+            kind:
+              xDataProperty.type === "numerical" &&
+              xDataProperty.numericalMode === "temporal"
+                ? DataKind.Temporal
+                : xDataProperty.type
           }
         );
 
@@ -988,7 +992,11 @@ export class AppStore extends BaseStore {
           yDataProperty.expression,
           yDataProperty.valueType,
           {
-            kind: yDataProperty.type === "numerical" && yDataProperty.numericalMode === "temporal" ? DataKind.Temporal : yDataProperty.type
+            kind:
+              yDataProperty.type === "numerical" &&
+              yDataProperty.numericalMode === "temporal"
+                ? DataKind.Temporal
+                : yDataProperty.type
           }
         );
 
@@ -1009,7 +1017,10 @@ export class AppStore extends BaseStore {
           axis.expression,
           axis.valueType,
           {
-            kind: axis.type === "numerical" && axis.numericalMode === "temporal" ? DataKind.Temporal : axis.type
+            kind:
+              axis.type === "numerical" && axis.numericalMode === "temporal"
+                ? DataKind.Temporal
+                : axis.type
           }
         );
 
@@ -1024,7 +1035,6 @@ export class AppStore extends BaseStore {
       }
     });
   }
-
 
   private getBindingByDataKind(kind: DataKind) {
     switch (kind) {
@@ -1042,14 +1052,16 @@ export class AppStore extends BaseStore {
     property?: string;
     appendToProperty?: string;
     dataExpression: DragData.DataExpression;
-    type?: "default" | "numerical" | "categorical",
-    numericalMode?: "linear" | "logarithmic" | "temporal"
+    type?: "default" | "numerical" | "categorical";
+    numericalMode?: "linear" | "logarithmic" | "temporal";
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
     const groupExpression = dataExpression.expression;
     let dataBinding: Specification.Types.AxisDataBinding = {
-      type: options.type || this.getBindingByDataKind(options.dataExpression.metadata.kind),
+      type:
+        options.type ||
+        this.getBindingByDataKind(options.dataExpression.metadata.kind),
       expression: groupExpression,
       valueType: dataExpression.valueType,
       gapRatio: 0.1,

@@ -22,6 +22,8 @@ export interface ColumnMetadata {
   orderMode?: "alphabetically" | "occurrence" | "order";
   /** Formatting for other data types */
   format?: string;
+  rawColumnName?: string;
+  isRaw?: boolean;
 }
 
 export interface Column {
@@ -65,3 +67,5 @@ export enum TableType {
   /** TelLs to nested chart that table is parent links table of the chart with all data */
   ParentLinks = "ParentLinks"
 }
+
+export const rawColumnPostFix = "_raw";

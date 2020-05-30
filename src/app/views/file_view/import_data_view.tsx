@@ -4,18 +4,20 @@ import * as React from "react";
 import * as R from "../../resources";
 import * as globals from "../../globals";
 import { getConfig } from "../../config";
-import { Dataset } from "../../../core";
+import { Dataset, deepClone } from "../../../core";
 import {
   classNames,
   getExtensionFromFileName,
   readFileAsString,
-  getFileNameWithoutExtension
+  getFileNameWithoutExtension,
+  convertColumns
 } from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
+import { color } from "d3";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -164,7 +166,11 @@ export interface ImportDataViewProps {
 
 export interface ImportDataViewState {
   dataTable: Dataset.Table;
+  dataTableOrigin: Dataset.Table;
   linkTable: Dataset.Table;
+  linkTableOrigin: Dataset.Table;
+  dataTableError?: string;
+  linkTableError?: string;
 }
 
 export class ImportDataView extends React.Component<
@@ -175,7 +181,11 @@ export class ImportDataView extends React.Component<
     super(props);
     this.state = {
       dataTable: null,
-      linkTable: null
+      linkTable: null,
+      dataTableOrigin: null,
+      linkTableOrigin: null,
+      dataTableError: null,
+      linkTableError: null
     };
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
@@ -269,18 +279,37 @@ export class ImportDataView extends React.Component<
         </h2>
         {this.state.dataTable ? (
           <div className="charticulator__import-data-view-table">
-            {this.renderTable(this.state.dataTable, () => {
-              this.setState({
-                dataTable: this.state.dataTable
-              });
-            })}
+            {this.renderTable(
+              this.state.dataTable,
+              (column: string, type: string) => {
+                const dataColumn = this.state.dataTable.columns.find(
+                  col => col.name === column
+                );
+                const dataTableError = convertColumns(
+                  this.state.dataTable,
+                  dataColumn,
+                  this.state.dataTableOrigin,
+                  type as Dataset.DataType
+                );
+                this.setState({
+                  dataTable: this.state.dataTable,
+                  dataTableError
+                });
+              }
+            )}
+            {this.state.dataTableError ? (
+              <p className="charticulator__import-data-view__error">
+                {this.state.dataTableError}
+              </p>
+            ) : null}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}
               title="Remove this table"
               onClick={() => {
                 this.setState({
-                  dataTable: null
+                  dataTable: null,
+                  dataTableOrigin: null
                 });
               }}
             />
@@ -292,7 +321,8 @@ export class ImportDataView extends React.Component<
               this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Main;
                 this.setState({
-                  dataTable: table
+                  dataTable: table,
+                  dataTableOrigin: deepClone(table)
                 });
               });
             }}
@@ -304,18 +334,41 @@ export class ImportDataView extends React.Component<
         </h2>
         {this.state.linkTable ? (
           <div className="charticulator__import-data-view-table">
-            {this.renderTable(this.state.linkTable, () => {
-              this.setState({
-                linkTable: this.state.linkTable
-              });
-            })}
+            {this.renderTable(
+              this.state.linkTable,
+              (column: string, type: string) => {
+                const dataColumn = this.state.linkTable.columns.find(
+                  col => col.name === column
+                );
+                const dataColumnOrigin = this.state.linkTableOrigin.columns.find(
+                  col => col.name === column
+                );
+                const linkTableError = convertColumns(
+                  this.state.linkTable,
+                  dataColumn,
+                  this.state.dataTableOrigin,
+                  type as Dataset.DataType
+                );
+                this.setState({
+                  linkTable: this.state.linkTable,
+                  linkTableOrigin: this.state.linkTable,
+                  linkTableError
+                });
+              }
+            )}
+            {this.state.linkTableError ? (
+              <p className="charticulator__import-data-view__error">
+                {this.state.linkTableError}
+              </p>
+            ) : null}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}
               title="Remove this table"
               onClick={() => {
                 this.setState({
-                  linkTable: null
+                  linkTable: null,
+                  linkTableOrigin: null
                 });
               }}
             />
@@ -327,7 +380,8 @@ export class ImportDataView extends React.Component<
               this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Links;
                 this.setState({
-                  linkTable: table
+                  linkTable: table,
+                  linkTableOrigin: deepClone(table)
                 });
               });
             }}
