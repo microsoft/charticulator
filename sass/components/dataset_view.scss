@@ -144,6 +144,10 @@
       padding-top: 10px;
       text-align: right;
     }
+
+    &__error {
+      color: red
+    }
   }
 }
 
@@ -155,6 +159,7 @@
   th {
     border: 1px solid $gray-180;
     padding: 4px 5px;
+    min-width: 70px;
   }
   th {
     font-weight: 700;
