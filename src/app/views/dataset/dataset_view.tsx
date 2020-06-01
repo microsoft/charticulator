@@ -260,6 +260,7 @@ export class ColumnView extends React.Component<
     let anchor: HTMLDivElement;
     return (
       <div
+        key={label}
         className="click-handler"
         ref={e => (anchor = e)}
         onClick={() => {
