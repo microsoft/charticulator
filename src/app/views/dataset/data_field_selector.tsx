@@ -130,6 +130,7 @@ export class DataFieldSelector extends React.Component<
       )[0];
     const columns = table.columns;
     const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
+    columnFilters.push(x => !x.metadata.isRaw);
     if (this.props.table) {
       columnFilters.push(x => x.table == this.props.table);
     }
@@ -189,7 +190,7 @@ export class DataFieldSelector extends React.Component<
       return r;
     });
     // Make sure we only show good ones
-    candidates = candidates.filter(x => x.derived.length > 0 || x.selectable);
+    candidates = candidates.filter(x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw);
     return candidates;
   }
 
