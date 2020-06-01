@@ -164,7 +164,7 @@ export function inferAndConvertColumn(
       return {
         type: DataType.Boolean,
         values: convertedValues,
-        // rawValues: values.map(v => v && v.toLowerCase()),
+        rawValues: values.map(v => v && v.toLowerCase()),
         metadata: {
           kind: DataKind.Categorical
         }
