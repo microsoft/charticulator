@@ -659,7 +659,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                      getExpressionUnit(expression) &&
+                    getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -931,7 +931,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function*() {
+      const rowIterator = function* () {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -952,7 +952,6 @@ export class AppStore extends BaseStore {
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       element => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
-    console.log(plotSegments);
     plotSegments.forEach(plot => {
       const table = this.dataset.tables.find(
         table => table.name === plot.table
@@ -968,7 +967,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-              xDataProperty.numericalMode === "temporal"
+                xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type
           }
@@ -994,7 +993,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-              yDataProperty.numericalMode === "temporal"
+                yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type
           }
