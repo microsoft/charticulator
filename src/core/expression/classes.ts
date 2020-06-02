@@ -30,6 +30,11 @@ export class SimpleContext implements Context {
 import { constants, functions, operators, precedences } from "./intrinsics";
 import { format } from "d3-format";
 import { parse } from "./parser";
+import { DatasetContext } from "../dataset";
+import {
+  DataflowTable,
+  DataflowTableGroupedContext
+} from "../prototypes/dataflow";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
@@ -105,7 +110,16 @@ export class TextExpression {
         } else if (part.expression) {
           const val = part.expression.getValue(context);
           if (part.format) {
-            return format(part.format)(+val);
+            try {
+              return format(part.format)(+val);
+            } catch (ex) {
+              // try to handle specific format
+              if (part.format.match(/^\%raw$/).length > 0) {
+                getFormattedValue(val, part.expression);
+              } else {
+                throw ex;
+              }
+            }
           } else {
             return val;
           }
@@ -388,4 +402,41 @@ export class Variable extends Expression {
   protected replaceChildren(r: PatternReplacer): Expression {
     return new Variable(this.name);
   }
+}
+
+function getFormattedValue(val: any, expression: Expression) {
+  if (val === undefined || val === null) {
+    return val;
+  }
+  if (context instanceof ShadowContext) {
+    if (
+      expression instanceof FunctionCall &&
+      expression.args[0] instanceof Variable
+    ) {
+      const columnName = (expression.args[0] as Variable).name;
+      const rawColumnName = ((context as ShadowContext)
+        .upstream as DataflowTable).columns.find(col => col.name == columnName)
+        .metadata.rawColumnName;
+      if (rawColumnName) {
+        return (context as ShadowContext).getVariable(rawColumnName);
+      }
+    }
+  }
+  if (context instanceof DataflowTableGroupedContext) {
+    if (
+      expression instanceof FunctionCall &&
+      expression.args[0] instanceof Variable
+    ) {
+      const columnName = (expression.args[0] as Variable).name;
+      const rawColumnName = (context as DataflowTableGroupedContext)
+        .getTable()
+        .columns.find(col => col.name == columnName).metadata.rawColumnName;
+      if (rawColumnName) {
+        return (context as DataflowTableGroupedContext).getVariable(
+          rawColumnName
+        );
+      }
+    }
+  }
+  return val;
 }
