@@ -44,6 +44,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     } else {
       if (
         (action.valueType == Specification.DataType.String ||
+          action.valueType == Specification.DataType.Boolean ||
           action.valueType == Specification.DataType.Number) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
