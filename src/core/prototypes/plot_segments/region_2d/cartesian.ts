@@ -275,53 +275,6 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       return result;
     };
 
-    // TODO move to dataset operations
-    const getDisplayFormat = (
-      manager: ChartStateManager,
-      expressionString: string,
-      table: string
-    ) => {
-      const axisTable: DataflowTable = manager.getTable(table);
-
-      const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
-      // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-      const functionCallpart = expression.parts.find(part => {
-        if (part.expression instanceof FunctionCall) {
-          return part.expression.args.find(
-            arg => arg instanceof Variable
-          ) as any;
-        }
-      }).expression as FunctionCall;
-      if (functionCallpart) {
-        const variable = functionCallpart.args.find(
-          arg => arg instanceof Variable
-        ) as Variable;
-        const columnName = variable.name;
-        const tableName = axisTable.name;
-        const table = manager.dataset.tables.find(
-          table => table.name === tableName
-        );
-        const column = table.columns.find(column => column.name === columnName);
-        const rawColumnName = column.metadata.rawColumnName;
-        if (rawColumnName) {
-          const dataMapping = new Map<string, string>();
-          table.rows.forEach(row => {
-            const value = row[columnName].toString();
-            const rawValue = row[rawColumnName].toString();
-            dataMapping.set(value, rawValue);
-          });
-          return (value: any) => {
-            const rawValue = dataMapping.get(value);
-            return rawValue !== null ? rawValue : value;
-          };
-        }
-      }
-
-      return (value: any) => {
-        return value;
-      };
-    };
-
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
@@ -329,7 +282,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        getDisplayFormat(manager, props.xData.expression, this.object.table)
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.xData.expression,
+          this.object.table
+        )
       );
       if (props.xData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.xData));
@@ -349,7 +306,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        getDisplayFormat(manager, props.yData.expression, this.object.table)
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.yData.expression,
+          this.object.table
+        )
       );
       if (props.yData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.yData));
