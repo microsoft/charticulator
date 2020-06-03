@@ -22,6 +22,7 @@ import {
   Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
+import { ChartStateManager } from "../..";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -86,7 +87,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
 export class PolarPlotSegment extends PlotSegmentClass<
   PolarProperties,
   PolarAttributes
-> {
+  > {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 
