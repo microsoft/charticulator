@@ -82,7 +82,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    const properties = [];
+    const properties: Specification.Template.Property[] = [];
 
     if (
       this.object.mappings.fill &&
@@ -134,6 +134,14 @@ export class RectElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.strokeWidth
+      });
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "strokeStyle"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.strokeStyle
       });
     }
     if (
