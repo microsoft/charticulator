@@ -91,7 +91,7 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
 export class CurvePlotSegment extends PlotSegmentClass<
   CurveProperties,
   CurveAttributes
-> {
+  > {
   public static classID = "plot-segment.curve";
   public static type = "plot-segment";
 
@@ -588,6 +588,32 @@ export class CurvePlotSegment extends PlotSegmentClass<
           expression: this.object.properties.sublayout.order.expression,
           property: { property: "sublayout", field: ["order", "expression"] }
         }
+      });
+    }
+    if (this.object.properties.xData) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "xData",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
+      });
+    }
+    if (this.object.properties.yData) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "yData",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
       });
     }
     return { inferences: r, properties: p };

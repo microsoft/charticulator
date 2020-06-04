@@ -86,7 +86,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
 export class PolarPlotSegment extends PlotSegmentClass<
   PolarProperties,
   PolarAttributes
-> {
+  > {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 
@@ -667,6 +667,32 @@ export class PolarPlotSegment extends PlotSegmentClass<
           expression: this.object.properties.sublayout.order.expression,
           property: { property: "sublayout", field: ["order", "expression"] }
         }
+      });
+    }
+    if (this.object.properties.xData) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "xData",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
+      });
+    }
+    if (this.object.properties.yData) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "yData",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
       });
     }
     return { inferences: r, properties: p };

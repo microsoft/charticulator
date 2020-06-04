@@ -250,6 +250,19 @@ export class LineGuide extends PlotSegmentClass {
       r.push(buildAxisInference(this.object, "axis"));
       p = p.concat(buildAxisProperties(this.object, "axis"));
     }
+    if (this.object.properties.axis) {
+      p.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "axis",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
+      });
+    }
     return { inferences: r, properties: p };
   }
 }

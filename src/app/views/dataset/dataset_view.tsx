@@ -24,12 +24,12 @@ export interface DatasetViewProps {
   store: AppStore;
 }
 
-export interface DatasetViewState { }
+export interface DatasetViewState {}
 
 export class DatasetView extends React.Component<
   DatasetViewProps,
   DatasetViewState
-  > {
+> {
   public componentDidMount() {
     this.props.store.addListener(AppStore.EVENT_DATASET, () =>
       this.forceUpdate()
@@ -70,7 +70,7 @@ export interface ColumnsViewState {
 export class ColumnsView extends React.Component<
   ColumnsViewProps,
   ColumnsViewState
-  > {
+> {
   constructor(props: ColumnsViewProps) {
     super(props);
     this.state = {
@@ -107,6 +107,7 @@ export class ColumnsView extends React.Component<
                   );
                   newTable.displayName = getFileNameWithoutExtension(file.name);
                   newTable.name = table.name;
+                  newTable.type = table.type;
                   const store = this.props.store;
                   const newDataset: Dataset.Dataset = {
                     name: store.dataset.name,
@@ -145,7 +146,11 @@ export class ColumnsView extends React.Component<
                           const store = this.props.store;
 
                           store.dispatcher.dispatch(
-                            new Actions.ConvertColumnDataType(table.name, column, type as DataType)
+                            new Actions.ConvertColumnDataType(
+                              table.name,
+                              column,
+                              type as DataType
+                            )
                           );
                         }}
                       />
@@ -158,14 +163,16 @@ export class ColumnsView extends React.Component<
           />
         </h2>
         <p className="el-details">{table.displayName || table.name}</p>
-        {table.columns.map((c, idx) => (
-          <ColumnView
-            key={`t${idx}`}
-            store={this.props.store}
-            table={this.props.table}
-            column={c}
-          />
-        ))}
+        {table.columns
+          .filter(c => !c.metadata.isRaw)
+          .map((c, idx) => (
+            <ColumnView
+              key={`t${idx}`}
+              store={this.props.store}
+              table={this.props.table}
+              column={c}
+            />
+          ))}
       </div>
     );
   }
@@ -185,7 +192,7 @@ export class ColumnViewState {
 export class ColumnView extends React.Component<
   ColumnViewProps,
   ColumnViewState
-  > {
+> {
   constructor(props: ColumnViewProps) {
     super(props);
     this.state = {
@@ -226,7 +233,7 @@ export class ColumnView extends React.Component<
             type,
             null,
             desc.metadata
-          )
+          );
         })}
       </div>
     );
@@ -252,7 +259,9 @@ export class ColumnView extends React.Component<
   ) {
     let anchor: HTMLDivElement;
     return (
-      <div className="click-handler"
+      <div
+        key={label}
+        className="click-handler"
         ref={e => (anchor = e)}
         onClick={() => {
           if (!onColumnKindChanged) {
@@ -269,7 +278,7 @@ export class ColumnView extends React.Component<
                         name: type.toString(),
                         text: type.toString(),
                         url: R.getSVGIcon(kind2Icon[type])
-                      }
+                      };
                     })}
                     context={context}
                     onClick={(value: string) => {
