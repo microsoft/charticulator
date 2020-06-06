@@ -239,6 +239,7 @@ export class ImportDataView extends React.Component<
                                         .loadCSVFromURL(table.url)
                                         .then(r => {
                                           r.name = table.name;
+                                          r.displayName = table.name;
                                           r.type =
                                             index == 0
                                               ? TableType.Main
