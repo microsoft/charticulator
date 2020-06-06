@@ -23,7 +23,8 @@ import {
 import {
   AxisRenderer,
   buildAxisWidgets,
-  getNumericalInterpolate
+  getNumericalInterpolate,
+  buildAxisProperties
 } from "../plot_segments/axis";
 import {
   DataAxisAttributes,
@@ -371,6 +372,26 @@ export class DataAxisClass extends MarkClass<
       table: this.getGlyphClass().object.table,
       groupBy: null // TODO: fixme
     };
+    let properties: Specification.Template.Property[] = [];
+    if (this.object.properties.axis) {
+      const axis = this.object.properties.axis;
+      properties = properties.concat(
+        buildAxisProperties(this.object as any, "axis")
+      );
+    }
+    if (this.object.properties.axis) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "axis",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
+      });
+    }
     if (props.dataExpressions && props.dataExpressions.length > 0) {
       return {
         inferences: [
@@ -399,7 +420,8 @@ export class DataAxisClass extends MarkClass<
               }
             };
           })
-        ]
+        ],
+        properties
       };
     }
   }
