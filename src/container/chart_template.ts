@@ -29,7 +29,14 @@ export interface TemplateInstance {
 /** Represents a chart template */
 export class ChartTemplate {
   private template: Specification.Template.ChartTemplate;
+  /**Mapping of tables. Chart contains table and column names used in the designer app.
+   * But data set can have column or table names with different names. It needs for expressions
+   */
   private tableAssignment: { [name: string]: string };
+  /**
+   * Mapping of columns. Chart contains table and column names used in the designer app.
+   * But data set can have column or table names with different names It needs for expressions
+   */
   private columnAssignment: { [name: string]: { [name: string]: string } };
 
   /** Create a chart template */
@@ -97,6 +104,7 @@ export class ChartTemplate {
     }
   }
 
+  /** Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas */
   public instantiate(
     dataset: Dataset.Dataset,
     inference: boolean = true
@@ -238,6 +246,9 @@ export class ChartTemplate {
         if (axisDataBinding.tickDataExpression) {
           axisDataBinding.tickDataExpression = null; // TODO: fixme
         }
+        // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
+        // If disableAuto is true, the same scales will be used for data
+        // Example: If disableAuto is true, axis values will be same for all new data sets.
         if (!inference.disableAuto) {
           let vector = getExpressionVector(
             expression,
