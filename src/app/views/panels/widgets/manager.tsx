@@ -340,7 +340,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <InputExpression
         defaultValue={this.getPropertyValue(property) as string}
         validate={value => {
-          if (value.trim() !== "") {
+          if (value && value.trim() !== "") {
             return this.store.verifyUserExpressionWithTable(
               value,
               options.table
