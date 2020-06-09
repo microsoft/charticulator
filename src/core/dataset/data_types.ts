@@ -34,7 +34,12 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     }
   },
   number: {
-    test: (x: string) => !isNaN(+x.replace(/\,/g, "")),
+    test: (x: string) => {
+      if (x === "null") {
+        return true;
+      }
+      return !isNaN(+x.replace(/\,/g, ""));
+    },
     convert: (x: string) => {
       const value = +x.replace(/\,/g, "");
       return isNaN(value) ? null : value;

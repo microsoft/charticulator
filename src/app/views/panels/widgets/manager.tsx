@@ -339,12 +339,20 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputExpression
         defaultValue={this.getPropertyValue(property) as string}
-        validate={value =>
-          this.store.verifyUserExpressionWithTable(value, options.table)
-        }
+        validate={value => {
+          if (value && value.trim() !== "") {
+            return this.store.verifyUserExpressionWithTable(
+              value,
+              options.table
+            );
+          }
+          return {
+            pass: true
+          };
+        }}
         placeholder="(none)"
         onEnter={value => {
-          if (value.trim() == "") {
+          if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
