@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { scaleUtc, scaleLinear, scaleLog } from "d3-scale";
+import { getSortFunctionByData } from ".";
 
 export namespace Scale {
   /** Base scale class */
@@ -141,7 +142,7 @@ export namespace Scale {
       switch (order) {
         case "alphabetically":
           {
-            domain.sort((a, b) => (a < b ? -1 : 1));
+            domain.sort(getSortFunctionByData(domain));
           }
           break;
         case "occurrence":
