@@ -17,7 +17,6 @@ import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
-import { string } from "../core/expression";
 import { TableType } from "../core/dataset";
 
 function makeDefaultDataset(): Dataset.Dataset {
@@ -108,7 +107,16 @@ export class Application {
     workerScriptURL: string
   ) {
     await initialize(config);
-    this.worker = new CharticulatorWorker(workerScriptURL);
+
+    const responce = await fetch(`${workerScriptURL}`);
+    if (!responce.ok) {
+      throw Error(`Loading worker script from ${workerScriptURL} failed`);
+    }
+    const script = await responce.text();
+    const blob = new Blob([script], { type: "application/javascript" });
+    const workerScript = URL.createObjectURL(blob);
+
+    this.worker = new CharticulatorWorker(workerScript);
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -147,7 +155,7 @@ export class Application {
 
   public setupNestedEditor(id: string) {
     window.addEventListener("message", (e: MessageEvent) => {
-      if (e.origin != document.location.origin || e.data.id != id) {
+      if (e.data.id != id) {
         return;
       }
       const info: {
@@ -174,23 +182,44 @@ export class Application {
         })
       );
       this.appStore.setupNestedEditor(newSpecification => {
-        window.opener.postMessage(
-          {
-            id,
-            type: "save",
-            specification: newSpecification
-          },
-          document.location.origin
-        );
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              id,
+              type: "save",
+              specification: newSpecification
+            },
+            document.location.origin
+          );
+        } else {
+          window.parent.postMessage(
+            {
+              id,
+              type: "save",
+              specification: newSpecification
+            },
+            "*"
+          );
+        }
       });
     });
-    window.opener.postMessage(
-      {
-        id,
-        type: "initialized"
-      },
-      document.location.origin
-    );
+    if (window.opener) {
+      window.opener.postMessage(
+        {
+          id,
+          type: "initialized"
+        },
+        document.location.origin
+      );
+    } else {
+      window.parent.postMessage(
+        {
+          id,
+          type: "initialized"
+        },
+        "*"
+      );
+    }
   }
 
   public async processHashString() {
