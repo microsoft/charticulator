@@ -18,6 +18,7 @@
     "public_server": "node build.js public_server",
     "watch": "node build.js watch",
     "ssl_watch": "node build.js ssl_watch",
+    "start": "node build.js dev watch",
     "ssl_start": "node build.js dev ssl_watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
