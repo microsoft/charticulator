@@ -35,6 +35,7 @@ export interface DataFieldSelectorProps {
 export interface DataFieldSelectorValue {
   table: string;
   expression: string;
+  rawExpression: string;
   // lambdaExpression: string;
   /** Only available if the expression refers to exactly a column */
   columnName?: string;
@@ -160,6 +161,9 @@ export class DataFieldSelector extends React.Component<
         table: table.name,
         columnName: c.name,
         expression: Expression.variable(c.name).toString(),
+        rawExpression: Expression.variable(
+          c.metadata.rawColumnName || c.name
+        ).toString(),
         type: c.type,
         displayName: c.name,
         metadata: c.metadata,
@@ -176,6 +180,10 @@ export class DataFieldSelector extends React.Component<
               item.function,
               Expression.parse(r.expression)
             ).toString(),
+            rawExpression: Expression.functionCall(
+              item.function,
+              Expression.parse(r.rawExpression)
+            ).toString(),
             type: item.type,
             metadata: item.metadata,
             displayName: item.name,
@@ -190,7 +198,9 @@ export class DataFieldSelector extends React.Component<
       return r;
     });
     // Make sure we only show good ones
-    candidates = candidates.filter(x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw);
+    candidates = candidates.filter(
+      x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw
+    );
     return candidates;
   }
 
@@ -223,6 +233,7 @@ export class DataFieldSelector extends React.Component<
         const r = {
           table: item.table,
           expression: item.expression,
+          rawExpression: item.rawExpression,
           columnName: item.columnName,
           type: item.type,
           metadata: item.metadata

@@ -717,7 +717,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                               this.store.getTable(value.table),
                               value.expression,
                               value.type,
-                              value.metadata
+                              value.metadata,
+                              value.rawExpression
                             );
                             new Actions.BindDataToAxis(
                               this.objectClass
