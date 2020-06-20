@@ -243,6 +243,10 @@ export class DataFieldSelector extends React.Component<
             aggregation,
             Expression.parse(item.expression)
           ).toString();
+          r.rawExpression = Expression.functionCall(
+            aggregation,
+            Expression.parse(item.rawExpression)
+          ).toString();
         }
         this.props.onChange(r);
       }

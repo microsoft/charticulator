@@ -232,7 +232,9 @@ export class ColumnView extends React.Component<
             lambdaExpr,
             type,
             null,
-            desc.metadata
+            desc.metadata,
+            undefined,
+            expr
           );
         })}
       </div>

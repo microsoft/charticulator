@@ -1145,7 +1145,7 @@ export class AppStore extends BaseStore {
       case Specification.DataKind.Ordinal:
         {
           dataBinding.type = "categorical";
-          dataBinding.valueType = Specification.DataType.String;
+          dataBinding.valueType = dataExpression.valueType;
 
           if (dataExpression.metadata.order) {
             dataBinding.categories = dataExpression.metadata.order.slice();
