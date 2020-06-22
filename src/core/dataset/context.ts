@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 
 /**
- * Context provideres for expression.
+ * Context provideres for expressions ({@link "core/expression/index"})
+ *
  * @packageDocumentation
  * @preferred
  */

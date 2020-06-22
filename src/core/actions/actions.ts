@@ -1,6 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+/**
+ * Core part has two actions {@link SelectMark} and {@link ClearSelection}.
+ *
+ * {@link SelectMark} dispatches on selection
+ *
+ * {@link ClearSelection} dispatches on reset selection
+ *
+ * {@link Action} is base class for actions
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 import { Dispatcher } from "../common";
 import { Glyph, Element, PlotSegment } from "../specification";
 import * as Specification from "../specification";

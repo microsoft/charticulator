@@ -1,5 +1,5 @@
 /**
- * Contains few actions used by core part of charticulator. See {@link "core/actions/action"} for details
+ * Contains few actions used by core part of charticulator. See {@link "core/actions/actions"} for details
  * @packageDocumentation
  * @preferred
  */

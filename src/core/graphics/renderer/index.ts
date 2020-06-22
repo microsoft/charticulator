@@ -47,8 +47,6 @@ export function facetRows(
  * The class is responsible for rendering the visual part of the chart (coordinates, elements such as glyph marks e.t.c).
  * The module calls methods {@link MarkClass.getGraphics} implemented in each marks (rect, image, text, symbol e.t.c)
  *
- * @packageDocumentation
- * @preferred
  */
 export class ChartRenderer {
   private manager: Prototypes.ChartStateManager;
