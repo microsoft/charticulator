@@ -125,33 +125,40 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   }
 
   private getDateFormat(property: Prototypes.Controls.Property) {
-    const prop = this.objectClass.object.properties[property.property] as any;
-    const expressionString: string = prop.expression;
-    const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
-    // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-    const functionCallpart = expression.parts.find(part => {
-      if (part.expression instanceof FunctionCall) {
-        return part.expression.args.find(arg => arg instanceof Variable) as any;
+    try {
+      const prop = this.objectClass.object.properties[property.property] as any;
+      const expressionString: string = prop.expression;
+      const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
+      // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
+      const functionCallpart = expression.parts.find(part => {
+        if (part.expression instanceof FunctionCall) {
+          return part.expression.args.find(
+            arg => arg instanceof Variable
+          ) as any;
+        }
+      }).expression as FunctionCall;
+      if (functionCallpart) {
+        const variable = functionCallpart.args.find(
+          arg => arg instanceof Variable
+        ) as Variable;
+        const columnName = variable.name;
+        const tableName = (this.objectClass.object as any).table;
+        const table = this.store.dataset.tables.find(
+          table => table.name === tableName
+        );
+        const column = table.columns.find(column => column.name === columnName);
+        if (column.metadata.format) {
+          return column.metadata.format;
+        }
+        const rawColumnName = column.metadata.rawColumnName;
+        if (rawColumnName) {
+          const value = table.rows[0][rawColumnName].toString();
+          return getDateFormat(value);
+        }
       }
-    }).expression as FunctionCall;
-    if (functionCallpart) {
-      const variable = functionCallpart.args.find(
-        arg => arg instanceof Variable
-      ) as Variable;
-      const columnName = variable.name;
-      const tableName = (this.objectClass.object as any).table;
-      const table = this.store.dataset.tables.find(
-        table => table.name === tableName
-      );
-      const column = table.columns.find(column => column.name === columnName);
-      if (column.metadata.format) {
-        return column.metadata.format;
-      }
-      const rawColumnName = column.metadata.rawColumnName;
-      if (rawColumnName) {
-        const value = table.rows[0][rawColumnName].toString();
-        return getDateFormat(value);
-      }
+    } catch (ex) {
+      console.warn(ex);
+      return null;
     }
 
     return null;
