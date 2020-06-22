@@ -23,7 +23,8 @@ import {
 import {
   AxisRenderer,
   buildAxisWidgets,
-  getNumericalInterpolate
+  getNumericalInterpolate,
+  buildAxisProperties
 } from "../plot_segments/axis";
 import {
   DataAxisAttributes,
@@ -36,7 +37,7 @@ export { DataAxisAttributes, DataAxisProperties };
 export class DataAxisClass extends MarkClass<
   DataAxisProperties,
   DataAxisAttributes
-> {
+  > {
   public static classID = "mark.data-axis";
   public static type = "mark";
 
@@ -202,7 +203,7 @@ export class DataAxisClass extends MarkClass<
           0,
           Math.sqrt(
             (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
-              (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
+            (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
           ),
           false,
           false
@@ -211,7 +212,7 @@ export class DataAxisClass extends MarkClass<
           0,
           0,
           (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) *
-            180,
+          180,
           -1
         );
         g.transform = cs.getLocalTransform(
@@ -229,7 +230,7 @@ export class DataAxisClass extends MarkClass<
         0,
         Math.sqrt(
           (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
-            (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
+          (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
         ),
         false,
         false
@@ -371,6 +372,24 @@ export class DataAxisClass extends MarkClass<
       table: this.getGlyphClass().object.table,
       groupBy: null // TODO: fixme
     };
+    let properties: Specification.Template.Property[] = [];
+    if (this.object.properties.axis) {
+      const axis = this.object.properties.axis;
+      properties = properties.concat(
+        buildAxisProperties(this.object as any, "axis")
+      );
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: {
+            property: "axis",
+            field: "categories"
+          }
+        },
+        type: Specification.AttributeType.Enum,
+        default: "ascending"
+      });
+    }
     if (props.dataExpressions && props.dataExpressions.length > 0) {
       return {
         inferences: [
@@ -399,7 +418,8 @@ export class DataAxisClass extends MarkClass<
               }
             };
           })
-        ]
+        ],
+        properties
       };
     }
   }

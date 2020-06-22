@@ -718,42 +718,61 @@ export abstract class LinksClass extends ChartElementClass {
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+
+    if (
+      this.object.mappings.color &&
+      this.object.mappings.color.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "color"
+        },
+        type: Specification.AttributeType.Color,
+        default:
+          this.object.mappings.color &&
+          rgbToHex((this.object.mappings.color as Specification.ValueMapping)
+            .value as Color) // TODO fix it
+      });
+    }
+
+    if (
+      this.object.mappings.strokeWidth &&
+      this.object.mappings.strokeWidth.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "strokeWidth"
+        },
+        type: Specification.AttributeType.Number,
+        default:
+          this.object.mappings.strokeWidth &&
+          ((this.object.mappings.strokeWidth as Specification.ValueMapping)
+            .value as number) // TODO fix it
+      });
+    }
+
+    if (
+      this.object.mappings.opacity &&
+      this.object.mappings.opacity.type === "value"
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "opacity"
+        },
+        type: Specification.AttributeType.Number,
+        default:
+          this.object.mappings.opacity &&
+          ((this.object.mappings.opacity as Specification.ValueMapping)
+            .value as number) // TODO fix it
+      });
+    }
+
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "color"
-          },
-          type: Specification.AttributeType.Color,
-          default:
-            this.object.mappings.color &&
-            rgbToHex((this.object.mappings.color as Specification.ValueMapping)
-              .value as Color) // TODO fix it
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "strokeWidth"
-          },
-          type: Specification.AttributeType.Number,
-          default:
-            this.object.mappings.strokeWidth &&
-            ((this.object.mappings.strokeWidth as Specification.ValueMapping)
-              .value as number) // TODO fix it
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: "opacity"
-          },
-          type: Specification.AttributeType.Number,
-          default:
-            this.object.mappings.opacity &&
-            ((this.object.mappings.opacity as Specification.ValueMapping)
-              .value as number) // TODO fix it
-        }
-      ]
+      properties
     };
   }
 }

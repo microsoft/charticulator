@@ -50,7 +50,7 @@ export class ChartTemplateBuilder {
     public readonly chart: Specification.Chart,
     public readonly dataset: Dataset.Dataset,
     public readonly manager: Prototypes.ChartStateManager
-  ) {}
+  ) { }
 
   public reset() {
     this.template = {
@@ -120,6 +120,16 @@ export class ChartTemplateBuilder {
           pn += "." + property.field.toString();
         } else {
           pn += "." + property.field.join(".");
+        }
+      }
+      if (property.subfield) {
+        if (
+          typeof property.subfield == "string" ||
+          typeof property.subfield == "number"
+        ) {
+          pn += "." + property.subfield.toString();
+        } else {
+          pn += "." + property.subfield.join(".");
         }
       }
     }

@@ -4,6 +4,8 @@ import { Point, getById, setField, getField } from "../common";
 import * as Graphics from "../graphics";
 import * as Specification from "../specification";
 import * as Controls from "./controls";
+import { isType } from "./object";
+import { ObjectProperties } from "../specification";
 export * from "./chart_element";
 export * from "./object";
 
@@ -448,6 +450,12 @@ export function setProperty(
 ) {
   if (typeof property == "string") {
     object.properties[property] = value;
+  } else if (property.subfield) {
+    setField(
+      (object.properties[property.property] as any)[property.field as string],
+      property.subfield,
+      value
+    );
   } else {
     setField(object.properties[property.property], property.field, value);
   }
@@ -460,6 +468,29 @@ export function getProperty(
   if (typeof property == "string") {
     return object.properties[property];
   } else {
-    return getField(object.properties[property.property], property.field);
+    if (property.subfield) {
+      return getField(
+        (object.properties[property.property] as any)[property.field as string],
+        property.subfield
+      );
+    } else {
+      return getField(object.properties[property.property], property.field);
+    }
+  }
+}
+
+export type StrokeStyle = "solid" | "dashed" | "dotted";
+
+export function strokeStyleToDashArray(strokeStyle: StrokeStyle) {
+  switch (strokeStyle) {
+    case "dashed": {
+      return "8";
+    }
+    case "dotted": {
+      return "1 10";
+    }
+    default: {
+      return "";
+    }
   }
 }

@@ -3,7 +3,15 @@
 import { dsvFormat, csvParseRows, tsvParseRows } from "d3-dsv";
 
 import { inferAndConvertColumn } from "./data_types";
-import { Column, Row, Table } from "./dataset";
+import {
+  Row,
+  Table,
+  rawColumnPostFix,
+  DataValue,
+  DataType,
+  ColumnMetadata
+} from "./dataset";
+import { deepClone } from "../common";
 
 export function parseHints(hints: string) {
   const items = hints.match(/ *\*(.*)/);
@@ -80,15 +88,43 @@ export function parseDataset(
       columnHints = header.map(x => ({}));
     }
 
-    const columnValues = header.map((name, index) => {
+    let columnValues = header.map((name, index) => {
       const values = data.map(row => row[index]);
       return inferAndConvertColumn(values);
     });
+
+    const additionalColumns: Array<{
+      values: DataValue[];
+      rawValues?: string[] | DataValue[];
+      type: DataType;
+      metadata: ColumnMetadata;
+    }> = [];
+    columnValues.forEach((column, index) => {
+      if (column.rawValues) {
+        const rawColumn = deepClone(column);
+        rawColumn.metadata.isRaw = true;
+        rawColumn.values = rawColumn.rawValues;
+        delete rawColumn.rawValues;
+        const rawColumnName = header[index] + rawColumnPostFix;
+        column.metadata.rawColumnName = rawColumnName;
+        delete column.rawValues;
+        header.push(rawColumnName);
+        additionalColumns.push(rawColumn);
+      }
+    });
+    columnValues = columnValues.concat(additionalColumns);
 
     const outRows = data.map((row, rindex) => {
       const out: Row = { _id: rindex.toString() };
       columnValues.forEach((column, cindex) => {
         out[header[cindex]] = columnValues[cindex].values[rindex];
+        if (columnValues[cindex].rawValues) {
+          out[header[cindex] + rawColumnPostFix] =
+            columnValues[cindex].rawValues[rindex];
+          if (!header.find(h => h === header[cindex] + rawColumnPostFix)) {
+            header.push(header[cindex] + rawColumnPostFix);
+          }
+        }
       });
       return out;
     });

@@ -14,6 +14,7 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
+  strokeStyleToDashArray,
   TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
@@ -29,7 +30,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-> {
+  > {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -44,6 +45,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
+    strokeStyle: "solid",
     shape: "rectangle"
   };
 
@@ -80,7 +82,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    const properties = [];
+    const properties: Specification.Template.Property[] = [];
 
     if (
       this.object.mappings.fill &&
@@ -132,6 +134,14 @@ export class RectElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.strokeWidth
+      });
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "strokeStyle"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.strokeStyle
       });
     }
     if (
@@ -192,6 +202,21 @@ export class RectElementClass extends EmphasizableMarkClass<
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
+      );
+      widgets.push(
+        manager.row(
+          "Line Style",
+          manager.inputSelect(
+            { property: "strokeStyle" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+              labels: ["Solid", "Dashed", "Dotted"],
+              options: ["solid", "dashed", "dotted"]
+            }
+          )
+        )
       );
     }
     widgets = widgets.concat([
@@ -267,6 +292,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)
@@ -297,6 +325,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           strokeColor: attrs.stroke,
           strokeWidth: attrs.strokeWidth,
           strokeLinejoin: "miter",
+          strokeDasharray: strokeStyleToDashArray(
+            this.object.properties.strokeStyle
+          ),
           fillColor: attrs.fill,
           opacity: attrs.opacity,
           ...this.generateEmphasisStyle(empasized)
@@ -314,6 +345,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
+            strokeDasharray: strokeStyleToDashArray(
+              this.object.properties.strokeStyle
+            ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
             ...this.generateEmphasisStyle(empasized)

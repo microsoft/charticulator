@@ -736,19 +736,20 @@ export function buildAxisWidgets(
               m.row(
                 "Range",
                 m.vertical(
-                  m.horizontal([0, 1],
+                  m.horizontal(
+                    [0, 1],
                     m.label("start"),
                     m.inputDate({ property: axisProperty, field: "domainMin" })
                   ),
-                  m.horizontal([0, 1],
+                  m.horizontal(
+                    [0, 1],
                     m.label("end"),
                     m.inputDate({ property: axisProperty, field: "domainMax" })
                   )
                 )
               )
             );
-          }
-          else {
+          } else {
             widgets.push(
               m.row(
                 "Range",
@@ -890,43 +891,66 @@ export function buildAxisProperties(
 ): Specification.Template.Property[] {
   const axisObject = plotSegment.properties[property] as AttributeMap;
   const style: any = axisObject.style;
+  if (!style) {
+    return [];
+  }
   return [
     {
-      objectID: axisObject._id as string,
+      objectID: plotSegment._id as string,
       target: {
-        attribute: "tickSize"
+        property: {
+          property,
+          field: "style",
+          subfield: "tickSize"
+        }
       },
       type: Specification.AttributeType.Number,
       default: style.tickSize
     },
     {
-      objectID: axisObject._id as string,
+      objectID: plotSegment._id as string,
       target: {
-        attribute: "fontSize"
+        property: {
+          property,
+          field: "style",
+          subfield: "fontSize"
+        }
       },
       type: Specification.AttributeType.Number,
       default: style.fontSize
     },
     {
-      objectID: axisObject._id as string,
+      objectID: plotSegment._id as string,
       target: {
-        attribute: "fontFamily"
+        property: {
+          property,
+          field: "style",
+          subfield: "fontFamily"
+        }
       },
       type: Specification.AttributeType.FontFamily,
       default: style.fontFamily
     },
     {
-      objectID: axisObject._id as string,
+      objectID: plotSegment._id as string,
       target: {
-        attribute: "lineColor"
+        property: {
+          property,
+          field: "style",
+          subfield: "lineColor"
+        }
       },
       type: Specification.AttributeType.Color,
       default: rgbToHex(style.lineColor)
     },
     {
-      objectID: axisObject._id as string,
+      objectID: plotSegment._id as string,
       target: {
-        attribute: "tickColor"
+        property: {
+          property,
+          field: "style",
+          subfield: "tickColor"
+        }
       },
       type: Specification.AttributeType.Color,
       default: rgbToHex(style.tickColor)

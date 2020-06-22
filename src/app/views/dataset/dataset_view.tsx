@@ -118,6 +118,7 @@ export class ColumnsView extends React.Component<
                   );
                   newTable.displayName = getFileNameWithoutExtension(file.name);
                   newTable.name = table.name;
+                  newTable.type = table.type;
                   const store = this.props.store;
                   const newDataset: Dataset.Dataset = {
                     name: store.dataset.name,
@@ -173,14 +174,16 @@ export class ColumnsView extends React.Component<
           />
         </h2>
         <p className="el-details">{table.displayName || table.name}</p>
-        {table.columns.map((c, idx) => (
-          <ColumnView
-            key={`t${idx}`}
-            store={this.props.store}
-            table={this.props.table}
-            column={c}
-          />
-        ))}
+        {table.columns
+          .filter(c => !c.metadata.isRaw)
+          .map((c, idx) => (
+            <ColumnView
+              key={`t${idx}`}
+              store={this.props.store}
+              table={this.props.table}
+              column={c}
+            />
+          ))}
       </div>
     );
   }
@@ -268,6 +271,7 @@ export class ColumnView extends React.Component<
     let anchor: HTMLDivElement;
     return (
       <div
+        key={label}
         className="click-handler"
         ref={e => (anchor = e)}
         onClick={() => {

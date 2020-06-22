@@ -10,7 +10,8 @@ import {
   SnappingGuides,
   BoundingBox,
   Controls,
-  TemplateParameters
+  TemplateParameters,
+  LinkAnchor
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
@@ -29,7 +30,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-> {
+  > {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -74,6 +75,10 @@ export class GuideClass extends ChartElementClass<
       [1, value],
       [-1, value2]
     ]);
+  }
+
+  public getLinkAnchors(): LinkAnchor.Description[] {
+    return [];
   }
 
   /** Get handles given current state */
@@ -175,7 +180,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-> {
+  > {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 

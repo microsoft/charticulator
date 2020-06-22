@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { prettyNumber, ZoomInfo } from "../../core";
+import { prettyNumber, ZoomInfo, Dataset } from "../../core";
 import { DataType, DataKind } from "../../core/specification";
 import { convertColumn } from "../../core/dataset/data_types";
 
@@ -167,8 +167,10 @@ export function stringToDataURL(mimeType: string, content: string) {
   return "data:" + mimeType + ";base64," + b64EncodeUnicode(content);
 }
 
-
-function checkConvertion(type: DataType, dataSample: Array<string | boolean | Date | number>) {
+function checkConvertion(
+  type: DataType,
+  dataSample: Array<string | boolean | Date | number>
+) {
   let convertable = true;
   if (type === DataType.String) {
     return convertable;
@@ -177,7 +179,15 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
   switch (type) {
     case DataType.Boolean:
       for (const data of dataSample) {
-        if (data && (data.toString() != "0" && data.toString() != "true" && data.toString() != "1" && data.toString() != "false")) {
+        if (
+          data &&
+          (data.toString().toLowerCase() != "0" &&
+            data.toString().toLowerCase() != "true" &&
+            data.toString().toLowerCase() != "1" &&
+            data.toString().toLowerCase() != "false" &&
+            data.toString().toLowerCase() != "yes" &&
+            data.toString().toLowerCase() != "no")
+        ) {
           convertable = false;
           break;
         }
@@ -186,7 +196,11 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
     case DataType.Date:
       convertable = true;
       for (const data of dataSample) {
-        if (data && Number.isNaN(Date.parse(data.toString())) && Number.isNaN(new Date(+data.toString()).getDate())) {
+        if (
+          data &&
+          Number.isNaN(Date.parse(data.toString())) &&
+          Number.isNaN(new Date(+data.toString()).getDate())
+        ) {
           convertable = false;
           break;
         }
@@ -206,63 +220,47 @@ function checkConvertion(type: DataType, dataSample: Array<string | boolean | Da
   }
 }
 
-export function getConvertableDataKind(type: DataType, dataSample?: Array<string | boolean | Date | number>): DataKind[] {
+export function getConvertableDataKind(
+  type: DataType,
+  dataSample?: Array<string | boolean | Date | number>
+): DataKind[] {
   let types;
   switch (type) {
     case DataType.Boolean:
-      types = [
-        DataKind.Ordinal,
-        DataKind.Categorical,
-      ];
+      types = [DataKind.Ordinal, DataKind.Categorical];
       break;
     case DataType.Date:
-      types = [
-        DataKind.Categorical,
-        DataKind.Ordinal,
-        DataKind.Temporal,
-      ];
+      types = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
       break;
     case DataType.String:
-      types = [
-        DataKind.Categorical,
-        DataKind.Ordinal
-      ];
+      types = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Number:
-      types = [
-        DataKind.Categorical,
-        DataKind.Numerical,
-        DataKind.Ordinal,
-      ];
+      types = [DataKind.Categorical, DataKind.Numerical, DataKind.Ordinal];
       break;
   }
 
   return types;
 }
 
-export function getConvertableTypes(type: DataType, dataSample?: Array<string | boolean | Date | number>): DataType[] {
+export function getConvertableTypes(
+  type: DataType,
+  dataSample?: Array<string | boolean | Date | number>
+): DataType[] {
   let types;
   switch (type) {
     case DataType.Boolean:
-      types = [
-        DataType.Number,
-        DataType.String,
-        DataType.Boolean
-      ];
+      types = [DataType.Number, DataType.String, DataType.Boolean];
       break;
     case DataType.Date:
-      types = [
-        DataType.Number,
-        DataType.String,
-        DataType.Date
-      ];
+      types = [DataType.Number, DataType.String, DataType.Date];
       break;
     case DataType.String:
       types = [
         DataType.Number,
         DataType.String,
         DataType.Boolean,
-        DataType.Date,
+        DataType.Date
       ];
       break;
     case DataType.Number:
@@ -270,7 +268,7 @@ export function getConvertableTypes(type: DataType, dataSample?: Array<string | 
         DataType.Number,
         DataType.String,
         DataType.Boolean,
-        DataType.Date,
+        DataType.Date
       ];
       break;
   }
@@ -280,7 +278,58 @@ export function getConvertableTypes(type: DataType, dataSample?: Array<string | 
       return true;
     }
     if (dataSample) {
-      return checkConvertion(t, dataSample.map(d => d.toString()));
+      return checkConvertion(t, dataSample.map(d => d && d.toString()));
     }
   });
+}
+
+/** Fill table with values converted to @param type from origin table */
+export function convertColumns(
+  table: Dataset.Table,
+  column: Dataset.Column,
+  originTable: Dataset.Table,
+  type: Dataset.DataType
+) {
+  const applyConvertedValues = (
+    table: Dataset.Table,
+    columnName: string,
+    convertedValues: Array<string | number | boolean>
+  ) => {
+    table.rows.forEach((value: any, index: number) => {
+      value[columnName] = convertedValues[index];
+    });
+  };
+
+  const originColumn = originTable.columns.find(
+    col => col.name === column.name
+  );
+  let columnValues = originTable.rows.map(
+    row => row[column.metadata.rawColumnName] || row[column.name]
+  );
+  const typeBeforeChange = column.type;
+  column.type = type;
+
+  columnValues = originTable.rows.map(row => {
+    const value = row[column.metadata.rawColumnName] || row[column.name];
+    return value && value.toString();
+  });
+
+  try {
+    const convertedValues = convertColumn(type, columnValues as any);
+    if (convertedValues.filter(val => val).length === 0) {
+      throw Error(
+        `Converting column type from ${originColumn.type} to ${type} failed`
+      );
+    }
+    applyConvertedValues(table, column.name, convertedValues);
+    return null;
+  } catch (ex) {
+    const messgae = `Converting column type from ${
+      originColumn.type
+    } to ${type} failed`;
+    console.warn(messgae);
+    // rollback type
+    column.type = typeBeforeChange;
+    return messgae;
+  }
 }

@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom";
 
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
+import { timeFormat } from "d3-time-format";
 
 import {
   Color,
@@ -55,6 +56,13 @@ import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
 import { InputDate } from "./controls/input_date";
+import {
+  TextExpression,
+  FunctionCall,
+  Variable
+} from "../../../../core/expression";
+import { Func } from "mocha";
+import { getDateFormat } from "../../../../core/dataset/datetime";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -116,6 +124,39 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return value;
   }
 
+  private getDateFormat(property: Prototypes.Controls.Property) {
+    const prop = this.objectClass.object.properties[property.property] as any;
+    const expressionString: string = prop.expression;
+    const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
+    // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
+    const functionCallpart = expression.parts.find(part => {
+      if (part.expression instanceof FunctionCall) {
+        return part.expression.args.find(arg => arg instanceof Variable) as any;
+      }
+    }).expression as FunctionCall;
+    if (functionCallpart) {
+      const variable = functionCallpart.args.find(
+        arg => arg instanceof Variable
+      ) as Variable;
+      const columnName = variable.name;
+      const tableName = (this.objectClass.object as any).table;
+      const table = this.store.dataset.tables.find(
+        table => table.name === tableName
+      );
+      const column = table.columns.find(column => column.name === columnName);
+      if (column.metadata.format) {
+        return column.metadata.format;
+      }
+      const rawColumnName = column.metadata.rawColumnName;
+      if (rawColumnName) {
+        const value = table.rows[0][rawColumnName].toString();
+        return getDateFormat(value);
+      }
+    }
+
+    return null;
+  }
+
   public emitSetProperty(
     property: Prototypes.Controls.Property,
     value: Specification.AttributeValue
@@ -159,10 +200,12 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
     const value = this.getPropertyValue(property) as number;
+    const format = this.getDateFormat(property) as string;
     return (
       <InputDate
         {...options}
         defaultValue={value}
+        dateDisplayFormat={format}
         onEnter={value => {
           if (value == null) {
             this.emitSetProperty(property, null);
@@ -296,12 +339,20 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputExpression
         defaultValue={this.getPropertyValue(property) as string}
-        validate={value =>
-          this.store.verifyUserExpressionWithTable(value, options.table)
-        }
+        validate={value => {
+          if (value && value.trim() !== "") {
+            return this.store.verifyUserExpressionWithTable(
+              value,
+              options.table
+            );
+          }
+          return {
+            pass: true
+          };
+        }}
         placeholder="(none)"
         onEnter={value => {
-          if (value.trim() == "") {
+          if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);

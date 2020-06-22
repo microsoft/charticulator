@@ -5,17 +5,21 @@ import * as FileSaver from "file-saver";
 import { saveAs } from "file-saver";
 import { Prototypes, deepClone } from "../../../core";
 import { Actions } from "../../actions";
-import { renderDataURLToPNG, stringToDataURL } from "../../utils";
+import {
+  renderDataURLToPNG,
+  stringToDataURL,
+  convertColumns
+} from "../../utils";
 import { AppStore } from "../app_store";
 import { Migrator } from "../migrator";
 import { ActionHandlerRegistry } from "./registry";
 import { getConfig } from "../../config";
 import { convertColumn } from "../../../core/dataset/data_types";
-import { DataType, Table } from "../../../core/dataset";
+import { DataType, Table, Column } from "../../../core/dataset";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
-export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.Export, function (action) {
+export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.Export, function(action) {
     (async () => {
       // Export as vector graphics
       if (action.type == "svg") {
@@ -206,7 +210,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
   });
 
-  REG.add(Actions.Load, function (action) {
+  REG.add(Actions.Load, function(action) {
     this.historyManager.clear();
     const state = new Migrator().migrate(
       action.projectData,
@@ -215,7 +219,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.loadState(state);
   });
 
-  REG.add(Actions.ImportDataset, function (action) {
+  REG.add(Actions.ImportDataset, function(action) {
     this.currentChartID = null;
     this.dataset = action.dataset;
     this.originDataset = deepClone(this.dataset);
@@ -225,7 +229,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.ImportChartAndDataset, function (action) {
+  REG.add(Actions.ImportChartAndDataset, function(action) {
     this.historyManager.clear();
 
     this.currentChartID = null;
@@ -244,7 +248,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.UpdatePlotSegments, function (action) {
+  REG.add(Actions.UpdatePlotSegments, function(action) {
     this.saveHistory();
 
     this.updatePlotSegments();
@@ -253,7 +257,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ReplaceDataset, function (action) {
+  REG.add(Actions.ReplaceDataset, function(action) {
     this.saveHistory();
 
     this.currentChartID = null;
@@ -272,73 +276,42 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ConvertColumnDataType, function (action) {
+  REG.add(Actions.ConvertColumnDataType, function(action) {
     this.saveHistory();
 
-    const table = this.dataset.tables.find(table => table.name === action.tableName);
+    const table = this.dataset.tables.find(
+      table => table.name === action.tableName
+    );
     if (!table) {
       return;
     }
 
     const column = table.columns.find(column => column.name === action.column);
-
     if (!column) {
       return;
     }
 
-    const applyConvertedValues = (table: Table, columnName: string, convertedValues: Array<(string | number | boolean)>) => {
-      table.rows.forEach((value: any, index: number) => {
-        value[columnName] = convertedValues[index];
-      });
+    const originTable = this.originDataset.tables.find(
+      table => table.name === action.tableName
+    );
+    let originColumn = originTable.columns.find(
+      column => column.name === action.column
+    );
+    if (originColumn.metadata.rawColumnName) {
+      originColumn = originTable.columns.find(
+        column => column.name === originColumn.metadata.rawColumnName
+      );
     }
 
-    const finalizeAction = () => {
-      this.updatePlotSegments();
-      this.solveConstraintsAndUpdateGraphics();
-      this.emit(AppStore.EVENT_DATASET);
-      this.emit(AppStore.EVENT_SELECTION);
-    }
+    convertColumns(table, column, originTable, action.type);
 
-    const originTable = this.originDataset.tables.find(table => table.name === action.tableName);
-    const originColumn = originTable.columns.find(column => column.name === action.column);
-    let columnValues = originTable.rows.map(row => row[column.name]);
-    const typeBeforeChange = column.type;
-    column.type = action.type;
-
-    // if target type matches with origin column, replace data from origin dataset
-    if (originColumn.type === action.type) {
-      columnValues = originTable.rows.map(row => row[column.name]);
-      applyConvertedValues(table, column.name, columnValues);
-      finalizeAction();
-
-      return;
-    } else
-      // if origin data type converts to string, convert all data to localte string
-      if (originColumn.type === DataType.Date && action.type === DataType.String) {
-        const convertedValues = columnValues.map(value => new Date(value as number).toLocaleString());
-        applyConvertedValues(table, column.name, convertedValues);
-        finalizeAction();
-        return;
-      } else {
-        // convertColumn works with string input only
-        columnValues = columnValues.map(value => value && value.toString() || "");
-      }
-
-    try {
-      const convertedValues = convertColumn(action.type, columnValues as any);
-      applyConvertedValues(table, column.name, convertedValues);
-      finalizeAction();
-      return;
-    }
-    catch (ex) {
-      console.warn(`Converting column type from ${originColumn.type} to ${action.type} failed`);
-      // rollback type
-      column.type = typeBeforeChange;
-      return;
-    }
+    this.updatePlotSegments();
+    this.solveConstraintsAndUpdateGraphics();
+    this.emit(AppStore.EVENT_DATASET);
+    this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.Undo, function (action) {
+  REG.add(Actions.Undo, function(action) {
     const state = this.historyManager.undo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -347,7 +320,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Redo, function (action) {
+  REG.add(Actions.Redo, function(action) {
     const state = this.historyManager.redo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -356,7 +329,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Reset, function (action) {
+  REG.add(Actions.Reset, function(action) {
     this.saveHistory();
 
     this.currentSelection = null;

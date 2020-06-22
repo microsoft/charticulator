@@ -5,8 +5,8 @@
  *
  * Expected formats: DateFormat TimeFormat TimezoneFormat
  * - DateFormats:
- *   - YYYY-MM, YYYY-MM-DD
- *   - MM/YYYY, MM/DD/YYYY
+ *   - YYYY-MM, YYYY-MM-DD, YYYY-M, YYYY-M-D
+ *   - MM/YYYY, MM/DD/YYYY, M/YYYY, M/D/YYYY
  * - TimeFormats:
  *   - HH:MM, HH:MM:SS
  *   - HH:MM{am/pm}, HH:MM:SS{am/pm}
@@ -34,7 +34,7 @@ export function parseDate(str: string) {
   }
   // Overall pass
   m = str.match(
-    /^(((\d{4})-(\d{2})(-(\d{2}))?|(\d{2})(\/(\d{2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
+    /^(((\d{4})-(\d{1,2})(-(\d{1,2}))?|(\d{1,2})(\/(\d{1,2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)?|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
   );
   if (m) {
     let year = 1970,
@@ -118,6 +118,78 @@ export function parseDate(str: string) {
   } else {
     return null;
   }
+}
+
+/** Returns format for given string of date */
+export function getDateFormat(str: string) {
+  let format = null;
+  // ISO8601 full date: https://stackoverflow.com/a/37563868
+  if (
+    str.match(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i)
+  ) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      format = "%Y-%m-%dT%H:%M:%S";
+    } else {
+      return null;
+    }
+  }
+  // Get date format
+
+  // YYYY-MM
+  if (str.match(/^(\d{4})-(\d{1,2})/i)) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      format = "%Y-%m";
+    } else {
+      return null;
+    }
+  }
+  // MM/YYYY
+  if (str.match(/^(\d{1,2})\/(\d{4})/i)) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      format = "%m/%Y";
+    } else {
+      return null;
+    }
+  }
+
+  // YYYY-MM-DD
+  if (str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/i)) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      format = "%Y-%m-%d";
+    } else {
+      return null;
+    }
+  }
+  // MM/DD/YYYY
+  if (str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/i)) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      format = "%m/%d/%Y";
+    } else {
+      return null;
+    }
+  }
+
+  // Check that time is exists
+  if (
+    str.match(
+      /^(((\d{4})-(\d{1,2})(-(\d{1,2}))?|(\d{1,2})(\/(\d{1,2}))?\/(\d{4}))( +((\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)( +(([+-]\d{2}):(\d{2})))?)|(\d{2}):(\d{2})(:(\d{2}))?(am|pm)?)$/i
+    )
+  ) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      // TODO add am|pm and %H:%M
+      format += " %H:%M:%S";
+    } else {
+      return format;
+    }
+  }
+
+  return format;
 }
 
 export const monthNames = [
