@@ -347,6 +347,13 @@ export class ExportTemplateView extends ContextedComponent<
               column.displayName,
               null,
               value => {
+                const dataTable = this.store.dataset.tables.find(
+                  t => t.name === table.name
+                );
+                const dataColumn = dataTable.columns.find(
+                  c => c.name === column.name
+                );
+                dataColumn.displayName = value;
                 column.displayName = value;
                 this.setState({
                   template: this.state.template
@@ -371,26 +378,44 @@ export class ExportTemplateView extends ContextedComponent<
         .map((inference, index) => {
           let descriptionMin = inference.description;
           let descriptionMax = inference.description;
+          const object = findObjectById(this.store.chart, inference.objectID);
           if (!descriptionMin) {
             if (inference.scale) {
-              const scaleName = findObjectById(
-                template.specification,
-                inference.objectID
-              ).properties.name;
+              const scaleName = object.properties.name;
               descriptionMin = `Auto min domain and range for ${scaleName}`;
               descriptionMax = `Auto max domain and range for ${scaleName}`;
             }
             if (inference.axis) {
-              const objectName = findObjectById(
-                template.specification,
-                inference.objectID
-              ).properties.name;
+              const objectName = object.properties.name;
               descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
               descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
           if (inference.disableAuto === undefined) {
-            inference.disableAuto = false;
+            if (object.properties.disableAuto === undefined) {
+              object.properties.disableAuto = false;
+              inference.disableAuto = false;
+            } else {
+              inference.disableAuto = object.properties.disableAuto as boolean;
+            }
+          }
+          if (inference.disableAutoMax === undefined) {
+            if (object.properties.disableAutoMax === undefined) {
+              object.properties.disableAutoMax = false;
+              inference.disableAutoMax = false;
+            } else {
+              inference.disableAutoMax = object.properties
+                .disableAutoMax as boolean;
+            }
+          }
+          if (inference.disableAutoMin === undefined) {
+            if (object.properties.disableAutoMin === undefined) {
+              object.properties.disableAutoMin = false;
+              inference.disableAutoMin = false;
+            } else {
+              inference.disableAutoMin = object.properties
+                .disableAutoMin as boolean;
+            }
           }
           return (
             <React.Fragment key={index}>
@@ -398,6 +423,8 @@ export class ExportTemplateView extends ContextedComponent<
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMin = !inference.disableAutoMin;
+                  object.properties.disableAutoMin = !object.properties
+                    .disableAutoMin;
                   this.setState({ template });
                 }}
               >
@@ -414,6 +441,8 @@ export class ExportTemplateView extends ContextedComponent<
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMax = !inference.disableAutoMax;
+                  object.properties.disableAutoMax = !object.properties
+                    .disableAutoMax;
                   this.setState({ template });
                 }}
               >
@@ -439,7 +468,7 @@ export class ExportTemplateView extends ContextedComponent<
     for (const p of this.state.template.properties) {
       const id = p.objectID;
       const object = findObjectById(
-        this.state.template.specification,
+        this.store.chart,
         id
       ) as Specification.ExposableObject;
 

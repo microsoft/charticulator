@@ -38,7 +38,7 @@ export class ChartTemplateBuilder {
     public readonly chart: Specification.Chart,
     public readonly dataset: Dataset.Dataset,
     public readonly manager: Prototypes.ChartStateManager
-  ) { }
+  ) {}
 
   public reset() {
     this.template = {
@@ -210,6 +210,12 @@ export class ChartTemplateBuilder {
             this.addColumn(inference.dataSource.table, key);
           });
         }
+        if (inference.disableAutoMax !== undefined) {
+          inference.disableAutoMax = false;
+        }
+        if (inference.disableAutoMin !== undefined) {
+          inference.disableAutoMin = false;
+        }
         template.inference.push(inference);
       }
     }
@@ -332,7 +338,7 @@ export class ChartTemplateBuilder {
                 return this.tableColumns[table.name].has(x.name);
               })
               .map(x => ({
-                displayName: x.name,
+                displayName: x.displayName || x.name,
                 name: x.name,
                 type: x.type,
                 metadata: x.metadata
