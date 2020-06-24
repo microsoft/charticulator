@@ -209,49 +209,59 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [];
+    if (this.object.properties.fontFamily) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "fontFamily"
+        },
+        type: Specification.AttributeType.FontFamily,
+        default: this.object.properties.fontFamily
+      });
+    }
+    if (this.object.properties.fontSize) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "fontSize"
+        },
+        type: Specification.AttributeType.Number,
+        default: this.object.properties.fontSize
+      });
+    }
+    if (this.object.properties.textColor) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "textColor"
+        },
+        type: Specification.AttributeType.Color,
+        default: rgbToHex(this.object.properties.textColor)
+      });
+    }
+    if (this.object.properties.alignY) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "alignY"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.alignY
+      });
+    }
+    if (this.object.properties.alignX) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "alignX"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.alignX
+      });
+    }
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            property: "fontFamily"
-          },
-          type: Specification.AttributeType.FontFamily,
-          default: this.object.properties.fontFamily
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            property: "fontSize"
-          },
-          type: Specification.AttributeType.Number,
-          default: this.object.properties.fontSize
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            property: "textColor"
-          },
-          type: Specification.AttributeType.Color,
-          default: rgbToHex(this.object.properties.textColor)
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            property: "alignY"
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.object.properties.alignY
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            property: "alignX"
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.object.properties.alignX
-        }
-      ]
+      properties
     };
   }
 }

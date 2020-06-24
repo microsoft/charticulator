@@ -423,8 +423,16 @@ export class ExportTemplateView extends ContextedComponent<
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMin = !inference.disableAutoMin;
-                  object.properties.disableAutoMin = !object.properties
-                    .disableAutoMin;
+                  this.dispatch(
+                    new Actions.SetObjectProperty(
+                      object,
+                      "disableAutoMin",
+                      null,
+                      !object.properties.disableAutoMin,
+                      true,
+                      true
+                    )
+                  );
                   this.setState({ template });
                 }}
               >
@@ -441,8 +449,16 @@ export class ExportTemplateView extends ContextedComponent<
                 className="el-inference-item"
                 onClick={() => {
                   inference.disableAutoMax = !inference.disableAutoMax;
-                  object.properties.disableAutoMax = !object.properties
-                    .disableAutoMax;
+                  this.dispatch(
+                    new Actions.SetObjectProperty(
+                      object,
+                      "disableAutoMax",
+                      null,
+                      !object.properties.disableAutoMax,
+                      true,
+                      true
+                    )
+                  );
                   this.setState({ template });
                 }}
               >
@@ -473,8 +489,22 @@ export class ExportTemplateView extends ContextedComponent<
       ) as Specification.ExposableObject;
 
       if (object && (p.target.attribute || p.target.property)) {
-        if (object.exposed == undefined) {
-          object.exposed = true;
+        if (object.properties.exposed == undefined) {
+          this.dispatch(
+            new Actions.SetObjectProperty(
+              object,
+              "exposed",
+              null,
+              true,
+              true,
+              true
+            )
+          );
+          const templateObject = findObjectById(
+            this.state.template.specification,
+            id
+          );
+          templateObject.properties.exposed = true;
         }
         templateObjects.set(id, object as Specification.ExposableObject);
       }
@@ -489,13 +519,32 @@ export class ExportTemplateView extends ContextedComponent<
           key={key}
           className="el-inference-item"
           onClick={() => {
-            object.exposed = !object.exposed;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                "exposed",
+                null,
+                !(object.properties.exposed === undefined
+                  ? true
+                  : object.properties.exposed),
+                true,
+                true
+              )
+            );
+            const templateObject = findObjectById(
+              this.state.template.specification,
+              object._id
+            );
+            templateObject.properties.exposed = !templateObject.properties
+              .exposed;
             this.setState({ template });
           }}
         >
           <SVGImageIcon
             url={
-              !object.exposed
+              !(object.properties.exposed === undefined
+                ? true
+                : object.properties.exposed)
                 ? R.getSVGIcon("checkbox/empty")
                 : R.getSVGIcon("checkbox/checked")
             }
