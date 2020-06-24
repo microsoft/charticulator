@@ -231,6 +231,7 @@ export class ExportTemplateView extends ContextedComponent<
     this.setState(this.getDefaultState(newProps.exportKind));
   }
 
+  /** Renders input fields for extension properties */
   public renderInput(
     label: string,
     type: string,
@@ -306,6 +307,7 @@ export class ExportTemplateView extends ContextedComponent<
     }
   }
 
+  /** Renders all fields for extension properties */
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
       const displayName = this.store.getPropertyExportName(property.name);
@@ -333,6 +335,7 @@ export class ExportTemplateView extends ContextedComponent<
     });
   }
 
+  /** Renders column names for export view */
   public renderSlots() {
     if (this.state.template.tables.length == 0) {
       return <p>(none)</p>;
@@ -477,6 +480,7 @@ export class ExportTemplateView extends ContextedComponent<
     );
   }
 
+  /** Renders object/properties list of chart */
   public renderExposedProperties() {
     const template = this.state.template;
     const result: JSX.Element[] = [];
