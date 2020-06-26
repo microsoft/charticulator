@@ -101,11 +101,14 @@ export class Application {
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
+  private config: CharticulatorAppConfig;
+
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
     workerScriptURL: string
   ) {
+    this.config = config;
     await initialize(config);
 
     const responce = await fetch(`${workerScriptURL}`);
@@ -192,14 +195,16 @@ export class Application {
             document.location.origin
           );
         } else {
-          window.parent.postMessage(
-            {
-              id,
-              type: "save",
-              specification: newSpecification
-            },
-            "*"
-          );
+          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+            window.parent.postMessage(
+              {
+                id,
+                type: "save",
+                specification: newSpecification
+              },
+              this.config.CorsPolicy.TargetOrigins
+            );
+          }
         }
       });
     });
@@ -212,13 +217,15 @@ export class Application {
         document.location.origin
       );
     } else {
-      window.parent.postMessage(
-        {
-          id,
-          type: "initialized"
-        },
-        "*"
-      );
+      if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+        window.parent.postMessage(
+          {
+            id,
+            type: "initialized"
+          },
+          this.config.CorsPolicy.TargetOrigins
+        );
+      }
     }
   }
 
