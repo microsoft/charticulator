@@ -584,14 +584,15 @@ export class AppStore extends BaseStore {
     valueKind: Specification.DataKind,
     outputType: Specification.AttributeType,
     hints: Prototypes.DataMappingHints = {},
-    markAttribute?: string
+    markAttribute?: string,
+    tableName?: string
   ): string {
     // Figure out the source table
-    let tableName: string = null;
-    if (context.glyph) {
+    // let tableName: string = null;
+    if (!tableName && context.glyph) {
       tableName = context.glyph.table;
     }
-    if (context.chart) {
+    if (!tableName && context.chart) {
       tableName = context.chart.table;
     }
     // Figure out the groupBy
@@ -659,7 +660,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                    getExpressionUnit(expression) &&
+                      getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -931,7 +932,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function* () {
+      const rowIterator = function*() {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -967,7 +968,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-                xDataProperty.numericalMode === "temporal"
+              xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type
           }
@@ -993,7 +994,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-                yDataProperty.numericalMode === "temporal"
+              yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type
           }
@@ -1067,7 +1068,8 @@ export class AppStore extends BaseStore {
       visible: true,
       side: "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
-      numericalMode: options.numericalMode
+      numericalMode: options.numericalMode,
+      table: options.dataExpression.table.name
     };
 
     let expressions = [groupExpression];

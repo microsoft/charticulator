@@ -213,22 +213,8 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               metadata: x.metadata
             };
           }),
-          rows: mapToRows(dataRowIndices),
-          type: TableType.Main
-        },
-        {
-          name: "MainParentTable",
-          displayName: "MainParentTable",
-          columns: table.columns.map(x => {
-            return {
-              name: columnNameMap[x.name],
-              displayName: columnNameMap[x.name],
-              type: x.type,
-              metadata: x.metadata
-            };
-          }),
           rows: mapToRows(allDataRowIndices),
-          type: TableType.ParentMain
+          type: TableType.Main
         }
       ]
     };

@@ -118,7 +118,8 @@ export class AttributePanel extends React.Component<
             data.expression,
             data.valueType,
             data.metadata,
-            hints
+            hints,
+            data.table.name || glyph.table
           ).dispatch(this.props.store.dispatcher);
         };
       }

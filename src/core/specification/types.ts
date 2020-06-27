@@ -28,6 +28,7 @@ export interface AxisDataBinding extends AttributeMap {
   tickFormat?: string;
 
   style?: AxisRenderingStyle;
+  table?: string;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

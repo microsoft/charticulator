@@ -119,14 +119,18 @@ export class ChartConstraintSolver {
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
-          if (expr.parts.find(part => part.expression instanceof FunctionCall && part.expression.name === "columnName")) {
+          if (
+            expr.parts.find(
+              part =>
+                part.expression instanceof FunctionCall &&
+                part.expression.name === "columnName"
+            )
+          ) {
             attrs[attr] = expr.getValue(
               (rowContext as DataflowTableGroupedContext).getTable()
             );
           } else {
-            attrs[attr] = expr.getValue(
-              rowContext
-            );
+            attrs[attr] = expr.getValue(rowContext);
           }
         }
         break;

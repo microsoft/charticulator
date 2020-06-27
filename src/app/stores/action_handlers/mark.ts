@@ -170,7 +170,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
       .attributes[action.attribute];
-    const table = this.getTable(action.glyph.table);
+    const table = this.getTable(action.table || action.glyph.table);
     const inferred = this.scaleInference(
       { glyph: action.glyph },
       action.expression,
@@ -178,12 +178,13 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       action.valueMetadata.kind,
       action.attributeType,
       action.hints,
-      action.attribute
+      action.attribute,
+      action.table
     );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
         type: "scale",
-        table: action.glyph.table,
+        table: action.table || action.glyph.table,
         expression: action.expression,
         valueType: action.valueType,
         scale: inferred,
@@ -210,7 +211,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           action.valueType == Specification.DataType.Number ? ".1f" : undefined;
         action.mark.mappings[action.attribute] = {
           type: "text",
-          table: action.glyph.table,
+          table: action.table || action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format }
           ]).toString()
