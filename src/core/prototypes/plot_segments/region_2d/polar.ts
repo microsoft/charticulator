@@ -86,7 +86,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
 export class PolarPlotSegment extends PlotSegmentClass<
   PolarProperties,
   PolarAttributes
-  > {
+> {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 
@@ -670,6 +670,17 @@ export class PolarPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.xData) {
+      const values = (this.object.properties.xData as any).categories;
+      let defaultValue = "ascending";
+      if (values) {
+        const a = values[0].toString();
+        const b = values[(values as any[]).length - 1].toString();
+        if (b && a && b.localeCompare(a) > -1) {
+          defaultValue = "ascending";
+        } else {
+          defaultValue = "descending";
+        }
+      }
       p.push({
         objectID: this.object._id,
         target: {
@@ -679,10 +690,21 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     if (this.object.properties.yData) {
+      const values = (this.object.properties.yData as any).categories;
+      let defaultValue = "ascending";
+      if (values) {
+        const a = values[0].toString();
+        const b = values[(values as any[]).length - 1].toString();
+        if (b && a && b.localeCompare(a) > -1) {
+          defaultValue = "ascending";
+        } else {
+          defaultValue = "descending";
+        }
+      }
       p.push({
         objectID: this.object._id,
         target: {
@@ -692,7 +714,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };
