@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { AppStore } from "./stores";
 
-import { initialize, Dispatcher, Specification, Dataset } from "../core";
+import { initialize, Dispatcher, Specification, Dataset, deepClone } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -185,12 +185,14 @@ export class Application {
         })
       );
       this.appStore.setupNestedEditor(newSpecification => {
+        const template = deepClone(this.appStore.buildChartTemplate());
         if (window.opener) {
           window.opener.postMessage(
             {
               id,
               type: "save",
-              specification: newSpecification
+              specification: newSpecification,
+              template
             },
             document.location.origin
           );
@@ -200,7 +202,8 @@ export class Application {
               {
                 id,
                 type: "save",
-                specification: newSpecification
+                specification: newSpecification,
+                template
               },
               this.config.CorsPolicy.TargetOrigins
             );
