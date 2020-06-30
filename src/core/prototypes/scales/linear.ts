@@ -154,6 +154,22 @@ export class LinearScale extends ScaleClass<
       },
       type: Specification.AttributeType.Number
     });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        attribute: "rangeMin"
+      },
+      type: Specification.AttributeType.Number,
+      default: this.state.attributes.rangeMin
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        attribute: "rangeMax"
+      },
+      type: Specification.AttributeType.Number,
+      default: this.state.attributes.rangeMax
+    });
     return parameters;
   }
 }
