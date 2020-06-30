@@ -232,7 +232,8 @@ export class RectElementClass extends EmphasizableMarkClass<
     return widgets;
   }
 
-  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /**
+   * Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
    *   -------------- y1
    *   |            |     |
    *   |      *     | yc  height

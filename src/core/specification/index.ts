@@ -263,8 +263,9 @@ export interface Chart<
   glyphs: Glyph[];
   /** Scales */
   scales: Scale[];
-  /** Temporary structure to save created scales for reusing instead creating new.
-   *  Unused scales will be removed on save
+  /** 
+   * Temporary structure to save created scales for reusing instead creating new.
+   * Unused scales will be removed on save
    */
   scaleMappings: ScaleMapping[];
   /** Chart elements */

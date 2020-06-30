@@ -86,7 +86,7 @@ export interface Region2DConfiguration {
   terminology: {
     xAxis: string;
     yAxis: string;
-    /** Items alligmetns */
+    /** Items alignments */
     xMin: string;
     xMinIcon: string;
     xMiddle: string;
@@ -409,7 +409,7 @@ export class Region2DConstraintBuilder {
               solver.addLinear(
                 ConstraintStrength.HARD,
                 (data.categories.length - i - 0.5) * props.marginX1 -
-                  (i + 0.5) * props.marginX2,
+                (i + 0.5) * props.marginX2,
                 [
                   [i + 0.5, x2],
                   [data.categories.length - i - 0.5, x1],
@@ -462,7 +462,7 @@ export class Region2DConstraintBuilder {
             solver.addLinear(
               ConstraintStrength.HARD,
               (data.categories.length - i - 0.5) * props.marginY1 -
-                (i + 0.5) * props.marginY2,
+              (i + 0.5) * props.marginY2,
               [
                 [i + 0.5, y2],
                 [data.categories.length - i - 0.5, y1],
@@ -2083,25 +2083,25 @@ export class Region2DConstraintBuilder {
             isXFixed
               ? null
               : m.inputSelect(
-                  { property: "sublayout", field: ["align", "x"] },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"]
-                  }
-                ),
+                { property: "sublayout", field: ["align", "x"] },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: ["align/left", "align/x-middle", "align/right"],
+                  labels: ["Left", "Middle", "Right"]
+                }
+              ),
             isYFixed
               ? null
               : m.inputSelect(
-                  { property: "sublayout", field: ["align", "y"] },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"]
-                  }
-                )
+                { property: "sublayout", field: ["align", "y"] },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: ["align/bottom", "align/y-middle", "align/top"],
+                  labels: ["Bottom", "Middle", "Top"]
+                }
+              )
           )
         )
       );
@@ -2409,9 +2409,9 @@ export class Region2DConstraintBuilder {
         sublayout.push(
           m.label(
             this.terminology.xAxis +
-              " & " +
-              this.terminology.yAxis +
-              ": Stacking"
+            " & " +
+            this.terminology.yAxis +
+            ": Stacking"
           )
         );
       }

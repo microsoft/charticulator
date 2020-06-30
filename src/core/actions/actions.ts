@@ -23,7 +23,8 @@ export function objectDigest(obj?: Specification.Object) {
   return obj ? [obj.classID, obj._id] : null;
 }
 
-/** Base class for all actions to describe all user interactions with charticulators objects
+/** 
+ * Base class for all actions to describe all user interactions with charticulators objects
  * Actions dispatches by {@link BaseStore.dispatcher} method of the store.
  * List of charticulator app actions can be found in {@link "app/actions/actions"} module
  */

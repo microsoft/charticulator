@@ -29,7 +29,8 @@ export interface TemplateInstance {
 /** Represents a chart template */
 export class ChartTemplate {
   private template: Specification.Template.ChartTemplate;
-  /**Mapping of tables. Chart contains table and column names used in the designer app.
+  /**
+   * Mapping of tables. Chart contains table and column names used in the designer app.
    * But data set can have column or table names with different names. It needs for expressions
    */
   private tableAssignment: { [name: string]: string };

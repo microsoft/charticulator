@@ -14,7 +14,8 @@ export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.style({ fill: true })
 };
 
-/** Properties of rectangle
+/**
+ * Properties of rectangle
  *   -------------- y1
  *   |            |     |
  *   |            | yc  height

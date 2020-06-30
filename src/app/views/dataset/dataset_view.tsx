@@ -33,7 +33,8 @@ export interface DatasetViewProps {
 
 export interface DatasetViewState {}
 
-/** Component for displaying dataset on the left side of app
+/**
+ * Component for displaying dataset on the left side of app
  *
  * ![Mark widgets](media://dataset_view.png)
  */

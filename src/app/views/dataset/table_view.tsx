@@ -19,7 +19,8 @@ export interface TableViewProps {
   onTypeChange?: (column: string, type: string) => void;
 }
 
-/** Component for displaying data samples on loading or in context menu of {@link DatasetView}
+/**
+ * Component for displaying data samples on loading or in context menu of {@link DatasetView}
  *
  * ![Table view](media://table_view.png)
  *

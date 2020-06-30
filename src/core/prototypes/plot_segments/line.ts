@@ -107,9 +107,9 @@ export class LineGuide extends PlotSegmentClass {
   }
 
   /**
-   * Creates constrins for elements on the line plot segment
+   * Creates constraints for elements on the line plot segment
    * Line plot segment distributes the elements on the line
-   *  (y1 and y2 can have diferent values, so line cna have some angle between line and axis lines)
+   *  (y1 and y2 can have different values, so line can have some angle between line and axis lines)
    *  *
    *  y1 *------#------#------* y2
    *    x1      t      t      x2

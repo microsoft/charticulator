@@ -251,7 +251,9 @@ export class RemoveMarkFromGlyph extends Action {
   }
 }
 
-/** Dispatches when user binds table coulmns to atrributes */
+/**
+ * Dispatches when user binds table coulmns to attributes
+ */
 export class MapDataToMarkAttribute extends Action {
   /**
    * @param glyph the glyph object where marks is

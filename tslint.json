@@ -29,6 +29,7 @@
     "no-var-requires": false,
     "jsx-no-lambda": false,
     "jsx-no-string-ref": false,
-    "jsx-key": false
+    "jsx-key": false,
+    "jsdoc-format": [true, "check-multiline-start"]
   }
 }
