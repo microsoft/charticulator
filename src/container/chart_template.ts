@@ -238,7 +238,7 @@ export class ChartTemplate {
         if (axisDataBinding.tickDataExpression) {
           axisDataBinding.tickDataExpression = null; // TODO: fixme
         }
-        if (!inference.disableAuto) {
+        if (!inference.disableAutoMin || !inference.disableAutoMax) {
           let vector = getExpressionVector(
             expression,
             this.tableAssignment[inference.dataSource.table],
@@ -285,7 +285,7 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
-        if (!inference.disableAuto) {
+        if (!inference.disableAutoMin || !inference.disableAutoMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map(x =>
             this.transformExpression(x, inference.dataSource.table)

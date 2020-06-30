@@ -379,59 +379,82 @@ export class ExportTemplateView extends ContextedComponent<
         // Only show axis and scale inferences
         .filter(inference => inference.axis || inference.scale)
         .map((inference, index) => {
-          let descriptionMin = inference.description;
-          let descriptionMax = inference.description;
+          let descriptionMin: string;
+          let descriptionMax: string;
           const object = findObjectById(this.store.chart, inference.objectID);
-          if (!descriptionMin) {
+          const temaplteObject = findObjectById(
+            template.specification,
+            inference.objectID
+          );
+          if (!descriptionMin || !descriptionMax) {
+            const objectName = object.properties.name;
             if (inference.scale) {
-              const scaleName = object.properties.name;
-              descriptionMin = `Auto min domain and range for ${scaleName}`;
-              descriptionMax = `Auto max domain and range for ${scaleName}`;
+              descriptionMin = `Auto min domain and range for ${objectName}`;
+              descriptionMax = `Auto max domain and range for ${objectName}`;
             }
             if (inference.axis) {
-              const objectName = object.properties.name;
               descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
               descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
-          if (inference.disableAuto === undefined) {
-            if (object.properties.disableAuto === undefined) {
-              object.properties.disableAuto = false;
-              inference.disableAuto = false;
-            } else {
-              inference.disableAuto = object.properties.disableAuto as boolean;
-            }
+          let keyDisableAutoMin = "disableAutoMin";
+          let keyDisableAutoMax = "disableAutoMax";
+          if (inference.axis) {
+            keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
+            keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
           }
-          if (inference.disableAutoMax === undefined) {
-            if (object.properties.disableAutoMax === undefined) {
-              object.properties.disableAutoMax = false;
-              inference.disableAutoMax = false;
-            } else {
-              inference.disableAutoMax = object.properties
-                .disableAutoMax as boolean;
-            }
+          if (object.properties[keyDisableAutoMax] === undefined) {
+            // object.properties[keyPropertyAutoMax] = false;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                keyDisableAutoMax,
+                null,
+                false,
+                true,
+                true
+              )
+            );
+            temaplteObject.properties[keyDisableAutoMax] = false;
+            inference.disableAutoMax = false;
+          } else {
+            inference.disableAutoMax = temaplteObject.properties[
+              keyDisableAutoMax
+            ] as boolean;
           }
-          if (inference.disableAutoMin === undefined) {
-            if (object.properties.disableAutoMin === undefined) {
-              object.properties.disableAutoMin = false;
-              inference.disableAutoMin = false;
-            } else {
-              inference.disableAutoMin = object.properties
-                .disableAutoMin as boolean;
-            }
+          if (object.properties[keyDisableAutoMin] === undefined) {
+            // object.properties[keyPropertyAutoMin] = false;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                keyDisableAutoMin,
+                null,
+                false,
+                true,
+                true
+              )
+            );
+            temaplteObject.properties[keyDisableAutoMin] = false;
+            inference.disableAutoMin = false;
+          } else {
+            inference.disableAutoMin = object.properties[
+              keyDisableAutoMin
+            ] as boolean;
           }
+
           return (
             <React.Fragment key={index}>
               <div
                 className="el-inference-item"
                 onClick={() => {
-                  inference.disableAutoMin = !inference.disableAutoMin;
+                  // inference.disableAutoMin = !object.properties[keyDisableAutoMin];
+                  // temaplteObject.properties[keyDisableAutoMin] = !object.properties[keyDisableAutoMin];
                   this.dispatch(
                     new Actions.SetObjectProperty(
                       object,
-                      "disableAutoMin",
+                      keyDisableAutoMin,
                       null,
-                      !object.properties.disableAutoMin,
+                      !object.properties[keyDisableAutoMin],
                       true,
                       true
                     )
@@ -441,7 +464,7 @@ export class ExportTemplateView extends ContextedComponent<
               >
                 <SVGImageIcon
                   url={
-                    inference.disableAutoMin
+                    object.properties[keyDisableAutoMin]
                       ? R.getSVGIcon("checkbox/empty")
                       : R.getSVGIcon("checkbox/checked")
                   }
@@ -451,13 +474,14 @@ export class ExportTemplateView extends ContextedComponent<
               <div
                 className="el-inference-item"
                 onClick={() => {
-                  inference.disableAutoMax = !inference.disableAutoMax;
+                  // inference.disableAutoMax = !object.properties[keyDisableAutoMax];
+                  // temaplteObject.properties[keyDisableAutoMax] = !object.properties[keyDisableAutoMax];
                   this.dispatch(
                     new Actions.SetObjectProperty(
                       object,
-                      "disableAutoMax",
+                      keyDisableAutoMax,
                       null,
-                      !object.properties.disableAutoMax,
+                      !object.properties[keyDisableAutoMax],
                       true,
                       true
                     )
@@ -467,7 +491,7 @@ export class ExportTemplateView extends ContextedComponent<
               >
                 <SVGImageIcon
                   url={
-                    inference.disableAutoMax
+                    object.properties[keyDisableAutoMax]
                       ? R.getSVGIcon("checkbox/empty")
                       : R.getSVGIcon("checkbox/checked")
                   }
