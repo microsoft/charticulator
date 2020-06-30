@@ -17,7 +17,8 @@ export class DataExpression extends DropZoneData {
     public table: Dataset.Table,
     public expression: string,
     public valueType: Dataset.DataType,
-    public metadata: Dataset.ColumnMetadata = null
+    public metadata: Dataset.ColumnMetadata = null,
+    public rawColumnExpression: string
   ) {
     super();
   }
