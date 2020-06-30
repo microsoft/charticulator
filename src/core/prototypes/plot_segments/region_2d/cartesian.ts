@@ -23,6 +23,9 @@ import {
   Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
+import { DataType } from "../../../specification";
+import { TextExpression, FunctionCall, Variable } from "../../../expression";
+import { DataflowTable } from "../../dataflow";
 
 export type CartesianAxisMode =
   | "null"
@@ -271,13 +274,19 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       }
       return result;
     };
+
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
         attrs.x2 - attrs.x1,
         false,
-        false
+        false,
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.xData.expression,
+          this.object.table
+        )
       );
       if (props.xData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.xData));
@@ -296,7 +305,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         0,
         attrs.y2 - attrs.y1,
         false,
-        true
+        true,
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.yData.expression,
+          this.object.table
+        )
       );
       if (props.yData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.yData));

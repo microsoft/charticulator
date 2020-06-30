@@ -10,9 +10,18 @@ import * as Graphics from "./graphics";
 import * as Prototypes from "./prototypes";
 import * as Solver from "./solver";
 import * as Specification from "./specification";
+import * as Utils from "./common/utils";
 export * from "./actions";
 
-export { Expression, Specification, Prototypes, Solver, Graphics, Dataset };
+export {
+  Expression,
+  Specification,
+  Prototypes,
+  Solver,
+  Graphics,
+  Dataset,
+  Utils
+};
 
 import { CharticulatorCoreConfig, setConfig } from "./config";
 

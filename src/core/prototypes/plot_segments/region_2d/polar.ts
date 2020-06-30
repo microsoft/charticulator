@@ -23,6 +23,7 @@ import {
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
+import { ChartStateManager } from "../..";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -87,7 +88,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
 export class PolarPlotSegment extends PlotSegmentClass<
   PolarProperties,
   PolarAttributes
-  > {
+> {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 
@@ -329,7 +330,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     ];
   }
 
-  public getGraphics(): Graphics.Group {
+  public getGraphics(manager: ChartStateManager): Graphics.Group {
     const builder = this.createBuilder();
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
@@ -346,7 +347,18 @@ export class PolarPlotSegment extends PlotSegmentClass<
     if (radialData && radialData.visible) {
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(radialData, innerRadius, outerRadius, false, true)
+          .setAxisDataBinding(
+            radialData,
+            innerRadius,
+            outerRadius,
+            false,
+            true,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.yData.expression,
+              this.object.table
+            )
+          )
           .renderLine(
             cx,
             cy,
@@ -363,7 +375,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
             angleStart,
             angleEnd,
             builder.config.xAxisPrePostGap,
-            false
+            false,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.xData.expression,
+              this.object.table
+            )
           )
           .renderPolar(
             cx,

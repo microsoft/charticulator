@@ -23,6 +23,7 @@ import {
   Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
+import { ChartStateManager } from "../..";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -91,7 +92,7 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
 export class CurvePlotSegment extends PlotSegmentClass<
   CurveProperties,
   CurveAttributes
-  > {
+> {
   public static classID = "plot-segment.curve";
   public static type = "plot-segment";
 
@@ -325,7 +326,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     ];
   }
 
-  public getGraphics(): Graphics.Group {
+  public getGraphics(manager: ChartStateManager): Graphics.Group {
     const { tangent1, tangent2, normal1, normal2 } = this.state.attributes;
 
     const g = Graphics.makeGroup([]);
@@ -335,7 +336,18 @@ export class CurvePlotSegment extends PlotSegmentClass<
     if (props.xData && props.xData.visible) {
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(props.xData, tangent1, tangent2, false, false)
+          .setAxisDataBinding(
+            props.xData,
+            tangent1,
+            tangent2,
+            false,
+            false,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.xData.expression,
+              this.object.table
+            )
+          )
           .renderCurve(
             cs,
             props.xData.side == "opposite" ? normal2 : normal1,
@@ -351,7 +363,18 @@ export class CurvePlotSegment extends PlotSegmentClass<
       tr = Graphics.concatTransform(cs.getBaseTransform(), tr);
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(props.yData, normal1, normal2, false, true)
+          .setAxisDataBinding(
+            props.yData,
+            normal1,
+            normal2,
+            false,
+            true,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.yData.expression,
+              this.object.table
+            )
+          )
           .renderLine(
             tr.x,
             tr.y,
