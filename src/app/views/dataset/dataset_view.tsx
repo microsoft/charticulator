@@ -244,7 +244,9 @@ export class ColumnView extends React.Component<
             lambdaExpr,
             type,
             null,
-            desc.metadata
+            desc.metadata,
+            undefined,
+            expr
           );
         })}
       </div>
@@ -267,7 +269,8 @@ export class ColumnView extends React.Component<
     type: Dataset.DataType,
     additionalElement: JSX.Element = null,
     metadata: Dataset.ColumnMetadata,
-    onColumnKindChanged?: (column: string, type: string) => void
+    onColumnKindChanged?: (column: string, type: string) => void,
+    rawColumnExpr?: string
   ) {
     let anchor: HTMLDivElement;
     return (
@@ -318,7 +321,8 @@ export class ColumnView extends React.Component<
               this.props.table,
               this.applyAggregation(expr, type),
               type,
-              metadata
+              metadata,
+              this.applyAggregation(rawColumnExpr, DataType.String)
             );
             return r;
           }}
@@ -337,7 +341,6 @@ export class ColumnView extends React.Component<
 
   public render() {
     const c = this.props.column;
-
     const derivedColumnsControl = this.renderDerivedColumns();
 
     if (derivedColumnsControl != null) {
@@ -370,7 +373,8 @@ export class ColumnView extends React.Component<
               this.props.store.dispatcher.dispatch(
                 new Actions.UpdatePlotSegments()
               );
-            }
+            },
+            Expression.variable(c.metadata.rawColumnName || c.name).toString()
           )}
           {this.state.isExpanded ? derivedColumnsControl : null}
         </div>
@@ -393,7 +397,8 @@ export class ColumnView extends React.Component<
             new Actions.UpdatePlotSegments()
           );
           this.forceUpdate();
-        }
+        },
+        Expression.variable(c.metadata.rawColumnName || c.name).toString()
       );
     }
   }

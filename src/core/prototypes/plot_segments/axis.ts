@@ -14,7 +14,7 @@ import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
 import { Controls, TemplateParameters } from "../common";
 import { format } from "d3-format";
-import { AttributeMap } from "../../specification";
+import { AttributeMap, DataKind, DataType } from "../../specification";
 
 export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -59,7 +59,8 @@ export class AxisRenderer {
     rangeMin: number,
     rangeMax: number,
     enablePrePostGap: boolean,
-    reverse: boolean
+    reverse: boolean,
+    getTickFormat?: (value: any) => string
   ) {
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
@@ -107,7 +108,8 @@ export class AxisRenderer {
             data.categories,
             getCategoricalAxis(data, enablePrePostGap, reverse).ranges,
             rangeMin,
-            rangeMax
+            rangeMax,
+            getTickFormat
           );
         }
         break;
@@ -173,7 +175,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -212,7 +214,7 @@ export class AxisRenderer {
       const tx =
         ((Math.log(ticks[i]) - Math.log(domainMin)) /
           (Math.log(domainMax) - Math.log(domainMin))) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -246,7 +248,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -266,14 +268,15 @@ export class AxisRenderer {
     domain: string[],
     range: Array<[number, number]>,
     rangeMin: number,
-    rangeMax: number
+    rangeMax: number,
+    tickFormat?: ((value: any) => string)
   ) {
     const r: TickDescription[] = [];
     for (let i = 0; i < domain.length; i++) {
       r.push({
         position:
           ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin,
-        label: domain[i]
+        label: tickFormat ? tickFormat(domain[i]) : domain[i]
       });
     }
     this.valueToPosition = value => {

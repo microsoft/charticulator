@@ -21,6 +21,7 @@ import {
   buildAxisProperties
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
+import { ChartStateManager } from "..";
 
 /**
  * Line plot segment distributes the elements on the line
@@ -239,7 +240,7 @@ export class LineGuide extends PlotSegmentClass {
     } as BoundingBox.Line;
   }
 
-  public getGraphics(): Graphics.Element {
+  public getGraphics(manager: ChartStateManager): Graphics.Element {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const props = this.object.properties;
@@ -252,7 +253,18 @@ export class LineGuide extends PlotSegmentClass {
     }
     if (props.axis && props.axis.visible) {
       const renderer = new AxisRenderer();
-      renderer.setAxisDataBinding(props.axis, 0, length, false, false);
+      renderer.setAxisDataBinding(
+        props.axis,
+        0,
+        length,
+        false,
+        false,
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.axis.expression,
+          this.object.table
+        )
+      );
       const g = renderer.renderLine(
         x1,
         y1,

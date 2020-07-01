@@ -46,7 +46,7 @@ import {
 import { DataflowTable } from "../../core/prototypes/dataflow";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
-import { DataKind } from "../../core/specification";
+import { DataKind, DataType } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -659,7 +659,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                    getExpressionUnit(expression) &&
+                      getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -931,7 +931,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function* () {
+      const rowIterator = function*() {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -967,10 +967,11 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-                xDataProperty.numericalMode === "temporal"
+              xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type
-          }
+          },
+          xDataProperty.rawColumnExpr
         );
 
         this.bindDataToAxis({
@@ -993,10 +994,11 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-                yDataProperty.numericalMode === "temporal"
+              yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type
-          }
+          },
+          yDataProperty.rawColumnExpr
         );
 
         this.bindDataToAxis({
@@ -1020,7 +1022,8 @@ export class AppStore extends BaseStore {
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axis.type
-          }
+          },
+          yDataProperty.rawColumnExpr
         );
 
         this.bindDataToAxis({
@@ -1056,13 +1059,25 @@ export class AppStore extends BaseStore {
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
-    const groupExpression = dataExpression.expression;
+    let groupExpression = dataExpression.expression;
+    let valueType = dataExpression.valueType;
+    const type = this.getBindingByDataKind(
+      options.dataExpression.metadata.kind
+    );
+    const rawColumnExpression = dataExpression.rawColumnExpression;
+    if (
+      rawColumnExpression &&
+      (options.dataExpression.metadata.kind === DataKind.Ordinal ||
+        options.dataExpression.metadata.kind === DataKind.Categorical)
+    ) {
+      groupExpression = rawColumnExpression;
+      valueType = DataType.String;
+    }
+
     let dataBinding: Specification.Types.AxisDataBinding = {
-      type:
-        options.type ||
-        this.getBindingByDataKind(options.dataExpression.metadata.kind),
+      type: options.type || type,
       expression: groupExpression,
-      valueType: dataExpression.valueType,
+      valueType,
       gapRatio: 0.1,
       visible: true,
       side: "default",
@@ -1130,7 +1145,7 @@ export class AppStore extends BaseStore {
       case Specification.DataKind.Ordinal:
         {
           dataBinding.type = "categorical";
-          dataBinding.valueType = Specification.DataType.String;
+          dataBinding.valueType = dataExpression.valueType;
 
           if (dataExpression.metadata.order) {
             dataBinding.categories = dataExpression.metadata.order.slice();
