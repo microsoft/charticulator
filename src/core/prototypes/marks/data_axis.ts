@@ -132,7 +132,7 @@ export class DataAxisClass extends MarkClass<
     }
   }
 
-  // Initialize the state of an element so that everything has a valid value
+  /** Initialize the state of an element so that everything has a valid value */
   public initializeState(): void {
     const attrs = this.state.attributes;
     attrs.x1 = -10;
@@ -141,7 +141,7 @@ export class DataAxisClass extends MarkClass<
     attrs.y2 = 10;
   }
 
-  // Get bounding rectangle given current state
+  /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     return [

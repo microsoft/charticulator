@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * See {@link DatasetView} or {@link TableView}
+ * @packageDocumentation
+ * @preferred
+ */
+
 import * as React from "react";
 import { Dataset, Expression } from "../../../core";
 import { DragData, Actions } from "../../actions";
@@ -26,6 +33,11 @@ export interface DatasetViewProps {
 
 export interface DatasetViewState {}
 
+/**
+ * Component for displaying dataset on the left side of app
+ *
+ * ![Mark widgets](media://dataset_view.png)
+ */
 export class DatasetView extends React.Component<
   DatasetViewProps,
   DatasetViewState

@@ -68,7 +68,8 @@ export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
   return { r, g, b };
 }
 
-/** Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
+/** 
+ * Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
  * @param color {@Color} object or color string in HEX format (`#RRGGBB`)
  */
 export function renderColor(
@@ -223,6 +224,7 @@ class TextOnPath extends React.PureComponent<{
   }
 }
 
+/** The method renders all chart elements in SVG document */
 export function renderGraphicalElementSVG(
   element: Graphics.Element,
   options?: RenderGraphicalElementSVGOptions
