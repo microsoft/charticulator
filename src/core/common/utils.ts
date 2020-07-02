@@ -1,4 +1,5 @@
 import { Color } from "./color";
+import { timeFormat } from "d3-time-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -542,4 +543,13 @@ export function hexToRgb(hex: string): Color {
         b: parseInt(result[3], 16)
       }
     : null;
+}
+
+/**
+ * Applies timeFormat function of d3 to value
+ * @param value date value
+ * @param format date format of d3
+ */
+export function applyDateFormat(value: Date, format: string): string {
+  return timeFormat(format)(value);
 }

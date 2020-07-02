@@ -36,10 +36,20 @@ export function parseHints(hints: string) {
   }
 }
 
+/**
+ * TODO add user input handler to specify concrete delimeter of CSV file
+ */
 export function getLocalListSeparator(): string {
   return ["", ""].toLocaleString();
 }
 
+/**
+ * Parses data from file. Returns converted rows and list of colum names with types.
+ * Calls {@link inferAndConvertColumn} method from {@link "core/dataset/data_types"} for convert types.
+ * @param fileName input file name for parsing
+ * @param content data of file
+ * @param type type of file. *.csv - text with coma delimeter. *.tsv - tab separated text files
+ */
 export function parseDataset(
   fileName: string,
   content: string,

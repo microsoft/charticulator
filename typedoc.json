@@ -1,0 +1,11 @@
+{
+    "inputFiles": [
+        "./src/"
+    ],
+    "mode": "modules",
+    "out": "./docs/charticulator",
+    "media": "./docs/images",
+    "includes": [
+        "./documentation.md"
+    ]
+}
