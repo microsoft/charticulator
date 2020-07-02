@@ -26,6 +26,7 @@
     "test": "yarn run lint && yarn run dev && yarn run unit_test",
     "add_licenses": "license-check-and-add",
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes"
+    "typedoc": "typedoc --options ./typedoc.json"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -82,13 +83,14 @@
     "@types/file-saver": "^1.3.0",
     "@types/hammerjs": "^2.0.35",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^9.6.2",
+    "@types/node": "^13.13.4",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "chai": "^4.2.0",
     "dts-bundle": "^0.7.3",
     "file-loader": "^2.0.0",
     "fs-extra": "^7.0.1",
+    "handlebars": "4.7.6",
     "http-server": "^0.12.0",
     "husky": "^1.1.3",
     "js-yaml": "^3.13.1",
@@ -104,6 +106,8 @@
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.12.0",
     "tslint-react": "^3.6.0",
+    "typedoc": "~0.15.0",
+    "typedoc-plugin-external-module-name": "2.2.1",
     "typescript": "^3.1.6",
     "uglify-es": "^3.3.9",
     "url-loader": "^1.0.1",

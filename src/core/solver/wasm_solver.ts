@@ -89,7 +89,11 @@ export class WASMSolver extends ConstraintSolver {
     attr.map[attr.name] = value;
   }
 
-  /** Add a linear constraint */
+  /**
+   * Add a linear constraint
+   * @param lhs - left-hand side of equation
+   * @param rhs - left-hand side of equation
+   */
   public addLinear(
     strength: ConstraintStrength,
     bias: number,

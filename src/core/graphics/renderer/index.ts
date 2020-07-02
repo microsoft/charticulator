@@ -1,6 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+/**
+ * See {@link ChartRenderer} for details
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 import {
   getById,
   MultistringHashMap,
@@ -36,6 +43,11 @@ export function facetRows(
   }
 }
 
+/**
+ * The class is responsible for rendering the visual part of the chart (coordinates, elements such as glyph marks e.t.c).
+ * The module calls methods {@link MarkClass.getGraphics} implemented in each marks (rect, image, text, symbol e.t.c)
+ *
+ */
 export class ChartRenderer {
   private manager: Prototypes.ChartStateManager;
 
@@ -82,6 +94,12 @@ export class ChartRenderer {
     });
   }
 
+  /**
+   * Method calls getGraphics method of {@link Mark} objects to get graphical representation of element
+   * @param dataset Dataset of charticulator
+   * @param chart Chart object 
+   * @param chartState State of chart and chart elements
+   */
   private renderChart(
     dataset: Dataset.Dataset,
     chart: Specification.Chart,

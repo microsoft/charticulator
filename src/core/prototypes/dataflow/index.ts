@@ -1,5 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * Expressions context providers.
+ *
+ * {@link DataflowTable} provides data context for charticulator's expressions, solver, plotsegments.
+ *
+ * {@link DataflowManager} is a proxy between dateset and other parts of charticualtor.
+ *
+ * @packageDocumentation
+ * @preferred
+ */
 import * as Dataset from "../../dataset";
 import * as Expression from "../../expression";
 import * as Specification from "../../specification";
