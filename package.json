@@ -25,7 +25,7 @@
     "unit_test": "NODE_PATH=. mocha dist/scripts/tests/unit",
     "test": "yarn run lint && yarn run dev && yarn run unit_test",
     "add_licenses": "license-check-and-add",
-    "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes"
+    "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
     "typedoc": "typedoc --options ./typedoc.json"
   },
   "lint-staged": {
