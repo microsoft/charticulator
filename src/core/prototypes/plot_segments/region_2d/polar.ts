@@ -22,6 +22,8 @@ import {
   Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
+import { getSortDirection } from "../../..";
+import { ChartStateManager } from "../..";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -86,7 +88,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
 export class PolarPlotSegment extends PlotSegmentClass<
   PolarProperties,
   PolarAttributes
-  > {
+> {
   public static classID = "plot-segment.polar";
   public static type = "plot-segment";
 
@@ -328,7 +330,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     ];
   }
 
-  public getGraphics(): Graphics.Group {
+  public getGraphics(manager: ChartStateManager): Graphics.Group {
     const builder = this.createBuilder();
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
@@ -345,7 +347,18 @@ export class PolarPlotSegment extends PlotSegmentClass<
     if (radialData && radialData.visible) {
       g.elements.push(
         new AxisRenderer()
-          .setAxisDataBinding(radialData, innerRadius, outerRadius, false, true)
+          .setAxisDataBinding(
+            radialData,
+            innerRadius,
+            outerRadius,
+            false,
+            true,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.yData.expression,
+              this.object.table
+            )
+          )
           .renderLine(
             cx,
             cy,
@@ -362,7 +375,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
             angleStart,
             angleEnd,
             builder.config.xAxisPrePostGap,
-            false
+            false,
+            PlotSegmentClass.getDisplayFormat(
+              manager,
+              props.xData.expression,
+              this.object.table
+            )
           )
           .renderPolar(
             cx,
@@ -670,6 +688,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.xData) {
+      const values = (this.object.properties.xData as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -679,10 +699,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     if (this.object.properties.yData) {
+      const values = (this.object.properties.yData as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -692,7 +714,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };

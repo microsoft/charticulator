@@ -212,12 +212,7 @@ export class ChartContainer extends EventEmitter {
   }
 
   public addContextMenuListener(
-    listener: (
-      table: string,
-      rowIndices: number[],
-      clientX: number,
-      clientY: number
-    ) => void
+    listener: (table: string, rowIndices: number[], modifiers: any) => void
   ): EventSubscription {
     return this.addListener(ChartContainerEvent.ContextMenu, listener);
   }
@@ -281,8 +276,8 @@ export class ChartContainer extends EventEmitter {
   /** Mount the chart to a container element */
   public mount(
     container: string | Element,
-    width: number = 900,
-    height: number = 600
+    width: number = 1200,
+    height: number = 800
   ) {
     // We only mount in one place
     if (this.container) {

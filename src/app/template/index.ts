@@ -1,3 +1,14 @@
+/**
+ * The {@link ChartTemplateBuilder} creates tempate ({@link ChartTemplate}) from the current chart.
+ * {@link ChartTemplate} contains simplified version of {@link Chart} object in {@link ChartTemplate.specification} property.
+ * Tempate can be exported as *.tmplt file (JSON format). It also uses on export to HTML file or on export as Power BI visual.
+ *
+ * Template can be loaded into container outside of Charticulator app to visualize with custom dataset.
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -29,6 +40,7 @@ export interface ExportTemplateTarget {
   generate(properties: { [name: string]: any }): Promise<string>;
 }
 
+/** Class builds the template from given {@link Specification.Chart} object  */
 export class ChartTemplateBuilder {
   protected template: Specification.Template.ChartTemplate;
   protected tableColumns: { [name: string]: Set<string> };
@@ -38,7 +50,7 @@ export class ChartTemplateBuilder {
     public readonly chart: Specification.Chart,
     public readonly dataset: Dataset.Dataset,
     public readonly manager: Prototypes.ChartStateManager
-  ) { }
+  ) {}
 
   public reset() {
     this.template = {
@@ -210,6 +222,28 @@ export class ChartTemplateBuilder {
             this.addColumn(inference.dataSource.table, key);
           });
         }
+        if (inference.axis) {
+          const templateObject = Prototypes.findObjectById(
+            this.chart,
+            inference.objectID
+          );
+          const keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
+          const keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
+
+          inference.disableAutoMax = templateObject.properties[
+            keyDisableAutoMax
+          ] as boolean;
+          inference.disableAutoMin = templateObject.properties[
+            keyDisableAutoMin
+          ] as boolean;
+
+          if (inference.disableAutoMax === undefined) {
+            inference.disableAutoMax = false;
+          }
+          if (inference.disableAutoMin === undefined) {
+            inference.disableAutoMin = false;
+          }
+        }
         template.inference.push(inference);
       }
     }
@@ -332,7 +366,7 @@ export class ChartTemplateBuilder {
                 return this.tableColumns[table.name].has(x.name);
               })
               .map(x => ({
-                displayName: x.name,
+                displayName: x.displayName || x.name,
                 name: x.name,
                 type: x.type,
                 metadata: x.metadata

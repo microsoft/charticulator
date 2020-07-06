@@ -493,7 +493,8 @@ export class DataMappAndScaleEditor extends ContextedComponent<
                   this.store.getTable(value.table),
                   value.expression,
                   value.type,
-                  value.metadata
+                  value.metadata,
+                  value.rawExpression
                 ),
                 options.hints
               );

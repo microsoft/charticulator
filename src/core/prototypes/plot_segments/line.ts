@@ -21,13 +21,30 @@ import {
   buildAxisProperties
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
+import { ChartStateManager } from "..";
+import { getSortDirection } from "../..";
 
+/**
+ * Line plot segment distributes the elements on the line
+ *
+ *  (y1 and y2 can have diferent values, so line cna have some angle between line and axis lines)
+ *  y1 *------#------#------* y2
+ *    x1                    x2
+ *
+ * # - some element on line
+ */
 export interface LineGuideAttributes extends Specification.AttributeMap {
+  /** x value of left point of line */
   x1?: number;
+  /** y value of left point of line */
   y1?: number;
+  /** x value of right point of line */
   x2?: number;
+  /** y value of right point of line */
   y2?: number;
+  /** free variable ? TODO figure out */
   x?: number;
+  /** free variable ? TODO figure out */
   y?: number;
 }
 
@@ -91,10 +108,22 @@ export class LineGuide extends PlotSegmentClass {
     attrs.y2 = 100;
   }
 
+  /**
+   * Creates constraints for elements on the line plot segment
+   * Line plot segment distributes the elements on the line
+   *  (y1 and y2 can have different values, so line can have some angle between line and axis lines)
+   *  *
+   *  y1 *------#------#------* y2
+   *    x1      t      t      x2
+   *
+   * # - some element on line
+   * t - position of the element on line
+   */
   public buildGlyphConstraints(solver: ConstraintSolver): void {
     const chart = this.parent.object;
     const props = this.object.properties;
     const rows = this.parent.dataflow.getTable(this.object.table);
+    // take variables for attributes
     const [x1, y1, x2, y2] = solver.attrs(this.state.attributes, [
       "x1",
       "y1",
@@ -107,6 +136,7 @@ export class LineGuide extends PlotSegmentClass {
     const dataIndices = this.state.dataRowIndices;
 
     for (const [index, markState] of this.state.glyphs.entries()) {
+      // describes position of points on line (proportions)
       let t = (0.5 + index) / count;
 
       if (props.axis == null) {
@@ -140,12 +170,15 @@ export class LineGuide extends PlotSegmentClass {
         }
       }
 
+      // t is position of elements on line
+      // add constraint t*x2 + (1 - t) * x1 = x
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
         [[t, x2], [1 - t, x1]],
         [[1, solver.attr(markState.attributes, "x")]]
       );
+      // add constraint t*y2 + (1 - t) * y1 = y
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
@@ -208,7 +241,7 @@ export class LineGuide extends PlotSegmentClass {
     } as BoundingBox.Line;
   }
 
-  public getGraphics(): Graphics.Element {
+  public getGraphics(manager: ChartStateManager): Graphics.Element {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const props = this.object.properties;
@@ -221,7 +254,18 @@ export class LineGuide extends PlotSegmentClass {
     }
     if (props.axis && props.axis.visible) {
       const renderer = new AxisRenderer();
-      renderer.setAxisDataBinding(props.axis, 0, length, false, false);
+      renderer.setAxisDataBinding(
+        props.axis,
+        0,
+        length,
+        false,
+        false,
+        PlotSegmentClass.getDisplayFormat(
+          manager,
+          props.axis.expression,
+          this.object.table
+        )
+      );
       const g = renderer.renderLine(
         x1,
         y1,
@@ -251,6 +295,8 @@ export class LineGuide extends PlotSegmentClass {
       p = p.concat(buildAxisProperties(this.object, "axis"));
     }
     if (this.object.properties.axis) {
+      const values = (this.object.properties.axis as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -260,7 +306,7 @@ export class LineGuide extends PlotSegmentClass {
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };

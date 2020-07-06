@@ -48,6 +48,10 @@ export interface MarkEditorViewState {
   height: number;
 }
 
+/**
+ * Editor view for glyph
+ * ![Mark widgets](media://glyph_editor.png)
+ */
 export class MarkEditorView extends ContextedComponent<
   MarkEditorViewProps,
   MarkEditorViewState
