@@ -25,7 +25,8 @@ export class ChartConstraintSolver {
   public datasetContext: Dataset.DatasetContext;
   public expressionCache: Expression.ExpressionCache;
 
-  /** Create a ChartConstraintSolver
+  /** 
+   * Create a ChartConstraintSolver
    * - stage == "chart": disregard glyphs, solve chart-level constraints
    * - stage == "glyphs": fix chart-level attributes, solve only glyphs
    * @param stage determines the scope of the variables to solve
@@ -463,7 +464,8 @@ export class ChartConstraintSolver {
   }
 }
 
-/** Closed-form solution for single marks
+/**
+ * Closed-form solution for single marks
  *
  * Closed-form solution is: MarkAttributes = F(DataValues, ScaleAttributes, FreeVariables)
  */
@@ -720,7 +722,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     this.glyphState = glyphState;
   }
 
-  public setValue() {}
+  public setValue() { }
   public getValue() {
     return 0;
   }
@@ -729,7 +731,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     console.warn("(unimplemented) Make Constant: ", attr);
   }
 
-  public destroy() {}
+  public destroy() { }
 
   private ker: Float64Array[];
   private X0: Float64Array[];

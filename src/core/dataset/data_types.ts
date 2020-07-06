@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import { DataValue, DataType, DataKind, ColumnMetadata } from "./dataset";
 import {
   parseDate,
@@ -169,7 +170,7 @@ export function inferAndConvertColumn(
       return {
         type: DataType.Boolean,
         values: convertedValues,
-        // rawValues: values.map(v => v && v.toLowerCase()),
+        rawValues: values.map(v => v && v.toLowerCase()),
         metadata: {
           kind: DataKind.Categorical
         }

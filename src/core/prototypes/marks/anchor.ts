@@ -31,7 +31,7 @@ export class AnchorElement extends MarkClass {
 
   public readonly state: AnchorElementState;
 
-  // Get a list of elemnt attributes
+  /** Get a list of elemnt attributes */
   public attributeNames: string[] = ["x", "y"];
   public attributes: { [name: string]: AttributeDescription } = {
     x: {
@@ -44,14 +44,14 @@ export class AnchorElement extends MarkClass {
     }
   };
 
-  // Initialize the state of an element so that everything has a valid value
+  /** Initialize the state of an element so that everything has a valid value */
   public initializeState(): void {
     const attrs = this.state.attributes;
     attrs.x = 0;
     attrs.y = 0;
   }
 
-  // Get bounding rectangle given current state
+  /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
     return [];
     // let attrs = this.state.attributes as AnchorElementAttributes;

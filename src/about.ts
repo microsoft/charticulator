@@ -1,3 +1,9 @@
+/**
+ * @ignore
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 fetch("data/THIRD_PARTY.json")
@@ -47,6 +53,9 @@ fetch("data/THIRD_PARTY.json")
 document.getElementById("version").innerText = CHARTICULATOR_PACKAGE.version;
 document.getElementById("revision").innerText = CHARTICULATOR_PACKAGE.revision;
 
+/**
+ * @ignore
+ */
 function createElement(name: string, attrs: any, text?: string) {
   const ele = document.createElement(name);
   Object.keys(attrs).forEach(attr => {
@@ -58,6 +67,9 @@ function createElement(name: string, attrs: any, text?: string) {
   }
   return ele;
 }
+/**
+ * @ignore
+ */
 const WebFontConfig = {
   google: {
     families: ["Lato:300,300i,400,400i,700,700i", "Inconsolata:400,700"]

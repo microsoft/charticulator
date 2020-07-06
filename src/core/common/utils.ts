@@ -1,4 +1,5 @@
 import { Color } from "./color";
+import { timeFormat } from "d3-time-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -461,7 +462,7 @@ export abstract class HashMap<KeyType, ValueType> {
 export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
-> {
+  > {
   protected separator: string = Math.random()
     .toString(36)
     .substr(2);
@@ -537,9 +538,35 @@ export function hexToRgb(hex: string): Color {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      }
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    }
     : null;
+}
+
+/**
+ * Retunrs sort direction by comparing the first and the last values of string array
+ */
+export function getSortDirection(values: string[]): string {
+  let direction = "ascending";
+  if (values && values[0] && values[(values as any[]).length - 1]) {
+    const a = values[0].toString();
+    const b = values[(values as any[]).length - 1].toString();
+    if (b && a && b.localeCompare(a) > -1) {
+      direction = "ascending";
+    } else {
+      direction = "descending";
+    }
+  }
+  return direction;
+}
+
+/**
+ * Applies timeFormat function of d3 to value
+ * @param value date value
+ * @param format date format of d3
+ */
+export function applyDateFormat(value: Date, format: string): string {
+  return timeFormat(format)(value);
 }

@@ -64,6 +64,10 @@ export interface ChartEditorViewState {
   isSolving: boolean;
 }
 
+/**
+ * Editor view for chart
+ * ![Mark widgets](media://chart_editor.png)
+ */
 export class ChartEditorView
   extends React.Component<ChartEditorViewProps, ChartEditorViewState>
   implements Droppable {

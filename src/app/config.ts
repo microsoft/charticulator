@@ -23,6 +23,9 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   }>;
   WorkerURL: string;
   ContainerURL: string;
+  CorsPolicy: {
+    TargetOrigins: string;
+  };
 }
 
 export function getConfig(): CharticulatorAppConfig {

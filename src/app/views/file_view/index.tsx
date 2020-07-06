@@ -1,5 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * Components to save, open, create, export charts.
+ *
+ * ![File view](media://file_view.png)
+ *
+ * * {@link "app/views/file_view/new_view"} / {@link "app/views/file_view/import_data_view"} - component with two file inputs for main table data and links table data
+ *
+ * ![File view](media://file_view_new.png)
+ *
+ * * {@link "app/views/file_view/open_view"}
+ *
+ * ![File view](media://file_view_open.png)
+ *
+ * * {@link "app/views/file_view/save_view"}
+ *
+ * ![File view](media://file_view_save.png)
+ *
+ * * {@link "app/views/file_view/export_view"}
+ *
+ * ![File view](media://file_view_export.png)
+ *
+ * @packageDocumentation
+ * @preferred
+ */
 import * as React from "react";
 import * as R from "../../resources";
 

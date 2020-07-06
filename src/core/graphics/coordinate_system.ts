@@ -1,5 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * @packageDocumentation
+ * @preferred
+ */
+
 import {
   Element,
   makeLine,
@@ -251,7 +257,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
 }
 
 export class CoordinateSystemHelper {
-  constructor(public coordinateSystem: CoordinateSystem) {}
+  constructor(public coordinateSystem: CoordinateSystem) { }
 
   public rect(
     x1: number,
@@ -363,7 +369,7 @@ export class CoordinateSystemHelper {
           2,
           Math.ceil(
             (3 * cs.getCurve().getSegments().length * Math.abs(x2 - x1)) /
-              cs.getCurve().getLength()
+            cs.getCurve().getLength()
           )
         );
         for (let i = 1; i <= segments; i++) {
