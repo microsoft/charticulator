@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { AppStore } from "./stores";
 
-import { initialize, Dispatcher, Specification, Dataset } from "../core";
+import { initialize, Dispatcher, Specification, Dataset, deepClone } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -17,7 +17,6 @@ import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
-import { string } from "../core/expression";
 import { TableType } from "../core/dataset";
 
 function makeDefaultDataset(): Dataset.Dataset {
@@ -102,13 +101,25 @@ export class Application {
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
+  private config: CharticulatorAppConfig;
+
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
     workerScriptURL: string
   ) {
+    this.config = config;
     await initialize(config);
-    this.worker = new CharticulatorWorker(workerScriptURL);
+
+    const responce = await fetch(`${workerScriptURL}`);
+    if (!responce.ok) {
+      throw Error(`Loading worker script from ${workerScriptURL} failed`);
+    }
+    const script = await responce.text();
+    const blob = new Blob([script], { type: "application/javascript" });
+    const workerScript = URL.createObjectURL(blob);
+
+    this.worker = new CharticulatorWorker(workerScript);
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -147,7 +158,7 @@ export class Application {
 
   public setupNestedEditor(id: string) {
     window.addEventListener("message", (e: MessageEvent) => {
-      if (e.origin != document.location.origin || e.data.id != id) {
+      if (e.data.id != id) {
         return;
       }
       const info: {
@@ -174,23 +185,51 @@ export class Application {
         })
       );
       this.appStore.setupNestedEditor(newSpecification => {
-        window.opener.postMessage(
-          {
-            id,
-            type: "save",
-            specification: newSpecification
-          },
-          document.location.origin
-        );
+        const template = deepClone(this.appStore.buildChartTemplate());
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              id,
+              type: "save",
+              specification: newSpecification,
+              template
+            },
+            document.location.origin
+          );
+        } else {
+          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+            window.parent.postMessage(
+              {
+                id,
+                type: "save",
+                specification: newSpecification,
+                template
+              },
+              this.config.CorsPolicy.TargetOrigins
+            );
+          }
+        }
       });
     });
-    window.opener.postMessage(
-      {
-        id,
-        type: "initialized"
-      },
-      document.location.origin
-    );
+    if (window.opener) {
+      window.opener.postMessage(
+        {
+          id,
+          type: "initialized"
+        },
+        document.location.origin
+      );
+    } else {
+      if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+        window.parent.postMessage(
+          {
+            id,
+            type: "initialized"
+          },
+          this.config.CorsPolicy.TargetOrigins
+        );
+      }
+    }
   }
 
   public async processHashString() {

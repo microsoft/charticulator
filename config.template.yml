@@ -6,6 +6,14 @@
 # Configure extensions if any
 #------------------------------------------------
 
+
+#------------------------------------------------
+# Allow communication with another domain. It requires for post message.
+#------------------------------------------------
+
+# CorsPolicy:
+#   TargetOrigins: https://charticulator.com
+
 # Extensions:
 #   - script: extensions/extension.js
 #     initialize: |

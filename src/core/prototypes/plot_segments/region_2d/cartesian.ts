@@ -26,6 +26,7 @@ import { PlotSegmentClass } from "../plot_segment";
 import { DataType } from "../../../specification";
 import { TextExpression, FunctionCall, Variable } from "../../../expression";
 import { DataflowTable } from "../../dataflow";
+import { getSortDirection } from "../../..";
 
 export type CartesianAxisMode =
   | "null"
@@ -539,6 +540,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.xData) {
+      const values = this.object.properties.xData.categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -548,10 +551,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     if (this.object.properties.yData) {
+      const values = this.object.properties.yData.categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -561,10 +566,12 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     if (this.object.properties.axis) {
+      const values = (this.object.properties.axis as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -574,7 +581,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };

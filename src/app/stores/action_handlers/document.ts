@@ -246,6 +246,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
+    this.solveConstraintsAndUpdateGraphics();
   });
 
   REG.add(Actions.UpdatePlotSegments, function(action) {

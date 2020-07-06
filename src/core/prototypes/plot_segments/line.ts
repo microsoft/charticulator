@@ -22,6 +22,7 @@ import {
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
 import { ChartStateManager } from "..";
+import { getSortDirection } from "../..";
 
 /**
  * Line plot segment distributes the elements on the line
@@ -294,6 +295,8 @@ export class LineGuide extends PlotSegmentClass {
       p = p.concat(buildAxisProperties(this.object, "axis"));
     }
     if (this.object.properties.axis) {
+      const values = (this.object.properties.axis as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -303,7 +306,7 @@ export class LineGuide extends PlotSegmentClass {
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };

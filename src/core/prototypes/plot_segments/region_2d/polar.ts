@@ -22,6 +22,7 @@ import {
   Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
+import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
@@ -687,6 +688,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.xData) {
+      const values = (this.object.properties.xData as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -696,10 +699,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     if (this.object.properties.yData) {
+      const values = (this.object.properties.yData as any).categories;
+      const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
         target: {
@@ -709,7 +714,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
           }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };
