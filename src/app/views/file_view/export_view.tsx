@@ -231,6 +231,7 @@ export class ExportTemplateView extends ContextedComponent<
     this.setState(this.getDefaultState(newProps.exportKind));
   }
 
+  /** Renders input fields for extension properties */
   public renderInput(
     label: string,
     type: string,
@@ -306,6 +307,7 @@ export class ExportTemplateView extends ContextedComponent<
     }
   }
 
+  /** Renders all fields for extension properties */
   public renderTargetProperties() {
     return this.state.target.getProperties().map(property => {
       const displayName = this.store.getPropertyExportName(property.name);
@@ -333,6 +335,7 @@ export class ExportTemplateView extends ContextedComponent<
     });
   }
 
+  /** Renders column names for export view */
   public renderSlots() {
     if (this.state.template.tables.length == 0) {
       return <p>(none)</p>;
@@ -347,6 +350,13 @@ export class ExportTemplateView extends ContextedComponent<
               column.displayName,
               null,
               value => {
+                const dataTable = this.store.dataset.tables.find(
+                  t => t.name === table.name
+                );
+                const dataColumn = dataTable.columns.find(
+                  c => c.name === column.name
+                );
+                dataColumn.displayName = value;
                 column.displayName = value;
                 this.setState({
                   template: this.state.template
@@ -369,41 +379,92 @@ export class ExportTemplateView extends ContextedComponent<
         // Only show axis and scale inferences
         .filter(inference => inference.axis || inference.scale)
         .map((inference, index) => {
-          let descriptionMin = inference.description;
-          let descriptionMax = inference.description;
-          if (!descriptionMin) {
+          let descriptionMin: string;
+          let descriptionMax: string;
+          const object = findObjectById(this.store.chart, inference.objectID);
+          const temaplteObject = findObjectById(
+            template.specification,
+            inference.objectID
+          );
+          if (!descriptionMin || !descriptionMax) {
+            const objectName = object.properties.name;
             if (inference.scale) {
-              const scaleName = findObjectById(
-                template.specification,
-                inference.objectID
-              ).properties.name;
-              descriptionMin = `Auto min domain and range for ${scaleName}`;
-              descriptionMax = `Auto max domain and range for ${scaleName}`;
+              descriptionMin = `Auto min domain and range for ${objectName}`;
+              descriptionMax = `Auto max domain and range for ${objectName}`;
             }
             if (inference.axis) {
-              const objectName = findObjectById(
-                template.specification,
-                inference.objectID
-              ).properties.name;
               descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
               descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
             }
           }
-          if (inference.disableAuto === undefined) {
-            inference.disableAuto = false;
+          let keyDisableAutoMin = "disableAutoMin";
+          let keyDisableAutoMax = "disableAutoMax";
+          if (inference.axis) {
+            keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
+            keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
           }
+          if (object.properties[keyDisableAutoMax] === undefined) {
+            // object.properties[keyPropertyAutoMax] = false;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                keyDisableAutoMax,
+                null,
+                false,
+                true,
+                true
+              )
+            );
+            temaplteObject.properties[keyDisableAutoMax] = false;
+            inference.disableAutoMax = false;
+          } else {
+            inference.disableAutoMax = temaplteObject.properties[
+              keyDisableAutoMax
+            ] as boolean;
+          }
+          if (object.properties[keyDisableAutoMin] === undefined) {
+            // object.properties[keyPropertyAutoMin] = false;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                keyDisableAutoMin,
+                null,
+                false,
+                true,
+                true
+              )
+            );
+            temaplteObject.properties[keyDisableAutoMin] = false;
+            inference.disableAutoMin = false;
+          } else {
+            inference.disableAutoMin = object.properties[
+              keyDisableAutoMin
+            ] as boolean;
+          }
+
           return (
             <React.Fragment key={index}>
               <div
                 className="el-inference-item"
                 onClick={() => {
-                  inference.disableAutoMin = !inference.disableAutoMin;
+                  // inference.disableAutoMin = !object.properties[keyDisableAutoMin];
+                  // temaplteObject.properties[keyDisableAutoMin] = !object.properties[keyDisableAutoMin];
+                  this.dispatch(
+                    new Actions.SetObjectProperty(
+                      object,
+                      keyDisableAutoMin,
+                      null,
+                      !object.properties[keyDisableAutoMin],
+                      true,
+                      true
+                    )
+                  );
                   this.setState({ template });
                 }}
               >
                 <SVGImageIcon
                   url={
-                    inference.disableAutoMin
+                    object.properties[keyDisableAutoMin]
                       ? R.getSVGIcon("checkbox/empty")
                       : R.getSVGIcon("checkbox/checked")
                   }
@@ -413,13 +474,24 @@ export class ExportTemplateView extends ContextedComponent<
               <div
                 className="el-inference-item"
                 onClick={() => {
-                  inference.disableAutoMax = !inference.disableAutoMax;
+                  // inference.disableAutoMax = !object.properties[keyDisableAutoMax];
+                  // temaplteObject.properties[keyDisableAutoMax] = !object.properties[keyDisableAutoMax];
+                  this.dispatch(
+                    new Actions.SetObjectProperty(
+                      object,
+                      keyDisableAutoMax,
+                      null,
+                      !object.properties[keyDisableAutoMax],
+                      true,
+                      true
+                    )
+                  );
                   this.setState({ template });
                 }}
               >
                 <SVGImageIcon
                   url={
-                    inference.disableAutoMax
+                    object.properties[keyDisableAutoMax]
                       ? R.getSVGIcon("checkbox/empty")
                       : R.getSVGIcon("checkbox/checked")
                   }
@@ -432,6 +504,7 @@ export class ExportTemplateView extends ContextedComponent<
     );
   }
 
+  /** Renders object/properties list of chart */
   public renderExposedProperties() {
     const template = this.state.template;
     const result: JSX.Element[] = [];
@@ -439,13 +512,27 @@ export class ExportTemplateView extends ContextedComponent<
     for (const p of this.state.template.properties) {
       const id = p.objectID;
       const object = findObjectById(
-        this.state.template.specification,
+        this.store.chart,
         id
       ) as Specification.ExposableObject;
 
       if (object && (p.target.attribute || p.target.property)) {
-        if (object.exposed == undefined) {
-          object.exposed = true;
+        if (object.properties.exposed == undefined) {
+          this.dispatch(
+            new Actions.SetObjectProperty(
+              object,
+              "exposed",
+              null,
+              true,
+              true,
+              true
+            )
+          );
+          const templateObject = findObjectById(
+            this.state.template.specification,
+            id
+          );
+          templateObject.properties.exposed = true;
         }
         templateObjects.set(id, object as Specification.ExposableObject);
       }
@@ -460,13 +547,32 @@ export class ExportTemplateView extends ContextedComponent<
           key={key}
           className="el-inference-item"
           onClick={() => {
-            object.exposed = !object.exposed;
+            this.dispatch(
+              new Actions.SetObjectProperty(
+                object,
+                "exposed",
+                null,
+                !(object.properties.exposed === undefined
+                  ? true
+                  : object.properties.exposed),
+                true,
+                true
+              )
+            );
+            const templateObject = findObjectById(
+              this.state.template.specification,
+              object._id
+            );
+            templateObject.properties.exposed = !templateObject.properties
+              .exposed;
             this.setState({ template });
           }}
         >
           <SVGImageIcon
             url={
-              !object.exposed
+              !(object.properties.exposed === undefined
+                ? true
+                : object.properties.exposed)
                 ? R.getSVGIcon("checkbox/empty")
                 : R.getSVGIcon("checkbox/checked")
             }

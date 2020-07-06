@@ -247,10 +247,10 @@ export class ChartTemplate {
         if (axisDataBinding.tickDataExpression) {
           axisDataBinding.tickDataExpression = null; // TODO: fixme
         }
+        if (!inference.disableAutoMin || !inference.disableAutoMax) {
         // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
         // If disableAuto is true, the same scales will be used for data
         // Example: If disableAuto is true, axis values will be same for all new data sets.
-        if (!inference.disableAuto) {
           let vector = getExpressionVector(
             expression,
             this.tableAssignment[inference.dataSource.table],
@@ -297,7 +297,7 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
-        if (!inference.disableAuto) {
+        if (!inference.disableAutoMin || !inference.disableAutoMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map(x =>
             this.transformExpression(x, inference.dataSource.table)
