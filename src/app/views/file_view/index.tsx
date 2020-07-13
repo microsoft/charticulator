@@ -95,7 +95,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
   public renderContent() {
     switch (this.state.currentTab) {
       case "new": {
-        return <FileViewNew onClose={this.props.onClose} />;
+        return <FileViewNew onClose={this.props.onClose} intlProvider={this.props.store} />;
       }
       case "save": {
         return <FileViewSaveAs onClose={this.props.onClose} />;
