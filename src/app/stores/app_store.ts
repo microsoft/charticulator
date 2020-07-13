@@ -112,7 +112,7 @@ export class AppStore extends BaseStore {
     delimiter: ",",
     localeRemove: ",",
     localeDecimal: "."
-  }
+  };
   public currentTool: string;
   public currentToolOptions: string;
 
