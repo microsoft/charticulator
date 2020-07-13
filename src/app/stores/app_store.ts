@@ -43,7 +43,7 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
-import { DataflowTable } from "../../core/prototypes/dataflow";
+import { LocaleDelimiter } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import { DataKind, DataType } from "../../core/specification";
@@ -108,6 +108,11 @@ export class AppStore extends BaseStore {
   public currentSelection: Selection;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
+  protected localeDelimiter: LocaleDelimiter = {
+    delimiter: ",",
+    localeRemove: ",",
+    localeDecimal: "."
+  }
   public currentTool: string;
   public currentToolOptions: string;
 
@@ -377,6 +382,14 @@ export class AppStore extends BaseStore {
     template: Specification.Template.ChartTemplate
   ): ExportTemplateTarget {
     return this.registeredExportTemplateTargets.get(name)(template);
+  }
+
+  public getLocaleDelimiter(): LocaleDelimiter {
+    return this.localeDelimiter;
+  }
+
+  public setLocaleDelimiter(value: LocaleDelimiter) {
+    this.localeDelimiter = value;
   }
 
   public getTable(name: string): Dataset.Table {
