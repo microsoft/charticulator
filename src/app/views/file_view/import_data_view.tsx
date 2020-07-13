@@ -198,10 +198,16 @@ export class ImportDataView extends React.Component<
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadDSVFromContents(filename, contents, { ...localeFormat, delimiter: "," });
+          return loader.loadDSVFromContents(filename, contents, {
+            ...localeFormat,
+            delimiter: ","
+          });
         }
         case "tsv": {
-          return loader.loadDSVFromContents(filename, contents, { ...localeFormat, delimiter: "\t" });
+          return loader.loadDSVFromContents(filename, contents, {
+            ...localeFormat,
+            delimiter: "\t"
+          });
         }
       }
     });
@@ -239,7 +245,10 @@ export class ImportDataView extends React.Component<
                                     dataset.tables.map((table, index) => {
                                       const loader = new Dataset.DatasetLoader();
                                       return loader
-                                        .loadDSVFromURL(table.url, this.props.intlProvider.getLocaleDelimiter())
+                                        .loadDSVFromURL(
+                                          table.url,
+                                          this.props.intlProvider.getLocaleDelimiter()
+                                        )
                                         .then(r => {
                                           r.name = table.name;
                                           r.displayName = table.name;
@@ -399,7 +408,7 @@ export class ImportDataView extends React.Component<
             url={R.getSVGIcon("general/more-horizontal")}
             title="Finish importing data"
             onClick={() => {
-              console.log('TODO set options')
+              console.log("TODO set options");
             }}
           />{" "}
           <ButtonRaised
