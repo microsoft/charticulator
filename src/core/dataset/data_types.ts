@@ -15,10 +15,10 @@ export interface LocaleFormat {
 }
 
 function localeNumber(x: string, localeFormat: LocaleFormat) {
-  const reRemove = new RegExp(localeFormat.localeRemove, 'g');
+  const reRemove = new RegExp(localeFormat.localeRemove, "g");
   x = x.replace(reRemove, "");
   if (localeFormat.localeDecimal !== ".") {
-    const reReplace = new RegExp(localeFormat.localeDecimal, 'g');
+    const reReplace = new RegExp(localeFormat.localeDecimal, "g");
     x = x.replace(reReplace, ".");
   }
   return +x;
@@ -73,7 +73,10 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
 };
 
 /** Infer column type from a set of strings (not null) */
-export function inferColumnType(values: string[], localeformat: LocaleFormat): DataType {
+export function inferColumnType(
+  values: string[],
+  localeformat: LocaleFormat
+): DataType {
   const candidates: DataType[] = [
     DataType.Boolean,
     DataType.Number,
@@ -102,7 +105,11 @@ export function inferColumnType(values: string[], localeformat: LocaleFormat): D
 }
 
 /** Convert strings to value type, null & non-convertibles are set as null */
-export function convertColumn(type: DataType, values: string[], localeformat: LocaleFormat): DataValue[] {
+export function convertColumn(
+  type: DataType,
+  values: string[],
+  localeformat: LocaleFormat
+): DataValue[] {
   const converter = dataTypes[type].convert;
   return values.map(v => (v != null ? converter(v, localeformat) : null));
 }
@@ -127,7 +134,10 @@ export function inferAndConvertColumn(
   type: DataType;
   metadata: ColumnMetadata;
 } {
-  const inferredType = inferColumnType(values.filter(x => x != null), localeformat);
+  const inferredType = inferColumnType(
+    values.filter(x => x != null),
+    localeformat
+  );
   const convertedValues = convertColumn(inferredType, values, localeformat);
   if (hints == null) {
     hints = {};

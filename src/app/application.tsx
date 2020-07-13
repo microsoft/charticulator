@@ -6,7 +6,13 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { AppStore } from "./stores";
 
-import { initialize, Dispatcher, Specification, Dataset, deepClone } from "../core";
+import {
+  initialize,
+  Dispatcher,
+  Specification,
+  Dataset,
+  deepClone
+} from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -248,9 +254,15 @@ export class Application {
     } else if (hashParsed.loadCSV) {
       // Quick load from one or two CSV files
       // default to comma delimiter, and en-US number format
-      const localeDelimiter = { delimiter: ",", localeRemove: ",", localeDecimal: "." };
+      const localeDelimiter = {
+        delimiter: ",",
+        localeRemove: ",",
+        localeDecimal: "."
+      };
       const spec: DatasetSourceSpecification = {
-        tables: hashParsed.loadCSV.split("|").map(x => ({ url: x, localeDelimiter }))
+        tables: hashParsed.loadCSV
+          .split("|")
+          .map(x => ({ url: x, localeDelimiter }))
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);

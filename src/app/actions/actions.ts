@@ -170,7 +170,12 @@ export class UpdatePlotSegments extends Action {
 }
 
 export class ConvertColumnDataType extends Action {
-  constructor(public tableName: string, public column: string, public type: DataType, public localeFormat: LocaleFormat) {
+  constructor(
+    public tableName: string,
+    public column: string,
+    public type: DataType,
+    public localeFormat: LocaleFormat
+  ) {
     super();
   }
 
@@ -293,7 +298,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action { }
+export class MarkAction extends Action {}
 
 export class SetMarkAttribute extends MarkAction {
   constructor(

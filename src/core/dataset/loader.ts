@@ -24,13 +24,20 @@ export class DatasetLoader {
     return fetch(url).then(resp => resp.text());
   }
 
-  public loadDSVFromURL(url: string, localeDelimiter: LocaleDelimiter): Promise<Table> {
+  public loadDSVFromURL(
+    url: string,
+    localeDelimiter: LocaleDelimiter
+  ): Promise<Table> {
     return this.loadTextData(url).then(data => {
       return parseDataset(url, data, localeDelimiter);
     });
   }
 
-  public loadDSVFromContents(filename: string, contents: string, localeDelimiter: LocaleDelimiter): Table {
+  public loadDSVFromContents(
+    filename: string,
+    contents: string,
+    localeDelimiter: LocaleDelimiter
+  ): Table {
     return parseDataset(filename, contents, localeDelimiter);
   }
 
