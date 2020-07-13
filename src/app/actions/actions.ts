@@ -14,6 +14,7 @@ import {
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
 import { DataType } from "../../core/dataset";
+import { LocaleFormat } from "../../core/dataset/data_types";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -169,7 +170,7 @@ export class UpdatePlotSegments extends Action {
 }
 
 export class ConvertColumnDataType extends Action {
-  constructor(public tableName: string, public column: string, public type: DataType) {
+  constructor(public tableName: string, public column: string, public type: DataType, public localeFormat: LocaleFormat) {
     super();
   }
 

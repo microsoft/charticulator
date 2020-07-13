@@ -247,8 +247,10 @@ export class Application {
       this.appStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.loadCSV) {
       // Quick load from one or two CSV files
+      // default to comma delimiter, and en-US number format
+      const localeDelimiter = { delimiter: ",", localeRemove: ",", localeDecimal: "." };
       const spec: DatasetSourceSpecification = {
-        tables: hashParsed.loadCSV.split("|").map(x => ({ url: x }))
+        tables: hashParsed.loadCSV.split("|").map(x => ({ url: x, localeDelimiter }))
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);

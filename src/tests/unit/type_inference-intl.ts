@@ -7,7 +7,7 @@ import {
 } from "../../core/dataset/data_types";
 import { DataType } from "../../core/dataset";
 
-const localeFormat = { localeRemove: ",", localeDecimal: "." };
+const localeFormat = { localeRemove: ".", localeDecimal: "," };
 
 describe("Data Type Inference", () => {
   it("inferColumnType", () => {
@@ -27,7 +27,7 @@ describe("Data Type Inference", () => {
   it("inferAndConvertColumn", () => {
     const cases: Array<[string[], any]> = [
       [
-        ["1", "3", "4.5", "23", null],
+        ["1", "3", "4,5", "23", null],
         {
           type: DataType.Number,
           values: [1, 3, 4.5, 23, null],

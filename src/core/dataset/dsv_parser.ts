@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { dsvFormat, csvParseRows, tsvParseRows } from "d3-dsv";
+import { dsvFormat } from "d3-dsv";
 
-import { inferAndConvertColumn } from "./data_types";
+import { inferAndConvertColumn, LocaleFormat } from "./data_types";
 import {
   Row,
   Table,
@@ -36,11 +36,8 @@ export function parseHints(hints: string) {
   }
 }
 
-/**
- * TODO add user input handler to specify concrete delimeter of CSV file
- */
-export function getLocalListSeparator(): string {
-  return ["", ""].toLocaleString();
+export interface LocaleDelimiter extends LocaleFormat {
+  delimiter: string;
 }
 
 /**
@@ -53,26 +50,10 @@ export function getLocalListSeparator(): string {
 export function parseDataset(
   fileName: string,
   content: string,
-  type: "csv" | "tsv"
+  localeDelimiter: LocaleDelimiter
 ): Table {
   let rows: string[][];
-  switch (type) {
-    case "csv":
-      {
-        rows = dsvFormat(getLocalListSeparator()).parseRows(content);
-      }
-      break;
-    case "tsv":
-      {
-        rows = tsvParseRows(content);
-      }
-      break;
-    default:
-      {
-        rows = [[]];
-      }
-      break;
-  }
+  rows = dsvFormat(localeDelimiter.delimiter).parseRows(content);
 
   // Remove empty rows if any
   rows = rows.filter(row => row.length > 0);
@@ -90,7 +71,7 @@ export function parseDataset(
 
     let columnValues = header.map((name, index) => {
       const values = data.map(row => row[index]);
-      return inferAndConvertColumn(values);
+      return inferAndConvertColumn(values, localeDelimiter);
     });
 
     const additionalColumns: Array<{

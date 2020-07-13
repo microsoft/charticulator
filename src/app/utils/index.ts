@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { prettyNumber, ZoomInfo, Dataset } from "../../core";
 import { DataType, DataKind } from "../../core/specification";
-import { convertColumn } from "../../core/dataset/data_types";
+import { convertColumn, LocaleFormat } from "../../core/dataset/data_types";
 
 export function classNames(...args: Array<string | [string, boolean]>) {
   return args
@@ -288,7 +288,8 @@ export function convertColumns(
   table: Dataset.Table,
   column: Dataset.Column,
   originTable: Dataset.Table,
-  type: Dataset.DataType
+  type: Dataset.DataType,
+  localeFormat: LocaleFormat
 ) {
   const applyConvertedValues = (
     table: Dataset.Table,
@@ -315,7 +316,7 @@ export function convertColumns(
   });
 
   try {
-    const convertedValues = convertColumn(type, columnValues as any);
+    const convertedValues = convertColumn(type, columnValues as any, localeFormat);
     if (convertedValues.filter(val => val).length === 0) {
       throw Error(
         `Converting column type from ${originColumn.type} to ${type} failed`

@@ -9,12 +9,27 @@ import {
   getDateFormat
 } from "./datetime";
 
+export interface LocaleFormat {
+  localeRemove: string;
+  localeDecimal: string;
+}
+
+function localeNumber(x: string, localeFormat: LocaleFormat) {
+  const reRemove = new RegExp(localeFormat.localeRemove, 'g');
+  x = x.replace(reRemove, "");
+  if (localeFormat.localeDecimal !== ".") {
+    const reReplace = new RegExp(localeFormat.localeDecimal, 'g');
+    x = x.replace(reReplace, ".");
+  }
+  return +x;
+}
+
 // Infer column type.
 // Adapted from datalib: https://github.com/vega/datalib/blob/master/src/import/type.js
 
 export interface DataTypeDescription {
-  test: (v: string) => boolean;
-  convert: (v: string) => DataValue;
+  test: (v: string, localeformat?: LocaleFormat) => boolean;
+  convert: (v: string, localeformat?: LocaleFormat) => DataValue;
 }
 
 export let dataTypes: { [name in DataType]: DataTypeDescription } = {
@@ -35,14 +50,15 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     }
   },
   number: {
-    test: (x: string) => {
+    test: (x: string, localeformat: LocaleFormat) => {
       if (x === "null") {
         return true;
       }
-      return !isNaN(+x.replace(/\,/g, ""));
+      const value = localeNumber(x, localeformat);
+      return !isNaN(value);
     },
-    convert: (x: string) => {
-      const value = +x.replace(/\,/g, "");
+    convert: (x: string, localeformat: LocaleFormat) => {
+      const value = localeNumber(x, localeformat);
       return isNaN(value) ? null : value;
     }
   },
@@ -57,7 +73,7 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
 };
 
 /** Infer column type from a set of strings (not null) */
-export function inferColumnType(values: string[]): DataType {
+export function inferColumnType(values: string[], localeformat: LocaleFormat): DataType {
   const candidates: DataType[] = [
     DataType.Boolean,
     DataType.Number,
@@ -71,7 +87,7 @@ export function inferColumnType(values: string[]): DataType {
     }
     // test for remaining candidates
     for (let j = 0; j < candidates.length; j++) {
-      if (!dataTypes[candidates[j]].test(v)) {
+      if (!dataTypes[candidates[j]].test(v, localeformat)) {
         // console.log(candidates[j], "fail at", v);
         candidates.splice(j, 1);
         j -= 1;
@@ -86,9 +102,9 @@ export function inferColumnType(values: string[]): DataType {
 }
 
 /** Convert strings to value type, null & non-convertibles are set as null */
-export function convertColumn(type: DataType, values: string[]): DataValue[] {
+export function convertColumn(type: DataType, values: string[], localeformat: LocaleFormat): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map(v => (v != null ? converter(v) : null));
+  return values.map(v => (v != null ? converter(v, localeformat) : null));
 }
 
 /** Get distinct values from a non-null array of basic types */
@@ -103,6 +119,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 /** Infer column metadata and update type if necessary */
 export function inferAndConvertColumn(
   values: string[],
+  localeformat: LocaleFormat,
   hints?: { [name: string]: string }
 ): {
   values: DataValue[];
@@ -110,8 +127,8 @@ export function inferAndConvertColumn(
   type: DataType;
   metadata: ColumnMetadata;
 } {
-  const inferredType = inferColumnType(values.filter(x => x != null));
-  const convertedValues = convertColumn(inferredType, values);
+  const inferredType = inferColumnType(values.filter(x => x != null), localeformat);
+  const convertedValues = convertColumn(inferredType, values, localeformat);
   if (hints == null) {
     hints = {};
   }

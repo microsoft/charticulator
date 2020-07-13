@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Table, Dataset, TableType } from "./dataset";
-import { parseDataset } from "./dsv_parser";
+import { parseDataset, LocaleDelimiter } from "./dsv_parser";
 
 export interface TableSourceSpecification {
   /** Name of the table, if empty, use the basename of the url without extension */
   name?: string;
-  /** Table format, if empty, infer from the url's extension */
-  format?: "csv" | "tsv";
+  /** Locale-based delimiter and number format */
+  localeDelimiter: LocaleDelimiter;
   /** Option 1: Specify the url to load the table from */
   url?: string;
   /** Option 2: Specify the table content, in this case format and name must be specified */
@@ -24,24 +24,14 @@ export class DatasetLoader {
     return fetch(url).then(resp => resp.text());
   }
 
-  public loadCSVFromURL(url: string): Promise<Table> {
+  public loadDSVFromURL(url: string, localeDelimiter: LocaleDelimiter): Promise<Table> {
     return this.loadTextData(url).then(data => {
-      return parseDataset(url, data, "csv");
+      return parseDataset(url, data, localeDelimiter);
     });
   }
 
-  public loadTSVFromURL(url: string): Promise<Table> {
-    return this.loadTextData(url).then(data => {
-      return parseDataset(url, data, "tsv");
-    });
-  }
-
-  public loadCSVFromContents(filename: string, contents: string): Table {
-    return parseDataset(filename, contents, "csv");
-  }
-
-  public loadTSVFromContents(filename: string, contents: string): Table {
-    return parseDataset(filename, contents, "csv");
+  public loadDSVFromContents(filename: string, contents: string, localeDelimiter: LocaleDelimiter): Table {
+    return parseDataset(filename, contents, localeDelimiter);
   }
 
   public async loadTableFromSourceSpecification(
@@ -49,21 +39,20 @@ export class DatasetLoader {
   ) {
     if (spec.url) {
       const tableContent = await this.loadTextData(spec.url);
-      let format: "csv" | "tsv" = "csv";
       if (spec.url.toLowerCase().endsWith(".tsv")) {
-        format = "tsv";
+        spec.localeDelimiter.delimiter = "\t";
       }
       const table = parseDataset(
         spec.url.split("/").pop(),
         tableContent,
-        format
+        spec.localeDelimiter
       );
       if (spec.name) {
         table.name = spec.name;
       }
       return table;
     } else if (spec.content) {
-      const table = parseDataset(spec.name, spec.content, spec.format);
+      const table = parseDataset(spec.name, spec.content, spec.localeDelimiter);
       table.name = spec.name;
       return table;
     } else {
