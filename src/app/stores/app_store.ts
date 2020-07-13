@@ -1218,5 +1218,4 @@ export class AppStore extends BaseStore implements IntlProvider {
   public setLocaleDelimiter(value: LocaleDelimiter) {
     this.localeDelimiter = value;
   }
-
 }

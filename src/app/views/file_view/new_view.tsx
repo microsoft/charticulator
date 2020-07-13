@@ -9,7 +9,7 @@ import { IntlProvider } from "../../../core/common/intl";
 export class FileViewNew extends ContextedComponent<
   {
     onClose: () => void;
-    intlProvider: IntlProvider
+    intlProvider: IntlProvider;
   },
   {}
 > {

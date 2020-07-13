@@ -4,6 +4,6 @@
 import { LocaleDelimiter } from "../dataset/dsv_parser";
 
 export interface IntlProvider {
-    getLocaleDelimiter(): LocaleDelimiter;
-    setLocaleDelimiter(value: LocaleDelimiter): void;
+  getLocaleDelimiter(): LocaleDelimiter;
+  setLocaleDelimiter(value: LocaleDelimiter): void;
 }
