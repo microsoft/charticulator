@@ -17,7 +17,8 @@ import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
-import { color } from "d3";
+import { LocaleFormat } from "../../../core/dataset/data_types";
+import { IntlProvider } from "../../../core/common/intl";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -162,6 +163,7 @@ export interface ImportDataViewProps {
   onConfirmImport?: (dataset: Dataset.Dataset) => void;
   onCancel?: () => void;
   showCancel?: boolean;
+  intlProvider: IntlProvider;
 }
 
 export interface ImportDataViewState {
@@ -190,15 +192,16 @@ export class ImportDataView extends React.Component<
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
+      const localeFormat: LocaleFormat = this.props.intlProvider.getLocaleDelimiter();
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadCSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(filename, contents, { ...localeFormat, delimiter: "," });
         }
         case "tsv": {
-          return loader.loadTSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(filename, contents, { ...localeFormat, delimiter: "\t" });
         }
       }
     });
@@ -236,7 +239,7 @@ export class ImportDataView extends React.Component<
                                     dataset.tables.map((table, index) => {
                                       const loader = new Dataset.DatasetLoader();
                                       return loader
-                                        .loadCSVFromURL(table.url)
+                                        .loadDSVFromURL(table.url, this.props.intlProvider.getLocaleDelimiter())
                                         .then(r => {
                                           r.name = table.name;
                                           r.displayName = table.name;
@@ -290,7 +293,8 @@ export class ImportDataView extends React.Component<
                   this.state.dataTable,
                   dataColumn,
                   this.state.dataTableOrigin,
-                  type as Dataset.DataType
+                  type as Dataset.DataType,
+                  this.props.intlProvider.getLocaleDelimiter()
                 );
                 this.setState({
                   dataTable: this.state.dataTable,
@@ -348,7 +352,8 @@ export class ImportDataView extends React.Component<
                   this.state.linkTable,
                   dataColumn,
                   this.state.dataTableOrigin,
-                  type as Dataset.DataType
+                  type as Dataset.DataType,
+                  this.props.intlProvider.getLocaleDelimiter()
                 );
                 this.setState({
                   linkTable: this.state.linkTable,
@@ -389,6 +394,14 @@ export class ImportDataView extends React.Component<
           />
         )}
         <div className="el-actions">
+          <ButtonRaised
+            text="Import options"
+            url={R.getSVGIcon("general/more-horizontal")}
+            title="Finish importing data"
+            onClick={() => {
+              console.log('TODO set options')
+            }}
+          />{" "}
           <ButtonRaised
             text="Done"
             url={R.getSVGIcon("general/confirm")}
