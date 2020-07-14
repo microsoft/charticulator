@@ -10,10 +10,10 @@ import { DataType } from "../../core/dataset";
 
 const localeNumberFormat: LocaleNumberFormat = { remove: ".", decimal: "," };
 
-describe("Data Type Inference", () => {
+describe("Data Type Inference Intl", () => {
   it("inferColumnType", () => {
     const cases: Array<[string[], DataType]> = [
-      [["1", "3", "4.5", "23"], DataType.Number],
+      [["1", "3", "4,5", "23"], DataType.Number],
       [["1990-01-13", "2012-12-30", "12:34:56", "11:05am"], DataType.Date],
       [["true", "true", "false", "yes", "no"], DataType.Boolean],
       [["Hello", "World", "Charticulator"], DataType.String],
