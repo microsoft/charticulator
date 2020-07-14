@@ -98,7 +98,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
         return (
           <FileViewNew
             onClose={this.props.onClose}
-            intlProvider={this.props.store}
+            localeProvider={this.props.store}
           />
         );
       }

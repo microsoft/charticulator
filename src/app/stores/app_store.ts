@@ -43,11 +43,11 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
-import { LocaleDelimiter } from "../../core/dataset/dsv_parser";
+import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import { DataKind, DataType } from "../../core/specification";
-import { IntlProvider } from "../../core/common/intl";
+import { LocaleProvider } from "../../core/common/intl";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -72,7 +72,7 @@ export interface AppStoreState {
   chartState: Specification.ChartState;
 }
 
-export class AppStore extends BaseStore implements IntlProvider {
+export class AppStore extends BaseStore implements LocaleProvider {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
 
@@ -109,10 +109,12 @@ export class AppStore extends BaseStore implements IntlProvider {
   public currentSelection: Selection;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
-  protected localeDelimiter: LocaleDelimiter = {
+  protected localeFileFormat: LocaleFileFormat = {
     delimiter: ",",
-    localeRemove: ",",
-    localeDecimal: "."
+    numberFormat: {
+      remove: ",",
+      decimal: "."
+    }
   };
   public currentTool: string;
   public currentToolOptions: string;
@@ -1211,11 +1213,11 @@ export class AppStore extends BaseStore implements IntlProvider {
     }
   }
 
-  public getLocaleDelimiter(): LocaleDelimiter {
-    return this.localeDelimiter;
+  public getLocaleFileFormat(): LocaleFileFormat {
+    return this.localeFileFormat;
   }
 
-  public setLocaleDelimiter(value: LocaleDelimiter) {
-    this.localeDelimiter = value;
+  public setLocaleFileFormat(value: LocaleFileFormat) {
+    this.localeFileFormat = value;
   }
 }

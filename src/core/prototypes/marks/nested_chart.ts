@@ -201,7 +201,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           }),
           rows: mapToRows(dataRowIndices),
           type: TableType.Main,
-          localeFormat: table.localeFormat
+          LocaleNumberFormat: table.LocaleNumberFormat
         }
         // {
         //   name: "MainParentTable",

@@ -116,7 +116,7 @@ export class ColumnsView extends React.Component<
                   const newTable = loader.loadDSVFromContents(
                     table.name,
                     reader.result as string,
-                    this.props.store.getLocaleDelimiter()
+                    this.props.store.getLocaleFileFormat()
                   );
                   newTable.displayName = getFileNameWithoutExtension(file.name);
                   newTable.name = table.name;

@@ -304,12 +304,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     }
 
-    convertColumns(
-      table,
-      column,
-      originTable,
-      action.type
-    );
+    convertColumns(table, column, originTable, action.type);
 
     this.updatePlotSegments();
     this.solveConstraintsAndUpdateGraphics();

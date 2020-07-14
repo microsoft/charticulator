@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import { dsvFormat } from "d3-dsv";
 
-import { inferAndConvertColumn, LocaleFormat } from "./data_types";
+import { inferAndConvertColumn, LocaleNumberFormat } from "./data_types";
 import {
   Row,
   Table,
@@ -36,8 +36,9 @@ export function parseHints(hints: string) {
   }
 }
 
-export interface LocaleDelimiter extends LocaleFormat {
+export interface LocaleFileFormat {
   delimiter: string;
+  numberFormat: LocaleNumberFormat;
 }
 
 /**
@@ -50,10 +51,10 @@ export interface LocaleDelimiter extends LocaleFormat {
 export function parseDataset(
   fileName: string,
   content: string,
-  localeDelimiter: LocaleDelimiter
+  localeFileFormat: LocaleFileFormat
 ): Table {
   let rows: string[][];
-  rows = dsvFormat(localeDelimiter.delimiter).parseRows(content);
+  rows = dsvFormat(localeFileFormat.delimiter).parseRows(content);
 
   // Remove empty rows if any
   rows = rows.filter(row => row.length > 0);
@@ -71,7 +72,7 @@ export function parseDataset(
 
     let columnValues = header.map((name, index) => {
       const values = data.map(row => row[index]);
-      return inferAndConvertColumn(values, localeDelimiter);
+      return inferAndConvertColumn(values, localeFileFormat.numberFormat);
     });
 
     const additionalColumns: Array<{
@@ -123,7 +124,7 @@ export function parseDataset(
       columns,
       rows: outRows,
       type: null,
-      localeFormat: localeDelimiter
+      LocaleNumberFormat: localeFileFormat.numberFormat
     };
   } else {
     return null;

@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Table, Dataset, TableType } from "./dataset";
-import { parseDataset, LocaleDelimiter } from "./dsv_parser";
+import { parseDataset, LocaleFileFormat } from "./dsv_parser";
 
 export interface TableSourceSpecification {
   /** Name of the table, if empty, use the basename of the url without extension */
   name?: string;
   /** Locale-based delimiter and number format */
-  localeDelimiter: LocaleDelimiter;
+  localeFileFormat: LocaleFileFormat;
   /** Option 1: Specify the url to load the table from */
   url?: string;
   /** Option 2: Specify the table content, in this case format and name must be specified */
@@ -26,19 +26,19 @@ export class DatasetLoader {
 
   public loadDSVFromURL(
     url: string,
-    localeDelimiter: LocaleDelimiter
+    localeFileFormat: LocaleFileFormat
   ): Promise<Table> {
     return this.loadTextData(url).then(data => {
-      return parseDataset(url, data, localeDelimiter);
+      return parseDataset(url, data, localeFileFormat);
     });
   }
 
   public loadDSVFromContents(
     filename: string,
     contents: string,
-    localeDelimiter: LocaleDelimiter
+    localeFileFormat: LocaleFileFormat
   ): Table {
-    return parseDataset(filename, contents, localeDelimiter);
+    return parseDataset(filename, contents, localeFileFormat);
   }
 
   public async loadTableFromSourceSpecification(
@@ -47,19 +47,19 @@ export class DatasetLoader {
     if (spec.url) {
       const tableContent = await this.loadTextData(spec.url);
       if (spec.url.toLowerCase().endsWith(".tsv")) {
-        spec.localeDelimiter.delimiter = "\t";
+        spec.localeFileFormat.delimiter = "\t";
       }
       const table = parseDataset(
         spec.url.split("/").pop(),
         tableContent,
-        spec.localeDelimiter
+        spec.localeFileFormat
       );
       if (spec.name) {
         table.name = spec.name;
       }
       return table;
     } else if (spec.content) {
-      const table = parseDataset(spec.name, spec.content, spec.localeDelimiter);
+      const table = parseDataset(spec.name, spec.content, spec.localeFileFormat);
       table.name = spec.name;
       return table;
     } else {

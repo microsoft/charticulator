@@ -24,6 +24,7 @@ import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
 import { TableType } from "../core/dataset";
+import { LocaleFileFormat } from "../core/dataset/dsv_parser";
 
 function makeDefaultDataset(): Dataset.Dataset {
   const rows: any[] = [];
@@ -254,15 +255,17 @@ export class Application {
     } else if (hashParsed.loadCSV) {
       // Quick load from one or two CSV files
       // default to comma delimiter, and en-US number format
-      const localeDelimiter = {
+      const localeFileFormat: LocaleFileFormat = {
         delimiter: ",",
-        localeRemove: ",",
-        localeDecimal: "."
+        numberFormat: {
+          remove: ",",
+          decimal: "."
+        }
       };
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV
           .split("|")
-          .map(x => ({ url: x, localeDelimiter }))
+          .map(x => ({ url: x, localeFileFormat }))
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);

@@ -4,12 +4,12 @@ import * as React from "react";
 import { Actions } from "../../actions";
 import { ContextedComponent } from "../../context_component";
 import { ImportDataView } from "./import_data_view";
-import { IntlProvider } from "../../../core/common/intl";
+import { LocaleProvider } from "../../../core/common/intl";
 
 export class FileViewNew extends ContextedComponent<
   {
     onClose: () => void;
-    intlProvider: IntlProvider;
+    localeProvider: LocaleProvider;
   },
   {}
 > {
@@ -18,7 +18,7 @@ export class FileViewNew extends ContextedComponent<
       <section className="charticulator__file-view-content">
         <h1>New</h1>
         <ImportDataView
-          intlProvider={this.props.intlProvider}
+          localeProvider={this.props.localeProvider}
           onConfirmImport={dataset => {
             this.dispatch(new Actions.ImportDataset(dataset));
             this.props.onClose();

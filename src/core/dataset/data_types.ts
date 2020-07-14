@@ -9,16 +9,16 @@ import {
   getDateFormat
 } from "./datetime";
 
-export interface LocaleFormat {
-  localeRemove: string;
-  localeDecimal: string;
+export interface LocaleNumberFormat {
+  remove: string;
+  decimal: string;
 }
 
-function localeNumber(x: string, localeFormat: LocaleFormat) {
-  const reRemove = new RegExp(localeFormat.localeRemove, "g");
+function localeNumber(x: string, localeNumberFormat: LocaleNumberFormat) {
+  const reRemove = new RegExp(localeNumberFormat.remove, "g");
   x = x.replace(reRemove, "");
-  if (localeFormat.localeDecimal !== ".") {
-    const reReplace = new RegExp(localeFormat.localeDecimal, "g");
+  if (localeNumberFormat.decimal !== ".") {
+    const reReplace = new RegExp(localeNumberFormat.decimal, "g");
     x = x.replace(reReplace, ".");
   }
   return +x;
@@ -28,8 +28,8 @@ function localeNumber(x: string, localeFormat: LocaleFormat) {
 // Adapted from datalib: https://github.com/vega/datalib/blob/master/src/import/type.js
 
 export interface DataTypeDescription {
-  test: (v: string, localeformat?: LocaleFormat) => boolean;
-  convert: (v: string, localeformat?: LocaleFormat) => DataValue;
+  test: (v: string, localeNumberFormat?: LocaleNumberFormat) => boolean;
+  convert: (v: string, localeNumberFormat?: LocaleNumberFormat) => DataValue;
 }
 
 export let dataTypes: { [name in DataType]: DataTypeDescription } = {
@@ -50,15 +50,15 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     }
   },
   number: {
-    test: (x: string, localeformat: LocaleFormat) => {
+    test: (x: string, localeNumberFormat: LocaleNumberFormat) => {
       if (x === "null") {
         return true;
       }
-      const value = localeNumber(x, localeformat);
+      const value = localeNumber(x, localeNumberFormat);
       return !isNaN(value);
     },
-    convert: (x: string, localeformat: LocaleFormat) => {
-      const value = localeNumber(x, localeformat);
+    convert: (x: string, localeNumberFormat: LocaleNumberFormat) => {
+      const value = localeNumber(x, localeNumberFormat);
       return isNaN(value) ? null : value;
     }
   },
@@ -75,7 +75,7 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
 /** Infer column type from a set of strings (not null) */
 export function inferColumnType(
   values: string[],
-  localeformat: LocaleFormat
+  localeNumberFormat: LocaleNumberFormat
 ): DataType {
   const candidates: DataType[] = [
     DataType.Boolean,
@@ -90,7 +90,7 @@ export function inferColumnType(
     }
     // test for remaining candidates
     for (let j = 0; j < candidates.length; j++) {
-      if (!dataTypes[candidates[j]].test(v, localeformat)) {
+      if (!dataTypes[candidates[j]].test(v, localeNumberFormat)) {
         // console.log(candidates[j], "fail at", v);
         candidates.splice(j, 1);
         j -= 1;
@@ -108,13 +108,13 @@ export function inferColumnType(
 export function convertColumn(
   type: DataType,
   values: string[],
-  localeformat: LocaleFormat = {
-    localeRemove: ",",
-    localeDecimal: "."
+  localeNumberFormat: LocaleNumberFormat = {
+    remove: ",",
+    decimal: "."
   }
 ): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map(v => (v != null ? converter(v, localeformat) : null));
+  return values.map(v => (v != null ? converter(v, localeNumberFormat) : null));
 }
 
 /** Get distinct values from a non-null array of basic types */
@@ -129,7 +129,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 /** Infer column metadata and update type if necessary */
 export function inferAndConvertColumn(
   values: string[],
-  localeformat: LocaleFormat,
+  localeNumberFormat: LocaleNumberFormat,
   hints?: { [name: string]: string }
 ): {
   values: DataValue[];
@@ -139,9 +139,9 @@ export function inferAndConvertColumn(
 } {
   const inferredType = inferColumnType(
     values.filter(x => x != null),
-    localeformat
+    localeNumberFormat
   );
-  const convertedValues = convertColumn(inferredType, values, localeformat);
+  const convertedValues = convertColumn(inferredType, values, localeNumberFormat);
   if (hints == null) {
     hints = {};
   }

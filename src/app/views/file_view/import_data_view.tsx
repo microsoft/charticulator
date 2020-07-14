@@ -17,8 +17,7 @@ import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
-import { LocaleFormat } from "../../../core/dataset/data_types";
-import { IntlProvider } from "../../../core/common/intl";
+import { LocaleProvider } from "../../../core/common/intl";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -163,7 +162,7 @@ export interface ImportDataViewProps {
   onConfirmImport?: (dataset: Dataset.Dataset) => void;
   onCancel?: () => void;
   showCancel?: boolean;
-  intlProvider: IntlProvider;
+  localeProvider: LocaleProvider;
 }
 
 export interface ImportDataViewState {
@@ -192,21 +191,21 @@ export class ImportDataView extends React.Component<
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
-      const localeFormat: LocaleFormat = this.props.intlProvider.getLocaleDelimiter();
+      const numberFormat = this.props.localeProvider.getLocaleFileFormat().numberFormat;
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
           return loader.loadDSVFromContents(filename, contents, {
-            ...localeFormat,
-            delimiter: ","
+            delimiter: ",",
+            numberFormat
           });
         }
         case "tsv": {
           return loader.loadDSVFromContents(filename, contents, {
-            ...localeFormat,
-            delimiter: "\t"
+            delimiter: "\t",
+            numberFormat
           });
         }
       }
@@ -247,7 +246,7 @@ export class ImportDataView extends React.Component<
                                       return loader
                                         .loadDSVFromURL(
                                           table.url,
-                                          this.props.intlProvider.getLocaleDelimiter()
+                                          this.props.localeProvider.getLocaleFileFormat()
                                         )
                                         .then(r => {
                                           r.name = table.name;
