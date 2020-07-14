@@ -141,7 +141,11 @@ export function inferAndConvertColumn(
     values.filter(x => x != null),
     localeNumberFormat
   );
-  const convertedValues = convertColumn(inferredType, values, localeNumberFormat);
+  const convertedValues = convertColumn(
+    inferredType,
+    values,
+    localeNumberFormat
+  );
   if (hints == null) {
     hints = {};
   }

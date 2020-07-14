@@ -191,7 +191,8 @@ export class ImportDataView extends React.Component<
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
-      const numberFormat = this.props.localeProvider.getLocaleFileFormat().numberFormat;
+      const numberFormat = this.props.localeProvider.getLocaleFileFormat()
+        .numberFormat;
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();

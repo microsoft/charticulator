@@ -59,7 +59,11 @@ export class DatasetLoader {
       }
       return table;
     } else if (spec.content) {
-      const table = parseDataset(spec.name, spec.content, spec.localeFileFormat);
+      const table = parseDataset(
+        spec.name,
+        spec.content,
+        spec.localeFileFormat
+      );
       table.name = spec.name;
       return table;
     } else {
