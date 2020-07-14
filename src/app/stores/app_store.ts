@@ -47,7 +47,6 @@ import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import { DataKind, DataType } from "../../core/specification";
-import { LocaleProvider } from "../../core/common/intl";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -72,7 +71,7 @@ export interface AppStoreState {
   chartState: Specification.ChartState;
 }
 
-export class AppStore extends BaseStore implements LocaleProvider {
+export class AppStore extends BaseStore {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
 
