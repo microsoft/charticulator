@@ -122,7 +122,8 @@ export function parseDataset(
       displayName: fileName,
       columns,
       rows: outRows,
-      type: null
+      type: null,
+      localeFormat: localeDelimiter
     };
   } else {
     return null;

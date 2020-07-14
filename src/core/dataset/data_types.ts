@@ -108,7 +108,10 @@ export function inferColumnType(
 export function convertColumn(
   type: DataType,
   values: string[],
-  localeformat: LocaleFormat
+  localeformat: LocaleFormat = {
+    localeRemove: ",",
+    localeDecimal: "."
+  }
 ): DataValue[] {
   const converter = dataTypes[type].convert;
   return values.map(v => (v != null ? converter(v, localeformat) : null));

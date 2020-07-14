@@ -288,8 +288,7 @@ export function convertColumns(
   table: Dataset.Table,
   column: Dataset.Column,
   originTable: Dataset.Table,
-  type: Dataset.DataType,
-  localeFormat: LocaleFormat
+  type: Dataset.DataType
 ) {
   const applyConvertedValues = (
     table: Dataset.Table,
@@ -319,7 +318,7 @@ export function convertColumns(
     const convertedValues = convertColumn(
       type,
       columnValues as any,
-      localeFormat
+      table.localeFormat
     );
     if (convertedValues.filter(val => val).length === 0) {
       throw Error(

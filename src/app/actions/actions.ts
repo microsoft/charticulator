@@ -174,7 +174,6 @@ export class ConvertColumnDataType extends Action {
     public tableName: string,
     public column: string,
     public type: DataType,
-    public localeFormat: LocaleFormat
   ) {
     super();
   }

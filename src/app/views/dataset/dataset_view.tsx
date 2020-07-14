@@ -162,8 +162,7 @@ export class ColumnsView extends React.Component<
                             new Actions.ConvertColumnDataType(
                               table.name,
                               column,
-                              type as DataType,
-                              this.props.store.getLocaleDelimiter()
+                              type as DataType
                             )
                           );
                         }}

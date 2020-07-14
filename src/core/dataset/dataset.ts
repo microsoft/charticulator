@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { DataValue, DataType, DataKind } from "../specification";
+import { LocaleFormat } from "./data_types";
 
 export { DataValue, DataType, DataKind };
 
@@ -55,6 +56,8 @@ export interface Table {
   rows: Row[];
   /** Type of the table */
   type: TableType;
+  /** Optional locale format of the table */
+  localeFormat?: LocaleFormat;
 }
 
 export enum TableType {

@@ -308,8 +308,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       table,
       column,
       originTable,
-      action.type,
-      action.localeFormat
+      action.type
     );
 
     this.updatePlotSegments();

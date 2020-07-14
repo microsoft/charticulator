@@ -302,8 +302,7 @@ export class ImportDataView extends React.Component<
                   this.state.dataTable,
                   dataColumn,
                   this.state.dataTableOrigin,
-                  type as Dataset.DataType,
-                  this.props.intlProvider.getLocaleDelimiter()
+                  type as Dataset.DataType
                 );
                 this.setState({
                   dataTable: this.state.dataTable,
@@ -361,8 +360,7 @@ export class ImportDataView extends React.Component<
                   this.state.linkTable,
                   dataColumn,
                   this.state.dataTableOrigin,
-                  type as Dataset.DataType,
-                  this.props.intlProvider.getLocaleDelimiter()
+                  type as Dataset.DataType
                 );
                 this.setState({
                   linkTable: this.state.linkTable,
