@@ -6,7 +6,13 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { AppStore } from "./stores";
 
-import { initialize, Dispatcher, Specification, Dataset, deepClone } from "../core";
+import {
+  initialize,
+  Dispatcher,
+  Specification,
+  Dataset,
+  deepClone
+} from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -30,9 +36,9 @@ function makeDefaultDataset(): Dataset.Dataset {
       const value =
         50 +
         30 *
-        Math.sin(
-          ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
-        );
+          Math.sin(
+            ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
+          );
       rows.push({
         _id: "ID" + rows.length,
         Month: month,
@@ -80,7 +86,7 @@ function makeDefaultDataset(): Dataset.Dataset {
 }
 
 export class ApplicationExtensionContext implements ExtensionContext {
-  constructor(public app: Application) { }
+  constructor(public app: Application) {}
 
   public getGlobalDispatcher(): Dispatcher<Action> {
     return this.app.appStore.dispatcher;
@@ -146,8 +152,8 @@ export class Application {
           // tslint:disable-next-line no-eval
           eval(
             "(function() { return function(application) { " +
-            ext.initialize +
-            " } })()"
+              ext.initialize +
+              " } })()"
           )(this);
         };
         document.body.appendChild(scriptTag);
