@@ -33,7 +33,7 @@ export interface FileUploaderState {
 export class FileUploader extends React.Component<
   FileUploaderProps,
   FileUploaderState
-> {
+  > {
   private inputElement: HTMLInputElement;
 
   constructor(props: FileUploaderProps) {
@@ -149,10 +149,10 @@ export class FileUploader extends React.Component<
             Open or Drop File
           </span>
         ) : (
-          <span className="charticulator__file-uploader-filename">
-            {this.state.filename}
-          </span>
-        )}
+            <span className="charticulator__file-uploader-filename">
+              {this.state.filename}
+            </span>
+          )}
       </div>
     );
   }
@@ -177,7 +177,7 @@ export interface ImportDataViewState {
 export class ImportDataView extends React.Component<
   ImportDataViewProps,
   ImportDataViewState
-> {
+  > {
   constructor(props: ImportDataViewProps) {
     super(props);
     this.state = {
@@ -197,10 +197,7 @@ export class ImportDataView extends React.Component<
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadDSVFromContents(filename, contents, {
-            delimiter: localeFileFormat.delimiter,
-            numberFormat: localeFileFormat.numberFormat
-          });
+          return loader.loadDSVFromContents(filename, contents, localeFileFormat);
         }
         case "tsv": {
           return loader.loadDSVFromContents(filename, contents, {
@@ -327,19 +324,19 @@ export class ImportDataView extends React.Component<
             />
           </div>
         ) : (
-          <FileUploader
-            extensions={["csv", "tsv"]}
-            onChange={file => {
-              this.loadFileAsTable(file).then(table => {
-                table.type = TableType.Main;
-                this.setState({
-                  dataTable: table,
-                  dataTableOrigin: deepClone(table)
+            <FileUploader
+              extensions={["csv", "tsv"]}
+              onChange={file => {
+                this.loadFileAsTable(file).then(table => {
+                  table.type = TableType.Main;
+                  this.setState({
+                    dataTable: table,
+                    dataTableOrigin: deepClone(table)
+                  });
                 });
-              });
-            }}
-          />
-        )}
+              }}
+            />
+          )}
         <h2>
           Links
           {this.state.linkTable ? ": " + this.state.linkTable.name : null}
@@ -386,19 +383,19 @@ export class ImportDataView extends React.Component<
             />
           </div>
         ) : (
-          <FileUploader
-            extensions={["csv", "tsv"]}
-            onChange={file => {
-              this.loadFileAsTable(file).then(table => {
-                table.type = TableType.Links;
-                this.setState({
-                  linkTable: table,
-                  linkTableOrigin: deepClone(table)
+            <FileUploader
+              extensions={["csv", "tsv"]}
+              onChange={file => {
+                this.loadFileAsTable(file).then(table => {
+                  table.type = TableType.Links;
+                  this.setState({
+                    linkTable: table,
+                    linkTableOrigin: deepClone(table)
+                  });
                 });
-              });
-            }}
-          />
-        )}
+              }}
+            />
+          )}
         <div className="el-actions">
           <ButtonRaised
             text="Done"
