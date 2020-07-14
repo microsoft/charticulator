@@ -15,10 +15,10 @@ export interface LocaleNumberFormat {
 }
 
 function localeNumber(x: string, localeNumberFormat: LocaleNumberFormat) {
-  const reRemove = new RegExp(localeNumberFormat.remove, "g");
+  const reRemove = new RegExp("\\" + localeNumberFormat.remove, "g");
   x = x.replace(reRemove, "");
   if (localeNumberFormat.decimal !== ".") {
-    const reReplace = new RegExp(localeNumberFormat.decimal, "g");
+    const reReplace = new RegExp("\\" + localeNumberFormat.decimal, "g");
     x = x.replace(reReplace, ".");
   }
   return +x;
