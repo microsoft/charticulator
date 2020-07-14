@@ -9,8 +9,7 @@ export class FileViewOptions extends ContextedComponent<
     onClose: () => void;
   },
   {}
-  > {
-
+> {
   public changeLocaleFileFormat(localeFileFormat: LocaleFileFormat) {
     this.store.setLocaleFileFormat(localeFileFormat);
     this.forceUpdate();
@@ -27,7 +26,12 @@ export class FileViewOptions extends ContextedComponent<
             <div>
               <label>CSV Delimiter</label>
               <select
-                onChange={e => this.changeLocaleFileFormat({ ...localeFileFormat, delimiter: e.target.options[e.target.selectedIndex].value })}
+                onChange={e =>
+                  this.changeLocaleFileFormat({
+                    ...localeFileFormat,
+                    delimiter: e.target.options[e.target.selectedIndex].value
+                  })
+                }
                 value={localeFileFormat.delimiter}
               >
                 <option value=",">comma</option>
@@ -37,22 +41,22 @@ export class FileViewOptions extends ContextedComponent<
             <div>
               <label>Number format</label>
               <select
-                onChange={e => e.target.options[e.target.selectedIndex].value === "." ?
-                  this.changeLocaleFileFormat({
-                    ...localeFileFormat,
-                    numberFormat: {
-                      decimal: ".",
-                      remove: ","
-                    }
-                  })
-                  :
-                  this.changeLocaleFileFormat({
-                    ...localeFileFormat,
-                    numberFormat: {
-                      decimal: ",",
-                      remove: "."
-                    }
-                  })
+                onChange={e =>
+                  e.target.options[e.target.selectedIndex].value === "."
+                    ? this.changeLocaleFileFormat({
+                        ...localeFileFormat,
+                        numberFormat: {
+                          decimal: ".",
+                          remove: ","
+                        }
+                      })
+                    : this.changeLocaleFileFormat({
+                        ...localeFileFormat,
+                        numberFormat: {
+                          decimal: ",",
+                          remove: "."
+                        }
+                      })
                 }
                 value={localeFileFormat.numberFormat.decimal}
               >
