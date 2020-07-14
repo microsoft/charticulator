@@ -23,8 +23,7 @@ export class FileViewOptions extends ContextedComponent<
         <div>
           <h2>Import file format</h2>
           <div>
-            <div>
-              <label>CSV Delimiter</label>
+          <div className="form-group">
               <select
                 onChange={e =>
                   this.changeLocaleFileFormat({
@@ -37,9 +36,9 @@ export class FileViewOptions extends ContextedComponent<
                 <option value=",">comma</option>
                 <option value=";">semicolon</option>
               </select>
+              <label>CSV Delimiter</label>
             </div>
-            <div>
-              <label>Number format</label>
+            <div className="form-group">
               <select
                 onChange={e =>
                   e.target.options[e.target.selectedIndex].value === "."
@@ -63,6 +62,7 @@ export class FileViewOptions extends ContextedComponent<
                 <option value=".">Decimal: . Separator: ,</option>
                 <option value=",">Decimal: , Separator: .</option>
               </select>
+              <label>Number format</label>
             </div>
           </div>
         </div>

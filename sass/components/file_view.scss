@@ -183,7 +183,7 @@
         transition: all $transition-default;
       }
 
-      input {
+      input, select {
         display: block;
         background: none;
         padding: 0;
