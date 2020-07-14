@@ -23,7 +23,7 @@ export class FileViewOptions extends ContextedComponent<
         <div>
           <h2>Import file format</h2>
           <div>
-          <div className="form-group">
+            <div className="form-group">
               <select
                 onChange={e =>
                   this.changeLocaleFileFormat({
