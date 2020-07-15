@@ -5,6 +5,7 @@ import { AttributeDescriptions } from "../object";
 import { AttributeMap } from "../../specification";
 import { Color } from "../../common";
 import { AttrBuilder } from "../attrs";
+import { StrokeStyle } from "../common";
 
 export const lineAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -26,4 +27,6 @@ export interface LineElementAttributes extends AttributeMap {
   visible: boolean;
 }
 
-export interface LineElementProperties extends AttributeMap {}
+export interface LineElementProperties extends AttributeMap {
+  strokeStyle: StrokeStyle;
+}

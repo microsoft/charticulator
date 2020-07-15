@@ -17,6 +17,7 @@ import {
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
+  strokeStyleToDashArray,
   TemplateParameters
 } from "../common";
 
@@ -29,7 +30,7 @@ export { LineElementAttributes, LineElementProperties };
 export class LineElementClass extends EmphasizableMarkClass<
   LineElementProperties,
   LineElementAttributes
-> {
+  > {
   public static classID = "mark.line";
   public static type = "mark";
 
@@ -43,6 +44,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<LineElementProperties> = {
+    strokeStyle: "solid",
     visible: true
   };
 
@@ -121,6 +123,9 @@ export class LineElementClass extends EmphasizableMarkClass<
         strokeColor: attrs.stroke,
         strokeOpacity: attrs.opacity,
         strokeWidth: attrs.strokeWidth,
+        strokeDasharray: strokeStyleToDashArray(
+          this.object.properties.strokeStyle
+        ),
         ...this.generateEmphasisStyle(emphasize)
       }
     );
@@ -247,6 +252,19 @@ export class LineElementClass extends EmphasizableMarkClass<
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
       }),
+      manager.row(
+        "Line Style",
+        manager.inputSelect(
+          { property: "strokeStyle" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+            labels: ["Solid", "Dashed", "Dotted"],
+            options: ["solid", "dashed", "dotted"]
+          }
+        )
+      ),
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
@@ -259,7 +277,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
-    const properties = [];
+    const properties: Specification.Template.Property[] = [];
     if (
       this.object.mappings.visible &&
       this.object.mappings.visible.type === "value"
@@ -299,6 +317,14 @@ export class LineElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.strokeWidth
+      });
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "strokeStyle"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.strokeStyle
       });
     }
     if (
