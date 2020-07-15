@@ -315,7 +315,11 @@ export function convertColumns(
   });
 
   try {
-    const convertedValues = convertColumn(type, columnValues as any);
+    const convertedValues = convertColumn(
+      type,
+      columnValues as any,
+      table.localeNumberFormat
+    );
     if (convertedValues.filter(val => val).length === 0) {
       throw Error(
         `Converting column type from ${originColumn.type} to ${type} failed`
@@ -326,7 +330,7 @@ export function convertColumns(
   } catch (ex) {
     const messgae = `Converting column type from ${
       originColumn.type
-      } to ${type} failed`;
+    } to ${type} failed`;
     console.warn(messgae);
     // rollback type
     column.type = typeBeforeChange;
@@ -334,12 +338,11 @@ export function convertColumns(
   }
 }
 
-
 export function copyToClipboard(str: string) {
-  const el = document.createElement('textarea');
+  const el = document.createElement("textarea");
   el.value = str;
   document.body.appendChild(el);
   el.select();
-  document.execCommand('copy');
+  document.execCommand("copy");
   document.body.removeChild(el);
-};
+}

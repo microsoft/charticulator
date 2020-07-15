@@ -200,7 +200,8 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
             };
           }),
           rows: mapToRows(dataRowIndices),
-          type: TableType.Main
+          type: TableType.Main,
+          localeNumberFormat: table.localeNumberFormat
         }
         // {
         //   name: "MainParentTable",
