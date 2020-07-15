@@ -30,7 +30,7 @@ export { LineElementAttributes, LineElementProperties };
 export class LineElementClass extends EmphasizableMarkClass<
   LineElementProperties,
   LineElementAttributes
-  > {
+> {
   public static classID = "mark.line";
   public static type = "mark";
 
