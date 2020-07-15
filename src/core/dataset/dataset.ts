@@ -57,7 +57,7 @@ export interface Table {
   /** Type of the table */
   type: TableType;
   /** Optional locale format of the table */
-  LocaleNumberFormat?: LocaleNumberFormat;
+  localeNumberFormat?: LocaleNumberFormat;
 }
 
 export enum TableType {

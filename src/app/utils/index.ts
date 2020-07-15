@@ -318,7 +318,7 @@ export function convertColumns(
     const convertedValues = convertColumn(
       type,
       columnValues as any,
-      table.LocaleNumberFormat
+      table.localeNumberFormat
     );
     if (convertedValues.filter(val => val).length === 0) {
       throw Error(
@@ -330,7 +330,7 @@ export function convertColumns(
   } catch (ex) {
     const messgae = `Converting column type from ${
       originColumn.type
-    } to ${type} failed`;
+      } to ${type} failed`;
     console.warn(messgae);
     // rollback type
     column.type = typeBeforeChange;

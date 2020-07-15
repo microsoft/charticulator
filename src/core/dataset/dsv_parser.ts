@@ -124,7 +124,7 @@ export function parseDataset(
       columns,
       rows: outRows,
       type: null,
-      LocaleNumberFormat: localeFileFormat.numberFormat
+      localeNumberFormat: localeFileFormat.numberFormat
     };
   } else {
     return null;
