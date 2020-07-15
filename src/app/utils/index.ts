@@ -330,7 +330,7 @@ export function convertColumns(
   } catch (ex) {
     const messgae = `Converting column type from ${
       originColumn.type
-      } to ${type} failed`;
+    } to ${type} failed`;
     console.warn(messgae);
     // rollback type
     column.type = typeBeforeChange;
