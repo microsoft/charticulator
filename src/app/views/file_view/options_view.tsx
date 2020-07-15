@@ -9,7 +9,7 @@ export class FileViewOptions extends ContextedComponent<
     onClose: () => void;
   },
   {}
-> {
+  > {
   public changeLocaleFileFormat(localeFileFormat: LocaleFileFormat) {
     this.store.setLocaleFileFormat(localeFileFormat);
     this.forceUpdate();
@@ -40,23 +40,16 @@ export class FileViewOptions extends ContextedComponent<
             </div>
             <div className="form-group">
               <select
-                onChange={e =>
-                  e.target.options[e.target.selectedIndex].value === "."
-                    ? this.changeLocaleFileFormat({
-                        ...localeFileFormat,
-                        numberFormat: {
-                          decimal: ".",
-                          remove: ","
-                        }
-                      })
-                    : this.changeLocaleFileFormat({
-                        ...localeFileFormat,
-                        numberFormat: {
-                          decimal: ",",
-                          remove: "."
-                        }
-                      })
-                }
+                onChange={e => {
+                  const isDot = e.target.options[e.target.selectedIndex].value === ".";
+                  this.changeLocaleFileFormat({
+                    ...localeFileFormat,
+                    numberFormat: {
+                      decimal: isDot ? "." : ",",
+                      remove: isDot ? "," : "."
+                    }
+                  });
+                }}
                 value={localeFileFormat.numberFormat.decimal}
               >
                 <option value=".">Decimal: dot / Separator: comma</option>
