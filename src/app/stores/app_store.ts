@@ -43,7 +43,7 @@ import {
   MarkSelection,
   Selection
 } from "./selection";
-import { DataflowTable } from "../../core/prototypes/dataflow";
+import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import { DataKind, DataType } from "../../core/specification";
@@ -108,6 +108,13 @@ export class AppStore extends BaseStore {
   public currentSelection: Selection;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
+  protected localeFileFormat: LocaleFileFormat = {
+    delimiter: ",",
+    numberFormat: {
+      remove: ",",
+      decimal: "."
+    }
+  };
   public currentTool: string;
   public currentToolOptions: string;
 
@@ -1203,5 +1210,13 @@ export class AppStore extends BaseStore {
         }
       }
     }
+  }
+
+  public getLocaleFileFormat(): LocaleFileFormat {
+    return this.localeFileFormat;
+  }
+
+  public setLocaleFileFormat(value: LocaleFileFormat) {
+    this.localeFileFormat = value;
   }
 }

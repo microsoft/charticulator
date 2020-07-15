@@ -36,6 +36,7 @@ import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
+import { FileViewOptions } from "./options_view";
 
 export class CurrentChartView extends React.PureComponent<
   { store: AppStore },
@@ -103,6 +104,9 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
       case "export": {
         return <FileViewExport onClose={this.props.onClose} />;
       }
+      case "options": {
+        return <FileViewOptions onClose={this.props.onClose} />;
+      }
       case "about": {
         return (
           <iframe
@@ -161,6 +165,15 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
             onClick={() => this.switchTab("export")}
           >
             Export
+          </div>
+          <div
+            className={classNames("el-tab", [
+              "active",
+              this.state.currentTab == "options"
+            ])}
+            onClick={() => this.switchTab("options")}
+          >
+            Options
           </div>
           <div className="el-sep" />
           <div

@@ -113,9 +113,10 @@ export class ColumnsView extends React.Component<
                 const loader = new Dataset.DatasetLoader();
                 const reader = new FileReader();
                 reader.onload = () => {
-                  const newTable = loader.loadCSVFromContents(
+                  const newTable = loader.loadDSVFromContents(
                     table.name,
-                    reader.result as string
+                    reader.result as string,
+                    this.props.store.getLocaleFileFormat()
                   );
                   newTable.displayName = getFileNameWithoutExtension(file.name);
                   newTable.name = table.name;

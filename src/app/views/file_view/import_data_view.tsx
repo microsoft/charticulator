@@ -17,7 +17,7 @@ import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
-import { color } from "d3";
+import { AppStore } from "../../stores";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -162,6 +162,7 @@ export interface ImportDataViewProps {
   onConfirmImport?: (dataset: Dataset.Dataset) => void;
   onCancel?: () => void;
   showCancel?: boolean;
+  store: AppStore;
 }
 
 export interface ImportDataViewState {
@@ -190,15 +191,23 @@ export class ImportDataView extends React.Component<
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
+      const localeFileFormat = this.props.store.getLocaleFileFormat();
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadCSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(
+            filename,
+            contents,
+            localeFileFormat
+          );
         }
         case "tsv": {
-          return loader.loadTSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(filename, contents, {
+            delimiter: "\t",
+            numberFormat: localeFileFormat.numberFormat
+          });
         }
       }
     });
@@ -236,7 +245,10 @@ export class ImportDataView extends React.Component<
                                     dataset.tables.map((table, index) => {
                                       const loader = new Dataset.DatasetLoader();
                                       return loader
-                                        .loadCSVFromURL(table.url)
+                                        .loadDSVFromURL(
+                                          table.url,
+                                          this.props.store.getLocaleFileFormat()
+                                        )
                                         .then(r => {
                                           r.name = table.name;
                                           r.displayName = table.name;

@@ -16,6 +16,7 @@ export class FileViewNew extends ContextedComponent<
       <section className="charticulator__file-view-content">
         <h1>New</h1>
         <ImportDataView
+          store={this.context.store}
           onConfirmImport={dataset => {
             this.dispatch(new Actions.ImportDataset(dataset));
             this.props.onClose();

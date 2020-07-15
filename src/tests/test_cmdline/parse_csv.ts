@@ -18,7 +18,13 @@ for (const path of args) {
   console.log("FILE: " + path);
   const contents = fs.readFileSync(path, "utf-8");
   const loader = new Dataset.DatasetLoader();
-  const result = loader.loadCSVFromContents(path, contents);
+  const result = loader.loadDSVFromContents(path, contents, {
+    delimiter: ", ",
+    numberFormat: {
+      remove: ",",
+      decimal: "."
+    }
+  });
   console.log(JSON.stringify(result.columns, null, 2));
   console.log(JSON.stringify(result.rows.slice(0, 2), null, 2));
 }
