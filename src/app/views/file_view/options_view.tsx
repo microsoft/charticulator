@@ -59,8 +59,8 @@ export class FileViewOptions extends ContextedComponent<
                 }
                 value={localeFileFormat.numberFormat.decimal}
               >
-                <option value=".">Decimal: . Separator: ,</option>
-                <option value=",">Decimal: , Separator: .</option>
+                <option value=".">Decimal: dot / Separator: comma</option>
+                <option value=",">Decimal: comma / Separator: dot</option>
               </select>
               <label>Number format</label>
             </div>
