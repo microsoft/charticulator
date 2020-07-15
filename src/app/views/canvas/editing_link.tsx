@@ -312,25 +312,34 @@ export class EditingLink extends React.Component<
               id2RowGlyphIndex
             };
           });
-          const rowItem = linkTable.getRow(0);
-          const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(
-            rowItem.source_id.toString()
+          // Find the first links with nodes are exists in main table
+          const rowItem: Specification.DataRow = linkTable.rows.find(
+            row =>
+              tables[0].id2RowGlyphIndex.get(row.source_id.toString()) != undefined &&
+              tables[1].id2RowGlyphIndex.get(row.target_id.toString()) != undefined
           );
-          const [iRow1, i1] = tables[1].id2RowGlyphIndex.get(
-            rowItem.target_id.toString()
-          );
-          glyphs = [
-            {
-              glyph: glyphObjects[0],
-              glyphState: plotSegmentClasses[0].state.glyphs[i0],
-              coordinateSystem: plotSegmentClasses[0].getCoordinateSystem()
-            },
-            {
-              glyph: glyphObjects[1],
-              glyphState: plotSegmentClasses[1].state.glyphs[i1],
-              coordinateSystem: plotSegmentClasses[1].getCoordinateSystem()
-            }
-          ];
+          if (rowItem) {
+            const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(
+              rowItem.source_id.toString()
+            );
+            const [iRow1, i1] = tables[1].id2RowGlyphIndex.get(
+              rowItem.target_id.toString()
+            );
+            glyphs = [
+              {
+                glyph: glyphObjects[0],
+                glyphState: plotSegmentClasses[0].state.glyphs[i0],
+                coordinateSystem: plotSegmentClasses[0].getCoordinateSystem()
+              },
+              {
+                glyph: glyphObjects[1],
+                glyphState: plotSegmentClasses[1].state.glyphs[i1],
+                coordinateSystem: plotSegmentClasses[1].getCoordinateSystem()
+              }
+            ];
+          } else {
+            glyphs = [];
+          }
         }
         break;
     }
