@@ -217,9 +217,11 @@ export class ImportDataView extends React.Component<
     table: Dataset.Table,
     onTypeChange: (column: string, type: string) => void
   ) {
-    return <div className="wide-content">
-      <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />
-    </div>;
+    return (
+      <div className="wide-content">
+        <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />
+      </div>
+    );
   }
 
   public render() {
