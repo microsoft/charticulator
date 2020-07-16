@@ -226,6 +226,11 @@
       }
     }
 
+    .wide-content {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
     .buttons {
       .el-progress {
         display: inline-block;
