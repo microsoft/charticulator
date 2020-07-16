@@ -36,9 +36,6 @@
         font-size: 12px;
         margin: 5px 0;
       }
-      .charticulator__dataset-table-view {
-        margin: 0;
-      }
     }
 
     &-controls {
@@ -152,7 +149,6 @@
 }
 
 .charticulator__dataset-table-view {
-  margin: 1em 0;
   border-collapse: collapse;
   font-size: 13px;
   td,
