@@ -234,12 +234,18 @@ function literalColorValues(values: string[]) {
   const colorList: Color[] = [];
   const cache: { [color: string]: true } = {};
   for (let i = 0; i < values.length; i++) {
-    let value = values[i];
-    if (cache[value]) continue;
-    let d3c = d3color(value);
-    if (!d3c) return null;
-    let { r, g, b, opacity } = d3c.rgb();
-    if (opacity !== 1) return null;
+    const value = values[i];
+    if (cache[value]) {
+      continue;
+    }
+    const d3c = d3color(value);
+    if (!d3c) {
+      return null;
+    }
+    const { r, g, b, opacity } = d3c.rgb();
+    if (opacity !== 1) {
+      return null;
+    }
     colorList.push({ r, g, b });
     cache[value] = true;
   }
