@@ -1,9 +1,9 @@
 /**
  * Expressions
- * 
+ *
  * The module of exressions responsible for data binding or data fetching
  * Grammar of expression described in [parser.pegjs file](\src\core\expression\index.ts)
- * 
+ *
  * @packageDocumentation
  * @preferred
  */

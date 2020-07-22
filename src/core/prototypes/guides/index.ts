@@ -30,7 +30,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-  > {
+> {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -180,7 +180,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-  > {
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 

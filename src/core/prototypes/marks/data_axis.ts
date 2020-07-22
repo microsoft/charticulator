@@ -37,7 +37,7 @@ export { DataAxisAttributes, DataAxisProperties };
 export class DataAxisClass extends MarkClass<
   DataAxisProperties,
   DataAxisAttributes
-  > {
+> {
   public static classID = "mark.data-axis";
   public static type = "mark";
 
@@ -203,7 +203,7 @@ export class DataAxisClass extends MarkClass<
           0,
           Math.sqrt(
             (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
-            (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
+              (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
           ),
           false,
           false
@@ -212,7 +212,7 @@ export class DataAxisClass extends MarkClass<
           0,
           0,
           (Math.atan2(attrs.y2 - attrs.y1, attrs.x2 - attrs.x1) / Math.PI) *
-          180,
+            180,
           -1
         );
         g.transform = cs.getLocalTransform(
@@ -230,7 +230,7 @@ export class DataAxisClass extends MarkClass<
         0,
         Math.sqrt(
           (attrs.x2 - attrs.x1) * (attrs.x2 - attrs.x1) +
-          (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
+            (attrs.y2 - attrs.y1) * (attrs.y2 - attrs.y1)
         ),
         false,
         false
