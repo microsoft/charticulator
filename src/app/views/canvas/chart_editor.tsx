@@ -38,7 +38,7 @@ import { EditingLink } from "./editing_link";
 import { HandlesView } from "./handles";
 import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
-import { MoveSnappingSession } from "./snapping";
+import { MoveSnappingSession } from "./snapping/move";
 
 export interface ChartEditorViewProps {
   store: AppStore;
