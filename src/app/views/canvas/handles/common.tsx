@@ -2,11 +2,7 @@
 // Licensed under the MIT license.
 import { EventEmitter } from "../../../../core";
 
-import {
-  Specification,
-  Prototypes,
-  ZoomInfo
-} from "../../../../core";
+import { Specification, Prototypes, ZoomInfo } from "../../../../core";
 
 export interface HandlesDragEvent {
   [name: string]: Specification.AttributeValue;
