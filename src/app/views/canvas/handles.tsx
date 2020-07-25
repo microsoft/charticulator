@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import { EventEmitter, EventSubscription, Graphics } from "../../../core";
+import { Graphics } from "../../../core";
 import * as globals from "../../globals";
 import * as R from "../../resources";
 
@@ -11,8 +11,6 @@ import { classNames, toSVGNumber } from "../../utils";
 import {
   Specification,
   Prototypes,
-  zipArray,
-  Solver,
   Point,
   Geometry,
   ZoomInfo
@@ -21,22 +19,10 @@ import { PopupView } from "../../controllers";
 import { EditableTextView, ButtonRaised } from "../../components";
 import { renderSVGPath } from "../../renderer";
 import { InputNumber } from "../panels/widgets/controls";
+import { HandlesDragContext, HandleViewProps } from "./handles/common";
 
 const POINT_SIZE = 3;
 const POINT_GHOST_SIZE = 6;
-
-export interface HandlesDragEvent {
-  [name: string]: Specification.AttributeValue;
-}
-
-export class HandlesDragContext extends EventEmitter {
-  public onDrag(listener: (e: HandlesDragEvent) => void) {
-    return this.addListener("drag", listener);
-  }
-  public onEnd(listener: (e: HandlesDragEvent) => void) {
-    return this.addListener("end", listener);
-  }
-}
 
 export interface HandlesViewProps {
   zoom: ZoomInfo;
@@ -181,17 +167,6 @@ export class HandlesView extends React.Component<
       </g>
     );
   }
-}
-
-export interface HandleViewProps {
-  zoom: ZoomInfo;
-  active?: boolean;
-  visible?: boolean;
-  snapped?: boolean;
-  onDragStart?: (
-    handle: Prototypes.Handles.Description,
-    ctx: HandlesDragContext
-  ) => void;
 }
 
 export interface PointHandleViewProps extends HandleViewProps {

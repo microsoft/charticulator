@@ -10,7 +10,7 @@ import {
   Geometry,
   ZoomInfo
 } from "../../../core";
-import { HandlesDragEvent } from "./handles";
+import { HandlesDragEvent } from "./handles/common";
 import { Actions } from "../../actions";
 import { GuideClass } from "../../../core/prototypes/guides";
 import { isType } from "../../../core/prototypes";
