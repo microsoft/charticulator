@@ -35,7 +35,8 @@ import {
 } from "./creating_component";
 import { DropZoneView } from "./dropzone";
 import { EditingLink } from "./editing_link";
-import { HandlesView, ResizeHandleView } from "./handles";
+import { HandlesView } from "./handles";
+import { ResizeHandleView } from "./handles/resize";
 import {
   ChartSnappableGuide,
   ChartSnappingSession,
