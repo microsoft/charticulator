@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import {  Prototypes } from "../../../../core";
+import { Prototypes } from "../../../../core";
 import { classNames } from "../../../utils";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
