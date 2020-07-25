@@ -2,12 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import {
-  Graphics,
-  Prototypes,
-  Point,
-  Geometry
-} from "../../../../core";
+import { Graphics, Prototypes, Point, Geometry } from "../../../../core";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 import { toSVGNumber } from "../../../utils";
@@ -28,7 +23,7 @@ export interface InputCurveHandleViewState {
 export class InputCurveHandleView extends React.Component<
   InputCurveHandleViewProps,
   InputCurveHandleViewState
-  > {
+> {
   public refs: {
     interaction: SVGRectElement;
   };
@@ -274,13 +269,13 @@ export class InputCurveHandleView extends React.Component<
                                 (a *
                                   (Math.cos(theta1) -
                                     theta1 * Math.sin(theta1))) /
-                                scaler,
+                                  scaler,
                               y:
                                 p1.y +
                                 (a *
                                   (Math.sin(theta1) +
                                     theta1 * Math.cos(theta1))) /
-                                scaler
+                                  scaler
                             };
                             const cp2 = {
                               x:
@@ -288,13 +283,13 @@ export class InputCurveHandleView extends React.Component<
                                 (a *
                                   (Math.cos(theta2) -
                                     theta2 * Math.sin(theta2))) /
-                                scaler,
+                                  scaler,
                               y:
                                 p2.y -
                                 (a *
                                   (Math.sin(theta2) +
                                     theta2 * Math.cos(theta2))) /
-                                scaler
+                                  scaler
                             };
                             curve.push([p1, cp1, cp2, p2].map(swapXY));
                           }

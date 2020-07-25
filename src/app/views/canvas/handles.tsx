@@ -2,11 +2,14 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import { Graphics, Specification,
+import {
+  Graphics,
+  Specification,
   Prototypes,
   Point,
   Geometry,
-  ZoomInfo } from "../../../core";
+  ZoomInfo
+} from "../../../core";
 import * as globals from "../../globals";
 import { classNames } from "../../utils";
 import { PopupView } from "../../controllers";
