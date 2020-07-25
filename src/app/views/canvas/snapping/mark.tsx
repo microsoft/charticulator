@@ -4,17 +4,13 @@ import { Specification, Prototypes } from "../../../../core";
 import { Actions } from "../../../actions";
 import { GuideClass } from "../../../../core/prototypes/guides";
 import { isType } from "../../../../core/prototypes";
-import {
-  SnappingSession,
-  SnappingAction,
-  SnappableGuide
-} from "./common";
+import { SnappingSession, SnappingAction, SnappableGuide } from "./common";
 
 export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
 export class MarkSnappingSession extends SnappingSession<
   Specification.Element
-  > {
+> {
   public mark: Specification.Glyph;
   public element: Specification.Element;
 
