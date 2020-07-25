@@ -1,34 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Specification, Prototypes } from "../../../core";
-import { Actions } from "../../actions";
-import { GuideClass } from "../../../core/prototypes/guides";
-import { isType } from "../../../core/prototypes";
+import { Specification, Prototypes } from "../../../../core";
+import { Actions } from "../../../actions";
+import { GuideClass } from "../../../../core/prototypes/guides";
+import { isType } from "../../../../core/prototypes";
 import {
   SnappingSession,
   SnappingAction,
   SnappableGuide
-} from "./snapping/common";
-
-export class MoveSnappingSession extends SnappingSession<void> {
-  constructor(handle: Prototypes.Handles.Description) {
-    super([], handle, 10);
-  }
-
-  public getUpdates(actions: Array<SnappingAction<void>>) {
-    const updates: { [name: string]: Specification.AttributeValue } = {};
-    for (const action of actions) {
-      updates[action.attribute] = action.value;
-    }
-    return updates;
-  }
-}
+} from "./common";
 
 export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
 export class MarkSnappingSession extends SnappingSession<
   Specification.Element
-> {
+  > {
   public mark: Specification.Glyph;
   public element: Specification.Element;
 
