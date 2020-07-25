@@ -4,7 +4,11 @@ import { Specification, Prototypes } from "../../../core";
 import { Actions } from "../../actions";
 import { GuideClass } from "../../../core/prototypes/guides";
 import { isType } from "../../../core/prototypes";
-import { SnappingSession, SnappingAction, SnappableGuide } from "./snapping/common";
+import {
+  SnappingSession,
+  SnappingAction,
+  SnappableGuide
+} from "./snapping/common";
 
 export class MoveSnappingSession extends SnappingSession<void> {
   constructor(handle: Prototypes.Handles.Description) {
@@ -24,7 +28,7 @@ export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
 export class MarkSnappingSession extends SnappingSession<
   Specification.Element
-  > {
+> {
   public mark: Specification.Glyph;
   public element: Specification.Element;
 
@@ -141,7 +145,7 @@ export type ChartSnappableGuide = SnappableGuide<Specification.ChartElement>;
 
 export class ChartSnappingSession extends SnappingSession<
   Specification.ChartElement
-  > {
+> {
   public markLayout: Specification.ChartElement;
 
   constructor(
