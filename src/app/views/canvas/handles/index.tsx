@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Prototypes, ZoomInfo } from "../../../core";
-import { HandlesDragContext } from "./handles/common";
-import { InputCurveHandleView } from "./handles/input_curve";
-import { TextAlignmentHandleView } from "./handles/text_alignment";
-import { PointHandleView } from "./handles/point";
-import { DistanceRatioHandleView } from "./handles/distance_ratio";
-import { AngleHandleView } from "./handles/angle";
-import { MarginHandleView } from "./handles/margin";
-import { GapRatioHandleView } from "./handles/gap_ratio";
-import { RelativeLineHandleView } from "./handles/relative_line";
-import { LineHandleView } from "./handles/line";
+import { Prototypes, ZoomInfo } from "../../../../core";
+import { HandlesDragContext } from "./common";
+import { InputCurveHandleView } from "./input_curve";
+import { TextAlignmentHandleView } from "./text_alignment";
+import { PointHandleView } from "./point";
+import { DistanceRatioHandleView } from "./distance_ratio";
+import { AngleHandleView } from "./angle";
+import { MarginHandleView } from "./margin";
+import { GapRatioHandleView } from "./gap_ratio";
+import { RelativeLineHandleView } from "./relative_line";
+import { LineHandleView } from "./line";
 
 export interface HandlesViewProps {
   zoom: ZoomInfo;
