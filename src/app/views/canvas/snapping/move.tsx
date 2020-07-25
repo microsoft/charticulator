@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Specification, Prototypes } from "../../../../core";
-import { SnappingSession, SnappingAction } from "./common";
+import { SnappingAction } from "./common";
+import { SnappingSession } from "./session";
 
 export class MoveSnappingSession extends SnappingSession<void> {
   constructor(handle: Prototypes.Handles.Description) {

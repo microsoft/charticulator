@@ -4,7 +4,8 @@ import { Specification, Prototypes } from "../../../../core";
 import { Actions } from "../../../actions";
 import { GuideClass } from "../../../../core/prototypes/guides";
 import { isType } from "../../../../core/prototypes";
-import { SnappingSession, SnappingAction, SnappableGuide } from "./common";
+import { SnappingAction, SnappableGuide } from "./common";
+import { SnappingSession } from "./session";
 
 export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
