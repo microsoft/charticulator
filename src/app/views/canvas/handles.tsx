@@ -2,12 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import {
-  Graphics,
-  Prototypes,
-  Geometry,
-  ZoomInfo
-} from "../../../core";
+import { Graphics, Prototypes, Geometry, ZoomInfo } from "../../../core";
 import { classNames } from "../../utils";
 import { renderSVGPath } from "../../renderer";
 import { HandlesDragContext, HandleViewProps } from "./handles/common";

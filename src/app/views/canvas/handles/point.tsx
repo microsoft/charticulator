@@ -22,7 +22,7 @@ export interface PointHandleViewState {
 export class PointHandleView extends React.Component<
   PointHandleViewProps,
   PointHandleViewState
-  > {
+> {
   public refs: {
     circle: SVGCircleElement;
   };
