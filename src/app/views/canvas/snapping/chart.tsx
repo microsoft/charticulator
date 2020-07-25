@@ -2,11 +2,7 @@
 // Licensed under the MIT license.
 import { Specification, Prototypes } from "../../../../core";
 import { Actions } from "../../../actions";
-import {
-  SnappingSession,
-  SnappingAction,
-  SnappableGuide
-} from "./common";
+import { SnappingSession, SnappingAction, SnappableGuide } from "./common";
 
 export type ChartSnappableGuide = SnappableGuide<Specification.ChartElement>;
 

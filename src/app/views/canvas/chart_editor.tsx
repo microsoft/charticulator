@@ -54,11 +54,11 @@ export interface ChartEditorViewState {
   currentCreationOptions?: string;
   currentSelection: Selection;
   dropZoneData:
-  | {
-    data?: DragData.DropZoneData;
-    layout?: DragData.ScaffoldType;
-  }
-  | false;
+    | {
+        data?: DragData.DropZoneData;
+        layout?: DragData.ScaffoldType;
+      }
+    | false;
   isSolving: boolean;
 }
 
@@ -725,9 +725,9 @@ export class ChartEditorView
             ) : null}
             {Prototypes.isType(layout.classID, "plot-segment")
               ? this.renderMarkHandlesInPlotSegment(
-                layout as Specification.PlotSegment,
-                layoutState as Specification.PlotSegmentState
-              )
+                  layout as Specification.PlotSegment,
+                  layoutState as Specification.PlotSegmentState
+                )
               : null}
             <HandlesView
               handles={handles}
@@ -1072,7 +1072,7 @@ export class ChartEditorView
     const height = this.state.viewHeight;
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
-      }) scale(${this.state.zoom.scale})`;
+    }) scale(${this.state.zoom.scale})`;
     return (
       <div className="chart-editor-view">
         <div className="chart-editor-canvas-view" ref="canvasContainer">
