@@ -12,7 +12,7 @@ import {
   getFileNameWithoutExtension,
   convertColumns
 } from "../../utils";
-import { ButtonRaised } from "../../components/index";
+import { ButtonRaised, MessagePanel } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";

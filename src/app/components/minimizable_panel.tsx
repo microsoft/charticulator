@@ -122,6 +122,8 @@ export interface FloatingPanelProps {
   height?: number;
   peerGroup: string;
   scroll?: boolean;
+  floatInCenter?: boolean;
+  closeButtonIcon?: string;
 }
 export interface FloatingPanelState {
   x: number;
@@ -145,28 +147,37 @@ export class FloatingPanel extends React.Component<
     // Figure out a position that doesn't overlap with existing windows
     let initialX = 100;
     let initialY = 100;
-    while (true) {
-      let found = false;
-      if (FloatingPanel.peerGroups.has(this.props.peerGroup)) {
-        for (const peer of FloatingPanel.peerGroups.get(this.props.peerGroup)) {
-          if (peer.state.x == initialX && peer.state.y == initialY) {
-            found = true;
-            break;
+    const width = this.props.width || 324;
+    const height = this.props.height || 324;
+    if (this.props.floatInCenter) {
+      initialX = window.innerWidth / 2 - width / 2;
+      initialY = window.innerHeight / 2 - height / 2;
+    } else {
+      while (true) {
+        let found = false;
+        if (FloatingPanel.peerGroups.has(this.props.peerGroup)) {
+          for (const peer of FloatingPanel.peerGroups.get(
+            this.props.peerGroup
+          )) {
+            if (peer.state.x == initialX && peer.state.y == initialY) {
+              found = true;
+              break;
+            }
           }
         }
-      }
-      if (found && initialX < 400 && initialY < 400) {
-        initialX += 50;
-        initialY += 50;
-      } else {
-        break;
+        if (found && initialX < 400 && initialY < 400) {
+          initialX += 50;
+          initialY += 50;
+        } else {
+          break;
+        }
       }
     }
     return {
       x: initialX,
       y: initialY,
-      width: 324,
-      height: 400,
+      width,
+      height,
       focus: false,
       minimized: false
     };
@@ -277,7 +288,7 @@ export class FloatingPanel extends React.Component<
               }
             />
             <ButtonFlat
-              url={getSVGIcon("general/popout")}
+              url={getSVGIcon(this.props.closeButtonIcon || "general/popout")}
               title="Restore to panel"
               onClick={() => this.props.onClose()}
             />
