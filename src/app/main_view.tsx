@@ -209,15 +209,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         </div>
         <PopupContainer controller={globals.popupController} />
         {this.props.store.messageState.size ? (
-          /*this.state.isErrorOccured*/ <div className="charticulator__floating-panels_errors">
+          <div className="charticulator__floating-panels_errors">
             <FloatingPanel
               floatInCenter={true}
               scroll={true}
               peerGroup="messages"
               title="Errors"
-              onClose={() =>
-                this.props.store.dispatcher.dispatch(new ClearMessages())
-              }
               closeButtonIcon={"general/cross"}
               height={200}
               width={350}

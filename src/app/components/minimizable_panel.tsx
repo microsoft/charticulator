@@ -287,11 +287,13 @@ export class FloatingPanel extends React.Component<
                 this.setState({ minimized: !this.state.minimized })
               }
             />
-            <ButtonFlat
-              url={getSVGIcon(this.props.closeButtonIcon || "general/popout")}
-              title="Restore to panel"
-              onClick={() => this.props.onClose()}
-            />
+            {this.props.onClose ? (
+              <ButtonFlat
+                url={getSVGIcon(this.props.closeButtonIcon || "general/popout")}
+                title="Restore to panel"
+                onClick={() => this.props.onClose()}
+              />
+            ) : null}
           </span>
         </div>
         {!this.state.minimized ? (

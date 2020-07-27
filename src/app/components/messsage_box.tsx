@@ -46,10 +46,6 @@ export class MessagePanel extends ContextedComponent<
     );
   }
 
-  private getPropertyDisplayName(name: string) {
-    return name[0].toUpperCase() + name.slice(1);
-  }
-
   public render(): any {
     const store = this.props.store;
     const messages: Map<MessageTypes, string> = store.messageState;
@@ -60,7 +56,7 @@ export class MessagePanel extends ContextedComponent<
           const message = messages.get(key);
           return (
             <div key={index}>
-              <div key={index} className="el-object-item">
+              <div key={index} className="el-object-item auto-height">
                 {/* <SVGImageIcon
                   url={R.getSVGIcon(
                     Prototypes.ObjectClasses.GetMetadata(scale.classID).iconPath
