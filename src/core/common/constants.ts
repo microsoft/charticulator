@@ -6,4 +6,12 @@ export type MessageTypes =
   | "parsingDataError"
   | "constraintSolvingError"
   | "linkGuideCreatingError"
-  | "invalidLinksData";
+  | "invalidLinksData"
+  | "noID"
+  | "noSourceOrTargetID";
+
+export const LinkSourceKeyColumn = "source_id";
+
+export const LinkTargetKeyColumn = "target_id";
+
+export const KeyColumn = "id";

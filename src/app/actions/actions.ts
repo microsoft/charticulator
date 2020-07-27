@@ -836,7 +836,7 @@ export class AddMessage extends Action {
   }
 
   public digest() {
-    return { name: "AddErrorMessage", type: this.type, options: this.options };
+    return { name: "AddMessage", type: this.type, options: this.options };
   }
 }
 
@@ -846,7 +846,7 @@ export class RemoveMessage extends Action {
   }
 
   public digest() {
-    return { name: "AddErrorMessage", type: this.type };
+    return { name: "RemoveMessage", type: this.type };
   }
 }
 

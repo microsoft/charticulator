@@ -1,17 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { classNames } from "../utils";
-import { DraggableElement, ClickableSVGElement } from "./draggable";
-
-import * as globals from "../globals";
-
-import { PopupView } from "../controllers";
 
 import * as React from "react";
 import * as R from "../resources";
 
 import { EventSubscription, Prototypes, MessageTypes } from "../../core";
-import { SVGImageIcon } from "../components";
 
 import { AppStore } from "../stores";
 // import { ReorderListView } from "./.";

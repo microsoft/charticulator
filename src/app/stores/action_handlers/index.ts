@@ -10,6 +10,7 @@ import registerDocumentActions from "./document";
 import registerGlyphActions from "./glyph";
 import registerMarkActions from "./mark";
 import registerSelectionActions from "./selection";
+import registerReportingActions from "./reporting";
 
 export function registerActionHandlers(
   REG: ActionHandlerRegistry<AppStore, Actions.Action>
@@ -19,6 +20,7 @@ export function registerActionHandlers(
   registerGlyphActions(REG);
   registerMarkActions(REG);
   registerSelectionActions(REG);
+  registerReportingActions(REG);
 }
 
 export { ActionHandlerRegistry };
