@@ -13,6 +13,7 @@ import { AttributeDescription, Controls } from "../common";
 import { ScaleClass } from "./index";
 import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
+import { color as d3color } from "d3-color";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -186,8 +187,12 @@ export class CategoricalScaleColor extends ScaleClass<
     if (props.mapping == null) {
       // If we can't reuse existing colors, infer from scratch
       props.mapping = {};
-      // Find a good default color palette
-      const colorList = getDefaultColorPalette(s.length);
+      // try to use literal values as color
+      let colorList = literalColorValues(values);
+      if (!colorList) {
+        // Find a good default color palette
+        colorList = getDefaultColorPalette(s.length);
+      }
       s.domain.forEach((v, d) => {
         // If we still don't have enough colors, reuse them
         // TODO: fix this with a better method
@@ -223,6 +228,28 @@ export class CategoricalScaleColor extends ScaleClass<
       )
     ];
   }
+}
+
+function literalColorValues(values: string[]) {
+  const colorList: Color[] = [];
+  const cache: { [color: string]: true } = {};
+  for (let i = 0; i < values.length; i++) {
+    const value = values[i];
+    if (cache[value]) {
+      continue;
+    }
+    const d3c = d3color(value);
+    if (!d3c) {
+      return null;
+    }
+    const { r, g, b, opacity } = d3c.rgb();
+    if (opacity !== 1) {
+      return null;
+    }
+    colorList.push({ r, g, b });
+    cache[value] = true;
+  }
+  return colorList;
 }
 
 export class CategoricalScaleEnum extends ScaleClass<
