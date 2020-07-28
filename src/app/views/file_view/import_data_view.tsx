@@ -485,7 +485,7 @@ export class ImportDataView extends React.Component<
     if (!isKeyColumn && linksTable) {
       this.props.store.dispatcher.dispatch(
         new AddMessage("noID", {
-          text: `No ${KeyColumn} colum are specified in links table`
+          text: `No ${KeyColumn} colum are specified in main table`
         })
       );
     } else {
