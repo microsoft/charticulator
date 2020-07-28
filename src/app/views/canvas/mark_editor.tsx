@@ -33,6 +33,7 @@ import { HandlesView } from "./handles";
 import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
 import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
+import { GuideProperties } from "../../../core/prototypes/guides";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -1275,13 +1276,18 @@ export class SingleMarkView
           {
             mode = "vline";
             onCreate = x => {
+              const guideProperties: Partial<GuideProperties> = {
+                axis: "x",
+                baseline: "center",
+                baselineReadonly: true
+              };
               this.dispatch(
                 new Actions.AddMarkToGlyph(
                   this.props.glyph,
                   "guide.guide",
                   { x: 0, y: 0 },
                   { value: x },
-                  { axis: "x" }
+                  guideProperties
                 )
               );
             };
@@ -1291,13 +1297,18 @@ export class SingleMarkView
           {
             mode = "hline";
             onCreate = y => {
+              const guideProperties: Partial<GuideProperties> = {
+                axis: "y",
+                baseline: "middle",
+                baselineReadonly: true
+              };
               this.dispatch(
                 new Actions.AddMarkToGlyph(
                   this.props.glyph,
                   "guide.guide",
                   { x: 0, y: 0 },
                   { value: y },
-                  { axis: "y" }
+                  guideProperties
                 )
               );
             };

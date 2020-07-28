@@ -104,6 +104,9 @@ export interface Mapping {
   type: string;
 }
 
+export type baselineH = "left" | "center" | "right";
+export type baselineV = "top" | "middle" | "bottom";
+
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
   type: "scale";

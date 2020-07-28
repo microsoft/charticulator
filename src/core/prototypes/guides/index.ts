@@ -25,6 +25,8 @@ export interface GuideProperties extends Specification.AttributeMap {
   gap: number;
   value: number;
   value2: number;
+  baseline: Specification.baselineH | Specification.baselineV;
+  baselineReadonly: boolean;
 }
 
 export class GuideClass extends ChartElementClass<
@@ -42,7 +44,9 @@ export class GuideClass extends ChartElementClass<
   public static defaultProperties: Partial<GuideProperties> = {
     gap: 0,
     value: 0,
-    value2: 0
+    value2: 0,
+    baseline: null,
+    baselineReadonly: true
   };
 
   public attributeNames: string[] = ["value", "value2"];
@@ -67,6 +71,7 @@ export class GuideClass extends ChartElementClass<
   }
 
   public buildConstraints(solver: ConstraintSolver) {
+    // TODO baseline
     const [value, value2] = solver.attrs(this.state.attributes, [
       "value",
       "value2"
@@ -128,15 +133,52 @@ export class GuideClass extends ChartElementClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    return [
-      manager.sectionHeader("Guide"),
-      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
+
+    const widgets: Controls.Widget[] = [
+      manager.sectionHeader("Guide")
     ];
+
+    if (!this.object.properties.baselineReadonly) {
+      let labels: string[];
+      let options: string[];
+      let icons: string[];
+      if (this.object.properties.axis === "x") {
+        labels = ["Left", "Center", "Right"];
+        options = ["left", "center", "right"];
+        icons = ["align/left", "align/x-middle", "align/right"];
+      } else {
+        labels = ["Top", "Middle", "Bottom"];
+        options = ["top", "middle", "bottom"];
+        icons = ["align/top", "align/y-middle", "align/bottom"];
+      }
+      widgets.push(
+        manager.row("Baseline",
+          manager.inputSelect(
+            { property: "baseline" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              labels,
+              options,
+              icons
+            }
+          )
+        )
+      );
+    }
+
+    widgets.push(
+      manager.mappingEditor("Value", "value", { defaultValue: this.state.attributes["value"] }),
+      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
+    );
+
+    return widgets;
   }
 
   public getTemplateParameters(): TemplateParameters {
     return {
       properties: [
+        //TODO: baseline
         {
           objectID: this.object._id,
           target: {

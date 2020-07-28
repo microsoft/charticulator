@@ -39,6 +39,7 @@ import { HandlesView } from "./handles";
 import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
+import { GuideProperties } from "../../../core/prototypes/guides";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -400,10 +401,29 @@ export class ChartEditorView
           {
             mode = "vline";
             onCreate = x => {
+              let xn = x[0];
+              const half = +(this.props.store.chartState.attributes.width) / 2;
+              const quarter = half / 2;
+              let baseline: Specification.baselineH = "center";
+              if (xn < -quarter) {
+                baseline = "left";
+                xn = half + xn;
+              } else if (xn > quarter) {
+                baseline = "right";
+                xn = half - xn;
+              }
+              const value: [number, Specification.Mapping] = [xn, x[1]];
+
+              const guideProperties: Partial<GuideProperties> = {
+                axis: "x",
+                baseline,
+                baselineReadonly: false
+              };
+        
               new Actions.AddChartElement(
                 "guide.guide",
-                { value: x },
-                { axis: "x" }
+                { value },
+                guideProperties
               ).dispatch(this.props.store.dispatcher);
             };
           }
@@ -412,10 +432,29 @@ export class ChartEditorView
           {
             mode = "hline";
             onCreate = y => {
+              let yn = y[0];
+              const half = +(this.props.store.chartState.attributes.height) / 2;
+              const quarter = half / 2;
+              let baseline: Specification.baselineV = "middle";
+              if (yn < -quarter) {
+                baseline = "bottom";
+                yn = half + yn;
+              } else if (yn > quarter) {
+                baseline = "top";
+                yn = half - yn;
+              }
+              const value: [number, Specification.Mapping] = [yn, y[1]];
+
+              const guideProperties: Partial<GuideProperties> = {
+                axis: "y",
+                baseline,
+                baselineReadonly: false
+              };
+
               new Actions.AddChartElement(
                 "guide.guide",
-                { value: y },
-                { axis: "y" }
+                { value },
+                guideProperties
               ).dispatch(this.props.store.dispatcher);
             };
           }
