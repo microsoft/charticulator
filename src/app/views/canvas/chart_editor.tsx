@@ -402,7 +402,7 @@ export class ChartEditorView
             mode = "vline";
             onCreate = x => {
               let xn = x[0];
-              const half = +(this.props.store.chartState.attributes.width) / 2;
+              const half = +this.props.store.chartState.attributes.width / 2;
               const quarter = half / 2;
               let baseline: Specification.baselineH = "center";
               if (xn < -quarter) {
@@ -419,7 +419,7 @@ export class ChartEditorView
                 baseline,
                 baselineReadonly: false
               };
-        
+
               new Actions.AddChartElement(
                 "guide.guide",
                 { value },
@@ -433,7 +433,7 @@ export class ChartEditorView
             mode = "hline";
             onCreate = y => {
               let yn = y[0];
-              const half = +(this.props.store.chartState.attributes.height) / 2;
+              const half = +this.props.store.chartState.attributes.height / 2;
               const quarter = half / 2;
               let baseline: Specification.baselineV = "middle";
               if (yn < -quarter) {

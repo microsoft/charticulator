@@ -133,10 +133,7 @@ export class GuideClass extends ChartElementClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-
-    const widgets: Controls.Widget[] = [
-      manager.sectionHeader("Guide")
-    ];
+    const widgets: Controls.Widget[] = [manager.sectionHeader("Guide")];
 
     if (!this.object.properties.baselineReadonly) {
       let labels: string[];
@@ -152,7 +149,8 @@ export class GuideClass extends ChartElementClass<
         icons = ["align/top", "align/y-middle", "align/bottom"];
       }
       widgets.push(
-        manager.row("Baseline",
+        manager.row(
+          "Baseline",
           manager.inputSelect(
             { property: "baseline" },
             {
@@ -168,7 +166,9 @@ export class GuideClass extends ChartElementClass<
     }
 
     widgets.push(
-      manager.mappingEditor("Value", "value", { defaultValue: this.state.attributes["value"] }),
+      manager.mappingEditor("Value", "value", {
+        defaultValue: this.state.attributes.value
+      }),
       manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
     );
 
@@ -178,7 +178,7 @@ export class GuideClass extends ChartElementClass<
   public getTemplateParameters(): TemplateParameters {
     return {
       properties: [
-        //TODO: baseline
+        // TODO: baseline
         {
           objectID: this.object._id,
           target: {
