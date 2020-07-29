@@ -87,7 +87,8 @@ export class TableView extends React.Component<TableViewProps, {}> {
                   if (c.metadata.rawColumnName) {
                     return (
                       <td key={`${c.name}-${index}`}>
-                        {r[c.metadata.rawColumnName] != null && r[c.metadata.rawColumnName].toString()}
+                        {r[c.metadata.rawColumnName] != null &&
+                          r[c.metadata.rawColumnName].toString()}
                       </td>
                     );
                   } else {

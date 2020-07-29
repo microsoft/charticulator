@@ -46,7 +46,7 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   packing: {
     gravityX: number;
     gravityY: number;
-  }
+  };
 }
 
 export interface Region2DAttributes extends Specification.AttributeMap {
@@ -409,7 +409,7 @@ export class Region2DConstraintBuilder {
               solver.addLinear(
                 ConstraintStrength.HARD,
                 (data.categories.length - i - 0.5) * props.marginX1 -
-                (i + 0.5) * props.marginX2,
+                  (i + 0.5) * props.marginX2,
                 [
                   [i + 0.5, x2],
                   [data.categories.length - i - 0.5, x1],
@@ -462,7 +462,7 @@ export class Region2DConstraintBuilder {
             solver.addLinear(
               ConstraintStrength.HARD,
               (data.categories.length - i - 0.5) * props.marginY1 -
-              (i + 0.5) * props.marginY2,
+                (i + 0.5) * props.marginY2,
               [
                 [i + 0.5, y2],
                 [data.categories.length - i - 0.5, y1],
@@ -1697,7 +1697,7 @@ export class Region2DConstraintBuilder {
           this.config.getXYScale,
           {
             gravityX: packingProps && packingProps.gravityX,
-            gravityY: packingProps && packingProps.gravityY,
+            gravityY: packingProps && packingProps.gravityY
           }
         )
       );
@@ -2083,25 +2083,25 @@ export class Region2DConstraintBuilder {
             isXFixed
               ? null
               : m.inputSelect(
-                { property: "sublayout", field: ["align", "x"] },
-                {
-                  type: "radio",
-                  options: ["start", "middle", "end"],
-                  icons: ["align/left", "align/x-middle", "align/right"],
-                  labels: ["Left", "Middle", "Right"]
-                }
-              ),
+                  { property: "sublayout", field: ["align", "x"] },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/left", "align/x-middle", "align/right"],
+                    labels: ["Left", "Middle", "Right"]
+                  }
+                ),
             isYFixed
               ? null
               : m.inputSelect(
-                { property: "sublayout", field: ["align", "y"] },
-                {
-                  type: "radio",
-                  options: ["start", "middle", "end"],
-                  icons: ["align/bottom", "align/y-middle", "align/top"],
-                  labels: ["Bottom", "Middle", "Top"]
-                }
-              )
+                  { property: "sublayout", field: ["align", "y"] },
+                  {
+                    type: "radio",
+                    options: ["start", "middle", "end"],
+                    icons: ["align/bottom", "align/y-middle", "align/top"],
+                    labels: ["Bottom", "Middle", "Top"]
+                  }
+                )
           )
         )
       );
@@ -2409,9 +2409,9 @@ export class Region2DConstraintBuilder {
         sublayout.push(
           m.label(
             this.terminology.xAxis +
-            " & " +
-            this.terminology.yAxis +
-            ": Stacking"
+              " & " +
+              this.terminology.yAxis +
+              ": Stacking"
           )
         );
       }
