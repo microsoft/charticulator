@@ -85,7 +85,6 @@ export class Migrator {
       state = this.addOriginDataSet(state);
     }
 
-
     // After migration, set version to targetVersion
     state.version = targetVersion;
 

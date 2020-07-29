@@ -9,19 +9,19 @@ export interface PopupOptions {
   parent?: PopupContext;
   anchor: Element;
   alignX?:
-  | "inner"
-  | "outer"
-  | "start-inner"
-  | "start-outer"
-  | "end-inner"
-  | "end-outer";
+    | "inner"
+    | "outer"
+    | "start-inner"
+    | "start-outer"
+    | "end-inner"
+    | "end-outer";
   alignY?:
-  | "inner"
-  | "outer"
-  | "start-inner"
-  | "start-outer"
-  | "end-inner"
-  | "end-outer";
+    | "inner"
+    | "outer"
+    | "start-inner"
+    | "start-outer"
+    | "end-inner"
+    | "end-outer";
 }
 
 const popupViewMapping = new WeakMap<HTMLDivElement, PopupContext>();
@@ -35,7 +35,7 @@ function findParentPopup(anchor: Element) {
     anchor = anchor.parentElement;
   }
 }
-export interface PopupResult { }
+export interface PopupResult {}
 
 export class PopupContext extends EventEmitter {
   public readonly id: string;
@@ -282,7 +282,7 @@ export class PopupView extends React.Component<
     width?: number;
   },
   {}
-  > {
+> {
   public render() {
     const popup = this.props.context;
     const position = popup.options.anchor.getBoundingClientRect();
@@ -456,7 +456,7 @@ export class ModalView extends React.Component<
     type?: string;
   },
   {}
-  > {
+> {
   public render() {
     const type = this.props.type || "default";
     return (

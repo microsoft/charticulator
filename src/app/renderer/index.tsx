@@ -68,7 +68,7 @@ export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
   return { r, g, b };
 }
 
-/** 
+/**
  * Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
  * @param color {@Color} object or color string in HEX format (`#RRGGBB`)
  */

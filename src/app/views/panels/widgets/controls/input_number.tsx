@@ -68,13 +68,13 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
     if (value == null) {
       return this.props.onEnter(value);
     } else {
-        if (this.props.minimum != null) {
-          value = Math.max(this.props.minimum, value);
-        }
-        if (this.props.maximum != null) {
-          value = Math.min(this.props.maximum, value);
-        }
-        return this.props.onEnter(value);
+      if (this.props.minimum != null) {
+        value = Math.max(this.props.minimum, value);
+      }
+      if (this.props.maximum != null) {
+        value = Math.min(this.props.maximum, value);
+      }
+      return this.props.onEnter(value);
     }
   }
 

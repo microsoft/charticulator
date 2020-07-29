@@ -25,7 +25,7 @@ export class ChartConstraintSolver {
   public datasetContext: Dataset.DatasetContext;
   public expressionCache: Expression.ExpressionCache;
 
-  /** 
+  /**
    * Create a ChartConstraintSolver
    * - stage == "chart": disregard glyphs, solve chart-level constraints
    * - stage == "glyphs": fix chart-level attributes, solve only glyphs
@@ -120,14 +120,18 @@ export class ChartConstraintSolver {
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
-          if (expr.parts.find(part => part.expression instanceof FunctionCall && part.expression.name === "columnName")) {
+          if (
+            expr.parts.find(
+              part =>
+                part.expression instanceof FunctionCall &&
+                part.expression.name === "columnName"
+            )
+          ) {
             attrs[attr] = expr.getValue(
               (rowContext as DataflowTableGroupedContext).getTable()
             );
           } else {
-            attrs[attr] = expr.getValue(
-              rowContext
-            );
+            attrs[attr] = expr.getValue(rowContext);
           }
         }
         break;
@@ -722,7 +726,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     this.glyphState = glyphState;
   }
 
-  public setValue() { }
+  public setValue() {}
   public getValue() {
     return 0;
   }
@@ -731,7 +735,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     console.warn("(unimplemented) Make Constant: ", attr);
   }
 
-  public destroy() { }
+  public destroy() {}
 
   private ker: Float64Array[];
   private X0: Float64Array[];

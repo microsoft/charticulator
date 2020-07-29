@@ -15,7 +15,7 @@ export interface AttributeOptions {
   edit: boolean;
 }
 
-export interface Variable { }
+export interface Variable {}
 
 export abstract class ConstraintPlugin {
   public abstract apply(): boolean;
