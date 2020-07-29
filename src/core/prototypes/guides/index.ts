@@ -89,43 +89,34 @@ export class GuideClass extends ChartElementClass<
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
-    const r = [
-      {
+    const line = (attribute: string, value: Specification.AttributeValue) => {
+      return {
         type: "line",
         axis: this.getAxis(),
-        actions: [{ type: "attribute", attribute: "value" }],
-        value: this.state.attributes.value,
+        actions: [{ type: "attribute", attribute }],
+        value,
         span: inf
       } as Handles.Line
-    ];
+    };
+    const r = [line("value", this.state.attributes.value)];
     if (this.object.properties.gap > 0) {
-      r.push({
-        type: "line",
-        axis: this.getAxis(),
-        actions: [{ type: "attribute", attribute: "value2" }],
-        value: this.state.attributes.value2,
-        span: inf
-      } as Handles.Line);
+      r.push(line("value2", this.state.attributes.value2));
     }
     return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    const r = [
-      {
+    const axis = (attribute: string, value: Specification.AttributeValue) => {
+      return {
         type: this.getAxis(),
         value: this.state.attributes.value,
-        attribute: "value",
+        attribute,
         visible: true
       } as SnappingGuides.Axis
-    ];
+    };
+    const r = [axis("value", this.state.attributes.value)];
     if (this.object.properties.gap > 0) {
-      r.push({
-        type: this.getAxis(),
-        value: this.state.attributes.value2,
-        attribute: "value2",
-        visible: true
-      } as SnappingGuides.Axis);
+      r.push(axis("value2", this.state.attributes.value2));
     }
     return r;
   }
