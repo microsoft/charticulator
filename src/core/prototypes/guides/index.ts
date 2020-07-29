@@ -96,7 +96,7 @@ export class GuideClass extends ChartElementClass<
         actions: [{ type: "attribute", attribute }],
         value,
         span: inf
-      } as Handles.Line
+      } as Handles.Line;
     };
     const r = [line("value", this.state.attributes.value)];
     if (this.object.properties.gap > 0) {
@@ -109,10 +109,10 @@ export class GuideClass extends ChartElementClass<
     const axis = (attribute: string, value: Specification.AttributeValue) => {
       return {
         type: this.getAxis(),
-        value: this.state.attributes.value,
+        value,
         attribute,
         visible: true
-      } as SnappingGuides.Axis
+      } as SnappingGuides.Axis;
     };
     const r = [axis("value", this.state.attributes.value)];
     if (this.object.properties.gap > 0) {
