@@ -35,12 +35,10 @@ import {
 } from "./creating_component";
 import { DropZoneView } from "./dropzone";
 import { EditingLink } from "./editing_link";
-import { HandlesView, ResizeHandleView } from "./handles";
-import {
-  ChartSnappableGuide,
-  ChartSnappingSession,
-  MoveSnappingSession
-} from "./snapping";
+import { HandlesView } from "./handles";
+import { ResizeHandleView } from "./handles/resize";
+import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
+import { MoveSnappingSession } from "./snapping/move";
 
 export interface ChartEditorViewProps {
   store: AppStore;
