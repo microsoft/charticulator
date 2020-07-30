@@ -18,13 +18,13 @@ import { ObjectClasses } from "../object";
 
 export interface GuideAttributes extends Specification.AttributeMap {
   value: number;
+  value2: number;
+  marginPos: number;
 }
 
 export interface GuideProperties extends Specification.AttributeMap {
   axis: "x" | "y";
   gap: number;
-  value: number;
-  value2: number;
   baseline: Specification.baselineH | Specification.baselineV;
   baselineReadonly: boolean;
 }
@@ -43,13 +43,11 @@ export class GuideClass extends ChartElementClass<
 
   public static defaultProperties: Partial<GuideProperties> = {
     gap: 0,
-    value: 0,
-    value2: 0,
     baseline: null,
     baselineReadonly: true
   };
 
-  public attributeNames: string[] = ["value", "value2"];
+  public attributeNames: string[] = ["value", "value2", "marginPos"];
   public attributes: { [name: string]: AttributeDescription } = {
     value: {
       name: "value",
@@ -58,12 +56,17 @@ export class GuideClass extends ChartElementClass<
     value2: {
       name: "value2",
       type: Specification.AttributeType.Number
+    },
+    marginPos: {
+      name: "marginPos",
+      type: Specification.AttributeType.Number
     }
   };
 
   public initializeState() {
     this.state.attributes.value = 0;
     this.state.attributes.value2 = 0;
+    this.state.attributes.marginPos = 0;
   }
 
   private getAxis() {
@@ -71,15 +74,53 @@ export class GuideClass extends ChartElementClass<
   }
 
   public buildConstraints(solver: ConstraintSolver) {
-    // TODO baseline
-    const [value, value2] = solver.attrs(this.state.attributes, [
-      "value",
-      "value2"
-    ]);
-    solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
-      [1, value],
-      [-1, value2]
-    ]);
+    switch (this.object.properties.baseline) {
+      case "center":
+      case "middle": {
+        const [value, value2, marginPos] = solver.attrs(this.state.attributes, [
+          "value",
+          "value2",
+          "marginPos"
+        ]);
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          this.object.properties.gap,
+          [[1, value], [-1, value2]]);
+
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          this.state.attributes.value,
+          [[-1, marginPos]]
+        );
+        break;
+      }
+      case "left": {
+        const [
+          width
+        ] = solver.attrs(this.parent.state.attributes, [
+          "width"
+        ]);
+        solver.makeConstant(this.parent.state.attributes, "width");
+
+        const [
+          value,
+          marginPos
+        ] = solver.attrs(this.state.attributes, [
+          "value",
+          "marginPos"
+        ]);
+        solver.makeConstant(this.state.attributes, "value");
+
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, marginPos]],
+          [[-0.5, width], [+1, value]]
+        );
+
+        break;
+      }
+    }
   }
 
   public getLinkAnchors(): LinkAnchor.Description[] {
@@ -89,24 +130,53 @@ export class GuideClass extends ChartElementClass<
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
-    const line = (attribute: string, value: Specification.AttributeValue) => {
+    const handleLine = (attribute: string, value: Specification.AttributeValue) => {
       return {
         type: "line",
-        axis: this.getAxis(),
+        axis,
         actions: [{ type: "attribute", attribute }],
         value,
         span: inf
       } as Handles.Line;
     };
-    const r = [line("value", this.state.attributes.value)];
-    if (this.object.properties.gap > 0) {
-      r.push(line("value2", this.state.attributes.value2));
+    const handleRelativeLine = (attribute: string, value: Specification.AttributeValue, reference: number, sign: number) => {
+      return {
+        type: "relative-line",
+        axis,
+        actions: [{ type: "attribute", attribute }],
+        reference,
+        sign,
+        value,
+        span: inf
+      } as Handles.RelativeLine
+    };
+    //const values = this.valuesByBaseline();
+    const { axis, baseline, gap } = this.object.properties;
+    const { value, value2 } = this.state.attributes;
+    const r: Handles.Description[] = [];
+    const w2 = (this.parent.state.attributes.width as number) / 2;
+    switch (baseline) {
+      case "center":
+      case "middle": {
+        r.push(handleLine("value", value));
+        if (gap > 0) {
+          r.push(handleLine("value2", value2));
+        }
+        break;
+      }
+      case "left": {
+        r.push(handleRelativeLine("value", value, -w2, 1));
+        if (gap > 0) {
+          //r.push(handleLine("value2", value2));
+        }
+        break;
+      }
     }
     return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    const axis = (attribute: string, value: Specification.AttributeValue) => {
+    const snappingGuideAxis = (attribute: string, value: Specification.AttributeValue) => {
       return {
         type: this.getAxis(),
         value,
@@ -114,9 +184,9 @@ export class GuideClass extends ChartElementClass<
         visible: true
       } as SnappingGuides.Axis;
     };
-    const r = [axis("value", this.state.attributes.value)];
+    const r = [snappingGuideAxis("marginPos", this.state.attributes.marginPos)];
     if (this.object.properties.gap > 0) {
-      r.push(axis("value2", this.state.attributes.value2));
+      r.push(snappingGuideAxis("value2", this.state.attributes.value2));  // TODO value2 for marginPos
     }
     return r;
   }
@@ -169,7 +239,30 @@ export class GuideClass extends ChartElementClass<
   public getTemplateParameters(): TemplateParameters {
     return {
       properties: [
-        // TODO: baseline
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "baseline"
+          },
+          type: Specification.AttributeType.Enum,
+          default: this.object.properties.baseline
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "baselineReadonly"
+          },
+          type: Specification.AttributeType.Boolean,
+          default: this.object.properties.baselineReadonly
+        },
+        {
+          objectID: this.object._id,
+          target: {
+            attribute: "marginPos"
+          },
+          type: Specification.AttributeType.Number,
+          default: this.state.attributes.marginPos
+        },
         {
           objectID: this.object._id,
           target: {
