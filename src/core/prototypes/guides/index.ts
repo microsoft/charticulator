@@ -82,30 +82,21 @@ export class GuideClass extends ChartElementClass<
           "value2",
           "marginPos"
         ]);
-        solver.addLinear(
-          ConstraintStrength.HARD,
-          this.object.properties.gap,
-          [[1, value], [-1, value2]]);
+        solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
+          [1, value],
+          [-1, value2]
+        ]);
 
-        solver.addLinear(
-          ConstraintStrength.HARD,
-          this.state.attributes.value,
-          [[-1, marginPos]]
-        );
+        solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
+          [-1, marginPos]
+        ]);
         break;
       }
       case "left": {
-        const [
-          width
-        ] = solver.attrs(this.parent.state.attributes, [
-          "width"
-        ]);
+        const [width] = solver.attrs(this.parent.state.attributes, ["width"]);
         solver.makeConstant(this.parent.state.attributes, "width");
 
-        const [
-          value,
-          marginPos
-        ] = solver.attrs(this.state.attributes, [
+        const [value, marginPos] = solver.attrs(this.state.attributes, [
           "value",
           "marginPos"
         ]);
@@ -130,7 +121,10 @@ export class GuideClass extends ChartElementClass<
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
-    const handleLine = (attribute: string, value: Specification.AttributeValue) => {
+    const handleLine = (
+      attribute: string,
+      value: Specification.AttributeValue
+    ) => {
       return {
         type: "line",
         axis,
@@ -139,7 +133,12 @@ export class GuideClass extends ChartElementClass<
         span: inf
       } as Handles.Line;
     };
-    const handleRelativeLine = (attribute: string, value: Specification.AttributeValue, reference: number, sign: number) => {
+    const handleRelativeLine = (
+      attribute: string,
+      value: Specification.AttributeValue,
+      reference: number,
+      sign: number
+    ) => {
       return {
         type: "relative-line",
         axis,
@@ -148,9 +147,9 @@ export class GuideClass extends ChartElementClass<
         sign,
         value,
         span: inf
-      } as Handles.RelativeLine
+      } as Handles.RelativeLine;
     };
-    //const values = this.valuesByBaseline();
+    // const values = this.valuesByBaseline();
     const { axis, baseline, gap } = this.object.properties;
     const { value, value2 } = this.state.attributes;
     const r: Handles.Description[] = [];
@@ -167,7 +166,7 @@ export class GuideClass extends ChartElementClass<
       case "left": {
         r.push(handleRelativeLine("value", value, -w2, 1));
         if (gap > 0) {
-          //r.push(handleLine("value2", value2));
+          // r.push(handleLine("value2", value2));
         }
         break;
       }
@@ -176,7 +175,10 @@ export class GuideClass extends ChartElementClass<
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    const snappingGuideAxis = (attribute: string, value: Specification.AttributeValue) => {
+    const snappingGuideAxis = (
+      attribute: string,
+      value: Specification.AttributeValue
+    ) => {
       return {
         type: this.getAxis(),
         value,
@@ -186,7 +188,7 @@ export class GuideClass extends ChartElementClass<
     };
     const r = [snappingGuideAxis("marginPos", this.state.attributes.marginPos)];
     if (this.object.properties.gap > 0) {
-      r.push(snappingGuideAxis("value2", this.state.attributes.value2));  // TODO value2 for marginPos
+      r.push(snappingGuideAxis("value2", this.state.attributes.value2)); // TODO value2 for marginPos
     }
     return r;
   }
