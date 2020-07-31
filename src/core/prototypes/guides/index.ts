@@ -17,20 +17,20 @@ import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
 
 type GuideAxis = "x" | "y";
-enum GuideAttributesNames {
+enum GuideAttributeNames {
   value = "value",
   value2 = "value2",
-  marginPos = "marginPos"
+  computedBaselineValue = "computedBaselineValue"
 }
 
 export interface GuideAttributes extends Specification.AttributeMap {
   value: number;
   value2: number;
-  marginPos: number;
+  computedBaselineValue: number;
 }
 
 interface GuideAttributeDescription extends AttributeDescription {
-  name: GuideAttributesNames;
+  name: GuideAttributeNames;
 }
 
 export interface GuideProperties extends Specification.AttributeMap {
@@ -58,24 +58,24 @@ export class GuideClass extends ChartElementClass<
     baselineReadonly: true
   };
 
-  public attributeNames: GuideAttributesNames[] = [
-    GuideAttributesNames.value,
-    GuideAttributesNames.value2,
-    GuideAttributesNames.marginPos
+  public attributeNames: GuideAttributeNames[] = [
+    GuideAttributeNames.value,
+    GuideAttributeNames.value2,
+    GuideAttributeNames.computedBaselineValue
   ];
   public attributes: {
-    [name in GuideAttributesNames]: GuideAttributeDescription
+    [name in GuideAttributeNames]: GuideAttributeDescription
   } = {
     value: {
-      name: GuideAttributesNames.value,
+      name: GuideAttributeNames.value,
       type: Specification.AttributeType.Number
     },
     value2: {
-      name: GuideAttributesNames.value2,
+      name: GuideAttributeNames.value2,
       type: Specification.AttributeType.Number
     },
-    marginPos: {
-      name: GuideAttributesNames.marginPos,
+    computedBaselineValue: {
+      name: GuideAttributeNames.computedBaselineValue,
       type: Specification.AttributeType.Number
     }
   };
@@ -83,7 +83,7 @@ export class GuideClass extends ChartElementClass<
   public initializeState() {
     this.state.attributes.value = 0;
     this.state.attributes.value2 = 0;
-    this.state.attributes.marginPos = 0;
+    this.state.attributes.computedBaselineValue = 0;
   }
 
   private getAxis() {
@@ -95,9 +95,9 @@ export class GuideClass extends ChartElementClass<
       case "center":
       case "middle": {
         const [value, value2, marginPos] = solver.attrs(this.state.attributes, [
-          GuideAttributesNames.value,
-          GuideAttributesNames.value2,
-          GuideAttributesNames.marginPos
+          GuideAttributeNames.value,
+          GuideAttributeNames.value2,
+          GuideAttributeNames.computedBaselineValue
         ]);
         solver.addLinear(ConstraintStrength.HARD, this.object.properties.gap, [
           [1, value],
@@ -114,10 +114,10 @@ export class GuideClass extends ChartElementClass<
         solver.makeConstant(this.parent.state.attributes, "width");
 
         const [value, marginPos] = solver.attrs(this.state.attributes, [
-          GuideAttributesNames.value,
-          GuideAttributesNames.marginPos
+          GuideAttributeNames.value,
+          GuideAttributeNames.computedBaselineValue
         ]);
-        solver.makeConstant(this.state.attributes, GuideAttributesNames.value);
+        solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
 
         solver.addLinear(
           ConstraintStrength.HARD,
@@ -139,7 +139,7 @@ export class GuideClass extends ChartElementClass<
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
     const handleLine = (
-      attribute: GuideAttributesNames,
+      attribute: GuideAttributeNames,
       value: Specification.AttributeValue
     ) => {
       return {
@@ -151,7 +151,7 @@ export class GuideClass extends ChartElementClass<
       } as Handles.Line;
     };
     const handleRelativeLine = (
-      attribute: GuideAttributesNames,
+      attribute: GuideAttributeNames,
       value: Specification.AttributeValue,
       reference: number,
       sign: number
@@ -174,14 +174,14 @@ export class GuideClass extends ChartElementClass<
     switch (baseline) {
       case "center":
       case "middle": {
-        r.push(handleLine(GuideAttributesNames.value, value));
+        r.push(handleLine(GuideAttributeNames.value, value));
         if (gap > 0) {
-          r.push(handleLine(GuideAttributesNames.value2, value2));
+          r.push(handleLine(GuideAttributeNames.value2, value2));
         }
         break;
       }
       case "left": {
-        r.push(handleRelativeLine(GuideAttributesNames.value, value, -w2, 1));
+        r.push(handleRelativeLine(GuideAttributeNames.value, value, -w2, 1));
         if (gap > 0) {
           // r.push(handleLine("value2", value2));
         }
@@ -205,14 +205,14 @@ export class GuideClass extends ChartElementClass<
     };
     const r = [
       snappingGuideAxis(
-        GuideAttributesNames.marginPos,
-        this.state.attributes.marginPos
+        GuideAttributeNames.computedBaselineValue,
+        this.state.attributes.computedBaselineValue
       )
     ];
     if (this.object.properties.gap > 0) {
       r.push(
         snappingGuideAxis(
-          GuideAttributesNames.value2,
+          GuideAttributeNames.value2,
           this.state.attributes.value2
         )
       ); // TODO value2 for marginPos
@@ -256,7 +256,7 @@ export class GuideClass extends ChartElementClass<
     }
 
     widgets.push(
-      manager.mappingEditor("Value", GuideAttributesNames.value, {
+      manager.mappingEditor("Value", GuideAttributeNames.value, {
         defaultValue: this.state.attributes.value
       }),
       manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
@@ -295,7 +295,7 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: GuideAttributesNames.value
+            attribute: GuideAttributeNames.value
           },
           type: Specification.AttributeType.Number,
           default: this.state.attributes.value as number
@@ -303,7 +303,7 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: GuideAttributesNames.value2
+            attribute: GuideAttributeNames.value2
           },
           type: Specification.AttributeType.Number,
           default: this.state.attributes.value2 as number
@@ -311,10 +311,10 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: GuideAttributesNames.marginPos
+            attribute: GuideAttributeNames.computedBaselineValue
           },
           type: Specification.AttributeType.Number,
-          default: this.state.attributes.marginPos
+          default: this.state.attributes.computedBaselineValue
         }
       ]
     };
