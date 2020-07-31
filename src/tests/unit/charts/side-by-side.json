@@ -2945,7 +2945,8 @@
           {
             "attributes": {
               "value": 0,
-              "value2": 30
+              "value2": 30,
+              "computedBaselineValue": 0
             }
           },
           {
