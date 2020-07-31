@@ -114,7 +114,7 @@ export class GuideClass extends ChartElementClass<
           [1, value],
           [-1, value2]
         ]);
-
+        // computedBaselineValue is equal to the value
         solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
           [-1, computedBaselineValue]
         ]);
