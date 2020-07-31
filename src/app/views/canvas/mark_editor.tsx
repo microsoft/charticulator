@@ -1270,7 +1270,11 @@ export class SingleMarkView
         ...args: Array<[number, Specification.Mapping]>
       ) => void = null;
       let mode: string = "point";
-      const addGuide = (value: [number, Specification.Mapping], axis: GuideAxis, baseline: Specification.baseline) => {
+      const addGuide = (
+        value: [number, Specification.Mapping],
+        axis: GuideAxis,
+        baseline: Specification.baseline
+      ) => {
         const guideProperties: Partial<GuideProperties> = {
           axis,
           baseline,
@@ -1285,7 +1289,6 @@ export class SingleMarkView
             guideProperties
           )
         );
-
       };
       switch (currentCreation) {
         case "guide-x":
