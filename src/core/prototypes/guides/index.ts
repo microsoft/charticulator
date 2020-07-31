@@ -16,7 +16,7 @@ import {
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
 
-type GuideAxis = "x" | "y";
+export type GuideAxis = "x" | "y";
 
 enum GuideAttributeNames {
   value = "value",
