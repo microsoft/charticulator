@@ -216,7 +216,7 @@ export class GuideClass extends ChartElementClass<
     if (gap > 0) {
       r.push(handleLine(GuideAttributeNames.value2, value2));
     }
-return r;
+    return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
