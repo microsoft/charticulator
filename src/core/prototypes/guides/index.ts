@@ -98,34 +98,6 @@ export class GuideClass extends ChartElementClass<
     return this.object.properties.axis;
   }
 
-  private computeBaselineFromParentAttribute(
-    solver: ConstraintSolver,
-    parentAttributeName: string,
-    rhsFn: (
-      parentAttributeVariable: Variable,
-      value: Variable
-    ) => Array<[number, Variable]>
-  ) {
-    const [parentAttributeVariable] = solver.attrs(
-      this.parent.state.attributes,
-      [parentAttributeName]
-    );
-    solver.makeConstant(this.parent.state.attributes, parentAttributeName);
-
-    const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
-      GuideAttributeNames.value,
-      GuideAttributeNames.computedBaselineValue
-    ]);
-    solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
-
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[1, computedBaselineValue]],
-      rhsFn(parentAttributeVariable, value)
-    );
-  }
-
   public buildConstraints(solver: ConstraintSolver) {
     switch (this.object.properties.baseline) {
       case "center":
@@ -181,6 +153,34 @@ export class GuideClass extends ChartElementClass<
         break;
       }
     }
+  }
+
+  private computeBaselineFromParentAttribute(
+    solver: ConstraintSolver,
+    parentAttributeName: string,
+    rhsFn: (
+      parentAttributeVariable: Variable,
+      value: Variable
+    ) => Array<[number, Variable]>
+  ) {
+    const [parentAttributeVariable] = solver.attrs(
+      this.parent.state.attributes,
+      [parentAttributeName]
+    );
+    solver.makeConstant(this.parent.state.attributes, parentAttributeName);
+
+    const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
+      GuideAttributeNames.value,
+      GuideAttributeNames.computedBaselineValue
+    ]);
+    solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
+
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[1, computedBaselineValue]],
+      rhsFn(parentAttributeVariable, value)
+    );
   }
 
   public getLinkAnchors(): LinkAnchor.Description[] {
