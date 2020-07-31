@@ -401,18 +401,18 @@ export class ChartEditorView
         parentAttributeName: string,
         axis: GuideAxis,
         baseline: Specification.baseline,
-        lowLimit: Specification.baseline,
-        highLimit: Specification.baseline
+        low: Specification.baseline,
+        high: Specification.baseline
       ) => {
         let n = arg[0];
         const half =
           +this.props.store.chartState.attributes[parentAttributeName] / 2;
         const quarter = half / 2;
         if (n < -quarter) {
-          baseline = lowLimit;
+          baseline = low;
           n = half + n;
         } else if (n > quarter) {
-          baseline = highLimit;
+          baseline = high;
           n = half - n;
         }
         const value: [number, Specification.Mapping] = [n, arg[1]];
