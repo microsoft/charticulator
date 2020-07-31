@@ -100,6 +100,7 @@ export class GuideClass extends ChartElementClass<
 
   public buildConstraints(solver: ConstraintSolver) {
     switch (this.object.properties.baseline) {
+      case undefined:
       case "center":
       case "middle": {
         const [value, value2, computedBaselineValue] = solver.attrs(
@@ -223,6 +224,7 @@ export class GuideClass extends ChartElementClass<
     const h2 = (this.parent.state.attributes.height as number) / 2;
     const w2 = (this.parent.state.attributes.width as number) / 2;
     switch (baseline) {
+      case undefined:
       case "center":
       case "middle": {
         r.push(handleLine(GuideAttributeNames.value, value));
