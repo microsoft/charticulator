@@ -43,7 +43,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-  > {
+> {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -58,8 +58,14 @@ export class GuideClass extends ChartElementClass<
     baselineReadonly: true
   };
 
-  public attributeNames: GuideAttributesNames[] = [GuideAttributesNames.value, GuideAttributesNames.value2, GuideAttributesNames.marginPos];
-  public attributes: { [name in GuideAttributesNames]: GuideAttributeDescription } = {
+  public attributeNames: GuideAttributesNames[] = [
+    GuideAttributesNames.value,
+    GuideAttributesNames.value2,
+    GuideAttributesNames.marginPos
+  ];
+  public attributes: {
+    [name in GuideAttributesNames]: GuideAttributeDescription
+  } = {
     value: {
       name: GuideAttributesNames.value,
       type: Specification.AttributeType.Number
@@ -197,9 +203,19 @@ export class GuideClass extends ChartElementClass<
         visible: true
       } as SnappingGuides.Axis;
     };
-    const r = [snappingGuideAxis(GuideAttributesNames.marginPos, this.state.attributes.marginPos)];
+    const r = [
+      snappingGuideAxis(
+        GuideAttributesNames.marginPos,
+        this.state.attributes.marginPos
+      )
+    ];
     if (this.object.properties.gap > 0) {
-      r.push(snappingGuideAxis(GuideAttributesNames.value2, this.state.attributes.value2)); // TODO value2 for marginPos
+      r.push(
+        snappingGuideAxis(
+          GuideAttributesNames.value2,
+          this.state.attributes.value2
+        )
+      ); // TODO value2 for marginPos
     }
     return r;
   }
@@ -319,7 +335,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-  > {
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
