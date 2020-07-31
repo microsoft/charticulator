@@ -405,7 +405,8 @@ export class ChartEditorView
         highLimit: Specification.baseline
       ) => {
         let n = arg[0];
-        const half = +this.props.store.chartState.attributes[parentAttributeName] / 2;
+        const half =
+          +this.props.store.chartState.attributes[parentAttributeName] / 2;
         const quarter = half / 2;
         if (n < -quarter) {
           baseline = lowLimit;
@@ -431,13 +432,15 @@ export class ChartEditorView
         case "guide-x":
           {
             mode = "vline";
-            onCreate = x => addGuide(x, "width", "x", "center", "left", "right");
+            onCreate = x =>
+              addGuide(x, "width", "x", "center", "left", "right");
           }
           break;
         case "guide-y":
           {
             mode = "hline";
-            onCreate = y => addGuide(y, "height", "y", "middle", "bottom", "top");
+            onCreate = y =>
+              addGuide(y, "height", "y", "middle", "bottom", "top");
           }
           break;
         case "guide-coordinator-x":
