@@ -238,13 +238,13 @@ export class GuideClass extends ChartElementClass<
       let options: string[];
       let icons: string[];
       if (this.object.properties.axis === "x") {
-        const hOptions: Specification.baselineH[] =["left", "center", "right"];
+        const hOptions: Specification.baselineH[] = ["left", "center", "right"];
         options = hOptions;
         labels = ["Left", "Center", "Right"];
 
         icons = ["align/left", "align/x-middle", "align/right"];
       } else {
-        const vOptions: Specification.baselineV[] =["top", "middle", "bottom"];
+        const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
         options = vOptions;
         labels = ["Top", "Middle", "Bottom"];
         icons = ["align/top", "align/y-middle", "align/bottom"];
@@ -270,7 +270,10 @@ export class GuideClass extends ChartElementClass<
       manager.mappingEditor("Value", GuideAttributeNames.value, {
         defaultValue: this.state.attributes.value
       }),
-      manager.row("Split Gap", manager.inputNumber({ property: GuidePropertyNames.gap }, {}))
+      manager.row(
+        "Split Gap",
+        manager.inputNumber({ property: GuidePropertyNames.gap }, {})
+      )
     );
 
     return widgets;
