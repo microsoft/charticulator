@@ -106,6 +106,7 @@ export interface Mapping {
 
 export type baselineH = "left" | "center" | "right";
 export type baselineV = "top" | "middle" | "bottom";
+export type baseline = baselineH | baselineV;
 
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
