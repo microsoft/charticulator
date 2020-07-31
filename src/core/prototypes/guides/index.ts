@@ -138,6 +138,24 @@ export class GuideClass extends ChartElementClass<
         );
         break;
       }
+      case "right": {
+        const [width] = solver.attrs(this.parent.state.attributes, ["width"]);
+        solver.makeConstant(this.parent.state.attributes, "width");
+
+        const [value, computedBaselineValue] = solver.attrs(
+          this.state.attributes,
+          [GuideAttributeNames.value, GuideAttributeNames.computedBaselineValue]
+        );
+        solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
+
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, computedBaselineValue]],
+          [[+0.5, width], [-1, value]]
+        );
+        break;
+      }
     }
   }
 
@@ -184,20 +202,21 @@ export class GuideClass extends ChartElementClass<
       case "center":
       case "middle": {
         r.push(handleLine(GuideAttributeNames.value, value));
-        if (gap > 0) {
-          r.push(handleLine(GuideAttributeNames.value2, value2));
-        }
         break;
       }
       case "left": {
         r.push(handleRelativeLine(GuideAttributeNames.value, value, -w2, 1));
-        if (gap > 0) {
-          // r.push(handleLine("value2", value2));
-        }
+        break;
+      }
+      case "right": {
+        r.push(handleRelativeLine(GuideAttributeNames.value, value, w2, -1));
         break;
       }
     }
-    return r;
+    if (gap > 0) {
+      r.push(handleLine(GuideAttributeNames.value2, value2));
+    }
+return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
