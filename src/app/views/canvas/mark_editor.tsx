@@ -33,7 +33,7 @@ import { HandlesView } from "./handles";
 import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
 import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
-import { GuideProperties } from "../../../core/prototypes/guides";
+import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -1270,48 +1270,34 @@ export class SingleMarkView
         ...args: Array<[number, Specification.Mapping]>
       ) => void = null;
       let mode: string = "point";
+      const addGuide = (value: [number, Specification.Mapping], axis: GuideAxis, baseline: Specification.baseline) => {
+        const guideProperties: Partial<GuideProperties> = {
+          axis,
+          baseline,
+          baselineReadonly: true
+        };
+        this.dispatch(
+          new Actions.AddMarkToGlyph(
+            this.props.glyph,
+            "guide.guide",
+            { x: 0, y: 0 },
+            { value },
+            guideProperties
+          )
+        );
 
+      };
       switch (currentCreation) {
         case "guide-x":
           {
             mode = "vline";
-            onCreate = x => {
-              const guideProperties: Partial<GuideProperties> = {
-                axis: "x",
-                baseline: "center",
-                baselineReadonly: true
-              };
-              this.dispatch(
-                new Actions.AddMarkToGlyph(
-                  this.props.glyph,
-                  "guide.guide",
-                  { x: 0, y: 0 },
-                  { value: x },
-                  guideProperties
-                )
-              );
-            };
+            onCreate = x => addGuide(x, "x", "center");
           }
           break;
         case "guide-y":
           {
             mode = "hline";
-            onCreate = y => {
-              const guideProperties: Partial<GuideProperties> = {
-                axis: "y",
-                baseline: "middle",
-                baselineReadonly: true
-              };
-              this.dispatch(
-                new Actions.AddMarkToGlyph(
-                  this.props.glyph,
-                  "guide.guide",
-                  { x: 0, y: 0 },
-                  { value: y },
-                  guideProperties
-                )
-              );
-            };
+            onCreate = y => addGuide(y, "y", "middle");
           }
           break;
         case "guide-coordinator-x":
