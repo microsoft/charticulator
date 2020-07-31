@@ -102,7 +102,7 @@ export class GuideClass extends ChartElementClass<
     switch (this.object.properties.baseline) {
       case "center":
       case "middle": {
-        const [value, value2, marginPos] = solver.attrs(this.state.attributes, [
+        const [value, value2, computedBaselineValue] = solver.attrs(this.state.attributes, [
           GuideAttributeNames.value,
           GuideAttributeNames.value2,
           GuideAttributeNames.computedBaselineValue
@@ -113,7 +113,7 @@ export class GuideClass extends ChartElementClass<
         ]);
 
         solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
-          [-1, marginPos]
+          [-1, computedBaselineValue]
         ]);
         break;
       }
@@ -121,7 +121,7 @@ export class GuideClass extends ChartElementClass<
         const [width] = solver.attrs(this.parent.state.attributes, ["width"]);
         solver.makeConstant(this.parent.state.attributes, "width");
 
-        const [value, marginPos] = solver.attrs(this.state.attributes, [
+        const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
           GuideAttributeNames.value,
           GuideAttributeNames.computedBaselineValue
         ]);
@@ -130,10 +130,9 @@ export class GuideClass extends ChartElementClass<
         solver.addLinear(
           ConstraintStrength.HARD,
           0,
-          [[1, marginPos]],
+          [[1, computedBaselineValue]],
           [[-0.5, width], [+1, value]]
         );
-
         break;
       }
     }
@@ -174,7 +173,6 @@ export class GuideClass extends ChartElementClass<
         span: inf
       } as Handles.RelativeLine;
     };
-    // const values = this.valuesByBaseline();
     const { axis, baseline, gap } = this.object.properties;
     const { value, value2 } = this.state.attributes;
     const r: Handles.Description[] = [];
