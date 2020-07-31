@@ -17,6 +17,7 @@ import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
 
 type GuideAxis = "x" | "y";
+
 enum GuideAttributeNames {
   value = "value",
   value2 = "value2",
@@ -31,6 +32,13 @@ export interface GuideAttributes extends Specification.AttributeMap {
 
 interface GuideAttributeDescription extends AttributeDescription {
   name: GuideAttributeNames;
+}
+
+enum GuidePropertyNames {
+  axis = "axis",
+  gap = "gap",
+  baseline = "baseline",
+  baselineReadonly = "baselineReadonly"
 }
 
 export interface GuideProperties extends Specification.AttributeMap {
@@ -230,19 +238,22 @@ export class GuideClass extends ChartElementClass<
       let options: string[];
       let icons: string[];
       if (this.object.properties.axis === "x") {
+        const hOptions: Specification.baselineH[] =["left", "center", "right"];
+        options = hOptions;
         labels = ["Left", "Center", "Right"];
-        options = ["left", "center", "right"];
+
         icons = ["align/left", "align/x-middle", "align/right"];
       } else {
+        const vOptions: Specification.baselineV[] =["top", "middle", "bottom"];
+        options = vOptions;
         labels = ["Top", "Middle", "Bottom"];
-        options = ["top", "middle", "bottom"];
         icons = ["align/top", "align/y-middle", "align/bottom"];
       }
       widgets.push(
         manager.row(
           "Baseline",
           manager.inputSelect(
-            { property: "baseline" },
+            { property: GuidePropertyNames.baseline },
             {
               type: "dropdown",
               showLabel: true,
@@ -259,7 +270,7 @@ export class GuideClass extends ChartElementClass<
       manager.mappingEditor("Value", GuideAttributeNames.value, {
         defaultValue: this.state.attributes.value
       }),
-      manager.row("Split Gap", manager.inputNumber({ property: "gap" }, {}))
+      manager.row("Split Gap", manager.inputNumber({ property: GuidePropertyNames.gap }, {}))
     );
 
     return widgets;
@@ -271,7 +282,7 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: "baseline"
+            attribute: GuidePropertyNames.baseline
           },
           type: Specification.AttributeType.Enum,
           default: this.object.properties.baseline
@@ -279,7 +290,7 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: "baselineReadonly"
+            attribute: GuidePropertyNames.baselineReadonly
           },
           type: Specification.AttributeType.Boolean,
           default: this.object.properties.baselineReadonly
@@ -287,7 +298,7 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: "gap"
+            attribute: GuidePropertyNames.gap
           },
           type: Specification.AttributeType.Number,
           default: this.object.properties.gap as number
