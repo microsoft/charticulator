@@ -164,6 +164,22 @@ export class GuideClass extends ChartElementClass<
         );
         break;
       }
+      case "top": {
+        this.computeBaselineFromParentAttribute(
+          solver,
+          "height",
+          (height, value) => [[+0.5, height], [-1, value]]
+        );
+        break;
+      }
+      case "bottom": {
+        this.computeBaselineFromParentAttribute(
+          solver,
+          "height",
+          (height, value) => [[-0.5, height], [+1, value]]
+        );
+        break;
+      }
     }
   }
 
@@ -205,6 +221,7 @@ export class GuideClass extends ChartElementClass<
     const { axis, baseline, gap } = this.object.properties;
     const { value, value2 } = this.state.attributes;
     const r: Handles.Description[] = [];
+    const h2 = (this.parent.state.attributes.height as number) / 2;
     const w2 = (this.parent.state.attributes.width as number) / 2;
     switch (baseline) {
       case "center":
@@ -218,6 +235,14 @@ export class GuideClass extends ChartElementClass<
       }
       case "right": {
         r.push(handleRelativeLine(GuideAttributeNames.value, value, w2, -1));
+        break;
+      }
+      case "top": {
+        r.push(handleRelativeLine(GuideAttributeNames.value, value, h2, -1));
+        break;
+      }
+      case "bottom": {
+        r.push(handleRelativeLine(GuideAttributeNames.value, value, -h2, 1));
         break;
       }
     }
