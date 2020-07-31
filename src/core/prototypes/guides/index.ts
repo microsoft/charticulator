@@ -101,15 +101,21 @@ export class GuideClass extends ChartElementClass<
   private computeBaselineFromParentAttribute(
     solver: ConstraintSolver,
     parentAttributeName: string,
-    rhsFn: (parentAttributeVariable: Variable, value: Variable) => Array<[number, Variable]>
+    rhsFn: (
+      parentAttributeVariable: Variable,
+      value: Variable
+    ) => Array<[number, Variable]>
   ) {
-    const [parentAttributeVariable] = solver.attrs(this.parent.state.attributes, [parentAttributeName]);
+    const [parentAttributeVariable] = solver.attrs(
+      this.parent.state.attributes,
+      [parentAttributeName]
+    );
     solver.makeConstant(this.parent.state.attributes, parentAttributeName);
 
-    const [value, computedBaselineValue] = solver.attrs(
-      this.state.attributes,
-      [GuideAttributeNames.value, GuideAttributeNames.computedBaselineValue]
-    );
+    const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
+      GuideAttributeNames.value,
+      GuideAttributeNames.computedBaselineValue
+    ]);
     solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
 
     solver.addLinear(
@@ -143,11 +149,19 @@ export class GuideClass extends ChartElementClass<
         break;
       }
       case "left": {
-        this.computeBaselineFromParentAttribute(solver, "width", (width, value) => [[-0.5, width], [+1, value]]);
+        this.computeBaselineFromParentAttribute(
+          solver,
+          "width",
+          (width, value) => [[-0.5, width], [+1, value]]
+        );
         break;
       }
       case "right": {
-        this.computeBaselineFromParentAttribute(solver, "width", (width, value) => [[+0.5, width], [-1, value]]);
+        this.computeBaselineFromParentAttribute(
+          solver,
+          "width",
+          (width, value) => [[+0.5, width], [-1, value]]
+        );
         break;
       }
     }
