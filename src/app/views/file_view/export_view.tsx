@@ -342,29 +342,31 @@ export class ExportTemplateView extends ContextedComponent<
     }
     return this.state.template.tables.map(table => (
       <div key={table.name}>
-        {table.columns.map(column => (
-          <div key={column.name}>
-            {this.renderInput(
-              column.name,
-              "string",
-              column.displayName,
-              null,
-              value => {
-                const dataTable = this.store.dataset.tables.find(
-                  t => t.name === table.name
-                );
-                const dataColumn = dataTable.columns.find(
-                  c => c.name === column.name
-                );
-                dataColumn.displayName = value;
-                column.displayName = value;
-                this.setState({
-                  template: this.state.template
-                });
-              }
-            )}
-          </div>
-        ))}
+        {table.columns
+          .filter(col => !col.metadata.isRaw)
+          .map(column => (
+            <div key={column.name}>
+              {this.renderInput(
+                column.name,
+                "string",
+                column.displayName,
+                null,
+                value => {
+                  const dataTable = this.store.dataset.tables.find(
+                    t => t.name === table.name
+                  );
+                  const dataColumn = dataTable.columns.find(
+                    c => c.name === column.name
+                  );
+                  dataColumn.displayName = value;
+                  column.displayName = value;
+                  this.setState({
+                    template: this.state.template
+                  });
+                }
+              )}
+            </div>
+          ))}
       </div>
     ));
   }
