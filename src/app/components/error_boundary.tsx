@@ -10,8 +10,8 @@ export interface ErrorBoundaryProps {
 
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
-  { hasError: boolean, errorString?: string }
-  > {
+  { hasError: boolean; errorString?: string }
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
@@ -22,7 +22,8 @@ export class ErrorBoundary extends React.Component<
   public componentDidCatch(error: Error, info: React.ErrorInfo) {
     this.setState({
       hasError: true,
-      errorString: `${error.name} \n ${error.message} \n ${error.stack && error.stack} \n ${info.componentStack}`
+      errorString: `${error.name} \n ${error.message} \n ${error.stack &&
+        error.stack} \n ${info.componentStack}`
     });
 
     console.log(error, info);

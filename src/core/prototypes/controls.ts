@@ -90,7 +90,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
 }
 
-export interface TableOptions { }
+export interface TableOptions {}
 
 export interface FilterEditorOptions {
   table: string;
