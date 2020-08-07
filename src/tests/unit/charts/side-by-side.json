@@ -824,7 +824,6 @@
             "_id": "tt6prdu54z",
             "classID": "guide.guide",
             "properties": {
-              "gap": 30,
               "name": "Guide1",
               "axis": "x"
             },
@@ -1166,16 +1165,6 @@
         "scaleMappings": [
         ],
         "constraints": [
-          {
-            "type": "snap",
-            "attributes": {
-              "element": "2kzhybohkce",
-              "attribute": "x1",
-              "targetElement": "tt6prdu54z",
-              "targetAttribute": "value2",
-              "gap": 0
-            }
-          }
         ],
         "resources": []
       },
@@ -2945,7 +2934,6 @@
           {
             "attributes": {
               "value": 0,
-              "value2": 30,
               "computedBaselineValue": 0
             }
           },
