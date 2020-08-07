@@ -418,8 +418,7 @@ export class ChartEditorView
         const value: [number, Specification.Mapping] = [n, arg[1]];
         const guideProperties: Partial<GuideProperties> = {
           axis,
-          baseline,
-          baselineReadonly: false
+          baseline
         };
         new Actions.AddChartElement(
           "guide.guide",

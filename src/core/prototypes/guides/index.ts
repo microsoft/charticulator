@@ -37,15 +37,13 @@ interface GuideAttributeDescription extends AttributeDescription {
 enum GuidePropertyNames {
   axis = "axis",
   gap = "gap",
-  baseline = "baseline",
-  baselineReadonly = "baselineReadonly"
+  baseline = "baseline"
 }
 
 export interface GuideProperties extends Specification.AttributeMap {
   axis: GuideAxis;
   gap: number;
   baseline: Specification.baselineH | Specification.baselineV;
-  baselineReadonly: boolean;
 }
 
 export class GuideClass extends ChartElementClass<
@@ -62,8 +60,7 @@ export class GuideClass extends ChartElementClass<
 
   public static defaultProperties: Partial<GuideProperties> = {
     gap: 0,
-    baseline: null,
-    baselineReadonly: true
+    baseline: null
   };
 
   public attributeNames: GuideAttributeNames[] = [
@@ -287,38 +284,36 @@ export class GuideClass extends ChartElementClass<
   ): Controls.Widget[] {
     const widgets: Controls.Widget[] = [manager.sectionHeader("Guide")];
 
-    if (!this.object.properties.baselineReadonly) {
-      let labels: string[];
-      let options: string[];
-      let icons: string[];
-      if (this.object.properties.axis === "x") {
-        const hOptions: Specification.baselineH[] = ["left", "center", "right"];
-        options = hOptions;
-        labels = ["Left", "Center", "Right"];
+    let labels: string[];
+    let options: string[];
+    let icons: string[];
+    if (this.object.properties.axis === "x") {
+      const hOptions: Specification.baselineH[] = ["left", "center", "right"];
+      options = hOptions;
+      labels = ["Left", "Center", "Right"];
 
-        icons = ["align/left", "align/x-middle", "align/right"];
-      } else {
-        const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
-        options = vOptions;
-        labels = ["Top", "Middle", "Bottom"];
-        icons = ["align/top", "align/y-middle", "align/bottom"];
-      }
-      widgets.push(
-        manager.row(
-          "Baseline",
-          manager.inputSelect(
-            { property: GuidePropertyNames.baseline },
-            {
-              type: "dropdown",
-              showLabel: true,
-              labels,
-              options,
-              icons
-            }
-          )
-        )
-      );
+      icons = ["align/left", "align/x-middle", "align/right"];
+    } else {
+      const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
+      options = vOptions;
+      labels = ["Top", "Middle", "Bottom"];
+      icons = ["align/top", "align/y-middle", "align/bottom"];
     }
+    widgets.push(
+      manager.row(
+        "Baseline",
+        manager.inputSelect(
+          { property: GuidePropertyNames.baseline },
+          {
+            type: "dropdown",
+            showLabel: true,
+            labels,
+            options,
+            icons
+          }
+        )
+      )
+    );
 
     widgets.push(
       manager.mappingEditor("Value", GuideAttributeNames.value, {
@@ -343,14 +338,6 @@ export class GuideClass extends ChartElementClass<
           },
           type: Specification.AttributeType.Enum,
           default: this.object.properties.baseline
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuidePropertyNames.baselineReadonly
-          },
-          type: Specification.AttributeType.Boolean,
-          default: this.object.properties.baselineReadonly
         },
         {
           objectID: this.object._id,

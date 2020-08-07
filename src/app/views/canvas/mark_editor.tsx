@@ -1277,8 +1277,7 @@ export class SingleMarkView
       ) => {
         const guideProperties: Partial<GuideProperties> = {
           axis,
-          baseline,
-          baselineReadonly: true
+          baseline
         };
         this.dispatch(
           new Actions.AddMarkToGlyph(
