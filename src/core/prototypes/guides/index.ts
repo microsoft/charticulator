@@ -91,10 +91,7 @@ export class GuideClass extends ChartElementClass<
       case "middle": {
         const [value, computedBaselineValue] = solver.attrs(
           this.state.attributes,
-          [
-            GuideAttributeNames.value,
-            GuideAttributeNames.computedBaselineValue
-          ]
+          [GuideAttributeNames.value, GuideAttributeNames.computedBaselineValue]
         );
         solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
           [-1, computedBaselineValue]
