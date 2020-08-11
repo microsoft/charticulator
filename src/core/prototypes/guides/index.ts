@@ -45,7 +45,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-> {
+  > {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -65,15 +65,15 @@ export class GuideClass extends ChartElementClass<
   public attributes: {
     [name in GuideAttributeNames]: GuideAttributeDescription
   } = {
-    value: {
-      name: GuideAttributeNames.value,
-      type: Specification.AttributeType.Number
-    },
-    computedBaselineValue: {
-      name: GuideAttributeNames.computedBaselineValue,
-      type: Specification.AttributeType.Number
-    }
-  };
+      value: {
+        name: GuideAttributeNames.value,
+        type: Specification.AttributeType.Number
+      },
+      computedBaselineValue: {
+        name: GuideAttributeNames.computedBaselineValue,
+        type: Specification.AttributeType.Number
+      }
+    };
 
   public initializeState() {
     this.state.attributes.value = 0;
@@ -86,47 +86,51 @@ export class GuideClass extends ChartElementClass<
 
   public buildConstraints(solver: ConstraintSolver) {
     switch (this.object.properties.baseline) {
-      case undefined:
-      case "center":
-      case "middle": {
-        const [value, computedBaselineValue] = solver.attrs(
-          this.state.attributes,
-          [GuideAttributeNames.value, GuideAttributeNames.computedBaselineValue]
+      case "center": {
+        this.computeBaselineFromParentAttribute(
+          solver,
+          ["cx"],
+          ([cx], value) => [[+1, cx], [+1, value]]
         );
-        solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
-          [-1, computedBaselineValue]
-        ]);
+        break;
+      }
+      case "middle": {
+        this.computeBaselineFromParentAttribute(
+          solver,
+          ["cy"],
+          ([cy], value) => [[+1, cy], [+1, value]]
+        );
         break;
       }
       case "left": {
         this.computeBaselineFromParentAttribute(
           solver,
-          "width",
-          (width, value) => [[-0.5, width], [+1, value]]
+          ["width", "marginLeft"],
+          ([width, marginLeft], value) => [[-0.5, width], [+1, marginLeft], [+1, value]]
         );
         break;
       }
       case "right": {
         this.computeBaselineFromParentAttribute(
           solver,
-          "width",
-          (width, value) => [[+0.5, width], [-1, value]]
+          ["width", "marginRight"],
+          ([width, marginRight], value) => [[+0.5, width], [-1, marginRight], [+1, value]]
         );
         break;
       }
       case "top": {
         this.computeBaselineFromParentAttribute(
           solver,
-          "height",
-          (height, value) => [[+0.5, height], [-1, value]]
+          ["height", "marginTop"],
+          ([height, marginTop], value) => [[+0.5, height], [-1, marginTop], [+1, value]]
         );
         break;
       }
       case "bottom": {
         this.computeBaselineFromParentAttribute(
           solver,
-          "height",
-          (height, value) => [[-0.5, height], [+1, value]]
+          ["height", "marginBottom"],
+          ([height, marginBottom], value) => [[-0.5, height], [+1, marginBottom], [+1, value]]
         );
         break;
       }
@@ -135,17 +139,18 @@ export class GuideClass extends ChartElementClass<
 
   private computeBaselineFromParentAttribute(
     solver: ConstraintSolver,
-    parentAttributeName: string,
+    parentAttributeNames: string[],
     rhsFn: (
-      parentAttributeVariable: Variable,
+      parentAttributeVariables: Variable[],
       value: Variable
     ) => Array<[number, Variable]>
   ) {
-    const [parentAttributeVariable] = solver.attrs(
-      this.parent.state.attributes,
-      [parentAttributeName]
+    const parentAttrs = this.parent.state.attributes;
+    const parentAttributeVariables = solver.attrs(
+      parentAttrs,
+      parentAttributeNames
     );
-    solver.makeConstant(this.parent.state.attributes, parentAttributeName);
+    //parentAttributeNames.forEach(parentAttributeName => solver.makeConstant(parentAttrs, parentAttributeName));
 
     const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
       GuideAttributeNames.value,
@@ -157,7 +162,7 @@ export class GuideClass extends ChartElementClass<
       ConstraintStrength.HARD,
       0,
       [[1, computedBaselineValue]],
-      rhsFn(parentAttributeVariable, value)
+      rhsFn(parentAttributeVariables, value)
     );
   }
 
@@ -168,64 +173,41 @@ export class GuideClass extends ChartElementClass<
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
-    const handleLine = (
-      attribute: GuideAttributeNames,
-      value: Specification.AttributeValue
-    ) => {
-      return {
-        type: "line",
-        axis,
-        actions: [{ type: "attribute", attribute }],
-        value,
-        span: inf
-      } as Handles.Line;
-    };
+    const { value } = this.state.attributes;
+    const { axis, baseline } = this.object.properties;
     const handleRelativeLine = (
-      attribute: GuideAttributeNames,
-      value: Specification.AttributeValue,
-      reference: number,
-      sign: number
+      reference: number
     ) => {
-      return {
+      return [{
         type: "relative-line",
         axis,
-        actions: [{ type: "attribute", attribute }],
+        actions: [{ type: "attribute", attribute: GuideAttributeNames.value }],
         reference,
-        sign,
+        sign: 1,
         value,
         span: inf
-      } as Handles.RelativeLine;
+      }] as Handles.RelativeLine[];
     };
-    const { axis, baseline } = this.object.properties;
-    const { value } = this.state.attributes;
-    const r: Handles.Description[] = [];
-    const h2 = (this.parent.state.attributes.height as number) / 2;
-    const w2 = (this.parent.state.attributes.width as number) / 2;
     switch (baseline) {
-      case undefined:
-      case "center":
+      case "center": {
+        return handleRelativeLine(+this.parent.state.attributes.cx);
+      }
       case "middle": {
-        r.push(handleLine(GuideAttributeNames.value, value));
-        break;
+        return handleRelativeLine(+this.parent.state.attributes.cy);
       }
       case "left": {
-        r.push(handleRelativeLine(GuideAttributeNames.value, value, -w2, 1));
-        break;
+        return handleRelativeLine(+this.parent.state.attributes.x1);
       }
       case "right": {
-        r.push(handleRelativeLine(GuideAttributeNames.value, value, w2, -1));
-        break;
+        return handleRelativeLine(+this.parent.state.attributes.x2);
       }
       case "top": {
-        r.push(handleRelativeLine(GuideAttributeNames.value, value, h2, -1));
-        break;
+        return handleRelativeLine(+this.parent.state.attributes.y2);
       }
       case "bottom": {
-        r.push(handleRelativeLine(GuideAttributeNames.value, value, -h2, 1));
-        break;
+        return handleRelativeLine(+this.parent.state.attributes.y1);
       }
     }
-    return r;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
@@ -340,7 +322,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-> {
+  > {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
