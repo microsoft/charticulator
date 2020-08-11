@@ -45,7 +45,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-  > {
+> {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -65,15 +65,15 @@ export class GuideClass extends ChartElementClass<
   public attributes: {
     [name in GuideAttributeNames]: GuideAttributeDescription
   } = {
-      value: {
-        name: GuideAttributeNames.value,
-        type: Specification.AttributeType.Number
-      },
-      computedBaselineValue: {
-        name: GuideAttributeNames.computedBaselineValue,
-        type: Specification.AttributeType.Number
-      }
-    };
+    value: {
+      name: GuideAttributeNames.value,
+      type: Specification.AttributeType.Number
+    },
+    computedBaselineValue: {
+      name: GuideAttributeNames.computedBaselineValue,
+      type: Specification.AttributeType.Number
+    }
+  };
 
   public initializeState() {
     this.state.attributes.value = 0;
@@ -106,7 +106,11 @@ export class GuideClass extends ChartElementClass<
         this.computeBaselineFromParentAttribute(
           solver,
           ["width", "marginLeft"],
-          ([width, marginLeft], value) => [[-0.5, width], [+1, marginLeft], [+1, value]]
+          ([width, marginLeft], value) => [
+            [-0.5, width],
+            [+1, marginLeft],
+            [+1, value]
+          ]
         );
         break;
       }
@@ -114,7 +118,11 @@ export class GuideClass extends ChartElementClass<
         this.computeBaselineFromParentAttribute(
           solver,
           ["width", "marginRight"],
-          ([width, marginRight], value) => [[+0.5, width], [-1, marginRight], [+1, value]]
+          ([width, marginRight], value) => [
+            [+0.5, width],
+            [-1, marginRight],
+            [+1, value]
+          ]
         );
         break;
       }
@@ -122,7 +130,11 @@ export class GuideClass extends ChartElementClass<
         this.computeBaselineFromParentAttribute(
           solver,
           ["height", "marginTop"],
-          ([height, marginTop], value) => [[+0.5, height], [-1, marginTop], [+1, value]]
+          ([height, marginTop], value) => [
+            [+0.5, height],
+            [-1, marginTop],
+            [+1, value]
+          ]
         );
         break;
       }
@@ -130,7 +142,11 @@ export class GuideClass extends ChartElementClass<
         this.computeBaselineFromParentAttribute(
           solver,
           ["height", "marginBottom"],
-          ([height, marginBottom], value) => [[-0.5, height], [+1, marginBottom], [+1, value]]
+          ([height, marginBottom], value) => [
+            [-0.5, height],
+            [+1, marginBottom],
+            [+1, value]
+          ]
         );
         break;
       }
@@ -150,7 +166,7 @@ export class GuideClass extends ChartElementClass<
       parentAttrs,
       parentAttributeNames
     );
-    //parentAttributeNames.forEach(parentAttributeName => solver.makeConstant(parentAttrs, parentAttributeName));
+    // parentAttributeNames.forEach(parentAttributeName => solver.makeConstant(parentAttrs, parentAttributeName));
 
     const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
       GuideAttributeNames.value,
@@ -175,18 +191,20 @@ export class GuideClass extends ChartElementClass<
     const inf = [-1000, 1000];
     const { value } = this.state.attributes;
     const { axis, baseline } = this.object.properties;
-    const handleRelativeLine = (
-      reference: number
-    ) => {
-      return [{
-        type: "relative-line",
-        axis,
-        actions: [{ type: "attribute", attribute: GuideAttributeNames.value }],
-        reference,
-        sign: 1,
-        value,
-        span: inf
-      }] as Handles.RelativeLine[];
+    const handleRelativeLine = (reference: number) => {
+      return [
+        {
+          type: "relative-line",
+          axis,
+          actions: [
+            { type: "attribute", attribute: GuideAttributeNames.value }
+          ],
+          reference,
+          sign: 1,
+          value,
+          span: inf
+        }
+      ] as Handles.RelativeLine[];
     };
     switch (baseline) {
       case "center": {
@@ -322,7 +340,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-  > {
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
