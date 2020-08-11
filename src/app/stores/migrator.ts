@@ -90,7 +90,7 @@ export class Migrator {
       compareVersion(state.version, "1.7.0") < 0 &&
       compareVersion(targetVersion, "1.7.0") >= 0
     ) {
-      // Minor change at version 1.6.1: Chargt guides now have a baseline prop 
+      // Minor change at version 1.6.1: Chargt guides now have a baseline prop
       state = this.addGuideBaseline(state);
     }
 
@@ -101,13 +101,17 @@ export class Migrator {
   }
 
   public addGuideBaseline(state: AppStoreState) {
-    //get chart guides
-    const chartGuides = state.chart.elements.filter(x=> x.classID===GuideClass.classID);
-    
-    //get glyph guides
-    const glyphGuides = state.chart.glyphs.filter(x=> x.classID===GuideClass.classID);
-    
-    //fix state attrs
+    // get chart guides
+    const chartGuides = state.chart.elements.filter(
+      x => x.classID === GuideClass.classID
+    );
+
+    // get glyph guides
+    const glyphGuides = state.chart.glyphs.filter(
+      x => x.classID === GuideClass.classID
+    );
+
+    // fix state attrs
 
     return state;
   }
