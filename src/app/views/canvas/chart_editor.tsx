@@ -55,11 +55,11 @@ export interface ChartEditorViewState {
   currentCreationOptions?: string;
   currentSelection: Selection;
   dropZoneData:
-  | {
-    data?: DragData.DropZoneData;
-    layout?: DragData.ScaffoldType;
-  }
-  | false;
+    | {
+        data?: DragData.DropZoneData;
+        layout?: DragData.ScaffoldType;
+      }
+    | false;
   isSolving: boolean;
 }
 
@@ -404,11 +404,15 @@ export class ChartEditorView
         highMarginAttr: string,
         baselineLow: Specification.baseline,
         baselineMid: Specification.baseline,
-        baselineHigh: Specification.baseline,
+        baselineHigh: Specification.baseline
       ) => {
         const outer = +this.props.store.chartState.attributes[outerAttr];
-        const lowMargin = +this.props.store.chartState.attributes[lowMarginAttr];
-        const highMargin = +this.props.store.chartState.attributes[highMarginAttr];
+        const lowMargin = +this.props.store.chartState.attributes[
+          lowMarginAttr
+        ];
+        const highMargin = +this.props.store.chartState.attributes[
+          highMarginAttr
+        ];
         const fromCenter = arg[0];
         const abs = outer / 2 + fromCenter;
         const inner = outer - lowMargin - highMargin;
@@ -449,14 +453,32 @@ export class ChartEditorView
           {
             mode = "vline";
             onCreate = x =>
-              addGuide(x, "x", "width", "marginLeft", "marginRight", "left", "center", "right");
+              addGuide(
+                x,
+                "x",
+                "width",
+                "marginLeft",
+                "marginRight",
+                "left",
+                "center",
+                "right"
+              );
           }
           break;
         case "guide-y":
           {
             mode = "hline";
             onCreate = y =>
-              addGuide(y, "y", "height", "marginBottom", "marginTop", "bottom", "middle", "top");
+              addGuide(
+                y,
+                "y",
+                "height",
+                "marginBottom",
+                "marginTop",
+                "bottom",
+                "middle",
+                "top"
+              );
           }
           break;
         case "guide-coordinator-x":
@@ -764,9 +786,9 @@ export class ChartEditorView
             ) : null}
             {Prototypes.isType(layout.classID, "plot-segment")
               ? this.renderMarkHandlesInPlotSegment(
-                layout as Specification.PlotSegment,
-                layoutState as Specification.PlotSegmentState
-              )
+                  layout as Specification.PlotSegment,
+                  layoutState as Specification.PlotSegmentState
+                )
               : null}
             <HandlesView
               handles={handles}
@@ -1111,7 +1133,7 @@ export class ChartEditorView
     const height = this.state.viewHeight;
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
-      }) scale(${this.state.zoom.scale})`;
+    }) scale(${this.state.zoom.scale})`;
     return (
       <div className="chart-editor-view">
         <div className="chart-editor-canvas-view" ref="canvasContainer">
