@@ -12,6 +12,7 @@ import {
   deepClone
 } from "../../core";
 import { TableType } from "../../core/dataset";
+import { GuideClass } from "../../core/prototypes/guides";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -85,8 +86,28 @@ export class Migrator {
       state = this.addOriginDataSet(state);
     }
 
+    if (
+      compareVersion(state.version, "1.7.0") < 0 &&
+      compareVersion(targetVersion, "1.7.0") >= 0
+    ) {
+      // Minor change at version 1.6.1: Chargt guides now have a baseline prop 
+      state = this.addGuideBaseline(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
+
+    return state;
+  }
+
+  public addGuideBaseline(state: AppStoreState) {
+    //get chart guides
+    const chartGuides = state.chart.elements.filter(x=> x.classID===GuideClass.classID);
+    
+    //get glyph guides
+    const glyphGuides = state.chart.glyphs.filter(x=> x.classID===GuideClass.classID);
+    
+    //fix state attrs
 
     return state;
   }
