@@ -53,7 +53,7 @@ export interface MarkEditorViewState {
 export class MarkEditorView extends ContextedComponent<
   MarkEditorViewProps,
   MarkEditorViewState
-> {
+  > {
   protected refContainer: HTMLDivElement;
   protected refSingleMarkView: SingleMarkView;
   protected resizeListenerHandle: number;
@@ -161,18 +161,18 @@ export class MarkEditorView extends ContextedComponent<
             height={this.state.height - 24}
           />
         ) : (
-          <div className="mark-editor-single-view">
-            <div
-              className="mark-view-container"
-              style={{
-                width: this.state.width + "px",
-                height: this.state.height - 24 + "px"
-              }}
-            >
-              <div className="mark-view-container-notice">No glyph to edit</div>
+            <div className="mark-editor-single-view">
+              <div
+                className="mark-view-container"
+                style={{
+                  width: this.state.width + "px",
+                  height: this.state.height - 24 + "px"
+                }}
+              >
+                <div className="mark-view-container-notice">No glyph to edit</div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
         <div className="canvas-controls">
           <div className="canvas-controls-left">
             <span className="glyph-tabs">
@@ -326,39 +326,39 @@ export class SingleMarkView
               const sin = Math.sin((bboxRect.rotation / 180) * Math.PI);
               xBounds = [
                 bboxRect.anchorX +
-                  bboxRect.cx +
-                  (bboxRect.width / 2) * cos +
-                  (bboxRect.height / 2) * sin,
+                bboxRect.cx +
+                (bboxRect.width / 2) * cos +
+                (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
-                  bboxRect.cx -
-                  (bboxRect.width / 2) * cos +
-                  (bboxRect.height / 2) * sin,
+                bboxRect.cx -
+                (bboxRect.width / 2) * cos +
+                (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
-                  bboxRect.cx +
-                  (bboxRect.width / 2) * cos -
-                  (bboxRect.height / 2) * sin,
+                bboxRect.cx +
+                (bboxRect.width / 2) * cos -
+                (bboxRect.height / 2) * sin,
                 bboxRect.anchorX +
-                  bboxRect.cx -
-                  (bboxRect.width / 2) * cos -
-                  (bboxRect.height / 2) * sin
+                bboxRect.cx -
+                (bboxRect.width / 2) * cos -
+                (bboxRect.height / 2) * sin
               ];
               yBounds = [
                 bboxRect.anchorY +
-                  bboxRect.cy +
-                  (bboxRect.width / 2) * -sin +
-                  (bboxRect.height / 2) * cos,
+                bboxRect.cy +
+                (bboxRect.width / 2) * -sin +
+                (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
-                  bboxRect.cy -
-                  (bboxRect.width / 2) * -sin +
-                  (bboxRect.height / 2) * cos,
+                bboxRect.cy -
+                (bboxRect.width / 2) * -sin +
+                (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
-                  bboxRect.cy +
-                  (bboxRect.width / 2) * -sin -
-                  (bboxRect.height / 2) * cos,
+                bboxRect.cy +
+                (bboxRect.width / 2) * -sin -
+                (bboxRect.height / 2) * cos,
                 bboxRect.anchorY +
-                  bboxRect.cy -
-                  (bboxRect.width / 2) * -sin -
-                  (bboxRect.height / 2) * cos
+                bboxRect.cy -
+                (bboxRect.width / 2) * -sin -
+                (bboxRect.height / 2) * cos
               ];
             }
             break;
@@ -1219,7 +1219,7 @@ export class SingleMarkView
       <path
         d={`M${pt.x - 5},${pt.y}L${pt.x},${pt.y - 5}L${pt.x + 5},${pt.y}L${
           pt.x
-        },${pt.y + 5}Z`}
+          },${pt.y + 5}Z`}
         className="mark-anchor"
       />
     );
@@ -1271,10 +1271,36 @@ export class SingleMarkView
       ) => void = null;
       let mode: string = "point";
       const addGuide = (
-        value: [number, Specification.Mapping],
+        arg: [number, Specification.Mapping],
         axis: GuideAxis,
-        baseline: Specification.baseline
+        outerAttr: string,
+        lowAttr: string,
+        highAttr: string,
+        baselineLow: Specification.baseline,
+        baselineMid: Specification.baseline,
+        baselineHigh: Specification.baseline
       ) => {
+        const pos = arg[0];
+        const outer = +this.props.glyphState.attributes[outerAttr];
+        const low = +this.props.glyphState.attributes[lowAttr];
+        const high = +this.props.glyphState.attributes[highAttr];
+        const quarter = outer / 4;
+        let rel: number;
+        let baseline: Specification.baseline;
+        if (pos < low + quarter) {
+          // relative to low
+          baseline = baselineLow;
+          rel = pos - low;
+        } else if (pos < quarter) {
+          // relative to mid
+          baseline = baselineMid;
+          rel = pos;
+        } else {
+          // relative to high
+          baseline = baselineHigh;
+          rel = pos - high;
+        }
+        const value: [number, Specification.Mapping] = [rel, arg[1]];
         const guideProperties: Partial<GuideProperties> = {
           axis,
           baseline
@@ -1293,13 +1319,31 @@ export class SingleMarkView
         case "guide-x":
           {
             mode = "vline";
-            onCreate = x => addGuide(x, "x", "center");
+            onCreate = x => addGuide(
+              x,
+              "x",
+              "width",
+              "ix1",
+              "ix2",
+              "left",
+              "center",
+              "right"
+            );
           }
           break;
         case "guide-y":
           {
             mode = "hline";
-            onCreate = y => addGuide(y, "y", "middle");
+            onCreate = y => addGuide(
+              y,
+              "y",
+              "height",
+              "iy1",
+              "iy2",
+              "bottom",
+              "middle",
+              "top"
+            );
           }
           break;
         case "guide-coordinator-x":
@@ -1361,7 +1405,7 @@ export class SingleMarkView
     const { glyph, glyphState } = this.props;
     const transform = `translate(${this.state.zoom.centerX},${
       this.state.zoom.centerY
-    }) scale(${this.state.zoom.scale})`;
+      }) scale(${this.state.zoom.scale})`;
     if (!glyphState) {
       return (
         <div className="mark-editor-single-view">
@@ -1429,18 +1473,18 @@ export class SingleMarkView
             <g>
               {this.state.dataForDropZones
                 ? zipArray(glyph.marks, glyphState.marks).map(
-                    ([elements, elementState]) => {
-                      return (
-                        <g key={`m${elements._id}`}>
-                          {this.renderDropZoneForElement(
-                            this.state.dataForDropZones,
-                            elements,
-                            elementState
-                          )}
-                        </g>
-                      );
-                    }
-                  )
+                  ([elements, elementState]) => {
+                    return (
+                      <g key={`m${elements._id}`}>
+                        {this.renderDropZoneForElement(
+                          this.state.dataForDropZones,
+                          elements,
+                          elementState
+                        )}
+                      </g>
+                    );
+                  }
+                )
                 : null}
             </g>
             <g>{this.renderDropIndicator()}</g>
