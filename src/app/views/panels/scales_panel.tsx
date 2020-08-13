@@ -17,6 +17,7 @@ import {
   Element,
   Scale
 } from "../../../core/specification";
+import { Actions } from "../..";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -86,11 +87,20 @@ export class ScalesPanel extends ContextedComponent<
       });
     };
 
-    const mapToUI = (scaleID: string) => (element: any) => (key: string) => {
+    const mapToUI = (scaleID: string) => (glyph: Glyph, element: any) => (
+      key: string
+    ) => {
       return (
         <div
           className="el-object-item"
           key={scaleID + "_" + element._id + "_" + key}
+          onClick={() => {
+            if (glyph) {
+              this.dispatch(new Actions.SelectMark(null, glyph, element));
+            } else {
+              this.dispatch(new Actions.SelectChartElement(element));
+            }
+          }}
         >
           <SVGImageIcon
             url={R.getSVGIcon(
@@ -144,20 +154,45 @@ export class ScalesPanel extends ContextedComponent<
                   .filter(elementFilterPredicate(scale._id))
                   .flatMap((element: ChartElement<ObjectProperties>) => {
                     return elementFilterList(scale._id, element).map(
-                      mapToUI(scale._id)(element)
+                      mapToUI(scale._id)(null, element)
                     );
                   })}
                 {store.chart.glyphs
                   .flatMap(
-                    (glyph: Glyph): Array<Element<ObjectProperties>> =>
-                      glyph.marks
+                    (
+                      glyph: Glyph
+                    ): Array<{
+                      glyph: Glyph;
+                      mark: Element<ObjectProperties>;
+                    }> =>
+                      glyph.marks.map(mark => {
+                        return {
+                          glyph,
+                          mark
+                        };
+                      })
                   )
-                  .filter(elementFilterPredicate(scale._id))
-                  .flatMap((element: ChartElement<ObjectProperties>) => {
-                    return elementFilterList(scale._id, element).map(
-                      mapToUI(scale._id)(element)
-                    );
-                  })}
+                  .filter(
+                    ({
+                      mark
+                    }: {
+                      glyph: Glyph;
+                      mark: Element<ObjectProperties>;
+                    }) => elementFilterPredicate(scale._id)(mark)
+                  )
+                  .flatMap(
+                    ({
+                      glyph,
+                      mark
+                    }: {
+                      glyph: Glyph;
+                      mark: Element<ObjectProperties>;
+                    }) => {
+                      return elementFilterList(scale._id, mark).map(
+                        mapToUI(scale._id)(glyph, mark)
+                      );
+                    }
+                  )}
               </ReorderListView>
             </div>
           );
