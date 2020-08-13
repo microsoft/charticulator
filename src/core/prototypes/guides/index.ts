@@ -48,7 +48,7 @@ export interface GuideProperties extends Specification.AttributeMap {
 export class GuideClass extends ChartElementClass<
   GuideProperties,
   GuideAttributes
-  > {
+> {
   public static classID = "guide.guide";
   public static type = "guide";
 
@@ -68,15 +68,15 @@ export class GuideClass extends ChartElementClass<
   public attributes: {
     [name in GuideAttributeNames]: GuideAttributeDescription
   } = {
-      value: {
-        name: GuideAttributeNames.value,
-        type: Specification.AttributeType.Number
-      },
-      computedBaselineValue: {
-        name: GuideAttributeNames.computedBaselineValue,
-        type: Specification.AttributeType.Number
-      }
-    };
+    value: {
+      name: GuideAttributeNames.value,
+      type: Specification.AttributeType.Number
+    },
+    computedBaselineValue: {
+      name: GuideAttributeNames.computedBaselineValue,
+      type: Specification.AttributeType.Number
+    }
+  };
 
   public initializeState() {
     this.state.attributes.value = 0;
@@ -289,7 +289,7 @@ export class GuideClass extends ChartElementClass<
       switch (baseline) {
         case "center":
         case "middle": {
-          return handleLine()
+          return handleLine();
         }
         case "left": {
           return handleRelativeLine(+parentAttrs.ix1);
@@ -440,7 +440,7 @@ export interface GuideCoordinatorProperties extends Specification.AttributeMap {
 export class GuideCoordinatorClass extends ChartElementClass<
   GuideCoordinatorProperties,
   GuideCoordinatorAttributes
-  > {
+> {
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
