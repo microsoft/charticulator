@@ -98,13 +98,22 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     if (options.defaultValue == null) {
       options.defaultValue = info.defaultValue;
     }
+
+    const openMapping =
+      options.openMapping || attribute === this.store.currentAttributeFocus;
+    if (openMapping) {
+      this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+    }
     return this.row(
       name,
       <MappingEditor
         parent={this}
         attribute={attribute}
         type={info.type}
-        options={options}
+        options={{
+          ...options,
+          openMapping
+        }}
       />
     );
   }

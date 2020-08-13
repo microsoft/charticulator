@@ -809,6 +809,19 @@ export class SelectChartElement extends Action {
   }
 }
 
+export class FocusToMarkAttribute extends Action {
+  constructor(public attributeName: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "FocusToMarkAttribute",
+      attributeName: this.attributeName
+    };
+  }
+}
+
 export class SetCurrentTool extends Action {
   constructor(public tool: string, public options: string = null) {
     super();

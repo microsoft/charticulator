@@ -106,6 +106,7 @@ export class AppStore extends BaseStore {
   public chartState: Specification.ChartState;
 
   public currentSelection: Selection;
+  public currentAttributeFocus: string;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   protected localeFileFormat: LocaleFileFormat = {

@@ -49,6 +49,12 @@ export class MappingEditor extends React.Component<
     showNoneAsValue: false
   };
 
+  public componentDidMount() {
+    if (this.props.options.openMapping) {
+      this.beginDataFieldSelection();
+    }
+  }
+
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;

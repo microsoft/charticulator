@@ -100,6 +100,7 @@ export class ScalesPanel extends ContextedComponent<
             } else {
               this.dispatch(new Actions.SelectChartElement(element));
             }
+            this.dispatch(new Actions.FocusToMarkAttribute(key));
           }}
         >
           <SVGImageIcon
