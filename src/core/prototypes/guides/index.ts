@@ -16,7 +16,7 @@ import {
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
-import { RectangleGlyph } from '../glyphs'
+import { RectangleGlyph } from "../glyphs";
 import { RectangleChart } from "../charts";
 
 export type GuideAxis = "x" | "y";
@@ -102,21 +102,23 @@ export class GuideClass extends ChartElementClass<
         case "middle": {
           const [, computedBaselineValue] = solver.attrs(
             this.state.attributes,
-            [GuideAttributeNames.value, GuideAttributeNames.computedBaselineValue]
+            [
+              GuideAttributeNames.value,
+              GuideAttributeNames.computedBaselineValue
+            ]
           );
-          solver.addLinear(ConstraintStrength.HARD, this.state.attributes.value, [
-            [-1, computedBaselineValue]
-          ]);
+          solver.addLinear(
+            ConstraintStrength.HARD,
+            this.state.attributes.value,
+            [[-1, computedBaselineValue]]
+          );
           break;
         }
         case "left": {
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [
-              [-0.5, width],
-              [+1, value]
-            ]
+            ([width], value) => [[-0.5, width], [+1, value]]
           );
           break;
         }
@@ -124,10 +126,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [
-              [+0.5, width],
-              [+1, value]
-            ]
+            ([width], value) => [[+0.5, width], [+1, value]]
           );
           break;
         }
@@ -135,10 +134,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [
-              [+0.5, height],
-              [+1, value]
-            ]
+            ([height], value) => [[+0.5, height], [+1, value]]
           );
           break;
         }
@@ -146,10 +142,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [
-              [-0.5, height],
-              [+1, value]
-            ]
+            ([height], value) => [[-0.5, height], [+1, value]]
           );
           break;
         }
@@ -262,13 +255,15 @@ export class GuideClass extends ChartElementClass<
     const inf = [-1000, 1000];
     const { value } = this.state.attributes;
     const { axis, baseline } = this.object.properties;
-    const { rectGlyph } = this.getParentType();
+    const { rectChart, rectGlyph } = this.getParentType();
     const handleLine = () => {
       return [
         {
           type: "line",
           axis,
-          actions: [{ type: "attribute", attribute: GuideAttributeNames.value }],
+          actions: [
+            { type: "attribute", attribute: GuideAttributeNames.value }
+          ],
           value,
           span: inf
         }
@@ -290,25 +285,45 @@ export class GuideClass extends ChartElementClass<
       ] as Handles.RelativeLine[];
     };
     const parentAttrs = this.parent.state.attributes;
-    console.log(parentAttrs);
-    switch (baseline) {
-      case "center": {
-        return rectGlyph ? handleLine() : handleRelativeLine(+parentAttrs.cx);
+    if (rectGlyph) {
+      switch (baseline) {
+        case "center":
+        case "middle": {
+          return handleLine()
+        }
+        case "left": {
+          return handleRelativeLine(+parentAttrs.ix1);
+        }
+        case "right": {
+          return handleRelativeLine(+parentAttrs.ix2);
+        }
+        case "top": {
+          return handleRelativeLine(+parentAttrs.iy2);
+        }
+        case "bottom": {
+          return handleRelativeLine(+parentAttrs.iy1);
+        }
       }
-      case "middle": {
-        return rectGlyph ? handleLine() : handleRelativeLine(+parentAttrs.cy);
-      }
-      case "left": {
-        return handleRelativeLine(rectGlyph ? +parentAttrs.ix1 : +parentAttrs.x1);
-      }
-      case "right": {
-        return handleRelativeLine(rectGlyph ? +parentAttrs.ix2 : +parentAttrs.x2);
-      }
-      case "top": {
-        return handleRelativeLine(rectGlyph ? +parentAttrs.iy2 : +parentAttrs.y2);
-      }
-      case "bottom": {
-        return handleRelativeLine(rectGlyph ? +parentAttrs.iy1 : +parentAttrs.y1);
+    } else if (rectChart) {
+      switch (baseline) {
+        case "center": {
+          return handleRelativeLine(+parentAttrs.cx);
+        }
+        case "middle": {
+          return handleRelativeLine(+parentAttrs.cy);
+        }
+        case "left": {
+          return handleRelativeLine(+parentAttrs.x1);
+        }
+        case "right": {
+          return handleRelativeLine(+parentAttrs.x2);
+        }
+        case "top": {
+          return handleRelativeLine(+parentAttrs.y2);
+        }
+        case "bottom": {
+          return handleRelativeLine(+parentAttrs.y1);
+        }
       }
     }
   }
