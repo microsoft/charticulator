@@ -31,7 +31,7 @@ export class ScalesPanel extends ContextedComponent<
     store: AppStore;
   },
   {}
-  > {
+> {
   public mappingButton: Element;
   private tokens: EventSubscription[];
 
@@ -104,10 +104,10 @@ export class ScalesPanel extends ContextedComponent<
         if (mappingFound) {
           found = true;
         }
-      })
+      });
 
       return found;
-    }
+    };
 
     const mapToUI = (scaleID: string) => (glyph: Glyph, element: any) => (
       key: string
@@ -132,13 +132,13 @@ export class ScalesPanel extends ContextedComponent<
           />
           <span className="el-text">{`${
             element.properties.name
-            }.${this.getPropertyDisplayName(key)}`}</span>
+          }.${this.getPropertyDisplayName(key)}`}</span>
         </div>
       );
     };
 
-    scales = scales.sort(
-      (a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
+    scales = scales
+      .sort((a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
         const lengthA =
           store.chart.elements.filter(elementFilterPredicate(a._id)).length +
           store.chart.glyphs
@@ -156,8 +156,7 @@ export class ScalesPanel extends ContextedComponent<
             .filter(elementFilterPredicate(b._id)).length;
 
         return lengthA > lengthB ? -1 : lengthB > lengthA ? 1 : 0;
-      }
-    )
+      })
       .filter(scale => scaleFilter(scale));
 
     return (
@@ -173,7 +172,7 @@ export class ScalesPanel extends ContextedComponent<
                 />
                 <span className="el-text">{scale.properties.name}</span>
               </div>
-              <ReorderListView enabled={true} onReorder={(a, b) => { }}>
+              <ReorderListView enabled={true} onReorder={(a, b) => {}}>
                 {store.chart.elements
                   .filter(elementFilterPredicate(scale._id))
                   .flatMap((element: ChartElement<ObjectProperties>) => {

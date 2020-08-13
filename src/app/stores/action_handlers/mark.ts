@@ -61,6 +61,13 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   MR.add(Actions.SetObjectProperty, function(this, action) {
+    // check name property. Names of objects are unique
+    if (
+      action.property === "name" &&
+      this.chartManager.isNameUsed(action.value as string)
+    ) {
+      return;
+    }
     if (action.field == null) {
       action.object.properties[action.property] = action.value;
     } else {

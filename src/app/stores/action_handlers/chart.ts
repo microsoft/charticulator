@@ -313,6 +313,12 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.SetObjectProperty, function(action) {
+    if (
+      action.property === "name" &&
+      this.chartManager.isNameUsed(action.value as string)
+    ) {
+      return;
+    }
     this.saveHistory();
 
     if (action.field == null) {
