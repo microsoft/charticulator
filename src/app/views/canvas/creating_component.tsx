@@ -416,10 +416,7 @@ export class CreatingComponent extends React.Component<
                   // guides do not snap to anything
                   guides.length = 0;
               }
-              const mgr = new PointSnapping(
-                guides,
-                10 / this.props.zoom.scale
-              );
+              const mgr = new PointSnapping(guides, 10 / this.props.zoom.scale);
               if (this.isHammering) {
                 return;
               }
