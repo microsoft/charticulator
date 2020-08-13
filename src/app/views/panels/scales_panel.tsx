@@ -15,7 +15,8 @@ import {
   ChartElement,
   ObjectProperties,
   Element,
-  Scale
+  Scale,
+  Chart
 } from "../../../core/specification";
 import { Actions } from "../..";
 
@@ -30,7 +31,7 @@ export class ScalesPanel extends ContextedComponent<
     store: AppStore;
   },
   {}
-> {
+  > {
   public mappingButton: Element;
   private tokens: EventSubscription[];
 
@@ -87,6 +88,27 @@ export class ScalesPanel extends ContextedComponent<
       });
     };
 
+    const scaleFilter = (scale: Scale<ObjectProperties>) => {
+      let found = false;
+      const scaleID: string = scale._id;
+      store.chart.glyphs.forEach(glyph => {
+        glyph.marks.forEach(mark => {
+          const mappingFound = elementFilterPredicate(scaleID)(mark);
+          if (mappingFound) {
+            found = true;
+          }
+        });
+      });
+      store.chart.elements.forEach(mark => {
+        const mappingFound = elementFilterPredicate(scaleID)(mark);
+        if (mappingFound) {
+          found = true;
+        }
+      })
+
+      return found;
+    }
+
     const mapToUI = (scaleID: string) => (glyph: Glyph, element: any) => (
       key: string
     ) => {
@@ -110,7 +132,7 @@ export class ScalesPanel extends ContextedComponent<
           />
           <span className="el-text">{`${
             element.properties.name
-          }.${this.getPropertyDisplayName(key)}`}</span>
+            }.${this.getPropertyDisplayName(key)}`}</span>
         </div>
       );
     };
@@ -135,11 +157,12 @@ export class ScalesPanel extends ContextedComponent<
 
         return lengthA > lengthB ? -1 : lengthB > lengthA ? 1 : 0;
       }
-    );
+    )
+      .filter(scale => scaleFilter(scale));
 
     return (
       <div className="charticulator__object-list-editor">
-        {scales.map(scale => {
+        {scales.filter(scaleFilter).map(scale => {
           return (
             <div key={scale._id}>
               <div key={scale._id} className="el-object-item">
@@ -150,7 +173,7 @@ export class ScalesPanel extends ContextedComponent<
                 />
                 <span className="el-text">{scale.properties.name}</span>
               </div>
-              <ReorderListView enabled={true} onReorder={(a, b) => {}}>
+              <ReorderListView enabled={true} onReorder={(a, b) => { }}>
                 {store.chart.elements
                   .filter(elementFilterPredicate(scale._id))
                   .flatMap((element: ChartElement<ObjectProperties>) => {
