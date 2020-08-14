@@ -247,6 +247,21 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
+  REG.add(Actions.SetObjectMappingScale, function(action) {
+    this.saveHistory();
+
+    if (
+      action.scaleId == null ||
+      action.object.mappings[action.property].type != "scale"
+    ) {
+      return;
+    } else {
+      (action.object.mappings[action.property] as any).scale = action.scaleId;
+    }
+
+    this.solveConstraintsAndUpdateGraphics();
+  });
+
   REG.add(Actions.SetScaleAttribute, function(action) {
     this.saveHistory();
 

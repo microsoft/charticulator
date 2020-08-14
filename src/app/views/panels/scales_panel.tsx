@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as R from "../../resources";
 
-import { EventSubscription, Prototypes } from "../../../core";
+import { EventSubscription, Prototypes, Action } from "../../../core";
 import { SVGImageIcon } from "../../components";
 
 import { AppStore } from "../../stores";
@@ -90,27 +90,6 @@ export class ScalesPanel extends ContextedComponent<
       });
     };
 
-    const scaleFilter = (scale: Scale<ObjectProperties>) => {
-      let found = false;
-      const scaleID: string = scale._id;
-      store.chart.glyphs.forEach(glyph => {
-        glyph.marks.forEach(mark => {
-          const mappingFound = filterElementByScalePredicate(scaleID)(mark);
-          if (mappingFound) {
-            found = true;
-          }
-        });
-      });
-      store.chart.elements.forEach(mark => {
-        const mappingFound = filterElementByScalePredicate(scaleID)(mark);
-        if (mappingFound) {
-          found = true;
-        }
-      });
-
-      return found;
-    };
-
     const mapToUI = (scale: Scale<ObjectProperties>) => (
       glyph: Glyph,
       element: any
@@ -153,38 +132,27 @@ export class ScalesPanel extends ContextedComponent<
       }
     };
 
-    scales = scales
-      .sort((a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
-        const lengthA =
-          store.chart.elements.filter(filterElementByScalePredicate(a._id))
-            .length +
-          store.chart.glyphs
-            .flatMap(
-              (glyph: Glyph): Array<Element<ObjectProperties>> => glyph.marks
-            )
-            .filter(filterElementByScalePredicate(a._id)).length;
-
-        const lengthB =
-          store.chart.elements.filter(filterElementByScalePredicate(b._id))
-            .length +
-          store.chart.glyphs
-            .flatMap(
-              (glyph: any): Array<Element<ObjectProperties>> => glyph.marks
-            )
-            .filter(filterElementByScalePredicate(b._id)).length;
-
-        return lengthA > lengthB ? -1 : lengthB > lengthA ? 1 : 0;
-      })
-      .filter(scale => scaleFilter(scale));
+    scales = scales.sort(
+      (a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
+        if (a.properties.name < b.properties.name) {
+          return -1;
+        }
+        if (a.properties.name > b.properties.name) {
+          return 1;
+        }
+        return 0;
+      }
+    );
 
     // Collect all used scales and object with properties into one list
-    const propertyList = scales.filter(scaleFilter).flatMap(scale => {
+    const propertyList = scales.flatMap(scale => {
       return [0]
         .map(() => {
           return {
             scale,
-            mark: null,
-            property: null
+            mark: null as ChartElement<ObjectProperties>,
+            property: null as string,
+            glyph: null as Glyph
           };
         })
         .concat(
@@ -198,7 +166,8 @@ export class ScalesPanel extends ContextedComponent<
                 return {
                   property,
                   mark,
-                  scale
+                  scale,
+                  glyph: null
                 };
               });
             })
@@ -224,13 +193,20 @@ export class ScalesPanel extends ContextedComponent<
             )
             // Take all properties of object/element where scale was used and map them into {property, element, scale} object/element
             .flatMap(
-              ({ mark }: { glyph: Glyph; mark: Element<ObjectProperties> }) => {
+              ({
+                mark,
+                glyph
+              }: {
+                glyph: Glyph;
+                mark: Element<ObjectProperties>;
+              }) => {
                 return filterElementProperties(scale._id, mark).map(
                   property => {
                     return {
                       property,
                       mark,
-                      scale
+                      scale,
+                      glyph
                     };
                   }
                 );
@@ -241,7 +217,44 @@ export class ScalesPanel extends ContextedComponent<
 
     return (
       <div className="charticulator__object-list-editor charticulator__object-scales">
-        <ReorderListView enabled={true} onReorder={(a, b) => {}}>
+        <ReorderListView
+          enabled={true}
+          onReorder={(IndexA, IndexB) => {
+            console.log(propertyList[IndexA]);
+            console.log(propertyList[IndexB]);
+
+            // Drag properties item only
+            if (!propertyList[IndexA].property || IndexA === IndexB) {
+              return;
+            }
+
+            // Find next scale in the list
+            if (IndexB > 0) {
+              IndexB--;
+            }
+            while (
+              IndexB > 0 &&
+              !propertyList[IndexB] &&
+              propertyList[IndexB].property != null
+            ) {
+              IndexB--;
+            }
+
+            console.log(
+              `Change ${propertyList[IndexA].mark.properties.name}.${
+                propertyList[IndexA].property
+              } scale to ${propertyList[IndexB].scale.properties.name}`
+            );
+
+            store.dispatcher.dispatch(
+              new Actions.SetObjectMappingScale(
+                propertyList[IndexA].mark,
+                propertyList[IndexA].property,
+                propertyList[IndexB].scale._id
+              )
+            );
+          }}
+        >
           {propertyList.map(el => {
             return mapToUI(el.scale)(null, el.mark)(el.property);
           })}

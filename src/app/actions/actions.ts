@@ -723,6 +723,25 @@ export class SetObjectProperty extends Action {
   }
 }
 
+export class SetObjectMappingScale extends Action {
+  constructor(
+    public object: Specification.Object,
+    public property: string,
+    public scaleId: string
+  ) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "SetObjectProperty",
+      object: objectDigest(this.object),
+      property: this.property,
+      scaleId: this.scaleId
+    };
+  }
+}
+
 export class ExtendPlotSegment extends Action {
   constructor(
     public plotSegment: Specification.PlotSegment,
