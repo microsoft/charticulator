@@ -256,7 +256,7 @@ export class ScalesPanel extends ContextedComponent<
           }}
         >
           {propertyList.map(el => {
-            return mapToUI(el.scale)(null, el.mark)(el.property);
+            return mapToUI(el.scale)(el.glyph, el.mark)(el.property);
           })}
         </ReorderListView>
       </div>
