@@ -19,7 +19,9 @@ import { ParentMapping, ChartElementState } from "../../core/specification";
 interface ChartElementRef {
   chartElementItem: Specification.ChartElement<Specification.ObjectProperties>;
   chartElementIndex: number;
-  chartElementState: Specification.ChartElementState<Specification.AttributeMap>;
+  chartElementState: Specification.ChartElementState<
+    Specification.AttributeMap
+  >;
 }
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -109,16 +111,23 @@ export class Migrator {
   }
 
   public addGuideBaseline(state: AppStoreState) {
-    console.log('migration chartGuides')
+    console.log("migration chartGuides");
 
     // get chart guides
     const chartGuideRefs: ChartElementRef[] = [];
-    const glyphGuides: { guide: Specification.ChartElement<Specification.ObjectProperties>, idx: number }[] = [];
+    const glyphGuides: Array<{
+      guide: Specification.ChartElement<Specification.ObjectProperties>;
+      idx: number;
+    }> = [];
 
     state.chart.elements.forEach((chartElementItem, chartElementIndex) => {
       if (chartElementItem.classID === GuideClass.classID) {
         const chartElementState = state.chartState.elements[chartElementIndex];
-        chartGuideRefs.push({ chartElementItem, chartElementIndex, chartElementState });
+        chartGuideRefs.push({
+          chartElementItem,
+          chartElementIndex,
+          chartElementState
+        });
       }
     });
 
@@ -127,15 +136,17 @@ export class Migrator {
 
       // add new properties
       chartElementItem.properties.baseline = "center";
-      chartElementState.attributes.computedBaselineValue = chartElementState.attributes.value;
+      chartElementState.attributes.computedBaselineValue =
+        chartElementState.attributes.value;
 
-      //convert mappings to actual values
+      // convert mappings to actual values
       const valueMapping = chartElementItem.mappings.value as ParentMapping;
       if (valueMapping && valueMapping.type === "parent") {
         if (valueMapping.type === "parent") {
           const { parentAttribute } = valueMapping;
           // set value to actual mapped attr value
-          chartElementState.attributes.value = chartElementState.attributes.computedBaselineValue = state.chartState.attributes[parentAttribute];
+          chartElementState.attributes.value = chartElementState.attributes.computedBaselineValue =
+            state.chartState.attributes[parentAttribute];
           // remove the mapping
           delete chartElementItem.mappings.value;
         }
@@ -143,12 +154,15 @@ export class Migrator {
 
       // find other elements constrained to this chartElementItem
       state.chart.constraints.forEach(constraint => {
-        if (constraint.type === "snap" && constraint.attributes.targetElement === chartElementItem._id) {
+        if (
+          constraint.type === "snap" &&
+          constraint.attributes.targetElement === chartElementItem._id
+        ) {
           const gap = +chartElementItem.properties.gap;
           if (constraint.attributes.targetAttribute === "value2" && gap) {
             // create a 2nd guide to insert, based on gap property of first
 
-            //const newGuide
+            // const newGuide
             const axis = chartElementItem.properties.axis;
             const newElement = {
               _id: uniqueID(),
@@ -181,7 +195,6 @@ export class Migrator {
                 constrainedElementState.attributes[attribute] = value;
               }
             });
-
           }
           constraint.attributes.targetAttribute = "computedBaselineValue";
         }
@@ -189,8 +202,8 @@ export class Migrator {
 
       // remove deleted properties / attributes
       delete chartElementItem.properties.gap;
-      delete chartElementItem.properties.value;   // unused property in original schema
-      delete chartElementItem.properties.value2;  // unused property in original schema
+      delete chartElementItem.properties.value; // unused property in original schema
+      delete chartElementItem.properties.value2; // unused property in original schema
       delete chartElementState.attributes.value2;
     });
 
@@ -201,9 +214,9 @@ export class Migrator {
       }
     });
 
-    console.log(state)
-    console.log(chartGuideRefs)
-    console.log(glyphGuides)
+    console.log(state);
+    console.log(chartGuideRefs);
+    console.log(glyphGuides);
 
     return state;
   }
