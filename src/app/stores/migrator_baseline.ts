@@ -6,10 +6,13 @@ import { Specification, uniqueID } from "../../core";
 import { GuideClass, GuideAxis } from "../../core/prototypes/guides";
 import { ParentMapping, ChartElementState } from "../../core/specification";
 
+type Element = Specification.ChartElement<Specification.ObjectProperties>;
+type State = Specification.ChartElementState<Specification.AttributeMap>;
+
 interface ChartElementRef {
-  element: Specification.ChartElement<Specification.ObjectProperties>;
+  element: Element;
   index: number;
-  state: Specification.ChartElementState<Specification.AttributeMap>;
+  state: State;
 }
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -87,7 +90,7 @@ function upgradeGlyphGuides(
 ) {
   // get glyph guides
   const glyphGuides: Array<{
-    guide: Specification.ChartElement<Specification.ObjectProperties>;
+    guide: Element;
     idx: number;
   }> = [];
 
@@ -99,10 +102,10 @@ function upgradeGlyphGuides(
 }
 
 function find(
-  elements: Array<Specification.ChartElement<Specification.ObjectProperties>>,
-  states: Array<Specification.ChartElementState<Specification.AttributeMap>>,
+  elements: Array<Element>,
+  states: Array<State>,
   predicate: (
-    element: Specification.ChartElement<Specification.ObjectProperties>
+    element: Element
   ) => boolean
 ) {
   const refs: ChartElementRef[] = [];
@@ -116,14 +119,14 @@ function find(
 }
 
 function changeConstraintTarget(
-  element: Specification.ChartElement<Specification.ObjectProperties>,
+  element: Element,
   constraint: Specification.Constraint,
   guideValue: number,
   elementCollection: Array<
-    Specification.ChartElement<Specification.ObjectProperties>
+    Element
   >,
   stateCollection: Array<
-    Specification.ChartElementState<Specification.AttributeMap>
+    State
   >
 ) {
   const gap = +element.properties.gap;
@@ -152,8 +155,8 @@ function changeConstraintTarget(
 }
 
 function removeOldGuideProperties(
-  element: Specification.ChartElement<Specification.ObjectProperties>,
-  state: Specification.ChartElementState<Specification.AttributeMap>
+  element: Element,
+  state: State
 ) {
   delete element.properties.gap;
   delete element.properties.value; // unused property in original schema
@@ -163,10 +166,10 @@ function removeOldGuideProperties(
 
 function createGuide(
   axis: GuideAxis,
-  chartElementItem: Specification.ChartElement<Specification.ObjectProperties>,
+  chartElementItem: Element,
   value: number
 ) {
-  const element: Specification.ChartElement<Specification.ObjectProperties> = {
+  const element: Element = {
     _id: uniqueID(),
     classID: "guide.guide",
     properties: {
