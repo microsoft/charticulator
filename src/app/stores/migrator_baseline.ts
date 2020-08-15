@@ -26,18 +26,12 @@ export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
   return appStoreState;
 }
 
-function upgradeScope(
-  parentElement: Chart,
-  parentState: ChartState
-) {
+function upgradeScope(parentElement: Chart, parentState: ChartState) {
   upgradeChartGuides(parentElement, parentState);
   upgradeGlyphGuides(parentElement, parentState);
 }
 
-function upgradeChartGuides(
-  parentElement: Chart,
-  parentState: ChartState
-) {
+function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
   // get chart guides
   const chartGuideRefs = find(
     parentElement.elements,
@@ -86,10 +80,7 @@ function upgradeChartGuides(
   });
 }
 
-function upgradeGlyphGuides(
-  parentElement: Chart,
-  parentState: ChartState
-) {
+function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
   // get glyph guides
   const glyphGuides: Array<{
     guide: Element;
