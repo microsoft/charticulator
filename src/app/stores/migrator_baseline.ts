@@ -102,11 +102,9 @@ function upgradeGlyphGuides(
 }
 
 function find(
-  elements: Array<Element>,
-  states: Array<State>,
-  predicate: (
-    element: Element
-  ) => boolean
+  elements: Element[],
+  states: State[],
+  predicate: (element: Element) => boolean
 ) {
   const refs: ChartElementRef[] = [];
   elements.forEach((element, index) => {
@@ -122,12 +120,8 @@ function changeConstraintTarget(
   element: Element,
   constraint: Specification.Constraint,
   guideValue: number,
-  elementCollection: Array<
-    Element
-  >,
-  stateCollection: Array<
-    State
-  >
+  elementCollection: Element[],
+  stateCollection: State[]
 ) {
   const gap = +element.properties.gap;
   if (constraint.attributes.targetAttribute === "value2" && gap) {
@@ -154,10 +148,7 @@ function changeConstraintTarget(
   constraint.attributes.targetAttribute = "computedBaselineValue";
 }
 
-function removeOldGuideProperties(
-  element: Element,
-  state: State
-) {
+function removeOldGuideProperties(element: Element, state: State) {
   delete element.properties.gap;
   delete element.properties.value; // unused property in original schema
   delete element.properties.value2; // unused property in original schema
