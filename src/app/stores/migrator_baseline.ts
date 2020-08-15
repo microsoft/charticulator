@@ -6,13 +6,15 @@ import { Specification, uniqueID } from "../../core";
 import { GuideClass, GuideAxis } from "../../core/prototypes/guides";
 import { ParentMapping, ChartElementState } from "../../core/specification";
 
+type Chart = Specification.Chart<Specification.ObjectProperties>;
+type ChartState = Specification.ChartState<Specification.AttributeMap>;
 type Element = Specification.ChartElement<Specification.ObjectProperties>;
-type State = Specification.ChartElementState<Specification.AttributeMap>;
+type ElementState = Specification.ChartElementState<Specification.AttributeMap>;
 
 interface ChartElementRef {
   element: Element;
   index: number;
-  state: State;
+  state: ElementState;
 }
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -25,16 +27,16 @@ export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
 }
 
 function upgradeScope(
-  parentElement: Specification.Chart<Specification.ObjectProperties>,
-  parentState: Specification.ChartState<Specification.AttributeMap>
+  parentElement: Chart,
+  parentState: ChartState
 ) {
   upgradeChartGuides(parentElement, parentState);
   upgradeGlyphGuides(parentElement, parentState);
 }
 
 function upgradeChartGuides(
-  parentElement: Specification.Chart<Specification.ObjectProperties>,
-  parentState: Specification.ChartState<Specification.AttributeMap>
+  parentElement: Chart,
+  parentState: ChartState
 ) {
   // get chart guides
   const chartGuideRefs = find(
@@ -85,8 +87,8 @@ function upgradeChartGuides(
 }
 
 function upgradeGlyphGuides(
-  parentElement: Specification.Chart<Specification.ObjectProperties>,
-  parentState: Specification.ChartState<Specification.AttributeMap>
+  parentElement: Chart,
+  parentState: ChartState
 ) {
   // get glyph guides
   const glyphGuides: Array<{
@@ -103,7 +105,7 @@ function upgradeGlyphGuides(
 
 function find(
   elements: Element[],
-  states: State[],
+  states: ElementState[],
   predicate: (element: Element) => boolean
 ) {
   const refs: ChartElementRef[] = [];
@@ -121,7 +123,7 @@ function changeConstraintTarget(
   constraint: Specification.Constraint,
   guideValue: number,
   elementCollection: Element[],
-  stateCollection: State[]
+  stateCollection: ElementState[]
 ) {
   const gap = +element.properties.gap;
   if (constraint.attributes.targetAttribute === "value2" && gap) {
@@ -148,7 +150,7 @@ function changeConstraintTarget(
   constraint.attributes.targetAttribute = "computedBaselineValue";
 }
 
-function removeOldGuideProperties(element: Element, state: State) {
+function removeOldGuideProperties(element: Element, state: ElementState) {
   delete element.properties.gap;
   delete element.properties.value; // unused property in original schema
   delete element.properties.value2; // unused property in original schema
