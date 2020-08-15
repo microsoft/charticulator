@@ -9,17 +9,14 @@ import { ParentMapping, ChartElementState } from "../../core/specification";
 interface ChartElementRef {
   element: Specification.ChartElement<Specification.ObjectProperties>;
   index: number;
-  state: Specification.ChartElementState<
-    Specification.AttributeMap
-  >;
+  state: Specification.ChartElementState<Specification.AttributeMap>;
 }
 
 /** Upgrade old versions of chart spec and state to newer version */
 
 export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
-
   upgradeScope(appStoreState.chart, appStoreState.chartState);
-  //TODO are nested charts scopes ?
+  // TODO are nested charts scopes ?
 
   return appStoreState;
 }
@@ -37,7 +34,11 @@ function upgradeChartGuides(
   parentState: Specification.ChartState<Specification.AttributeMap>
 ) {
   // get chart guides
-  const chartGuideRefs = find(parentElement.elements, parentState.elements, (element) => element.classID === GuideClass.classID);
+  const chartGuideRefs = find(
+    parentElement.elements,
+    parentState.elements,
+    element => element.classID === GuideClass.classID
+  );
 
   chartGuideRefs.forEach(ref => {
     const { element, state } = ref;
@@ -50,17 +51,24 @@ function upgradeChartGuides(
       state.attributes.value = parentState.attributes[parentAttribute];
       // remove the mapping
       delete element.mappings.value;
-    }
-    else {
+    } else {
       // guides should not be mapped to anything other than parent
       // Notify user?
     }
 
     // find other elements constrained to this chartElementItem
     parentElement.constraints.forEach(constraint => {
-      if (constraint.type === "snap" &&
-        constraint.attributes.targetElement === element._id) {
-        changeConstraintTarget(element, constraint, +state.attributes.value, parentElement.elements, parentState.elements);
+      if (
+        constraint.type === "snap" &&
+        constraint.attributes.targetElement === element._id
+      ) {
+        changeConstraintTarget(
+          element,
+          constraint,
+          +state.attributes.value,
+          parentElement.elements,
+          parentState.elements
+        );
       }
     });
 
@@ -76,7 +84,6 @@ function upgradeChartGuides(
 function upgradeGlyphGuides(
   parentElement: Specification.Chart<Specification.ObjectProperties>,
   parentState: Specification.ChartState<Specification.AttributeMap>
-
 ) {
   // get glyph guides
   const glyphGuides: Array<{
@@ -89,13 +96,14 @@ function upgradeGlyphGuides(
       glyphGuides.push({ guide, idx });
     }
   });
-
 }
 
 function find(
-  elements: Specification.ChartElement<Specification.ObjectProperties>[],
-  states: Specification.ChartElementState<Specification.AttributeMap>[],
-  predicate: (element: Specification.ChartElement<Specification.ObjectProperties>) => boolean
+  elements: Array<Specification.ChartElement<Specification.ObjectProperties>>,
+  states: Array<Specification.ChartElementState<Specification.AttributeMap>>,
+  predicate: (
+    element: Specification.ChartElement<Specification.ObjectProperties>
+  ) => boolean
 ) {
   const refs: ChartElementRef[] = [];
   elements.forEach((element, index) => {
@@ -111,8 +119,12 @@ function changeConstraintTarget(
   element: Specification.ChartElement<Specification.ObjectProperties>,
   constraint: Specification.Constraint,
   guideValue: number,
-  elementCollection: Specification.ChartElement<Specification.ObjectProperties>[],
-  stateCollection: Specification.ChartElementState<Specification.AttributeMap>[]
+  elementCollection: Array<
+    Specification.ChartElement<Specification.ObjectProperties>
+  >,
+  stateCollection: Array<
+    Specification.ChartElementState<Specification.AttributeMap>
+  >
 ) {
   const gap = +element.properties.gap;
   if (constraint.attributes.targetAttribute === "value2" && gap) {
@@ -126,7 +138,11 @@ function changeConstraintTarget(
     constraint.attributes.targetElement = newGuide.element._id;
 
     // find constraint object and make value attribute match
-    const constrained = find(elementCollection, stateCollection, (element) => element._id === constraint.attributes.element);
+    const constrained = find(
+      elementCollection,
+      stateCollection,
+      element => element._id === constraint.attributes.element
+    );
     constrained.forEach(ref => {
       const name = constraint.attributes.attribute as string;
       ref.state.attributes[name] = value;
@@ -135,14 +151,21 @@ function changeConstraintTarget(
   constraint.attributes.targetAttribute = "computedBaselineValue";
 }
 
-function removeOldGuideProperties(element: Specification.ChartElement<Specification.ObjectProperties>, state: Specification.ChartElementState<Specification.AttributeMap>) {
+function removeOldGuideProperties(
+  element: Specification.ChartElement<Specification.ObjectProperties>,
+  state: Specification.ChartElementState<Specification.AttributeMap>
+) {
   delete element.properties.gap;
   delete element.properties.value; // unused property in original schema
   delete element.properties.value2; // unused property in original schema
   delete state.attributes.value2;
 }
 
-function createGuide(axis: GuideAxis, chartElementItem: Specification.ChartElement<Specification.ObjectProperties>, value: number) {
+function createGuide(
+  axis: GuideAxis,
+  chartElementItem: Specification.ChartElement<Specification.ObjectProperties>,
+  value: number
+) {
   const element: Specification.ChartElement<Specification.ObjectProperties> = {
     _id: uniqueID(),
     classID: "guide.guide",
