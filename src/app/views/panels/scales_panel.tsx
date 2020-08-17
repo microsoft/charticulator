@@ -218,6 +218,7 @@ export class ScalesPanel extends ContextedComponent<
     return (
       <div className="charticulator__object-list-editor charticulator__object-scales">
         <ReorderListView
+          restrict={true}
           enabled={true}
           onReorder={(IndexA, IndexB) => {
             console.log(propertyList[IndexA]);
