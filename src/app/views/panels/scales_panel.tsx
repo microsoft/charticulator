@@ -3,8 +3,13 @@
 import * as React from "react";
 import * as R from "../../resources";
 
-import { EventSubscription, Prototypes, Action } from "../../../core";
-import { SVGImageIcon } from "../../components";
+import {
+  EventSubscription,
+  Prototypes,
+  Action,
+  Expression
+} from "../../../core";
+import { SVGImageIcon, DraggableElement } from "../../components";
 
 import { AppStore } from "../../stores";
 import { ReorderListView } from "./object_list_editor";
@@ -16,9 +21,11 @@ import {
   ObjectProperties,
   Element,
   Scale,
-  Chart
+  Chart,
+  DataType
 } from "../../../core/specification";
-import { Actions } from "../..";
+import { Actions, DragData } from "../..";
+import { classNames } from "../../utils";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -30,10 +37,19 @@ export class ScalesPanel extends ContextedComponent<
   {
     store: AppStore;
   },
-  {}
+  {
+    isSelected: string;
+  }
 > {
   public mappingButton: Element;
   private tokens: EventSubscription[];
+
+  constructor(props: { store: AppStore }) {
+    super(props, null);
+    this.state = {
+      isSelected: ""
+    };
+  }
 
   public componentDidMount() {
     this.tokens = [
@@ -92,7 +108,7 @@ export class ScalesPanel extends ContextedComponent<
 
     const mapToUI = (scale: Scale<ObjectProperties>) => (
       glyph: Glyph,
-      element: any
+      element: ChartElement<ObjectProperties>
     ) => (key: string) => {
       if (!element) {
         return (
@@ -106,6 +122,8 @@ export class ScalesPanel extends ContextedComponent<
           </div>
         );
       } else {
+        const expr = (element.mappings[key] as any).expression;
+        const rawColumnExpr: string = null; // TODO handle
         return (
           <div
             className="el-object-item el-object-scale-attribute"
@@ -119,14 +137,55 @@ export class ScalesPanel extends ContextedComponent<
               this.dispatch(new Actions.FocusToMarkAttribute(key));
             }}
           >
-            <SVGImageIcon
-              url={R.getSVGIcon(
-                Prototypes.ObjectClasses.GetMetadata(element.classID).iconPath
-              )}
-            />
-            <span className="el-text">{`${
-              element.properties.name
-            }.${this.getPropertyDisplayName(key)}`}</span>
+            <DraggableElement
+              key={key}
+              className={classNames("charticulator__scale-panel-property", [
+                "is-active",
+                this.state.isSelected === expr
+              ])}
+              onDragStart={() => this.setState({ isSelected: expr })}
+              onDragEnd={() => this.setState({ isSelected: null })}
+              dragData={() => {
+                const type = (element.mappings[key] as any).valueType;
+                const aggregation = Expression.getDefaultAggregationFunction(
+                  type
+                );
+                const applyAggregation = (expr: string, type: string) => {
+                  return Expression.functionCall(
+                    aggregation,
+                    Expression.parse(expr)
+                  ).toString();
+                };
+
+                this.setState({ isSelected: expr });
+                const r = new DragData.DataExpression(
+                  this.store.dataset.tables.find(
+                    table => table.name === (element.mappings[key] as any).table
+                  ),
+                  expr,
+                  type,
+                  {},
+                  rawColumnExpr &&
+                    applyAggregation(rawColumnExpr, DataType.String)
+                );
+                return r;
+              }}
+              renderDragElement={() => [
+                <span className="dragging-table-cell">
+                  {(element.mappings[key] as any).expression}
+                </span>,
+                { x: -10, y: -8 }
+              ]}
+            >
+              <SVGImageIcon
+                url={R.getSVGIcon(
+                  Prototypes.ObjectClasses.GetMetadata(element.classID).iconPath
+                )}
+              />
+              <span className="el-text">{`${
+                element.properties.name
+              }.${this.getPropertyDisplayName(key)}`}</span>
+            </DraggableElement>
           </div>
         );
       }
@@ -240,12 +299,6 @@ export class ScalesPanel extends ContextedComponent<
             ) {
               IndexB--;
             }
-
-            console.log(
-              `Change ${propertyList[IndexA].mark.properties.name}.${
-                propertyList[IndexA].property
-              } scale to ${propertyList[IndexB].scale.properties.name}`
-            );
 
             store.dispatcher.dispatch(
               new Actions.SetObjectMappingScale(
