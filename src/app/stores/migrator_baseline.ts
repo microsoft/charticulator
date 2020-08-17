@@ -4,14 +4,15 @@
 import { AppStoreState } from "./app_store";
 import { Specification, uniqueID } from "../../core";
 import { GuideClass, GuideAxis } from "../../core/prototypes/guides";
-import { ParentMapping, ChartElementState } from "../../core/specification";
+import { ParentMapping, ChartElementState, PlotSegment, PlotSegmentState } from "../../core/specification";
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
 type ChartState = Specification.ChartState<Specification.AttributeMap>;
 type Element = Specification.ChartElement<Specification.ObjectProperties>;
 type ElementState = Specification.ChartElementState<Specification.AttributeMap>;
+type Mark = Specification.Element<Specification.ObjectProperties>;
 
-interface ChartElementRef {
+interface ElementRef {
   element: Element;
   index: number;
   state: ElementState;
@@ -23,6 +24,7 @@ export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
   upgradeScope(appStoreState.chart, appStoreState.chartState);
   // TODO are nested charts scopes ?
 
+  console.log('upgraded baseline', appStoreState);
   return appStoreState;
 }
 
@@ -72,8 +74,7 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
     });
 
     // add new properties
-    element.properties.baseline = "center";
-    state.attributes.computedBaselineValue = state.attributes.value;
+    addNewGuideProperties(element, state);
 
     // remove deleted properties / attributes
     removeOldGuideProperties(element, state);
@@ -81,15 +82,71 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
 }
 
 function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
-  // get glyph guides
-  const glyphGuides: Array<{
-    guide: Element;
-    idx: number;
-  }> = [];
+  parentElement.glyphs.forEach((glyph, glyphIndex) => {
+    // collect and separate marks from guides
+    const guides: { [id: string]: Mark } = {};
+    const marks: { [id: string]: Mark } = {};
+    glyph.marks.forEach(mark => {
+      if (mark.classID === GuideClass.classID) {
+        guides[mark._id] = mark;
+      } else {
+        marks[mark._id] = mark;
+      }
+    });
+    // get element which uses this glyph
+    const related = find(parentElement.elements, parentState.elements, (element) => {
+      const ps = element as PlotSegment;
+      return ps.glyph === glyph._id;
+    });
+    // look at constraints
+    glyph.constraints.forEach(constraint => {
+      if (constraint.type === "snap") {
+        const id = constraint.attributes.targetElement as string;
+        const guide = guides[id];
+        if (guide && constraint.attributes.targetAttribute === "value2") {
+          // make a new guide
+          const newGuide = createGuide(guide.properties.axis as GuideAxis, guide, +guide.properties.value + +guide.properties.gap);
+          // add new guide
+          glyph.marks.push(newGuide.element);
+          // add state instances
+          related.forEach(ref => {
+            const s = ref.state as PlotSegmentState;
+            if (s.glyphs) {
+              s.glyphs.forEach(glyphState => {
+                glyphState.marks.push(newGuide.state);
+              });
+            }
+          });
+          // point to new guide
+          constraint.attributes.targetElement = newGuide.element._id;
+        }
+      }
+    });
 
-  parentElement.glyphs.forEach((guide, idx) => {
-    if (guide.classID === GuideClass.classID) {
-      glyphGuides.push({ guide, idx });
+    // if (guide.mappings) {
+    // TODO guides should not be mapped!
+    // }
+
+    for (let _id in guides) {
+      let guide = guides[_id];
+      // add new properties to guide
+      addNewGuideProperties(guide);
+      // delete old properties
+      removeOldGuideProperties(guide);
+      // modify all state instances
+      related.forEach(ref => {
+        const s = ref.state as PlotSegmentState;
+        if (s.glyphs) {
+          s.glyphs.forEach(glyphState => {
+            glyphState.marks.forEach(markState => {
+              // add new properties to guide
+              addNewGuideProperties(null, markState);
+              // delete old properties
+              removeOldGuideProperties(null, markState);
+            });
+          });
+        }
+      });
     }
   });
 }
@@ -99,7 +156,7 @@ function find(
   states: ElementState[],
   predicate: (element: Element) => boolean
 ) {
-  const refs: ChartElementRef[] = [];
+  const refs: ElementRef[] = [];
   elements.forEach((element, index) => {
     if (predicate(element)) {
       const state = states[index];
@@ -141,16 +198,29 @@ function changeConstraintTarget(
   constraint.attributes.targetAttribute = "computedBaselineValue";
 }
 
-function removeOldGuideProperties(element: Element, state: ElementState) {
-  delete element.properties.gap;
-  delete element.properties.value; // unused property in original schema
-  delete element.properties.value2; // unused property in original schema
-  delete state.attributes.value2;
+function addNewGuideProperties(element?: Specification.ChartElement<Specification.ObjectProperties>, state?: Specification.ChartElementState<Specification.AttributeMap>) {
+  if (element) {
+    element.properties.baseline = "center";
+  }
+  if (state) {
+    state.attributes.computedBaselineValue = state.attributes.value;
+  }
+}
+
+function removeOldGuideProperties(element?: Element, state?: ElementState) {
+  if (element) {
+    delete element.properties.gap;
+    delete element.properties.value; // unused property in original schema
+    delete element.properties.value2; // unused property in original schema
+  }
+  if (state) {
+    delete state.attributes.value2;
+  }
 }
 
 function createGuide(
   axis: GuideAxis,
-  chartElementItem: Element,
+  originalGuide: Element,
   value: number
 ) {
   const element: Element = {
@@ -158,7 +228,7 @@ function createGuide(
     classID: "guide.guide",
     properties: {
       baseline: axis === "x" ? "center" : "middle",
-      name: `${chartElementItem.properties.name} gap`,
+      name: `${originalGuide.properties.name} gap`,
       axis
     },
     mappings: {}
