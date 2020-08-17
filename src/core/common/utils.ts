@@ -570,3 +570,7 @@ export function getSortDirection(values: string[]): string {
 export function applyDateFormat(value: Date, format: string): string {
   return timeFormat(format)(value);
 }
+
+export function refineColumnName(name: string) {
+  return name.replace(/[^0-9a-zA-Z\_]/g, "_");
+}
