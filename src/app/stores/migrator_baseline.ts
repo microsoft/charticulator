@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { AppStoreState } from './app_store';
+import { AppStoreState } from "./app_store";
 import {
   ChartElementState,
   ParentMapping,
   PlotSegment,
   PlotSegmentState
-  } from '../../core/specification';
-import { GuideAxis, GuideClass } from '../../core/prototypes/guides';
-import { Specification, uniqueID } from '../../core';
+} from "../../core/specification";
+import { GuideAxis, GuideClass } from "../../core/prototypes/guides";
+import { Specification, uniqueID } from "../../core";
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
 type ChartState = Specification.ChartState<Specification.AttributeMap>;
