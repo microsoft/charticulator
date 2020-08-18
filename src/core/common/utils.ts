@@ -583,7 +583,8 @@ export function compareMarkAttributeNames(a: string, b: string) {
       return true;
     }
   }
-  
+}
+
 export function refineColumnName(name: string) {
   return name.replace(/[^0-9a-zA-Z\_]/g, "_");
 }
