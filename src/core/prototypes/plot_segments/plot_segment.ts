@@ -8,6 +8,7 @@ import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
+import { refineColumnName } from "../..";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -124,7 +125,9 @@ export abstract class PlotSegmentClass<
         const dataMapping = new Map<string, string>();
         table.rows.forEach(row => {
           const value = row[columnName].toString();
-          const rawValue = row[rawColumnName].toString();
+          const rawValue = (
+            row[rawColumnName] || row[refineColumnName(rawColumnName)]
+          ).toString();
           dataMapping.set(value, rawValue);
         });
         return (value: any) => {
