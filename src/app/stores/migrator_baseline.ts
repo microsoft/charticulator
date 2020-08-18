@@ -1,10 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { AppStoreState } from "./app_store";
-import { Specification, uniqueID } from "../../core";
-import { GuideClass, GuideAxis } from "../../core/prototypes/guides";
-import { ParentMapping, ChartElementState, PlotSegment, PlotSegmentState } from "../../core/specification";
+import { AppStoreState } from './app_store';
+import {
+  ChartElementState,
+  ParentMapping,
+  PlotSegment,
+  PlotSegmentState
+  } from '../../core/specification';
+import { GuideAxis, GuideClass } from '../../core/prototypes/guides';
+import { Specification, uniqueID } from '../../core';
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
 type ChartState = Specification.ChartState<Specification.AttributeMap>;
@@ -24,7 +29,6 @@ export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
   upgradeScope(appStoreState.chart, appStoreState.chartState);
   // TODO are nested charts scopes ?
 
-  console.log('upgraded baseline', appStoreState);
   return appStoreState;
 }
 
@@ -94,10 +98,14 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
       }
     });
     // get element which uses this glyph
-    const related = find(parentElement.elements, parentState.elements, (element) => {
-      const ps = element as PlotSegment;
-      return ps.glyph === glyph._id;
-    });
+    const related = find(
+      parentElement.elements,
+      parentState.elements,
+      element => {
+        const ps = element as PlotSegment;
+        return ps.glyph === glyph._id;
+      }
+    );
     // look at constraints
     glyph.constraints.forEach(constraint => {
       if (constraint.type === "snap") {
@@ -105,7 +113,11 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
         const guide = guides[id];
         if (guide && constraint.attributes.targetAttribute === "value2") {
           // make a new guide
-          const newGuide = createGuide(guide.properties.axis as GuideAxis, guide, +guide.properties.value + +guide.properties.gap);
+          const newGuide = createGuide(
+            guide.properties.axis as GuideAxis,
+            guide,
+            +guide.properties.value + +guide.properties.gap
+          );
           // add new guide
           glyph.marks.push(newGuide.element);
           // add state instances
@@ -127,8 +139,8 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
     // TODO guides should not be mapped!
     // }
 
-    for (let _id in guides) {
-      let guide = guides[_id];
+    for (const _id in guides) {
+      const guide = guides[_id];
       // add new properties to guide
       addNewGuideProperties(guide);
       // delete old properties
@@ -198,7 +210,10 @@ function changeConstraintTarget(
   constraint.attributes.targetAttribute = "computedBaselineValue";
 }
 
-function addNewGuideProperties(element?: Specification.ChartElement<Specification.ObjectProperties>, state?: Specification.ChartElementState<Specification.AttributeMap>) {
+function addNewGuideProperties(
+  element?: Specification.ChartElement<Specification.ObjectProperties>,
+  state?: Specification.ChartElementState<Specification.AttributeMap>
+) {
   if (element) {
     element.properties.baseline = "center";
   }
@@ -218,11 +233,7 @@ function removeOldGuideProperties(element?: Element, state?: ElementState) {
   }
 }
 
-function createGuide(
-  axis: GuideAxis,
-  originalGuide: Element,
-  value: number
-) {
+function createGuide(axis: GuideAxis, originalGuide: Element, value: number) {
   const element: Element = {
     _id: uniqueID(),
     classID: "guide.guide",
