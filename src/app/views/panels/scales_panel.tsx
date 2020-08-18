@@ -26,6 +26,8 @@ import {
 } from "../../../core/specification";
 import { Actions, DragData } from "../..";
 import { classNames } from "../../utils";
+import { FunctionCall, Variable } from "../../../core/expression";
+import { ColumnMetadata } from "../../../core/dataset";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -40,7 +42,7 @@ export class ScalesPanel extends ContextedComponent<
   {
     isSelected: string;
   }
-> {
+  > {
   public mappingButton: Element;
   private tokens: EventSubscription[];
 
@@ -123,7 +125,7 @@ export class ScalesPanel extends ContextedComponent<
         );
       } else {
         const expr = (element.mappings[key] as any).expression;
-        const rawColumnExpr: string = null; // TODO handle
+        let rawColumnExpr: string = null; // TODO handle
         return (
           <div
             className="el-object-item el-object-scale-attribute"
@@ -147,9 +149,11 @@ export class ScalesPanel extends ContextedComponent<
               onDragEnd={() => this.setState({ isSelected: null })}
               dragData={() => {
                 const type = (element.mappings[key] as any).valueType;
+                const scaleID = (element.mappings[key] as any).scale;
                 const aggregation = Expression.getDefaultAggregationFunction(
                   type
                 );
+
                 const applyAggregation = (expr: string, type: string) => {
                   return Expression.functionCall(
                     aggregation,
@@ -157,16 +161,30 @@ export class ScalesPanel extends ContextedComponent<
                   ).toString();
                 };
 
+                const table = this.store.dataset.tables.find(
+                  table => table.name === (element.mappings[key] as any).table
+                )
+
+                const parsedExpression = Expression.parse(expr);
+                let metadata: ColumnMetadata = {};
+                if (parsedExpression instanceof FunctionCall && parsedExpression.args[0] instanceof Variable) {
+                  const firstArgument = parsedExpression.args[0] as Variable;
+
+                  const column = table.columns.find(col => col.name === firstArgument.name);
+                  metadata = column.metadata;
+
+                  rawColumnExpr = applyAggregation(metadata.rawColumnName, DataType.String)
+                }
+
                 this.setState({ isSelected: expr });
                 const r = new DragData.DataExpression(
-                  this.store.dataset.tables.find(
-                    table => table.name === (element.mappings[key] as any).table
-                  ),
+                  table,
                   expr,
                   type,
-                  {},
+                  metadata,
                   rawColumnExpr &&
-                    applyAggregation(rawColumnExpr, DataType.String)
+                  applyAggregation(rawColumnExpr, DataType.String),
+                  scaleID
                 );
                 return r;
               }}
@@ -184,7 +202,7 @@ export class ScalesPanel extends ContextedComponent<
               />
               <span className="el-text">{`${
                 element.properties.name
-              }.${this.getPropertyDisplayName(key)}`}</span>
+                }.${this.getPropertyDisplayName(key)}`}</span>
             </DraggableElement>
           </div>
         );
