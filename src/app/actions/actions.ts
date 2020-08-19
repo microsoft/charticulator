@@ -296,7 +296,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action {}
+export class MarkAction extends Action { }
 
 export class SetMarkAttribute extends MarkAction {
   constructor(
@@ -495,7 +495,7 @@ export class MapDataToChartElementAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints
+    public hints: Prototypes.DataMappingHints,
   ) {
     super();
   }
@@ -723,6 +723,25 @@ export class SetObjectProperty extends Action {
   }
 }
 
+export class SetObjectMappingScale extends Action {
+  constructor(
+    public object: Specification.Object,
+    public property: string,
+    public scaleId: string
+  ) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "SetObjectProperty",
+      object: objectDigest(this.object),
+      property: this.property,
+      scaleId: this.scaleId
+    };
+  }
+}
+
 export class ExtendPlotSegment extends Action {
   constructor(
     public plotSegment: Specification.PlotSegment,
@@ -805,6 +824,19 @@ export class SelectChartElement extends Action {
       name: "SelectChartElement",
       glyph: objectDigest(this.chartElement),
       glyphIndex: this.glyphIndex
+    };
+  }
+}
+
+export class FocusToMarkAttribute extends Action {
+  constructor(public attributeName: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "FocusToMarkAttribute",
+      attributeName: this.attributeName
     };
   }
 }
