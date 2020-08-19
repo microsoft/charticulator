@@ -84,7 +84,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
-  ) {}
+  ) { }
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
@@ -103,7 +103,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
-      this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      setTimeout(() => {
+        this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      }, 0);
     }
     return this.row(
       name,
@@ -512,9 +514,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         defaultValue={
                           currentExpression
                             ? {
-                                table: options.table,
-                                expression: currentExpression
-                              }
+                              table: options.table,
+                              expression: currentExpression
+                            }
                             : null
                         }
                         onChange={value => {
@@ -1118,8 +1120,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-          ? this.props.draggingHint()
-          : this.props.children}
+            ? this.props.draggingHint()
+            : this.props.children}
       </div>
     );
   }
@@ -1131,7 +1133,7 @@ export class ReorderStringsValue extends React.Component<
     onConfirm: (items: string[]) => void;
   },
   { items: string[] }
-> {
+  > {
   public state: { items: string[] } = {
     items: this.props.items.slice()
   };
@@ -1190,7 +1192,7 @@ export class DetailsButton extends React.Component<
     manager: WidgetManager;
   },
   {}
-> {
+  > {
   public inner: DetailsButtonInner;
   public componentDidUpdate() {
     if (this.inner) {
@@ -1227,7 +1229,7 @@ export class DetailsButton extends React.Component<
 export class DetailsButtonInner extends React.Component<
   { parent: DetailsButton },
   {}
-> {
+  > {
   public render() {
     const parent = this.props.parent;
     return (
