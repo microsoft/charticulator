@@ -397,7 +397,10 @@ export class ChartTemplateBuilder {
 
       Object.keys(state.attributes).forEach(attribute => {
         // Only support numbers for now
-        if (cls.attributes[attribute].type === "number") {
+        if (
+          cls.attributes[attribute] &&
+          cls.attributes[attribute].type === "number"
+        ) {
           totals[attribute] = totals[attribute] || 0;
           totals[attribute] += state.attributes[attribute] || 0;
           counts[_id] = (counts[_id] || 0) + 1;
