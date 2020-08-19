@@ -16,7 +16,8 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID
+  uniqueID,
+  refineColumnName
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -152,7 +153,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         }
         const rawColumnName = column.metadata.rawColumnName;
         if (rawColumnName) {
-          const value = table.rows[0][rawColumnName].toString();
+          const value = (
+            table.rows[0][rawColumnName] || refineColumnName(rawColumnName)
+          ).toString();
           return getDateFormat(value);
         }
       }
