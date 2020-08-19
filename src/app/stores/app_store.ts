@@ -1087,7 +1087,7 @@ export class AppStore extends BaseStore {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
       expression:
-        appendToProperty === "dataExpressions"
+        appendToProperty === "dataExpressions" && object.properties[options.property]
           ? ((object.properties[options.property] as any).expression as string)
           : groupExpression,
       valueType,
@@ -1144,7 +1144,7 @@ export class AppStore extends BaseStore {
       }
     }
     let values: ValueType[] = [];
-    if (appendToProperty == "dataExpressions") {
+    if (appendToProperty == "dataExpressions" && dataBinding.domainMax && dataBinding.domainMin) {
       // save current range of scale if user adds data
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
     }
