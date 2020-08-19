@@ -38,7 +38,7 @@ export interface MappingEditorState {
 export class MappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
-> {
+  > {
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
@@ -48,6 +48,12 @@ export class MappingEditor extends React.Component<
   public state: MappingEditorState = {
     showNoneAsValue: false
   };
+
+  public componentDidMount() {
+    if (this.props.options.openMapping) {
+      this.beginDataFieldSelection();
+    }
+  }
 
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
@@ -360,6 +366,7 @@ export class MappingEditor extends React.Component<
             options.hints = {};
           }
           options.hints.newScale = modifiers.shiftKey;
+          options.hints.scaleID = data.scaleID;
           this.mapData(data, options.hints);
         }}
         className="charticulator__widget-control-mapping-editor"
@@ -417,7 +424,7 @@ export interface DataMappAndScaleEditorState {
 export class DataMappAndScaleEditor extends ContextedComponent<
   DataMappAndScaleEditorProps,
   DataMappAndScaleEditorState
-> {
+  > {
   public state = {
     currentMapping: this.props.defaultMapping
   };
