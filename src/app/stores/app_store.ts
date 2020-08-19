@@ -1153,8 +1153,8 @@ export class AppStore extends BaseStore {
     let values: ValueType[] = [];
     if (
       appendToProperty == "dataExpressions" &&
-      dataBinding.domainMax &&
-      dataBinding.domainMin
+      dataBinding.domainMax !== undefined &&
+      dataBinding.domainMin !== undefined
     ) {
       // save current range of scale if user adds data
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
