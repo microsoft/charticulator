@@ -525,6 +525,14 @@
         background: $gray-190;
       }
     }
+
+    .el-object-scale-attribute {
+      margin-left: 20px;
+    }
+  }
+
+  &__object-scales {
+    margin-left: -20px;
   }
 
   &__widget-container {

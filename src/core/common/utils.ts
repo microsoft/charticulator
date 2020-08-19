@@ -571,6 +571,20 @@ export function applyDateFormat(value: Date, format: string): string {
   return timeFormat(format)(value);
 }
 
+/**
+ * Compares attribute names
+ */
+export function compareMarkAttributeNames(a: string, b: string) {
+  if (a === b) {
+    return true;
+  } else {
+    // fill and stroke uses with color. Those preoperties has the same meaning for marks
+    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+      return true;
+    }
+  }
+}
+
 export function refineColumnName(name: string) {
   return name.replace(/[^0-9a-zA-Z\_]/g, "_");
 }

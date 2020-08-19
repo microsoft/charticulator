@@ -13,7 +13,8 @@ import {
   Specification,
   zipArray,
   uniqueID,
-  Scale
+  Scale,
+  compareMarkAttributeNames
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
@@ -106,6 +107,7 @@ export class AppStore extends BaseStore {
   public chartState: Specification.ChartState;
 
   public currentSelection: Selection;
+  public currentAttributeFocus: string;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   protected localeFileFormat: LocaleFileFormat = {
@@ -651,7 +653,7 @@ export class AppStore extends BaseStore {
                 if (scaleMapping.scale != null) {
                   if (
                     scaleMapping.expression == expression &&
-                    (markAttribute == scaleMapping.attribute ||
+                    (compareMarkAttributeNames(markAttribute, scaleMapping.attribute) ||
                       !markAttribute ||
                       !scaleMapping.attribute)
                   ) {
@@ -666,7 +668,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                      getExpressionUnit(expression) &&
+                    getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -688,7 +690,7 @@ export class AppStore extends BaseStore {
           if (
             scaleMapping.expression == expression &&
             ((scaleMapping.attribute &&
-              scaleMapping.attribute === markAttribute) ||
+              compareMarkAttributeNames(scaleMapping.attribute, markAttribute)) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
@@ -938,7 +940,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function*() {
+      const rowIterator = function* () {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -974,7 +976,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-              xDataProperty.numericalMode === "temporal"
+                xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type
           },
@@ -1001,7 +1003,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-              yDataProperty.numericalMode === "temporal"
+                yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type
           },

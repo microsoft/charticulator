@@ -101,6 +101,15 @@ export const type2DerivedColumns: {
       }
     },
     {
+      name: "monthnumber",
+      type: Dataset.DataType.String,
+      function: "date.monthnumber",
+      metadata: {
+        kind: Dataset.DataKind.Categorical,
+        orderMode: "alphabetically"
+      }
+    },
+    {
       name: "day",
       type: Dataset.DataType.String,
       function: "date.day",
