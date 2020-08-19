@@ -38,7 +38,7 @@ export interface MappingEditorState {
 export class MappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
-  > {
+> {
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
@@ -425,7 +425,7 @@ export interface DataMappAndScaleEditorState {
 export class DataMappAndScaleEditor extends ContextedComponent<
   DataMappAndScaleEditorProps,
   DataMappAndScaleEditorState
-  > {
+> {
   public state = {
     currentMapping: this.props.defaultMapping
   };

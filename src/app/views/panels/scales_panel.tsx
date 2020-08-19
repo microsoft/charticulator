@@ -173,7 +173,7 @@ export class ScalesPanel extends ContextedComponent<
                   const column = table.columns.find(col => col.name === firstArgument.name);
                   metadata = column.metadata;
 
-                  rawColumnExpr = applyAggregation(metadata.rawColumnName, DataType.String)
+                  rawColumnExpr = metadata.rawColumnName && applyAggregation(metadata.rawColumnName, DataType.String)
                 }
 
                 this.setState({ isSelected: expr });
@@ -182,8 +182,7 @@ export class ScalesPanel extends ContextedComponent<
                   expr,
                   type,
                   metadata,
-                  rawColumnExpr &&
-                  applyAggregation(rawColumnExpr, DataType.String),
+                  rawColumnExpr,
                   scaleID
                 );
                 return r;
