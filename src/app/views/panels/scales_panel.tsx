@@ -42,7 +42,7 @@ export class ScalesPanel extends ContextedComponent<
   {
     isSelected: string;
   }
-  > {
+> {
   public mappingButton: Element;
   private tokens: EventSubscription[];
 
@@ -163,17 +163,24 @@ export class ScalesPanel extends ContextedComponent<
 
                 const table = this.store.dataset.tables.find(
                   table => table.name === (element.mappings[key] as any).table
-                )
+                );
 
                 const parsedExpression = Expression.parse(expr);
                 let metadata: ColumnMetadata = {};
-                if (parsedExpression instanceof FunctionCall && parsedExpression.args[0] instanceof Variable) {
+                if (
+                  parsedExpression instanceof FunctionCall &&
+                  parsedExpression.args[0] instanceof Variable
+                ) {
                   const firstArgument = parsedExpression.args[0] as Variable;
 
-                  const column = table.columns.find(col => col.name === firstArgument.name);
+                  const column = table.columns.find(
+                    col => col.name === firstArgument.name
+                  );
                   metadata = column.metadata;
 
-                  rawColumnExpr = metadata.rawColumnName && applyAggregation(metadata.rawColumnName, DataType.String)
+                  rawColumnExpr =
+                    metadata.rawColumnName &&
+                    applyAggregation(metadata.rawColumnName, DataType.String);
                 }
 
                 this.setState({ isSelected: expr });
@@ -201,7 +208,7 @@ export class ScalesPanel extends ContextedComponent<
               />
               <span className="el-text">{`${
                 element.properties.name
-                }.${this.getPropertyDisplayName(key)}`}</span>
+              }.${this.getPropertyDisplayName(key)}`}</span>
             </DraggableElement>
           </div>
         );
