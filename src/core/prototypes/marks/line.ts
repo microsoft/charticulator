@@ -233,6 +233,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     return [
       manager.sectionHeader("Line"),
       manager.mappingEditor("X Span", "dx", {
@@ -273,7 +274,7 @@ export class LineElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
-    ];
+    ].concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {

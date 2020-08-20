@@ -81,6 +81,9 @@ export interface Selectable {
   plotSegment: Specification.PlotSegment;
   glyphIndex: number;
   rowIndices: number[];
+  notooltips?: boolean;
+  noselection?: boolean;
+  nocontextmenu?: boolean;
 }
 
 export interface Element {
