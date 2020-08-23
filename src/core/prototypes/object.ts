@@ -89,30 +89,30 @@ export abstract class ObjectClass<
       manager.row(
         "",
         manager.inputBoolean(
-          { property: "notooltips" },
+          { property: "enableTooltips" },
           {
             type: "checkbox",
-            label: "Disable tooltips"
+            label: "Tooltips"
           }
         )
       ),
       manager.row(
         "",
         manager.inputBoolean(
-          { property: "nocontextmenu" },
+          { property: "enableContextMenu" },
           {
             type: "checkbox",
-            label: "Disable context menu"
+            label: "Context menu"
           }
         )
       ),
       manager.row(
         "",
         manager.inputBoolean(
-          { property: "noselection" },
+          { property: "enableSelection" },
           {
             type: "checkbox",
-            label: "Disable selection"
+            label: "Selection"
           }
         )
       )

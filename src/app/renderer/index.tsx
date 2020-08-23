@@ -254,21 +254,30 @@ export function renderGraphicalElementSVG(
     if (options.onClick) {
       mouseEvents.onClick = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        if (!element.selectable.noselection) {
+        if (
+          element.selectable.enableSelection ||
+          element.selectable.enableSelection === undefined
+        ) {
           options.onClick(element.selectable, e.nativeEvent);
         }
       };
     }
     if (options.onMouseEnter) {
       mouseEvents.onMouseEnter = (e: React.MouseEvent<Element>) => {
-        if (!element.selectable.notooltips) {
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
           options.onMouseEnter(element.selectable, e.nativeEvent);
         }
       };
     }
     if (options.onMouseLeave) {
       mouseEvents.onMouseLeave = (e: React.MouseEvent<Element>) => {
-        if (!element.selectable.notooltips) {
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
           options.onMouseLeave(element.selectable, e.nativeEvent);
         }
       };
@@ -276,7 +285,10 @@ export function renderGraphicalElementSVG(
     if (options.onContextMenu) {
       mouseEvents.onContextMenu = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        if (!element.selectable.nocontextmenu) {
+        if (
+          element.selectable.enableContextMenu ||
+          element.selectable.enableContextMenu === undefined
+        ) {
           options.onContextMenu(element.selectable, e.nativeEvent);
         }
       };

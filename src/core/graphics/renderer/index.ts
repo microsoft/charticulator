@@ -85,9 +85,9 @@ export class ChartRenderer {
           plotSegment,
           glyphIndex: index,
           rowIndices: plotSegmentState.dataRowIndices[index],
-          notooltips: cls.object.properties.notooltips as boolean,
-          nocontextmenu: cls.object.properties.nocontextmenu as boolean,
-          noselection: cls.object.properties.notooltips as boolean
+          enableTooltips: cls.object.properties.enableTooltips as boolean,
+          enableContextMenu: cls.object.properties.enableContextMenu as boolean,
+          enableSelection: cls.object.properties.enableSelection as boolean
         };
         return makeGroup([g]);
       } else {
