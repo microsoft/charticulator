@@ -103,7 +103,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
-      this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      setTimeout(() => {
+        this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      }, 0);
     }
     return this.row(
       name,

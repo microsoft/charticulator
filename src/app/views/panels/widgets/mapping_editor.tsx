@@ -38,7 +38,7 @@ export interface MappingEditorState {
 export class MappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
-  > {
+> {
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
@@ -48,12 +48,6 @@ export class MappingEditor extends React.Component<
   public state: MappingEditorState = {
     showNoneAsValue: false
   };
-
-  public componentDidMount() {
-    if (this.props.options.openMapping) {
-      this.beginDataFieldSelection();
-    }
-  }
 
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
@@ -349,6 +343,13 @@ export class MappingEditor extends React.Component<
     const isDataMapping =
       currentMapping != null && currentMapping.type == "scale";
     shouldShowEraser = isDataMapping;
+
+    if (this.props.options.openMapping) {
+      setTimeout(() => {
+        this.beginDataFieldSelection();
+      });
+    }
+
     return (
       <DropZoneView
         filter={data => {
@@ -424,7 +425,7 @@ export interface DataMappAndScaleEditorState {
 export class DataMappAndScaleEditor extends ContextedComponent<
   DataMappAndScaleEditorProps,
   DataMappAndScaleEditorState
-  > {
+> {
   public state = {
     currentMapping: this.props.defaultMapping
   };

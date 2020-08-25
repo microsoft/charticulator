@@ -178,7 +178,8 @@ export class ChartTemplateBuilder {
                     )) {
                       if (
                         ps.kind == "chart-element" &&
-                        Prototypes.isType(ps.object.classID, "plot-segment")
+                        Prototypes.isType(ps.object.classID, "plot-segment") &&
+                        item.glyph._id === (ps.chartElement as any).glyph
                       ) {
                         groupBy = (ps.chartElement as Specification.PlotSegment)
                           .groupBy;

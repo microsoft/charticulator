@@ -68,5 +68,6 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.FocusToMarkAttribute, function(action) {
     this.currentAttributeFocus = action.attributeName;
+    this.emit(AppStore.EVENT_GRAPHICS);
   });
 }
