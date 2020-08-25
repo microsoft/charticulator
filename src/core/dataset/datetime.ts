@@ -115,6 +115,15 @@ export function parseDate(str: string) {
       }
     }
     return timestamp;
+  }
+  // Year
+  else if (str.match(/^\d{4}?$/i)) {
+    const t = Date.parse(str);
+    if (!isNaN(t)) {
+      return t;
+    } else {
+      return null;
+    }
   } else {
     return null;
   }
