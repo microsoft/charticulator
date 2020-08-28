@@ -96,6 +96,13 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="mark/nested-chart"
         />
         <span className="chartaccent__toolbar-separator" />
+        <ObjectButton
+          classID="legend.custom"
+          title="Legend"
+          icon="legend/legend"
+          noDragging={true}
+        />
+        <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
         <span className="chartaccent__toolbar-separator" />
