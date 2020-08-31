@@ -22,6 +22,7 @@ export type LegendType = "color" | "numerical" | "categorical";
 import { ChartStateManager } from "../state";
 import { TableType } from "../../dataset";
 import { Expression, Prototypes } from "../..";
+import { color } from "d3";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -175,7 +176,12 @@ export class CustomLegendClass extends LegendClass {
               const parsedExpression = this.parent.dataflow.cache.parse(
                 expression.expression
               );
-              return parsedExpression.getValue(table);
+              try {
+                return parsedExpression.getValue(table); // to do add check before apply
+              } catch (ex) {
+                console.error(ex);
+                return null;
+              }
             } else {
               return null;
             }
@@ -474,86 +480,86 @@ export class CustomLegendClass extends LegendClass {
     const widget = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
 
-    widget.push(
-      manager.row(
-        "Legend type",
-        manager.inputSelect(
-          { property: "legendType" },
-          {
-            type: "dropdown",
-            // icons: ["align/top", "align/y-middle"],
-            labels: ["Color", "Numerical", "Categorical"],
-            options: ["color", "numerical", "categorical"],
-            showLabel: true
-          }
-        )
-      )
-    );
+    // widget.push(
+    //   manager.row(
+    //     "Legend type",
+    //     manager.inputSelect(
+    //       { property: "legendType" },
+    //       {
+    //         type: "dropdown",
+    //         // icons: ["align/top", "align/y-middle"],
+    //         labels: ["Color", "Numerical", "Categorical"],
+    //         options: ["color", "numerical", "categorical"],
+    //         showLabel: true
+    //       }
+    //     )
+    //   )
+    // );
 
-    widget.push(
-      manager.row(
-        "Data source",
-        manager.inputSelect(
-          { property: "dataSource" },
-          {
-            type: "radio",
-            // icons: ["align/top", "align/y-middle"],
-            labels: ["Column names", "Column values"],
-            options: ["columnNames", "columnValues"],
-            showLabel: true
-          }
-        )
-      )
-    );
-    let typeProperty = "dataExpression";
-    if (props.legendType == "color") {
-      typeProperty += "Color";
-    }
-    if (props.legendType == "numerical") {
-      typeProperty += "Number";
-    }
-    if (props.legendType == "categorical") {
-      typeProperty += "Category";
-    }
-    if (props.dataSource === "columnValues") {
-      widget.push(manager.mappingEditor("Data column", typeProperty, {}));
-    }
-    if (props.dataSource === "columnNames") {
-      if (props.dataExpressions.length > 0) {
-        widget.push(manager.sectionHeader("Data Expressions"));
-        widget.push(
-          manager.arrayWidget(
-            { property: "dataExpressions" },
-            item => {
-              return manager.inputExpression(
-                {
-                  property: "dataExpressions",
-                  field:
-                    item.field instanceof Array
-                      ? [...item.field, "expression"]
-                      : [item.field, "expression"]
-                }
-                // { table: this.getGlyphClass().object.table }
-              );
-            },
-            {
-              allowDelete: true,
-              allowReorder: true
-            }
-          )
-        );
-      }
+    // widget.push(
+    //   manager.row(
+    //     "Data source",
+    //     manager.inputSelect(
+    //       { property: "dataSource" },
+    //       {
+    //         type: "radio",
+    //         // icons: ["align/top", "align/y-middle"],
+    //         labels: ["Column names", "Column values"],
+    //         options: ["columnNames", "columnValues"],
+    //         showLabel: true
+    //       }
+    //     )
+    //   )
+    // );
+    // let typeProperty = "dataExpression";
+    // if (props.legendType == "color") {
+    //   typeProperty += "Color";
+    // }
+    // if (props.legendType == "numerical") {
+    //   typeProperty += "Number";
+    // }
+    // if (props.legendType == "categorical") {
+    //   typeProperty += "Category";
+    // }
+    // if (props.dataSource === "columnValues") {
+    //   widget.push(manager.mappingEditor("Data column", typeProperty, {}));
+    // }
+    // if (props.dataSource === "columnNames") {
+    //   if (props.dataExpressions.length > 0) {
+    //     widget.push(manager.sectionHeader("Data Expressions"));
+    //     widget.push(
+    //       manager.arrayWidget(
+    //         { property: "dataExpressions" },
+    //         item => {
+    //           return manager.inputExpression(
+    //             {
+    //               property: "dataExpressions",
+    //               field:
+    //                 item.field instanceof Array
+    //                   ? [...item.field, "expression"]
+    //                   : [item.field, "expression"]
+    //             }
+    //             // { table: this.getGlyphClass().object.table }
+    //           );
+    //         },
+    //         {
+    //           allowDelete: true,
+    //           allowReorder: true
+    //         }
+    //       )
+    //     );
+    //   }
 
-      widget.push(
-        manager.inputExpression(
-          {
-            property: "dataExpressions",
-            field: [props.dataExpressions.length, "expression"]
-          }
-          // { table: this.getGlyphClass().object.table }
-        )
-      );
-    }
+    // widget.push(
+    //   manager.inputExpression(
+    //     {
+    //       property: "dataExpressions",
+    //       field: [props.dataExpressions.length, "expression"]
+    //     }
+    //     // { table: this.getGlyphClass().object.table }
+    //   )
+    // );
+    // }
     return widget;
   }
 }
