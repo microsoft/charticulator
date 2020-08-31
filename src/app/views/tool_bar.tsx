@@ -223,11 +223,11 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
           this.props.noDragging
             ? null
             : () => {
-              return new DragData.ObjectType(
-                this.props.classID,
-                this.props.options
-              );
-            }
+                return new DragData.ObjectType(
+                  this.props.classID,
+                  this.props.options
+                );
+              }
         }
       />
     );
@@ -244,7 +244,7 @@ export class MultiObjectButton extends ContextedComponent<
       options: string;
     };
   }
-  > {
+> {
   public state = {
     currentSelection: {
       classID: this.props.tools[0].classID,
@@ -360,7 +360,7 @@ export class ScaffoldButton extends ContextedComponent<
     icon: string;
   },
   {}
-  > {
+> {
   public render() {
     return (
       <ToolButton
@@ -437,7 +437,7 @@ export class CheckboxButton extends React.Component<
     onChange?: (v: boolean) => void;
   },
   {}
-  > {
+> {
   public render() {
     return (
       <span
