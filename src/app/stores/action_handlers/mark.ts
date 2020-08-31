@@ -13,11 +13,11 @@ import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
 
-export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // Internal registry of mark-level action handlers
   const MR = new ActionHandlerRegistry<AppStore, Actions.MarkAction>();
 
-  MR.add(Actions.UpdateMarkAttribute, function(action) {
+  MR.add(Actions.UpdateMarkAttribute, function (action) {
     for (const key in action.updates) {
       if (!action.updates.hasOwnProperty(key)) {
         continue;
@@ -60,7 +60,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     });
   });
 
-  MR.add(Actions.SetObjectProperty, function(this, action) {
+  MR.add(Actions.SetObjectProperty, function (this, action) {
     // check name property. Names of objects are unique
     if (
       action.property === "name" &&
@@ -80,7 +80,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  MR.add(Actions.SetMarkAttribute, function(this, action) {
+  MR.add(Actions.SetMarkAttribute, function (this, action) {
     if (action.mapping == null) {
       delete action.mark.mappings[action.attribute];
     } else {
@@ -99,11 +99,11 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  MR.add(Actions.UnmapMarkAttribute, function(this, action) {
+  MR.add(Actions.UnmapMarkAttribute, function (this, action) {
     delete action.mark.mappings[action.attribute];
   });
 
-  MR.add(Actions.SnapMarks, function(action) {
+  MR.add(Actions.SnapMarks, function (action) {
     const idx1 = action.glyph.marks.indexOf(action.mark);
     if (idx1 < 0) {
       return;
@@ -155,7 +155,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     });
   });
 
-  MR.add(Actions.MarkActionGroup, function(action) {
+  MR.add(Actions.MarkActionGroup, function (action) {
     for (const item of action.actions) {
       // Recursively handle group actions
       MR.handleAction(this, item);
@@ -163,7 +163,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   // The entry point for mark actions
-  REG.add(Actions.MarkAction, function(this, mainAction) {
+  REG.add(Actions.MarkAction, function (this, mainAction) {
     this.saveHistory();
 
     MR.handleAction(this, mainAction);
@@ -172,14 +172,14 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.MapDataToMarkAttribute, function(action) {
+  REG.add(Actions.MapDataToMarkAttribute, function (action) {
     this.saveHistory();
 
     const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
       .attributes[action.attribute];
     const table = this.getTable(action.glyph.table);
     const inferred =
-      action.hints.scaleID ||
+      action.hints && action.hints.scaleID ||
       this.scaleInference(
         { glyph: action.glyph },
         action.expression,
