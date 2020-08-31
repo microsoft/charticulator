@@ -62,7 +62,7 @@ export interface DataFieldSelectorState {
 export class DataFieldSelector extends React.Component<
   DataFieldSelectorProps,
   DataFieldSelectorState
-  > {
+> {
   constructor(props: DataFieldSelectorProps) {
     super(props);
     this.state = this.getDefaultState(props);
@@ -226,14 +226,21 @@ export class DataFieldSelector extends React.Component<
     return v1.expression == v2.expression && v1.table == v2.table;
   }
 
-  private isValueExists(v1: DataFieldSelectorValue, v2: DataFieldSelectorValue[]) {
-    if (v2.find(v => v == v1 || v1.expression == v.expression && v1.table == v.table)) {
+  private isValueExists(
+    v1: DataFieldSelectorValue,
+    v2: DataFieldSelectorValue[]
+  ) {
+    if (
+      v2.find(
+        v => v == v1 || (v1.expression == v.expression && v1.table == v.table)
+      )
+    ) {
       return true;
     }
     if (v1 == null || v2.length == 0) {
       return false;
     }
-    return false
+    return false;
   }
 
   private selectItem(item: DataFieldSelectorValue, aggregation: string = null) {
@@ -248,20 +255,29 @@ export class DataFieldSelector extends React.Component<
         }
       }
       if (this.props.multiSelect) {
-        this.setState((current) => {
-          const found = current.currentSelections.find(i => i.expression === item.expression);
+        this.setState(current => {
+          const found = current.currentSelections.find(
+            i => i.expression === item.expression
+          );
           if (found) {
             return {
               ...current,
-              currentSelections: current.currentSelections.filter(i => i.expression !== item.expression),
-              currentSelectionsAggregations: current.currentSelectionsAggregations.filter(a => a !== aggregation)
-            }
+              currentSelections: current.currentSelections.filter(
+                i => i.expression !== item.expression
+              ),
+              currentSelectionsAggregations: current.currentSelectionsAggregations.filter(
+                a => a !== aggregation
+              )
+            };
           } else {
             return {
               ...current,
               currentSelections: [...current.currentSelections, item],
-              currentSelectionsAggregations: [...current.currentSelectionsAggregations, aggregation]
-            }
+              currentSelectionsAggregations: [
+                ...current.currentSelectionsAggregations,
+                aggregation
+              ]
+            };
           }
         });
       } else {
@@ -326,40 +342,45 @@ export class DataFieldSelector extends React.Component<
         <div
           className={classNames(
             "el-field-item",
-            ["is-active", this.props.multiSelect ? this.isValueExists(item, this.state.currentSelections) : this.isValueEqual(this.state.currentSelection, item)],
+            [
+              "is-active",
+              this.props.multiSelect
+                ? this.isValueExists(item, this.state.currentSelections)
+                : this.isValueEqual(this.state.currentSelection, item)
+            ],
             ["is-selectable", item.selectable]
           )}
           onClick={
             item.selectable
-              ? (event) => {
-                this.selectItem(
-                  item,
-                  this.isValueEqual(this.state.currentSelection, item)
-                    ? this.state.currentSelectionAggregation
-                    : null
-                )
-              }
+              ? event => {
+                  this.selectItem(
+                    item,
+                    this.isValueEqual(this.state.currentSelection, item)
+                      ? this.state.currentSelectionAggregation
+                      : null
+                  );
+                }
               : null
           }
         >
           <SVGImageIcon url={R.getSVGIcon(kind2Icon[item.metadata.kind])} />
           <span className="el-text">{item.displayName}</span>
           {this.props.useAggregation &&
-            this.isValueEqual(this.state.currentSelection, item) ? (
-              <Select
-                value={this.state.currentSelectionAggregation}
-                options={Expression.getCompatibleAggregationFunctions(
-                  item.type
-                ).map(x => x.name)}
-                labels={Expression.getCompatibleAggregationFunctions(
-                  item.type
-                ).map(x => x.displayName)}
-                showText={true}
-                onChange={newValue => {
-                  this.selectItem(item, newValue);
-                }}
-              />
-            ) : null}
+          this.isValueEqual(this.state.currentSelection, item) ? (
+            <Select
+              value={this.state.currentSelectionAggregation}
+              options={Expression.getCompatibleAggregationFunctions(
+                item.type
+              ).map(x => x.name)}
+              labels={Expression.getCompatibleAggregationFunctions(
+                item.type
+              ).map(x => x.displayName)}
+              showText={true}
+              onChange={newValue => {
+                this.selectItem(item, newValue);
+              }}
+            />
+          ) : null}
           {item.derived && item.derived.length > 0 ? (
             <Button
               icon="general/more-vertical"
@@ -397,7 +418,7 @@ export class DataFieldSelector extends React.Component<
             className={classNames("el-field-item", "is-null", "is-selectable", [
               "is-active",
               !this.props.nullNotHighlightable &&
-              this.state.currentSelection == null
+                this.state.currentSelection == null
             ])}
             onClick={() => this.selectItem(null)}
           >

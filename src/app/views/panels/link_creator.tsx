@@ -19,9 +19,10 @@ import { ButtonRaised, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import { classNames } from "../../utils";
-import { DataFieldSelector } from "../dataset/data_field_selector";
+import { DataFieldSelector, DataFieldSelectorValue } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
+import { PanelRadioControl } from "./radio_control";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -38,7 +39,7 @@ export interface LinkCreationPanelState {
 export class LinkCreationPanel extends ContextedComponent<
   LinkCreationPanelProps,
   LinkCreationPanelState
-> {
+  > {
   public state: LinkCreationPanelState = this.getDefaultState();
 
   private groupBySelector: DataFieldSelector;
@@ -108,20 +109,20 @@ export class LinkCreationPanel extends ContextedComponent<
           </div>
         ) : null}
         {this.state.selectedPlotSegments.length == 1 &&
-        this.isLinkDataPresent() ? (
-          <div className="el-row">
-            <h2>Link Mode:</h2>
-            <PanelRadioControl
-              options={["link-through", "link-table"]}
-              icons={["link/through", "link/table"]}
-              labels={["Sequentially", "By Link Data"]}
-              value={this.state.linkMode}
-              onChange={newValue => this.setState({ linkMode: newValue })}
-              showText={true}
-              asList={true}
-            />
-          </div>
-        ) : null}
+          this.isLinkDataPresent() ? (
+            <div className="el-row">
+              <h2>Link Mode:</h2>
+              <PanelRadioControl
+                options={["link-through", "link-table"]}
+                icons={["link/through", "link/table"]}
+                labels={["Sequentially", "By Link Data"]}
+                value={this.state.linkMode}
+                onChange={newValue => this.setState({ linkMode: newValue })}
+                showText={true}
+                asList={true}
+              />
+            </div>
+          ) : null}
         {this.state.linkMode == "link-through" ? (
           <div>
             <h2>Connect by:</h2>
@@ -310,11 +311,11 @@ export class LinkCreationPanel extends ContextedComponent<
       } else {
         c1 =
           candidates1[
-            argMin(candidates1, c => Math.abs(meanPoint(c.points).y))
+          argMin(candidates1, c => Math.abs(meanPoint(c.points).y))
           ];
         c2 =
           candidates2[
-            argMin(candidates2, c => Math.abs(meanPoint(c.points).y))
+          argMin(candidates2, c => Math.abs(meanPoint(c.points).y))
           ];
       }
     }
@@ -495,7 +496,7 @@ export class LinkCreationPanel extends ContextedComponent<
 
         const facetBy = this.groupBySelector
           ? this.groupBySelector.value
-            ? [this.groupBySelector.value.expression]
+            ? [(this.groupBySelector.value as DataFieldSelectorValue).expression]
             : []
           : [];
 
@@ -666,7 +667,7 @@ export interface PlotSegmentSelectorState {
 export class PlotSegmentSelector extends ContextedComponent<
   PlotSegmentSelectorProps,
   PlotSegmentSelectorState
-> {
+  > {
   public state: PlotSegmentSelectorState = this.getInitialState();
 
   private getInitialState(): PlotSegmentSelectorState {
@@ -744,54 +745,6 @@ export class PlotSegmentSelector extends ContextedComponent<
           })}
         </ReorderListView>
       </div>
-    );
-  }
-}
-
-export interface PanelRadioControlProps {
-  options: string[];
-  icons?: string[];
-  labels?: string[];
-  showText?: boolean;
-  asList?: boolean;
-  value?: string;
-  onChange?: (newValue: string) => void;
-}
-
-export class PanelRadioControl extends React.Component<
-  PanelRadioControlProps,
-  {}
-> {
-  public render() {
-    const mainClass = this.props.asList
-      ? "charticulator-panel-list-view"
-      : "charticulator-panel-list-view is-inline";
-    return (
-      <span className={mainClass}>
-        {this.props.options.map((option, index) => {
-          return (
-            <span
-              className={classNames("el-item", [
-                "is-active",
-                this.props.value == option
-              ])}
-              key={option}
-              onClick={() => {
-                if (this.props) {
-                  this.props.onChange(option);
-                }
-              }}
-            >
-              {this.props.icons ? (
-                <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
-              ) : null}
-              {this.props.labels && this.props.showText ? (
-                <span className="el-text">{this.props.labels[index]}</span>
-              ) : null}
-            </span>
-          );
-        })}
-      </span>
     );
   }
 }

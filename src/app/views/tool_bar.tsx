@@ -13,6 +13,7 @@ import { PopupView } from "../controllers";
 
 import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
+import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 
 export class Toolbar extends ContextedComponent<{}, {}> {
@@ -96,12 +97,7 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="mark/nested-chart"
         />
         <span className="chartaccent__toolbar-separator" />
-        <ObjectButton
-          classID="legend.custom"
-          title="Legend"
-          icon="legend/legend"
-          noDragging={true}
-        />
+        <LegendButton />
         <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
@@ -227,11 +223,11 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
           this.props.noDragging
             ? null
             : () => {
-                return new DragData.ObjectType(
-                  this.props.classID,
-                  this.props.options
-                );
-              }
+              return new DragData.ObjectType(
+                this.props.classID,
+                this.props.options
+              );
+            }
         }
       />
     );
@@ -248,7 +244,7 @@ export class MultiObjectButton extends ContextedComponent<
       options: string;
     };
   }
-> {
+  > {
   public state = {
     currentSelection: {
       classID: this.props.tools[0].classID,
@@ -364,7 +360,7 @@ export class ScaffoldButton extends ContextedComponent<
     icon: string;
   },
   {}
-> {
+  > {
   public render() {
     return (
       <ToolButton
@@ -408,6 +404,32 @@ export class LinkButton extends ContextedComponent<{}, {}> {
   }
 }
 
+export class LegendButton extends ContextedComponent<{}, {}> {
+  public container: HTMLSpanElement;
+
+  public render() {
+    return (
+      <span ref={e => (this.container = e)}>
+        <ToolButton
+          title="Link"
+          icon={R.getSVGIcon("legend/legend")}
+          active={this.store.currentTool == "legend"}
+          onClick={() => {
+            globals.popupController.popupAt(
+              context => (
+                <PopupView context={context}>
+                  <LegendCreationPanel onFinish={() => context.close()} />
+                </PopupView>
+              ),
+              { anchor: this.container }
+            );
+          }}
+        />
+      </span>
+    );
+  }
+}
+
 export class CheckboxButton extends React.Component<
   {
     value: boolean;
@@ -415,7 +437,7 @@ export class CheckboxButton extends React.Component<
     onChange?: (v: boolean) => void;
   },
   {}
-> {
+  > {
   public render() {
     return (
       <span
