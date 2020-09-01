@@ -26,6 +26,7 @@ export interface DataMappingHints {
   rangeEnum?: string[];
   rangeImage?: string[];
   newScale?: boolean;
+  scaleID?: string;
 }
 
 export interface TemplateParameters {

@@ -343,6 +343,13 @@ export class MappingEditor extends React.Component<
     const isDataMapping =
       currentMapping != null && currentMapping.type == "scale";
     shouldShowEraser = isDataMapping;
+
+    if (this.props.options.openMapping) {
+      setTimeout(() => {
+        this.beginDataFieldSelection();
+      });
+    }
+
     return (
       <DropZoneView
         filter={data => {
@@ -360,6 +367,7 @@ export class MappingEditor extends React.Component<
             options.hints = {};
           }
           options.hints.newScale = modifiers.shiftKey;
+          options.hints.scaleID = data.scaleID;
           this.mapData(data, options.hints);
         }}
         className="charticulator__widget-control-mapping-editor"

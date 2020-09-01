@@ -13,7 +13,8 @@ import {
   Specification,
   zipArray,
   uniqueID,
-  Scale
+  Scale,
+  compareMarkAttributeNames
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
@@ -106,6 +107,7 @@ export class AppStore extends BaseStore {
   public chartState: Specification.ChartState;
 
   public currentSelection: Selection;
+  public currentAttributeFocus: string;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   protected localeFileFormat: LocaleFileFormat = {
@@ -651,7 +653,10 @@ export class AppStore extends BaseStore {
                 if (scaleMapping.scale != null) {
                   if (
                     scaleMapping.expression == expression &&
-                    (markAttribute == scaleMapping.attribute ||
+                    (compareMarkAttributeNames(
+                      markAttribute,
+                      scaleMapping.attribute
+                    ) ||
                       !markAttribute ||
                       !scaleMapping.attribute)
                   ) {
@@ -688,7 +693,10 @@ export class AppStore extends BaseStore {
           if (
             scaleMapping.expression == expression &&
             ((scaleMapping.attribute &&
-              scaleMapping.attribute === markAttribute) ||
+              compareMarkAttributeNames(
+                scaleMapping.attribute,
+                markAttribute
+              )) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
@@ -1083,7 +1091,12 @@ export class AppStore extends BaseStore {
 
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
-      expression: groupExpression,
+      // Don't change current expression (use current expression), if user appends data expression ()
+      expression:
+        appendToProperty === "dataExpressions" &&
+        object.properties[options.property]
+          ? ((object.properties[options.property] as any).expression as string)
+          : groupExpression,
       valueType,
       gapRatio: 0.1,
       visible: true,
@@ -1138,6 +1151,14 @@ export class AppStore extends BaseStore {
       }
     }
     let values: ValueType[] = [];
+    if (
+      appendToProperty == "dataExpressions" &&
+      dataBinding.domainMax !== undefined &&
+      dataBinding.domainMin !== undefined
+    ) {
+      // save current range of scale if user adds data
+      values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
+    }
     for (const expr of expressions) {
       const r = this.chartManager.getGroupedExpressionVector(
         dataExpression.table.name,

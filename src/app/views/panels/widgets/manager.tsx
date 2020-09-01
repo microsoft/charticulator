@@ -16,7 +16,8 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID
+  uniqueID,
+  refineColumnName
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -98,13 +99,24 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     if (options.defaultValue == null) {
       options.defaultValue = info.defaultValue;
     }
+
+    const openMapping =
+      options.openMapping || attribute === this.store.currentAttributeFocus;
+    if (openMapping) {
+      setTimeout(() => {
+        this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      }, 0);
+    }
     return this.row(
       name,
       <MappingEditor
         parent={this}
         attribute={attribute}
         type={info.type}
-        options={options}
+        options={{
+          ...options,
+          openMapping
+        }}
       />
     );
   }
@@ -152,7 +164,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         }
         const rawColumnName = column.metadata.rawColumnName;
         if (rawColumnName) {
-          const value = table.rows[0][rawColumnName].toString();
+          const value = (
+            table.rows[0][rawColumnName] || refineColumnName(rawColumnName)
+          ).toString();
           return getDateFormat(value);
         }
       }

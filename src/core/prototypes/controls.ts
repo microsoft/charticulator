@@ -62,6 +62,8 @@ export interface MappingEditorOptions {
   acceptKinds?: Specification.DataKind[];
 
   numberOptions?: InputNumberOptions;
+  /** Open mapping editor after rendering */
+  openMapping?: boolean;
 }
 
 export interface InputNumberOptions {
