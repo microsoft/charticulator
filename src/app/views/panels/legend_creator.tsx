@@ -12,7 +12,8 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID
+  uniqueID,
+  Expression
 } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, SVGImageIcon } from "../../components";
@@ -27,6 +28,7 @@ import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
 import { DataKind } from "../../../core/dataset";
+import { AttributeType } from "../../../core/specification";
 
 export interface LegendCreationPanelProps {
   onFinish?: () => void;
@@ -109,48 +111,92 @@ export class LegendCreationPanel extends ContextedComponent<
         )}
         <div className="el-row">
           <ButtonRaised
-            text="Create Links"
+            text="Create Legend"
             onClick={() => {
               const legend: any = null;
 
               const columns = this.groupBySelector
                 ? this.groupBySelector.value
                   ? this.groupBySelector.props.multiSelect
-                    ? (this.groupBySelector
-                        .value as DataFieldSelectorValue[]).map(
-                        v => v.expression
-                      )
+                    ? (this.groupBySelector.value as DataFieldSelectorValue[])
                     : [this.groupBySelector.value as DataFieldSelectorValue]
                   : []
                 : [];
 
-              console.log(columns);
-
-              const keyOptions = "dataExpression";
+              const keyOptions = "dataExpressionColumns";
               let legendType: "color" | "numerical" | "categorical" = "color";
+              let attributeType: AttributeType = AttributeType.Color;
 
               if (this.state.legendDataSource === "columnNames") {
                 legendType = "color";
+                attributeType = AttributeType.Color;
               } else {
                 const kind = (this.groupBySelector
                   .value as DataFieldSelectorValue).metadata.kind;
                 switch (kind) {
                   case DataKind.Numerical:
-                    legendType = "numerical";
-                    break;
                   case DataKind.Temporal:
                     legendType = "numerical";
+                    attributeType = AttributeType.Number;
                     break;
                   case DataKind.Ordinal:
                     legendType = "color";
+                    attributeType = AttributeType.Text;
                     break;
+                }
+              }
+
+              // Create mapping
+              let mappingOptions: any = {};
+              if (this.state.legendDataSource === "columnValues") {
+                const inferred = this.store.scaleInference(
+                  { chart: { table: columns[0].table } },
+                  columns[0].expression,
+                  columns[0].type,
+                  columns[0].metadata.kind,
+                  attributeType,
+                  {}
+                );
+
+                if (inferred != null) {
+                  mappingOptions = {
+                    type: "scale",
+                    table: columns[0].table,
+                    expression: columns[0].expression,
+                    valueType: columns[0].type,
+                    scale: inferred
+                  } as Specification.ScaleMapping;
+                } else {
+                  if (
+                    (columns[0].type == Specification.DataType.String ||
+                      columns[0].type == Specification.DataType.Boolean ||
+                      columns[0].type == Specification.DataType.Number) &&
+                    attributeType == Specification.AttributeType.Text
+                  ) {
+                    // If the valueType is a number, use a format
+                    const format =
+                      columns[0].type == Specification.DataType.Number
+                        ? ".1f"
+                        : undefined;
+                    mappingOptions = {
+                      type: "text",
+                      table: columns[0].table,
+                      textExpression: new Expression.TextExpression([
+                        {
+                          expression: Expression.parse(columns[0].expression),
+                          format
+                        }
+                      ]).toString()
+                    } as Specification.TextMapping;
+                  }
                 }
               }
 
               const options = {
                 dataSource: this.state.legendDataSource,
                 [keyOptions]: columns,
-                legendType
+                legendType,
+                mappingOptions
               };
 
               this.dispatch(

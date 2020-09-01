@@ -170,19 +170,19 @@ export class CustomLegendClass extends LegendClass {
           t => t.type === TableType.Main
         ).name;
         const table = this.parent.dataflow.getTable(tableName);
-        const data = this.object.properties.dataExpressions
-          .map(expression => {
-            if (expression.expression) {
-              const parsedExpression = this.parent.dataflow.cache.parse(
-                expression.expression
-              );
-              try {
-                return parsedExpression.getValue(table); // to do add check before apply
-              } catch (ex) {
-                console.error(ex);
-                return null;
-              }
-            } else {
+        const data = (this.object.properties.dataExpressionColumns as any[])
+          .map(ex => {
+            const expression = `columnName(${ex.table}.columns, "${
+              ex.columnName
+            }")`;
+            const parsedExpression = this.parent.dataflow.cache.parse(
+              expression
+            );
+            try {
+              const table = this.parent.dataflow.getTable(ex.table);
+              return parsedExpression.getValue(table); // to do add check before apply
+            } catch (ex) {
+              console.error(ex);
               return null;
             }
           })
@@ -218,21 +218,10 @@ export class CustomLegendClass extends LegendClass {
 
   public getScale(): [Specification.Scale, Specification.ScaleState] {
     let scale: string = null;
-    if (this.object.properties.legendType == "color") {
-      scale =
-        this.object.mappings.dataExpressionColor &&
-        (this.object.mappings.dataExpressionColor as any).scale;
-    }
-    if (this.object.properties.legendType == "categorical") {
-      scale =
-        this.object.mappings.dataExpressionCategory &&
-        (this.object.mappings.dataExpressionCategory as any).scale;
-    }
-    if (this.object.properties.legendType == "numerical") {
-      scale =
-        this.object.mappings.dataExpressionNumber &&
-        (this.object.mappings.dataExpressionNumber as any).scale;
-    }
+    scale =
+      this.object.properties.mappingOptions &&
+      (this.object.properties.mappingOptions as any).scale;
+
     const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
     if (scaleIndex >= 0) {
       return [
@@ -246,7 +235,6 @@ export class CustomLegendClass extends LegendClass {
 
   public getLegendItems(manager?: ChartStateManager): CustomLegendItem[] {
     let scale;
-
     if (this.object.properties.dataSource === "columnNames") {
       scale = this.getCustomScale(manager);
     } else {
