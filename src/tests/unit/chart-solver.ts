@@ -91,8 +91,10 @@ function makeDefaultAttributes(state: AppStoreState) {
   const defaultAttributes: DefaultAttributes = {};
   const { elements } = state.chart;
   for (let i = 0; i < elements.length; i++) {
-    let el = elements[i];
-    defaultAttributes[el._id] = deepClone(state.chartState.elements[i].attributes);
+    const el = elements[i];
+    defaultAttributes[el._id] = deepClone(
+      state.chartState.elements[i].attributes
+    );
   }
   return defaultAttributes;
 }
