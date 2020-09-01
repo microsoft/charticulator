@@ -86,15 +86,12 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
 }
 
 function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
-  parentElement.glyphs.forEach((glyph, glyphIndex) => {
+  parentElement.glyphs.forEach(glyph => {
     // collect and separate marks from guides
     const guides: { [id: string]: Mark } = {};
-    const marks: { [id: string]: Mark } = {};
     glyph.marks.forEach(mark => {
       if (mark.classID === GuideClass.classID) {
         guides[mark._id] = mark;
-      } else {
-        marks[mark._id] = mark;
       }
     });
     // get element which uses this glyph
