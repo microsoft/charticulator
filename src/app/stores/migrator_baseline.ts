@@ -6,10 +6,13 @@ import {
   ChartElementState,
   ParentMapping,
   PlotSegment,
-  PlotSegmentState
+  PlotSegmentState,
+  ValueMapping
 } from "../../core/specification";
-import { GuideAxis, GuideClass } from "../../core/prototypes/guides";
+import { GuideAxis, GuideClass, GuideAttributeNames } from "../../core/prototypes/guides";
 import { Specification, uniqueID } from "../../core";
+import { isType } from "../../core/prototypes";
+import { NestedChartElementClass, NestedChartElementProperties } from "../../core/prototypes/marks/nested_chart";
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
 type ChartState = Specification.ChartState<Specification.AttributeMap>;
@@ -85,19 +88,24 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
   });
 }
 
-function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
+function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState, nested = false) {
   parentElement.glyphs.forEach(glyph => {
     // collect and separate marks from guides
     const guides: { [id: string]: Mark } = {};
     glyph.marks.forEach(mark => {
-      if (mark.classID === GuideClass.classID) {
+      if (isType(mark.classID, GuideClass.classID)) {
         guides[mark._id] = mark;
+      } else if (isType(mark.classID, NestedChartElementClass.classID)) {
+        const nc = mark as Specification.Element<
+          NestedChartElementProperties
+        >;
+        upgradeGlyphGuides(nc.properties.specification, null, true);  // nested charts do not store in ChartState
       }
     });
     // get element which uses this glyph
     const related = find(
       parentElement.elements,
-      parentState.elements,
+      parentState && parentState.elements,
       element => {
         const ps = element as PlotSegment;
         return ps.glyph === glyph._id;
@@ -120,14 +128,23 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
           // add state instances
           related.forEach(ref => {
             const s = ref.state as PlotSegmentState;
-            if (s.glyphs) {
+            if (s && s.glyphs) {
               s.glyphs.forEach(glyphState => {
                 glyphState.marks.push(newGuide.state);
               });
             }
           });
+          if (nested) {
+            // nested charts store in mappings
+            const valueMapping: ValueMapping = {
+              type: "value",
+              value: newGuide.state.attributes.value
+            };
+            newGuide.element.mappings.value = valueMapping;
+          }
           // point to new guide
           constraint.attributes.targetElement = newGuide.element._id;
+          constraint.attributes.targetAttribute = GuideAttributeNames.computedBaselineValue;
         }
       }
     });
@@ -145,7 +162,7 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState) {
       // modify all state instances
       related.forEach(ref => {
         const s = ref.state as PlotSegmentState;
-        if (s.glyphs) {
+        if (s && s.glyphs) {
           s.glyphs.forEach(glyphState => {
             glyphState.marks.forEach(markState => {
               // add new properties to guide
@@ -168,7 +185,7 @@ function find(
   const refs: ElementRef[] = [];
   elements.forEach((element, index) => {
     if (predicate(element)) {
-      const state = states[index];
+      const state = states && states[index];
       refs.push({ element, index, state });
     }
   });
