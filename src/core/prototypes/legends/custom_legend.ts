@@ -39,7 +39,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export interface CustomLegendState extends LegendState { }
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -174,7 +174,7 @@ export class CustomLegendClass extends LegendClass {
           .map(ex => {
             const expression = `columnName(${ex.table}.columns, "${
               ex.columnName
-            }")`;
+              }")`;
             const parsedExpression = this.parent.dataflow.cache.parse(
               expression
             );
@@ -202,8 +202,19 @@ export class CustomLegendClass extends LegendClass {
         scaleClass.inferParameters(data as Specification.DataValue[], {});
 
         this.object.properties.scale = scale = newScale._id;
+
+        // add fake mapping for scale panels
+        this.object.mappings.mappingOptions = {
+          type: "scale",
+          table: tableName,
+          expression: null,
+          valueType,
+          scale: newScale._id
+        } as Specification.ScaleMapping;
       }
     }
+
+    // this.attributes.mappingOptions = this.object.properties.dataExpressionColumns as any;
 
     const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
     if (scaleIndex >= 0) {
@@ -221,6 +232,10 @@ export class CustomLegendClass extends LegendClass {
     scale =
       this.object.properties.mappingOptions &&
       (this.object.properties.mappingOptions as any).scale;
+
+    // this.attributes.mappingOptions = this.object.properties.dataExpressionColumns as any;
+    this.object.properties.scale = scale;
+    this.object.mappings.mappingOptions = this.object.properties.mappingOptions as any;
 
     const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
     if (scaleIndex >= 0) {
@@ -509,9 +524,9 @@ export class CustomLegendClass extends LegendClass {
     // if (props.legendType == "categorical") {
     //   typeProperty += "Category";
     // }
-    // if (props.dataSource === "columnValues") {
-    //   widget.push(manager.mappingEditor("Data column", typeProperty, {}));
-    // }
+    if (this.attributes.mappingOptions) {
+      widget.push(manager.mappingEditor("Data column", "mappingOptions", {}));
+    }
     // if (props.dataSource === "columnNames") {
     //   if (props.dataExpressions.length > 0) {
     //     widget.push(manager.sectionHeader("Data Expressions"));
