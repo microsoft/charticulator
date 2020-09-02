@@ -9,10 +9,17 @@ import {
   PlotSegmentState,
   ValueMapping
 } from "../../core/specification";
-import { GuideAxis, GuideClass, GuideAttributeNames } from "../../core/prototypes/guides";
+import {
+  GuideAxis,
+  GuideClass,
+  GuideAttributeNames
+} from "../../core/prototypes/guides";
 import { Specification, uniqueID } from "../../core";
 import { isType } from "../../core/prototypes";
-import { NestedChartElementClass, NestedChartElementProperties } from "../../core/prototypes/marks/nested_chart";
+import {
+  NestedChartElementClass,
+  NestedChartElementProperties
+} from "../../core/prototypes/marks/nested_chart";
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
 type ChartState = Specification.ChartState<Specification.AttributeMap>;
@@ -88,7 +95,11 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
   });
 }
 
-function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState, nested = false) {
+function upgradeGlyphGuides(
+  parentElement: Chart,
+  parentState: ChartState,
+  nested = false
+) {
   parentElement.glyphs.forEach(glyph => {
     // collect and separate marks from guides
     const guides: { [id: string]: Mark } = {};
@@ -96,10 +107,8 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState, neste
       if (isType(mark.classID, GuideClass.classID)) {
         guides[mark._id] = mark;
       } else if (isType(mark.classID, NestedChartElementClass.classID)) {
-        const nc = mark as Specification.Element<
-          NestedChartElementProperties
-        >;
-        upgradeGlyphGuides(nc.properties.specification, null, true);  // nested charts do not store in ChartState
+        const nc = mark as Specification.Element<NestedChartElementProperties>;
+        upgradeGlyphGuides(nc.properties.specification, null, true); // nested charts do not store in ChartState
       }
     });
     // get element which uses this glyph
@@ -144,7 +153,8 @@ function upgradeGlyphGuides(parentElement: Chart, parentState: ChartState, neste
           }
           // point to new guide
           constraint.attributes.targetElement = newGuide.element._id;
-          constraint.attributes.targetAttribute = GuideAttributeNames.computedBaselineValue;
+          constraint.attributes.targetAttribute =
+            GuideAttributeNames.computedBaselineValue;
         }
       }
     });
