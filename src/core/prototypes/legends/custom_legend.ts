@@ -39,7 +39,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export interface CustomLegendState extends LegendState { }
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -174,7 +174,7 @@ export class CustomLegendClass extends LegendClass {
           .map(ex => {
             const expression = `columnName(${ex.table}.columns, "${
               ex.columnName
-            }")`;
+              }")`;
             const parsedExpression = this.parent.dataflow.cache.parse(
               expression
             );
@@ -203,11 +203,17 @@ export class CustomLegendClass extends LegendClass {
 
         this.object.properties.scale = scale = newScale._id;
 
-        // add fake mapping for scale panels
+        // expression returns array of column names for selected columns
+        const expression =
+          `columnName(Temperature.columns, ${(this.object.properties.dataExpressionColumns as any[])
+            .map(ex => {
+              return `"${ex.columnName}"`
+            }).join(",")})`;
+
         this.object.mappings.mappingOptions = {
           type: "scale",
           table: tableName,
-          expression: null,
+          expression,
           valueType,
           scale: newScale._id
         } as Specification.ScaleMapping;
