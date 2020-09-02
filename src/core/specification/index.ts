@@ -3,6 +3,7 @@
 import { Color, Point } from "../common";
 import * as Template from "./template";
 import * as Types from "./types";
+import { Specification } from "../../container";
 
 export { Types, Template };
 
@@ -79,7 +80,8 @@ export type AttributeValue =
   | Color
   | Point
   | AttributeList
-  | AttributeMap;
+  | AttributeMap
+  | Specification.Chart;
 
 /** Attribute value list */
 export interface AttributeList extends ArrayLike<AttributeValue> {}
