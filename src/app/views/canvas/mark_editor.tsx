@@ -707,7 +707,7 @@ export class SingleMarkView
   public renderHandles() {
     return (
       <g>
-        {this.renderMarkHandles()}
+        {/* this.renderMarkHandles() */ }
         {this.renderElementHandles()}
         {/* {this.renderAnchorHandles()} */}
       </g>
