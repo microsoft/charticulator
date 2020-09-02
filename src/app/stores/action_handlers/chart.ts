@@ -35,7 +35,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         table: action.table,
         expression: action.expression,
         valueType: action.valueType,
-        scale: inferred
+        scale: inferred,
+        valueIndex: action.hints && action.hints.allowSelectValue ? 0 : null
       } as Specification.ScaleMapping;
     } else {
       if (

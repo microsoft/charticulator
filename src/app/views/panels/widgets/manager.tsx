@@ -105,9 +105,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     if (openMapping) {
       this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
     }
+
     return this.row(
       name,
       <MappingEditor
+        store={this.store}
         parent={this}
         attribute={attribute}
         type={info.type}

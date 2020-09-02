@@ -64,6 +64,8 @@ export interface MappingEditorOptions {
   numberOptions?: InputNumberOptions;
   /** Open mapping editor after rendering */
   openMapping?: boolean;
+  /** Enables value selector from mapping */
+  allowSelectValue?: boolean;
 }
 
 export interface InputNumberOptions {

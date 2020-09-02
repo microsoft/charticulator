@@ -27,6 +27,8 @@ export interface DataMappingHints {
   rangeImage?: string[];
   newScale?: boolean;
   scaleID?: string;
+  /** Enables value selector from mapping */
+  allowSelectValue?: boolean;
 }
 
 export interface TemplateParameters {

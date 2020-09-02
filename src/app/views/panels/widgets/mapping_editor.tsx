@@ -80,6 +80,37 @@ export class MappingEditor extends React.Component<
     );
   }
 
+  private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
+    const parent = this.props.parent;
+    const attribute = this.props.attribute;
+    const options = this.props.options;
+    const mapping = parent.getAttributeMapping(attribute);
+
+    globals.popupController.popupAt(
+      context => {
+        const scaleMapping = mapping as Specification.ScaleMapping;
+        if (scaleMapping.scale) {
+          const scaleObject = getById(
+            this.props.store.chart.scales,
+            scaleMapping.scale
+          );
+
+          return (
+            <PopupView context={context}>
+              {/* TODO Change to scale value selector */}
+              <ScaleEditor
+                scale={scaleObject}
+                scaleMapping={mapping as any}
+                store={this.props.store}
+              />
+            </PopupView>
+          );
+        }
+      },
+      { anchor }
+    );
+  }
+
   private initiateValueEditor() {
     switch (this.props.type) {
       case "number":
@@ -352,6 +383,7 @@ export class MappingEditor extends React.Component<
     const isDataMapping =
       currentMapping != null && currentMapping.type == "scale";
     shouldShowEraser = isDataMapping;
+    const valueIndex = currentMapping && (currentMapping as any).valueIndex;
     return (
       <DropZoneView
         filter={data => {
@@ -370,7 +402,13 @@ export class MappingEditor extends React.Component<
           }
           options.hints.newScale = modifiers.shiftKey;
           options.hints.scaleID = data.scaleID;
-          this.mapData(data, options.hints);
+          if (data.allowSelectValue) {
+            data.expression = `get(${data.expression}, 0)`;
+          }
+          this.mapData(data, {
+            ...options.hints,
+            allowSelectValue: data.allowSelectValue
+          });
         }}
         className="charticulator__widget-control-mapping-editor"
       >
@@ -402,6 +440,19 @@ export class MappingEditor extends React.Component<
                 }
                 onClick={() => {
                   this.beginDataFieldSelection();
+                }}
+                active={isDataMapping}
+              />
+            ) : null}
+            {valueIndex !== undefined ? (
+              <Button
+                icon={"general/bind-data"}
+                title="Bind data value"
+                ref={e =>
+                  (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+                }
+                onClick={() => {
+                  this.beginDataFieldValueSelection();
                 }}
                 active={isDataMapping}
               />
