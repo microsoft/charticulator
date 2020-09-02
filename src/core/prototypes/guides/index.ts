@@ -21,7 +21,7 @@ import { RectangleChart } from "../charts";
 
 export type GuideAxis = "x" | "y";
 
-enum GuideAttributeNames {
+export enum GuideAttributeNames {
   value = "value",
   computedBaselineValue = "computedBaselineValue"
 }
