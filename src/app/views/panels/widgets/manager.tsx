@@ -388,6 +388,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const color = this.getPropertyValue(property) as Color;
     return (
       <InputColor
+        store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}
         onEnter={value => {

@@ -23,12 +23,14 @@ import { ScaleEditor } from "../scale_editor";
 import { Button, InputExpression } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
+import { AppStore } from "../../../stores";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
   attribute: string;
   type: Specification.AttributeType;
   options: Prototypes.Controls.MappingEditorOptions;
+  store?: AppStore;
 }
 
 export interface MappingEditorState {
@@ -38,7 +40,7 @@ export interface MappingEditorState {
 export class MappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
-  > {
+> {
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
@@ -98,6 +100,7 @@ export class MappingEditor extends React.Component<
             context => (
               <PopupView context={context}>
                 <ColorPicker
+                  store={this.props.store}
                   defaultValue={null}
                   allowNull={true}
                   onPick={color => {
@@ -424,7 +427,7 @@ export interface DataMappAndScaleEditorState {
 export class DataMappAndScaleEditor extends ContextedComponent<
   DataMappAndScaleEditorProps,
   DataMappAndScaleEditorState
-  > {
+> {
   public state = {
     currentMapping: this.props.defaultMapping
   };
