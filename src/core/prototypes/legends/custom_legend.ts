@@ -56,6 +56,8 @@ export class CustomLegendClass extends LegendClass {
 
   private textMeasure = new Graphics.TextMeasurer();
 
+  private manager?: ChartStateManager;
+
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
     iconPath: "legend/legend",
@@ -91,26 +93,6 @@ export class CustomLegendClass extends LegendClass {
     y: {
       name: "y",
       type: Specification.AttributeType.Number
-    },
-    dataExpression: {
-      name: "dataExpression",
-      defaultValue: null,
-      type: Specification.AttributeType.Color
-    },
-    dataExpressionColor: {
-      name: "dataExpressionColor",
-      defaultValue: null,
-      type: Specification.AttributeType.Color
-    },
-    dataExpressionNumber: {
-      name: "dataExpressionNumber",
-      defaultValue: null,
-      type: Specification.AttributeType.Number
-    },
-    dataExpressionCategory: {
-      name: "dataExpressionCategory",
-      defaultValue: null,
-      type: Specification.AttributeType.Text
     },
     x1: {
       name: "x1",
@@ -257,10 +239,10 @@ export class CustomLegendClass extends LegendClass {
     }
   }
 
-  public getLegendItems(manager?: ChartStateManager): CustomLegendItem[] {
+  public getLegendItems(): CustomLegendItem[] {
     let scale;
     if (this.object.properties.dataSource === "columnNames") {
-      scale = this.getCustomScale(manager);
+      scale = this.getCustomScale(this.manager);
     } else {
       scale = this.getScale();
     }
@@ -391,6 +373,7 @@ export class CustomLegendClass extends LegendClass {
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Element {
+    this.manager = manager;
     if (this.object.properties.legendType == "numerical") {
       const scale = this.getScale();
       if (!scale) {
@@ -440,7 +423,7 @@ export class CustomLegendClass extends LegendClass {
       this.textMeasure.setFontSize(fontSize);
 
       const g = Graphics.makeGroup([]);
-      const items = this.getLegendItems(manager);
+      const items = this.getLegendItems();
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const metrics = this.textMeasure.measure(item.label);
@@ -482,6 +465,7 @@ export class CustomLegendClass extends LegendClass {
       }
       const { x1, y1 } = this.getLayoutBox();
       g.transform = { x: x1, y: y1, angle: 0 };
+
       return g;
     }
   }
@@ -490,88 +474,7 @@ export class CustomLegendClass extends LegendClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const widget = super.getAttributePanelWidgets(manager);
-    const props = this.object.properties;
 
-    // widget.push(
-    //   manager.row(
-    //     "Legend type",
-    //     manager.inputSelect(
-    //       { property: "legendType" },
-    //       {
-    //         type: "dropdown",
-    //         // icons: ["align/top", "align/y-middle"],
-    //         labels: ["Color", "Numerical", "Categorical"],
-    //         options: ["color", "numerical", "categorical"],
-    //         showLabel: true
-    //       }
-    //     )
-    //   )
-    // );
-
-    // widget.push(
-    //   manager.row(
-    //     "Data source",
-    //     manager.inputSelect(
-    //       { property: "dataSource" },
-    //       {
-    //         type: "radio",
-    //         // icons: ["align/top", "align/y-middle"],
-    //         labels: ["Column names", "Column values"],
-    //         options: ["columnNames", "columnValues"],
-    //         showLabel: true
-    //       }
-    //     )
-    //   )
-    // );
-    // let typeProperty = "dataExpression";
-    // if (props.legendType == "color") {
-    //   typeProperty += "Color";
-    // }
-    // if (props.legendType == "numerical") {
-    //   typeProperty += "Number";
-    // }
-    // if (props.legendType == "categorical") {
-    //   typeProperty += "Category";
-    // }
-    if (this.attributes.mappingOptions) {
-      widget.push(manager.mappingEditor("Data column", "mappingOptions", {}));
-    }
-    // if (props.dataSource === "columnNames") {
-    //   if (props.dataExpressions.length > 0) {
-    //     widget.push(manager.sectionHeader("Data Expressions"));
-    //     widget.push(
-    //       manager.arrayWidget(
-    //         { property: "dataExpressions" },
-    //         item => {
-    //           return manager.inputExpression(
-    //             {
-    //               property: "dataExpressions",
-    //               field:
-    //                 item.field instanceof Array
-    //                   ? [...item.field, "expression"]
-    //                   : [item.field, "expression"]
-    //             }
-    //             // { table: this.getGlyphClass().object.table }
-    //           );
-    //         },
-    //         {
-    //           allowDelete: true,
-    //           allowReorder: true
-    //         }
-    //       )
-    //     );
-    //   }
-
-    // widget.push(
-    //   manager.inputExpression(
-    //     {
-    //       property: "dataExpressions",
-    //       field: [props.dataExpressions.length, "expression"]
-    //     }
-    //     // { table: this.getGlyphClass().object.table }
-    //   )
-    // );
-    // }
     return widget;
   }
 }
