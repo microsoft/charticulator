@@ -24,6 +24,8 @@ import { Button, InputExpression } from "./controls";
 import { DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
+import { ScaleValueSelector } from "../scale_value_selector";
+import { FunctionCall, Variable } from "../../../../core/expression";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
@@ -97,11 +99,23 @@ export class MappingEditor extends React.Component<
 
           return (
             <PopupView context={context}>
-              {/* TODO Change to scale value selector */}
-              <ScaleEditor
+              <ScaleValueSelector
                 scale={scaleObject}
                 scaleMapping={mapping as any}
                 store={this.props.store}
+                onSelect={index => {
+                  const paresedExpression = Expression.parse(
+                    scaleMapping.expression
+                  ) as FunctionCall;
+                  // change the second param of get function
+                  (paresedExpression.args[1] as any).value = index;
+                  scaleMapping.expression = paresedExpression.toString();
+                  this.props.parent.onEditMappingHandler(
+                    this.props.attribute,
+                    scaleMapping
+                  );
+                  context.close();
+                }}
               />
             </PopupView>
           );
