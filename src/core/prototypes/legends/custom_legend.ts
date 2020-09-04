@@ -19,12 +19,15 @@ export type LegendSourceType = "columnNames" | "columnValues";
 
 export type LegendType = "color" | "numerical" | "categorical";
 
+export type LegendOrientation = "horizontal" | "vertical";
+
 import { ChartStateManager } from "../state";
 import { TableType } from "../../dataset";
 import { Expression, Prototypes } from "../..";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
+  orientation: LegendOrientation;
   dataSource: LegendSourceType;
   dataExpressions: DataAxisExpression[];
   axis: {
@@ -77,6 +80,7 @@ export class CustomLegendClass extends LegendClass {
     dataSource: "columnValues",
     dataExpressions: [],
     legendType: "color",
+    orientation: "vertical",
     axis: {
       side: "default",
       visible: true,
@@ -338,6 +342,45 @@ export class CustomLegendClass extends LegendClass {
     }
   }
 
+  public getLayoutBox(): { x1: number; y1: number; x2: number; y2: number } {
+    if (this.object.properties.orientation === "vertical") {
+      return super.getLayoutBox();
+    }
+
+    const { x, y } = this.state.attributes;
+    const [width, height] = this.getLegendSize();
+    let x1: number, y1: number, x2: number, y2: number;
+    switch (this.object.properties.alignX) {
+      case "start":
+        x1 = x;
+        x2 = x + width;
+        break;
+      case "middle":
+        x1 = x - width / 2;
+        x2 = x + width / 2;
+        break;
+      case "end":
+        x1 = x - width;
+        x2 = x;
+        break;
+    }
+    switch (this.object.properties.alignY) {
+      case "start":
+        y1 = y;
+        y2 = y + height;
+        break;
+      case "middle":
+        y1 = y - height / 2;
+        y2 = y + height / 2;
+        break;
+      case "end":
+        y1 = y - height;
+        y2 = y;
+        break;
+    }
+    return { x1, y1, x2, y2 };
+  }
+
   public getHandles(): Handles.Description[] {
     if (this.object.properties.legendType === "numerical") {
       const attrs = this.state.attributes;
@@ -367,13 +410,46 @@ export class CustomLegendClass extends LegendClass {
     }
   }
 
-  public getLineHeight() {
+  public getLineHeight(): number {
     return this.object.properties.fontSize + 10;
+  }
+
+  public getLineWidth(): number {
+    let width = 0;
+    const items = this.getLegendItems();
+    if (this.object.properties.orientation === "horizontal") {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const metrics = this.textMeasure.measure(item.label);
+        width += 10 + metrics.width;
+      }
+    } else {
+      width = this.textMeasure.measure(items[0].label).width;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const metrics = this.textMeasure.measure(item.label);
+        if (10 + metrics.width > width) {
+          width = 10 + metrics.width;
+        }
+      }
+    }
+
+    return width;
   }
 
   public getLegendSize(): [number, number] {
     const items = this.getLegendItems();
-    return [100, items.length * this.getLineHeight()];
+    if (this.object.properties.orientation === "vertical") {
+      return [
+        this.getLineWidth() + this.getLineHeight(),
+        items.length * this.getLineHeight()
+      ];
+    } else {
+      return [
+        this.getLineWidth() + items.length * this.getLineHeight(),
+        this.getLineHeight()
+      ];
+    }
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Element {
@@ -460,11 +536,19 @@ export class CustomLegendClass extends LegendClass {
             }
             break;
         }
-        gItem.transform = {
-          x: 0,
-          y: lineHeight * (items.length - 1 - i),
-          angle: 0
-        };
+        if (this.object.properties.orientation === "vertical") {
+          gItem.transform = {
+            x: 0,
+            y: lineHeight * (items.length - 1 - i),
+            angle: 0
+          };
+        } else {
+          gItem.transform = {
+            x: (metrics.width + lineHeight) * (items.length - 1 - i),
+            y: 0,
+            angle: 0
+          };
+        }
         g.elements.push(gItem);
       }
       const { x1, y1 } = this.getLayoutBox();
@@ -488,6 +572,22 @@ export class CustomLegendClass extends LegendClass {
         )
       );
     }
+
+    widget.push(
+      manager.row(
+        "Orientation",
+        manager.inputSelect(
+          { property: "orientation" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: ["align/x-middle", "align/y-middle"],
+            labels: ["Vertical", "Horizontal"],
+            options: ["vertical", "horizontal"]
+          }
+        )
+      )
+    );
 
     return widget;
   }
