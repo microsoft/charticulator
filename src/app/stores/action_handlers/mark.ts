@@ -197,7 +197,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         valueType: action.valueType,
         scale: inferred,
         attribute: action.attribute,
-        valueIndex: action.hints && action.hints.allowSelectValue ? 0 : undefined
+        valueIndex:
+          action.hints && action.hints.allowSelectValue ? 0 : undefined
       } as Specification.ScaleMapping;
       if (
         !this.chart.scaleMappings.find(
