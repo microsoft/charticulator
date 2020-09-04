@@ -41,7 +41,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export interface CustomLegendState extends LegendState { }
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -159,7 +159,7 @@ export class CustomLegendClass extends LegendClass {
           .map(ex => {
             const expression = `columnName(${ex.table}.columns, "${
               ex.columnName
-            }")`;
+              }")`;
             const parsedExpression = this.parent.dataflow.cache.parse(
               expression
             );
@@ -579,8 +579,8 @@ export class CustomLegendClass extends LegendClass {
         manager.inputSelect(
           { property: "orientation" },
           {
-            type: "dropdown",
-            showLabel: true,
+            type: "radio",
+            showLabel: false,
             icons: ["align/x-middle", "align/y-middle"],
             labels: ["Vertical", "Horizontal"],
             options: ["vertical", "horizontal"]
