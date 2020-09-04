@@ -53,12 +53,6 @@ export class MappingEditor extends React.Component<
     showNoneAsValue: false
   };
 
-  public componentDidMount() {
-    if (this.props.options.openMapping) {
-      this.beginDataFieldSelection();
-    }
-  }
-
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
@@ -398,6 +392,13 @@ export class MappingEditor extends React.Component<
       currentMapping != null && currentMapping.type == "scale";
     shouldShowEraser = isDataMapping;
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
+
+    if (this.props.options.openMapping) {
+      setTimeout(() => {
+        this.beginDataFieldSelection();
+      });
+    }
+
     return (
       <DropZoneView
         filter={data => {

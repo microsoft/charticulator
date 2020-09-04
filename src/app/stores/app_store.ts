@@ -653,7 +653,10 @@ export class AppStore extends BaseStore {
                 if (scaleMapping.scale != null) {
                   if (
                     scaleMapping.expression == expression &&
-                    (compareMarkAttributeNames(markAttribute, scaleMapping.attribute) ||
+                    (compareMarkAttributeNames(
+                      markAttribute,
+                      scaleMapping.attribute
+                    ) ||
                       !markAttribute ||
                       !scaleMapping.attribute)
                   ) {
@@ -668,7 +671,7 @@ export class AppStore extends BaseStore {
                   // TODO: Fix this part
                   if (
                     getExpressionUnit(scaleMapping.expression) ==
-                    getExpressionUnit(expression) &&
+                      getExpressionUnit(expression) &&
                     getExpressionUnit(scaleMapping.expression) != null
                   ) {
                     const scaleObject = getById(
@@ -690,7 +693,10 @@ export class AppStore extends BaseStore {
           if (
             scaleMapping.expression == expression &&
             ((scaleMapping.attribute &&
-              compareMarkAttributeNames(scaleMapping.attribute, markAttribute)) ||
+              compareMarkAttributeNames(
+                scaleMapping.attribute,
+                markAttribute
+              )) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
@@ -940,7 +946,7 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function* () {
+      const rowIterator = function*() {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
@@ -976,7 +982,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-                xDataProperty.numericalMode === "temporal"
+              xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type
           },
@@ -1003,7 +1009,7 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-                yDataProperty.numericalMode === "temporal"
+              yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type
           },
@@ -1087,7 +1093,8 @@ export class AppStore extends BaseStore {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
       expression:
-        appendToProperty === "dataExpressions"
+        appendToProperty === "dataExpressions" &&
+        object.properties[options.property]
           ? ((object.properties[options.property] as any).expression as string)
           : groupExpression,
       valueType,
@@ -1144,7 +1151,11 @@ export class AppStore extends BaseStore {
       }
     }
     let values: ValueType[] = [];
-    if (appendToProperty == "dataExpressions") {
+    if (
+      appendToProperty == "dataExpressions" &&
+      dataBinding.domainMax !== undefined &&
+      dataBinding.domainMin !== undefined
+    ) {
       // save current range of scale if user adds data
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
     }
