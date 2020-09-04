@@ -458,7 +458,7 @@ export class MappingEditor extends React.Component<
                 active={isDataMapping}
               />
             ) : null}
-            {valueIndex !== undefined ? (
+            {valueIndex !== undefined && valueIndex !== null ? (
               <Button
                 icon={"general/bind-data"}
                 title="Bind data value"
