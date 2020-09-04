@@ -192,7 +192,8 @@ export class ScalesPanel extends ContextedComponent<
                   type,
                   metadata,
                   rawColumnExpr,
-                  scaleID
+                  scaleID,
+                  allowSelectValue
                 );
                 return r;
               }}
