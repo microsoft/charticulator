@@ -17,7 +17,9 @@ import {
   Prototypes,
   Specification,
   uniqueID,
-  refineColumnName
+  refineColumnName,
+  EventEmitter,
+  getById
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -53,7 +55,7 @@ import {
   InputImageProperty
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor } from "./mapping_editor";
+import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
 import { InputDate } from "./controls/input_date";
@@ -64,6 +66,8 @@ import {
 } from "../../../../core/expression";
 import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
+import { ScaleMapping } from "../../../../core/specification";
+import { ScaleValueSelector } from "../scale_value_selector";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -476,6 +480,57 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       />
     );
   }
+
+  public scaleEditor(attribute: string, text: string) {
+    let mappingButton: Element = null;
+
+    const objectClass = this.objectClass;
+    const mapping = objectClass.object.mappings[attribute] as ScaleMapping;
+
+    const scaleObject = getById(this.store.chart.scales, mapping.scale);
+
+    const scale = mapping.scale;
+
+    const parent = {
+      updateEvents: new EventEmitter()
+    };
+
+    return (
+      <Button
+        ref={e => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
+        text={text}
+        // icon={icon}
+        onClick={() => {
+          const options = {
+            allowSelectValue: true
+          };
+          // const mapping = this.getAttributeMapping(attribute);
+          globals.popupController.popupAt(
+            context => {
+              return (
+                <PopupView context={context}>
+                  {/* <DataMappAndScaleEditor
+                    attribute={attribute}
+                    parent={parent as any}
+                    defaultMapping={mapping}
+                    options={options}
+                    onClose={() => context.close()}
+                  /> */}
+                  <ScaleValueSelector
+                    scale={scaleObject}
+                    scaleMapping={mapping}
+                    store={this.store}
+                  />
+                </PopupView>
+              );
+            },
+            { anchor: mappingButton }
+          );
+        }}
+      />
+    );
+  }
+
   public orderByWidget(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.OrderWidgetOptions

@@ -22,7 +22,6 @@ export type LegendType = "color" | "numerical" | "categorical";
 import { ChartStateManager } from "../state";
 import { TableType } from "../../dataset";
 import { Expression, Prototypes } from "../..";
-import { color } from "d3";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -121,7 +120,7 @@ export class CustomLegendClass extends LegendClass {
   }
 
   public getCustomScale(
-    manager: ChartStateManager
+    manager: ChartStateManager = this.manager
   ): [Specification.Scale, Specification.ScaleState] {
     if (!manager) {
       return null;
@@ -225,8 +224,13 @@ export class CustomLegendClass extends LegendClass {
 
     // this.attributes.mappingOptions = this.object.properties.dataExpressionColumns as any;
     this.object.properties.scale = scale;
-    this.object.mappings.mappingOptions = this.object.properties
-      .mappingOptions as any;
+    if (
+      this.object.properties.mappingOptions &&
+      (this.object.properties.mappingOptions as any).scale
+    ) {
+      this.object.mappings.mappingOptions = this.object.properties
+        .mappingOptions as any;
+    }
 
     const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
     if (scaleIndex >= 0) {
@@ -474,6 +478,16 @@ export class CustomLegendClass extends LegendClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const widget = super.getAttributePanelWidgets(manager);
+
+    const scale = this.getCustomScale();
+    if (scale) {
+      widget.push(
+        manager.row(
+          "Scale",
+          manager.scaleEditor("mappingOptions", "Edit scale colors")
+        )
+      );
+    }
 
     return widget;
   }

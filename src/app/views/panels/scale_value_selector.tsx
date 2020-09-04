@@ -15,7 +15,7 @@ export interface ScaleValueSelectorProps {
   scale: Specification.Scale;
   scaleMapping: Specification.ScaleMapping;
   store: AppStore;
-  onSelect: (index: number) => void;
+  onSelect?: (index: number) => void;
 }
 
 export interface ScaleValueSelectorState {
@@ -63,9 +63,9 @@ export class ScaleValueSelector extends React.Component<
         store.dispatcher
       );
     };
-    let canAddLegend = true;
-    if (scale.classID.startsWith("scale.format")) {
-      canAddLegend = false;
+    let canSelectValue = false;
+    if (typeof this.props.onSelect === "function") {
+      canSelectValue = true;
     }
     return (
       <div
@@ -96,6 +96,7 @@ export class ScaleValueSelector extends React.Component<
                     return (
                       <div
                         className={
+                          this.props.onSelect &&
                           this.state.selectedIndex === selectedIndex
                             ? "is-active"
                             : ""
@@ -117,7 +118,7 @@ export class ScaleValueSelector extends React.Component<
                 )
               )
             )}
-            {canAddLegend ? (
+            {canSelectValue ? (
               <div className="action-buttons">
                 <ButtonRaised
                   url={R.getSVGIcon("general/confirm")}

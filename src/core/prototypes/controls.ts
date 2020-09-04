@@ -176,6 +176,8 @@ export interface WidgetManager {
     text?: string
   ): Widget;
 
+  scaleEditor(attribute: string, text: string): Widget;
+
   // Order by data button. Map data to "sortBy" expression
   orderByWidget(property: Property, options: OrderWidgetOptions): Widget;
 
