@@ -461,7 +461,7 @@ export class MappingEditor extends React.Component<
             ) : null}
             {valueIndex !== undefined && valueIndex !== null ? (
               <Button
-                icon={"general/bind-data"}
+                icon={"general/edit"}
                 title="Bind data value"
                 ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
