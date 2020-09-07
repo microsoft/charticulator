@@ -41,7 +41,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export interface CustomLegendState extends LegendState { }
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -159,7 +159,7 @@ export class CustomLegendClass extends LegendClass {
           .map(ex => {
             const expression = `columnName(${ex.table}.columns, "${
               ex.columnName
-            }")`;
+              }")`;
             const parsedExpression = this.parent.dataflow.cache.parse(
               expression
             );
@@ -393,10 +393,7 @@ export class CustomLegendClass extends LegendClass {
           actions: [
             { type: "attribute", source: "x", attribute: "x1" },
             { type: "attribute", source: "y", attribute: "y1" }
-          ],
-          options: {
-            snapToClosestPoint: true
-          }
+          ]
         } as Handles.Point,
         {
           type: "point",
@@ -405,10 +402,7 @@ export class CustomLegendClass extends LegendClass {
           actions: [
             { type: "attribute", source: "x", attribute: "x2" },
             { type: "attribute", source: "y", attribute: "y2" }
-          ],
-          options: {
-            snapToClosestPoint: true
-          }
+          ]
         } as Handles.Point
       ];
     } else {
