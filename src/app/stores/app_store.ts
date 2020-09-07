@@ -929,7 +929,7 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public getClosestSnappingGuide(point: { x: number, y: number }) {
+  public getClosestSnappingGuide(point: { x: number; y: number }) {
     const chartClass = this.chartManager.getChartClass(
       this.chartManager.chartState
     );
@@ -950,9 +950,7 @@ export class AppStore extends BaseStore {
         ],
         index
       ) => {
-        const layoutClass = this.chartManager.getChartElementClass(
-          layoutState
-        );
+        const layoutClass = this.chartManager.getChartElementClass(layoutState);
         chartGuides = chartGuides.concat(
           layoutClass.getSnappingGuides().map(bounds => {
             return {
@@ -972,14 +970,14 @@ export class AppStore extends BaseStore {
       const guide = g.guide as Prototypes.SnappingGuides.Axis;
       // Find closest point
       if (guide.type == "y") {
-        const dY = Math.abs(guide.value - (point.y));
+        const dY = Math.abs(guide.value - point.y);
         if (dY < minYDistance || minYDistance == null) {
           minYDistance = dY;
           minYGuide = g;
         }
       }
       if (guide.type == "x") {
-        const dX = Math.abs(guide.value - (point.x));
+        const dX = Math.abs(guide.value - point.x);
         if (dX < minXDistance || minXDistance == null) {
           minXDistance = dX;
           minXGuide = g;
@@ -987,7 +985,7 @@ export class AppStore extends BaseStore {
       }
     }
 
-    return [minXGuide, minYGuide]
+    return [minXGuide, minYGuide];
   }
 
   public buildChartTemplate(): Specification.Template.ChartTemplate {

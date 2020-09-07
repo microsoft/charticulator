@@ -5,7 +5,6 @@ import { Color, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 
 import { LegendClass } from "./legend";
-import { Specification } from "../..";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -17,7 +16,7 @@ export class CategoricalLegendClass extends LegendClass {
   public static classID: string = "legend.categorical";
   public static type: string = "legend";
 
-  private textMeasure = new Graphics.TextMeasurer();
+  protected textMeasure = new Graphics.TextMeasurer();
 
   public getLegendItems(): CategoricalLegendItem[] {
     const scale = this.getScale();
