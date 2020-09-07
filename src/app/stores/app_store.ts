@@ -929,6 +929,67 @@ export class AppStore extends BaseStore {
     }
   }
 
+  public getClosestSnappingGuide(point: { x: number, y: number }) {
+    const chartClass = this.chartManager.getChartClass(
+      this.chartManager.chartState
+    );
+    const boundsGuides = chartClass.getSnappingGuides();
+    let chartGuides = boundsGuides.map(bounds => {
+      return {
+        element: null,
+        guide: bounds
+      };
+    });
+    const elements = this.chartManager.chart.elements;
+    const elementStates = this.chartManager.chartState.elements;
+    zipArray(elements, elementStates).forEach(
+      (
+        [layout, layoutState]: [
+          Specification.ChartElement,
+          Specification.ChartElementState
+        ],
+        index
+      ) => {
+        const layoutClass = this.chartManager.getChartElementClass(
+          layoutState
+        );
+        chartGuides = chartGuides.concat(
+          layoutClass.getSnappingGuides().map(bounds => {
+            return {
+              element: layout,
+              guide: bounds
+            };
+          })
+        );
+      }
+    );
+
+    let minYDistance = null;
+    let minXDistance = null;
+    let minYGuide = null;
+    let minXGuide = null;
+    for (const g of chartGuides) {
+      const guide = g.guide as Prototypes.SnappingGuides.Axis;
+      // Find closest point
+      if (guide.type == "y") {
+        const dY = Math.abs(guide.value - (point.y));
+        if (dY < minYDistance || minYDistance == null) {
+          minYDistance = dY;
+          minYGuide = g;
+        }
+      }
+      if (guide.type == "x") {
+        const dX = Math.abs(guide.value - (point.x));
+        if (dX < minXDistance || minXDistance == null) {
+          minXDistance = dX;
+          minXGuide = g;
+        }
+      }
+    }
+
+    return [minXGuide, minYGuide]
+  }
+
   public buildChartTemplate(): Specification.Template.ChartTemplate {
     const builder = new ChartTemplateBuilder(
       this.chart,

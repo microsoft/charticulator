@@ -43,7 +43,7 @@ export interface LegendCreationPanelState {
 export class LegendCreationPanel extends ContextedComponent<
   LegendCreationPanelProps,
   LegendCreationPanelState
-> {
+  > {
   public state: LegendCreationPanelState = this.getDefaultState();
 
   private groupBySelector: DataFieldSelector;
@@ -91,24 +91,24 @@ export class LegendCreationPanel extends ContextedComponent<
             </div>
           </div>
         ) : (
-          <div>
-            <h2>Connect by:</h2>
-            <div className="el-row">
-              <DataFieldSelector
-                multiSelect={true}
-                ref={e => (this.groupBySelector = e)}
-                kinds={[
-                  Specification.DataKind.Categorical,
-                  Specification.DataKind.Numerical,
-                  Specification.DataKind.Temporal,
-                  Specification.DataKind.Ordinal
-                ]}
-                datasetStore={this.store}
-                nullDescription="(select column names to create legend)"
-              />
+            <div>
+              <h2>Connect by:</h2>
+              <div className="el-row">
+                <DataFieldSelector
+                  multiSelect={true}
+                  ref={e => (this.groupBySelector = e)}
+                  kinds={[
+                    Specification.DataKind.Categorical,
+                    Specification.DataKind.Numerical,
+                    Specification.DataKind.Temporal,
+                    Specification.DataKind.Ordinal
+                  ]}
+                  datasetStore={this.store}
+                  nullDescription="(select column names to create legend)"
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         <div className="el-row">
           <ButtonRaised
             text="Create Legend"
@@ -196,7 +196,8 @@ export class LegendCreationPanel extends ContextedComponent<
                 dataSource: this.state.legendDataSource,
                 [keyOptions]: columns,
                 legendType,
-                mappingOptions
+                mappingOptions,
+                snapToClosestGuide: this.state.legendDataSource === "columnValues"
               };
 
               this.dispatch(

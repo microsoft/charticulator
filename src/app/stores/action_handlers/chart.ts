@@ -123,6 +123,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
     }
 
+    // TODO fix issue with applying
+    if (action.properties.snapToClosestGuide) {
+      const idx = this.chart.elements.indexOf(newChartElement);
+      const x = this.chartState.elements[idx].attributes.x as number;
+      const y = this.chartState.elements[idx].attributes.y as number;
+      const [guideX, guideY] = this.getClosestSnappingGuide({
+        x, y
+      });
+
+      this.chartState.elements[idx].attributes.x = (guideX.guide as any).value;
+      this.chartState.elements[idx].attributes.y = (guideY.guide as any).value;
+    }
+
     this.currentSelection = new ChartElementSelection(newChartElement);
     this.emit(AppStore.EVENT_SELECTION);
 
