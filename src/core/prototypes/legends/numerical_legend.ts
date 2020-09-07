@@ -118,7 +118,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" }
-        ]
+        ],
+        options: {
+          snapToClosestPoint: true
+        }
       } as Handles.Point,
       {
         type: "point",
@@ -127,7 +130,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" }
-        ]
+        ],
+        options: {
+          snapToClosestPoint: true
+        }
       } as Handles.Point
     ];
   }

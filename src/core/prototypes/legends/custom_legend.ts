@@ -3,15 +3,9 @@
 
 import { Color, deepClone } from "../../common";
 import * as Specification from "../../specification";
-import {
-  AttributeDescription,
-  Controls,
-  ObjectClassMetadata,
-  BoundingBox,
-  Handles
-} from "../common";
+import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
-import { LegendProperties, LegendState, LegendClass } from "./legend";
+import { LegendProperties, LegendState } from "./legend";
 import {
   defaultAxisStyle,
   buildAxisAppearanceWidgets
@@ -23,7 +17,6 @@ export type LegendType = "color" | "numerical" | "categorical";
 
 export type LegendOrientation = "horizontal" | "vertical";
 
-import { ChartStateManager } from "../state";
 import { CategoricalLegendClass } from "./categorical_legend";
 
 export interface CustomLegendProperties extends LegendProperties {
@@ -56,8 +49,6 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
   public readonly object: CustomLegendObject;
   public readonly state: CustomLegendState;
-
-  private manager?: ChartStateManager;
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
