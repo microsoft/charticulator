@@ -393,7 +393,10 @@ export class CustomLegendClass extends LegendClass {
           actions: [
             { type: "attribute", source: "x", attribute: "x1" },
             { type: "attribute", source: "y", attribute: "y1" }
-          ]
+          ],
+          options: {
+            snapToClosestPoint: true
+          }
         } as Handles.Point,
         {
           type: "point",
@@ -402,7 +405,10 @@ export class CustomLegendClass extends LegendClass {
           actions: [
             { type: "attribute", source: "x", attribute: "x2" },
             { type: "attribute", source: "y", attribute: "y2" }
-          ]
+          ],
+          options: {
+            snapToClosestPoint: true
+          }
         } as Handles.Point
       ];
     } else {
@@ -424,7 +430,7 @@ export class CustomLegendClass extends LegendClass {
         width += 10 + metrics.width;
       }
     } else {
-      width = this.textMeasure.measure(items[0].label).width;
+      width = (items[0] && this.textMeasure.measure(items[0].label).width) || 0;
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const metrics = this.textMeasure.measure(item.label);

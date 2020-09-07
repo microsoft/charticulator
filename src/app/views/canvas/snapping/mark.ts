@@ -39,7 +39,8 @@ export class MarkSnappingSession extends SnappingSession<
         return true;
       }),
       bound,
-      threshold
+      threshold,
+      false
     );
 
     this.mark = mark;

@@ -133,7 +133,10 @@ export abstract class LegendClass extends ChartElementClass {
         actions: [
           { type: "attribute", source: "x", attribute: "x" },
           { type: "attribute", source: "y", attribute: "y" }
-        ]
+        ],
+        options: {
+          snapToClosestPoint: true
+        }
       } as Handles.Point
     ];
   }

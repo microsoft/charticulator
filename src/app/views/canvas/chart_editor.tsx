@@ -762,7 +762,8 @@ export class ChartEditorView
                   guides,
                   layout,
                   handle,
-                  10 / this.state.zoom.scale
+                  10 / this.state.zoom.scale,
+                  handle.options && handle.options.snapToClosestPoint
                 );
                 ctx.onDrag(e => {
                   session.handleDrag(e);

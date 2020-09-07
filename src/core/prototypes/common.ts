@@ -110,6 +110,11 @@ export namespace Handles {
     type: string;
     visible?: boolean;
     actions: HandleAction[];
+    options?: HandleOptions;
+  }
+
+  export interface HandleOptions {
+    snapToClosestPoint: boolean;
   }
 
   export interface HandleAction {
