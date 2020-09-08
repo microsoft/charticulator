@@ -135,7 +135,7 @@ export class AppStore extends BaseStore {
 
   private propertyExportName = new Map<string, string>();
 
-  public messageState: Map<MessageTypes, string>;
+  public messageState: Map<MessageTypes | string, string>;
 
   constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
     super(null);

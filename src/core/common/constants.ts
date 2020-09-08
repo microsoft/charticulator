@@ -1,14 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-export type MessageTypes =
-  | "generalError"
-  | "parsingDataError"
-  | "constraintSolvingError"
-  | "linkGuideCreatingError"
-  | "invalidLinksData"
-  | "noID"
-  | "noSourceOrTargetID";
+export type MessageTypes = [
+  "generalError",
+  "parsingDataError",
+  "constraintSolvingError",
+  "linkGuideCreatingError",
+  "invalidLinksData",
+  "noID",
+  "noSourceOrTargetID"
+];
+
+export const messageTypes: MessageTypes = [
+  "generalError",
+  "parsingDataError",
+  "constraintSolvingError",
+  "linkGuideCreatingError",
+  "invalidLinksData",
+  "noID",
+  "noSourceOrTargetID",
+];
 
 export const LinkSourceKeyColumn = "source_id";
 

@@ -826,7 +826,7 @@ export class SetCurrentTool extends Action {
 
 export class AddMessage extends Action {
   constructor(
-    public type: MessageTypes,
+    public type: MessageTypes | string,
     public options: {
       title?: string;
       text?: string;
@@ -841,7 +841,7 @@ export class AddMessage extends Action {
 }
 
 export class RemoveMessage extends Action {
-  constructor(public type: MessageTypes) {
+  constructor(public type: MessageTypes | string) {
     super();
   }
 
