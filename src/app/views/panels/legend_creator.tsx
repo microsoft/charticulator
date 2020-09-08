@@ -233,8 +233,6 @@ export class LegendCreationPanel extends ContextedComponent<
                 }
               }
 
-              // Create mapping
-              const mappingOptions: any = {};
               if (this.state.legendDataSource === "columnValues") {
                 const aggregation = Expression.getDefaultAggregationFunction(
                   columns[0].type
@@ -244,8 +242,9 @@ export class LegendCreationPanel extends ContextedComponent<
                   Expression.parse(columns[0].expression)
                 ).toString();
 
+                const table = columns[0].table;
                 const inferred = this.store.scaleInference(
-                  { chart: { table: columns[0].table } },
+                  { chart: { table } },
                   aggregatedExpression,
                   columns[0].type,
                   columns[0].metadata.kind,
@@ -324,6 +323,14 @@ export class LegendCreationPanel extends ContextedComponent<
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                 }
+
+                newLegend.mappings.mappingOptions = {
+                  type: "scale",
+                  table,
+                  expression: aggregatedExpression,
+                  valueType: columns[0].type,
+                  scale: inferred
+                } as Specification.ScaleMapping;
               }
 
               this.store.solveConstraintsAndUpdateGraphics();

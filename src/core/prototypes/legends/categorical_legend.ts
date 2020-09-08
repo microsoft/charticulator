@@ -4,7 +4,9 @@
 import { Color, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 
-import { LegendClass } from "./legend";
+import { LegendClass, LegendProperties } from "./legend";
+import { buildAxisAppearanceWidgets } from "../plot_segments/axis";
+import { Controls } from "..";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -15,6 +17,11 @@ export interface CategoricalLegendItem {
 export class CategoricalLegendClass extends LegendClass {
   public static classID: string = "legend.categorical";
   public static type: string = "legend";
+
+  public static defaultProperties: LegendProperties = {
+    ...LegendClass.defaultProperties,
+    orientation: "vertical"
+  };
 
   protected textMeasure = new Graphics.TextMeasurer();
 
@@ -62,9 +69,42 @@ export class CategoricalLegendClass extends LegendClass {
     return this.object.properties.fontSize + 10;
   }
 
+  public getLineWidth(): number {
+    let width = 0;
+    const items = this.getLegendItems();
+    if (this.object.properties.orientation === "horizontal") {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const metrics = this.textMeasure.measure(item.label);
+        width += 10 + metrics.width;
+      }
+    } else {
+      width = (items[0] && this.textMeasure.measure(items[0].label).width) || 0;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const metrics = this.textMeasure.measure(item.label);
+        if (10 + metrics.width > width) {
+          width = 10 + metrics.width;
+        }
+      }
+    }
+
+    return width;
+  }
+
   public getLegendSize(): [number, number] {
     const items = this.getLegendItems();
-    return [100, items.length * this.getLineHeight()];
+    if (this.object.properties.orientation === "vertical") {
+      return [
+        this.getLineWidth() + this.getLineHeight(),
+        items.length * this.getLineHeight()
+      ];
+    } else {
+      return [
+        this.getLineWidth() + items.length * this.getLineHeight(),
+        this.getLineHeight()
+      ];
+    }
   }
 
   public getGraphics(): Graphics.Element {
@@ -76,9 +116,11 @@ export class CategoricalLegendClass extends LegendClass {
 
     const g = Graphics.makeGroup([]);
     const items = this.getLegendItems();
+    let itemGroupOffset = 0;
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const metrics = this.textMeasure.measure(item.label);
+      console.log(item.label, metrics);
       const offsets = Graphics.TextMeasurer.ComputeTextPosition(
         lineHeight,
         lineHeight / 2,
@@ -108,15 +150,88 @@ export class CategoricalLegendClass extends LegendClass {
           }
           break;
       }
-      gItem.transform = {
-        x: 0,
-        y: lineHeight * (items.length - 1 - i),
-        angle: 0
-      };
+      if (this.object.properties.orientation === "vertical") {
+        gItem.transform = {
+          x: 0,
+          y: lineHeight * (items.length - 1 - i),
+          angle: 0
+        };
+      } else {
+        gItem.transform = {
+          x: itemGroupOffset,
+          y: 0,
+          angle: 0
+        };
+        itemGroupOffset += metrics.width + lineHeight;
+        console.log(itemGroupOffset);
+      }
       g.elements.push(gItem);
     }
     const { x1, y1 } = this.getLayoutBox();
     g.transform = { x: x1, y: y1, angle: 0 };
     return g;
+  }
+
+  public getLayoutBox(): { x1: number; y1: number; x2: number; y2: number } {
+    if (this.object.properties.orientation === "vertical") {
+      return super.getLayoutBox();
+    }
+
+    const { x, y } = this.state.attributes;
+    const [width, height] = this.getLegendSize();
+    let x1: number, y1: number, x2: number, y2: number;
+    switch (this.object.properties.alignX) {
+      case "start":
+        x1 = x;
+        x2 = x + width;
+        break;
+      case "middle":
+        x1 = x - width / 2;
+        x2 = x + width / 2;
+        break;
+      case "end":
+        x1 = x - width;
+        x2 = x;
+        break;
+    }
+    switch (this.object.properties.alignY) {
+      case "start":
+        y1 = y;
+        y2 = y + height;
+        break;
+      case "middle":
+        y1 = y - height / 2;
+        y2 = y + height / 2;
+        break;
+      case "end":
+        y1 = y - height;
+        y2 = y;
+        break;
+    }
+    return { x1, y1, x2, y2 };
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const widget = super.getAttributePanelWidgets(manager);
+
+    widget.push(
+      manager.row(
+        "Orientation",
+        manager.inputSelect(
+          { property: "orientation" },
+          {
+            type: "radio",
+            showLabel: false,
+            icons: ["align/x-middle", "align/y-middle"],
+            labels: ["Vertical", "Horizontal"],
+            options: ["vertical", "horizontal"]
+          }
+        )
+      )
+    );
+
+    return widget;
   }
 }
