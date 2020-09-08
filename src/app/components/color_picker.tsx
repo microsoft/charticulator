@@ -347,35 +347,6 @@ export class ColorPicker extends React.Component<
     }
   }
 
-  private getLegendsPalette(): ColorPalette[] {
-    if (!this.props.store) {
-      return [];
-    }
-
-    const chart = this.props.store.chart;
-
-    return chart.elements
-      .filter(el => Prototypes.isType(el.classID, "legend"))
-      .map(legend => {
-        const scale = chart.scales.find(
-          scale => scale._id === (legend.mappings.mappingOptions as any).scale
-        );
-
-        const colors = [];
-        for (const key of Object.keys(scale.properties.mapping)) {
-          colors.push((scale.properties.mapping as any)[key]);
-        }
-
-        const legendPalette: ColorPalette = {
-          name: `Legend/${legend.properties.name}`,
-          type: "palette",
-          colors: [colors]
-        };
-
-        return legendPalette;
-      });
-  }
-
   public render() {
     return (
       <div className="color-picker">
@@ -417,9 +388,7 @@ export class ColorPicker extends React.Component<
               </li>
             </ul>
             <PaletteList
-              palettes={this.getLegendsPalette().concat(
-                predefinedPalettes.filter(x => x.type == "palette")
-              )}
+              palettes={predefinedPalettes.filter(x => x.type == "palette")}
               selected={this.state.currentPalette}
               onClick={p => {
                 this.setState({ currentPalette: p, currentPicker: null });
