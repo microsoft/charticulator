@@ -639,7 +639,8 @@ export class BindDataToAxis extends Action {
         table: this.dataExpression.table.name,
         expression: this.dataExpression.expression,
         valueType: this.dataExpression.valueType,
-        kind: this.dataExpression.metadata.kind
+        kind: this.dataExpression.metadata.kind,
+        allowSelectValue: this.dataExpression.allowSelectValue
       }
     };
   }

@@ -789,7 +789,11 @@ export class AppStore extends BaseStore {
     let newLegend = null;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
-      if (mapping.valueIndex !== undefined && mapping.valueIndex !== null) {
+      if (
+        mapping &&
+        mapping.valueIndex !== undefined &&
+        mapping.valueIndex !== null
+      ) {
         newLegend = this.chartManager.createObject(
           `legend.custom`
         ) as Specification.ChartElement;
@@ -868,7 +872,11 @@ export class AppStore extends BaseStore {
       table: mapping.table,
       expression: mapping.expression,
       valueType: mapping.valueType,
-      scale: scaleObject._id
+      scale: scaleObject._id,
+      allowSelectValue:
+        mapping &&
+        mapping.valueIndex !== undefined &&
+        mapping.valueIndex !== null
     } as Specification.ScaleMapping;
 
     newLegend.mappings.mappingOptions = mappingOptions;

@@ -103,7 +103,7 @@ export class ScaleValueSelector extends React.Component<
                         }
                         onClick={() => {
                           this.setState({ selectedIndex });
-                          if (selectedIndex != null) {
+                          if (selectedIndex != null && this.props.onSelect) {
                             this.props.onSelect(selectedIndex);
                           }
                         }}

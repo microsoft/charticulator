@@ -243,6 +243,7 @@ export class MappingEditor extends React.Component<
                 ref={e => (this.noneLabel = e)}
                 onClick={() => {
                   if (
+                    !mapping ||
                     (mapping as any).valueIndex === undefined ||
                     (mapping as any).valueIndex === null
                   ) {
@@ -260,8 +261,9 @@ export class MappingEditor extends React.Component<
                 ref={e => (this.noneLabel = e)}
                 onClick={() => {
                   if (
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
+                    !mapping ||
+                    ((mapping as any).valueIndex === undefined ||
+                      (mapping as any).valueIndex === null)
                   ) {
                     this.initiateValueEditor();
                   }
@@ -336,6 +338,7 @@ export class MappingEditor extends React.Component<
                 ref={e => (this.scaleMappingDisplay = e)}
                 onClick={() => {
                   if (
+                    !scaleMapping ||
                     scaleMapping.valueIndex === undefined ||
                     scaleMapping.valueIndex === null
                   ) {
