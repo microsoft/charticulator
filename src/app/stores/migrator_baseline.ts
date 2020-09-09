@@ -210,10 +210,10 @@ function changeConstraintTarget(
   stateCollection: ElementState[]
 ) {
   if (!element) {
-    throw "constraint bound to unknown element";
+    throw new Error("constraint bound to unknown element");
   }
   if (!element.properties) {
-    throw "constraint target element has no properties";
+    throw new Error("constraint target element has no properties");
   }
   const gap = +element.properties.gap;
   if (constraint.attributes.targetAttribute === "value2" && gap) {
