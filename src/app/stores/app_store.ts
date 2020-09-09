@@ -14,7 +14,7 @@ import {
   zipArray,
   uniqueID,
   Scale,
-  MessageTypes
+  MessageTypes,
   compareMarkAttributeNames
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
