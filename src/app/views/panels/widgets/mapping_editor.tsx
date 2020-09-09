@@ -419,7 +419,11 @@ export class MappingEditor extends React.Component<
 
     if (this.props.options.openMapping) {
       setTimeout(() => {
-        this.beginDataFieldSelection();
+        if (valueIndex === undefined || valueIndex === null) {
+          this.beginDataFieldSelection();
+        } else {
+          this.beginDataFieldValueSelection();
+        }
       });
     }
 
@@ -448,6 +452,10 @@ export class MappingEditor extends React.Component<
 
           if (data.allowSelectValue && parsedExpression.name !== "get") {
             data.expression = `get(${data.expression}, 0)`;
+          }
+          // because original mapping allowed it
+          if (parsedExpression.name === "get") {
+            data.allowSelectValue = true;
           }
           this.mapData(data, {
             ...options.hints,
