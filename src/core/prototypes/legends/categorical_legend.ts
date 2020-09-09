@@ -116,6 +116,7 @@ export class CategoricalLegendClass extends LegendClass {
 
     const g = Graphics.makeGroup([]);
     const items = this.getLegendItems();
+    const horizontalGap = 2;
     let itemGroupOffset = 0;
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
@@ -154,15 +155,15 @@ export class CategoricalLegendClass extends LegendClass {
         gItem.transform = {
           x: 0,
           y: lineHeight * (items.length - 1 - i),
-          angle: 0
+          angle: 0,
         };
       } else {
         gItem.transform = {
           x: itemGroupOffset,
           y: 0,
-          angle: 0
+          angle: 0,
         };
-        itemGroupOffset += metrics.width + lineHeight;
+        itemGroupOffset += metrics.width + lineHeight + horizontalGap;
         console.log(itemGroupOffset);
       }
       g.elements.push(gItem);
