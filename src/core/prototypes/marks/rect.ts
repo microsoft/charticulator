@@ -166,6 +166,8 @@ export class RectElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
+
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size & Shape"),
       manager.mappingEditor("Width", "width", {
@@ -219,16 +221,8 @@ export class RectElementClass extends EmphasizableMarkClass<
         )
       );
     }
-    widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true
-      })
-    ]);
+
+    widgets = widgets.concat(parentWidgets);
     return widgets;
   }
 

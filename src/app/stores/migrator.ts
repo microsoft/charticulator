@@ -85,8 +85,38 @@ export class Migrator {
       state = this.addOriginDataSet(state);
     }
 
+    if (
+      compareVersion(state.version, "1.7.0") < 0 &&
+      compareVersion(targetVersion, "1.7.0") >= 0
+    ) {
+      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      state = this.addInteractivityProperties(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
+
+    return state;
+  }
+
+  /**
+   * Adds enableTooltips, enableSelection, enableContextMenu properties with default balue true
+   * @param state current state
+   */
+  public addInteractivityProperties(state: AppStoreState) {
+    for (const mark of state.chart.elements) {
+      mark.properties.enableTooltips = true;
+      mark.properties.enableSelection = true;
+      mark.properties.enableContextMenu = true;
+    }
+
+    for (const glyph of state.chart.glyphs) {
+      for (const mark of glyph.marks) {
+        mark.properties.enableTooltips = true;
+        mark.properties.enableSelection = true;
+        mark.properties.enableContextMenu = true;
+      }
+    }
 
     return state;
   }
