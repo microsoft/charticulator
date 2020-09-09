@@ -155,13 +155,13 @@ export class CategoricalLegendClass extends LegendClass {
         gItem.transform = {
           x: 0,
           y: lineHeight * (items.length - 1 - i),
-          angle: 0,
+          angle: 0
         };
       } else {
         gItem.transform = {
           x: itemGroupOffset,
           y: 0,
-          angle: 0,
+          angle: 0
         };
         itemGroupOffset += metrics.width + lineHeight + horizontalGap;
         console.log(itemGroupOffset);
@@ -225,7 +225,7 @@ export class CategoricalLegendClass extends LegendClass {
           {
             type: "radio",
             showLabel: false,
-            icons: ["align/x-middle", "align/y-middle"],
+            icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
             labels: ["Vertical", "Horizontal"],
             options: ["vertical", "horizontal"]
           }
