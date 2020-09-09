@@ -143,8 +143,8 @@ export class CategoricalLegendClass extends LegendClass {
         case "color":
           {
             gItem.elements.push(
-              Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                fillColor: item.value as Color
+              Graphics.makeRect(10, 4, lineHeight, lineHeight - 4, {
+                fillColor: item.value as Color,
               })
             );
           }
@@ -154,13 +154,13 @@ export class CategoricalLegendClass extends LegendClass {
         gItem.transform = {
           x: 0,
           y: lineHeight * (items.length - 1 - i),
-          angle: 0
+          angle: 0,
         };
       } else {
         gItem.transform = {
-          x: itemGroupOffset,
+          x: itemGroupOffset - 4,
           y: 0,
-          angle: 0
+          angle: 0,
         };
         itemGroupOffset += metrics.width + lineHeight;
         console.log(itemGroupOffset);
