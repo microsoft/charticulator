@@ -209,6 +209,12 @@ function changeConstraintTarget(
   elementCollection: Element[],
   stateCollection: ElementState[]
 ) {
+  if (!element) {
+    throw "constraint bound to unknown element";
+  }
+  if (!element.properties) {
+    throw "constraint target element has no properties";
+  }
   const gap = +element.properties.gap;
   if (constraint.attributes.targetAttribute === "value2" && gap) {
     // create a 2nd guide to insert, based on gap property of first
@@ -262,7 +268,7 @@ function createGuide(axis: GuideAxis, originalGuide: Element, value: number) {
     _id: uniqueID(),
     classID: "guide.guide",
     properties: {
-      baseline: axis === "x" ? "center" : "middle",
+      baseline: axis === "y" ? "middle" : "center",
       name: `${originalGuide.properties.name} gap`,
       axis
     },
