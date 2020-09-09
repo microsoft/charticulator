@@ -441,7 +441,12 @@ export class MappingEditor extends React.Component<
           }
           options.hints.newScale = modifiers.shiftKey;
           options.hints.scaleID = data.scaleID;
-          if (data.allowSelectValue) {
+
+          const parsedExpression = Expression.parse(
+            data.expression
+          ) as FunctionCall;
+
+          if (data.allowSelectValue && parsedExpression.name !== "get") {
             data.expression = `get(${data.expression}, 0)`;
           }
           this.mapData(data, {

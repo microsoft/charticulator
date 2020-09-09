@@ -121,7 +121,6 @@ export class CategoricalLegendClass extends LegendClass {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const metrics = this.textMeasure.measure(item.label);
-      console.log(item.label, metrics);
       const offsets = Graphics.TextMeasurer.ComputeTextPosition(
         lineHeight,
         lineHeight / 2,
