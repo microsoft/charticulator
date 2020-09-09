@@ -52,7 +52,7 @@ export class ScaleValueSelector extends React.Component<
   }
 
   public render() {
-    const { scale, store } = this.props;
+    const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
     const manager = new WidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
@@ -101,7 +101,12 @@ export class ScaleValueSelector extends React.Component<
                             ? "is-active"
                             : ""
                         }
-                        onClick={() => this.setState({ selectedIndex })}
+                        onClick={() => {
+                          this.setState({ selectedIndex });
+                          if (selectedIndex != null) {
+                            this.props.onSelect(selectedIndex);
+                          }
+                        }}
                       >
                         {manager.horizontal(
                           [2, 3],
@@ -120,13 +125,27 @@ export class ScaleValueSelector extends React.Component<
             )}
             {canSelectValue ? (
               <div className="action-buttons">
-                <ButtonRaised
+                {/* <ButtonRaised
                   url={R.getSVGIcon("general/confirm")}
                   text={"Select value"}
                   onClick={() => {
                     if (this.state.selectedIndex != null) {
                       this.props.onSelect(this.state.selectedIndex);
                     }
+                  }}
+                /> */}
+                <ButtonRaised
+                  url={R.getSVGIcon("legend/legend")}
+                  text={
+                    store.isLegendExistForScale(scale._id)
+                      ? "Remove Legend"
+                      : "Add Legend"
+                  }
+                  onClick={() => {
+                    new Actions.ToggleLegendForScale(
+                      scale._id,
+                      scaleMapping
+                    ).dispatch(store.dispatcher);
                   }}
                 />
               </div>

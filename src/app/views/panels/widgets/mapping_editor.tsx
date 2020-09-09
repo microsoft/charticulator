@@ -241,7 +241,14 @@ export class MappingEditor extends React.Component<
               <span
                 className="el-clickable-label"
                 ref={e => (this.noneLabel = e)}
-                onClick={() => this.initiateValueEditor()}
+                onClick={() => {
+                  if (
+                    (mapping as any).valueIndex === undefined ||
+                    (mapping as any).valueIndex === null
+                  ) {
+                    this.initiateValueEditor();
+                  }
+                }}
               >
                 (auto)
               </span>
@@ -251,7 +258,14 @@ export class MappingEditor extends React.Component<
               <span
                 className="el-clickable-label"
                 ref={e => (this.noneLabel = e)}
-                onClick={() => this.initiateValueEditor()}
+                onClick={() => {
+                  if (
+                    (mapping as any).valueIndex === undefined ||
+                    (mapping as any).valueIndex === null
+                  ) {
+                    this.initiateValueEditor();
+                  }
+                }}
               >
                 (none)
               </span>
@@ -321,20 +335,27 @@ export class MappingEditor extends React.Component<
                 className="el-mapping-scale"
                 ref={e => (this.scaleMappingDisplay = e)}
                 onClick={() => {
-                  globals.popupController.popupAt(
-                    context => (
-                      <PopupView context={context}>
-                        <DataMappAndScaleEditor
-                          attribute={this.props.attribute}
-                          parent={this}
-                          defaultMapping={mapping}
-                          options={options}
-                          onClose={() => context.close()}
-                        />
-                      </PopupView>
-                    ),
-                    { anchor: this.scaleMappingDisplay }
-                  );
+                  if (
+                    scaleMapping.valueIndex === undefined ||
+                    scaleMapping.valueIndex === null
+                  ) {
+                    globals.popupController.popupAt(
+                      context => (
+                        <PopupView context={context}>
+                          <DataMappAndScaleEditor
+                            attribute={this.props.attribute}
+                            parent={this}
+                            defaultMapping={mapping}
+                            options={options}
+                            onClose={() => context.close()}
+                          />
+                        </PopupView>
+                      ),
+                      { anchor: this.scaleMappingDisplay }
+                    );
+                  } else {
+                    this.beginDataFieldValueSelection();
+                  }
                 }}
               >
                 <span className="el-mapping-scale-scale is-left">
@@ -446,7 +467,8 @@ export class MappingEditor extends React.Component<
                 }}
               />
             ) : null}
-            {shouldShowBindData ? (
+            {(valueIndex === undefined || valueIndex === null) &&
+            shouldShowBindData ? (
               <Button
                 icon={"general/bind-data"}
                 title="Bind data"
@@ -461,7 +483,7 @@ export class MappingEditor extends React.Component<
             ) : null}
             {valueIndex !== undefined && valueIndex !== null ? (
               <Button
-                icon={"general/edit"}
+                icon={"general/bind-data"}
                 title="Bind data value"
                 ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
