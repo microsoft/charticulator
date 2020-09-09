@@ -30,11 +30,8 @@ import {
 } from "./creating_component";
 import { DropZoneView } from "./dropzone";
 import { HandlesView } from "./handles";
-import {
-  MarkSnappableGuide,
-  MarkSnappingSession,
-  MoveSnappingSession
-} from "./snapping";
+import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
+import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
 
 export interface MarkEditorViewProps {

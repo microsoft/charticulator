@@ -97,7 +97,7 @@ export class ChartRenderer {
   /**
    * Method calls getGraphics method of {@link Mark} objects to get graphical representation of element
    * @param dataset Dataset of charticulator
-   * @param chart Chart object 
+   * @param chart Chart object
    * @param chartState State of chart and chart elements
    */
   private renderChart(

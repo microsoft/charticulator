@@ -234,6 +234,7 @@ functions.date = {
 
   year: makeArrayCapable1(utcFormat("%Y")), // year with century as a decimal number.
   month: makeArrayCapable1(utcFormat("%b")), // month as a string "Jan" - "Dec".
+  monthnumber: makeArrayCapable1(utcFormat("%m")), // zero-padded number of the month as a decimal number [01,12].
   day: makeArrayCapable1(utcFormat("%d")), // zero-padded day of the month as a decimal number [01,31].
   weekOfYear: makeArrayCapable1(utcFormat("%U")), // Sunday-based week of the year as a decimal number [00,53].
   dayOfYear: makeArrayCapable1(utcFormat("%j")), // day of the year as a decimal number [001,366].

@@ -82,7 +82,7 @@ export type AttributeValue =
   | AttributeMap;
 
 /** Attribute value list */
-export interface AttributeList extends ArrayLike<AttributeValue> { }
+export interface AttributeList extends ArrayLike<AttributeValue> {}
 
 /** Attribute value map */
 export interface AttributeMap {
@@ -168,7 +168,7 @@ export interface ObjectProperties extends AttributeMap {
 /** General object */
 export interface Object<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Identifiable {
+> extends Identifiable {
   /** The class ID for the Object */
   classID: string;
   /** Attributes  */
@@ -184,12 +184,12 @@ export interface ExposableObject extends Object {
 /** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a group of data rows */
 export interface Element<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> { }
+> extends Object<PropertiesType> {}
 
 /** Glyph: a compound of elements, with constraints between them; a glyph is driven by a group of data rows */
 export interface Glyph<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> {
+> extends Object<PropertiesType> {
   /** The data table this mark correspond to */
   table: string;
   /** Elements within the mark */
@@ -201,7 +201,7 @@ export interface Glyph<
 /** Scale */
 export interface Scale<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> {
+> extends Object<PropertiesType> {
   inputType: DataType;
   outputType: AttributeType;
 }
@@ -209,7 +209,7 @@ export interface Scale<
 /** MarkLayout: the "PlotSegment" */
 export interface PlotSegment<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> {
+> extends Object<PropertiesType> {
   /** The mark to use */
   glyph: string;
   /** The data table to get data rows from */
@@ -225,22 +225,22 @@ export interface PlotSegment<
 /** Guide */
 export interface Guide<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> { }
+> extends Object<PropertiesType> {}
 
 /** Guide Coordinator */
 export interface GuideCoordinator<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> { }
+> extends Object<PropertiesType> {}
 
 /** Links */
 export interface Links<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> { }
+> extends Object<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
 export type ChartElement<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > =
+> =
   | PlotSegment<PropertiesType>
   | Guide<PropertiesType>
   | GuideCoordinator<PropertiesType>;
@@ -258,12 +258,12 @@ export interface Resource {
 /** A chart is a set of chart elements and constraints between them, with guides and scales */
 export interface Chart<
   PropertiesType extends ObjectProperties = ObjectProperties
-  > extends Object<PropertiesType> {
+> extends Object<PropertiesType> {
   /** Marks */
   glyphs: Glyph[];
   /** Scales */
   scales: Scale[];
-  /** 
+  /**
    * Temporary structure to save created scales for reusing instead creating new.
    * Unused scales will be removed on save
    */
@@ -283,17 +283,17 @@ export interface Chart<
 /** General object state */
 export interface ObjectState<
   AttributesType extends AttributeMap = AttributeMap
-  > {
+> {
   attributes: AttributesType;
 }
 
 /** Element state */
 export interface MarkState<AttributesType extends AttributeMap = AttributeMap>
-  extends ObjectState<AttributesType> { }
+  extends ObjectState<AttributesType> {}
 
 /** Scale state */
 export interface ScaleState<AttributesType extends AttributeMap = AttributeMap>
-  extends ObjectState<AttributesType> { }
+  extends ObjectState<AttributesType> {}
 
 /** Glyph state */
 export interface GlyphState<AttributesType extends AttributeMap = AttributeMap>
@@ -308,7 +308,7 @@ export interface GlyphState<AttributesType extends AttributeMap = AttributeMap>
 /** PlotSegment state */
 export interface PlotSegmentState<
   AttributesType extends AttributeMap = AttributeMap
-  > extends ObjectState<AttributesType> {
+> extends ObjectState<AttributesType> {
   // Mark states
   glyphs: GlyphState[];
   // Data row indices for the mark states
@@ -317,12 +317,12 @@ export interface PlotSegmentState<
 
 /** Guide state */
 export interface GuideState<AttributesType extends AttributeMap = AttributeMap>
-  extends ObjectState<AttributesType> { }
+  extends ObjectState<AttributesType> {}
 
 /** Chart element state, one of PlotSegmentState or GuideState */
 export type ChartElementState<
   AttributesType extends AttributeMap = AttributeMap
-  > =
+> =
   | PlotSegmentState<AttributesType>
   | GuideState<AttributesType>
   | MarkState<AttributesType>;

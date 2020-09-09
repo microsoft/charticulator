@@ -178,7 +178,8 @@ export class ChartTemplateBuilder {
                     )) {
                       if (
                         ps.kind == "chart-element" &&
-                        Prototypes.isType(ps.object.classID, "plot-segment")
+                        Prototypes.isType(ps.object.classID, "plot-segment") &&
+                        item.glyph._id === (ps.chartElement as any).glyph
                       ) {
                         groupBy = (ps.chartElement as Specification.PlotSegment)
                           .groupBy;
@@ -397,7 +398,10 @@ export class ChartTemplateBuilder {
 
       Object.keys(state.attributes).forEach(attribute => {
         // Only support numbers for now
-        if (cls.attributes[attribute].type === "number") {
+        if (
+          cls.attributes[attribute] &&
+          cls.attributes[attribute].type === "number"
+        ) {
           totals[attribute] = totals[attribute] || 0;
           totals[attribute] += state.attributes[attribute] || 0;
           counts[_id] = (counts[_id] || 0) + 1;

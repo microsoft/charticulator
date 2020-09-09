@@ -10,8 +10,7 @@ import {
   Specification,
   Prototypes
 } from "../../../core";
-import { SnappableGuide } from "./snapping";
-import { Actions } from "../../actions";
+import { SnappableGuide } from "./snapping/common";
 
 export interface CreatingComponentProps {
   width: number;

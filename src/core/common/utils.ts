@@ -462,7 +462,7 @@ export abstract class HashMap<KeyType, ValueType> {
 export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
-  > {
+> {
   protected separator: string = Math.random()
     .toString(36)
     .substr(2);
@@ -538,10 +538,10 @@ export function hexToRgb(hex: string): Color {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
     : null;
 }
 
@@ -569,4 +569,22 @@ export function getSortDirection(values: string[]): string {
  */
 export function applyDateFormat(value: Date, format: string): string {
   return timeFormat(format)(value);
+}
+
+/**
+ * Compares attribute names
+ */
+export function compareMarkAttributeNames(a: string, b: string) {
+  if (a === b) {
+    return true;
+  } else {
+    // fill and stroke uses with color. Those preoperties has the same meaning for marks
+    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+      return true;
+    }
+  }
+}
+
+export function refineColumnName(name: string) {
+  return name.replace(/[^0-9a-zA-Z\_]/g, "_");
 }

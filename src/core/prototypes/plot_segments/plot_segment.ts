@@ -8,6 +8,7 @@ import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
+import { refineColumnName } from "../..";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -104,34 +105,44 @@ export abstract class PlotSegmentClass<
 
     const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
     // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-    const functionCallpart = expression.parts.find(part => {
-      if (part.expression instanceof FunctionCall) {
-        return part.expression.args.find(arg => arg instanceof Variable) as any;
+    try {
+      const parsedExpression = expression.parts.find(part => {
+        if (part.expression instanceof FunctionCall) {
+          return part.expression.args.find(
+            arg => arg instanceof Variable
+          ) as any;
+        }
+      });
+      const functionCallpart =
+        parsedExpression && (parsedExpression.expression as FunctionCall);
+      if (functionCallpart) {
+        const variable = functionCallpart.args.find(
+          arg => arg instanceof Variable
+        ) as Variable;
+        const columnName = variable.name;
+        const tableName = axisTable.name;
+        const table = manager.dataset.tables.find(
+          table => table.name === tableName
+        );
+        const column = table.columns.find(column => column.name === columnName);
+        const rawColumnName = column.metadata.rawColumnName;
+        if (rawColumnName) {
+          const dataMapping = new Map<string, string>();
+          table.rows.forEach(row => {
+            const value = row[columnName].toString();
+            const rawValue = (
+              row[rawColumnName] || row[refineColumnName(rawColumnName)]
+            ).toString();
+            dataMapping.set(value, rawValue);
+          });
+          return (value: any) => {
+            const rawValue = dataMapping.get(value);
+            return rawValue !== null ? rawValue : value;
+          };
+        }
       }
-    }).expression as FunctionCall;
-    if (functionCallpart) {
-      const variable = functionCallpart.args.find(
-        arg => arg instanceof Variable
-      ) as Variable;
-      const columnName = variable.name;
-      const tableName = axisTable.name;
-      const table = manager.dataset.tables.find(
-        table => table.name === tableName
-      );
-      const column = table.columns.find(column => column.name === columnName);
-      const rawColumnName = column.metadata.rawColumnName;
-      if (rawColumnName) {
-        const dataMapping = new Map<string, string>();
-        table.rows.forEach(row => {
-          const value = row[columnName].toString();
-          const rawValue = row[rawColumnName].toString();
-          dataMapping.set(value, rawValue);
-        });
-        return (value: any) => {
-          const rawValue = dataMapping.get(value);
-          return rawValue !== null ? rawValue : value;
-        };
-      }
+    } catch (ex) {
+      console.log(ex);
     }
 
     return (value: any) => {
