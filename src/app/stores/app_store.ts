@@ -760,7 +760,10 @@ export class AppStore extends BaseStore {
     return false;
   }
 
-  public toggleLegendForScale(scale: string) {
+  public toggleLegendForScale(
+    scale: string,
+    mapping: Specification.ScaleMapping
+  ) {
     const scaleObject = getById(this.chartManager.chart.scales, scale);
     // See if we already have a legend
     for (const element of this.chart.elements) {
@@ -771,9 +774,10 @@ export class AppStore extends BaseStore {
         }
       }
     }
+    let newLegend = null;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
-      const newLegend = this.chartManager.createObject(
+      newLegend = this.chartManager.createObject(
         `legend.categorical`
       ) as Specification.ChartElement;
       newLegend.properties.scale = scale;
@@ -785,7 +789,7 @@ export class AppStore extends BaseStore {
         type: "parent",
         parentAttribute: "y2"
       } as Specification.ParentMapping;
-      this.chartManager.addChartElement(newLegend);
+      // this.chartManager.addChartElement(newLegend);
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
         value: 100
@@ -796,7 +800,7 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,color>" ||
       scaleObject.classID == "scale.linear<integer,color>"
     ) {
-      const newLegend = this.chartManager.createObject(
+      newLegend = this.chartManager.createObject(
         `legend.numerical-color`
       ) as Specification.ChartElement;
       newLegend.properties.scale = scale;
@@ -808,7 +812,7 @@ export class AppStore extends BaseStore {
         type: "parent",
         parentAttribute: "y2"
       } as Specification.ParentMapping;
-      this.chartManager.addChartElement(newLegend);
+      // this.chartManager.addChartElement(newLegend);
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
         value: 100
@@ -819,7 +823,7 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
-      const newLegend = this.chartManager.createObject(
+      newLegend = this.chartManager.createObject(
         `legend.numerical-number`
       ) as Specification.ChartElement;
       newLegend.properties.scale = scale;
@@ -839,8 +843,19 @@ export class AppStore extends BaseStore {
         type: "parent",
         parentAttribute: "y2"
       } as Specification.ParentMapping;
-      this.chartManager.addChartElement(newLegend);
     }
+
+    const mappingOptions = {
+      type: "scale",
+      table: mapping.table,
+      expression: mapping.expression,
+      valueType: mapping.valueType,
+      scale: scaleObject._id
+    } as Specification.ScaleMapping;
+
+    newLegend.mappings.mappingOptions = mappingOptions;
+
+    this.chartManager.addChartElement(newLegend);
   }
 
   public getRepresentativeGlyphState(glyph: Specification.Glyph) {

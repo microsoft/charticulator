@@ -296,7 +296,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action { }
+export class MarkAction extends Action {}
 
 export class SetMarkAttribute extends MarkAction {
   constructor(
@@ -495,7 +495,7 @@ export class MapDataToChartElementAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints,
+    public hints: Prototypes.DataMappingHints
   ) {
     super();
   }
@@ -565,14 +565,18 @@ export class SetScaleAttribute extends Action {
 }
 
 export class ToggleLegendForScale extends Action {
-  constructor(public scale: string) {
+  constructor(
+    public scale: string,
+    public mapping: Specification.ScaleMapping
+  ) {
     super();
   }
 
   public digest() {
     return {
       name: "ToggleLegendForScale",
-      scale: this.scale
+      scale: this.scale,
+      mapping: this.mapping.expression
     };
   }
 }
