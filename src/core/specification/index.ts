@@ -152,11 +152,19 @@ export interface ParentMapping extends Mapping {
 // Constraints
 // ===========================================================================
 
+export interface ConstraintAttributes {
+  gap?: number;
+  element: string;
+  attribute: string;
+  targetElement: string;
+  targetAttribute: string;
+}
+
 /** Constraint */
 export interface Constraint {
   /** Constraint type */
   type: string;
-  attributes: AttributeMap;
+  attributes: ConstraintAttributes;
 }
 
 // ===========================================================================
