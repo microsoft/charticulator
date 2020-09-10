@@ -7,12 +7,15 @@ import {
   ParentMapping,
   PlotSegment,
   PlotSegmentState,
-  ValueMapping
+  ValueMapping,
+  baselineH,
+  baselineV
 } from "../../core/specification";
 import {
   GuideAxis,
   GuideClass,
-  GuideAttributeNames
+  GuideAttributeNames,
+  GuidePropertyNames
 } from "../../core/prototypes/guides";
 import { Specification, uniqueID } from "../../core";
 import { isType } from "../../core/prototypes";
@@ -33,12 +36,24 @@ interface ElementRef {
   state: ElementState;
 }
 
+enum CommonPropertyNames {
+  name = "name",
+  gap = "gap"
+}
+
+enum DeletedAttributeNames {
+  value2 = "value2"
+}
+
+enum DeletedPropertyNames {
+  value = "value",
+  value2 = "value2"
+}
+
 /** Upgrade old versions of chart spec and state to newer version */
 
 export function upgradeGuidesToBaseline(appStoreState: AppStoreState) {
   upgradeScope(appStoreState.chart, appStoreState.chartState);
-  // TODO are nested charts scopes ?
-
   return appStoreState;
 }
 
@@ -59,11 +74,11 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
     const { element, state } = ref;
 
     // convert mappings to actual values
-    const valueMapping = element.mappings.value as ParentMapping;
-    if (valueMapping && valueMapping.type === "parent") {
-      const { parentAttribute } = valueMapping;
+    const parentMapping = element.mappings.value as ParentMapping;
+    if (parentMapping && parentMapping.type === "parent") {
+      const { parentAttribute } = parentMapping;
       // set value to actual mapped attr value
-      state.attributes.value = parentState.attributes[parentAttribute];
+      state.attributes[GuideAttributeNames.value] = parentState.attributes[parentAttribute];
       // remove the mapping
       delete element.mappings.value;
     } else {
@@ -80,7 +95,7 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
         changeConstraintTarget(
           element,
           constraint,
-          +state.attributes.value,
+          +state.attributes[GuideAttributeNames.value],
           parentElement.elements,
           parentState.elements
         );
@@ -125,12 +140,12 @@ function upgradeGlyphGuides(
       if (constraint.type === "snap") {
         const id = constraint.attributes.targetElement as string;
         const guide = guides[id];
-        if (guide && constraint.attributes.targetAttribute === "value2") {
+        if (guide && constraint.attributes.targetAttribute === DeletedAttributeNames.value2) {
           // make a new guide
           const newGuide = createGuide(
-            guide.properties.axis as GuideAxis,
+            guide.properties[GuidePropertyNames.axis] as GuideAxis,
             guide,
-            +guide.properties.value + +guide.properties.gap
+            +guide.properties[DeletedPropertyNames.value] + +guide.properties[CommonPropertyNames.gap]
           );
           // add new guide
           glyph.marks.push(newGuide.element);
@@ -147,7 +162,7 @@ function upgradeGlyphGuides(
             // nested charts store in mappings
             const valueMapping: ValueMapping = {
               type: "value",
-              value: newGuide.state.attributes.value
+              value: newGuide.state.attributes[GuideAttributeNames.value]
             };
             newGuide.element.mappings.value = valueMapping;
           }
@@ -215,10 +230,10 @@ function changeConstraintTarget(
   if (!element.properties) {
     throw new Error("constraint target element has no properties");
   }
-  const gap = +element.properties.gap;
-  if (constraint.attributes.targetAttribute === "value2" && gap) {
+  const gap = +element.properties[CommonPropertyNames.gap];
+  if (constraint.attributes.targetAttribute === DeletedAttributeNames.value2 && gap) {
     // create a 2nd guide to insert, based on gap property of first
-    const axis = element.properties.axis as GuideAxis;
+    const axis = element.properties[GuidePropertyNames.axis] as GuideAxis;
     const value = guideValue + gap;
     const newGuide = createGuide(axis, element, value);
     elementCollection.push(newGuide.element);
@@ -245,31 +260,34 @@ function addNewGuideProperties(
   state?: Specification.ChartElementState<Specification.AttributeMap>
 ) {
   if (element) {
-    element.properties.baseline = "center";
+    const defaultBaseline: baselineH = "center";
+    element.properties[GuidePropertyNames.baseline] = defaultBaseline;
   }
   if (state) {
-    state.attributes.computedBaselineValue = state.attributes.value;
+    state.attributes[GuideAttributeNames.computedBaselineValue] = state.attributes[GuideAttributeNames.value];
   }
 }
 
 function removeOldGuideProperties(element?: Element, state?: ElementState) {
   if (element) {
-    delete element.properties.gap;
-    delete element.properties.value; // unused property in original schema
-    delete element.properties.value2; // unused property in original schema
+    delete element.properties[CommonPropertyNames.gap];
+    delete element.properties[DeletedPropertyNames.value]; // unused property in original schema
+    delete element.properties[DeletedPropertyNames.value2]; // unused property in original schema
   }
   if (state) {
-    delete state.attributes.value2;
+    delete state.attributes[DeletedAttributeNames.value2];
   }
 }
 
 function createGuide(axis: GuideAxis, originalGuide: Element, value: number) {
+  const defaultBaselineH: baselineH = "center";
+  const defaultBaselineV: baselineV = "middle";
   const element: Element = {
     _id: uniqueID(),
     classID: "guide.guide",
     properties: {
-      baseline: axis === "y" ? "middle" : "center",
-      name: `${originalGuide.properties.name} gap`,
+      baseline: axis === "y" ? defaultBaselineV : defaultBaselineH,
+      name: `${originalGuide.properties[CommonPropertyNames.name] || "Guide"} gap`,
       axis
     },
     mappings: {}
