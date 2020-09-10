@@ -35,7 +35,12 @@ export class SnapConstraintClass {
     states: Specification.ObjectState[],
     solver: ConstraintSolver
   ): void {
-    const { attribute, element, targetAttribute, targetElement } = constraint.attributes;
+    const {
+      attribute,
+      element,
+      targetAttribute,
+      targetElement
+    } = constraint.attributes;
     let gap = constraint.attributes.gap;
     if (gap == null) {
       gap = 0;
