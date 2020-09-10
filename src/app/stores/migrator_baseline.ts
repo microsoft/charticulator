@@ -78,7 +78,8 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
     if (parentMapping && parentMapping.type === "parent") {
       const { parentAttribute } = parentMapping;
       // set value to actual mapped attr value
-      state.attributes[GuideAttributeNames.value] = parentState.attributes[parentAttribute];
+      state.attributes[GuideAttributeNames.value] =
+        parentState.attributes[parentAttribute];
       // remove the mapping
       delete element.mappings.value;
     } else {
@@ -140,12 +141,16 @@ function upgradeGlyphGuides(
       if (constraint.type === "snap") {
         const id = constraint.attributes.targetElement as string;
         const guide = guides[id];
-        if (guide && constraint.attributes.targetAttribute === DeletedAttributeNames.value2) {
+        if (
+          guide &&
+          constraint.attributes.targetAttribute === DeletedAttributeNames.value2
+        ) {
           // make a new guide
           const newGuide = createGuide(
             guide.properties[GuidePropertyNames.axis] as GuideAxis,
             guide,
-            +guide.properties[DeletedPropertyNames.value] + +guide.properties[CommonPropertyNames.gap]
+            +guide.properties[DeletedPropertyNames.value] +
+              +guide.properties[CommonPropertyNames.gap]
           );
           // add new guide
           glyph.marks.push(newGuide.element);
@@ -231,7 +236,10 @@ function changeConstraintTarget(
     throw new Error("constraint target element has no properties");
   }
   const gap = +element.properties[CommonPropertyNames.gap];
-  if (constraint.attributes.targetAttribute === DeletedAttributeNames.value2 && gap) {
+  if (
+    constraint.attributes.targetAttribute === DeletedAttributeNames.value2 &&
+    gap
+  ) {
     // create a 2nd guide to insert, based on gap property of first
     const axis = element.properties[GuidePropertyNames.axis] as GuideAxis;
     const value = guideValue + gap;
@@ -264,7 +272,8 @@ function addNewGuideProperties(
     element.properties[GuidePropertyNames.baseline] = defaultBaseline;
   }
   if (state) {
-    state.attributes[GuideAttributeNames.computedBaselineValue] = state.attributes[GuideAttributeNames.value];
+    state.attributes[GuideAttributeNames.computedBaselineValue] =
+      state.attributes[GuideAttributeNames.value];
   }
 }
 
@@ -287,7 +296,8 @@ function createGuide(axis: GuideAxis, originalGuide: Element, value: number) {
     classID: "guide.guide",
     properties: {
       baseline: axis === "y" ? defaultBaselineV : defaultBaselineH,
-      name: `${originalGuide.properties[CommonPropertyNames.name] || "Guide"} gap`,
+      name: `${originalGuide.properties[CommonPropertyNames.name] ||
+        "Guide"} gap`,
       axis
     },
     mappings: {}
