@@ -35,7 +35,7 @@ interface GuideAttributeDescription extends AttributeDescription {
   name: GuideAttributeNames;
 }
 
-enum GuidePropertyNames {
+export enum GuidePropertyNames {
   axis = "axis",
   baseline = "baseline"
 }
