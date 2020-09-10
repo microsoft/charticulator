@@ -90,6 +90,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", {
@@ -189,7 +190,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
   /**

@@ -72,20 +72,22 @@ export class ChartRenderer {
       if (!mark.properties.visible) {
         return null;
       }
-      const g = this.manager
-        .getMarkClass(markState)
-        .getGraphics(
-          coordinateSystem,
-          offset,
-          index,
-          this.manager,
-          state.emphasized
-        );
+      const cls = this.manager.getMarkClass(markState);
+      const g = cls.getGraphics(
+        coordinateSystem,
+        offset,
+        index,
+        this.manager,
+        state.emphasized
+      );
       if (g != null) {
         g.selectable = {
           plotSegment,
           glyphIndex: index,
-          rowIndices: plotSegmentState.dataRowIndices[index]
+          rowIndices: plotSegmentState.dataRowIndices[index],
+          enableTooltips: cls.object.properties.enableTooltips as boolean,
+          enableContextMenu: cls.object.properties.enableContextMenu as boolean,
+          enableSelection: cls.object.properties.enableSelection as boolean
         };
         return makeGroup([g]);
       } else {
