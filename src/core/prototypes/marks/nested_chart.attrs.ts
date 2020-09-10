@@ -4,6 +4,7 @@
 import { AttributeDescriptions } from "../object";
 import { AttributeMap } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
+import { Specification } from "../..";
 
 export const nestedChartAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -28,7 +29,7 @@ export interface NestedChartElementAttributes extends AttributeMap {
 
 export interface NestedChartElementProperties extends AttributeMap {
   /** The chart specification */
-  specification: any;
+  specification: Specification.Chart;
   /** Map column names to nested chart column names */
   columnNameMap: { [name: string]: string };
 }

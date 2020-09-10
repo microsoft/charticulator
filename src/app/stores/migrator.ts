@@ -12,6 +12,7 @@ import {
   deepClone
 } from "../../core";
 import { TableType } from "../../core/dataset";
+import { upgradeGuidesToBaseline } from "./migrator_baseline";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -89,8 +90,10 @@ export class Migrator {
       compareVersion(state.version, "1.7.0") < 0 &&
       compareVersion(targetVersion, "1.7.0") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.7.0: Interactivity properties for marks
       state = this.addInteractivityProperties(state);
+      // Minor change at version 1.7.0: Guides now have a baseline prop
+      state = upgradeGuidesToBaseline(state);
     }
 
     // After migration, set version to targetVersion

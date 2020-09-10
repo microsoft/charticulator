@@ -39,6 +39,7 @@ import { HandlesView } from "./handles";
 import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
+import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -395,29 +396,89 @@ export class ChartEditorView
         }
       }
 
+      const addGuide = (
+        arg: [number, Specification.Mapping],
+        axis: GuideAxis,
+        outerAttr: string,
+        lowMarginAttr: string,
+        highMarginAttr: string,
+        baselineLow: Specification.baseline,
+        baselineMid: Specification.baseline,
+        baselineHigh: Specification.baseline
+      ) => {
+        const outer = +this.props.store.chartState.attributes[outerAttr];
+        const lowMargin = +this.props.store.chartState.attributes[
+          lowMarginAttr
+        ];
+        const highMargin = +this.props.store.chartState.attributes[
+          highMarginAttr
+        ];
+        const fromCenter = arg[0];
+        const abs = outer / 2 + fromCenter;
+        const inner = outer - lowMargin - highMargin;
+        const half = inner / 2;
+        const quarter = half / 2;
+        const lowAbs = lowMargin;
+        const halfAbs = lowMargin + half;
+        const highAbs = outer - highMargin;
+        let rel: number;
+        let baseline: Specification.baseline;
+        if (abs < lowAbs + quarter) {
+          // relative to low
+          baseline = baselineLow;
+          rel = abs - lowAbs;
+        } else if (abs < halfAbs + quarter) {
+          // relative to mid
+          baseline = baselineMid;
+          rel = abs - halfAbs;
+        } else {
+          // relative to high
+          baseline = baselineHigh;
+          rel = abs - highAbs;
+        }
+        const value: [number, Specification.Mapping] = [rel, arg[1]];
+        const guideProperties: Partial<GuideProperties> = {
+          axis,
+          baseline
+        };
+        new Actions.AddChartElement(
+          "guide.guide",
+          { value },
+          guideProperties
+        ).dispatch(this.props.store.dispatcher);
+      };
+
       switch (this.state.currentCreation) {
         case "guide-x":
           {
             mode = "vline";
-            onCreate = x => {
-              new Actions.AddChartElement(
-                "guide.guide",
-                { value: x },
-                { axis: "x" }
-              ).dispatch(this.props.store.dispatcher);
-            };
+            onCreate = x =>
+              addGuide(
+                x,
+                "x",
+                "width",
+                "marginLeft",
+                "marginRight",
+                "left",
+                "center",
+                "right"
+              );
           }
           break;
         case "guide-y":
           {
             mode = "hline";
-            onCreate = y => {
-              new Actions.AddChartElement(
-                "guide.guide",
-                { value: y },
-                { axis: "y" }
-              ).dispatch(this.props.store.dispatcher);
-            };
+            onCreate = y =>
+              addGuide(
+                y,
+                "y",
+                "height",
+                "marginBottom",
+                "marginTop",
+                "bottom",
+                "middle",
+                "top"
+              );
           }
           break;
         case "guide-coordinator-x":

@@ -107,7 +107,7 @@ interface RectangleChartState extends Specification.ChartState {
   attributes: RectangleChartAttributes;
 }
 
-class RectangleChart extends ChartClass {
+export class RectangleChart extends ChartClass {
   public static classID = "chart.rectangle";
   public static type = "chart";
 
