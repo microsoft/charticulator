@@ -254,23 +254,43 @@ export function renderGraphicalElementSVG(
     if (options.onClick) {
       mouseEvents.onClick = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        options.onClick(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableSelection ||
+          element.selectable.enableSelection === undefined
+        ) {
+          options.onClick(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onMouseEnter) {
       mouseEvents.onMouseEnter = (e: React.MouseEvent<Element>) => {
-        options.onMouseEnter(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
+          options.onMouseEnter(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onMouseLeave) {
       mouseEvents.onMouseLeave = (e: React.MouseEvent<Element>) => {
-        options.onMouseLeave(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
+          options.onMouseLeave(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onContextMenu) {
       mouseEvents.onContextMenu = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        options.onContextMenu(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableContextMenu ||
+          element.selectable.enableContextMenu === undefined
+        ) {
+          options.onContextMenu(element.selectable, e.nativeEvent);
+        }
       };
     }
   }

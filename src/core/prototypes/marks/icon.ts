@@ -262,6 +262,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     let widgets = [
       manager.sectionHeader("Icon"),
@@ -343,7 +344,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {

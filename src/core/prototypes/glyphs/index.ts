@@ -73,7 +73,7 @@ export interface RectangleGlyphState extends Specification.GlyphState {
   attributes: RectangleGlyphAttributes;
 }
 
-class RectangleGlyph extends GlyphClass {
+export class RectangleGlyph extends GlyphClass {
   public static classID = "glyph.rectangle";
   public static type = "glyph";
 

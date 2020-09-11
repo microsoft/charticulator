@@ -44,7 +44,6 @@ export class PackingPlugin extends ConstraintPlugin {
     this.getXYScale = getXYScale;
     this.gravityX = options.gravityX;
     this.gravityY = options.gravityY;
-    console.log("this.gravityX", this.gravityX, "this.gravityY", this.gravityY);
   }
 
   public apply() {
