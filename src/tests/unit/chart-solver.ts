@@ -4,8 +4,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { AppStoreState } from "../../app/stores";
-import { Prototypes, initialize } from "../../core";
+import { Prototypes, initialize, deepClone } from "../../core";
 import { Migrator } from "../../app/stores/migrator";
+import { DefaultAttributes } from "../../core/prototypes";
 
 /** Test if a deep equals b with tolerance on numeric values */
 function expect_deep_approximately_equals(a: any, b: any, tol: number) {
@@ -59,11 +60,13 @@ describe("Chart Solver", () => {
         fs.readFileSync(path.join(pathPrefix, filename), "utf-8")
       ).state;
 
-      state = new Migrator().migrate(state, "1.5.0");
+      state = new Migrator().migrate(state, "1.7.0");
 
       const manager = new Prototypes.ChartStateManager(
         state.chart,
-        state.dataset
+        state.dataset,
+        null,
+        makeDefaultAttributes(state)
       );
 
       manager.solveConstraints();
@@ -83,3 +86,15 @@ describe("Chart Solver", () => {
     });
   });
 });
+
+function makeDefaultAttributes(state: AppStoreState) {
+  const defaultAttributes: DefaultAttributes = {};
+  const { elements } = state.chart;
+  for (let i = 0; i < elements.length; i++) {
+    const el = elements[i];
+    defaultAttributes[el._id] = deepClone(
+      state.chartState.elements[i].attributes
+    );
+  }
+  return defaultAttributes;
+}

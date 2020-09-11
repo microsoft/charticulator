@@ -235,6 +235,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     return [
       manager.sectionHeader("Text"),
@@ -329,7 +330,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
-    ];
+    ].concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {

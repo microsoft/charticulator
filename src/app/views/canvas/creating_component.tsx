@@ -409,10 +409,14 @@ export class CreatingComponent extends React.Component<
           height={this.props.height}
           onMouseEnter={e => {
             const move = (e: MouseEvent) => {
-              const mgr = new PointSnapping(
-                this.props.guides,
-                10 / this.props.zoom.scale
-              );
+              const guides = [...this.props.guides];
+              switch (this.props.mode) {
+                case "hline":
+                case "vline":
+                  // guides do not snap to anything
+                  guides.length = 0;
+              }
+              const mgr = new PointSnapping(guides, 10 / this.props.zoom.scale);
               if (this.isHammering) {
                 return;
               }

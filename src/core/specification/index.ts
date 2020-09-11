@@ -3,6 +3,7 @@
 import { Color, Point } from "../common";
 import * as Template from "./template";
 import * as Types from "./types";
+import { Specification } from "../../container";
 
 export { Types, Template };
 
@@ -79,7 +80,8 @@ export type AttributeValue =
   | Color
   | Point
   | AttributeList
-  | AttributeMap;
+  | AttributeMap
+  | Specification.Chart;
 
 /** Attribute value list */
 export interface AttributeList extends ArrayLike<AttributeValue> {}
@@ -103,6 +105,10 @@ export interface Mapping {
   /** Mapping type */
   type: string;
 }
+
+export type baselineH = "left" | "center" | "right";
+export type baselineV = "top" | "middle" | "bottom";
+export type baseline = baselineH | baselineV;
 
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
@@ -148,11 +154,19 @@ export interface ParentMapping extends Mapping {
 // Constraints
 // ===========================================================================
 
+export interface ConstraintAttributes {
+  gap?: number;
+  element: string;
+  attribute: string;
+  targetElement: string;
+  targetAttribute: string;
+}
+
 /** Constraint */
 export interface Constraint {
   /** Constraint type */
   type: string;
-  attributes: AttributeMap;
+  attributes: ConstraintAttributes;
 }
 
 // ===========================================================================
