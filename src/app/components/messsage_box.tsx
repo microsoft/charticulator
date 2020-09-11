@@ -4,13 +4,16 @@
 import * as React from "react";
 import * as R from "../resources";
 
-import { EventSubscription, Prototypes, MessageTypes, messageTypes } from "../../core";
+import {
+  EventSubscription,
+  Prototypes,
+  MessageType,
+  messageTypes
+} from "../../core";
 
 import { AppStore } from "../stores";
-// import { ReorderListView } from "./.";
 import { ContextedComponent } from "../context_component";
 import { Element } from "../../core/specification";
-import { ReorderListView } from "../views/panels/object_list_editor";
 import { SVGImageIcon } from ".";
 import { RemoveMessage } from "../actions/actions";
 
@@ -50,29 +53,18 @@ export class MessagePanel extends ContextedComponent<
 
   public render(): any {
     const store = this.props.store;
-    const messages: Map<MessageTypes | string, string> = store.messageState;
+    const messages: Map<MessageType | string, string> = store.messageState;
 
     return (
       <div className="charticulator__object-list-editor">
         {Array.from(messages, ([key, value]) => key).map((key, index) => {
           const message = messages.get(key);
-          // TODO redesign
-          if (
-            messageTypes.find(k => k === key)
-          ) {
+          if (messageTypes.find(k => k === key)) {
             return (
               <div key={index}>
                 <div key={index} className="el-object-item auto-height">
-                  {/* <SVGImageIcon
-                  url={R.getSVGIcon(
-                    Prototypes.ObjectClasses.GetMetadata(scale.classID).iconPath
-                  )}
-                /> */}
                   <span className="el-text">{message}</span>
                 </div>
-                {/* <ReorderListView enabled={true} onReorder={(a, b) => {}}>
-                <p>Error</p>
-              </ReorderListView> */}
               </div>
             );
           } else {

@@ -10,7 +10,7 @@ import {
   SelectMark,
   ClearSelection,
   objectDigest,
-  MessageTypes
+  MessageType
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
@@ -496,7 +496,7 @@ export class MapDataToChartElementAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints,
+    public hints: Prototypes.DataMappingHints
   ) {
     super();
   }
@@ -858,7 +858,7 @@ export class SetCurrentTool extends Action {
 
 export class AddMessage extends Action {
   constructor(
-    public type: MessageTypes | string,
+    public type: MessageType | string,
     public options: {
       title?: string;
       text?: string;
@@ -873,7 +873,7 @@ export class AddMessage extends Action {
 }
 
 export class RemoveMessage extends Action {
-  constructor(public type: MessageTypes | string) {
+  constructor(public type: MessageType | string) {
     super();
   }
 

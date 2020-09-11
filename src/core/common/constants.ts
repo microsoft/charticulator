@@ -1,25 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-export type MessageTypes = [
-  "generalError",
-  "parsingDataError",
-  "constraintSolvingError",
-  "linkGuideCreatingError",
-  "invalidLinksData",
-  "noID",
-  "noSourceOrTargetID"
-];
+export enum MessageType {
+  GeneralError,
+  ParsingDataError,
+  ConstraintSolvingError,
+  LinkGuideCreatingError,
+  InvalidLinksData,
+  NoID,
+  NoSourceOrTargetID
+}
 
-export const messageTypes: MessageTypes = [
-  "generalError",
-  "parsingDataError",
-  "constraintSolvingError",
-  "linkGuideCreatingError",
-  "invalidLinksData",
-  "noID",
-  "noSourceOrTargetID",
-];
+export const messageTypes = Object.values(MessageType);
 
 export const LinkSourceKeyColumn = "source_id";
 

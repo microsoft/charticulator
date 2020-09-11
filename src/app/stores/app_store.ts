@@ -14,7 +14,7 @@ import {
   zipArray,
   uniqueID,
   Scale,
-  MessageTypes,
+  MessageType,
   compareMarkAttributeNames
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
@@ -137,7 +137,7 @@ export class AppStore extends BaseStore {
 
   private propertyExportName = new Map<string, string>();
 
-  public messageState: Map<MessageTypes | string, string>;
+  public messageState: Map<MessageType | string, string>;
 
   constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
     super(null);
