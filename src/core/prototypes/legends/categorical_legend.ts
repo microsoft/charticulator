@@ -116,7 +116,7 @@ export class CategoricalLegendClass extends LegendClass {
 
     const g = Graphics.makeGroup([]);
     const items = this.getLegendItems();
-    const horizontalGap = 2;
+    const horizontalGap = 10;
     let itemGroupOffset = 0;
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
