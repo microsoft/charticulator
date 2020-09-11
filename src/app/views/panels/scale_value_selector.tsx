@@ -125,15 +125,6 @@ export class ScaleValueSelector extends React.Component<
             )}
             {canSelectValue ? (
               <div className="action-buttons">
-                {/* <ButtonRaised
-                  url={R.getSVGIcon("general/confirm")}
-                  text={"Select value"}
-                  onClick={() => {
-                    if (this.state.selectedIndex != null) {
-                      this.props.onSelect(this.state.selectedIndex);
-                    }
-                  }}
-                /> */}
                 <ButtonRaised
                   url={R.getSVGIcon("legend/legend")}
                   text={
