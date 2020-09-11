@@ -19,3 +19,4 @@ export * from "./gradient_picker";
 export * from "./minimizable_panel";
 export * from "./error_boundary";
 export * from "./editable_text_view";
+export * from "./messsage_box";

@@ -9,7 +9,8 @@ import {
   Action,
   SelectMark,
   ClearSelection,
-  objectDigest
+  objectDigest,
+  MessageType
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
@@ -296,7 +297,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action { }
+export class MarkAction extends Action {}
 
 export class SetMarkAttribute extends MarkAction {
   constructor(
@@ -495,7 +496,7 @@ export class MapDataToChartElementAttribute extends Action {
     public expression: string,
     public valueType: Specification.DataType,
     public valueMetadata: Dataset.ColumnMetadata,
-    public hints: Prototypes.DataMappingHints,
+    public hints: Prototypes.DataMappingHints
   ) {
     super();
   }
@@ -852,5 +853,41 @@ export class SetCurrentTool extends Action {
       tool: this.tool,
       options: this.options
     };
+  }
+}
+
+export class AddMessage extends Action {
+  constructor(
+    public type: MessageType | string,
+    public options: {
+      title?: string;
+      text?: string;
+    } = {}
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "AddMessage", type: this.type, options: this.options };
+  }
+}
+
+export class RemoveMessage extends Action {
+  constructor(public type: MessageType | string) {
+    super();
+  }
+
+  public digest() {
+    return { name: "RemoveMessage", type: this.type };
+  }
+}
+
+export class ClearMessages extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "ClearMessages" };
   }
 }
