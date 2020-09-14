@@ -25,6 +25,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   ContainerURL: string;
   CorsPolicy: {
     TargetOrigins: string;
+    Embedded: boolean;
   };
 }
 

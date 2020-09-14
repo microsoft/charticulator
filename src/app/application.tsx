@@ -113,20 +113,12 @@ export class Application {
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
-    workerScriptURL: string
+    workerScriptContent: string
   ) {
     this.config = config;
     await initialize(config);
 
-    const responce = await fetch(`${workerScriptURL}`);
-    if (!responce.ok) {
-      throw Error(`Loading worker script from ${workerScriptURL} failed`);
-    }
-    const script = await responce.text();
-    const blob = new Blob([script], { type: "application/javascript" });
-    const workerScript = URL.createObjectURL(blob);
-
-    this.worker = new CharticulatorWorker(workerScript);
+    this.worker = new CharticulatorWorker(workerScriptContent);
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -163,11 +155,13 @@ export class Application {
     await this.processHashString();
   }
 
-  public setupNestedEditor(id: string) {
-    window.addEventListener("message", (e: MessageEvent) => {
-      if (e.data.id != id) {
-        return;
-      }
+  public setupNestedEditor(
+    id: string,
+    onInitialized?: (id: string, load: (data: any) => void) => void,
+    onSave?: (data: any) => void
+  ) {
+    const appStore = this.appStore;
+    const setupCallback = ((data: any) => {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
@@ -177,7 +171,7 @@ export class Application {
           column: string;
           value: any;
         };
-      } = e.data;
+      } = data;
       info.specification.mappings.width = {
         type: "value",
         value: info.width
@@ -186,13 +180,13 @@ export class Application {
         type: "value",
         value: info.height
       } as Specification.ValueMapping;
-      this.appStore.dispatcher.dispatch(
+      appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset, {
           filterCondition: info.filterCondition
         })
       );
-      this.appStore.setupNestedEditor(newSpecification => {
-        const template = deepClone(this.appStore.buildChartTemplate());
+      appStore.setupNestedEditor(newSpecification => {
+        const template = deepClone(appStore.buildChartTemplate());
         if (window.opener) {
           window.opener.postMessage(
             {
@@ -215,8 +209,20 @@ export class Application {
               this.config.CorsPolicy.TargetOrigins
             );
           }
+          if (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) {
+            onSave({
+              specification: newSpecification,
+              template
+            });
+          }
         }
       });
+    }).bind(this);
+    window.addEventListener("message", (e: MessageEvent) => {
+      if (e.data.id != id) {
+        return;
+      }
+      setupCallback(e.data);
     });
     if (window.opener) {
       window.opener.postMessage(
@@ -235,6 +241,10 @@ export class Application {
           },
           this.config.CorsPolicy.TargetOrigins
         );
+      } else if (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) {
+        onInitialized(id, (data: any) => {
+          setupCallback(data);
+        });
       }
     }
   }
