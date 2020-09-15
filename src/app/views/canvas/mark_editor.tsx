@@ -33,6 +33,7 @@ import { HandlesView } from "./handles";
 import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
 import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
+import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -706,7 +707,7 @@ export class SingleMarkView
   public renderHandles() {
     return (
       <g>
-        {this.renderMarkHandles()}
+        {/* this.renderMarkHandles() */}
         {this.renderElementHandles()}
         {/* {this.renderAnchorHandles()} */}
       </g>
@@ -1269,38 +1270,82 @@ export class SingleMarkView
         ...args: Array<[number, Specification.Mapping]>
       ) => void = null;
       let mode: string = "point";
-
+      const addGuide = (
+        arg: [number, Specification.Mapping],
+        axis: GuideAxis,
+        outerAttr: string,
+        lowAttr: string,
+        highAttr: string,
+        baselineLow: Specification.baseline,
+        baselineMid: Specification.baseline,
+        baselineHigh: Specification.baseline
+      ) => {
+        const pos = arg[0];
+        const outer = +this.props.glyphState.attributes[outerAttr];
+        const low = +this.props.glyphState.attributes[lowAttr];
+        const high = +this.props.glyphState.attributes[highAttr];
+        const quarter = outer / 4;
+        let rel: number;
+        let baseline: Specification.baseline;
+        if (pos < low + quarter) {
+          // relative to low
+          baseline = baselineLow;
+          rel = pos - low;
+        } else if (pos < quarter) {
+          // relative to mid
+          baseline = baselineMid;
+          rel = pos;
+        } else {
+          // relative to high
+          baseline = baselineHigh;
+          rel = pos - high;
+        }
+        const value: [number, Specification.Mapping] = [rel, arg[1]];
+        const guideProperties: Partial<GuideProperties> = {
+          axis,
+          baseline
+        };
+        this.dispatch(
+          new Actions.AddMarkToGlyph(
+            this.props.glyph,
+            "guide.guide",
+            { x: 0, y: 0 },
+            { value },
+            guideProperties
+          )
+        );
+      };
       switch (currentCreation) {
         case "guide-x":
           {
             mode = "vline";
-            onCreate = x => {
-              this.dispatch(
-                new Actions.AddMarkToGlyph(
-                  this.props.glyph,
-                  "guide.guide",
-                  { x: 0, y: 0 },
-                  { value: x },
-                  { axis: "x" }
-                )
+            onCreate = x =>
+              addGuide(
+                x,
+                "x",
+                "width",
+                "ix1",
+                "ix2",
+                "left",
+                "center",
+                "right"
               );
-            };
           }
           break;
         case "guide-y":
           {
             mode = "hline";
-            onCreate = y => {
-              this.dispatch(
-                new Actions.AddMarkToGlyph(
-                  this.props.glyph,
-                  "guide.guide",
-                  { x: 0, y: 0 },
-                  { value: y },
-                  { axis: "y" }
-                )
+            onCreate = y =>
+              addGuide(
+                y,
+                "y",
+                "height",
+                "iy1",
+                "iy2",
+                "bottom",
+                "middle",
+                "top"
               );
-            };
           }
           break;
         case "guide-coordinator-x":
@@ -1394,7 +1439,13 @@ export class SingleMarkView
 
     return (
       <div className="mark-editor-single-view">
-        <div className="mark-view-container">
+        <div
+          className="mark-view-container"
+          style={{
+            width: this.props.width as number,
+            height: this.props.height as number
+          }}
+        >
           <svg
             className="canvas-view canvas-view-mark"
             ref="canvas"

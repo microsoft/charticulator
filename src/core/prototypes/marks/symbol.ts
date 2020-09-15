@@ -289,6 +289,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     let widgets = [
       manager.sectionHeader("Symbol"),
       manager.mappingEditor("Shape", "symbol", {
@@ -330,7 +331,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {

@@ -84,7 +84,39 @@ export abstract class ObjectClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    return [manager.text("No editable attribute")];
+    return [
+      manager.sectionHeader("Interactivity"),
+      manager.row(
+        "",
+        manager.inputBoolean(
+          { property: "enableTooltips" },
+          {
+            type: "checkbox",
+            label: "Tooltips"
+          }
+        )
+      ),
+      manager.row(
+        "",
+        manager.inputBoolean(
+          { property: "enableContextMenu" },
+          {
+            type: "checkbox",
+            label: "Context menu"
+          }
+        )
+      ),
+      manager.row(
+        "",
+        manager.inputBoolean(
+          { property: "enableSelection" },
+          {
+            type: "checkbox",
+            label: "Selection"
+          }
+        )
+      )
+    ];
   }
 
   public getTemplateParameters(): TemplateParameters {
