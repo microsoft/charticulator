@@ -26,489 +26,489 @@ export function getSVGIcon(path: string): string {
 // General icons
 addSVGIcon(
   "general/cross",
-  require("url-loader?esModule=false!resources/icons/icons_cross.svg")
+  require("resources/icons/icons_cross.svg")
 );
 addSVGIcon(
   "general/plus",
-  require("url-loader?esModule=false!resources/icons/icons_plus.svg")
+  require("resources/icons/icons_plus.svg")
 );
 addSVGIcon(
   "general/minus",
-  require("url-loader?esModule=false!resources/icons/icons_minus.svg")
+  require("resources/icons/icons_minus.svg")
 );
 addSVGIcon(
   "general/copy",
-  require("url-loader?esModule=false!resources/icons/icons_copy.svg")
+  require("resources/icons/icons_copy.svg")
 );
 addSVGIcon(
   "general/sort",
-  require("url-loader?esModule=false!resources/icons/icons_sort.svg")
+  require("resources/icons/icons_sort.svg")
 );
 addSVGIcon(
   "general/order-reversed",
-  require("url-loader?esModule=false!resources/icons/icons_reverse-order.svg")
+  require("resources/icons/icons_reverse-order.svg")
 );
 addSVGIcon(
   "general/dropdown",
-  require("url-loader?esModule=false!resources/icons/icons_dropdown.svg")
+  require("resources/icons/icons_dropdown.svg")
 );
 addSVGIcon(
   "general/edit",
-  require("url-loader?esModule=false!resources/icons/icons_edit.svg")
+  require("resources/icons/icons_edit.svg")
 );
 addSVGIcon(
   "general/eraser",
-  require("url-loader?esModule=false!resources/icons/icons_eraser.svg")
+  require("resources/icons/icons_eraser.svg")
 );
 addSVGIcon(
   "general/bind-data",
-  require("url-loader?esModule=false!resources/icons/icons_bind-data.svg")
+  require("resources/icons/icons_bind-data.svg")
 );
 addSVGIcon(
   "general/confirm",
-  require("url-loader?esModule=false!resources/icons/icons_confirm.svg")
+  require("resources/icons/icons_confirm.svg")
 );
 addSVGIcon(
   "general/more-horizontal",
-  require("url-loader?esModule=false!resources/icons/icons_more-horizontal.svg")
+  require("resources/icons/icons_more-horizontal.svg")
 );
 addSVGIcon(
   "general/more-vertical",
-  require("url-loader?esModule=false!resources/icons/icons_more-vertical.svg")
+  require("resources/icons/icons_more-vertical.svg")
 );
 addSVGIcon(
   "general/replace",
-  require("url-loader?esModule=false!resources/icons/icons_replace.svg")
+  require("resources/icons/icons_replace.svg")
 );
 addSVGIcon(
   "general/eye",
-  require("url-loader?esModule=false!resources/icons/icons_eye.svg")
+  require("resources/icons/icons_eye.svg")
 );
 addSVGIcon(
   "general/eye-faded",
-  require("url-loader?esModule=false!resources/icons/icons_eye-faded.svg")
+  require("resources/icons/icons_eye-faded.svg")
 );
 
 addSVGIcon(
   "general/popout",
-  require("url-loader?esModule=false!resources/icons/icons_popout.svg")
+  require("resources/icons/icons_popout.svg")
 );
 addSVGIcon(
   "general/order",
-  require("url-loader?esModule=false!resources/icons/icons_order.svg")
+  require("resources/icons/icons_order.svg")
 );
 
 addSVGIcon(
   "general/zoom-in",
-  require("url-loader?esModule=false!resources/icons/icons_zoom-in.svg")
+  require("resources/icons/icons_zoom-in.svg")
 );
 addSVGIcon(
   "general/zoom-out",
-  require("url-loader?esModule=false!resources/icons/icons_zoom-out.svg")
+  require("resources/icons/icons_zoom-out.svg")
 );
 addSVGIcon(
   "general/zoom-auto",
-  require("url-loader?esModule=false!resources/icons/icons_zoom-auto.svg")
+  require("resources/icons/icons_zoom-auto.svg")
 );
 
 addSVGIcon(
   "general/triangle-up",
-  require("url-loader?esModule=false!resources/icons/icons_triangle-up.svg")
+  require("resources/icons/icons_triangle-up.svg")
 );
 addSVGIcon(
   "general/triangle-down",
-  require("url-loader?esModule=false!resources/icons/icons_triangle-down.svg")
+  require("resources/icons/icons_triangle-down.svg")
 );
 addSVGIcon(
   "general/triangle-left",
-  require("url-loader?esModule=false!resources/icons/icons_triangle-left.svg")
+  require("resources/icons/icons_triangle-left.svg")
 );
 addSVGIcon(
   "general/triangle-right",
-  require("url-loader?esModule=false!resources/icons/icons_triangle-right.svg")
+  require("resources/icons/icons_triangle-right.svg")
 );
 
 addSVGIcon(
   "general/text-size-up",
-  require("url-loader?esModule=false!resources/icons/icons_text-size-up.svg")
+  require("resources/icons/icons_text-size-up.svg")
 );
 addSVGIcon(
   "general/text-size-down",
-  require("url-loader?esModule=false!resources/icons/icons_text-size-down.svg")
+  require("resources/icons/icons_text-size-down.svg")
 );
 addSVGIcon(
   "general/digits-more",
-  require("url-loader?esModule=false!resources/icons/icons_digits-more.svg")
+  require("resources/icons/icons_digits-more.svg")
 );
 addSVGIcon(
   "general/digits-less",
-  require("url-loader?esModule=false!resources/icons/icons_digits-less.svg")
+  require("resources/icons/icons_digits-less.svg")
 );
 
 // Toolbar icons
 addSVGIcon(
   "toolbar/new",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-new.svg")
+  require("resources/icons/icons_toolbar-new.svg")
 );
 addSVGIcon(
   "toolbar/open",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-open.svg")
+  require("resources/icons/icons_toolbar-open.svg")
 );
 addSVGIcon(
   "toolbar/save",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-save.svg")
+  require("resources/icons/icons_toolbar-save.svg")
 );
 addSVGIcon(
   "toolbar/copy",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-copy.svg")
+  require("resources/icons/icons_toolbar-copy.svg")
 );
 addSVGIcon(
   "toolbar/download",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-download.svg")
+  require("resources/icons/icons_toolbar-download.svg")
 );
 addSVGIcon(
   "toolbar/export",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-export.svg")
+  require("resources/icons/icons_toolbar-export.svg")
 );
 addSVGIcon(
   "toolbar/undo",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-undo.svg")
+  require("resources/icons/icons_toolbar-undo.svg")
 );
 addSVGIcon(
   "toolbar/redo",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-redo.svg")
+  require("resources/icons/icons_toolbar-redo.svg")
 );
 addSVGIcon(
   "toolbar/help",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-help.svg")
+  require("resources/icons/icons_toolbar-help.svg")
 );
 addSVGIcon(
   "toolbar/import",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-import.svg")
+  require("resources/icons/icons_toolbar-import.svg")
 );
 addSVGIcon(
   "toolbar/back",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-back.svg")
+  require("resources/icons/icons_toolbar-back.svg")
 );
 addSVGIcon(
   "toolbar/trash",
-  require("url-loader?esModule=false!resources/icons/icons_toolbar-trash.svg")
+  require("resources/icons/icons_toolbar-trash.svg")
 );
 
 addSVGIcon(
   "app-icon",
-  require("url-loader?esModule=false!resources/icons/app_icon.svg")
+  require("resources/icons/app_icon.svg")
 );
 
 // Scaffold icons
 addSVGIcon(
   "scaffold/cartesian-x",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-xline.svg")
+  require("resources/icons/icons_scaffold-xline.svg")
 );
 addSVGIcon(
   "scaffold/cartesian-y",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-yline.svg")
+  require("resources/icons/icons_scaffold-yline.svg")
 );
 addSVGIcon(
   "scaffold/circle",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-circle.svg")
+  require("resources/icons/icons_scaffold-circle.svg")
 );
 addSVGIcon(
   "scaffold/curve",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-curve.svg")
+  require("resources/icons/icons_scaffold-curve.svg")
 );
 addSVGIcon(
   "scaffold/spiral",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-spiral.svg")
+  require("resources/icons/icons_scaffold-spiral.svg")
 );
 addSVGIcon(
   "scaffold/xwrap",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-xwrap.svg")
+  require("resources/icons/icons_scaffold-xwrap.svg")
 );
 addSVGIcon(
   "scaffold/ywrap",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-ywrap.svg")
+  require("resources/icons/icons_scaffold-ywrap.svg")
 );
 addSVGIcon(
   "scaffold/map",
-  require("url-loader?esModule=false!resources/icons/icons_scaffold-map.svg")
+  require("resources/icons/icons_scaffold-map.svg")
 );
 
 addSVGIcon(
   "plot/line",
-  require("url-loader?esModule=false!resources/icons/icons_plot-line.svg")
+  require("resources/icons/icons_plot-line.svg")
 );
 addSVGIcon(
   "plot/curve",
-  require("url-loader?esModule=false!resources/icons/icons_plot-curve.svg")
+  require("resources/icons/icons_plot-curve.svg")
 );
 addSVGIcon(
   "plot/region",
-  require("url-loader?esModule=false!resources/icons/icons_plot-region.svg")
+  require("resources/icons/icons_plot-region.svg")
 );
 
 // Chart & Glyph
 addSVGIcon(
   "chart",
-  require("url-loader?esModule=false!resources/icons/icons_chart.svg")
+  require("resources/icons/icons_chart.svg")
 );
 addSVGIcon(
   "glyph",
-  require("url-loader?esModule=false!resources/icons/icons_glyph.svg")
+  require("resources/icons/icons_glyph.svg")
 );
 
 // Plot segment icons
 addSVGIcon(
   "plot-segment/cartesian",
-  require("url-loader?esModule=false!resources/icons/icons_plot-segment-cartesian.svg")
+  require("resources/icons/icons_plot-segment-cartesian.svg")
 );
 addSVGIcon(
   "plot-segment/polar",
-  require("url-loader?esModule=false!resources/icons/icons_plot-segment-polar.svg")
+  require("resources/icons/icons_plot-segment-polar.svg")
 );
 addSVGIcon(
   "plot-segment/line",
-  require("url-loader?esModule=false!resources/icons/icons_plot-segment-line.svg")
+  require("resources/icons/icons_plot-segment-line.svg")
 );
 addSVGIcon(
   "plot-segment/curve",
-  require("url-loader?esModule=false!resources/icons/icons_plot-segment-curve.svg")
+  require("resources/icons/icons_plot-segment-curve.svg")
 );
 
 // Guide icons
 addSVGIcon(
   "guide/x",
-  require("url-loader?esModule=false!resources/icons/icons_guide-xline.svg")
+  require("resources/icons/icons_guide-xline.svg")
 );
 addSVGIcon(
   "guide/y",
-  require("url-loader?esModule=false!resources/icons/icons_guide-yline.svg")
+  require("resources/icons/icons_guide-yline.svg")
 );
 addSVGIcon(
   "guide/coordinator-x",
-  require("url-loader?esModule=false!resources/icons/icons_guide-coordinator-x.svg")
+  require("resources/icons/icons_guide-coordinator-x.svg")
 );
 addSVGIcon(
   "guide/coordinator-y",
-  require("url-loader?esModule=false!resources/icons/icons_guide-coordinator-y.svg")
+  require("resources/icons/icons_guide-coordinator-y.svg")
 );
 
 // Link icons
 addSVGIcon(
   "link/tool",
-  require("url-loader?esModule=false!resources/icons/icons_link-tool.svg")
+  require("resources/icons/icons_link-tool.svg")
 );
 addSVGIcon(
   "link/line",
-  require("url-loader?esModule=false!resources/icons/icons_link-line.svg")
+  require("resources/icons/icons_link-line.svg")
 );
 addSVGIcon(
   "link/band",
-  require("url-loader?esModule=false!resources/icons/icons_link-band.svg")
+  require("resources/icons/icons_link-band.svg")
 );
 addSVGIcon(
   "link/between",
-  require("url-loader?esModule=false!resources/icons/icons_link-between.svg")
+  require("resources/icons/icons_link-between.svg")
 );
 addSVGIcon(
   "link/table",
-  require("url-loader?esModule=false!resources/icons/icons_link-table.svg")
+  require("resources/icons/icons_link-table.svg")
 );
 addSVGIcon(
   "link/through",
-  require("url-loader?esModule=false!resources/icons/icons_link-through.svg")
+  require("resources/icons/icons_link-through.svg")
 );
 
 // Mark element icons
 addSVGIcon(
   "mark/anchor",
-  require("url-loader?esModule=false!resources/icons/icons_element-anchor.svg")
+  require("resources/icons/icons_element-anchor.svg")
 );
 addSVGIcon(
   "mark/rect",
-  require("url-loader?esModule=false!resources/icons/icons_element-rect.svg")
+  require("resources/icons/icons_element-rect.svg")
 );
 addSVGIcon(
   "mark/ellipse",
-  require("url-loader?esModule=false!resources/icons/icons_element-ellipse.svg")
+  require("resources/icons/icons_element-ellipse.svg")
 );
 addSVGIcon(
   "mark/triangle",
-  require("url-loader?esModule=false!resources/icons/icons_element-triangle.svg")
+  require("resources/icons/icons_element-triangle.svg")
 );
 addSVGIcon(
   "mark/image",
-  require("url-loader?esModule=false!resources/icons/icons_element-image.svg")
+  require("resources/icons/icons_element-image.svg")
 );
 addSVGIcon(
   "mark/icon",
-  require("url-loader?esModule=false!resources/icons/icons_element-icon.svg")
+  require("resources/icons/icons_element-icon.svg")
 );
 addSVGIcon(
   "mark/symbol",
-  require("url-loader?esModule=false!resources/icons/icons_element-symbol.svg")
+  require("resources/icons/icons_element-symbol.svg")
 );
 addSVGIcon(
   "mark/line",
-  require("url-loader?esModule=false!resources/icons/icons_element-line.svg")
+  require("resources/icons/icons_element-line.svg")
 );
 addSVGIcon(
   "mark/text",
-  require("url-loader?esModule=false!resources/icons/icons_element-text.svg")
+  require("resources/icons/icons_element-text.svg")
 );
 addSVGIcon(
   "mark/textbox",
-  require("url-loader?esModule=false!resources/icons/icons_element-textbox.svg")
+  require("resources/icons/icons_element-textbox.svg")
 );
 addSVGIcon(
   "mark/data-axis",
-  require("url-loader?esModule=false!resources/icons/icons_data-axis.svg")
+  require("resources/icons/icons_data-axis.svg")
 );
 addSVGIcon(
   "mark/nested-chart",
-  require("url-loader?esModule=false!resources/icons/icons_nested-chart.svg")
+  require("resources/icons/icons_nested-chart.svg")
 );
 addSVGIcon(
   "stroke/dashed",
-  require("url-loader?esModule=false!resources/icons/icons_stroke-dashed.svg")
+  require("resources/icons/icons_stroke-dashed.svg")
 );
 addSVGIcon(
   "stroke/dotted",
-  require("url-loader?esModule=false!resources/icons/icons_stroke-dotted.svg")
+  require("resources/icons/icons_stroke-dotted.svg")
 );
 addSVGIcon(
   "stroke/solid",
-  require("url-loader?esModule=false!resources/icons/icons_stroke-solid.svg")
+  require("resources/icons/icons_stroke-solid.svg")
 );
 
 // Handle icons
 addSVGIcon(
   "sublayout/overlap",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-overlap.svg")
+  require("resources/icons/icons_sublayout-overlap.svg")
 );
 addSVGIcon(
   "sublayout/dodge-x",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-dodge-horizontal.svg")
+  require("resources/icons/icons_sublayout-dodge-horizontal.svg")
 );
 addSVGIcon(
   "sublayout/dodge-y",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-dodge-vertical.svg")
+  require("resources/icons/icons_sublayout-dodge-vertical.svg")
 );
 addSVGIcon(
   "sublayout/dodge-angular",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-dodge-angular.svg")
+  require("resources/icons/icons_sublayout-dodge-angular.svg")
 );
 addSVGIcon(
   "sublayout/dodge-radial",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-dodge-radial.svg")
+  require("resources/icons/icons_sublayout-dodge-radial.svg")
 );
 addSVGIcon(
   "sublayout/grid",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-grid.svg")
+  require("resources/icons/icons_sublayout-grid.svg")
 );
 addSVGIcon(
   "sublayout/polar-grid",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-polar-grid.svg")
+  require("resources/icons/icons_sublayout-polar-grid.svg")
 );
 addSVGIcon(
   "sublayout/packing",
-  require("url-loader?esModule=false!resources/icons/icons_sublayout-packing.svg")
+  require("resources/icons/icons_sublayout-packing.svg")
 );
 addSVGIcon(
   "align/left",
-  require("url-loader?esModule=false!resources/icons/icons_align-left.svg")
+  require("resources/icons/icons_align-left.svg")
 );
 addSVGIcon(
   "align/x-middle",
-  require("url-loader?esModule=false!resources/icons/icons_align-x-middle.svg")
+  require("resources/icons/icons_align-x-middle.svg")
 );
 addSVGIcon(
   "align/right",
-  require("url-loader?esModule=false!resources/icons/icons_align-right.svg")
+  require("resources/icons/icons_align-right.svg")
 );
 addSVGIcon(
   "align/top",
-  require("url-loader?esModule=false!resources/icons/icons_align-top.svg")
+  require("resources/icons/icons_align-top.svg")
 );
 addSVGIcon(
   "align/y-middle",
-  require("url-loader?esModule=false!resources/icons/icons_align-y-middle.svg")
+  require("resources/icons/icons_align-y-middle.svg")
 );
 addSVGIcon(
   "align/bottom",
-  require("url-loader?esModule=false!resources/icons/icons_align-bottom.svg")
+  require("resources/icons/icons_align-bottom.svg")
 );
 addSVGIcon(
   "text-align/left",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-left.svg")
+  require("resources/icons/icons_text-align-left.svg")
 );
 addSVGIcon(
   "text-align/x-middle",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-x-middle.svg")
+  require("resources/icons/icons_text-align-x-middle.svg")
 );
 addSVGIcon(
   "text-align/right",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-right.svg")
+  require("resources/icons/icons_text-align-right.svg")
 );
 addSVGIcon(
   "text-align/top",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-top.svg")
+  require("resources/icons/icons_text-align-top.svg")
 );
 addSVGIcon(
   "text-align/y-middle",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-y-middle.svg")
+  require("resources/icons/icons_text-align-y-middle.svg")
 );
 addSVGIcon(
   "text-align/bottom",
-  require("url-loader?esModule=false!resources/icons/icons_text-align-bottom.svg")
+  require("resources/icons/icons_text-align-bottom.svg")
 );
 
 // Data type icons
 addSVGIcon(
   "type/boolean",
-  require("url-loader?esModule=false!resources/icons/icons_type-boolean.svg")
+  require("resources/icons/icons_type-boolean.svg")
 );
 addSVGIcon(
   "type/categorical",
-  require("url-loader?esModule=false!resources/icons/icons_type-categorical.svg")
+  require("resources/icons/icons_type-categorical.svg")
 );
 addSVGIcon(
   "type/numerical",
-  require("url-loader?esModule=false!resources/icons/icons_type-numerical.svg")
+  require("resources/icons/icons_type-numerical.svg")
 );
 addSVGIcon(
   "type/ordinal",
-  require("url-loader?esModule=false!resources/icons/icons_type-ordinal.svg")
+  require("resources/icons/icons_type-ordinal.svg")
 );
 addSVGIcon(
   "type/temporal",
-  require("url-loader?esModule=false!resources/icons/icons_type-temporal.svg")
+  require("resources/icons/icons_type-temporal.svg")
 );
 
 // Checkbox
 addSVGIcon(
   "checkbox/empty",
-  require("url-loader?esModule=false!resources/icons/icons_checkbox-empty.svg")
+  require("resources/icons/icons_checkbox-empty.svg")
 );
 addSVGIcon(
   "checkbox/checked",
-  require("url-loader?esModule=false!resources/icons/icons_checkbox-checked.svg")
+  require("resources/icons/icons_checkbox-checked.svg")
 );
 
 addSVGIcon(
   "legend/legend",
-  require("url-loader?esModule=false!resources/icons/icons_legend.svg")
+  require("resources/icons/icons_legend.svg")
 );
 addSVGIcon(
   "scale/scale",
-  require("url-loader?esModule=false!resources/icons/icons_scale.svg")
+  require("resources/icons/icons_scale.svg")
 );
 addSVGIcon(
   "scale/color",
-  require("url-loader?esModule=false!resources/icons/icons_scale-color.svg")
+  require("resources/icons/icons_scale-color.svg")
 );
 
 addSVGIcon(
   "loading",
-  require("url-loader?esModule=false!resources/icons/loading-01.svg")
+  require("resources/icons/loading-01.svg")
 );

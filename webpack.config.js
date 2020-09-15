@@ -45,6 +45,22 @@ module.exports = (env, { mode }) => {
         libraryTarget: "var",
         library: "Charticulator"
       },
+      module: {
+        rules: [
+          {
+              test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
+              use: [
+                  {
+                      loader: require.resolve('url-loader'),
+                      options: {
+                        esModule: false,
+                        limit: false
+                      }
+                  }
+              ]
+          }
+        ]
+      },
       resolve: {
         alias: {
           resources: __dirname + "/resources"
