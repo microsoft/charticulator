@@ -54,7 +54,7 @@ module.exports = (env, { mode }) => {
                       loader: require.resolve('url-loader'),
                       options: {
                         esModule: false,
-                        limit: false
+                        limit: 16384
                       }
                   }
               ]
