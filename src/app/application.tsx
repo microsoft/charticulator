@@ -209,7 +209,11 @@ export class Application {
               this.config.CorsPolicy.TargetOrigins
             );
           }
-          if (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) {
+          if (
+            this.config.CorsPolicy &&
+            this.config.CorsPolicy.Embedded &&
+            onSave
+          ) {
             onSave({
               specification: newSpecification,
               template
@@ -241,7 +245,11 @@ export class Application {
           },
           this.config.CorsPolicy.TargetOrigins
         );
-      } else if (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) {
+      } else if (
+        this.config.CorsPolicy &&
+        this.config.CorsPolicy.Embedded &&
+        onInitialized
+      ) {
         onInitialized(id, (data: any) => {
           setupCallback(data);
         });
