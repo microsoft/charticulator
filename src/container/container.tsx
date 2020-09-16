@@ -19,7 +19,6 @@ import { TemplateInstance } from "./chart_template";
 
 export interface ChartContainerComponentProps {
   chart: Specification.Chart;
-  forceUpdate: (forceUpdate: () => void) => void;
   dataset: Dataset.Dataset;
   defaultAttributes?: Prototypes.DefaultAttributes;
   defaultWidth: number;
@@ -51,7 +50,6 @@ export class ChartContainerComponent extends React.Component<
 
   constructor(props: ChartContainerComponentProps) {
     super(props);
-    props.forceUpdate(this.forceUpdate.bind(this));
   }
 
   public component: ChartComponent;
@@ -191,7 +189,8 @@ export class ChartContainer extends EventEmitter {
   private chart: Specification.Chart;
   private defaultAttributes: Prototypes.DefaultAttributes;
 
-  private forceUpdateCallback: () => void;
+  private width: number = 1200;
+  private height: number = 800;
 
   constructor(
     public readonly instance: TemplateInstance,
@@ -283,17 +282,16 @@ export class ChartContainer extends EventEmitter {
 
   public setChart(chart: Specification.Chart) {
     this.chart = chart;
-    this.forceUpdateCallback();
+    ReactDOM.render(this.reactMount(this.width, this.height), this.container);
   }
 
   public reactMount(width: number = 1200, height: number = 800) {
+    this.width = width;
+    this.height = height;
     return (
       <ChartContainerComponent
         ref={e => (this.component = e)}
         chart={this.chart}
-        forceUpdate={(forceUpdate: () => void) =>
-          (this.forceUpdateCallback = forceUpdate)
-        }
         dataset={this.dataset}
         defaultWidth={width}
         defaultHeight={height}
