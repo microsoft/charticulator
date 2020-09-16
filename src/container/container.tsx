@@ -48,6 +48,10 @@ export class ChartContainerComponent extends React.Component<
     selection: null
   };
 
+  constructor(props: ChartContainerComponentProps) {
+    super(props);
+  }
+
   public component: ChartComponent;
 
   public setSelection(
@@ -185,6 +189,9 @@ export class ChartContainer extends EventEmitter {
   private chart: Specification.Chart;
   private defaultAttributes: Prototypes.DefaultAttributes;
 
+  private width: number = 1200;
+  private height: number = 800;
+
   constructor(
     public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset
@@ -273,21 +280,15 @@ export class ChartContainer extends EventEmitter {
     return this.component.setAttributeMapping(objectID, attribute, mapping);
   }
 
-  /** Mount the chart to a container element */
-  public mount(
-    container: string | Element,
-    width: number = 1200,
-    height: number = 800
-  ) {
-    // We only mount in one place
-    if (this.container) {
-      this.unmount();
-    }
-    if (typeof container == "string") {
-      container = document.getElementById(container);
-    }
-    this.container = container;
-    ReactDOM.render(
+  public setChart(chart: Specification.Chart) {
+    this.chart = chart;
+    ReactDOM.render(this.reactMount(this.width, this.height), this.container);
+  }
+
+  public reactMount(width: number = 1200, height: number = 800) {
+    this.width = width;
+    this.height = height;
+    return (
       <ChartContainerComponent
         ref={e => (this.component = e)}
         chart={this.chart}
@@ -328,9 +329,25 @@ export class ChartContainer extends EventEmitter {
             modifiers
           );
         }}
-      />,
-      container
+      />
     );
+  }
+
+  /** Mount the chart to a container element */
+  public mount(
+    container: string | Element,
+    width: number = 1200,
+    height: number = 800
+  ) {
+    // We only mount in one place
+    if (this.container) {
+      this.unmount();
+    }
+    if (typeof container == "string") {
+      container = document.getElementById(container);
+    }
+    this.container = container;
+    ReactDOM.render(this.reactMount(width, height), container);
   }
 
   /** Unmount the chart */

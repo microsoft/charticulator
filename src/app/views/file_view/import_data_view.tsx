@@ -450,7 +450,9 @@ export class ImportDataView extends React.Component<
         <div className="charticulator__credits">
           <p
             dangerouslySetInnerHTML={{
-              __html: getConfig().LegalNotices.privacyStatementHTML
+              __html:
+                getConfig().LegalNotices &&
+                getConfig().LegalNotices.privacyStatementHTML,
             }}
           />
         </div>

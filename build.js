@@ -184,6 +184,10 @@ let COMMANDS = {
       "CHARTICULATOR_CONFIG",
       mixin
     );
+    await yamlToJSON(
+      "config.yml",
+      "dist/scripts/config.json"
+    );
   },
 
   // Compile sass files
