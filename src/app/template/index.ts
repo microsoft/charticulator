@@ -70,17 +70,28 @@ export class ChartTemplateBuilder {
     }
   }
 
-  public addColumn(table: string, column: string) {
+  public addColumn(table: string, columnName: string) {
     if (table == null) {
       table = this.dataset.tables[0].name;
     }
     const tableObject = getByName(this.dataset.tables, table);
     if (tableObject) {
-      if (getByName(tableObject.columns, column)) {
+      const column = getByName(tableObject.columns, columnName);
+      if (column) {
+        if (column.metadata.isRaw) {
+          const notRawColumn = tableObject.columns.find(
+            col => col.metadata.rawColumnName === column.name
+          );
+          if (this.tableColumns.hasOwnProperty(table)) {
+            this.tableColumns[table].add(notRawColumn.name);
+          } else {
+            this.tableColumns[table] = new Set([notRawColumn.name]);
+          }
+        }
         if (this.tableColumns.hasOwnProperty(table)) {
-          this.tableColumns[table].add(column);
+          this.tableColumns[table].add(columnName);
         } else {
-          this.tableColumns[table] = new Set([column]);
+          this.tableColumns[table] = new Set([columnName]);
         }
       }
     }
