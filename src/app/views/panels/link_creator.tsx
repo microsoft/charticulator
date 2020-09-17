@@ -19,9 +19,13 @@ import { ButtonRaised, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import { classNames } from "../../utils";
-import { DataFieldSelector } from "../dataset/data_field_selector";
+import {
+  DataFieldSelector,
+  DataFieldSelectorValue
+} from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
+import { PanelRadioControl } from "./radio_control";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -495,7 +499,10 @@ export class LinkCreationPanel extends ContextedComponent<
 
         const facetBy = this.groupBySelector
           ? this.groupBySelector.value
-            ? [this.groupBySelector.value.expression]
+            ? [
+                (this.groupBySelector.value as DataFieldSelectorValue)
+                  .expression
+              ]
             : []
           : [];
 
@@ -744,54 +751,6 @@ export class PlotSegmentSelector extends ContextedComponent<
           })}
         </ReorderListView>
       </div>
-    );
-  }
-}
-
-export interface PanelRadioControlProps {
-  options: string[];
-  icons?: string[];
-  labels?: string[];
-  showText?: boolean;
-  asList?: boolean;
-  value?: string;
-  onChange?: (newValue: string) => void;
-}
-
-export class PanelRadioControl extends React.Component<
-  PanelRadioControlProps,
-  {}
-> {
-  public render() {
-    const mainClass = this.props.asList
-      ? "charticulator-panel-list-view"
-      : "charticulator-panel-list-view is-inline";
-    return (
-      <span className={mainClass}>
-        {this.props.options.map((option, index) => {
-          return (
-            <span
-              className={classNames("el-item", [
-                "is-active",
-                this.props.value == option
-              ])}
-              key={option}
-              onClick={() => {
-                if (this.props) {
-                  this.props.onChange(option);
-                }
-              }}
-            >
-              {this.props.icons ? (
-                <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
-              ) : null}
-              {this.props.labels && this.props.showText ? (
-                <span className="el-text">{this.props.labels[index]}</span>
-              ) : null}
-            </span>
-          );
-        })}
-      </span>
     );
   }
 }

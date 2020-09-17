@@ -3,14 +3,14 @@
 import { Dataset } from "../../core";
 
 export class ObjectType {
-  constructor(public classID: string, public options: string = null) { }
+  constructor(public classID: string, public options: string = null) {}
 }
 
 export class ScaffoldType {
-  constructor(public type: string) { }
+  constructor(public type: string) {}
 }
 
-export class DropZoneData { }
+export class DropZoneData {}
 
 export class DataExpression extends DropZoneData {
   constructor(
@@ -19,7 +19,8 @@ export class DataExpression extends DropZoneData {
     public valueType: Dataset.DataType,
     public metadata: Dataset.ColumnMetadata = null,
     public rawColumnExpression: string,
-    public scaleID?: string
+    public scaleID?: string,
+    public allowSelectValue?: boolean
   ) {
     super();
   }

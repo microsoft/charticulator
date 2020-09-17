@@ -2,11 +2,12 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { Color, getColorConverter } from "../../core";
+import { Color, getColorConverter, Prototypes } from "../../core";
 import { ColorPalette, predefinedPalettes } from "../resources";
 import { classNames } from "../utils";
 import { Button } from "../views/panels/widgets/controls";
 import { ColorSpaceDescription, ColorSpacePicker } from "./color_space_picker";
+import { AppStore } from "../stores";
 
 const sRGB_to_HCL = getColorConverter("sRGB", "hcl");
 const HCL_to_sRGB = getColorConverter("hcl", "sRGB");
@@ -202,6 +203,7 @@ export interface ColorPickerProps {
   defaultValue?: Color;
   allowNull?: boolean;
   onPick?: (color: Color) => void;
+  store?: AppStore;
 }
 
 export interface ColorPickerState {

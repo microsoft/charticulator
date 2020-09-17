@@ -17,11 +17,13 @@ import {
 import { PopupView } from "../../../../controllers/popup_controller";
 
 import { InputText } from "./input_text";
+import { AppStore } from "../../../../stores";
 
 export interface InputColorProps {
   defaultValue: Color;
   allowNull?: boolean;
   onEnter: (value: Color) => boolean;
+  store?: AppStore;
 }
 
 export class InputColor extends React.Component<InputColorProps, {}> {
@@ -43,6 +45,7 @@ export class InputColor extends React.Component<InputColorProps, {}> {
                 return (
                   <PopupView context={context}>
                     <ColorPicker
+                      store={this.props.store}
                       allowNull={true}
                       onPick={color => {
                         if (color == null) {

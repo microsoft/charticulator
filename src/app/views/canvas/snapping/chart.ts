@@ -16,9 +16,15 @@ export class ChartSnappingSession extends SnappingSession<
     guides: Array<SnappableGuide<Specification.ChartElement>>,
     markLayout: Specification.ChartElement,
     bound: Prototypes.Handles.Description,
-    threshold: number
+    threshold: number,
+    findClosestSnappingGuide: boolean
   ) {
-    super(guides.filter(x => x.element != markLayout), bound, threshold);
+    super(
+      guides.filter(x => x.element != markLayout),
+      bound,
+      threshold,
+      findClosestSnappingGuide
+    );
     this.markLayout = markLayout;
   }
 

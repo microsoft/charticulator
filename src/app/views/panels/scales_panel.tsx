@@ -150,6 +150,8 @@ export class ScalesPanel extends ContextedComponent<
               dragData={() => {
                 const type = (element.mappings[key] as any).valueType;
                 const scaleID = (element.mappings[key] as any).scale;
+                const allowSelectValue = (element.mappings[key] as any)
+                  .allowSelectValue;
                 const aggregation = Expression.getDefaultAggregationFunction(
                   type
                 );
@@ -190,7 +192,8 @@ export class ScalesPanel extends ContextedComponent<
                   type,
                   metadata,
                   rawColumnExpr,
-                  scaleID
+                  scaleID,
+                  allowSelectValue
                 );
                 return r;
               }}

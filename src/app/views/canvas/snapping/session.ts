@@ -8,18 +8,21 @@ export class SnappingSession<ElementType> {
   public candidates: Array<SnappableGuide<ElementType>>;
   public handle: Prototypes.Handles.Description;
   public threshold: number;
+  public findClosestSnappingGuide: boolean;
 
   public currentCandidates: Array<SnappableGuide<ElementType>>;
 
   constructor(
     guides: Array<SnappableGuide<ElementType>>,
     handle: Prototypes.Handles.Description,
-    threshold: number
+    threshold: number,
+    findClosest: boolean
   ) {
     this.handle = handle;
     this.threshold = threshold;
     this.candidates = [];
     this.currentCandidates = null;
+    this.findClosestSnappingGuide = findClosest;
 
     switch (handle.type) {
       case "line":
@@ -75,24 +78,41 @@ export class SnappingSession<ElementType> {
           let minYDistance: number = null;
           for (const g of this.candidates) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
-            if (guide.type == "x") {
-              const d = Math.abs(guide.value - (e.x as number));
-              if (
-                d < this.threshold &&
-                (minXDistance == null || d < minXDistance - EPSILON)
-              ) {
-                minXDistance = d;
-                minXGuide = g;
+            if (this.findClosestSnappingGuide) {
+              // Find closest point
+              if (guide.type == "y") {
+                const dY = Math.abs(guide.value - (e.y as number));
+                if (dY < minYDistance || minYDistance == null) {
+                  minYDistance = dY;
+                  minYGuide = g;
+                }
+              } else if (guide.type == "x") {
+                const dX = Math.abs(guide.value - (e.x as number));
+                if (dX < minXDistance || minXDistance == null) {
+                  minXDistance = dX;
+                  minXGuide = g;
+                }
               }
-            }
-            if (guide.type == "y") {
-              const d = Math.abs(guide.value - (e.y as number));
-              if (
-                d < this.threshold &&
-                (minYDistance == null || d < minYDistance - EPSILON)
-              ) {
-                minYDistance = d;
-                minYGuide = g;
+            } else {
+              // Filter guides by threshold
+              if (guide.type == "x") {
+                const d = Math.abs(guide.value - (e.x as number));
+                if (
+                  d < this.threshold &&
+                  (minXDistance == null || d < minXDistance - EPSILON)
+                ) {
+                  minXDistance = d;
+                  minXGuide = g;
+                }
+              } else if (guide.type == "y") {
+                const d = Math.abs(guide.value - (e.y as number));
+                if (
+                  d < this.threshold &&
+                  (minYDistance == null || d < minYDistance - EPSILON)
+                ) {
+                  minYDistance = d;
+                  minYGuide = g;
+                }
               }
             }
           }

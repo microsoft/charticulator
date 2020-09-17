@@ -123,6 +123,8 @@ export interface ScaleMapping extends Mapping {
   valueType: DataType;
   /** The id of the scale to use. If null, use the expression directly */
   scale?: string;
+  /** Index of value in mapping */
+  valueIndex?: number;
 }
 
 /** Text mapping: map data to text */

@@ -345,8 +345,8 @@ export class DataAxisClass extends MarkClass<
       r.push(
         manager.arrayWidget(
           { property: "dataExpressions" },
-          item =>
-            manager.inputExpression(
+          item => {
+            return manager.inputExpression(
               {
                 property: "dataExpressions",
                 field:
@@ -355,7 +355,8 @@ export class DataAxisClass extends MarkClass<
                     : [item.field, "expression"]
               },
               { table: this.getGlyphClass().object.table }
-            ),
+            );
+          },
           {
             allowDelete: true,
             allowReorder: true

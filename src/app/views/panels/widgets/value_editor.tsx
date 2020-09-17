@@ -111,6 +111,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                   context => (
                     <PopupView context={context}>
                       <ColorPicker
+                        store={this.store}
                         defaultValue={color}
                         allowNull={true}
                         onPick={color => {
