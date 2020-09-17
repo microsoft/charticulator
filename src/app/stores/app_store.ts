@@ -811,7 +811,6 @@ export class AppStore extends BaseStore {
         type: "parent",
         parentAttribute: "y2"
       } as Specification.ParentMapping;
-      // this.chartManager.addChartElement(newLegend);
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
         value: 100
@@ -834,7 +833,6 @@ export class AppStore extends BaseStore {
         type: "parent",
         parentAttribute: "y2"
       } as Specification.ParentMapping;
-      // this.chartManager.addChartElement(newLegend);
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
         value: 100
@@ -1016,8 +1014,7 @@ export class AppStore extends BaseStore {
           minYDistance = dY;
           minYGuide = g;
         }
-      }
-      if (guide.type == "x") {
+      } else if (guide.type == "x") {
         const dX = Math.abs(guide.value - point.x);
         if (dX < minXDistance || minXDistance == null) {
           minXDistance = dX;

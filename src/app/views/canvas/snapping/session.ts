@@ -86,8 +86,7 @@ export class SnappingSession<ElementType> {
                   minYDistance = dY;
                   minYGuide = g;
                 }
-              }
-              if (guide.type == "x") {
+              } else if (guide.type == "x") {
                 const dX = Math.abs(guide.value - (e.x as number));
                 if (dX < minXDistance || minXDistance == null) {
                   minXDistance = dX;
@@ -105,8 +104,7 @@ export class SnappingSession<ElementType> {
                   minXDistance = d;
                   minXGuide = g;
                 }
-              }
-              if (guide.type == "y") {
+              } else if (guide.type == "y") {
                 const d = Math.abs(guide.value - (e.y as number));
                 if (
                   d < this.threshold &&
