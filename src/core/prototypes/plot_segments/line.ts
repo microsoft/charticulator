@@ -18,7 +18,8 @@ import {
   buildAxisWidgets,
   getCategoricalAxis,
   buildAxisInference,
-  buildAxisProperties
+  buildAxisProperties,
+  getNumericalInterpolate
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
 import { ChartStateManager } from "..";
@@ -149,7 +150,8 @@ export class LineGuide extends PlotSegmentClass {
               const row = rows.getGroupedContext(dataIndices[index]);
               const expr = this.parent.dataflow.cache.parse(data.expression);
               const value = expr.getNumberValue(row);
-              t = (value - data.domainMin) / (data.domainMax - data.domainMin);
+              const interp = getNumericalInterpolate(data);
+              t = interp(value);
             }
             break;
           case "categorical":
@@ -175,14 +177,20 @@ export class LineGuide extends PlotSegmentClass {
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [[t, x2], [1 - t, x1]],
+        [
+          [t, x2],
+          [1 - t, x1]
+        ],
         [[1, solver.attr(markState.attributes, "x")]]
       );
       // add constraint t*y2 + (1 - t) * y1 = y
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [[t, y2], [1 - t, y1]],
+        [
+          [t, y2],
+          [1 - t, y1]
+        ],
         [[1, solver.attr(markState.attributes, "y")]]
       );
     }

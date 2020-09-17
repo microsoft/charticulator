@@ -14,6 +14,7 @@ import {
   zipArray,
   uniqueID,
   Scale,
+  MessageType,
   compareMarkAttributeNames
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
@@ -136,6 +137,8 @@ export class AppStore extends BaseStore {
 
   private propertyExportName = new Map<string, string>();
 
+  public messageState: Map<MessageType | string, string>;
+
   constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
     super(null);
 
@@ -152,6 +155,8 @@ export class AppStore extends BaseStore {
 
     this.newChartEmpty();
     this.solveConstraintsAndUpdateGraphics();
+
+    this.messageState = new Map();
 
     this.registerExportTemplateTarget(
       "Charticulator Template",

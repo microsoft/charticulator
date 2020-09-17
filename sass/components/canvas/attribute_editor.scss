@@ -528,6 +528,10 @@
       &.is-active {
         background: $gray-190;
       }
+
+      &.auto-height {
+        height: auto;
+      }
     }
 
     .el-object-scale-attribute {

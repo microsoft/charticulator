@@ -7,7 +7,8 @@ import {
   ErrorBoundary,
   FloatingPanel,
   MinimizablePane,
-  MinimizablePanelView
+  MinimizablePanelView,
+  MessagePanel
 } from "./components";
 import { DragStateView, PopupContainer } from "./controllers";
 import { AppStore } from "./stores";
@@ -21,6 +22,8 @@ import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
+import { Action } from "../core";
+import { ClearMessages } from "./actions/actions";
 
 export interface MainViewProps {
   store: AppStore;
@@ -45,6 +48,8 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       attributeViewMaximized: false,
       scaleViewMaximized: false
     };
+
+    props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
   }
 
   public static childContextTypes = {
@@ -203,6 +208,23 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           ) : null}
         </div>
         <PopupContainer controller={globals.popupController} />
+        {this.props.store.messageState.size ? (
+          <div className="charticulator__floating-panels_errors">
+            <FloatingPanel
+              floatInCenter={true}
+              scroll={true}
+              peerGroup="messages"
+              title="Errors"
+              closeButtonIcon={"general/cross"}
+              height={200}
+              width={350}
+            >
+              <ErrorBoundary>
+                <MessagePanel store={this.props.store} />
+              </ErrorBoundary>
+            </FloatingPanel>
+          </div>
+        ) : null}
         <DragStateView controller={globals.dragController} />
       </div>
     );

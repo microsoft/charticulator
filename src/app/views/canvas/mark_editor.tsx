@@ -1439,7 +1439,13 @@ export class SingleMarkView
 
     return (
       <div className="mark-editor-single-view">
-        <div className="mark-view-container">
+        <div
+          className="mark-view-container"
+          style={{
+            width: this.props.width as number,
+            height: this.props.height as number
+          }}
+        >
           <svg
             className="canvas-view canvas-view-mark"
             ref="canvas"
