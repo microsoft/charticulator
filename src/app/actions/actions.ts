@@ -566,14 +566,18 @@ export class SetScaleAttribute extends Action {
 }
 
 export class ToggleLegendForScale extends Action {
-  constructor(public scale: string) {
+  constructor(
+    public scale: string,
+    public mapping: Specification.ScaleMapping
+  ) {
     super();
   }
 
   public digest() {
     return {
       name: "ToggleLegendForScale",
-      scale: this.scale
+      scale: this.scale,
+      mapping: this.mapping.expression
     };
   }
 }
@@ -636,7 +640,8 @@ export class BindDataToAxis extends Action {
         table: this.dataExpression.table.name,
         expression: this.dataExpression.expression,
         valueType: this.dataExpression.valueType,
-        kind: this.dataExpression.metadata.kind
+        kind: this.dataExpression.metadata.kind,
+        allowSelectValue: this.dataExpression.allowSelectValue
       }
     };
   }

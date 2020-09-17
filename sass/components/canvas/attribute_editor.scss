@@ -339,6 +339,10 @@
       }
     }
   }
+
+  .is-active {
+    background: #cecece;
+  }
 }
 
 .slider-control {
@@ -1839,6 +1843,13 @@
     .el-item {
       display: inline-block;
     }
+  }
+}
+
+.scale-editor-view {
+  .action-buttons {
+    text-align: right;
+    margin-top: 10px;
   }
 }
 

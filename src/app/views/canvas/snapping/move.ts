@@ -6,7 +6,7 @@ import { SnappingSession } from "./session";
 
 export class MoveSnappingSession extends SnappingSession<void> {
   constructor(handle: Prototypes.Handles.Description) {
-    super([], handle, 10);
+    super([], handle, 10, handle.options && handle.options.snapToClosestPoint);
   }
 
   public getUpdates(actions: Array<SnappingAction<void>>) {

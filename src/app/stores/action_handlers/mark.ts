@@ -179,7 +179,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       .attributes[action.attribute];
     const table = this.getTable(action.glyph.table);
     const inferred =
-      action.hints.scaleID ||
+      (action.hints && action.hints.scaleID) ||
       this.scaleInference(
         { glyph: action.glyph },
         action.expression,
@@ -196,7 +196,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         expression: action.expression,
         valueType: action.valueType,
         scale: inferred,
-        attribute: action.attribute
+        attribute: action.attribute,
+        valueIndex:
+          action.hints && action.hints.allowSelectValue ? 0 : undefined
       } as Specification.ScaleMapping;
       if (
         !this.chart.scaleMappings.find(

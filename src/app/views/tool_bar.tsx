@@ -13,6 +13,7 @@ import { PopupView } from "../controllers";
 
 import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
+import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 
 export class Toolbar extends ContextedComponent<{}, {}> {
@@ -95,6 +96,8 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           title="Nested Chart"
           icon="mark/nested-chart"
         />
+        <span className="chartaccent__toolbar-separator" />
+        <LegendButton />
         <span className="chartaccent__toolbar-separator" />
         <span className="chartaccent__toolbar-label">Links</span>
         <LinkButton />
@@ -390,6 +393,32 @@ export class LinkButton extends ContextedComponent<{}, {}> {
               context => (
                 <PopupView context={context}>
                   <LinkCreationPanel onFinish={() => context.close()} />
+                </PopupView>
+              ),
+              { anchor: this.container }
+            );
+          }}
+        />
+      </span>
+    );
+  }
+}
+
+export class LegendButton extends ContextedComponent<{}, {}> {
+  public container: HTMLSpanElement;
+
+  public render() {
+    return (
+      <span ref={e => (this.container = e)}>
+        <ToolButton
+          title="Link"
+          icon={R.getSVGIcon("legend/legend")}
+          active={this.store.currentTool == "legend"}
+          onClick={() => {
+            globals.popupController.popupAt(
+              context => (
+                <PopupView context={context}>
+                  <LegendCreationPanel onFinish={() => context.close()} />
                 </PopupView>
               ),
               { anchor: this.container }
