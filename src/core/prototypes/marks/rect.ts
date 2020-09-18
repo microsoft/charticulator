@@ -222,6 +222,17 @@ export class RectElementClass extends EmphasizableMarkClass<
       );
     }
 
+    widgets = widgets.concat([
+      manager.mappingEditor("Opacity", "opacity", {
+        hints: { rangeNumber: [0, 1] },
+        defaultValue: 1,
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
+      }),
+      manager.mappingEditor("Visibility", "visible", {
+        defaultValue: true
+      })
+    ]);
+
     widgets = widgets.concat(parentWidgets);
     return widgets;
   }
@@ -247,20 +258,42 @@ export class RectElementClass extends EmphasizableMarkClass<
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, x2], [-1, x1]],
+      [
+        [1, x2],
+        [-1, x1]
+      ],
       [[1, width]]
     );
     // add constraint y2 - y1 = height
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, y2], [-1, y1]],
+      [
+        [1, y2],
+        [-1, y1]
+      ],
       [[1, height]]
     );
     // add constraint x1 + x2 = 2 * xc
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cx]],
+      [
+        [1, x1],
+        [1, x2]
+      ]
+    );
     // add constraint y1 + y2 = 2 * yc
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cy]],
+      [
+        [1, y1],
+        [1, y2]
+      ]
+    );
   }
 
   // Get the graphical element from the element
