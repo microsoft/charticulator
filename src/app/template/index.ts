@@ -20,6 +20,7 @@ import {
   Prototypes,
   Specification
 } from "../../core";
+import { TableType } from "../../core/dataset";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -197,14 +198,17 @@ export class ChartTemplateBuilder {
                         break; // TODO: for now, we assume it's the first one
                       }
                     }
-                  }
-                  if (
+                  } else if (
                     item.kind == "chart-element" &&
                     Prototypes.isType(item.chartElement.classID, "links")
                   ) {
                     const linkTable = item.object.properties.linkTable as any;
                     const defaultTable = this.dataset.tables[0];
                     table = (linkTable && linkTable.table) || defaultTable.name;
+                  } else {
+                    table = this.dataset.tables.find(
+                      table => table.type === TableType.Main
+                    ).name;
                   }
                 }
               }
