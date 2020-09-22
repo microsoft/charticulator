@@ -27,6 +27,9 @@ import { ClearMessages } from "./actions/actions";
 
 export interface MainViewProps {
   store: AppStore;
+  viewConfiguration: {
+    Position: string;
+  };
 }
 
 export interface MainViewState {
@@ -63,6 +66,13 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public render() {
+    const panelsAlign = (panels: React.ReactElement[], reverse: boolean) => {
+      if (reverse) {
+        return panels.reverse();
+      }
+      return panels;
+    };
+
     return (
       <div
         className="charticulator__application"
@@ -71,92 +81,110 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       >
         <MenuBar ref={e => (this.refMenuBar = e)} />
         <section className="charticulator__panel-container">
-          <div className="charticulator__panel charticulator__panel-dataset">
-            <MinimizablePanelView>
-              <MinimizablePane title="Dataset" scroll={true} hideHeader={true}>
-                <ErrorBoundary>
-                  <DatasetView store={this.props.store} />
-                </ErrorBoundary>
-              </MinimizablePane>
-              {this.state.scaleViewMaximized ? null : (
-                <MinimizablePane
-                  title="Scales"
-                  scroll={true}
-                  onMaximize={() => this.setState({ scaleViewMaximized: true })}
-                >
-                  <ErrorBoundary>
-                    <ScalesPanel store={this.props.store} />
-                  </ErrorBoundary>
-                </MinimizablePane>
-              )}
-            </MinimizablePanelView>
-          </div>
-          <div className="charticulator__panel charticulator__panel-editor">
-            <div className="charticulator__panel-editor-toolbar">
-              <Toolbar />
-            </div>
-            <div className="charticulator__panel-editor-panel-container">
-              <div
-                className="charticulator__panel-editor-panel charticulator__panel-editor-panel-panes"
-                style={{
-                  display:
-                    this.state.glyphViewMaximized &&
-                    this.state.attributeViewMaximized &&
-                    this.state.layersViewMaximized
-                      ? "none"
-                      : undefined
-                }}
-              >
+          {panelsAlign(
+            [
+              <div className="charticulator__panel charticulator__panel-dataset">
                 <MinimizablePanelView>
-                  {this.state.glyphViewMaximized ? null : (
+                  <MinimizablePane
+                    title="Dataset"
+                    scroll={true}
+                    hideHeader={true}
+                  >
+                    <ErrorBoundary>
+                      <DatasetView store={this.props.store} />
+                    </ErrorBoundary>
+                  </MinimizablePane>
+                  {this.state.scaleViewMaximized ? null : (
                     <MinimizablePane
-                      title="Glyph"
-                      scroll={false}
-                      onMaximize={() =>
-                        this.setState({ glyphViewMaximized: true })
-                      }
-                    >
-                      <ErrorBoundary>
-                        <MarkEditorView height={300} />
-                      </ErrorBoundary>
-                    </MinimizablePane>
-                  )}
-                  {this.state.layersViewMaximized ? null : (
-                    <MinimizablePane
-                      title="Layers"
-                      scroll={true}
-                      maxHeight={200}
-                      onMaximize={() =>
-                        this.setState({ layersViewMaximized: true })
-                      }
-                    >
-                      <ErrorBoundary>
-                        <ObjectListEditor />
-                      </ErrorBoundary>
-                    </MinimizablePane>
-                  )}
-                  {this.state.attributeViewMaximized ? null : (
-                    <MinimizablePane
-                      title="Attributes"
+                      title="Scales"
                       scroll={true}
                       onMaximize={() =>
-                        this.setState({ attributeViewMaximized: true })
+                        this.setState({ scaleViewMaximized: true })
                       }
                     >
                       <ErrorBoundary>
-                        <AttributePanel store={this.props.store} />
+                        <ScalesPanel store={this.props.store} />
                       </ErrorBoundary>
                     </MinimizablePane>
                   )}
                 </MinimizablePanelView>
+              </div>,
+              <div className="charticulator__panel charticulator__panel-editor">
+                <div className="charticulator__panel-editor-toolbar">
+                  <Toolbar />
+                </div>
+                <div className="charticulator__panel-editor-panel-container">
+                  {panelsAlign(
+                    [
+                      <div
+                        className="charticulator__panel-editor-panel charticulator__panel-editor-panel-panes"
+                        style={{
+                          display:
+                            this.state.glyphViewMaximized &&
+                            this.state.attributeViewMaximized &&
+                            this.state.layersViewMaximized
+                              ? "none"
+                              : undefined
+                        }}
+                      >
+                        <MinimizablePanelView>
+                          {this.state.glyphViewMaximized ? null : (
+                            <MinimizablePane
+                              title="Glyph"
+                              scroll={false}
+                              onMaximize={() =>
+                                this.setState({ glyphViewMaximized: true })
+                              }
+                            >
+                              <ErrorBoundary>
+                                <MarkEditorView height={300} />
+                              </ErrorBoundary>
+                            </MinimizablePane>
+                          )}
+                          {this.state.layersViewMaximized ? null : (
+                            <MinimizablePane
+                              title="Layers"
+                              scroll={true}
+                              maxHeight={200}
+                              onMaximize={() =>
+                                this.setState({ layersViewMaximized: true })
+                              }
+                            >
+                              <ErrorBoundary>
+                                <ObjectListEditor />
+                              </ErrorBoundary>
+                            </MinimizablePane>
+                          )}
+                          {this.state.attributeViewMaximized ? null : (
+                            <MinimizablePane
+                              title="Attributes"
+                              scroll={true}
+                              onMaximize={() =>
+                                this.setState({ attributeViewMaximized: true })
+                              }
+                            >
+                              <ErrorBoundary>
+                                <AttributePanel store={this.props.store} />
+                              </ErrorBoundary>
+                            </MinimizablePane>
+                          )}
+                        </MinimizablePanelView>
+                      </div>,
+                      <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">
+                        <ErrorBoundary>
+                          <ChartEditorView store={this.props.store} />
+                        </ErrorBoundary>
+                      </div>
+                    ],
+                    this.props.viewConfiguration &&
+                      this.props.viewConfiguration.Position === "right"
+                  )}
+                </div>
               </div>
-              <div className="charticulator__panel-editor-panel charticulator__panel-editor-panel-chart">
-                <ErrorBoundary>
-                  <ChartEditorView store={this.props.store} />
-                </ErrorBoundary>
-              </div>
-            </div>
-          </div>
+            ],
+            this.props.viewConfiguration &&
+              this.props.viewConfiguration.Position === "right"
+          )}
         </section>
         <div className="charticulator__floating-panels">
           {this.state.glyphViewMaximized ? (

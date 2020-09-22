@@ -27,6 +27,9 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     TargetOrigins: string;
     Embedded: boolean;
   };
+  MainView: {
+    Position: string;
+  };
 }
 
 export function getConfig(): CharticulatorAppConfig {

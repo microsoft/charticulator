@@ -124,7 +124,11 @@ export class Application {
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
     (window as any).mainStore = this.appStore;
     ReactDOM.render(
-      <MainView store={this.appStore} ref={e => (this.mainView = e)} />,
+      <MainView
+        store={this.appStore}
+        ref={e => (this.mainView = e)}
+        viewConfiguration={this.config.MainView}
+      />,
       document.getElementById(containerID)
     );
 

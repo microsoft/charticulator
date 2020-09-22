@@ -51,6 +51,11 @@ MapService:
   # provider: Google
   # apiKey: "TODO: put your api key here"
 
+#------------------------------------------------
+# Configure panels layout
+#------------------------------------------------
+MainView:
+  Position: left
 
 #------------------------------------------------
 # Configure the display of legal notices
