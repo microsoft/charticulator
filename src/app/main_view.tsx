@@ -28,7 +28,9 @@ import { ClearMessages } from "./actions/actions";
 export interface MainViewProps {
   store: AppStore;
   viewConfiguration: {
-    Position: string;
+    ColumnsPosition: string;
+    EditorPanelsPosition: string;
+    ToolbarPosition: string;
   };
 }
 
@@ -177,13 +179,13 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </div>
                     ],
                     this.props.viewConfiguration &&
-                      this.props.viewConfiguration.Position === "right"
+                      this.props.viewConfiguration.EditorPanelsPosition === "right"
                   )}
                 </div>
               </div>
             ],
             this.props.viewConfiguration &&
-              this.props.viewConfiguration.Position === "right"
+              this.props.viewConfiguration.ColumnsPosition === "right"
           )}
         </section>
         <div className="charticulator__floating-panels">

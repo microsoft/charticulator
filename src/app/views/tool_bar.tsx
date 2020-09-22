@@ -16,7 +16,9 @@ import { LinkCreationPanel } from "./panels/link_creator";
 import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 
-export class Toolbar extends ContextedComponent<{}, {}> {
+export class Toolbar extends ContextedComponent<{
+  position: string;
+}, {}> {
   public token: EventSubscription;
 
   public componentDidMount() {

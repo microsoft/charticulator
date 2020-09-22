@@ -54,8 +54,10 @@ MapService:
 #------------------------------------------------
 # Configure panels layout
 #------------------------------------------------
-MainView:
-  Position: left
+  MainView:
+    ColumnsPosition: right
+    EditorPanelsPosition: right
+    ToolbarPosition: right
 
 #------------------------------------------------
 # Configure the display of legal notices
