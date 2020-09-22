@@ -160,7 +160,7 @@ export class LinearScale extends ScaleClass<
         attribute: "rangeMin"
       },
       type: Specification.AttributeType.Number,
-      default: this.state.attributes.rangeMin
+      default: null
     });
     parameters.properties.push({
       objectID: this.object._id,
@@ -168,7 +168,7 @@ export class LinearScale extends ScaleClass<
         attribute: "rangeMax"
       },
       type: Specification.AttributeType.Number,
-      default: this.state.attributes.rangeMax
+      default: null
     });
     return parameters;
   }
