@@ -28,9 +28,9 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     Embedded: boolean;
   };
   MainView: {
-    ColumnsPosition: string;
-    EditorPanelsPosition: string;
-    ToolbarPosition: string;
+    ColumnsPosition: "left" | "right";
+    EditorPanelsPosition: "left" | "right";
+    ToolbarPosition: "top" | "right" | "left";
   };
 }
 

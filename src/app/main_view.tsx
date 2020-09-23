@@ -28,9 +28,9 @@ import { ClearMessages } from "./actions/actions";
 export interface MainViewProps {
   store: AppStore;
   viewConfiguration: {
-    ColumnsPosition: string;
-    EditorPanelsPosition: string;
-    ToolbarPosition: string;
+    ColumnsPosition: "left" | "right";
+    EditorPanelsPosition: "left" | "right";
+    ToolbarPosition: "top" | "right" | "left";
   };
 }
 
@@ -68,11 +68,22 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public render() {
-    const panelsAlign = (panels: React.ReactElement[], reverse: boolean) => {
+    const panelsAlign = (
+      panels: Array<React.ReactElement<any>>,
+      reverse: boolean
+    ) => {
       if (reverse) {
         return panels.reverse();
       }
       return panels;
+    };
+
+    const toolBarCreator = (layout: "vertical" | "horizontal") => {
+      return (
+        <div className={`charticulator__panel-editor-toolbar-${layout}`}>
+          <Toolbar layout={layout} />
+        </div>
+      );
     };
 
     return (
@@ -111,10 +122,15 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   )}
                 </MinimizablePanelView>
               </div>,
+              <div className="charticulator__panel-editor-toolbar">
+                {toolBarCreator("vertical")}
+              </div>,
               <div className="charticulator__panel charticulator__panel-editor">
-                <div className="charticulator__panel-editor-toolbar">
-                  <Toolbar />
-                </div>
+                {this.props.viewConfiguration.ToolbarPosition == "top" && (
+                  <div className="charticulator__panel-editor-toolbar">
+                    {toolBarCreator("horizontal")}
+                  </div>
+                )}
                 <div className="charticulator__panel-editor-panel-container">
                   {panelsAlign(
                     [
@@ -179,7 +195,8 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                       </div>
                     ],
                     this.props.viewConfiguration &&
-                      this.props.viewConfiguration.EditorPanelsPosition === "right"
+                      this.props.viewConfiguration.EditorPanelsPosition ===
+                        "right"
                   )}
                 </div>
               </div>

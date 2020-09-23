@@ -127,7 +127,12 @@ export class Application {
       <MainView
         store={this.appStore}
         ref={e => (this.mainView = e)}
-        viewConfiguration={this.config.MainView}
+        // viewConfiguration={this.config.MainView}
+        viewConfiguration={{
+          ColumnsPosition: "right",
+          EditorPanelsPosition: "left",
+          ToolbarPosition: "left"
+        }}
       />,
       document.getElementById(containerID)
     );

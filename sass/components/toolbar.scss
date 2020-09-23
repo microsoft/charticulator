@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+$toolbar-height: 32px;
+
 .chartaccent__toolbar {
   @include font-main;
-  $toolbar-height: 32px;
 
   line-height: $toolbar-height;
   white-space: nowrap;
@@ -55,6 +56,31 @@
       @include shadow-ambient;
       background: $gray-220;
     }
+  }
+}
+
+.chartaccent__toolbar-vertical {
+  @extend .chartaccent__toolbar;
+  flex-direction: column;
+  width: 40px;
+  height: $toolbar-height;
+
+  & > * {
+    width: 32px;
+    margin-bottom: 4px;
+  }
+
+  &-separator {
+    @extend .chartaccent__toolbar-separator;
+    width: 22px;
+    height: $toolbar-height - 20px;
+    border-right: 0px solid $gray-190;
+    border-bottom: 1px solid $gray-190;
+    margin-bottom: 4px;
+  }
+
+  &-label {
+    font-size: 12px;
   }
 }
 
