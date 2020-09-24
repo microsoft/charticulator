@@ -299,7 +299,6 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
     return (
       <ToolButton
         icon={R.getSVGIcon(this.props.icon)}
-        vertical={true}
         active={this.getIsActive()}
         title={this.props.title}
         onClick={() => {
@@ -396,6 +395,37 @@ export class MultiObjectButton extends ContextedComponent<
   }
 
   public render() {
+    const onClick = () => {
+      if (!this.props.compact) {
+        return;
+      }
+      globals.popupController.popupAt(
+        context => {
+          return (
+            <PopupView context={context}>
+              {this.props.tools.map((tool, index) => (
+                <div
+                  key={index}
+                  className="charticulator__button-multi-tool-dropdown"
+                >
+                  <ObjectButton
+                    {...tool}
+                    noDragging={true}
+                    onClick={() => context.close()}
+                  />
+                </div>
+              ))}
+            </PopupView>
+          );
+        },
+        {
+          anchor: ReactDOM.findDOMNode(this.refButton) as Element,
+          alignX: "end-outer",
+          alignY: "start-inner"
+        }
+      );
+    };
+
     return (
       <div
         className={classNames("charticulator__button-multi-tool", [
@@ -406,40 +436,28 @@ export class MultiObjectButton extends ContextedComponent<
         <ObjectButton
           ref={e => (this.refButton = e)}
           {...this.getSelectedTool()}
-          onClick={() => {
-            if (!this.props.compact) {
-              return;
-            }
-            globals.popupController.popupAt(
-              context => {
-                return (
-                  <PopupView context={context}>
-                    {this.props.tools.map((tool, index) => (
-                      <div
-                        key={index}
-                        className="charticulator__button-multi-tool-dropdown"
-                      >
-                        <ObjectButton
-                          {...tool}
-                          noDragging={true}
-                          onClick={() => context.close()}
-                        />
-                      </div>
-                    ))}
-                  </PopupView>
-                );
-              },
-              {
-                anchor: ReactDOM.findDOMNode(this.refButton) as Element,
-                alignX: "start-inner",
-                alignY: "start-inner"
-              }
-            );
-          }}
+          onClick={onClick}
         />
         <span
+          style={{
+            position: "relative",
+            bottom: "-7px",
+            left: "-25px"
+          }}
+          onClick={onClick}
+        >
+          {this.props.compact ? (
+            <SVGImageIcon url={R.getSVGIcon("general/triangle-right-bottom")} />
+          ) : null}
+        </span>
+        <span
           className="el-dropdown"
-          ref={e => (this.refButton = e as any)}
+          ref={e => {
+            if (this.props.compact) {
+              return;
+            }
+            this.refButton = e as any;
+          }}
           onClick={() => {}}
         >
           {this.props.compact ? null : (
