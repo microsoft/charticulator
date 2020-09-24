@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-$toolbar-height: 32px;
-
 .chartaccent__toolbar {
   @include font-main;
 
+  $toolbar-height: 32px;
   line-height: $toolbar-height;
   white-space: nowrap;
 
@@ -61,10 +60,11 @@ $toolbar-height: 32px;
 
 .chartaccent__toolbar-vertical {
   @extend .chartaccent__toolbar;
+  $toolbar-height: 32px;
   flex-direction: column;
   width: 40px;
   height: $toolbar-height;
-
+  align-items: center;
   & > * {
     width: 32px;
     margin-bottom: 4px;
@@ -81,6 +81,7 @@ $toolbar-height: 32px;
 
   &-label {
     font-size: 12px;
+    margin-left: -8px;
   }
 }
 
