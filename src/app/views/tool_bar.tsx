@@ -24,26 +24,34 @@ export class Toolbar extends ContextedComponent<
 > {
   public token: EventSubscription;
 
+  private theLastRowsCount: number = 0;
+  private itemsCount: number = 0;
+
   public componentDidMount() {
     this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
       this.forceUpdate();
     });
+
+    window.addEventListener('resize', () => {
+      if (this.theLastRowsCount != this.computeColumns(this.itemsCount)) {
+        console.log(" this.forceUpdate();");
+        this.forceUpdate();
+      }
+    })
   }
 
   public componentWillUnmount() {
     this.token.remove();
   }
 
-  public render() {
+  private computeColumns(itemsCount: number) {
+    return this.theLastRowsCount = Math.floor((window.innerHeight - 80) / itemsCount - 1);
+  }
+
+  private getToolItems(labels: boolean = true) {
     return (
-      <div
-        className={
-          this.props.layout === "vertical"
-            ? "chartaccent__toolbar-vertical"
-            : "chartaccent__toolbar"
-        }
-      >
-        <span
+      <>
+        {labels && <span
           className={
             this.props.layout === "vertical"
               ? "chartaccent__toolbar-vertical-label"
@@ -51,7 +59,7 @@ export class Toolbar extends ContextedComponent<
           }
         >
           Marks
-        </span>
+        </span>}
         <MultiObjectButton
           compact={this.props.layout === "vertical"}
           tools={[
@@ -139,7 +147,7 @@ export class Toolbar extends ContextedComponent<
               : "chartaccent__toolbar-separator"
           }
         />
-        <span
+        {labels && <span
           className={
             this.props.layout === "vertical"
               ? "chartaccent__toolbar-vertical-label"
@@ -147,7 +155,7 @@ export class Toolbar extends ContextedComponent<
           }
         >
           Links
-        </span>
+        </span>}
         <LinkButton />
         <span
           className={
@@ -156,7 +164,7 @@ export class Toolbar extends ContextedComponent<
               : "chartaccent__toolbar-separator"
           }
         />
-        <span
+        {labels && <span
           className={
             this.props.layout === "vertical"
               ? "chartaccent__toolbar-vertical-label"
@@ -164,7 +172,7 @@ export class Toolbar extends ContextedComponent<
           }
         >
           Guides
-        </span>
+        </span>}
         <ObjectButton
           classID="guide-y"
           title="Guide Y"
@@ -189,7 +197,7 @@ export class Toolbar extends ContextedComponent<
           icon="guide/coordinator-y"
           noDragging={true}
         />
-        <span
+        {labels && (<><span
           className={
             this.props.layout === "vertical"
               ? "chartaccent__toolbar-vertical-separator"
@@ -204,7 +212,7 @@ export class Toolbar extends ContextedComponent<
           }
         >
           {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
-        </span>
+        </span></>)}
         <ObjectButton
           classID="plot-segment.cartesian"
           title="2D Region"
@@ -224,7 +232,7 @@ export class Toolbar extends ContextedComponent<
               : "chartaccent__toolbar-separator"
           }
         />
-        <span
+        {labels && <span
           className={
             this.props.layout === "vertical"
               ? "chartaccent__toolbar-vertical-label"
@@ -232,7 +240,7 @@ export class Toolbar extends ContextedComponent<
           }
         >
           Scaffolds
-        </span>
+        </span>}
         <ScaffoldButton
           type="cartesian-x"
           title="Horizontal Line"
@@ -257,6 +265,28 @@ export class Toolbar extends ContextedComponent<
           icon="scaffold/curve"
           currentTool={this.store.currentTool}
         />
+        </>
+    );
+  }
+
+  public render() {
+
+    const toolItems = this.getToolItems(this.props.layout === "horizontal");
+    this.itemsCount = toolItems.props.children.length;
+    this.theLastRowsCount = this.computeColumns(toolItems.props.children.length);
+    debugger;
+    return (
+      <div
+        className={
+          this.props.layout === "vertical"
+            ? "chartaccent__toolbar-vertical"
+            : "chartaccent__toolbar-horizontal"
+        }
+        style={this.props.layout === "vertical" ? {
+          gridTemplateRows: `repeat(${this.theLastRowsCount}, auto)`
+        } : null}
+      >
+        {toolItems}
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
       </div>
     );
@@ -442,7 +472,7 @@ export class MultiObjectButton extends ContextedComponent<
           style={{
             position: "relative",
             bottom: "-7px",
-            left: "-25px"
+            left: "-30px"
           }}
           onClick={onClick}
         >

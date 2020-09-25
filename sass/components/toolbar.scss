@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-.chartaccent__toolbar {
+@import "../common/common.scss";
+
+.chartaccent__toolbar-horizontal {
   @include font-main;
 
   $toolbar-height: 32px;
@@ -12,6 +14,7 @@
 
   & > * {
     height: 32px;
+    margin-right: 4px;
   }
 
   &-label {
@@ -59,19 +62,23 @@
 }
 
 .chartaccent__toolbar-vertical {
-  @extend .chartaccent__toolbar;
+  @extend .chartaccent__toolbar-horizontal;
   $toolbar-height: 32px;
-  flex-direction: column;
-  width: 40px;
-  height: $toolbar-height;
+  display: grid;
+  grid-auto-flow: column;
+
   align-items: center;
+  flex-wrap: wrap;
+  height: 100%;
+
   & > * {
     width: 32px;
     margin-bottom: 4px;
+    margin-right: 4px;
   }
 
   &-separator {
-    @extend .chartaccent__toolbar-separator;
+    @extend .chartaccent__toolbar-horizontal-separator;
     width: 22px;
     height: $toolbar-height - 20px;
     border-right: 0px solid $gray-190;

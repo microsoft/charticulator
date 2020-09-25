@@ -68,23 +68,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public render() {
-    const panelsAlign = (
-      panels: Array<React.ReactElement<any>>,
-      reverse: boolean
-    ) => {
-      if (reverse) {
-        return panels.reverse();
-      }
-      return panels;
-    };
 
     const toolBarCreator = (layout: "vertical" | "horizontal") => {
       return (
-        <div className="charticulator__panel-editor-toolbar">
           <div className={`charticulator__panel-editor-toolbar-${layout}`}>
             <Toolbar layout={layout} />
           </div>
-        </div>
       );
     };
 
