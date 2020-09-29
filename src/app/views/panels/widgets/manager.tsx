@@ -169,7 +169,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           return column.metadata.format;
         }
         const rawColumnName = column.metadata.rawColumnName;
-        if (rawColumnName) {
+        if (
+          rawColumnName &&
+          (column.metadata.kind === Specification.DataKind.Temporal ||
+            column.type === Specification.DataType.Boolean)
+        ) {
           const value = (
             table.rows[0][rawColumnName] || refineColumnName(rawColumnName)
           ).toString();

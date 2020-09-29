@@ -35,6 +35,7 @@ import {
   DataflowTable,
   DataflowTableGroupedContext
 } from "../prototypes/dataflow";
+import { Specification } from "..";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
@@ -414,11 +415,16 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression.args[0] instanceof Variable
     ) {
       const columnName = (expression.args[0] as Variable).name;
-      const rawColumnName = ((context as ShadowContext)
-        .upstream as DataflowTable).columns.find(col => col.name == columnName)
-        .metadata.rawColumnName;
-      if (rawColumnName) {
-        return (context as ShadowContext).getVariable(rawColumnName);
+      const column = ((context as ShadowContext)
+        .upstream as DataflowTable).columns.find(col => col.name == columnName);
+      if (
+        column.metadata.rawColumnName &&
+        (column.metadata.kind === Specification.DataKind.Temporal ||
+          column.type === Specification.DataType.Boolean)
+      ) {
+        return (context as ShadowContext).getVariable(
+          column.metadata.rawColumnName
+        );
       }
     }
   }
