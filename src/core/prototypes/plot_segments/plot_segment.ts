@@ -126,7 +126,11 @@ export abstract class PlotSegmentClass<
         );
         const column = table.columns.find(column => column.name === columnName);
         const rawColumnName = column.metadata.rawColumnName;
-        if (rawColumnName) {
+        if (
+          rawColumnName &&
+          (column.metadata.kind === Specification.DataKind.Temporal ||
+            column.type === Specification.DataType.Boolean)
+        ) {
           const dataMapping = new Map<string, string>();
           table.rows.forEach(row => {
             const value = row[columnName].toString();

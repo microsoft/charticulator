@@ -20,7 +20,8 @@ export class DataExpression extends DropZoneData {
     public metadata: Dataset.ColumnMetadata = null,
     public rawColumnExpression: string,
     public scaleID?: string,
-    public allowSelectValue?: boolean
+    public allowSelectValue?: boolean,
+    public type?: string
   ) {
     super();
   }

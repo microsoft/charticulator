@@ -1178,9 +1178,9 @@ export class AppStore extends BaseStore {
     const { object, property, appendToProperty, dataExpression } = options;
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
-    const type = this.getBindingByDataKind(
-      options.dataExpression.metadata.kind
-    );
+    const type = dataExpression.type
+      ? options.type
+      : this.getBindingByDataKind(options.dataExpression.metadata.kind);
     const rawColumnExpression = dataExpression.rawColumnExpression;
     if (
       rawColumnExpression &&
@@ -1204,7 +1204,8 @@ export class AppStore extends BaseStore {
       visible: true,
       side: "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
-      numericalMode: options.numericalMode
+      numericalMode: options.numericalMode,
+      dataKind: dataExpression.metadata.kind
     };
 
     let expressions = [groupExpression];
@@ -1270,51 +1271,53 @@ export class AppStore extends BaseStore {
       values = values.concat(r);
     }
 
-    switch (dataExpression.metadata.kind) {
-      case Specification.DataKind.Categorical:
-      case Specification.DataKind.Ordinal:
-        {
-          dataBinding.type = "categorical";
-          dataBinding.valueType = dataExpression.valueType;
+    if (dataExpression.metadata) {
+      switch (dataExpression.metadata.kind) {
+        case Specification.DataKind.Categorical:
+        case Specification.DataKind.Ordinal:
+          {
+            dataBinding.type = "categorical";
+            dataBinding.valueType = dataExpression.valueType;
 
-          if (dataExpression.metadata.order) {
-            dataBinding.categories = dataExpression.metadata.order.slice();
-          } else {
-            const scale = new Scale.CategoricalScale();
-            let orderMode: "alphabetically" | "occurrence" | "order" =
-              "alphabetically";
-            if (dataExpression.metadata.orderMode) {
-              orderMode = dataExpression.metadata.orderMode;
+            if (dataExpression.metadata.order) {
+              dataBinding.categories = dataExpression.metadata.order.slice();
+            } else {
+              const scale = new Scale.CategoricalScale();
+              let orderMode: "alphabetically" | "occurrence" | "order" =
+                "alphabetically";
+              if (dataExpression.metadata.orderMode) {
+                orderMode = dataExpression.metadata.orderMode;
+              }
+              scale.inferParameters(values as string[], orderMode);
+              dataBinding.categories = new Array<string>(scale.length);
+              scale.domain.forEach(
+                (index: any, x: any) =>
+                  (dataBinding.categories[index] = x.toString())
+              );
             }
-            scale.inferParameters(values as string[], orderMode);
-            dataBinding.categories = new Array<string>(scale.length);
-            scale.domain.forEach(
-              (index: any, x: any) =>
-                (dataBinding.categories[index] = x.toString())
-            );
           }
-        }
-        break;
-      case Specification.DataKind.Numerical:
-        {
-          const scale = new Scale.LinearScale();
-          scale.inferParameters(values as number[]);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "linear";
-        }
-        break;
-      case Specification.DataKind.Temporal:
-        {
-          const scale = new Scale.DateScale();
-          scale.inferParameters(values as number[]);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "temporal";
-        }
-        break;
+          break;
+        case Specification.DataKind.Numerical:
+          {
+            const scale = new Scale.LinearScale();
+            scale.inferParameters(values as number[]);
+            dataBinding.domainMin = scale.domainMin;
+            dataBinding.domainMax = scale.domainMax;
+            dataBinding.type = "numerical";
+            dataBinding.numericalMode = "linear";
+          }
+          break;
+        case Specification.DataKind.Temporal:
+          {
+            const scale = new Scale.DateScale();
+            scale.inferParameters(values as number[]);
+            dataBinding.domainMin = scale.domainMin;
+            dataBinding.domainMax = scale.domainMax;
+            dataBinding.type = "numerical";
+            dataBinding.numericalMode = "temporal";
+          }
+          break;
+      }
     }
 
     // Adjust sublayout option if current option is not available

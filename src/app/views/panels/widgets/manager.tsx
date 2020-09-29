@@ -68,6 +68,7 @@ import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
+import { DataExpression } from "../../../actions/drag_data";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -169,7 +170,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           return column.metadata.format;
         }
         const rawColumnName = column.metadata.rawColumnName;
-        if (rawColumnName) {
+        if (
+          rawColumnName &&
+          (column.metadata.kind === Specification.DataKind.Temporal ||
+            column.type === Specification.DataType.Boolean)
+        ) {
           const value = (
             table.rows[0][rawColumnName] || refineColumnName(rawColumnName)
           ).toString();
@@ -603,7 +608,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public reorderWidget(property: Prototypes.Controls.Property): JSX.Element {
+  public reorderWidget(
+    property: Prototypes.Controls.Property,
+    allowReset: boolean
+  ): JSX.Element {
     let container: HTMLSpanElement;
     return (
       <span ref={e => (container = e)}>
@@ -622,6 +630,29 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         this.emitSetProperty(property, items);
                         context.close();
                       }}
+                      onReset={() => {
+                        const axisDataBinding = {
+                          ...(this.objectClass.object.properties[
+                            property.property
+                          ] as any)
+                        };
+
+                        axisDataBinding.table = this.store.chartManager.getTable(
+                          (this.objectClass.object as any).table
+                        );
+                        axisDataBinding.metadata = {
+                          kind: axisDataBinding.dataKind
+                        };
+
+                        new Actions.BindDataToAxis(
+                          this.objectClass.object as Specification.PlotSegment,
+                          property.property,
+                          null,
+                          axisDataBinding,
+                          axisDataBinding.type
+                        ).dispatch(this.store.dispatcher);
+                      }}
+                      allowReset={allowReset}
                     />
                   </PopupView>
                 );
@@ -1189,6 +1220,8 @@ export class ReorderStringsValue extends React.Component<
   {
     items: string[];
     onConfirm: (items: string[]) => void;
+    allowReset?: boolean;
+    onReset?: () => void;
   },
   { items: string[] }
 > {
@@ -1230,6 +1263,20 @@ export class ReorderStringsValue extends React.Component<
               this.setState({ items: this.state.items.sort() });
             }}
           />
+          {this.props.allowReset && (
+            <>
+              {" "}
+              <Button
+                icon={"general/clear"}
+                text="Reset"
+                onClick={() => {
+                  if (this.props.onReset) {
+                    this.props.onReset();
+                  }
+                }}
+              />
+            </>
+          )}
         </div>
         <div className="el-row">
           <ButtonRaised
