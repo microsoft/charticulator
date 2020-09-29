@@ -31,35 +31,28 @@ export class Toolbar extends ContextedComponent<
     this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
       this.forceUpdate();
     });
-
-    window.addEventListener('resize', () => {
-      if (this.theLastRowsCount != this.computeColumns(this.itemsCount)) {
-        console.log(" this.forceUpdate();");
-        this.forceUpdate();
-      }
-    })
   }
 
   public componentWillUnmount() {
     this.token.remove();
   }
 
-  private computeColumns(itemsCount: number) {
-    return this.theLastRowsCount = Math.floor((window.innerHeight - 80) / itemsCount - 1);
-  }
-
   private getToolItems(labels: boolean = true) {
-    return (
+    const buckets = [];
+
+    buckets.push(
       <>
-        {labels && <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-label"
-              : "chartaccent__toolbar-label"
-          }
-        >
-          Marks
-        </span>}
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Marks
+          </span>
+        )}
         <MultiObjectButton
           compact={this.props.layout === "vertical"}
           tools={[
@@ -67,20 +60,20 @@ export class Toolbar extends ContextedComponent<
               classID: "mark.rect",
               title: "Rectangle",
               icon: "mark/rect",
-              options: '{"shape":"rectangle"}'
+              options: '{"shape":"rectangle"}',
             },
             {
               classID: "mark.rect",
               title: "Ellipse",
               icon: "mark/ellipse",
-              options: '{"shape":"ellipse"}'
+              options: '{"shape":"ellipse"}',
             },
             {
               classID: "mark.rect",
               title: "Triangle",
               icon: "mark/triangle",
-              options: '{"shape":"triangle"}'
-            }
+              options: '{"shape":"triangle"}',
+            },
           ]}
         />
         <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
@@ -91,13 +84,13 @@ export class Toolbar extends ContextedComponent<
             {
               classID: "mark.text",
               title: "Text",
-              icon: "mark/text"
+              icon: "mark/text",
             },
             {
               classID: "mark.textbox",
               title: "Textbox",
-              icon: "mark/textbox"
-            }
+              icon: "mark/textbox",
+            },
           ]}
         />
         <MultiObjectButton
@@ -106,22 +99,20 @@ export class Toolbar extends ContextedComponent<
             {
               classID: "mark.icon",
               title: "Icon",
-              icon: "mark/icon"
+              icon: "mark/icon",
             },
             {
               classID: "mark.image",
               title: "Image",
-              icon: "mark/image"
-            }
+              icon: "mark/image",
+            },
           ]}
         />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
+      </>
+    );
+
+    buckets.push(
+      <>
         <ObjectButton
           classID="mark.data-axis"
           title="Data Axis"
@@ -132,47 +123,45 @@ export class Toolbar extends ContextedComponent<
           title="Nested Chart"
           icon="mark/nested-chart"
         />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
+      </>
+    );
+
+    buckets.push(
+      <>
         <LegendButton />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
-        {labels && <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-label"
-              : "chartaccent__toolbar-label"
-          }
-        >
-          Links
-        </span>}
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Links
+          </span>
+        )}
         <LinkButton />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
-        {labels && <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-label"
-              : "chartaccent__toolbar-label"
-          }
-        >
-          Guides
-        </span>}
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Guides
+          </span>
+        )}
         <ObjectButton
           classID="guide-y"
           title="Guide Y"
@@ -197,22 +186,31 @@ export class Toolbar extends ContextedComponent<
           icon="guide/coordinator-y"
           noDragging={true}
         />
-        {labels && (<><span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-label"
-              : "chartaccent__toolbar-label"
-          }
-        >
-          {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
-        </span></>)}
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <>
+            <span
+              className={
+                this.props.layout === "vertical"
+                  ? "chartaccent__toolbar-vertical-separator"
+                  : "chartaccent__toolbar-separator"
+              }
+            />
+            <span
+              className={
+                this.props.layout === "vertical"
+                  ? "chartaccent__toolbar-vertical-label"
+                  : "chartaccent__toolbar-label"
+              }
+            >
+              {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
+            </span>
+          </>
+        )}
         <ObjectButton
           classID="plot-segment.cartesian"
           title="2D Region"
@@ -225,22 +223,22 @@ export class Toolbar extends ContextedComponent<
           icon="plot/line"
           noDragging={true}
         />
-        <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-separator"
-              : "chartaccent__toolbar-separator"
-          }
-        />
-        {labels && <span
-          className={
-            this.props.layout === "vertical"
-              ? "chartaccent__toolbar-vertical-label"
-              : "chartaccent__toolbar-label"
-          }
-        >
-          Scaffolds
-        </span>}
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Scaffolds
+          </span>
+        )}
         <ScaffoldButton
           type="cartesian-x"
           title="Horizontal Line"
@@ -265,16 +263,16 @@ export class Toolbar extends ContextedComponent<
           icon="scaffold/curve"
           currentTool={this.store.currentTool}
         />
-        </>
+      </>
     );
+
+    return buckets;
   }
 
   public render() {
-
-    const toolItems = this.getToolItems(this.props.layout === "horizontal");
-    this.itemsCount = toolItems.props.children.length;
-    this.theLastRowsCount = this.computeColumns(toolItems.props.children.length);
-    debugger;
+    const toolItems = this.getToolItems(
+      this.props.layout === "horizontal"
+    );
     return (
       <div
         className={
@@ -282,11 +280,27 @@ export class Toolbar extends ContextedComponent<
             ? "chartaccent__toolbar-vertical"
             : "chartaccent__toolbar-horizontal"
         }
-        style={this.props.layout === "vertical" ? {
-          gridTemplateRows: `repeat(${this.theLastRowsCount}, auto)`
-        } : null}
       >
-        {toolItems}
+        {toolItems.map(item => {
+          return (
+            <>
+            <div className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-group"
+                : "chartaccent__toolbar-horizontal-group"
+            }>
+              {item}
+            </div>
+            <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-separator"
+                : "chartaccent__toolbar-horizontal-separator"
+            }
+          />
+            </>
+          )
+        })}
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
       </div>
     );
@@ -369,8 +383,8 @@ export class MultiObjectButton extends ContextedComponent<
   public state = {
     currentSelection: {
       classID: this.props.tools[0].classID,
-      options: this.props.tools[0].options
-    }
+      options: this.props.tools[0].options,
+    },
   };
   private refButton: ObjectButton;
   public token: EventSubscription;
@@ -410,8 +424,8 @@ export class MultiObjectButton extends ContextedComponent<
           this.setState({
             currentSelection: {
               classID: item.classID,
-              options: item.options
-            }
+              options: item.options,
+            },
           });
           break;
         }
@@ -430,7 +444,7 @@ export class MultiObjectButton extends ContextedComponent<
         return;
       }
       globals.popupController.popupAt(
-        context => {
+        (context) => {
           return (
             <PopupView context={context}>
               {this.props.tools.map((tool, index) => (
@@ -451,7 +465,7 @@ export class MultiObjectButton extends ContextedComponent<
         {
           anchor: ReactDOM.findDOMNode(this.refButton) as Element,
           alignX: "end-outer",
-          alignY: "start-inner"
+          alignY: "start-inner",
         }
       );
     };
@@ -460,11 +474,11 @@ export class MultiObjectButton extends ContextedComponent<
       <div
         className={classNames("charticulator__button-multi-tool", [
           "is-active",
-          this.isActive()
+          this.isActive(),
         ])}
       >
         <ObjectButton
-          ref={e => (this.refButton = e)}
+          ref={(e) => (this.refButton = e)}
           {...this.getSelectedTool()}
           onClick={onClick}
         />
@@ -472,7 +486,7 @@ export class MultiObjectButton extends ContextedComponent<
           style={{
             position: "relative",
             bottom: "-7px",
-            left: "-30px"
+            left: "-30px",
           }}
           onClick={onClick}
         >
@@ -482,7 +496,7 @@ export class MultiObjectButton extends ContextedComponent<
         </span>
         <span
           className="el-dropdown"
-          ref={e => {
+          ref={(e) => {
             if (this.props.compact) {
               return;
             }
@@ -530,14 +544,14 @@ export class LinkButton extends ContextedComponent<{}, {}> {
 
   public render() {
     return (
-      <span ref={e => (this.container = e)}>
+      <span ref={(e) => (this.container = e)}>
         <ToolButton
           title="Link"
           icon={R.getSVGIcon("link/tool")}
           active={this.store.currentTool == "link"}
           onClick={() => {
             globals.popupController.popupAt(
-              context => (
+              (context) => (
                 <PopupView context={context}>
                   <LinkCreationPanel onFinish={() => context.close()} />
                 </PopupView>
@@ -556,14 +570,14 @@ export class LegendButton extends ContextedComponent<{}, {}> {
 
   public render() {
     return (
-      <span ref={e => (this.container = e)}>
+      <span ref={(e) => (this.container = e)}>
         <ToolButton
           title="Link"
           icon={R.getSVGIcon("legend/legend")}
           active={this.store.currentTool == "legend"}
           onClick={() => {
             globals.popupController.popupAt(
-              context => (
+              (context) => (
                 <PopupView context={context}>
                   <LegendCreationPanel onFinish={() => context.close()} />
                 </PopupView>
