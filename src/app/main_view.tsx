@@ -43,9 +43,9 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refMenuBar: MenuBar;
 
   public static defaultViewConfig: {
-    ColumnsPosition: "right";
+    ColumnsPosition: "left";
     EditorPanelsPosition: "left";
-    ToolbarPosition: "left";
+    ToolbarPosition: "top";
   };
 
   constructor(props: MainViewProps) {
