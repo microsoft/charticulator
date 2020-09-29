@@ -42,17 +42,15 @@ export interface MainViewState {
 export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refMenuBar: MenuBar;
 
-  public static defaultViewConfig: {
-    ColumnsPosition: "left";
-    EditorPanelsPosition: "left";
-    ToolbarPosition: "top";
-  };
-
   constructor(props: MainViewProps) {
     super(props);
 
     if (!props.viewConfiguration) {
-      props.viewConfiguration = MainView.defaultViewConfig;
+      props.viewConfiguration = {
+        ColumnsPosition: "left",
+        EditorPanelsPosition: "left",
+        ToolbarPosition: "top",
+      };
     }
 
     this.state = {
