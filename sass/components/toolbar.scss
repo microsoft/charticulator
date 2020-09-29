@@ -81,7 +81,7 @@ $elements-margin: 4px;
   $col3-cell-size: $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin;
   $col4-cell-size: $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin  $tool-icon-size + $elements-margin;
 
-  align-items: flex-start;
+  align-content: flex-start;
   justify-content: flex-start;
   flex-direction: row;
   
@@ -134,7 +134,7 @@ $elements-margin: 4px;
     height: 5px;
     border-right: 0px solid $gray-190;
     border-bottom: 1px solid $gray-190;
-    margin-bottom: $elements-margin;
+    margin-bottom: 8px;
   }
 
   &-label {
