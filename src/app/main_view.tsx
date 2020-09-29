@@ -23,13 +23,16 @@ import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
 
+export interface MainViewConfig {
+  ColumnsPosition: "left" | "right";
+  EditorPanelsPosition: "left" | "right";
+  ToolbarPosition: "top" | "right" | "left";
+  Name?: string;
+}
+
 export interface MainViewProps {
   store: AppStore;
-  viewConfiguration: {
-    ColumnsPosition: "left" | "right";
-    EditorPanelsPosition: "left" | "right";
-    ToolbarPosition: "top" | "right" | "left";
-  };
+  viewConfiguration: MainViewConfig;
 }
 
 export interface MainViewState {
@@ -42,15 +45,19 @@ export interface MainViewState {
 export class MainView extends React.Component<MainViewProps, MainViewState> {
   public refMenuBar: MenuBar;
 
+  private viewConfiguration: MainViewConfig;
+
   constructor(props: MainViewProps) {
     super(props);
 
     if (!props.viewConfiguration) {
-      props.viewConfiguration = {
+      this.viewConfiguration = {
         ColumnsPosition: "left",
         EditorPanelsPosition: "left",
         ToolbarPosition: "top",
       };
+    } else {
+      this.viewConfiguration = props.viewConfiguration;
     }
 
     this.state = {
@@ -178,29 +185,29 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => e.preventDefault()}
       >
-        <MenuBar ref={(e) => (this.refMenuBar = e)} />
+        <MenuBar name={this.viewConfiguration.Name} ref={(e) => (this.refMenuBar = e)} />
         <section className="charticulator__panel-container">
           {[
-            this.props.viewConfiguration.ColumnsPosition == "left" &&
+            this.viewConfiguration.ColumnsPosition == "left" &&
               datasetPanel(),
             <div className="charticulator__panel charticulator__panel-editor">
-              {this.props.viewConfiguration.ToolbarPosition == "top" &&
+              {this.viewConfiguration.ToolbarPosition == "top" &&
                 toolBarCreator("horizontal")}
               <div className="charticulator__panel-editor-panel-container">
                 {[
-                  this.props.viewConfiguration.EditorPanelsPosition == "left" &&
+                  this.viewConfiguration.EditorPanelsPosition == "left" &&
                     editorPanels(),
-                  this.props.viewConfiguration.ToolbarPosition == "left" &&
+                  this.viewConfiguration.ToolbarPosition == "left" &&
                     toolBarCreator("vertical"),
                   chartPanel(),
-                  this.props.viewConfiguration.ToolbarPosition == "right" &&
+                  this.viewConfiguration.ToolbarPosition == "right" &&
                     toolBarCreator("vertical"),
-                  this.props.viewConfiguration.EditorPanelsPosition ==
+                  this.viewConfiguration.EditorPanelsPosition ==
                     "right" && editorPanels(),
                 ]}
               </div>
             </div>,
-            this.props.viewConfiguration.ColumnsPosition == "right" &&
+            this.viewConfiguration.ColumnsPosition == "right" &&
               datasetPanel(),
           ]}
         </section>

@@ -105,7 +105,11 @@ export abstract class BaseButton<
   protected _doClick = this.doClick.bind(this);
 }
 
-export class AppButton extends BaseButton<ButtonProps> {
+export interface AppButtonProps extends ButtonProps {
+  name?: string
+}
+
+export class AppButton extends BaseButton<AppButtonProps> {
   public render() {
     return (
       <span
@@ -114,7 +118,7 @@ export class AppButton extends BaseButton<ButtonProps> {
         onClick={this._doClick}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
-        <span className="el-text">Charticulator</span>
+        <span className="el-text">{this.props.name || "Charticulator"}</span>
       </span>
     );
   }

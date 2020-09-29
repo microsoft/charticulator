@@ -94,7 +94,7 @@ export class AppStore extends BaseStore {
   public readonly worker: CharticulatorWorker;
 
   /** Is this app a nested chart editor? */
-  public isNestedEditor: boolean = false;
+  public editorType: "chart" | "nested" | "embedded" = "chart";
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
@@ -350,9 +350,10 @@ export class AppStore extends BaseStore {
   }
 
   public setupNestedEditor(
-    callback: (newSpecification: Specification.Chart) => void
+    callback: (newSpecification: Specification.Chart) => void,
+    type: "nested" | "embedded"
   ) {
-    this.isNestedEditor = true;
+    this.editorType = type;
     this.disableFileView = true;
     this.emit(AppStore.EVENT_IS_NESTED_EDITOR);
     this.addListener(AppStore.EVENT_NESTED_EDITOR_EDIT, () => {

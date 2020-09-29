@@ -224,7 +224,9 @@ export class Application {
             });
           }
         }
-      });
+      },
+      this.config.CorsPolicy &&
+        this.config.CorsPolicy.Embedded ? "embedded" : "nested");
     }).bind(this);
     window.addEventListener("message", (e: MessageEvent) => {
       if (e.data.id != id) {

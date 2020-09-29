@@ -85,7 +85,9 @@ export class HelpButton extends React.Component<{}, {}> {
   }
 }
 
-export class MenuBar extends ContextedComponent<{}, {}> {
+export class MenuBar extends ContextedComponent<{
+  name?: string;
+}, {}> {
   protected subs: EventSubscription;
 
   public componentDidMount() {
@@ -138,7 +140,7 @@ export class MenuBar extends ContextedComponent<{}, {}> {
             break;
           case "save":
             {
-              if (this.context.store.isNestedEditor) {
+              if (this.context.store.editorType == "nested" || this.context.store.editorType == "embedded") {
                 this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
                 if (this.context.store.currentChartID) {
@@ -217,6 +219,19 @@ export class MenuBar extends ContextedComponent<{}, {}> {
     );
   }
 
+  public renderSaveEmbedded() {
+    return (
+      <MenuButton
+        url={R.getSVGIcon("toolbar/save")}
+        text=""
+        title="Save (Ctrl-S)"
+        onClick={() => {
+          this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+        }}
+      />
+    );
+  }
+
   public renderNewOpenSave() {
     return (
       <>
@@ -260,11 +275,11 @@ export class MenuBar extends ContextedComponent<{}, {}> {
     return (
       <section className="charticulator__menu-bar">
         <div className="charticulator__menu-bar-left">
-          <AppButton onClick={() => this.showFileModalWindow("open")} />
+          <AppButton name={this.props.name} onClick={() => this.showFileModalWindow("open")} />
           <span className="charticulator__menu-bar-separator" />
-          {this.context.store.isNestedEditor
-            ? this.renderSaveNested()
-            : this.renderNewOpenSave()}
+          {this.context.store.editorType === "nested" ? this.renderSaveNested() : null}
+          {this.context.store.editorType === "chart" ? this.renderNewOpenSave() : null}
+          {this.context.store.editorType === "embedded" ? this.renderSaveEmbedded() : null}
           <span className="charticulator__menu-bar-separator" />
           <MenuButton
             url={R.getSVGIcon("toolbar/undo")}
