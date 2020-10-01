@@ -1873,6 +1873,12 @@
     @include shadow-focused;
   }
 
+  & > .el-scale-editor-left {
+    @extend .el-scale-editor;
+    right: calc(100% + 5px);
+    left: unset;
+  }
+
   .action-buttons {
     text-align: right;
     margin-top: 10px;
