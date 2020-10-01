@@ -183,16 +183,18 @@ export class ImportDataView extends React.Component<
   ImportDataViewProps,
   ImportDataViewState
 > {
+  public state = {
+    dataTable: null as Dataset.Table,
+    linkTable: null as Dataset.Table,
+    dataTableOrigin: null as Dataset.Table,
+    linkTableOrigin: null as Dataset.Table
+  };
+
   constructor(props: ImportDataViewProps) {
     super(props);
-    this.state = {
-      dataTable: null,
-      linkTable: null,
-      dataTableOrigin: null,
-      linkTableOrigin: null
-    };
-
-    props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
+    this.props.store.addListener(AppStore.EVENT_GRAPHICS, () =>
+      this.forceUpdate()
+    );
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
@@ -452,7 +454,7 @@ export class ImportDataView extends React.Component<
             dangerouslySetInnerHTML={{
               __html:
                 getConfig().LegalNotices &&
-                getConfig().LegalNotices.privacyStatementHTML,
+                getConfig().LegalNotices.privacyStatementHTML
             }}
           />
         </div>

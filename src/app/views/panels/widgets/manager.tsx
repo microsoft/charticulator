@@ -644,13 +644,19 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                           kind: axisDataBinding.dataKind
                         };
 
-                        new Actions.BindDataToAxis(
-                          this.objectClass.object as Specification.PlotSegment,
-                          property.property,
-                          null,
-                          axisDataBinding,
-                          axisDataBinding.type
-                        ).dispatch(this.store.dispatcher);
+                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                          this.objectClass.object
+                        );
+                        const values = this.store.chartManager.getGroupedExpressionVector(
+                          (this.objectClass.object as any).table,
+                          groupBy,
+                          axisDataBinding.expression
+                        );
+
+                        return this.store.getCategoriesForDataBinding(
+                          axisDataBinding.metadata,
+                          values
+                        );
                       }}
                       allowReset={allowReset}
                     />
@@ -1221,7 +1227,7 @@ export class ReorderStringsValue extends React.Component<
     items: string[];
     onConfirm: (items: string[]) => void;
     allowReset?: boolean;
-    onReset?: () => void;
+    onReset?: () => string[];
   },
   { items: string[] }
 > {
@@ -1271,7 +1277,8 @@ export class ReorderStringsValue extends React.Component<
                 text="Reset"
                 onClick={() => {
                   if (this.props.onReset) {
-                    this.props.onReset();
+                    const items = this.props.onReset();
+                    this.setState({ items });
                   }
                 }}
               />
