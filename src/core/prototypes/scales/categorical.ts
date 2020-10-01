@@ -8,7 +8,7 @@ import {
   AttributeMap,
   AttributeType
 } from "../../specification";
-import { AttributeDescription, Controls } from "../common";
+import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
 
 import { ScaleClass } from "./index";
 import { AttributeDescriptions } from "../object";
@@ -154,6 +154,11 @@ export class CategoricalScaleColor extends ScaleClass<
 > {
   public static classID = "scale.categorical<string,color>";
   public static type = "scale";
+
+  public static metadata: ObjectClassMetadata = {
+    displayName: "Scale",
+    iconPath: "scale/color"
+  };
 
   public attributeNames: string[] = [];
   public attributes: AttributeDescriptions = {};
