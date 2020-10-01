@@ -2077,7 +2077,7 @@ export class Region2DConstraintBuilder {
       const isYFixed = props.yData && props.yData.type == "numerical";
       extra.push(
         m.row(
-          "Align",
+          "Alignment",
           m.horizontal(
             [0, 0],
             isXFixed
