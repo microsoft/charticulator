@@ -314,6 +314,7 @@ export interface ObjectButtonProps {
   options?: string;
   noDragging?: boolean;
   onClick?: () => void;
+  compact?: boolean;
 }
 
 export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
@@ -345,6 +346,7 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
         icon={R.getSVGIcon(this.props.icon)}
         active={this.getIsActive()}
         title={this.props.title}
+        compact={this.props.compact}
         onClick={() => {
           this.dispatch(
             new Actions.SetCurrentTool(this.props.classID, this.props.options)
@@ -481,19 +483,8 @@ export class MultiObjectButton extends ContextedComponent<
           ref={(e) => (this.refButton = e)}
           {...this.getSelectedTool()}
           onClick={onClick}
+          compact={this.props.compact}
         />
-        <span
-          style={{
-            position: "relative",
-            bottom: "-7px",
-            left: "-30px",
-          }}
-          onClick={onClick}
-        >
-          {this.props.compact ? (
-            <SVGImageIcon url={R.getSVGIcon("general/triangle-right-bottom")} />
-          ) : null}
-        </span>
         <span
           className="el-dropdown"
           ref={(e) => {
