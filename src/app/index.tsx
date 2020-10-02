@@ -50,3 +50,6 @@ export { Actions, DragData } from "./actions";
 export { ExtensionContext, Extension } from "./extension";
 export { Application, ApplicationExtensionContext } from "./application";
 export { ExportTemplateTarget } from "./template";
+export { Widgets } from "./views/panels/index";
+export { PopupContainer } from "./controllers/popup_controller";
+export * as globals from "./globals";

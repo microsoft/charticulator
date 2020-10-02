@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 /**
  * @ignore
  */
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+
 export * from "./attribute_panel";
+export * as Widgets from "./widgets/controls/index";
