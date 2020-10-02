@@ -270,9 +270,7 @@ export class Toolbar extends ContextedComponent<
   }
 
   public render() {
-    const toolItems = this.getToolItems(
-      this.props.layout === "horizontal"
-    );
+    const toolItems = this.getToolItems(this.props.layout === "horizontal");
     return (
       <div
         className={
@@ -281,25 +279,28 @@ export class Toolbar extends ContextedComponent<
             : "chartaccent__toolbar-horizontal"
         }
       >
-        {toolItems.map(item => {
+        {toolItems.map((item, index) => {
           return (
             <>
-            <div className={
-              this.props.layout === "vertical"
-                ? "chartaccent__toolbar-vertical-group"
-                : "chartaccent__toolbar-horizontal-group"
-            }>
-              {item}
-            </div>
-            <span
-            className={
-              this.props.layout === "vertical"
-                ? "chartaccent__toolbar-vertical-separator"
-                : "chartaccent__toolbar-horizontal-separator"
-            }
-          />
+              <div
+                key={index}
+                className={
+                  this.props.layout === "vertical"
+                    ? "chartaccent__toolbar-vertical-group"
+                    : "chartaccent__toolbar-horizontal-group"
+                }
+              >
+                {item}
+              </div>
+              <span
+                className={
+                  this.props.layout === "vertical"
+                    ? "chartaccent__toolbar-vertical-separator"
+                    : "chartaccent__toolbar-horizontal-separator"
+                }
+              />
             </>
-          )
+          );
         })}
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
       </div>
