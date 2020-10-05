@@ -217,7 +217,7 @@ export class CategoricalLegendClass extends LegendClass {
     const widgets = super.getAttributePanelWidgets(manager);
 
     return [
-      manager.sectionHeader("Layout"),
+      ...widgets,
       manager.row(
         "Orientation",
         manager.inputSelect(
@@ -230,8 +230,7 @@ export class CategoricalLegendClass extends LegendClass {
             options: ["vertical", "horizontal"]
           }
         )
-      ),
-      ...widgets
+      )
     ];
   }
 }
