@@ -346,3 +346,12 @@ export function copyToClipboard(str: string) {
   document.execCommand("copy");
   document.body.removeChild(el);
 }
+
+
+export function isInIFrame() {
+  try {
+    return window.self !== window.top;
+  } catch(ex) {
+    return true;
+  }
+}

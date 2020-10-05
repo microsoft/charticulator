@@ -13,6 +13,8 @@ import { ModalView, PopupView } from "../controllers";
 
 import { FileView } from "./file_view";
 import { AppStore } from "../stores";
+import { Button } from "./panels/widgets/controls";
+import { isInIFrame } from "../utils";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -300,9 +302,48 @@ export class MenuBar extends ContextedComponent<{
             url={R.getSVGIcon("toolbar/trash")}
             title="Reset"
             onClick={() => {
-              if (confirm("Are you really willing to reset the chart?")) {
-                new Actions.Reset().dispatch(this.context.store.dispatcher);
-              }
+                if (isInIFrame()) {
+                  globals.popupController.showModal(
+                    context => {
+                      return (
+                        <div
+                          onMouseDown={e => {
+                              e.stopPropagation();
+                            }
+                          }
+                          className={"charticulator__reset_chart_dialog"}>
+                          <div className={"charticulator__reset_chart_dialog-inner"}>
+                          {/* <ModalView context={context}> */}
+                            <>
+                              <p>Are you really willing to reset the chart?</p>
+                              <div className={"charticulator__reset_chart_dialog-buttons"}>
+                                <Button
+                                  text="Yes"
+                                  onClick={() => {
+                                    this.context.store.dispatcher.dispatch(new Actions.Reset());
+                                    context.close();
+                                  }}
+                                />
+                                <Button
+                                  text="No"
+                                  onClick={() => {
+                                    context.close();
+                                  }}
+                                />
+                              </div>
+                            </>
+                          {/* </ModalView> */}
+                          </div>
+                        </div>
+                      );
+                    },
+                    { anchor: null }
+                  );
+                } else {
+                  if (confirm("Are you really willing to reset the chart?")) {
+                    new Actions.Reset().dispatch(this.context.store.dispatcher);
+                  }
+                }
             }}
           />
         </div>
