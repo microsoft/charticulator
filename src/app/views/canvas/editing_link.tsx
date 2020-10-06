@@ -315,9 +315,9 @@ export class EditingLink extends React.Component<
           // Find the first links with nodes are exists in main table
           const rowItem: Specification.DataRow = linkTable.rows.find(
             row =>
-              tables[0].id2RowGlyphIndex.get(row.source_id.toString()) !=
+            row.source_id && tables[0].id2RowGlyphIndex.get(row.source_id.toString()) !=
                 undefined &&
-              tables[1].id2RowGlyphIndex.get(row.target_id.toString()) !=
+                row.target_id && tables[1].id2RowGlyphIndex.get(row.target_id.toString()) !=
                 undefined
           );
           if (rowItem) {
