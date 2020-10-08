@@ -178,10 +178,9 @@ export class DataAxisClass extends MarkClass<
         break;
       case "last":
         {
-          if (
-            glyphIndex !=
-            this.getPlotSegmentClass().state.glyphs.length - 1
-          ) {
+          const index = this.getPlotSegmentClass().getLastGlyphIndex();
+          console.log(index);
+          if (glyphIndex != index) {
             return null;
           }
         }
@@ -189,7 +188,8 @@ export class DataAxisClass extends MarkClass<
       case "first":
       default:
         {
-          if (glyphIndex != 0) {
+          const index = this.getPlotSegmentClass().getFirstGlyphIndex();
+          if (glyphIndex != index) {
             return null;
           }
         }
