@@ -191,11 +191,17 @@ export abstract class PlotSegmentClass<
     return groups;
   }
 
+  /**
+   * Return the index of the first glyph after sorting glyphs according sublayout order parameter
+   */
   public getFirstGlyphIndex() {
     const glyphs = this.buildGlyphOrderedList();
     return glyphs.length > 0 ? glyphs[0] : -1;
   }
 
+  /**
+   * Return the index of the last glyph after sorting glyphs according sublayout order parameter
+   */
   public getLastGlyphIndex() {
     const glyphs = this.buildGlyphOrderedList();
     return glyphs.length > 0 ? glyphs[glyphs.length - 1] : -1;
