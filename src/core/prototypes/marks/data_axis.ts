@@ -179,7 +179,6 @@ export class DataAxisClass extends MarkClass<
       case "last":
         {
           const index = this.getPlotSegmentClass().getLastGlyphIndex();
-          console.log(index);
           if (glyphIndex != index) {
             return null;
           }
