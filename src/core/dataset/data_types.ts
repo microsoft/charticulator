@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import { DataValue, DataType, DataKind, ColumnMetadata } from "./dataset";
 import {
   parseDate,
@@ -8,12 +9,27 @@ import {
   getDateFormat
 } from "./datetime";
 
+export interface LocaleNumberFormat {
+  remove: string;
+  decimal: string;
+}
+
+function localeNumber(x: string, localeNumberFormat: LocaleNumberFormat) {
+  const reRemove = new RegExp("\\" + localeNumberFormat.remove, "g");
+  x = x.replace(reRemove, "");
+  if (localeNumberFormat.decimal !== ".") {
+    const reReplace = new RegExp("\\" + localeNumberFormat.decimal, "g");
+    x = x.replace(reReplace, ".");
+  }
+  return +x;
+}
+
 // Infer column type.
 // Adapted from datalib: https://github.com/vega/datalib/blob/master/src/import/type.js
 
 export interface DataTypeDescription {
-  test: (v: string) => boolean;
-  convert: (v: string) => DataValue;
+  test: (v: string, localeNumberFormat?: LocaleNumberFormat) => boolean;
+  convert: (v: string, localeNumberFormat?: LocaleNumberFormat) => DataValue;
 }
 
 export let dataTypes: { [name in DataType]: DataTypeDescription } = {
@@ -34,14 +50,15 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     }
   },
   number: {
-    test: (x: string) => {
+    test: (x: string, localeNumberFormat: LocaleNumberFormat) => {
       if (x === "null") {
         return true;
       }
-      return !isNaN(+x.replace(/\,/g, ""));
+      const value = localeNumber(x, localeNumberFormat);
+      return !isNaN(value);
     },
-    convert: (x: string) => {
-      const value = +x.replace(/\,/g, "");
+    convert: (x: string, localeNumberFormat: LocaleNumberFormat) => {
+      const value = localeNumber(x, localeNumberFormat);
       return isNaN(value) ? null : value;
     }
   },
@@ -56,7 +73,10 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
 };
 
 /** Infer column type from a set of strings (not null) */
-export function inferColumnType(values: string[]): DataType {
+export function inferColumnType(
+  values: string[],
+  localeNumberFormat: LocaleNumberFormat
+): DataType {
   const candidates: DataType[] = [
     DataType.Boolean,
     DataType.Number,
@@ -70,7 +90,7 @@ export function inferColumnType(values: string[]): DataType {
     }
     // test for remaining candidates
     for (let j = 0; j < candidates.length; j++) {
-      if (!dataTypes[candidates[j]].test(v)) {
+      if (!dataTypes[candidates[j]].test(v, localeNumberFormat)) {
         // console.log(candidates[j], "fail at", v);
         candidates.splice(j, 1);
         j -= 1;
@@ -85,9 +105,16 @@ export function inferColumnType(values: string[]): DataType {
 }
 
 /** Convert strings to value type, null & non-convertibles are set as null */
-export function convertColumn(type: DataType, values: string[]): DataValue[] {
+export function convertColumn(
+  type: DataType,
+  values: string[],
+  localeNumberFormat: LocaleNumberFormat = {
+    remove: ",",
+    decimal: "."
+  }
+): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map(v => (v != null ? converter(v) : null));
+  return values.map(v => (v != null ? converter(v, localeNumberFormat) : null));
 }
 
 /** Get distinct values from a non-null array of basic types */
@@ -102,6 +129,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 /** Infer column metadata and update type if necessary */
 export function inferAndConvertColumn(
   values: string[],
+  localeNumberFormat: LocaleNumberFormat,
   hints?: { [name: string]: string }
 ): {
   values: DataValue[];
@@ -109,8 +137,15 @@ export function inferAndConvertColumn(
   type: DataType;
   metadata: ColumnMetadata;
 } {
-  const inferredType = inferColumnType(values.filter(x => x != null));
-  const convertedValues = convertColumn(inferredType, values);
+  const inferredType = inferColumnType(
+    values.filter(x => x != null),
+    localeNumberFormat
+  );
+  const convertedValues = convertColumn(
+    inferredType,
+    values,
+    localeNumberFormat
+  );
   if (hints == null) {
     hints = {};
   }
@@ -169,7 +204,7 @@ export function inferAndConvertColumn(
       return {
         type: DataType.Boolean,
         values: convertedValues,
-        // rawValues: values.map(v => v && v.toLowerCase()),
+        rawValues: values.map(v => v && v.toLowerCase()),
         metadata: {
           kind: DataKind.Categorical
         }

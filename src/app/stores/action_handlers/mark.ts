@@ -61,6 +61,13 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   MR.add(Actions.SetObjectProperty, function(this, action) {
+    // check name property. Names of objects are unique
+    if (
+      action.property === "name" &&
+      this.chartManager.isNameUsed(action.value as string)
+    ) {
+      return;
+    }
     if (action.field == null) {
       action.object.properties[action.property] = action.value;
     } else {
@@ -171,15 +178,17 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
       .attributes[action.attribute];
     const table = this.getTable(action.glyph.table);
-    const inferred = this.scaleInference(
-      { glyph: action.glyph },
-      action.expression,
-      action.valueType,
-      action.valueMetadata.kind,
-      action.attributeType,
-      action.hints,
-      action.attribute
-    );
+    const inferred =
+      (action.hints && action.hints.scaleID) ||
+      this.scaleInference(
+        { glyph: action.glyph },
+        action.expression,
+        action.valueType,
+        action.valueMetadata.kind,
+        action.attributeType,
+        action.hints,
+        action.attribute
+      );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
         type: "scale",
@@ -187,7 +196,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         expression: action.expression,
         valueType: action.valueType,
         scale: inferred,
-        attribute: action.attribute
+        attribute: action.attribute,
+        valueIndex:
+          action.hints && action.hints.allowSelectValue ? 0 : undefined
       } as Specification.ScaleMapping;
       if (
         !this.chart.scaleMappings.find(
@@ -201,7 +212,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
     } else {
       if (
-        (action.valueType == Specification.DataType.String ||
+        (action.valueType == Specification.DataType.Boolean ||
+          action.valueType == Specification.DataType.String ||
           action.valueType == Specification.DataType.Number) &&
         action.attributeType == Specification.AttributeType.Text
       ) {

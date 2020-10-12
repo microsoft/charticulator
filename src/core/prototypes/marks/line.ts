@@ -17,6 +17,7 @@ import {
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
+  strokeStyleToDashArray,
   TemplateParameters
 } from "../common";
 
@@ -43,6 +44,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<LineElementProperties> = {
+    strokeStyle: "solid",
     visible: true
   };
 
@@ -77,7 +79,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     attrs.visible = true;
   }
 
-  // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(solver: ConstraintSolver): void {
     const [x1, y1, x2, y2, cx, cy, dx, dy] = solver.attrs(
       this.state.attributes,
@@ -99,7 +101,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     );
   }
 
-  // Get the graphical element from the element
+  /** Get the graphical element from the element */
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
@@ -121,12 +123,15 @@ export class LineElementClass extends EmphasizableMarkClass<
         strokeColor: attrs.stroke,
         strokeOpacity: attrs.opacity,
         strokeWidth: attrs.strokeWidth,
+        strokeDasharray: strokeStyleToDashArray(
+          this.object.properties.strokeStyle
+        ),
         ...this.generateEmphasisStyle(emphasize)
       }
     );
   }
 
-  // Get DropZones given current state
+  /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes as LineElementAttributes;
     const { x1, y1, x2, y2 } = attrs;
@@ -163,7 +168,8 @@ export class LineElementClass extends EmphasizableMarkClass<
       } as DropZones.Line
     ];
   }
-  // Get bounding rectangle given current state
+
+  /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes as LineElementAttributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
@@ -227,6 +233,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     return [
       manager.sectionHeader("Line"),
       manager.mappingEditor("X Span", "dx", {
@@ -246,6 +253,19 @@ export class LineElementClass extends EmphasizableMarkClass<
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
       }),
+      manager.row(
+        "Line Style",
+        manager.inputSelect(
+          { property: "strokeStyle" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+            labels: ["Solid", "Dashed", "Dotted"],
+            options: ["solid", "dashed", "dotted"]
+          }
+        )
+      ),
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
@@ -254,11 +274,11 @@ export class LineElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Visibility", "visible", {
         defaultValue: true
       })
-    ];
+    ].concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {
-    const properties = [];
+    const properties: Specification.Template.Property[] = [];
     if (
       this.object.mappings.visible &&
       this.object.mappings.visible.type === "value"
@@ -298,6 +318,14 @@ export class LineElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.strokeWidth
+      });
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "strokeStyle"
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.strokeStyle
       });
     }
     if (

@@ -16,6 +16,7 @@ import { ActionHandlerRegistry } from "./registry";
 import { getConfig } from "../../config";
 import { convertColumn } from "../../../core/dataset/data_types";
 import { DataType, Table, Column } from "../../../core/dataset";
+import { AddMessage } from "../../actions/actions";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
 export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
@@ -246,6 +247,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
+    this.solveConstraintsAndUpdateGraphics();
   });
 
   REG.add(Actions.UpdatePlotSegments, function(action) {
@@ -303,7 +305,10 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     }
 
-    convertColumns(table, column, originTable, action.type);
+    const result = convertColumns(table, column, originTable, action.type);
+    if (result) {
+      this.messageState.set("columnConvertError", result);
+    }
 
     this.updatePlotSegments();
     this.solveConstraintsAndUpdateGraphics();

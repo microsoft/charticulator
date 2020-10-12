@@ -28,13 +28,16 @@ export interface DataFieldSelectorProps {
   };
 
   onChange?: (newValue: DataFieldSelectorValue) => void;
+  onChangeSelectionList?: (newValue: DataFieldSelectorValue[]) => void;
 
   useAggregation?: boolean;
+  multiSelect?: boolean;
 }
 
 export interface DataFieldSelectorValue {
   table: string;
   expression: string;
+  rawExpression: string;
   // lambdaExpression: string;
   /** Only available if the expression refers to exactly a column */
   columnName?: string;
@@ -51,7 +54,9 @@ export interface DataFieldSelectorValueCandidate
 
 export interface DataFieldSelectorState {
   currentSelection: DataFieldSelectorValue;
+  currentSelections: DataFieldSelectorValue[];
   currentSelectionAggregation: string;
+  currentSelectionsAggregations: string[];
 }
 
 export class DataFieldSelector extends React.Component<
@@ -91,7 +96,9 @@ export class DataFieldSelector extends React.Component<
           if (f.expression == expression) {
             return {
               currentSelection: f,
-              currentSelectionAggregation: expressionAggregation
+              currentSelectionAggregation: expressionAggregation,
+              currentSelections: [f],
+              currentSelectionsAggregations: [expressionAggregation]
             };
           }
         }
@@ -99,12 +106,18 @@ export class DataFieldSelector extends React.Component<
     }
     return {
       currentSelection: null,
-      currentSelectionAggregation: null
+      currentSelectionAggregation: null,
+      currentSelections: [],
+      currentSelectionsAggregations: []
     };
   }
 
   public get value() {
-    return this.state.currentSelection;
+    if (this.props.multiSelect) {
+      return this.state.currentSelections;
+    } else {
+      return this.state.currentSelection;
+    }
   }
 
   private getAllFields() {
@@ -160,6 +173,9 @@ export class DataFieldSelector extends React.Component<
         table: table.name,
         columnName: c.name,
         expression: Expression.variable(c.name).toString(),
+        rawExpression: Expression.variable(
+          c.metadata.rawColumnName || c.name
+        ).toString(),
         type: c.type,
         displayName: c.name,
         metadata: c.metadata,
@@ -176,6 +192,10 @@ export class DataFieldSelector extends React.Component<
               item.function,
               Expression.parse(r.expression)
             ).toString(),
+            rawExpression: Expression.functionCall(
+              item.function,
+              Expression.parse(r.rawExpression)
+            ).toString(),
             type: item.type,
             metadata: item.metadata,
             displayName: item.name,
@@ -190,7 +210,9 @@ export class DataFieldSelector extends React.Component<
       return r;
     });
     // Make sure we only show good ones
-    candidates = candidates.filter(x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw);
+    candidates = candidates.filter(
+      x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw
+    );
     return candidates;
   }
 
@@ -204,6 +226,23 @@ export class DataFieldSelector extends React.Component<
     return v1.expression == v2.expression && v1.table == v2.table;
   }
 
+  private isValueExists(
+    v1: DataFieldSelectorValue,
+    v2: DataFieldSelectorValue[]
+  ) {
+    if (
+      v2.find(
+        v => v == v1 || (v1.expression == v.expression && v1.table == v.table)
+      )
+    ) {
+      return true;
+    }
+    if (v1 == null || v2.length == 0) {
+      return false;
+    }
+    return false;
+  }
+
   private selectItem(item: DataFieldSelectorValue, aggregation: string = null) {
     if (item == null) {
       if (this.props.onChange) {
@@ -215,25 +254,83 @@ export class DataFieldSelector extends React.Component<
           aggregation = Expression.getDefaultAggregationFunction(item.type);
         }
       }
-      this.setState({
-        currentSelection: item,
-        currentSelectionAggregation: aggregation
-      });
+      if (this.props.multiSelect) {
+        this.setState(current => {
+          const found = current.currentSelections.find(
+            i => i.expression === item.expression
+          );
+          if (found) {
+            return {
+              ...current,
+              currentSelections: current.currentSelections.filter(
+                i => i.expression !== item.expression
+              ),
+              currentSelectionsAggregations: current.currentSelectionsAggregations.filter(
+                a => a !== aggregation
+              )
+            };
+          } else {
+            return {
+              ...current,
+              currentSelections: [...current.currentSelections, item],
+              currentSelectionsAggregations: [
+                ...current.currentSelectionsAggregations,
+                aggregation
+              ]
+            };
+          }
+        });
+      } else {
+        this.setState({
+          currentSelection: item,
+          currentSelectionAggregation: aggregation
+        });
+      }
       if (this.props.onChange) {
-        const r = {
-          table: item.table,
-          expression: item.expression,
-          columnName: item.columnName,
-          type: item.type,
-          metadata: item.metadata
-        };
-        if (this.props.useAggregation) {
-          r.expression = Expression.functionCall(
-            aggregation,
-            Expression.parse(item.expression)
-          ).toString();
+        if (this.props.multiSelect) {
+          const rlist = [...this.state.currentSelections, item].map(item => {
+            const r = {
+              table: item.table,
+              expression: item.expression,
+              rawExpression: item.rawExpression,
+              columnName: item.columnName,
+              type: item.type,
+              metadata: item.metadata
+            };
+            if (this.props.useAggregation) {
+              r.expression = Expression.functionCall(
+                aggregation,
+                Expression.parse(item.expression)
+              ).toString();
+              r.rawExpression = Expression.functionCall(
+                aggregation,
+                Expression.parse(item.rawExpression)
+              ).toString();
+            }
+            return r;
+          });
+          this.props.onChangeSelectionList(rlist);
+        } else {
+          const r = {
+            table: item.table,
+            expression: item.expression,
+            rawExpression: item.rawExpression,
+            columnName: item.columnName,
+            type: item.type,
+            metadata: item.metadata
+          };
+          if (this.props.useAggregation) {
+            r.expression = Expression.functionCall(
+              aggregation,
+              Expression.parse(item.expression)
+            ).toString();
+            r.rawExpression = Expression.functionCall(
+              aggregation,
+              Expression.parse(item.rawExpression)
+            ).toString();
+          }
+          this.props.onChange(r);
         }
-        this.props.onChange(r);
       }
     }
   }
@@ -245,18 +342,24 @@ export class DataFieldSelector extends React.Component<
         <div
           className={classNames(
             "el-field-item",
-            ["is-active", this.isValueEqual(this.state.currentSelection, item)],
+            [
+              "is-active",
+              this.props.multiSelect
+                ? this.isValueExists(item, this.state.currentSelections)
+                : this.isValueEqual(this.state.currentSelection, item)
+            ],
             ["is-selectable", item.selectable]
           )}
           onClick={
             item.selectable
-              ? () =>
+              ? event => {
                   this.selectItem(
                     item,
                     this.isValueEqual(this.state.currentSelection, item)
                       ? this.state.currentSelectionAggregation
                       : null
-                  )
+                  );
+                }
               : null
           }
         >

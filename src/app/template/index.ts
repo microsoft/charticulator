@@ -1,3 +1,14 @@
+/**
+ * The {@link ChartTemplateBuilder} creates tempate ({@link ChartTemplate}) from the current chart.
+ * {@link ChartTemplate} contains simplified version of {@link Chart} object in {@link ChartTemplate.specification} property.
+ * Tempate can be exported as *.tmplt file (JSON format). It also uses on export to HTML file or on export as Power BI visual.
+ *
+ * Template can be loaded into container outside of Charticulator app to visualize with custom dataset.
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -9,6 +20,7 @@ import {
   Prototypes,
   Specification
 } from "../../core";
+import { TableType } from "../../core/dataset";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -29,6 +41,7 @@ export interface ExportTemplateTarget {
   generate(properties: { [name: string]: any }): Promise<string>;
 }
 
+/** Class builds the template from given {@link Specification.Chart} object  */
 export class ChartTemplateBuilder {
   protected template: Specification.Template.ChartTemplate;
   protected tableColumns: { [name: string]: Set<string> };
@@ -38,7 +51,7 @@ export class ChartTemplateBuilder {
     public readonly chart: Specification.Chart,
     public readonly dataset: Dataset.Dataset,
     public readonly manager: Prototypes.ChartStateManager
-  ) { }
+  ) {}
 
   public reset() {
     this.template = {
@@ -58,17 +71,28 @@ export class ChartTemplateBuilder {
     }
   }
 
-  public addColumn(table: string, column: string) {
+  public addColumn(table: string, columnName: string) {
     if (table == null) {
       table = this.dataset.tables[0].name;
     }
     const tableObject = getByName(this.dataset.tables, table);
     if (tableObject) {
-      if (getByName(tableObject.columns, column)) {
+      const column = getByName(tableObject.columns, columnName);
+      if (column) {
+        if (column.metadata.isRaw) {
+          const notRawColumn = tableObject.columns.find(
+            col => col.metadata.rawColumnName === column.name
+          );
+          if (this.tableColumns.hasOwnProperty(table)) {
+            this.tableColumns[table].add(notRawColumn.name);
+          } else {
+            this.tableColumns[table] = new Set([notRawColumn.name]);
+          }
+        }
         if (this.tableColumns.hasOwnProperty(table)) {
-          this.tableColumns[table].add(column);
+          this.tableColumns[table].add(columnName);
         } else {
-          this.tableColumns[table] = new Set([column]);
+          this.tableColumns[table] = new Set([columnName]);
         }
       }
     }
@@ -166,21 +190,25 @@ export class ChartTemplateBuilder {
                     )) {
                       if (
                         ps.kind == "chart-element" &&
-                        Prototypes.isType(ps.object.classID, "plot-segment")
+                        Prototypes.isType(ps.object.classID, "plot-segment") &&
+                        item.glyph._id === (ps.chartElement as any).glyph
                       ) {
                         groupBy = (ps.chartElement as Specification.PlotSegment)
                           .groupBy;
                         break; // TODO: for now, we assume it's the first one
                       }
                     }
-                  }
-                  if (
+                  } else if (
                     item.kind == "chart-element" &&
                     Prototypes.isType(item.chartElement.classID, "links")
                   ) {
                     const linkTable = item.object.properties.linkTable as any;
                     const defaultTable = this.dataset.tables[0];
                     table = (linkTable && linkTable.table) || defaultTable.name;
+                  } else {
+                    table = this.dataset.tables.find(
+                      table => table.type === TableType.Main
+                    ).name;
                   }
                 }
               }
@@ -209,6 +237,28 @@ export class ChartTemplateBuilder {
           Object.keys(nestedChart.columnNameMap).forEach(key => {
             this.addColumn(inference.dataSource.table, key);
           });
+        }
+        if (inference.axis) {
+          const templateObject = Prototypes.findObjectById(
+            this.chart,
+            inference.objectID
+          );
+          const keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
+          const keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
+
+          inference.disableAutoMax = templateObject.properties[
+            keyDisableAutoMax
+          ] as boolean;
+          inference.disableAutoMin = templateObject.properties[
+            keyDisableAutoMin
+          ] as boolean;
+
+          if (inference.disableAutoMax === undefined) {
+            inference.disableAutoMax = false;
+          }
+          if (inference.disableAutoMin === undefined) {
+            inference.disableAutoMin = false;
+          }
         }
         template.inference.push(inference);
       }
@@ -332,7 +382,7 @@ export class ChartTemplateBuilder {
                 return this.tableColumns[table.name].has(x.name);
               })
               .map(x => ({
-                displayName: x.name,
+                displayName: x.displayName || x.name,
                 name: x.name,
                 type: x.type,
                 metadata: x.metadata
@@ -363,7 +413,10 @@ export class ChartTemplateBuilder {
 
       Object.keys(state.attributes).forEach(attribute => {
         // Only support numbers for now
-        if (cls.attributes[attribute].type === "number") {
+        if (
+          cls.attributes[attribute] &&
+          cls.attributes[attribute].type === "number"
+        ) {
           totals[attribute] = totals[attribute] || 0;
           totals[attribute] += state.attributes[attribute] || 0;
           counts[_id] = (counts[_id] || 0) + 1;

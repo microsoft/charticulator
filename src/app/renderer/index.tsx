@@ -68,7 +68,8 @@ export function applyColorFilter(color: Color, colorFilter: ColorFilter) {
   return { r, g, b };
 }
 
-/** Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
+/**
+ * Coverts {@Color} to `rgb(r,g,b)` string. Or coverts `#RRGGBB` fromat to `rgb(r,g,b)`}
  * @param color {@Color} object or color string in HEX format (`#RRGGBB`)
  */
 export function renderColor(
@@ -223,6 +224,7 @@ class TextOnPath extends React.PureComponent<{
   }
 }
 
+/** The method renders all chart elements in SVG document */
 export function renderGraphicalElementSVG(
   element: Graphics.Element,
   options?: RenderGraphicalElementSVGOptions
@@ -252,23 +254,43 @@ export function renderGraphicalElementSVG(
     if (options.onClick) {
       mouseEvents.onClick = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        options.onClick(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableSelection ||
+          element.selectable.enableSelection === undefined
+        ) {
+          options.onClick(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onMouseEnter) {
       mouseEvents.onMouseEnter = (e: React.MouseEvent<Element>) => {
-        options.onMouseEnter(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
+          options.onMouseEnter(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onMouseLeave) {
       mouseEvents.onMouseLeave = (e: React.MouseEvent<Element>) => {
-        options.onMouseLeave(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableTooltips ||
+          element.selectable.enableTooltips === undefined
+        ) {
+          options.onMouseLeave(element.selectable, e.nativeEvent);
+        }
       };
     }
     if (options.onContextMenu) {
       mouseEvents.onContextMenu = (e: React.MouseEvent<Element>) => {
         e.stopPropagation();
-        options.onContextMenu(element.selectable, e.nativeEvent);
+        if (
+          element.selectable.enableContextMenu ||
+          element.selectable.enableContextMenu === undefined
+        ) {
+          options.onContextMenu(element.selectable, e.nativeEvent);
+        }
       };
     }
   }

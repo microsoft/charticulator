@@ -6,3 +6,5 @@ datasets/
 dist/
 .sass-cache/
 docs/
+cert.pem
+key.pem

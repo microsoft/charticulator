@@ -3,6 +3,7 @@
 import { Color, Point } from "../common";
 import * as Template from "./template";
 import * as Types from "./types";
+import { Specification } from "../../container";
 
 export { Types, Template };
 
@@ -79,7 +80,8 @@ export type AttributeValue =
   | Color
   | Point
   | AttributeList
-  | AttributeMap;
+  | AttributeMap
+  | Specification.Chart;
 
 /** Attribute value list */
 export interface AttributeList extends ArrayLike<AttributeValue> {}
@@ -104,6 +106,10 @@ export interface Mapping {
   type: string;
 }
 
+export type baselineH = "left" | "center" | "right";
+export type baselineV = "top" | "middle" | "bottom";
+export type baseline = baselineH | baselineV;
+
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
   type: "scale";
@@ -117,6 +123,8 @@ export interface ScaleMapping extends Mapping {
   valueType: DataType;
   /** The id of the scale to use. If null, use the expression directly */
   scale?: string;
+  /** Index of value in mapping */
+  valueIndex?: number;
 }
 
 /** Text mapping: map data to text */
@@ -146,11 +154,19 @@ export interface ParentMapping extends Mapping {
 // Constraints
 // ===========================================================================
 
+export interface ConstraintAttributes {
+  gap?: number;
+  element: string;
+  attribute: string;
+  targetElement: string;
+  targetAttribute: string;
+}
+
 /** Constraint */
 export interface Constraint {
   /** Constraint type */
   type: string;
-  attributes: AttributeMap;
+  attributes: ConstraintAttributes;
 }
 
 // ===========================================================================
@@ -263,6 +279,10 @@ export interface Chart<
   glyphs: Glyph[];
   /** Scales */
   scales: Scale[];
+  /**
+   * Temporary structure to save created scales for reusing instead creating new.
+   * Unused scales will be removed on save
+   */
   scaleMappings: ScaleMapping[];
   /** Chart elements */
   elements: ChartElement[];

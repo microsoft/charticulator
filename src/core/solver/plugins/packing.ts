@@ -44,7 +44,6 @@ export class PackingPlugin extends ConstraintPlugin {
     this.getXYScale = getXYScale;
     this.gravityX = options.gravityX;
     this.gravityY = options.gravityY;
-    console.log("this.gravityX", this.gravityX, "this.gravityY", this.gravityY);
   }
 
   public apply() {
@@ -57,19 +56,19 @@ export class PackingPlugin extends ConstraintPlugin {
     }
     const cx = this.solver.getValue(this.cx);
     const cy = this.solver.getValue(this.cy);
-    const nodes = this.points.map(pt => {
+    const nodes = this.points.map((pt) => {
       const x = (this.solver.getValue(pt[0]) - cx) / xScale;
       const y = (this.solver.getValue(pt[1]) - cy) / yScale;
       // Use forceSimulation's default initialization
       return {
         fx: !this.xEnable ? x : undefined, // keep x unchanged if x is disabled
         fy: !this.yEnable ? y : undefined, // keep y unchanged if y is disabled
-        r: pt[2]
+        r: pt[2],
       } as NodeType;
     });
 
     const force = forceSimulation(nodes);
-    force.force("collision", forceCollide<NodeType>(d => d.r));
+    force.force("collision", forceCollide<NodeType>((d) => d.r));
     force.force("gravityX", forceX().strength(this.gravityX || 0.1));
     force.force("gravityY", forceY().strength(this.gravityY || 0.1));
     force.stop();

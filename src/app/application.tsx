@@ -6,7 +6,13 @@ import * as ReactDOM from "react-dom";
 import { MainView } from "./main_view";
 import { AppStore } from "./stores";
 
-import { initialize, Dispatcher, Specification, Dataset } from "../core";
+import {
+  initialize,
+  Dispatcher,
+  Specification,
+  Dataset,
+  deepClone
+} from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
@@ -17,8 +23,8 @@ import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
-import { string } from "../core/expression";
 import { TableType } from "../core/dataset";
+import { LocaleFileFormat } from "../core/dataset/dsv_parser";
 
 function makeDefaultDataset(): Dataset.Dataset {
   const rows: any[] = [];
@@ -102,13 +108,17 @@ export class Application {
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
+  private config: CharticulatorAppConfig;
+
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
-    workerScriptURL: string
+    workerScriptContent: string
   ) {
+    this.config = config;
     await initialize(config);
-    this.worker = new CharticulatorWorker(workerScriptURL);
+
+    this.worker = new CharticulatorWorker(workerScriptContent);
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -145,11 +155,13 @@ export class Application {
     await this.processHashString();
   }
 
-  public setupNestedEditor(id: string) {
-    window.addEventListener("message", (e: MessageEvent) => {
-      if (e.origin != document.location.origin || e.data.id != id) {
-        return;
-      }
+  public setupNestedEditor(
+    id: string,
+    onInitialized?: (id: string, load: (data: any) => void) => void,
+    onSave?: (data: any) => void
+  ) {
+    const appStore = this.appStore;
+    const setupCallback = ((data: any) => {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
@@ -159,7 +171,7 @@ export class Application {
           column: string;
           value: any;
         };
-      } = e.data;
+      } = data;
       info.specification.mappings.width = {
         type: "value",
         value: info.width
@@ -168,29 +180,81 @@ export class Application {
         type: "value",
         value: info.height
       } as Specification.ValueMapping;
-      this.appStore.dispatcher.dispatch(
+      appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset, {
           filterCondition: info.filterCondition
         })
       );
-      this.appStore.setupNestedEditor(newSpecification => {
-        window.opener.postMessage(
+      appStore.setupNestedEditor(newSpecification => {
+        const template = deepClone(appStore.buildChartTemplate());
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              id,
+              type: "save",
+              specification: newSpecification,
+              template
+            },
+            document.location.origin
+          );
+        } else {
+          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+            window.parent.postMessage(
+              {
+                id,
+                type: "save",
+                specification: newSpecification,
+                template
+              },
+              this.config.CorsPolicy.TargetOrigins
+            );
+          }
+          if (
+            this.config.CorsPolicy &&
+            this.config.CorsPolicy.Embedded &&
+            onSave
+          ) {
+            onSave({
+              specification: newSpecification,
+              template
+            });
+          }
+        }
+      });
+    }).bind(this);
+    window.addEventListener("message", (e: MessageEvent) => {
+      if (e.data.id != id) {
+        return;
+      }
+      setupCallback(e.data);
+    });
+    if (window.opener) {
+      window.opener.postMessage(
+        {
+          id,
+          type: "initialized"
+        },
+        document.location.origin
+      );
+    } else {
+      if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+        window.parent.postMessage(
           {
             id,
-            type: "save",
-            specification: newSpecification
+            type: "initialized"
           },
-          document.location.origin
+          this.config.CorsPolicy.TargetOrigins
         );
-      });
-    });
-    window.opener.postMessage(
-      {
-        id,
-        type: "initialized"
-      },
-      document.location.origin
-    );
+      } else if (
+        this.config.CorsPolicy &&
+        this.config.CorsPolicy.Embedded &&
+        onInitialized
+      ) {
+        onInitialized(id, (data: any) => {
+          setupCallback(data);
+        });
+      }
+    }
   }
 
   public async processHashString() {
@@ -208,8 +272,18 @@ export class Application {
       this.appStore.dispatcher.dispatch(new Actions.ImportDataset(dataset));
     } else if (hashParsed.loadCSV) {
       // Quick load from one or two CSV files
+      // default to comma delimiter, and en-US number format
+      const localeFileFormat: LocaleFileFormat = {
+        delimiter: ",",
+        numberFormat: {
+          remove: ",",
+          decimal: "."
+        }
+      };
       const spec: DatasetSourceSpecification = {
-        tables: hashParsed.loadCSV.split("|").map(x => ({ url: x }))
+        tables: hashParsed.loadCSV
+          .split("|")
+          .map(x => ({ url: x, localeFileFormat }))
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);

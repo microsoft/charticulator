@@ -35,7 +35,7 @@ export class ScaleEditor extends React.Component<
   }
 
   public render() {
-    const { scale, store } = this.props;
+    const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
     const manager = new WidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
@@ -82,9 +82,10 @@ export class ScaleEditor extends React.Component<
                       : "Add Legend"
                   }
                   onClick={() => {
-                    new Actions.ToggleLegendForScale(scale._id).dispatch(
-                      store.dispatcher
-                    );
+                    new Actions.ToggleLegendForScale(
+                      scale._id,
+                      scaleMapping
+                    ).dispatch(store.dispatcher);
                   }}
                 />
               </div>

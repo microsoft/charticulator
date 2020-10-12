@@ -3,9 +3,12 @@
 import { expect } from "chai";
 import {
   inferColumnType,
-  inferAndConvertColumn
+  inferAndConvertColumn,
+  LocaleNumberFormat
 } from "../../core/dataset/data_types";
 import { DataType } from "../../core/dataset";
+
+const localeNumberFormat: LocaleNumberFormat = { remove: ",", decimal: "." };
 
 describe("Data Type Inference", () => {
   it("inferColumnType", () => {
@@ -18,7 +21,7 @@ describe("Data Type Inference", () => {
       [["Jan", "Feb", "Mar", "Nov"], DataType.String]
     ];
     for (const [values, type] of cases) {
-      const inferredType = inferColumnType(values);
+      const inferredType = inferColumnType(values, localeNumberFormat);
       expect(inferredType).to.equals(type, values.join(", "));
     }
   });
@@ -69,7 +72,7 @@ describe("Data Type Inference", () => {
       ]
     ];
     for (const [values, expectedResult] of cases) {
-      const r = inferAndConvertColumn(values);
+      const r = inferAndConvertColumn(values, localeNumberFormat);
       if (expectedResult.type) {
         expect(r.type).to.equals(expectedResult.type);
       }

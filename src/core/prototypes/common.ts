@@ -26,6 +26,9 @@ export interface DataMappingHints {
   rangeEnum?: string[];
   rangeImage?: string[];
   newScale?: boolean;
+  scaleID?: string;
+  /** Enables value selector from mapping */
+  allowSelectValue?: boolean;
 }
 
 export interface TemplateParameters {
@@ -107,6 +110,11 @@ export namespace Handles {
     type: string;
     visible?: boolean;
     actions: HandleAction[];
+    options?: HandleOptions;
+  }
+
+  export interface HandleOptions {
+    snapToClosestPoint: boolean;
   }
 
   export interface HandleAction {

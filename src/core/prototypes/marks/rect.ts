@@ -30,7 +30,7 @@ export { RectElementAttributes, RectElementProperties };
 export class RectElementClass extends EmphasizableMarkClass<
   RectElementProperties,
   RectElementAttributes
-  > {
+> {
   public static classID = "mark.rect";
   public static type = "mark";
 
@@ -166,6 +166,8 @@ export class RectElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
+
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size & Shape"),
       manager.mappingEditor("Width", "width", {
@@ -219,6 +221,7 @@ export class RectElementClass extends EmphasizableMarkClass<
         )
       );
     }
+
     widgets = widgets.concat([
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
@@ -229,29 +232,68 @@ export class RectElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
+
+    widgets = widgets.concat(parentWidgets);
     return widgets;
   }
 
-  // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /**
+   * Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+   *   -------------- y1
+   *   |            |     |
+   *   |      *     | yc  height
+   *   |            |     |
+   *   -------------- y2
+   *  x1     xc     x2
+   *  <----width---->
+   */
   public buildConstraints(solver: ConstraintSolver): void {
+    // take variables for attributes
     const [x1, y1, x2, y2, cx, cy, width, height] = solver.attrs(
       this.state.attributes,
       ["x1", "y1", "x2", "y2", "cx", "cy", "width", "height"]
     );
+    // Describes intrinsic relations of reactangle
+    // add constraint x2 - x1 = width
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, x2], [-1, x1]],
+      [
+        [1, x2],
+        [-1, x1]
+      ],
       [[1, width]]
     );
+    // add constraint y2 - y1 = height
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, y2], [-1, y1]],
+      [
+        [1, y2],
+        [-1, y1]
+      ],
       [[1, height]]
     );
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
+    // add constraint x1 + x2 = 2 * xc
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cx]],
+      [
+        [1, x1],
+        [1, x2]
+      ]
+    );
+    // add constraint y1 + y2 = 2 * yc
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cy]],
+      [
+        [1, y1],
+        [1, y2]
+      ]
+    );
   }
 
   // Get the graphical element from the element

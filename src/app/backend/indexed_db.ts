@@ -25,6 +25,7 @@ export function uuid() {
   );
 }
 
+/** Responsible to manage saving, loading, storing charts created by user in IndexedDB of the browser */
 export class IndexedDBBackend {
   private databaseName: string;
   private database: IDBDatabase;

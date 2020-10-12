@@ -4,7 +4,13 @@ import * as React from "react";
 import * as R from "../../resources";
 import * as globals from "../../globals";
 import { getConfig } from "../../config";
-import { Dataset, deepClone } from "../../../core";
+import {
+  Dataset,
+  deepClone,
+  LinkSourceKeyColumn,
+  LinkTargetKeyColumn,
+  KeyColumn
+} from "../../../core";
 import {
   classNames,
   getExtensionFromFileName,
@@ -17,7 +23,8 @@ import { SVGImageIcon } from "../../components/icons";
 import { TableView } from "../dataset/table_view";
 import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
-import { color } from "d3";
+import { AppStore } from "../../stores";
+import { AddMessage, RemoveMessage } from "../../actions/actions";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -162,6 +169,7 @@ export interface ImportDataViewProps {
   onConfirmImport?: (dataset: Dataset.Dataset) => void;
   onCancel?: () => void;
   showCancel?: boolean;
+  store: AppStore;
 }
 
 export interface ImportDataViewState {
@@ -169,8 +177,6 @@ export interface ImportDataViewState {
   dataTableOrigin: Dataset.Table;
   linkTable: Dataset.Table;
   linkTableOrigin: Dataset.Table;
-  dataTableError?: string;
-  linkTableError?: string;
 }
 
 export class ImportDataView extends React.Component<
@@ -183,22 +189,30 @@ export class ImportDataView extends React.Component<
       dataTable: null,
       linkTable: null,
       dataTableOrigin: null,
-      linkTableOrigin: null,
-      dataTableError: null,
-      linkTableError: null
+      linkTableOrigin: null
     };
+
+    props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then(contents => {
+      const localeFileFormat = this.props.store.getLocaleFileFormat();
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
       const loader = new Dataset.DatasetLoader();
       switch (ext) {
         case "csv": {
-          return loader.loadCSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(
+            filename,
+            contents,
+            localeFileFormat
+          );
         }
         case "tsv": {
-          return loader.loadTSVFromContents(filename, contents);
+          return loader.loadDSVFromContents(filename, contents, {
+            delimiter: "\t",
+            numberFormat: localeFileFormat.numberFormat
+          });
         }
       }
     });
@@ -208,7 +222,11 @@ export class ImportDataView extends React.Component<
     table: Dataset.Table,
     onTypeChange: (column: string, type: string) => void
   ) {
-    return <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />;
+    return (
+      <div className="wide-content">
+        <TableView table={table} maxRows={5} onTypeChange={onTypeChange} />
+      </div>
+    );
   }
 
   public render() {
@@ -236,7 +254,10 @@ export class ImportDataView extends React.Component<
                                     dataset.tables.map((table, index) => {
                                       const loader = new Dataset.DatasetLoader();
                                       return loader
-                                        .loadCSVFromURL(table.url)
+                                        .loadDSVFromURL(
+                                          table.url,
+                                          this.props.store.getLocaleFileFormat()
+                                        )
                                         .then(r => {
                                           r.name = table.name;
                                           r.displayName = table.name;
@@ -292,17 +313,18 @@ export class ImportDataView extends React.Component<
                   this.state.dataTableOrigin,
                   type as Dataset.DataType
                 );
+                if (dataTableError) {
+                  this.props.store.dispatcher.dispatch(
+                    new AddMessage("parsingDataError", {
+                      text: dataTableError as string
+                    })
+                  );
+                }
                 this.setState({
-                  dataTable: this.state.dataTable,
-                  dataTableError
+                  dataTable: this.state.dataTable
                 });
               }
             )}
-            {this.state.dataTableError ? (
-              <p className="charticulator__import-data-view__error">
-                {this.state.dataTableError}
-              </p>
-            ) : null}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}
@@ -321,6 +343,9 @@ export class ImportDataView extends React.Component<
             onChange={file => {
               this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Main;
+
+                this.checkKeyColumn(table, this.state.linkTable);
+
                 this.setState({
                   dataTable: table,
                   dataTableOrigin: deepClone(table)
@@ -341,27 +366,27 @@ export class ImportDataView extends React.Component<
                 const dataColumn = this.state.linkTable.columns.find(
                   col => col.name === column
                 );
-                const dataColumnOrigin = this.state.linkTableOrigin.columns.find(
-                  col => col.name === column
-                );
                 const linkTableError = convertColumns(
                   this.state.linkTable,
                   dataColumn,
                   this.state.dataTableOrigin,
                   type as Dataset.DataType
                 );
+
+                if (linkTableError) {
+                  this.props.store.dispatcher.dispatch(
+                    new AddMessage("parsingDataError", {
+                      text: linkTableError as string
+                    })
+                  );
+                }
+
                 this.setState({
                   linkTable: this.state.linkTable,
-                  linkTableOrigin: this.state.linkTable,
-                  linkTableError
+                  linkTableOrigin: this.state.linkTable
                 });
               }
             )}
-            {this.state.linkTableError ? (
-              <p className="charticulator__import-data-view__error">
-                {this.state.linkTableError}
-              </p>
-            ) : null}
             <ButtonRaised
               text="Remove"
               url={R.getSVGIcon("general/cross")}
@@ -371,6 +396,8 @@ export class ImportDataView extends React.Component<
                   linkTable: null,
                   linkTableOrigin: null
                 });
+                this.checkSourceAndTargetColumns(null);
+                this.checkKeyColumn(this.state.dataTable, null);
               }}
             />
           </div>
@@ -380,6 +407,8 @@ export class ImportDataView extends React.Component<
             onChange={file => {
               this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Links;
+                this.checkSourceAndTargetColumns(table);
+                this.checkKeyColumn(this.state.dataTable, table);
                 this.setState({
                   linkTable: table,
                   linkTableOrigin: deepClone(table)
@@ -393,9 +422,19 @@ export class ImportDataView extends React.Component<
             text="Done"
             url={R.getSVGIcon("general/confirm")}
             title="Finish importing data"
-            disabled={this.state.dataTable == null}
+            disabled={
+              this.state.dataTable == null ||
+              this.props.store.messageState.get("noID") !== undefined ||
+              this.props.store.messageState.get("noSourceOrTargetID") !==
+                undefined
+            }
             onClick={() => {
-              if (this.state.dataTable != null) {
+              if (
+                this.state.dataTable != null &&
+                this.props.store.messageState.get("noID") === undefined &&
+                this.props.store.messageState.get("noSourceOrTargetID") ===
+                  undefined
+              ) {
                 const dataset: Dataset.Dataset = {
                   name: this.state.dataTable.name,
                   tables: [this.state.dataTable]
@@ -411,11 +450,48 @@ export class ImportDataView extends React.Component<
         <div className="charticulator__credits">
           <p
             dangerouslySetInnerHTML={{
-              __html: getConfig().LegalNotices.privacyStatementHTML
+              __html:
+                getConfig().LegalNotices &&
+                getConfig().LegalNotices.privacyStatementHTML,
             }}
           />
         </div>
       </div>
     );
+  }
+
+  private checkSourceAndTargetColumns(table: Dataset.Table) {
+    const countOfKeyColumns =
+      table &&
+      table.columns.filter(
+        column =>
+          column.name === LinkSourceKeyColumn ||
+          column.name === LinkTargetKeyColumn
+      ).length;
+    if (table && countOfKeyColumns < 2) {
+      this.props.store.dispatcher.dispatch(
+        new AddMessage("noSourceOrTargetID", {
+          text: `No ${LinkSourceKeyColumn} or ${LinkTargetKeyColumn} colums are specified in links table`
+        })
+      );
+    } else {
+      this.props.store.dispatcher.dispatch(
+        new RemoveMessage("noSourceOrTargetID")
+      );
+    }
+  }
+
+  private checkKeyColumn(mainTable: Dataset.Table, linksTable: Dataset.Table) {
+    const isKeyColumn =
+      mainTable && mainTable.columns.find(column => column.name === KeyColumn);
+    if (!isKeyColumn && linksTable) {
+      this.props.store.dispatcher.dispatch(
+        new AddMessage("noID", {
+          text: `No ${KeyColumn} colum are specified in main table`
+        })
+      );
+    } else {
+      this.props.store.dispatcher.dispatch(new RemoveMessage("noID"));
+    }
   }
 }

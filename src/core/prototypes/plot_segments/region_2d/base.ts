@@ -46,7 +46,7 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   packing: {
     gravityX: number;
     gravityY: number;
-  }
+  };
 }
 
 export interface Region2DAttributes extends Specification.AttributeMap {
@@ -86,6 +86,7 @@ export interface Region2DConfiguration {
   terminology: {
     xAxis: string;
     yAxis: string;
+    /** Items alignments */
     xMin: string;
     xMinIcon: string;
     xMiddle: string;
@@ -98,14 +99,18 @@ export interface Region2DConfiguration {
     yMiddleIcon: string;
     yMax: string;
     yMaxIcon: string;
+    /** Stack X */
     dodgeX: string;
     dodgeXIcon: string;
+    /** Stack Y */
     dodgeY: string;
     dodgeYIcon: string;
+    /** Grid */
     grid: string;
     gridIcon: string;
     gridDirectionX: string;
     gridDirectionY: string;
+    /** Packing force layout */
     packing: string;
     packingIcon: string;
     overlap: string;
@@ -183,6 +188,9 @@ export class DodgingFitters {
   }
 }
 
+/**
+ * Describes variables for constraints group. Count of group matches with data cound
+ */
 export class SublayoutGroup {
   public group: number[];
   public x1: Variable;
@@ -197,6 +205,10 @@ export interface SublayoutContext {
   yAxisPrePostGap?: boolean;
 }
 
+/**
+ * Class builds constrains for plot segments
+ * The builder creates constraints depends on sublayout
+ */
 export class Region2DConstraintBuilder {
   public terminology: Region2DConfiguration["terminology"];
 
@@ -505,6 +517,7 @@ export class Region2DConstraintBuilder {
     switch (axis) {
       case "x":
         {
+          // take x axis data to determine count of groups
           const data = props.xData;
           const [x1, x2, y1, y2] = solver.attrs(attrs, [
             this.x1Name,
@@ -523,9 +536,11 @@ export class Region2DConstraintBuilder {
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
             const [t1, t2] = axis.ranges[cindex];
 
+            // t1 * x2 = (1 - t1) * x2
             const vx1Expr = [[t1, x2], [1 - t1, x1]] as Array<
               [number, Variable]
             >;
+            // t2 * x2 = (1 - t2) * x2
             const vx2Expr = [[t2, x2], [1 - t2, x1]] as Array<
               [number, Variable]
             >;
@@ -541,9 +556,12 @@ export class Region2DConstraintBuilder {
               { edit: true }
             );
 
+            // t1 * x2 = (1 - t1) * x2 = 1 * vx1
             solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
+            // t2 * x2 = (1 - t2) * x2 = 1 * vx2
             solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
 
+            // save group of constraints
             sublayoutGroups.push({
               group: categoryMarks[cindex],
               x1: vx1,
@@ -1040,15 +1058,19 @@ export class Region2DConstraintBuilder {
         if (props.sublayout.type == "overlap") {
           this.fitGroups(groups, "xy");
         }
+        // Stack X
         if (props.sublayout.type == "dodge-x") {
           this.sublayoutDodging(groups, "x", context.xAxisPrePostGap);
         }
+        // Stack Y
         if (props.sublayout.type == "dodge-y") {
           this.sublayoutDodging(groups, "y", context.yAxisPrePostGap);
         }
+        // Grid layout
         if (props.sublayout.type == "grid") {
           this.sublayoutGrid(groups);
         }
+        // Force layout
         if (props.sublayout.type == "packing") {
           this.sublayoutPacking(groups);
         }
@@ -1675,7 +1697,7 @@ export class Region2DConstraintBuilder {
           this.config.getXYScale,
           {
             gravityX: packingProps && packingProps.gravityX,
-            gravityY: packingProps && packingProps.gravityY,
+            gravityY: packingProps && packingProps.gravityY
           }
         )
       );

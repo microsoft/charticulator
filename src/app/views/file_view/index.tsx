@@ -1,5 +1,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * Components to save, open, create, export charts.
+ *
+ * ![File view](media://file_view.png)
+ *
+ * * {@link "app/views/file_view/new_view"} / {@link "app/views/file_view/import_data_view"} - component with two file inputs for main table data and links table data
+ *
+ * ![File view](media://file_view_new.png)
+ *
+ * * {@link "app/views/file_view/open_view"}
+ *
+ * ![File view](media://file_view_open.png)
+ *
+ * * {@link "app/views/file_view/save_view"}
+ *
+ * ![File view](media://file_view_save.png)
+ *
+ * * {@link "app/views/file_view/export_view"}
+ *
+ * ![File view](media://file_view_export.png)
+ *
+ * @packageDocumentation
+ * @preferred
+ */
 import * as React from "react";
 import * as R from "../../resources";
 
@@ -11,6 +36,7 @@ import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
+import { FileViewOptions } from "./options_view";
 
 export class CurrentChartView extends React.PureComponent<
   { store: AppStore },
@@ -78,6 +104,9 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
       case "export": {
         return <FileViewExport onClose={this.props.onClose} />;
       }
+      case "options": {
+        return <FileViewOptions onClose={this.props.onClose} />;
+      }
       case "about": {
         return (
           <iframe
@@ -136,6 +165,15 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
             onClick={() => this.switchTab("export")}
           >
             Export
+          </div>
+          <div
+            className={classNames("el-tab", [
+              "active",
+              this.state.currentTab == "options"
+            ])}
+            onClick={() => this.switchTab("options")}
+          >
+            Options
           </div>
           <div className="el-sep" />
           <div

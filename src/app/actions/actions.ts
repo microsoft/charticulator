@@ -9,7 +9,8 @@ import {
   Action,
   SelectMark,
   ClearSelection,
-  objectDigest
+  objectDigest,
+  MessageType
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
@@ -169,7 +170,11 @@ export class UpdatePlotSegments extends Action {
 }
 
 export class ConvertColumnDataType extends Action {
-  constructor(public tableName: string, public column: string, public type: DataType) {
+  constructor(
+    public tableName: string,
+    public column: string,
+    public type: DataType
+  ) {
     super();
   }
 
@@ -210,6 +215,7 @@ export class RemoveGlyph extends Action {
 
 // Mark editing actions
 
+/** Add an mark to the glyph */
 export class AddMarkToGlyph extends Action {
   constructor(
     public glyph: Specification.Glyph,
@@ -232,6 +238,7 @@ export class AddMarkToGlyph extends Action {
   }
 }
 
+/** Remove an mark from the glyph */
 export class RemoveMarkFromGlyph extends Action {
   constructor(
     public glyph: Specification.Glyph,
@@ -249,7 +256,20 @@ export class RemoveMarkFromGlyph extends Action {
   }
 }
 
+/**
+ * Dispatches when user binds table coulmns to attributes
+ */
 export class MapDataToMarkAttribute extends Action {
+  /**
+   * @param glyph the glyph object where marks is
+   * @param mark mark object for which the attribute is being changed
+   * @param attribute name of the attribute that data is associated with
+   * @param attributeType attribute data type
+   * @param expression expression to fetch data from table. Usually contains name of column and aggregation function
+   * @param valueType type of data in the column
+   * @param valueMetadata additional data about column
+   * @param hints contains configuration of data mapping to attribute
+   */
   constructor(
     public glyph: Specification.Glyph,
     public mark: Specification.Element,
@@ -277,7 +297,7 @@ export class MapDataToMarkAttribute extends Action {
   }
 }
 
-export class MarkAction extends Action { }
+export class MarkAction extends Action {}
 
 export class SetMarkAttribute extends MarkAction {
   constructor(
@@ -546,14 +566,18 @@ export class SetScaleAttribute extends Action {
 }
 
 export class ToggleLegendForScale extends Action {
-  constructor(public scale: string) {
+  constructor(
+    public scale: string,
+    public mapping: Specification.ScaleMapping
+  ) {
     super();
   }
 
   public digest() {
     return {
       name: "ToggleLegendForScale",
-      scale: this.scale
+      scale: this.scale,
+      mapping: this.mapping.expression
     };
   }
 }
@@ -616,7 +640,8 @@ export class BindDataToAxis extends Action {
         table: this.dataExpression.table.name,
         expression: this.dataExpression.expression,
         valueType: this.dataExpression.valueType,
-        kind: this.dataExpression.metadata.kind
+        kind: this.dataExpression.metadata.kind,
+        allowSelectValue: this.dataExpression.allowSelectValue
       }
     };
   }
@@ -700,6 +725,25 @@ export class SetObjectProperty extends Action {
       value: this.value,
       noUpdateState: this.noUpdateState,
       noComputeLayout: this.noComputeLayout
+    };
+  }
+}
+
+export class SetObjectMappingScale extends Action {
+  constructor(
+    public object: Specification.Object,
+    public property: string,
+    public scaleId: string
+  ) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "SetObjectProperty",
+      object: objectDigest(this.object),
+      property: this.property,
+      scaleId: this.scaleId
     };
   }
 }
@@ -790,6 +834,19 @@ export class SelectChartElement extends Action {
   }
 }
 
+export class FocusToMarkAttribute extends Action {
+  constructor(public attributeName: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "FocusToMarkAttribute",
+      attributeName: this.attributeName
+    };
+  }
+}
+
 export class SetCurrentTool extends Action {
   constructor(public tool: string, public options: string = null) {
     super();
@@ -801,5 +858,41 @@ export class SetCurrentTool extends Action {
       tool: this.tool,
       options: this.options
     };
+  }
+}
+
+export class AddMessage extends Action {
+  constructor(
+    public type: MessageType | string,
+    public options: {
+      title?: string;
+      text?: string;
+    } = {}
+  ) {
+    super();
+  }
+
+  public digest() {
+    return { name: "AddMessage", type: this.type, options: this.options };
+  }
+}
+
+export class RemoveMessage extends Action {
+  constructor(public type: MessageType | string) {
+    super();
+  }
+
+  public digest() {
+    return { name: "RemoveMessage", type: this.type };
+  }
+}
+
+export class ClearMessages extends Action {
+  constructor() {
+    super();
+  }
+
+  public digest() {
+    return { name: "ClearMessages" };
   }
 }

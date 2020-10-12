@@ -105,7 +105,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         {
           specification: this.object.properties.specification,
           dataset: this.getDataset(0),
-          filterCondition: this.getFilterCondition(),
+          // filterCondition: this.getFilterCondition(),
           width: this.state.attributes.width,
           height: this.state.attributes.height
         }
@@ -200,36 +200,23 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
             };
           }),
           rows: mapToRows(dataRowIndices),
-          type: TableType.Main
-        },
-        {
-          name: "MainParentTable",
-          displayName: "MainParentTable",
-          columns: table.columns.map(x => {
-            return {
-              name: columnNameMap[x.name],
-              displayName: columnNameMap[x.name],
-              type: x.type,
-              metadata: x.metadata
-            };
-          }),
-          rows: mapToRows(dataRowIndices),
-          type: TableType.Main
-        },
-        {
-          name: "MainParentTable",
-          displayName: "MainParentTable",
-          columns: table.columns.map(x => {
-            return {
-              name: columnNameMap[x.name],
-              displayName: columnNameMap[x.name],
-              type: x.type,
-              metadata: x.metadata
-            };
-          }),
-          rows: mapToRows(allDataRowIndices),
-          type: TableType.ParentMain
+          type: TableType.Main,
+          localeNumberFormat: table.localeNumberFormat
         }
+        // {
+        //   name: "MainParentTable",
+        //   displayName: "MainParentTable",
+        //   columns: table.columns.map(x => {
+        //     return {
+        //       name: columnNameMap[x.name],
+        //       displayName: columnNameMap[x.name],
+        //       type: x.type,
+        //       metadata: x.metadata
+        //     };
+        //   }),
+        //   rows: mapToRows(dataRowIndices),
+        //   type: TableType.Main
+        // }
       ]
     };
   }
@@ -540,7 +527,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       scaleMappings: [],
       constraints: [],
       resources: []
-    } as any;
+    };
     return obj;
   }
 

@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * See {@link DatasetView} or {@link TableView}
+ * @packageDocumentation
+ * @preferred
+ */
+
 import * as React from "react";
 import { Dataset } from "../../../core";
 import { Select } from "../panels/widgets/controls";
@@ -12,6 +19,13 @@ export interface TableViewProps {
   onTypeChange?: (column: string, type: string) => void;
 }
 
+/**
+ * Component for displaying data samples on loading or in context menu of {@link DatasetView}
+ *
+ * ![Table view](media://table_view.png)
+ *
+ * ![Table view](media://table_view_leftside.png)
+ */
 export class TableView extends React.Component<TableViewProps, {}> {
   public render() {
     const table = this.props.table;
@@ -73,7 +87,8 @@ export class TableView extends React.Component<TableViewProps, {}> {
                   if (c.metadata.rawColumnName) {
                     return (
                       <td key={`${c.name}-${index}`}>
-                        {r[c.metadata.rawColumnName] != null && r[c.metadata.rawColumnName].toString()}
+                        {r[c.metadata.rawColumnName] != null &&
+                          r[c.metadata.rawColumnName].toString()}
                       </td>
                     );
                   } else {

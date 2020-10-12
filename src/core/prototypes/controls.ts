@@ -62,6 +62,10 @@ export interface MappingEditorOptions {
   acceptKinds?: Specification.DataKind[];
 
   numberOptions?: InputNumberOptions;
+  /** Open mapping editor after rendering */
+  openMapping?: boolean;
+  /** Enables value selector from mapping */
+  allowSelectValue?: boolean;
 }
 
 export interface InputNumberOptions {
@@ -90,7 +94,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
 }
 
-export interface TableOptions { }
+export interface TableOptions {}
 
 export interface FilterEditorOptions {
   table: string;
@@ -171,6 +175,8 @@ export interface WidgetManager {
     icon?: string,
     text?: string
   ): Widget;
+
+  scaleEditor(attribute: string, text: string): Widget;
 
   // Order by data button. Map data to "sortBy" expression
   orderByWidget(property: Property, options: OrderWidgetOptions): Widget;

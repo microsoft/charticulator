@@ -1,4 +1,5 @@
 import { Color } from "./color";
+import { timeFormat } from "d3-time-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -574,4 +575,47 @@ export function getSortFunctionByData(values: string[]) {
   }
 
   return (a: any, b: any) => (a < b ? -1 : 1);
+}
+/**
+ * Retunrs sort direction by comparing the first and the last values of string array
+ */
+export function getSortDirection(values: string[]): string {
+  let direction = "ascending";
+  if (values && values[0] && values[(values as any[]).length - 1]) {
+    const a = values[0].toString();
+    const b = values[(values as any[]).length - 1].toString();
+    if (b && a && b.localeCompare(a) > -1) {
+      direction = "ascending";
+    } else {
+      direction = "descending";
+    }
+  }
+  return direction;
+}
+
+/**
+ * Applies timeFormat function of d3 to value
+ * @param value date value
+ * @param format date format of d3
+ */
+export function applyDateFormat(value: Date, format: string): string {
+  return timeFormat(format)(value);
+}
+
+/**
+ * Compares attribute names
+ */
+export function compareMarkAttributeNames(a: string, b: string) {
+  if (a === b) {
+    return true;
+  } else {
+    // fill and stroke uses with color. Those preoperties has the same meaning for marks
+    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+      return true;
+    }
+  }
+}
+
+export function refineColumnName(name: string) {
+  return name.replace(/[^0-9a-zA-Z\_]/g, "_");
 }

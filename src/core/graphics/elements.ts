@@ -1,27 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+/**
+ * Internal graphics representation
+ * Bridge the core components with the rendering system
+ *
+ * Coordinate System:
+ *        y
+ *        ^
+ *        |
+ *   -----o-----> x
+ *        |
+ *        |
+ *
+ * Rigid Transform:
+ *
+ *  (theta is counter clockwise in above diagram)
+ *  x' = x cos(theta) - y sin(theta) + tx
+ *  y' = x sin(theta) + y cos(theta) + ty
+ *
+ *  concatTransform(a, b)(p) = a(b(p))
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 import { Color, Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
-
-// Internal graphics representation
-// Bridge the core components with the rendering system
-//
-// Coordinate System:
-//        y
-//        ^
-//        |
-//   -----o-----> x
-//        |
-//        |
-//
-// Rigid Transform:
-//
-//  (theta is counter clockwise in above diagram)
-//  x' = x cos(theta) - y sin(theta) + tx
-//  y' = x sin(theta) + y cos(theta) + ty
-//
-//  concatTransform(a, b)(p) = a(b(p))
 
 export interface PointDirection extends Point {
   direction: Point;
@@ -75,6 +81,9 @@ export interface Selectable {
   plotSegment: Specification.PlotSegment;
   glyphIndex: number;
   rowIndices: number[];
+  enableTooltips?: boolean;
+  enableSelection?: boolean;
+  enableContextMenu?: boolean;
 }
 
 export interface Element {

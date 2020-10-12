@@ -1,3 +1,16 @@
+/**
+ * ![Chart levels](media://glyph-levels.png)
+ *
+ * The Chart-level specification includes chart elements, layout constraints between them, and scales. The most important chart element is
+ * a plot segment, which lays out glyphs according to its scaffolds and/or
+ * axes, and transforms them according to its coordinate system, scales specify how data is mapped to attributes
+ * such as width, height, and color, and they can be shared among several
+ * marks. Legends visualize the scales used in the chart.
+ *
+ * @packageDocumentation
+ * @preferred
+ */
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -60,7 +73,7 @@ export interface RectangleGlyphState extends Specification.GlyphState {
   attributes: RectangleGlyphAttributes;
 }
 
-class RectangleGlyph extends GlyphClass {
+export class RectangleGlyph extends GlyphClass {
   public static classID = "glyph.rectangle";
   public static type = "glyph";
 

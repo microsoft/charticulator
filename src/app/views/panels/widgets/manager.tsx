@@ -16,7 +16,10 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID
+  uniqueID,
+  refineColumnName,
+  EventEmitter,
+  getById
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -52,7 +55,7 @@ import {
   InputImageProperty
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor } from "./mapping_editor";
+import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
 import { InputDate } from "./controls/input_date";
@@ -63,6 +66,8 @@ import {
 } from "../../../../core/expression";
 import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
+import { ScaleMapping } from "../../../../core/specification";
+import { ScaleValueSelector } from "../scale_value_selector";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -98,13 +103,26 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     if (options.defaultValue == null) {
       options.defaultValue = info.defaultValue;
     }
+
+    const openMapping =
+      options.openMapping || attribute === this.store.currentAttributeFocus;
+    if (openMapping) {
+      setTimeout(() => {
+        this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
+      }, 0);
+    }
+
     return this.row(
       name,
       <MappingEditor
+        store={this.store}
         parent={this}
         attribute={attribute}
         type={info.type}
-        options={options}
+        options={{
+          ...options,
+          openMapping
+        }}
       />
     );
   }
@@ -125,33 +143,46 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   }
 
   private getDateFormat(property: Prototypes.Controls.Property) {
-    const prop = this.objectClass.object.properties[property.property] as any;
-    const expressionString: string = prop.expression;
-    const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
-    // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-    const functionCallpart = expression.parts.find(part => {
-      if (part.expression instanceof FunctionCall) {
-        return part.expression.args.find(arg => arg instanceof Variable) as any;
+    try {
+      const prop = this.objectClass.object.properties[property.property] as any;
+      const expressionString: string = prop.expression;
+      const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
+      // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
+      const functionCallpart = expression.parts.find(part => {
+        if (part.expression instanceof FunctionCall) {
+          return part.expression.args.find(
+            arg => arg instanceof Variable
+          ) as any;
+        }
+      }).expression as FunctionCall;
+      if (functionCallpart) {
+        const variable = functionCallpart.args.find(
+          arg => arg instanceof Variable
+        ) as Variable;
+        const columnName = variable.name;
+        const tableName = (this.objectClass.object as any).table;
+        const table = this.store.dataset.tables.find(
+          table => table.name === tableName
+        );
+        const column = table.columns.find(column => column.name === columnName);
+        if (column.metadata.format) {
+          return column.metadata.format;
+        }
+        const rawColumnName = column.metadata.rawColumnName;
+        if (
+          rawColumnName &&
+          (column.metadata.kind === Specification.DataKind.Temporal ||
+            column.type === Specification.DataType.Boolean)
+        ) {
+          const value = (
+            table.rows[0][rawColumnName] || refineColumnName(rawColumnName)
+          ).toString();
+          return getDateFormat(value);
+        }
       }
-    }).expression as FunctionCall;
-    if (functionCallpart) {
-      const variable = functionCallpart.args.find(
-        arg => arg instanceof Variable
-      ) as Variable;
-      const columnName = variable.name;
-      const tableName = (this.objectClass.object as any).table;
-      const table = this.store.dataset.tables.find(
-        table => table.name === tableName
-      );
-      const column = table.columns.find(column => column.name === columnName);
-      if (column.metadata.format) {
-        return column.metadata.format;
-      }
-      const rawColumnName = column.metadata.rawColumnName;
-      if (rawColumnName) {
-        const value = table.rows[0][rawColumnName].toString();
-        return getDateFormat(value);
-      }
+    } catch (ex) {
+      console.warn(ex);
+      return null;
     }
 
     return null;
@@ -369,6 +400,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const color = this.getPropertyValue(property) as Color;
     return (
       <InputColor
+        store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}
         onEnter={value => {
@@ -454,6 +486,57 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       />
     );
   }
+
+  public scaleEditor(attribute: string, text: string) {
+    let mappingButton: Element = null;
+
+    const objectClass = this.objectClass;
+    const mapping = objectClass.object.mappings[attribute] as ScaleMapping;
+
+    const scaleObject = getById(this.store.chart.scales, mapping.scale);
+
+    const scale = mapping.scale;
+
+    const parent = {
+      updateEvents: new EventEmitter()
+    };
+
+    return (
+      <Button
+        ref={e => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
+        text={text}
+        // icon={icon}
+        onClick={() => {
+          const options = {
+            allowSelectValue: true
+          };
+          // const mapping = this.getAttributeMapping(attribute);
+          globals.popupController.popupAt(
+            context => {
+              return (
+                <PopupView context={context}>
+                  {/* <DataMappAndScaleEditor
+                    attribute={attribute}
+                    parent={parent as any}
+                    defaultMapping={mapping}
+                    options={options}
+                    onClose={() => context.close()}
+                  /> */}
+                  <ScaleValueSelector
+                    scale={scaleObject}
+                    scaleMapping={mapping}
+                    store={this.store}
+                  />
+                </PopupView>
+              );
+            },
+            { anchor: mappingButton }
+          );
+        }}
+      />
+    );
+  }
+
   public orderByWidget(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.OrderWidgetOptions
@@ -717,7 +800,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                               this.store.getTable(value.table),
                               value.expression,
                               value.type,
-                              value.metadata
+                              value.metadata,
+                              value.rawExpression
                             );
                             new Actions.BindDataToAxis(
                               this.objectClass

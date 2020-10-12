@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { ButtonRaised } from "./index";
+import { copyToClipboard } from "../utils";
 
 export interface ErrorBoundaryProps {
   maxWidth?: number;
@@ -9,7 +10,7 @@ export interface ErrorBoundaryProps {
 
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
-  { hasError: boolean }
+  { hasError: boolean; errorString?: string }
 > {
   constructor(props: ErrorBoundaryProps) {
     super(props);
@@ -18,10 +19,13 @@ export class ErrorBoundary extends React.Component<
     };
   }
 
-  public componentDidCatch(error: Error, info: any) {
+  public componentDidCatch(error: Error, info: React.ErrorInfo) {
     this.setState({
-      hasError: true
+      hasError: true,
+      errorString: `${error.name} \n ${error.message} \n ${error.stack &&
+        error.stack} \n ${info.componentStack}`
     });
+
     console.log(error, info);
   }
 
@@ -46,6 +50,14 @@ export class ErrorBoundary extends React.Component<
                 this.setState({
                   hasError: false
                 });
+              }}
+            />
+          </p>
+          <p>
+            <ButtonRaised
+              text="Copy diagnostic information to clipboard"
+              onClick={() => {
+                copyToClipboard(this.state.errorString);
               }}
             />
           </p>

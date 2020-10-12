@@ -339,6 +339,10 @@
       }
     }
   }
+
+  .is-active {
+    background: #cecece;
+  }
 }
 
 .slider-control {
@@ -524,7 +528,19 @@
       &.is-active {
         background: $gray-190;
       }
+
+      &.auto-height {
+        height: auto;
+      }
     }
+
+    .el-object-scale-attribute {
+      margin-left: 20px;
+    }
+  }
+
+  &__object-scales {
+    margin-left: -20px;
   }
 
   &__widget-container {
@@ -1827,6 +1843,13 @@
     .el-item {
       display: inline-block;
     }
+  }
+}
+
+.scale-editor-view {
+  .action-buttons {
+    text-align: right;
+    margin-top: 10px;
   }
 }
 

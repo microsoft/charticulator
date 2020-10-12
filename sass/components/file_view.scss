@@ -183,7 +183,8 @@
         transition: all $transition-default;
       }
 
-      input {
+      input,
+      select {
         display: block;
         background: none;
         padding: 0;
@@ -223,6 +224,11 @@
       label {
         top: -15px;
       }
+    }
+
+    .wide-content {
+      overflow-x: auto;
+      margin: 1em 0;
     }
 
     .buttons {

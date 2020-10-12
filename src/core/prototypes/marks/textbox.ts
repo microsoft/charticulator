@@ -91,6 +91,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const props = this.object.properties;
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     const widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", {
@@ -186,7 +187,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ];
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)

@@ -130,7 +130,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     return [cx, cy];
   }
 
-  // Get the graphical element from the element
+  /** Get the graphical element from the element */
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
@@ -167,7 +167,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     return gImage;
   }
 
-  // Get DropZones given current state
+  /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
     return [
       {
@@ -184,7 +184,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     ];
   }
 
-  // Get bounding rectangle given current state
+  /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
@@ -262,6 +262,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     let widgets = [
       manager.sectionHeader("Icon"),
@@ -343,7 +344,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
   public getTemplateParameters(): TemplateParameters {

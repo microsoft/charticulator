@@ -66,7 +66,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   public attributes = imageAttributes;
   public attributeNames = Object.keys(imageAttributes);
 
-  // Initialize the state of an element so that everything has a valid value
+  /** Initialize the state of an element so that everything has a valid value */
   public initializeState(): void {
     const defaultWidth = 30;
     const defaultHeight = 50;
@@ -90,6 +90,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const parentWidgets = super.getAttributePanelWidgets(manager);
     let widgets: Controls.Widget[] = [
       manager.sectionHeader("Size"),
       manager.mappingEditor("Width", "width", {
@@ -189,10 +190,13 @@ export class ImageElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
-    return widgets;
+    return widgets.concat(parentWidgets);
   }
 
-  // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  /**
+   * Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+   * See description of {@link RectElementClass.buildConstraints} method for details. Image has the same shape, except center point.
+   */
   public buildConstraints(solver: ConstraintSolver): void {
     const [x1, y1, x2, y2, cx, cy, width, height] = solver.attrs(
       this.state.attributes,
