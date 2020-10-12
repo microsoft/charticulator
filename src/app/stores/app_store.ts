@@ -1319,7 +1319,7 @@ export class AppStore extends BaseStore {
     metadata: Dataset.ColumnMetadata,
     values: ValueType[]
   ) {
-    let categories;
+    let categories: string[];
     if (metadata.order) {
       categories = metadata.order.slice();
     } else {
