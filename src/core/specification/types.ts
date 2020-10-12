@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from "../common";
+import { DataKind } from "../dataset";
 import { AttributeMap, Expression, DataType } from "./index";
 
 /** Common parameter and mapping types */
@@ -28,6 +29,7 @@ export interface AxisDataBinding extends AttributeMap {
   tickFormat?: string;
 
   style?: AxisRenderingStyle;
+  dataKind?: DataKind;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

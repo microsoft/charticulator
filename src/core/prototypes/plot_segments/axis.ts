@@ -823,7 +823,10 @@ export function buildAxisWidgets(
                   property: axisProperty,
                   field: "expression"
                 }),
-                m.reorderWidget({ property: axisProperty, field: "categories" })
+                m.reorderWidget(
+                  { property: axisProperty, field: "categories" },
+                  true
+                )
               )
             )
           );
