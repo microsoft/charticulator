@@ -563,9 +563,9 @@ export function getSortFunctionByData(values: string[]) {
     .reduceRight((a, b) => a && b);
   if (testResult) {
     return (a: any, b: any) => {
-      const aNum = a.match(/\d+/)[0];
-      const bNum = b.match(/\d+/)[0];
       if (a && b) {
+        const aNum = a.match(/\d+/)[0];
+        const bNum = b.match(/\d+/)[0];
         return +aNum < +bNum
           ? 1
           : +a.split("-").pop() < +b.split("-").pop()
