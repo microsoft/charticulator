@@ -92,10 +92,12 @@ export namespace Scale {
   }
 
   export class DateScale extends LinearScale {
-    public inferParameters(values: number[]) {
-      const scale = scaleUtc()
+    public inferParameters(values: number[], nice: boolean = true) {
+      let scale = scaleUtc()
         .domain([Math.min(...values), Math.max(...values)])
-        .nice();
+      if (nice) {
+        scale = scale.nice();
+      }
       this.domainMin = scale.domain()[0].getTime();
       this.domainMax = scale.domain()[1].getTime();
       if (this.domainMax == this.domainMin) {
