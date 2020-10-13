@@ -5,7 +5,7 @@ import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
 
-import { EventSubscription } from "../../core";
+import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
@@ -14,7 +14,8 @@ import { ModalView, PopupView } from "../controllers";
 import { FileView } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame } from "../utils";
+import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
+import { ChartTemplate } from "../../container";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -221,6 +222,61 @@ export class MenuBar extends ContextedComponent<{
     );
   }
 
+  public renderExportImportButtons() {
+    return (
+      <>
+        <MenuButton
+          url={R.getSVGIcon("toolbar/import")}
+          text=""
+          title="Import template"
+          onClick={async () => {
+            const file = await showOpenFileDialog(["tmplt"]);
+            const str = await readFileAsString(file);
+            const data = JSON.parse(str);
+            const template = new ChartTemplate(data);
+            for (const table of this.store.dataset.tables) {
+              const tTable = template.getDatasetSchema()[0];
+              template.assignTable(tTable.name, table.name);
+              for (const column of tTable.columns) {
+                template.assignColumn(tTable.name, column.name, column.name);
+              }
+            }
+            const instance = template.instantiate(
+              this.store.dataset,
+              false // no scale inference
+            );
+
+            this.store.dispatcher.dispatch(
+              new Actions.ImportChartAndDataset(instance.chart, this.store.dataset, {})
+            );
+          }}
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/export")}
+          text=""
+          title="Export template"
+          onClick={() => {
+            const template = deepClone(this.store.buildChartTemplate());
+            const target = this.store.createExportTemplateTarget("Charticulator Template", template);
+            const targetProperties: { [name: string]: string } = {};
+            for (const property of target.getProperties()) {
+              targetProperties[property.name] =
+                this.store.getPropertyExportName(property.name) || property.default;
+            }
+            
+            this.dispatch(
+              new Actions.ExportTemplate(
+                "",
+                target,
+                targetProperties
+              )
+            );
+          }}
+        />
+      </>
+    );
+  }
+
   public renderSaveEmbedded() {
     return (
       <MenuButton
@@ -266,7 +322,7 @@ export class MenuBar extends ContextedComponent<{
           url={R.getSVGIcon("toolbar/export")}
           title="Export"
           onClick={() => {
-            this.showFileModalWindow("export");
+              this.showFileModalWindow("export");
           }}
         />
       </>
@@ -282,6 +338,8 @@ export class MenuBar extends ContextedComponent<{
           {this.context.store.editorType === "nested" ? this.renderSaveNested() : null}
           {this.context.store.editorType === "chart" ? this.renderNewOpenSave() : null}
           {this.context.store.editorType === "embedded" ? this.renderSaveEmbedded() : null}
+          <span className="charticulator__menu-bar-separator" />
+          {this.context.store.editorType === "embedded" ? this.renderExportImportButtons() : null}
           <span className="charticulator__menu-bar-separator" />
           <MenuButton
             url={R.getSVGIcon("toolbar/undo")}
