@@ -126,7 +126,11 @@ export abstract class PlotSegmentClass<
         );
         const column = table.columns.find(column => column.name === columnName);
         const rawColumnName = column.metadata.rawColumnName;
-        if (rawColumnName) {
+        if (
+          rawColumnName &&
+          (column.metadata.kind === Specification.DataKind.Temporal ||
+            column.type === Specification.DataType.Boolean)
+        ) {
           const dataMapping = new Map<string, string>();
           table.rows.forEach(row => {
             const value = row[columnName].toString();
@@ -149,4 +153,57 @@ export abstract class PlotSegmentClass<
       return value;
     };
   };
+
+  protected buildGlyphOrderedList(): number[] {
+    const groups = this.state.dataRowIndices.map((x, i) => i);
+    if (!this.object.properties.sublayout) {
+      return groups;
+    }
+    const order = (this.object.properties.sublayout as any).order;
+    const dateRowIndices = this.state.dataRowIndices;
+    const table = this.parent.dataflow.getTable(this.object.table);
+
+    if (order != null && order.expression) {
+      const orderExpression = this.parent.dataflow.cache.parse(
+        order.expression
+      );
+      const compare = (i: number, j: number) => {
+        const vi = orderExpression.getValue(
+          table.getGroupedContext(dateRowIndices[i])
+        );
+        const vj = orderExpression.getValue(
+          table.getGroupedContext(dateRowIndices[j])
+        );
+        if (vi < vj) {
+          return -1;
+        } else if (vi > vj) {
+          return 1;
+        } else {
+          return 0;
+        }
+      };
+      groups.sort(compare);
+    }
+    if ((this.object.properties.sublayout as any).orderReversed) {
+      groups.reverse();
+    }
+
+    return groups;
+  }
+
+  /**
+   * Return the index of the first glyph after sorting glyphs according sublayout order parameter
+   */
+  public getFirstGlyphIndex() {
+    const glyphs = this.buildGlyphOrderedList();
+    return glyphs.length > 0 ? glyphs[0] : -1;
+  }
+
+  /**
+   * Return the index of the last glyph after sorting glyphs according sublayout order parameter
+   */
+  public getLastGlyphIndex() {
+    const glyphs = this.buildGlyphOrderedList();
+    return glyphs.length > 0 ? glyphs[glyphs.length - 1] : -1;
+  }
 }

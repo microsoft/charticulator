@@ -150,20 +150,19 @@ export class CategoricalLegendClass extends LegendClass {
           }
           break;
       }
-      if (this.object.properties.orientation === "vertical") {
-        gItem.transform = {
-          x: 0,
-          y: lineHeight * (items.length - 1 - i),
-          angle: 0
-        };
-      } else {
+      if (this.object.properties.orientation === "horizontal") {
         gItem.transform = {
           x: itemGroupOffset,
           y: 0,
           angle: 0
         };
         itemGroupOffset += metrics.width + lineHeight + horizontalGap;
-        console.log(itemGroupOffset);
+      } else {
+        gItem.transform = {
+          x: 0,
+          y: lineHeight * (items.length - 1 - i),
+          angle: 0
+        };
       }
       g.elements.push(gItem);
     }

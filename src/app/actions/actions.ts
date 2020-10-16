@@ -625,7 +625,9 @@ export class BindDataToAxis extends Action {
     public object: Specification.Object,
     public property: string,
     public appendToProperty: string,
-    public dataExpression: DragData.DataExpression
+    public dataExpression: DragData.DataExpression,
+    public type?: "default" | "numerical" | "categorical",
+    public numericalMode?: "linear" | "logarithmic" | "temporal"
   ) {
     super();
   }
@@ -642,7 +644,9 @@ export class BindDataToAxis extends Action {
         valueType: this.dataExpression.valueType,
         kind: this.dataExpression.metadata.kind,
         allowSelectValue: this.dataExpression.allowSelectValue
-      }
+      },
+      type: this.type,
+      numericalMode: this.numericalMode
     };
   }
 }

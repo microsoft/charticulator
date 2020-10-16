@@ -182,7 +182,7 @@ export interface WidgetManager {
   orderByWidget(property: Property, options: OrderWidgetOptions): Widget;
 
   // Reorder widget: allow user to reorder the items in a property
-  reorderWidget(property: Property): Widget;
+  reorderWidget(property: Property, allowReset: boolean): Widget;
 
   arrayWidget(
     property: Property,

@@ -48,7 +48,12 @@ import {
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
-import { DataKind, DataType, Mapping } from "../../core/specification";
+import {
+  DataKind,
+  DataType,
+  DataValue,
+  Mapping
+} from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1179,9 +1184,9 @@ export class AppStore extends BaseStore {
     const { object, property, appendToProperty, dataExpression } = options;
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
-    const type = this.getBindingByDataKind(
-      options.dataExpression.metadata.kind
-    );
+    const type = dataExpression.type
+      ? options.type
+      : this.getBindingByDataKind(options.dataExpression.metadata.kind);
     const rawColumnExpression = dataExpression.rawColumnExpression;
     if (
       rawColumnExpression &&
@@ -1205,7 +1210,8 @@ export class AppStore extends BaseStore {
       visible: true,
       side: "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
-      numericalMode: options.numericalMode
+      numericalMode: options.numericalMode,
+      dataKind: dataExpression.metadata.kind
     };
 
     let expressions = [groupExpression];
@@ -1235,24 +1241,9 @@ export class AppStore extends BaseStore {
       object.properties[property] = dataBinding;
     }
 
-    let groupBy: Specification.Types.GroupBy = null;
-    if (Prototypes.isType(object.classID, "plot-segment")) {
-      groupBy = (object as Specification.PlotSegment).groupBy;
-    } else {
-      // Find groupBy for data-driven guide
-      if (Prototypes.isType(object.classID, "mark")) {
-        for (const glyph of this.chart.glyphs) {
-          if (glyph.marks.indexOf(object) >= 0) {
-            // Found the glyph
-            this.chartManager.enumeratePlotSegments(cls => {
-              if (cls.object.glyph == glyph._id) {
-                groupBy = cls.object.groupBy;
-              }
-            });
-          }
-        }
-      }
-    }
+    const groupBy: Specification.Types.GroupBy = this.getGroupingExpression(
+      object
+    );
     let values: ValueType[] = [];
     if (
       appendToProperty == "dataExpressions" &&
@@ -1271,51 +1262,40 @@ export class AppStore extends BaseStore {
       values = values.concat(r);
     }
 
-    switch (dataExpression.metadata.kind) {
-      case Specification.DataKind.Categorical:
-      case Specification.DataKind.Ordinal:
-        {
-          dataBinding.type = "categorical";
-          dataBinding.valueType = dataExpression.valueType;
-
-          if (dataExpression.metadata.order) {
-            dataBinding.categories = dataExpression.metadata.order.slice();
-          } else {
-            const scale = new Scale.CategoricalScale();
-            let orderMode: "alphabetically" | "occurrence" | "order" =
-              "alphabetically";
-            if (dataExpression.metadata.orderMode) {
-              orderMode = dataExpression.metadata.orderMode;
-            }
-            scale.inferParameters(values as string[], orderMode);
-            dataBinding.categories = new Array<string>(scale.length);
-            scale.domain.forEach(
-              (index: any, x: any) =>
-                (dataBinding.categories[index] = x.toString())
+    if (dataExpression.metadata) {
+      switch (dataExpression.metadata.kind) {
+        case Specification.DataKind.Categorical:
+        case Specification.DataKind.Ordinal:
+          {
+            dataBinding.type = "categorical";
+            dataBinding.valueType = dataExpression.valueType;
+            dataBinding.categories = this.getCategoriesForDataBinding(
+              dataExpression.metadata,
+              values
             );
           }
-        }
-        break;
-      case Specification.DataKind.Numerical:
-        {
-          const scale = new Scale.LinearScale();
-          scale.inferParameters(values as number[]);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "linear";
-        }
-        break;
-      case Specification.DataKind.Temporal:
-        {
-          const scale = new Scale.DateScale();
-          scale.inferParameters(values as number[], false);
-          dataBinding.domainMin = scale.domainMin;
-          dataBinding.domainMax = scale.domainMax;
-          dataBinding.type = "numerical";
-          dataBinding.numericalMode = "temporal";
-        }
-        break;
+          break;
+        case Specification.DataKind.Numerical:
+          {
+            const scale = new Scale.LinearScale();
+            scale.inferParameters(values as number[]);
+            dataBinding.domainMin = scale.domainMin;
+            dataBinding.domainMax = scale.domainMax;
+            dataBinding.type = "numerical";
+            dataBinding.numericalMode = "linear";
+          }
+          break;
+        case Specification.DataKind.Temporal:
+          {
+            const scale = new Scale.DateScale();
+            scale.inferParameters(values as number[]);
+            dataBinding.domainMin = scale.domainMin;
+            dataBinding.domainMax = scale.domainMax;
+            dataBinding.type = "numerical";
+            dataBinding.numericalMode = "temporal";
+          }
+          break;
+      }
     }
 
     // Adjust sublayout option if current option is not available
@@ -1334,6 +1314,54 @@ export class AppStore extends BaseStore {
         }
       }
     }
+  }
+
+  public getCategoriesForDataBinding(
+    metadata: Dataset.ColumnMetadata,
+    values: ValueType[]
+  ) {
+    let categories: string[];
+    if (metadata.order) {
+      categories = metadata.order.slice();
+    } else {
+      const scale = new Scale.CategoricalScale();
+      let orderMode: "alphabetically" | "occurrence" | "order" =
+        "alphabetically";
+      if (metadata.orderMode) {
+        orderMode = metadata.orderMode;
+      }
+      scale.inferParameters(values as string[], orderMode);
+      categories = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (categories[index] = x.toString())
+      );
+
+      return categories;
+    }
+  }
+
+  public getGroupingExpression(
+    object: Specification.Object<Specification.ObjectProperties>
+  ) {
+    let groupBy: Specification.Types.GroupBy = null;
+    if (Prototypes.isType(object.classID, "plot-segment")) {
+      groupBy = (object as Specification.PlotSegment).groupBy;
+    } else {
+      // Find groupBy for data-driven guide
+      if (Prototypes.isType(object.classID, "mark")) {
+        for (const glyph of this.chart.glyphs) {
+          if (glyph.marks.indexOf(object) >= 0) {
+            // Found the glyph
+            this.chartManager.enumeratePlotSegments(cls => {
+              if (cls.object.glyph == glyph._id) {
+                groupBy = cls.object.groupBy;
+              }
+            });
+          }
+        }
+      }
+    }
+    return groupBy;
   }
 
   public getLocaleFileFormat(): LocaleFileFormat {

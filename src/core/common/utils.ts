@@ -546,6 +546,38 @@ export function hexToRgb(hex: string): Color {
 }
 
 /**
+ * Return common comparator for two values or sope specific comparator for specific data type
+ * testToRange function compares properly, strings with numbers: number-number, number-, number+
+ * to sort value ranges list properly
+ */
+export function getSortFunctionByData(values: string[]) {
+  const testToRange = (value: string) => {
+    const reg = /(\d\-)|(\d+\-\d+)|(\d+\+)/;
+    if (value.match(reg).length) {
+      return true;
+    }
+    return false;
+  };
+  const testResult = values
+    .map(val => testToRange(val))
+    .reduceRight((a, b) => a && b);
+  if (testResult) {
+    return (a: any, b: any) => {
+      if (a && b) {
+        const aNum = a.match(/\d+/)[0];
+        const bNum = b.match(/\d+/)[0];
+        return +aNum < +bNum
+          ? 1
+          : +a.split("-").pop() < +b.split("-").pop()
+          ? 1
+          : -1;
+      }
+    };
+  }
+
+  return (a: any, b: any) => (a < b ? -1 : 1);
+}
+/**
  * Retunrs sort direction by comparing the first and the last values of string array
  */
 export function getSortDirection(values: string[]): string {
