@@ -15,7 +15,7 @@ import {
   uniqueID,
   Scale,
   MessageType,
-  compareMarkAttributeNames
+  compareMarkAttributeNames,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorker } from "../../worker";
@@ -26,15 +26,15 @@ import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
 import {
   renderDataURLToPNG,
   b64EncodeUnicode,
-  stringToDataURL
+  stringToDataURL,
 } from "../utils";
 import {
   renderChartToLocalString,
-  renderChartToString
+  renderChartToString,
 } from "../views/canvas/chart_display";
 import {
   ActionHandlerRegistry,
-  registerActionHandlers
+  registerActionHandlers,
 } from "./action_handlers";
 import { createDefaultChart } from "./defaults";
 import { HistoryManager } from "./history_manager";
@@ -43,7 +43,7 @@ import {
   ChartElementSelection,
   GlyphSelection,
   MarkSelection,
-  Selection
+  Selection,
 } from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
@@ -52,7 +52,7 @@ import {
   DataKind,
   DataType,
   DataValue,
-  Mapping
+  Mapping,
 } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
@@ -120,8 +120,8 @@ export class AppStore extends BaseStore {
     delimiter: ",",
     numberFormat: {
       remove: ",",
-      decimal: "."
-    }
+      decimal: ".",
+    },
   };
   public currentTool: string;
   public currentToolOptions: string;
@@ -172,8 +172,8 @@ export class AppStore extends BaseStore {
               displayName: "Name",
               name: "name",
               type: "string",
-              default: "template"
-            }
+              default: "template",
+            },
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
           generate: () => {
@@ -181,7 +181,7 @@ export class AppStore extends BaseStore {
               const r = b64EncodeUnicode(JSON.stringify(template, null, 2));
               resolve(r);
             });
-          }
+          },
         };
       }
     );
@@ -200,7 +200,7 @@ export class AppStore extends BaseStore {
       version: CHARTICULATOR_PACKAGE.version,
       dataset: this.dataset,
       chart: this.chart,
-      chartState: this.chartState
+      chartState: this.chartState,
     };
   }
 
@@ -290,9 +290,9 @@ export class AppStore extends BaseStore {
           }
           return false;
         }) != null ||
-        chart.glyphs.find(glyph => {
+        chart.glyphs.find((glyph) => {
           return (
-            glyph.marks.find(mark => {
+            glyph.marks.find((mark) => {
               const mappings = (mark as Specification.Object).mappings;
               if (mappings) {
                 return hasMappedProperty(mappings, scale._id);
@@ -306,10 +306,10 @@ export class AppStore extends BaseStore {
 
     chart.scales
       .filter(scaleFilter)
-      .forEach(scale => this.chartManager.removeScale(scale));
+      .forEach((scale) => this.chartManager.removeScale(scale));
 
-    chart.scaleMappings = chart.scaleMappings.filter(scaleMapping =>
-      chart.scales.find(scale => scale._id === scaleMapping.scale)
+    chart.scaleMappings = chart.scaleMappings.filter((scaleMapping) =>
+      chart.scales.find((scale) => scale._id === scaleMapping.scale)
     );
   }
 
@@ -321,7 +321,7 @@ export class AppStore extends BaseStore {
       const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
       const png = await renderDataURLToPNG(svg, {
         mode: "thumbnail",
-        thumbnail: [200, 150]
+        thumbnail: [200, 150],
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
@@ -335,18 +335,18 @@ export class AppStore extends BaseStore {
     const svg = stringToDataURL("image/svg+xml", await this.renderLocalSVG());
     const png = await renderDataURLToPNG(svg, {
       mode: "thumbnail",
-      thumbnail: [200, 150]
+      thumbnail: [200, 150],
     });
     const id = await this.backend.create(
       "chart",
       {
         state,
-        name
+        name,
       },
       {
         name,
         dataset: this.dataset.name,
-        thumbnail: png.toDataURL()
+        thumbnail: png.toDataURL(),
       }
     );
     this.currentChartID = id;
@@ -401,7 +401,7 @@ export class AppStore extends BaseStore {
 
   public getTable(name: string): Dataset.Table {
     if (this.dataset != null) {
-      return this.dataset.tables.filter(d => d.name == name)[0];
+      return this.dataset.tables.filter((d) => d.name == name)[0];
     } else {
       return null;
     }
@@ -415,7 +415,7 @@ export class AppStore extends BaseStore {
     table: Dataset.Table,
     columnName: string
   ): Dataset.DataValue[] {
-    return table.rows.map(d => d[columnName]);
+    return table.rows.map((d) => d[columnName]);
   }
 
   public saveSelectionState(): SelectionState {
@@ -423,20 +423,20 @@ export class AppStore extends BaseStore {
     if (this.currentSelection instanceof ChartElementSelection) {
       selection.selection = {
         type: "chart-element",
-        chartElementID: this.currentSelection.chartElement._id
+        chartElementID: this.currentSelection.chartElement._id,
       };
     }
     if (this.currentSelection instanceof GlyphSelection) {
       selection.selection = {
         type: "glyph",
-        glyphID: this.currentSelection.glyph._id
+        glyphID: this.currentSelection.glyph._id,
       };
     }
     if (this.currentSelection instanceof MarkSelection) {
       selection.selection = {
         type: "mark",
         glyphID: this.currentSelection.glyph._id,
-        markID: this.currentSelection.mark._id
+        markID: this.currentSelection.mark._id,
       };
     }
     if (this.currentGlyph) {
@@ -618,7 +618,7 @@ export class AppStore extends BaseStore {
     let groupBy: Specification.Types.GroupBy = null;
     if (context.glyph) {
       // Find plot segments that use the glyph.
-      this.chartManager.enumeratePlotSegments(cls => {
+      this.chartManager.enumeratePlotSegments((cls) => {
         if (cls.object.glyph == context.glyph._id) {
           groupBy = cls.object.groupBy;
         }
@@ -750,7 +750,7 @@ export class AppStore extends BaseStore {
       ) as Prototypes.Scales.ScaleClass;
 
       const parentMainTable = this.getTables().find(
-        table => table.type === TableType.ParentMain
+        (table) => table.type === TableType.ParentMain
       );
       if (parentMainTable) {
         table = parentMainTable;
@@ -816,15 +816,15 @@ export class AppStore extends BaseStore {
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
         type: "parent",
-        parentAttribute: "x2"
+        parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
         type: "parent",
-        parentAttribute: "y2"
+        parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
-        value: 100
+        value: 100,
       } as Specification.ValueMapping;
     }
     // Numerical-color scale
@@ -838,15 +838,15 @@ export class AppStore extends BaseStore {
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
         type: "parent",
-        parentAttribute: "x2"
+        parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
         type: "parent",
-        parentAttribute: "y2"
+        parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
         type: "value",
-        value: 100
+        value: 100,
       } as Specification.ValueMapping;
     }
     // Numerical-number scale
@@ -860,19 +860,19 @@ export class AppStore extends BaseStore {
       newLegend.properties.scale = scale;
       newLegend.mappings.x1 = {
         type: "parent",
-        parentAttribute: "x1"
+        parentAttribute: "x1",
       } as Specification.ParentMapping;
       newLegend.mappings.y1 = {
         type: "parent",
-        parentAttribute: "y1"
+        parentAttribute: "y1",
       } as Specification.ParentMapping;
       newLegend.mappings.x2 = {
         type: "parent",
-        parentAttribute: "x1"
+        parentAttribute: "x1",
       } as Specification.ParentMapping;
       newLegend.mappings.y2 = {
         type: "parent",
-        parentAttribute: "y2"
+        parentAttribute: "y2",
       } as Specification.ParentMapping;
     }
 
@@ -885,7 +885,7 @@ export class AppStore extends BaseStore {
       allowSelectValue:
         mapping &&
         mapping.valueIndex !== undefined &&
-        mapping.valueIndex !== null
+        mapping.valueIndex !== null,
     } as Specification.ScaleMapping;
 
     newLegend.mappings.mappingOptions = mappingOptions;
@@ -916,7 +916,7 @@ export class AppStore extends BaseStore {
 
   public async solveConstraintsInWorker(mappingOnly: boolean = false) {
     this.solverStatus = {
-      solving: true
+      solving: true,
     };
     this.emit(AppStore.EVENT_SOLVER_STATUS);
 
@@ -930,7 +930,7 @@ export class AppStore extends BaseStore {
     this.preSolveValues = [];
 
     this.solverStatus = {
-      solving: false
+      solving: false,
     };
     this.emit(AppStore.EVENT_SOLVER_STATUS);
   }
@@ -984,10 +984,10 @@ export class AppStore extends BaseStore {
       this.chartManager.chartState
     );
     const boundsGuides = chartClass.getSnappingGuides();
-    let chartGuides = boundsGuides.map(bounds => {
+    let chartGuides = boundsGuides.map((bounds) => {
       return {
         element: null,
-        guide: bounds
+        guide: bounds,
       };
     });
     const elements = this.chartManager.chart.elements;
@@ -1002,10 +1002,10 @@ export class AppStore extends BaseStore {
       ) => {
         const layoutClass = this.chartManager.getChartElementClass(layoutState);
         chartGuides = chartGuides.concat(
-          layoutClass.getSnappingGuides().map(bounds => {
+          layoutClass.getSnappingGuides().map((bounds) => {
             return {
               element: layout,
-              guide: bounds
+              guide: bounds,
             };
           })
         );
@@ -1054,18 +1054,18 @@ export class AppStore extends BaseStore {
   ) {
     if (table != null) {
       const dfTable = this.chartManager.dataflow.getTable(table);
-      const rowIterator = function*() {
+      const rowIterator = function* () {
         for (let i = 0; i < dfTable.rows.length; i++) {
           yield dfTable.getRowContext(i);
         }
       };
       return Expression.verifyUserExpression(inputString, {
         data: rowIterator(),
-        ...options
+        ...options,
       });
     } else {
       return Expression.verifyUserExpression(inputString, {
-        ...options
+        ...options,
       });
     }
   }
@@ -1073,11 +1073,11 @@ export class AppStore extends BaseStore {
   public updatePlotSegments() {
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
-      element => Prototypes.isType(element.classID, "plot-segment")
+      (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
-    plotSegments.forEach(plot => {
+    plotSegments.forEach((plot) => {
       const table = this.dataset.tables.find(
-        table => table.name === plot.table
+        (table) => table.name === plot.table
       );
 
       // xData
@@ -1092,7 +1092,7 @@ export class AppStore extends BaseStore {
               xDataProperty.type === "numerical" &&
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : xDataProperty.type
+                : xDataProperty.type,
           },
           xDataProperty.rawColumnExpr
         );
@@ -1103,7 +1103,7 @@ export class AppStore extends BaseStore {
           object: plot,
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
-          numericalMode: xDataProperty.numericalMode
+          numericalMode: xDataProperty.numericalMode,
         });
       }
 
@@ -1119,7 +1119,7 @@ export class AppStore extends BaseStore {
               yDataProperty.type === "numerical" &&
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : yDataProperty.type
+                : yDataProperty.type,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1130,7 +1130,7 @@ export class AppStore extends BaseStore {
           object: plot,
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
-          numericalMode: yDataProperty.numericalMode
+          numericalMode: yDataProperty.numericalMode,
         });
       }
 
@@ -1144,7 +1144,7 @@ export class AppStore extends BaseStore {
             kind:
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : axis.type
+                : axis.type,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1155,7 +1155,7 @@ export class AppStore extends BaseStore {
           object: plot,
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
-          numericalMode: axis.numericalMode
+          numericalMode: axis.numericalMode,
         });
       }
     });
@@ -1211,7 +1211,7 @@ export class AppStore extends BaseStore {
       side: "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
       numericalMode: options.numericalMode,
-      dataKind: dataExpression.metadata.kind
+      dataKind: dataExpression.metadata.kind,
     };
 
     let expressions = [groupExpression];
@@ -1219,16 +1219,16 @@ export class AppStore extends BaseStore {
     if (appendToProperty) {
       if (object.properties[appendToProperty] == null) {
         object.properties[appendToProperty] = [
-          { name: uniqueID(), expression: groupExpression }
+          { name: uniqueID(), expression: groupExpression },
         ];
       } else {
         (object.properties[appendToProperty] as any[]).push({
           name: uniqueID(),
-          expression: groupExpression
+          expression: groupExpression,
         });
       }
       expressions = (object.properties[appendToProperty] as any[]).map(
-        x => x.expression
+        (x) => x.expression
       );
       if (object.properties[property] == null) {
         object.properties[property] = dataBinding;
@@ -1352,7 +1352,7 @@ export class AppStore extends BaseStore {
         for (const glyph of this.chart.glyphs) {
           if (glyph.marks.indexOf(object) >= 0) {
             // Found the glyph
-            this.chartManager.enumeratePlotSegments(cls => {
+            this.chartManager.enumeratePlotSegments((cls) => {
               if (cls.object.glyph == glyph._id) {
                 groupBy = cls.object.groupBy;
               }

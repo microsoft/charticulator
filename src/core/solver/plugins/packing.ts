@@ -68,7 +68,10 @@ export class PackingPlugin extends ConstraintPlugin {
     });
 
     const force = forceSimulation(nodes);
-    force.force("collision", forceCollide<NodeType>((d) => d.r));
+    force.force(
+      "collision",
+      forceCollide<NodeType>((d) => d.r)
+    );
     force.force("gravityX", forceX().strength(this.gravityX || 0.1));
     force.force("gravityY", forceY().strength(this.gravityY || 0.1));
     force.stop();

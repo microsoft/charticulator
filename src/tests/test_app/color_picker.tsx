@@ -11,13 +11,13 @@ export class ColorPickerTestView extends React.Component<{}, {}> {
           style={{
             background: "#eee",
             border: "10px solid #aaa",
-            display: "inline-block"
+            display: "inline-block",
           }}
         >
           <ColorPicker
             defaultValue={{ r: 117, g: 232, b: 75 }}
             allowNull={true}
-            onPick={value => {
+            onPick={(value) => {
               console.log(value);
             }}
           />
@@ -36,7 +36,7 @@ export class GradientPickerTestView extends React.Component<{}, {}> {
             background: "#eee",
             border: "10px solid #aaa",
             width: "300px",
-            display: "inline-block"
+            display: "inline-block",
           }}
         >
           <GradientPicker />

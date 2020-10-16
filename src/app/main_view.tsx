@@ -185,11 +185,13 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => e.preventDefault()}
       >
-        <MenuBar name={this.viewConfiguration.Name} ref={(e) => (this.refMenuBar = e)} />
+        <MenuBar
+          name={this.viewConfiguration.Name}
+          ref={(e) => (this.refMenuBar = e)}
+        />
         <section className="charticulator__panel-container">
           {[
-            this.viewConfiguration.ColumnsPosition == "left" &&
-              datasetPanel(),
+            this.viewConfiguration.ColumnsPosition == "left" && datasetPanel(),
             <div className="charticulator__panel charticulator__panel-editor">
               {this.viewConfiguration.ToolbarPosition == "top" &&
                 toolBarCreator("horizontal")}
@@ -202,13 +204,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   chartPanel(),
                   this.viewConfiguration.ToolbarPosition == "right" &&
                     toolBarCreator("vertical"),
-                  this.viewConfiguration.EditorPanelsPosition ==
-                    "right" && editorPanels(),
+                  this.viewConfiguration.EditorPanelsPosition == "right" &&
+                    editorPanels(),
                 ]}
               </div>
             </div>,
-            this.viewConfiguration.ColumnsPosition == "right" &&
-              datasetPanel(),
+            this.viewConfiguration.ColumnsPosition == "right" && datasetPanel(),
           ]}
         </section>
         <div className="charticulator__floating-panels">

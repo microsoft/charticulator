@@ -30,12 +30,11 @@ export class ToolButton extends React.Component<
   }
 
   public render() {
-
     const onClick = () => {
       if (this.props.onClick) {
         this.props.onClick();
       }
-    }
+    };
 
     if (this.props.dragData) {
       return (

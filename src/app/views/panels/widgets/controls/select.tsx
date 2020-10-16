@@ -4,7 +4,7 @@ import * as React from "react";
 import { SVGImageIcon } from "../../../../components";
 import {
   PopupContext,
-  PopupView
+  PopupView,
 } from "../../../../controllers/popup_controller";
 import * as globals from "../../../../globals";
 import * as R from "../../../../resources";
@@ -18,7 +18,7 @@ export function DropdownListView(props: {
 }) {
   return (
     <ul className="dropdown-list">
-      {props.list.map(item => (
+      {props.list.map((item) => (
         <li
           key={item.name}
           className={props.selected == item.name ? "is-active" : null}
@@ -54,22 +54,22 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
   constructor(props: SelectProps) {
     super(props);
     this.state = {
-      active: false
+      active: false,
     };
   }
   private startDropdown() {
     globals.popupController.popupAt(
-      context => {
+      (context) => {
         context.addListener("close", () => {
           this.setState({
-            active: false
+            active: false,
           });
         });
         const list = this.props.options.map((x, i) => {
           return {
             url: this.props.icons ? R.getSVGIcon(this.props.icons[i]) : null,
             name: x,
-            text: this.props.labels ? this.props.labels[i] : null
+            text: this.props.labels ? this.props.labels[i] : null,
           };
         });
         return (
@@ -88,7 +88,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
       { anchor: this.anchor }
     );
     this.setState({
-      active: true
+      active: true,
     });
   }
   private _startDropdown = (e: React.MouseEvent<HTMLSpanElement>) => {
@@ -108,7 +108,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
           ["has-text", this.props.labels != null && props.showText],
           ["has-icon", this.props.icons != null]
         )}
-        ref={e => (this.anchor = e)}
+        ref={(e) => (this.anchor = e)}
         onClick={this._startDropdown}
       >
         {props.icons != null ? (

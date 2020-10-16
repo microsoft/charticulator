@@ -6,7 +6,6 @@ import { getTimeZoneOffset, prettyNumber } from "../../../../../core";
 import { parseDate } from "../../../../../core/dataset/datetime";
 import * as d3 from "d3-time-format";
 
-
 export interface InputDateProps {
   defaultValue?: number | Date;
   placeholder?: string;
@@ -44,13 +43,16 @@ export class InputDate extends React.Component<InputDateProps, {}> {
             "datapicker" // TODO add component
           ) : (
             <InputText
-              ref={e => (this.textInput = e)}
+              ref={(e) => (this.textInput = e)}
               placeholder={this.props.placeholder}
               defaultValue={this.formatDate(
-                typeof this.props.defaultValue === "number" ? this.props.defaultValue + getTimeZoneOffset(this.props.defaultValue) : this.props.defaultValue,
+                typeof this.props.defaultValue === "number"
+                  ? this.props.defaultValue +
+                      getTimeZoneOffset(this.props.defaultValue)
+                  : this.props.defaultValue,
                 this.props.interval
               )}
-              onEnter={str => {
+              onEnter={(str) => {
                 const date = parseDate(str, true);
                 this.props.onEnter(date);
                 return date != null;

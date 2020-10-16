@@ -7,8 +7,8 @@ import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
-export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.AddGlyph, function(action) {
+export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.AddGlyph, function (action) {
     this.saveHistory();
     const glyph = this.chartManager.addGlyph(
       action.classID,
@@ -19,7 +19,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.RemoveGlyph, function(action) {
+  REG.add(Actions.RemoveGlyph, function (action) {
     this.saveHistory();
     const glyph = this.chartManager.removeGlyph(action.glyph);
     this.currentSelection = null;
@@ -27,7 +27,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.SetGlyphAttribute, function(action) {
+  REG.add(Actions.SetGlyphAttribute, function (action) {
     this.saveHistory();
 
     if (action.mapping == null) {
@@ -39,7 +39,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.UpdateGlyphAttribute, function(action) {
+  REG.add(Actions.UpdateGlyphAttribute, function (action) {
     this.saveHistory();
 
     for (const key in action.updates) {
@@ -48,7 +48,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
       delete action.glyph.mappings[key];
     }
-    this.forAllGlyph(action.glyph, glyphState => {
+    this.forAllGlyph(action.glyph, (glyphState) => {
       for (const key in action.updates) {
         if (!action.updates.hasOwnProperty(key)) {
           continue;
@@ -66,7 +66,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.AddMarkToGlyph, function(action) {
+  REG.add(Actions.AddMarkToGlyph, function (action) {
     this.saveHistory();
 
     const mark = this.chartManager.createObject(
@@ -101,8 +101,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                 attribute: attr,
                 targetElement: (mapping as any).element,
                 targetAttribute: (mapping as any).attribute,
-                gap: 0
-              }
+                gap: 0,
+              },
             });
           } else {
             mark.mappings[attr] = mapping;
@@ -110,7 +110,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         }
         if (value != null) {
           const idx = action.glyph.marks.indexOf(mark);
-          this.forAllGlyph(action.glyph, glyphState => {
+          this.forAllGlyph(action.glyph, (glyphState) => {
             glyphState.marks[idx].attributes[attr] = value;
             this.addPresolveValue(
               Solver.ConstraintStrength.STRONG,
@@ -133,19 +133,19 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           {
             mark.mappings.x1 = {
               type: "parent",
-              parentAttribute: "ix1"
+              parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
               type: "parent",
-              parentAttribute: "iy1"
+              parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
               type: "parent",
-              parentAttribute: "ix2"
+              parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
               type: "parent",
-              parentAttribute: "iy2"
+              parentAttribute: "iy2",
             } as Specification.ParentMapping;
             // Move anchor to bottom
             // action.glyph.marks[0].mappings["y"] = <Specification.ParentMapping>{ type: "parent", parentAttribute: "iy1" };
@@ -155,19 +155,19 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           {
             mark.mappings.x1 = {
               type: "parent",
-              parentAttribute: "ix1"
+              parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
               type: "parent",
-              parentAttribute: "iy1"
+              parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
               type: "parent",
-              parentAttribute: "ix2"
+              parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
               type: "parent",
-              parentAttribute: "iy2"
+              parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }
           break;
@@ -177,11 +177,11 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           {
             mark.mappings.x = {
               type: "parent",
-              parentAttribute: "icx"
+              parentAttribute: "icx",
             } as Specification.ParentMapping;
             mark.mappings.y = {
               type: "parent",
-              parentAttribute: "icy"
+              parentAttribute: "icy",
             } as Specification.ParentMapping;
           }
           break;
@@ -189,19 +189,19 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           {
             mark.mappings.x1 = {
               type: "parent",
-              parentAttribute: "ix1"
+              parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
               type: "parent",
-              parentAttribute: "iy1"
+              parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
               type: "parent",
-              parentAttribute: "ix1"
+              parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
               type: "parent",
-              parentAttribute: "iy2"
+              parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }
           break;
@@ -227,7 +227,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.RemoveMarkFromGlyph, function(action) {
+  REG.add(Actions.RemoveMarkFromGlyph, function (action) {
     this.saveHistory();
 
     // We never delete the anchor

@@ -7,7 +7,7 @@ import {
   AttributeDescription,
   Controls,
   Handles,
-  ObjectClassMetadata
+  ObjectClassMetadata,
 } from "../common";
 import { MarkClass } from "./mark";
 
@@ -26,7 +26,7 @@ export class AnchorElement extends MarkClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Anchor",
-    iconPath: "mark/anchor"
+    iconPath: "mark/anchor",
   };
 
   public readonly state: AnchorElementState;
@@ -36,12 +36,12 @@ export class AnchorElement extends MarkClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x: {
       name: "x",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y: {
       name: "y",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   /** Initialize the state of an element so that everything has a valid value */
@@ -84,11 +84,11 @@ export class AnchorElement extends MarkClass {
     const element = super.createDefault(glyph);
     element.mappings.x = {
       type: "parent",
-      parentAttribute: "icx"
+      parentAttribute: "icx",
     } as Specification.ParentMapping;
     element.mappings.y = {
       type: "parent",
-      parentAttribute: "icy"
+      parentAttribute: "icy",
     } as Specification.ParentMapping;
     return element;
   }

@@ -6,7 +6,7 @@ import * as Specification from "../../specification";
 import {
   lineAttributes,
   LineElementAttributes,
-  LineElementProperties
+  LineElementProperties,
 } from "./line.attrs";
 
 import {
@@ -18,7 +18,7 @@ import {
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
-  TemplateParameters
+  TemplateParameters,
 } from "../common";
 
 import * as Graphics from "../../graphics";
@@ -39,20 +39,20 @@ export class LineElementClass extends EmphasizableMarkClass<
     iconPath: "mark/line",
     creatingInteraction: {
       type: "line-segment",
-      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" }
-    }
+      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" },
+    },
   };
 
   public static defaultProperties: Partial<LineElementProperties> = {
     strokeStyle: "solid",
-    visible: true
+    visible: true,
   };
 
   public static defaultMappingValues: Partial<LineElementAttributes> = {
     stroke: { r: 0, g: 0, b: 0 },
     strokeWidth: 1,
     opacity: 1,
-    visible: true
+    visible: true,
   };
 
   public attributes = lineAttributes;
@@ -85,19 +85,41 @@ export class LineElementClass extends EmphasizableMarkClass<
       this.state.attributes,
       ["x1", "y1", "x2", "y2", "cx", "cy", "dx", "dy"]
     );
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cx]],
+      [
+        [1, x1],
+        [1, x2],
+      ]
+    );
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cy]],
+      [
+        [1, y1],
+        [1, y2],
+      ]
+    );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, dx]],
-      [[1, x2], [-1, x1]]
+      [
+        [1, x2],
+        [-1, x1],
+      ]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, dy]],
-      [[1, y2], [-1, y1]]
+      [
+        [1, y2],
+        [-1, y1],
+      ]
     );
   }
 
@@ -126,7 +148,7 @@ export class LineElementClass extends EmphasizableMarkClass<
         strokeDasharray: strokeStyleToDashArray(
           this.object.properties.strokeStyle
         ),
-        ...this.generateEmphasisStyle(emphasize)
+        ...this.generateEmphasisStyle(emphasize),
       }
     );
   }
@@ -148,9 +170,9 @@ export class LineElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "dx",
             attributeType: "number",
-            hints: { autoRange: true, startWithZero: "always" }
-          }
-        }
+            hints: { autoRange: true, startWithZero: "always" },
+          },
+        },
       } as DropZones.Line,
       {
         type: "line",
@@ -162,10 +184,10 @@ export class LineElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "dy",
             attributeType: "number",
-            hints: { autoRange: true, startWithZero: "always" }
-          }
-        }
-      } as DropZones.Line
+            hints: { autoRange: true, startWithZero: "always" },
+          },
+        },
+      } as DropZones.Line,
     ];
   }
 
@@ -180,8 +202,8 @@ export class LineElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -189,8 +211,8 @@ export class LineElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -198,9 +220,9 @@ export class LineElementClass extends EmphasizableMarkClass<
         y: cy,
         actions: [
           { type: "attribute", source: "x", attribute: "cx" },
-          { type: "attribute", source: "y", attribute: "cy" }
-        ]
-      } as Handles.Point
+          { type: "attribute", source: "y", attribute: "cy" },
+        ],
+      } as Handles.Point,
     ];
   }
 
@@ -213,7 +235,7 @@ export class LineElementClass extends EmphasizableMarkClass<
       x1,
       y1,
       x2,
-      y2
+      y2,
     } as BoundingBox.Line;
   }
 
@@ -226,7 +248,7 @@ export class LineElementClass extends EmphasizableMarkClass<
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
     ];
   }
 
@@ -239,19 +261,19 @@ export class LineElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("X Span", "dx", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true
+        defaultAuto: true,
       }),
       manager.mappingEditor("Y Span", "dy", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true
+        defaultAuto: true,
       }),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Stroke", "stroke", {}),
       manager.mappingEditor("Line Width", "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
+        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
       }),
       manager.row(
         "Line Style",
@@ -262,18 +284,18 @@ export class LineElementClass extends EmphasizableMarkClass<
             showLabel: true,
             icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
             labels: ["Solid", "Dashed", "Dotted"],
-            options: ["solid", "dashed", "dotted"]
+            options: ["solid", "dashed", "dotted"],
           }
         )
       ),
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true
-      })
+        defaultValue: true,
+      }),
     ].concat(parentWidgets);
   }
 
@@ -286,10 +308,10 @@ export class LineElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible"
+          attribute: "visible",
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible
+        default: this.state.attributes.visible,
       });
     }
     if (
@@ -299,12 +321,12 @@ export class LineElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "stroke"
+          attribute: "stroke",
         },
         type: Specification.AttributeType.Color,
         default:
           this.state.attributes.stroke &&
-          rgbToHex(this.state.attributes.stroke as Color)
+          rgbToHex(this.state.attributes.stroke as Color),
       });
     }
     if (
@@ -314,18 +336,18 @@ export class LineElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "strokeWidth"
+          attribute: "strokeWidth",
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.strokeWidth
+        default: this.state.attributes.strokeWidth,
       });
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "strokeStyle"
+          property: "strokeStyle",
         },
         type: Specification.AttributeType.Enum,
-        default: this.object.properties.strokeStyle
+        default: this.object.properties.strokeStyle,
       });
     }
     if (
@@ -335,14 +357,14 @@ export class LineElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity"
+          attribute: "opacity",
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity
+        default: this.state.attributes.opacity,
       });
     }
     return {
-      properties
+      properties,
     };
   }
 }

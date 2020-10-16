@@ -61,7 +61,7 @@ export class SelectMark extends Action {
       plotSegment: objectDigest(this.plotSegment),
       glyph: objectDigest(this.glyph),
       mark: objectDigest(this.mark),
-      glyphIndex: this.glyphIndex
+      glyphIndex: this.glyphIndex,
     };
   }
 }
@@ -70,7 +70,7 @@ export class SelectMark extends Action {
 export class ClearSelection extends Action {
   public digest() {
     return {
-      name: "ClearSelection"
+      name: "ClearSelection",
     };
   }
 }

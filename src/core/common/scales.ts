@@ -13,7 +13,7 @@ export namespace Scale {
     public abstract get(value: InputType): OutputType;
     /** Get mapped values */
     public map(values: InputType[]): OutputType[] {
-      return values.map(x => (x == null ? null : this.get(x)));
+      return values.map((x) => (x == null ? null : this.get(x)));
     }
   }
 
@@ -94,8 +94,7 @@ export namespace Scale {
 
   export class DateScale extends LinearScale {
     public inferParameters(values: number[], nice: boolean = true) {
-      let scale = scaleUtc()
-        .domain([Math.min(...values), Math.max(...values)])
+      let scale = scaleUtc().domain([Math.min(...values), Math.max(...values)]);
       if (nice) {
         scale = scale.nice();
       }
@@ -108,7 +107,7 @@ export namespace Scale {
 
     public ticks(n: number = 10) {
       const scale = scaleUtc().domain([this.domainMin, this.domainMax]);
-      return scale.ticks(n).map(x => x.getTime());
+      return scale.ticks(n).map((x) => x.getTime());
     }
 
     public tickFormat(n: number = 10, specifier?: string) {

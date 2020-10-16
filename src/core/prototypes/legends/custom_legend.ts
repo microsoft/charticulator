@@ -52,8 +52,8 @@ export class CustomLegendClass extends CategoricalLegendClass {
     iconPath: "legend/legend",
     creatingInteraction: {
       type: "point",
-      mapping: { x: "x", y: "y" }
-    }
+      mapping: { x: "x", y: "y" },
+    },
   };
 
   public getAttributePanelWidgets(
@@ -63,9 +63,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
     const scale = this.getScale();
     if (scale) {
-      widget.push(
-        manager.sectionHeader("Colors"),
-      )
+      widget.push(manager.sectionHeader("Colors"));
       widget.push(
         manager.row(
           "Scale",

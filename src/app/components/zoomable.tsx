@@ -32,14 +32,14 @@ export class ZoomableCanvas extends React.Component<
       zoom: {
         centerX: props.width / 2,
         centerY: props.height / 2,
-        scale: 1
-      }
+        scale: 1,
+      },
     };
   }
 
   public setZooming(zoom: ZoomInfo) {
     this.setState({
-      zoom
+      zoom,
     });
   }
 
@@ -55,7 +55,7 @@ export class ZoomableCanvas extends React.Component<
     const r = this.refs.container.getBoundingClientRect();
     return {
       x: point.x - r.left,
-      y: point.y - r.top
+      y: point.y - r.top,
     };
   }
 
@@ -86,9 +86,7 @@ export class ZoomableCanvas extends React.Component<
   }
 
   public render() {
-    const transform = `translate(${this.state.zoom.centerX},${
-      this.state.zoom.centerY
-    }) scale(${this.state.zoom.scale})`;
+    const transform = `translate(${this.state.zoom.centerX},${this.state.zoom.centerY}) scale(${this.state.zoom.scale})`;
     return (
       <g ref="container">
         <rect
@@ -100,7 +98,7 @@ export class ZoomableCanvas extends React.Component<
           style={{
             fill: "transparent",
             stroke: "none",
-            pointerEvents: "fill"
+            pointerEvents: "fill",
           }}
         />
         <g transform={transform}>{this.props.children}</g>

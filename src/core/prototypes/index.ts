@@ -50,7 +50,7 @@ export {
   Links,
   Guides,
   Legends,
-  Dataflow
+  Dataflow,
 };
 
 Charts.registerClasses();

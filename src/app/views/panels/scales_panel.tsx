@@ -7,7 +7,7 @@ import {
   EventSubscription,
   Prototypes,
   Action,
-  Expression
+  Expression,
 } from "../../../core";
 import { SVGImageIcon, DraggableElement } from "../../components";
 
@@ -22,7 +22,7 @@ import {
   Element,
   Scale,
   Chart,
-  DataType
+  DataType,
 } from "../../../core/specification";
 import { Actions, DragData } from "../..";
 import { classNames } from "../../utils";
@@ -49,7 +49,7 @@ export class ScalesPanel extends ContextedComponent<
   constructor(props: { store: AppStore }) {
     super(props, null);
     this.state = {
-      isSelected: ""
+      isSelected: "",
     };
   }
 
@@ -59,12 +59,14 @@ export class ScalesPanel extends ContextedComponent<
       this.store.addListener(AppStore.EVENT_SELECTION, () =>
         this.forceUpdate()
       ),
-      this.store.addListener(AppStore.EVENT_SAVECHART, () => this.forceUpdate())
+      this.store.addListener(AppStore.EVENT_SAVECHART, () =>
+        this.forceUpdate()
+      ),
     ];
   }
 
   public componentWillUnmount() {
-    this.tokens.forEach(token => token.remove());
+    this.tokens.forEach((token) => token.remove());
     this.tokens = [];
   }
 
@@ -88,7 +90,7 @@ export class ScalesPanel extends ContextedComponent<
       element: any
     ) => {
       return (
-        Object.keys(element.mappings).find(key => {
+        Object.keys(element.mappings).find((key) => {
           const mapping = element.mappings[key];
           return (
             mapping.type === "scale" &&
@@ -99,7 +101,7 @@ export class ScalesPanel extends ContextedComponent<
     };
 
     const filterElementProperties = (scaleID: string, element: any) => {
-      return Object.keys(element.mappings).filter(key => {
+      return Object.keys(element.mappings).filter((key) => {
         const mapping = element.mappings[key];
         return (
           mapping.type === "scale" &&
@@ -143,7 +145,7 @@ export class ScalesPanel extends ContextedComponent<
               key={key}
               className={classNames("charticulator__scale-panel-property", [
                 "is-active",
-                this.state.isSelected === expr
+                this.state.isSelected === expr,
               ])}
               onDragStart={() => this.setState({ isSelected: expr })}
               onDragEnd={() => this.setState({ isSelected: null })}
@@ -164,7 +166,7 @@ export class ScalesPanel extends ContextedComponent<
                 };
 
                 const table = this.store.dataset.tables.find(
-                  table => table.name === (element.mappings[key] as any).table
+                  (table) => table.name === (element.mappings[key] as any).table
                 );
 
                 const parsedExpression = Expression.parse(expr);
@@ -176,7 +178,7 @@ export class ScalesPanel extends ContextedComponent<
                   const firstArgument = parsedExpression.args[0] as Variable;
 
                   const column = table.columns.find(
-                    col => col.name === firstArgument.name
+                    (col) => col.name === firstArgument.name
                   );
                   metadata = column.metadata;
 
@@ -201,7 +203,7 @@ export class ScalesPanel extends ContextedComponent<
                 <span className="dragging-table-cell">
                   {(element.mappings[key] as any).expression}
                 </span>,
-                { x: -10, y: -8 }
+                { x: -10, y: -8 },
               ]}
             >
               <SVGImageIcon
@@ -231,14 +233,14 @@ export class ScalesPanel extends ContextedComponent<
     );
 
     // Collect all used scales and object with properties into one list
-    const propertyList = scales.flatMap(scale => {
+    const propertyList = scales.flatMap((scale) => {
       return [0]
         .map(() => {
           return {
             scale,
             mark: null as ChartElement<ObjectProperties>,
             property: null as string,
-            glyph: null as Glyph
+            glyph: null as Glyph,
           };
         })
         .concat(
@@ -248,14 +250,16 @@ export class ScalesPanel extends ContextedComponent<
             .filter(filterElementByScalePredicate(scale._id))
             .flatMap((mark: ChartElement<ObjectProperties>) => {
               // Take all properties of object/element where scale was used and map them into {property, element, scale} object/element
-              return filterElementProperties(scale._id, mark).map(property => {
-                return {
-                  property,
-                  mark,
-                  scale,
-                  glyph: null
-                };
-              });
+              return filterElementProperties(scale._id, mark).map(
+                (property) => {
+                  return {
+                    property,
+                    mark,
+                    scale,
+                    glyph: null,
+                  };
+                }
+              );
             })
         )
         .concat(
@@ -265,10 +269,10 @@ export class ScalesPanel extends ContextedComponent<
               (
                 glyph: Glyph
               ): Array<{ glyph: Glyph; mark: Element<ObjectProperties> }> =>
-                glyph.marks.map(mark => {
+                glyph.marks.map((mark) => {
                   return {
                     glyph,
-                    mark
+                    mark,
                   };
                 })
             )
@@ -281,18 +285,18 @@ export class ScalesPanel extends ContextedComponent<
             .flatMap(
               ({
                 mark,
-                glyph
+                glyph,
               }: {
                 glyph: Glyph;
                 mark: Element<ObjectProperties>;
               }) => {
                 return filterElementProperties(scale._id, mark).map(
-                  property => {
+                  (property) => {
                     return {
                       property,
                       mark,
                       scale,
-                      glyph
+                      glyph,
                     };
                   }
                 );
@@ -336,7 +340,7 @@ export class ScalesPanel extends ContextedComponent<
             );
           }}
         >
-          {propertyList.map(el => {
+          {propertyList.map((el) => {
             return mapToUI(el.scale)(el.glyph, el.mark)(el.property);
           })}
         </ReorderListView>

@@ -9,7 +9,7 @@ import {
   Specification,
   Expression,
   Dataset,
-  deepClone
+  deepClone,
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
@@ -42,7 +42,7 @@ export class Migrator {
         version: stateOld.version, // keep the old version, so the following code can run
         dataset: stateOld.dataset.dataset,
         chart: stateOld.chart.chart,
-        chartState: stateOld.chart.chartState
+        chartState: stateOld.chart.chartState,
       };
     }
 
@@ -152,7 +152,7 @@ export class Migrator {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegmentState = elementState as Specification.PlotSegmentState;
         plotSegmentState.dataRowIndices = ((plotSegmentState.dataRowIndices as any) as number[]).map(
-          i => [i]
+          (i) => [i]
         );
       }
     }
@@ -266,7 +266,7 @@ export class Migrator {
             properties.dataExpressions = properties.dataExpressions.map(
               (x: string, index: number) => ({
                 name: index.toString(),
-                expression: this.addAggregationToExpression(x, valueType)
+                expression: this.addAggregationToExpression(x, valueType),
               })
             );
           }
@@ -287,9 +287,9 @@ export class Migrator {
       }
     }
     const allIndices = linkIndices.concat(otherIndices);
-    state.chart.elements = allIndices.map(i => state.chart.elements[i]);
+    state.chart.elements = allIndices.map((i) => state.chart.elements[i]);
     state.chartState.elements = allIndices.map(
-      i => state.chartState.elements[i]
+      (i) => state.chartState.elements[i]
     );
     return state;
   }

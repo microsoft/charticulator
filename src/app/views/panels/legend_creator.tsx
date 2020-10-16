@@ -13,7 +13,7 @@ import {
   Prototypes,
   Specification,
   uniqueID,
-  Expression
+  Expression,
 } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, SVGImageIcon } from "../../components";
@@ -22,7 +22,7 @@ import { ContextedComponent } from "../../context_component";
 import { classNames } from "../../utils";
 import {
   DataFieldSelector,
-  DataFieldSelectorValue
+  DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
@@ -52,7 +52,7 @@ export class LegendCreationPanel extends ContextedComponent<
     return {
       legendDataSource: "columnValues",
       errorReport: null,
-      legendType: "color"
+      legendType: "color",
     };
   }
 
@@ -77,12 +77,12 @@ export class LegendCreationPanel extends ContextedComponent<
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={false}
-                ref={e => (this.groupBySelector = e)}
+                ref={(e) => (this.groupBySelector = e)}
                 kinds={[
                   Specification.DataKind.Categorical,
                   Specification.DataKind.Numerical,
                   Specification.DataKind.Temporal,
-                  Specification.DataKind.Ordinal
+                  Specification.DataKind.Ordinal,
                 ]}
                 datasetStore={this.store}
                 nullDescription="(select column to create legend)"
@@ -95,12 +95,12 @@ export class LegendCreationPanel extends ContextedComponent<
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={true}
-                ref={e => (this.groupBySelector = e)}
+                ref={(e) => (this.groupBySelector = e)}
                 kinds={[
                   Specification.DataKind.Categorical,
                   Specification.DataKind.Numerical,
                   Specification.DataKind.Temporal,
-                  Specification.DataKind.Ordinal
+                  Specification.DataKind.Ordinal,
                 ]}
                 datasetStore={this.store}
                 nullDescription="(select column names to create legend)"
@@ -139,13 +139,13 @@ export class LegendCreationPanel extends ContextedComponent<
                 );
 
                 const tableName = this.store.dataset.tables.find(
-                  t => t.type === TableType.Main
+                  (t) => t.type === TableType.Main
                 ).name;
                 const table = this.store.chartManager.dataflow.getTable(
                   tableName
                 );
                 const data = (columns as any[])
-                  .map(ex => {
+                  .map((ex) => {
                     const expression = `columnName(${ex.table}.columns, "${ex.columnName}")`;
                     const parsedExpression = this.store.chartManager.dataflow.cache.parse(
                       expression
@@ -160,10 +160,10 @@ export class LegendCreationPanel extends ContextedComponent<
                       return null;
                     }
                   })
-                  .filter(v => v != null);
+                  .filter((v) => v != null);
 
                 const expression = `columnName(${tableName}.columns, ${(data as any[])
-                  .map(ex => {
+                  .map((ex) => {
                     return `"${ex[0]}"`;
                   })
                   .join(",")})`;
@@ -192,16 +192,16 @@ export class LegendCreationPanel extends ContextedComponent<
                 newLegend.properties.scale = newScale._id;
                 newLegend.mappings.x = {
                   type: "parent",
-                  parentAttribute: "x2"
+                  parentAttribute: "x2",
                 } as Specification.ParentMapping;
                 newLegend.mappings.y = {
                   type: "parent",
-                  parentAttribute: "y2"
+                  parentAttribute: "y2",
                 } as Specification.ParentMapping;
                 this.store.chartManager.addChartElement(newLegend);
                 this.store.chartManager.chart.mappings.marginRight = {
                   type: "value",
-                  value: 100
+                  value: 100,
                 } as Specification.ValueMapping;
 
                 const mappingOptions = {
@@ -210,7 +210,7 @@ export class LegendCreationPanel extends ContextedComponent<
                   expression,
                   valueType,
                   scale: newScale._id,
-                  allowSelectValue: true
+                  allowSelectValue: true,
                 } as Specification.ScaleMapping;
 
                 newLegend.mappings.mappingOptions = mappingOptions;
@@ -262,16 +262,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
                       type: "parent",
-                      parentAttribute: "x2"
+                      parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
                       type: "parent",
-                      parentAttribute: "y2"
+                      parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
                       type: "value",
-                      value: 100
+                      value: 100,
                     } as Specification.ValueMapping;
                     break;
                   case "scale.linear<number,color>":
@@ -282,16 +282,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
                       type: "parent",
-                      parentAttribute: "x2"
+                      parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
                       type: "parent",
-                      parentAttribute: "y2"
+                      parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
                       type: "value",
-                      value: 100
+                      value: 100,
                     } as Specification.ValueMapping;
                     break;
                   case "scale.linear<number,number>":
@@ -302,19 +302,19 @@ export class LegendCreationPanel extends ContextedComponent<
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x1 = {
                       type: "parent",
-                      parentAttribute: "x1"
+                      parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y1 = {
                       type: "parent",
-                      parentAttribute: "y1"
+                      parentAttribute: "y1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.x2 = {
                       type: "parent",
-                      parentAttribute: "x1"
+                      parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y2 = {
                       type: "parent",
-                      parentAttribute: "y2"
+                      parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                 }
@@ -324,7 +324,7 @@ export class LegendCreationPanel extends ContextedComponent<
                   table,
                   expression: aggregatedExpression,
                   valueType: columns[0].type,
-                  scale: inferred
+                  scale: inferred,
                 } as Specification.ScaleMapping;
               }
 

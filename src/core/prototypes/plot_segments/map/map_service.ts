@@ -92,7 +92,7 @@ export class GoogleMapService extends StaticMapService {
       zoom: `${options.zoom}`,
       size: `${options.width}x${options.height}`,
       key: this.apiKey,
-      format: "png"
+      format: "png",
     };
     if (options.resolution == "high") {
       params.scale = "2";
@@ -121,7 +121,7 @@ export class BingMapService extends StaticMapService {
     const params: { [name: string]: string } = {
       mapSize: `${options.width},${options.height}`,
       key: this.apiKey,
-      format: "png"
+      format: "png",
     };
     if (options.resolution == "high") {
       params.dpi = "Large";
@@ -135,9 +135,9 @@ export class BingMapService extends StaticMapService {
       type = "AerialWithLabels";
     }
     let url = `https://dev.virtualearth.net/REST/v1/Imagery/Map/${type}/`;
-    url += `${options.center.latitude},${
-      options.center.longitude
-    }/${options.zoom + 1}`;
+    url += `${options.center.latitude},${options.center.longitude}/${
+      options.zoom + 1
+    }`;
     url += "?" + buildQueryParameters(params);
     return url;
   }

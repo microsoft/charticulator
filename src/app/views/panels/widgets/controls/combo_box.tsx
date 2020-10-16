@@ -29,12 +29,12 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
   protected refContainer: HTMLSpanElement;
   protected refInput: HTMLInputElement;
   public state: ComboBoxState = {
-    value: this.props.defaultValue
+    value: this.props.defaultValue,
   };
 
   public componentWillReceiveProps(newProps: ComboBoxProps) {
     this.setState({
-      value: newProps.defaultValue
+      value: newProps.defaultValue,
     });
   }
 
@@ -45,20 +45,20 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
     const ok = this.props.onEnter(val);
     if (ok) {
       this.setState({
-        value: val
+        value: val,
       });
     }
   }
 
   protected reset() {
     this.setState({
-      value: this.props.defaultValue
+      value: this.props.defaultValue,
     });
   }
 
   protected handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
   };
   protected handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
         <span
           className={classNames("el-default-option-item", [
             "is-active",
-            props.selected
+            props.selected,
           ])}
           onClick={props.onClick}
         >
@@ -91,7 +91,7 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
       ));
     return (
       <span className="charticulator__widget-control-combo-box-suggestions">
-        {this.props.options.map(x => (
+        {this.props.options.map((x) => (
           <span
             className="charticulator__widget-control-combo-box-suggestions-option"
             key={x}
@@ -103,7 +103,7 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
                 }
                 this.tryEmitValue(x);
               },
-              selected: this.state.value == x
+              selected: this.state.value == x,
             })}
           </span>
         ))}
@@ -115,13 +115,13 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
     return (
       <span
         className="charticulator__widget-control-combo-box"
-        ref={e => (this.refContainer = e)}
+        ref={(e) => (this.refContainer = e)}
       >
         {this.props.optionsOnly ? (
           <span className="el-value">{this.state.value}</span>
         ) : (
           <input
-            ref={e => (this.refInput = e)}
+            ref={(e) => (this.refInput = e)}
             className="el-input"
             value={this.state.value}
             onChange={this.handleChange}
@@ -134,7 +134,7 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
           className="el-dropdown"
           onClick={() => {
             globals.popupController.popupAt(
-              context => {
+              (context) => {
                 return (
                   <PopupView
                     className="charticulator__widget-control-combo-box-popup"
@@ -174,7 +174,7 @@ const fontList = [
   "Tahoma",
   "Times",
   "Trebuchet MS",
-  "Verdana"
+  "Verdana",
 ];
 
 export interface ComboBoxFontFamilyProps {
@@ -195,7 +195,7 @@ export class ComboBoxFontFamily extends React.Component<
           <span
             className={classNames("el-default-option-item", [
               "is-active",
-              props.selected
+              props.selected,
             ])}
             style={{ fontFamily: x }}
             {...props}

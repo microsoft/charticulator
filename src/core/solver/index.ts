@@ -5,7 +5,7 @@ import {
   ConstraintPlugin,
   ConstraintSolver,
   ConstraintStrength,
-  Variable
+  Variable,
 } from "./abstract";
 import { ChartConstraintSolver, GlyphConstraintAnalyzer } from "./solver";
 
@@ -16,7 +16,7 @@ export {
   AttributeOptions,
   ConstraintStrength,
   Variable,
-  ConstraintPlugin
+  ConstraintPlugin,
 };
 
 import * as ConstraintPlugins from "./plugins";

@@ -14,7 +14,7 @@ $elements-margin: 4px;
 
   display: flex;
   flex-direction: row;
- 
+
   &-group {
     display: flex;
     flex-direction: row;
@@ -77,14 +77,18 @@ $elements-margin: 4px;
   $col3-breakpoint-height: 550px;
   $col4-breakpoint-height: 510px;
 
-  $col2-cell-size: $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin;
-  $col3-cell-size: $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin;
-  $col4-cell-size: $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin $tool-icon-size + $elements-margin  $tool-icon-size + $elements-margin;
+  $col2-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin;
+  $col3-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin $tool-icon-size + $elements-margin;
+  $col4-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin;
 
   align-content: flex-start;
   justify-content: flex-start;
   flex-direction: row;
-  
+
   width: $tool-icon-size;
 
   @media (max-height: $col2-breakpoint-height) {
@@ -110,15 +114,14 @@ $elements-margin: 4px;
     @media (max-height: $col2-breakpoint-height) {
       grid-template-columns: $col2-cell-size;
     }
-  
+
     @media (max-height: $col3-breakpoint-height) {
       grid-template-columns: $col3-cell-size;
     }
-  
+
     @media (max-height: $col4-breakpoint-height) {
       grid-template-columns: $col4-cell-size;
     }
-
   }
 
   &-group > * {

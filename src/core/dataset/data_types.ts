@@ -6,7 +6,7 @@ import {
   parseDate,
   testAndNormalizeMonthName,
   monthNames,
-  getDateFormat
+  getDateFormat,
 } from "./datetime";
 
 export interface LocaleNumberFormat {
@@ -47,7 +47,7 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
       } else {
         return null;
       }
-    }
+    },
   },
   number: {
     test: (x: string, localeNumberFormat: LocaleNumberFormat) => {
@@ -60,16 +60,16 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     convert: (x: string, localeNumberFormat: LocaleNumberFormat) => {
       const value = localeNumber(x, localeNumberFormat);
       return isNaN(value) ? null : value;
-    }
+    },
   },
   date: {
     test: (x: string) => parseDate(x, true) != null,
-    convert: (x: string) => parseDate(x, true)
+    convert: (x: string) => parseDate(x, true),
   },
   string: {
     test: (x: string) => true,
-    convert: (x: string) => x.toString()
-  }
+    convert: (x: string) => x.toString(),
+  },
 };
 
 /** Infer column type from a set of strings (not null) */
@@ -80,7 +80,7 @@ export function inferColumnType(
   const candidates: DataType[] = [
     DataType.Boolean,
     DataType.Number,
-    DataType.Date
+    DataType.Date,
   ] as any;
   for (let i = 0; i < values.length; i++) {
     let v = values[i];
@@ -110,11 +110,13 @@ export function convertColumn(
   values: string[],
   localeNumberFormat: LocaleNumberFormat = {
     remove: ",",
-    decimal: "."
+    decimal: ".",
   }
 ): DataValue[] {
   const converter = dataTypes[type].convert;
-  return values.map(v => (v != null ? converter(v, localeNumberFormat) : null));
+  return values.map((v) =>
+    v != null ? converter(v, localeNumberFormat) : null
+  );
 }
 
 /** Get distinct values from a non-null array of basic types */
@@ -138,7 +140,7 @@ export function inferAndConvertColumn(
   metadata: ColumnMetadata;
 } {
   const inferredType = inferColumnType(
-    values.filter(x => x != null),
+    values.filter((x) => x != null),
     localeNumberFormat
   );
   const convertedValues = convertColumn(
@@ -152,7 +154,7 @@ export function inferAndConvertColumn(
 
   switch (inferredType) {
     case DataType.Number: {
-      const validValues = convertedValues.filter(x => x != null);
+      const validValues = convertedValues.filter((x) => x != null);
       const minValue = Math.min(...(validValues as number[]));
       const maxValue = Math.max(...(validValues as number[]));
       if (validValues.every((x: number) => Math.round(x) == x)) {
@@ -161,12 +163,12 @@ export function inferAndConvertColumn(
           // Special case: Year
           return {
             type: DataType.String,
-            values: convertedValues.map(x => x.toString()),
+            values: convertedValues.map((x) => x.toString()),
             metadata: {
               unit: "__year",
               kind: DataKind.Ordinal,
-              orderMode: "alphabetically"
-            }
+              orderMode: "alphabetically",
+            },
           };
         }
       }
@@ -196,18 +198,18 @@ export function inferAndConvertColumn(
         values: convertedValues,
         metadata: {
           kind: DataKind.Numerical,
-          unit: hints.unit
-        }
+          unit: hints.unit,
+        },
       };
     }
     case DataType.Boolean: {
       return {
         type: DataType.Boolean,
         values: convertedValues,
-        rawValues: values.map(v => v && v.toLowerCase()),
+        rawValues: values.map((v) => v && v.toLowerCase()),
         metadata: {
-          kind: DataKind.Categorical
-        }
+          kind: DataKind.Categorical,
+        },
       };
     }
     case DataType.Date: {
@@ -218,16 +220,16 @@ export function inferAndConvertColumn(
         metadata: {
           kind: DataKind.Temporal,
           unit: hints.unit,
-          format: getDateFormat(values[0])
-        }
+          format: getDateFormat(values[0]),
+        },
       };
     }
     case DataType.String: {
       const metadata: ColumnMetadata = {
         kind: DataKind.Categorical,
-        unit: hints.unit
+        unit: hints.unit,
       };
-      const validValues = convertedValues.filter(x => x != null);
+      const validValues = convertedValues.filter((x) => x != null);
       if (
         validValues.every((x: string) => testAndNormalizeMonthName(x) != null)
       ) {
@@ -241,8 +243,8 @@ export function inferAndConvertColumn(
           metadata: {
             kind: DataKind.Ordinal,
             order: monthNames,
-            unit: "__month"
-          }
+            unit: "__month",
+          },
         };
       }
       if (hints.order) {
@@ -255,7 +257,7 @@ export function inferAndConvertColumn(
       return {
         type: DataType.String,
         values: convertedValues,
-        metadata
+        metadata,
       };
     }
   }
@@ -264,14 +266,14 @@ export function inferAndConvertColumn(
   return {
     type: inferredType,
     values: convertedValues,
-    metadata: { kind: DataKind.Categorical }
+    metadata: { kind: DataKind.Categorical },
   };
 }
 
 export function convertColumnType(values: any[], type: DataType): DataValue[] {
   switch (type) {
     case DataType.Boolean: {
-      return values.map(v => {
+      return values.map((v) => {
         if (v == null) {
           return null;
         }
@@ -286,7 +288,7 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
       });
     }
     case DataType.Number: {
-      return values.map(v => {
+      return values.map((v) => {
         // Check for null as well, since +null == 0
         if (v == null) {
           return null;
@@ -296,10 +298,10 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
       });
     }
     case DataType.String: {
-      return values.map(v => (v == null ? "" : v.toString()));
+      return values.map((v) => (v == null ? "" : v.toString()));
     }
     case DataType.Date: {
-      return values.map(v => {
+      return values.map((v) => {
         if (v == null) {
           return null;
         }

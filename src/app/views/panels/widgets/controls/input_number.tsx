@@ -125,12 +125,12 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
           onClick={() => {
             this.reportValue(this.props.defaultValue - tick);
           }}
-        />
+        />,
       ];
     } else {
       return (
         <UpdownButton
-          onClick={part => {
+          onClick={(part) => {
             if (part == "up") {
               this.reportValue(this.props.defaultValue + tick);
             } else {
@@ -147,10 +147,10 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
       <span className="charticulator__widget-control-input-number">
         <div className="charticulator__widget-control-input-number-input">
           <InputText
-            ref={e => (this.textInput = e)}
+            ref={(e) => (this.textInput = e)}
             placeholder={this.props.placeholder}
             defaultValue={this.formatNumber(this.props.defaultValue)}
-            onEnter={str => {
+            onEnter={(str) => {
               const num = this.parseNumber(str);
               return this.reportValue(num);
             }}

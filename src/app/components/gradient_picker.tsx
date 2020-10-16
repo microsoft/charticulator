@@ -7,7 +7,7 @@ import {
   ColorGradient,
   colorToHTMLColorHEX,
   deepClone,
-  interpolateColors
+  interpolateColors,
 } from "../../core";
 import { PopupView } from "../controllers";
 import * as globals from "../globals";
@@ -35,7 +35,7 @@ export class GradientPicker extends React.Component<
 > {
   public static tabs = [
     { name: "palettes", label: "Palettes" },
-    { name: "custom", label: "Custom" }
+    { name: "custom", label: "Custom" },
   ];
 
   constructor(props: GradientPickerProps) {
@@ -44,15 +44,18 @@ export class GradientPicker extends React.Component<
       currentTab: "palettes",
       currentGradient: this.props.defaultValue || {
         colorspace: "lab",
-        colors: [{ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 }]
-      }
+        colors: [
+          { r: 0, g: 0, b: 0 },
+          { r: 255, g: 255, b: 255 },
+        ],
+      },
     };
   }
 
   public selectGradient(gradient: ColorGradient, emit: boolean = false) {
     this.setState(
       {
-        currentGradient: gradient
+        currentGradient: gradient,
       },
       () => {
         if (emit) {
@@ -66,7 +69,7 @@ export class GradientPicker extends React.Component<
 
   public renderGradientPalettes() {
     const items = predefinedPalettes.filter(
-      x => x.type == "sequential" || x.type == "diverging"
+      (x) => x.type == "sequential" || x.type == "diverging"
     );
     const groups: Array<[string, ColorPalette[]]> = [];
     const group2Index = new Map<string, number>();
@@ -90,10 +93,10 @@ export class GradientPicker extends React.Component<
               <li key={`m${index}`}>
                 <div className="label">{group[0]}</div>
                 <ul>
-                  {group[1].map(x => {
+                  {group[1].map((x) => {
                     const gradient: ColorGradient = {
                       colors: x.colors[0],
-                      colorspace: "lab"
+                      colorspace: "lab",
                     };
                     return (
                       <li
@@ -121,7 +124,7 @@ export class GradientPicker extends React.Component<
         <TabsView
           tabs={GradientPicker.tabs}
           currentTab={this.state.currentTab}
-          onSelect={tab => this.setState({ currentTab: tab })}
+          onSelect={(tab) => this.setState({ currentTab: tab })}
         />
         {this.state.currentTab == "palettes"
           ? this.renderGradientPalettes()
@@ -150,13 +153,13 @@ export class GradientPicker extends React.Component<
                       <span
                         className="color-item"
                         style={{ background: colorToCSS(color) }}
-                        onClick={e => {
+                        onClick={(e) => {
                           globals.popupController.popupAt(
-                            context => (
+                            (context) => (
                               <PopupView context={context}>
                                 <ColorPicker
                                   defaultValue={color}
-                                  onPick={color => {
+                                  onPick={(color) => {
                                     const newGradient = deepClone(
                                       this.state.currentGradient
                                     );
@@ -173,7 +176,7 @@ export class GradientPicker extends React.Component<
                       />
                       <InputField
                         defaultValue={colorToHTMLColorHEX(color)}
-                        onEnter={value => {
+                        onEnter={(value) => {
                           const newColor = colorFromHTMLColor(value);
                           const newGradient = deepClone(
                             this.state.currentGradient
@@ -283,7 +286,7 @@ export class GradientView extends React.PureComponent<
   public render() {
     return (
       <span className="gradient-view">
-        <canvas ref={e => (this.refCanvas = e)} width={50} height={2} />
+        <canvas ref={(e) => (this.refCanvas = e)} width={50} height={2} />
       </span>
     );
   }

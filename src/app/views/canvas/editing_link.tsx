@@ -11,7 +11,7 @@ import {
   Point,
   Prototypes,
   Specification,
-  ZoomInfo
+  ZoomInfo,
 } from "../../../core";
 import { Actions } from "../../actions";
 import { renderSVGPath } from "../../renderer";
@@ -61,7 +61,7 @@ export class EditingLink extends React.Component<
       stage: "select-source",
       firstAnchor: null,
       secondAnchor: null,
-      currentMouseLocation: { x: 0, y: 0 }
+      currentMouseLocation: { x: 0, y: 0 },
     };
   }
 
@@ -84,18 +84,18 @@ export class EditingLink extends React.Component<
     this.hammer = new Hammer(this.refs.container);
     this.hammer.add(new Hammer.Pan());
     this.hammer.add(new Hammer.Tap());
-    this.hammer.on("tap panend", e => {
+    this.hammer.on("tap panend", (e) => {
       const pageX = e.center.x;
       const pageY = e.center.y;
 
       const markInfo = this.getMarkAtPoint(pageX, pageY);
       if (markInfo) {
         let anchor: Specification.Types.LinkAnchorPoint[];
-        anchor = markInfo.anchor.points.map(pt => {
+        anchor = markInfo.anchor.points.map((pt) => {
           return {
             x: { element: markInfo.anchor.element, attribute: pt.xAttribute },
             y: { element: markInfo.anchor.element, attribute: pt.yAttribute },
-            direction: pt.direction
+            direction: pt.direction,
           } as Specification.Types.LinkAnchorPoint;
         });
         if (markInfo.mode == "begin") {
@@ -141,18 +141,16 @@ export class EditingLink extends React.Component<
       Prototypes.Links.LinksClass.BandPath(
         path,
         {
-          points: anchor.points.map(p => {
+          points: anchor.points.map((p) => {
             return { x: p.x + dx, y: p.y + dy, direction: p.direction };
           }),
           coordinateSystem,
-          curveness: this.props.link.properties.curveness as number
+          curveness: this.props.link.properties.curveness as number,
         },
         false,
         true
       );
-      const transform = `translate(${this.props.zoom.centerX},${
-        this.props.zoom.centerY
-      }) scale(${this.props.zoom.scale})`;
+      const transform = `translate(${this.props.zoom.centerX},${this.props.zoom.centerY}) scale(${this.props.zoom.scale})`;
       const d = renderSVGPath(path.path.cmds);
       return (
         <g transform={transform}>
@@ -209,7 +207,7 @@ export class EditingLink extends React.Component<
           const facets = Prototypes.Links.facetRows(
             manager.dataflow.getTable(plotSegmentClass.object.table),
             plotSegmentClass.state.dataRowIndices,
-            props.linkThrough.facetExpressions.map(x =>
+            props.linkThrough.facetExpressions.map((x) =>
               manager.dataflow.cache.parse(x)
             )
           );
@@ -241,15 +239,15 @@ export class EditingLink extends React.Component<
                 glyphState: rowToMarkState.get(
                   facets[firstNonEmptyFacet][0].join(",")
                 ),
-                coordinateSystem
+                coordinateSystem,
               },
               {
                 glyph,
                 glyphState: rowToMarkState.get(
                   facets[firstNonEmptyFacet][1].join(",")
                 ),
-                coordinateSystem
-              }
+                coordinateSystem,
+              },
             ];
           }
         }
@@ -257,43 +255,43 @@ export class EditingLink extends React.Component<
       case "links.between":
         {
           const plotSegmentClasses = props.linkBetween.plotSegments.map(
-            x =>
+            (x) =>
               manager.getClassById(
                 x
               ) as Prototypes.PlotSegments.PlotSegmentClass
           );
-          const glyphObjects = plotSegmentClasses.map(x =>
+          const glyphObjects = plotSegmentClasses.map((x) =>
             getById(manager.chart.glyphs, x.object.glyph)
           );
           glyphs = [
             {
               glyph: glyphObjects[0],
               glyphState: plotSegmentClasses[0].state.glyphs[0],
-              coordinateSystem: plotSegmentClasses[0].getCoordinateSystem()
+              coordinateSystem: plotSegmentClasses[0].getCoordinateSystem(),
             },
             {
               glyph: glyphObjects[1],
               glyphState: plotSegmentClasses[1].state.glyphs[0],
-              coordinateSystem: plotSegmentClasses[1].getCoordinateSystem()
-            }
+              coordinateSystem: plotSegmentClasses[1].getCoordinateSystem(),
+            },
           ];
         }
         break;
       case "links.table":
         {
           const plotSegmentClasses = props.linkTable.plotSegments.map(
-            x =>
+            (x) =>
               manager.getClassById(
                 x
               ) as Prototypes.PlotSegments.PlotSegmentClass
           );
-          const glyphObjects = plotSegmentClasses.map(x =>
+          const glyphObjects = plotSegmentClasses.map((x) =>
             getById(manager.chart.glyphs, x.object.glyph)
           );
           const linkTable = this.props.store.chartManager.dataflow.getTable(
             props.linkTable.table
           );
-          const tables = plotSegmentClasses.map(plotSegmentClass => {
+          const tables = plotSegmentClasses.map((plotSegmentClass) => {
             const table = this.props.store.chartManager.dataflow.getTable(
               plotSegmentClass.object.table
             );
@@ -304,20 +302,22 @@ export class EditingLink extends React.Component<
               i++
             ) {
               const rowIndex = plotSegmentClass.state.dataRowIndices[i];
-              const rowIDs = rowIndex.map(i => table.getRow(i).id).join(",");
+              const rowIDs = rowIndex.map((i) => table.getRow(i).id).join(",");
               id2RowGlyphIndex.set(rowIDs, [rowIndex, i]);
             }
             return {
               table,
-              id2RowGlyphIndex
+              id2RowGlyphIndex,
             };
           });
           // Find the first links with nodes are exists in main table
           const rowItem: Specification.DataRow = linkTable.rows.find(
-            row =>
-            row.source_id && tables[0].id2RowGlyphIndex.get(row.source_id.toString()) !=
+            (row) =>
+              row.source_id &&
+              tables[0].id2RowGlyphIndex.get(row.source_id.toString()) !=
                 undefined &&
-                row.target_id && tables[1].id2RowGlyphIndex.get(row.target_id.toString()) !=
+              row.target_id &&
+              tables[1].id2RowGlyphIndex.get(row.target_id.toString()) !=
                 undefined
           );
           if (rowItem) {
@@ -331,13 +331,13 @@ export class EditingLink extends React.Component<
               {
                 glyph: glyphObjects[0],
                 glyphState: plotSegmentClasses[0].state.glyphs[i0],
-                coordinateSystem: plotSegmentClasses[0].getCoordinateSystem()
+                coordinateSystem: plotSegmentClasses[0].getCoordinateSystem(),
               },
               {
                 glyph: glyphObjects[1],
                 glyphState: plotSegmentClasses[1].state.glyphs[i1],
-                coordinateSystem: plotSegmentClasses[1].getCoordinateSystem()
-              }
+                coordinateSystem: plotSegmentClasses[1].getCoordinateSystem(),
+              },
             ];
           } else {
             glyphs = [];
@@ -362,7 +362,7 @@ export class EditingLink extends React.Component<
           );
           const mode: "begin" | "end" = glyphIndex == 0 ? "begin" : "end";
           let anchors = markClass.getLinkAnchors(mode);
-          anchors = anchors.filter(anchor => {
+          anchors = anchors.filter((anchor) => {
             if (lineMode == "line") {
               return anchor.points.length == 1;
             }
@@ -376,7 +376,7 @@ export class EditingLink extends React.Component<
                 <g
                   className="anchor"
                   key={`m${index}`}
-                  ref={g => {
+                  ref={(g) => {
                     if (g != null) {
                       this.markPlaceholders.set(g, {
                         mode,
@@ -384,7 +384,7 @@ export class EditingLink extends React.Component<
                         anchor,
                         offsetX,
                         offsetY,
-                        coordinateSystem
+                        coordinateSystem,
                       });
                     }
                   }}
@@ -415,21 +415,21 @@ export class EditingLink extends React.Component<
           glyphState.marks[getIndexById(glyph.marks, element)];
         const anchorDescription: Prototypes.LinkAnchor.Description = {
           element,
-          points: anchor.map(a => {
+          points: anchor.map((a) => {
             return {
               x: elementState.attributes[a.x.attribute] as number,
               xAttribute: a.x.attribute,
               y: elementState.attributes[a.y.attribute] as number,
               yAttribute: a.y.attribute,
-              direction: a.direction
+              direction: a.direction,
             };
-          })
+          }),
         };
         return {
           coordinateSystem,
           offsetX,
           offsetY,
-          anchor: anchorDescription
+          anchor: anchorDescription,
         };
       }
     );
@@ -438,25 +438,25 @@ export class EditingLink extends React.Component<
       const path = Graphics.makePath();
       const anchor1 = {
         coordinateSystem: currentAnchors[0].coordinateSystem,
-        points: currentAnchors[0].anchor.points.map(p => {
+        points: currentAnchors[0].anchor.points.map((p) => {
           return {
             x: p.x + currentAnchors[0].offsetX,
             y: p.y + currentAnchors[0].offsetY,
-            direction: p.direction
+            direction: p.direction,
           };
         }),
-        curveness: this.props.link.properties.curveness as number
+        curveness: this.props.link.properties.curveness as number,
       };
       const anchor2 = {
         coordinateSystem: currentAnchors[1].coordinateSystem,
-        points: currentAnchors[1].anchor.points.map(p => {
+        points: currentAnchors[1].anchor.points.map((p) => {
           return {
             x: p.x + currentAnchors[1].offsetX,
             y: p.y + currentAnchors[1].offsetY,
-            direction: p.direction
+            direction: p.direction,
           };
         }),
-        curveness: this.props.link.properties.curveness as number
+        curveness: this.props.link.properties.curveness as number,
       };
       Prototypes.Links.LinksClass.LinkPath(
         path,
@@ -465,9 +465,7 @@ export class EditingLink extends React.Component<
         anchor1,
         anchor2
       );
-      const transform = `translate(${this.props.zoom.centerX},${
-        this.props.zoom.centerY
-      }) scale(${this.props.zoom.scale})`;
+      const transform = `translate(${this.props.zoom.centerX},${this.props.zoom.centerY}) scale(${this.props.zoom.scale})`;
       currentLinkElement = (
         <g transform={transform}>
           <path
@@ -496,7 +494,7 @@ export class EditingLink extends React.Component<
     const r = this.refs.handler.getBoundingClientRect();
     const p = Geometry.unapplyZoom(this.props.zoom, {
       x: point.x - r.left,
-      y: point.y - r.top
+      y: point.y - r.top,
     });
     return { x: p.x, y: -p.y };
   }

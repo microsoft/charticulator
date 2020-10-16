@@ -6,4 +6,5 @@
  */
 
 export * from "./attribute_panel";
+// tslint:disable-next-line
 export * as Widgets from "./widgets/controls/index";
