@@ -25,7 +25,7 @@ export function loadDataFromURL(
   contentType: string = "text",
   timeout: number = 10
 ): Promise<any> {
-  return fetch(url).then((response) => {
+  return fetch(url).then(response => {
     if (response.ok && response.status == 200) {
       if (contentType == "text") {
         return response.text();

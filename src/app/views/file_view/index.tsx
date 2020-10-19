@@ -45,14 +45,14 @@ export class CurrentChartView extends React.PureComponent<
   constructor(props: { store: AppStore }) {
     super(props);
     this.state = {
-      svgDataURL: null,
+      svgDataURL: null
     };
     this.renderImage();
   }
   public async renderImage() {
     const svg = await this.props.store.renderLocalSVG();
     this.setState({
-      svgDataURL: stringToDataURL("image/svg+xml", svg),
+      svgDataURL: stringToDataURL("image/svg+xml", svg)
     });
   }
   public render() {
@@ -83,13 +83,13 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
   constructor(props: FileViewProps) {
     super(props);
     this.state = {
-      currentTab: this.props.defaultTab || "open",
+      currentTab: this.props.defaultTab || "open"
     };
   }
 
   public switchTab(name: string) {
     this.setState({
-      currentTab: name,
+      currentTab: name
     });
   }
 
@@ -133,7 +133,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "new",
+              this.state.currentTab == "new"
             ])}
             onClick={() => this.switchTab("new")}
           >
@@ -142,7 +142,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "open",
+              this.state.currentTab == "open"
             ])}
             onClick={() => this.switchTab("open")}
           >
@@ -151,7 +151,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "save",
+              this.state.currentTab == "save"
             ])}
             onClick={() => this.switchTab("save")}
           >
@@ -160,7 +160,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "export",
+              this.state.currentTab == "export"
             ])}
             onClick={() => this.switchTab("export")}
           >
@@ -169,7 +169,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "options",
+              this.state.currentTab == "options"
             ])}
             onClick={() => this.switchTab("options")}
           >
@@ -179,7 +179,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div
             className={classNames("el-tab", [
               "active",
-              this.state.currentTab == "about",
+              this.state.currentTab == "about"
             ])}
             onClick={() => this.switchTab("about")}
           >

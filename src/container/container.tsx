@@ -8,12 +8,12 @@ import {
   EventEmitter,
   Specification,
   EventSubscription,
-  Prototypes,
+  Prototypes
 } from "../core";
 import {
   ChartComponent,
   DataSelection,
-  GlyphEventHandler,
+  GlyphEventHandler
 } from "./chart_component";
 import { TemplateInstance } from "./chart_template";
 
@@ -45,7 +45,7 @@ export class ChartContainerComponent extends React.Component<
   public state: ChartContainerComponentState = {
     width: this.props.defaultWidth != null ? this.props.defaultWidth : 900,
     height: this.props.defaultHeight != null ? this.props.defaultHeight : 900,
-    selection: null,
+    selection: null
   };
 
   constructor(props: ChartContainerComponentProps) {
@@ -71,16 +71,14 @@ export class ChartContainerComponent extends React.Component<
         table,
         indices: indicesSet,
         isSelected: (qTable: string, qIndices: number[]) => {
-          return (
-            table == qTable && qIndices.find((v) => indicesSet.has(v)) >= 0
-          );
-        },
-      },
+          return table == qTable && qIndices.find(v => indicesSet.has(v)) >= 0;
+        }
+      }
     });
     if (emit && this.props.onSelectionChange) {
       this.props.onSelectionChange({
         table,
-        rowIndices: Array.from(indicesSet),
+        rowIndices: Array.from(indicesSet)
       });
     }
   }
@@ -163,7 +161,7 @@ export class ChartContainerComponent extends React.Component<
   public render() {
     return (
       <ChartComponent
-        ref={(e) => (this.component = e)}
+        ref={e => (this.component = e)}
         chart={this.props.chart}
         dataset={this.props.dataset}
         defaultAttributes={this.props.defaultAttributes}
@@ -184,7 +182,7 @@ export enum ChartContainerEvent {
   Selection = "selection",
   MouseEnter = "mouseenter",
   MouseLeave = "mouseleave",
-  ContextMenu = "contextmenu",
+  ContextMenu = "contextmenu"
 }
 
 export class ChartContainer extends EventEmitter {
@@ -292,13 +290,13 @@ export class ChartContainer extends EventEmitter {
     this.height = height;
     return (
       <ChartContainerComponent
-        ref={(e) => (this.component = e)}
+        ref={e => (this.component = e)}
         chart={this.chart}
         dataset={this.dataset}
         defaultWidth={width}
         defaultHeight={height}
         defaultAttributes={this.defaultAttributes}
-        onSelectionChange={(data) => {
+        onSelectionChange={data => {
           if (data == null) {
             this.emit(ChartContainerEvent.Selection);
           } else {
@@ -309,14 +307,14 @@ export class ChartContainer extends EventEmitter {
             );
           }
         }}
-        onMouseEnterGlyph={(data) => {
+        onMouseEnterGlyph={data => {
           this.emit(
             ChartContainerEvent.MouseEnter,
             data.table,
             data.rowIndices
           );
         }}
-        onMouseLeaveGlyph={(data) => {
+        onMouseLeaveGlyph={data => {
           this.emit(
             ChartContainerEvent.MouseLeave,
             data.table,

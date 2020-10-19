@@ -9,19 +9,19 @@ import {
   PlotSegmentState,
   ValueMapping,
   baselineH,
-  baselineV,
+  baselineV
 } from "../../core/specification";
 import {
   GuideAxis,
   GuideClass,
   GuideAttributeNames,
-  GuidePropertyNames,
+  GuidePropertyNames
 } from "../../core/prototypes/guides";
 import { Specification, uniqueID } from "../../core";
 import { isType } from "../../core/prototypes";
 import {
   NestedChartElementClass,
-  NestedChartElementProperties,
+  NestedChartElementProperties
 } from "../../core/prototypes/marks/nested_chart";
 
 type Chart = Specification.Chart<Specification.ObjectProperties>;
@@ -38,16 +38,16 @@ interface ElementRef {
 
 enum CommonPropertyNames {
   name = "name",
-  gap = "gap",
+  gap = "gap"
 }
 
 enum DeletedAttributeNames {
-  value2 = "value2",
+  value2 = "value2"
 }
 
 enum DeletedPropertyNames {
   value = "value",
-  value2 = "value2",
+  value2 = "value2"
 }
 
 /** Upgrade old versions of chart spec and state to newer version */
@@ -67,10 +67,10 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
   const chartGuideRefs = find(
     parentElement.elements,
     parentState.elements,
-    (element) => element.classID === GuideClass.classID
+    element => element.classID === GuideClass.classID
   );
 
-  chartGuideRefs.forEach((ref) => {
+  chartGuideRefs.forEach(ref => {
     const { element, state } = ref;
 
     // convert mappings to actual values
@@ -88,7 +88,7 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
     }
 
     // find other elements constrained to this chartElementItem
-    parentElement.constraints.forEach((constraint) => {
+    parentElement.constraints.forEach(constraint => {
       if (
         constraint.type === "snap" &&
         constraint.attributes.targetElement === element._id
@@ -116,10 +116,10 @@ function upgradeGlyphGuides(
   parentState: ChartState,
   nested = false
 ) {
-  parentElement.glyphs.forEach((glyph) => {
+  parentElement.glyphs.forEach(glyph => {
     // collect and separate marks from guides
     const guides: { [id: string]: Mark } = {};
-    glyph.marks.forEach((mark) => {
+    glyph.marks.forEach(mark => {
       if (isType(mark.classID, GuideClass.classID)) {
         guides[mark._id] = mark;
       } else if (isType(mark.classID, NestedChartElementClass.classID)) {
@@ -131,13 +131,13 @@ function upgradeGlyphGuides(
     const related = find(
       parentElement.elements,
       parentState && parentState.elements,
-      (element) => {
+      element => {
         const ps = element as PlotSegment;
         return ps.glyph === glyph._id;
       }
     );
     // look at constraints
-    glyph.constraints.forEach((constraint) => {
+    glyph.constraints.forEach(constraint => {
       if (constraint.type === "snap") {
         const id = constraint.attributes.targetElement as string;
         const guide = guides[id];
@@ -155,10 +155,10 @@ function upgradeGlyphGuides(
           // add new guide
           glyph.marks.push(newGuide.element);
           // add state instances
-          related.forEach((ref) => {
+          related.forEach(ref => {
             const s = ref.state as PlotSegmentState;
             if (s && s.glyphs) {
-              s.glyphs.forEach((glyphState) => {
+              s.glyphs.forEach(glyphState => {
                 glyphState.marks.push(newGuide.state);
               });
             }
@@ -167,7 +167,7 @@ function upgradeGlyphGuides(
             // nested charts store in mappings
             const valueMapping: ValueMapping = {
               type: "value",
-              value: newGuide.state.attributes[GuideAttributeNames.value],
+              value: newGuide.state.attributes[GuideAttributeNames.value]
             };
             newGuide.element.mappings.value = valueMapping;
           }
@@ -190,11 +190,11 @@ function upgradeGlyphGuides(
       // delete old properties
       removeOldGuideProperties(guide);
       // modify all state instances
-      related.forEach((ref) => {
+      related.forEach(ref => {
         const s = ref.state as PlotSegmentState;
         if (s && s.glyphs) {
-          s.glyphs.forEach((glyphState) => {
-            glyphState.marks.forEach((markState) => {
+          s.glyphs.forEach(glyphState => {
+            glyphState.marks.forEach(markState => {
               // add new properties to guide
               addNewGuideProperties(null, markState);
               // delete old properties
@@ -253,9 +253,9 @@ function changeConstraintTarget(
     const constrained = find(
       elementCollection,
       stateCollection,
-      (element) => element._id === constraint.attributes.element
+      element => element._id === constraint.attributes.element
     );
-    constrained.forEach((ref) => {
+    constrained.forEach(ref => {
       const name = constraint.attributes.attribute as string;
       ref.state.attributes[name] = value;
     });
@@ -296,18 +296,17 @@ function createGuide(axis: GuideAxis, originalGuide: Element, value: number) {
     classID: "guide.guide",
     properties: {
       baseline: axis === "y" ? defaultBaselineV : defaultBaselineH,
-      name: `${
-        originalGuide.properties[CommonPropertyNames.name] || "Guide"
-      } gap`,
-      axis,
+      name: `${originalGuide.properties[CommonPropertyNames.name] ||
+        "Guide"} gap`,
+      axis
     },
-    mappings: {},
+    mappings: {}
   };
   const state: ChartElementState = {
     attributes: {
       value,
-      computedBaselineValue: value,
-    },
+      computedBaselineValue: value
+    }
   };
   return { element, state };
 }

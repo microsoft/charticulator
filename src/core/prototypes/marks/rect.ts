@@ -15,14 +15,14 @@ import {
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   rectAttributes,
   RectElementAttributes,
-  RectElementProperties,
+  RectElementProperties
 } from "./rect.attrs";
 
 export { RectElementAttributes, RectElementProperties };
@@ -39,21 +39,21 @@ export class RectElementClass extends EmphasizableMarkClass<
     iconPath: "mark/rect",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
-    },
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
+    }
   };
 
   public static defaultProperties: Partial<RectElementProperties> = {
     visible: true,
     strokeStyle: "solid",
-    shape: "rectangle",
+    shape: "rectangle"
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
     fill: { r: 217, g: 217, b: 217 },
     strokeWidth: 1,
     opacity: 1,
-    visible: true,
+    visible: true
   };
 
   public attributes = rectAttributes;
@@ -91,10 +91,10 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fill",
+          attribute: "fill"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.fill),
+        default: rgbToHex(this.state.attributes.fill)
       });
     }
     if (
@@ -104,10 +104,10 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible",
+          attribute: "visible"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible,
+        default: this.state.attributes.visible
       });
     }
     if (
@@ -117,10 +117,10 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "stroke",
+          attribute: "stroke"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.stroke),
+        default: rgbToHex(this.state.attributes.stroke)
       });
     }
     if (
@@ -130,18 +130,18 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "strokeWidth",
+          attribute: "strokeWidth"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.strokeWidth,
+        default: this.state.attributes.strokeWidth
       });
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "strokeStyle",
+          property: "strokeStyle"
         },
         type: Specification.AttributeType.Enum,
-        default: this.object.properties.strokeStyle,
+        default: this.object.properties.strokeStyle
       });
     }
     if (
@@ -151,15 +151,15 @@ export class RectElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity",
+          attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity,
+        default: this.state.attributes.opacity
       });
     }
 
     return {
-      properties,
+      properties
     };
   }
 
@@ -173,12 +173,12 @@ export class RectElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Width", "width", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.mappingEditor("Height", "height", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.row(
         "Shape",
@@ -189,20 +189,20 @@ export class RectElementClass extends EmphasizableMarkClass<
             showLabel: true,
             icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
             labels: ["Rectangle", "Triangle", "Ellipse"],
-            options: ["rectangle", "triangle", "ellipse"],
+            options: ["rectangle", "triangle", "ellipse"]
           }
         )
       ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
         manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
+          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
       );
       widgets.push(
@@ -215,7 +215,7 @@ export class RectElementClass extends EmphasizableMarkClass<
               showLabel: true,
               icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
               labels: ["Solid", "Dashed", "Dotted"],
-              options: ["solid", "dashed", "dotted"],
+              options: ["solid", "dashed", "dotted"]
             }
           )
         )
@@ -226,11 +226,11 @@ export class RectElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+        defaultValue: true
+      })
     ]);
 
     widgets = widgets.concat(parentWidgets);
@@ -258,42 +258,20 @@ export class RectElementClass extends EmphasizableMarkClass<
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, x2],
-        [-1, x1],
-      ],
+      [[1, x2], [-1, x1]],
       [[1, width]]
     );
     // add constraint y2 - y1 = height
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, y2],
-        [-1, y1],
-      ],
+      [[1, y2], [-1, y1]],
       [[1, height]]
     );
     // add constraint x1 + x2 = 2 * xc
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cx]],
-      [
-        [1, x1],
-        [1, x2],
-      ]
-    );
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
     // add constraint y1 + y2 = 2 * yc
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cy]],
-      [
-        [1, y1],
-        [1, y2],
-      ]
-    );
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
   }
 
   // Get the graphical element from the element
@@ -325,7 +303,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
-            ...this.generateEmphasisStyle(empasized),
+            ...this.generateEmphasisStyle(empasized)
           }
         );
       }
@@ -358,7 +336,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           ),
           fillColor: attrs.fill,
           opacity: attrs.opacity,
-          ...this.generateEmphasisStyle(empasized),
+          ...this.generateEmphasisStyle(empasized)
         };
         return path;
       }
@@ -378,7 +356,7 @@ export class RectElementClass extends EmphasizableMarkClass<
             ),
             fillColor: attrs.fill,
             opacity: attrs.opacity,
-            ...this.generateEmphasisStyle(empasized),
+            ...this.generateEmphasisStyle(empasized)
           }
         );
       }
@@ -398,16 +376,16 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: -1, y: 0 },
+            direction: { x: -1, y: 0 }
           },
           {
             x: attrs.x1,
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -417,16 +395,16 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 1, y: 0 },
+            direction: { x: 1, y: 0 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 1, y: 0 },
-          },
-        ],
+            direction: { x: 1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -436,16 +414,16 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
+            direction: { x: 0, y: -1 }
           },
           {
             x: attrs.x2,
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -455,16 +433,16 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
+            direction: { x: 0, y: 1 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -474,9 +452,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "cx",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -486,9 +464,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "cx",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -498,9 +476,9 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x1",
             yAttribute: "cy",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -510,10 +488,10 @@ export class RectElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x2",
             yAttribute: "cy",
-            direction: { x: 1, y: 0 },
-          },
-        ],
-      },
+            direction: { x: 1, y: 0 }
+          }
+        ]
+      }
     ];
   }
 
@@ -532,9 +510,9 @@ export class RectElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
       } as DropZones.Line,
       {
         type: "line",
@@ -546,10 +524,10 @@ export class RectElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
-      } as DropZones.Line,
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
+      } as DropZones.Line
     ];
   }
   // Get bounding rectangle given current state
@@ -562,28 +540,28 @@ export class RectElementClass extends EmphasizableMarkClass<
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "point",
@@ -591,8 +569,8 @@ export class RectElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -600,8 +578,8 @@ export class RectElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -609,8 +587,8 @@ export class RectElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -618,9 +596,9 @@ export class RectElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
-      } as Handles.Point,
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -633,7 +611,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     } as BoundingBox.Rectangle;
   }
 
@@ -646,7 +624,7 @@ export class RectElementClass extends EmphasizableMarkClass<
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
   }
 }

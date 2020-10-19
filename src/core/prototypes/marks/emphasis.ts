@@ -7,12 +7,12 @@ import {
   Object,
   ObjectState,
   EmphasisMethod,
-  AttributeMap,
+  AttributeMap
 } from "../../specification";
 
 const DEFAULT_EMPHASIS_DESATURATION: ColorFilter = {
   saturation: { multiply: 0.2 },
-  lightness: { add: 0.01, pow: 0.2 },
+  lightness: { add: 0.01, pow: 0.2 }
 };
 const DEFAULT_EMPHASIS_STROKE_COLOR = { r: 255, g: 0, b: 0 };
 const DEFAULT_EMPHASIS_STROKE_WIDTH = 1;
@@ -43,7 +43,7 @@ export abstract class EmphasizableMarkClass<
   protected generateEmphasisStyle(emphasize?: boolean): Style {
     // If emphasize is undefined (or true), we use full saturation
     const style = {
-      saturation: 1,
+      saturation: 1
     } as Style;
 
     // only if emphasize is explicitly false to we use saturation of .7

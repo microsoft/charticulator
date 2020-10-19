@@ -94,7 +94,7 @@ export {
   Solver,
   Graphics,
   Dataset,
-  Utils,
+  Utils
 };
 
 import { CharticulatorCoreConfig, setConfig } from "./config";

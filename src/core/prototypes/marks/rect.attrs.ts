@@ -11,7 +11,7 @@ export const rectAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
   ...AttrBuilder.center(),
   ...AttrBuilder.size(),
-  ...AttrBuilder.style({ fill: true }),
+  ...AttrBuilder.style({ fill: true })
 };
 
 /**

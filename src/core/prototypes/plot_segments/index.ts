@@ -40,7 +40,7 @@ import { MapPlotSegment } from "./map";
 import {
   CartesianPlotSegment,
   CurvePlotSegment,
-  PolarPlotSegment,
+  PolarPlotSegment
 } from "./region_2d";
 
 export { defaultAxisStyle } from "./axis";
@@ -50,7 +50,7 @@ export {
   CurvePlotSegment,
   PolarPlotSegment,
   Region2DAttributes,
-  Region2DProperties,
+  Region2DProperties
 } from "./region_2d";
 
 export { PlotSegmentClass } from "./plot_segment";

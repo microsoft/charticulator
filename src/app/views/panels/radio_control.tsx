@@ -32,7 +32,7 @@ export class PanelRadioControl extends React.Component<
             <span
               className={classNames("el-item", [
                 "is-active",
-                this.props.value == option,
+                this.props.value == option
               ])}
               key={option}
               onClick={() => {

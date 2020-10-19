@@ -98,7 +98,7 @@ export class DataFieldSelector extends React.Component<
               currentSelection: f,
               currentSelectionAggregation: expressionAggregation,
               currentSelections: [f],
-              currentSelectionsAggregations: [expressionAggregation],
+              currentSelectionsAggregations: [expressionAggregation]
             };
           }
         }
@@ -108,7 +108,7 @@ export class DataFieldSelector extends React.Component<
       currentSelection: null,
       currentSelectionAggregation: null,
       currentSelections: [],
-      currentSelectionsAggregations: [],
+      currentSelectionsAggregations: []
     };
   }
 
@@ -139,24 +139,24 @@ export class DataFieldSelector extends React.Component<
     const table = store
       .getTables()
       .filter(
-        (table) => table.name == this.props.table || this.props.table == null
+        table => table.name == this.props.table || this.props.table == null
       )[0];
     const columns = table.columns;
     const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
-    columnFilters.push((x) => !x.metadata.isRaw);
+    columnFilters.push(x => !x.metadata.isRaw);
     if (this.props.table) {
-      columnFilters.push((x) => x.table == this.props.table);
+      columnFilters.push(x => x.table == this.props.table);
     }
     if (this.props.kinds) {
       columnFilters.push(
-        (x) =>
+        x =>
           x.metadata != null &&
           isKindAcceptable(x.metadata.kind, this.props.kinds)
       );
     }
     if (this.props.types) {
       columnFilters.push(
-        (x) => x.metadata != null && this.props.types.indexOf(x.type) >= 0
+        x => x.metadata != null && this.props.types.indexOf(x.type) >= 0
       );
     }
     const columnFilter = (x: DataFieldSelectorValue) => {
@@ -167,7 +167,7 @@ export class DataFieldSelector extends React.Component<
       }
       return true;
     };
-    let candidates = columns.map((c) => {
+    let candidates = columns.map(c => {
       const r: DataFieldSelectorValueCandidate = {
         selectable: true,
         table: table.name,
@@ -179,7 +179,7 @@ export class DataFieldSelector extends React.Component<
         type: c.type,
         displayName: c.name,
         metadata: c.metadata,
-        derived: [],
+        derived: []
       };
       // Compute derived columns.
       const derivedColumns = type2DerivedColumns[r.type];
@@ -199,7 +199,7 @@ export class DataFieldSelector extends React.Component<
             type: item.type,
             metadata: item.metadata,
             displayName: item.name,
-            selectable: true,
+            selectable: true
           };
           if (columnFilter(ditem)) {
             r.derived.push(ditem);
@@ -211,7 +211,7 @@ export class DataFieldSelector extends React.Component<
     });
     // Make sure we only show good ones
     candidates = candidates.filter(
-      (x) => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw
+      x => (x.derived.length > 0 || x.selectable) && !x.metadata.isRaw
     );
     return candidates;
   }
@@ -232,7 +232,7 @@ export class DataFieldSelector extends React.Component<
   ) {
     if (
       v2.find(
-        (v) => v == v1 || (v1.expression == v.expression && v1.table == v.table)
+        v => v == v1 || (v1.expression == v.expression && v1.table == v.table)
       )
     ) {
       return true;
@@ -255,19 +255,19 @@ export class DataFieldSelector extends React.Component<
         }
       }
       if (this.props.multiSelect) {
-        this.setState((current) => {
+        this.setState(current => {
           const found = current.currentSelections.find(
-            (i) => i.expression === item.expression
+            i => i.expression === item.expression
           );
           if (found) {
             return {
               ...current,
               currentSelections: current.currentSelections.filter(
-                (i) => i.expression !== item.expression
+                i => i.expression !== item.expression
               ),
               currentSelectionsAggregations: current.currentSelectionsAggregations.filter(
-                (a) => a !== aggregation
-              ),
+                a => a !== aggregation
+              )
             };
           } else {
             return {
@@ -275,27 +275,27 @@ export class DataFieldSelector extends React.Component<
               currentSelections: [...current.currentSelections, item],
               currentSelectionsAggregations: [
                 ...current.currentSelectionsAggregations,
-                aggregation,
-              ],
+                aggregation
+              ]
             };
           }
         });
       } else {
         this.setState({
           currentSelection: item,
-          currentSelectionAggregation: aggregation,
+          currentSelectionAggregation: aggregation
         });
       }
       if (this.props.onChange) {
         if (this.props.multiSelect) {
-          const rlist = [...this.state.currentSelections, item].map((item) => {
+          const rlist = [...this.state.currentSelections, item].map(item => {
             const r = {
               table: item.table,
               expression: item.expression,
               rawExpression: item.rawExpression,
               columnName: item.columnName,
               type: item.type,
-              metadata: item.metadata,
+              metadata: item.metadata
             };
             if (this.props.useAggregation) {
               r.expression = Expression.functionCall(
@@ -317,7 +317,7 @@ export class DataFieldSelector extends React.Component<
             rawExpression: item.rawExpression,
             columnName: item.columnName,
             type: item.type,
-            metadata: item.metadata,
+            metadata: item.metadata
           };
           if (this.props.useAggregation) {
             r.expression = Expression.functionCall(
@@ -346,13 +346,13 @@ export class DataFieldSelector extends React.Component<
               "is-active",
               this.props.multiSelect
                 ? this.isValueExists(item, this.state.currentSelections)
-                : this.isValueEqual(this.state.currentSelection, item),
+                : this.isValueEqual(this.state.currentSelection, item)
             ],
             ["is-selectable", item.selectable]
           )}
           onClick={
             item.selectable
-              ? (event) => {
+              ? event => {
                   this.selectItem(
                     item,
                     this.isValueEqual(this.state.currentSelection, item)
@@ -371,12 +371,12 @@ export class DataFieldSelector extends React.Component<
               value={this.state.currentSelectionAggregation}
               options={Expression.getCompatibleAggregationFunctions(
                 item.type
-              ).map((x) => x.name)}
+              ).map(x => x.name)}
               labels={Expression.getCompatibleAggregationFunctions(
                 item.type
-              ).map((x) => x.displayName)}
+              ).map(x => x.displayName)}
               showText={true}
-              onChange={(newValue) => {
+              onChange={newValue => {
                 this.selectItem(item, newValue);
               }}
             />
@@ -400,9 +400,9 @@ export class DataFieldSelector extends React.Component<
           <div
             className="el-derived-fields"
             style={{ display: "none" }}
-            ref={(e) => (elDerived = e)}
+            ref={e => (elDerived = e)}
           >
-            {item.derived.map((df) => this.renderCandidate(df))}
+            {item.derived.map(df => this.renderCandidate(df))}
           </div>
         ) : null}
       </div>
@@ -418,7 +418,7 @@ export class DataFieldSelector extends React.Component<
             className={classNames("el-field-item", "is-null", "is-selectable", [
               "is-active",
               !this.props.nullNotHighlightable &&
-                this.state.currentSelection == null,
+                this.state.currentSelection == null
             ])}
             onClick={() => this.selectItem(null)}
           >
@@ -428,7 +428,7 @@ export class DataFieldSelector extends React.Component<
         {fields.length == 0 && !this.props.nullDescription ? (
           <div className="el-field-item is-null">(no suitable column)</div>
         ) : null}
-        {fields.map((f) => this.renderCandidate(f))}
+        {fields.map(f => this.renderCandidate(f))}
       </div>
     );
   }

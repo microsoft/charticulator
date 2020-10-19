@@ -39,7 +39,7 @@ export class SnapConstraintClass {
       attribute,
       element,
       targetAttribute,
-      targetElement,
+      targetElement
     } = constraint.attributes;
     let gap = constraint.attributes.gap;
     if (gap == null) {
@@ -56,7 +56,7 @@ export class SnapConstraintClass {
     );
     solver.addLinear(ConstraintStrength.HARD, gap, [
       [1, attr],
-      [-1, targetAttr],
+      [-1, targetAttr]
     ]);
   }
 }

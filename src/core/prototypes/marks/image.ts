@@ -13,21 +13,21 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   imageAttributes,
   ImageElementAttributes,
-  ImageElementProperties,
+  ImageElementProperties
 } from "./image.attrs";
 
 export const imagePlaceholder: Specification.Types.Image = {
   src:
     "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmljb25zPC90aXRsZT48cmVjdCB4PSI1LjE1MTI0IiB5PSI2LjY4NDYyIiB3aWR0aD0iMjEuNjk3NTIiIGhlaWdodD0iMTguNjEyNSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6IzAwMDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLXdpZHRoOjAuOTI2MTg0MTE3Nzk0MDM2OXB4Ii8+PHBvbHlnb24gcG9pbnRzPSIyMC4xNSAxMi45NDMgMTMuODExIDIxLjQwNCAxMC4xNTQgMTYuNDk4IDUuMTUxIDIzLjE3NiA1LjE1MSAyNS4zMDYgMTAuODg4IDI1LjMwNiAxNi43MTkgMjUuMzA2IDI2Ljg0OSAyNS4zMDYgMjYuODQ5IDIxLjkzIDIwLjE1IDEyLjk0MyIgc3R5bGU9ImZpbGwtb3BhY2l0eTowLjI7c3Ryb2tlOiMwMDA7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS13aWR0aDowLjcwMDAwMDAwMDAwMDAwMDFweCIvPjxjaXJjbGUgY3g9IjExLjkyMDI3IiBjeT0iMTIuMzk5MjMiIHI9IjEuOTAyMTYiIHN0eWxlPSJmaWxsLW9wYWNpdHk6MC4yO3N0cm9rZTojMDAwO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2Utd2lkdGg6MC43MDAwMDAwMDAwMDAwMDAxcHgiLz48L3N2Zz4=",
   width: 100,
-  height: 100,
+  height: 100
 };
 
 export { ImageElementAttributes, ImageElementProperties };
@@ -44,8 +44,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
     iconPath: "mark/image",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
-    },
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
+    }
   };
 
   public static defaultProperties: Partial<ImageElementProperties> = {
@@ -54,13 +54,13 @@ export class ImageElementClass extends EmphasizableMarkClass<
     paddingX: 0,
     paddingY: 0,
     alignX: "middle",
-    alignY: "middle",
+    alignY: "middle"
   };
 
   public static defaultMappingValues: Partial<ImageElementAttributes> = {
     strokeWidth: 1,
     opacity: 1,
-    visible: true,
+    visible: true
   };
 
   public attributes = imageAttributes;
@@ -96,12 +96,12 @@ export class ImageElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Width", "width", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.mappingEditor("Height", "height", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.sectionHeader("Image"),
       manager.mappingEditor("Image", "image", {}),
@@ -113,7 +113,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
             type: "dropdown",
             showLabel: true,
             labels: ["Letterbox", "Stretch"],
-            options: ["letterbox", "stretch"],
+            options: ["letterbox", "stretch"]
           }
         )
       ),
@@ -129,7 +129,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"],
+                    labels: ["Left", "Middle", "Right"]
                   }
                 ),
                 manager.inputSelect(
@@ -138,11 +138,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"],
+                    labels: ["Bottom", "Middle", "Top"]
                   }
                 )
               )
-            ),
+            )
           ]
         : []),
       manager.row(
@@ -154,7 +154,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
             { property: "paddingX" },
             {
               updownTick: 1,
-              showUpdown: true,
+              showUpdown: true
             }
           ),
           manager.label("y:"),
@@ -162,21 +162,21 @@ export class ImageElementClass extends EmphasizableMarkClass<
             { property: "paddingY" },
             {
               updownTick: 1,
-              showUpdown: true,
+              showUpdown: true
             }
           )
         )
       ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
         manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
+          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
       );
     }
@@ -184,11 +184,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+        defaultValue: true
+      })
     ]);
     return widgets.concat(parentWidgets);
   }
@@ -205,39 +205,17 @@ export class ImageElementClass extends EmphasizableMarkClass<
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, x2],
-        [-1, x1],
-      ],
+      [[1, x2], [-1, x1]],
       [[1, width]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, y2],
-        [-1, y1],
-      ],
+      [[1, y2], [-1, y1]],
       [[1, height]]
     );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cx]],
-      [
-        [1, x1],
-        [1, x2],
-      ]
-    );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cy]],
-      [
-        [1, y1],
-        [1, y2],
-      ]
-    );
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
   }
 
   // Get the graphical element from the element
@@ -275,7 +253,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           attrs.y2 + offset.y,
           {
             strokeColor: null,
-            fillColor: attrs.fill,
+            fillColor: attrs.fill
           }
         )
       );
@@ -352,8 +330,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         y: imgY,
         width: imageWidth,
         height: imageHeight,
-        mode: "stretch",
-      } as Graphics.Image,
+        mode: "stretch"
+      } as Graphics.Image
     ]);
     gImage.transform = cs.getLocalTransform(px + offset.x, py + offset.y);
     g.elements.push(gImage);
@@ -370,7 +348,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
             strokeColor: attrs.stroke,
             strokeWidth: attrs.strokeWidth,
             strokeLinejoin: "miter",
-            fillColor: null,
+            fillColor: null
           }
         )
       );
@@ -378,7 +356,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
     // Apply the opacity
     g.style = {
-      opacity: attrs.opacity,
+      opacity: attrs.opacity
     };
     return g;
   }
@@ -396,16 +374,16 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: -1, y: 0 },
+            direction: { x: -1, y: 0 }
           },
           {
             x: attrs.x1,
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -415,16 +393,16 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 1, y: 0 },
+            direction: { x: 1, y: 0 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 1, y: 0 },
-          },
-        ],
+            direction: { x: 1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -434,16 +412,16 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
+            direction: { x: 0, y: -1 }
           },
           {
             x: attrs.x2,
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -453,16 +431,16 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
+            direction: { x: 0, y: 1 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -472,9 +450,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "cx",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -484,9 +462,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "cx",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -496,9 +474,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x1",
             yAttribute: "cy",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -508,10 +486,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x2",
             yAttribute: "cy",
-            direction: { x: 1, y: 0 },
-          },
-        ],
-      },
+            direction: { x: 1, y: 0 }
+          }
+        ]
+      }
     ];
   }
 
@@ -530,9 +508,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
       } as DropZones.Line,
       {
         type: "line",
@@ -544,10 +522,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
-      } as DropZones.Line,
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
+      } as DropZones.Line
     ];
   }
   // Get bounding rectangle given current state
@@ -560,28 +538,28 @@ export class ImageElementClass extends EmphasizableMarkClass<
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "point",
@@ -589,8 +567,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -598,8 +576,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -607,8 +585,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -616,9 +594,9 @@ export class ImageElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
-      } as Handles.Point,
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -631,7 +609,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     } as BoundingBox.Rectangle;
   }
 
@@ -644,7 +622,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
   }
 
@@ -657,10 +635,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "strokeWidth",
+          attribute: "strokeWidth"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.strokeWidth,
+        default: this.state.attributes.strokeWidth
       });
     }
     if (
@@ -670,10 +648,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity",
+          attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity,
+        default: this.state.attributes.opacity
       });
     }
     if (
@@ -683,10 +661,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible",
+          attribute: "visible"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.visible,
+        default: this.state.attributes.visible
       });
     }
     if (
@@ -696,10 +674,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "image",
+          attribute: "image"
         },
         type: Specification.AttributeType.Image,
-        default: this.state.attributes.image.src,
+        default: this.state.attributes.image.src
       });
     }
     if (
@@ -709,10 +687,10 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fill",
+          attribute: "fill"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.fill),
+        default: rgbToHex(this.state.attributes.fill)
       });
     }
     if (
@@ -722,14 +700,14 @@ export class ImageElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "stroke",
+          attribute: "stroke"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.stroke),
+        default: rgbToHex(this.state.attributes.stroke)
       });
     }
     return {
-      properties,
+      properties
     };
   }
 }

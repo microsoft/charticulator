@@ -4,7 +4,7 @@ import { expect } from "chai";
 import {
   inferColumnType,
   inferAndConvertColumn,
-  LocaleNumberFormat,
+  LocaleNumberFormat
 } from "../../core/dataset/data_types";
 import { DataType } from "../../core/dataset";
 
@@ -18,7 +18,7 @@ describe("Data Type Inference", () => {
       [["true", "true", "false", "yes", "no"], DataType.Boolean],
       [["Hello", "World", "Charticulator"], DataType.String],
       [["2010", "2011", "2013", "2012"], DataType.Number],
-      [["Jan", "Feb", "Mar", "Nov"], DataType.String],
+      [["Jan", "Feb", "Mar", "Nov"], DataType.String]
     ];
     for (const [values, type] of cases) {
       const inferredType = inferColumnType(values, localeNumberFormat);
@@ -32,20 +32,20 @@ describe("Data Type Inference", () => {
         {
           type: DataType.Number,
           values: [1, 3, 4.5, 23, null],
-          metadata: { kind: "numerical" },
-        },
+          metadata: { kind: "numerical" }
+        }
       ],
       [
         ["1990-01-13", "2012-12-30", "12:34:56", "11:05am"],
-        { type: DataType.Date, metadata: { kind: "temporal" } },
+        { type: DataType.Date, metadata: { kind: "temporal" } }
       ],
       [
         ["true", "true", "false", "yes", "no"],
-        { type: DataType.Boolean, metadata: { kind: "categorical" } },
+        { type: DataType.Boolean, metadata: { kind: "categorical" } }
       ],
       [
         ["Hello", "World", "Charticulator"],
-        { type: DataType.String, metadata: { kind: "categorical" } },
+        { type: DataType.String, metadata: { kind: "categorical" } }
       ],
       [
         ["2010", "2011", "2013", "2012"],
@@ -54,9 +54,9 @@ describe("Data Type Inference", () => {
           metadata: {
             unit: "__year",
             orderMode: "alphabetically",
-            kind: "ordinal",
-          },
-        },
+            kind: "ordinal"
+          }
+        }
       ],
       [
         ["Jan", "Feb", "MAR", "november", "sept."],
@@ -66,10 +66,10 @@ describe("Data Type Inference", () => {
           metadata: {
             kind: "ordinal",
             order: "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(","),
-            unit: "__month",
-          },
-        },
-      ],
+            unit: "__month"
+          }
+        }
+      ]
     ];
     for (const [values, expectedResult] of cases) {
       const r = inferAndConvertColumn(values, localeNumberFormat);

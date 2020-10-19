@@ -29,7 +29,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     super(props);
     this.state = {
       currentValue: props.defaultValue,
-      dragging: false,
+      dragging: false
     };
   }
 
@@ -37,7 +37,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   public componentWillReceiveProps(props: SliderProps) {
     this.setState({
-      currentValue: props.defaultValue,
+      currentValue: props.defaultValue
     });
   }
 
@@ -78,14 +78,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     const margin = 13;
 
-    this.hammer.on("panstart pan panend tap", (e) => {
+    this.hammer.on("panstart pan panend tap", e => {
       const left = this.refs.svg.getBoundingClientRect().left;
       const x = e.center.x - left;
       let pos = (x - margin) / (this.props.width - margin - margin);
       pos = Math.max(0, Math.min(1, pos));
       const value = this.niceValue(this.ratioToValue(pos));
       this.setState({
-        currentValue: value,
+        currentValue: value
       });
       if (this.props.onChange) {
         if (e.type == "panend" || e.type == "tap") {
@@ -96,12 +96,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       }
       if (e.type == "panstart") {
         this.setState({
-          dragging: true,
+          dragging: true
         });
       }
       if (e.type == "panend") {
         this.setState({
-          dragging: false,
+          dragging: false
         });
       }
     });

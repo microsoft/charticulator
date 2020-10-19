@@ -10,7 +10,7 @@ import {
   ButtonFlat,
   EditableTextView,
   SVGImageIcon,
-  ButtonRaised,
+  ButtonRaised
 } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Actions } from "../../actions";
@@ -29,7 +29,7 @@ export class FileViewOpen extends ContextedComponent<
 > {
   public state: FileViewOpenState = {
     chartList: [],
-    chartCount: 0,
+    chartCount: 0
   };
 
   public componentDidMount() {
@@ -38,10 +38,10 @@ export class FileViewOpen extends ContextedComponent<
 
   public updateChartList() {
     const store = this.store;
-    store.backend.list("chart", "timeCreated", 0, 1000).then((result) => {
+    store.backend.list("chart", "timeCreated", 0, 1000).then(result => {
       this.setState({
         chartList: result.items,
-        chartCount: result.totalCount,
+        chartCount: result.totalCount
       });
     });
   }
@@ -62,13 +62,13 @@ export class FileViewOpen extends ContextedComponent<
       } else {
         return (
           <ul className="chart-list">
-            {this.state.chartList.map((chart) => {
+            {this.state.chartList.map(chart => {
               return (
                 <li
                   key={chart.id}
                   onClick={() => {
                     this.dispatch(
-                      new Actions.Open(chart.id, (error) => {
+                      new Actions.Open(chart.id, error => {
                         if (error) {
                           // TODO: add error reporting
                         } else {
@@ -82,11 +82,11 @@ export class FileViewOpen extends ContextedComponent<
                     <img src={chart.metadata.thumbnail as string} />
                   </div>
                   <div className="description">
-                    <div className="name" onClick={(e) => e.stopPropagation()}>
+                    <div className="name" onClick={e => e.stopPropagation()}>
                       <EditableTextView
                         text={chart.metadata.name}
-                        onEdit={(newText) => {
-                          backend.get(chart.id).then((chart) => {
+                        onEdit={newText => {
+                          backend.get(chart.id).then(chart => {
                             chart.metadata.name = newText;
                             backend
                               .put(chart.id, chart.data, chart.metadata)
@@ -110,7 +110,9 @@ export class FileViewOpen extends ContextedComponent<
                           onClick={() => {
                             if (
                               confirm(
-                                `Do you want to delete the chart "${chart.metadata.name}"?`
+                                `Do you want to delete the chart "${
+                                  chart.metadata.name
+                                }"?`
                               )
                             ) {
                               backend.delete(chart.id).then(() => {
@@ -124,7 +126,7 @@ export class FileViewOpen extends ContextedComponent<
                           title="Copy this chart"
                           stopPropagation={true}
                           onClick={() => {
-                            backend.get(chart.id).then((chart) => {
+                            backend.get(chart.id).then(chart => {
                               backend
                                 .create("chart", chart.data, chart.metadata)
                                 .then(() => {
@@ -138,9 +140,9 @@ export class FileViewOpen extends ContextedComponent<
                           title="Download this chart"
                           stopPropagation={true}
                           onClick={() => {
-                            backend.get(chart.id).then((chart) => {
+                            backend.get(chart.id).then(chart => {
                               const blob = new Blob([
-                                JSON.stringify(chart.data, null, 2),
+                                JSON.stringify(chart.data, null, 2)
                               ]);
                               FileSaver.saveAs(
                                 blob,

@@ -19,7 +19,7 @@ import {
   classNames,
   showOpenFileDialog,
   getFileNameWithoutExtension,
-  getConvertableDataKind,
+  getConvertableDataKind
 } from "../../utils";
 import { Button, Select, DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
@@ -53,7 +53,7 @@ export class DatasetView extends React.Component<
     return (
       <div className="charticulator__dataset-view">
         {tables
-          .filter((table) => mainTables.find((m) => m === table.type))
+          .filter(table => mainTables.find(m => m === table.type))
           .map((table, idx) => (
             <ColumnsView
               key={`t${idx}`}
@@ -86,7 +86,7 @@ export class ColumnsView extends React.Component<
   constructor(props: ColumnsViewProps) {
     super(props);
     this.state = {
-      selectedColumn: null,
+      selectedColumn: null
     };
   }
 
@@ -96,7 +96,7 @@ export class ColumnsView extends React.Component<
     return (
       <div
         className="charticulator__dataset-view-columns"
-        ref={(e) => (anchor = e)}
+        ref={e => (anchor = e)}
       >
         <h2 className="el-title">
           <span className="el-text">
@@ -109,7 +109,7 @@ export class ColumnsView extends React.Component<
             title="Replace data with CSV file"
             active={false}
             onClick={() => {
-              showOpenFileDialog(["csv"]).then((file) => {
+              showOpenFileDialog(["csv"]).then(file => {
                 const loader = new Dataset.DatasetLoader();
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -124,13 +124,13 @@ export class ColumnsView extends React.Component<
                   const store = this.props.store;
                   const newDataset: Dataset.Dataset = {
                     name: store.dataset.name,
-                    tables: store.dataset.tables.map((x) => {
+                    tables: store.dataset.tables.map(x => {
                       if (x.name == table.name) {
                         return newTable;
                       } else {
                         return x;
                       }
-                    }),
+                    })
                   };
                   store.dispatcher.dispatch(
                     new Actions.ReplaceDataset(newDataset)
@@ -146,7 +146,7 @@ export class ColumnsView extends React.Component<
             active={false}
             onClick={() => {
               globals.popupController.popupAt(
-                (context) => (
+                context => (
                   <PopupView context={context}>
                     <div className="charticulator__dataset-view-detail">
                       <h2>{table.displayName || table.name}</h2>
@@ -177,7 +177,7 @@ export class ColumnsView extends React.Component<
         </h2>
         <p className="el-details">{table.displayName || table.name}</p>
         {table.columns
-          .filter((c) => !c.metadata.isRaw)
+          .filter(c => !c.metadata.isRaw)
           .map((c, idx) => (
             <ColumnView
               key={`t${idx}`}
@@ -210,7 +210,7 @@ export class ColumnView extends React.Component<
     super(props);
     this.state = {
       isSelected: null,
-      isExpanded: false,
+      isExpanded: false
     };
   }
 
@@ -222,7 +222,7 @@ export class ColumnView extends React.Component<
     }
     return (
       <div className="charticulator__dataset-view-derived-fields">
-        {derivedColumns.map((desc) => {
+        {derivedColumns.map(desc => {
           const expr = Expression.functionCall(
             desc.function,
             Expression.variable(this.props.column.name)
@@ -278,22 +278,22 @@ export class ColumnView extends React.Component<
       <div
         key={label}
         className="click-handler"
-        ref={(e) => (anchor = e)}
+        ref={e => (anchor = e)}
         onClick={() => {
           if (!onColumnKindChanged) {
             return;
           }
           globals.popupController.popupAt(
-            (context) => (
+            context => (
               <PopupView key={label} context={context}>
                 <div>
                   <DropdownListView
                     selected={type}
-                    list={getConvertableDataKind(type).map((type) => {
+                    list={getConvertableDataKind(type).map(type => {
                       return {
                         name: type.toString(),
                         text: type.toString(),
-                        url: R.getSVGIcon(kind2Icon[type]),
+                        url: R.getSVGIcon(kind2Icon[type])
                       };
                     })}
                     context={context}
@@ -312,7 +312,7 @@ export class ColumnView extends React.Component<
           key={expr}
           className={classNames("charticulator__dataset-view-column", [
             "is-active",
-            this.state.isSelected == expr,
+            this.state.isSelected == expr
           ])}
           onDragStart={() => this.setState({ isSelected: expr })}
           onDragEnd={() => this.setState({ isSelected: null })}
@@ -330,7 +330,7 @@ export class ColumnView extends React.Component<
           }}
           renderDragElement={() => [
             <span className="dragging-table-cell">{expr}</span>,
-            { x: -10, y: -8 },
+            { x: -10, y: -8 }
           ]}
         >
           <SVGImageIcon url={icon} />

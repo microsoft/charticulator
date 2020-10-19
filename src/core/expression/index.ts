@@ -28,7 +28,7 @@ export {
   BooleanValue,
   StringValue,
   DateValue,
-  variableReplacer,
+  variableReplacer
 } from "./classes";
 
 export { SyntaxError } from "./parser";
@@ -63,5 +63,5 @@ export {
   AggregationFunctionDescription,
   verifyUserExpression,
   VerifyUserExpressionOptions,
-  VerifyUserExpressionReport,
+  VerifyUserExpressionReport
 } from "./helpers";

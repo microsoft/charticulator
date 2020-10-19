@@ -24,7 +24,7 @@ export class MarkSnappingSession extends SnappingSession<
     threshold: number
   ) {
     super(
-      guides.filter((x) => {
+      guides.filter(x => {
         // element cannot snap to itself
         if (x.element === element) {
           return false;
@@ -65,7 +65,7 @@ export class MarkSnappingSession extends SnappingSession<
                   action.attribute,
                   {
                     type: "parent",
-                    parentAttribute: action.snapAttribute,
+                    parentAttribute: action.snapAttribute
                   } as Specification.ParentMapping
                 )
               );
@@ -109,7 +109,7 @@ export class MarkSnappingSession extends SnappingSession<
                 action.attribute,
                 {
                   type: "value",
-                  value: action.value,
+                  value: action.value
                 } as Specification.ValueMapping
               )
             );

@@ -7,7 +7,7 @@ export enum ConstraintStrength {
   STRONG = 2,
   MEDIUM = 3,
   WEAK = 4,
-  WEAKER = 5,
+  WEAKER = 5
 }
 
 export interface AttributeOptions {
@@ -68,7 +68,7 @@ export abstract class ConstraintSolver {
 
   /** Get attributes */
   public attrs(map: AttributeMap, name: string[]): Variable[] {
-    return name.map((n) => this.attr(map, n));
+    return name.map(n => this.attr(map, n));
   }
 
   /** Get a linear value */
@@ -82,10 +82,7 @@ export abstract class ConstraintSolver {
 
   /** Add a constraint that enfoces a = b */
   public addEquals(strength: ConstraintStrength, a: Variable, b: Variable) {
-    this.addLinear(strength, 0, [
-      [1, a],
-      [-1, b],
-    ]);
+    this.addLinear(strength, 0, [[1, a], [-1, b]]);
   }
 
   /** Add a constraint that enfoces a = value */
@@ -104,6 +101,6 @@ export abstract class ConstraintSolver {
   }
 
   public applyPlugins() {
-    this.plugins.forEach((p) => p.apply());
+    this.plugins.forEach(p => p.apply());
   }
 }

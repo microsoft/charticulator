@@ -12,7 +12,7 @@ import {
   StringValue,
   Variable,
   TextExpression,
-  Context,
+  Context
 } from "./classes";
 import { DataflowTable } from "../prototypes/dataflow";
 
@@ -78,12 +78,12 @@ export const aggregationFunctions: AggregationFunctionDescription[] = [
   { name: "variance", displayName: "Variance", inputTypes: ["number"] },
   { name: "first", displayName: "First" },
   { name: "last", displayName: "Last" },
-  { name: "count", displayName: "Count" },
+  { name: "count", displayName: "Count" }
 ];
 
 export function getCompatibleAggregationFunctions(inputType: string) {
   return aggregationFunctions.filter(
-    (x) => x.inputTypes == null || x.inputTypes.indexOf(inputType) >= 0
+    x => x.inputTypes == null || x.inputTypes.indexOf(inputType) >= 0
   );
 }
 
@@ -163,7 +163,7 @@ export function verifyUserExpression(
   } catch (error) {
     return {
       pass: false,
-      error: "Parse Error: " + error.message,
+      error: "Parse Error: " + error.message
     };
   }
   if (options.table) {
@@ -172,7 +172,7 @@ export function verifyUserExpression(
     } catch (error) {
       return {
         pass: false,
-        error: "Evaluate Error: " + error.message,
+        error: "Evaluate Error: " + error.message
       };
     }
   } else if (options.data) {
@@ -188,14 +188,14 @@ export function verifyUserExpression(
           if (!expectedTypes.has(valueType)) {
             return {
               pass: false,
-              error: `Type Error: unexpected ${valueType} returned`,
+              error: `Type Error: unexpected ${valueType} returned`
             };
           }
         }
       } catch (error) {
         return {
           pass: false,
-          error: "Evaluate Error: " + error.message,
+          error: "Evaluate Error: " + error.message
         };
       }
     } else {
@@ -206,13 +206,13 @@ export function verifyUserExpression(
       } catch (error) {
         return {
           pass: false,
-          error: "Evaluate Error: " + error.message,
+          error: "Evaluate Error: " + error.message
         };
       }
     }
   }
   return {
     pass: true,
-    formatted: expr.toString(),
+    formatted: expr.toString()
   };
 }

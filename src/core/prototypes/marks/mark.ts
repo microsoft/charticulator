@@ -13,7 +13,7 @@ import {
   Handles,
   LinkAnchor,
   ObjectClass,
-  SnappingGuides,
+  SnappingGuides
 } from "../common";
 import { GlyphClass } from "../glyphs";
 import { PlotSegmentClass } from "../plot_segments";

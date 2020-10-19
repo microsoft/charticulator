@@ -7,7 +7,7 @@ import {
   AttributeOptions,
   ConstraintSolver,
   ConstraintStrength,
-  Variable,
+  Variable
 } from "./abstract";
 
 export function initialize() {
@@ -21,7 +21,7 @@ const strengthMap: { [name in ConstraintStrength]: number } = {
   [ConstraintStrength.STRONG]: LSCGSolver.ConstraintSolver.STRENGTH_STRONG,
   [ConstraintStrength.MEDIUM]: LSCGSolver.ConstraintSolver.STRENGTH_MEDIUM,
   [ConstraintStrength.WEAK]: LSCGSolver.ConstraintSolver.STRENGTH_WEAK,
-  [ConstraintStrength.WEAKER]: LSCGSolver.ConstraintSolver.STRENGTH_WEAKER,
+  [ConstraintStrength.WEAKER]: LSCGSolver.ConstraintSolver.STRENGTH_WEAKER
 };
 
 export interface WASMSolverVariable extends Variable {
@@ -141,7 +141,7 @@ export class WASMSolver extends ConstraintSolver {
       id,
       bias,
       variable_names,
-      weights,
+      weights
     });
   }
 

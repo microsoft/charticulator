@@ -30,7 +30,7 @@ export class GapRatioHandleView extends React.Component<
     super(props);
     this.state = {
       dragging: false,
-      newValue: this.props.handle.value,
+      newValue: this.props.handle.value
     };
   }
 
@@ -85,7 +85,7 @@ export class GapRatioHandleView extends React.Component<
       return oldValue;
     };
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       if (this.refs.cOrigin) {
@@ -104,14 +104,14 @@ export class GapRatioHandleView extends React.Component<
 
       this.setState({
         dragging: true,
-        newValue: oldValue,
+        newValue: oldValue
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
 
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -127,12 +127,12 @@ export class GapRatioHandleView extends React.Component<
           newValue = Math.min(1, Math.max(newValue, 0));
         }
         this.setState({
-          newValue,
+          newValue
         });
         context.emit("drag", { value: newValue });
       }
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -149,7 +149,7 @@ export class GapRatioHandleView extends React.Component<
         }
         context.emit("end", { value: newValue });
         this.setState({
-          dragging: false,
+          dragging: false
         });
         context = null;
       }
@@ -179,7 +179,7 @@ export class GapRatioHandleView extends React.Component<
     const polar = handle.coordinateSystem as Graphics.PolarCoordinates;
     const center = Geometry.applyZoom(this.props.zoom, {
       x: polar.origin.x,
-      y: -polar.origin.y,
+      y: -polar.origin.y
     });
     switch (handle.axis) {
       case "x": {

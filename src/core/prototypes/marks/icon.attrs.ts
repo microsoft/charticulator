@@ -10,11 +10,11 @@ export const iconAttributes: AttributeDescriptions = {
   ...AttrBuilder.point(),
   ...AttrBuilder.number("size", false, {
     defaultRange: [0, 3600],
-    defaultValue: 400,
+    defaultValue: 400
   }),
   ...AttrBuilder.opacity(),
   ...AttrBuilder.visible(),
-  ...AttrBuilder.image(),
+  ...AttrBuilder.image()
 };
 
 export interface IconElementAttributes extends AttributeMap {

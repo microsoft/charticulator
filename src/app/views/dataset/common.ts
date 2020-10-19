@@ -6,18 +6,18 @@ export const kind2Icon: { [name in Dataset.DataKind]: string } = {
   categorical: "type/categorical",
   numerical: "type/numerical",
   ordinal: "type/ordinal",
-  temporal: "type/temporal",
+  temporal: "type/temporal"
 };
 
 export const kind2CompatibleKinds: {
-  [name in Dataset.DataKind]: Dataset.DataKind[];
+  [name in Dataset.DataKind]: Dataset.DataKind[]
 } = {
   // Ordinal is compatible with categorical
   categorical: [Dataset.DataKind.Ordinal],
   // Temporal is compatible with numerical
   numerical: [Dataset.DataKind.Temporal],
   ordinal: [],
-  temporal: [],
+  temporal: []
 };
 
 /** Determine if kind is acceptable, considering compatible kinds */
@@ -63,7 +63,7 @@ function makeTwoDigitRange(start: number, end: number): string[] {
 }
 
 export const type2DerivedColumns: {
-  [name in Dataset.DataType]: DerivedColumnDescription[];
+  [name in Dataset.DataType]: DerivedColumnDescription[]
 } = {
   string: null,
   number: null,
@@ -75,8 +75,8 @@ export const type2DerivedColumns: {
       function: "date.year",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        orderMode: "alphabetically",
-      },
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "month",
@@ -96,9 +96,9 @@ export const type2DerivedColumns: {
           "Sep",
           "Oct",
           "Nov",
-          "Dec",
-        ],
-      },
+          "Dec"
+        ]
+      }
     },
     {
       name: "monthnumber",
@@ -106,8 +106,8 @@ export const type2DerivedColumns: {
       function: "date.monthnumber",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        orderMode: "alphabetically",
-      },
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "day",
@@ -115,8 +115,8 @@ export const type2DerivedColumns: {
       function: "date.day",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        orderMode: "alphabetically",
-      },
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "weekOfYear",
@@ -124,8 +124,8 @@ export const type2DerivedColumns: {
       function: "date.weekOfYear",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        orderMode: "alphabetically",
-      },
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "dayOfYear",
@@ -133,8 +133,8 @@ export const type2DerivedColumns: {
       function: "date.dayOfYear",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        orderMode: "alphabetically",
-      },
+        orderMode: "alphabetically"
+      }
     },
     {
       name: "weekday",
@@ -142,8 +142,8 @@ export const type2DerivedColumns: {
       function: "date.weekday",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      },
+        order: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+      }
     },
     {
       name: "hour",
@@ -151,8 +151,8 @@ export const type2DerivedColumns: {
       function: "date.hour",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: makeTwoDigitRange(0, 24),
-      },
+        order: makeTwoDigitRange(0, 24)
+      }
     },
     {
       name: "minute",
@@ -160,8 +160,8 @@ export const type2DerivedColumns: {
       function: "date.minute",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: makeTwoDigitRange(0, 59),
-      },
+        order: makeTwoDigitRange(0, 59)
+      }
     },
     {
       name: "second",
@@ -169,8 +169,8 @@ export const type2DerivedColumns: {
       function: "date.second",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: makeTwoDigitRange(0, 59),
-      },
-    },
-  ],
+        order: makeTwoDigitRange(0, 59)
+      }
+    }
+  ]
 };

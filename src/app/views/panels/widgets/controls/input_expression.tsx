@@ -28,14 +28,14 @@ export class InputExpression extends React.Component<
   public state: InputExpressionState = {
     errorMessage: null,
     errorIndicator: false,
-    value: this.props.defaultValue || "",
+    value: this.props.defaultValue || ""
   };
 
   public componentWillReceiveProps(newProps: InputExpressionProps) {
     this.setState({
       errorMessage: null,
       errorIndicator: false,
-      value: newProps.defaultValue || "",
+      value: newProps.defaultValue || ""
     });
   }
 
@@ -44,7 +44,7 @@ export class InputExpression extends React.Component<
       this.setState({
         value: "",
         errorIndicator: false,
-        errorMessage: null,
+        errorMessage: null
       });
       this.props.onEnter(null);
     } else {
@@ -53,13 +53,13 @@ export class InputExpression extends React.Component<
         this.setState({
           value: result.formatted,
           errorIndicator: false,
-          errorMessage: null,
+          errorMessage: null
         });
         this.props.onEnter(result.formatted);
       } else {
         this.setState({
           errorIndicator: true,
-          errorMessage: result.error,
+          errorMessage: result.error
         });
       }
     }
@@ -68,7 +68,7 @@ export class InputExpression extends React.Component<
     this.setState({
       value: this.props.defaultValue || "",
       errorIndicator: false,
-      errorMessage: null,
+      errorMessage: null
     });
     if (this.props.onCancel) {
       this.props.onCancel();
@@ -84,10 +84,10 @@ export class InputExpression extends React.Component<
             ["is-error", this.state.errorIndicator]
           )}
           type="text"
-          ref={(e) => (this.refInput = e)}
+          ref={e => (this.refInput = e)}
           value={this.state.value}
           placeholder={this.props.placeholder}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key == "Enter") {
               this.doEnter();
             }
@@ -95,7 +95,7 @@ export class InputExpression extends React.Component<
               this.doCancel();
             }
           }}
-          onFocus={(e) => {
+          onFocus={e => {
             this.refInput.select();
           }}
           onBlur={() => {
@@ -107,15 +107,15 @@ export class InputExpression extends React.Component<
             if (this.props.allowNull && newValue.trim() == "") {
               this.setState({
                 value: newValue,
-                errorIndicator: false,
+                errorIndicator: false
               });
             } else {
               const result = Expression.verifyUserExpression(newValue, {
-                textExpression: this.props.textExpression,
+                textExpression: this.props.textExpression
               });
               this.setState({
                 value: this.refInput.value,
-                errorIndicator: !result.pass,
+                errorIndicator: !result.pass
               });
             }
           }}

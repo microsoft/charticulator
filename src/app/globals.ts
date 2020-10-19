@@ -3,7 +3,7 @@
 import {
   DragController,
   PopupController,
-  ResizeListeners,
+  ResizeListeners
 } from "./controllers";
 
 export let dragController = new DragController();

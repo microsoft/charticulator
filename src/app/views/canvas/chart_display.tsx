@@ -5,7 +5,7 @@ import * as ReactDOMServer from "react-dom/server";
 import { Dataset, Graphics, Prototypes, Specification } from "../../../core";
 import {
   GraphicalElementDisplay,
-  renderGraphicalElementSVG,
+  renderGraphicalElementSVG
 } from "../../renderer";
 
 export interface ChartDisplayViewProps {
@@ -83,12 +83,12 @@ export function renderChartToLocalString(
           reject(new Error(`failed to retrieve map image at url ${url}`));
         };
         img.src = url;
-      }).then((dataurl) => {
+      }).then(dataurl => {
         urls.set(url, dataurl);
       });
       allTasks.push(task);
       return url;
-    },
+    }
   });
   return Promise.all(allTasks).then(() => {
     return ReactDOMServer.renderToString(
@@ -109,7 +109,7 @@ export function renderChartToLocalString(
         >
           {renderGraphicalElementSVG(graphics, {
             chartComponentSync: true,
-            externalResourceResolver: (url: string) => urls.get(url),
+            externalResourceResolver: (url: string) => urls.get(url)
           })}
         </g>
       </svg>

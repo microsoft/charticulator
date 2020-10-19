@@ -18,18 +18,18 @@ import {
   Handles,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 import {
   AxisRenderer,
   buildAxisWidgets,
   getNumericalInterpolate,
-  buildAxisProperties,
+  buildAxisProperties
 } from "../plot_segments/axis";
 import {
   DataAxisAttributes,
   DataAxisProperties,
-  DataAxisExpression,
+  DataAxisExpression
 } from "./data_axis.attrs";
 
 export { DataAxisAttributes, DataAxisProperties };
@@ -46,15 +46,15 @@ export class DataAxisClass extends MarkClass<
     iconPath: "mark/data-axis",
     creatingInteraction: {
       type: "line-segment",
-      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" },
-    },
+      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" }
+    }
   };
 
   public static defaultProperties: Partial<DataAxisProperties> = {
     dataExpressions: [],
     axis: null,
     visible: true,
-    visibleOn: "first",
+    visibleOn: "first"
   };
 
   public getAttributeNames(expr: DataAxisExpression) {
@@ -73,17 +73,17 @@ export class DataAxisClass extends MarkClass<
 
   public get attributes(): AttributeDescriptions {
     const r: AttributeDescriptions = {
-      ...AttrBuilder.line(),
+      ...AttrBuilder.line()
     };
     for (const item of this.object.properties.dataExpressions) {
       const [xName, yName] = this.getAttributeNames(item);
       r[xName] = {
         name: xName,
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       };
       r[yName] = {
         name: yName,
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       };
     }
     return r;
@@ -118,19 +118,13 @@ export class DataAxisClass extends MarkClass<
           solver.addLinear(
             ConstraintStrength.HARD,
             0,
-            [
-              [t, x2],
-              [1 - t, x1],
-            ],
+            [[t, x2], [1 - t, x1]],
             [[1, solver.attr(attrs, attrX)]]
           );
           solver.addLinear(
             ConstraintStrength.HARD,
             0,
-            [
-              [t, y2],
-              [1 - t, y1],
-            ],
+            [[t, y2], [1 - t, y1]],
             [[1, solver.attr(attrs, attrY)]]
           );
         }
@@ -157,8 +151,8 @@ export class DataAxisClass extends MarkClass<
         y: attrs.y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -166,9 +160,9 @@ export class DataAxisClass extends MarkClass<
         y: attrs.y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
-      } as Handles.Point,
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -263,7 +257,7 @@ export class DataAxisClass extends MarkClass<
         guides.push({
           type: "x",
           value: attrs[attr] as number,
-          attribute: attr,
+          attribute: attr
         } as SnappingGuides.Axis);
       }
     }
@@ -273,7 +267,7 @@ export class DataAxisClass extends MarkClass<
         guides.push({
           type: "y",
           value: attrs[attr] as number,
-          attribute: attr,
+          attribute: attr
         } as SnappingGuides.Axis);
       }
     }
@@ -283,7 +277,7 @@ export class DataAxisClass extends MarkClass<
         type: "label",
         x: attrs[attrX] as number,
         y: attrs[attrY] as number,
-        text: item.expression,
+        text: item.expression
       } as SnappingGuides.Label);
     }
     return guides;
@@ -296,7 +290,7 @@ export class DataAxisClass extends MarkClass<
       x1: attrs.x1,
       y1: attrs.y1,
       x2: attrs.x2,
-      y2: attrs.y2,
+      y2: attrs.y2
     } as BoundingBox.Line;
   }
 
@@ -313,10 +307,10 @@ export class DataAxisClass extends MarkClass<
         dropAction: {
           axisInference: {
             property: "axis",
-            appendToProperty: "dataExpressions",
-          },
-        },
-      } as DropZones.Line,
+            appendToProperty: "dataExpressions"
+          }
+        }
+      } as DropZones.Line
     ];
   }
 
@@ -340,7 +334,7 @@ export class DataAxisClass extends MarkClass<
             labels: ["All", "First", "Last"],
             showLabel: true,
             options: ["all", "first", "last"],
-            type: "dropdown",
+            type: "dropdown"
           }
         )
       )
@@ -350,21 +344,21 @@ export class DataAxisClass extends MarkClass<
       r.push(
         manager.arrayWidget(
           { property: "dataExpressions" },
-          (item) => {
+          item => {
             return manager.inputExpression(
               {
                 property: "dataExpressions",
                 field:
                   item.field instanceof Array
                     ? [...item.field, "expression"]
-                    : [item.field, "expression"],
+                    : [item.field, "expression"]
               },
               { table: this.getGlyphClass().object.table }
             );
           },
           {
             allowDelete: true,
-            allowReorder: true,
+            allowReorder: true
           }
         )
       );
@@ -376,7 +370,7 @@ export class DataAxisClass extends MarkClass<
     const props = this.object.properties;
     const dataSource: Specification.Template.Inference["dataSource"] = {
       table: this.getGlyphClass().object.table,
-      groupBy: null, // TODO: fixme
+      groupBy: null // TODO: fixme
     };
     let properties: Specification.Template.Property[] = [];
     if (this.object.properties.axis) {
@@ -389,11 +383,11 @@ export class DataAxisClass extends MarkClass<
         target: {
           property: {
             property: "axis",
-            field: "categories",
-          },
+            field: "categories"
+          }
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending",
+        default: "ascending"
       });
     }
     if (props.dataExpressions && props.dataExpressions.length > 0) {
@@ -405,11 +399,11 @@ export class DataAxisClass extends MarkClass<
             axis: {
               expression: props.dataExpressions[0].expression,
               additionalExpressions: props.dataExpressions.map(
-                (x) => x.expression
+                x => x.expression
               ),
               type: props.axis.type,
-              property: "axis",
-            },
+              property: "axis"
+            }
           },
           ...props.dataExpressions.map((x, i) => {
             return {
@@ -419,13 +413,13 @@ export class DataAxisClass extends MarkClass<
                 expression: x.expression,
                 property: {
                   property: "dataExpressions",
-                  field: [i, "expression"],
-                },
-              },
+                  field: [i, "expression"]
+                }
+              }
             };
-          }),
+          })
         ],
-        properties,
+        properties
       };
     }
   }

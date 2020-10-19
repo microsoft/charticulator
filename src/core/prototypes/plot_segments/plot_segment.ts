@@ -70,16 +70,16 @@ export abstract class PlotSegmentClass<
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.filter,
-            mode: "button",
+            mode: "button"
           }),
           manager.groupByEditor({
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.groupBy,
-            mode: "button",
+            mode: "button"
           })
         )
-      ),
+      )
     ];
   }
 
@@ -106,10 +106,10 @@ export abstract class PlotSegmentClass<
     const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
     // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
     try {
-      const parsedExpression = expression.parts.find((part) => {
+      const parsedExpression = expression.parts.find(part => {
         if (part.expression instanceof FunctionCall) {
           return part.expression.args.find(
-            (arg) => arg instanceof Variable
+            arg => arg instanceof Variable
           ) as any;
         }
       });
@@ -117,16 +117,14 @@ export abstract class PlotSegmentClass<
         parsedExpression && (parsedExpression.expression as FunctionCall);
       if (functionCallpart) {
         const variable = functionCallpart.args.find(
-          (arg) => arg instanceof Variable
+          arg => arg instanceof Variable
         ) as Variable;
         const columnName = variable.name;
         const tableName = axisTable.name;
         const table = manager.dataset.tables.find(
-          (table) => table.name === tableName
+          table => table.name === tableName
         );
-        const column = table.columns.find(
-          (column) => column.name === columnName
-        );
+        const column = table.columns.find(column => column.name === columnName);
         const rawColumnName = column.metadata.rawColumnName;
         if (
           rawColumnName &&
@@ -134,7 +132,7 @@ export abstract class PlotSegmentClass<
             column.type === Specification.DataType.Boolean)
         ) {
           const dataMapping = new Map<string, string>();
-          table.rows.forEach((row) => {
+          table.rows.forEach(row => {
             const value = row[columnName].toString();
             const rawValue = (
               row[rawColumnName] || row[refineColumnName(rawColumnName)]

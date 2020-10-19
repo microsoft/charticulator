@@ -7,7 +7,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 fetch("data/THIRD_PARTY.json")
-  .then((res) => res.json())
+  .then(res => res.json())
   .then(
     (
       data: Array<{
@@ -20,7 +20,7 @@ fetch("data/THIRD_PARTY.json")
     ) => {
       const creditsEle = document.getElementById("credits");
       const creditsFrag = document.createDocumentFragment();
-      data.forEach((item) => {
+      data.forEach(item => {
         const ele = createElement("div", { class: "credit " });
         ele.appendChild(createElement("h3", {}, item.name));
         ele.appendChild(createElement("p", { class: "authors" }, item.authors));
@@ -58,7 +58,7 @@ document.getElementById("revision").innerText = CHARTICULATOR_PACKAGE.revision;
  */
 function createElement(name: string, attrs: any, text?: string) {
   const ele = document.createElement(name);
-  Object.keys(attrs).forEach((attr) => {
+  Object.keys(attrs).forEach(attr => {
     const attrValue = attrs[attr];
     ele.setAttribute(attr, attrValue);
   });
@@ -72,10 +72,10 @@ function createElement(name: string, attrs: any, text?: string) {
  */
 const WebFontConfig = {
   google: {
-    families: ["Lato:300,300i,400,400i,700,700i", "Inconsolata:400,700"],
-  },
+    families: ["Lato:300,300i,400,400i,700,700i", "Inconsolata:400,700"]
+  }
 };
-((d) => {
+(d => {
   const wf = d.createElement("script"),
     s = d.scripts[0];
   wf.src = "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js";

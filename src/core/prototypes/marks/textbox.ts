@@ -13,14 +13,14 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   textboxAttributes,
   TextboxElementAttributes,
-  TextboxElementProperties,
+  TextboxElementProperties
 } from "./textbox.attrs";
 
 export { TextboxElementAttributes, TextboxElementProperties };
@@ -37,8 +37,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     iconPath: "mark/textbox",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
-    },
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
+    }
   };
 
   public static defaultProperties: Partial<TextboxElementProperties> = {
@@ -46,7 +46,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     paddingX: 0,
     paddingY: 0,
     alignX: "middle",
-    alignY: "middle",
+    alignY: "middle"
   };
 
   public static defaultMappingValues: Partial<TextboxElementAttributes> = {
@@ -55,7 +55,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     fontSize: 14,
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
-    visible: true,
+    visible: true
   };
 
   public attributes = textboxAttributes;
@@ -77,7 +77,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     attrs.color = {
       r: 0,
       g: 0,
-      b: 0,
+      b: 0
     };
     attrs.visible = true;
     attrs.outline = null;
@@ -97,17 +97,17 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Width", "width", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.mappingEditor("Height", "height", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
+        defaultAuto: true
       }),
       manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: "Arial",
+        defaultValue: "Arial"
       }),
       manager.mappingEditor("Size", "fontSize", {
         hints: { rangeNumber: [0, 36] },
@@ -116,8 +116,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           showUpdown: true,
           updownStyle: "font",
           minimum: 0,
-          updownTick: 2,
-        },
+          updownTick: 2
+        }
       }),
       manager.row(
         "Align X",
@@ -129,7 +129,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               type: "radio",
               options: ["start", "middle", "end"],
               icons: ["align/left", "align/x-middle", "align/right"],
-              labels: ["Left", "Middle", "Right"],
+              labels: ["Left", "Middle", "Right"]
             }
           ),
           props.alignX != "middle"
@@ -140,7 +140,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   { property: "paddingX" },
                   {
                     updownTick: 1,
-                    showUpdown: true,
+                    showUpdown: true
                   }
                 )
               )
@@ -157,7 +157,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               type: "radio",
               options: ["start", "middle", "end"],
               icons: ["align/bottom", "align/y-middle", "align/top"],
-              labels: ["Bottom", "Middle", "Top"],
+              labels: ["Bottom", "Middle", "Top"]
             }
           ),
           props.alignY != "middle"
@@ -168,7 +168,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   { property: "paddingY" },
                   {
                     updownTick: 1,
-                    showUpdown: true,
+                    showUpdown: true
                   }
                 )
               )
@@ -181,11 +181,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+        defaultValue: true
+      })
     ];
     return widgets.concat(parentWidgets);
   }
@@ -199,39 +199,17 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, x2],
-        [-1, x1],
-      ],
+      [[1, x2], [-1, x1]],
       [[1, width]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [
-        [1, y2],
-        [-1, y1],
-      ],
+      [[1, y2], [-1, y1]],
       [[1, height]]
     );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cx]],
-      [
-        [1, x1],
-        [1, x2],
-      ]
-    );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cy]],
-      [
-        [1, y1],
-        [1, y2],
-      ]
-    );
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
   }
 
   // Get the graphical element from the element
@@ -292,7 +270,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       text: attrs.text,
       fontFamily: attrs.fontFamily,
       fontSize: attrs.fontSize,
-      align: props.alignX,
+      align: props.alignX
     };
     if (attrs.outline) {
       if (attrs.color) {
@@ -300,15 +278,15 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           {
             ...textElement,
             style: {
-              strokeColor: attrs.outline,
-            },
+              strokeColor: attrs.outline
+            }
           } as Graphics.TextOnPath,
           {
             ...textElement,
             style: {
-              fillColor: attrs.color,
-            },
-          } as Graphics.TextOnPath,
+              fillColor: attrs.color
+            }
+          } as Graphics.TextOnPath
         ]);
         g.style = { opacity: attrs.opacity };
         return g;
@@ -317,8 +295,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ...textElement,
           style: {
             strokeColor: attrs.outline,
-            opacity: attrs.opacity,
-          },
+            opacity: attrs.opacity
+          }
         } as Graphics.TextOnPath;
       }
     } else {
@@ -326,8 +304,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         ...textElement,
         style: {
           fillColor: attrs.color,
-          opacity: attrs.opacity,
-        },
+          opacity: attrs.opacity
+        }
       } as Graphics.TextOnPath;
     }
   }
@@ -345,16 +323,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: -1, y: 0 },
+            direction: { x: -1, y: 0 }
           },
           {
             x: attrs.x1,
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -364,16 +342,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 1, y: 0 },
+            direction: { x: 1, y: 0 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 1, y: 0 },
-          },
-        ],
+            direction: { x: 1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -383,16 +361,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "x1",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
+            direction: { x: 0, y: -1 }
           },
           {
             x: attrs.x2,
             y: attrs.y1,
             xAttribute: "x2",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -402,16 +380,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "x1",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
+            direction: { x: 0, y: 1 }
           },
           {
             x: attrs.x2,
             y: attrs.y2,
             xAttribute: "x2",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -421,9 +399,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y1,
             xAttribute: "cx",
             yAttribute: "y1",
-            direction: { x: 0, y: -1 },
-          },
-        ],
+            direction: { x: 0, y: -1 }
+          }
+        ]
       },
       {
         element,
@@ -433,9 +411,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.y2,
             xAttribute: "cx",
             yAttribute: "y2",
-            direction: { x: 0, y: 1 },
-          },
-        ],
+            direction: { x: 0, y: 1 }
+          }
+        ]
       },
       {
         element,
@@ -445,9 +423,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x1",
             yAttribute: "cy",
-            direction: { x: -1, y: 0 },
-          },
-        ],
+            direction: { x: -1, y: 0 }
+          }
+        ]
       },
       {
         element,
@@ -457,10 +435,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             y: attrs.cy,
             xAttribute: "x2",
             yAttribute: "cy",
-            direction: { x: 1, y: 0 },
-          },
-        ],
-      },
+            direction: { x: 1, y: 0 }
+          }
+        ]
+      }
     ];
   }
 
@@ -479,9 +457,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
       } as DropZones.Line,
       {
         type: "line",
@@ -493,10 +471,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" },
-          },
-        },
-      } as DropZones.Line,
+            hints: { autoRange: true, startWithZero: "always" }
+          }
+        }
+      } as DropZones.Line
     ];
   }
   // Get bounding rectangle given current state
@@ -509,28 +487,28 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
-        span: [y1, y2],
+        span: [y1, y2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
-        span: [x1, x2],
+        span: [x1, x2]
       } as Handles.Line,
       {
         type: "point",
@@ -538,8 +516,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -547,8 +525,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -556,8 +534,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -565,9 +543,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
-      } as Handles.Point,
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -580,7 +558,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     } as BoundingBox.Rectangle;
   }
 
@@ -593,7 +571,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
     ];
   }
 
@@ -606,10 +584,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "text",
+          attribute: "text"
         },
         type: Specification.AttributeType.Text,
-        default: this.state.attributes.text,
+        default: this.state.attributes.text
       });
     }
     if (
@@ -619,10 +597,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fontFamily",
+          attribute: "fontFamily"
         },
         type: Specification.AttributeType.FontFamily,
-        default: this.state.attributes.fontFamily,
+        default: this.state.attributes.fontFamily
       });
     }
     if (
@@ -632,10 +610,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fontSize",
+          attribute: "fontSize"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.fontSize,
+        default: this.state.attributes.fontSize
       });
     }
     if (
@@ -645,10 +623,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "color",
+          attribute: "color"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.color),
+        default: rgbToHex(this.state.attributes.color)
       });
     }
     if (
@@ -658,10 +636,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible",
+          attribute: "visible"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible,
+        default: this.state.attributes.visible
       });
     }
     if (
@@ -671,15 +649,15 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity",
+          attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity,
+        default: this.state.attributes.opacity
       });
     }
 
     return {
-      properties,
+      properties
     };
   }
 }

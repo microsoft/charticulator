@@ -29,7 +29,7 @@ export class AngleHandleView extends React.Component<
     super(props);
     this.state = {
       dragging: false,
-      newValue: this.props.handle.value,
+      newValue: this.props.handle.value
     };
   }
 
@@ -63,18 +63,18 @@ export class AngleHandleView extends React.Component<
     let context: HandlesDragContext = null;
     let oldValue = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       this.setState({
         dragging: true,
-        newValue: oldValue,
+        newValue: oldValue
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       if (context) {
         const cc = this.refs.centerCircle.getBoundingClientRect();
         const px = e.center.x - (cc.left + cc.width / 2);
@@ -83,12 +83,12 @@ export class AngleHandleView extends React.Component<
           (Math.atan2(-px, py) / Math.PI) * 180 + 180
         );
         this.setState({
-          newValue,
+          newValue
         });
         context.emit("drag", { value: newValue });
       }
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       if (context) {
         const cc = this.refs.centerCircle.getBoundingClientRect();
         const px = e.center.x - (cc.left + cc.width / 2);
@@ -101,7 +101,7 @@ export class AngleHandleView extends React.Component<
         // }
         context.emit("end", { value: newValue });
         this.setState({
-          dragging: false,
+          dragging: false
         });
         context = null;
       }
@@ -174,9 +174,8 @@ export class AngleHandleView extends React.Component<
         </g>
         {this.state.dragging ? (
           <g
-            transform={`translate(${cx},${cy}) rotate(${
-              180 + this.state.newValue
-            })`}
+            transform={`translate(${cx},${cy}) rotate(${180 +
+              this.state.newValue})`}
           >
             <line
               x1={0}

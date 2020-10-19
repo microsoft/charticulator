@@ -12,35 +12,35 @@ export const textAttributes: AttributeDescriptions = {
     name: "text",
     type: AttributeType.Text,
     solverExclude: true,
-    defaultValue: "",
+    defaultValue: ""
   },
   fontFamily: {
     name: "fontFamily",
     type: AttributeType.FontFamily,
     solverExclude: true,
-    defaultValue: "Arial",
+    defaultValue: "Arial"
   },
   fontSize: {
     name: "fontSize",
     type: AttributeType.Number,
     solverExclude: true,
     defaultRange: [0, 24],
-    defaultValue: 14,
+    defaultValue: 14
   },
   color: {
     name: "color",
     type: AttributeType.Color,
     solverExclude: true,
-    defaultValue: null,
+    defaultValue: null
   },
   outline: {
     name: "outline",
     type: AttributeType.Color,
     solverExclude: true,
-    defaultValue: null,
+    defaultValue: null
   },
   ...AttrBuilder.opacity(),
-  ...AttrBuilder.visible(),
+  ...AttrBuilder.visible()
 };
 
 export interface TextElementAttributes extends AttributeMap {

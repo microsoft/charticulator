@@ -28,7 +28,7 @@ export class RelativeLineHandleView extends React.Component<
     super(props);
     this.state = {
       dragging: false,
-      newValue: this.props.handle.value,
+      newValue: this.props.handle.value
     };
   }
 
@@ -45,7 +45,7 @@ export class RelativeLineHandleView extends React.Component<
 
     const sign = this.props.handle.sign;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       dXLast = 0;
@@ -54,13 +54,13 @@ export class RelativeLineHandleView extends React.Component<
       dYIntegrate = 0;
       this.setState({
         dragging: true,
-        newValue: oldValue,
+        newValue: oldValue
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -70,12 +70,12 @@ export class RelativeLineHandleView extends React.Component<
           (this.props.handle.axis == "x" ? dXIntegrate : dYIntegrate) * sign +
           oldValue;
         this.setState({
-          newValue,
+          newValue
         });
         context.emit("drag", { value: newValue });
       }
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -86,7 +86,7 @@ export class RelativeLineHandleView extends React.Component<
           oldValue;
         context.emit("end", { value: newValue });
         this.setState({
-          dragging: false,
+          dragging: false
         });
         context = null;
       }

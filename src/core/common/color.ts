@@ -303,7 +303,7 @@ export function interpolateColors(
 ): ColorInterpolation {
   const color_to_space = getColorConverter("sRGB", colorspace);
   const space_to_color = getColorConverter(colorspace, "sRGB");
-  const cs = colors.map((x) => color_to_space(x.r, x.g, x.b));
+  const cs = colors.map(x => color_to_space(x.r, x.g, x.b));
   return (t: number) => {
     t = Math.min(1, Math.max(0, t));
     const pos = t * (colors.length - 1);
@@ -332,7 +332,7 @@ const brewer6 = [
   "#b2df8a",
   "#33a02c",
   "#fb9a99",
-  "#e31a1c",
+  "#e31a1c"
 ].map(colorFromHTMLColor);
 const brewer12 = [
   "#a6cee3",
@@ -346,7 +346,7 @@ const brewer12 = [
   "#cab2d6",
   "#6a3d9a",
   "#ffff99",
-  "#b15928",
+  "#b15928"
 ].map(colorFromHTMLColor);
 
 export function getDefaultColorPalette(count: number) {

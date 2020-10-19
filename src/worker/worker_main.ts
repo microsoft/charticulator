@@ -36,7 +36,7 @@ class CharticulatorWorkerProcess extends WorkerHostProcess {
         chart,
         chartState,
         dataset,
-        (solver) => {
+        solver => {
           for (const [strength, attrs, attr, value] of preSolveValues) {
             solver.solver.addEqualToConstant(
               strength,

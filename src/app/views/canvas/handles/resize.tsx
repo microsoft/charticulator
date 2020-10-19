@@ -43,7 +43,7 @@ export class ResizeHandleView extends React.Component<
     newX1: this.props.cx - this.props.width / 2,
     newY1: this.props.cy - this.props.height / 2,
     newX2: this.props.cx + this.props.width / 2,
-    newY2: this.props.cy + this.props.height / 2,
+    newY2: this.props.cy + this.props.height / 2
   };
 
   public hammer: HammerManager;
@@ -70,7 +70,7 @@ export class ResizeHandleView extends React.Component<
       return [newWidth, newHeight];
     };
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       let element = document.elementFromPoint(
         e.center.x - e.deltaX,
         e.center.y - e.deltaY
@@ -120,11 +120,11 @@ export class ResizeHandleView extends React.Component<
         newX1: this.props.cx - nW / 2,
         newY1: this.props.cy - nH / 2,
         newX2: this.props.cx + nW / 2,
-        newY2: this.props.cy + nH / 2,
+        newY2: this.props.cy + nH / 2
       });
     });
 
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
       dXLast = e.deltaX;
       dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -134,18 +134,18 @@ export class ResizeHandleView extends React.Component<
         newX1: this.props.cx - nW / 2,
         newY1: this.props.cy - nH / 2,
         newX2: this.props.cx + nW / 2,
-        newY2: this.props.cy + nH / 2,
+        newY2: this.props.cy + nH / 2
       });
     });
 
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
       dXLast = e.deltaX;
       dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
       dYLast = e.deltaY;
       const [nW, nH] = compute();
       this.setState({
-        dragging: false,
+        dragging: false
       });
       this.props.onResize(nW, nH);
     });
@@ -168,7 +168,7 @@ export class ResizeHandleView extends React.Component<
       <g
         className={classNames("handle", "handle-resize", [
           "active",
-          this.state.dragging,
+          this.state.dragging
         ])}
         ref="container"
       >

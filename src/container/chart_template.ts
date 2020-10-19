@@ -9,7 +9,7 @@ import {
   makeRange,
   Prototypes,
   Scale,
-  Specification,
+  Specification
 } from "../core";
 import {
   findObjectById,
@@ -17,7 +17,7 @@ import {
   forEachObject,
   getProperty,
   setProperty,
-  DefaultAttributes,
+  DefaultAttributes
 } from "../core/prototypes";
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 
@@ -100,7 +100,7 @@ export class ChartTemplate {
     }
     if (groupBy.expression) {
       return {
-        expression: this.transformExpression(groupBy.expression, table),
+        expression: this.transformExpression(groupBy.expression, table)
       };
     }
   }
@@ -153,7 +153,7 @@ export class ChartTemplate {
               .properties as Prototypes.Links.LinksProperties;
             if (props.linkThrough.facetExpressions) {
               props.linkThrough.facetExpressions = props.linkThrough.facetExpressions.map(
-                (x) =>
+                x =>
                   this.transformExpression(
                     x,
                     (getById(
@@ -200,7 +200,7 @@ export class ChartTemplate {
     if (!inference) {
       return {
         chart,
-        defaultAttributes: this.template.defaultAttributes,
+        defaultAttributes: this.template.defaultAttributes
       };
     }
 
@@ -214,8 +214,8 @@ export class ChartTemplate {
       const tableContext = df.getTable(table);
       const indices = groupBy
         ? new CompiledGroupBy(groupBy, df.cache).groupBy(tableContext)
-        : makeRange(0, tableContext.rows.length).map((x) => [x]);
-      return indices.map((is) =>
+        : makeRange(0, tableContext.rows.length).map(x => [x]);
+      return indices.map(is =>
         expr.getValue(tableContext.getGroupedContext(is))
       );
     };
@@ -299,10 +299,10 @@ export class ChartTemplate {
       if (inference.scale) {
         if (!inference.disableAutoMin || !inference.disableAutoMax) {
           const scale = inference.scale;
-          const expressions = scale.expressions.map((x) =>
+          const expressions = scale.expressions.map(x =>
             this.transformExpression(x, inference.dataSource.table)
           );
-          const vectors = expressions.map((x) =>
+          const vectors = expressions.map(x =>
             getExpressionVector(
               x,
               this.tableAssignment[inference.dataSource.table],
@@ -321,17 +321,17 @@ export class ChartTemplate {
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
-            attributes: {},
+            attributes: {}
           }) as Prototypes.Scales.ScaleClass;
           scaleClass.inferParameters(vector, {
-            reuseRange: true,
+            reuseRange: true
           });
         }
       }
       if (inference.nestedChart) {
         const { nestedChart } = inference;
         const columnNameMap: { [name: string]: string } = {};
-        Object.keys(nestedChart.columnNameMap).forEach((key) => {
+        Object.keys(nestedChart.columnNameMap).forEach(key => {
           const newKey = this.columnAssignment[inference.dataSource.table][key];
           columnNameMap[newKey] = nestedChart.columnNameMap[key];
         });
@@ -340,7 +340,7 @@ export class ChartTemplate {
     }
     return {
       chart,
-      defaultAttributes: this.template.defaultAttributes,
+      defaultAttributes: this.template.defaultAttributes
     };
   }
 

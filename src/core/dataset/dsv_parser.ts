@@ -9,7 +9,7 @@ import {
   rawColumnPostFix,
   DataValue,
   DataType,
-  ColumnMetadata,
+  ColumnMetadata
 } from "./dataset";
 import { deepClone } from "../common";
 
@@ -19,11 +19,11 @@ export function parseHints(hints: string) {
     const entries = items[1]
       .trim()
       .split(";")
-      .map((x) => x.trim())
-      .filter((x) => x != "");
+      .map(x => x.trim())
+      .filter(x => x != "");
     const result: { [name: string]: string } = {};
     for (const entry of entries) {
-      const items = entry.split(":").map((x) => x.trim());
+      const items = entry.split(":").map(x => x.trim());
       if (items.length == 2) {
         result[items[0]] = items[1];
       } else if (items.length == 1) {
@@ -57,21 +57,21 @@ export function parseDataset(
   rows = dsvFormat(localeFileFormat.delimiter).parseRows(content);
 
   // Remove empty rows if any
-  rows = rows.filter((row) => row.length > 0);
+  rows = rows.filter(row => row.length > 0);
 
   if (rows.length > 0) {
     const header = rows[0];
     let columnHints: Array<{ [name: string]: string }>;
     let data = rows.slice(1);
-    if (data.length > 0 && data[0].every((x) => /^ *\*/.test(x))) {
+    if (data.length > 0 && data[0].every(x => /^ *\*/.test(x))) {
       columnHints = data[0].map(parseHints);
       data = data.slice(1);
     } else {
-      columnHints = header.map((x) => ({}));
+      columnHints = header.map(x => ({}));
     }
 
     let columnValues = header.map((name, index) => {
-      const values = data.map((row) => row[index]);
+      const values = data.map(row => row[index]);
       return inferAndConvertColumn(values, localeFileFormat.numberFormat);
     });
 
@@ -103,7 +103,7 @@ export function parseDataset(
         if (columnValues[cindex].rawValues) {
           out[header[cindex] + rawColumnPostFix] =
             columnValues[cindex].rawValues[rindex];
-          if (!header.find((h) => h === header[cindex] + rawColumnPostFix)) {
+          if (!header.find(h => h === header[cindex] + rawColumnPostFix)) {
             header.push(header[cindex] + rawColumnPostFix);
           }
         }
@@ -115,7 +115,7 @@ export function parseDataset(
       name: header[i],
       displayName: header[i],
       type: x.type,
-      metadata: x.metadata,
+      metadata: x.metadata
     }));
 
     return {
@@ -124,7 +124,7 @@ export function parseDataset(
       columns,
       rows: outRows,
       type: null,
-      localeNumberFormat: localeFileFormat.numberFormat,
+      localeNumberFormat: localeFileFormat.numberFormat
     };
   } else {
     return null;

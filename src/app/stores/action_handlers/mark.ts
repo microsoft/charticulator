@@ -7,24 +7,24 @@ import {
   zipArray,
   Prototypes,
   Specification,
-  Expression,
+  Expression
 } from "../../../core";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
 
-export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // Internal registry of mark-level action handlers
   const MR = new ActionHandlerRegistry<AppStore, Actions.MarkAction>();
 
-  MR.add(Actions.UpdateMarkAttribute, function (action) {
+  MR.add(Actions.UpdateMarkAttribute, function(action) {
     for (const key in action.updates) {
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
       delete action.mark.mappings[key];
 
-      action.glyph.constraints = action.glyph.constraints.filter((c) => {
+      action.glyph.constraints = action.glyph.constraints.filter(c => {
         if (c.type == "snap") {
           if (
             c.attributes.element == action.mark._id &&
@@ -37,7 +37,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
     }
 
-    this.forAllGlyph(action.glyph, (glyphState) => {
+    this.forAllGlyph(action.glyph, glyphState => {
       for (const [mark, markState] of zipArray(
         action.glyph.marks,
         glyphState.marks
@@ -60,7 +60,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     });
   });
 
-  MR.add(Actions.SetObjectProperty, function (this, action) {
+  MR.add(Actions.SetObjectProperty, function(this, action) {
     // check name property. Names of objects are unique
     if (
       action.property === "name" &&
@@ -80,12 +80,12 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  MR.add(Actions.SetMarkAttribute, function (this, action) {
+  MR.add(Actions.SetMarkAttribute, function(this, action) {
     if (action.mapping == null) {
       delete action.mark.mappings[action.attribute];
     } else {
       action.mark.mappings[action.attribute] = action.mapping;
-      action.glyph.constraints = action.glyph.constraints.filter((c) => {
+      action.glyph.constraints = action.glyph.constraints.filter(c => {
         if (c.type == "snap") {
           if (
             c.attributes.element == action.mark._id &&
@@ -99,11 +99,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  MR.add(Actions.UnmapMarkAttribute, function (this, action) {
+  MR.add(Actions.UnmapMarkAttribute, function(this, action) {
     delete action.mark.mappings[action.attribute];
   });
 
-  MR.add(Actions.SnapMarks, function (action) {
+  MR.add(Actions.SnapMarks, function(action) {
     const idx1 = action.glyph.marks.indexOf(action.mark);
     if (idx1 < 0) {
       return;
@@ -118,7 +118,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     // Remove any existing attribute mapping
     delete action.mark.mappings[action.attribute];
     // Remove any existing snapping
-    action.glyph.constraints = action.glyph.constraints.filter((c) => {
+    action.glyph.constraints = action.glyph.constraints.filter(c => {
       if (c.type == "snap") {
         if (
           c.attributes.element == action.mark._id &&
@@ -136,12 +136,12 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         attribute: action.attribute,
         targetElement: action.targetMark._id,
         targetAttribute: action.targetAttribute,
-        gap: 0,
-      },
+        gap: 0
+      }
     });
 
     // Force the states to be equal
-    this.forAllGlyph(action.glyph, (glyphState) => {
+    this.forAllGlyph(action.glyph, glyphState => {
       const elementState = glyphState.marks[idx1];
       const targetElementState = glyphState.marks[idx2];
       elementState.attributes[action.attribute] =
@@ -155,7 +155,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     });
   });
 
-  MR.add(Actions.MarkActionGroup, function (action) {
+  MR.add(Actions.MarkActionGroup, function(action) {
     for (const item of action.actions) {
       // Recursively handle group actions
       MR.handleAction(this, item);
@@ -163,7 +163,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   // The entry point for mark actions
-  REG.add(Actions.MarkAction, function (this, mainAction) {
+  REG.add(Actions.MarkAction, function(this, mainAction) {
     this.saveHistory();
 
     MR.handleAction(this, mainAction);
@@ -172,7 +172,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.MapDataToMarkAttribute, function (action) {
+  REG.add(Actions.MapDataToMarkAttribute, function(action) {
     this.saveHistory();
 
     const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
@@ -198,16 +198,16 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         scale: inferred,
         attribute: action.attribute,
         valueIndex:
-          action.hints && action.hints.allowSelectValue ? 0 : undefined,
+          action.hints && action.hints.allowSelectValue ? 0 : undefined
       } as Specification.ScaleMapping;
       if (
         !this.chart.scaleMappings.find(
-          (scaleMapping) => scaleMapping.scale === inferred
+          scaleMapping => scaleMapping.scale === inferred
         )
       ) {
         this.chart.scaleMappings.push({
           ...action.mark.mappings[action.attribute],
-          attribute: action.attribute,
+          attribute: action.attribute
         } as Specification.ScaleMapping);
       }
     } else {
@@ -224,8 +224,8 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           type: "text",
           table: action.glyph.table,
           textExpression: new Expression.TextExpression([
-            { expression: Expression.parse(action.expression), format },
-          ]).toString(),
+            { expression: Expression.parse(action.expression), format }
+          ]).toString()
         } as Specification.TextMapping;
       }
     }

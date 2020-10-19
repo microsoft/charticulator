@@ -27,7 +27,9 @@ const usedIDs = new Set<string>();
 /** Generate a unique ID in uuid format */
 export function uniqueID(): string {
   while (true) {
-    const id = Math.random().toString(36).substr(2);
+    const id = Math.random()
+      .toString(36)
+      .substr(2);
     if (!usedIDs.has(id)) {
       usedIDs.add(id);
       return id;

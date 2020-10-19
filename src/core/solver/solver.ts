@@ -122,7 +122,7 @@ export class ChartConstraintSolver {
           );
           if (
             expr.parts.find(
-              (part) =>
+              part =>
                 part.expression instanceof FunctionCall &&
                 part.expression.name === "columnName"
             )
@@ -222,7 +222,7 @@ export class ChartConstraintSolver {
       attr.value = defaultValue;
       this.supportVariables.add(key, name, attr);
       const variable = this.solver.attr(attr, "value", {
-        edit: true,
+        edit: true
       });
       return variable;
     }
@@ -243,7 +243,7 @@ export class ChartConstraintSolver {
       rowContext,
       getExpressionValue: (expr: string, context: Expression.Context) => {
         return this.manager.dataflow.cache.parse(expr).getNumberValue(context);
-      },
+      }
     });
   }
 
@@ -396,7 +396,7 @@ export class ChartConstraintSolver {
           return analyzed.computeAttributes(
             this.manager.dataflow.getTable(table).getGroupedContext(rowIndex)
           );
-        },
+        }
       });
 
       if (this.stage == "glyphs") {
@@ -441,7 +441,7 @@ export class ChartConstraintSolver {
                     .getTable(table)
                     .getGroupedContext(rowIndex)
                 );
-              },
+              }
             }
           );
         }
@@ -509,7 +509,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
       index: this.currentVariableIndex,
       type: "object",
       id,
-      attribute: attr,
+      attribute: attr
     };
     this.variableRegistry.add(attrs, attr, attrInfo);
     this.indexToAttribute.set(attrInfo.index, attrInfo);
@@ -527,7 +527,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         index: this.currentVariableIndex,
         id: uniqueID(),
         type: "object",
-        attribute: attr,
+        attribute: attr
       };
       console.warn("Adding unnamed attribute", attr);
       this.variableRegistry.add(attrs, attr, attrInfo);
@@ -549,7 +549,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         .map(([weight, obj]) => ({ weight, index: obj.index }))
         .concat(
           rhs.map(([weight, obj]) => ({ weight: -weight, index: obj.index }))
-        ),
+        )
     ]);
   }
 
@@ -565,7 +565,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         .map(([weight, obj]) => ({ weight, index: obj.index }))
         .concat(
           rhs.map(([weight, obj]) => ({ weight: -weight, index: obj.index }))
-        ),
+        )
     ]);
   }
 
@@ -574,10 +574,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
       const idx = this.inputBiases.get(name).index;
       this.linears.push([
         0,
-        [
-          { weight: 1, index: attr.index },
-          { weight: 1, biasIndex: idx },
-        ],
+        [{ weight: 1, index: attr.index }, { weight: 1, biasIndex: idx }]
       ]);
     } else {
       const idx = this.inputBiasesCount;
@@ -586,16 +583,13 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         index: idx,
         type: "input",
         id: null,
-        attribute: name,
+        attribute: name
       };
       this.inputBiases.set(name, attrInfo);
       this.indexToBias.set(attrInfo.index, attrInfo);
       this.linears.push([
         0,
-        [
-          { weight: 1, index: attr.index },
-          { weight: 1, biasIndex: idx },
-        ],
+        [{ weight: 1, index: attr.index }, { weight: 1, biasIndex: idx }]
       ]);
     }
   }
@@ -654,7 +648,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
 
     const glyphState: Specification.GlyphState = {
       attributes: {},
-      marks: [],
+      marks: []
     };
     const glyphClass = Prototypes.ObjectClasses.Create(
       null,
@@ -664,7 +658,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     glyphClass.initializeState();
     for (const mark of glyph.marks) {
       const markState: Specification.MarkState = {
-        attributes: {},
+        attributes: {}
       };
       glyphState.marks.push(markState);
       const markClass = Prototypes.ObjectClasses.Create(
@@ -713,7 +707,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         }
       }
       markClass.buildConstraints(this, {
-        getExpressionValue: () => 1,
+        getExpressionValue: () => 1
       });
     }
 
@@ -861,7 +855,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
       height: this.computeAttribute(
         this.attr(this.glyphState.attributes, "height"),
         rowContext
-      ),
+      )
     };
   }
 }

@@ -61,7 +61,7 @@ export namespace Geometry {
   export function vectorRotate(p: Vector, radians: number): Vector {
     return {
       x: p.x * Math.cos(radians) + p.y * Math.sin(radians),
-      y: -p.x * Math.sin(radians) + p.y * Math.cos(radians),
+      y: -p.x * Math.sin(radians) + p.y * Math.cos(radians)
     };
   }
 
@@ -132,7 +132,7 @@ export namespace Geometry {
   export function applyZoom(zoom: ZoomInfo, pt: Point): Point {
     return {
       x: pt.x * zoom.scale + zoom.centerX,
-      y: pt.y * zoom.scale + zoom.centerY,
+      y: pt.y * zoom.scale + zoom.centerY
     };
   }
 
@@ -140,7 +140,7 @@ export namespace Geometry {
   export function unapplyZoom(zoom: ZoomInfo, pt: Point): Point {
     return {
       x: (pt.x - zoom.centerX) / zoom.scale,
-      y: (pt.y - zoom.centerY) / zoom.scale,
+      y: (pt.y - zoom.centerY) / zoom.scale
     };
   }
 }

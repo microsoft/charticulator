@@ -84,7 +84,7 @@ export class DragSession {
     // 0: undefined
     // -1: ignored (onDragEnter returned false)
     // 1: drag entered
-    withins.forEach((droppable) => {
+    withins.forEach(droppable => {
       let ctx = this.states.get(droppable);
       if (!ctx) {
         ctx = new DragContext();
@@ -211,7 +211,7 @@ export class DragController extends EventEmitter {
     this._droppables.set(obj, {
       remove: () => {
         this._element2Droppable.delete(rootElement);
-      },
+      }
     });
   }
 
@@ -237,11 +237,11 @@ export class DragController extends EventEmitter {
     const hammer = new Hammer.Manager(rootElement);
     hammer.add(new Hammer.Pan());
 
-    hammer.on("panstart", (e) => {
+    hammer.on("panstart", e => {
       try {
         this._dragSession = new DragSession(this, obj, {
           x: e.center.x,
-          y: e.center.y,
+          y: e.center.y
         });
       } catch (e) {
         console.trace(e);
@@ -251,11 +251,11 @@ export class DragController extends EventEmitter {
       this.emit("session");
     });
 
-    hammer.on("pan", (e) => {
+    hammer.on("pan", e => {
       if (this._dragSession != null) {
         const modifiers: DragModifiers = {
           shiftKey: e.srcEvent.shiftKey,
-          ctrlKey: e.srcEvent.ctrlKey,
+          ctrlKey: e.srcEvent.ctrlKey
         };
         this._dragSession.handlePan(
           { x: e.center.x, y: e.center.y },
@@ -264,11 +264,11 @@ export class DragController extends EventEmitter {
       }
     });
 
-    hammer.on("panend", (e) => {
+    hammer.on("panend", e => {
       if (this._dragSession != null) {
         const modifiers: DragModifiers = {
           shiftKey: e.srcEvent.shiftKey,
-          ctrlKey: e.srcEvent.ctrlKey,
+          ctrlKey: e.srcEvent.ctrlKey
         };
         this._dragSession.handleEnd(
           { x: e.center.x, y: e.center.y },
@@ -286,7 +286,7 @@ export class DragController extends EventEmitter {
     }
 
     this._draggables.set(obj, {
-      hammer,
+      hammer
     });
   }
 
@@ -339,14 +339,14 @@ export class DragStateView extends React.Component<
           right: 0,
           top: 0,
           bottom: 0,
-          pointerEvents: "none",
+          pointerEvents: "none"
         }}
       >
         <div
           style={{
             position: "absolute",
             left: session.point.x + offset.x + "px",
-            top: session.point.y + offset.y + "px",
+            top: session.point.y + offset.y + "px"
           }}
         >
           {element}

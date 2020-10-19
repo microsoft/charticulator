@@ -24,7 +24,7 @@ export class AttrBuilder {
     } else {
       return this.attr(name, AttributeType.Number, {
         solverExclude: true,
-        ...options,
+        ...options
       });
     }
   }
@@ -35,7 +35,7 @@ export class AttrBuilder {
   ): AttributeDescriptions {
     return this.attr(name, AttributeType.Color, {
       solverExclude: true,
-      ...options,
+      ...options
     });
   }
 
@@ -45,7 +45,7 @@ export class AttrBuilder {
   ): AttributeDescriptions {
     return this.attr(name, AttributeType.Boolean, {
       solverExclude: true,
-      ...options,
+      ...options
     });
   }
 
@@ -55,7 +55,7 @@ export class AttrBuilder {
   ): AttributeDescriptions {
     return this.attr(name, AttributeType.Enum, {
       solverExclude: true,
-      ...options,
+      ...options
     });
   }
 
@@ -64,42 +64,42 @@ export class AttrBuilder {
       ...this.number("x1"),
       ...this.number("y1"),
       ...this.number("x2"),
-      ...this.number("y2"),
+      ...this.number("y2")
     };
   }
 
   public static point(): AttributeDescriptions {
     return {
       ...this.number("x"),
-      ...this.number("y"),
+      ...this.number("y")
     };
   }
 
   public static center(): AttributeDescriptions {
     return {
       ...this.number("cx"),
-      ...this.number("cy"),
+      ...this.number("cy")
     };
   }
 
   public static size(): AttributeDescriptions {
     return {
       ...this.number("width", true, { defaultRange: [0, 200] }),
-      ...this.number("height", true, { defaultRange: [0, 200] }),
+      ...this.number("height", true, { defaultRange: [0, 200] })
     };
   }
 
   public static dXdY(): AttributeDescriptions {
     return {
       ...this.number("dx", true, { defaultRange: [30, 100] }),
-      ...this.number("dy", true, { defaultRange: [30, 100] }),
+      ...this.number("dy", true, { defaultRange: [30, 100] })
     };
   }
 
   public static opacity() {
     return this.number("opacity", false, {
       defaultRange: [0, 1],
-      defaultValue: 1,
+      defaultValue: 1
     });
   }
 
@@ -110,7 +110,7 @@ export class AttrBuilder {
   public static image() {
     return this.attr("image", AttributeType.Image, {
       solverExclude: true,
-      defaultValue: null,
+      defaultValue: null
     });
   }
 
@@ -119,10 +119,10 @@ export class AttrBuilder {
       ...this.color("stroke", { defaultValue: null }),
       ...this.number("strokeWidth", false, {
         defaultRange: [0, 5],
-        defaultValue: 1,
+        defaultValue: 1
       }),
       ...this.opacity(),
-      ...this.visible(),
+      ...this.visible()
     };
     if (options.fill) {
       r.fill = this.color("fill", { defaultValue: null }).fill;

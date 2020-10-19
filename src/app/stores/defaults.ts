@@ -18,17 +18,17 @@ export function createDefaultGlyph(tableName: string) {
         mappings: {
           x: {
             type: "parent",
-            parentAttribute: "icx",
+            parentAttribute: "icx"
           } as Specification.ParentMapping,
           y: {
             type: "parent",
-            parentAttribute: "icy",
-          } as Specification.ParentMapping,
-        },
-      },
+            parentAttribute: "icy"
+          } as Specification.ParentMapping
+        }
+      }
     ],
     mappings: {},
-    constraints: [],
+    constraints: []
   } as Specification.Glyph;
 }
 
@@ -46,20 +46,20 @@ export function createDefaultPlotSegment(
     mappings: {
       x1: {
         type: "parent",
-        parentAttribute: "x1",
+        parentAttribute: "x1"
       } as Specification.ParentMapping,
       y1: {
         type: "parent",
-        parentAttribute: "y1",
+        parentAttribute: "y1"
       } as Specification.ParentMapping,
       x2: {
         type: "parent",
-        parentAttribute: "x2",
+        parentAttribute: "x2"
       } as Specification.ParentMapping,
       y2: {
         type: "parent",
-        parentAttribute: "y2",
-      } as Specification.ParentMapping,
+        parentAttribute: "y2"
+      } as Specification.ParentMapping
     },
     properties: {
       name: "PlotSegment1",
@@ -75,19 +75,19 @@ export function createDefaultPlotSegment(
         ratioY: 0.1,
         align: {
           x: "start",
-          y: "start",
+          y: "start"
         },
         grid: {
           direction: "x",
           xCount: null,
-          yCount: null,
+          yCount: null
         },
         packing: {
           gravityX: 0.1,
-          gravityY: 0.1,
-        },
-      },
-    },
+          gravityY: 0.1
+        }
+      }
+    }
   } as Specification.PlotSegment;
 }
 
@@ -100,30 +100,30 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
       name: "Title",
       visible: true,
       alignment: { x: "middle", y: "top", xMargin: 0, yMargin: 30 },
-      rotation: 0,
+      rotation: 0
     },
     mappings: {
       x: {
         type: "parent",
-        parentAttribute: "cx",
+        parentAttribute: "cx"
       } as Specification.ParentMapping,
       y: {
         type: "parent",
-        parentAttribute: "oy2",
+        parentAttribute: "oy2"
       } as Specification.ParentMapping,
       text: {
         type: "value",
-        value: dataset.name,
+        value: dataset.name
       } as Specification.ValueMapping,
       fontSize: {
         type: "value",
-        value: 24,
+        value: 24
       } as Specification.ValueMapping,
       color: {
         type: "value",
-        value: { r: 0, g: 0, b: 0 },
-      } as Specification.ValueMapping,
-    },
+        value: { r: 0, g: 0, b: 0 }
+      } as Specification.ValueMapping
+    }
   } as Specification.ChartElement;
 }
 
@@ -137,19 +137,19 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
     properties: {
       name: "Chart",
       backgroundColor: null,
-      backgroundOpacity: 1,
+      backgroundOpacity: 1
     },
     mappings: {
-      marginTop: { type: "value", value: 80 } as Specification.ValueMapping,
+      marginTop: { type: "value", value: 80 } as Specification.ValueMapping
     },
     glyphs: [glyph],
     elements: [
       createDefaultPlotSegment(table, glyph),
-      createDefaultTitle(dataset),
+      createDefaultTitle(dataset)
     ],
     scales: [],
     scaleMappings: [],
     constraints: [],
-    resources: [],
+    resources: []
   } as Specification.Chart;
 }

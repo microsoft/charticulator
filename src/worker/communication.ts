@@ -8,7 +8,7 @@ export class WorkerRPC {
 
   constructor(workerScriptURL: string) {
     this.worker = new Worker(workerScriptURL);
-    this.worker.onmessage = (event) => {
+    this.worker.onmessage = event => {
       const msg = event.data;
       if (this.idCallbacks.has(msg.instanceID)) {
         this.idCallbacks.get(msg.instanceID)(msg);
@@ -25,7 +25,7 @@ export class WorkerRPC {
   public rpc(path: string, ...args: any[]): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       const msgID = this.newUniqueID();
-      this.idCallbacks.set(msgID, (message) => {
+      this.idCallbacks.set(msgID, message => {
         if (message.type == "rpc-result") {
           this.idCallbacks.delete(msgID);
           resolve(message.returnValue);
@@ -39,7 +39,7 @@ export class WorkerRPC {
         type: "rpc-call",
         instanceID: msgID,
         path,
-        args,
+        args
       });
     });
   }
@@ -50,7 +50,7 @@ export class WorkerHostProcess {
   private rpcMethods = new Map<string, Function>();
 
   constructor() {
-    onmessage = (event) => {
+    onmessage = event => {
       const message = event.data;
       this.handleMessage(message, event);
     };
@@ -71,7 +71,7 @@ export class WorkerHostProcess {
                 {
                   type: "rpc-error",
                   instanceID: message.instanceID,
-                  errorMessage: `RPC method "${message.path}" not found`,
+                  errorMessage: `RPC method "${message.path}" not found`
                 },
                 undefined
               );
@@ -79,22 +79,22 @@ export class WorkerHostProcess {
               const result = method(...message.args);
               if (result instanceof Promise) {
                 result
-                  .then((returnValue) => {
+                  .then(returnValue => {
                     postMessage(
                       {
                         type: "rpc-result",
                         instanceID: message.instanceID,
-                        returnValue,
+                        returnValue
                       },
                       undefined
                     );
                   })
-                  .catch((error) => {
+                  .catch(error => {
                     postMessage(
                       {
                         type: "rpc-error",
                         instanceID: message.instanceID,
-                        errorMessage: error.message + "\n" + error.stack,
+                        errorMessage: error.message + "\n" + error.stack
                       },
                       undefined
                     );
@@ -104,7 +104,7 @@ export class WorkerHostProcess {
                   {
                     type: "rpc-result",
                     instanceID: message.instanceID,
-                    returnValue: result,
+                    returnValue: result
                   },
                   undefined
                 );
@@ -115,7 +115,7 @@ export class WorkerHostProcess {
               {
                 type: "rpc-error",
                 instanceID: message.instanceID,
-                errorMessage: e.message + "\n" + e.stack,
+                errorMessage: e.message + "\n" + e.stack
               },
               undefined
             );

@@ -46,13 +46,13 @@ export class TestApplicationView extends React.Component<
           style={{
             padding: "10px",
             borderBottom: "1px solid #CCC",
-            marginBottom: "10px",
+            marginBottom: "10px"
           }}
         >
           {"Select Test: "}
           <select
             value={this.state.currentTest || ""}
-            onChange={(e) => {
+            onChange={e => {
               if (e.target.value == "") {
                 document.location.hash = "";
               } else {
@@ -62,7 +62,7 @@ export class TestApplicationView extends React.Component<
             }}
           >
             <option value="">(no test selected)</option>
-            {registeredTests.map((test) => (
+            {registeredTests.map(test => (
               <option key={test.name} value={test.name}>
                 {test.name}
               </option>

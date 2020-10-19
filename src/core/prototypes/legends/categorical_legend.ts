@@ -20,7 +20,7 @@ export class CategoricalLegendClass extends LegendClass {
 
   public static defaultProperties: LegendProperties = {
     ...LegendClass.defaultProperties,
-    orientation: "vertical",
+    orientation: "vertical"
   };
 
   protected textMeasure = new Graphics.TextMeasurer();
@@ -41,7 +41,7 @@ export class CategoricalLegendClass extends LegendClass {
                 items.push({
                   type: "boolean",
                   label: key,
-                  value: mapping[key],
+                  value: mapping[key]
                 });
               }
               break;
@@ -97,12 +97,12 @@ export class CategoricalLegendClass extends LegendClass {
     if (this.object.properties.orientation === "vertical") {
       return [
         this.getLineWidth() + this.getLineHeight(),
-        items.length * this.getLineHeight(),
+        items.length * this.getLineHeight()
       ];
     } else {
       return [
         this.getLineWidth() + items.length * this.getLineHeight(),
-        this.getLineHeight(),
+        this.getLineHeight()
       ];
     }
   }
@@ -144,7 +144,7 @@ export class CategoricalLegendClass extends LegendClass {
           {
             gItem.elements.push(
               Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                fillColor: item.value as Color,
+                fillColor: item.value as Color
               })
             );
           }
@@ -154,14 +154,14 @@ export class CategoricalLegendClass extends LegendClass {
         gItem.transform = {
           x: itemGroupOffset,
           y: 0,
-          angle: 0,
+          angle: 0
         };
         itemGroupOffset += metrics.width + lineHeight + horizontalGap;
       } else {
         gItem.transform = {
           x: 0,
           y: lineHeight * (items.length - 1 - i),
-          angle: 0,
+          angle: 0
         };
       }
       g.elements.push(gItem);
@@ -226,10 +226,10 @@ export class CategoricalLegendClass extends LegendClass {
             showLabel: false,
             icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
             labels: ["Vertical", "Horizontal"],
-            options: ["vertical", "horizontal"],
+            options: ["vertical", "horizontal"]
           }
         )
-      ),
+      )
     ];
   }
 }

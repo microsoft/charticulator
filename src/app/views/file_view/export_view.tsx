@@ -27,11 +27,11 @@ export class InputGroup extends React.Component<
     return (
       <div className="form-group">
         <input
-          ref={(e) => (this.ref = e)}
+          ref={e => (this.ref = e)}
           type="text"
           required={true}
           value={this.props.value || ""}
-          onChange={(e) => {
+          onChange={e => {
             this.props.onChange(this.ref.value);
           }}
         />
@@ -59,9 +59,9 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
         <InputGroup
           label="DPI (for PNG/JPEG)"
           value={this.state.dpi}
-          onChange={(newValue) => {
+          onChange={newValue => {
             this.setState({
-              dpi: newValue,
+              dpi: newValue
             });
           }}
         />
@@ -127,7 +127,7 @@ export class FileViewExport extends ContextedComponent<
   FileViewExportState
 > {
   public state: FileViewExportState = {
-    exportMode: "image",
+    exportMode: "image"
   };
 
   public renderExportView(mode: "image" | "html") {
@@ -157,7 +157,7 @@ export class FileViewExport extends ContextedComponent<
               <div
                 className={classNames("el-item", [
                   "is-active",
-                  this.state.exportMode == "image",
+                  this.state.exportMode == "image"
                 ])}
                 onClick={() => this.setState({ exportMode: "image" })}
               >
@@ -167,19 +167,19 @@ export class FileViewExport extends ContextedComponent<
               <div
                 className={classNames("el-item", [
                   "is-active",
-                  this.state.exportMode == "html",
+                  this.state.exportMode == "html"
                 ])}
                 onClick={() => this.setState({ exportMode: "html" })}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
                 <span className="el-text">Export as HTML</span>
               </div>
-              {this.store.listExportTemplateTargets().map((name) => (
+              {this.store.listExportTemplateTargets().map(name => (
                 <div
                   key={name}
                   className={classNames("el-item", [
                     "is-active",
-                    this.state.exportMode == name,
+                    this.state.exportMode == name
                   ])}
                   onClick={() => this.setState({ exportMode: name })}
                 >
@@ -223,7 +223,7 @@ export class ExportTemplateView extends ContextedComponent<
     return {
       template,
       target,
-      targetProperties,
+      targetProperties
     };
   }
 
@@ -245,11 +245,11 @@ export class ExportTemplateView extends ContextedComponent<
         return (
           <div className="form-group">
             <input
-              ref={(e) => (ref = e)}
+              ref={e => (ref = e)}
               type="text"
               required={true}
               value={value || ""}
-              onChange={(e) => {
+              onChange={e => {
                 onChange(ref.value);
               }}
             />
@@ -284,7 +284,7 @@ export class ExportTemplateView extends ContextedComponent<
             <div
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "row"
               }}
             >
               <InputImageProperty
@@ -309,7 +309,7 @@ export class ExportTemplateView extends ContextedComponent<
 
   /** Renders all fields for extension properties */
   public renderTargetProperties() {
-    return this.state.target.getProperties().map((property) => {
+    return this.state.target.getProperties().map(property => {
       const displayName = this.store.getPropertyExportName(property.name);
       const targetProperties = this.state.targetProperties;
 
@@ -320,13 +320,13 @@ export class ExportTemplateView extends ContextedComponent<
             property.type,
             displayName || targetProperties[property.name],
             property.default,
-            (value) => {
+            value => {
               this.store.setPropertyExportName(property.name, value);
               this.setState({
                 targetProperties: {
                   ...targetProperties,
-                  [property.name]: value,
-                },
+                  [property.name]: value
+                }
               });
             }
           )}
@@ -340,28 +340,28 @@ export class ExportTemplateView extends ContextedComponent<
     if (this.state.template.tables.length == 0) {
       return <p>(none)</p>;
     }
-    return this.state.template.tables.map((table) => (
+    return this.state.template.tables.map(table => (
       <div key={table.name}>
         {table.columns
-          .filter((col) => !col.metadata.isRaw)
-          .map((column) => (
+          .filter(col => !col.metadata.isRaw)
+          .map(column => (
             <div key={column.name}>
               {this.renderInput(
                 column.name,
                 "string",
                 column.displayName,
                 null,
-                (value) => {
+                value => {
                   const dataTable = this.store.dataset.tables.find(
-                    (t) => t.name === table.name
+                    t => t.name === table.name
                   );
                   const dataColumn = dataTable.columns.find(
-                    (c) => c.name === column.name
+                    c => c.name === column.name
                   );
                   dataColumn.displayName = value;
                   column.displayName = value;
                   this.setState({
-                    template: this.state.template,
+                    template: this.state.template
                   });
                 }
               )}
@@ -379,7 +379,7 @@ export class ExportTemplateView extends ContextedComponent<
     return (
       template.inference
         // Only show axis and scale inferences
-        .filter((inference) => inference.axis || inference.scale)
+        .filter(inference => inference.axis || inference.scale)
         .map((inference, index) => {
           let descriptionMin: string;
           let descriptionMax: string;

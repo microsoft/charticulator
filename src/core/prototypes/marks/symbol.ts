@@ -13,7 +13,7 @@ import {
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
-  AttributeDescriptions,
+  AttributeDescriptions
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -21,7 +21,7 @@ import {
   symbolAttributes,
   SymbolElementAttributes,
   SymbolElementProperties,
-  symbolTypes,
+  symbolTypes
 } from "./symbol.attrs";
 
 export const symbolTypesList = symbolTypes;
@@ -40,12 +40,12 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     iconPath: "mark/symbol",
     creatingInteraction: {
       type: "point",
-      mapping: { x: "x", y: "y" },
-    },
+      mapping: { x: "x", y: "y" }
+    }
   };
 
   public static defaultProperties: Partial<SymbolElementProperties> = {
-    visible: true,
+    visible: true
   };
 
   public static defaultMappingValues: Partial<SymbolElementAttributes> = {
@@ -53,7 +53,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     strokeWidth: 1,
     opacity: 1,
     size: 60,
-    visible: true,
+    visible: true
   };
 
   public attributes: AttributeDescriptions = symbolAttributes;
@@ -85,10 +85,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             y: attrs.y,
             xAttribute: "x",
             yAttribute: "y",
-            direction: { x: mode == "begin" ? 1 : -1, y: 0 },
-          },
-        ],
-      },
+            direction: { x: mode == "begin" ? 1 : -1, y: 0 }
+          }
+        ]
+      }
     ];
   }
 
@@ -113,7 +113,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       strokeWidth: attrs.strokeWidth,
       fillColor: attrs.fill,
       opacity: attrs.opacity,
-      ...this.generateEmphasisStyle(emphasize),
+      ...this.generateEmphasisStyle(emphasize)
     };
 
     switch (attrs.symbol) {
@@ -125,7 +125,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           x1: pc.x - w / 2,
           y1: pc.y - w / 2,
           x2: pc.x + w / 2,
-          y2: pc.y + w / 2,
+          y2: pc.y + w / 2
         } as Graphics.Rect;
       }
       case "cross": {
@@ -221,7 +221,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           style,
           cx: pc.x,
           cy: pc.y,
-          r: Math.sqrt(attrs.size / Math.PI),
+          r: Math.sqrt(attrs.size / Math.PI)
         } as Graphics.Circle;
       }
     }
@@ -242,10 +242,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "size",
             attributeType: Specification.AttributeType.Number,
-            hints: { rangeNumber: [0, 200 * Math.PI] },
-          },
-        },
-      } as DropZones.Line,
+            hints: { rangeNumber: [0, 200 * Math.PI] }
+          }
+        }
+      } as DropZones.Line
     ];
   }
 
@@ -260,9 +260,9 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         y,
         actions: [
           { type: "attribute", source: "x", attribute: "x" },
-          { type: "attribute", source: "y", attribute: "y" },
-        ],
-      } as Handles.Point,
+          { type: "attribute", source: "y", attribute: "y" }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -273,7 +273,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       type: "circle",
       cx: x,
       cy: y,
-      radius: Math.sqrt(size / Math.PI),
+      radius: Math.sqrt(size / Math.PI)
     } as BoundingBox.Circle;
   }
 
@@ -282,7 +282,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     const { x, y } = attrs;
     return [
       { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis
     ];
   }
 
@@ -295,7 +295,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Shape", "symbol", {
         acceptKinds: [Specification.DataKind.Categorical],
         hints: { rangeEnum: symbolTypes },
-        defaultValue: "circle",
+        defaultValue: "circle"
       }),
       manager.mappingEditor("Size", "size", {
         acceptKinds: [Specification.DataKind.Numerical],
@@ -305,19 +305,19 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           showSlider: true,
           minimum: 0,
           sliderRange: [0, 3600],
-          sliderFunction: "sqrt",
-        },
+          sliderFunction: "sqrt"
+        }
       }),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.mappingEditor("Stroke", "stroke", {})
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
         manager.mappingEditor("Line Width", "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
+          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 }
         })
       );
     }
@@ -325,11 +325,11 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+        defaultValue: true
+      })
     ]);
     return widgets.concat(parentWidgets);
   }
@@ -344,10 +344,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible",
+          attribute: "visible"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible,
+        default: this.state.attributes.visible
       });
     }
     if (
@@ -357,10 +357,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fill",
+          attribute: "fill"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.fill as Color),
+        default: rgbToHex(this.state.attributes.fill as Color)
       });
     }
     if (
@@ -370,10 +370,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "strokeWidth",
+          attribute: "strokeWidth"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.strokeWidth,
+        default: this.state.attributes.strokeWidth
       });
     }
     if (
@@ -383,10 +383,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "stroke",
+          attribute: "stroke"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.stroke),
+        default: rgbToHex(this.state.attributes.stroke)
       });
     }
     if (
@@ -396,10 +396,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "size",
+          attribute: "size"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.size,
+        default: this.state.attributes.size
       });
     }
     if (
@@ -409,10 +409,10 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity",
+          attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity,
+        default: this.state.attributes.opacity
       });
     }
     if (
@@ -422,15 +422,15 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "symbol",
+          attribute: "symbol"
         },
         type: Specification.AttributeType.Enum,
-        default: this.state.attributes.symbol,
+        default: this.state.attributes.symbol
       });
     }
 
     return {
-      properties,
+      properties
     };
   }
 }

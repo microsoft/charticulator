@@ -30,7 +30,7 @@ export class DistanceRatioHandleView extends React.Component<
     super(props);
     this.state = {
       dragging: false,
-      newValue: this.props.handle.value,
+      newValue: this.props.handle.value
     };
   }
 
@@ -56,18 +56,18 @@ export class DistanceRatioHandleView extends React.Component<
     let context: HandlesDragContext = null;
     let oldValue = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       this.setState({
         dragging: true,
-        newValue: oldValue,
+        newValue: oldValue
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       if (context) {
         const cc = this.refs.centerCircle.getBoundingClientRect();
         const px = e.center.x - (cc.left + cc.width / 2);
@@ -79,12 +79,12 @@ export class DistanceRatioHandleView extends React.Component<
         d = this.clip(d);
         const newValue = d;
         this.setState({
-          newValue,
+          newValue
         });
         context.emit("drag", { value: newValue });
       }
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       if (context) {
         const cc = this.refs.centerCircle.getBoundingClientRect();
         const px = e.center.x - (cc.left + cc.width / 2);
@@ -100,7 +100,7 @@ export class DistanceRatioHandleView extends React.Component<
         // }
         context.emit("end", { value: newValue });
         this.setState({
-          dragging: false,
+          dragging: false
         });
         context = null;
       }

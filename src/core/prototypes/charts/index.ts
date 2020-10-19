@@ -16,7 +16,7 @@ import {
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 
 import { Color } from "../../common";
@@ -31,7 +31,7 @@ export abstract class ChartClass extends ObjectClass {
 
   public static metadata: ObjectClassMetadata = {
     iconPath: "chart",
-    displayName: "Chart",
+    displayName: "Chart"
   };
 
   public setDataflow(dataflow: DataflowManager) {
@@ -59,7 +59,7 @@ export abstract class ChartClass extends ObjectClass {
         const scaleMapping = mapping as Specification.ScaleMapping;
         const idx = indexOf(
           this.object.scales,
-          (x) => x._id == scaleMapping.scale
+          x => x._id == scaleMapping.scale
         );
         const scaleClass = ObjectClasses.Create(
           this.parent,
@@ -119,12 +119,12 @@ export class RectangleChart extends ChartClass {
     marginTop: 50,
     marginBottom: 50,
     cx: 0,
-    cy: 0,
+    cy: 0
   };
 
   public static defaultProperties: Specification.AttributeMap = {
     backgroundColor: null,
-    backgroundOpacity: 1,
+    backgroundOpacity: 1
   };
 
   public readonly object: Specification.Chart & {
@@ -149,79 +149,79 @@ export class RectangleChart extends ChartClass {
     "marginLeft",
     "marginRight",
     "marginTop",
-    "marginBottom",
+    "marginBottom"
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     cx: {
       name: "cx",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     cy: {
       name: "cy",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     ox1: {
       name: "ox1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     oy1: {
       name: "oy1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     ox2: {
       name: "ox2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     oy2: {
       name: "oy2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     width: {
       name: "width",
       type: Specification.AttributeType.Number,
-      defaultValue: 900,
+      defaultValue: 900
     },
     height: {
       name: "height",
       type: Specification.AttributeType.Number,
-      defaultValue: 600,
+      defaultValue: 600
     },
     marginLeft: {
       name: "marginLeft",
       type: Specification.AttributeType.Number,
-      defaultValue: 50,
+      defaultValue: 50
     },
     marginRight: {
       name: "marginRight",
       type: Specification.AttributeType.Number,
-      defaultValue: 50,
+      defaultValue: 50
     },
     marginTop: {
       name: "marginTop",
       type: Specification.AttributeType.Number,
-      defaultValue: 50,
+      defaultValue: 50
     },
     marginBottom: {
       name: "marginBottom",
       type: Specification.AttributeType.Number,
-      defaultValue: 50,
-    },
+      defaultValue: 50
+    }
   };
 
   // Initialize the state of a mark so that everything has a valid value
@@ -255,7 +255,7 @@ export class RectangleChart extends ChartClass {
         attrs.height / 2,
         {
           fillColor: this.object.properties.backgroundColor,
-          fillOpacity: this.object.properties.backgroundOpacity,
+          fillOpacity: this.object.properties.backgroundOpacity
         }
       );
     }
@@ -280,7 +280,7 @@ export class RectangleChart extends ChartClass {
       marginLeft,
       marginRight,
       marginTop,
-      marginBottom,
+      marginBottom
     ] = solver.attrs(attrs, [
       "x1",
       "y1",
@@ -297,7 +297,7 @@ export class RectangleChart extends ChartClass {
       "marginLeft",
       "marginRight",
       "marginTop",
-      "marginBottom",
+      "marginBottom"
     ]);
     solver.makeConstant(attrs, "width");
     solver.makeConstant(attrs, "height");
@@ -314,56 +314,28 @@ export class RectangleChart extends ChartClass {
       ConstraintStrength.HARD,
       0,
       [[1, x1]],
-      [
-        [-0.5, width],
-        [+1, marginLeft],
-      ]
+      [[-0.5, width], [+1, marginLeft]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, x2]],
-      [
-        [+0.5, width],
-        [-1, marginRight],
-      ]
+      [[+0.5, width], [-1, marginRight]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, y1]],
-      [
-        [-0.5, height],
-        [+1, marginBottom],
-      ]
+      [[-0.5, height], [+1, marginBottom]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, y2]],
-      [
-        [+0.5, height],
-        [-1, marginTop],
-      ]
+      [[+0.5, height], [-1, marginTop]]
     );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cx]],
-      [
-        [1, x1],
-        [1, x2],
-      ]
-    );
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cy]],
-      [
-        [1, y1],
-        [1, y2],
-      ]
-    );
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
+    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
@@ -373,25 +345,25 @@ export class RectangleChart extends ChartClass {
         type: "x",
         value: attrs.x1,
         attribute: "x1",
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis,
       {
         type: "x",
         value: attrs.x2,
         attribute: "x2",
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.y1,
         attribute: "y1",
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.y2,
         attribute: "y2",
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis,
       // <SnappingGuides.Axis>{ type: "x", value: attrs.ox1, attribute: "ox1", visible: true },
       // <SnappingGuides.Axis>{ type: "x", value: attrs.ox2, attribute: "ox2", visible: true },
@@ -401,14 +373,14 @@ export class RectangleChart extends ChartClass {
         type: "x",
         value: attrs.cx,
         attribute: "cx",
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.cy,
         attribute: "cy",
-        visible: true,
-      } as SnappingGuides.Axis,
+        visible: true
+      } as SnappingGuides.Axis
     ];
   }
 
@@ -424,18 +396,18 @@ export class RectangleChart extends ChartClass {
         reference: x1 - attrs.marginLeft,
         sign: 1,
         value: attrs.marginLeft,
-        span: inf,
+        span: inf
       } as Handles.RelativeLine,
       {
         type: "relative-line",
         axis: "x",
         actions: [
-          { type: "attribute-value-mapping", attribute: "marginRight" },
+          { type: "attribute-value-mapping", attribute: "marginRight" }
         ],
         reference: x2 + attrs.marginRight,
         sign: -1,
         value: attrs.marginRight,
-        span: inf,
+        span: inf
       } as Handles.RelativeLine,
       {
         type: "relative-line",
@@ -444,19 +416,19 @@ export class RectangleChart extends ChartClass {
         reference: y2 + attrs.marginTop,
         sign: -1,
         value: attrs.marginTop,
-        span: inf,
+        span: inf
       } as Handles.RelativeLine,
       {
         type: "relative-line",
         axis: "y",
         actions: [
-          { type: "attribute-value-mapping", attribute: "marginBottom" },
+          { type: "attribute-value-mapping", attribute: "marginBottom" }
         ],
         reference: y1 - attrs.marginBottom,
         sign: 1,
         value: attrs.marginBottom,
-        span: inf,
-      } as Handles.RelativeLine,
+        span: inf
+      } as Handles.RelativeLine
       // <Handles.RelativeLine>{
       //     type: "relative-line", axis: "x",
       //     value: attrs.width, sign: 1,
@@ -513,7 +485,7 @@ export class RectangleChart extends ChartClass {
       manager.row(
         "Color",
         manager.inputColor({ property: "backgroundColor" }, { allowNull: true })
-      ),
+      )
     ];
     if (this.object.properties.backgroundColor != null) {
       result.push(
@@ -541,36 +513,36 @@ export class RectangleChart extends ChartClass {
           {
             objectID: this.object._id,
             target: {
-              attribute: "marginLeft",
+              attribute: "marginLeft"
             },
             type: Specification.AttributeType.Number,
-            default: this.state.attributes.marginLeft,
+            default: this.state.attributes.marginLeft
           },
           {
             objectID: this.object._id,
             target: {
-              attribute: "marginRight",
+              attribute: "marginRight"
             },
             type: Specification.AttributeType.Number,
-            default: this.state.attributes.marginRight,
+            default: this.state.attributes.marginRight
           },
           {
             objectID: this.object._id,
             target: {
-              attribute: "marginTop",
+              attribute: "marginTop"
             },
             type: Specification.AttributeType.Number,
-            default: this.state.attributes.marginTop,
+            default: this.state.attributes.marginTop
           },
           {
             objectID: this.object._id,
             target: {
-              attribute: "marginBottom",
+              attribute: "marginBottom"
             },
             type: Specification.AttributeType.Number,
-            default: this.state.attributes.marginBottom,
-          },
-        ],
+            default: this.state.attributes.marginBottom
+          }
+        ]
       };
     }
   }

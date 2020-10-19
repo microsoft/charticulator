@@ -7,13 +7,13 @@ import {
   Scale,
   ScaleState,
   AttributeValue,
-  AttributeMap,
+  AttributeMap
 } from "../../specification";
 import {
   DataMappingHints,
   ObjectClass,
   TemplateParameters,
-  ObjectClassMetadata,
+  ObjectClassMetadata
 } from "../common";
 
 export interface InferParametersOptions extends DataMappingHints {
@@ -34,7 +34,7 @@ export abstract class ScaleClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Scale",
-    iconPath: "scale/scale",
+    iconPath: "scale/scale"
   };
 
   public abstract mapDataToAttribute(data: DataValue): AttributeValue;
@@ -59,11 +59,11 @@ export abstract class ScaleClass<
             classID: this.object.classID,
             expressions: [],
             properties: {
-              mapping: "mapping",
-            },
-          },
-        },
-      ],
+              mapping: "mapping"
+            }
+          }
+        }
+      ]
     };
   }
 }

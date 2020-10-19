@@ -9,14 +9,14 @@ import {
   deepClone,
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
-  KeyColumn,
+  KeyColumn
 } from "../../../core";
 import {
   classNames,
   getExtensionFromFileName,
   readFileAsString,
   getFileNameWithoutExtension,
-  convertColumns,
+  convertColumns
 } from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
@@ -47,21 +47,21 @@ export class FileUploader extends React.Component<
     super(props);
     this.state = {
       draggingOver: false,
-      filename: props.filename,
+      filename: props.filename
     };
   }
 
   public reset() {
     this.inputElement.value = null;
     this.setState({
-      filename: null,
+      filename: null
     });
   }
 
   private onInputChange() {
     if (this.inputElement.files.length == 1) {
       this.setState({
-        filename: this.inputElement.files[0].name,
+        filename: this.inputElement.files[0].name
       });
       if (this.props.onChange) {
         this.props.onChange(this.inputElement.files[0]);
@@ -109,33 +109,33 @@ export class FileUploader extends React.Component<
           ["is-active", this.state.filename != null]
         )}
         onClick={() => this.showOpenFile()}
-        onDragOver={(e) => {
+        onDragOver={e => {
           e.preventDefault();
           if (this.isDataTransferValid(e.dataTransfer)) {
             this.setState({
-              draggingOver: true,
+              draggingOver: true
             });
           }
         }}
-        onDragLeave={(e) => {
+        onDragLeave={e => {
           this.setState({
-            draggingOver: false,
+            draggingOver: false
           });
         }}
-        onDragExit={(e) => {
+        onDragExit={e => {
           this.setState({
-            draggingOver: false,
+            draggingOver: false
           });
         }}
-        onDrop={(e) => {
+        onDrop={e => {
           e.preventDefault();
           this.setState({
-            draggingOver: false,
+            draggingOver: false
           });
           const file = this.getFileFromDataTransfer(e.dataTransfer);
           if (file != null) {
             this.setState({
-              filename: file.name,
+              filename: file.name
             });
             if (this.props.onChange) {
               this.props.onChange(file);
@@ -145,8 +145,8 @@ export class FileUploader extends React.Component<
       >
         <input
           style={{ display: "none" }}
-          accept={this.props.extensions.map((x) => "." + x).join(",")}
-          ref={(e) => (this.inputElement = e)}
+          accept={this.props.extensions.map(x => "." + x).join(",")}
+          ref={e => (this.inputElement = e)}
           type="file"
           onChange={() => this.onInputChange()}
         />
@@ -187,7 +187,7 @@ export class ImportDataView extends React.Component<
     dataTable: null as Dataset.Table,
     linkTable: null as Dataset.Table,
     dataTableOrigin: null as Dataset.Table,
-    linkTableOrigin: null as Dataset.Table,
+    linkTableOrigin: null as Dataset.Table
   };
 
   constructor(props: ImportDataViewProps) {
@@ -197,7 +197,7 @@ export class ImportDataView extends React.Component<
     );
   }
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
-    return readFileAsString(file).then((contents) => {
+    return readFileAsString(file).then(contents => {
       const localeFileFormat = this.props.store.getLocaleFileFormat();
       const ext = getExtensionFromFileName(file.name);
       const filename = getFileNameWithoutExtension(file.name);
@@ -213,7 +213,7 @@ export class ImportDataView extends React.Component<
         case "tsv": {
           return loader.loadDSVFromContents(filename, contents, {
             delimiter: "\t",
-            numberFormat: localeFileFormat.numberFormat,
+            numberFormat: localeFileFormat.numberFormat
           });
         }
       }
@@ -237,16 +237,16 @@ export class ImportDataView extends React.Component<
     return (
       <div className="charticulator__import-data-view">
         {sampleDatasets != null ? (
-          <div ref={(e) => (sampleDatasetDiv = e)}>
+          <div ref={e => (sampleDatasetDiv = e)}>
             <ButtonRaised
               text="Load Sample Dataset..."
               onClick={() => {
                 globals.popupController.popupAt(
-                  (context) => {
+                  context => {
                     return (
                       <PopupView context={context}>
                         <div className="charticulator__sample-dataset-list">
-                          {sampleDatasets.map((dataset) => {
+                          {sampleDatasets.map(dataset => {
                             return (
                               <div
                                 className="charticulator__sample-dataset-list-item"
@@ -260,7 +260,7 @@ export class ImportDataView extends React.Component<
                                           table.url,
                                           this.props.store.getLocaleFileFormat()
                                         )
-                                        .then((r) => {
+                                        .then(r => {
                                           r.name = table.name;
                                           r.displayName = table.name;
                                           r.type =
@@ -270,11 +270,11 @@ export class ImportDataView extends React.Component<
                                           return r;
                                         });
                                     })
-                                  ).then((tables) => {
+                                  ).then(tables => {
                                     context.close();
                                     const ds: Dataset.Dataset = {
                                       name: dataset.name,
-                                      tables,
+                                      tables
                                     };
                                     this.props.onConfirmImport(ds);
                                   });
@@ -307,7 +307,7 @@ export class ImportDataView extends React.Component<
               this.state.dataTable,
               (column: string, type: string) => {
                 const dataColumn = this.state.dataTable.columns.find(
-                  (col) => col.name === column
+                  col => col.name === column
                 );
                 const dataTableError = convertColumns(
                   this.state.dataTable,
@@ -318,12 +318,12 @@ export class ImportDataView extends React.Component<
                 if (dataTableError) {
                   this.props.store.dispatcher.dispatch(
                     new AddMessage("parsingDataError", {
-                      text: dataTableError as string,
+                      text: dataTableError as string
                     })
                   );
                 }
                 this.setState({
-                  dataTable: this.state.dataTable,
+                  dataTable: this.state.dataTable
                 });
               }
             )}
@@ -334,7 +334,7 @@ export class ImportDataView extends React.Component<
               onClick={() => {
                 this.setState({
                   dataTable: null,
-                  dataTableOrigin: null,
+                  dataTableOrigin: null
                 });
               }}
             />
@@ -342,15 +342,15 @@ export class ImportDataView extends React.Component<
         ) : (
           <FileUploader
             extensions={["csv", "tsv"]}
-            onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+            onChange={file => {
+              this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Main;
 
                 this.checkKeyColumn(table, this.state.linkTable);
 
                 this.setState({
                   dataTable: table,
-                  dataTableOrigin: deepClone(table),
+                  dataTableOrigin: deepClone(table)
                 });
               });
             }}
@@ -366,7 +366,7 @@ export class ImportDataView extends React.Component<
               this.state.linkTable,
               (column: string, type: string) => {
                 const dataColumn = this.state.linkTable.columns.find(
-                  (col) => col.name === column
+                  col => col.name === column
                 );
                 const linkTableError = convertColumns(
                   this.state.linkTable,
@@ -378,14 +378,14 @@ export class ImportDataView extends React.Component<
                 if (linkTableError) {
                   this.props.store.dispatcher.dispatch(
                     new AddMessage("parsingDataError", {
-                      text: linkTableError as string,
+                      text: linkTableError as string
                     })
                   );
                 }
 
                 this.setState({
                   linkTable: this.state.linkTable,
-                  linkTableOrigin: this.state.linkTable,
+                  linkTableOrigin: this.state.linkTable
                 });
               }
             )}
@@ -396,7 +396,7 @@ export class ImportDataView extends React.Component<
               onClick={() => {
                 this.setState({
                   linkTable: null,
-                  linkTableOrigin: null,
+                  linkTableOrigin: null
                 });
                 this.checkSourceAndTargetColumns(null);
                 this.checkKeyColumn(this.state.dataTable, null);
@@ -406,14 +406,14 @@ export class ImportDataView extends React.Component<
         ) : (
           <FileUploader
             extensions={["csv", "tsv"]}
-            onChange={(file) => {
-              this.loadFileAsTable(file).then((table) => {
+            onChange={file => {
+              this.loadFileAsTable(file).then(table => {
                 table.type = TableType.Links;
                 this.checkSourceAndTargetColumns(table);
                 this.checkKeyColumn(this.state.dataTable, table);
                 this.setState({
                   linkTable: table,
-                  linkTableOrigin: deepClone(table),
+                  linkTableOrigin: deepClone(table)
                 });
               });
             }}
@@ -439,7 +439,7 @@ export class ImportDataView extends React.Component<
               ) {
                 const dataset: Dataset.Dataset = {
                   name: this.state.dataTable.name,
-                  tables: [this.state.dataTable],
+                  tables: [this.state.dataTable]
                 };
                 if (this.state.linkTable != null) {
                   dataset.tables.push(this.state.linkTable);
@@ -454,7 +454,7 @@ export class ImportDataView extends React.Component<
             dangerouslySetInnerHTML={{
               __html:
                 getConfig().LegalNotices &&
-                getConfig().LegalNotices.privacyStatementHTML,
+                getConfig().LegalNotices.privacyStatementHTML
             }}
           />
         </div>
@@ -466,14 +466,14 @@ export class ImportDataView extends React.Component<
     const countOfKeyColumns =
       table &&
       table.columns.filter(
-        (column) =>
+        column =>
           column.name === LinkSourceKeyColumn ||
           column.name === LinkTargetKeyColumn
       ).length;
     if (table && countOfKeyColumns < 2) {
       this.props.store.dispatcher.dispatch(
         new AddMessage("noSourceOrTargetID", {
-          text: `No ${LinkSourceKeyColumn} or ${LinkTargetKeyColumn} colums are specified in links table`,
+          text: `No ${LinkSourceKeyColumn} or ${LinkTargetKeyColumn} colums are specified in links table`
         })
       );
     } else {
@@ -485,12 +485,11 @@ export class ImportDataView extends React.Component<
 
   private checkKeyColumn(mainTable: Dataset.Table, linksTable: Dataset.Table) {
     const isKeyColumn =
-      mainTable &&
-      mainTable.columns.find((column) => column.name === KeyColumn);
+      mainTable && mainTable.columns.find(column => column.name === KeyColumn);
     if (!isKeyColumn && linksTable) {
       this.props.store.dispatcher.dispatch(
         new AddMessage("noID", {
-          text: `No ${KeyColumn} colum are specified in main table`,
+          text: `No ${KeyColumn} colum are specified in main table`
         })
       );
     } else {

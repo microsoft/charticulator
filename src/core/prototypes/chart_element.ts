@@ -10,7 +10,7 @@ import {
   Controls,
   DropZones,
   Handles,
-  SnappingGuides,
+  SnappingGuides
 } from "./common";
 import { ObjectClass } from "./object";
 import { ChartStateManager } from "./state";

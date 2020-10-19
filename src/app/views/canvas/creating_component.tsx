@@ -8,7 +8,7 @@ import {
   ZoomInfo,
   Geometry,
   Specification,
-  Prototypes,
+  Prototypes
 } from "../../../core";
 import { SnappableGuide } from "./snapping/common";
 
@@ -73,13 +73,13 @@ export class PointSnapping {
               if (guide.element == null) {
                 candidate = {
                   type: "parent",
-                  parentAttribute: axis.attribute,
+                  parentAttribute: axis.attribute
                 } as Specification.ParentMapping;
               } else {
                 candidate = {
                   type: "_element",
                   element: guide.element._id,
-                  attribute: axis.attribute,
+                  attribute: axis.attribute
                 } as SnappingElementMapping;
               }
               candidateValue = axis.value;
@@ -116,13 +116,13 @@ export class PointSnapping {
               if (guide.element == null) {
                 candidate = {
                   type: "parent",
-                  parentAttribute: axis.attribute,
+                  parentAttribute: axis.attribute
                 } as Specification.ParentMapping;
               } else {
                 candidate = {
                   type: "_element",
                   element: guide.element._id,
-                  attribute: axis.attribute,
+                  attribute: axis.attribute
                 } as SnappingElementMapping;
               }
               candidateValue = axis.value;
@@ -162,7 +162,7 @@ export class CreatingComponent extends React.Component<
       draggingPoint: null,
       activeGuides: [],
       hoverCandidateX: null,
-      hoverCandidateY: null,
+      hoverCandidateY: null
     };
   }
 
@@ -170,7 +170,7 @@ export class CreatingComponent extends React.Component<
     const r = this.refs.handler.getBoundingClientRect();
     const p = Geometry.unapplyZoom(this.props.zoom, {
       x: point.x - r.left,
-      y: point.y - r.top,
+      y: point.y - r.top
     });
     return { x: p.x, y: -p.y };
   }
@@ -185,7 +185,7 @@ export class CreatingComponent extends React.Component<
       case "vline":
         {
           this.hammer.add(new Hammer.Tap());
-          this.hammer.on("tap", (e) => {
+          this.hammer.on("tap", e => {
             const p = this.getPointFromEvent(e.center);
             let p0X = this.state.hoverCandidateX;
             let p0Y = this.state.hoverCandidateY;
@@ -211,7 +211,7 @@ export class CreatingComponent extends React.Component<
       case "rectangle": {
         this.hammer.add(new Hammer.Pan());
         this.hammer.add(new Hammer.Tap());
-        this.hammer.on("tap", (e) => {
+        this.hammer.on("tap", e => {
           this.props.onCancel();
         });
         let p0X: [number, Specification.Mapping] = null;
@@ -219,7 +219,7 @@ export class CreatingComponent extends React.Component<
         let p1X: [number, Specification.Mapping] = null;
         let p1Y: [number, Specification.Mapping] = null;
 
-        this.hammer.on("panstart", (e) => {
+        this.hammer.on("panstart", e => {
           this.isHammering = true;
           const p0 = this.getPointFromEvent(
             Geometry.vectorSub(e.center, { x: e.deltaX, y: e.deltaY })
@@ -234,10 +234,10 @@ export class CreatingComponent extends React.Component<
           mgr.endSnapping();
           this.setState({
             points: [{ x: p0X[0], y: p0Y[0] }],
-            draggingPoint: { x: p0X[0], y: p0Y[0] },
+            draggingPoint: { x: p0X[0], y: p0Y[0] }
           });
         });
-        this.hammer.on("pan", (e) => {
+        this.hammer.on("pan", e => {
           const p1 = this.getPointFromEvent(e.center);
           const mgr = new PointSnapping(
             this.props.guides,
@@ -251,15 +251,15 @@ export class CreatingComponent extends React.Component<
           this.setState({
             points: [{ x: p0X[0], y: p0Y[0] }],
             draggingPoint: { x: p1X[0], y: p1Y[0] },
-            activeGuides: Array.from(guides),
+            activeGuides: Array.from(guides)
           });
         });
-        this.hammer.on("panend", (e) => {
+        this.hammer.on("panend", e => {
           this.isHammering = false;
           this.setState({
             points: null,
             draggingPoint: null,
-            activeGuides: [],
+            activeGuides: []
           });
           this.props.onCreate(p0X, p0Y, p1X, p1Y);
         });
@@ -286,7 +286,7 @@ export class CreatingComponent extends React.Component<
         }
         const pp = this.getPixelPoint({
           x: this.state.hoverCandidateX[0],
-          y: this.state.hoverCandidateY[0],
+          y: this.state.hoverCandidateY[0]
         });
         return <circle cx={pp.x} cy={pp.y} r={3} />;
       }
@@ -299,7 +299,7 @@ export class CreatingComponent extends React.Component<
         }
         const pp = this.getPixelPoint({
           x: this.state.hoverCandidateX[0],
-          y: this.state.hoverCandidateY[0],
+          y: this.state.hoverCandidateY[0]
         });
         return <line x1={0} x2={this.props.width} y1={pp.y} y2={pp.y} />;
       }
@@ -312,7 +312,7 @@ export class CreatingComponent extends React.Component<
         }
         const pp = this.getPixelPoint({
           x: this.state.hoverCandidateX[0],
-          y: this.state.hoverCandidateY[0],
+          y: this.state.hoverCandidateY[0]
         });
         return <line y1={0} y2={this.props.height} x1={pp.x} x2={pp.x} />;
       }
@@ -407,7 +407,7 @@ export class CreatingComponent extends React.Component<
           y={0}
           width={this.props.width}
           height={this.props.height}
-          onMouseEnter={(e) => {
+          onMouseEnter={e => {
             const move = (e: MouseEvent) => {
               const guides = [...this.props.guides];
               switch (this.props.mode) {
@@ -428,7 +428,7 @@ export class CreatingComponent extends React.Component<
               this.setState({
                 activeGuides: Array.from(mgr.endSnapping()),
                 hoverCandidateX: hx,
-                hoverCandidateY: hy,
+                hoverCandidateY: hy
               });
             };
             const leave = () => {
@@ -480,8 +480,8 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
         null,
         {
           type: "value",
-          value: desc.valueMappings[attr],
-        } as Specification.ValueMapping,
+          value: desc.valueMappings[attr]
+        } as Specification.ValueMapping
       ];
     }
     for (const attr in desc.attributes) {

@@ -15,7 +15,7 @@ export let MainContextTypes = {
     } else {
       return new Error(`store not found in component ${componentName}`);
     }
-  },
+  }
 };
 
 export class ContextedComponent<TProps, TState> extends React.Component<

@@ -30,7 +30,7 @@ export class DataflowTableGroupedContext implements Expression.Context {
 
   public getVariable(name: string) {
     if (this.table.rows[this.indices[0]].hasOwnProperty(name)) {
-      return this.indices.map((i) => this.table.rows[i][name]);
+      return this.indices.map(i => this.table.rows[i][name]);
     }
     return this.table.getVariable(name);
   }
@@ -91,7 +91,7 @@ export class DataflowManager implements Expression.Context {
         table.rows,
         table.columns,
         {
-          displayName: table.displayName,
+          displayName: table.displayName
         }
       );
       this.tables.set(table.name, dfTable);

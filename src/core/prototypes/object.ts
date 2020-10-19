@@ -92,7 +92,7 @@ export abstract class ObjectClass<
           { property: "enableTooltips" },
           {
             type: "checkbox",
-            label: "Tooltips",
+            label: "Tooltips"
           }
         )
       ),
@@ -102,7 +102,7 @@ export abstract class ObjectClass<
           { property: "enableContextMenu" },
           {
             type: "checkbox",
-            label: "Context menu",
+            label: "Context menu"
           }
         )
       ),
@@ -112,10 +112,10 @@ export abstract class ObjectClass<
           { property: "enableSelection" },
           {
             type: "checkbox",
-            label: "Selection",
+            label: "Selection"
           }
         )
-      ),
+      )
     ];
   }
 
@@ -130,7 +130,7 @@ export abstract class ObjectClass<
       _id: id,
       classID: this.classID,
       properties: {},
-      mappings: {},
+      mappings: {}
     };
     obj.properties = deepClone(this.defaultProperties);
     for (const attr in this.defaultMappingValues) {
@@ -138,7 +138,7 @@ export abstract class ObjectClass<
         const value = deepClone(this.defaultMappingValues[attr]);
         obj.mappings[attr] = {
           type: "value",
-          value,
+          value
         } as Specification.ValueMapping;
       }
     }
@@ -219,7 +219,7 @@ export class ObjectClasses {
     }
     const parents = ObjectClasses.type2Parents.get(type);
     if (parents != null) {
-      return parents.some((t) => ObjectClasses.isType(t, parentType));
+      return parents.some(t => ObjectClasses.isType(t, parentType));
     } else {
       return false;
     }

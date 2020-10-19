@@ -37,7 +37,7 @@ export class NumericalColorLegendClass extends LegendClass {
       tickColor: this.object.properties.textColor,
       fontSize: this.object.properties.fontSize,
       fontFamily: this.object.properties.fontFamily,
-      lineColor: this.object.properties.textColor,
+      lineColor: this.object.properties.textColor
     });
     const g = Graphics.makeGroup([]);
     g.elements.push(
@@ -53,7 +53,7 @@ export class NumericalColorLegendClass extends LegendClass {
       const y2 = Math.min(height, ((i + 1.5) / ticks) * height);
       g.elements.push(
         Graphics.makeRect(marginLeft, y1, marginLeft + gradientWidth, y2, {
-          fillColor: color,
+          fillColor: color
         })
       );
     }

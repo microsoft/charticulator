@@ -19,7 +19,7 @@ export class TextMeasurer {
     hangingBaseline: [0.7245381636743151, -0.005125313493913097],
     ideographicBaseline: [-0.2120442632498544, 0.008153756552125913],
     alphabeticBaseline: [0, 0],
-    middle: [0.34642399534071056, -0.22714036109493208],
+    middle: [0.34642399534071056, -0.22714036109493208]
   };
 
   constructor() {
@@ -55,7 +55,7 @@ export class TextMeasurer {
         TextMeasurer.parameters.alphabeticBaseline[1],
       middle:
         this.fontSize * TextMeasurer.parameters.middle[0] +
-        TextMeasurer.parameters.middle[1],
+        TextMeasurer.parameters.middle[1]
     };
   }
 

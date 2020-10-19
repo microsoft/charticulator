@@ -9,7 +9,7 @@ import {
   setField,
   Solver,
   Specification,
-  uniqueID,
+  uniqueID
 } from "../../../core";
 import { ValueType } from "../../../core/expression/classes";
 import { Actions } from "../../actions";
@@ -17,8 +17,8 @@ import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
-export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.SaveExportTemplatePropertyName, function (action) {
+export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.SaveExportTemplatePropertyName, function(action) {
     this.setPropertyExportName(action.propertyName, action.value);
   });
 }

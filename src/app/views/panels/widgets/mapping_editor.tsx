@@ -9,7 +9,7 @@ import {
   Expression,
   getById,
   Prototypes,
-  Specification,
+  Specification
 } from "../../../../core";
 import { DragData } from "../../../actions";
 import { ColorPicker, SVGImageIcon } from "../../../components";
@@ -50,7 +50,7 @@ export class MappingEditor extends React.Component<
   public updateEvents = new EventEmitter();
 
   public state: MappingEditorState = {
-    showNoneAsValue: false,
+    showNoneAsValue: false
   };
 
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
@@ -61,11 +61,11 @@ export class MappingEditor extends React.Component<
 
     const {
       alignLeft,
-      alignX,
+      alignX
     }: { alignLeft: boolean; alignX: any } = this.getAligntment(anchor);
 
     globals.popupController.popupAt(
-      (context) => {
+      context => {
         return (
           <PopupView context={context}>
             <DataMappAndScaleEditor
@@ -110,7 +110,7 @@ export class MappingEditor extends React.Component<
     );
 
     globals.popupController.popupAt(
-      (context) => {
+      context => {
         const scaleMapping = mapping as Specification.ScaleMapping;
         if (scaleMapping.scale) {
           const scaleObject = getById(
@@ -124,7 +124,7 @@ export class MappingEditor extends React.Component<
                 scale={scaleObject}
                 scaleMapping={mapping as any}
                 store={this.props.store}
-                onSelect={(index) => {
+                onSelect={index => {
                   const paresedExpression = Expression.parse(
                     scaleMapping.expression
                   ) as FunctionCall;
@@ -153,7 +153,7 @@ export class MappingEditor extends React.Component<
       case "text":
         {
           this.setState({
-            showNoneAsValue: true,
+            showNoneAsValue: true
           });
         }
         break;
@@ -163,13 +163,13 @@ export class MappingEditor extends React.Component<
             return;
           }
           globals.popupController.popupAt(
-            (context) => (
+            context => (
               <PopupView context={context}>
                 <ColorPicker
                   store={this.props.store}
                   defaultValue={null}
                   allowNull={true}
-                  onPick={(color) => {
+                  onPick={color => {
                     if (color == null) {
                       this.clearMapping();
                       context.close();
@@ -190,14 +190,14 @@ export class MappingEditor extends React.Component<
   private setValueMapping(value: Specification.AttributeValue) {
     this.props.parent.onEditMappingHandler(this.props.attribute, {
       type: "value",
-      value,
+      value
     } as Specification.ValueMapping);
   }
 
   public clearMapping() {
     this.props.parent.onEditMappingHandler(this.props.attribute, null);
     this.setState({
-      showNoneAsValue: false,
+      showNoneAsValue: false
     });
   }
 
@@ -231,11 +231,11 @@ export class MappingEditor extends React.Component<
         type={this.props.type}
         placeholder={placeholderText}
         onClear={() => this.clearMapping()}
-        onEmitValue={(value) => this.setValueMapping(value)}
-        onEmitMapping={(mapping) =>
+        onEmitValue={value => this.setValueMapping(value)}
+        onEmitMapping={mapping =>
           this.props.parent.onEditMappingHandler(this.props.attribute, mapping)
         }
-        onBeginDataFieldSelection={(ref) => this.beginDataFieldSelection(ref)}
+        onBeginDataFieldSelection={ref => this.beginDataFieldSelection(ref)}
         getTable={() => this.getTableOrDefault()}
         hints={this.props.options.hints}
         numberOptions={this.props.options.numberOptions}
@@ -267,7 +267,7 @@ export class MappingEditor extends React.Component<
             return (
               <span
                 className="el-clickable-label"
-                ref={(e) => (this.noneLabel = e)}
+                ref={e => (this.noneLabel = e)}
                 onClick={() => {
                   if (
                     !mapping ||
@@ -285,7 +285,7 @@ export class MappingEditor extends React.Component<
             return (
               <span
                 className="el-clickable-label"
-                ref={(e) => (this.noneLabel = e)}
+                ref={e => (this.noneLabel = e)}
                 onClick={() => {
                   if (
                     !mapping ||
@@ -314,7 +314,7 @@ export class MappingEditor extends React.Component<
             <InputExpression
               defaultValue={textMapping.textExpression}
               textExpression={true}
-              validate={(value) =>
+              validate={value =>
                 parent.store.verifyUserExpressionWithTable(
                   value,
                   textMapping.table,
@@ -322,7 +322,7 @@ export class MappingEditor extends React.Component<
                 )
               }
               allowNull={true}
-              onEnter={(newValue) => {
+              onEnter={newValue => {
                 if (newValue == null || newValue.trim() == "") {
                   this.clearMapping();
                 } else {
@@ -333,7 +333,7 @@ export class MappingEditor extends React.Component<
                       this.props.attribute,
                       {
                         type: "value",
-                        value: newValue,
+                        value: newValue
                       } as Specification.ValueMapping
                     );
                   } else {
@@ -342,7 +342,7 @@ export class MappingEditor extends React.Component<
                       {
                         type: "text",
                         table: textMapping.table,
-                        textExpression: newValue,
+                        textExpression: newValue
                       } as Specification.TextMapping
                     );
                   }
@@ -362,7 +362,7 @@ export class MappingEditor extends React.Component<
             return (
               <span
                 className="el-mapping-scale"
-                ref={(e) => (this.scaleMappingDisplay = e)}
+                ref={e => (this.scaleMappingDisplay = e)}
                 onClick={() => {
                   if (
                     !scaleMapping ||
@@ -371,13 +371,13 @@ export class MappingEditor extends React.Component<
                   ) {
                     const {
                       alignLeft,
-                      alignX,
+                      alignX
                     }: { alignLeft: boolean; alignX: any } = this.getAligntment(
                       this.scaleMappingDisplay
                     );
 
                     globals.popupController.popupAt(
-                      (context) => (
+                      context => (
                         <PopupView context={context}>
                           <DataMappAndScaleEditor
                             attribute={this.props.attribute}
@@ -464,7 +464,7 @@ export class MappingEditor extends React.Component<
 
     return (
       <DropZoneView
-        filter={(data) => {
+        filter={data => {
           if (!shouldShowBindData) {
             return false;
           }
@@ -494,7 +494,7 @@ export class MappingEditor extends React.Component<
           }
           this.mapData(data, {
             ...options.hints,
-            allowSelectValue: data.allowSelectValue,
+            allowSelectValue: data.allowSelectValue
           });
         }}
         className="charticulator__widget-control-mapping-editor"
@@ -513,7 +513,7 @@ export class MappingEditor extends React.Component<
                     this.clearMapping();
                   }
                   this.setState({
-                    showNoneAsValue: false,
+                    showNoneAsValue: false
                   });
                 }}
               />
@@ -523,7 +523,7 @@ export class MappingEditor extends React.Component<
               <Button
                 icon={"general/bind-data"}
                 title="Bind data"
-                ref={(e) =>
+                ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
                 }
                 onClick={() => {
@@ -536,7 +536,7 @@ export class MappingEditor extends React.Component<
               <Button
                 icon={"general/bind-data"}
                 title="Bind data value"
-                ref={(e) =>
+                ref={e =>
                   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
                 }
                 onClick={() => {
@@ -569,7 +569,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
   DataMappAndScaleEditorState
 > {
   public state = {
-    currentMapping: this.props.defaultMapping,
+    currentMapping: this.props.defaultMapping
   };
 
   private tokens: EventSubscription[];
@@ -580,9 +580,9 @@ export class DataMappAndScaleEditor extends ContextedComponent<
         this.setState({
           currentMapping: this.props.parent.props.parent.getAttributeMapping(
             this.props.attribute
-          ),
+          )
         });
-      }),
+      })
     ];
   }
 
@@ -636,7 +636,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
           }
           nullDescription={"(none)"}
           nullNotHighlightable={true}
-          onChange={(value) => {
+          onChange={value => {
             if (value != null) {
               this.props.parent.mapData(
                 new DragData.DataExpression(

@@ -215,7 +215,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
             right: 0,
             top: 0,
             bottom: 0,
-            pointerEvents: "all",
+            pointerEvents: "all"
           }}
           onMouseDown={() => {
             this.props.controller.reset();
@@ -232,7 +232,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
 
   public renderPopups() {
     const popups: PopupContext[] = [];
-    this.props.controller.traverse((p) => {
+    this.props.controller.traverse(p => {
       if (!p.isClosed) {
         popups.push(p);
       }
@@ -249,17 +249,17 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
             right: 0,
             top: 0,
             bottom: 0,
-            pointerEvents: "all",
+            pointerEvents: "all"
           }}
-          onMouseDown={(e) => {
+          onMouseDown={e => {
             this.props.controller.resetPopups();
           }}
         >
-          {popups.map((popup) => {
+          {popups.map(popup => {
             return (
               <div
                 key={popup.id}
-                ref={(ref) => {
+                ref={ref => {
                   if (ref) {
                     popupViewMapping.set(ref, popup);
                   }
@@ -394,10 +394,10 @@ export class PopupView extends React.Component<
             : "popup-view-container"
         }
         style={style}
-        onMouseDownCapture={(e) => {
+        onMouseDownCapture={e => {
           newlyCreatedContexts = new WeakSet<PopupContext>();
         }}
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           e.stopPropagation();
           for (const child of this.props.context.children) {
             if (!newlyCreatedContexts.has(child)) {
@@ -411,35 +411,35 @@ export class PopupView extends React.Component<
             "popup-view",
             [
               "popup-x-top-left",
-              alignX == "start-inner" && alignY == "end-outer",
+              alignX == "start-inner" && alignY == "end-outer"
             ],
             [
               "popup-x-bottom-left",
-              alignX == "start-inner" && alignY == "start-outer",
+              alignX == "start-inner" && alignY == "start-outer"
             ],
             [
               "popup-x-top-right",
-              alignX == "end-inner" && alignY == "end-outer",
+              alignX == "end-inner" && alignY == "end-outer"
             ],
             [
               "popup-x-bottom-right",
-              alignX == "end-inner" && alignY == "start-outer",
+              alignX == "end-inner" && alignY == "start-outer"
             ],
             [
               "popup-y-top-left",
-              alignX == "start-outer" && alignY == "start-inner",
+              alignX == "start-outer" && alignY == "start-inner"
             ],
             [
               "popup-y-top-right",
-              alignX == "end-outer" && alignY == "start-inner",
+              alignX == "end-outer" && alignY == "start-inner"
             ],
             [
               "popup-y-bottom-left",
-              alignX == "start-outer" && alignY == "end-inner",
+              alignX == "start-outer" && alignY == "end-inner"
             ],
             [
               "popup-y-bottom-right",
-              alignX == "end-outer" && alignY == "end-inner",
+              alignX == "end-outer" && alignY == "end-inner"
             ]
           )}
         >
@@ -462,7 +462,7 @@ export class ModalView extends React.Component<
     return (
       <div
         className={`charticulator__modal-${type}`}
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           e.stopPropagation();
         }}
       >

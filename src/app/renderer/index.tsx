@@ -8,12 +8,12 @@ import {
   shallowClone,
   getColorConverter,
   uniqueID,
-  hexToRgb,
+  hexToRgb
 } from "../../core";
 import { toSVGNumber } from "../utils";
 import {
   ChartComponent,
-  GlyphEventHandler,
+  GlyphEventHandler
 } from "../../container/chart_component";
 import { ColorFilter, NumberModifier } from "../../core/graphics";
 
@@ -24,7 +24,7 @@ function desaturate(color: Color, amount: number) {
   return {
     r: Math.min(r + amount * (l - r), 255),
     g: Math.min(g + amount * (l - g), 255),
-    b: Math.min(b + amount * (l - b), 255),
+    b: Math.min(b + amount * (l - b), 255)
   };
 }
 
@@ -113,7 +113,7 @@ export function renderStyle(style: Graphics.Style): React.CSSProperties {
     textAnchor: style.textAnchor != undefined ? style.textAnchor : "start",
     opacity: style.opacity != undefined ? style.opacity : 1,
     strokeDasharray:
-      style.strokeDasharray != undefined ? style.strokeDasharray : null,
+      style.strokeDasharray != undefined ? style.strokeDasharray : null
   };
 }
 
@@ -136,11 +136,11 @@ const path_commands: { [name: string]: (args: number[]) => string } = {
     )},${toSVGNumber(args[3])},${toSVGNumber(args[4])},${toSVGNumber(
       args[5]
     )},${toSVGNumber(-args[6])}`,
-  Z: () => `Z`,
+  Z: () => `Z`
 };
 
 export function renderSVGPath(cmds: Array<{ cmd: string; args: number[] }>) {
-  return cmds.map((x) => path_commands[x.cmd](x.args)).join(" ");
+  return cmds.map(x => path_commands[x.cmd](x.args)).join(" ");
 }
 
 export function renderTransform(transform: Graphics.RigidTransform): string {
@@ -364,7 +364,7 @@ export function renderGraphicalElementSVG(
           className={options.className || null}
           style={style}
           points={polygon.points
-            .map((p) => `${toSVGNumber(p.x)},${toSVGNumber(-p.y)}`)
+            .map(p => `${toSVGNumber(p.x)},${toSVGNumber(-p.y)}`)
             .join(" ")}
         />
       );
@@ -484,14 +484,14 @@ export function renderGraphicalElementSVG(
             isSelected: (table: string, rowIndices: number[]) => {
               // Get parent row indices from component row indices
               const parentRowIndices = rowIndices.map(
-                (x) => component.selectable.rowIndices[x]
+                x => component.selectable.rowIndices[x]
               );
               // Query the selection with parent row indices
               return options.selection.isSelected(
                 component.selectable.plotSegment.table,
                 parentRowIndices
               );
-            },
+            }
           }
         : null;
 
@@ -514,8 +514,8 @@ export function renderGraphicalElementSVG(
                 plotSegment: component.selectable.plotSegment,
                 glyphIndex: component.selectable.glyphIndex,
                 rowIndices: s.rowIndices.map(
-                  (i) => component.selectable.rowIndices[i]
-                ),
+                  i => component.selectable.rowIndices[i]
+                )
               },
               parameters
             );
@@ -538,7 +538,7 @@ export function renderGraphicalElementSVG(
           onGlyphMouseLeave={convertEventHandler(options.onMouseLeave)}
           rendererOptions={{
             chartComponentSync: options.chartComponentSync,
-            externalResourceResolver: options.externalResourceResolver,
+            externalResourceResolver: options.externalResourceResolver
           }}
         />
       );
@@ -553,7 +553,7 @@ export function renderGraphicalElementSVG(
             opacity:
               group.style && group.style.opacity != null
                 ? group.style.opacity
-                : 1,
+                : 1
           }}
           {...mouseEvents}
         >
@@ -566,7 +566,7 @@ export function renderGraphicalElementSVG(
               onMouseEnter: options.onMouseEnter,
               onMouseLeave: options.onMouseLeave,
               onContextMenu: options.onContextMenu,
-              selection: options.selection,
+              selection: options.selection
             });
           })}
         </g>

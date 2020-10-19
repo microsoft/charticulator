@@ -28,7 +28,7 @@ export class MarginHandleView extends React.Component<
     super(props);
     this.state = {
       dragging: false,
-      newValue: this.props.handle.value,
+      newValue: this.props.handle.value
     };
   }
 
@@ -45,7 +45,7 @@ export class MarginHandleView extends React.Component<
     let dYIntegrate: number = 0;
     let dYLast: number = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       sign = this.props.handle.sign;
@@ -60,13 +60,13 @@ export class MarginHandleView extends React.Component<
       dYIntegrate = 0;
       this.setState({
         dragging: true,
-        newValue: oldValue,
+        newValue: oldValue
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -83,12 +83,12 @@ export class MarginHandleView extends React.Component<
           );
         }
         this.setState({
-          newValue,
+          newValue
         });
         context.emit("drag", { value: newValue });
       }
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -106,7 +106,7 @@ export class MarginHandleView extends React.Component<
         }
         context.emit("end", { value: newValue });
         this.setState({
-          dragging: false,
+          dragging: false
         });
         context = null;
       }

@@ -12,14 +12,14 @@ import {
   Handles,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   textAttributes,
   TextElementAttributes,
-  TextElementProperties,
+  TextElementProperties
 } from "./text.attrs";
 
 export { TextElementAttributes, TextElementProperties };
@@ -36,8 +36,8 @@ export class TextElementClass extends EmphasizableMarkClass<
     iconPath: "mark/text",
     creatingInteraction: {
       type: "point",
-      mapping: { x: "x", y: "y" },
-    },
+      mapping: { x: "x", y: "y" }
+    }
   };
 
   public static defaultMappingValues: Partial<TextElementAttributes> = {
@@ -46,13 +46,13 @@ export class TextElementClass extends EmphasizableMarkClass<
     fontSize: 14,
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
-    visible: true,
+    visible: true
   };
 
   public static defaultProperties: Partial<TextElementProperties> = {
     alignment: { x: "middle", y: "top", xMargin: 5, yMargin: 5 },
     rotation: 0,
-    visible: true,
+    visible: true
   };
 
   public attributes = textAttributes;
@@ -69,7 +69,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     attrs.color = {
       r: 0,
       g: 0,
-      b: 0,
+      b: 0
     };
     attrs.visible = true;
     attrs.outline = null;
@@ -118,7 +118,7 @@ export class TextElementClass extends EmphasizableMarkClass<
         strokeColor: attrs.outline,
         fillColor: attrs.color,
         opacity: attrs.opacity,
-        ...this.generateEmphasisStyle(empasized),
+        ...this.generateEmphasisStyle(empasized)
       }
     );
     const g = Graphics.makeGroup([text]);
@@ -136,10 +136,10 @@ export class TextElementClass extends EmphasizableMarkClass<
         dropAction: {
           scaleInference: {
             attribute: "text",
-            attributeType: Specification.AttributeType.Text,
-          },
-        },
-      } as DropZones.Rectangle,
+            attributeType: Specification.AttributeType.Text
+          }
+        }
+      } as DropZones.Rectangle
     ];
   }
   // Get bounding rectangle given current state
@@ -155,8 +155,8 @@ export class TextElementClass extends EmphasizableMarkClass<
         y,
         actions: [
           { type: "attribute", source: "x", attribute: "x" },
-          { type: "attribute", source: "y", attribute: "y" },
-        ],
+          { type: "attribute", source: "y", attribute: "y" }
+        ]
       } as Handles.Point,
       {
         type: "text-alignment",
@@ -166,8 +166,8 @@ export class TextElementClass extends EmphasizableMarkClass<
           {
             type: "attribute-value-mapping",
             source: "text",
-            attribute: "text",
-          },
+            attribute: "text"
+          }
         ],
         textWidth: bbox.width,
         textHeight: bbox.height,
@@ -175,8 +175,8 @@ export class TextElementClass extends EmphasizableMarkClass<
         anchorY: y,
         text: attrs.text,
         alignment: props.alignment,
-        rotation: props.rotation,
-      } as Handles.TextAlignment,
+        rotation: props.rotation
+      } as Handles.TextAlignment
     ];
   }
 
@@ -208,7 +208,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       cy: attrs.y + cx * sin + cy * cos,
       width: metrics.width,
       height: (metrics.middle - metrics.ideographicBaseline) * 2,
-      rotation,
+      rotation
     };
   }
 
@@ -223,7 +223,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation,
+      rotation: rect.rotation
     } as BoundingBox.AnchoredRectangle;
   }
 
@@ -232,7 +232,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     const { x, y, x1, y1, x2, y2 } = attrs;
     return [
       { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis
     ];
   }
 
@@ -245,7 +245,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: "Arial",
+        defaultValue: "Arial"
       }),
       manager.mappingEditor("Size", "fontSize", {
         hints: { rangeNumber: [0, 36] },
@@ -254,8 +254,8 @@ export class TextElementClass extends EmphasizableMarkClass<
           showUpdown: true,
           updownStyle: "font",
           minimum: 0,
-          updownTick: 2,
-        },
+          updownTick: 2
+        }
       }),
       manager.sectionHeader("Anchor & Rotation"),
       manager.row(
@@ -269,10 +269,10 @@ export class TextElementClass extends EmphasizableMarkClass<
               icons: [
                 "text-align/left",
                 "text-align/x-middle",
-                "text-align/right",
+                "text-align/right"
               ],
               labels: ["Left", "Middle", "Right"],
-              options: ["left", "middle", "right"],
+              options: ["left", "middle", "right"]
             }
           ),
           props.alignment.x != "middle"
@@ -283,7 +283,7 @@ export class TextElementClass extends EmphasizableMarkClass<
                   { property: "alignment", field: "xMargin" },
                   {
                     updownTick: 1,
-                    showUpdown: true,
+                    showUpdown: true
                   }
                 )
               )
@@ -301,10 +301,10 @@ export class TextElementClass extends EmphasizableMarkClass<
               icons: [
                 "text-align/top",
                 "text-align/y-middle",
-                "text-align/bottom",
+                "text-align/bottom"
               ],
               labels: ["Top", "Middle", "Bottom"],
-              options: ["top", "middle", "bottom"],
+              options: ["top", "middle", "bottom"]
             }
           ),
           props.alignment.y != "middle"
@@ -315,7 +315,7 @@ export class TextElementClass extends EmphasizableMarkClass<
                   { property: "alignment", field: "yMargin" },
                   {
                     updownTick: 1,
-                    showUpdown: true,
+                    showUpdown: true
                   }
                 )
               )
@@ -329,11 +329,11 @@ export class TextElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+        defaultValue: true
+      })
     ].concat(parentWidgets);
   }
 
@@ -346,10 +346,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fontFamily",
+          attribute: "fontFamily"
         },
         type: Specification.AttributeType.FontFamily,
-        default: this.state.attributes.fontFamily,
+        default: this.state.attributes.fontFamily
       });
     }
     if (
@@ -359,10 +359,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "fontSize",
+          attribute: "fontSize"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.fontSize,
+        default: this.state.attributes.fontSize
       });
     }
     if (
@@ -372,10 +372,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "color",
+          attribute: "color"
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.color),
+        default: rgbToHex(this.state.attributes.color)
       });
     }
     if (
@@ -385,10 +385,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible",
+          attribute: "visible"
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible,
+        default: this.state.attributes.visible
       });
     }
     if (
@@ -398,10 +398,10 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity",
+          attribute: "opacity"
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity,
+        default: this.state.attributes.opacity
       });
     }
     if (
@@ -411,15 +411,15 @@ export class TextElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "text",
+          attribute: "text"
         },
         type: Specification.AttributeType.Text,
-        default: this.state.attributes.text,
+        default: this.state.attributes.text
       });
     }
 
     return {
-      properties,
+      properties
     };
   }
 }

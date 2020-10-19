@@ -222,7 +222,7 @@ export const monthNames = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec",
+  "Dec"
 ];
 
 const monthNameMap: { [name: string]: string } = {
@@ -260,7 +260,7 @@ const monthNameMap: { [name: string]: string } = {
   november: "Nov",
 
   dec: "Dec",
-  december: "Dec",
+  december: "Dec"
 };
 
 /** Check if a string is a month name, if yes, return a normalized version */

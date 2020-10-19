@@ -11,7 +11,7 @@ export const imageAttributes: AttributeDescriptions = {
   ...AttrBuilder.center(),
   ...AttrBuilder.size(),
   ...AttrBuilder.style({ fill: true }),
-  ...AttrBuilder.image(),
+  ...AttrBuilder.image()
 };
 
 export interface ImageElementAttributes extends AttributeMap {

@@ -57,12 +57,12 @@ export class InputText extends React.Component<InputTextProps, {}> {
       <input
         className="charticulator__widget-control-input-field"
         type="text"
-        ref={(e) => (this.inputElement = e)}
+        ref={e => (this.inputElement = e)}
         defaultValue={
           this.props.defaultValue != null ? this.props.defaultValue : ""
         }
         placeholder={this.props.placeholder}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if (e.key == "Enter") {
             this.doEnter();
           }
@@ -70,7 +70,7 @@ export class InputText extends React.Component<InputTextProps, {}> {
             this.doCancel();
           }
         }}
-        onFocus={(e) => {
+        onFocus={e => {
           // Select the text, with backward selection
           this.inputElement.setSelectionRange(
             0,

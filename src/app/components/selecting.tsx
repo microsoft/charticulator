@@ -41,7 +41,7 @@ export class SelectionView extends React.Component<
 
   public getDefaultState(): SelectionViewState {
     return {
-      marquee: null,
+      marquee: null
     };
   }
 
@@ -52,7 +52,7 @@ export class SelectionView extends React.Component<
 
     this.hammer.on("tap", () => {
       this.setState({
-        marquee: null,
+        marquee: null
       });
       if (this.props.onTap) {
         this.props.onTap();
@@ -60,26 +60,26 @@ export class SelectionView extends React.Component<
     });
 
     let currentMarquee: MarqueeSelection = null;
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", e => {
       const rect = this.refs.handler.getBoundingClientRect();
       const [x, y] = [e.center.x - rect.left, e.center.y - rect.top];
       currentMarquee = {
         x1: x,
         y1: y,
         x2: x,
-        y2: y,
+        y2: y
       };
     });
-    this.hammer.on("pan", (e) => {
+    this.hammer.on("pan", e => {
       const rect = this.refs.handler.getBoundingClientRect();
       const [x, y] = [e.center.x - rect.left, e.center.y - rect.top];
       currentMarquee.x2 = x;
       currentMarquee.y2 = y;
       this.setState({
-        marquee: currentMarquee,
+        marquee: currentMarquee
       });
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", e => {
       const rect = this.refs.handler.getBoundingClientRect();
       const [x, y] = [e.center.x - rect.left, e.center.y - rect.top];
       currentMarquee.x2 = x;
@@ -88,7 +88,7 @@ export class SelectionView extends React.Component<
         this.props.onMarqueeSelect(currentMarquee);
       }
       this.setState({
-        marquee: null,
+        marquee: null
       });
     });
   }

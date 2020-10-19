@@ -7,12 +7,12 @@ import { AppStore } from "../app_store";
 import {
   ChartElementSelection,
   GlyphSelection,
-  MarkSelection,
+  MarkSelection
 } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
-export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.SelectChartElement, function (action) {
+export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.SelectChartElement, function(action) {
     const selection = new ChartElementSelection(action.chartElement);
     if (Prototypes.isType(action.chartElement.classID, "plot-segment")) {
       const plotSegment = action.chartElement as Specification.PlotSegment;
@@ -25,7 +25,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.SelectMark, function (action) {
+  REG.add(Actions.SelectMark, function(action) {
     if (action.plotSegment == null) {
       action.plotSegment = this.findPlotSegmentForGlyph(action.glyph);
     }
@@ -42,7 +42,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.SelectGlyph, function (action) {
+  REG.add(Actions.SelectGlyph, function(action) {
     if (action.plotSegment == null) {
       action.plotSegment = this.findPlotSegmentForGlyph(action.glyph);
     }
@@ -55,18 +55,18 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ClearSelection, function (action) {
+  REG.add(Actions.ClearSelection, function(action) {
     this.currentSelection = null;
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.SetCurrentTool, function (action) {
+  REG.add(Actions.SetCurrentTool, function(action) {
     this.currentTool = action.tool;
     this.currentToolOptions = action.options;
     this.emit(AppStore.EVENT_CURRENT_TOOL);
   });
 
-  REG.add(Actions.FocusToMarkAttribute, function (action) {
+  REG.add(Actions.FocusToMarkAttribute, function(action) {
     this.currentAttributeFocus = action.attributeName;
     this.emit(AppStore.EVENT_GRAPHICS);
   });

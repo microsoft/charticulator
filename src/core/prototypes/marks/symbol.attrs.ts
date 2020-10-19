@@ -13,17 +13,17 @@ export const symbolTypes: string[] = [
   "square",
   "star",
   "triangle",
-  "wye",
+  "wye"
 ];
 
 export const symbolAttributes: AttributeDescriptions = {
   ...AttrBuilder.point(),
   ...AttrBuilder.number("size", false, {
     defaultRange: [0, 200 * Math.PI],
-    defaultValue: 60,
+    defaultValue: 60
   }),
   ...AttrBuilder.enum("symbol", { defaultRange: symbolTypes }),
-  ...AttrBuilder.style({ fill: true }),
+  ...AttrBuilder.style({ fill: true })
 };
 
 export interface SymbolElementAttributes extends AttributeMap {

@@ -12,7 +12,7 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
+  uniqueID
 } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, SVGImageIcon } from "../../components";
@@ -21,7 +21,7 @@ import { ContextedComponent } from "../../context_component";
 import { classNames } from "../../utils";
 import {
   DataFieldSelector,
-  DataFieldSelectorValue,
+  DataFieldSelectorValue
 } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
@@ -49,10 +49,10 @@ export class LinkCreationPanel extends ContextedComponent<
 
   private getDefaultState(): LinkCreationPanelState {
     let plotSegments = this.store.chart.elements as Specification.PlotSegment[];
-    plotSegments = plotSegments.filter((x) =>
+    plotSegments = plotSegments.filter(x =>
       Prototypes.isType(x.classID, "plot-segment")
     );
-    const selectedPlotSegments = plotSegments.map((x) => x._id);
+    const selectedPlotSegments = plotSegments.map(x => x._id);
     let linkMode = "link-through";
     if (selectedPlotSegments.length == 1) {
       linkMode = this.isLinkDataPresent() ? "link-table" : "link-through";
@@ -64,7 +64,7 @@ export class LinkCreationPanel extends ContextedComponent<
       linkMode,
       plotSegments,
       selectedPlotSegments,
-      errorReport: null,
+      errorReport: null
     };
   }
 
@@ -94,7 +94,7 @@ export class LinkCreationPanel extends ContextedComponent<
             <PlotSegmentSelector
               items={this.state.plotSegments}
               defaultSelection={this.state.selectedPlotSegments}
-              onChange={(newSelection) => {
+              onChange={newSelection => {
                 let linkMode = this.state.linkMode;
                 if (newSelection.length == 1) {
                   linkMode = this.isLinkDataPresent()
@@ -105,7 +105,7 @@ export class LinkCreationPanel extends ContextedComponent<
                 }
                 this.setState({
                   linkMode,
-                  selectedPlotSegments: newSelection,
+                  selectedPlotSegments: newSelection
                 });
               }}
             />
@@ -120,7 +120,7 @@ export class LinkCreationPanel extends ContextedComponent<
               icons={["link/through", "link/table"]}
               labels={["Sequentially", "By Link Data"]}
               value={this.state.linkMode}
-              onChange={(newValue) => this.setState({ linkMode: newValue })}
+              onChange={newValue => this.setState({ linkMode: newValue })}
               showText={true}
               asList={true}
             />
@@ -131,7 +131,7 @@ export class LinkCreationPanel extends ContextedComponent<
             <h2>Connect by:</h2>
             <div className="el-row">
               <DataFieldSelector
-                ref={(e) => (this.groupBySelector = e)}
+                ref={e => (this.groupBySelector = e)}
                 kinds={[Specification.DataKind.Categorical]}
                 datasetStore={this.store}
                 nullDescription="(link all items)"
@@ -151,7 +151,7 @@ export class LinkCreationPanel extends ContextedComponent<
                 }
               } else {
                 this.setState({
-                  errorReport: "Cannot Create Link!",
+                  errorReport: "Cannot Create Link!"
                 });
               }
             }}
@@ -188,7 +188,7 @@ export class LinkCreationPanel extends ContextedComponent<
         {
           color = {
             type: "value",
-            value: { r: 0, g: 0, b: 0 },
+            value: { r: 0, g: 0, b: 0 }
           } as Specification.ValueMapping;
           opacity = { type: "value", value: 1 } as Specification.ValueMapping;
         }
@@ -197,7 +197,7 @@ export class LinkCreationPanel extends ContextedComponent<
         {
           color = {
             type: "value",
-            value: { r: 0, g: 0, b: 0 },
+            value: { r: 0, g: 0, b: 0 }
           } as Specification.ValueMapping;
           opacity = { type: "value", value: 0.5 } as Specification.ValueMapping;
         }
@@ -219,13 +219,13 @@ export class LinkCreationPanel extends ContextedComponent<
     switch (this.state.linkType) {
       case "line":
         {
-          candidates1 = candidates1.filter((x) => x.points.length == 1);
-          candidates2 = candidates2.filter((x) => x.points.length == 1);
+          candidates1 = candidates1.filter(x => x.points.length == 1);
+          candidates2 = candidates2.filter(x => x.points.length == 1);
         }
         break;
       case "band": {
-        candidates1 = candidates1.filter((x) => x.points.length == 2);
-        candidates2 = candidates2.filter((x) => x.points.length == 2);
+        candidates1 = candidates1.filter(x => x.points.length == 2);
+        candidates2 = candidates2.filter(x => x.points.length == 2);
       }
     }
 
@@ -272,7 +272,7 @@ export class LinkCreationPanel extends ContextedComponent<
       }
       return {
         x: x / points.length,
-        y: y / points.length,
+        y: y / points.length
       };
     };
 
@@ -280,45 +280,45 @@ export class LinkCreationPanel extends ContextedComponent<
       c2: Prototypes.LinkAnchor.Description = null;
     if (xRelationship == "after") {
       if (linkMode == "link-table") {
-        c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).y)];
-        c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).y)];
+        c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).y)];
+        c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).y)];
       } else {
-        c1 = candidates1[argMax(candidates1, (c) => meanPoint(c.points).x)];
-        c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).x)];
+        c1 = candidates1[argMax(candidates1, c => meanPoint(c.points).x)];
+        c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).x)];
       }
     } else if (xRelationship == "before") {
       if (linkMode == "link-table") {
-        c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).y)];
-        c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).y)];
+        c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).y)];
+        c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).y)];
       } else {
-        c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).x)];
-        c2 = candidates2[argMax(candidates2, (c) => meanPoint(c.points).x)];
+        c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).x)];
+        c2 = candidates2[argMax(candidates2, c => meanPoint(c.points).x)];
       }
     } else {
       if (yRelationship == "after") {
         if (linkMode == "link-table") {
-          c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).x)];
-          c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).x)];
+          c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).x)];
+          c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).x)];
         } else {
-          c1 = candidates1[argMax(candidates1, (c) => meanPoint(c.points).y)];
-          c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).y)];
+          c1 = candidates1[argMax(candidates1, c => meanPoint(c.points).y)];
+          c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).y)];
         }
       } else if (yRelationship == "before") {
         if (linkMode == "link-table") {
-          c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).x)];
-          c2 = candidates2[argMin(candidates2, (c) => meanPoint(c.points).x)];
+          c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).x)];
+          c2 = candidates2[argMin(candidates2, c => meanPoint(c.points).x)];
         } else {
-          c1 = candidates1[argMin(candidates1, (c) => meanPoint(c.points).y)];
-          c2 = candidates2[argMax(candidates2, (c) => meanPoint(c.points).y)];
+          c1 = candidates1[argMin(candidates1, c => meanPoint(c.points).y)];
+          c2 = candidates2[argMax(candidates2, c => meanPoint(c.points).y)];
         }
       } else {
         c1 =
           candidates1[
-            argMin(candidates1, (c) => Math.abs(meanPoint(c.points).y))
+            argMin(candidates1, c => Math.abs(meanPoint(c.points).y))
           ];
         c2 =
           candidates2[
-            argMin(candidates2, (c) => Math.abs(meanPoint(c.points).y))
+            argMin(candidates2, c => Math.abs(meanPoint(c.points).y))
           ];
       }
     }
@@ -335,9 +335,9 @@ export class LinkCreationPanel extends ContextedComponent<
                   yAttribute: "icy",
                   x: 0,
                   y: 0,
-                  direction: { x: 0, y: 0 },
-                },
-              ],
+                  direction: { x: 0, y: 0 }
+                }
+              ]
             };
           }
           if (c2 == null) {
@@ -349,9 +349,9 @@ export class LinkCreationPanel extends ContextedComponent<
                   yAttribute: "icy",
                   x: 0,
                   y: 0,
-                  direction: { x: 0, y: 0 },
-                },
-              ],
+                  direction: { x: 0, y: 0 }
+                }
+              ]
             };
           }
         }
@@ -367,16 +367,16 @@ export class LinkCreationPanel extends ContextedComponent<
                   yAttribute: "iy1",
                   x: 0,
                   y: 0,
-                  direction: { x: 1, y: 0 },
+                  direction: { x: 1, y: 0 }
                 },
                 {
                   xAttribute: "icx",
                   yAttribute: "iy2",
                   x: 0,
                   y: 0,
-                  direction: { x: 1, y: 0 },
-                },
-              ],
+                  direction: { x: 1, y: 0 }
+                }
+              ]
             };
           }
           if (c2 == null) {
@@ -388,35 +388,35 @@ export class LinkCreationPanel extends ContextedComponent<
                   yAttribute: "iy1",
                   x: 0,
                   y: 0,
-                  direction: { x: -1, y: 0 },
+                  direction: { x: -1, y: 0 }
                 },
                 {
                   xAttribute: "icx",
                   yAttribute: "iy2",
                   x: 0,
                   y: 0,
-                  direction: { x: -1, y: 0 },
-                },
-              ],
+                  direction: { x: -1, y: 0 }
+                }
+              ]
             };
           }
         }
         break;
     }
 
-    const anchor1 = c1.points.map((pt) => {
+    const anchor1 = c1.points.map(pt => {
       return {
         x: { element: c1.element, attribute: pt.xAttribute },
         y: { element: c1.element, attribute: pt.yAttribute },
-        direction: pt.direction,
+        direction: pt.direction
       } as Specification.Types.LinkAnchorPoint;
     });
 
-    const anchor2 = c2.points.map((pt) => {
+    const anchor2 = c2.points.map(pt => {
       return {
         x: { element: c2.element, attribute: pt.xAttribute },
         y: { element: c2.element, attribute: pt.yAttribute },
-        direction: pt.direction,
+        direction: pt.direction
       } as Specification.Types.LinkAnchorPoint;
     });
 
@@ -461,7 +461,7 @@ export class LinkCreationPanel extends ContextedComponent<
       anchor1,
       anchor2,
       color,
-      opacity,
+      opacity
     };
   }
 
@@ -485,10 +485,10 @@ export class LinkCreationPanel extends ContextedComponent<
     }
     const plotSegmentIDs = this.state.selectedPlotSegments;
     const plotSegmentClasses = plotSegmentIDs.map(
-      (x) => manager.getClassById(x) as Prototypes.PlotSegments.PlotSegmentClass
+      x => manager.getClassById(x) as Prototypes.PlotSegments.PlotSegmentClass
     );
     const glyphs = plotSegmentClasses.map(
-      (c) => manager.getObjectById(c.object.glyph) as Specification.Glyph
+      c => manager.getObjectById(c.object.glyph) as Specification.Glyph
     );
 
     switch (this.state.linkMode) {
@@ -501,7 +501,7 @@ export class LinkCreationPanel extends ContextedComponent<
           ? this.groupBySelector.value
             ? [
                 (this.groupBySelector.value as DataFieldSelectorValue)
-                  .expression,
+                  .expression
               ]
             : []
           : [];
@@ -509,7 +509,7 @@ export class LinkCreationPanel extends ContextedComponent<
         const facets = Prototypes.Links.facetRows(
           manager.dataflow.getTable(plotSegmentClass.object.table),
           plotSegmentClass.state.dataRowIndices,
-          facetBy.map((x) => manager.dataflow.cache.parse(x))
+          facetBy.map(x => manager.dataflow.cache.parse(x))
         );
 
         const layoutState = plotSegmentClass.state;
@@ -527,7 +527,7 @@ export class LinkCreationPanel extends ContextedComponent<
           anchor1,
           anchor2,
           color,
-          opacity,
+          opacity
         } = this.getDefaultAnchor(
           manager,
           "link-through",
@@ -543,7 +543,7 @@ export class LinkCreationPanel extends ContextedComponent<
           classID: "links.through",
           mappings: {
             color,
-            opacity,
+            opacity
           },
           properties: {
             name: "Link",
@@ -555,24 +555,24 @@ export class LinkCreationPanel extends ContextedComponent<
             anchor2,
             linkThrough: {
               plotSegment: this.state.selectedPlotSegments[0],
-              facetExpressions: facetBy,
+              facetExpressions: facetBy
             },
-            curveness: 30,
-          } as Prototypes.Links.LinksProperties,
+            curveness: 30
+          } as Prototypes.Links.LinksProperties
         };
 
         return links;
       }
       case "link-between": {
         // Find the first pair of glyphs
-        const firstGlyphs = plotSegmentClasses.map((x) => x.state.glyphs[0]);
+        const firstGlyphs = plotSegmentClasses.map(x => x.state.glyphs[0]);
         const {
           linkType,
           interpolationType,
           anchor1,
           anchor2,
           color,
-          opacity,
+          opacity
         } = this.getDefaultAnchor(
           manager,
           "link-between",
@@ -588,7 +588,7 @@ export class LinkCreationPanel extends ContextedComponent<
           classID: "links.between",
           mappings: {
             color,
-            opacity,
+            opacity
           },
           properties: {
             name: "Link",
@@ -599,10 +599,10 @@ export class LinkCreationPanel extends ContextedComponent<
             anchor1,
             anchor2,
             linkBetween: {
-              plotSegments: plotSegmentIDs,
+              plotSegments: plotSegmentIDs
             },
-            curveness: 30,
-          } as Prototypes.Links.LinksProperties,
+            curveness: 30
+          } as Prototypes.Links.LinksProperties
         };
 
         return links;
@@ -616,7 +616,7 @@ export class LinkCreationPanel extends ContextedComponent<
           anchor1,
           anchor2,
           color,
-          opacity,
+          opacity
         } = this.getDefaultAnchor(
           manager,
           "link-table",
@@ -632,7 +632,7 @@ export class LinkCreationPanel extends ContextedComponent<
           classID: "links.table",
           mappings: {
             color,
-            opacity,
+            opacity
           },
           properties: {
             name: "Link",
@@ -646,11 +646,11 @@ export class LinkCreationPanel extends ContextedComponent<
               table: this.store.dataset.tables[1].name,
               plotSegments: [
                 plotSegmentClasses[0].object._id,
-                plotSegmentClasses[0].object._id,
-              ],
+                plotSegmentClasses[0].object._id
+              ]
             },
-            curveness: 30,
-          } as Prototypes.Links.LinksProperties,
+            curveness: 30
+          } as Prototypes.Links.LinksProperties
         };
 
         return links;
@@ -679,8 +679,8 @@ export class PlotSegmentSelector extends ContextedComponent<
   private getInitialState(): PlotSegmentSelectorState {
     const plotSegments = this.props.items;
     return {
-      order: plotSegments.map((x) => x._id),
-      selection: this.props.defaultSelection || plotSegments.map((x) => x._id),
+      order: plotSegments.map(x => x._id),
+      selection: this.props.defaultSelection || plotSegments.map(x => x._id)
     };
   }
 
@@ -699,41 +699,41 @@ export class PlotSegmentSelector extends ContextedComponent<
             const newOrder = this.state.order.slice();
             ReorderListView.ReorderArray(newOrder, a, b);
             const newSelection = this.state.order.filter(
-              (x) => this.state.selection.indexOf(x) >= 0
+              x => this.state.selection.indexOf(x) >= 0
             );
             this.setState(
               {
                 order: newOrder,
-                selection: newSelection,
+                selection: newSelection
               },
               () => this.notify()
             );
           }}
         >
-          {this.state.order.map((id) => {
+          {this.state.order.map(id => {
             const item = getById(this.props.items, id);
             return (
               <div
                 key={id}
                 className={classNames("el-item", [
                   "is-active",
-                  this.state.selection.indexOf(id) >= 0,
+                  this.state.selection.indexOf(id) >= 0
                 ])}
-                onClick={(e) => {
+                onClick={e => {
                   if (e.shiftKey) {
                     const newSelection = this.state.order.filter(
-                      (x) => x == id || this.state.selection.indexOf(x) >= 0
+                      x => x == id || this.state.selection.indexOf(x) >= 0
                     );
                     this.setState(
                       {
-                        selection: newSelection,
+                        selection: newSelection
                       },
                       () => this.notify()
                     );
                   } else {
                     this.setState(
                       {
-                        selection: [id],
+                        selection: [id]
                       },
                       () => this.notify()
                     );

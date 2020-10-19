@@ -44,7 +44,7 @@ export class IndexedDBBackend {
         request.onupgradeneeded = () => {
           this.database = request.result;
           const itemsStore = this.database.createObjectStore("items", {
-            keyPath: "id",
+            keyPath: "id"
           });
           itemsStore.createIndex("TypeIndex", "type");
           itemsStore.createIndex("DataIDIndex", "dataID");
@@ -52,13 +52,13 @@ export class IndexedDBBackend {
           itemsStore.createIndex("TimeCreatedIndex", "metadata.timeCreated");
           itemsStore.createIndex("TimeModifiedIndex", "metadata.timeModified");
           const dataStore = this.database.createObjectStore("data", {
-            keyPath: "id",
+            keyPath: "id"
           });
         };
         request.onerror = () => {
           reject(new Error("could not open database"));
         };
-        request.onsuccess = (e) => {
+        request.onsuccess = e => {
           this.database = request.result;
           resolve();
         };
@@ -95,7 +95,7 @@ export class IndexedDBBackend {
                 resultFiltered = resultFiltered.slice(start, start + count);
                 resolve({
                   items: resultFiltered,
-                  totalCount: result.length,
+                  totalCount: result.length
                 });
               }
             };
@@ -152,11 +152,11 @@ export class IndexedDBBackend {
               id,
               dataID: req1.result.dataID,
               type: original.type,
-              metadata,
+              metadata
             };
             const dataObj = {
               id: req1.result.dataID,
-              data,
+              data
             };
             dataStore.put(dataObj);
             itemsStore.put(obj);
@@ -188,11 +188,11 @@ export class IndexedDBBackend {
             id: uuid(),
             dataID: uuid(),
             type,
-            metadata,
+            metadata
           };
           const dataObj = {
             id: obj.dataID,
-            data,
+            data
           };
           dataStore.put(dataObj);
           itemsStore.put(obj);

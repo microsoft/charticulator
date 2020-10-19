@@ -48,10 +48,10 @@ describe("Chart Solver", () => {
   const pathPrefix = "src/tests/unit/charts";
 
   // Scan for test cases
-  const cases = fs.readdirSync(pathPrefix).filter((x) => x.endsWith(".json"));
+  const cases = fs.readdirSync(pathPrefix).filter(x => x.endsWith(".json"));
 
   // Run tests
-  cases.forEach((filename) => {
+  cases.forEach(filename => {
     it(filename, async () => {
       // The solver has to be initialized, other options can be omitted
       await initialize();

@@ -12,7 +12,7 @@ import {
   Controls,
   TemplateParameters,
   LinkAnchor,
-  isType,
+  isType
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { ObjectClasses } from "../object";
@@ -23,7 +23,7 @@ export type GuideAxis = "x" | "y";
 
 export enum GuideAttributeNames {
   value = "value",
-  computedBaselineValue = "computedBaselineValue",
+  computedBaselineValue = "computedBaselineValue"
 }
 
 export interface GuideAttributes extends Specification.AttributeMap {
@@ -37,7 +37,7 @@ interface GuideAttributeDescription extends AttributeDescription {
 
 export enum GuidePropertyNames {
   axis = "axis",
-  baseline = "baseline",
+  baseline = "baseline"
 }
 
 export interface GuideProperties extends Specification.AttributeMap {
@@ -54,28 +54,28 @@ export class GuideClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Guide",
-    iconPath: "guide/x",
+    iconPath: "guide/x"
   };
 
   public static defaultProperties: Partial<GuideProperties> = {
-    baseline: null,
+    baseline: null
   };
 
   public attributeNames: GuideAttributeNames[] = [
     GuideAttributeNames.value,
-    GuideAttributeNames.computedBaselineValue,
+    GuideAttributeNames.computedBaselineValue
   ];
   public attributes: {
-    [name in GuideAttributeNames]: GuideAttributeDescription;
+    [name in GuideAttributeNames]: GuideAttributeDescription
   } = {
     value: {
       name: GuideAttributeNames.value,
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     computedBaselineValue: {
       name: GuideAttributeNames.computedBaselineValue,
-      type: Specification.AttributeType.Number,
-    },
+      type: Specification.AttributeType.Number
+    }
   };
 
   public initializeState() {
@@ -104,7 +104,7 @@ export class GuideClass extends ChartElementClass<
             this.state.attributes,
             [
               GuideAttributeNames.value,
-              GuideAttributeNames.computedBaselineValue,
+              GuideAttributeNames.computedBaselineValue
             ]
           );
           solver.addLinear(
@@ -118,10 +118,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [
-              [-0.5, width],
-              [+1, value],
-            ]
+            ([width], value) => [[-0.5, width], [+1, value]]
           );
           break;
         }
@@ -129,10 +126,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [
-              [+0.5, width],
-              [+1, value],
-            ]
+            ([width], value) => [[+0.5, width], [+1, value]]
           );
           break;
         }
@@ -140,10 +134,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [
-              [+0.5, height],
-              [+1, value],
-            ]
+            ([height], value) => [[+0.5, height], [+1, value]]
           );
           break;
         }
@@ -151,10 +142,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [
-              [-0.5, height],
-              [+1, value],
-            ]
+            ([height], value) => [[-0.5, height], [+1, value]]
           );
           break;
         }
@@ -165,10 +153,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["cx"],
-            ([cx], value) => [
-              [+1, cx],
-              [+1, value],
-            ]
+            ([cx], value) => [[+1, cx], [+1, value]]
           );
           break;
         }
@@ -176,10 +161,7 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["cy"],
-            ([cy], value) => [
-              [+1, cy],
-              [+1, value],
-            ]
+            ([cy], value) => [[+1, cy], [+1, value]]
           );
           break;
         }
@@ -190,7 +172,7 @@ export class GuideClass extends ChartElementClass<
             ([width, marginLeft], value) => [
               [-0.5, width],
               [+1, marginLeft],
-              [+1, value],
+              [+1, value]
             ]
           );
           break;
@@ -202,7 +184,7 @@ export class GuideClass extends ChartElementClass<
             ([width, marginRight], value) => [
               [+0.5, width],
               [-1, marginRight],
-              [+1, value],
+              [+1, value]
             ]
           );
           break;
@@ -214,7 +196,7 @@ export class GuideClass extends ChartElementClass<
             ([height, marginTop], value) => [
               [+0.5, height],
               [-1, marginTop],
-              [+1, value],
+              [+1, value]
             ]
           );
           break;
@@ -226,7 +208,7 @@ export class GuideClass extends ChartElementClass<
             ([height, marginBottom], value) => [
               [-0.5, height],
               [+1, marginBottom],
-              [+1, value],
+              [+1, value]
             ]
           );
           break;
@@ -252,7 +234,7 @@ export class GuideClass extends ChartElementClass<
 
     const [value, computedBaselineValue] = solver.attrs(this.state.attributes, [
       GuideAttributeNames.value,
-      GuideAttributeNames.computedBaselineValue,
+      GuideAttributeNames.computedBaselineValue
     ]);
     solver.makeConstant(this.state.attributes, GuideAttributeNames.value);
 
@@ -280,11 +262,11 @@ export class GuideClass extends ChartElementClass<
           type: "line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            { type: "attribute", attribute: GuideAttributeNames.value }
           ],
           value,
-          span: inf,
-        },
+          span: inf
+        }
       ] as Handles.Line[];
     };
     const handleRelativeLine = (reference: number) => {
@@ -293,13 +275,13 @@ export class GuideClass extends ChartElementClass<
           type: "relative-line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            { type: "attribute", attribute: GuideAttributeNames.value }
           ],
           reference,
           sign: 1,
           value,
-          span: inf,
-        },
+          span: inf
+        }
       ] as Handles.RelativeLine[];
     };
     const parentAttrs = this.parent.state.attributes;
@@ -355,14 +337,14 @@ export class GuideClass extends ChartElementClass<
         type: this.getAxis(),
         value,
         attribute,
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis;
     };
     const r = [
       snappingGuideAxis(
         GuideAttributeNames.computedBaselineValue,
         this.state.attributes.computedBaselineValue
-      ),
+      )
     ];
     return r;
   }
@@ -397,7 +379,7 @@ export class GuideClass extends ChartElementClass<
             showLabel: true,
             labels,
             options,
-            icons,
+            icons
           }
         )
       )
@@ -405,7 +387,7 @@ export class GuideClass extends ChartElementClass<
 
     widgets.push(
       manager.mappingEditor("Value", GuideAttributeNames.value, {
-        defaultValue: this.state.attributes.value,
+        defaultValue: this.state.attributes.value
       })
     );
 
@@ -418,28 +400,28 @@ export class GuideClass extends ChartElementClass<
         {
           objectID: this.object._id,
           target: {
-            attribute: GuidePropertyNames.baseline,
+            attribute: GuidePropertyNames.baseline
           },
           type: Specification.AttributeType.Enum,
-          default: this.object.properties.baseline,
+          default: this.object.properties.baseline
         },
         {
           objectID: this.object._id,
           target: {
-            attribute: GuideAttributeNames.value,
+            attribute: GuideAttributeNames.value
           },
           type: Specification.AttributeType.Number,
-          default: this.state.attributes.value as number,
+          default: this.state.attributes.value as number
         },
         {
           objectID: this.object._id,
           target: {
-            attribute: GuideAttributeNames.computedBaselineValue,
+            attribute: GuideAttributeNames.computedBaselineValue
           },
           type: Specification.AttributeType.Number,
-          default: this.state.attributes.computedBaselineValue,
-        },
-      ],
+          default: this.state.attributes.computedBaselineValue
+        }
+      ]
     };
   }
 }
@@ -464,12 +446,12 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuideCoordinator",
-    iconPath: "guide/coordinator-x",
+    iconPath: "guide/coordinator-x"
   };
 
   public static defaultAttributes: Partial<GuideCoordinatorAttributes> = {
     axis: "x",
-    count: 4,
+    count: 4
   };
 
   public buildConstraints(solver: ConstraintSolver) {
@@ -488,10 +470,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [1 - t, t1],
-          [t, t2],
-        ],
+        [[1 - t, t1], [t, t2]],
         [[1, solver.attr(attrs, name)]]
       );
     });
@@ -519,26 +498,26 @@ export class GuideCoordinatorClass extends ChartElementClass<
     const r: { [name: string]: AttributeDescription } = {
       x1: {
         name: "x1",
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       },
       y1: {
         name: "y1",
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       },
       x2: {
         name: "x2",
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       },
       y2: {
         name: "y2",
-        type: Specification.AttributeType.Number,
-      },
+        type: Specification.AttributeType.Number
+      }
     };
     for (let i = 0; i < this.object.properties.count; i++) {
       const name = `value${i}`;
       r[name] = {
         name,
-        type: Specification.AttributeType.Number,
+        type: Specification.AttributeType.Number
       };
     }
     return r;
@@ -573,8 +552,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -584,15 +563,15 @@ export class GuideCoordinatorClass extends ChartElementClass<
           {
             type: "attribute",
             source: "x",
-            attribute: axis == "y" ? "x1" : "x2",
+            attribute: axis == "y" ? "x1" : "x2"
           },
           {
             type: "attribute",
             source: "y",
-            attribute: axis == "x" ? "y1" : "y2",
-          },
-        ],
-      } as Handles.Point,
+            attribute: axis == "x" ? "y1" : "y2"
+          }
+        ]
+      } as Handles.Point
     ];
   }
 
@@ -612,17 +591,17 @@ export class GuideCoordinatorClass extends ChartElementClass<
       x1,
       y1,
       x2,
-      y2,
+      y2
     } as BoundingBox.Line;
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    return this.getValueNames().map((name) => {
+    return this.getValueNames().map(name => {
       return {
         type: this.getAxis(),
         value: this.state.attributes[name],
         attribute: name,
-        visible: true,
+        visible: true
       } as SnappingGuides.Axis;
     });
   }
@@ -642,10 +621,10 @@ export class GuideCoordinatorClass extends ChartElementClass<
             updownTick: 1,
             updownRange: [1, 100],
             minimum: 1,
-            maximum: 100,
+            maximum: 100
           }
         )
-      ),
+      )
     ];
   }
 }

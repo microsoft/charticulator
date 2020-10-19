@@ -11,7 +11,7 @@ import {
   Dispatcher,
   Specification,
   Dataset,
-  deepClone,
+  deepClone
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -43,7 +43,7 @@ function makeDefaultDataset(): Dataset.Dataset {
         _id: "ID" + rows.length,
         Month: month,
         City: city,
-        Value: +value.toFixed(1),
+        Value: +value.toFixed(1)
       });
       cityIndex += 1;
     }
@@ -61,27 +61,27 @@ function makeDefaultDataset(): Dataset.Dataset {
             type: Dataset.DataType.String,
             metadata: {
               kind: Dataset.DataKind.Categorical,
-              order: months,
-            },
+              order: months
+            }
           },
           {
             name: "City",
             displayName: "City",
             type: Dataset.DataType.String,
-            metadata: { kind: Dataset.DataKind.Categorical },
+            metadata: { kind: Dataset.DataKind.Categorical }
           },
           {
             name: "Value",
             displayName: "Value",
             type: Dataset.DataType.Number,
-            metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" },
-          },
+            metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" }
+          }
         ],
         rows,
-        type: TableType.Main,
-      },
+        type: TableType.Main
+      }
     ],
-    name: "demo",
+    name: "demo"
   };
 }
 
@@ -126,7 +126,7 @@ export class Application {
     ReactDOM.render(
       <MainView
         store={this.appStore}
-        ref={(e) => (this.mainView = e)}
+        ref={e => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
       />,
       document.getElementById(containerID)
@@ -136,7 +136,7 @@ export class Application {
 
     // Load extensions if any
     if (config.Extensions) {
-      config.Extensions.forEach((ext) => {
+      config.Extensions.forEach(ext => {
         const scriptTag = document.createElement("script");
         if (typeof ext.script == "string") {
           scriptTag.src = ext.script;
@@ -178,19 +178,19 @@ export class Application {
       } = data;
       info.specification.mappings.width = {
         type: "value",
-        value: info.width,
+        value: info.width
       } as Specification.ValueMapping;
       info.specification.mappings.height = {
         type: "value",
-        value: info.height,
+        value: info.height
       } as Specification.ValueMapping;
       appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(info.specification, info.dataset, {
-          filterCondition: info.filterCondition,
+          filterCondition: info.filterCondition
         })
       );
       appStore.setupNestedEditor(
-        (newSpecification) => {
+        newSpecification => {
           const template = deepClone(appStore.buildChartTemplate());
           if (window.opener) {
             window.opener.postMessage(
@@ -198,7 +198,7 @@ export class Application {
                 id,
                 type: "save",
                 specification: newSpecification,
-                template,
+                template
               },
               document.location.origin
             );
@@ -212,7 +212,7 @@ export class Application {
                   id,
                   type: "save",
                   specification: newSpecification,
-                  template,
+                  template
                 },
                 this.config.CorsPolicy.TargetOrigins
               );
@@ -224,7 +224,7 @@ export class Application {
             ) {
               onSave({
                 specification: newSpecification,
-                template,
+                template
               });
             }
           }
@@ -244,7 +244,7 @@ export class Application {
       window.opener.postMessage(
         {
           id,
-          type: "initialized",
+          type: "initialized"
         },
         document.location.origin
       );
@@ -253,7 +253,7 @@ export class Application {
         window.parent.postMessage(
           {
             id,
-            type: "initialized",
+            type: "initialized"
           },
           this.config.CorsPolicy.TargetOrigins
         );
@@ -289,13 +289,13 @@ export class Application {
         delimiter: ",",
         numberFormat: {
           remove: ",",
-          decimal: ".",
-        },
+          decimal: "."
+        }
       };
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV
           .split("|")
-          .map((x) => ({ url: x, localeFileFormat })),
+          .map(x => ({ url: x, localeFileFormat }))
       };
       const loader = new Dataset.DatasetLoader();
       const dataset = await loader.loadDatasetFromSourceSpecification(spec);

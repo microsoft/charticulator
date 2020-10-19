@@ -27,7 +27,7 @@ export class EditableTextView extends React.Component<
     super(props);
     this.state = {
       editing: this.props.autofocus || false,
-      currentText: this.props.text,
+      currentText: this.props.text
     };
     this.confirmEdit = this.confirmEdit.bind(this);
     this.cancelEdit = this.cancelEdit.bind(this);
@@ -37,7 +37,7 @@ export class EditableTextView extends React.Component<
   public confirmEdit() {
     const text = this.state.currentText;
     this.setState({
-      editing: false,
+      editing: false
     });
     if (this.props.onEdit) {
       this.props.onEdit(text);
@@ -46,14 +46,14 @@ export class EditableTextView extends React.Component<
 
   public cancelEdit() {
     this.setState({
-      editing: false,
+      editing: false
     });
   }
 
   public startEdit() {
     this.setState({
       editing: true,
-      currentText: this.props.text,
+      currentText: this.props.text
     });
   }
 
@@ -80,10 +80,10 @@ export class EditableTextView extends React.Component<
             type="text"
             ref="input"
             value={this.state.currentText}
-            onChange={(e) =>
+            onChange={e =>
               this.setState({ currentText: this.refs.input.value })
             }
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key == "Enter") {
                 this.confirmEdit();
               }

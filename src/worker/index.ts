@@ -6,7 +6,7 @@ import {
   Prototypes,
   Solver,
   Specification,
-  zipArray,
+  zipArray
 } from "../core";
 import { WorkerRPC } from "./communication";
 

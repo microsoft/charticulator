@@ -12,14 +12,14 @@ import {
   Handles,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters,
+  TemplateParameters
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DProperties,
+  Region2DProperties
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
@@ -82,7 +82,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
   packing: "Packing",
   packingIcon: "sublayout/packing",
   overlap: "Overlap",
-  overlapIcon: "sublayout/overlap",
+  overlapIcon: "sublayout/overlap"
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
@@ -97,8 +97,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     iconPath: "plot-segment/polar",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
-    },
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
+    }
   };
 
   public static defaultProperties: Specification.AttributeMap = {
@@ -114,18 +114,18 @@ export class PolarPlotSegment extends PlotSegmentClass<
       ratioY: 0.1,
       align: {
         x: "start",
-        y: "start",
+        y: "start"
       },
       grid: {
         direction: "x",
         xCount: null,
-        yCount: null,
-      },
+        yCount: null
+      }
     },
     startAngle: 0,
     endAngle: 360,
     innerRatio: 0.5,
-    outerRatio: 0.9,
+    outerRatio: 0.9
   };
 
   public readonly state: PolarState;
@@ -143,61 +143,61 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "gapX",
     "gapY",
     "x",
-    "y",
+    "y"
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     angle1: {
       name: "angle1",
       type: Specification.AttributeType.Number,
-      defaultValue: -90,
+      defaultValue: -90
     },
     angle2: {
       name: "angle2",
       type: Specification.AttributeType.Number,
-      defaultValue: 90,
+      defaultValue: 90
     },
     radial1: {
       name: "radial1",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     radial2: {
       name: "radial2",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     x: {
       name: "x",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     y: {
       name: "y",
-      type: Specification.AttributeType.Number,
+      type: Specification.AttributeType.Number
     },
     gapX: {
       name: "gapX",
       type: Specification.AttributeType.Number,
-      editableInGlyphStage: true,
+      editableInGlyphStage: true
     },
     gapY: {
       name: "gapY",
       type: Specification.AttributeType.Number,
-      editableInGlyphStage: true,
-    },
+      editableInGlyphStage: true
+    }
   };
 
   public initializeState(): void {
@@ -229,7 +229,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         const radiusMiddle =
           (this.state.attributes.radial1 + this.state.attributes.radial2) / 2;
         return { x: 57.29577951308232 / radiusMiddle, y: 1 };
-      },
+      }
     };
     const builder = new Region2DConstraintBuilder(
       this,
@@ -257,7 +257,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       "x2",
       "y2",
       "radial1",
-      "radial2",
+      "radial2"
     ]);
 
     attrs.angle1 = props.startAngle;
@@ -271,19 +271,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [props.innerRatio, x2],
-          [-props.innerRatio, x1],
-        ],
+        [[props.innerRatio, x2], [-props.innerRatio, x1]],
         [[2, innerRadius]]
       );
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [props.outerRatio, x2],
-          [-props.outerRatio, x1],
-        ],
+        [[props.outerRatio, x2], [-props.outerRatio, x1]],
         [[2, outerRadius]]
       );
     } else {
@@ -292,19 +286,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [props.innerRatio, y2],
-          [-props.innerRatio, y1],
-        ],
+        [[props.innerRatio, y2], [-props.innerRatio, y1]],
         [[2, innerRadius]]
       );
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [props.outerRatio, y2],
-          [-props.outerRatio, y1],
-        ],
+        [[props.outerRatio, y2], [-props.outerRatio, y1]],
         [[2, outerRadius]]
       );
     }
@@ -327,7 +315,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0,
+      rotation: 0
     } as BoundingBox.Rectangle;
   }
 
@@ -338,7 +326,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
     ];
   }
 
@@ -411,7 +399,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     return new Graphics.PolarCoordinates(
       {
         x: (x1 + x2) / 2,
-        y: (y1 + y2) / 2,
+        y: (y1 + y2) / 2
       },
       attrs.radial1,
       attrs.radial2,
@@ -431,7 +419,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
-      title: "Add Angular Scaffold",
+      title: "Add Angular Scaffold"
     } as DropZones.Region);
     zones.push({
       type: "region",
@@ -439,7 +427,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
-      title: "Convert to Curve Coordinates",
+      title: "Convert to Curve Coordinates"
     } as DropZones.Region);
     zones.push({
       type: "region",
@@ -447,7 +435,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
-      title: "Convert to Cartesian Coordinates",
+      title: "Convert to Cartesian Coordinates"
     } as DropZones.Region);
     zones.push({
       type: "line",
@@ -455,8 +443,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       p2: { x: cx + radial2, y: cy },
       title: "Radial Axis",
       dropAction: {
-        axisInference: { property: "yData" },
-      },
+        axisInference: { property: "yData" }
+      }
     } as DropZones.Line);
     zones.push({
       type: "arc",
@@ -466,8 +454,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       angleEnd: attrs.angle2,
       title: "Angular Axis",
       dropAction: {
-        axisInference: { property: "xData" },
-      },
+        axisInference: { property: "xData" }
+      }
     } as DropZones.Arc);
     return zones;
   }
@@ -476,7 +464,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     return [
       props.xData ? props.xData.type : "null",
-      props.yData ? props.yData.type : "null",
+      props.yData ? props.yData.type : "null"
     ];
   }
 
@@ -495,28 +483,28 @@ export class PolarPlotSegment extends PlotSegmentClass<
         axis: "y",
         value: y1,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y1" }],
+        actions: [{ type: "attribute", attribute: "y1" }]
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y2" }],
+        actions: [{ type: "attribute", attribute: "y2" }]
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x1" }],
+        actions: [{ type: "attribute", attribute: "x1" }]
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x2" }],
+        actions: [{ type: "attribute", attribute: "x2" }]
       } as Handles.Line,
       {
         type: "point",
@@ -524,8 +512,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -533,8 +521,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
+          { type: "attribute", source: "y", attribute: "y1" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -542,8 +530,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
       } as Handles.Point,
       {
         type: "point",
@@ -551,10 +539,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
+          { type: "attribute", source: "y", attribute: "y2" }
+        ]
       } as Handles.Point,
-      ...builder.getHandles().map((handle) => {
+      ...builder.getHandles().map(handle => {
         return {
           type: "gap-ratio",
           axis: handle.gap.axis,
@@ -568,9 +556,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
             {
               type: "property",
               property: handle.gap.property.property,
-              field: handle.gap.property.field,
-            },
-          ],
+              field: handle.gap.property.field
+            }
+          ]
         } as Handles.GapRatio;
       }),
       {
@@ -581,7 +569,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.endAngle,
         clipAngles: [props.startAngle, null],
-        icon: "<",
+        icon: "<"
       } as Handles.Angle,
       {
         type: "angle",
@@ -591,7 +579,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         radius: radius * Math.max(props.innerRatio, props.outerRatio),
         value: props.startAngle,
         clipAngles: [null, props.endAngle],
-        icon: ">",
+        icon: ">"
       } as Handles.Angle,
       {
         type: "distance-ratio",
@@ -603,7 +591,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         endDistance: radius,
         startAngle: props.startAngle,
         endAngle: props.endAngle,
-        clipRange: [props.innerRatio + 0.01, 1],
+        clipRange: [props.innerRatio + 0.01, 1]
       } as Handles.DistanceRatio,
       {
         type: "distance-ratio",
@@ -615,8 +603,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         endDistance: radius,
         startAngle: props.startAngle,
         endAngle: props.endAngle,
-        clipRange: [0, props.outerRatio - 0.01],
-      } as Handles.DistanceRatio,
+        clipRange: [0, props.outerRatio - 0.01]
+      } as Handles.DistanceRatio
     ];
   }
 
@@ -631,7 +619,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,
-      widgets: [...widgets],
+      widgets: [...widgets]
     };
   }
 
@@ -668,7 +656,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
           { type: "checkbox", label: "Height to Area" }
         )
       ),
-      ...builder.buildPanelWidgets(manager),
+      ...builder.buildPanelWidgets(manager)
     ];
   }
 
@@ -691,12 +679,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         dataSource: {
           table: this.object.table,
-          groupBy: this.object.groupBy,
+          groupBy: this.object.groupBy
         },
         expression: {
           expression: this.object.properties.sublayout.order.expression,
-          property: { property: "sublayout", field: ["order", "expression"] },
-        },
+          property: { property: "sublayout", field: ["order", "expression"] }
+        }
       });
     }
     if (this.object.properties.xData) {
@@ -707,11 +695,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
         target: {
           property: {
             property: "xData",
-            field: "categories",
-          },
+            field: "categories"
+          }
         },
         type: Specification.AttributeType.Enum,
-        default: defaultValue,
+        default: defaultValue
       });
     }
     if (this.object.properties.yData) {
@@ -722,11 +710,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
         target: {
           property: {
             property: "yData",
-            field: "categories",
-          },
+            field: "categories"
+          }
         },
         type: Specification.AttributeType.Enum,
-        default: defaultValue,
+        default: defaultValue
       });
     }
     return { inferences: r, properties: p };
