@@ -554,7 +554,7 @@ export function getSortFunctionByData(values: string[]) {
   const testToRange = (value: string) => {
     const reg = /(\d\-)|(\d+\-\d+)|(\d+\+)/;
     const match = value.match(reg);
-    if (match && value.match(reg).length) {
+    if (match && match.length) {
       return true;
     }
     return false;
