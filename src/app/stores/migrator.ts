@@ -13,6 +13,11 @@ import {
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
+import {
+  LegendClass,
+  LegendProperties
+} from "../../core/prototypes/legends/legend";
+import { ChartElement } from "../../core/specification";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -94,6 +99,14 @@ export class Migrator {
       state = this.addInteractivityProperties(state);
       // Minor change at version 1.7.0: Guides now have a baseline prop
       state = upgradeGuidesToBaseline(state);
+    }
+
+    if (
+      compareVersion(state.version, "1.8.0") < 0 &&
+      compareVersion(targetVersion, "1.8.0") >= 0
+    ) {
+      // Minor change at version 1.7.0: Add default value for property layout in legend
+      state = this.setValueToLayoutPropertyOfLegend(state);
     }
 
     // After migration, set version to targetVersion
@@ -291,6 +304,22 @@ export class Migrator {
     state.chartState.elements = allIndices.map(
       i => state.chartState.elements[i]
     );
+    return state;
+  }
+
+  public setValueToLayoutPropertyOfLegend(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (
+        Prototypes.isType(element.classID, "legend.categorical") ||
+        Prototypes.isType(element.classID, "legend.custom")
+      ) {
+        const legend = element as ChartElement<LegendProperties>;
+        if (legend.properties.orientation === undefined) {
+          legend.properties.orientation = "vertical";
+        }
+      }
+    }
+
     return state;
   }
 }

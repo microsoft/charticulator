@@ -332,6 +332,18 @@ export class ChartTemplateBuilder {
         table = plotSegment.table;
       }
       if (Prototypes.isType(elementClass.object.classID, "links")) {
+        if (Prototypes.isType(elementClass.object.classID, "links.through")) {
+          const facetExpressions = (elementClass.object.properties
+            .linkThrough as any).facetExpressions as string[];
+
+          const mainTable = this.dataset.tables.find(
+            table => table.type === TableType.Main
+          );
+          this.addTable(mainTable.name);
+          for (const expression of facetExpressions) {
+            this.addColumn(mainTable.name, expression);
+          }
+        }
         const linkTable = elementClass.object.properties
           .linkTable as Specification.AttributeMap;
         if (linkTable) {

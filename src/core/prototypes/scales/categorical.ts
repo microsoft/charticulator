@@ -152,6 +152,11 @@ export class CategoricalScaleColor extends ScaleClass<
   CategoricalScaleProperties<Color>,
   {}
 > {
+  public static metadata: ObjectClassMetadata = {
+    displayName: "Scale",
+    iconPath: "scale/color"
+  };
+
   public static classID = "scale.categorical<string,color>";
   public static type = "scale";
 
