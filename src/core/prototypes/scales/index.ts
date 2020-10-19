@@ -43,6 +43,15 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   {
     input: {
       type: [DataType.Number, DataType.Date],
+      kind: [DataKind.Categorical, DataKind.Ordinal]
+    },
+    output: AttributeType.Color,
+    scale: "scale.categorical<string,color>",
+    priority: 1
+  },
+  {
+    input: {
+      type: [DataType.Number, DataType.Date],
       kind: [DataKind.Numerical, DataKind.Temporal]
     },
     output: AttributeType.Boolean,
@@ -115,6 +124,9 @@ export function inferScaleType(
       continue;
     }
     if (!match(rule.output, attrType)) {
+      continue;
+    }
+    if (!match(rule.input.kind, dataKind)) {
       continue;
     }
     if (!candidate || candidate.priority < rule.priority) {

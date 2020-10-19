@@ -553,7 +553,8 @@ export function hexToRgb(hex: string): Color {
 export function getSortFunctionByData(values: string[]) {
   const testToRange = (value: string) => {
     const reg = /(\d\-)|(\d+\-\d+)|(\d+\+)/;
-    if (value.match(reg).length) {
+    const match = value.match(reg);
+    if (match && match.length) {
       return true;
     }
     return false;
