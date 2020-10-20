@@ -110,8 +110,10 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
             { property: "specification" },
             {
               specification: this.object.properties.specification,
-              dataset: this.getDataset(0),
-              // filterCondition: this.getFilterCondition(),
+              dataset: this.getDataset(
+                manager.getCurrentGlyphIndex(this.parent.parent?.object._id) ||
+                  0
+              ),
               width: this.state.attributes.width,
               height: this.state.attributes.height,
               searchSection: strings.objects.nestedChart.sizeAndShape,

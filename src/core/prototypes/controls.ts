@@ -404,6 +404,7 @@ export interface WidgetManager {
     options: NestedChartEditorOptions
   ): Widget;
 
+  getCurrentGlyphIndex(plotSegmentId: string): number;
   customCollapsiblePanel(
     widgets: Widget[],
     options: CustomCollapsiblePanelOptions
