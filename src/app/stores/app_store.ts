@@ -1335,9 +1335,8 @@ export class AppStore extends BaseStore {
       scale.domain.forEach(
         (index: any, x: any) => (categories[index] = x.toString())
       );
-
-      return categories;
     }
+    return categories;
   }
 
   public getGroupingExpression(
