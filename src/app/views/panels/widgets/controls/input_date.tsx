@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { InputText } from "./input_text";
-import { prettyNumber } from "../../../../../core";
-import { Button, UpdownButton } from "./button";
-import { Slider } from "./slider";
+import { getTimeZoneOffset, prettyNumber } from "../../../../../core";
 import { parseDate } from "../../../../../core/dataset/datetime";
 import * as d3 from "d3-time-format";
 
@@ -48,11 +46,14 @@ export class InputDate extends React.Component<InputDateProps, {}> {
               ref={e => (this.textInput = e)}
               placeholder={this.props.placeholder}
               defaultValue={this.formatDate(
-                this.props.defaultValue,
+                typeof this.props.defaultValue === "number"
+                  ? this.props.defaultValue +
+                      getTimeZoneOffset(this.props.defaultValue)
+                  : this.props.defaultValue,
                 this.props.interval
               )}
               onEnter={str => {
-                const date = parseDate(str);
+                const date = parseDate(str, true);
                 this.props.onEnter(date);
                 return date != null;
               }}

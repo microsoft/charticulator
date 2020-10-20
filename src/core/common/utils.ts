@@ -621,3 +621,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
 export function refineColumnName(name: string) {
   return name.replace(/[^0-9a-zA-Z\_]/g, "_");
 }
+
+export function getTimeZoneOffset(date: number) {
+  return new Date(date).getTimezoneOffset() * 60 * 1000;
+}
