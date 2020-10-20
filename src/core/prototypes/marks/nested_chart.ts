@@ -99,12 +99,15 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         defaultValue: true
       })
     ]);
+
     widgets = widgets.concat([
       manager.nestedChartEditor(
         { property: "specification" },
         {
           specification: this.object.properties.specification,
-          dataset: this.getDataset(0),
+          dataset: this.getDataset(
+            manager.getCurrentGlyphIndex(this.parent.parent.object._id)
+          ),
           // filterCondition: this.getFilterCondition(),
           width: this.state.attributes.width,
           height: this.state.attributes.height

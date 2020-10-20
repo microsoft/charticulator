@@ -69,6 +69,7 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
+import { PlotSegmentClass } from "../../../../core/prototypes/plot_segments";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1053,6 +1054,18 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         </div>
       )
     );
+  }
+
+  public getCurrentGlyphIndex(plotSegmentId: string) {
+    let currentGlyphIndex = 0;
+    const plotSegment = Prototypes.findObjectById(
+      this.store.chart,
+      plotSegmentId
+    );
+    if (Prototypes.isType(plotSegment.classID, "plot-segment")) {
+      currentGlyphIndex = this.store.getSelectedGlyphIndex(plotSegment._id);
+    }
+    return currentGlyphIndex;
   }
 
   public row(title?: string, widget?: JSX.Element) {
