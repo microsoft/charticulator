@@ -612,7 +612,10 @@ export function compareMarkAttributeNames(a: string, b: string) {
     return true;
   } else {
     // fill and stroke uses with color. Those preoperties has the same meaning for marks
-    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+    if (
+      ["fill", "stroke", "color"].indexOf(b) > -1 &&
+      ["fill", "stroke", "color"].indexOf(a) > -1
+    ) {
       return true;
     }
   }
