@@ -70,7 +70,7 @@ export abstract class Expression {
 
   public getStringValue(c: Context) {
     const v = this.getValue(c);
-    return v.toString();
+    return v !== null ? v.toString() : "null";
   }
 
   public static Parse(expr: string): Expression {
