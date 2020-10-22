@@ -181,12 +181,12 @@ function checkConvertion(
       for (const data of dataSample) {
         if (
           data &&
-          (data.toString().toLowerCase() != "0" &&
-            data.toString().toLowerCase() != "true" &&
-            data.toString().toLowerCase() != "1" &&
-            data.toString().toLowerCase() != "false" &&
-            data.toString().toLowerCase() != "yes" &&
-            data.toString().toLowerCase() != "no")
+          data.toString().toLowerCase() != "0" &&
+          data.toString().toLowerCase() != "true" &&
+          data.toString().toLowerCase() != "1" &&
+          data.toString().toLowerCase() != "false" &&
+          data.toString().toLowerCase() != "yes" &&
+          data.toString().toLowerCase() != "no"
         ) {
           convertable = false;
           break;
@@ -345,4 +345,12 @@ export function copyToClipboard(str: string) {
   el.select();
   document.execCommand("copy");
   document.body.removeChild(el);
+}
+
+export function isInIFrame() {
+  try {
+    return window.self !== window.top;
+  } catch (ex) {
+    return true;
+  }
 }

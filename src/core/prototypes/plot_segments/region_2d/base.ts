@@ -2077,7 +2077,7 @@ export class Region2DConstraintBuilder {
       const isYFixed = props.yData && props.yData.type == "numerical";
       extra.push(
         m.row(
-          "Align",
+          "Alignment",
           m.horizontal(
             [0, 0],
             isXFixed
@@ -2212,14 +2212,18 @@ export class Region2DConstraintBuilder {
       m.sectionHeader("Sub-layout"),
       m.row(
         "Type",
-        m.inputSelect(
-          { property: "sublayout", field: "type" },
-          {
-            type: "radio",
-            options: options.map(x => x.value),
-            icons: options.map(x => x.icon),
-            labels: options.map(x => x.label)
-          }
+        m.horizontal(
+          [0, 0],
+          null,
+          m.inputSelect(
+            { property: "sublayout", field: "type" },
+            {
+              type: "radio",
+              options: options.map(x => x.value),
+              icons: options.map(x => x.icon),
+              labels: options.map(x => x.label)
+            }
+          )
         )
       ),
       ...extra

@@ -165,12 +165,26 @@ body {
       display: flex;
       flex-direction: column;
 
-      &-toolbar {
+      &-toolbar-horizontal {
         padding: 10px;
         background: $gray-210;
         border-bottom: $panel-border-width solid $panel-border-color;
         // z-index: 9;
         // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      }
+
+      &-toolbar-vertical {
+        padding: 10px;
+        background: $gray-210;
+        border-bottom: $panel-border-width solid $panel-border-color;
+
+        border-right: 1px solid $gray-190;
+        border-left: 1px solid $gray-190;
+        // z-index: 9;
+        // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        // display: grid;
+        // grid-auto-flow: column;
+        // grid-template-rows: "repeat(30, auto)";
       }
 
       &-panel-container {

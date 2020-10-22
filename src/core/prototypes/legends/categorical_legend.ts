@@ -213,9 +213,10 @@ export class CategoricalLegendClass extends LegendClass {
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const widget = super.getAttributePanelWidgets(manager);
+    const widgets = super.getAttributePanelWidgets(manager);
 
-    widget.push(
+    return [
+      ...widgets,
       manager.row(
         "Orientation",
         manager.inputSelect(
@@ -229,8 +230,6 @@ export class CategoricalLegendClass extends LegendClass {
           }
         )
       )
-    );
-
-    return widget;
+    ];
   }
 }

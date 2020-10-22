@@ -246,7 +246,6 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             this.emitSetProperty(property, value);
             return true;
           }
-          return false;
         }}
       />
     );

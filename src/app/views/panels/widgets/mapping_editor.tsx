@@ -58,6 +58,12 @@ export class MappingEditor extends React.Component<
     const attribute = this.props.attribute;
     const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
+
+    const {
+      alignLeft,
+      alignX
+    }: { alignLeft: boolean; alignX: any } = this.getAligntment(anchor);
+
     globals.popupController.popupAt(
       context => {
         return (
@@ -67,13 +73,30 @@ export class MappingEditor extends React.Component<
               parent={this}
               defaultMapping={mapping}
               options={options}
+              alignLeft={alignLeft}
               onClose={() => context.close()}
             />
           </PopupView>
         );
       },
-      { anchor }
+      { anchor, alignX }
     );
+  }
+
+  private getAligntment(anchor: Element) {
+    let alignX:
+      | "start-outer"
+      | "inner"
+      | "outer"
+      | "start-inner"
+      | "end-inner"
+      | "end-outer";
+    let alignLeft: boolean = false;
+    if (window.innerWidth - anchor.getBoundingClientRect().x < 500) {
+      alignX = "start-outer";
+      alignLeft = true;
+    }
+    return { alignLeft, alignX };
   }
 
   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
@@ -81,6 +104,10 @@ export class MappingEditor extends React.Component<
     const attribute = this.props.attribute;
     const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
+
+    const { alignX }: { alignLeft: boolean; alignX: any } = this.getAligntment(
+      anchor
+    );
 
     globals.popupController.popupAt(
       context => {
@@ -115,7 +142,7 @@ export class MappingEditor extends React.Component<
           );
         }
       },
-      { anchor }
+      { anchor, alignX }
     );
   }
 
@@ -262,8 +289,8 @@ export class MappingEditor extends React.Component<
                 onClick={() => {
                   if (
                     !mapping ||
-                    ((mapping as any).valueIndex === undefined ||
-                      (mapping as any).valueIndex === null)
+                    (mapping as any).valueIndex === undefined ||
+                    (mapping as any).valueIndex === null
                   ) {
                     this.initiateValueEditor();
                   }
@@ -342,6 +369,13 @@ export class MappingEditor extends React.Component<
                     scaleMapping.valueIndex === undefined ||
                     scaleMapping.valueIndex === null
                   ) {
+                    const {
+                      alignLeft,
+                      alignX
+                    }: { alignLeft: boolean; alignX: any } = this.getAligntment(
+                      this.scaleMappingDisplay
+                    );
+
                     globals.popupController.popupAt(
                       context => (
                         <PopupView context={context}>
@@ -350,11 +384,12 @@ export class MappingEditor extends React.Component<
                             parent={this}
                             defaultMapping={mapping}
                             options={options}
+                            alignLeft={alignLeft}
                             onClose={() => context.close()}
                           />
                         </PopupView>
                       ),
-                      { anchor: this.scaleMappingDisplay }
+                      { anchor: this.scaleMappingDisplay, alignX }
                     );
                   } else {
                     this.beginDataFieldValueSelection();
@@ -523,6 +558,7 @@ export interface DataMappAndScaleEditorProps {
   options: Prototypes.Controls.MappingEditorOptions;
   parent: MappingEditor;
   onClose: () => void;
+  alignLeft?: boolean;
 }
 export interface DataMappAndScaleEditorState {
   currentMapping: Specification.Mapping;
@@ -627,8 +663,14 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     if (scaleElement) {
       return (
         <div className="charticulator__data-mapping-and-scale-editor">
+          <div
+            className={
+              this.props.alignLeft ? "el-scale-editor-left" : "el-scale-editor"
+            }
+          >
+            {scaleElement}
+          </div>
           <div className="el-data-picker">{this.renderDataPicker()}</div>
-          <div className="el-scale-editor">{scaleElement}</div>
         </div>
       );
     } else {

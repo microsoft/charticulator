@@ -15,6 +15,7 @@ export interface ToolButtonProps {
   onClick?: () => void;
   dragData?: () => any;
   active?: boolean;
+  compact?: boolean;
 }
 
 export class ToolButton extends React.Component<
@@ -29,6 +30,12 @@ export class ToolButton extends React.Component<
   }
 
   public render() {
+    const onClick = () => {
+      if (this.props.onClick) {
+        this.props.onClick();
+      }
+    };
+
     if (this.props.dragData) {
       return (
         <DraggableElement
@@ -48,15 +55,25 @@ export class ToolButton extends React.Component<
               this.props.active || this.state.dragging
             ])}
             title={this.props.title}
-            onClick={() => {
-              if (this.props.onClick) {
-                this.props.onClick();
-              }
-            }}
+            onClick={onClick}
           >
             {this.props.icon ? <SVGImageIcon url={this.props.icon} /> : null}
             {this.props.text ? (
               <span className="el-text">{this.props.text}</span>
+            ) : null}
+          </span>
+          <span
+            style={{
+              position: "relative",
+              bottom: "-7px",
+              left: "-30px"
+            }}
+            onClick={onClick}
+          >
+            {this.props.compact ? (
+              <SVGImageIcon
+                url={R.getSVGIcon("general/triangle-right-bottom")}
+              />
             ) : null}
           </span>
         </DraggableElement>
@@ -69,11 +86,7 @@ export class ToolButton extends React.Component<
             this.props.active
           ])}
           title={this.props.title}
-          onClick={() => {
-            if (this.props.onClick) {
-              this.props.onClick();
-            }
-          }}
+          onClick={onClick}
         >
           {this.props.icon ? <SVGImageIcon url={this.props.icon} /> : null}
           {this.props.text ? (
@@ -105,7 +118,11 @@ export abstract class BaseButton<
   protected _doClick = this.doClick.bind(this);
 }
 
-export class AppButton extends BaseButton<ButtonProps> {
+export interface AppButtonProps extends ButtonProps {
+  name?: string;
+}
+
+export class AppButton extends BaseButton<AppButtonProps> {
   public render() {
     return (
       <span
@@ -114,7 +131,7 @@ export class AppButton extends BaseButton<ButtonProps> {
         onClick={this._doClick}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
-        <span className="el-text">Charticulator</span>
+        <span className="el-text">{this.props.name || "Charticulator"}</span>
       </span>
     );
   }

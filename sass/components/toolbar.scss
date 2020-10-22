@@ -1,17 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-.chartaccent__toolbar {
-  @include font-main;
-  $toolbar-height: 32px;
+@import "../common/common.scss";
 
+$tool-icon-size: 32px;
+$elements-margin: 4px;
+
+.chartaccent__toolbar-horizontal {
+  @include font-main;
+
+  $toolbar-height: $tool-icon-size;
   line-height: $toolbar-height;
   white-space: nowrap;
 
   display: flex;
   flex-direction: row;
 
-  & > * {
-    height: 32px;
+  &-group {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &-group > * {
+    height: $tool-icon-size;
+    margin-bottom: $elements-margin;
+    margin-right: $elements-margin;
   }
 
   &-label {
@@ -31,8 +43,8 @@
     margin-top: 2px;
     margin-bottom: 2px;
     border-right: 1px solid $gray-190;
-    width: 0px;
-    margin-left: 5px;
+    width: 4px;
+    margin-left: 4px;
     margin-right: 8px;
   }
 
@@ -55,6 +67,82 @@
       @include shadow-ambient;
       background: $gray-220;
     }
+  }
+}
+
+.chartaccent__toolbar-vertical {
+  @extend .chartaccent__toolbar-horizontal;
+  $toolbar-height: $tool-icon-size;
+  $col2-breakpoint-height: 815px;
+  $col3-breakpoint-height: 550px;
+  $col4-breakpoint-height: 510px;
+
+  $col2-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin;
+  $col3-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin $tool-icon-size + $elements-margin;
+  $col4-cell-size: $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin $tool-icon-size + $elements-margin $tool-icon-size +
+    $elements-margin;
+
+  align-content: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+
+  width: $tool-icon-size;
+
+  @media (max-height: $col2-breakpoint-height) {
+    width: 72px;
+  }
+
+  @media (max-height: $col3-breakpoint-height) {
+    width: 108px;
+  }
+
+  @media (max-height: $col4-breakpoint-height) {
+    width: 144px;
+  }
+
+  flex-wrap: wrap;
+  height: 100%;
+
+  &-group {
+    flex-shrink: 1;
+    width: 100%;
+    display: grid;
+
+    @media (max-height: $col2-breakpoint-height) {
+      grid-template-columns: $col2-cell-size;
+    }
+
+    @media (max-height: $col3-breakpoint-height) {
+      grid-template-columns: $col3-cell-size;
+    }
+
+    @media (max-height: $col4-breakpoint-height) {
+      grid-template-columns: $col4-cell-size;
+    }
+  }
+
+  &-group > * {
+    width: $tool-icon-size;
+    height: $tool-icon-size;
+    margin-bottom: $elements-margin;
+    margin-right: $elements-margin;
+  }
+
+  &-separator {
+    @extend .chartaccent__toolbar-horizontal-separator;
+    width: 100%;
+    height: 5px;
+    border-right: 0px solid $gray-190;
+    border-bottom: 1px solid $gray-190;
+    margin-bottom: 8px;
+  }
+
+  &-label {
+    font-size: 12px;
+    margin-left: -8px;
   }
 }
 

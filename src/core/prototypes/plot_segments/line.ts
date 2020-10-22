@@ -177,20 +177,14 @@ export class LineGuide extends PlotSegmentClass {
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [t, x2],
-          [1 - t, x1]
-        ],
+        [[t, x2], [1 - t, x1]],
         [[1, solver.attr(markState.attributes, "x")]]
       );
       // add constraint t*y2 + (1 - t) * y1 = y
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [
-          [t, y2],
-          [1 - t, y1]
-        ],
+        [[t, y2], [1 - t, y1]],
         [[1, solver.attr(markState.attributes, "y")]]
       );
     }
