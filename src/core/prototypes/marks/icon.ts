@@ -205,7 +205,11 @@ export class IconElementClass extends EmphasizableMarkClass<
         actions: [
           { type: "property", source: "alignment", property: "alignment" },
           { type: "property", source: "rotation", property: "rotation" },
-          { type: "attribute-value-mapping", source: "text", attribute: "text" }
+          {
+            type: "attribute-value-mapping",
+            source: "text",
+            attribute: "text"
+          }
         ],
         textWidth: bbox.width,
         textHeight: bbox.height,

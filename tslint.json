@@ -30,6 +30,7 @@
     "jsx-no-lambda": false,
     "jsx-no-string-ref": false,
     "jsx-key": false,
-    "jsdoc-format": [true, "check-multiline-start"]
+    "jsdoc-format": [true, "check-multiline-start"],
+    "array-type": false
   }
 }

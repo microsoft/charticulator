@@ -16,8 +16,16 @@ import { LinkCreationPanel } from "./panels/link_creator";
 import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 
-export class Toolbar extends ContextedComponent<{}, {}> {
+export class Toolbar extends ContextedComponent<
+  {
+    layout: "vertical" | "horizontal";
+  },
+  {}
+> {
   public token: EventSubscription;
+
+  private theLastRowsCount: number = 0;
+  private itemsCount: number = 0;
 
   public componentDidMount() {
     this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
@@ -29,11 +37,24 @@ export class Toolbar extends ContextedComponent<{}, {}> {
     this.token.remove();
   }
 
-  public render() {
-    return (
-      <div className="chartaccent__toolbar">
-        <span className="chartaccent__toolbar-label">Marks</span>
+  private getToolItems(labels: boolean = true) {
+    const buckets = [];
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Marks
+          </span>
+        )}
         <MultiObjectButton
+          compact={this.props.layout === "vertical"}
           tools={[
             {
               classID: "mark.rect",
@@ -58,6 +79,7 @@ export class Toolbar extends ContextedComponent<{}, {}> {
         <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
         <ObjectButton classID="mark.line" title="Line" icon="mark/line" />
         <MultiObjectButton
+          compact={this.props.layout === "vertical"}
           tools={[
             {
               classID: "mark.text",
@@ -72,6 +94,7 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           ]}
         />
         <MultiObjectButton
+          compact={this.props.layout === "vertical"}
           tools={[
             {
               classID: "mark.icon",
@@ -85,7 +108,11 @@ export class Toolbar extends ContextedComponent<{}, {}> {
             }
           ]}
         />
-        <span className="chartaccent__toolbar-separator" />
+      </>
+    );
+
+    buckets.push(
+      <>
         <ObjectButton
           classID="mark.data-axis"
           title="Data Axis"
@@ -96,13 +123,45 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           title="Nested Chart"
           icon="mark/nested-chart"
         />
-        <span className="chartaccent__toolbar-separator" />
+      </>
+    );
+
+    buckets.push(
+      <>
         <LegendButton />
-        <span className="chartaccent__toolbar-separator" />
-        <span className="chartaccent__toolbar-label">Links</span>
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Links
+          </span>
+        )}
         <LinkButton />
-        <span className="chartaccent__toolbar-separator" />
-        <span className="chartaccent__toolbar-label">Guides</span>
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Guides
+          </span>
+        )}
         <ObjectButton
           classID="guide-y"
           title="Guide Y"
@@ -127,8 +186,31 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="guide/coordinator-y"
           noDragging={true}
         />
-        <span className="chartaccent__toolbar-separator" />
-        <span className="chartaccent__toolbar-label">Plot Segments</span>
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <>
+            <span
+              className={
+                this.props.layout === "vertical"
+                  ? "chartaccent__toolbar-vertical-separator"
+                  : "chartaccent__toolbar-separator"
+              }
+            />
+            <span
+              className={
+                this.props.layout === "vertical"
+                  ? "chartaccent__toolbar-vertical-label"
+                  : "chartaccent__toolbar-label"
+              }
+            >
+              {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
+            </span>
+          </>
+        )}
         <ObjectButton
           classID="plot-segment.cartesian"
           title="2D Region"
@@ -141,8 +223,22 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="plot/line"
           noDragging={true}
         />
-        <span className="chartaccent__toolbar-separator" />
-        <span className="chartaccent__toolbar-label">Scaffolds</span>
+      </>
+    );
+
+    buckets.push(
+      <>
+        {labels && (
+          <span
+            className={
+              this.props.layout === "vertical"
+                ? "chartaccent__toolbar-vertical-label"
+                : "chartaccent__toolbar-label"
+            }
+          >
+            Scaffolds
+          </span>
+        )}
         <ScaffoldButton
           type="cartesian-x"
           title="Horizontal Line"
@@ -167,6 +263,45 @@ export class Toolbar extends ContextedComponent<{}, {}> {
           icon="scaffold/curve"
           currentTool={this.store.currentTool}
         />
+      </>
+    );
+
+    return buckets;
+  }
+
+  public render() {
+    const toolItems = this.getToolItems(this.props.layout === "horizontal");
+    return (
+      <div
+        className={
+          this.props.layout === "vertical"
+            ? "chartaccent__toolbar-vertical"
+            : "chartaccent__toolbar-horizontal"
+        }
+      >
+        {toolItems.map((item, index) => {
+          return (
+            <>
+              <div
+                key={index}
+                className={
+                  this.props.layout === "vertical"
+                    ? "chartaccent__toolbar-vertical-group"
+                    : "chartaccent__toolbar-horizontal-group"
+                }
+              >
+                {item}
+              </div>
+              <span
+                className={
+                  this.props.layout === "vertical"
+                    ? "chartaccent__toolbar-vertical-separator"
+                    : "chartaccent__toolbar-horizontal-separator"
+                }
+              />
+            </>
+          );
+        })}
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
       </div>
     );
@@ -180,6 +315,7 @@ export interface ObjectButtonProps {
   options?: string;
   noDragging?: boolean;
   onClick?: () => void;
+  compact?: boolean;
 }
 
 export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
@@ -211,6 +347,7 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
         icon={R.getSVGIcon(this.props.icon)}
         active={this.getIsActive()}
         title={this.props.title}
+        compact={this.props.compact}
         onClick={() => {
           this.dispatch(
             new Actions.SetCurrentTool(this.props.classID, this.props.options)
@@ -236,6 +373,7 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
 
 export class MultiObjectButton extends ContextedComponent<
   {
+    compact?: boolean;
     tools: ObjectButtonProps[];
   },
   {
@@ -304,6 +442,37 @@ export class MultiObjectButton extends ContextedComponent<
   }
 
   public render() {
+    const onClick = () => {
+      if (!this.props.compact) {
+        return;
+      }
+      globals.popupController.popupAt(
+        context => {
+          return (
+            <PopupView context={context}>
+              {this.props.tools.map((tool, index) => (
+                <div
+                  key={index}
+                  className="charticulator__button-multi-tool-dropdown"
+                >
+                  <ObjectButton
+                    {...tool}
+                    noDragging={true}
+                    onClick={() => context.close()}
+                  />
+                </div>
+              ))}
+            </PopupView>
+          );
+        },
+        {
+          anchor: ReactDOM.findDOMNode(this.refButton) as Element,
+          alignX: "end-outer",
+          alignY: "start-inner"
+        }
+      );
+    };
+
     return (
       <div
         className={classNames("charticulator__button-multi-tool", [
@@ -314,38 +483,22 @@ export class MultiObjectButton extends ContextedComponent<
         <ObjectButton
           ref={e => (this.refButton = e)}
           {...this.getSelectedTool()}
+          onClick={onClick}
+          compact={this.props.compact}
         />
         <span
           className="el-dropdown"
-          onClick={() => {
-            globals.popupController.popupAt(
-              context => {
-                return (
-                  <PopupView context={context}>
-                    {this.props.tools.map((tool, index) => (
-                      <div
-                        key={index}
-                        className="charticulator__button-multi-tool-dropdown"
-                      >
-                        <ObjectButton
-                          {...tool}
-                          noDragging={true}
-                          onClick={() => context.close()}
-                        />
-                      </div>
-                    ))}
-                  </PopupView>
-                );
-              },
-              {
-                anchor: ReactDOM.findDOMNode(this.refButton) as Element,
-                alignX: "start-inner",
-                alignY: "end-outer"
-              }
-            );
+          ref={e => {
+            if (this.props.compact) {
+              return;
+            }
+            this.refButton = e as any;
           }}
+          onClick={() => {}}
         >
-          <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+          {this.props.compact ? null : (
+            <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+          )}
         </span>
       </div>
     );

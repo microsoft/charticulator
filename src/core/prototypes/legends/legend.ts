@@ -163,31 +163,6 @@ export abstract class LegendClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widget = [
-      manager.sectionHeader("Alignment"),
-      manager.row(
-        "Horizontal",
-        manager.inputSelect(
-          { property: "alignX" },
-          {
-            type: "radio",
-            icons: ["align/left", "align/x-middle", "align/right"],
-            labels: ["Left", "Middle", "Right"],
-            options: ["start", "middle", "end"]
-          }
-        )
-      ),
-      manager.row(
-        "Vertical",
-        manager.inputSelect(
-          { property: "alignY" },
-          {
-            type: "radio",
-            icons: ["align/top", "align/y-middle", "align/bottom"],
-            labels: ["Top", "Middle", "Bottom"],
-            options: ["end", "middle", "start"]
-          }
-        )
-      ),
       manager.sectionHeader("Labels"),
       manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
       manager.row(
@@ -197,7 +172,32 @@ export abstract class LegendClass extends ChartElementClass {
           { showUpdown: true, updownStyle: "font", updownTick: 2 }
         )
       ),
-      manager.row("Color", manager.inputColor({ property: "textColor" }))
+      manager.row("Color", manager.inputColor({ property: "textColor" })),
+      manager.sectionHeader("Layout"),
+      manager.row(
+        "Alignment",
+        manager.horizontal(
+          [1, 1],
+          manager.inputSelect(
+            { property: "alignX" },
+            {
+              type: "radio",
+              icons: ["align/left", "align/x-middle", "align/right"],
+              labels: ["Left", "Middle", "Right"],
+              options: ["start", "middle", "end"]
+            }
+          ),
+          manager.inputSelect(
+            { property: "alignY" },
+            {
+              type: "radio",
+              icons: ["align/top", "align/y-middle", "align/bottom"],
+              labels: ["Top", "Middle", "Bottom"],
+              options: ["end", "middle", "start"]
+            }
+          )
+        )
+      )
     ];
 
     return widget;

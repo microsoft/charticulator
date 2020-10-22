@@ -1066,8 +1066,12 @@ export class TableLinksClass extends LinksClass {
       const row = linkTable.getGroupedContext([rowIndex]);
       const rowItem = linkTable.getRow(rowIndex);
 
-      const r1 = tables[0].id2RowGlyphIndex.get(rowItem.source_id.toString());
-      const r2 = tables[1].id2RowGlyphIndex.get(rowItem.target_id.toString());
+      const r1 =
+        rowItem.source_id &&
+        tables[0].id2RowGlyphIndex.get(rowItem.source_id.toString());
+      const r2 =
+        rowItem.source_id &&
+        tables[1].id2RowGlyphIndex.get(rowItem.target_id.toString());
 
       if (!r1 || !r2) {
         continue;
