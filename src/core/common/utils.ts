@@ -604,6 +604,8 @@ export function applyDateFormat(value: Date, format: string): string {
   return utcFormat(format)(value);
 }
 
+export const colorAttributes = ["fill", "stroke", "color"];
+
 /**
  * Compares attribute names
  */
@@ -612,7 +614,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
     return true;
   } else {
     // fill and stroke uses with color. Those preoperties has the same meaning for marks
-    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+    if (colorAttributes.indexOf(b) > -1 && colorAttributes.indexOf(a) > -1) {
       return true;
     }
   }
