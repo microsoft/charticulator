@@ -66,7 +66,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                 className={classNames("el-object-item", [
                   "is-active",
                   sel instanceof ChartElementSelection &&
-                  sel.chartElement == element
+                    sel.chartElement == element
                 ])}
                 onClick={() => {
                   this.dispatch(new Actions.SelectChartElement(element));
@@ -150,8 +150,8 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
                   className={classNames("el-object-item", [
                     "is-active",
                     sel instanceof MarkSelection &&
-                    sel.glyph == glyph &&
-                    sel.mark == mark
+                      sel.glyph == glyph &&
+                      sel.mark == mark
                   ])}
                   key={mark._id}
                   onClick={() => {
@@ -229,7 +229,7 @@ export interface ReorderListViewState {
 export class ReorderListView extends React.Component<
   ReorderListViewProps,
   ReorderListViewState
-  > {
+> {
   private container: HTMLDivElement;
   private container2Index = new WeakMap<Element, number>();
   private index2Container = new Map<number, Element>();
@@ -315,8 +315,11 @@ export class ReorderListView extends React.Component<
         const box = e.target.getBoundingClientRect();
         const dropCoordinates = e.center;
 
-        if (dropCoordinates.x < box.left || dropCoordinates.x > box.right ||
-          dropCoordinates.y < box.top || dropCoordinates.y > box.bottom
+        if (
+          dropCoordinates.x < box.left ||
+          dropCoordinates.x > box.right ||
+          dropCoordinates.y < box.top ||
+          dropCoordinates.y > box.bottom
         ) {
           this.setState({
             reordering: false,
@@ -365,15 +368,15 @@ export class ReorderListView extends React.Component<
             >
               {item}
               {this.state.reordering &&
-                this.state.dropIndex &&
-                this.state.dropIndex[0] == index ? (
-                  <div
-                    className={classNames(
-                      "charticulator__reorder-list-view-item-hint",
-                      ["is-top", this.state.dropIndex[1] < 0.5]
-                    )}
-                  />
-                ) : null}
+              this.state.dropIndex &&
+              this.state.dropIndex[0] == index ? (
+                <div
+                  className={classNames(
+                    "charticulator__reorder-list-view-item-hint",
+                    ["is-top", this.state.dropIndex[1] < 0.5]
+                  )}
+                />
+              ) : null}
               {this.state.reordering && this.state.dragIndex == index ? (
                 <div className="charticulator__reorder-list-view-item-drag-hint" />
               ) : null}

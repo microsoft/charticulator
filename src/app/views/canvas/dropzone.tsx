@@ -12,7 +12,7 @@ export interface DropZoneViewProps {
   zoom: ZoomInfo;
   onDragEnter: (
     data: any
-  ) => ((point: Point, modifiers: DragModifiers) => boolean);
+  ) => (point: Point, modifiers: DragModifiers) => boolean;
 }
 
 export interface DropZoneViewState {

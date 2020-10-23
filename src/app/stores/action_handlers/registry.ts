@@ -16,7 +16,7 @@ export class ActionHandlerRegistry<ThisType, BaseAction> {
    * @param handler the action handler
    */
   public add<ActionType extends BaseAction>(
-    constructor: { new (...args: any[]): ActionType },
+    constructor: new (...args: any[]) => ActionType,
     handler: (this: ThisType, action: ActionType) => void
   ) {
     this.handlers.push({ constructor, handler });

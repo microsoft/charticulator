@@ -48,16 +48,16 @@ module.exports = (env, { mode }) => {
       module: {
         rules: [
           {
-            test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
-            use: [
-              {
-                loader: require.resolve('url-loader'),
-                options: {
-                  esModule: false,
-                  limit: 65536
-                }
-              }
-            ]
+              test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
+              use: [
+                  {
+                      loader: require.resolve('url-loader'),
+                      options: {
+                        esModule: false,
+                        limit: 65536
+                      }
+                  }
+              ]
           }
         ]
       },

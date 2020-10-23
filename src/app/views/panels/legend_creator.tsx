@@ -146,7 +146,9 @@ export class LegendCreationPanel extends ContextedComponent<
                 );
                 const data = (columns as any[])
                   .map(ex => {
-                    const expression = `columnName(${ex.table}.columns, "${ex.columnName}")`;
+                    const expression = `columnName(${ex.table}.columns, "${
+                      ex.columnName
+                    }")`;
                     const parsedExpression = this.store.chartManager.dataflow.cache.parse(
                       expression
                     );
@@ -253,7 +255,9 @@ export class LegendCreationPanel extends ContextedComponent<
                   this.store.chartManager.chart.scales,
                   inferred
                 );
-                let newLegend: Specification.Object<Specification.ObjectProperties> = null;
+                let newLegend: Specification.Object<
+                  Specification.ObjectProperties
+                > = null;
                 switch (scaleObject.classID) {
                   case "scale.categorical<string,color>":
                     newLegend = this.store.chartManager.createObject(

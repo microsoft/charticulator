@@ -269,7 +269,7 @@ export class AxisRenderer {
     range: Array<[number, number]>,
     rangeMin: number,
     rangeMax: number,
-    tickFormat?: ((value: any) => string)
+    tickFormat?: (value: any) => string
   ) {
     const r: TickDescription[] = [];
     for (let i = 0; i < domain.length; i++) {

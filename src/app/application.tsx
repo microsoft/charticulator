@@ -124,7 +124,11 @@ export class Application {
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
     (window as any).mainStore = this.appStore;
     ReactDOM.render(
-      <MainView store={this.appStore} ref={e => (this.mainView = e)} />,
+      <MainView
+        store={this.appStore}
+        ref={e => (this.mainView = e)}
+        viewConfiguration={this.config.MainView}
+      />,
       document.getElementById(containerID)
     );
 
@@ -185,42 +189,50 @@ export class Application {
           filterCondition: info.filterCondition
         })
       );
-      appStore.setupNestedEditor(newSpecification => {
-        const template = deepClone(appStore.buildChartTemplate());
-        if (window.opener) {
-          window.opener.postMessage(
-            {
-              id,
-              type: "save",
-              specification: newSpecification,
-              template
-            },
-            document.location.origin
-          );
-        } else {
-          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
-            window.parent.postMessage(
+      appStore.setupNestedEditor(
+        newSpecification => {
+          const template = deepClone(appStore.buildChartTemplate());
+          if (window.opener) {
+            window.opener.postMessage(
               {
                 id,
                 type: "save",
                 specification: newSpecification,
                 template
               },
-              this.config.CorsPolicy.TargetOrigins
+              document.location.origin
             );
+          } else {
+            if (
+              this.config.CorsPolicy &&
+              this.config.CorsPolicy.TargetOrigins
+            ) {
+              window.parent.postMessage(
+                {
+                  id,
+                  type: "save",
+                  specification: newSpecification,
+                  template
+                },
+                this.config.CorsPolicy.TargetOrigins
+              );
+            }
+            if (
+              this.config.CorsPolicy &&
+              this.config.CorsPolicy.Embedded &&
+              onSave
+            ) {
+              onSave({
+                specification: newSpecification,
+                template
+              });
+            }
           }
-          if (
-            this.config.CorsPolicy &&
-            this.config.CorsPolicy.Embedded &&
-            onSave
-          ) {
-            onSave({
-              specification: newSpecification,
-              template
-            });
-          }
-        }
-      });
+        },
+        this.config.CorsPolicy && this.config.CorsPolicy.Embedded
+          ? "embedded"
+          : "nested"
+      );
     }).bind(this);
     window.addEventListener("message", (e: MessageEvent) => {
       if (e.data.id != id) {

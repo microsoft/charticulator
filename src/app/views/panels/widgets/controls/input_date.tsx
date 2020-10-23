@@ -47,11 +47,14 @@ export class InputDate extends React.Component<InputDateProps, {}> {
               ref={e => (this.textInput = e)}
               placeholder={this.props.placeholder}
               defaultValue={this.formatDate(
-                this.props.defaultValue,
+                typeof this.props.defaultValue === "number"
+                  ? this.props.defaultValue +
+                      getTimeZoneOffset(this.props.defaultValue)
+                  : this.props.defaultValue,
                 this.props.interval
               )}
               onEnter={str => {
-                const date = parseDate(str);
+                const date = parseDate(str, true);
                 this.props.onEnter(date);
                 return date != null;
               }}

@@ -49,4 +49,9 @@ export { Core };
 export { Actions, DragData } from "./actions";
 export { ExtensionContext, Extension } from "./extension";
 export { Application, ApplicationExtensionContext } from "./application";
+export { addSVGIcon, getSVGIcon } from "./resources";
 export { ExportTemplateTarget } from "./template";
+export { Widgets } from "./views/panels/index";
+export { PopupContainer } from "./controllers/popup_controller";
+// tslint:disable-next-line
+export * as globals from "./globals";

@@ -134,8 +134,8 @@
     }
 
     .charticulator__button-tool {
-      margin-right: 0;
       box-shadow: none;
+      margin-right: 4px;
     }
     .el-dropdown {
       @include button-base(32px);
