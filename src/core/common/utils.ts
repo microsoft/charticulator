@@ -604,6 +604,8 @@ export function applyDateFormat(value: Date, format: string): string {
   return timeFormat(format)(value);
 }
 
+export const colorAttributes = ["fill", "stroke", "color"];
+
 /**
  * Compares attribute names
  */
@@ -612,10 +614,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
     return true;
   } else {
     // fill and stroke uses with color. Those preoperties has the same meaning for marks
-    if (
-      ["fill", "stroke", "color"].indexOf(b) > -1 &&
-      ["fill", "stroke", "color"].indexOf(a) > -1
-    ) {
+    if (colorAttributes.indexOf(b) > -1 && colorAttributes.indexOf(a) > -1) {
       return true;
     }
   }
