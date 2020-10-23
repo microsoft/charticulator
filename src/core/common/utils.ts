@@ -1,5 +1,5 @@
 import { Color } from "./color";
-import { timeFormat } from "d3-time-format";
+import { timeFormat, utcFormat } from "d3-time-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -601,7 +601,7 @@ export function getSortDirection(values: string[]): string {
  * @param format date format of d3
  */
 export function applyDateFormat(value: Date, format: string): string {
-  return timeFormat(format)(value);
+  return utcFormat(format)(value);
 }
 
 /**
@@ -620,8 +620,4 @@ export function compareMarkAttributeNames(a: string, b: string) {
 
 export function refineColumnName(name: string) {
   return name.replace(/[^0-9a-zA-Z\_]/g, "_");
-}
-
-export function getTimeZoneOffset(date: number) {
-  return new Date(date).getTimezoneOffset() * 60 * 1000;
 }

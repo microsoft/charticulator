@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { InputText } from "./input_text";
-import { getTimeZoneOffset, prettyNumber } from "../../../../../core";
+import { applyDateFormat } from "../../../../../core";
 import { parseDate } from "../../../../../core/dataset/datetime";
-import * as d3 from "d3-time-format";
 
 export interface InputDateProps {
   defaultValue?: number | Date;
@@ -24,13 +23,15 @@ export class InputDate extends React.Component<InputDateProps, {}> {
       return "";
     }
     if (typeof value === "number") {
-      return d3.timeFormat(this.props.dateDisplayFormat || "%Y-%m-%dT%H:%M:%S")(
-        new Date(value)
+      return applyDateFormat(
+        new Date(value),
+        this.props.dateDisplayFormat || "%Y-%m-%dT%H:%M:%S"
       );
     }
     if (typeof Date === "object" && value instanceof Date) {
-      return d3.timeFormat(this.props.dateDisplayFormat || "%Y-%m-%dT%H:%M:%S")(
-        value
+      return applyDateFormat(
+        value,
+        this.props.dateDisplayFormat || "%Y-%m-%dT%H:%M:%S"
       );
     }
   }
@@ -46,14 +47,11 @@ export class InputDate extends React.Component<InputDateProps, {}> {
               ref={e => (this.textInput = e)}
               placeholder={this.props.placeholder}
               defaultValue={this.formatDate(
-                typeof this.props.defaultValue === "number"
-                  ? this.props.defaultValue +
-                      getTimeZoneOffset(this.props.defaultValue)
-                  : this.props.defaultValue,
+                this.props.defaultValue,
                 this.props.interval
               )}
               onEnter={str => {
-                const date = parseDate(str, true);
+                const date = parseDate(str);
                 this.props.onEnter(date);
                 return date != null;
               }}

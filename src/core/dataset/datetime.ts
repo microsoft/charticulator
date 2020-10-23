@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { getTimeZoneOffset } from "../common";
-
 /**
  * Parse a date string.
  *
@@ -21,18 +19,15 @@ import { getTimeZoneOffset } from "../common";
  * @param str the date string
  * @returns the parsed Date's unix timestamp (in milliseconds) or null if unable to parse
  */
-export function parseDate(str: string, addTimeZoneShift: boolean = false) {
+export function parseDate(str: string) {
   str = str.trim();
   let m;
   // ISO8601 full date: https://stackoverflow.com/a/37563868
   if (
     str.match(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i)
   ) {
-    let t = Date.parse(str);
+    const t = Date.parse(str);
     if (!isNaN(t)) {
-      if (addTimeZoneShift) {
-        t += getTimeZoneOffset(t);
-      }
       return t;
     } else {
       return null;
@@ -124,11 +119,8 @@ export function parseDate(str: string, addTimeZoneShift: boolean = false) {
   }
   // Year
   else if (str.match(/^\d{4}?$/i)) {
-    let t = Date.parse(str);
+    const t = Date.parse(str);
     if (!isNaN(t)) {
-      if (addTimeZoneShift) {
-        t += getTimeZoneOffset(t);
-      }
       return t;
     } else {
       return null;

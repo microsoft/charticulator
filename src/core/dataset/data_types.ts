@@ -63,8 +63,8 @@ export let dataTypes: { [name in DataType]: DataTypeDescription } = {
     }
   },
   date: {
-    test: (x: string) => parseDate(x, true) != null,
-    convert: (x: string) => parseDate(x, true)
+    test: (x: string) => parseDate(x) != null,
+    convert: (x: string) => parseDate(x)
   },
   string: {
     test: (x: string) => true,
@@ -306,7 +306,7 @@ export function convertColumnType(values: any[], type: DataType): DataValue[] {
         if (typeof v == "number") {
           return v;
         }
-        return parseDate(v.toString(), true);
+        return parseDate(v.toString());
       });
     }
   }
