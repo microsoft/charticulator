@@ -94,7 +94,11 @@ export namespace Scale {
 
   export class DateScale extends LinearScale {
     public inferParameters(values: number[], nice: boolean = true) {
-      let scale = scaleUtc().domain([Math.min(...values), Math.max(...values)]);
+      const filteredValues = values.filter(val => !isNaN(val));
+      let scale = scaleUtc().domain([
+        Math.min(...filteredValues),
+        Math.max(...filteredValues)
+      ]);
       if (nice) {
         scale = scale.nice();
       }

@@ -133,11 +133,15 @@ export abstract class PlotSegmentClass<
         ) {
           const dataMapping = new Map<string, string>();
           table.rows.forEach(row => {
-            const value = row[columnName].toString();
-            const rawValue = (
-              row[rawColumnName] || row[refineColumnName(rawColumnName)]
-            ).toString();
-            dataMapping.set(value, rawValue);
+            const value = row[columnName];
+            const rawValue = row[rawColumnName];
+            if (value && rawValue) {
+              const stringValue = value.toString();
+              const rawValueString = (
+                rawValue || row[refineColumnName(rawColumnName)]
+              ).toString();
+              dataMapping.set(stringValue, rawValueString);
+            }
           });
           return (value: any) => {
             const rawValue = dataMapping.get(value);

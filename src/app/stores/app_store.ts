@@ -1274,6 +1274,7 @@ export class AppStore extends BaseStore {
               values
             );
           }
+
           break;
         case Specification.DataKind.Numerical:
           {
@@ -1288,7 +1289,7 @@ export class AppStore extends BaseStore {
         case Specification.DataKind.Temporal:
           {
             const scale = new Scale.DateScale();
-            scale.inferParameters(values as number[]);
+            scale.inferParameters(values as number[], false);
             dataBinding.domainMin = scale.domainMin;
             dataBinding.domainMax = scale.domainMax;
             dataBinding.type = "numerical";

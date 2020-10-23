@@ -6,7 +6,6 @@ import * as ReactDOM from "react-dom";
 
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
-import { timeFormat } from "d3-time-format";
 
 import {
   Color,
