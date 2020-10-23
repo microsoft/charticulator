@@ -26,11 +26,8 @@ export function parseDate(str: string, addTimeZoneShift: boolean = false) {
   if (
     str.match(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(([+-]\d\d:\d\d)|Z)?$/i)
   ) {
-    let t = Date.parse(str);
+    const t = Date.parse(str);
     if (!isNaN(t)) {
-      if (addTimeZoneShift) {
-        t += getTimeZoneOffset(t);
-      }
       return t;
     } else {
       return null;
@@ -122,11 +119,8 @@ export function parseDate(str: string, addTimeZoneShift: boolean = false) {
   }
   // Year
   else if (str.match(/^\d{4}?$/i)) {
-    let t = Date.parse(str);
+    const t = Date.parse(str);
     if (!isNaN(t)) {
-      if (addTimeZoneShift) {
-        t += getTimeZoneOffset(t);
-      }
       return t;
     } else {
       return null;
@@ -220,7 +214,7 @@ export const monthNames = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec"
+  "Dec",
 ];
 
 const monthNameMap: { [name: string]: string } = {
@@ -258,7 +252,7 @@ const monthNameMap: { [name: string]: string } = {
   november: "Nov",
 
   dec: "Dec",
-  december: "Dec"
+  december: "Dec",
 };
 
 /** Check if a string is a month name, if yes, return a normalized version */
