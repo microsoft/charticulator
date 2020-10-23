@@ -345,6 +345,11 @@
     fill: none;
   }
 
+  circle.mark-guide {
+    stroke: $gray-200;
+    fill: none;
+  }
+
   .handle {
     &.handle-point {
       cursor: move;
@@ -635,6 +640,13 @@
     stroke-width: 1px;
     stroke: $color-active;
     stroke-dasharray: 3 2;
+  }
+
+  circle.snapping-guide {
+    stroke-width: 1px;
+    stroke: $color-active;
+    stroke-dasharray: 3 2;
+    fill: none;
   }
 
   path.mark-anchor {

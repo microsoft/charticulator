@@ -60,20 +60,20 @@ export class Toolbar extends ContextedComponent<
               classID: "mark.rect",
               title: "Rectangle",
               icon: "mark/rect",
-              options: '{"shape":"rectangle"}'
+              options: '{"shape":"rectangle"}',
             },
             {
               classID: "mark.rect",
               title: "Ellipse",
               icon: "mark/ellipse",
-              options: '{"shape":"ellipse"}'
+              options: '{"shape":"ellipse"}',
             },
             {
               classID: "mark.rect",
               title: "Triangle",
               icon: "mark/triangle",
-              options: '{"shape":"triangle"}'
-            }
+              options: '{"shape":"triangle"}',
+            },
           ]}
         />
         <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
@@ -84,13 +84,13 @@ export class Toolbar extends ContextedComponent<
             {
               classID: "mark.text",
               title: "Text",
-              icon: "mark/text"
+              icon: "mark/text",
             },
             {
               classID: "mark.textbox",
               title: "Textbox",
-              icon: "mark/textbox"
-            }
+              icon: "mark/textbox",
+            },
           ]}
         />
         <MultiObjectButton
@@ -99,13 +99,13 @@ export class Toolbar extends ContextedComponent<
             {
               classID: "mark.icon",
               title: "Icon",
-              icon: "mark/icon"
+              icon: "mark/icon",
             },
             {
               classID: "mark.image",
               title: "Image",
-              icon: "mark/image"
-            }
+              icon: "mark/image",
+            },
           ]}
         />
       </>
@@ -184,6 +184,12 @@ export class Toolbar extends ContextedComponent<
           classID="guide-coordinator-x"
           title="Guide Y"
           icon="guide/coordinator-y"
+          noDragging={true}
+        />
+        <ObjectButton
+          classID="guide-coordinator-polar"
+          title="Guide polar"
+          icon="guide/coordinator-polar"
           noDragging={true}
         />
       </>
@@ -386,8 +392,8 @@ export class MultiObjectButton extends ContextedComponent<
   public state = {
     currentSelection: {
       classID: this.props.tools[0].classID,
-      options: this.props.tools[0].options
-    }
+      options: this.props.tools[0].options,
+    },
   };
   private refButton: ObjectButton;
   public token: EventSubscription;
@@ -427,8 +433,8 @@ export class MultiObjectButton extends ContextedComponent<
           this.setState({
             currentSelection: {
               classID: item.classID,
-              options: item.options
-            }
+              options: item.options,
+            },
           });
           break;
         }
@@ -447,7 +453,7 @@ export class MultiObjectButton extends ContextedComponent<
         return;
       }
       globals.popupController.popupAt(
-        context => {
+        (context) => {
           return (
             <PopupView context={context}>
               {this.props.tools.map((tool, index) => (
@@ -468,7 +474,7 @@ export class MultiObjectButton extends ContextedComponent<
         {
           anchor: ReactDOM.findDOMNode(this.refButton) as Element,
           alignX: "end-outer",
-          alignY: "start-inner"
+          alignY: "start-inner",
         }
       );
     };
@@ -477,18 +483,18 @@ export class MultiObjectButton extends ContextedComponent<
       <div
         className={classNames("charticulator__button-multi-tool", [
           "is-active",
-          this.isActive()
+          this.isActive(),
         ])}
       >
         <ObjectButton
-          ref={e => (this.refButton = e)}
+          ref={(e) => (this.refButton = e)}
           {...this.getSelectedTool()}
           onClick={onClick}
           compact={this.props.compact}
         />
         <span
           className="el-dropdown"
-          ref={e => {
+          ref={(e) => {
             if (this.props.compact) {
               return;
             }
@@ -536,14 +542,14 @@ export class LinkButton extends ContextedComponent<{}, {}> {
 
   public render() {
     return (
-      <span ref={e => (this.container = e)}>
+      <span ref={(e) => (this.container = e)}>
         <ToolButton
           title="Link"
           icon={R.getSVGIcon("link/tool")}
           active={this.store.currentTool == "link"}
           onClick={() => {
             globals.popupController.popupAt(
-              context => (
+              (context) => (
                 <PopupView context={context}>
                   <LinkCreationPanel onFinish={() => context.close()} />
                 </PopupView>
@@ -562,14 +568,14 @@ export class LegendButton extends ContextedComponent<{}, {}> {
 
   public render() {
     return (
-      <span ref={e => (this.container = e)}>
+      <span ref={(e) => (this.container = e)}>
         <ToolButton
           title="Link"
           icon={R.getSVGIcon("legend/legend")}
           active={this.store.currentTool == "legend"}
           onClick={() => {
             globals.popupController.popupAt(
-              context => (
+              (context) => (
                 <PopupView context={context}>
                   <LegendCreationPanel onFinish={() => context.close()} />
                 </PopupView>

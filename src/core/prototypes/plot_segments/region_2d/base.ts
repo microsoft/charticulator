@@ -5,7 +5,7 @@ import {
   ConstraintPlugins,
   ConstraintSolver,
   ConstraintStrength,
-  Variable
+  Variable,
 } from "../../../solver";
 import * as Specification from "../../../specification";
 import { BuildConstraintsContext, Controls } from "../../common";
@@ -13,7 +13,7 @@ import { DataflowTable } from "../../dataflow";
 import {
   buildAxisWidgets,
   getCategoricalAxis,
-  getNumericalInterpolate
+  getNumericalInterpolate,
 } from "../axis";
 import { PlotSegmentClass } from "../plot_segment";
 
@@ -160,7 +160,7 @@ export class CrossFitter {
         );
       } else {
         this.solver.addSoftInequality(w, candidate[2], candidate[1], [
-          [1, candidate[0]]
+          [1, candidate[0]],
         ]);
       }
     }
@@ -242,7 +242,7 @@ export class Region2DConstraintBuilder {
     categories: Array<{ expression: string; categories: string[] }>
   ): number[][] {
     // Prepare categories
-    const categoriesParsed = categories.map(c => {
+    const categoriesParsed = categories.map((c) => {
       const imap = new Map<string, number>();
       for (let i = 0; i < c.categories.length; i++) {
         imap.set(c.categories[i], i);
@@ -251,7 +251,7 @@ export class Region2DConstraintBuilder {
         categories: c.categories,
         indexMap: imap,
         stride: 0,
-        expression: this.getExpression(c.expression)
+        expression: this.getExpression(c.expression),
       };
     });
     let k = 1;
@@ -331,14 +331,17 @@ export class Region2DConstraintBuilder {
     const [gapX, x1, x2] = solver.attrs(attrs, [
       "gapX",
       this.x1Name,
-      this.x2Name
+      this.x2Name,
     ]);
 
     solver.addLinear(
       ConstraintStrength.HARD,
       ratio * (props.marginX2 + props.marginX2),
       [[length - 1, gapX]],
-      [[ratio, x2], [-ratio, x1]]
+      [
+        [ratio, x2],
+        [-ratio, x1],
+      ]
     );
   }
 
@@ -352,13 +355,16 @@ export class Region2DConstraintBuilder {
     const [gapY, y1, y2] = solver.attrs(attrs, [
       "gapY",
       this.y1Name,
-      this.y2Name
+      this.y2Name,
     ]);
     solver.addLinear(
       ConstraintStrength.HARD,
       ratio * (props.marginX2 + props.marginX2),
       [[length - 1, gapY]],
-      [[ratio, y2], [-ratio, y1]]
+      [
+        [ratio, y2],
+        [-ratio, y1],
+      ]
     );
   }
 
@@ -387,7 +393,10 @@ export class Region2DConstraintBuilder {
               solver.addLinear(
                 ConstraintStrength.HARD,
                 (1 - t) * props.marginX1 - t * props.marginX2,
-                [[1 - t, x1], [t, x2]],
+                [
+                  [1 - t, x1],
+                  [t, x2],
+                ],
                 [[1, solver.attr(markState.attributes, "x")]]
               );
             }
@@ -396,7 +405,7 @@ export class Region2DConstraintBuilder {
             const [x1, x2, gapX] = solver.attrs(attrs, [
               this.x1Name,
               this.x2Name,
-              "gapX"
+              "gapX",
             ]);
             const expr = this.getExpression(data.expression);
             for (const [index, markState] of state.glyphs.entries()) {
@@ -413,13 +422,13 @@ export class Region2DConstraintBuilder {
                 [
                   [i + 0.5, x2],
                   [data.categories.length - i - 0.5, x1],
-                  [-data.categories.length / 2 + i + 0.5, gapX]
+                  [-data.categories.length / 2 + i + 0.5, gapX],
                 ],
                 [
                   [
                     data.categories.length,
-                    solver.attr(markState.attributes, "x")
-                  ]
+                    solver.attr(markState.attributes, "x"),
+                  ],
                 ]
               );
             }
@@ -440,7 +449,10 @@ export class Region2DConstraintBuilder {
             solver.addLinear(
               ConstraintStrength.HARD,
               (t - 1) * props.marginY2 + t * props.marginY1,
-              [[1 - t, y1], [t, y2]],
+              [
+                [1 - t, y1],
+                [t, y2],
+              ],
               [[1, solver.attr(markState.attributes, "y")]]
             );
           }
@@ -449,7 +461,7 @@ export class Region2DConstraintBuilder {
           const [y1, y2, gapY] = solver.attrs(attrs, [
             this.y1Name,
             this.y2Name,
-            "gapY"
+            "gapY",
           ]);
           const expr = this.getExpression(data.expression);
           for (const [index, markState] of state.glyphs.entries()) {
@@ -466,7 +478,7 @@ export class Region2DConstraintBuilder {
               [
                 [i + 0.5, y2],
                 [data.categories.length - i - 0.5, y1],
-                [-data.categories.length / 2 + i + 0.5, gapY]
+                [-data.categories.length / 2 + i + 0.5, gapY],
               ],
               [[data.categories.length, solver.attr(markState.attributes, "y")]]
             );
@@ -483,13 +495,13 @@ export class Region2DConstraintBuilder {
       case "x": {
         const data = props.xData;
         return this.groupMarksByCategories([
-          { categories: data.categories, expression: data.expression }
+          { categories: data.categories, expression: data.expression },
         ]);
       }
       case "y": {
         const data = props.yData;
         return this.groupMarksByCategories([
-          { categories: data.categories, expression: data.expression }
+          { categories: data.categories, expression: data.expression },
         ]);
       }
       case "xy": {
@@ -497,7 +509,7 @@ export class Region2DConstraintBuilder {
         const yData = props.yData;
         return this.groupMarksByCategories([
           { categories: xData.categories, expression: xData.expression },
-          { categories: yData.categories, expression: yData.expression }
+          { categories: yData.categories, expression: yData.expression },
         ]);
       }
     }
@@ -523,7 +535,7 @@ export class Region2DConstraintBuilder {
             this.x1Name,
             this.x2Name,
             this.y1Name,
-            this.y2Name
+            this.y2Name,
           ]);
 
           const axis = getCategoricalAxis(
@@ -537,13 +549,15 @@ export class Region2DConstraintBuilder {
             const [t1, t2] = axis.ranges[cindex];
 
             // t1 * x2 = (1 - t1) * x2
-            const vx1Expr = [[t1, x2], [1 - t1, x1]] as Array<
-              [number, Variable]
-            >;
+            const vx1Expr = [
+              [t1, x2],
+              [1 - t1, x1],
+            ] as Array<[number, Variable]>;
             // t2 * x2 = (1 - t2) * x2
-            const vx2Expr = [[t2, x2], [1 - t2, x1]] as Array<
-              [number, Variable]
-            >;
+            const vx2Expr = [
+              [t2, x2],
+              [1 - t2, x1],
+            ] as Array<[number, Variable]>;
 
             const vx1 = solver.attr(
               { value: solver.getLinear(...vx1Expr) },
@@ -567,7 +581,7 @@ export class Region2DConstraintBuilder {
               x1: vx1,
               y1,
               x2: vx2,
-              y2
+              y2,
             });
           }
           this.applySublayout(sublayoutGroups, "x", sublayoutContext);
@@ -580,7 +594,7 @@ export class Region2DConstraintBuilder {
             this.x1Name,
             this.x2Name,
             this.y1Name,
-            this.y2Name
+            this.y2Name,
           ]);
 
           const axis = getCategoricalAxis(
@@ -593,12 +607,14 @@ export class Region2DConstraintBuilder {
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
             const [t1, t2] = axis.ranges[cindex];
 
-            const vy1Expr = [[t1, y2], [1 - t1, y1]] as Array<
-              [number, Variable]
-            >;
-            const vy2Expr = [[t2, y2], [1 - t2, y1]] as Array<
-              [number, Variable]
-            >;
+            const vy1Expr = [
+              [t1, y2],
+              [1 - t1, y1],
+            ] as Array<[number, Variable]>;
+            const vy2Expr = [
+              [t2, y2],
+              [1 - t2, y1],
+            ] as Array<[number, Variable]>;
 
             const vy1 = solver.attr(
               { value: solver.getLinear(...vy1Expr) },
@@ -619,7 +635,7 @@ export class Region2DConstraintBuilder {
               x1,
               y1: vy1,
               x2,
-              y2: vy2
+              y2: vy2,
             });
           }
           this.applySublayout(sublayoutGroups, "y", sublayoutContext);
@@ -633,7 +649,7 @@ export class Region2DConstraintBuilder {
             this.x1Name,
             this.x2Name,
             this.y1Name,
-            this.y2Name
+            this.y2Name,
           ]);
 
           const xAxis = getCategoricalAxis(
@@ -653,19 +669,23 @@ export class Region2DConstraintBuilder {
             for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
               const [tx1, tx2] = xAxis.ranges[xIndex];
 
-              const vx1Expr = [[tx1, x2], [1 - tx1, x1]] as Array<
-                [number, Variable]
-              >;
-              const vx2Expr = [[tx2, x2], [1 - tx2, x1]] as Array<
-                [number, Variable]
-              >;
+              const vx1Expr = [
+                [tx1, x2],
+                [1 - tx1, x1],
+              ] as Array<[number, Variable]>;
+              const vx2Expr = [
+                [tx2, x2],
+                [1 - tx2, x1],
+              ] as Array<[number, Variable]>;
 
-              const vy1Expr = [[ty1, y2], [1 - ty1, y1]] as Array<
-                [number, Variable]
-              >;
-              const vy2Expr = [[ty2, y2], [1 - ty2, y1]] as Array<
-                [number, Variable]
-              >;
+              const vy1Expr = [
+                [ty1, y2],
+                [1 - ty1, y1],
+              ] as Array<[number, Variable]>;
+              const vy2Expr = [
+                [ty2, y2],
+                [1 - ty2, y1],
+              ] as Array<[number, Variable]>;
 
               const vx1 = solver.attr(
                 { value: solver.getLinear(...vx1Expr) },
@@ -698,7 +718,7 @@ export class Region2DConstraintBuilder {
                 x1: vx1,
                 y1: vy1,
                 x2: vx2,
-                y2: vy2
+                y2: vy2,
               });
             }
           }
@@ -744,7 +764,7 @@ export class Region2DConstraintBuilder {
               x1: xAxis ? xAxis.ranges[ix][0] * (x2 - x1) + x1 : x1,
               y1: yAxis ? yAxis.ranges[iy][0] * (y2 - y1) + y1 : y1,
               x2: xAxis ? xAxis.ranges[ix][1] * (x2 - x1) + x1 : x2,
-              y2: yAxis ? yAxis.ranges[iy][1] * (y2 - y1) + y1 : y2
+              y2: yAxis ? yAxis.ranges[iy][1] * (y2 - y1) + y1 : y2,
             };
           }),
           false,
@@ -766,8 +786,8 @@ export class Region2DConstraintBuilder {
             reference: p1 * (x2 - x1) + x1,
             value: data.gapRatio,
             scale: axis.gapScale * (x2 - x1),
-            span: [y1, y2]
-          }
+            span: [y1, y2],
+          },
         });
       }
     }
@@ -784,8 +804,8 @@ export class Region2DConstraintBuilder {
             reference: p1 * (y2 - y1) + y1,
             value: data.gapRatio,
             scale: axis.gapScale * (y2 - y1),
-            span: [x1, x2]
-          }
+            span: [x1, x2],
+          },
         });
       }
     }
@@ -803,7 +823,7 @@ export class Region2DConstraintBuilder {
       this.x1Name,
       this.x2Name,
       this.y1Name,
-      this.y2Name
+      this.y2Name,
     ]);
 
     const count = dataIndices.length;
@@ -828,7 +848,7 @@ export class Region2DConstraintBuilder {
                 solver.addLinear(ConstraintStrength.HARD, 0, [
                   [1, x2Prev],
                   [-1, x1This],
-                  [1, gapX]
+                  [1, gapX],
                 ]);
               }
               if (index == 0) {
@@ -861,16 +881,22 @@ export class Region2DConstraintBuilder {
               solver.addLinear(
                 ConstraintStrength.HARD,
                 0,
-                [[1 - t, x1], [t, x2]],
+                [
+                  [1 - t, x1],
+                  [t, x2],
+                ],
                 [[1, solver.attr(markState.attributes, "x")]]
               );
               solver.addLinear(
                 ConstraintStrength.WEAK,
                 0,
-                [[1, x2], [-1, x1]],
+                [
+                  [1, x2],
+                  [-1, x1],
+                ],
                 [
                   [count, solver.attr(markState.attributes, "width")],
-                  [count - 1, gapX]
+                  [count - 1, gapX],
                 ]
               );
             }
@@ -892,7 +918,7 @@ export class Region2DConstraintBuilder {
                 solver.addLinear(ConstraintStrength.HARD, 0, [
                   [1, y2Prev],
                   [-1, y1This],
-                  [1, gapY]
+                  [1, gapY],
                 ]);
               }
               if (index == 0) {
@@ -924,16 +950,22 @@ export class Region2DConstraintBuilder {
               solver.addLinear(
                 ConstraintStrength.HARD,
                 0,
-                [[1 - t, y2], [t, y1]],
+                [
+                  [1 - t, y2],
+                  [t, y1],
+                ],
                 [[1, solver.attr(markState.attributes, "y")]]
               );
               solver.addLinear(
                 ConstraintStrength.WEAK,
                 0,
-                [[1, y2], [-1, y1]],
+                [
+                  [1, y2],
+                  [-1, y1],
+                ],
                 [
                   [count, solver.attr(markState.attributes, "height")],
-                  [count - 1, gapY]
+                  [count - 1, gapY],
                 ]
               );
             }
@@ -964,8 +996,9 @@ export class Region2DConstraintBuilder {
 
     const alignment = props.sublayout.align;
 
-    groups.forEach(group => {
-      const markStates = group.group.map(index => state.glyphs[index]);
+    
+    groups.forEach((group) => {
+      const markStates = group.group.map((index) => state.glyphs[index]);
       const { x1, y1, x2, y2 } = group;
 
       for (let index = 0; index < markStates.length; index++) {
@@ -995,9 +1028,12 @@ export class Region2DConstraintBuilder {
               0,
               [
                 [1, solver.attr(m1.attributes, "x1")],
-                [1, solver.attr(m1.attributes, "x2")]
+                [1, solver.attr(m1.attributes, "x2")],
               ],
-              [[1, x1], [1, x2]]
+              [
+                [1, x1],
+                [1, x2],
+              ]
             );
           }
         }
@@ -1026,9 +1062,12 @@ export class Region2DConstraintBuilder {
               0,
               [
                 [1, solver.attr(m1.attributes, "y1")],
-                [1, solver.attr(m1.attributes, "y2")]
+                [1, solver.attr(m1.attributes, "y2")],
               ],
-              [[1, y1], [1, y2]]
+              [
+                [1, y1],
+                [1, y2],
+              ]
             );
           }
         }
@@ -1112,8 +1151,8 @@ export class Region2DConstraintBuilder {
       dodgeGapOffset = dodgeGapRatio / 2;
     }
 
-    groups.forEach(group => {
-      const markStates = group.group.map(index => state.glyphs[index]);
+    groups.forEach((group) => {
+      const markStates = group.group.map((index) => state.glyphs[index]);
       const { x1, y1, x2, y2 } = group;
 
       const count = markStates.length;
@@ -1133,7 +1172,7 @@ export class Region2DConstraintBuilder {
                   [dodgeGapRatio, x2],
                   [-dodgeGapRatio, x1],
                   [1, solver.attr(m0.attributes, "x2")],
-                  [-1, solver.attr(m1.attributes, "x1")]
+                  [-1, solver.attr(m1.attributes, "x1")],
                 ]);
               }
               break;
@@ -1143,7 +1182,7 @@ export class Region2DConstraintBuilder {
                   [dodgeGapRatio, y2],
                   [-dodgeGapRatio, y1],
                   [1, solver.attr(m0.attributes, "y2")],
-                  [-1, solver.attr(m1.attributes, "y1")]
+                  [-1, solver.attr(m1.attributes, "y1")],
                 ]);
               }
               break;
@@ -1177,9 +1216,12 @@ export class Region2DConstraintBuilder {
                   0,
                   [
                     [1, solver.attr(m1.attributes, "y1")],
-                    [1, solver.attr(m1.attributes, "y2")]
+                    [1, solver.attr(m1.attributes, "y2")],
                   ],
-                  [[1, y1], [1, y2]]
+                  [
+                    [1, y1],
+                    [1, y2],
+                  ]
                 );
               }
             }
@@ -1210,9 +1252,12 @@ export class Region2DConstraintBuilder {
                   0,
                   [
                     [1, solver.attr(m1.attributes, "x1")],
-                    [1, solver.attr(m1.attributes, "x2")]
+                    [1, solver.attr(m1.attributes, "x2")],
                   ],
-                  [[1, x1], [1, x2]]
+                  [
+                    [1, x1],
+                    [1, x2],
+                  ]
                 );
               }
             }
@@ -1227,12 +1272,12 @@ export class Region2DConstraintBuilder {
             const x1WithGap: Array<[number, Variable]> = [
               [1, x1],
               [dodgeGapOffset, x2],
-              [-dodgeGapOffset, x1]
+              [-dodgeGapOffset, x1],
             ];
             const x2WithGap: Array<[number, Variable]> = [
               [1, x2],
               [dodgeGapOffset, x1],
-              [-dodgeGapOffset, x2]
+              [-dodgeGapOffset, x2],
             ];
             if (alignment.x == "start") {
               solver.addLinear(
@@ -1266,9 +1311,12 @@ export class Region2DConstraintBuilder {
                 0,
                 [
                   [1, solver.attr(m1.attributes, "x1")],
-                  [1, solver.attr(mN.attributes, "x2")]
+                  [1, solver.attr(mN.attributes, "x2")],
                 ],
-                [[1, x1], [1, x2]]
+                [
+                  [1, x1],
+                  [1, x2],
+                ]
               );
             }
           }
@@ -1278,12 +1326,12 @@ export class Region2DConstraintBuilder {
             const y1WithGap: Array<[number, Variable]> = [
               [1, y1],
               [dodgeGapOffset, y2],
-              [-dodgeGapOffset, y1]
+              [-dodgeGapOffset, y1],
             ];
             const y2WithGap: Array<[number, Variable]> = [
               [1, y2],
               [dodgeGapOffset, y1],
-              [-dodgeGapOffset, y2]
+              [-dodgeGapOffset, y2],
             ];
             if (alignment.y == "start") {
               solver.addLinear(
@@ -1317,9 +1365,12 @@ export class Region2DConstraintBuilder {
                 0,
                 [
                   [1, solver.attr(m1.attributes, "y1")],
-                  [1, solver.attr(mN.attributes, "y2")]
+                  [1, solver.attr(mN.attributes, "y2")],
                 ],
-                [[1, y1], [1, y2]]
+                [
+                  [1, y1],
+                  [1, y2],
+                ]
               );
             }
           }
@@ -1358,7 +1409,7 @@ export class Region2DConstraintBuilder {
     const yMaxFitter = new CrossFitter(solver, "max");
 
     let maxCount = 0;
-    groups.forEach(group => {
+    groups.forEach((group) => {
       if (maxCount < group.group.length) {
         maxCount = group.group.length;
       }
@@ -1406,8 +1457,8 @@ export class Region2DConstraintBuilder {
     const gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
     const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
 
-    groups.forEach(group => {
-      const markStates = group.group.map(index => state.glyphs[index]);
+    groups.forEach((group) => {
+      const markStates = group.group.map((index) => state.glyphs[index]);
       const { x1, y1, x2, y2 } = group;
 
       let xMax: number, yMax: number;
@@ -1453,19 +1504,19 @@ export class Region2DConstraintBuilder {
         }
         const cellX1: Array<[number, Variable]> = [
           [(xi / xCount) * (1 + gapRatioX), x2],
-          [1 - (xi / xCount) * (1 + gapRatioX), x1]
+          [1 - (xi / xCount) * (1 + gapRatioX), x1],
         ];
         const cellX2: Array<[number, Variable]> = [
           [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
-          [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1]
+          [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1],
         ];
         const cellY1: Array<[number, Variable]> = [
           [(yi / yCount) * (1 + gapRatioY), y2],
-          [1 - (yi / yCount) * (1 + gapRatioY), y1]
+          [1 - (yi / yCount) * (1 + gapRatioY), y1],
         ];
         const cellY2: Array<[number, Variable]> = [
           [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
-          [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1]
+          [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1],
         ];
         const state = markStates[i];
         if (alignX == "start") {
@@ -1494,7 +1545,7 @@ export class Region2DConstraintBuilder {
             0,
             [
               [1, solver.attr(state.attributes, "x1")],
-              [1, solver.attr(state.attributes, "x2")]
+              [1, solver.attr(state.attributes, "x2")],
             ],
             cellX1.concat(cellX2)
           );
@@ -1525,7 +1576,7 @@ export class Region2DConstraintBuilder {
             0,
             [
               [1, solver.attr(state.attributes, "y1")],
-              [1, solver.attr(state.attributes, "y2")]
+              [1, solver.attr(state.attributes, "y2")],
             ],
             cellY1.concat(cellY2)
           );
@@ -1586,8 +1637,8 @@ export class Region2DConstraintBuilder {
               scale:
                 (1 / (enablePrePostGapX ? maxCount : maxCount - 1)) *
                 (group.x2 - group.x1),
-              span: [minY, maxY]
-            }
+              span: [minY, maxY],
+            },
           });
         }
       }
@@ -1620,8 +1671,8 @@ export class Region2DConstraintBuilder {
               scale:
                 (1 / (enablePrePostGapY ? maxCount : maxCount - 1)) *
                 (group.y2 - group.y1),
-              span: [minX, maxX]
-            }
+              span: [minX, maxX],
+            },
           });
         }
       }
@@ -1637,32 +1688,38 @@ export class Region2DConstraintBuilder {
     const state = this.plotSegment.state;
     const packingProps = this.plotSegment.object.properties.sublayout.packing;
 
-    groups.forEach(group => {
-      const markStates = group.group.map(index => state.glyphs[index]);
+    groups.forEach((group) => {
+      const markStates = group.group.map((index) => state.glyphs[index]);
       const { x1, y1, x2, y2 } = group;
       const centerState: Specification.AttributeMap = {
         cx: 0,
-        cy: 0
+        cy: 0,
       };
       const cx = solver.attr(centerState, "cx", {
-        edit: true
+        edit: true,
       });
       const cy = solver.attr(centerState, "cy", {
-        edit: true
+        edit: true,
       });
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
         [[2, cx]],
-        [[1, x1], [1, x2]]
+        [
+          [1, x1],
+          [1, x2],
+        ]
       );
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
         [[2, cy]],
-        [[1, y1], [1, y2]]
+        [
+          [1, y1],
+          [1, y2],
+        ]
       );
-      const points = markStates.map(state => {
+      const points = markStates.map((state) => {
         let radius = 0;
         for (const e of state.marks) {
           if (e.attributes.size != null) {
@@ -1684,7 +1741,7 @@ export class Region2DConstraintBuilder {
         return [
           solver.attr(state.attributes, "x"),
           solver.attr(state.attributes, "y"),
-          radius
+          radius,
         ] as [Variable, Variable, number];
       });
       solver.addPlugin(
@@ -1697,7 +1754,7 @@ export class Region2DConstraintBuilder {
           this.config.getXYScale,
           {
             gravityX: packingProps && packingProps.gravityX,
-            gravityY: packingProps && packingProps.gravityY
+            gravityY: packingProps && packingProps.gravityY,
           }
         )
       );
@@ -1725,8 +1782,8 @@ export class Region2DConstraintBuilder {
                         y1: state.attributes[this.y1Name] as number,
                         x2: state.attributes[this.x2Name] as number,
                         y2: state.attributes[this.y2Name] as number,
-                        group: state.dataRowIndices.map((x, i) => i)
-                      }
+                        group: state.dataRowIndices.map((x, i) => i),
+                      },
                     ],
                     this.config.xAxisPrePostGap,
                     this.config.yAxisPrePostGap
@@ -1813,14 +1870,14 @@ export class Region2DConstraintBuilder {
                       y1: solver.attr(attrs, this.y1Name),
                       x2: solver.attr(attrs, this.x2Name),
                       y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
+                      group: state.dataRowIndices.map((x, i) => i),
+                    },
                   ],
                   "xy",
                   {
                     mode: "default",
                     xAxisPrePostGap: this.config.xAxisPrePostGap,
-                    yAxisPrePostGap: this.config.yAxisPrePostGap
+                    yAxisPrePostGap: this.config.yAxisPrePostGap,
                   }
                 );
               }
@@ -1835,12 +1892,12 @@ export class Region2DConstraintBuilder {
                       y1: solver.attr(attrs, this.y1Name),
                       x2: solver.attr(attrs, this.x2Name),
                       y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
+                      group: state.dataRowIndices.map((x, i) => i),
+                    },
                   ],
                   "x",
                   {
-                    mode: "x-only"
+                    mode: "x-only",
                   }
                 );
               }
@@ -1856,12 +1913,12 @@ export class Region2DConstraintBuilder {
                       y1: solver.attr(attrs, this.y1Name),
                       x2: solver.attr(attrs, this.x2Name),
                       y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
+                      group: state.dataRowIndices.map((x, i) => i),
+                    },
                   ],
                   "x",
                   {
-                    mode: "x-only"
+                    mode: "x-only",
                   }
                 );
               }
@@ -1888,12 +1945,12 @@ export class Region2DConstraintBuilder {
                       y1: solver.attr(attrs, this.y1Name),
                       x2: solver.attr(attrs, this.x2Name),
                       y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
+                      group: state.dataRowIndices.map((x, i) => i),
+                    },
                   ],
                   "y",
                   {
-                    mode: "y-only"
+                    mode: "y-only",
                   }
                 );
               }
@@ -1933,12 +1990,12 @@ export class Region2DConstraintBuilder {
                       y1: solver.attr(attrs, this.y1Name),
                       x2: solver.attr(attrs, this.x2Name),
                       y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i)
-                    }
+                      group: state.dataRowIndices.map((x, i) => i),
+                    },
                   ],
                   "y",
                   {
-                    mode: "y-only"
+                    mode: "y-only",
                   }
                 );
               }
@@ -2011,27 +2068,27 @@ export class Region2DConstraintBuilder {
     const overlapOption = {
       value: "overlap",
       label: this.terminology.overlap,
-      icon: this.terminology.overlapIcon
+      icon: this.terminology.overlapIcon,
     };
     const packingOption = {
       value: "packing",
       label: this.terminology.packing,
-      icon: this.terminology.packingIcon
+      icon: this.terminology.packingIcon,
     };
     const dodgeXOption = {
       value: "dodge-x",
       label: this.terminology.dodgeX,
-      icon: this.terminology.dodgeXIcon
+      icon: this.terminology.dodgeXIcon,
     };
     const dodgeYOption = {
       value: "dodge-y",
       label: this.terminology.dodgeY,
-      icon: this.terminology.dodgeYIcon
+      icon: this.terminology.dodgeYIcon,
     };
     const gridOption = {
       value: "grid",
       label: this.terminology.grid,
-      icon: this.terminology.gridIcon
+      icon: this.terminology.gridIcon,
     };
     const props = this.plotSegment.object.properties;
     const xMode = props.xData ? props.xData.type : "null";
@@ -2045,7 +2102,7 @@ export class Region2DConstraintBuilder {
         dodgeXOption,
         dodgeYOption,
         gridOption,
-        packingOption
+        packingOption,
       ];
     }
     return [overlapOption, packingOption];
@@ -2088,7 +2145,7 @@ export class Region2DConstraintBuilder {
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"]
+                    labels: ["Left", "Middle", "Right"],
                   }
                 ),
             isYFixed
@@ -2099,7 +2156,7 @@ export class Region2DConstraintBuilder {
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"]
+                    labels: ["Bottom", "Middle", "Top"],
                   }
                 )
           )
@@ -2131,7 +2188,7 @@ export class Region2DConstraintBuilder {
             m.inputNumber(
               {
                 property: "sublayout",
-                field: type == "dodge-x" ? "ratioX" : "ratioY"
+                field: type == "dodge-x" ? "ratioX" : "ratioY",
               },
               { minimum: 0, maximum: 1, percentage: true, showSlider: true }
             )
@@ -2152,8 +2209,8 @@ export class Region2DConstraintBuilder {
                   icons: ["scaffold/xwrap", "scaffold/ywrap"],
                   labels: [
                     this.terminology.gridDirectionX,
-                    this.terminology.gridDirectionY
-                  ]
+                    this.terminology.gridDirectionY,
+                  ],
                 }
               ),
               m.label("Count:"),
@@ -2162,7 +2219,7 @@ export class Region2DConstraintBuilder {
                 field:
                   props.sublayout.grid.direction == "x"
                     ? ["grid", "xCount"]
-                    : ["grid", "yCount"]
+                    : ["grid", "yCount"],
               })
             )
           )
@@ -2219,14 +2276,14 @@ export class Region2DConstraintBuilder {
             { property: "sublayout", field: "type" },
             {
               type: "radio",
-              options: options.map(x => x.value),
-              icons: options.map(x => x.icon),
-              labels: options.map(x => x.label)
+              options: options.map((x) => x.value),
+              icons: options.map((x) => x.icon),
+              labels: options.map((x) => x.label),
             }
           )
         )
       ),
-      ...extra
+      ...extra,
     ];
   }
 
@@ -2246,12 +2303,12 @@ export class Region2DConstraintBuilder {
       return [
         ...this.buildAxisWidgets(m, this.terminology.xAxis, "x"),
         ...this.buildAxisWidgets(m, this.terminology.yAxis, "y"),
-        ...this.buildSublayoutWidgets(m)
+        ...this.buildSublayoutWidgets(m),
       ];
     } else {
       return [
         ...this.buildAxisWidgets(m, this.terminology.xAxis, "x"),
-        ...this.buildAxisWidgets(m, this.terminology.yAxis, "y")
+        ...this.buildAxisWidgets(m, this.terminology.yAxis, "y"),
       ];
     }
   }
@@ -2281,13 +2338,13 @@ export class Region2DConstraintBuilder {
                 icons: [
                   this.terminology.xMinIcon,
                   this.terminology.xMiddleIcon,
-                  this.terminology.xMaxIcon
+                  this.terminology.xMaxIcon,
                 ],
                 labels: [
                   this.terminology.xMin,
                   this.terminology.xMiddle,
-                  this.terminology.xMax
-                ]
+                  this.terminology.xMax,
+                ],
               }
             )
           );
@@ -2302,13 +2359,13 @@ export class Region2DConstraintBuilder {
                 icons: [
                   this.terminology.yMinIcon,
                   this.terminology.yMiddleIcon,
-                  this.terminology.yMaxIcon
+                  this.terminology.yMaxIcon,
                 ],
                 labels: [
                   this.terminology.yMin,
                   this.terminology.yMiddle,
-                  this.terminology.yMax
-                ]
+                  this.terminology.yMax,
+                ],
               }
             )
           );
@@ -2323,8 +2380,8 @@ export class Region2DConstraintBuilder {
                 icons: ["scaffold/xwrap", "scaffold/ywrap"],
                 labels: [
                   this.terminology.gridDirectionX,
-                  this.terminology.gridDirectionY
-                ]
+                  this.terminology.gridDirectionY,
+                ],
               }
             )
           );
@@ -2349,12 +2406,12 @@ export class Region2DConstraintBuilder {
           { property: "sublayout", field: "type" },
           {
             type: "dropdown",
-            options: options.map(x => x.value),
-            icons: options.map(x => x.icon),
-            labels: options.map(x => x.label)
+            options: options.map((x) => x.value),
+            icons: options.map((x) => x.icon),
+            labels: options.map((x) => x.label),
           }
         ),
-        ...extra
+        ...extra,
       ];
     }
 
@@ -2373,13 +2430,13 @@ export class Region2DConstraintBuilder {
             icons: [
               this.terminology.yMinIcon,
               this.terminology.yMiddleIcon,
-              this.terminology.yMaxIcon
+              this.terminology.yMaxIcon,
             ],
             labels: [
               this.terminology.yMin,
               this.terminology.yMiddle,
-              this.terminology.yMax
-            ]
+              this.terminology.yMax,
+            ],
           }
         )
       );
@@ -2397,13 +2454,13 @@ export class Region2DConstraintBuilder {
             icons: [
               this.terminology.xMinIcon,
               this.terminology.xMiddleIcon,
-              this.terminology.xMaxIcon
+              this.terminology.xMaxIcon,
             ],
             labels: [
               this.terminology.xMin,
               this.terminology.xMiddle,
-              this.terminology.xMax
-            ]
+              this.terminology.xMax,
+            ],
           }
         )
       );

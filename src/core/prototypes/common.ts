@@ -273,6 +273,16 @@ export namespace SnappingGuides {
     attribute: string;
   }
 
+  export interface PolarAxis extends Description {
+    type: "point";
+    angle: number;
+    radius: number;
+    angleAttribute: string;
+    radiusAttribute: string;
+    cx: number;
+    cy: number;
+  }
+
   export interface Label extends Description {
     type: "label";
     x: number;

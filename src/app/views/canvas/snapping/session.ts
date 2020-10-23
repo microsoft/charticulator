@@ -29,16 +29,27 @@ export class SnappingSession<ElementType> {
         {
           const lineHandle = handle as Prototypes.Handles.Line;
           // Get all guides
-          this.candidates = guides.filter(g => {
-            return g.guide.type == lineHandle.axis;
+          this.candidates = guides.filter((g) => {
+            return (
+              g.guide.type == lineHandle.axis ||
+              g.guide.type == "angular" ||
+              g.guide.type == "radial" ||
+              g.guide.type == "point"
+            );
           });
         }
         break;
       case "point":
         {
           // Get all guides
-          this.candidates = guides.filter(g => {
-            return g.guide.type == "x" || g.guide.type == "y";
+          this.candidates = guides.filter((g) => {
+            return (
+              g.guide.type == "x" ||
+              g.guide.type == "y" ||
+              g.guide.type == "angular" ||
+              g.guide.type == "radial" ||
+              g.guide.type == "point"
+            );
           });
         }
         break;
@@ -92,6 +103,18 @@ export class SnappingSession<ElementType> {
                   minXDistance = dX;
                   minXGuide = g;
                 }
+              } else if (g.guide.type == "point") {
+                const polarGuide = g.guide as Prototypes.SnappingGuides.PolarAxis;
+                const dX = Math.abs(polarGuide.angle - (e.x as number));
+                const dY = Math.abs(polarGuide.radius - (e.y as number));
+                if (dX < minXDistance || minXDistance == null) {
+                  minXDistance = dX;
+                  minXGuide = g;
+                }
+                if (dY < minYDistance || minYDistance == null) {
+                  minYDistance = dY;
+                  minYGuide = g;
+                }
               }
             } else {
               // Filter guides by threshold
@@ -112,6 +135,23 @@ export class SnappingSession<ElementType> {
                 ) {
                   minYDistance = d;
                   minYGuide = g;
+                }
+              } else if (g.guide.type == "point") {
+                const polarGuide = g.guide as Prototypes.SnappingGuides.PolarAxis;
+                const d = Math.sqrt(
+                  (polarGuide.angle - (e.x as number)) *
+                    (polarGuide.angle - (e.x as number)) +
+                    (polarGuide.radius - (e.y as number)) *
+                      (polarGuide.radius - (e.y as number))
+                );
+                if (
+                  d < this.threshold &&
+                  (minYDistance == null || d < minYDistance - EPSILON)
+                ) {
+                  minYDistance = d;
+                  minYGuide = g;
+                  minXDistance = d;
+                  minXGuide = g;
                 }
               }
             }
@@ -149,7 +189,7 @@ export class SnappingSession<ElementType> {
             result.push({
               type: "value-mapping",
               attribute: action.attribute,
-              value
+              value,
             });
           }
           break;
@@ -159,7 +199,7 @@ export class SnappingSession<ElementType> {
               type: "property",
               property: action.property,
               field: action.field,
-              value
+              value,
             });
           }
           break;
@@ -177,7 +217,7 @@ export class SnappingSession<ElementType> {
                   attribute: action.attribute,
                   snapElement: candidate.element,
                   snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
-                    .attribute
+                    .attribute,
                 });
                 didSnap = true;
               }
@@ -193,9 +233,33 @@ export class SnappingSession<ElementType> {
                     attribute: action.attribute,
                     snapElement: candidate.element,
                     snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
-                      .attribute
+                      .attribute,
                   });
                   didSnap = true;
+                } else if (
+                  (candidate.guide as Prototypes.SnappingGuides.PolarAxis)
+                    .type === "point"
+                ) {
+                  if (source == "x") {
+                    result.push({
+                      type: "snap",
+                      attribute: action.attribute,
+                      snapElement: candidate.element,
+                      snapAttribute: (candidate.guide as Prototypes.SnappingGuides.PolarAxis)
+                        .angleAttribute,
+                    });
+                    didSnap = true;
+                  }
+                  if (source == "y") {
+                    result.push({
+                      type: "snap",
+                      attribute: action.attribute,
+                      snapElement: candidate.element,
+                      snapAttribute: (candidate.guide as Prototypes.SnappingGuides.PolarAxis)
+                        .radiusAttribute,
+                    });
+                    didSnap = true;
+                  }
                 }
               }
             }
@@ -203,7 +267,7 @@ export class SnappingSession<ElementType> {
               result.push({
                 type: "move",
                 attribute: action.attribute,
-                value
+                value,
               });
             }
           }
