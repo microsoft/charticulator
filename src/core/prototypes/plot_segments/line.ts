@@ -11,7 +11,7 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  TemplateParameters
+  TemplateParameters,
 } from "../common";
 import {
   AxisRenderer,
@@ -19,7 +19,7 @@ import {
   getCategoricalAxis,
   buildAxisInference,
   buildAxisProperties,
-  getNumericalInterpolate
+  getNumericalInterpolate,
 } from "./axis";
 import { PlotSegmentClass } from "./plot_segment";
 import { ChartStateManager } from "..";
@@ -70,12 +70,12 @@ export class LineGuide extends PlotSegmentClass {
     iconPath: "plot-segment/line",
     creatingInteraction: {
       type: "line-segment",
-      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" }
-    }
+      mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" },
+    },
   };
 
   public static defaultProperties: Specification.AttributeMap = {
-    visible: true
+    visible: true,
   };
 
   public readonly state: LineGuideState;
@@ -85,20 +85,20 @@ export class LineGuide extends PlotSegmentClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public initializeState(): void {
@@ -129,7 +129,7 @@ export class LineGuide extends PlotSegmentClass {
       "x1",
       "y1",
       "x2",
-      "y2"
+      "y2",
     ]);
     const attrs = this.state.attributes;
 
@@ -177,14 +177,20 @@ export class LineGuide extends PlotSegmentClass {
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [[t, x2], [1 - t, x1]],
+        [
+          [t, x2],
+          [1 - t, x1],
+        ],
         [[1, solver.attr(markState.attributes, "x")]]
       );
       // add constraint t*y2 + (1 - t) * y1 = y
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [[t, y2], [1 - t, y1]],
+        [
+          [t, y2],
+          [1 - t, y1],
+        ],
         [[1, solver.attr(markState.attributes, "y")]]
       );
     }
@@ -200,8 +206,8 @@ export class LineGuide extends PlotSegmentClass {
       p2: { x: x2, y: y2 },
       title: "Axis",
       dropAction: {
-        axisInference: { property: "axis" }
-      }
+        axisInference: { property: "axis" },
+      },
     } as DropZones.Line);
     return zones;
   }
@@ -216,8 +222,8 @@ export class LineGuide extends PlotSegmentClass {
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -225,9 +231,9 @@ export class LineGuide extends PlotSegmentClass {
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
-      } as Handles.Point
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
+      } as Handles.Point,
     ];
   }
 
@@ -239,7 +245,7 @@ export class LineGuide extends PlotSegmentClass {
       x1,
       y1,
       x2,
-      y2
+      y2,
     } as BoundingBox.Line;
   }
 
@@ -251,7 +257,7 @@ export class LineGuide extends PlotSegmentClass {
     if (props.axis == null) {
       return Graphics.makeLine(x1, y1, x2, y2, {
         strokeColor: { r: 0, g: 0, b: 0 },
-        fillColor: null
+        fillColor: null,
       });
     }
     if (props.axis && props.axis.visible) {
@@ -262,11 +268,7 @@ export class LineGuide extends PlotSegmentClass {
         length,
         false,
         false,
-        PlotSegmentClass.getDisplayFormat(
-          manager,
-          props.axis.expression,
-          this.object.table
-        )
+        PlotSegmentClass.getDisplayFormat(props.axis, props.axis.tickFormat)
       );
       const g = renderer.renderLine(
         x1,
@@ -284,7 +286,7 @@ export class LineGuide extends PlotSegmentClass {
     const props = this.object.properties;
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...buildAxisWidgets(props.axis, "axis", manager, "Axis")
+      ...buildAxisWidgets(props.axis, "axis", manager, "Axis"),
     ];
   }
 
@@ -304,11 +306,11 @@ export class LineGuide extends PlotSegmentClass {
         target: {
           property: {
             property: "axis",
-            field: "categories"
-          }
+            field: "categories",
+          },
         },
         type: Specification.AttributeType.Enum,
-        default: defaultValue
+        default: defaultValue,
       });
     }
     return { inferences: r, properties: p };
