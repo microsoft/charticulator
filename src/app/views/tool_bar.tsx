@@ -471,10 +471,15 @@ export class MultiObjectButton extends ContextedComponent<
     };
 
     const onClick = () => {
-      if (!this.props.compact) {
-        return;
+      if (this.props.compact) {
+        openContextMenu();
       }
-      openContextMenu();
+    };
+
+    const onClickContextMenu = () => {
+      if (!this.props.compact) {
+        openContextMenu();
+      }
     };
 
     return (
@@ -498,7 +503,7 @@ export class MultiObjectButton extends ContextedComponent<
             }
             this.refButton = e as any;
           }}
-          onClick={!this.props.compact ? () => openContextMenu() : null}
+          onClick={onClickContextMenu}
         >
           {this.props.compact ? null : (
             <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
