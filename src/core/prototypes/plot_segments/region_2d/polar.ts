@@ -365,10 +365,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
             outerRadius,
             false,
             true,
-            PlotSegmentClass.getDisplayFormat(
-              props.yData,
-              props.yData.tickFormat
-            )
+            this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
           )
           .renderLine(
             cx,
@@ -387,10 +384,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
             angleEnd,
             builder.config.xAxisPrePostGap,
             false,
-            PlotSegmentClass.getDisplayFormat(
-              props.xData,
-              props.xData.tickFormat
-            )
+            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
           )
           .renderPolar(
             cx,

@@ -95,9 +95,68 @@ export abstract class PlotSegmentClass<
     return plotSegment;
   }
 
-  public static getDisplayFormat = (
+  public getDisplayRawFormat(
     binding: Specification.Types.AxisDataBinding,
-    tickFormat?: string
+    manager: ChartStateManager
+  ) {
+    const tableName = this.object.table;
+    const table = manager.dataset.tables.find(
+      (table) => table.name === tableName
+    );
+    const getColumnName = (rawExpression: string) => {
+      const expression = TextExpression.Parse(`\$\{${rawExpression}\}`);
+      const parsedExpression = expression.parts.find((part) => {
+        if (part.expression instanceof FunctionCall) {
+          return part.expression.args.find(
+            (arg) => arg instanceof Variable
+          ) as any;
+        }
+      });
+      const functionCallpart =
+        parsedExpression && (parsedExpression.expression as FunctionCall);
+      if (functionCallpart) {
+        const variable = functionCallpart.args.find(
+          (arg) => arg instanceof Variable
+        ) as Variable;
+        const columnName = variable.name;
+        const column = table.columns.find(
+          (column) => column.name === columnName
+        );
+
+        return column.name;
+      }
+
+      return null;
+    };
+    if (binding.valueType === Specification.DataType.Boolean) {
+      const columnName = getColumnName(binding.expression);
+      const rawColumnName = getColumnName(binding.rawExpression);
+      if (columnName && rawColumnName) {
+        const dataMapping = new Map<string, string>();
+        table.rows.forEach((row) => {
+          const value = row[columnName];
+          const rawValue = row[rawColumnName];
+          if (value !== undefined && rawValue !== undefined) {
+            const stringValue = value.toString();
+            const rawValueString = (
+              rawValue || row[refineColumnName(rawColumnName)]
+            ).toString();
+            dataMapping.set(stringValue, rawValueString);
+          }
+        });
+        return (value: any) => {
+          const rawValue = dataMapping.get(value);
+          return rawValue !== null ? rawValue : value;
+        };
+      }
+    }
+    return null;
+  }
+
+  public getDisplayFormat = (
+    binding: Specification.Types.AxisDataBinding,
+    tickFormat?: string,
+    manager?: ChartStateManager
   ) => {
     if (binding.numericalMode === "temporal" || binding.valueType === "date") {
       if (tickFormat) {
@@ -116,6 +175,12 @@ export abstract class PlotSegmentClass<
           return resolvedFormat(value);
         };
       } else {
+        if (binding.rawExpression && manager) {
+          const rawFormat = this.getDisplayRawFormat(binding, manager);
+          if (rawFormat) {
+            return rawFormat;
+          }
+        }
         return (value: any) => {
           return value;
         };

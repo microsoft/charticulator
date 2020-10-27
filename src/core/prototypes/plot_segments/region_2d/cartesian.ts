@@ -283,7 +283,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.x2 - attrs.x1,
         false,
         false,
-        PlotSegmentClass.getDisplayFormat(props.xData, props.xData.tickFormat)
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
       if (props.xData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.xData));
@@ -303,7 +303,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         attrs.y2 - attrs.y1,
         false,
         true,
-        PlotSegmentClass.getDisplayFormat(props.yData, props.yData.tickFormat)
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
       );
       if (props.yData.tickDataExpression) {
         axisRenderer.setTicksByData(getTickData(props.yData));

@@ -268,7 +268,7 @@ export class LineGuide extends PlotSegmentClass {
         length,
         false,
         false,
-        PlotSegmentClass.getDisplayFormat(props.axis, props.axis.tickFormat)
+        this.getDisplayFormat(props.axis, props.axis.tickFormat, manager)
       );
       const g = renderer.renderLine(
         x1,

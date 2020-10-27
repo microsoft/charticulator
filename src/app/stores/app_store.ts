@@ -1206,6 +1206,7 @@ export class AppStore extends BaseStore {
         object.properties[options.property]
           ? ((object.properties[options.property] as any).expression as string)
           : groupExpression,
+      rawExpression: dataExpression.rawColumnExpression,
       valueType,
       gapRatio: 0.1,
       visible: true,
