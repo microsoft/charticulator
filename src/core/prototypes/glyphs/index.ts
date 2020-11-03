@@ -23,7 +23,7 @@ import {
   ObjectClass,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
 } from "../common";
 
 export abstract class GlyphClass extends ObjectClass {
@@ -32,7 +32,7 @@ export abstract class GlyphClass extends ObjectClass {
 
   public static metadata: ObjectClassMetadata = {
     iconPath: "glyph",
-    displayName: "Glyph"
+    displayName: "Glyph",
   };
 
   // Initialize the state of a mark so that everything has a valid value
@@ -94,67 +94,67 @@ export class RectangleGlyph extends GlyphClass {
     "ix2",
     "iy2",
     "icx",
-    "icy"
+    "icy",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x: {
       name: "x",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y: {
       name: "y",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     width: {
       name: "width",
       type: Specification.AttributeType.Number,
-      defaultRange: [30, 200]
+      defaultRange: [30, 200],
     },
     height: {
       name: "height",
       type: Specification.AttributeType.Number,
-      defaultRange: [30, 200]
+      defaultRange: [30, 200],
     },
     ix1: {
       name: "ix1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     iy1: {
       name: "iy1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     ix2: {
       name: "ix2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     iy2: {
       name: "iy2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     icx: {
       name: "icx",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     icy: {
       name: "icy",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   // Initialize the state of a mark so that everything has a valid value
@@ -192,7 +192,7 @@ export class RectangleGlyph extends GlyphClass {
       ix2,
       iy2,
       icx,
-      icy
+      icy,
     ] = solver.attrs(this.state.attributes, [
       "x1",
       "y1",
@@ -207,36 +207,54 @@ export class RectangleGlyph extends GlyphClass {
       "ix2",
       "iy2",
       "icx",
-      "icy"
+      "icy",
     ]);
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, x2], [-1, x1]],
+      [
+        [1, x2],
+        [-1, x1],
+      ],
       [[1, width]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, y2], [-1, y1]],
+      [
+        [1, y2],
+        [-1, y1],
+      ],
       [[1, height]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, ix2], [-1, ix1]],
+      [
+        [1, ix2],
+        [-1, ix1],
+      ],
       [[1, width]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, iy2], [-1, iy1]],
+      [
+        [1, iy2],
+        [-1, iy1],
+      ],
       [[1, height]]
     );
     // solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
     // solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
-    solver.addLinear(ConstraintStrength.HARD, 0, [[1, ix1], [1, ix2]]);
-    solver.addLinear(ConstraintStrength.HARD, 0, [[1, iy1], [1, iy2]]);
+    solver.addLinear(ConstraintStrength.HARD, 0, [
+      [1, ix1],
+      [1, ix2],
+    ]);
+    solver.addLinear(ConstraintStrength.HARD, 0, [
+      [1, iy1],
+      [1, iy2],
+    ]);
     solver.addLinear(ConstraintStrength.HARD, 0, [[1, icx]]);
     solver.addLinear(ConstraintStrength.HARD, 0, [[1, icy]]);
     solver.addLinear(
@@ -246,7 +264,7 @@ export class RectangleGlyph extends GlyphClass {
       [
         [0.5, x2],
         [0.5, x1],
-        [1, solver.attr(this.state.marks[0].attributes, "x")]
+        [1, solver.attr(this.state.marks[0].attributes, "x")],
       ]
     );
     solver.addLinear(
@@ -256,7 +274,7 @@ export class RectangleGlyph extends GlyphClass {
       [
         [0.5, y2],
         [0.5, y1],
-        [1, solver.attr(this.state.marks[0].attributes, "y")]
+        [1, solver.attr(this.state.marks[0].attributes, "y")],
       ]
     );
   }
@@ -267,38 +285,38 @@ export class RectangleGlyph extends GlyphClass {
         type: "x",
         value: attrs.ix1,
         attribute: "ix1",
-        visible: true
+        visible: true,
       } as SnappingGuides.Axis,
       {
         type: "x",
         value: attrs.ix2,
         attribute: "ix2",
-        visible: true
+        visible: true,
       } as SnappingGuides.Axis,
       {
         type: "x",
         value: attrs.icx,
         attribute: "icx",
-        visible: true
+        visible: true,
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.iy1,
         attribute: "iy1",
-        visible: true
+        visible: true,
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.iy2,
         attribute: "iy2",
-        visible: true
+        visible: true,
       } as SnappingGuides.Axis,
       {
         type: "y",
         value: attrs.icy,
         attribute: "icy",
-        visible: true
-      } as SnappingGuides.Axis
+        visible: true,
+      } as SnappingGuides.Axis,
     ];
   }
 
@@ -312,29 +330,29 @@ export class RectangleGlyph extends GlyphClass {
         axis: "x",
         actions: [{ type: "attribute", attribute: "ix1" }],
         value: ix1,
-        span: inf
+        span: inf,
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "ix2" }],
         value: ix2,
-        span: inf
+        span: inf,
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "iy1" }],
         value: iy1,
-        span: inf
+        span: inf,
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "iy2" }],
         value: iy2,
-        span: inf
-      } as Handles.Line
+        span: inf,
+      } as Handles.Line,
     ];
   }
 
@@ -344,7 +362,7 @@ export class RectangleGlyph extends GlyphClass {
     return [
       manager.sectionHeader("Dimensions"),
       manager.mappingEditor("Width", "width", {}),
-      manager.mappingEditor("Height", "height", {})
+      manager.mappingEditor("Height", "height", {}),
     ];
   }
 }

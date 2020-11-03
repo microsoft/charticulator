@@ -10,12 +10,12 @@ import {
   BoundingBox,
   Controls,
   Handles,
-  ObjectClassMetadata
+  ObjectClassMetadata,
 } from "../common";
 import {
   AxisRenderer,
   buildAxisAppearanceWidgets,
-  defaultAxisStyle
+  defaultAxisStyle,
 } from "../plot_segments/axis";
 
 export interface NumericalNumberLegendAttributes
@@ -44,7 +44,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend"
+    iconPath: "legend/legend",
   };
 
   public static defaultProperties = {
@@ -52,28 +52,28 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     axis: {
       side: "default",
       visible: true,
-      style: deepClone(defaultAxisStyle)
-    }
+      style: deepClone(defaultAxisStyle),
+    },
   };
 
   public attributeNames: string[] = ["x1", "y1", "x2", "y2"];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public initializeState(): void {
@@ -86,11 +86,14 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
   public getScale(): [Specification.Scale, Specification.ScaleState] {
     const scale = this.object.properties.scale;
-    const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
+    const scaleIndex = indexOf(
+      this.parent.object.scales,
+      (x) => x._id == scale
+    );
     if (scaleIndex >= 0) {
       return [
         this.parent.object.scales[scaleIndex],
-        this.parent.state.scales[scaleIndex]
+        this.parent.state.scales[scaleIndex],
       ];
     } else {
       return null;
@@ -103,7 +106,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       x1: this.state.attributes.x1,
       y1: this.state.attributes.y1,
       x2: this.state.attributes.x2,
-      y2: this.state.attributes.y2
+      y2: this.state.attributes.y2,
     } as BoundingBox.Line;
   }
 
@@ -117,11 +120,11 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
+          { type: "attribute", source: "y", attribute: "y1" },
         ],
         options: {
-          snapToClosestPoint: true
-        }
+          snapToClosestPoint: true,
+        },
       } as Handles.Point,
       {
         type: "point",
@@ -129,12 +132,12 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
+          { type: "attribute", source: "y", attribute: "y2" },
         ],
         options: {
-          snapToClosestPoint: true
-        }
-      } as Handles.Point
+          snapToClosestPoint: true,
+        },
+      } as Handles.Point,
     ];
   }
 
@@ -188,7 +191,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
     return [
       manager.sectionHeader("Axis"),
-      buildAxisAppearanceWidgets(props.axis.visible, "axis", manager)
+      buildAxisAppearanceWidgets(props.axis.visible, "axis", manager),
     ];
   }
 }

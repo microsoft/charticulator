@@ -9,7 +9,7 @@ import {
   Controls,
   DataMappingHints,
   TemplateParameters,
-  ObjectClassMetadata
+  ObjectClassMetadata,
 } from "../common";
 import { ScaleClass } from "./index";
 import { InferParametersOptions } from "./scale";
@@ -32,7 +32,7 @@ export class LinearScale extends ScaleClass<
   public static type = "scale";
 
   public static defaultMappingValues: Specification.AttributeMap = {
-    rangeMin: 0
+    rangeMin: 0,
   };
 
   public attributeNames: string[] = ["rangeMin", "rangeMax"];
@@ -40,12 +40,12 @@ export class LinearScale extends ScaleClass<
     rangeMin: {
       name: "rangeMin",
       type: Specification.AttributeType.Number,
-      defaultValue: 0
+      defaultValue: 0,
     },
     rangeMax: {
       name: "rangeMax",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public mapDataToAttribute(
@@ -76,7 +76,7 @@ export class LinearScale extends ScaleClass<
       [[1, target]],
       [
         [1 - k, solver.attr(attrs, "rangeMin")],
-        [k, solver.attr(attrs, "rangeMax")]
+        [k, solver.attr(attrs, "rangeMax")],
       ]
     );
   }
@@ -94,7 +94,7 @@ export class LinearScale extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter(x => typeof x == "number") as number[];
+    const values = column.filter((x) => typeof x == "number") as number[];
     s.inferParameters(values);
     s.adjustDomain(options);
 
@@ -111,12 +111,12 @@ export class LinearScale extends ScaleClass<
       }
       this.object.mappings.rangeMin = {
         type: "value",
-        value: 0
+        value: 0,
       } as Specification.ValueMapping;
       if (!options.autoRange) {
         this.object.mappings.rangeMax = {
           type: "value",
-          value: attrs.rangeMax
+          value: attrs.rangeMax,
         } as Specification.ValueMapping;
       }
     }
@@ -131,7 +131,7 @@ export class LinearScale extends ScaleClass<
       manager.row("End", manager.inputNumber({ property: "domainMax" })),
       manager.sectionHeader("Range"),
       manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
-      manager.mappingEditor("End", "rangeMax", { defaultAuto: true })
+      manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
     ];
   }
 
@@ -143,32 +143,32 @@ export class LinearScale extends ScaleClass<
     parameters.properties.push({
       objectID: this.object._id,
       target: {
-        property: "domainMin"
-      },
-      type: Specification.AttributeType.Number
-    });
-    parameters.properties.push({
-      objectID: this.object._id,
-      target: {
-        property: "domainMax"
-      },
-      type: Specification.AttributeType.Number
-    });
-    parameters.properties.push({
-      objectID: this.object._id,
-      target: {
-        attribute: "rangeMin"
+        property: "domainMin",
       },
       type: Specification.AttributeType.Number,
-      default: null
     });
     parameters.properties.push({
       objectID: this.object._id,
       target: {
-        attribute: "rangeMax"
+        property: "domainMax",
       },
       type: Specification.AttributeType.Number,
-      default: null
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        attribute: "rangeMin",
+      },
+      type: Specification.AttributeType.Number,
+      default: null,
+    });
+    parameters.properties.push({
+      objectID: this.object._id,
+      target: {
+        attribute: "rangeMax",
+      },
+      type: Specification.AttributeType.Number,
+      default: null,
     });
     return parameters;
   }
@@ -181,7 +181,10 @@ export interface LinearColorScaleProperties extends LinearScaleProperties {
 function getDefaultGradient(): Specification.Types.ColorGradient {
   return {
     colorspace: "lab",
-    colors: [{ r: 255, g: 255, b: 255 }, { r: 0, g: 0, b: 0 }]
+    colors: [
+      { r: 255, g: 255, b: 255 },
+      { r: 0, g: 0, b: 0 },
+    ],
   };
 }
 
@@ -194,11 +197,11 @@ export class LinearColorScale extends ScaleClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Scale",
-    iconPath: "scale/color"
+    iconPath: "scale/color",
   };
 
   public static defaultMappingValues: Specification.AttributeMap = {
-    range: getDefaultGradient()
+    range: getDefaultGradient(),
   };
 
   public readonly object: {
@@ -233,7 +236,7 @@ export class LinearColorScale extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter(x => typeof x == "number") as number[];
+    const values = column.filter((x) => typeof x == "number") as number[];
     s.inferParameters(values);
     s.adjustDomain(options);
 
@@ -256,7 +259,7 @@ export class LinearColorScale extends ScaleClass<
       manager.inputColorGradient(
         { property: "range", noComputeLayout: true },
         true
-      )
+      ),
     ];
   }
 
@@ -268,16 +271,16 @@ export class LinearColorScale extends ScaleClass<
     parameters.properties.push({
       objectID: this.object._id,
       target: {
-        property: "domainMin"
+        property: "domainMin",
       },
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     });
     parameters.properties.push({
       objectID: this.object._id,
       target: {
-        property: "domainMax"
+        property: "domainMax",
       },
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     });
     return parameters;
   }
@@ -301,7 +304,7 @@ export class LinearBooleanScale extends ScaleClass<
     min: 0,
     max: 1,
     mode: "interval",
-    inclusive: true
+    inclusive: true,
   };
 
   public attributeNames: string[] = [];
@@ -347,7 +350,7 @@ export class LinearBooleanScale extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter(x => typeof x == "number") as number[];
+    const values = column.filter((x) => typeof x == "number") as number[];
     s.inferParameters(values);
     props.min = s.domainMin;
     props.max = s.domainMax;
@@ -386,7 +389,7 @@ export class LinearBooleanScale extends ScaleClass<
             type: "dropdown",
             options: ["greater", "less", "interval"],
             showLabel: true,
-            labels: ["Greater", "Less", "Interval"]
+            labels: ["Greater", "Less", "Interval"],
           }
         )
       ),
@@ -394,7 +397,7 @@ export class LinearBooleanScale extends ScaleClass<
         "Inclusive",
         manager.inputBoolean({ property: "inclusive" }, { type: "checkbox" })
       ),
-      ...minMax
+      ...minMax,
     ];
   }
 
@@ -407,62 +410,62 @@ export class LinearBooleanScale extends ScaleClass<
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "min"
+          property: "min",
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.min
+        default: this.object.properties.min,
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "max"
+          property: "max",
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.max
+        default: this.object.properties.max,
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive"
+          property: "inclusive",
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive
+        default: this.object.properties.inclusive,
       });
     }
     if (this.object.properties.mode === "greater") {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "min"
+          property: "min",
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.min
+        default: this.object.properties.min,
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive"
+          property: "inclusive",
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive
+        default: this.object.properties.inclusive,
       });
     }
     if (this.object.properties.mode === "less") {
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "max"
+          property: "max",
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.max
+        default: this.object.properties.max,
       });
       parameters.properties.push({
         objectID: this.object._id,
         target: {
-          property: "inclusive"
+          property: "inclusive",
         },
         type: Specification.AttributeType.Boolean,
-        default: this.object.properties.inclusive
+        default: this.object.properties.inclusive,
       });
     }
     return parameters;

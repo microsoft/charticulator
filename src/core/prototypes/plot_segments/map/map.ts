@@ -13,7 +13,7 @@ import {
   Handles,
   ObjectClasses,
   ObjectClassMetadata,
-  SnappingGuides
+  SnappingGuides,
 } from "../../common";
 
 import { PlotSegmentClass } from "../plot_segment";
@@ -53,13 +53,13 @@ export class MapPlotSegment extends PlotSegmentClass {
   public static type: string = "plot-segment";
 
   public static metadata: ObjectClassMetadata = {
-    iconPath: "plot-segment/map"
+    iconPath: "plot-segment/map",
   };
 
   public static defaultMappingValues: Specification.AttributeMap = {};
 
   public static defaultProperties: Specification.AttributeMap = {
-    mapType: "roadmap"
+    mapType: "roadmap",
   };
 
   public readonly state: MapState;
@@ -69,20 +69,20 @@ export class MapPlotSegment extends PlotSegmentClass {
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   // The map service for this map
@@ -141,7 +141,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     } as BoundingBox.Rectangle;
   }
 
@@ -152,7 +152,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
+      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
     ];
   }
 
@@ -186,11 +186,11 @@ export class MapPlotSegment extends PlotSegmentClass {
     const [cX, cY] = this.mercatorProjection(cLatitude, cLongitude);
     const scale = Math.pow(2, zoom);
     const { x1, y1, x2, y2 } = attrs;
-    return points.map(p => {
+    return points.map((p) => {
       const [x, y] = this.mercatorProjection(p[0], p[1]);
       return [
         (x - cX) * scale + (x1 + x2) / 2,
-        -(y - cY) * scale + (y1 + y2) / 2
+        -(y - cY) * scale + (y1 + y2) / 2,
       ] as [number, number];
     });
   }
@@ -242,18 +242,18 @@ export class MapPlotSegment extends PlotSegmentClass {
       src: this.mapService.getImageryURLAtPoint({
         center: {
           latitude,
-          longitude
+          longitude,
         },
         type: this.object.properties.mapType,
         zoom,
         width,
         height,
-        resolution: "high"
+        resolution: "high",
       }),
       x: x1,
       y: y1,
       width,
-      height
+      height,
     } as Graphics.Image;
     return Graphics.makeGroup([img, glyphGraphics]);
   }
@@ -268,8 +268,8 @@ export class MapPlotSegment extends PlotSegmentClass {
       p2: { x: x1, y: y1 },
       title: "Longitude",
       dropAction: {
-        axisInference: { property: "longitudeData" }
-      }
+        axisInference: { property: "longitudeData" },
+      },
     } as DropZones.Line);
     zones.push({
       type: "line",
@@ -277,8 +277,8 @@ export class MapPlotSegment extends PlotSegmentClass {
       p2: { x: x1, y: y2 },
       title: "Latitude",
       dropAction: {
-        axisInference: { property: "latitudeData" }
-      }
+        axisInference: { property: "latitudeData" },
+      },
     } as DropZones.Line);
     return zones;
   }
@@ -293,28 +293,28 @@ export class MapPlotSegment extends PlotSegmentClass {
         axis: "y",
         value: y1,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y1" }]
+        actions: [{ type: "attribute", attribute: "y1" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y2" }]
+        actions: [{ type: "attribute", attribute: "y2" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x1" }]
+        actions: [{ type: "attribute", attribute: "x1" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x2" }]
+        actions: [{ type: "attribute", attribute: "x2" }],
       } as Handles.Line,
       {
         type: "point",
@@ -322,8 +322,8 @@ export class MapPlotSegment extends PlotSegmentClass {
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -331,8 +331,8 @@ export class MapPlotSegment extends PlotSegmentClass {
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -340,8 +340,8 @@ export class MapPlotSegment extends PlotSegmentClass {
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -349,9 +349,9 @@ export class MapPlotSegment extends PlotSegmentClass {
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
-      } as Handles.Point
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
+      } as Handles.Point,
     ];
     return h;
   }
@@ -370,9 +370,9 @@ export class MapPlotSegment extends PlotSegmentClass {
           type: "dropdown",
           showLabel: true,
           labels: ["Roadmap", "Satellite", "Hybrid", "Terrain"],
-          options: ["roadmap", "satellite", "hybrid", "terrain"]
+          options: ["roadmap", "satellite", "hybrid", "terrain"],
         }
-      )
+      ),
     ];
     return widgets;
   }

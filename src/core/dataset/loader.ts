@@ -21,14 +21,14 @@ export interface DatasetSourceSpecification {
 
 export class DatasetLoader {
   public loadTextData(url: string): Promise<string> {
-    return fetch(url).then(resp => resp.text());
+    return fetch(url).then((resp) => resp.text());
   }
 
   public loadDSVFromURL(
     url: string,
     localeFileFormat: LocaleFileFormat
   ): Promise<Table> {
-    return this.loadTextData(url).then(data => {
+    return this.loadTextData(url).then((data) => {
       return parseDataset(url, data, localeFileFormat);
     });
   }
@@ -78,7 +78,7 @@ export class DatasetLoader {
   ) {
     // Load all tables
     const tables = await Promise.all(
-      spec.tables.map(table => this.loadTableFromSourceSpecification(table))
+      spec.tables.map((table) => this.loadTableFromSourceSpecification(table))
     );
     tables[0].type = TableType.Main;
     if (tables[1]) {

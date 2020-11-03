@@ -13,7 +13,7 @@ import {
   MultistringHashMap,
   Point,
   transpose,
-  zipArray
+  zipArray,
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
@@ -32,7 +32,7 @@ export function facetRows(
     const facets = new MultistringHashMap<number[]>();
     for (const index of indices) {
       const row = rows[index];
-      const facetValues = columns.map(c => row[c] as string);
+      const facetValues = columns.map((c) => row[c] as string);
       if (facets.has(facetValues)) {
         facets.get(facetValues).push(index);
       } else {
@@ -87,7 +87,7 @@ export class ChartRenderer {
           rowIndices: plotSegmentState.dataRowIndices[index],
           enableTooltips: cls.object.properties.enableTooltips as boolean,
           enableContextMenu: cls.object.properties.enableContextMenu as boolean,
-          enableSelection: cls.object.properties.enableSelection as boolean
+          enableSelection: cls.object.properties.enableSelection as boolean,
         };
         return makeGroup([g]);
       } else {
@@ -139,7 +139,7 @@ export class ChartRenderer {
         const glyphArrays: Group[][] = [];
         for (const [
           glyphIndex,
-          glyphState
+          glyphState,
         ] of plotSegmentState.glyphs.entries()) {
           const anchorX = glyphState.marks[0].attributes.x as number;
           const anchorY = glyphState.marks[0].attributes.y as number;
@@ -157,7 +157,7 @@ export class ChartRenderer {
           glyphArrays.push(g);
         }
         // Transpose glyphArrays so each mark is in a layer
-        const glyphElements = transpose(glyphArrays).map(x => makeGroup(x));
+        const glyphElements = transpose(glyphArrays).map((x) => makeGroup(x));
         const gGlyphs = makeGroup(glyphElements);
         gGlyphs.transform = coordinateSystem.getBaseTransform();
         const gElement = makeGroup([]);

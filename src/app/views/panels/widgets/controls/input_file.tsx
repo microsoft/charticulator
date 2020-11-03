@@ -27,7 +27,7 @@ export class InputFile extends React.Component<InputFileProps, {}> {
     if (this.inputElement.files.length == 1) {
       const file = this.inputElement.files[0];
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.props.onOpenFile(file.name, reader.result);
       };
       switch (this.props.outputType) {
@@ -61,7 +61,7 @@ export class InputFile extends React.Component<InputFileProps, {}> {
         />
         <input
           style={{ display: "none" }}
-          ref={e => (this.inputElement = e)}
+          ref={(e) => (this.inputElement = e)}
           type="file"
           accept={this.props.accept.join(",")}
           onChange={this.onFileSelected}

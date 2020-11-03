@@ -22,7 +22,7 @@ export class ScrollView extends React.Component<
 
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.container);
-    this.hammer.on("panstart", e => {});
+    this.hammer.on("panstart", (e) => {});
   }
 
   public componentWillUnmount() {

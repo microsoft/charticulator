@@ -8,7 +8,7 @@ export enum MessageType {
   LinkGuideCreatingError,
   InvalidLinksData,
   NoID,
-  NoSourceOrTargetID
+  NoSourceOrTargetID,
 }
 
 export const messageTypes = Object.values(MessageType);

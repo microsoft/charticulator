@@ -33,7 +33,7 @@ export class FileViewSaveAs extends ContextedComponent<
           <CurrentChartView store={this.store} />
           <div className="form-group">
             <input
-              ref={e => (inputSaveChartName = e)}
+              ref={(e) => (inputSaveChartName = e)}
               type="text"
               required={true}
               defaultValue={this.store.dataset.name}
@@ -54,15 +54,15 @@ export class FileViewSaveAs extends ContextedComponent<
                 const name = inputSaveChartName.value.trim();
                 this.setState(
                   {
-                    saving: true
+                    saving: true,
                   },
                   () => {
                     this.dispatch(
-                      new Actions.SaveAs(name, error => {
+                      new Actions.SaveAs(name, (error) => {
                         if (error) {
                           this.setState({
                             saving: true,
-                            error: error.message
+                            error: error.message,
                           });
                         } else {
                           this.props.onClose();

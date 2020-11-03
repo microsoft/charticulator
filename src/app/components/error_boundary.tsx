@@ -15,15 +15,16 @@ export class ErrorBoundary extends React.Component<
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {
-      hasError: false
+      hasError: false,
     };
   }
 
   public componentDidCatch(error: Error, info: React.ErrorInfo) {
     this.setState({
       hasError: true,
-      errorString: `${error.name} \n ${error.message} \n ${error.stack &&
-        error.stack} \n ${info.componentStack}`
+      errorString: `${error.name} \n ${error.message} \n ${
+        error.stack && error.stack
+      } \n ${info.componentStack}`,
     });
 
     console.log(error, info);
@@ -48,7 +49,7 @@ export class ErrorBoundary extends React.Component<
               text="Try Again"
               onClick={() => {
                 this.setState({
-                  hasError: false
+                  hasError: false,
                 });
               }}
             />

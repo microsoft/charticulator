@@ -22,7 +22,7 @@ export class SVGImageIcon extends React.PureComponent<
         <span
           className="el-svg-icon svg-image-icon"
           style={style}
-          onDragStart={e => false}
+          onDragStart={(e) => false}
         />
       );
     } else {

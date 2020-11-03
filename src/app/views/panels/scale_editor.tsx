@@ -60,7 +60,7 @@ export class ScaleEditor extends React.Component<
             <div className="header">
               <EditableTextView
                 text={scale.properties.name}
-                onEdit={newText => {
+                onEdit={(newText) => {
                   new Actions.SetObjectProperty(
                     scale,
                     "name",

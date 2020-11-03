@@ -11,7 +11,7 @@ export const nestedChartAttributes: AttributeDescriptions = {
   ...AttrBuilder.center(),
   ...AttrBuilder.size(),
   ...AttrBuilder.opacity(),
-  ...AttrBuilder.visible()
+  ...AttrBuilder.visible(),
 };
 
 export interface NestedChartElementAttributes extends AttributeMap {

@@ -72,7 +72,7 @@ export function findSegment(bounds: number[], k: number): [number, number] {
   } else {
     return [
       bounds.length - 2,
-      bounds[bounds.length - 1] - bounds[bounds.length - 2]
+      bounds[bounds.length - 1] - bounds[bounds.length - 2],
     ];
   }
 }
@@ -110,7 +110,7 @@ export abstract class CurveParameterization {
     const tangent = this.getTangentAtT(t);
     return {
       x: -tangent.y,
-      y: tangent.x
+      y: tangent.x,
     };
   }
 }
@@ -154,7 +154,7 @@ export class BezierCurveParameterization extends CurveParameterization {
   public getPointAtT(t: number) {
     return {
       x: this.k0x + t * (this.k1x + t * (this.k2x + t * this.k3x)),
-      y: this.k0y + t * (this.k1y + t * (this.k2y + t * this.k3y))
+      y: this.k0y + t * (this.k1y + t * (this.k2y + t * this.k3y)),
     };
   }
 
@@ -166,7 +166,7 @@ export class BezierCurveParameterization extends CurveParameterization {
     const length = Math.sqrt(dxdt * dxdt + dydt * dydt);
     return {
       x: dxdt / length,
-      y: dydt / length
+      y: dydt / length,
     };
   }
 
@@ -206,7 +206,7 @@ export class LineSegmentParametrization extends CurveParameterization {
     );
     this.tangent = {
       x: (p2.x - p1.x) / this.length,
-      y: (p2.y - p1.y) / this.length
+      y: (p2.y - p1.y) / this.length,
     };
   }
 
@@ -217,7 +217,7 @@ export class LineSegmentParametrization extends CurveParameterization {
   public getPointAtT(t: number) {
     return {
       x: this.p1.x + (this.p2.x - this.p1.x) * t,
-      y: this.p1.y + (this.p2.y - this.p1.y) * t
+      y: this.p1.y + (this.p2.y - this.p1.y) * t,
     };
   }
 
@@ -277,7 +277,7 @@ export class MultiCurveParametrization {
     return {
       p: p.getPointAtT(t),
       t: p.getTangentAtT(t),
-      n: p.getNormalAtT(t)
+      n: p.getNormalAtT(t),
     };
   }
 

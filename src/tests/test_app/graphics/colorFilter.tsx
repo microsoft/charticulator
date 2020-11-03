@@ -13,7 +13,7 @@ export class ColorFilterTestView extends React.Component<
     super(props);
     this.state = {
       slider1: 200,
-      slider2: 200
+      slider2: 200,
     };
   }
   public render() {
@@ -61,13 +61,13 @@ export class ColorFilterTestView extends React.Component<
       "#bcbd22",
       "#dbdb8d",
       "#17becf",
-      "#9edae5"
-    ].map(x => colorFromHTMLColor(x));
+      "#9edae5",
+    ].map((x) => colorFromHTMLColor(x));
     const elements = colors.map((color, i) => {
       const x = (i % 4) * 150;
       const y = Math.floor(i / 4) * 50;
       const style: Graphics.Style = {
-        fillColor: color
+        fillColor: color,
       };
       return makeGroup([
         makeRect(x, y, x + 60, y + 40, style),
@@ -75,9 +75,9 @@ export class ColorFilterTestView extends React.Component<
           ...style,
           colorFilter: {
             saturation: { multiply: this.state.slider1 / 1000 },
-            lightness: { add: 0.01, pow: this.state.slider2 / 1000 }
-          }
-        })
+            lightness: { add: 0.01, pow: this.state.slider2 / 1000 },
+          },
+        }),
       ]);
     });
     return (
@@ -90,7 +90,7 @@ export class ColorFilterTestView extends React.Component<
             min={1}
             max={1000}
             value={this.state.slider1}
-            onChange={e => {
+            onChange={(e) => {
               this.setState({ slider1: +e.target.value });
             }}
           />
@@ -103,7 +103,7 @@ export class ColorFilterTestView extends React.Component<
             min={0}
             max={1000}
             value={this.state.slider2}
-            onChange={e => {
+            onChange={(e) => {
               this.setState({ slider2: +e.target.value });
             }}
           />

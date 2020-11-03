@@ -13,14 +13,14 @@ import {
   Handles,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters
+  TemplateParameters,
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   nestedChartAttributes,
   NestedChartElementAttributes,
-  NestedChartElementProperties
+  NestedChartElementProperties,
 } from "./nested_chart.attrs";
 import { TableType } from "../../dataset";
 
@@ -38,17 +38,17 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     iconPath: "mark/nested-chart",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
-    }
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
+    },
   };
 
   public static defaultProperties: Partial<NestedChartElementProperties> = {
-    visible: true
+    visible: true,
   };
 
   public static defaultMappingValues: Partial<NestedChartElementAttributes> = {
     opacity: 1,
-    visible: true
+    visible: true,
   };
 
   public attributes = nestedChartAttributes;
@@ -81,23 +81,23 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Width", "width", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true
+        defaultAuto: true,
       }),
       manager.mappingEditor("Height", "height", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true
-      })
+        defaultAuto: true,
+      }),
     ];
     widgets = widgets.concat([
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true
-      })
+        defaultValue: true,
+      }),
     ]);
     widgets = widgets.concat([
       manager.nestedChartEditor(
@@ -107,9 +107,9 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           dataset: this.getDataset(0),
           // filterCondition: this.getFilterCondition(),
           width: this.state.attributes.width,
-          height: this.state.attributes.height
+          height: this.state.attributes.height,
         }
-      )
+      ),
     ]);
     return widgets;
   }
@@ -123,17 +123,39 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, x2], [-1, x1]],
+      [
+        [1, x2],
+        [-1, x1],
+      ],
       [[1, width]]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
-      [[1, y2], [-1, y1]],
+      [
+        [1, y2],
+        [-1, y1],
+      ],
       [[1, height]]
     );
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cx]], [[1, x1], [1, x2]]);
-    solver.addLinear(ConstraintStrength.HARD, 0, [[2, cy]], [[1, y1], [1, y2]]);
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cx]],
+      [
+        [1, x1],
+        [1, x2],
+      ]
+    );
+    solver.addLinear(
+      ConstraintStrength.HARD,
+      0,
+      [[2, cy]],
+      [
+        [1, y1],
+        [1, y2],
+      ]
+    );
   }
 
   public getFilterCondition(): any {
@@ -150,7 +172,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     return plotSegmentClass.object.groupBy
       ? {
           column: plotSegmentClass.object.groupBy.expression,
-          value: data[plotSegmentClass.object.groupBy.expression]
+          value: data[plotSegmentClass.object.groupBy.expression],
         }
       : null;
   }
@@ -172,11 +194,11 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     }
     const dataRowIndices = plotSegmentClass.state.dataRowIndices[glyphIndex];
     const allDataRowIndices = plotSegmentClass.state.dataRowIndices.flatMap(
-      index => index
+      (index) => index
     );
 
     const mapToRows = (dataRowIndices: number[]) =>
-      dataRowIndices.map(i => {
+      dataRowIndices.map((i) => {
         const data = table.rows[i];
         const r: Dataset.Row = { _id: data._id };
         for (const col in columnNameMap) {
@@ -191,18 +213,18 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         {
           name: "MainTable",
           displayName: "MainTable",
-          columns: table.columns.map(x => {
+          columns: table.columns.map((x) => {
             return {
               name: columnNameMap[x.name],
               displayName: columnNameMap[x.name],
               type: x.type,
-              metadata: x.metadata
+              metadata: x.metadata,
             };
           }),
           rows: mapToRows(dataRowIndices),
           type: TableType.Main,
-          localeNumberFormat: table.localeNumberFormat
-        }
+          localeNumberFormat: table.localeNumberFormat,
+        },
         // {
         //   name: "MainParentTable",
         //   displayName: "MainParentTable",
@@ -217,7 +239,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         //   rows: mapToRows(dataRowIndices),
         //   type: TableType.Main
         // }
-      ]
+      ],
     };
   }
 
@@ -243,11 +265,11 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           glyphIndex,
           rowIndices: this.getPlotSegmentClass().state.dataRowIndices[
             glyphIndex
-          ]
+          ],
         },
         width: attrs.width,
-        height: attrs.height
-      } as Graphics.ChartContainerElement
+        height: attrs.height,
+      } as Graphics.ChartContainerElement,
     ]);
     g.transform = { angle: 0, x: -attrs.width / 2, y: attrs.height / 2 };
     const gContainer = Graphics.makeGroup([g]);
@@ -273,9 +295,9 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "width",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" }
-          }
-        }
+            hints: { autoRange: true, startWithZero: "always" },
+          },
+        },
       } as DropZones.Line,
       {
         type: "line",
@@ -287,10 +309,10 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           scaleInference: {
             attribute: "height",
             attributeType: Specification.AttributeType.Number,
-            hints: { autoRange: true, startWithZero: "always" }
-          }
-        }
-      } as DropZones.Line
+            hints: { autoRange: true, startWithZero: "always" },
+          },
+        },
+      } as DropZones.Line,
     ];
   }
   // Get bounding rectangle given current state
@@ -303,28 +325,28 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
-        span: [y1, y2]
+        span: [y1, y2],
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
-        span: [y1, y2]
+        span: [y1, y2],
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
-        span: [x1, x2]
+        span: [x1, x2],
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
-        span: [x1, x2]
+        span: [x1, x2],
       } as Handles.Line,
       {
         type: "point",
@@ -332,8 +354,8 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -341,8 +363,8 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -350,8 +372,8 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -359,9 +381,9 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
-      } as Handles.Point
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
+      } as Handles.Point,
     ];
   }
 
@@ -374,7 +396,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     } as BoundingBox.Rectangle;
   }
 
@@ -387,7 +409,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
     ];
   }
 
@@ -403,16 +425,16 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       properties: {
         name: "Chart",
         backgroundColor: null,
-        backgroundOpacity: 1
+        backgroundOpacity: 1,
       },
       mappings: {
         marginTop: { type: "value", value: 25 } as Specification.ValueMapping,
         marginBottom: {
           type: "value",
-          value: 10
+          value: 10,
         } as Specification.ValueMapping,
         marginLeft: { type: "value", value: 10 } as Specification.ValueMapping,
-        marginRight: { type: "value", value: 10 } as Specification.ValueMapping
+        marginRight: { type: "value", value: 10 } as Specification.ValueMapping,
       },
       glyphs: [
         {
@@ -428,18 +450,18 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               mappings: {
                 x: {
                   type: "parent",
-                  parentAttribute: "icx"
+                  parentAttribute: "icx",
                 } as Specification.ParentMapping,
                 y: {
                   type: "parent",
-                  parentAttribute: "icy"
-                } as Specification.ParentMapping
-              }
-            }
+                  parentAttribute: "icy",
+                } as Specification.ParentMapping,
+              },
+            },
           ],
           mappings: {},
-          constraints: []
-        } as Specification.Glyph
+          constraints: [],
+        } as Specification.Glyph,
       ],
       elements: [
         {
@@ -451,20 +473,20 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           mappings: {
             x1: {
               type: "parent",
-              parentAttribute: "x1"
+              parentAttribute: "x1",
             } as Specification.ParentMapping,
             y1: {
               type: "parent",
-              parentAttribute: "y1"
+              parentAttribute: "y1",
             } as Specification.ParentMapping,
             x2: {
               type: "parent",
-              parentAttribute: "x2"
+              parentAttribute: "x2",
             } as Specification.ParentMapping,
             y2: {
               type: "parent",
-              parentAttribute: "y2"
-            } as Specification.ParentMapping
+              parentAttribute: "y2",
+            } as Specification.ParentMapping,
           },
           properties: {
             name: "PlotSegment1",
@@ -480,15 +502,15 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               ratioY: 0.1,
               align: {
                 x: "start",
-                y: "start"
+                y: "start",
               },
               grid: {
                 direction: "x",
                 xCount: null,
-                yCount: null
-              }
-            }
-          }
+                yCount: null,
+              },
+            },
+          },
         } as Specification.PlotSegment,
         {
           _id: uniqueID(),
@@ -497,36 +519,36 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
             name: "Title",
             visible: true,
             alignment: { x: "middle", y: "top", xMargin: 0, yMargin: 5 },
-            rotation: 0
+            rotation: 0,
           },
           mappings: {
             x: {
               type: "parent",
-              parentAttribute: "cx"
+              parentAttribute: "cx",
             } as Specification.ParentMapping,
             y: {
               type: "parent",
-              parentAttribute: "oy2"
+              parentAttribute: "oy2",
             } as Specification.ParentMapping,
             text: {
               type: "value",
-              value: "Nested Chart"
+              value: "Nested Chart",
             } as Specification.ValueMapping,
             fontSize: {
               type: "value",
-              value: 12
+              value: 12,
             } as Specification.ValueMapping,
             color: {
               type: "value",
-              value: { r: 0, g: 0, b: 0 }
-            } as Specification.ValueMapping
-          }
-        } as Specification.ChartElement
+              value: { r: 0, g: 0, b: 0 },
+            } as Specification.ValueMapping,
+          },
+        } as Specification.ChartElement,
       ],
       scales: [],
       scaleMappings: [],
       constraints: [],
-      resources: []
+      resources: [],
     };
     return obj;
   }
@@ -537,13 +559,13 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         {
           objectID: this.object._id,
           dataSource: {
-            table: this.getGlyphClass().object.table
+            table: this.getGlyphClass().object.table,
           },
           nestedChart: {
-            columnNameMap: this.object.properties.columnNameMap
-          }
-        }
-      ]
+            columnNameMap: this.object.properties.columnNameMap,
+          },
+        },
+      ],
     };
   }
 }

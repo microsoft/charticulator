@@ -20,13 +20,13 @@ export function addPalette(
   predefinedPalettes.push({
     name,
     type,
-    colors: colors.map(x =>
-      x.map(y => {
+    colors: colors.map((x) =>
+      x.map((y) => {
         const c = colorFromHTMLColor(y);
         const [r, g, b] = converter(c.r, c.g, c.b);
         return { r, g, b };
       })
-    )
+    ),
   });
 }
 
@@ -41,7 +41,7 @@ addPalette("D3/Category 10", "qualitative", [
   "#e377c2",
   "#7f7f7f",
   "#bcbd22",
-  "#17becf"
+  "#17becf",
 ]);
 addPalette("D3/Category 20", "qualitative", [
   "#1f77b4",
@@ -63,7 +63,7 @@ addPalette("D3/Category 20", "qualitative", [
   "#bcbd22",
   "#dbdb8d",
   "#17becf",
-  "#9edae5"
+  "#9edae5",
 ]);
 addPalette("D3/Category 20 b", "qualitative", [
   "#393b79",
@@ -85,7 +85,7 @@ addPalette("D3/Category 20 b", "qualitative", [
   "#7b4173",
   "#a55194",
   "#ce6dbd",
-  "#de9ed6"
+  "#de9ed6",
 ]);
 addPalette("D3/Category 20 c", "qualitative", [
   "#3182bd",
@@ -107,7 +107,7 @@ addPalette("D3/Category 20 c", "qualitative", [
   "#636363",
   "#969696",
   "#bdbdbd",
-  "#d9d9d9"
+  "#d9d9d9",
 ]);
 
 addPalette(
@@ -122,7 +122,7 @@ addPalette(
     "#ef3b2c",
     "#cb181d",
     "#a50f15",
-    "#67000d"
+    "#67000d",
   ].reverse(),
   [
     "#fff5eb",
@@ -133,7 +133,7 @@ addPalette(
     "#f16913",
     "#d94801",
     "#a63603",
-    "#7f2704"
+    "#7f2704",
   ].reverse(),
   [
     "#f7fcf5",
@@ -144,7 +144,7 @@ addPalette(
     "#41ab5d",
     "#238b45",
     "#006d2c",
-    "#00441b"
+    "#00441b",
   ].reverse(),
   [
     "#f7fbff",
@@ -155,7 +155,7 @@ addPalette(
     "#4292c6",
     "#2171b5",
     "#08519c",
-    "#08306b"
+    "#08306b",
   ].reverse(),
   [
     "#fcfbfd",
@@ -166,7 +166,7 @@ addPalette(
     "#807dba",
     "#6a51a3",
     "#54278f",
-    "#3f007d"
+    "#3f007d",
   ].reverse(),
   [
     "#ffffff",
@@ -177,7 +177,7 @@ addPalette(
     "#737373",
     "#525252",
     "#252525",
-    "#000000"
+    "#000000",
   ].reverse()
 );
 
@@ -194,7 +194,7 @@ addPalette(
     "#757575",
     "#616161",
     "#424242",
-    "#212121"
+    "#212121",
   ].reverse(),
   [
     "#eceff1",
@@ -206,7 +206,7 @@ addPalette(
     "#546e7a",
     "#455a64",
     "#37474f",
-    "#263238"
+    "#263238",
   ].reverse(),
   [
     "#efebe9",
@@ -218,7 +218,7 @@ addPalette(
     "#6d4c41",
     "#5d4037",
     "#4e342e",
-    "#3e2723"
+    "#3e2723",
   ].reverse(),
   [
     "#ffebee",
@@ -230,7 +230,7 @@ addPalette(
     "#e53935",
     "#d32f2f",
     "#c62828",
-    "#b71c1c"
+    "#b71c1c",
   ].reverse(),
   [
     "#fce4ec",
@@ -242,7 +242,7 @@ addPalette(
     "#d81b60",
     "#c2185b",
     "#ad1457",
-    "#880e4f"
+    "#880e4f",
   ].reverse(),
   [
     "#f3e5f5",
@@ -254,7 +254,7 @@ addPalette(
     "#8e24aa",
     "#7b1fa2",
     "#6a1b9a",
-    "#4a148c"
+    "#4a148c",
   ].reverse(),
   [
     "#ede7f6",
@@ -266,7 +266,7 @@ addPalette(
     "#5e35b1",
     "#512da8",
     "#4527a0",
-    "#311b92"
+    "#311b92",
   ].reverse(),
   [
     "#e8eaf6",
@@ -278,7 +278,7 @@ addPalette(
     "#3949ab",
     "#303f9f",
     "#283593",
-    "#1a237e"
+    "#1a237e",
   ].reverse(),
   [
     "#e3f2fd",
@@ -290,7 +290,7 @@ addPalette(
     "#1e88e5",
     "#1976d2",
     "#1565c0",
-    "#0d47a1"
+    "#0d47a1",
   ].reverse(),
   [
     "#e1f5fe",
@@ -302,7 +302,7 @@ addPalette(
     "#039be5",
     "#0288d1",
     "#0277bd",
-    "#01579b"
+    "#01579b",
   ].reverse(),
   [
     "#e0f7fa",
@@ -314,7 +314,7 @@ addPalette(
     "#00acc1",
     "#0097a7",
     "#00838f",
-    "#006064"
+    "#006064",
   ].reverse(),
   [
     "#e0f2f1",
@@ -326,7 +326,7 @@ addPalette(
     "#00897b",
     "#00796b",
     "#00695c",
-    "#004d40"
+    "#004d40",
   ].reverse(),
   [
     "#e8f5e9",
@@ -338,7 +338,7 @@ addPalette(
     "#43a047",
     "#388e3c",
     "#2e7d32",
-    "#1b5e20"
+    "#1b5e20",
   ].reverse(),
   [
     "#f1f8e9",
@@ -350,7 +350,7 @@ addPalette(
     "#7cb342",
     "#689f38",
     "#558b2f",
-    "#33691e"
+    "#33691e",
   ].reverse(),
   [
     "#f9fbe7",
@@ -362,7 +362,7 @@ addPalette(
     "#c0ca33",
     "#afb42b",
     "#9e9d24",
-    "#827717"
+    "#827717",
   ].reverse(),
   [
     "#fffde7",
@@ -374,7 +374,7 @@ addPalette(
     "#fdd835",
     "#fbc02d",
     "#f9a825",
-    "#f57f17"
+    "#f57f17",
   ].reverse(),
   [
     "#fff8e1",
@@ -386,7 +386,7 @@ addPalette(
     "#ffb300",
     "#ffa000",
     "#ff8f00",
-    "#ff6f00"
+    "#ff6f00",
   ].reverse(),
   [
     "#fff3e0",
@@ -398,7 +398,7 @@ addPalette(
     "#fb8c00",
     "#f57c00",
     "#ef6c00",
-    "#e65100"
+    "#e65100",
   ].reverse(),
   [
     "#fbe9e7",
@@ -410,7 +410,7 @@ addPalette(
     "#f4511e",
     "#e64a19",
     "#d84315",
-    "#bf360c"
+    "#bf360c",
   ].reverse()
 );
 
@@ -424,7 +424,7 @@ addPalette(
     "#767676",
     "#393939",
     "#2b2b2b",
-    "#1f1f1f"
+    "#1f1f1f",
   ].reverse(),
   [
     "#cbc6c4",
@@ -433,7 +433,7 @@ addPalette(
     "#7a7574",
     "#6e6a68",
     "#5d5a58",
-    "#4c4a48"
+    "#4c4a48",
   ].reverse(),
   [
     "#bac8cc",
@@ -442,7 +442,7 @@ addPalette(
     "#69797e",
     "#5a686c",
     "#4a5459",
-    "#394146"
+    "#394146",
   ].reverse(),
   [
     "#cae0d9",
@@ -451,7 +451,7 @@ addPalette(
     "#567c73",
     "#486860",
     "#3b534d",
-    "#2d3f3a"
+    "#2d3f3a",
   ].reverse(),
   [
     "#f7d7c4",
@@ -460,7 +460,7 @@ addPalette(
     "#ac744c",
     "#8e562e",
     "#603d30",
-    "#4d291c"
+    "#4d291c",
   ].reverse(),
   [
     "#ffc0c0",
@@ -469,7 +469,7 @@ addPalette(
     "#ff4343",
     "#d13438",
     "#a4262c",
-    "#761721"
+    "#761721",
   ].reverse(),
   [
     "#f4abba",
@@ -478,7 +478,7 @@ addPalette(
     "#e81123",
     "#c50f1f",
     "#a80000",
-    "#750b1c"
+    "#750b1c",
   ].reverse(),
   [
     "#edbed3",
@@ -487,7 +487,7 @@ addPalette(
     "#ea005e",
     "#c30052",
     "#970044",
-    "#6b0036"
+    "#6b0036",
   ].reverse(),
   [
     "#e8a3de",
@@ -496,7 +496,7 @@ addPalette(
     "#e3008c",
     "#bf0077",
     "#9b0062",
-    "#77004d"
+    "#77004d",
   ].reverse(),
   [
     "#de94e0",
@@ -505,7 +505,7 @@ addPalette(
     "#b4009e",
     "#9a0089",
     "#800074",
-    "#5c005c"
+    "#5c005c",
   ].reverse(),
   [
     "#dea2ed",
@@ -514,7 +514,7 @@ addPalette(
     "#881798",
     "#721481",
     "#5c126b",
-    "#460f54"
+    "#460f54",
   ].reverse(),
   [
     "#cfc4f5",
@@ -523,7 +523,7 @@ addPalette(
     "#744da9",
     "#5c2e91",
     "#4e257f",
-    "#401b6c"
+    "#401b6c",
   ].reverse(),
   [
     "#c3c3f4",
@@ -532,7 +532,7 @@ addPalette(
     "#886ce4",
     "#735bc1",
     "#5e4a9d",
-    "#49397a"
+    "#49397a",
   ].reverse(),
   [
     "#b5b5e2",
@@ -541,7 +541,7 @@ addPalette(
     "#7160e8",
     "#5a4ebc",
     "#49409a",
-    "#373277"
+    "#373277",
   ].reverse(),
   [
     "#bebee5",
@@ -550,7 +550,7 @@ addPalette(
     "#4f4bd9",
     "#413eb3",
     "#32318c",
-    "#242466"
+    "#242466",
   ].reverse(),
   [
     "#a6bdff",
@@ -559,7 +559,7 @@ addPalette(
     "#2849ec",
     "#203dbd",
     "#19318d",
-    "#11255e"
+    "#11255e",
   ].reverse(),
   [
     "#abc9ed",
@@ -568,7 +568,7 @@ addPalette(
     "#0046ff",
     "#0037da",
     "#0027b4",
-    "#00188f"
+    "#00188f",
   ].reverse(),
   [
     "#b3dbf2",
@@ -577,7 +577,7 @@ addPalette(
     "#0078d7",
     "#0063b1",
     "#004e8c",
-    "#003966"
+    "#003966",
   ].reverse(),
   [
     "#99ecff",
@@ -586,7 +586,7 @@ addPalette(
     "#00bcf2",
     "#0099bc",
     "#006f94",
-    "#005b70"
+    "#005b70",
   ].reverse(),
   [
     "#91e5df",
@@ -595,7 +595,7 @@ addPalette(
     "#00b7c3",
     "#009ca4",
     "#038387",
-    "#006666"
+    "#006666",
   ].reverse(),
   [
     "#c2f2e9",
@@ -604,7 +604,7 @@ addPalette(
     "#00cea6",
     "#00b294",
     "#008272",
-    "#005e50"
+    "#005e50",
   ].reverse(),
   [
     "#a8e5c2",
@@ -613,7 +613,7 @@ addPalette(
     "#00cc6a",
     "#00ae56",
     "#10893e",
-    "#00722e"
+    "#00722e",
   ].reverse(),
   [
     "#aae5aa",
@@ -622,7 +622,7 @@ addPalette(
     "#16c60c",
     "#13a10e",
     "#107c10",
-    "#0b6a0b"
+    "#0b6a0b",
   ].reverse(),
   [
     "#d5e5ae",
@@ -631,7 +631,7 @@ addPalette(
     "#7cd300",
     "#6bb700",
     "#599b00",
-    "#498205"
+    "#498205",
   ].reverse(),
   [
     "#f8ffb3",
@@ -640,7 +640,7 @@ addPalette(
     "#bad80a",
     "#a4cf0c",
     "#8cbd18",
-    "#73aa24"
+    "#73aa24",
   ].reverse(),
   [
     "#f9f1a5",
@@ -649,7 +649,7 @@ addPalette(
     "#fce100",
     "#dfbe00",
     "#c19c00",
-    "#986f0b"
+    "#986f0b",
   ].reverse(),
   [
     "#ffe5b6",
@@ -658,7 +658,7 @@ addPalette(
     "#ffb900",
     "#eaa300",
     "#d48c00",
-    "#ab620d"
+    "#ab620d",
   ].reverse(),
   [
     "#ffdabb",
@@ -667,7 +667,7 @@ addPalette(
     "#ff8c00",
     "#d47300",
     "#b05e0d",
-    "#7f4200"
+    "#7f4200",
   ].reverse(),
   [
     "#f2d5c9",
@@ -676,7 +676,7 @@ addPalette(
     "#f7630c",
     "#ca5010",
     "#a74109",
-    "#7f2f08"
+    "#7f2f08",
   ].reverse(),
   [
     "#eec7c2",
@@ -685,7 +685,7 @@ addPalette(
     "#f03a17",
     "#da3b01",
     "#a52613",
-    "#7f1d10"
+    "#7f1d10",
   ].reverse()
 );
 
@@ -714,7 +714,7 @@ addPalette("ColorBrewer/Reds", "sequential", [
   "#ef3b2c",
   "#cb181d",
   "#a50f15",
-  "#67000d"
+  "#67000d",
 ]);
 addPalette("ColorBrewer/Oranges", "sequential", [
   "#fff5eb",
@@ -725,7 +725,7 @@ addPalette("ColorBrewer/Oranges", "sequential", [
   "#f16913",
   "#d94801",
   "#a63603",
-  "#7f2704"
+  "#7f2704",
 ]);
 addPalette("ColorBrewer/Greens", "sequential", [
   "#f7fcf5",
@@ -736,7 +736,7 @@ addPalette("ColorBrewer/Greens", "sequential", [
   "#41ab5d",
   "#238b45",
   "#006d2c",
-  "#00441b"
+  "#00441b",
 ]);
 addPalette("ColorBrewer/Blues", "sequential", [
   "#f7fbff",
@@ -747,7 +747,7 @@ addPalette("ColorBrewer/Blues", "sequential", [
   "#4292c6",
   "#2171b5",
   "#08519c",
-  "#08306b"
+  "#08306b",
 ]);
 addPalette("ColorBrewer/Purples", "sequential", [
   "#fcfbfd",
@@ -758,7 +758,7 @@ addPalette("ColorBrewer/Purples", "sequential", [
   "#807dba",
   "#6a51a3",
   "#54278f",
-  "#3f007d"
+  "#3f007d",
 ]);
 addPalette("ColorBrewer/Greys", "sequential", [
   "#ffffff",
@@ -769,7 +769,7 @@ addPalette("ColorBrewer/Greys", "sequential", [
   "#737373",
   "#525252",
   "#252525",
-  "#000000"
+  "#000000",
 ]);
 
 // Diverging
@@ -787,7 +787,7 @@ addPalette(
     "#80cdc1",
     "#35978f",
     "#01665e",
-    "#003c30"
+    "#003c30",
   ].reverse()
 );
 addPalette(
@@ -804,7 +804,7 @@ addPalette(
     "#b8e186",
     "#7fbc41",
     "#4d9221",
-    "#276419"
+    "#276419",
   ].reverse()
 );
 addPalette(
@@ -821,7 +821,7 @@ addPalette(
     "#a6dba0",
     "#5aae61",
     "#1b7837",
-    "#00441b"
+    "#00441b",
   ].reverse()
 );
 addPalette(
@@ -838,7 +838,7 @@ addPalette(
     "#b2abd2",
     "#8073ac",
     "#542788",
-    "#2d004b"
+    "#2d004b",
   ].reverse()
 );
 addPalette(
@@ -855,7 +855,7 @@ addPalette(
     "#92c5de",
     "#4393c3",
     "#2166ac",
-    "#053061"
+    "#053061",
   ].reverse()
 );
 addPalette(
@@ -872,7 +872,7 @@ addPalette(
     "#bababa",
     "#878787",
     "#4d4d4d",
-    "#1a1a1a"
+    "#1a1a1a",
   ].reverse()
 );
 addPalette(
@@ -889,7 +889,7 @@ addPalette(
     "#abd9e9",
     "#74add1",
     "#4575b4",
-    "#313695"
+    "#313695",
   ].reverse()
 );
 addPalette(
@@ -906,7 +906,7 @@ addPalette(
     "#a6d96a",
     "#66bd63",
     "#1a9850",
-    "#006837"
+    "#006837",
   ].reverse()
 );
 addPalette(
@@ -923,7 +923,7 @@ addPalette(
     "#abdda4",
     "#66c2a5",
     "#3288bd",
-    "#5e4fa2"
+    "#5e4fa2",
   ].reverse()
 );
 
@@ -936,7 +936,7 @@ addPalette("ColorBrewer/BuGn", "sequential", [
   "#41ae76",
   "#238b45",
   "#006d2c",
-  "#00441b"
+  "#00441b",
 ]);
 addPalette("ColorBrewer/BuPu", "sequential", [
   "#f7fcfd",
@@ -947,7 +947,7 @@ addPalette("ColorBrewer/BuPu", "sequential", [
   "#8c6bb1",
   "#88419d",
   "#810f7c",
-  "#4d004b"
+  "#4d004b",
 ]);
 addPalette("ColorBrewer/GnBu", "sequential", [
   "#f7fcf0",
@@ -958,7 +958,7 @@ addPalette("ColorBrewer/GnBu", "sequential", [
   "#4eb3d3",
   "#2b8cbe",
   "#0868ac",
-  "#084081"
+  "#084081",
 ]);
 addPalette("ColorBrewer/OrRd", "sequential", [
   "#fff7ec",
@@ -969,7 +969,7 @@ addPalette("ColorBrewer/OrRd", "sequential", [
   "#ef6548",
   "#d7301f",
   "#b30000",
-  "#7f0000"
+  "#7f0000",
 ]);
 addPalette("ColorBrewer/PuBu", "sequential", [
   "#fff7fb",
@@ -980,7 +980,7 @@ addPalette("ColorBrewer/PuBu", "sequential", [
   "#3690c0",
   "#0570b0",
   "#045a8d",
-  "#023858"
+  "#023858",
 ]);
 addPalette("ColorBrewer/PuBuGn", "sequential", [
   "#fff7fb",
@@ -991,7 +991,7 @@ addPalette("ColorBrewer/PuBuGn", "sequential", [
   "#3690c0",
   "#02818a",
   "#016c59",
-  "#014636"
+  "#014636",
 ]);
 
 addPalette("ColorBrewer/PuRd", "sequential", [
@@ -1003,7 +1003,7 @@ addPalette("ColorBrewer/PuRd", "sequential", [
   "#e7298a",
   "#ce1256",
   "#980043",
-  "#67001f"
+  "#67001f",
 ]);
 addPalette("ColorBrewer/RdPu", "sequential", [
   "#fff7f3",
@@ -1014,7 +1014,7 @@ addPalette("ColorBrewer/RdPu", "sequential", [
   "#dd3497",
   "#ae017e",
   "#7a0177",
-  "#49006a"
+  "#49006a",
 ]);
 addPalette("ColorBrewer/YlGn", "sequential", [
   "#ffffe5",
@@ -1025,7 +1025,7 @@ addPalette("ColorBrewer/YlGn", "sequential", [
   "#41ab5d",
   "#238443",
   "#006837",
-  "#004529"
+  "#004529",
 ]);
 addPalette("ColorBrewer/YlGnBu", "sequential", [
   "#ffffd9",
@@ -1036,7 +1036,7 @@ addPalette("ColorBrewer/YlGnBu", "sequential", [
   "#1d91c0",
   "#225ea8",
   "#253494",
-  "#081d58"
+  "#081d58",
 ]);
 addPalette("ColorBrewer/YlOrBr", "sequential", [
   "#ffffe5",
@@ -1047,7 +1047,7 @@ addPalette("ColorBrewer/YlOrBr", "sequential", [
   "#ec7014",
   "#cc4c02",
   "#993404",
-  "#662506"
+  "#662506",
 ]);
 addPalette("ColorBrewer/YlOrRd", "sequential", [
   "#ffffcc",
@@ -1058,7 +1058,7 @@ addPalette("ColorBrewer/YlOrRd", "sequential", [
   "#fc4e2a",
   "#e31a1c",
   "#bd0026",
-  "#800026"
+  "#800026",
 ]);
 
 // Qualitative
@@ -1070,7 +1070,7 @@ addPalette("ColorBrewer/Accent", "qualitative", [
   "#386cb0",
   "#f0027f",
   "#bf5b17",
-  "#666666"
+  "#666666",
 ]);
 addPalette("ColorBrewer/Dark2", "qualitative", [
   "#1b9e77",
@@ -1080,7 +1080,7 @@ addPalette("ColorBrewer/Dark2", "qualitative", [
   "#66a61e",
   "#e6ab02",
   "#a6761d",
-  "#666666"
+  "#666666",
 ]);
 addPalette("ColorBrewer/Paired", "qualitative", [
   "#a6cee3",
@@ -1094,7 +1094,7 @@ addPalette("ColorBrewer/Paired", "qualitative", [
   "#cab2d6",
   "#6a3d9a",
   "#ffff99",
-  "#b15928"
+  "#b15928",
 ]);
 addPalette("ColorBrewer/Pastel1", "qualitative", [
   "#fbb4ae",
@@ -1105,7 +1105,7 @@ addPalette("ColorBrewer/Pastel1", "qualitative", [
   "#ffffcc",
   "#e5d8bd",
   "#fddaec",
-  "#f2f2f2"
+  "#f2f2f2",
 ]);
 addPalette("ColorBrewer/Pastel2", "qualitative", [
   "#b3e2cd",
@@ -1115,7 +1115,7 @@ addPalette("ColorBrewer/Pastel2", "qualitative", [
   "#e6f5c9",
   "#fff2ae",
   "#f1e2cc",
-  "#cccccc"
+  "#cccccc",
 ]);
 addPalette("ColorBrewer/Set1", "qualitative", [
   "#e41a1c",
@@ -1126,7 +1126,7 @@ addPalette("ColorBrewer/Set1", "qualitative", [
   "#ffff33",
   "#a65628",
   "#f781bf",
-  "#999999"
+  "#999999",
 ]);
 addPalette("ColorBrewer/Set2", "qualitative", [
   "#66c2a5",
@@ -1136,7 +1136,7 @@ addPalette("ColorBrewer/Set2", "qualitative", [
   "#a6d854",
   "#ffd92f",
   "#e5c494",
-  "#b3b3b3"
+  "#b3b3b3",
 ]);
 addPalette("ColorBrewer/Set3", "qualitative", [
   "#8dd3c7",
@@ -1150,5 +1150,5 @@ addPalette("ColorBrewer/Set3", "qualitative", [
   "#d9d9d9",
   "#bc80bd",
   "#ccebc5",
-  "#ffed6f"
+  "#ffed6f",
 ]);

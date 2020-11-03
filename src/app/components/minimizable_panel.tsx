@@ -34,7 +34,7 @@ export class MinimizablePane extends React.Component<
   constructor(props: MinimizablePaneProps) {
     super(props);
     this.state = {
-      minimized: props.defaultMinimized || false
+      minimized: props.defaultMinimized || false,
     };
   }
   public renderHeader() {
@@ -53,7 +53,7 @@ export class MinimizablePane extends React.Component<
         />
         <span className="title">{this.props.title}</span>
         {this.props.onMaximize ? (
-          <span className="buttons" onClick={e => e.stopPropagation()}>
+          <span className="buttons" onClick={(e) => e.stopPropagation()}>
             <ButtonFlat
               title="Show as separate window"
               url={getSVGIcon("general/popout")}
@@ -179,7 +179,7 @@ export class FloatingPanel extends React.Component<
       width,
       height,
       focus: false,
-      minimized: false
+      minimized: false,
     };
   }
 
@@ -190,14 +190,14 @@ export class FloatingPanel extends React.Component<
   public componentDidMount() {
     this.hammer = new Hammer.Manager(this.refContainer);
     this.hammer.add(new Hammer.Pan({ threshold: 0 }));
-    this.hammer.on("panstart", e => {
+    this.hammer.on("panstart", (e) => {
       if (e.target == this.refHeader) {
         const x0 = this.state.x - e.deltaX;
         const y0 = this.state.y - e.deltaY;
-        const panListener: HammerListener = e => {
+        const panListener: HammerListener = (e) => {
           this.setState({
             x: x0 + e.deltaX,
-            y: Math.max(0, y0 + e.deltaY)
+            y: Math.max(0, y0 + e.deltaY),
           });
         };
         const panEndListener = () => {
@@ -210,10 +210,10 @@ export class FloatingPanel extends React.Component<
       if (e.target == this.refResizer) {
         const x0 = this.state.width - e.deltaX;
         const y0 = this.state.height - e.deltaY;
-        const panListener: HammerListener = e => {
+        const panListener: HammerListener = (e) => {
           this.setState({
             width: Math.max(324, x0 + e.deltaX),
-            height: Math.max(100, y0 + e.deltaY)
+            height: Math.max(100, y0 + e.deltaY),
           });
         };
         const panEndListener = () => {
@@ -260,26 +260,26 @@ export class FloatingPanel extends React.Component<
           ["is-focus", this.state.focus],
           ["is-scroll", this.props.scroll]
         )}
-        ref={e => (this.refContainer = e)}
+        ref={(e) => (this.refContainer = e)}
         style={{
           left: this.state.x + "px",
           top: this.state.y + "px",
           width: this.state.width + "px",
-          height: this.state.minimized ? undefined : this.state.height + "px"
+          height: this.state.minimized ? undefined : this.state.height + "px",
         }}
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           this.focus();
         }}
-        onTouchStart={e => {
+        onTouchStart={(e) => {
           this.focus();
         }}
       >
         <div
           className="charticulator__floating-panel-header"
-          ref={e => (this.refHeader = e)}
+          ref={(e) => (this.refHeader = e)}
         >
           <span className="title">{this.props.title}</span>
-          <span className="buttons" onClick={e => e.stopPropagation()}>
+          <span className="buttons" onClick={(e) => e.stopPropagation()}>
             <ButtonFlat
               url={getSVGIcon("general/minus")}
               title="Minimize"
@@ -304,7 +304,7 @@ export class FloatingPanel extends React.Component<
         {!this.state.minimized ? (
           <div
             className="charticulator__floating-panel-resizer"
-            ref={e => (this.refResizer = e)}
+            ref={(e) => (this.refResizer = e)}
           />
         ) : null}
       </div>

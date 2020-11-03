@@ -8,7 +8,7 @@ import {
   CategoricalScaleColor,
   CategoricalScaleBoolean,
   CategoricalScaleEnum,
-  CategoricalScaleImage
+  CategoricalScaleImage,
 } from "./categorical";
 import { LinearScale, LinearColorScale, LinearBooleanScale } from "./linear";
 
@@ -25,81 +25,81 @@ const inferScaleTypeRules: InferScaleTypeRule[] = [
   {
     input: {
       type: [DataType.Number, DataType.Date],
-      kind: [DataKind.Numerical, DataKind.Temporal]
+      kind: [DataKind.Numerical, DataKind.Temporal],
     },
     output: AttributeType.Number,
     scale: "scale.linear<number,number>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.Number, DataType.Date],
-      kind: [DataKind.Numerical, DataKind.Temporal]
+      kind: [DataKind.Numerical, DataKind.Temporal],
     },
     output: AttributeType.Color,
     scale: "scale.linear<number,color>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.Number, DataType.Date],
-      kind: [DataKind.Categorical, DataKind.Ordinal]
+      kind: [DataKind.Categorical, DataKind.Ordinal],
     },
     output: AttributeType.Color,
     scale: "scale.categorical<string,color>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.Number, DataType.Date],
-      kind: [DataKind.Numerical, DataKind.Temporal]
+      kind: [DataKind.Numerical, DataKind.Temporal],
     },
     output: AttributeType.Boolean,
     scale: "scale.linear<number,boolean>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.String, DataType.Boolean],
-      kind: [DataKind.Categorical, DataKind.Ordinal]
+      kind: [DataKind.Categorical, DataKind.Ordinal],
     },
     output: AttributeType.Color,
     scale: "scale.categorical<string,color>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.String, DataType.Boolean],
-      kind: [DataKind.Categorical, DataKind.Ordinal]
+      kind: [DataKind.Categorical, DataKind.Ordinal],
     },
     output: AttributeType.Image,
     scale: "scale.categorical<string,image>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.String, DataType.Boolean],
-      kind: [DataKind.Categorical, DataKind.Ordinal]
+      kind: [DataKind.Categorical, DataKind.Ordinal],
     },
     output: AttributeType.Enum,
     scale: "scale.categorical<string,enum>",
-    priority: 1
+    priority: 1,
   },
   {
     input: {
       type: [DataType.String, DataType.Boolean],
-      kind: [DataKind.Categorical, DataKind.Ordinal]
+      kind: [DataKind.Categorical, DataKind.Ordinal],
     },
     output: AttributeType.Boolean,
     scale: "scale.categorical<string,boolean>",
-    priority: 1
+    priority: 1,
   },
   {
     input: { type: DataType.String, kind: [DataKind.Ordinal] },
     output: AttributeType.Number,
     scale: "scale.categorical<string,number>",
-    priority: 1
-  }
+    priority: 1,
+  },
 ];
 
 function match<T>(test: T | T[], input: T): boolean {
