@@ -241,21 +241,21 @@ export function inferAndConvertColumn(
           metadata: {
             kind: DataKind.Ordinal,
             order: monthNames,
-            unit: "__month"
-          }
+            unit: "__month",
+          },
         };
       }
       if (hints.order) {
         metadata.order = hints.order.split(",");
         metadata.kind = DataKind.Ordinal;
       } else {
-        metadata.orderMode = "alphabetically";
+        metadata.orderMode = "order";
         metadata.kind = DataKind.Categorical;
       }
       return {
         type: DataType.String,
         values: convertedValues,
-        metadata
+        metadata,
       };
     }
   }
@@ -264,14 +264,14 @@ export function inferAndConvertColumn(
   return {
     type: inferredType,
     values: convertedValues,
-    metadata: { kind: DataKind.Categorical }
+    metadata: { kind: DataKind.Categorical },
   };
 }
 
 export function convertColumnType(values: any[], type: DataType): DataValue[] {
   switch (type) {
     case DataType.Boolean: {
-      return values.map(v => {
+      return values.map((v) => {
         if (v == null) {
           return null;
         }
