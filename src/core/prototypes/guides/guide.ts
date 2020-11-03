@@ -64,7 +64,7 @@ export class GuideClass extends ChartElementClass<
     GuideAttributeNames.computedBaselineValue,
   ];
   public attributes: {
-    [name in GuideAttributeNames]: GuideAttributeDescription
+    [name in GuideAttributeNames]: GuideAttributeDescription;
   } = {
     value: {
       name: GuideAttributeNames.value,
@@ -116,7 +116,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [[-0.5, width], [+1, value]]
+            ([width], value) => [
+              [-0.5, width],
+              [+1, value],
+            ]
           );
           break;
         }
@@ -124,7 +127,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["width"],
-            ([width], value) => [[+0.5, width], [+1, value]]
+            ([width], value) => [
+              [+0.5, width],
+              [+1, value],
+            ]
           );
           break;
         }
@@ -132,7 +138,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [[+0.5, height], [+1, value]]
+            ([height], value) => [
+              [+0.5, height],
+              [+1, value],
+            ]
           );
           break;
         }
@@ -140,7 +149,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["height"],
-            ([height], value) => [[-0.5, height], [+1, value]]
+            ([height], value) => [
+              [-0.5, height],
+              [+1, value],
+            ]
           );
           break;
         }
@@ -151,7 +163,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["cx"],
-            ([cx], value) => [[+1, cx], [+1, value]]
+            ([cx], value) => [
+              [+1, cx],
+              [+1, value],
+            ]
           );
           break;
         }
@@ -159,7 +174,10 @@ export class GuideClass extends ChartElementClass<
           this.computeBaselineFromParentAttribute(
             solver,
             ["cy"],
-            ([cy], value) => [[+1, cy], [+1, value]]
+            ([cy], value) => [
+              [+1, cy],
+              [+1, value],
+            ]
           );
           break;
         }

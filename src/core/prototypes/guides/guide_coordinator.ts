@@ -62,7 +62,10 @@ export class GuideCoordinatorClass extends ChartElementClass<
       solver.addLinear(
         ConstraintStrength.HARD,
         0,
-        [[1 - t, t1], [t, t2]],
+        [
+          [1 - t, t1],
+          [t, t2],
+        ],
         [[1, solver.attr(attrs, name)]]
       );
     });

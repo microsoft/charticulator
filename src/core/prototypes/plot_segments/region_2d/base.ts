@@ -996,7 +996,6 @@ export class Region2DConstraintBuilder {
 
     const alignment = props.sublayout.align;
 
-    
     groups.forEach((group) => {
       const markStates = group.group.map((index) => state.glyphs[index]);
       const { x1, y1, x2, y2 } = group;

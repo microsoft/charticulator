@@ -1429,9 +1429,7 @@ export class SingleMarkView
 
   public render() {
     const { glyph, glyphState } = this.props;
-    const transform = `translate(${this.state.zoom.centerX},${
-      this.state.zoom.centerY
-    }) scale(${this.state.zoom.scale})`;
+    const transform = `translate(${this.state.zoom.centerX},${this.state.zoom.centerY}) scale(${this.state.zoom.scale})`;
     if (!glyphState) {
       return (
         <div className="mark-editor-single-view">
