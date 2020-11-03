@@ -73,16 +73,16 @@ export abstract class PlotSegmentClass<
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.filter,
-            mode: "button",
+            mode: "button"
           }),
           manager.groupByEditor({
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.groupBy,
-            mode: "button",
+            mode: "button"
           })
         )
-      ),
+      )
     ];
   }
 
