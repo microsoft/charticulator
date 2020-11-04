@@ -15,17 +15,9 @@ import {
   SnappingGuides,
   BoundingBox,
   Controls,
-  TemplateParameters,
-  LinkAnchor,
-  isType,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
-import { ObjectClasses } from "../object";
-import { RectangleGlyph } from "../glyphs";
-import { RectangleChart } from "../charts";
-import { GuideCoordinatorClass } from "./guide_coordinator";
-import { PolarProperties, PolarState } from "../plot_segments/region_2d/polar";
-import { SublayoutGroup } from "../plot_segments/region_2d/base";
+import { PolarState } from "../plot_segments/region_2d/polar";
 
 export interface PolarGuideCoordinatorAttributes
   extends Specification.AttributeMap {
@@ -269,7 +261,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           solver.addEquals(
             ConstraintStrength.HARD,
             solver.attr(attrs, radialY[yindex]),
-            vy1
+            vy2
           );
         }
       }
@@ -317,7 +309,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
   public getValueNamesForPoints(): string[] {
     const attrs = [];
-    for (let i = 0; i < this.object.properties.radialGuidesCount; i++) {
+    for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
       for (let j = 0; j < this.object.properties.radialGuidesCount; j++) {
         const nameX = `point${i}${j}X`;
         attrs.push(nameX);
@@ -565,6 +557,20 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         } as SnappingGuides.PolarAxis);
       }
     }
+
+    // add center for coordinates
+    result.push({
+      type: "point",
+      angle: this.state.attributes.x,
+      radius: this.state.attributes.y,
+      startAngle: this.object.properties.startAngle,
+      endAngle: this.object.properties.endAngle,
+      angleAttribute: "x",
+      radiusAttribute: "y",
+      visible: true,
+      cx: this.state.attributes.x,
+      cy: this.state.attributes.y,
+    } as SnappingGuides.PolarAxis);
 
     return result;
   }

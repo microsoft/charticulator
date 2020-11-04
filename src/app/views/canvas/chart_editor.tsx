@@ -519,7 +519,7 @@ export class ChartEditorView
                   startAngle: 0,
                   endAngle: 360,
                   innerRatio: 0.0,
-                  outerRatio: 2,
+                  outerRatio: 1,
                 }
               ).dispatch(this.props.store.dispatcher);
             };
@@ -1108,12 +1108,14 @@ export class ChartEditorView
               cx={
                 // axisGuide.angle * this.state.zoom.scale +
                 // this.state.zoom.centerX
-                axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                axisGuide.angle * this.state.zoom.scale +
+                this.state.zoom.centerX
               }
               cy={
                 // axisGuide.radius * this.state.zoom.scale +
                 // this.state.zoom.centerY
-                -axisGuide.cy * this.state.zoom.scale + this.state.zoom.centerY
+                -axisGuide.radius * this.state.zoom.scale +
+                this.state.zoom.centerY
               }
               r={Math.abs(5 * this.state.zoom.scale)}
             />
