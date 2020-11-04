@@ -173,12 +173,13 @@ export class DataAxisClass extends MarkClass<
   ): Graphics.Element {
     const attrs = this.state.attributes;
     const props = this.object.properties;
+    const ps = this.getPlotSegmentClass();
     switch (props.visibleOn) {
       case "all":
         break;
       case "last":
         {
-          const index = this.getPlotSegmentClass().getLastGlyphIndex();
+          const index = ps?.getLastGlyphIndex();
           if (glyphIndex != index) {
             return null;
           }
@@ -187,7 +188,7 @@ export class DataAxisClass extends MarkClass<
       case "first":
       default:
         {
-          const index = this.getPlotSegmentClass().getFirstGlyphIndex();
+          const index = ps?.getFirstGlyphIndex();
           if (glyphIndex != index) {
             return null;
           }
