@@ -132,12 +132,12 @@ export class AxisRenderer {
     for (const [pos, tick] of position2Tick.entries()) {
       this.ticks.push({
         position: pos,
-        label: tick
+        label: tick,
       });
     }
   }
 
-  public getTickFormat(
+  public static getTickFormat(
     tickFormat: string,
     defaultFormat: (d: number) => string
   ) {
@@ -169,7 +169,10 @@ export class AxisRenderer {
       Math.round(Math.min(10, rangeLength / 40))
     );
 
-    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+    const resolvedFormat = AxisRenderer.getTickFormat(
+      tickFormat,
+      defaultFormat
+    );
 
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -207,7 +210,10 @@ export class AxisRenderer {
       Math.round(Math.min(10, rangeLength / 40))
     );
 
-    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+    const resolvedFormat = AxisRenderer.getTickFormat(
+      tickFormat,
+      defaultFormat
+    );
 
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -821,7 +827,7 @@ export function buildAxisWidgets(
                 [1, 0],
                 m.inputExpression({
                   property: axisProperty,
-                  field: "expression"
+                  field: "expression",
                 }),
                 m.reorderWidget(
                   { property: axisProperty, field: "categories" },
@@ -830,6 +836,29 @@ export function buildAxisWidgets(
               )
             )
           );
+          if (data.valueType === "date") {
+            widgets.push(
+              m.row(
+                "Tick Data",
+                m.inputExpression({
+                  property: axisProperty,
+                  field: "tickDataExpression",
+                })
+              )
+            );
+            widgets.push(
+              m.row(
+                "Tick Format",
+                m.inputText(
+                  {
+                    property: axisProperty,
+                    field: "tickFormat",
+                  },
+                  "(auto)"
+                )
+              )
+            );
+          }
           widgets.push(
             m.row(
               "Gap",
