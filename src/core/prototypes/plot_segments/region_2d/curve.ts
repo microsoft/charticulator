@@ -366,11 +366,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
             tangent2,
             false,
             false,
-            PlotSegmentClass.getDisplayFormat(
-              manager,
-              props.xData.expression,
-              this.object.table
-            )
+            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
           )
           .renderCurve(
             cs,
@@ -393,11 +389,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
             normal2,
             false,
             true,
-            PlotSegmentClass.getDisplayFormat(
-              manager,
-              props.yData.expression,
-              this.object.table
-            )
+            this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
           )
           .renderLine(
             tr.x,

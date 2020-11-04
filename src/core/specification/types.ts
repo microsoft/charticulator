@@ -12,6 +12,7 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** Data mapping expression */
   expression?: Expression;
+  rawExpression?: Expression;
   valueType?: DataType;
 
   /** Domain for linear/logarithm types */

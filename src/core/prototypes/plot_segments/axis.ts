@@ -137,7 +137,7 @@ export class AxisRenderer {
     }
   }
 
-  public getTickFormat(
+  public static getTickFormat(
     tickFormat: string,
     defaultFormat: (d: number) => string
   ) {
@@ -169,7 +169,10 @@ export class AxisRenderer {
       Math.round(Math.min(10, rangeLength / 40))
     );
 
-    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+    const resolvedFormat = AxisRenderer.getTickFormat(
+      tickFormat,
+      defaultFormat
+    );
 
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -207,7 +210,10 @@ export class AxisRenderer {
       Math.round(Math.min(10, rangeLength / 40))
     );
 
-    const resolvedFormat = this.getTickFormat(tickFormat, defaultFormat);
+    const resolvedFormat = AxisRenderer.getTickFormat(
+      tickFormat,
+      defaultFormat
+    );
 
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
@@ -830,6 +836,29 @@ export function buildAxisWidgets(
               )
             )
           );
+          if (data.valueType === "date") {
+            widgets.push(
+              m.row(
+                "Tick Data",
+                m.inputExpression({
+                  property: axisProperty,
+                  field: "tickDataExpression",
+                })
+              )
+            );
+            widgets.push(
+              m.row(
+                "Tick Format",
+                m.inputText(
+                  {
+                    property: axisProperty,
+                    field: "tickFormat",
+                  },
+                  "(auto)"
+                )
+              )
+            );
+          }
           widgets.push(
             m.row(
               "Gap",
