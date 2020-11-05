@@ -29,7 +29,7 @@ export class SnappingSession<ElementType> {
         {
           const lineHandle = handle as Prototypes.Handles.Line;
           // Get all guides
-          this.candidates = guides.filter(g => {
+          this.candidates = guides.filter((g) => {
             return g.guide.type == lineHandle.axis;
           });
         }
@@ -37,7 +37,7 @@ export class SnappingSession<ElementType> {
       case "point":
         {
           // Get all guides
-          this.candidates = guides.filter(g => {
+          this.candidates = guides.filter((g) => {
             return g.guide.type == "x" || g.guide.type == "y";
           });
         }
@@ -149,7 +149,7 @@ export class SnappingSession<ElementType> {
             result.push({
               type: "value-mapping",
               attribute: action.attribute,
-              value
+              value,
             });
           }
           break;
@@ -159,7 +159,7 @@ export class SnappingSession<ElementType> {
               type: "property",
               property: action.property,
               field: action.field,
-              value
+              value,
             });
           }
           break;
@@ -177,7 +177,7 @@ export class SnappingSession<ElementType> {
                   attribute: action.attribute,
                   snapElement: candidate.element,
                   snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
-                    .attribute
+                    .attribute,
                 });
                 didSnap = true;
               }
@@ -193,7 +193,7 @@ export class SnappingSession<ElementType> {
                     attribute: action.attribute,
                     snapElement: candidate.element,
                     snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
-                      .attribute
+                      .attribute,
                   });
                   didSnap = true;
                 }
@@ -203,7 +203,7 @@ export class SnappingSession<ElementType> {
               result.push({
                 type: "move",
                 attribute: action.attribute,
-                value
+                value,
               });
             }
           }

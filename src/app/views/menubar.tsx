@@ -26,7 +26,7 @@ export class HelpButton extends React.Component<{}, {}> {
         ref="helpButton"
         onClick={() => {
           globals.popupController.popupAt(
-            context => {
+            (context) => {
               return (
                 <PopupView
                   context={context}
@@ -79,7 +79,7 @@ export class HelpButton extends React.Component<{}, {}> {
             },
             {
               anchor: ReactDOM.findDOMNode(this.refs.helpButton) as Element,
-              alignX: "end-inner"
+              alignX: "end-inner",
             }
           );
         }}
@@ -118,7 +118,7 @@ export class MenuBar extends ContextedComponent<
     "ctrl-o": "open",
     backspace: "delete",
     delete: "delete",
-    escape: "escape"
+    escape: "escape",
   };
 
   public onKeyDown = (e: KeyboardEvent) => {
@@ -199,7 +199,7 @@ export class MenuBar extends ContextedComponent<
       return;
     }
     globals.popupController.showModal(
-      context => {
+      (context) => {
         return (
           <ModalView context={context}>
             <FileView
@@ -383,10 +383,10 @@ export class MenuBar extends ContextedComponent<
             onClick={() => {
               if (isInIFrame()) {
                 globals.popupController.showModal(
-                  context => {
+                  (context) => {
                     return (
                       <div
-                        onMouseDown={e => {
+                        onMouseDown={(e) => {
                           e.stopPropagation();
                         }}
                         className={"charticulator__reset_chart_dialog"}

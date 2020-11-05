@@ -17,7 +17,7 @@ export class FileViewNew extends ContextedComponent<
         <h1>New</h1>
         <ImportDataView
           store={this.context.store}
-          onConfirmImport={dataset => {
+          onConfirmImport={(dataset) => {
             this.dispatch(new Actions.ImportDataset(dataset));
             this.props.onClose();
           }}

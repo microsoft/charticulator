@@ -8,7 +8,7 @@ import {
   colorFromHTMLColor,
   colorToHTMLColorHEX,
   Expression,
-  Specification
+  Specification,
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
@@ -23,7 +23,7 @@ import {
   InputExpression,
   InputImage,
   InputNumber,
-  InputText
+  InputText,
 } from "./controls";
 
 export interface ValueEditorProps {
@@ -81,7 +81,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             defaultValue={number}
             placeholder={placeholderText}
             {...numberOptions}
-            onEnter={newValue => {
+            onEnter={(newValue) => {
               if (newValue == null) {
                 this.emitClearValue();
                 return true;
@@ -104,17 +104,17 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
           <span className="el-color-value">
             <span
               className="el-color-item"
-              ref={e => (colorItem = e)}
+              ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
               onClick={() => {
                 globals.popupController.popupAt(
-                  context => (
+                  (context) => (
                     <PopupView context={context}>
                       <ColorPicker
                         store={this.store}
                         defaultValue={color}
                         allowNull={true}
-                        onPick={color => {
+                        onPick={(color) => {
                           if (color == null) {
                             this.emitClearValue();
                             context.close();
@@ -131,7 +131,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             />
             <InputText
               defaultValue={hex}
-              onEnter={newValue => {
+              onEnter={(newValue) => {
                 newValue = newValue.trim();
                 if (newValue == "") {
                   this.emitClearValue();
@@ -153,7 +153,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
         return (
           <ComboBoxFontFamily
             defaultValue={value as string}
-            onEnter={value => {
+            onEnter={(value) => {
               this.emitSetValue(value);
               return true;
             }}
@@ -165,7 +165,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
           return (
             <InputExpression
               textExpression={true}
-              validate={value =>
+              validate={(value) =>
                 this.context.store.verifyUserExpressionWithTable(
                   value,
                   this.props.getTable(),
@@ -173,11 +173,11 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                 )
               }
               defaultValue={new Expression.TextExpression([
-                { string: str }
+                { string: str },
               ]).toString()}
               placeholder={placeholderText}
               allowNull={true}
-              onEnter={newValue => {
+              onEnter={(newValue) => {
                 if (newValue == null || newValue.trim() == "") {
                   this.emitClearValue();
                 } else {
@@ -186,13 +186,13 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                   ) {
                     this.emitMapping({
                       type: "value",
-                      value: newValue
+                      value: newValue,
                     } as Specification.ValueMapping);
                   } else {
                     this.emitMapping({
                       type: "text",
                       table: this.props.getTable(),
-                      textExpression: newValue
+                      textExpression: newValue,
                     } as Specification.TextMapping);
                   }
                 }
@@ -205,7 +205,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             <InputText
               defaultValue={str}
               placeholder={placeholderText}
-              onEnter={newValue => {
+              onEnter={(newValue) => {
                 if (newValue == null) {
                   this.emitClearValue();
                 } else {
@@ -223,7 +223,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
         return (
           <ComboBox
             defaultValue={str}
-            onEnter={newValue => {
+            onEnter={(newValue) => {
               if (newValue == null) {
                 this.emitClearValue();
               } else {
@@ -243,7 +243,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             <Button
               active={false}
               text="Conditioned by..."
-              ref={e => (ref = ReactDOM.findDOMNode(e) as Element)}
+              ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
               onClick={() => {
                 // this.beginDataFieldSelection(ref);
                 this.props.onBeginDataFieldSelection(ref);
@@ -255,7 +255,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
             <Button
               active={false}
               icon={boolean ? "checkbox/checked" : "checkbox/empty"}
-              ref={e => (ref = ReactDOM.findDOMNode(e) as Element)}
+              ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
               onClick={() => {
                 this.emitSetValue(!boolean);
               }}
@@ -268,7 +268,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
         return (
           <InputImage
             value={str}
-            onChange={newValue => {
+            onChange={(newValue) => {
               if (newValue == null) {
                 this.emitClearValue();
               } else {

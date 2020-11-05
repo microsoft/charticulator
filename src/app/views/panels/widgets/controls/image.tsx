@@ -39,14 +39,14 @@ export class InputImage extends ContextedComponent<
       this.props.onChange({
         src: images[0].dataURL,
         width: images[0].width,
-        height: images[0].height
+        height: images[0].height,
       });
     }
   }
 
   public startChooseImage = () => {
     globals.popupController.popupAt(
-      context => {
+      (context) => {
         return (
           <PopupView context={context}>
             <ImageChooser
@@ -84,16 +84,16 @@ export class InputImage extends ContextedComponent<
       const uris = uriList
         .replace(/\r/g, "")
         .split("\n")
-        .map(x => x.trim())
-        .filter(x => !x.startsWith("#"));
+        .map((x) => x.trim())
+        .filter((x) => !x.startsWith("#"));
       ImageUploader.ParseURIs(uris)
-        .then(r => {
+        .then((r) => {
           this.emitOnChange(r);
         })
-        .catch(e => {});
+        .catch((e) => {});
     }
     if (e.dataTransfer.files.length > 0) {
-      ImageUploader.ParseFiles(e.dataTransfer.files).then(r => {
+      ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
         this.emitOnChange(r);
       });
     }
@@ -115,7 +115,7 @@ export class InputImage extends ContextedComponent<
           ["is-none", isNone],
           ["is-drag-over", this.state.dragOver]
         )}
-        ref={e => (this.element = e)}
+        ref={(e) => (this.element = e)}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
         onDragOver={this.handleDragOver}
@@ -135,7 +135,7 @@ export class InputImage extends ContextedComponent<
               <span className="el-text">
                 {isNone ? "(none)" : imageDisplayURL}
               </span>
-            </span>
+            </span>,
           ]
         )}
       </span>
@@ -154,12 +154,12 @@ export class ImageChooser extends ContextedComponent<ImageChooserProps, {}> {
       <div className="charticulator__image-chooser">
         <ImageUploader
           focusOnMount={true}
-          onUpload={images => {
+          onUpload={(images) => {
             if (images.length == 1) {
               this.props.onChoose({
                 src: images[0].dataURL,
                 width: images[0].width,
-                height: images[0].height
+                height: images[0].height,
               });
             }
           }}
@@ -215,7 +215,7 @@ export class ImageUploader extends React.Component<
             name,
             width: img.width,
             height: img.height,
-            dataURL: reader.result as string
+            dataURL: reader.result as string,
           });
         };
         img.src = reader.result as string;
@@ -238,10 +238,10 @@ export class ImageUploader extends React.Component<
 
   public static ParseURIs(uris: string[]): Promise<ImageUploaderItem[]> {
     return Promise.all(
-      uris.map(uri =>
+      uris.map((uri) =>
         fetch(uri)
-          .then(result => result.blob())
-          .then(blob => {
+          .then((result) => result.blob())
+          .then((blob) => {
             return new Promise<ImageUploaderItem>((resolve, reject) => {
               if (!blob.type.startsWith("image/")) {
                 reject(new Error("not an image"));
@@ -273,18 +273,18 @@ export class ImageUploader extends React.Component<
       const uris = uriList
         .replace(/\r/g, "")
         .split("\n")
-        .map(x => x.trim())
-        .filter(x => !x.startsWith("#"));
+        .map((x) => x.trim())
+        .filter((x) => !x.startsWith("#"));
       ImageUploader.ParseURIs(uris)
-        .then(r => {
+        .then((r) => {
           this.emitOnUpload(r);
         })
-        .catch(e => {
+        .catch((e) => {
           this.showError(e);
         });
     }
     if (e.dataTransfer.files.length > 0) {
-      ImageUploader.ParseFiles(e.dataTransfer.files).then(r => {
+      ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
         this.emitOnUpload(r);
       });
     }
@@ -294,10 +294,10 @@ export class ImageUploader extends React.Component<
     if (e.clipboardData.files.length > 0) {
       e.preventDefault();
       const result = ImageUploader.ParseFiles(e.clipboardData.files)
-        .then(r => {
+        .then((r) => {
           this.emitOnUpload(r);
         })
-        .catch(e => {
+        .catch((e) => {
           this.showError(e);
         });
     }
@@ -308,7 +308,7 @@ export class ImageUploader extends React.Component<
     inputFile.setAttribute("type", "file");
     inputFile.onchange = () => {
       if (inputFile.files.length > 0) {
-        ImageUploader.ParseFiles(inputFile.files).then(r => {
+        ImageUploader.ParseFiles(inputFile.files).then((r) => {
           this.emitOnUpload(r);
         });
       }
@@ -336,7 +336,7 @@ export class ImageUploader extends React.Component<
     return (
       <div
         className="charticulator__image-uploader"
-        ref={e => (this.refContainer = e)}
+        ref={(e) => (this.refContainer = e)}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
         onDragOver={this.handleDragOver}
@@ -347,7 +347,7 @@ export class ImageUploader extends React.Component<
         ) : (
           <span className="el-input-wrapper">
             <input
-              ref={e => (this.refInput = e)}
+              ref={(e) => (this.refInput = e)}
               className="el-input"
               onPaste={this.handlePaste}
               value=""
@@ -380,7 +380,7 @@ export class InputImageProperty extends InputImage {
           ["is-none", isNone],
           ["is-drag-over", this.state.dragOver]
         )}
-        ref={e => (this.element = e)}
+        ref={(e) => (this.element = e)}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
         onDragOver={this.handleDragOver}
@@ -399,19 +399,19 @@ export class InputImageProperty extends InputImage {
               key={0}
               placeholder={isNone ? "(none)" : imageDisplayURL}
               focusOnMount={true}
-              onUpload={images => {
+              onUpload={(images) => {
                 if (images.length == 1) {
                   if (this.props.onChange) {
                     this.props.onChange({
                       src: images[0].dataURL,
                       width: images[0].width,
                       height: images[0].height,
-                      name: images[0].name
+                      name: images[0].name,
                     });
                   }
                 }
               }}
-            />
+            />,
           ]
         )}
       </span>

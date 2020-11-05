@@ -13,14 +13,14 @@ import {
   Handles,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters
+  TemplateParameters,
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConstraintBuilder,
-  Region2DProperties
+  Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { ChartStateManager } from "../..";
@@ -86,7 +86,7 @@ export let curveTerminology: Region2DConfiguration["terminology"] = {
   packing: "Packing",
   packingIcon: "sublayout/packing",
   overlap: "Overlap",
-  overlapIcon: "sublayout/overlap"
+  overlapIcon: "sublayout/overlap",
 };
 
 export class CurvePlotSegment extends PlotSegmentClass<
@@ -101,8 +101,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
     iconPath: "plot-segment/curve",
     creatingInteraction: {
       type: "rectangle",
-      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" }
-    }
+      mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
+    },
   };
 
   public static defaultProperties: Specification.AttributeMap = {
@@ -118,24 +118,24 @@ export class CurvePlotSegment extends PlotSegmentClass<
       ratioY: 0.1,
       align: {
         x: "start",
-        y: "start"
+        y: "start",
       },
       grid: {
         direction: "x",
         xCount: null,
-        yCount: null
-      }
+        yCount: null,
+      },
     },
     curve: [
       [
         { x: -1, y: 0 },
         { x: -0.25, y: -0.5 },
         { x: 0.25, y: 0.5 },
-        { x: 1, y: 0 }
-      ]
+        { x: 1, y: 0 },
+      ],
     ],
     normalStart: -0.2,
-    normalEnd: 0.2
+    normalEnd: 0.2,
   };
 
   public readonly state: CurveState;
@@ -153,59 +153,59 @@ export class CurvePlotSegment extends PlotSegmentClass<
     "gapX",
     "gapY",
     "x",
-    "y"
+    "y",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
       name: "x1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x2: {
       name: "x2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y1: {
       name: "y1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y2: {
       name: "y2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     tangent1: {
       name: "tangent1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     tangent2: {
       name: "tangent2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     normal1: {
       name: "normal1",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     normal2: {
       name: "normal2",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     x: {
       name: "x",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y: {
       name: "y",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     gapX: {
       name: "gapX",
       type: Specification.AttributeType.Number,
-      editableInGlyphStage: true
+      editableInGlyphStage: true,
     },
     gapY: {
       name: "gapY",
       type: Specification.AttributeType.Number,
-      editableInGlyphStage: true
-    }
+      editableInGlyphStage: true,
+    },
   };
 
   public initializeState(): void {
@@ -232,7 +232,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const config = {
       terminology: curveTerminology,
       xAxisPrePostGap: false,
-      yAxisPrePostGap: false
+      yAxisPrePostGap: false,
     };
     const builder = new Region2DConstraintBuilder(
       this,
@@ -250,7 +250,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
   public getCurveArcLength() {
     return new Graphics.MultiCurveParametrization(
       this.object.properties.curve.map(
-        c => new Graphics.BezierCurveParameterization(c[0], c[1], c[2], c[3])
+        (c) => new Graphics.BezierCurveParameterization(c[0], c[1], c[2], c[3])
       )
     ).getLength();
   }
@@ -262,10 +262,25 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
-    const [x1, y1, x2, y2, tangent1, tangent2, normal1, normal2] = solver.attrs(
-      attrs,
-      ["x1", "y1", "x2", "y2", "tangent1", "tangent2", "normal1", "normal2"]
-    );
+    const [
+      x1,
+      y1,
+      x2,
+      y2,
+      tangent1,
+      tangent2,
+      normal1,
+      normal2,
+    ] = solver.attrs(attrs, [
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "tangent1",
+      "tangent2",
+      "normal1",
+      "normal2",
+    ]);
     const arcLength = this.getCurveArcLength();
 
     attrs.tangent1 = 0;
@@ -276,7 +291,10 @@ export class CurvePlotSegment extends PlotSegmentClass<
       ConstraintStrength.HARD,
       0,
       [[1, tangent2]],
-      [[arcLength / 2, x2], [-arcLength / 2, x1]]
+      [
+        [arcLength / 2, x2],
+        [-arcLength / 2, x1],
+      ]
     );
     // normal1 = normalStart * (x2 - x1) / 2
     // normal2 = normalEnd * (x2 - x1) / 2
@@ -284,13 +302,19 @@ export class CurvePlotSegment extends PlotSegmentClass<
       ConstraintStrength.HARD,
       0,
       [[1, normal1]],
-      [[props.normalStart / 2, x2], [-props.normalStart / 2, x1]]
+      [
+        [props.normalStart / 2, x2],
+        [-props.normalStart / 2, x1],
+      ]
     );
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
       [[1, normal2]],
-      [[props.normalEnd / 2, x2], [-props.normalEnd / 2, x1]]
+      [
+        [props.normalEnd / 2, x2],
+        [-props.normalEnd / 2, x1],
+      ]
     );
   }
 
@@ -311,7 +335,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     } as BoundingBox.Rectangle;
   }
 
@@ -322,7 +346,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis
+      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
     ];
   }
 
@@ -387,8 +411,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
     return new Graphics.BezierCurveCoordinates(
       { x: cx, y: cy },
       new Graphics.MultiCurveParametrization(
-        this.object.properties.curve.map(ps => {
-          const p = ps.map(p => ({ x: p.x * scaler, y: p.y * scaler }));
+        this.object.properties.curve.map((ps) => {
+          const p = ps.map((p) => ({ x: p.x * scaler, y: p.y * scaler }));
           return new Graphics.BezierCurveParameterization(
             p[0],
             p[1],
@@ -410,7 +434,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
-      title: "Convert to Polar Coordinates"
+      title: "Convert to Polar Coordinates",
     } as DropZones.Region);
     zones.push({
       type: "region",
@@ -418,7 +442,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
-      title: "Convert to Cartesian Coordinates"
+      title: "Convert to Cartesian Coordinates",
     } as DropZones.Region);
     // zones.push(
     //     <DropZones.Line>{
@@ -449,7 +473,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     return [
       props.xData ? props.xData.type : "null",
-      props.yData ? props.yData.type : "null"
+      props.yData ? props.yData.type : "null",
     ];
   }
 
@@ -467,28 +491,28 @@ export class CurvePlotSegment extends PlotSegmentClass<
         axis: "y",
         value: y1,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y1" }]
+        actions: [{ type: "attribute", attribute: "y1" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
-        actions: [{ type: "attribute", attribute: "y2" }]
+        actions: [{ type: "attribute", attribute: "y2" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x1" }]
+        actions: [{ type: "attribute", attribute: "x1" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
-        actions: [{ type: "attribute", attribute: "x2" }]
+        actions: [{ type: "attribute", attribute: "x2" }],
       } as Handles.Line,
       {
         type: "point",
@@ -496,8 +520,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -505,8 +529,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" }
-        ]
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -514,8 +538,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
       } as Handles.Point,
       {
         type: "point",
@@ -523,8 +547,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: y2,
         actions: [
           { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" }
-        ]
+          { type: "attribute", source: "y", attribute: "y2" },
+        ],
       } as Handles.Point,
       {
         type: "input-curve",
@@ -532,8 +556,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y1,
         x2,
         y2,
-        actions: [{ type: "property", property: "curve" }]
-      } as Handles.InputCurve
+        actions: [{ type: "property", property: "curve" }],
+      } as Handles.InputCurve,
     ];
     return h;
   }
@@ -548,7 +572,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,
-      widgets: [...widgets]
+      widgets: [...widgets],
     };
   }
 
@@ -574,7 +598,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
       //     manager.label("Outer:"),
       //     manager.inputNumber({ property: "outerRatio" })
       // )),
-      ...builder.buildPanelWidgets(manager)
+      ...builder.buildPanelWidgets(manager),
     ];
   }
 
@@ -597,12 +621,12 @@ export class CurvePlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         dataSource: {
           table: this.object.table,
-          groupBy: this.object.groupBy
+          groupBy: this.object.groupBy,
         },
         expression: {
           expression: this.object.properties.sublayout.order.expression,
-          property: { property: "sublayout", field: ["order", "expression"] }
-        }
+          property: { property: "sublayout", field: ["order", "expression"] },
+        },
       });
     }
     if (this.object.properties.xData) {
@@ -611,11 +635,11 @@ export class CurvePlotSegment extends PlotSegmentClass<
         target: {
           property: {
             property: "xData",
-            field: "categories"
-          }
+            field: "categories",
+          },
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: "ascending",
       });
     }
     if (this.object.properties.yData) {
@@ -624,11 +648,11 @@ export class CurvePlotSegment extends PlotSegmentClass<
         target: {
           property: {
             property: "yData",
-            field: "categories"
-          }
+            field: "categories",
+          },
         },
         type: Specification.AttributeType.Enum,
-        default: "ascending"
+        default: "ascending",
       });
     }
     return { inferences: r, properties: p };

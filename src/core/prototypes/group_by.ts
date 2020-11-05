@@ -11,7 +11,7 @@ export class CompiledGroupBy {
       const expr = cache.parse(groupBy.expression);
       this.groupBy = (table: DataflowTable) => {
         const indices = makeRange(0, table.rows.length);
-        const groups = gather(indices, i =>
+        const groups = gather(indices, (i) =>
           expr.getStringValue(table.getRowContext(i))
         );
         return groups;

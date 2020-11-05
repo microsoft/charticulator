@@ -18,7 +18,7 @@ import {
   uniqueID,
   refineColumnName,
   EventEmitter,
-  getById
+  getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
@@ -27,14 +27,14 @@ import { PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
-  Droppable
+  Droppable,
 } from "../../../controllers/drag_controller";
 
 import { AppStore } from "../../../stores";
 import {
   classNames,
   showOpenFileDialog,
-  readFileAsString
+  readFileAsString,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -51,7 +51,7 @@ import {
   ComboBox,
   CheckBox,
   InputExpression,
-  InputImageProperty
+  InputImageProperty,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
@@ -61,7 +61,7 @@ import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
   FunctionCall,
-  Variable
+  Variable,
 } from "../../../../core/expression";
 import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
@@ -121,7 +121,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         type={info.type}
         options={{
           ...options,
-          openMapping
+          openMapping,
         }}
       />
     );
@@ -148,23 +148,25 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       const expressionString: string = prop.expression;
       const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
       // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-      const functionCallpart = expression.parts.find(part => {
+      const functionCallpart = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
           return part.expression.args.find(
-            arg => arg instanceof Variable
+            (arg) => arg instanceof Variable
           ) as any;
         }
       }).expression as FunctionCall;
       if (functionCallpart) {
         const variable = functionCallpart.args.find(
-          arg => arg instanceof Variable
+          (arg) => arg instanceof Variable
         ) as Variable;
         const columnName = variable.name;
         const tableName = (this.objectClass.object as any).table;
         const table = this.store.dataset.tables.find(
-          table => table.name === tableName
+          (table) => table.name === tableName
         );
-        const column = table.columns.find(column => column.name === columnName);
+        const column = table.columns.find(
+          (column) => column.name === columnName
+        );
         if (column.metadata.format) {
           return column.metadata.format;
         }
@@ -212,7 +214,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <InputNumber
         {...options}
         defaultValue={value}
-        onEnter={value => {
+        onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
@@ -237,7 +239,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         {...options}
         defaultValue={value}
         dateDisplayFormat={format}
-        onEnter={value => {
+        onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
@@ -258,7 +260,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <InputText
         defaultValue={this.getPropertyValue(property) as string}
         placeholder={placeholder}
-        onEnter={value => {
+        onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
         }}
@@ -270,7 +272,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <ComboBoxFontFamily
         defaultValue={this.getPropertyValue(property) as string}
-        onEnter={value => {
+        onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
         }}
@@ -288,7 +290,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         defaultValue={this.getPropertyValue(property) as string}
         options={values}
         optionsOnly={valuesOnly}
-        onEnter={value => {
+        onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
         }}
@@ -308,7 +310,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           options={options.options}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
-          onChange={value => {
+          onChange={(value) => {
             this.emitSetProperty(property, value);
           }}
         />
@@ -321,7 +323,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           options={options.options}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
-          onChange={value => {
+          onChange={(value) => {
             this.emitSetProperty(property, value);
           }}
         />
@@ -341,7 +343,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             text={options.label}
             title={options.label}
             fillWidth={options.type == "checkbox-fill-width"}
-            onChange={v => {
+            onChange={(v) => {
               this.emitSetProperty(property, v);
             }}
           />
@@ -369,7 +371,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputExpression
         defaultValue={this.getPropertyValue(property) as string}
-        validate={value => {
+        validate={(value) => {
           if (value && value.trim() !== "") {
             return this.store.verifyUserExpressionWithTable(
               value,
@@ -377,11 +379,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             );
           }
           return {
-            pass: true
+            pass: true,
           };
         }}
         placeholder="(none)"
-        onEnter={value => {
+        onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
           } else {
@@ -402,7 +404,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}
-        onEnter={value => {
+        onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
         }}
@@ -441,7 +443,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputImage
         value={this.getPropertyValue(property) as Specification.Types.Image}
-        onChange={image => {
+        onChange={(image) => {
           this.emitSetProperty(property, image as Specification.Types.Image);
           return true;
         }}
@@ -452,7 +454,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputImageProperty
         value={this.getPropertyValue(property) as Specification.Types.Image}
-        onChange={image => {
+        onChange={(image) => {
           this.emitSetProperty(property, image as Specification.Types.Image);
           return true;
         }}
@@ -497,21 +499,21 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     const scale = mapping.scale;
 
     const parent = {
-      updateEvents: new EventEmitter()
+      updateEvents: new EventEmitter(),
     };
 
     return (
       <Button
-        ref={e => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
+        ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
         // icon={icon}
         onClick={() => {
           const options = {
-            allowSelectValue: true
+            allowSelectValue: true,
           };
           // const mapping = this.getAttributeMapping(attribute);
           globals.popupController.popupAt(
-            context => {
+            (context) => {
               return (
                 <PopupView context={context}>
                   {/* <DataMappAndScaleEditor
@@ -543,18 +545,18 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     let ref: DropZoneView;
     return (
       <DropZoneView
-        filter={data => data instanceof DragData.DataExpression}
+        filter={(data) => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(property, { expression: data.expression });
         }}
-        ref={e => (ref = e)}
+        ref={(e) => (ref = e)}
         className={classNames("charticulator__widget-control-order-widget", [
           "is-active",
-          this.getPropertyValue(property) != null
+          this.getPropertyValue(property) != null,
         ])}
         onClick={() => {
           globals.popupController.popupAt(
-            context => {
+            (context) => {
               let fieldSelector: DataFieldSelector;
               let currentExpression: string = null;
               const currentSortBy = this.getPropertyValue(
@@ -568,7 +570,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   <div className="charticulator__widget-popup-order-widget">
                     <div className="el-row">
                       <DataFieldSelector
-                        ref={e => (fieldSelector = e)}
+                        ref={(e) => (fieldSelector = e)}
                         nullDescription="(default order)"
                         datasetStore={this.store}
                         useAggregation={true}
@@ -576,14 +578,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                           currentExpression
                             ? {
                                 table: options.table,
-                                expression: currentExpression
+                                expression: currentExpression,
                               }
                             : null
                         }
-                        onChange={value => {
+                        onChange={(value) => {
                           if (value != null) {
                             this.emitSetProperty(property, {
-                              expression: value.expression
+                              expression: value.expression,
                             });
                           } else {
                             this.emitSetProperty(property, null);
@@ -675,7 +677,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     renderItem: (item: Prototypes.Controls.Property) => JSX.Element,
     options: Prototypes.Controls.ArrayWidgetOptions = {
       allowDelete: true,
-      allowReorder: true
+      allowReorder: true,
     }
   ): JSX.Element {
     const items = (this.getPropertyValue(property) as any[]).slice();
@@ -706,7 +708,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                       ? property.field instanceof Array
                         ? [...property.field, index]
                         : [property.field, index]
-                      : index
+                      : index,
                   })}
                 </span>
                 {options.allowDelete ? (
@@ -734,10 +736,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ) {
     return (
       <DropZoneView
-        filter={data => data instanceof DragData.DataExpression}
+        filter={(data) => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(options.property, {
-            expression: data.expression
+            expression: data.expression,
           });
         }}
         className={classNames("charticulator__widget-control-drop-target")}
@@ -781,11 +783,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     if (options.dropzone && options.dropzone.type == "axis-data-binding") {
       let refButton: Element;
       const current = this.getPropertyValue({
-        property: options.dropzone.property
+        property: options.dropzone.property,
       }) as Specification.Types.AxisDataBinding;
       return (
         <DropZoneView
-          filter={data => data instanceof DragData.DataExpression}
+          filter={(data) => data instanceof DragData.DataExpression}
           onDrop={(data: DragData.DataExpression) => {
             new Actions.BindDataToAxis(
               this.objectClass.object as Specification.PlotSegment,
@@ -805,10 +807,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           {widget}
           <Button
             icon={"general/bind-data"}
-            ref={e => (refButton = ReactDOM.findDOMNode(e) as Element)}
+            ref={(e) => (refButton = ReactDOM.findDOMNode(e) as Element)}
             onClick={() => {
               globals.popupController.popupAt(
-                context => {
+                (context) => {
                   return (
                     <PopupView context={context}>
                       <DataFieldSelector
@@ -821,7 +823,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         useAggregation={true}
                         nullDescription={"(none)"}
                         nullNotHighlightable={true}
-                        onChange={value => {
+                        onChange={(value) => {
                           if (!value) {
                             this.emitSetProperty(
                               { property: options.dropzone.property },
@@ -904,10 +906,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         return (
           <Button
             text={text}
-            ref={e => (button = e)}
+            ref={(e) => (button = e)}
             onClick={() => {
               globals.popupController.popupAt(
-                context => {
+                (context) => {
                   return (
                     <PopupView context={context}>
                       <FilterEditor
@@ -949,10 +951,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         return (
           <Button
             text={text}
-            ref={e => (button = e)}
+            ref={(e) => (button = e)}
             onClick={() => {
               globals.popupController.popupAt(
-                context => {
+                (context) => {
                   return (
                     <PopupView context={context}>
                       <GroupByEditor
@@ -1009,7 +1011,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             dataset: options.dataset,
                             width: options.width,
                             height: options.height,
-                            filterCondition: options.filterCondition
+                            filterCondition: options.filterCondition,
                           },
                           document.location.origin
                         );
@@ -1109,7 +1111,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         className="charticulator__widget-scroll-list"
         style={{
           maxHeight: options.maxHeight ? options.maxHeight + "px" : undefined,
-          height: options.height ? options.height + "px" : undefined
+          height: options.height ? options.height + "px" : undefined,
         }}
       >
         {widgets.map((widget, i) => (
@@ -1151,7 +1153,7 @@ export class DropZoneView
     this.state = {
       isInSession: false,
       isDraggingOver: false,
-      data: null
+      data: null,
     };
   }
 
@@ -1162,21 +1164,21 @@ export class DropZoneView
         const session = globals.dragController.getSession();
         if (this.props.filter(session.data)) {
           this.setState({
-            isInSession: true
+            isInSession: true,
           });
         }
       }),
       globals.dragController.addListener("sessionend", () => {
         this.setState({
-          isInSession: false
+          isInSession: false,
         });
-      })
+      }),
     ];
   }
 
   public componentWillUnmount() {
     globals.dragController.unregisterDroppable(this);
-    this.tokens.forEach(x => x.remove());
+    this.tokens.forEach((x) => x.remove());
   }
 
   public onDragEnter(ctx: DragContext) {
@@ -1185,12 +1187,12 @@ export class DropZoneView
     if (judge) {
       this.setState({
         isDraggingOver: true,
-        data
+        data,
       });
       ctx.onLeave(() => {
         this.setState({
           isDraggingOver: false,
-          data: null
+          data: null,
         });
       });
       ctx.onDrop((point: Point, modifiers: DragModifiers) => {
@@ -1209,7 +1211,7 @@ export class DropZoneView
           ["is-dragging-over", this.state.isDraggingOver]
         )}
         onClick={this.props.onClick}
-        ref={e => (this.dropContainer = e)}
+        ref={(e) => (this.dropContainer = e)}
       >
         {this.props.draggingHint == null
           ? this.props.children
@@ -1231,7 +1233,7 @@ export class ReorderStringsValue extends React.Component<
   { items: string[] }
 > {
   public state: { items: string[] } = {
-    items: this.props.items.slice()
+    items: this.props.items.slice(),
   };
 
   public render() {
@@ -1246,7 +1248,7 @@ export class ReorderStringsValue extends React.Component<
               this.setState({ items });
             }}
           >
-            {items.map(x => (
+            {items.map((x) => (
               <div key={x} className="el-item">
                 {x}
               </div>
@@ -1316,15 +1318,15 @@ export class DetailsButton extends React.Component<
     return (
       <Button
         icon={"general/more-horizontal"}
-        ref={e => (btn = ReactDOM.findDOMNode(e) as Element)}
+        ref={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
         onClick={() => {
           globals.popupController.popupAt(
-            context => {
+            (context) => {
               return (
                 <PopupView context={context}>
                   <DetailsButtonInner
                     parent={this}
-                    ref={e => (this.inner = e)}
+                    ref={(e) => (this.inner = e)}
                   />
                 </PopupView>
               );

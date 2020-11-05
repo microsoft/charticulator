@@ -25,10 +25,10 @@ export class FileViewOptions extends ContextedComponent<
           <div>
             <div className="form-group">
               <select
-                onChange={e =>
+                onChange={(e) =>
                   this.changeLocaleFileFormat({
                     ...localeFileFormat,
-                    delimiter: e.target.options[e.target.selectedIndex].value
+                    delimiter: e.target.options[e.target.selectedIndex].value,
                   })
                 }
                 value={localeFileFormat.delimiter}
@@ -40,15 +40,15 @@ export class FileViewOptions extends ContextedComponent<
             </div>
             <div className="form-group">
               <select
-                onChange={e => {
+                onChange={(e) => {
                   const isDot =
                     e.target.options[e.target.selectedIndex].value === ".";
                   this.changeLocaleFileFormat({
                     ...localeFileFormat,
                     numberFormat: {
                       decimal: isDot ? "." : ",",
-                      remove: isDot ? "," : "."
-                    }
+                      remove: isDot ? "," : ".",
+                    },
                   });
                 }}
                 value={localeFileFormat.numberFormat.decimal}

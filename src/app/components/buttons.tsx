@@ -25,7 +25,7 @@ export class ToolButton extends React.Component<
   constructor(props: ToolButtonProps) {
     super(props);
     this.state = {
-      dragging: false
+      dragging: false,
     };
   }
 
@@ -45,14 +45,14 @@ export class ToolButton extends React.Component<
           renderDragElement={() => {
             return [
               <SVGImageIcon url={this.props.icon} width={32} height={32} />,
-              { x: -16, y: -16 }
+              { x: -16, y: -16 },
             ];
           }}
         >
           <span
             className={classNames("charticulator__button-tool", [
               "is-active",
-              this.props.active || this.state.dragging
+              this.props.active || this.state.dragging,
             ])}
             title={this.props.title}
             onClick={onClick}
@@ -66,7 +66,7 @@ export class ToolButton extends React.Component<
             style={{
               position: "relative",
               bottom: "-7px",
-              left: "-30px"
+              left: "-30px",
             }}
             onClick={onClick}
           >
@@ -83,7 +83,7 @@ export class ToolButton extends React.Component<
         <span
           className={classNames("charticulator__button-tool", [
             "is-active",
-            this.props.active
+            this.props.active,
           ])}
           title={this.props.title}
           onClick={onClick}
@@ -220,7 +220,7 @@ export class ButtonFlatPanel extends BaseButton<IconButtonProps> {
           <span
             className={classNames("charticulator__button-flat-panel", [
               "is-disabled",
-              this.props.disabled
+              this.props.disabled,
             ])}
             title={props.title}
             onClick={this._doClick}
@@ -234,7 +234,7 @@ export class ButtonFlatPanel extends BaseButton<IconButtonProps> {
           <span
             className={classNames("charticulator__button-flat-panel", [
               "is-disabled",
-              this.props.disabled
+              this.props.disabled,
             ])}
             title={props.title}
             onClick={this._doClick}
@@ -248,7 +248,7 @@ export class ButtonFlatPanel extends BaseButton<IconButtonProps> {
         <span
           className={classNames("charticulator__button-flat-panel", [
             "is-disabled",
-            this.props.disabled
+            this.props.disabled,
           ])}
           title={props.title}
           onClick={this._doClick}
@@ -269,7 +269,7 @@ export class ButtonRaised extends BaseButton<IconButtonProps> {
           <span
             className={classNames("charticulator__button-raised", [
               "is-disabled",
-              this.props.disabled
+              this.props.disabled,
             ])}
             title={props.title}
             onClick={this._doClick}
@@ -283,7 +283,7 @@ export class ButtonRaised extends BaseButton<IconButtonProps> {
           <span
             className={classNames("charticulator__button-raised", [
               "is-disabled",
-              this.props.disabled
+              this.props.disabled,
             ])}
             title={props.title}
             onClick={this._doClick}
@@ -297,7 +297,7 @@ export class ButtonRaised extends BaseButton<IconButtonProps> {
         <span
           className={classNames("charticulator__button-raised", [
             "is-disabled",
-            this.props.disabled
+            this.props.disabled,
           ])}
           title={props.title}
           onClick={this._doClick}

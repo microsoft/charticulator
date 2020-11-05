@@ -8,7 +8,7 @@ import {
   makeGroup,
   makeLine,
   makeText,
-  Style
+  Style,
 } from "../../graphics";
 import { TextMeasurer } from "../../graphics/renderer/text_measurer";
 import { Specification } from "../../index";
@@ -21,7 +21,7 @@ export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: "Arial",
   fontSize: 12,
-  tickSize: 5
+  tickSize: 5,
 };
 
 function fillDefaultAxisStyle(
@@ -182,10 +182,10 @@ export class AxisRenderer {
         rangeMin;
       r.push({
         position: tx,
-        label: resolvedFormat(ticks[i])
+        label: resolvedFormat(ticks[i]),
       });
     }
-    this.valueToPosition = value =>
+    this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
       rangeMin;
     this.ticks = r;
@@ -224,10 +224,10 @@ export class AxisRenderer {
         rangeMin;
       r.push({
         position: tx,
-        label: resolvedFormat(ticks[i])
+        label: resolvedFormat(ticks[i]),
       });
     }
-    this.valueToPosition = value =>
+    this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
       rangeMin;
     this.ticks = r;
@@ -258,10 +258,10 @@ export class AxisRenderer {
         rangeMin;
       r.push({
         position: tx,
-        label: tickFormat(ticks[i])
+        label: tickFormat(ticks[i]),
       });
     }
-    this.valueToPosition = value =>
+    this.valueToPosition = (value) =>
       ((value - domainMin) / (domainMax - domainMin)) * (rangeMax - rangeMin) +
       rangeMin;
     this.ticks = r;
@@ -282,10 +282,10 @@ export class AxisRenderer {
       r.push({
         position:
           ((range[i][0] + range[i][1]) / 2) * (rangeMax - rangeMin) + rangeMin,
-        label: tickFormat ? tickFormat(domain[i]) : domain[i]
+        label: tickFormat ? tickFormat(domain[i]) : domain[i],
       });
     }
-    this.valueToPosition = value => {
+    this.valueToPosition = (value) => {
       const i = domain.indexOf(value);
       if (i >= 0) {
         return (
@@ -309,7 +309,7 @@ export class AxisRenderer {
     const tickSize = style.tickSize;
     const lineStyle: Style = {
       strokeLinecap: "square",
-      strokeColor: style.lineColor
+      strokeColor: style.lineColor,
     };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
@@ -327,7 +327,7 @@ export class AxisRenderer {
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
     // Ticks
     for (const tickPosition of this.ticks
-      .map(x => x.position)
+      .map((x) => x.position)
       .concat([rangeMin, rangeMax])) {
       const tx = x + tickPosition * cos,
         ty = y + tickPosition * sin;
@@ -336,11 +336,11 @@ export class AxisRenderer {
       g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
     }
     // Tick texts
-    const ticks = this.ticks.map(x => {
+    const ticks = this.ticks.map((x) => {
       return {
         position: x.position,
         label: x.label,
-        measure: AxisRenderer.textMeasurer.measure(x.label)
+        measure: AxisRenderer.textMeasurer.measure(x.label),
       };
     });
     let maxTextWidth = 0;
@@ -373,13 +373,13 @@ export class AxisRenderer {
         );
         const gText = makeGroup([
           makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-            fillColor: style.tickColor
-          })
+            fillColor: style.tickColor,
+          }),
         ]);
         gText.transform = {
           x: tx + dx,
           y: ty + dy,
-          angle: 0
+          angle: 0,
         };
         g.elements.push(gText);
       } else if (Math.abs(cos) < Math.sqrt(3) / 2) {
@@ -393,13 +393,13 @@ export class AxisRenderer {
         );
         const gText = makeGroup([
           makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-            fillColor: style.tickColor
-          })
+            fillColor: style.tickColor,
+          }),
         ]);
         gText.transform = {
           x: tx + dx,
           y: ty + dy,
-          angle: 0
+          angle: 0,
         };
         g.elements.push(gText);
       } else {
@@ -414,13 +414,13 @@ export class AxisRenderer {
           );
           const gText = makeGroup([
             makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor
-            })
+              fillColor: style.tickColor,
+            }),
           ]);
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: cos > 0 ? 36 + angle : 36 + angle - 180
+            angle: cos > 0 ? 36 + angle : 36 + angle - 180,
           };
           g.elements.push(gText);
         } else {
@@ -434,13 +434,13 @@ export class AxisRenderer {
           );
           const gText = makeGroup([
             makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor
-            })
+              fillColor: style.tickColor,
+            }),
           ]);
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: 0
+            angle: 0,
           };
           g.elements.push(gText);
         }
@@ -472,7 +472,7 @@ export class AxisRenderer {
     const tickSize = style.tickSize;
     const lineStyle: Style = {
       strokeLinecap: "round",
-      strokeColor: style.lineColor
+      strokeColor: style.lineColor,
     };
     const g = makeGroup([]);
     g.transform.x = cx;
@@ -480,7 +480,7 @@ export class AxisRenderer {
 
     const hintStyle = {
       strokeColor: { r: 0, g: 0, b: 0 },
-      strokeOpacity: 0.1
+      strokeOpacity: 0.1,
     };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
@@ -504,8 +504,8 @@ export class AxisRenderer {
       const gt = makeGroup([
         makeLine(0, 0, 0, style.tickSize * side, lineStyle),
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
-          fillColor: style.tickColor
-        })
+          fillColor: style.tickColor,
+        }),
       ]);
 
       gt.transform.angle = -angle;
@@ -527,14 +527,14 @@ export class AxisRenderer {
     const tickSize = style.tickSize;
     const lineStyle: Style = {
       strokeLinecap: "round",
-      strokeColor: style.lineColor
+      strokeColor: style.lineColor,
     };
     const g = makeGroup([]);
     g.transform = coordinateSystem.getBaseTransform();
 
     const hintStyle = {
       strokeColor: { r: 0, g: 0, b: 0 },
-      strokeOpacity: 0.1
+      strokeOpacity: 0.1,
     };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
@@ -555,8 +555,8 @@ export class AxisRenderer {
       const gt = makeGroup([
         makeLine(0, 0, 0, -style.tickSize * side, lineStyle),
         makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
-          fillColor: style.tickColor
-        })
+          fillColor: style.tickColor,
+        }),
       ]);
 
       gt.transform = coordinateSystem.getLocalTransform(tangent, y);
@@ -595,7 +595,7 @@ export function getCategoricalAxis(
   const chunkRanges = data.categories.map((c, i) => {
     return [
       preGap + (gap + chunkSize) * i,
-      preGap + (gap + chunkSize) * i + chunkSize
+      preGap + (gap + chunkSize) * i + chunkSize,
     ] as [number, number];
   });
   if (reverse) {
@@ -606,7 +606,7 @@ export function getCategoricalAxis(
     preGap,
     postGap,
     gapScale,
-    ranges: chunkRanges
+    ranges: chunkRanges,
   };
 }
 
@@ -647,7 +647,7 @@ export function buildAxisAppearanceWidgets(
             type: "dropdown",
             showLabel: true,
             options: ["default", "opposite"],
-            labels: ["Default", "Opposite"]
+            labels: ["Default", "Opposite"],
           }
         ),
         m.detailsButton(
@@ -656,28 +656,28 @@ export function buildAxisAppearanceWidgets(
             "Line Color",
             m.inputColor({
               property: axisProperty,
-              field: ["style", "lineColor"]
+              field: ["style", "lineColor"],
             })
           ),
           m.row(
             "Tick Color",
             m.inputColor({
               property: axisProperty,
-              field: ["style", "tickColor"]
+              field: ["style", "tickColor"],
             })
           ),
           m.row(
             "Tick Size",
             m.inputNumber({
               property: axisProperty,
-              field: ["style", "tickSize"]
+              field: ["style", "tickSize"],
             })
           ),
           m.row(
             "Font Family",
             m.inputFontFamily({
               property: axisProperty,
-              field: ["style", "fontFamily"]
+              field: ["style", "fontFamily"],
             })
           ),
           m.row(
@@ -712,8 +712,8 @@ export function buildAxisWidgets(
     dropzone: {
       type: "axis-data-binding",
       property: axisProperty,
-      prompt: axisName + ": drop here to assign data"
-    }
+      prompt: axisName + ": drop here to assign data",
+    },
   };
   const makeAppearance = () => {
     return buildAxisAppearanceWidgets(data.visible, axisProperty, m);
@@ -735,7 +735,7 @@ export function buildAxisWidgets(
                 "Data",
                 m.inputExpression({
                   property: axisProperty,
-                  field: "expression"
+                  field: "expression",
                 })
               )
             );
@@ -781,7 +781,7 @@ export function buildAxisWidgets(
                     options: ["linear", "logarithmic"],
                     labels: ["Linear", "Logarithmic"],
                     showLabel: true,
-                    type: "dropdown"
+                    type: "dropdown",
                   }
                 )
               )
@@ -792,7 +792,7 @@ export function buildAxisWidgets(
               "Tick Data",
               m.inputExpression({
                 property: axisProperty,
-                field: "tickDataExpression"
+                field: "tickDataExpression",
               })
             )
           );
@@ -802,7 +802,7 @@ export function buildAxisWidgets(
               m.inputText(
                 {
                   property: axisProperty,
-                  field: "tickFormat"
+                  field: "tickFormat",
                 },
                 "(auto)"
               )
@@ -909,14 +909,14 @@ export function buildAxisInference(
     objectID: plotSegment._id,
     dataSource: {
       table: plotSegment.table,
-      groupBy: plotSegment.groupBy
+      groupBy: plotSegment.groupBy,
     },
     axis: {
       expression: axis.expression,
       type: axis.type,
       style: axis.style,
-      property
-    }
+      property,
+    },
   };
 }
 
@@ -936,11 +936,11 @@ export function buildAxisProperties(
         property: {
           property,
           field: "style",
-          subfield: "tickSize"
-        }
+          subfield: "tickSize",
+        },
       },
       type: Specification.AttributeType.Number,
-      default: style.tickSize
+      default: style.tickSize,
     },
     {
       objectID: plotSegment._id as string,
@@ -948,11 +948,11 @@ export function buildAxisProperties(
         property: {
           property,
           field: "style",
-          subfield: "fontSize"
-        }
+          subfield: "fontSize",
+        },
       },
       type: Specification.AttributeType.Number,
-      default: style.fontSize
+      default: style.fontSize,
     },
     {
       objectID: plotSegment._id as string,
@@ -960,11 +960,11 @@ export function buildAxisProperties(
         property: {
           property,
           field: "style",
-          subfield: "fontFamily"
-        }
+          subfield: "fontFamily",
+        },
       },
       type: Specification.AttributeType.FontFamily,
-      default: style.fontFamily
+      default: style.fontFamily,
     },
     {
       objectID: plotSegment._id as string,
@@ -972,11 +972,11 @@ export function buildAxisProperties(
         property: {
           property,
           field: "style",
-          subfield: "lineColor"
-        }
+          subfield: "lineColor",
+        },
       },
       type: Specification.AttributeType.Color,
-      default: rgbToHex(style.lineColor)
+      default: rgbToHex(style.lineColor),
     },
     {
       objectID: plotSegment._id as string,
@@ -984,11 +984,11 @@ export function buildAxisProperties(
         property: {
           property,
           field: "style",
-          subfield: "tickColor"
-        }
+          subfield: "tickColor",
+        },
       },
       type: Specification.AttributeType.Color,
-      default: rgbToHex(style.tickColor)
-    }
+      default: rgbToHex(style.tickColor),
+    },
   ];
 }

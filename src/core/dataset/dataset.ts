@@ -68,7 +68,7 @@ export enum TableType {
   /** TelLs to nested chart that table is parent chart table with all data */
   ParentMain = "ParentMain",
   /** TelLs to nested chart that table is parent links table of the chart with all data */
-  ParentLinks = "ParentLinks"
+  ParentLinks = "ParentLinks",
 }
 
 export const rawColumnPostFix = "_raw";

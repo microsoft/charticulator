@@ -32,7 +32,7 @@ export class GroupByEditor extends React.Component<
     }
     return {
       type: groupByType,
-      currentValue: value
+      currentValue: value,
     };
   }
   public emitUpdateGroupBy(newValue: Specification.Types.Filter) {
@@ -63,7 +63,7 @@ export class GroupByEditor extends React.Component<
             this.state.currentValue && this.state.currentValue.expression
               ? {
                   table: options.table,
-                  expression: this.state.currentValue.expression
+                  expression: this.state.currentValue.expression,
                 }
               : null
           }
@@ -71,12 +71,12 @@ export class GroupByEditor extends React.Component<
           nullDescription="(none)"
           datasetStore={this.props.manager.store}
           kinds={[Specification.DataKind.Categorical]}
-          onChange={field => {
+          onChange={(field) => {
             if (field == null) {
               this.emitUpdateGroupBy(null);
             } else {
               this.emitUpdateGroupBy({
-                expression: field.expression
+                expression: field.expression,
               });
             }
           }}

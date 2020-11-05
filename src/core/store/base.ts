@@ -19,7 +19,7 @@ export class BaseStore extends EventEmitter {
     } else {
       this.dispatcher = new Dispatcher<Actions.Action>();
     }
-    this.dispatcherID = this.dispatcher.register(action =>
+    this.dispatcherID = this.dispatcher.register((action) =>
       this.handleAction(action)
     );
   }

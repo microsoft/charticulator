@@ -8,7 +8,7 @@ import {
   colorFromHTMLColor,
   colorToHTMLColor,
   colorToHTMLColorHEX,
-  prettyNumber
+  prettyNumber,
 } from "../../core";
 import { Select } from "../views/panels/widgets/controls";
 
@@ -67,7 +67,7 @@ export class ColorSpacePicker extends React.Component<
       desc: props.colorSpaces[0],
       x1,
       x2,
-      x3
+      x3,
     };
   }
 
@@ -156,7 +156,7 @@ export class ColorSpacePicker extends React.Component<
           this.setState(
             {
               x2: v2 * (x2Max - x2Min) + x2Min,
-              x3: v3 * (x3Max - x3Min) + x3Min
+              x3: v3 * (x3Max - x3Min) + x3Min,
             },
             () => {
               if (isEnd) {
@@ -185,9 +185,9 @@ export class ColorSpacePicker extends React.Component<
               <Select
                 value={this.state.desc.name}
                 showText={true}
-                options={this.props.colorSpaces.map(x => x.name)}
-                labels={this.props.colorSpaces.map(x => x.description)}
-                onChange={v => {
+                options={this.props.colorSpaces.map((x) => x.name)}
+                labels={this.props.colorSpaces.map((x) => x.description)}
+                onChange={(v) => {
                   for (const sp of this.props.colorSpaces) {
                     if (sp.name == v) {
                       const [r, g, b] = this.state.desc.toRGB(
@@ -213,7 +213,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>HEX</label>
                   <InputField
                     defaultValue={colorToHTMLColorHEX(rgb)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       const color = colorFromHTMLColor(v);
                       if (color) {
                         const [x1, x2, x3] = this.state.desc.fromRGB(
@@ -236,7 +236,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>{this.state.desc.dimension1.name}</label>
                   <InputField
                     defaultValue={prettyNumber(this.state.x1, 1)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = clipToRange(
@@ -253,7 +253,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>{this.state.desc.dimension2.name}</label>
                   <InputField
                     defaultValue={prettyNumber(this.state.x2, 1)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = clipToRange(
@@ -270,7 +270,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>{this.state.desc.dimension3.name}</label>
                   <InputField
                     defaultValue={prettyNumber(this.state.x3, 1)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = clipToRange(
@@ -289,7 +289,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>R</label>
                   <InputField
                     defaultValue={prettyNumber(rgb.r, 0)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
@@ -308,7 +308,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>G</label>
                   <InputField
                     defaultValue={prettyNumber(rgb.g, 0)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
@@ -327,7 +327,7 @@ export class ColorSpacePicker extends React.Component<
                   <label>B</label>
                   <InputField
                     defaultValue={prettyNumber(rgb.b, 0)}
-                    onEnter={v => {
+                    onEnter={(v) => {
                       let num = parseFloat(v);
                       if (num == num && num != null) {
                         num = Math.max(0, Math.min(255, num));
@@ -393,10 +393,10 @@ export class InputField extends React.Component<InputFieldProps, {}> {
     return (
       <input
         type="text"
-        ref={e => (this.inputElement = e)}
+        ref={(e) => (this.inputElement = e)}
         defaultValue={this.props.defaultValue}
         autoFocus={true}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           if (e.key == "Enter") {
             this.doEnter();
           }
@@ -404,7 +404,7 @@ export class InputField extends React.Component<InputFieldProps, {}> {
             this.doCancel();
           }
         }}
-        onFocus={e => {
+        onFocus={(e) => {
           e.currentTarget.select();
         }}
         onBlur={() => {
@@ -458,7 +458,7 @@ class XYCanvas extends React.PureComponent<XYCanvasProps, {}> {
     this.hammer.add(new Hammer.Pan({ threshold: 0 }));
     this.hammer.add(new Hammer.Tap());
 
-    this.hammer.on("panstart tap pan panend", e => {
+    this.hammer.on("panstart tap pan panend", (e) => {
       const bounds = this.refs.canvasElement.getBoundingClientRect();
       let x = e.center.x - bounds.left;
       let y = e.center.y - bounds.top;
@@ -586,7 +586,7 @@ class ZCanvas extends React.PureComponent<ZCanvasProps, {}> {
     this.hammer.add(new Hammer.Pan({ threshold: 0 }));
     this.hammer.add(new Hammer.Tap());
 
-    this.hammer.on("panstart tap pan panend", e => {
+    this.hammer.on("panstart tap pan panend", (e) => {
       const bounds = this.refs.canvasElement.getBoundingClientRect();
       let y = e.center.y - bounds.top;
       y /= this.props.height;

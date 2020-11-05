@@ -12,7 +12,7 @@ export class PolarLineTestView extends React.Component<
     super(props);
     this.state = {
       slider1: 0,
-      slider2: 0
+      slider2: 0,
     };
   }
   public render() {
@@ -32,7 +32,7 @@ export class PolarLineTestView extends React.Component<
       const path2 = Graphics.makePath({
         strokeColor: { r: 0, g: 0, b: 0 },
         fillColor: { r: 0, g: 255, b: 0 },
-        fillOpacity: 0.1
+        fillOpacity: 0.1,
       });
       path2.polarLineTo(cx, cy, angle1, r, angle2, r, true);
       path2.polarLineTo(cx, cy, angle2, r, angle2, r - 10, false);
@@ -64,7 +64,7 @@ export class PolarLineTestView extends React.Component<
             min={0}
             max={1000}
             value={this.state.slider1}
-            onChange={e => {
+            onChange={(e) => {
               this.setState({ slider1: +e.target.value });
             }}
           />
@@ -73,7 +73,7 @@ export class PolarLineTestView extends React.Component<
             min={0}
             max={1000}
             value={this.state.slider2}
-            onChange={e => {
+            onChange={(e) => {
               this.setState({ slider2: +e.target.value });
             }}
           />

@@ -274,7 +274,7 @@ export class PathMaker {
   ) {
     this.path.cmds.push({
       cmd: "A",
-      args: [rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y]
+      args: [rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y],
     });
   }
 
@@ -423,7 +423,7 @@ export function concatTransform(a: RigidTransform, b: RigidTransform) {
   return {
     x: a.x + b.x * cos - b.y * sin,
     y: a.y + b.x * sin + b.y * cos,
-    angle: a.angle + b.angle
+    angle: a.angle + b.angle,
   };
 }
 
@@ -433,7 +433,7 @@ export function transform(transform: RigidTransform, a: Point): Point {
   const sin = Math.sin(theta);
   return {
     x: a.x * cos - a.y * sin + transform.x,
-    y: a.x * sin + a.y * cos + transform.y
+    y: a.x * sin + a.y * cos + transform.y,
   };
 }
 
@@ -443,6 +443,6 @@ export function transformDirection(transform: RigidTransform, a: Point): Point {
   const sin = Math.sin(theta);
   return {
     x: a.x * cos - a.y * sin,
-    y: a.x * sin + a.y * cos
+    y: a.x * sin + a.y * cos,
   };
 }

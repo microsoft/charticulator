@@ -10,7 +10,7 @@ import {
   Controls,
   Handles,
   ObjectClassMetadata,
-  TemplateParameters
+  TemplateParameters,
 } from "../common";
 
 export interface LegendAttributes extends Specification.AttributeMap {
@@ -41,7 +41,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend"
+    iconPath: "legend/legend",
   };
 
   public static defaultProperties: LegendProperties = {
@@ -53,19 +53,19 @@ export abstract class LegendClass extends ChartElementClass {
     fontSize: 14,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
-    dataExpressions: []
+    dataExpressions: [],
   };
 
   public attributeNames: string[] = ["x", "y"];
   public attributes: { [name: string]: AttributeDescription } = {
     x: {
       name: "x",
-      type: Specification.AttributeType.Number
+      type: Specification.AttributeType.Number,
     },
     y: {
       name: "y",
-      type: Specification.AttributeType.Number
-    }
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public initializeState(): void {
@@ -118,7 +118,7 @@ export abstract class LegendClass extends ChartElementClass {
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
-      rotation: 0
+      rotation: 0,
     } as BoundingBox.Rectangle;
   }
 
@@ -132,22 +132,25 @@ export abstract class LegendClass extends ChartElementClass {
         y,
         actions: [
           { type: "attribute", source: "x", attribute: "x" },
-          { type: "attribute", source: "y", attribute: "y" }
+          { type: "attribute", source: "y", attribute: "y" },
         ],
         options: {
-          snapToClosestPoint: true
-        }
-      } as Handles.Point
+          snapToClosestPoint: true,
+        },
+      } as Handles.Point,
     ];
   }
 
   public getScale(): [Specification.Scale, Specification.ScaleState] {
     const scale = this.object.properties.scale;
-    const scaleIndex = indexOf(this.parent.object.scales, x => x._id == scale);
+    const scaleIndex = indexOf(
+      this.parent.object.scales,
+      (x) => x._id == scale
+    );
     if (scaleIndex >= 0) {
       return [
         this.parent.object.scales[scaleIndex],
-        this.parent.state.scales[scaleIndex]
+        this.parent.state.scales[scaleIndex],
       ];
     } else {
       return null;
@@ -184,7 +187,7 @@ export abstract class LegendClass extends ChartElementClass {
               type: "radio",
               icons: ["align/left", "align/x-middle", "align/right"],
               labels: ["Left", "Middle", "Right"],
-              options: ["start", "middle", "end"]
+              options: ["start", "middle", "end"],
             }
           ),
           manager.inputSelect(
@@ -193,11 +196,11 @@ export abstract class LegendClass extends ChartElementClass {
               type: "radio",
               icons: ["align/top", "align/y-middle", "align/bottom"],
               labels: ["Top", "Middle", "Bottom"],
-              options: ["end", "middle", "start"]
+              options: ["end", "middle", "start"],
             }
           )
         )
-      )
+      ),
     ];
 
     return widget;
@@ -209,54 +212,54 @@ export abstract class LegendClass extends ChartElementClass {
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "fontFamily"
+          property: "fontFamily",
         },
         type: Specification.AttributeType.FontFamily,
-        default: this.object.properties.fontFamily
+        default: this.object.properties.fontFamily,
       });
     }
     if (this.object.properties.fontSize) {
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "fontSize"
+          property: "fontSize",
         },
         type: Specification.AttributeType.Number,
-        default: this.object.properties.fontSize
+        default: this.object.properties.fontSize,
       });
     }
     if (this.object.properties.textColor) {
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "textColor"
+          property: "textColor",
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.object.properties.textColor)
+        default: rgbToHex(this.object.properties.textColor),
       });
     }
     if (this.object.properties.alignY) {
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "alignY"
+          property: "alignY",
         },
         type: Specification.AttributeType.Enum,
-        default: this.object.properties.alignY
+        default: this.object.properties.alignY,
       });
     }
     if (this.object.properties.alignX) {
       properties.push({
         objectID: this.object._id,
         target: {
-          property: "alignX"
+          property: "alignX",
         },
         type: Specification.AttributeType.Enum,
-        default: this.object.properties.alignX
+        default: this.object.properties.alignX,
       });
     }
     return {
-      properties
+      properties,
     };
   }
 }
