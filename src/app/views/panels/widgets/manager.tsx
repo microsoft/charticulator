@@ -642,6 +642,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         );
                         axisDataBinding.metadata = {
                           kind: axisDataBinding.dataKind,
+                          orderMode: "order",
                         };
 
                         const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(

@@ -251,7 +251,7 @@ export function inferAndConvertColumn(
         metadata.order = hints.order.split(",");
         metadata.kind = DataKind.Ordinal;
       } else {
-        metadata.orderMode = "alphabetically";
+        metadata.orderMode = "order";
         metadata.kind = DataKind.Categorical;
       }
       return {
