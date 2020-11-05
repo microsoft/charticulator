@@ -612,19 +612,19 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
-      <span ref={e => (container = e)}>
+      <span ref={(e) => (container = e)}>
         <Button
           icon={"general/sort"}
           active={false}
           onClick={() => {
             globals.popupController.popupAt(
-              context => {
+              (context) => {
                 const items = this.getPropertyValue(property) as string[];
                 return (
                   <PopupView context={context}>
                     <ReorderStringsValue
                       items={items}
-                      onConfirm={items => {
+                      onConfirm={(items) => {
                         this.emitSetProperty(property, items);
                         context.close();
                       }}
@@ -632,14 +632,15 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         const axisDataBinding = {
                           ...(this.objectClass.object.properties[
                             property.property
-                          ] as any)
+                          ] as any),
                         };
 
                         axisDataBinding.table = this.store.chartManager.getTable(
                           (this.objectClass.object as any).table
                         );
                         axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind
+                          kind: axisDataBinding.dataKind,
+                          orderMode: "order",
                         };
 
                         const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
