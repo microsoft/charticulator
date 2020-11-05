@@ -8,7 +8,7 @@ import {
   EventSubscription,
   Prototypes,
   MessageType,
-  messageTypes
+  messageTypes,
 } from "../../core";
 
 import { AppStore } from "../stores";
@@ -34,12 +34,12 @@ export class MessagePanel extends ContextedComponent<
 
   public componentDidMount() {
     this.tokens = [
-      this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate())
+      this.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate()),
     ];
   }
 
   public componentWillUnmount() {
-    this.tokens.forEach(token => token.remove());
+    this.tokens.forEach((token) => token.remove());
     this.tokens = [];
   }
 
@@ -59,7 +59,7 @@ export class MessagePanel extends ContextedComponent<
       <div className="charticulator__object-list-editor">
         {Array.from(messages, ([key, value]) => key).map((key, index) => {
           const message = messages.get(key);
-          if (messageTypes.find(k => k === key)) {
+          if (messageTypes.find((k) => k === key)) {
             return (
               <div key={index}>
                 <div key={index} className="el-object-item auto-height">

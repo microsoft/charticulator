@@ -10,7 +10,7 @@ import {
   SelectMark,
   ClearSelection,
   objectDigest,
-  MessageType
+  MessageType,
 } from "../../core";
 import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
@@ -194,7 +194,7 @@ export class AddGlyph extends Action {
   public digest() {
     return {
       name: "AddGlyph",
-      classID: this.classID
+      classID: this.classID,
     };
   }
 }
@@ -208,7 +208,7 @@ export class RemoveGlyph extends Action {
   public digest() {
     return {
       name: "RemoveGlyph",
-      glyph: objectDigest(this.glyph)
+      glyph: objectDigest(this.glyph),
     };
   }
 }
@@ -233,7 +233,7 @@ export class AddMarkToGlyph extends Action {
       classID: this.classID,
       glyph: objectDigest(this.glyph),
       mappings: this.mappings,
-      properties: this.properties
+      properties: this.properties,
     };
   }
 }
@@ -251,7 +251,7 @@ export class RemoveMarkFromGlyph extends Action {
     return {
       name: "RemoveMarkFromGlyph",
       glyph: objectDigest(this.glyph),
-      mark: objectDigest(this.mark)
+      mark: objectDigest(this.mark),
     };
   }
 }
@@ -292,7 +292,7 @@ export class MapDataToMarkAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any
+      hints: this.hints as any,
     };
   }
 }
@@ -315,7 +315,7 @@ export class SetMarkAttribute extends MarkAction {
       glyph: objectDigest(this.glyph),
       mark: objectDigest(this.mark),
       attribute: this.attribute,
-      mapping: this.mapping
+      mapping: this.mapping,
     };
   }
 }
@@ -334,7 +334,7 @@ export class UnmapMarkAttribute extends MarkAction {
       name: "UnmapMarkAttribute",
       glyph: objectDigest(this.glyph),
       mark: objectDigest(this.mark),
-      attribute: this.attribute
+      attribute: this.attribute,
     };
   }
 }
@@ -353,7 +353,7 @@ export class UpdateMarkAttribute extends MarkAction {
       name: "UpdateMarkAttribute",
       glyph: objectDigest(this.glyph),
       mark: objectDigest(this.mark),
-      updates: this.updates
+      updates: this.updates,
     };
   }
 }
@@ -376,7 +376,7 @@ export class SnapMarks extends MarkAction {
       mark: objectDigest(this.mark),
       attribute: this.attribute,
       targetMark: objectDigest(this.targetMark),
-      targetAttribute: this.targetAttribute
+      targetAttribute: this.targetAttribute,
     };
   }
 }
@@ -393,7 +393,7 @@ export class MarkActionGroup extends MarkAction {
   public digest() {
     return {
       name: "MarkActionGroup",
-      actions: this.actions.map(x => x.digest())
+      actions: this.actions.map((x) => x.digest()),
     };
   }
 }
@@ -412,7 +412,7 @@ export class SetGlyphAttribute extends Action {
       name: "SetGlyphAttribute",
       glyph: objectDigest(this.glyph),
       attribute: this.attribute,
-      mapping: this.mapping
+      mapping: this.mapping,
     };
   }
 }
@@ -429,7 +429,7 @@ export class UpdateGlyphAttribute extends Action {
     return {
       name: "UpdateGlyphAttribute",
       glyph: objectDigest(this.glyph),
-      updates: this.updates
+      updates: this.updates,
     };
   }
 }
@@ -450,7 +450,7 @@ export class AddChartElement extends Action {
       name: "AddChartElement",
       classID: this.classID,
       mappings: this.mappings,
-      attribute: this.properties
+      attribute: this.properties,
     };
   }
 }
@@ -463,7 +463,7 @@ export class DeleteChartElement extends Action {
   public digest() {
     return {
       name: "DeleteChartElement",
-      chartElement: objectDigest(this.chartElement)
+      chartElement: objectDigest(this.chartElement),
     };
   }
 }
@@ -482,7 +482,7 @@ export class SetChartElementMapping extends Action {
       name: "SetChartElementMapping",
       chartElement: objectDigest(this.chartElement),
       attribute: this.attribute,
-      mapping: this.mapping
+      mapping: this.mapping,
     };
   }
 }
@@ -509,7 +509,7 @@ export class MapDataToChartElementAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any
+      hints: this.hints as any,
     };
   }
 }
@@ -525,7 +525,7 @@ export class SetPlotSegmentFilter extends Action {
     return {
       name: "SetPlotSegmentFilter",
       plotSegment: objectDigest(this.plotSegment),
-      filter: this.filter
+      filter: this.filter,
     };
   }
 }
@@ -541,7 +541,7 @@ export class SetPlotSegmentGroupBy extends Action {
     return {
       name: "SetPlotSegmentGroupBy",
       plotSegment: objectDigest(this.plotSegment),
-      groupBy: this.groupBy
+      groupBy: this.groupBy,
     };
   }
 }
@@ -560,7 +560,7 @@ export class SetScaleAttribute extends Action {
       name: "SetScaleAttribute",
       scale: objectDigest(this.scale),
       attribute: this.attribute,
-      mapping: this.mapping
+      mapping: this.mapping,
     };
   }
 }
@@ -577,7 +577,7 @@ export class ToggleLegendForScale extends Action {
     return {
       name: "ToggleLegendForScale",
       scale: this.scale,
-      mapping: this.mapping.expression
+      mapping: this.mapping.expression,
     };
   }
 }
@@ -594,7 +594,7 @@ export class UpdateChartElementAttribute extends Action {
     return {
       name: "UpdateChartElementAttribute",
       chartElement: objectDigest(this.chartElement),
-      updates: this.updates
+      updates: this.updates,
     };
   }
 }
@@ -615,7 +615,7 @@ export class SnapChartElements extends Action {
       element: objectDigest(this.element),
       attribute: this.attribute,
       targetElement: objectDigest(this.targetElement),
-      targetAttribute: this.targetAttribute
+      targetAttribute: this.targetAttribute,
     };
   }
 }
@@ -643,10 +643,10 @@ export class BindDataToAxis extends Action {
         expression: this.dataExpression.expression,
         valueType: this.dataExpression.valueType,
         kind: this.dataExpression.metadata.kind,
-        allowSelectValue: this.dataExpression.allowSelectValue
+        allowSelectValue: this.dataExpression.allowSelectValue,
       },
       type: this.type,
-      numericalMode: this.numericalMode
+      numericalMode: this.numericalMode,
     };
   }
 }
@@ -659,7 +659,7 @@ export class AddLinks extends Action {
   public digest() {
     return {
       name: "AddLinks",
-      links: this.links
+      links: this.links,
     };
   }
 }
@@ -675,7 +675,7 @@ export class UpdateChartAttribute extends Action {
   public digest() {
     return {
       name: "UpdateChartAttribute",
-      updates: this.updates
+      updates: this.updates,
     };
   }
 }
@@ -689,7 +689,7 @@ export class SetChartSize extends Action {
     return {
       name: "SetChartSize",
       width: this.width,
-      height: this.height
+      height: this.height,
     };
   }
 }
@@ -703,7 +703,7 @@ export class SetChartAttribute extends Action {
     return {
       name: "SetChartAttribute",
       attribute: this.attribute,
-      mapping: this.mapping
+      mapping: this.mapping,
     };
   }
 }
@@ -728,7 +728,7 @@ export class SetObjectProperty extends Action {
       field: this.field,
       value: this.value,
       noUpdateState: this.noUpdateState,
-      noComputeLayout: this.noComputeLayout
+      noComputeLayout: this.noComputeLayout,
     };
   }
 }
@@ -747,7 +747,7 @@ export class SetObjectMappingScale extends Action {
       name: "SetObjectProperty",
       object: objectDigest(this.object),
       property: this.property,
-      scaleId: this.scaleId
+      scaleId: this.scaleId,
     };
   }
 }
@@ -764,7 +764,7 @@ export class ExtendPlotSegment extends Action {
     return {
       name: "ExtendPlotSegment",
       plotSegment: objectDigest(this.plotSegment),
-      extension: this.extension
+      extension: this.extension,
     };
   }
 }
@@ -778,7 +778,7 @@ export class ReorderChartElement extends Action {
     return {
       name: "ReorderChartElement",
       fromIndex: this.fromIndex,
-      toIndex: this.toIndex
+      toIndex: this.toIndex,
     };
   }
 }
@@ -797,7 +797,7 @@ export class ReorderGlyphMark extends Action {
       name: "ReorderGlyphMark",
       glyph: objectDigest(this.glyph),
       fromIndex: this.fromIndex,
-      toIndex: this.toIndex
+      toIndex: this.toIndex,
     };
   }
 }
@@ -816,7 +816,7 @@ export class SelectGlyph extends Action {
       name: "SelectGlyph",
       plotSegment: objectDigest(this.plotSegment),
       glyph: objectDigest(this.glyph),
-      glyphIndex: this.glyphIndex
+      glyphIndex: this.glyphIndex,
     };
   }
 }
@@ -833,7 +833,7 @@ export class SelectChartElement extends Action {
     return {
       name: "SelectChartElement",
       glyph: objectDigest(this.chartElement),
-      glyphIndex: this.glyphIndex
+      glyphIndex: this.glyphIndex,
     };
   }
 }
@@ -846,7 +846,7 @@ export class FocusToMarkAttribute extends Action {
   public digest() {
     return {
       name: "FocusToMarkAttribute",
-      attributeName: this.attributeName
+      attributeName: this.attributeName,
     };
   }
 }
@@ -860,7 +860,7 @@ export class SetCurrentTool extends Action {
     return {
       name: "SetCurrentTool",
       tool: this.tool,
-      options: this.options
+      options: this.options,
     };
   }
 }

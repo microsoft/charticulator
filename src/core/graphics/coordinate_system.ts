@@ -12,7 +12,7 @@ import {
   makePath,
   makeRect,
   MultiCurveParametrization,
-  PathMaker
+  PathMaker,
 } from ".";
 import { Geometry, Point } from "../common";
 import { RigidTransform, Style, makeEllipse } from "./elements";
@@ -51,7 +51,7 @@ export class CartesianCoordinates extends CoordinateSystem {
     return {
       x: this.origin.x,
       y: this.origin.y,
-      angle: 0
+      angle: 0,
     };
   }
   public transformPoint(x: number, y: number): Point {
@@ -84,7 +84,7 @@ export class CartesianCoordinates extends CoordinateSystem {
     return {
       x,
       y,
-      angle: 0
+      angle: 0,
     };
   }
 }
@@ -106,7 +106,7 @@ export class PolarCoordinates extends CoordinateSystem {
     return {
       x: this.origin.x,
       y: this.origin.y,
-      angle: 0
+      angle: 0,
     };
   }
 
@@ -131,7 +131,7 @@ export class PolarCoordinates extends CoordinateSystem {
   public transformPoint(angle: number, radial: number): Point {
     return {
       x: this.transformRadial(radial) * Math.sin(angle * (Math.PI / 180)),
-      y: this.transformRadial(radial) * Math.cos(angle * (Math.PI / 180))
+      y: this.transformRadial(radial) * Math.cos(angle * (Math.PI / 180)),
     };
   }
 
@@ -144,7 +144,7 @@ export class PolarCoordinates extends CoordinateSystem {
     const t = -angle * (Math.PI / 180);
     return {
       x: dx * Math.cos(t) - dy * Math.sin(t),
-      y: dx * Math.sin(t) + dy * Math.cos(t)
+      y: dx * Math.sin(t) + dy * Math.cos(t),
     };
   }
 
@@ -153,7 +153,7 @@ export class PolarCoordinates extends CoordinateSystem {
     return {
       x: this.transformRadial(radial) * Math.sin(t),
       y: this.transformRadial(radial) * Math.cos(t),
-      angle: -angle
+      angle: -angle,
     };
   }
 
@@ -161,7 +161,7 @@ export class PolarCoordinates extends CoordinateSystem {
     const t = angle * (Math.PI / 180);
     return {
       x: this.transformRadial(radial) * Math.sin(t) + this.origin.x,
-      y: this.transformRadial(radial) * Math.cos(t) + this.origin.y
+      y: this.transformRadial(radial) * Math.cos(t) + this.origin.y,
     };
   }
 
@@ -174,7 +174,7 @@ export class PolarCoordinates extends CoordinateSystem {
     const t = -angle * (Math.PI / 180);
     return {
       x: dx * Math.cos(t) - dy * Math.sin(t),
-      y: dx * Math.sin(t) + dy * Math.cos(t)
+      y: dx * Math.sin(t) + dy * Math.cos(t),
     };
   }
 }
@@ -195,7 +195,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     return {
       x: this.origin.x,
       y: this.origin.y,
-      angle: 0
+      angle: 0,
     };
   }
 
@@ -203,7 +203,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     const frame = this.curve.getFrameAtS(x);
     return {
       x: frame.p.x + y * frame.n.x,
-      y: frame.p.y + y * frame.n.y
+      y: frame.p.y + y * frame.n.y,
     };
   }
 
@@ -216,7 +216,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     const frame = this.curve.getFrameAtS(x);
     return {
       x: dx * frame.t.x + dy * frame.n.x,
-      y: dx * frame.t.y + dy * frame.n.y
+      y: dx * frame.t.y + dy * frame.n.y,
     };
   }
 
@@ -226,7 +226,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     return {
       x: frame.p.x + y * frame.n.x,
       y: frame.p.y + y * frame.n.y,
-      angle
+      angle,
     };
   }
 
@@ -234,7 +234,7 @@ export class BezierCurveCoordinates extends CoordinateSystem {
     const p = this.transformPoint(x, y);
     return {
       x: p.x + this.origin.x,
-      y: p.y + this.origin.y
+      y: p.y + this.origin.y,
     };
   }
 

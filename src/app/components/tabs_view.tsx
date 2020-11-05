@@ -15,12 +15,12 @@ export class TabsView extends React.Component<TabsViewProps, {}> {
     return (
       <div className="charticulator__tabs-view">
         <div className="charticulator__tabs-view-tabs">
-          {this.props.tabs.map(tab => (
+          {this.props.tabs.map((tab) => (
             <span
               key={tab.name}
               className={classNames("charticulator__tabs-view-tab", [
                 "is-active",
-                this.props.currentTab == tab.name
+                this.props.currentTab == tab.name,
               ])}
               onClick={() => this.props.onSelect(tab.name)}
             >

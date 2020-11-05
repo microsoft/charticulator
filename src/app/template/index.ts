@@ -18,7 +18,7 @@ import {
   Expression,
   getByName,
   Prototypes,
-  Specification
+  Specification,
 } from "../../core";
 import { TableType } from "../../core/dataset";
 
@@ -59,7 +59,7 @@ export class ChartTemplateBuilder {
       defaultAttributes: {},
       tables: [],
       inference: [],
-      properties: []
+      properties: [],
     };
     this.tableColumns = {};
     this.objectVisited = {};
@@ -81,7 +81,7 @@ export class ChartTemplateBuilder {
       if (column) {
         if (column.metadata.isRaw) {
           const notRawColumn = tableObject.columns.find(
-            col => col.metadata.rawColumnName === column.name
+            (col) => col.metadata.rawColumnName === column.name
           );
           if (this.tableColumns.hasOwnProperty(table)) {
             this.tableColumns[table].add(notRawColumn.name);
@@ -207,7 +207,7 @@ export class ChartTemplateBuilder {
                     table = (linkTable && linkTable.table) || defaultTable.name;
                   } else {
                     table = this.dataset.tables.find(
-                      table => table.type === TableType.Main
+                      (table) => table.type === TableType.Main
                     ).name;
                   }
                 }
@@ -222,7 +222,7 @@ export class ChartTemplateBuilder {
           if (!inference.dataSource) {
             inference.dataSource = {
               table,
-              groupBy
+              groupBy,
             };
           }
         }
@@ -234,7 +234,7 @@ export class ChartTemplateBuilder {
         }
         if (inference.nestedChart) {
           const { nestedChart } = inference;
-          Object.keys(nestedChart.columnNameMap).forEach(key => {
+          Object.keys(nestedChart.columnNameMap).forEach((key) => {
             this.addColumn(inference.dataSource.table, key);
           });
         }
@@ -337,7 +337,7 @@ export class ChartTemplateBuilder {
             .linkThrough as any).facetExpressions as string[];
 
           const mainTable = this.dataset.tables.find(
-            table => table.type === TableType.Main
+            (table) => table.type === TableType.Main
           );
           this.addTable(mainTable.name);
           for (const expression of facetExpressions) {
@@ -350,14 +350,14 @@ export class ChartTemplateBuilder {
           const linksTableName = linkTable.table as string;
           this.addTable(linksTableName); // TODO get table by type
           const linksTable = this.dataset.tables.find(
-            table => table.name === linksTableName
+            (table) => table.name === linksTableName
           );
-          linksTable.columns.forEach(linksColumn =>
+          linksTable.columns.forEach((linksColumn) =>
             this.addColumn(linksTableName, linksColumn.name)
           );
           const table = this.dataset.tables[0];
           const idColumn =
-            table && table.columns.find(column => column.name === "id");
+            table && table.columns.find((column) => column.name === "id");
           if (idColumn) {
             this.addColumn(table.name, idColumn.name);
           }
@@ -385,26 +385,26 @@ export class ChartTemplateBuilder {
 
     // Extract data tables
     template.tables = this.dataset.tables
-      .map(table => {
+      .map((table) => {
         if (this.tableColumns.hasOwnProperty(table.name)) {
           return {
             name: table.name,
             columns: table.columns
-              .filter(x => {
+              .filter((x) => {
                 return this.tableColumns[table.name].has(x.name);
               })
-              .map(x => ({
+              .map((x) => ({
                 displayName: x.displayName || x.name,
                 name: x.name,
                 type: x.type,
-                metadata: x.metadata
-              }))
+                metadata: x.metadata,
+              })),
           };
         } else {
           return null;
         }
       })
-      .filter(x => x != null);
+      .filter((x) => x != null);
 
     this.computeDefaultAttributes();
     return template;
@@ -423,7 +423,7 @@ export class ChartTemplateBuilder {
       const totals = (this.template.defaultAttributes[_id] =
         this.template.defaultAttributes[_id] || {});
 
-      Object.keys(state.attributes).forEach(attribute => {
+      Object.keys(state.attributes).forEach((attribute) => {
         // Only support numbers for now
         if (
           cls.attributes[attribute] &&
@@ -437,9 +437,9 @@ export class ChartTemplateBuilder {
     });
 
     // The default attributes are currently totals, now divide each attribute by the count to average them
-    Object.keys(this.template.defaultAttributes).forEach(objId => {
+    Object.keys(this.template.defaultAttributes).forEach((objId) => {
       const attribs = this.template.defaultAttributes[objId];
-      Object.keys(attribs).forEach(attribute => {
+      Object.keys(attribs).forEach((attribute) => {
         attribs[attribute] = attribs[attribute] / counts[objId];
       });
     });

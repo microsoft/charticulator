@@ -52,8 +52,8 @@ export class CustomLegendClass extends CategoricalLegendClass {
     iconPath: "legend/legend",
     creatingInteraction: {
       type: "point",
-      mapping: { x: "x", y: "y" }
-    }
+      mapping: { x: "x", y: "y" },
+    },
   };
 
   public getAttributePanelWidgets(

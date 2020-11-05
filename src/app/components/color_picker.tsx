@@ -56,7 +56,7 @@ function HSVtoRGB(
     Math.max(0, Math.min(255, r * 255)),
     Math.max(0, Math.min(255, g * 255)),
     Math.max(0, Math.min(255, b * 255)),
-    false
+    false,
   ];
 }
 
@@ -104,7 +104,7 @@ export class HSVColorPicker extends React.Component<
       dimension2: { name: "Saturation", range: [0, 100] },
       dimension3: { name: "Value", range: [100, 0] },
       toRGB: HSVtoRGB,
-      fromRGB: RGBtoHSV
+      fromRGB: RGBtoHSV,
     },
     {
       name: "Saturation",
@@ -116,7 +116,7 @@ export class HSVColorPicker extends React.Component<
       fromRGB: (r, g, b) => {
         const [h, s, v] = RGBtoHSV(r, g, b);
         return [s, h, v];
-      }
+      },
     },
     {
       name: "Value",
@@ -128,8 +128,8 @@ export class HSVColorPicker extends React.Component<
       fromRGB: (r, g, b) => {
         const [h, s, v] = RGBtoHSV(r, g, b);
         return [v, h, s];
-      }
-    }
+      },
+    },
   ];
 
   public render() {
@@ -161,7 +161,7 @@ export class HCLColorPicker extends React.Component<
       fromRGB: (r: number, g: number, b: number) => {
         const [h, c, l] = sRGB_to_HCL(r, g, b);
         return [l, h, c];
-      }
+      },
     },
     {
       name: "Hue",
@@ -172,7 +172,7 @@ export class HCLColorPicker extends React.Component<
       toRGB: (x1: number, x2: number, x3: number) =>
         HCL_to_sRGB(x1, x2, x3) as [number, number, number, boolean],
       fromRGB: (r: number, g: number, b: number) =>
-        sRGB_to_HCL(r, g, b) as [number, number, number]
+        sRGB_to_HCL(r, g, b) as [number, number, number],
     },
     {
       name: "Chroma",
@@ -185,8 +185,8 @@ export class HCLColorPicker extends React.Component<
       fromRGB: (r: number, g: number, b: number) => {
         const [h, c, l] = sRGB_to_HCL(r, g, b);
         return [c, h, l];
-      }
-    }
+      },
+    },
   ];
 
   public render() {
@@ -229,7 +229,7 @@ export class ColorGrid extends React.PureComponent<ColorGridProps, {}> {
                 className={classNames("color-item", [
                   "active",
                   this.props.defaultValue != null &&
-                    colorToCSS(this.props.defaultValue) == colorToCSS(color)
+                    colorToCSS(this.props.defaultValue) == colorToCSS(color),
                 ])}
                 onClick={() => {
                   if (this.props.onClick) {
@@ -278,12 +278,12 @@ export class PaletteList extends React.PureComponent<PaletteListProps, {}> {
             <li key={`m${index}`}>
               <div className="label">{group[0]}</div>
               <ul>
-                {group[1].map(x => (
+                {group[1].map((x) => (
                   <li
                     key={x.name}
                     className={classNames("item", [
                       "active",
-                      this.props.selected == x
+                      this.props.selected == x,
                     ])}
                     onClick={() => this.props.onClick(x)}
                   >
@@ -308,7 +308,7 @@ export class ColorPicker extends React.Component<
     if (this.props.defaultValue) {
       const colorCSS = colorToCSS(this.props.defaultValue);
       let matchedPalette: ColorPalette = null;
-      for (const p of predefinedPalettes.filter(x => x.type == "palette")) {
+      for (const p of predefinedPalettes.filter((x) => x.type == "palette")) {
         for (const g of p.colors) {
           for (const c of g) {
             if (colorToCSS(c) == colorCSS) {
@@ -328,21 +328,21 @@ export class ColorPicker extends React.Component<
         this.state = {
           currentPalette: matchedPalette,
           currentPicker: null,
-          currentColor: this.props.defaultValue
+          currentColor: this.props.defaultValue,
         };
       } else {
         this.state = {
           currentPalette: null,
           currentPicker: "hcl",
-          currentColor: this.props.defaultValue
+          currentColor: this.props.defaultValue,
         };
       }
     } else {
       this.state = {
         currentPalette: predefinedPalettes.filter(
-          x => x.name == "Palette/ColorBrewer"
+          (x) => x.name == "Palette/ColorBrewer"
         )[0],
-        currentPicker: null
+        currentPicker: null,
       };
     }
   }
@@ -359,12 +359,12 @@ export class ColorPicker extends React.Component<
                   <li
                     className={classNames("item", [
                       "active",
-                      this.state.currentPicker == "hcl"
+                      this.state.currentPicker == "hcl",
                     ])}
                     onClick={() => {
                       this.setState({
                         currentPalette: null,
-                        currentPicker: "hcl"
+                        currentPicker: "hcl",
                       });
                     }}
                   >
@@ -373,12 +373,12 @@ export class ColorPicker extends React.Component<
                   <li
                     className={classNames("item", [
                       "active",
-                      this.state.currentPicker == "hsv"
+                      this.state.currentPicker == "hsv",
                     ])}
                     onClick={() => {
                       this.setState({
                         currentPalette: null,
-                        currentPicker: "hsv"
+                        currentPicker: "hsv",
                       });
                     }}
                   >
@@ -388,9 +388,9 @@ export class ColorPicker extends React.Component<
               </li>
             </ul>
             <PaletteList
-              palettes={predefinedPalettes.filter(x => x.type == "palette")}
+              palettes={predefinedPalettes.filter((x) => x.type == "palette")}
               selected={this.state.currentPalette}
-              onClick={p => {
+              onClick={(p) => {
                 this.setState({ currentPalette: p, currentPicker: null });
               }}
             />
@@ -402,7 +402,7 @@ export class ColorPicker extends React.Component<
                 icon="general/cross"
                 onClick={() => {
                   this.setState({
-                    currentColor: null
+                    currentColor: null,
                   });
                   this.props.onPick(null);
                 }}
@@ -415,7 +415,7 @@ export class ColorPicker extends React.Component<
             <ColorGrid
               colors={this.state.currentPalette.colors}
               defaultValue={this.state.currentColor}
-              onClick={c => {
+              onClick={(c) => {
                 this.props.onPick(c);
                 this.setState({ currentColor: c });
               }}
@@ -424,7 +424,7 @@ export class ColorPicker extends React.Component<
           {this.state.currentPicker == "hcl" ? (
             <HCLColorPicker
               defaultValue={this.state.currentColor || { r: 0, g: 0, b: 0 }}
-              onChange={c => {
+              onChange={(c) => {
                 this.props.onPick(c);
                 this.setState({ currentColor: c });
               }}
@@ -433,7 +433,7 @@ export class ColorPicker extends React.Component<
           {this.state.currentPicker == "hsv" ? (
             <HSVColorPicker
               defaultValue={this.state.currentColor || { r: 0, g: 0, b: 0 }}
-              onChange={c => {
+              onChange={(c) => {
                 this.props.onPick(c);
                 this.setState({ currentColor: c });
               }}

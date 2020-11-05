@@ -8,7 +8,7 @@ import {
   FloatingPanel,
   MinimizablePane,
   MinimizablePanelView,
-  MessagePanel
+  MessagePanel,
 } from "./components";
 import { DragStateView, PopupContainer } from "./controllers";
 import { AppStore } from "./stores";
@@ -16,7 +16,7 @@ import {
   AttributePanel,
   ChartEditorView,
   DatasetView,
-  MarkEditorView
+  MarkEditorView,
 } from "./views";
 import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
@@ -54,7 +54,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       this.viewConfiguration = {
         ColumnsPosition: "left",
         EditorPanelsPosition: "left",
-        ToolbarPosition: "top"
+        ToolbarPosition: "top",
       };
     } else {
       this.viewConfiguration = props.viewConfiguration;
@@ -64,19 +64,19 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       glyphViewMaximized: false,
       layersViewMaximized: false,
       attributeViewMaximized: false,
-      scaleViewMaximized: false
+      scaleViewMaximized: false,
     };
 
     props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
   }
 
   public static childContextTypes = {
-    store: (s: AppStore) => s instanceof AppStore
+    store: (s: AppStore) => s instanceof AppStore,
   };
 
   public getChildContext() {
     return {
-      store: this.props.store
+      store: this.props.store,
     };
   }
 
@@ -124,7 +124,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               this.state.attributeViewMaximized &&
               this.state.layersViewMaximized
                 ? "none"
-                : undefined
+                : undefined,
           }}
         >
           <MinimizablePanelView>
@@ -182,12 +182,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
     return (
       <div
         className="charticulator__application"
-        onDragOver={e => e.preventDefault()}
-        onDrop={e => e.preventDefault()}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
       >
         <MenuBar
           name={this.viewConfiguration.Name}
-          ref={e => (this.refMenuBar = e)}
+          ref={(e) => (this.refMenuBar = e)}
         />
         <section className="charticulator__panel-container">
           {[
@@ -205,11 +205,11 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   this.viewConfiguration.ToolbarPosition == "right" &&
                     toolBarCreator("vertical"),
                   this.viewConfiguration.EditorPanelsPosition == "right" &&
-                    editorPanels()
+                    editorPanels(),
                 ]}
               </div>
             </div>,
-            this.viewConfiguration.ColumnsPosition == "right" && datasetPanel()
+            this.viewConfiguration.ColumnsPosition == "right" && datasetPanel(),
           ]}
         </section>
         <div className="charticulator__floating-panels">

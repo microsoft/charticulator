@@ -30,13 +30,13 @@ export let precedences = {
     "/": [18, 18, 19],
     "^": [20, 20, 21],
     "unary:+": [22, 22],
-    "unary:-": [23, 23]
+    "unary:-": [23, 23],
   } as { [name: string]: number[] },
   FUNCTION_CALL: 100,
   LAMBDA_FUNCTION: 100,
   VARIABLE: 100,
   FIELD_ACCESS: 100,
-  VALUE: 100
+  VALUE: 100,
 };
 
 // Math constants
@@ -60,9 +60,9 @@ function makeArrayCapable2<TA, TB, TRet>(f: (a: TA, b: TB) => TRet) {
     if (a instanceof Array && b instanceof Array) {
       return a.map((ai, i) => f(ai, b[i]));
     } else if (a instanceof Array) {
-      return a.map(ai => f(ai, b as TB));
+      return a.map((ai) => f(ai, b as TB));
     } else if (b instanceof Array) {
-      return b.map(bi => f(a as TA, bi as TB));
+      return b.map((bi) => f(a as TA, bi as TB));
     } else {
       return f(a, b);
     }
@@ -106,9 +106,9 @@ functions.get = (obj: any, field: string | number) => obj[field];
 // Array functions
 functions.first = (list: any[]) => list[0];
 functions.last = (list: any[]) => list[list.length - 1];
-functions.map = (list: any[], func: Function) => list.map(item => func(item));
+functions.map = (list: any[], func: Function) => list.map((item) => func(item));
 functions.filter = (list: any[], func: Function) =>
-  list.filter(item => func(item));
+  list.filter((item) => func(item));
 
 // Statistics
 function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
@@ -129,7 +129,7 @@ function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
 }
 functions.min = (...list: Array<number | number[]>) => {
   let r: number = null;
-  stat_foreach(x => {
+  stat_foreach((x) => {
     if (r == null || x < r) {
       r = x;
     }
@@ -138,7 +138,7 @@ functions.min = (...list: Array<number | number[]>) => {
 };
 functions.max = (...list: Array<number | number[]>) => {
   let r: number = null;
-  stat_foreach(x => {
+  stat_foreach((x) => {
     if (r == null || x > r) {
       r = x;
     }
@@ -147,19 +147,19 @@ functions.max = (...list: Array<number | number[]>) => {
 };
 functions.sum = (...list: Array<number | number[]>) => {
   let r = 0;
-  stat_foreach(x => (r += x), list);
+  stat_foreach((x) => (r += x), list);
   return r;
 };
 functions.count = (...list: Array<number | number[]>) => {
   let r = 0;
-  stat_foreach(x => (r += 1), list);
+  stat_foreach((x) => (r += 1), list);
   return r;
 };
 functions.stdev = (...list: Array<number | number[]>) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
-  stat_foreach(x => {
+  stat_foreach((x) => {
     count += 1;
     sumX += x;
     sumX2 += x * x;
@@ -172,7 +172,7 @@ functions.variance = (...list: Array<number | number[]>) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
-  stat_foreach(x => {
+  stat_foreach((x) => {
     count += 1;
     sumX += x;
     sumX2 += x * x;
@@ -183,7 +183,7 @@ functions.variance = (...list: Array<number | number[]>) => {
 };
 functions.median = (...list: Array<number | number[]>) => {
   const values: number[] = [];
-  stat_foreach(x => {
+  stat_foreach((x) => {
     values.push(x);
   }, list);
   values.sort((a, b) => a - b);
@@ -196,7 +196,7 @@ functions.median = (...list: Array<number | number[]>) => {
 functions.avg = (...list: Array<number | number[]>) => {
   let r = 0,
     c = 0;
-  stat_foreach(x => {
+  stat_foreach((x) => {
     r += x;
     c += 1;
   }, list);
@@ -244,7 +244,7 @@ functions.date = {
   minute: makeArrayCapable1(utcFormat("%M")), // minute as a decimal number [00,59].
   second: makeArrayCapable1(utcFormat("%S")), // second as a decimal number [00,61].
 
-  timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000)
+  timestamp: makeArrayCapable1((d: Date) => d.getTime() / 1000),
 };
 
 functions.format = makeArrayCapable2((value: number, spec: string) => {
@@ -254,7 +254,7 @@ functions.format = makeArrayCapable2((value: number, spec: string) => {
 // JSON format
 functions.json = {
   parse: makeArrayCapable1((x: string) => JSON.parse(x)),
-  stringify: makeArrayCapable1((x: any) => JSON.stringify(x))
+  stringify: makeArrayCapable1((x: any) => JSON.stringify(x)),
 };
 
 // Comparison
@@ -288,8 +288,8 @@ functions.sortBy = (
 functions.columnName = (columns: any[] | any, ...names: string[]) => {
   if (columns instanceof Array) {
     return columns
-      .filter(column => names.find(n => n == column.name))
-      .map(column => column.displayName || column.name);
+      .filter((column) => names.find((n) => n == column.name))
+      .map((column) => column.displayName || column.name);
   } else {
     return columns.displayName || columns.name;
   }

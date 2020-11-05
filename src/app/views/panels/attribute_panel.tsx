@@ -11,7 +11,7 @@ import {
   ChartElementSelection,
   AppStore,
   GlyphSelection,
-  MarkSelection
+  MarkSelection,
 } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 
@@ -43,7 +43,7 @@ export class AttributePanel extends React.Component<
   }
 
   public componentWillUnmount() {
-    this.tokens.forEach(token => token.remove());
+    this.tokens.forEach((token) => token.remove());
     this.tokens = [];
   }
 
@@ -172,7 +172,7 @@ export class AttributePanel extends React.Component<
               <SVGImageIcon url={getObjectIcon(object.classID)} />
               <EditableTextView
                 text={object.properties.name}
-                onEdit={newValue => {
+                onEdit={(newValue) => {
                   new Actions.SetObjectProperty(
                     object,
                     "name",

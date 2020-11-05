@@ -41,7 +41,7 @@ export class EventEmitter {
     } else {
       this.eventSubscriptions.set(event, {
         first: sub,
-        last: sub
+        last: sub,
       });
     }
     return sub;
@@ -108,7 +108,7 @@ export class Dispatcher<ActionType> {
     this.dispatchingIndex = 0;
     this.currentAction = action;
 
-    this.registeredItems.forEach(x => (x.stage = 0));
+    this.registeredItems.forEach((x) => (x.stage = 0));
 
     try {
       // Order the items by order of registration
@@ -145,7 +145,7 @@ export class Dispatcher<ActionType> {
     this.registeredItems.set(id, {
       order: [priority, this.currentID],
       stage: 0,
-      callback
+      callback,
     });
     return id;
   }
@@ -156,7 +156,7 @@ export class Dispatcher<ActionType> {
 
   public waitFor(ids: string[]) {
     ids = ids
-      .filter(a => this.registeredItems.has(a))
+      .filter((a) => this.registeredItems.has(a))
       .sort((a, b) =>
         compareOrder(
           this.registeredItems.get(a).order,

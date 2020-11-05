@@ -37,7 +37,7 @@ export class ScaleValueSelector extends React.Component<
     const selectedIndex = +(parsedExpression.args[1] as any).value;
 
     this.state = {
-      selectedIndex
+      selectedIndex,
     };
   }
 
@@ -77,7 +77,7 @@ export class ScaleValueSelector extends React.Component<
             <div className="header">
               <EditableTextView
                 text={scale.properties.name}
-                onEdit={newText => {
+                onEdit={(newText) => {
                   new Actions.SetObjectProperty(
                     scale,
                     "name",
@@ -114,7 +114,7 @@ export class ScaleValueSelector extends React.Component<
                           manager.inputColor({
                             property: "mapping",
                             field: key,
-                            noComputeLayout: true
+                            noComputeLayout: true,
                           })
                         )}
                       </div>

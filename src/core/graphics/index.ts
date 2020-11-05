@@ -16,10 +16,10 @@ export {
   CartesianCoordinates,
   PolarCoordinates,
   BezierCurveCoordinates,
-  CoordinateSystemHelper
+  CoordinateSystemHelper,
 } from "./coordinate_system";
 export {
   BezierCurveParameterization,
   MultiCurveParametrization,
-  LineSegmentParametrization
+  LineSegmentParametrization,
 } from "./bezier_curve";
