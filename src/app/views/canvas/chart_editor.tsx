@@ -516,8 +516,8 @@ export class ChartEditorView
                   axis: "xy",
                   angularGuidesCount: 4,
                   radialGuidesCount: 2,
-                  startAngle: 0,
-                  endAngle: 360,
+                  startAngle: 45,
+                  endAngle: 405,
                   innerRatio: 0.0,
                   outerRatio: 1,
                 }

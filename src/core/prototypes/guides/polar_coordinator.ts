@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { Prototypes, zipArray } from "../../../container";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -18,6 +19,7 @@ import {
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { PolarState } from "../plot_segments/region_2d/polar";
+import { ChartStateManager } from "../state";
 
 export interface PolarGuideCoordinatorAttributes
   extends Specification.AttributeMap {
@@ -67,7 +69,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuidePolarCoordinator",
-    iconPath: "guide/coordinator-polar", // TODO change
+    iconPath: "plot-segment/polar", // TODO change
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -82,7 +84,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     radialGuidesCount: 4,
   };
 
-  public buildConstraints(solver: ConstraintSolver) {
+  public buildConstraints(
+    solver: ConstraintSolver,
+    constr: any,
+    manager: ChartStateManager
+  ) {
     console.log("buildConstraints");
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -254,17 +260,23 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
           solver.addEquals(
             ConstraintStrength.HARD,
-            solver.attr(attrs, angularX[xindex]),
+            solver.attr(attrs, angularX[xindex], {
+              edit: true,
+            }),
             vx1
           );
 
           solver.addEquals(
             ConstraintStrength.HARD,
-            solver.attr(attrs, radialY[yindex]),
+            solver.attr(attrs, radialY[yindex], {
+              edit: true,
+            }),
             vy2
           );
         }
       }
+
+      const chartConstraints = this.parent.object.constraints;
 
       solver.addPlugin(
         new ConstraintPlugins.PolarCoordinatorPlugin(
@@ -273,7 +285,30 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           y,
           radialVarable,
           angleVarable,
-          attrs
+          attrs,
+          chartConstraints,
+          this.object._id,
+          (elementID: string, attribute: string, value: any) => {
+            // call UpdateChartElementAttribute
+
+            const object = Prototypes.findObjectById(manager.chart, elementID);
+            // solver.
+            const [element, elementState] = zipArray(
+              manager.chart.elements,
+              manager.chartState.elements
+            ).find(([element, elementState]) => {
+              return element._id === elementID;
+            });
+            elementState.attributes[attribute] = value;
+            console.log(
+              "update attribute",
+              elementID,
+              attribute,
+              value,
+              object
+            );
+          },
+          manager
         )
       );
     }
