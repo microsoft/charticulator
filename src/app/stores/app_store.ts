@@ -1190,6 +1190,7 @@ export class AppStore extends BaseStore {
     const rawColumnExpression = dataExpression.rawColumnExpression;
     if (
       rawColumnExpression &&
+      dataExpression.valueType !== DataType.Date &&
       (options.dataExpression.metadata.kind === DataKind.Ordinal ||
         options.dataExpression.metadata.kind === DataKind.Categorical)
     ) {
