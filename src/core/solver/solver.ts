@@ -12,6 +12,7 @@ import { Matrix, WASMSolver } from "./wasm_solver";
 import { PlotSegmentClass } from "../prototypes/plot_segments";
 import { DataflowTableGroupedContext } from "../prototypes/dataflow";
 import { FunctionCall } from "../expression";
+import { ChartStateManager } from "../prototypes";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
@@ -239,12 +240,18 @@ export class ChartConstraintSolver {
     this.addObject(element, elementState, markState, rowContext, true);
     const elementClass = this.manager.getMarkClass(elementState);
 
-    elementClass.buildConstraints(this.solver, {
-      rowContext,
-      getExpressionValue: (expr: string, context: Expression.Context) => {
-        return this.manager.dataflow.cache.parse(expr).getNumberValue(context);
+    elementClass.buildConstraints(
+      this.solver,
+      {
+        rowContext,
+        getExpressionValue: (expr: string, context: Expression.Context) => {
+          return this.manager.dataflow.cache
+            .parse(expr)
+            .getNumberValue(context);
+        },
       },
-    });
+      this.manager
+    );
   }
 
   public getAttachedAttributes(mark: Specification.Glyph) {
@@ -274,7 +281,7 @@ export class ChartConstraintSolver {
     if (this.glyphAnalyzeResults.has(glyph)) {
       return this.glyphAnalyzeResults.get(glyph);
     }
-    const analyzer = new GlyphConstraintAnalyzer(glyph);
+    const analyzer = new GlyphConstraintAnalyzer(glyph, this.manager);
     analyzer.solve();
     this.glyphAnalyzeResults.set(glyph, analyzer);
     return analyzer;
@@ -503,6 +510,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
 
   public glyphState: Specification.GlyphState;
 
+  public manager: ChartStateManager;
+
   public addAttribute(
     attrs: Specification.AttributeMap,
     attr: string,
@@ -653,8 +662,9 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     }
   }
 
-  constructor(glyph: Specification.Glyph) {
+  constructor(glyph: Specification.Glyph, manager: ChartStateManager) {
     super();
+    this.manager = manager;
 
     const glyphState: Specification.GlyphState = {
       attributes: {},
@@ -716,9 +726,13 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
           );
         }
       }
-      markClass.buildConstraints(this, {
-        getExpressionValue: () => 1,
-      });
+      markClass.buildConstraints(
+        this,
+        {
+          getExpressionValue: () => 1,
+        },
+        this.manager
+      );
     }
 
     glyphClass.buildIntrinsicConstraints(this);

@@ -13,7 +13,7 @@ import {
   Handles,
   LinkAnchor,
   ObjectClass,
-  SnappingGuides
+  SnappingGuides,
 } from "../common";
 import { GlyphClass } from "../glyphs";
 import { PlotSegmentClass } from "../plot_segments";
@@ -36,7 +36,8 @@ export abstract class MarkClass<
   /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    context: BuildConstraintsContext,
+    manager: ChartStateManager
   ): void {}
 
   /** Get the graphical element from the element */

@@ -47,7 +47,6 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   }
 
   public apply() {
-    console.log("apply PolarCoordinatorPlugin");
     const cx = this.solver.getValue(this.cx);
     const cy = this.solver.getValue(this.cy);
     const attrs = this.attrs;

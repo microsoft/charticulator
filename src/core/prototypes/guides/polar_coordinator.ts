@@ -17,6 +17,7 @@ import {
   BoundingBox,
   Controls,
 } from "../common";
+import { GlyphClass } from "../glyphs";
 import { ObjectClassMetadata } from "../index";
 import { PolarState } from "../plot_segments/region_2d/polar";
 import { ChartStateManager } from "../state";
@@ -289,14 +290,42 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           chartConstraints,
           this.object._id,
           (elementID: string, attribute: string, value: any) => {
-            const object = Prototypes.findObjectById(manager.chart, elementID);
-            const [element, elementState] = zipArray(
+            const found = zipArray(
               manager.chart.elements,
               manager.chartState.elements
             ).find(([element, elementState]) => {
               return element._id === elementID;
             });
-            elementState.attributes[attribute] = value;
+            if (found) {
+              const elementState = found[1];
+              elementState.attributes[attribute] = value;
+            } else {
+              for (const [element, elementState] of zipArray(
+                manager.chart.elements,
+                manager.chartState.elements
+              )) {
+                if (Prototypes.isType(element.classID, "plot-segment")) {
+                  const plotSegment = element as Specification.PlotSegment;
+                  const plotSegmentState = elementState as Specification.PlotSegmentState;
+                  for (const glyphState of plotSegmentState.glyphs) {
+                    const glyph = Prototypes.findObjectById(
+                      manager.chart,
+                      plotSegment.glyph
+                    ) as Specification.Glyph;
+                    const found = zipArray(glyph.marks, glyphState.marks).find(
+                      ([element, elementState]) => {
+                        return element._id === elementID;
+                      }
+                    );
+
+                    if (found) {
+                      const elementState = found[1];
+                      elementState.attributes[attribute] = value;
+                    }
+                  }
+                }
+              }
+            }
           },
           manager
         )

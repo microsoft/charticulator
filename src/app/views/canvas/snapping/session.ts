@@ -56,6 +56,19 @@ export class SnappingSession<ElementType> {
     }
   }
 
+  private giveProrityToPoint(
+    a: SnappableGuide<ElementType>,
+    b: SnappableGuide<ElementType>
+  ) {
+    if (a.guide.type === "point" && b.guide.type !== "point") {
+      return -1;
+    } else if (a.guide.type === "point" && b.guide.type === "point") {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
   public handleDrag(e: HandlesDragEvent) {
     const EPSILON = 1e-5;
     switch (this.handle.type) {
@@ -63,7 +76,7 @@ export class SnappingSession<ElementType> {
         {
           let minGuide: SnappableGuide<ElementType> = null;
           let minDistance: number = null;
-          for (const g of this.candidates) {
+          for (const g of this.candidates.sort(this.giveProrityToPoint)) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
             const d = Math.abs(guide.value - (e.value as number));
             if (
@@ -87,23 +100,11 @@ export class SnappingSession<ElementType> {
           let minXDistance: number = null;
           let minYGuide: SnappableGuide<ElementType> = null;
           let minYDistance: number = null;
-          for (const g of this.candidates) {
+          for (const g of this.candidates.sort(this.giveProrityToPoint)) {
             const guide = g.guide as Prototypes.SnappingGuides.Axis;
             if (this.findClosestSnappingGuide) {
               // Find closest point
-              if (guide.type == "y") {
-                const dY = Math.abs(guide.value - (e.y as number));
-                if (dY < minYDistance || minYDistance == null) {
-                  minYDistance = dY;
-                  minYGuide = g;
-                }
-              } else if (guide.type == "x") {
-                const dX = Math.abs(guide.value - (e.x as number));
-                if (dX < minXDistance || minXDistance == null) {
-                  minXDistance = dX;
-                  minXGuide = g;
-                }
-              } else if (g.guide.type == "point") {
+              if (g.guide.type == "point") {
                 const polarGuide = g.guide as Prototypes.SnappingGuides.PolarAxis;
                 const dX = Math.abs(polarGuide.angle - (e.x as number));
                 const dY = Math.abs(polarGuide.radius - (e.y as number));
@@ -115,10 +116,39 @@ export class SnappingSession<ElementType> {
                   minYDistance = dY;
                   minYGuide = g;
                 }
+              } else if (guide.type == "y") {
+                const dY = Math.abs(guide.value - (e.y as number));
+                if (dY < minYDistance || minYDistance == null) {
+                  minYDistance = dY;
+                  minYGuide = g;
+                }
+              } else if (guide.type == "x") {
+                const dX = Math.abs(guide.value - (e.x as number));
+                if (dX < minXDistance || minXDistance == null) {
+                  minXDistance = dX;
+                  minXGuide = g;
+                }
               }
             } else {
               // Filter guides by threshold
-              if (guide.type == "x") {
+              if (g.guide.type == "point") {
+                const polarGuide = g.guide as Prototypes.SnappingGuides.PolarAxis;
+                const d = Math.sqrt(
+                  (polarGuide.angle - (e.x as number)) *
+                    (polarGuide.angle - (e.x as number)) +
+                    (polarGuide.radius - (e.y as number)) *
+                      (polarGuide.radius - (e.y as number))
+                );
+                if (
+                  d < this.threshold &&
+                  (minYDistance == null || d < minYDistance - EPSILON)
+                ) {
+                  minYDistance = d;
+                  minYGuide = g;
+                  minXDistance = d;
+                  minXGuide = g;
+                }
+              } else if (guide.type == "x") {
                 const d = Math.abs(guide.value - (e.x as number));
                 if (
                   d < this.threshold &&
@@ -135,23 +165,6 @@ export class SnappingSession<ElementType> {
                 ) {
                   minYDistance = d;
                   minYGuide = g;
-                }
-              } else if (g.guide.type == "point") {
-                const polarGuide = g.guide as Prototypes.SnappingGuides.PolarAxis;
-                const d = Math.sqrt(
-                  (polarGuide.angle - (e.x as number)) *
-                    (polarGuide.angle - (e.x as number)) +
-                    (polarGuide.radius - (e.y as number)) *
-                      (polarGuide.radius - (e.y as number))
-                );
-                if (
-                  d < this.threshold &&
-                  (minYDistance == null || d < minYDistance - EPSILON)
-                ) {
-                  minYDistance = d;
-                  minYGuide = g;
-                  minXDistance = d;
-                  minXGuide = g;
                 }
               }
             }
@@ -223,20 +236,10 @@ export class SnappingSession<ElementType> {
               }
             }
             if (source == "x" || source == "y") {
-              for (const candidate of this.currentCandidates) {
+              for (const candidate of this.currentCandidates.sort(
+                this.giveProrityToPoint
+              )) {
                 if (
-                  source ==
-                  (candidate.guide as Prototypes.SnappingGuides.Axis).type
-                ) {
-                  result.push({
-                    type: "snap",
-                    attribute: action.attribute,
-                    snapElement: candidate.element,
-                    snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
-                      .attribute,
-                  });
-                  didSnap = true;
-                } else if (
                   (candidate.guide as Prototypes.SnappingGuides.PolarAxis)
                     .type === "point"
                 ) {
@@ -260,6 +263,18 @@ export class SnappingSession<ElementType> {
                     });
                     didSnap = true;
                   }
+                } else if (
+                  source ==
+                  (candidate.guide as Prototypes.SnappingGuides.Axis).type
+                ) {
+                  result.push({
+                    type: "snap",
+                    attribute: action.attribute,
+                    snapElement: candidate.element,
+                    snapAttribute: (candidate.guide as Prototypes.SnappingGuides.Axis)
+                      .attribute,
+                  });
+                  didSnap = true;
                 }
               }
             }

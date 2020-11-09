@@ -592,53 +592,6 @@ export class ChartEditorView
           );
         }
 
-        if (theGuide.type == "angular") {
-          const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
-          const radians = (axisGuide.angle / 180) * Math.PI;
-          const tx = Math.sin(radians) * this.state.viewWidth;
-          const ty = Math.cos(radians) * this.state.viewWidth;
-
-          return (
-            <line
-              key={`k${idx}`}
-              className="mark-guide"
-              x2={
-                (axisGuide.cx + tx) * this.state.zoom.scale +
-                this.state.zoom.centerX
-              }
-              y2={
-                (axisGuide.cy + ty) * this.state.zoom.scale +
-                this.state.zoom.centerY
-              }
-              x1={
-                axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
-              }
-              y1={
-                axisGuide.cy * this.state.zoom.scale + this.state.zoom.centerY
-              }
-            />
-          );
-        }
-
-        if (theGuide.type == "radial") {
-          const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
-          const radians = (axisGuide.angle / 180) * Math.PI;
-          const tx = Math.sin(radians) * axisGuide.radius;
-          const ty = Math.cos(radians) * axisGuide.radius;
-          return (
-            <circle
-              className="mark-guide"
-              key={`k${idx}`}
-              cx={
-                axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
-              }
-              cy={
-                axisGuide.cy * this.state.zoom.scale + this.state.zoom.centerY
-              }
-              r={Math.abs(axisGuide.radius * this.state.zoom.scale)}
-            />
-          );
-        }
         if (theGuide.type == "point") {
           const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
 
@@ -1085,52 +1038,6 @@ export class ChartEditorView
             />
           );
         }
-        case "angular": {
-          const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
-          const radians = (axisGuide.angle / 180) * Math.PI;
-          const tx = Math.sin(radians) * this.state.viewWidth;
-          const ty = Math.cos(radians) * this.state.viewWidth;
-
-          return (
-            <line
-              key={`k${idx}`}
-              className="snapping-guide"
-              x2={
-                (axisGuide.cx + tx) * this.state.zoom.scale +
-                this.state.zoom.centerX
-              }
-              y2={
-                (axisGuide.cy + ty) * this.state.zoom.scale +
-                this.state.zoom.centerY
-              }
-              x1={
-                axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
-              }
-              y1={
-                axisGuide.cy * this.state.zoom.scale + this.state.zoom.centerY
-              }
-            />
-          );
-        }
-        case "radial": {
-          const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
-          const radians = (axisGuide.angle / 180) * Math.PI;
-          const tx = Math.sin(radians) * axisGuide.radius;
-          const ty = Math.cos(radians) * axisGuide.radius;
-          return (
-            <circle
-              className="snapping-guide"
-              key={`k${idx}`}
-              cx={
-                axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
-              }
-              cy={
-                axisGuide.cy * this.state.zoom.scale + this.state.zoom.centerY
-              }
-              r={Math.abs(axisGuide.radius * this.state.zoom.scale)}
-            />
-          );
-        }
         case "point": {
           const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
           return (
@@ -1139,14 +1046,10 @@ export class ChartEditorView
                 className="snapping-guide"
                 key={`k${idx}`}
                 cx={
-                  // axisGuide.angle * this.state.zoom.scale +
-                  // this.state.zoom.centerX
                   axisGuide.angle * this.state.zoom.scale +
                   this.state.zoom.centerX
                 }
                 cy={
-                  // axisGuide.radius * this.state.zoom.scale +
-                  // this.state.zoom.centerY
                   -axisGuide.radius * this.state.zoom.scale +
                   this.state.zoom.centerY
                 }
