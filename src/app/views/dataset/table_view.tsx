@@ -41,8 +41,8 @@ export class TableView extends React.Component<TableViewProps, {}> {
         <thead>
           <tr>
             {table.columns
-              .filter(c => !c.metadata.isRaw)
-              .map(c => (
+              .filter((c) => !c.metadata.isRaw)
+              .map((c) => (
                 <th key={c.name}>{c.name}</th>
               ))}
           </tr>
@@ -51,23 +51,23 @@ export class TableView extends React.Component<TableViewProps, {}> {
           {onTypeChange && (
             <tr key={-1}>
               {table.columns
-                .filter(c => !c.metadata.isRaw)
+                .filter((c) => !c.metadata.isRaw)
                 .map((c, index) => {
                   const convertableTypes = getConvertableTypes(
                     c.type,
-                    table.rows.slice(0, 10).map(row => row[c.name])
+                    table.rows.slice(0, 10).map((row) => row[c.name])
                   );
                   return (
                     <td key={`${c.name}-${index}`}>
                       {
                         <Select
-                          onChange={newType => {
+                          onChange={(newType) => {
                             onTypeChange(c.name, newType);
                             this.forceUpdate();
                           }}
                           value={c.type}
                           options={convertableTypes}
-                          labels={convertableTypes.map(type => {
+                          labels={convertableTypes.map((type) => {
                             const str = type.toString();
                             return str[0].toUpperCase() + str.slice(1);
                           })}
@@ -79,10 +79,10 @@ export class TableView extends React.Component<TableViewProps, {}> {
                 })}
             </tr>
           )}
-          {table.rows.slice(0, maxRows).map(r => (
+          {table.rows.slice(0, maxRows).map((r) => (
             <tr key={r._id}>
               {table.columns
-                .filter(c => !c.metadata.isRaw)
+                .filter((c) => !c.metadata.isRaw)
                 .map((c, index) => {
                   if (c.metadata.rawColumnName) {
                     return (
@@ -104,7 +104,7 @@ export class TableView extends React.Component<TableViewProps, {}> {
           {table.rows.length > maxRows ? (
             <tr>
               {table.columns
-                .filter(c => !c.metadata.isRaw)
+                .filter((c) => !c.metadata.isRaw)
                 .map((c, i) =>
                   i == 0 ? (
                     <td key={i}>({table.rows.length - maxRows} more rows)</td>

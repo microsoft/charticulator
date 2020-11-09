@@ -36,7 +36,7 @@ describe("Basic Expression", () => {
     [`array(1,2,3,4) + array(5,6,7,8)`, [6, 8, 10, 12]],
     [`stdev(list(100,150,100,125,125,150))`, 20.412414523193135],
     [`variance(list(100,150,100,125,125,150))`, 416.66666666666606],
-    [`median(list(100,150,100,125,125,150))`, 137.5]
+    [`median(list(100,150,100,125,125,150))`, 137.5],
   ];
   const context = new Expression.SimpleContext();
   context.variables = {
@@ -46,13 +46,13 @@ describe("Basic Expression", () => {
     data: [
       { key: "A", value: 1 },
       { key: "B", value: 2 },
-      { key: "C", value: 3 }
+      { key: "C", value: 3 },
     ],
-    'test 1 \t x""': 2
+    'test 1 \t x""': 2,
   };
 
   it("getValue", () => {
-    test_cases.forEach(ci => {
+    test_cases.forEach((ci) => {
       const expr = ci[0];
       const expected = ci[1];
       const e = Expression.parse(expr);
@@ -62,7 +62,7 @@ describe("Basic Expression", () => {
   });
 
   it("toString", () => {
-    test_cases.forEach(ci => {
+    test_cases.forEach((ci) => {
       const expr = ci[0];
       const expected = ci[1];
       const e = Expression.parse(expr);
@@ -78,17 +78,17 @@ describe("Text Expression", () => {
   const test_cases: Array<[string, any]> = [
     [
       "Hello World, Temperature is ${Temperature}{.1f} degree",
-      "Hello World, Temperature is 70.0 degree"
+      "Hello World, Temperature is 70.0 degree",
     ],
-    ["\\$ ${Temperature}{.1f} \\\\F", "$ 70.0 \\F"]
+    ["\\$ ${Temperature}{.1f} \\\\F", "$ 70.0 \\F"],
   ];
   const context = new Expression.SimpleContext();
   context.variables = {
-    Temperature: 70
+    Temperature: 70,
   };
 
   it("getValue", () => {
-    test_cases.forEach(ci => {
+    test_cases.forEach((ci) => {
       const expr = ci[0];
       const expected = ci[1];
       const e = Expression.parseTextExpression(expr);
@@ -98,7 +98,7 @@ describe("Text Expression", () => {
   });
 
   it("toString", () => {
-    test_cases.forEach(ci => {
+    test_cases.forEach((ci) => {
       const expr = ci[0];
       const expected = ci[1];
       const e = Expression.parseTextExpression(expr);
@@ -115,9 +115,9 @@ describe("Expression Utilities", () => {
     const cases: any[][] = [
       ["a + b + c + d", { a: "A", b: "B" }, "A + B + c + d"],
       ["a + b * (c + d)", { a: "A", c: "C" }, "A + b * (C + d)"],
-      ["a", { a: "A", b: "B" }, "A"]
+      ["a", { a: "A", b: "B" }, "A"],
     ];
-    cases.forEach(ci => {
+    cases.forEach((ci) => {
       expect(
         Expression.parse(ci[0])
           .replace(Expression.variableReplacer(ci[1]))
@@ -130,9 +130,9 @@ describe("Expression Utilities", () => {
     const cases: any[][] = [
       ["a + b + c + d", ["a", "b", "c", "d"]],
       ["a + b * (c + d)", ["a", "b", "c", "d"]],
-      ["a * (b + c) * d", ["a", "b", "c", "d"]]
+      ["a * (b + c) * d", ["a", "b", "c", "d"]],
     ];
-    cases.forEach(ci => {
+    cases.forEach((ci) => {
       const vars = new Set<string>();
       Expression.parse(ci[0]).replace((expr: Expression.Expression) => {
         if (expr instanceof Expression.Variable) {

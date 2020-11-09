@@ -1,5 +1,5 @@
 import { Color } from "./color";
-import { timeFormat } from "d3-time-format";
+import { timeFormat, utcFormat } from "d3-time-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -315,7 +315,7 @@ export function stableSort<T>(
         }
       })
       // Extract items back
-      .map(x => x[0])
+      .map((x) => x[0])
   );
 }
 
@@ -463,9 +463,7 @@ export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
 > {
-  protected separator: string = Math.random()
-    .toString(36)
-    .substr(2);
+  protected separator: string = Math.random().toString(36).substr(2);
   protected hash(key: string[]): string {
     return key.join(this.separator);
   }
@@ -484,7 +482,7 @@ export function parseVersion(version: string) {
   return {
     major: +m[1],
     minor: +m[2],
-    patch: +m[3]
+    patch: +m[3],
   };
 }
 
@@ -540,7 +538,7 @@ export function hexToRgb(hex: string): Color {
     ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
+        b: parseInt(result[3], 16),
       }
     : null;
 }
@@ -560,7 +558,7 @@ export function getSortFunctionByData(values: string[]) {
     return false;
   };
   const testResult = values
-    .map(val => testToRange(val))
+    .map((val) => testToRange(val))
     .reduceRight((a, b) => a && b);
   if (testResult) {
     return (a: any, b: any) => {
@@ -601,8 +599,10 @@ export function getSortDirection(values: string[]): string {
  * @param format date format of d3
  */
 export function applyDateFormat(value: Date, format: string): string {
-  return timeFormat(format)(value);
+  return utcFormat(format)(value);
 }
+
+export const colorAttributes = ["fill", "stroke", "color"];
 
 /**
  * Compares attribute names
@@ -612,7 +612,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
     return true;
   } else {
     // fill and stroke uses with color. Those preoperties has the same meaning for marks
-    if ((a === "fill" && b === "stroke") || (b === "fill" && a === "stroke")) {
+    if (colorAttributes.indexOf(b) > -1 && colorAttributes.indexOf(a) > -1) {
       return true;
     }
   }

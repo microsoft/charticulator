@@ -33,7 +33,7 @@ import { parse } from "./parser";
 import { DatasetContext } from "../dataset";
 import {
   DataflowTable,
-  DataflowTableGroupedContext
+  DataflowTableGroupedContext,
 } from "../prototypes/dataflow";
 import { Specification } from "..";
 
@@ -70,7 +70,7 @@ export abstract class Expression {
 
   public getStringValue(c: Context) {
     const v = this.getValue(c);
-    return v.toString();
+    return v !== null && v !== undefined ? v.toString() : "null";
   }
 
   public static Parse(expr: string): Expression {
@@ -105,7 +105,7 @@ export class TextExpression {
 
   public getValue(context: Context): string {
     return this.parts
-      .map(part => {
+      .map((part) => {
         if (part.string) {
           return part.string;
         } else if (part.expression) {
@@ -130,12 +130,12 @@ export class TextExpression {
   }
 
   public isTrivialString() {
-    return this.parts.every(x => x.string != null);
+    return this.parts.every((x) => x.string != null);
   }
 
   public toString(): string {
     return this.parts
-      .map(part => {
+      .map((part) => {
         if (part.string) {
           return part.string.replace(/([\$\\])/g, "\\$1");
         } else if (part.expression) {
@@ -156,14 +156,14 @@ export class TextExpression {
 
   public replace(r: PatternReplacer): TextExpression {
     return new TextExpression(
-      this.parts.map(part => {
+      this.parts.map((part) => {
         if (part.string) {
           return { string: part.string };
         } else if (part.expression) {
           if (part.format) {
             return {
               expression: part.expression.replace(r),
-              format: part.format
+              format: part.format,
             };
           } else {
             return { expression: part.expression.replace(r) };
@@ -254,12 +254,12 @@ export class FunctionCall extends Expression {
   }
 
   public getValue(c: Context) {
-    return this.function(...this.args.map(arg => arg.getValue(c)));
+    return this.function(...this.args.map((arg) => arg.getValue(c)));
   }
 
   public toString() {
     return `${this.name}(${this.args
-      .map(arg => arg.toStringPrecedence(precedences.FUNCTION_ARGUMENT))
+      .map((arg) => arg.toStringPrecedence(precedences.FUNCTION_ARGUMENT))
       .join(", ")})`;
   }
 
@@ -270,7 +270,7 @@ export class FunctionCall extends Expression {
   protected replaceChildren(r: PatternReplacer): Expression {
     return new FunctionCall(
       this.name.split("."),
-      this.args.map(x => x.replace(r))
+      this.args.map((x) => x.replace(r))
     );
   }
 }
@@ -416,7 +416,9 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
     ) {
       const columnName = (expression.args[0] as Variable).name;
       const column = ((context as ShadowContext)
-        .upstream as DataflowTable).columns.find(col => col.name == columnName);
+        .upstream as DataflowTable).columns.find(
+        (col) => col.name == columnName
+      );
       if (
         column.metadata.rawColumnName &&
         (column.metadata.kind === Specification.DataKind.Temporal ||
@@ -436,7 +438,7 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       const columnName = (expression.args[0] as Variable).name;
       const rawColumnName = (context as DataflowTableGroupedContext)
         .getTable()
-        .columns.find(col => col.name == columnName).metadata.rawColumnName;
+        .columns.find((col) => col.name == columnName).metadata.rawColumnName;
       if (rawColumnName) {
         return (context as DataflowTableGroupedContext).getVariable(
           rawColumnName

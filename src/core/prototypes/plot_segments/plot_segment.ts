@@ -9,6 +9,9 @@ import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
 import { refineColumnName } from "../..";
+import { AxisRenderer } from "./axis";
+import { utcFormat } from "d3-time-format";
+import { getDateFormat } from "../../dataset/datetime";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -70,16 +73,16 @@ export abstract class PlotSegmentClass<
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.filter,
-            mode: "button"
+            mode: "button",
           }),
           manager.groupByEditor({
             table: this.object.table,
             target: { plotSegment: this.object },
             value: this.object.groupBy,
-            mode: "button"
+            mode: "button",
           })
         )
-      )
+      ),
     ];
   }
 
@@ -92,24 +95,20 @@ export abstract class PlotSegmentClass<
     return plotSegment;
   }
 
-  public static getDisplayFormat = (
-    manager: ChartStateManager,
-    expressionString: string,
-    table: string
-  ) => {
-    // TODO take raw expression, instead parsing current
-    if (!expressionString || !table) {
-      return null;
-    }
-    const axisTable: DataflowTable = manager.getTable(table);
-
-    const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
-    // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
-    try {
-      const parsedExpression = expression.parts.find(part => {
+  public getDisplayRawFormat(
+    binding: Specification.Types.AxisDataBinding,
+    manager: ChartStateManager
+  ) {
+    const tableName = this.object.table;
+    const table = manager.dataset.tables.find(
+      (table) => table.name === tableName
+    );
+    const getColumnName = (rawExpression: string) => {
+      const expression = TextExpression.Parse(`\$\{${rawExpression}\}`);
+      const parsedExpression = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
           return part.expression.args.find(
-            arg => arg instanceof Variable
+            (arg) => arg instanceof Variable
           ) as any;
         }
       });
@@ -117,41 +116,76 @@ export abstract class PlotSegmentClass<
         parsedExpression && (parsedExpression.expression as FunctionCall);
       if (functionCallpart) {
         const variable = functionCallpart.args.find(
-          arg => arg instanceof Variable
+          (arg) => arg instanceof Variable
         ) as Variable;
         const columnName = variable.name;
-        const tableName = axisTable.name;
-        const table = manager.dataset.tables.find(
-          table => table.name === tableName
+        const column = table.columns.find(
+          (column) => column.name === columnName
         );
-        const column = table.columns.find(column => column.name === columnName);
-        const rawColumnName = column.metadata.rawColumnName;
-        if (
-          rawColumnName &&
-          (column.metadata.kind === Specification.DataKind.Temporal ||
-            column.type === Specification.DataType.Boolean)
-        ) {
-          const dataMapping = new Map<string, string>();
-          table.rows.forEach(row => {
-            const value = row[columnName].toString();
-            const rawValue = (
-              row[rawColumnName] || row[refineColumnName(rawColumnName)]
-            ).toString();
-            dataMapping.set(value, rawValue);
-          });
-          return (value: any) => {
-            const rawValue = dataMapping.get(value);
-            return rawValue !== null ? rawValue : value;
-          };
-        }
-      }
-    } catch (ex) {
-      console.log(ex);
-    }
 
-    return (value: any) => {
-      return value;
+        return column.name;
+      }
+
+      return null;
     };
+    if (binding.valueType === Specification.DataType.Boolean) {
+      const columnName = getColumnName(binding.expression);
+      const rawColumnName = getColumnName(binding.rawExpression);
+      if (columnName && rawColumnName) {
+        const dataMapping = new Map<string, string>();
+        table.rows.forEach((row) => {
+          const value = row[columnName];
+          const rawValue = row[rawColumnName];
+          if (value !== undefined && rawValue !== undefined) {
+            const stringValue = value.toString();
+            const rawValueString = (
+              rawValue || row[refineColumnName(rawColumnName)]
+            ).toString();
+            dataMapping.set(stringValue, rawValueString);
+          }
+        });
+        return (value: any) => {
+          const rawValue = dataMapping.get(value);
+          return rawValue !== null ? rawValue : value;
+        };
+      }
+    }
+    return null;
+  }
+
+  public getDisplayFormat = (
+    binding: Specification.Types.AxisDataBinding,
+    tickFormat?: string,
+    manager?: ChartStateManager
+  ) => {
+    if (binding.numericalMode === "temporal" || binding.valueType === "date") {
+      if (tickFormat) {
+        return (value: any) => {
+          return utcFormat(tickFormat)(value);
+        };
+      } else {
+        return (value: any) => {
+          return utcFormat("%m/%d/%Y")(value);
+        };
+      }
+    } else {
+      if (tickFormat) {
+        const resolvedFormat = AxisRenderer.getTickFormat(tickFormat, null);
+        return (value: any) => {
+          return resolvedFormat(value);
+        };
+      } else {
+        if (binding.rawExpression && manager) {
+          const rawFormat = this.getDisplayRawFormat(binding, manager);
+          if (rawFormat) {
+            return rawFormat;
+          }
+        }
+        return (value: any) => {
+          return value;
+        };
+      }
+    }
   };
 
   protected buildGlyphOrderedList(): number[] {

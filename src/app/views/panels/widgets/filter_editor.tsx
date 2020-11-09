@@ -33,7 +33,7 @@ export class FilterEditor extends React.Component<
     }
     return {
       type: filterType,
-      currentValue: value
+      currentValue: value,
     };
   }
   public emitUpdateFilter(newValue: Specification.Types.Filter) {
@@ -65,7 +65,7 @@ export class FilterEditor extends React.Component<
             manager.row(
               "Expression",
               <InputExpression
-                validate={newValue =>
+                validate={(newValue) =>
                   manager.store.verifyUserExpressionWithTable(
                     newValue,
                     options.table,
@@ -73,14 +73,14 @@ export class FilterEditor extends React.Component<
                   )
                 }
                 defaultValue={this.state.currentValue.expression}
-                onEnter={newValue => {
+                onEnter={(newValue) => {
                   this.emitUpdateFilter({
-                    expression: newValue
+                    expression: newValue,
                   });
                   return true;
                 }}
               />
-            )
+            ),
           ];
         }
         break;
@@ -102,12 +102,12 @@ export class FilterEditor extends React.Component<
                 <DataFieldSelector
                   defaultValue={{
                     table: options.table,
-                    expression: this.state.currentValue.categories.expression
+                    expression: this.state.currentValue.categories.expression,
                   }}
                   table={options.table}
                   datasetStore={this.props.manager.store}
                   kinds={[Specification.DataKind.Categorical]}
-                  onChange={field => {
+                  onChange={(field) => {
                     // Enumerate all values of this field
                     if (field.expression) {
                       const parsed = Expression.parse(field.expression);
@@ -122,8 +122,8 @@ export class FilterEditor extends React.Component<
                       this.emitUpdateFilter({
                         categories: {
                           expression: field.expression,
-                          values: exprValues
-                        }
+                          values: exprValues,
+                        },
                       });
                     }
                   }}
@@ -146,8 +146,8 @@ export class FilterEditor extends React.Component<
                           this.emitUpdateFilter({
                             categories: {
                               expression: value.categories.expression,
-                              values: value.categories.values
-                            }
+                              values: value.categories.values,
+                            },
                           });
                         }}
                       />{" "}
@@ -162,26 +162,26 @@ export class FilterEditor extends React.Component<
                           this.emitUpdateFilter({
                             categories: {
                               expression: value.categories.expression,
-                              values: value.categories.values
-                            }
+                              values: value.categories.values,
+                            },
                           });
                         }}
                       />
                     </div>
                     <div className="el-list">
-                      {keysSorted.map(key => (
+                      {keysSorted.map((key) => (
                         <div key={key}>
                           <CheckBox
                             value={value.categories.values[key]}
                             text={key}
                             fillWidth={true}
-                            onChange={newValue => {
+                            onChange={(newValue) => {
                               value.categories.values[key] = newValue;
                               this.emitUpdateFilter({
                                 categories: {
                                   expression: value.categories.expression,
-                                  values: value.categories.values
-                                }
+                                  values: value.categories.values,
+                                },
                               });
                             }}
                           />
@@ -190,7 +190,7 @@ export class FilterEditor extends React.Component<
                     </div>
                   </div>
                 )
-              : null
+              : null,
           ];
         }
         break;
@@ -203,7 +203,7 @@ export class FilterEditor extends React.Component<
             manager.row(
               "Filter Type",
               <Select
-                onChange={newValue => {
+                onChange={(newValue) => {
                   if (this.state.type != newValue) {
                     if (newValue == "none") {
                       this.emitUpdateFilter(null);
@@ -214,9 +214,9 @@ export class FilterEditor extends React.Component<
                           expression: "",
                           categories: {
                             expression: "",
-                            values: {}
-                          }
-                        }
+                            values: {},
+                          },
+                        },
                       });
                     }
                   }

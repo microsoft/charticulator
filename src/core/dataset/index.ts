@@ -28,5 +28,5 @@ export { DatasetContext, TableContext, RowContext } from "./context";
 export {
   convertColumnType,
   inferColumnType,
-  inferAndConvertColumn
+  inferAndConvertColumn,
 } from "./data_types";

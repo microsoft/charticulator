@@ -24,7 +24,7 @@ export class Button extends React.Component<ButtonProps, {}> {
           ["has-icon", this.props.icon != null]
         )}
         title={this.props.title}
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           if (this.props.onClick) {
             this.props.onClick();
@@ -78,7 +78,7 @@ export class CheckBox extends React.Component<CheckBoxProps, {}> {
           ["has-text", this.props.text != null]
         )}
         title={this.props.title}
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           if (this.props.onChange) {
             this.props.onChange(!this.props.value);

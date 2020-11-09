@@ -33,7 +33,7 @@ export enum DataType {
   /** Boolean data type, stored as boolean */
   Boolean = "boolean",
   /** Date data type, stored as unix timestamps (ms) */
-  Date = "date"
+  Date = "date",
 }
 
 /** Abstract data kind */
@@ -45,7 +45,7 @@ export enum DataKind {
   /** Numerical data kind */
   Numerical = "numerical",
   /** Temporal data kind */
-  Temporal = "temporal"
+  Temporal = "temporal",
 }
 
 /** Data row */
@@ -69,7 +69,7 @@ export enum AttributeType {
   Color = "color",
   Image = "image",
   Point = "point",
-  Object = "object"
+  Object = "object",
 }
 
 /** Attribute value types */
@@ -358,5 +358,5 @@ export interface ChartState<AttributesType extends AttributeMap = AttributeMap>
  */
 export enum EmphasisMethod {
   Saturation = "saturation",
-  Outline = "outline"
+  Outline = "outline",
 }

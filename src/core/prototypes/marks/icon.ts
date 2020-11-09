@@ -12,14 +12,14 @@ import {
   LinkAnchor,
   ObjectClassMetadata,
   SnappingGuides,
-  TemplateParameters
+  TemplateParameters,
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
 import {
   iconAttributes,
   IconElementAttributes,
-  IconElementProperties
+  IconElementProperties,
 } from "./icon.attrs";
 import { imagePlaceholder } from "./image";
 
@@ -37,20 +37,20 @@ export class IconElementClass extends EmphasizableMarkClass<
     iconPath: "mark/icon",
     creatingInteraction: {
       type: "point",
-      mapping: { x: "x", y: "y" }
-    }
+      mapping: { x: "x", y: "y" },
+    },
   };
 
   public static defaultProperties: Partial<IconElementProperties> = {
     alignment: { x: "middle", y: "top", xMargin: 5, yMargin: 5 },
     rotation: 0,
-    visible: true
+    visible: true,
   };
 
   public static defaultMappingValues: Partial<IconElementAttributes> = {
     opacity: 1,
     size: 400,
-    visible: true
+    visible: true,
   };
 
   public attributes = iconAttributes;
@@ -80,10 +80,10 @@ export class IconElementClass extends EmphasizableMarkClass<
             y: attrs.y,
             xAttribute: "x",
             yAttribute: "y",
-            direction: { x: mode == "begin" ? 1 : -1, y: 0 }
-          }
-        ]
-      }
+            direction: { x: mode == "begin" ? 1 : -1, y: 0 },
+          },
+        ],
+      },
     ];
   }
 
@@ -104,7 +104,7 @@ export class IconElementClass extends EmphasizableMarkClass<
       width: w,
       height: h,
       dx: offsets[0],
-      dy: offsets[1]
+      dy: offsets[1],
     };
   }
 
@@ -156,8 +156,8 @@ export class IconElementClass extends EmphasizableMarkClass<
         y: -layout.dy,
         width: layout.width,
         height: layout.height,
-        mode: "stretch"
-      } as Graphics.Image
+        mode: "stretch",
+      } as Graphics.Image,
     ]);
     gImage.transform = cs.getLocalTransform(
       attrs.x + offset.x,
@@ -177,10 +177,10 @@ export class IconElementClass extends EmphasizableMarkClass<
         dropAction: {
           scaleInference: {
             attribute: "size",
-            attributeType: Specification.AttributeType.Number
-          }
-        }
-      } as DropZones.Rectangle
+            attributeType: Specification.AttributeType.Number,
+          },
+        },
+      } as DropZones.Rectangle,
     ];
   }
 
@@ -197,8 +197,8 @@ export class IconElementClass extends EmphasizableMarkClass<
         y,
         actions: [
           { type: "attribute", source: "x", attribute: "x" },
-          { type: "attribute", source: "y", attribute: "y" }
-        ]
+          { type: "attribute", source: "y", attribute: "y" },
+        ],
       } as Handles.Point,
       {
         type: "text-alignment",
@@ -208,8 +208,8 @@ export class IconElementClass extends EmphasizableMarkClass<
           {
             type: "attribute-value-mapping",
             source: "text",
-            attribute: "text"
-          }
+            attribute: "text",
+          },
         ],
         textWidth: bbox.width,
         textHeight: bbox.height,
@@ -217,8 +217,8 @@ export class IconElementClass extends EmphasizableMarkClass<
         anchorY: y,
         text: null,
         alignment: props.alignment,
-        rotation: props.rotation
-      } as Handles.TextAlignment
+        rotation: props.rotation,
+      } as Handles.TextAlignment,
     ];
   }
 
@@ -235,7 +235,7 @@ export class IconElementClass extends EmphasizableMarkClass<
       cy: attrs.y - dx * sin - dy * cos,
       width: layout.width,
       height: layout.height,
-      rotation
+      rotation,
     };
   }
 
@@ -250,7 +250,7 @@ export class IconElementClass extends EmphasizableMarkClass<
       cy: rect.cy - attrs.y,
       width: rect.width,
       height: rect.height,
-      rotation: rect.rotation
+      rotation: rect.rotation,
     } as BoundingBox.AnchoredRectangle;
   }
 
@@ -259,7 +259,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     const { x, y } = attrs;
     return [
       { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis
+      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
     ];
   }
 
@@ -279,9 +279,9 @@ export class IconElementClass extends EmphasizableMarkClass<
           showSlider: true,
           minimum: 0,
           sliderRange: [0, 3600],
-          sliderFunction: "sqrt"
-        }
-      })
+          sliderFunction: "sqrt",
+        },
+      }),
     ];
 
     widgets = widgets.concat([
@@ -297,10 +297,10 @@ export class IconElementClass extends EmphasizableMarkClass<
               icons: [
                 "text-align/left",
                 "text-align/x-middle",
-                "text-align/right"
+                "text-align/right",
               ],
               labels: ["Left", "Middle", "Right"],
-              options: ["left", "middle", "right"]
+              options: ["left", "middle", "right"],
             }
           ),
           props.alignment.x != "middle"
@@ -323,10 +323,10 @@ export class IconElementClass extends EmphasizableMarkClass<
               icons: [
                 "text-align/top",
                 "text-align/y-middle",
-                "text-align/bottom"
+                "text-align/bottom",
               ],
               labels: ["Top", "Middle", "Bottom"],
-              options: ["top", "middle", "bottom"]
+              options: ["top", "middle", "bottom"],
             }
           ),
           props.alignment.y != "middle"
@@ -342,11 +342,11 @@ export class IconElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 }
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
       manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true
-      })
+        defaultValue: true,
+      }),
     ]);
     return widgets.concat(parentWidgets);
   }
@@ -361,10 +361,10 @@ export class IconElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "visible"
+          attribute: "visible",
         },
         type: Specification.AttributeType.Boolean,
-        default: this.state.attributes.visible
+        default: this.state.attributes.visible,
       });
     }
     if (
@@ -374,10 +374,10 @@ export class IconElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "size"
+          attribute: "size",
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.size
+        default: this.state.attributes.size,
       });
     }
     if (
@@ -387,14 +387,14 @@ export class IconElementClass extends EmphasizableMarkClass<
       properties.push({
         objectID: this.object._id,
         target: {
-          attribute: "opacity"
+          attribute: "opacity",
         },
         type: Specification.AttributeType.Number,
-        default: this.state.attributes.opacity
+        default: this.state.attributes.opacity,
       });
     }
     return {
-      properties
+      properties,
     };
   }
 }

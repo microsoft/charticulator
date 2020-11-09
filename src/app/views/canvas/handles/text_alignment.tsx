@@ -35,7 +35,7 @@ export class TextAlignmentHandleView extends React.Component<
     this.state = {
       dragging: false,
       newAlignment: props.handle.alignment,
-      newRotation: props.handle.rotation
+      newRotation: props.handle.rotation,
     };
   }
 
@@ -81,7 +81,7 @@ export class TextAlignmentHandleView extends React.Component<
         x: previousAlignment.x,
         y: previousAlignment.y,
         xMargin: previousAlignment.xMargin,
-        yMargin: previousAlignment.yMargin
+        yMargin: previousAlignment.yMargin,
       };
 
       const cos = Math.cos((newRotation / 180) * Math.PI);
@@ -147,17 +147,17 @@ export class TextAlignmentHandleView extends React.Component<
 
       if (commit) {
         this.setState({
-          dragging: false
+          dragging: false,
         });
         context.emit("end", { alignment: newAlignment, rotation: newRotation });
       } else {
         this.setState({
           newAlignment,
-          newRotation
+          newRotation,
         });
         context.emit("drag", {
           alignment: newAlignment,
-          rotation: newRotation
+          rotation: newRotation,
         });
       }
     };
@@ -171,24 +171,24 @@ export class TextAlignmentHandleView extends React.Component<
       );
       if (commit) {
         this.setState({
-          dragging: false
+          dragging: false,
         });
         context.emit("end", {
           alignment: newAlignment,
-          rotation: previousRotation
+          rotation: previousRotation,
         });
       } else {
         this.setState({
-          newAlignment
+          newAlignment,
         });
         context.emit("drag", {
           alignment: newAlignment,
-          rotation: previousRotation
+          rotation: previousRotation,
         });
       }
     };
 
-    this.hammer.on("panstart", e => {
+    this.hammer.on("panstart", (e) => {
       const cx = e.center.x - e.deltaX;
       const cy = e.center.y - e.deltaY;
       startX = cx;
@@ -214,10 +214,10 @@ export class TextAlignmentHandleView extends React.Component<
       this.setState({
         dragging: true,
         newAlignment: previousAlignment,
-        newRotation: previousRotation
+        newRotation: previousRotation,
       });
     });
-    this.hammer.on("pan", e => {
+    this.hammer.on("pan", (e) => {
       sumDeltaX += e.deltaX - dXLast;
       sumDeltaY += e.deltaY - dYLast;
       dXLast = e.deltaX;
@@ -233,7 +233,7 @@ export class TextAlignmentHandleView extends React.Component<
         handleAlignment(p1);
       }
     });
-    this.hammer.on("panend", e => {
+    this.hammer.on("panend", (e) => {
       sumDeltaX += e.deltaX - dXLast;
       sumDeltaY += e.deltaY - dYLast;
       dXLast = e.deltaX;
@@ -261,14 +261,14 @@ export class TextAlignmentHandleView extends React.Component<
       return;
     }
     globals.popupController.popupAt(
-      context => {
+      (context) => {
         return (
           <PopupView context={context}>
             <div className="handle-text-view-popup">
               <EditableTextView
                 text={this.props.handle.text}
                 autofocus={true}
-                onEdit={newText => {
+                onEdit={(newText) => {
                   const dragContext = new HandlesDragContext();
                   this.props.onDragStart(this.props.handle, dragContext);
                   dragContext.emit("end", { text: newText });
@@ -280,7 +280,7 @@ export class TextAlignmentHandleView extends React.Component<
         );
       },
       {
-        anchor: this.container
+        anchor: this.container,
       }
     );
   }
@@ -314,7 +314,7 @@ export class TextAlignmentHandleView extends React.Component<
       fy: this.props.handle.anchorY + fx * sin + dy * cos,
       width: this.props.handle.textWidth,
       height: this.props.handle.textHeight,
-      rotation
+      rotation,
     };
   }
 
@@ -355,7 +355,7 @@ export class TextAlignmentHandleView extends React.Component<
     const p = Geometry.applyZoom(zoom, { x: rect.cx, y: -rect.cy });
     const anchor = Geometry.applyZoom(zoom, {
       x: handle.anchorX,
-      y: -handle.anchorY
+      y: -handle.anchorY,
     });
     const fp = Geometry.applyZoom(zoom, { x: rect.fx, y: -rect.fy });
     return (
@@ -367,14 +367,14 @@ export class TextAlignmentHandleView extends React.Component<
           ["visible", handle.visible || this.props.visible]
         )}
         onClick={this.handleClick}
-        ref={e => (this.container = e)}
+        ref={(e) => (this.container = e)}
       >
         <circle
           className="element-shape handle-ghost"
           cx={anchor.x}
           cy={anchor.y}
           r={0}
-          ref={e => (this.anchorCircle = e)}
+          ref={(e) => (this.anchorCircle = e)}
         />
         <g transform={`translate(${fp.x - 16},${fp.y - 16})`}>
           <path
@@ -401,7 +401,7 @@ export class TextAlignmentHandleView extends React.Component<
         />
         <circle
           className="element-shape handle-ghost element-rotation"
-          ref={e => (this.rotationCircle = e)}
+          ref={(e) => (this.rotationCircle = e)}
           cx={fp.x}
           cy={fp.y}
           r={8}

@@ -11,7 +11,7 @@ export const lineAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
   ...AttrBuilder.center(),
   ...AttrBuilder.dXdY(),
-  ...AttrBuilder.style()
+  ...AttrBuilder.style(),
 };
 
 export interface LineElementAttributes extends AttributeMap {

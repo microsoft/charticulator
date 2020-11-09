@@ -31,7 +31,7 @@ export class InputCurveHandleView extends React.Component<
   public state: InputCurveHandleViewState = {
     enabled: false,
     drawing: false,
-    points: []
+    points: [],
   };
 
   public hammer: HammerManager;
@@ -47,7 +47,7 @@ export class InputCurveHandleView extends React.Component<
     const h = Math.abs(this.props.handle.y2 - this.props.handle.y1);
     return {
       x: (x - w / 2) / (w / 2),
-      y: (y - h / 2) / (w / 2)
+      y: (y - h / 2) / (w / 2),
     };
   }
 
@@ -89,7 +89,7 @@ export class InputCurveHandleView extends React.Component<
         p0,
         Geometry.vectorAdd(p0, Geometry.vectorScale(t0, ds)),
         Geometry.vectorAdd(pi, Geometry.vectorScale(ti, -ds)),
-        pi
+        pi,
       ]);
 
       s0 = s;
@@ -103,28 +103,28 @@ export class InputCurveHandleView extends React.Component<
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.interaction);
 
-    this.hammer.on("panstart", e => {
+    this.hammer.on("panstart", (e) => {
       const x = e.center.x - e.deltaX;
       const y = e.center.y - e.deltaY;
       this.setState({
         drawing: true,
-        points: [this.getPoint(x, y)]
+        points: [this.getPoint(x, y)],
       });
     });
-    this.hammer.on("pan", e => {
+    this.hammer.on("pan", (e) => {
       this.state.points.push(this.getPoint(e.center.x, e.center.y));
       this.setState({
-        points: this.state.points
+        points: this.state.points,
       });
     });
-    this.hammer.on("panend", e => {
+    this.hammer.on("panend", (e) => {
       const curve = this.getBezierCurvesFromMousePoints(this.state.points);
       const context = new HandlesDragContext();
       this.props.onDragStart(this.props.handle, context);
       context.emit("end", { value: curve });
       this.setState({
         drawing: false,
-        enabled: false
+        enabled: false,
       });
     });
   }
@@ -145,7 +145,7 @@ export class InputCurveHandleView extends React.Component<
       const y = p.y * scaler + (handle.y1 + handle.y2) / 2;
       return {
         x: fX(x),
-        y: fY(y)
+        y: fY(y),
       };
     };
     return (
@@ -153,7 +153,7 @@ export class InputCurveHandleView extends React.Component<
         d={
           "M" +
           this.state.points
-            .map(p => {
+            .map((p) => {
               const pt = transformPoint(p);
               return `${toSVGNumber(pt.x)},${toSVGNumber(pt.y)}`;
             })
@@ -197,7 +197,7 @@ export class InputCurveHandleView extends React.Component<
         className="handle-button"
         onClick={() => {
           globals.popupController.popupAt(
-            context => {
+            (context) => {
               let windings = 4;
               let startAngle = 180;
               return (
@@ -209,7 +209,7 @@ export class InputCurveHandleView extends React.Component<
                       </span>
                       <InputNumber
                         defaultValue={windings}
-                        onEnter={value => {
+                        onEnter={(value) => {
                           windings = value;
                           return true;
                         }}
@@ -221,7 +221,7 @@ export class InputCurveHandleView extends React.Component<
                       </span>
                       <InputNumber
                         defaultValue={startAngle}
-                        onEnter={value => {
+                        onEnter={(value) => {
                           startAngle = value;
                           return true;
                         }}
@@ -257,11 +257,11 @@ export class InputCurveHandleView extends React.Component<
                             const r2 = a * theta2;
                             const p1 = {
                               x: r1 * Math.cos(theta1),
-                              y: r1 * Math.sin(theta1)
+                              y: r1 * Math.sin(theta1),
                             };
                             const p2 = {
                               x: r2 * Math.cos(theta2),
-                              y: r2 * Math.sin(theta2)
+                              y: r2 * Math.sin(theta2),
                             };
                             const cp1 = {
                               x:
@@ -275,7 +275,7 @@ export class InputCurveHandleView extends React.Component<
                                 (a *
                                   (Math.sin(theta1) +
                                     theta1 * Math.cos(theta1))) /
-                                  scaler
+                                  scaler,
                             };
                             const cp2 = {
                               x:
@@ -289,7 +289,7 @@ export class InputCurveHandleView extends React.Component<
                                 (a *
                                   (Math.sin(theta2) +
                                     theta2 * Math.cos(theta2))) /
-                                  scaler
+                                  scaler,
                             };
                             curve.push([p1, cp1, cp2, p2].map(swapXY));
                           }
@@ -310,7 +310,7 @@ export class InputCurveHandleView extends React.Component<
           y={cy - 16}
           width={32}
           height={32}
-          ref={e => (anchorElement = e)}
+          ref={(e) => (anchorElement = e)}
         />
         <image
           xlinkHref={R.getSVGIcon("scaffold/spiral")}
@@ -335,7 +335,7 @@ export class InputCurveHandleView extends React.Component<
           ref="interaction"
           style={{
             pointerEvents: this.state.enabled ? "fill" : "none",
-            cursor: "crosshair"
+            cursor: "crosshair",
           }}
           className="handle-ghost element-region"
           x={Math.min(fX(handle.x1), fX(handle.x2))}

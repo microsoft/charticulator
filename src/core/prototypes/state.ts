@@ -111,10 +111,10 @@ export class ChartStateManager {
     const chart = this.chart;
 
     // Build the state hierarchy
-    const elementStates = chart.elements.map(element => {
+    const elementStates = chart.elements.map((element) => {
       // Initialie the element state
       const elementState: Specification.ChartElementState = {
-        attributes: {}
+        attributes: {},
       };
       // Special case for plot segment
       if (Prototypes.isType(element.classID, "plot-segment")) {
@@ -126,9 +126,9 @@ export class ChartStateManager {
       return elementState;
     });
 
-    const scaleStates = chart.scales.map(scale => {
+    const scaleStates = chart.scales.map((scale) => {
       const state = {
-        attributes: {}
+        attributes: {},
       } as Specification.ScaleState;
       return state;
     });
@@ -137,7 +137,7 @@ export class ChartStateManager {
       elements: elementStates,
       scales: scaleStates,
       scaleMappings: chart.scaleMappings,
-      attributes: {}
+      attributes: {},
     };
   }
 
@@ -246,14 +246,14 @@ export class ChartStateManager {
 
   /** Initialize the chart state with default parameters */
   public initializeState(defaultAttributes: DefaultAttributes = {}) {
-    this.enumerateClasses(cls => {
+    this.enumerateClasses((cls) => {
       cls.initializeState();
 
       const attributesToAdd = defaultAttributes[cls.object._id];
       if (attributesToAdd) {
         cls.state.attributes = {
           ...cls.state.attributes,
-          ...attributesToAdd
+          ...attributesToAdd,
         };
       }
     });
@@ -350,17 +350,17 @@ export class ChartStateManager {
           mappings: {
             x: {
               type: "parent",
-              parentAttribute: "icx"
+              parentAttribute: "icx",
             } as Specification.ParentMapping,
             y: {
               type: "parent",
-              parentAttribute: "icy"
-            } as Specification.ParentMapping
-          }
-        }
+              parentAttribute: "icy",
+            } as Specification.ParentMapping,
+          },
+        },
       ],
       mappings: {},
-      constraints: []
+      constraints: [],
     };
     this.idIndex.set(newGlyph._id, [newGlyph, null]);
     this.idIndex.set(newGlyph.marks[0]._id, [newGlyph.marks[0], null]);
@@ -408,7 +408,7 @@ export class ChartStateManager {
           for (const glyphState of plotSegmentClass.state.glyphs) {
             const glyphClass = this.classCache.getGlyphClass(glyphState);
             const markState: Specification.MarkState = {
-              attributes: {}
+              attributes: {},
             };
             glyphState.marks.push(markState);
             const markClass = this.classCache.createMarkClass(
@@ -457,7 +457,7 @@ export class ChartStateManager {
     index: number = null
   ) {
     const elementState: Specification.ChartElementState = {
-      attributes: {}
+      attributes: {},
     };
     if (Prototypes.isType(element.classID, "plot-segment")) {
       this.mapPlotSegmentState(
@@ -569,7 +569,7 @@ export class ChartStateManager {
         plotSegment.filter,
         this.dataflow.cache
       );
-      filteredIndices = filteredIndices.filter(i => {
+      filteredIndices = filteredIndices.filter((i) => {
         return filter.filter(table.getRowContext(i));
       });
     }
@@ -592,25 +592,27 @@ export class ChartStateManager {
         // TODO: emit error
       }
     } else {
-      plotSegmentState.dataRowIndices = filteredIndices.map(i => [i]);
+      plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
     }
     // Resolve filter
-    plotSegmentState.glyphs = plotSegmentState.dataRowIndices.map(rowIndex => {
-      if (index2ExistingGlyphState.has(rowIndex.join(","))) {
-        return index2ExistingGlyphState.get(rowIndex.join(","));
-      } else {
-        const glyphState = {
-          marks: glyphObject.marks.map(() => {
-            const elementState = {
-              attributes: {}
-            } as Specification.MarkState;
-            return elementState;
-          }),
-          attributes: {}
-        } as Specification.GlyphState;
-        return glyphState;
+    plotSegmentState.glyphs = plotSegmentState.dataRowIndices.map(
+      (rowIndex) => {
+        if (index2ExistingGlyphState.has(rowIndex.join(","))) {
+          return index2ExistingGlyphState.get(rowIndex.join(","));
+        } else {
+          const glyphState = {
+            marks: glyphObject.marks.map(() => {
+              const elementState = {
+                attributes: {},
+              } as Specification.MarkState;
+              return elementState;
+            }),
+            attributes: {},
+          } as Specification.GlyphState;
+          return glyphState;
+        }
       }
-    });
+    );
   }
 
   private initializePlotSegmentCache(
@@ -688,7 +690,7 @@ export class ChartStateManager {
   /** Add a new scale */
   public addScale(scale: Specification.Scale) {
     const scaleState: Specification.ScaleState = {
-      attributes: {}
+      attributes: {},
     };
     this.chart.scales.push(scale);
     this.chartState.scales.push(scaleState);
@@ -772,7 +774,7 @@ export class ChartStateManager {
     for (const e of elements) {
       elementIDs.add(e._id);
     }
-    return constraints.filter(constraint => {
+    return constraints.filter((constraint) => {
       switch (constraint.type) {
         case "snap": {
           return (
@@ -831,7 +833,7 @@ export class ChartStateManager {
     const plotSegmentClass = this.getClassById(
       plotSegment._id
     ) as PlotSegments.PlotSegmentClass;
-    return plotSegmentClass.state.dataRowIndices.map(indices =>
+    return plotSegmentClass.state.dataRowIndices.map((indices) =>
       table.getGroupedContext(indices)
     );
   }
@@ -852,12 +854,12 @@ export class ChartStateManager {
     }
     if (groupBy && groupBy.expression) {
       const groupExpression = this.dataflow.cache.parse(groupBy.expression);
-      const groups = gather(indices, i =>
+      const groups = gather(indices, (i) =>
         groupExpression.getStringValue(table.getRowContext(i))
       );
-      return groups.map(g => expr.getValue(table.getGroupedContext(g)));
+      return groups.map((g) => expr.getValue(table.getGroupedContext(g)));
     } else {
-      return indices.map(i => expr.getValue(table.getGroupedContext([i])));
+      return indices.map((i) => expr.getValue(table.getGroupedContext([i])));
     }
   }
 

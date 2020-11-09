@@ -8,7 +8,7 @@ import { Actions } from "../../actions";
 import {
   renderDataURLToPNG,
   stringToDataURL,
-  convertColumns
+  convertColumns,
 } from "../../utils";
 import { AppStore } from "../app_store";
 import { Migrator } from "../migrator";
@@ -19,8 +19,8 @@ import { DataType, Table, Column } from "../../../core/dataset";
 import { AddMessage } from "../../actions/actions";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
-export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
-  REG.add(Actions.Export, function(action) {
+export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  REG.add(Actions.Export, function (action) {
     (async () => {
       // Export as vector graphics
       if (action.type == "svg") {
@@ -37,9 +37,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         renderDataURLToPNG(svgDataURL, {
           mode: "scale",
           scale: action.options.scale || 2,
-          background: "#ffffff"
-        }).then(png => {
-          png.toBlob(blob => {
+          background: "#ffffff",
+        }).then((png) => {
+          png.toBlob((blob) => {
             saveAs(
               blob,
               "charticulator." + (action.type == "png" ? "png" : "jpg"),
@@ -50,9 +50,9 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
       // Export as interactive HTML
       if (action.type == "html") {
-        const containerScriptText = await (await fetch(
-          getConfig().ContainerURL
-        )).text();
+        const containerScriptText = await (
+          await fetch(getConfig().ContainerURL)
+        ).text();
 
         const template = deepClone(this.buildChartTemplate());
 
@@ -148,8 +148,8 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     })();
   });
 
-  REG.add(Actions.ExportTemplate, function(this, action) {
-    action.target.generate(action.properties).then(base64 => {
+  REG.add(Actions.ExportTemplate, function (this, action) {
+    action.target.generate(action.properties).then((base64) => {
       const byteCharacters = atob(base64);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -158,7 +158,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       const byteArray = new Uint8Array(byteNumbers);
 
       const blob = new Blob([byteArray], {
-        type: "application/x-binary"
+        type: "application/x-binary",
       });
       FileSaver.saveAs(
         blob,
@@ -169,7 +169,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     });
   });
 
-  REG.add(Actions.Save, function(action) {
+  REG.add(Actions.Save, function (action) {
     this.backendSaveChart()
       .then(() => {
         if (action.onFinish) {
@@ -183,7 +183,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
   });
 
-  REG.add(Actions.SaveAs, function(action) {
+  REG.add(Actions.SaveAs, function (action) {
     this.backendSaveChartAs(action.saveAs)
       .then(() => {
         if (action.onFinish) {
@@ -197,7 +197,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
   });
 
-  REG.add(Actions.Open, function(action) {
+  REG.add(Actions.Open, function (action) {
     this.backendOpenChart(action.id)
       .then(() => {
         if (action.onFinish) {
@@ -211,7 +211,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       });
   });
 
-  REG.add(Actions.Load, function(action) {
+  REG.add(Actions.Load, function (action) {
     this.historyManager.clear();
     const state = new Migrator().migrate(
       action.projectData,
@@ -220,7 +220,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.loadState(state);
   });
 
-  REG.add(Actions.ImportDataset, function(action) {
+  REG.add(Actions.ImportDataset, function (action) {
     this.currentChartID = null;
     this.dataset = action.dataset;
     this.originDataset = deepClone(this.dataset);
@@ -230,7 +230,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.ImportChartAndDataset, function(action) {
+  REG.add(Actions.ImportChartAndDataset, function (action) {
     this.historyManager.clear();
 
     this.currentChartID = null;
@@ -250,7 +250,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.UpdatePlotSegments, function(action) {
+  REG.add(Actions.UpdatePlotSegments, function (action) {
     this.saveHistory();
 
     this.updatePlotSegments();
@@ -259,7 +259,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ReplaceDataset, function(action) {
+  REG.add(Actions.ReplaceDataset, function (action) {
     this.saveHistory();
 
     this.currentChartID = null;
@@ -278,30 +278,32 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ConvertColumnDataType, function(action) {
+  REG.add(Actions.ConvertColumnDataType, function (action) {
     this.saveHistory();
 
     const table = this.dataset.tables.find(
-      table => table.name === action.tableName
+      (table) => table.name === action.tableName
     );
     if (!table) {
       return;
     }
 
-    const column = table.columns.find(column => column.name === action.column);
+    const column = table.columns.find(
+      (column) => column.name === action.column
+    );
     if (!column) {
       return;
     }
 
     const originTable = this.originDataset.tables.find(
-      table => table.name === action.tableName
+      (table) => table.name === action.tableName
     );
     let originColumn = originTable.columns.find(
-      column => column.name === action.column
+      (column) => column.name === action.column
     );
     if (originColumn.metadata.rawColumnName) {
       originColumn = originTable.columns.find(
-        column => column.name === originColumn.metadata.rawColumnName
+        (column) => column.name === originColumn.metadata.rawColumnName
       );
     }
 
@@ -316,7 +318,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.Undo, function(action) {
+  REG.add(Actions.Undo, function (action) {
     const state = this.historyManager.undo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -325,7 +327,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Redo, function(action) {
+  REG.add(Actions.Redo, function (action) {
     const state = this.historyManager.redo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -334,7 +336,7 @@ export default function(REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Reset, function(action) {
+  REG.add(Actions.Reset, function (action) {
     this.saveHistory();
 
     this.currentSelection = null;

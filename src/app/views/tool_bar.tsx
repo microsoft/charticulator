@@ -448,10 +448,7 @@ export class MultiObjectButton extends ContextedComponent<
   }
 
   public render() {
-    const onClick = () => {
-      if (!this.props.compact) {
-        return;
-      }
+    const openContextMenu = () => {
       globals.popupController.popupAt(
         (context) => {
           return (
@@ -479,6 +476,18 @@ export class MultiObjectButton extends ContextedComponent<
       );
     };
 
+    const onClick = () => {
+      if (this.props.compact) {
+        openContextMenu();
+      }
+    };
+
+    const onClickContextMenu = () => {
+      if (!this.props.compact) {
+        openContextMenu();
+      }
+    };
+
     return (
       <div
         className={classNames("charticulator__button-multi-tool", [
@@ -500,7 +509,7 @@ export class MultiObjectButton extends ContextedComponent<
             }
             this.refButton = e as any;
           }}
-          onClick={() => {}}
+          onClick={onClickContextMenu}
         >
           {this.props.compact ? null : (
             <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />

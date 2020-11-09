@@ -79,7 +79,7 @@ export class DraggableElement extends React.Component<
         ref="draggableContainer"
         className={classNames(this.props.className, "draggable", [
           "dragging",
-          this.state.dragging
+          this.state.dragging,
         ])}
         style={{ display: "inline-block", cursor: "pointer" }}
       >

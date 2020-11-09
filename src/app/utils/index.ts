@@ -6,8 +6,8 @@ import { convertColumn } from "../../core/dataset/data_types";
 
 export function classNames(...args: Array<string | [string, boolean]>) {
   return args
-    .filter(x => x != null && (typeof x == "string" || x[1] == true))
-    .map(x => (typeof x == "string" ? x : x[0]))
+    .filter((x) => x != null && (typeof x == "string" || x[1] == true))
+    .map((x) => (typeof x == "string" ? x : x[0]))
     .join(" ");
 }
 
@@ -31,15 +31,12 @@ export function parseHashString(value: string) {
   }
 
   // Split by & and parse each key=value pair
-  return value.split("&").reduce(
-    (prev, str) => {
-      const pair = str.split("=");
-      prev[decodeURIComponent(pair[0])] =
-        pair.length == 2 ? decodeURIComponent(pair[1]) : "";
-      return prev;
-    },
-    {} as { [key: string]: string }
-  );
+  return value.split("&").reduce((prev, str) => {
+    const pair = str.split("=");
+    prev[decodeURIComponent(pair[0])] =
+      pair.length == 2 ? decodeURIComponent(pair[1]) : "";
+    return prev;
+  }, {} as { [key: string]: string });
 }
 
 export interface RenderDataURLToPNGOptions {
@@ -143,9 +140,9 @@ export function showOpenFileDialog(accept?: string[]): Promise<File> {
     const inputElement = document.createElement("input");
     inputElement.type = "file";
     if (accept != null) {
-      inputElement.accept = accept.map(x => "." + x).join(",");
+      inputElement.accept = accept.map((x) => "." + x).join(",");
     }
-    inputElement.onchange = e => {
+    inputElement.onchange = (e) => {
       if (inputElement.files.length == 1) {
         resolve(inputElement.files[0]);
       } else {
@@ -260,7 +257,7 @@ export function getConvertableTypes(
         DataType.Number,
         DataType.String,
         DataType.Boolean,
-        DataType.Date
+        DataType.Date,
       ];
       break;
     case DataType.Number:
@@ -268,17 +265,20 @@ export function getConvertableTypes(
         DataType.Number,
         DataType.String,
         DataType.Boolean,
-        DataType.Date
+        DataType.Date,
       ];
       break;
   }
 
-  return types.filter(t => {
+  return types.filter((t) => {
     if (t == type) {
       return true;
     }
     if (dataSample) {
-      return checkConvertion(t, dataSample.map(d => d && d.toString()));
+      return checkConvertion(
+        t,
+        dataSample.map((d) => d && d.toString())
+      );
     }
   });
 }
@@ -301,15 +301,15 @@ export function convertColumns(
   };
 
   const originColumn = originTable.columns.find(
-    col => col.name === column.name
+    (col) => col.name === column.name
   );
   let columnValues = originTable.rows.map(
-    row => row[column.metadata.rawColumnName] || row[column.name]
+    (row) => row[column.metadata.rawColumnName] || row[column.name]
   );
   const typeBeforeChange = column.type;
   column.type = type;
 
-  columnValues = originTable.rows.map(row => {
+  columnValues = originTable.rows.map((row) => {
     const value = row[column.metadata.rawColumnName] || row[column.name];
     return value && value.toString();
   });
@@ -320,7 +320,7 @@ export function convertColumns(
       columnValues as any,
       table.localeNumberFormat
     );
-    if (convertedValues.filter(val => val).length === 0) {
+    if (convertedValues.filter((val) => val).length === 0) {
       throw Error(
         `Converting column type from ${originColumn.type} to ${type} failed`
       );
@@ -328,9 +328,7 @@ export function convertColumns(
     applyConvertedValues(table, column.name, convertedValues);
     return null;
   } catch (ex) {
-    const messgae = `Converting column type from ${
-      originColumn.type
-    } to ${type} failed`;
+    const messgae = `Converting column type from ${originColumn.type} to ${type} failed`;
     console.warn(messgae);
     // rollback type
     column.type = typeBeforeChange;

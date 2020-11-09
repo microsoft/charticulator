@@ -20,7 +20,7 @@ export class ChartSnappingSession extends SnappingSession<
     findClosestSnappingGuide: boolean
   ) {
     super(
-      guides.filter(x => x.element != markLayout),
+      guides.filter((x) => x.element != markLayout),
       bound,
       threshold,
       findClosestSnappingGuide
@@ -43,7 +43,7 @@ export class ChartSnappingSession extends SnappingSession<
                   action.attribute,
                   {
                     type: "parent",
-                    parentAttribute: action.snapAttribute
+                    parentAttribute: action.snapAttribute,
                   } as Specification.ParentMapping
                 )
               );
@@ -90,7 +90,7 @@ export class ChartSnappingSession extends SnappingSession<
                 action.attribute,
                 {
                   type: "value",
-                  value: action.value
+                  value: action.value,
                 } as Specification.ValueMapping
               )
             );

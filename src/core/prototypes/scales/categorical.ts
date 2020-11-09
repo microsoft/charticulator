@@ -6,7 +6,7 @@ import {
   DataValue,
   AttributeValue,
   AttributeMap,
-  AttributeType
+  AttributeType,
 } from "../../specification";
 import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
 
@@ -66,8 +66,8 @@ export class CategoricalScaleNumber extends ScaleClass<
   public attributes: { [name: string]: AttributeDescription } = {
     rangeScale: {
       name: "rangeScale",
-      type: AttributeType.Number
-    }
+      type: AttributeType.Number,
+    },
   };
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
@@ -105,7 +105,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter(x => typeof x == "string") as string[];
+    const values = column.filter((x) => typeof x == "string") as string[];
     s.inferParameters(values, "order");
 
     props.mapping = {};
@@ -136,14 +136,14 @@ export class CategoricalScaleNumber extends ScaleClass<
     return [
       manager.sectionHeader("Number Mapping"),
       manager.scrollList(
-        keys.map(key =>
+        keys.map((key) =>
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
             manager.inputNumber({ property: "mapping", field: key })
           )
         )
-      )
+      ),
     ];
   }
 }
@@ -154,7 +154,7 @@ export class CategoricalScaleColor extends ScaleClass<
 > {
   public static metadata: ObjectClassMetadata = {
     displayName: "Scale",
-    iconPath: "scale/color"
+    iconPath: "scale/color",
   };
 
   public static classID = "scale.categorical<string,color>";
@@ -177,8 +177,8 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column
-      .filter(x => x != null)
-      .map(x => x.toString()) as string[];
+      .filter((x) => x != null)
+      .map((x) => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -219,18 +219,18 @@ export class CategoricalScaleColor extends ScaleClass<
     return [
       manager.sectionHeader("Color Mapping"),
       manager.scrollList(
-        keys.map(key =>
+        keys.map((key) =>
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
             manager.inputColor({
               property: "mapping",
               field: key,
-              noComputeLayout: true
+              noComputeLayout: true,
             })
           )
         )
-      )
+      ),
     ];
   }
 }
@@ -281,8 +281,8 @@ export class CategoricalScaleEnum extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column
-      .filter(x => x != null)
-      .map(x => x.toString()) as string[];
+      .filter((x) => x != null)
+      .map((x) => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -321,7 +321,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     return [
       manager.sectionHeader("String Mapping"),
       manager.scrollList(
-        keys.map(key =>
+        keys.map((key) =>
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
@@ -332,7 +332,7 @@ export class CategoricalScaleEnum extends ScaleClass<
             )
           )
         )
-      )
+      ),
     ];
   }
 }
@@ -361,8 +361,8 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column
-      .filter(x => x != null)
-      .map(x => x.toString()) as string[];
+      .filter((x) => x != null)
+      .map((x) => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -415,7 +415,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
           manager.setButton({ property: "mapping" }, mappingNONE, null, "Clear")
         )
       ),
-      manager.scrollList(items)
+      manager.scrollList(items),
     ];
   }
 }
@@ -444,8 +444,8 @@ export class CategoricalScaleImage extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column
-      .filter(x => x != null)
-      .map(x => x.toString()) as string[];
+      .filter((x) => x != null)
+      .map((x) => x.toString()) as string[];
     s.inferParameters(values, "order");
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -481,7 +481,7 @@ export class CategoricalScaleImage extends ScaleClass<
     return [
       manager.sectionHeader("Image Mapping"),
       manager.scrollList(
-        keys.map(key =>
+        keys.map((key) =>
           manager.horizontal(
             [2, 5],
             manager.text(key, "right"),
@@ -489,7 +489,7 @@ export class CategoricalScaleImage extends ScaleClass<
             manager.clearButton({ property: "mapping", field: key }, "")
           )
         )
-      )
+      ),
     ];
   }
 }

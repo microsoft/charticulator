@@ -9,13 +9,13 @@ import {
   Graphics,
   Solver,
   zip,
-  deepClone
+  deepClone,
 } from "../core";
 import {
   renderGraphicalElementSVG,
   RenderGraphicalElementSVGOptions,
   DataSelection,
-  GraphicalElementEventHandler
+  GraphicalElementEventHandler,
 } from "../app/renderer";
 
 export { DataSelection };
@@ -70,19 +70,19 @@ export class ChartComponent extends React.Component<
 
       this.state = {
         working: false,
-        graphics: this.renderer.render()
+        graphics: this.renderer.render(),
       };
     } else {
       this.state = {
         working: true,
-        graphics: null
+        graphics: null,
       };
       this.scheduleUpdate();
     }
   }
 
   public applySelection(selection: DataSelection) {
-    this.manager.enumeratePlotSegments(cls => {
+    this.manager.enumeratePlotSegments((cls) => {
       for (const [rowIndices, glyphState] of zip(
         cls.state.dataRowIndices,
         cls.state.glyphs
@@ -106,7 +106,7 @@ export class ChartComponent extends React.Component<
     } else if (newProps.selection != this.props.selection) {
       this.applySelection(newProps.selection);
       this.setState({
-        graphics: this.renderer.render()
+        graphics: this.renderer.render(),
       });
     }
   }
@@ -139,7 +139,7 @@ export class ChartComponent extends React.Component<
     ) {
       this.manager.chart.mappings.width = {
         type: "value",
-        value: newProps.width
+        value: newProps.width,
       } as Specification.ValueMapping;
       changed = true;
     }
@@ -150,7 +150,7 @@ export class ChartComponent extends React.Component<
     ) {
       this.manager.chart.mappings.height = {
         type: "value",
-        value: newProps.height
+        value: newProps.height,
       } as Specification.ValueMapping;
       changed = true;
     }
@@ -178,7 +178,7 @@ export class ChartComponent extends React.Component<
       this.applySelection(this.props.selection);
       this.setState({
         working: false,
-        graphics: this.renderer.render()
+        graphics: this.renderer.render(),
       });
     }, 10);
   }
@@ -251,7 +251,7 @@ export class ChartComponent extends React.Component<
         metaKey: event.metaKey,
         clientX: (event as any).clientX,
         clientY: (event as any).clientY,
-        event
+        event,
       };
       handler({ table: element.plotSegment.table, rowIndices }, modifiers);
     };
@@ -275,8 +275,9 @@ export class ChartComponent extends React.Component<
     const gfx = renderGraphicalElementSVG(this.state.graphics, renderOptions);
     const inner = (
       <g
-        transform={`translate(${this.props.width / 2}, ${this.props.height /
-          2})`}
+        transform={`translate(${this.props.width / 2}, ${
+          this.props.height / 2
+        })`}
       >
         {this.props.onGlyphClick ? (
           <rect
@@ -287,7 +288,7 @@ export class ChartComponent extends React.Component<
             style={{
               fill: "none",
               pointerEvents: "all",
-              stroke: "none"
+              stroke: "none",
             }}
             onClick={() => {
               this.props.onGlyphClick(null, null);
@@ -303,7 +304,7 @@ export class ChartComponent extends React.Component<
             height={this.props.height}
             style={{
               fill: "rgba(0, 0, 0, 0.1)",
-              stroke: "none"
+              stroke: "none",
             }}
           />
         ) : null}
@@ -319,7 +320,7 @@ export class ChartComponent extends React.Component<
             height={this.props.height}
             className={this.props.className}
             style={{
-              userSelect: "none"
+              userSelect: "none",
             }}
           >
             {inner}

@@ -8,7 +8,7 @@ try {
     .execSync("git rev-parse HEAD")
     .toString()
     .trim();
-} catch (e) {}
+} catch (e) { }
 
 module.exports = (env, { mode }) => {
   if (mode == null) {
@@ -32,12 +32,12 @@ module.exports = (env, { mode }) => {
       entry:
         mode == "production"
           ? {
-              app: "./dist/scripts/app/index.js"
-            }
+            app: "./dist/scripts/app/index.js"
+          }
           : {
-              app: "./dist/scripts/app/index.js",
-              test: "./dist/scripts/tests/test_app/index.js"
-            },
+            app: "./dist/scripts/app/index.js",
+            test: "./dist/scripts/tests/test_app/index.js"
+          },
       output: {
         filename: "[name].bundle.js",
         path: __dirname + "/dist/scripts",

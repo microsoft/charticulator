@@ -12,7 +12,7 @@ import {
   ChartElementSelection,
   AppStore,
   GlyphSelection,
-  MarkSelection
+  MarkSelection,
 } from "../../stores";
 import { classNames } from "../../utils";
 import { Button } from "./widgets/controls";
@@ -60,13 +60,13 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
             this.dispatch(new Actions.ReorderChartElement(a, b));
           }}
         >
-          {chart.elements.map(element => {
+          {chart.elements.map((element) => {
             return (
               <div
                 className={classNames("el-object-item", [
                   "is-active",
                   sel instanceof ChartElementSelection &&
-                    sel.chartElement == element
+                    sel.chartElement == element,
                 ])}
                 onClick={() => {
                   this.dispatch(new Actions.SelectChartElement(element));
@@ -123,7 +123,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
         <div
           className={classNames("el-object-item", [
             "is-active",
-            sel instanceof GlyphSelection && sel.glyph == glyph
+            sel instanceof GlyphSelection && sel.glyph == glyph,
           ])}
           onClick={() => {
             this.dispatch(new Actions.SelectGlyph(null, glyph));
@@ -143,15 +143,15 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
           }}
         >
           {glyph.marks
-            .filter(x => x.classID != "mark.anchor")
-            .map(mark => {
+            .filter((x) => x.classID != "mark.anchor")
+            .map((mark) => {
               return (
                 <div
                   className={classNames("el-object-item", [
                     "is-active",
                     sel instanceof MarkSelection &&
                       sel.glyph == glyph &&
-                      sel.mark == mark
+                      sel.mark == mark,
                   ])}
                   key={mark._id}
                   onClick={() => {
@@ -208,7 +208,7 @@ export class ObjectListEditor extends ContextedComponent<{}, {}> {
     return (
       <div className="charticulator__object-list-editor">
         {this.renderChart()}
-        {chart.glyphs.map(glyph => this.renderGlyph(glyph))}
+        {chart.glyphs.map((glyph) => this.renderGlyph(glyph))}
       </div>
     );
   }
@@ -240,7 +240,7 @@ export class ReorderListView extends React.Component<
     this.state = {
       reordering: false,
       dragIndex: null,
-      dropIndex: null
+      dropIndex: null,
     };
   }
 
@@ -286,7 +286,7 @@ export class ReorderListView extends React.Component<
     const hammer = new Hammer(this.container);
     this.hammer = hammer;
     hammer.add(new Hammer.Pan());
-    hammer.on("panstart", e => {
+    hammer.on("panstart", (e) => {
       const cx = e.center.x - e.deltaX;
       const cy = e.center.y - e.deltaY;
       const item = this.getItemAtPoint(cx, cy);
@@ -294,20 +294,20 @@ export class ReorderListView extends React.Component<
         this.setState({
           reordering: true,
           dragIndex: item[0],
-          dropIndex: item
+          dropIndex: item,
         });
       }
     });
-    hammer.on("pan", e => {
+    hammer.on("pan", (e) => {
       const cx = e.center.x;
       const cy = e.center.y;
       const item = this.getItemAtPoint(cx, cy);
       this.setState({
         reordering: true,
-        dropIndex: item
+        dropIndex: item,
       });
     });
-    hammer.on("panend", e => {
+    hammer.on("panend", (e) => {
       if (!this.state.reordering || !this.state.dropIndex) {
         return;
       }
@@ -324,7 +324,7 @@ export class ReorderListView extends React.Component<
           this.setState({
             reordering: false,
             dragIndex: null,
-            dropIndex: null
+            dropIndex: null,
           });
           return;
         }
@@ -335,7 +335,7 @@ export class ReorderListView extends React.Component<
       this.setState({
         reordering: false,
         dragIndex: null,
-        dropIndex: null
+        dropIndex: null,
       });
       this.props.onReorder(from, to);
     });
@@ -351,13 +351,13 @@ export class ReorderListView extends React.Component<
     return (
       <div
         className="charticulator__reorder-list-view"
-        ref={e => (this.container = e)}
+        ref={(e) => (this.container = e)}
       >
         {React.Children.map(this.props.children, (item, index) => {
           return (
             <div
               className="charticulator__reorder-list-view-item"
-              ref={e => {
+              ref={(e) => {
                 if (e) {
                   this.container2Index.set(e, index);
                   this.index2Container.set(index, e);

@@ -84,11 +84,11 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
           >
             {renderGraphicalElementSVG(element, {
               className: "element-shape ghost",
-              noStyle: true
+              noStyle: true,
             })}
             {renderGraphicalElementSVG(element, {
               className: "element-shape indicator",
-              noStyle: true
+              noStyle: true,
             })}
           </g>
         );
@@ -100,7 +100,7 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
         const trCenter = {
           x: rect.cx,
           y: rect.cy,
-          angle: rect.rotation
+          angle: rect.rotation,
         };
         const tr = Graphics.concatTransform(
           Graphics.concatTransform(
@@ -189,11 +189,11 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
             >
               {renderGraphicalElementSVG(element, {
                 className: "element-line ghost",
-                noStyle: true
+                noStyle: true,
               })}
               {renderGraphicalElementSVG(element, {
                 className: "element-line indicator",
-                noStyle: true
+                noStyle: true,
               })}
             </g>
           );

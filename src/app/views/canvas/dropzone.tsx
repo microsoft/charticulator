@@ -44,11 +44,11 @@ export class DropZoneView
     const handler = this.props.onDragEnter(data);
     if (handler) {
       this.setState({
-        active: true
+        active: true,
       });
       ctx.onLeave(() => {
         this.setState({
-          active: false
+          active: false,
         });
       });
       ctx.onDrop((point: Point, modifiers: DragModifiers) => {
@@ -61,7 +61,7 @@ export class DropZoneView
   }
 
   public makeClosePath(...points: Point[]) {
-    return `M${points.map(d => `${d.x},${d.y}`).join("L")}Z`;
+    return `M${points.map((d) => `${d.x},${d.y}`).join("L")}Z`;
   }
   public makeDashedLine(p1: Point, p2: Point) {
     return (
@@ -124,14 +124,15 @@ export class DropZoneView
     const height = 9;
     let extra = "";
     if (Math.abs(angle) < Math.PI / 2) {
-      extra = `translate(0, ${-height / 2}) rotate(180) translate(0, ${height /
-        2})`;
+      extra = `translate(0, ${-height / 2}) rotate(180) translate(0, ${
+        height / 2
+      })`;
     }
     return (
       <g
-        transform={`translate(${cx},${cy}) rotate(${((angle + Math.PI) /
-          Math.PI) *
-          180}) translate(${dx},${dy}) ${extra}`}
+        transform={`translate(${cx},${cy}) rotate(${
+          ((angle + Math.PI) / Math.PI) * 180
+        }) translate(${dx},${dy}) ${extra}`}
       >
         <text
           className="dropzone-element-text"
@@ -193,11 +194,11 @@ export class DropZoneView
           const angleOffset = -90;
           const start = [
             x + radius * Math.cos(((angleOffset + startAngle) * Math.PI) / 180),
-            y + radius * Math.sin(((angleOffset + startAngle) * Math.PI) / 180)
+            y + radius * Math.sin(((angleOffset + startAngle) * Math.PI) / 180),
           ];
           const end = [
             x + radius * Math.cos(((angleOffset + endAngle) * Math.PI) / 180),
-            y + radius * Math.sin(((angleOffset + endAngle) * Math.PI) / 180)
+            y + radius * Math.sin(((angleOffset + endAngle) * Math.PI) / 180),
           ];
           const largeArcFlag = endAngle - startAngle < 180 ? 0 : 1;
           return [
@@ -211,13 +212,13 @@ export class DropZoneView
             largeArcFlag,
             1,
             end[0].toFixed(6),
-            end[1].toFixed(6)
+            end[1].toFixed(6),
           ].join(" ");
         };
         const zone = z as Prototypes.DropZones.Arc;
         const zcenter = Geometry.applyZoom(this.props.zoom, {
           x: zone.center.x,
-          y: -zone.center.y
+          y: -zone.center.y,
         });
         const zradius = zone.radius * this.props.zoom.scale;
         const width = 5;
@@ -309,11 +310,11 @@ export class DropZoneView
         const zone = z as Prototypes.DropZones.Region;
         const p1 = Geometry.applyZoom(this.props.zoom, {
           x: zone.p1.x,
-          y: -zone.p1.y
+          y: -zone.p1.y,
         });
         const p2 = Geometry.applyZoom(this.props.zoom, {
           x: zone.p2.x,
-          y: -zone.p2.y
+          y: -zone.p2.y,
         });
         return (
           <g>
@@ -347,7 +348,7 @@ export class DropZoneView
         const zone = z as Prototypes.DropZones.Rectangle;
         const c = Geometry.applyZoom(this.props.zoom, {
           x: zone.cx,
-          y: -zone.cy
+          y: -zone.cy,
         });
         const width = this.props.zoom.scale * zone.width;
         const height = this.props.zoom.scale * zone.height;
@@ -390,7 +391,7 @@ export class DropZoneView
         ref="container"
         className={classNames("dropzone", `dropzone-${z.type}`, [
           "active",
-          this.state.active
+          this.state.active,
         ])}
       >
         {this.renderElement(z)}

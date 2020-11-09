@@ -33,7 +33,7 @@ export class PointHandleView extends React.Component<
     this.state = {
       dragging: false,
       newXValue: this.props.handle.x,
-      newYValue: this.props.handle.y
+      newYValue: this.props.handle.y,
     };
   }
 
@@ -49,7 +49,7 @@ export class PointHandleView extends React.Component<
     let dYIntegrate: number = 0;
     let dYLast: number = 0;
 
-    this.hammer.on("panstart", e => {
+    this.hammer.on("panstart", (e) => {
       context = new HandlesDragContext();
       oldXValue = this.props.handle.x;
       oldYValue = this.props.handle.y;
@@ -60,13 +60,13 @@ export class PointHandleView extends React.Component<
       this.setState({
         dragging: true,
         newXValue: oldXValue,
-        newYValue: oldYValue
+        newYValue: oldYValue,
       });
       if (this.props.onDragStart) {
         this.props.onDragStart(this.props.handle, context);
       }
     });
-    this.hammer.on("pan", e => {
+    this.hammer.on("pan", (e) => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -76,12 +76,12 @@ export class PointHandleView extends React.Component<
         const newYValue = dYIntegrate + oldYValue;
         this.setState({
           newXValue,
-          newYValue
+          newYValue,
         });
         context.emit("drag", { x: newXValue, y: newYValue });
       }
     });
-    this.hammer.on("panend", e => {
+    this.hammer.on("panend", (e) => {
       if (context) {
         dXIntegrate += (e.deltaX - dXLast) / this.props.zoom.scale;
         dYIntegrate += -(e.deltaY - dYLast) / this.props.zoom.scale;
@@ -91,7 +91,7 @@ export class PointHandleView extends React.Component<
         const newYValue = dYIntegrate + oldYValue;
         context.emit("end", { x: newXValue, y: newYValue });
         this.setState({
-          dragging: false
+          dragging: false,
         });
         context = null;
       }
@@ -106,11 +106,11 @@ export class PointHandleView extends React.Component<
     const { handle } = this.props;
     const { x, y } = Geometry.applyZoom(this.props.zoom, {
       x: handle.x,
-      y: -handle.y
+      y: -handle.y,
     });
     const { x: hx, y: hy } = Geometry.applyZoom(this.props.zoom, {
       x: this.state.newXValue,
-      y: -this.state.newYValue
+      y: -this.state.newYValue,
     });
     return (
       <g

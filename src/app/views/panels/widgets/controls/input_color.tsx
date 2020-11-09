@@ -7,12 +7,12 @@ import {
   Color,
   colorFromHTMLColor,
   ColorGradient,
-  colorToHTMLColorHEX
+  colorToHTMLColorHEX,
 } from "../../../../../core";
 import {
   ColorPicker,
   GradientPicker,
-  GradientView
+  GradientView,
 } from "../../../../components";
 import { PopupView } from "../../../../controllers/popup_controller";
 
@@ -38,16 +38,16 @@ export class InputColor extends React.Component<InputColorProps, {}> {
         <span
           className="el-color-display"
           style={{ backgroundColor: hex == "" ? "transparent" : hex }}
-          ref={e => (colorButton = e)}
+          ref={(e) => (colorButton = e)}
           onClick={() => {
             globals.popupController.popupAt(
-              context => {
+              (context) => {
                 return (
                   <PopupView context={context}>
                     <ColorPicker
                       store={this.props.store}
                       allowNull={true}
-                      onPick={color => {
+                      onPick={(color) => {
                         if (color == null) {
                           this.props.onEnter(null);
                           context.close();
@@ -66,7 +66,7 @@ export class InputColor extends React.Component<InputColorProps, {}> {
         <InputText
           defaultValue={hex}
           placeholder={this.props.allowNull ? "(none)" : ""}
-          onEnter={newValue => {
+          onEnter={(newValue) => {
             newValue = newValue.trim();
             if (newValue == "") {
               if (this.props.allowNull) {
@@ -102,15 +102,15 @@ export class InputColorGradient extends React.Component<
       <span className="charticulator__widget-control-input-color-gradient">
         <span
           className="el-color-gradient-display"
-          ref={e => (colorButton = e)}
+          ref={(e) => (colorButton = e)}
           onClick={() => {
             globals.popupController.popupAt(
-              context => {
+              (context) => {
                 return (
                   <PopupView context={context}>
                     <GradientPicker
                       defaultValue={this.props.defaultValue}
-                      onPick={gradient => {
+                      onPick={(gradient) => {
                         this.props.onEnter(gradient);
                       }}
                     />
