@@ -281,6 +281,8 @@ export namespace SnappingGuides {
     radiusAttribute: string;
     cx: number;
     cy: number;
+    visibleAngle: number;
+    visibleRadius: number;
   }
 
   export interface Label extends Description {

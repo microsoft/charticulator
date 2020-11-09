@@ -289,10 +289,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           chartConstraints,
           this.object._id,
           (elementID: string, attribute: string, value: any) => {
-            // call UpdateChartElementAttribute
-
             const object = Prototypes.findObjectById(manager.chart, elementID);
-            // solver.
             const [element, elementState] = zipArray(
               manager.chart.elements,
               manager.chartState.elements
@@ -300,13 +297,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
               return element._id === elementID;
             });
             elementState.attributes[attribute] = value;
-            console.log(
-              "update attribute",
-              elementID,
-              attribute,
-              value,
-              object
-            );
           },
           manager
         )
@@ -589,6 +579,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           visible: true,
           cx: this.state.attributes.x,
           cy: this.state.attributes.y,
+          visibleAngle: this.state.attributes[`angularValue${i}`],
+          visibleRadius: this.state.attributes[`radialValue${i}`],
         } as SnappingGuides.PolarAxis);
       }
     }
@@ -605,6 +597,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       visible: true,
       cx: this.state.attributes.x,
       cy: this.state.attributes.y,
+      visibleAngle: 0,
+      visibleRadius: 0,
     } as SnappingGuides.PolarAxis);
 
     return result;
