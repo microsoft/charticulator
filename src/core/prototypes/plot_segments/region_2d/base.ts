@@ -2131,35 +2131,39 @@ export class Region2DConstraintBuilder {
     ) {
       const isXFixed = props.xData && props.xData.type == "numerical";
       const isYFixed = props.yData && props.yData.type == "numerical";
-      extra.push(
-        m.row(
-          "Alignment",
-          m.horizontal(
-            [0, 0],
-            isXFixed
-              ? null
-              : m.inputSelect(
-                  { property: "sublayout", field: ["align", "x"] },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"],
-                  }
-                ),
-            isYFixed
-              ? null
-              : m.inputSelect(
-                  { property: "sublayout", field: ["align", "y"] },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"],
-                  }
-                )
+
+      const alignmentWidgets = [];
+
+      if (!isYFixed) {
+        alignmentWidgets.push(
+          m.inputSelect(
+            { property: "sublayout", field: ["align", "y"] },
+            {
+              type: "radio",
+              options: ["start", "middle", "end"],
+              icons: ["align/bottom", "align/y-middle", "align/top"],
+              labels: ["Bottom", "Middle", "Top"],
+            }
           )
-        )
+        );
+      }
+      if (!isXFixed) {
+        alignmentWidgets.push(
+          m.inputSelect(
+            { property: "sublayout", field: ["align", "x"] },
+            {
+              type: "radio",
+              options: ["start", "middle", "end"],
+              icons: ["align/left", "align/x-middle", "align/right"],
+              labels: ["Left", "Middle", "Right"],
+            }
+          )
+        );
+      }
+      alignmentWidgets.push(null);
+
+      extra.push(
+        m.row("Alignment", m.horizontal([0, 0], ...alignmentWidgets.reverse()))
       );
       if (type == "grid") {
         extra.push(

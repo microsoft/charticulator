@@ -219,15 +219,19 @@ export class CategoricalLegendClass extends LegendClass {
       ...widgets,
       manager.row(
         "Orientation",
-        manager.inputSelect(
-          { property: "orientation" },
-          {
-            type: "radio",
-            showLabel: false,
-            icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
-            labels: ["Vertical", "Horizontal"],
-            options: ["vertical", "horizontal"],
-          }
+        manager.horizontal(
+          [0, 0],
+          null,
+          manager.inputSelect(
+            { property: "orientation" },
+            {
+              type: "radio",
+              showLabel: false,
+              icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
+              labels: ["Vertical", "Horizontal"],
+              options: ["vertical", "horizontal"],
+            }
+          )
         )
       ),
     ];
