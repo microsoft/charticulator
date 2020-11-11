@@ -17,7 +17,6 @@ import {
   BoundingBox,
   Controls,
 } from "../common";
-import { GlyphClass } from "../glyphs";
 import { ObjectClassMetadata } from "../index";
 import { PolarState } from "../plot_segments/region_2d/polar";
 import { ChartStateManager } from "../state";
@@ -45,7 +44,6 @@ export interface PolarGuideCoordinatorProperties
   endAngle: number;
   innerRatio: number;
   outerRatio: number;
-  equalizeArea: boolean;
   angularGuidesCount: number;
   radialGuidesCount: number;
 }
@@ -90,7 +88,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     constr: any,
     manager: ChartStateManager
   ) {
-    console.log("buildConstraints");
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
@@ -112,10 +109,29 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       ] as [number, number];
     });
 
-    const [x, y, x1, x2, y1, y2, innerRadius, outerRadius] = solver.attrs(
-      attrs,
-      ["x", "y", "x1", "x2", "y1", "y2", "radial1", "radial2"]
-    );
+    const [
+      x,
+      y,
+      x1,
+      x2,
+      y1,
+      y2,
+      angle1,
+      angle2,
+      innerRadius,
+      outerRadius,
+    ] = solver.attrs(attrs, [
+      "x",
+      "y",
+      "x1",
+      "x2",
+      "y1",
+      "y2",
+      "angle1",
+      "angle2",
+      "radial1",
+      "radial2",
+    ]);
 
     attrs.angle1 = props.startAngle;
     attrs.angle2 = props.endAngle;
@@ -153,8 +169,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         ConstraintStrength.HARD,
         0,
         [
-          [props.innerRatio, y2],
-          [-props.innerRatio, y1],
+          [-props.innerRatio, y2],
+          [props.innerRatio, y1],
         ],
         [[2, innerRadius]]
       );
@@ -163,14 +179,14 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         ConstraintStrength.HARD,
         0,
         [
-          [props.outerRatio, y2],
-          [-props.outerRatio, y1],
+          [-props.outerRatio, y2],
+          [props.outerRatio, y1],
         ],
         [[2, outerRadius]]
       );
     }
 
-    // add constraint 2 * xc = x1 + x2
+    // add constraint 2 * x = x1 + x2
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -180,7 +196,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         [1, x2],
       ]
     );
-    // add constraint 2 * yc = y1 + y2
+    // add constraint 2 * y = y1 + y2
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -193,13 +209,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
     // xy
     {
-      const [x1, x2, y1, y2] = solver.attrs(attrs, [
-        "angle1",
-        "angle2",
-        "radial1",
-        "radial2",
-      ]);
-
       const angleVarable: Array<Variable> = [];
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         angleVarable.push(solver.attr(attrs, angularX[xindex]));
@@ -209,72 +218,73 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         radialVarable.push(solver.attr(attrs, radialY[yindex]));
       }
 
+      for (let xindex = 0; xindex < angularX.length; xindex++) {
+        const [t1, t2] = chunkRangesX[xindex];
+
+        const vx1Expr = [
+          [t1, angle2],
+          [1 - t1, angle1],
+        ] as Array<[number, Variable]>;
+        const vx2Expr = [
+          [t2, angle2],
+          [1 - t2, angle1],
+        ] as Array<[number, Variable]>;
+
+        const vx1 = solver.attr(
+          { value: solver.getLinear(...vx1Expr) },
+          "valueX",
+          { edit: true }
+        );
+        const vx2 = solver.attr(
+          { value: solver.getLinear(...vx2Expr) },
+          "valueX",
+          { edit: true }
+        );
+
+        solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
+        solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
+
+        solver.addEquals(
+          ConstraintStrength.HARD,
+          solver.attr(attrs, angularX[xindex], {
+            edit: false,
+          }),
+          vx1
+        );
+      }
+
       for (let yindex = 0; yindex < radialY.length; yindex++) {
-        const [ty1, ty2] = chunkRangesY[yindex];
+        const [t1, t2] = chunkRangesY[yindex];
 
-        for (let xindex = 0; xindex < angularX.length; xindex++) {
-          const [tx1, tx2] = chunkRangesX[xindex];
+        const vy1Expr = [
+          [t1, outerRadius],
+          [1 - t1, innerRadius],
+        ] as Array<[number, Variable]>;
+        const vy2Expr = [
+          [t2, outerRadius],
+          [1 - t2, innerRadius],
+        ] as Array<[number, Variable]>;
+        const vy1 = solver.attr(
+          { value: solver.getLinear(...vy1Expr) },
+          "valueY",
+          { edit: true }
+        );
+        const vy2 = solver.attr(
+          { value: solver.getLinear(...vy2Expr) },
+          "valueY",
+          { edit: true }
+        );
 
-          const vx1Expr = [
-            [tx1, x2],
-            [1 - tx1, x1],
-          ] as Array<[number, Variable]>;
-          const vx2Expr = [
-            [tx2, x2],
-            [1 - tx2, x1],
-          ] as Array<[number, Variable]>;
+        solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
+        solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
 
-          const vy1Expr = [
-            [ty1, y2],
-            [1 - ty1, y1],
-          ] as Array<[number, Variable]>;
-          const vy2Expr = [
-            [ty2, y2],
-            [1 - ty2, y1],
-          ] as Array<[number, Variable]>;
-
-          const vx1 = solver.attr(
-            { value: solver.getLinear(...vx1Expr) },
-            "value",
-            { edit: true }
-          );
-          const vx2 = solver.attr(
-            { value: solver.getLinear(...vx2Expr) },
-            "value",
-            { edit: true }
-          );
-          const vy1 = solver.attr(
-            { value: solver.getLinear(...vy1Expr) },
-            "value",
-            { edit: true }
-          );
-          const vy2 = solver.attr(
-            { value: solver.getLinear(...vy2Expr) },
-            "value",
-            { edit: true }
-          );
-
-          solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
-          solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
-          solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
-          solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
-
-          solver.addEquals(
-            ConstraintStrength.HARD,
-            solver.attr(attrs, angularX[xindex], {
-              edit: true,
-            }),
-            vx1
-          );
-
-          solver.addEquals(
-            ConstraintStrength.HARD,
-            solver.attr(attrs, radialY[yindex], {
-              edit: true,
-            }),
-            vy2
-          );
-        }
+        solver.addEquals(
+          ConstraintStrength.HARD,
+          solver.attr(attrs, radialY[yindex], {
+            edit: false,
+          }),
+          vy2
+        );
       }
 
       const chartConstraints = this.parent.object.constraints;
@@ -385,7 +395,18 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   }
 
   public get attributeNames(): string[] {
-    return ["x", "y", "x1", "y1", "x2", "y2"]
+    return [
+      "x",
+      "y",
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "angle1",
+      "angle2",
+      "radial1",
+      "radial2",
+    ]
       .concat(this.getValueNamesForAngular())
       .concat(this.getValueNamesForRadial());
   }

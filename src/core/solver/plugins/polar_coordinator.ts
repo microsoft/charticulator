@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Specification } from "../..";
+import { Specification, zipArray } from "../..";
 import { ChartStateManager } from "../../prototypes";
 import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
@@ -49,20 +49,37 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public apply() {
     const cx = this.solver.getValue(this.cx);
     const cy = this.solver.getValue(this.cy);
+
     const attrs = this.attrs;
     for (let i = 0; i < this.angleVarable.length; i++) {
-      const [angleAttr] = this.solver.attrs(attrs, [
+      const angleAttr = this.solver.attr(
+        attrs,
         (this.angleVarable[i] as any).name,
-      ]);
+        {
+          edit: false,
+        }
+      );
 
       for (let j = 0; j < this.radialVarable.length; j++) {
         const attrXname = `point${i}${j}X`;
         const attrYname = `point${i}${j}Y`;
-        const [radialAttr, pointX, pointY] = this.solver.attrs(attrs, [
+
+        const radialAttr = this.solver.attr(
+          attrs,
           (this.radialVarable[j] as any).name,
-          attrXname,
-          attrYname,
-        ]);
+          {
+            edit: false,
+          }
+        );
+
+        const pointX = this.solver.attr(attrs, attrXname, {
+          edit: false,
+        });
+
+        const pointY = this.solver.attr(attrs, attrYname, {
+          edit: false,
+        });
+
         const angle = this.solver.getValue(angleAttr);
         const radians = (angle / 180) * Math.PI;
 
