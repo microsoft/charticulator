@@ -281,7 +281,7 @@ export class Toolbar extends ContextedComponent<
       >
         {toolItems.map((item, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               <div
                 key={index}
                 className={
@@ -299,7 +299,7 @@ export class Toolbar extends ContextedComponent<
                     : "chartaccent__toolbar-horizontal-separator"
                 }
               />
-            </>
+            </React.Fragment>
           );
         })}
         {/* <ScaffoldButton type="map" title="Map" icon="scaffold/map" currentTool={this.props.store.currentTool} /> */}
