@@ -652,19 +652,20 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           }
         )
       ),
-      manager.row(
-        "Radial",
-        manager.inputNumber(
-          { property: "radialGuidesCount" },
-          {
-            showUpdown: true,
-            updownTick: 1,
-            updownRange: [1, 100],
-            minimum: 1,
-            maximum: 100,
-          }
-        )
-      ),
+      // uncomment to allow configure count of guides in different radiuses
+      // manager.row(
+      //   "Radial",
+      //   manager.inputNumber(
+      //     { property: "radialGuidesCount" },
+      //     {
+      //       showUpdown: true,
+      //       updownTick: 1,
+      //       updownRange: [1, 100],
+      //       minimum: 1,
+      //       maximum: 100,
+      //     }
+      //   )
+      // ),
       manager.row(
         "Angle",
         manager.horizontal(
@@ -674,16 +675,17 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           manager.inputNumber({ property: "endAngle" })
         )
       ),
-      manager.row(
-        "Radius",
-        manager.horizontal(
-          [0, 1, 0, 1],
-          manager.label("Inner:"),
-          manager.inputNumber({ property: "innerRatio" }),
-          manager.label("Outer:"),
-          manager.inputNumber({ property: "outerRatio" })
-        )
-      ),
+      // uncomment to allow configure raito
+      // manager.row(
+      //   "Radius",
+      //   manager.horizontal(
+      //     [0, 1, 0, 1],
+      //     manager.label("Inner:"),
+      //     manager.inputNumber({ property: "innerRatio" }),
+      //     manager.label("Outer:"),
+      //     manager.inputNumber({ property: "outerRatio" })
+      //   )
+      // ),
     ];
   }
 }
