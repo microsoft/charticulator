@@ -180,7 +180,8 @@ export abstract class LegendClass extends ChartElementClass {
       manager.row(
         "Alignment",
         manager.horizontal(
-          [1, 1],
+          [0, 0],
+          null,
           manager.inputSelect(
             { property: "alignX" },
             {
@@ -194,11 +195,12 @@ export abstract class LegendClass extends ChartElementClass {
             { property: "alignY" },
             {
               type: "radio",
-              icons: ["align/top", "align/y-middle", "align/bottom"],
-              labels: ["Top", "Middle", "Bottom"],
-              options: ["end", "middle", "start"],
+              options: ["start", "middle", "end"],
+              icons: ["align/bottom", "align/y-middle", "align/top"],
+              labels: ["Bottom", "Middle", "Top"],
             }
-          )
+          ),
+          null
         )
       ),
     ];
