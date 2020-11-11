@@ -596,7 +596,7 @@ export class ChartEditorView
           const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
 
           return (
-            <>
+            <React.Fragment key={`fk${idx}`}>
               <circle
                 className="mark-guide"
                 key={`ck${idx}`}
@@ -641,7 +641,7 @@ export class ChartEditorView
                   this.state.zoom.centerY
                 }
               />
-            </>
+            </React.Fragment>
           );
         }
       }
@@ -1041,21 +1041,19 @@ export class ChartEditorView
         case "point": {
           const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
           return (
-            <>
-              <circle
-                className="snapping-guide"
-                key={`k${idx}`}
-                cx={
-                  axisGuide.angle * this.state.zoom.scale +
-                  this.state.zoom.centerX
-                }
-                cy={
-                  -axisGuide.radius * this.state.zoom.scale +
-                  this.state.zoom.centerY
-                }
-                r={Math.abs(5 * this.state.zoom.scale)}
-              />
-            </>
+            <circle
+              className="snapping-guide"
+              key={key}
+              cx={
+                axisGuide.angle * this.state.zoom.scale +
+                this.state.zoom.centerX
+              }
+              cy={
+                -axisGuide.radius * this.state.zoom.scale +
+                this.state.zoom.centerY
+              }
+              r={Math.abs(5 * this.state.zoom.scale)}
+            />
           );
         }
       }
