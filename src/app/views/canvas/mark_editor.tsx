@@ -1461,30 +1461,31 @@ export class SingleMarkView
             };
           }
           break;
-        case "guide-coordinator-polar":
-          {
-            mode = "rectangle";
-            onCreate = (x1, y1, x2, y2) => {
-              this.dispatch(
-                new Actions.AddMarkToGlyph(
-                  this.props.glyph,
-                  "guide.guide-coordinator-polar",
-                  { x: 0, y: 0 },
-                  { x1, y1, x2, y2 },
-                  {
-                    axis: "xy",
-                    angularGuidesCount: 4,
-                    radialGuidesCount: 2,
-                    startAngle: 45,
-                    endAngle: 405,
-                    innerRatio: 0.0,
-                    outerRatio: 1,
-                  }
-                )
-              );
-            };
-          }
-          break;
+        // Uncomment to allow polar guide coordinates in mark/glyph editor
+        // case "guide-coordinator-polar":
+        //   {
+        //     mode = "rectangle";
+        //     onCreate = (x1, y1, x2, y2) => {
+        //       this.dispatch(
+        //         new Actions.AddMarkToGlyph(
+        //           this.props.glyph,
+        //           "guide.guide-coordinator-polar",
+        //           { x: 0, y: 0 },
+        //           { x1, y1, x2, y2 },
+        //           {
+        //             axis: "xy",
+        //             angularGuidesCount: 4,
+        //             radialGuidesCount: 2,
+        //             startAngle: 45,
+        //             endAngle: 405,
+        //             innerRatio: 0.0,
+        //             outerRatio: 1,
+        //           }
+        //         )
+        //       );
+        //     };
+        //   }
+        //   break;
       }
       return (
         <CreatingComponent
