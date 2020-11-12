@@ -144,29 +144,24 @@ export class LegendCreationPanel extends ContextedComponent<
                 const table = this.store.chartManager.dataflow.getTable(
                   tableName
                 );
+                
                 const data = (columns as any[])
                   .map((ex) => {
-                    const expression = `columnName(${ex.table}.columns, "${ex.columnName}")`;
-                    const parsedExpression = this.store.chartManager.dataflow.cache.parse(
-                      expression
-                    );
-                    try {
-                      const table = this.store.chartManager.dataflow.getTable(
-                        ex.table
-                      );
-                      return parsedExpression.getValue(table); // to do add check before apply
-                    } catch (ex) {
-                      console.error(ex);
-                      return null;
-                    }
+                    const index = table.columns.findIndex(col => col.name == ex.columnName)
+                    return `get(get(${ex.table}.columns, ${index}), "displayName")`;
                   })
                   .filter((v) => v != null);
 
-                const expression = `columnName(${tableName}.columns, ${(data as any[])
+                const expression = `list(${(data as any[])
                   .map((ex) => {
-                    return `"${ex[0]}"`;
+                    return `${ex}`;
                   })
                   .join(",")})`;
+
+                const parsedExpression = this.store.chartManager.dataflow.cache.parse(
+                      expression
+                );
+                const expressionData = parsedExpression.getValue(table);
 
                 const newScale = this.store.chartManager.createObject(
                   scaleClassID
@@ -182,7 +177,7 @@ export class LegendCreationPanel extends ContextedComponent<
                 ) as Prototypes.Scales.ScaleClass;
 
                 scaleClass.inferParameters(
-                  data as Specification.DataValue[],
+                  expressionData as Specification.DataValue[],
                   {}
                 );
 
