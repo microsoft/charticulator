@@ -169,8 +169,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         ConstraintStrength.HARD,
         0,
         [
-          [-props.innerRatio, y2],
-          [props.innerRatio, y1],
+          [props.innerRatio, y2],
+          [-props.innerRatio, y1],
         ],
         [[2, innerRadius]]
       );
@@ -179,8 +179,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         ConstraintStrength.HARD,
         0,
         [
-          [-props.outerRatio, y2],
-          [props.outerRatio, y1],
+          [props.outerRatio, y2],
+          [-props.outerRatio, y1],
         ],
         [[2, outerRadius]]
       );
@@ -527,31 +527,31 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     return [
       {
         type: "line",
-        axis: "x",
-        actions: [{ type: "attribute", attribute: "x1" }],
-        value: x1,
-        span: [y1, y2],
-      } as Handles.Line,
-      {
-        type: "line",
-        axis: "x",
-        actions: [{ type: "attribute", attribute: "x2" }],
-        value: x2,
-        span: [y1, y2],
-      } as Handles.Line,
-      {
-        type: "line",
         axis: "y",
-        actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
+        actions: [{ type: "attribute", attribute: "y1" }],
       } as Handles.Line,
       {
         type: "line",
         axis: "y",
-        actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
+        actions: [{ type: "attribute", attribute: "y2" }],
+      } as Handles.Line,
+      {
+        type: "line",
+        axis: "x",
+        value: x1,
+        span: [y1, y2],
+        actions: [{ type: "attribute", attribute: "x1" }],
+      } as Handles.Line,
+      {
+        type: "line",
+        axis: "x",
+        value: x2,
+        span: [y1, y2],
+        actions: [{ type: "attribute", attribute: "x2" }],
       } as Handles.Line,
       {
         type: "point",
@@ -559,6 +559,15 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         y: y1,
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
+          { type: "attribute", source: "y", attribute: "y1" },
+        ],
+      } as Handles.Point,
+      {
+        type: "point",
+        x: x2,
+        y: y1,
+        actions: [
+          { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
       } as Handles.Point,
@@ -569,15 +578,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         actions: [
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
-        ],
-      } as Handles.Point,
-      {
-        type: "point",
-        x: x2,
-        y: y1,
-        actions: [
-          { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y1" },
         ],
       } as Handles.Point,
       {
