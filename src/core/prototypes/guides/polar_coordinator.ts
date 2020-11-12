@@ -630,7 +630,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           cx: this.state.attributes.x,
           cy: this.state.attributes.y,
           visibleAngle: this.state.attributes[`angularValue${i}`],
-          visibleRadius: this.state.attributes[`radialValue${i}`],
+          visibleRadius: this.state.attributes[`radialValue${j}`],
         } as SnappingGuides.PolarAxis);
       }
     }
