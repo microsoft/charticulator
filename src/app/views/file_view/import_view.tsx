@@ -122,7 +122,8 @@ export class FileViewImport extends ContextedComponent<
                   </div>
                 );
               })}
-            <p className="charticulator__file-view-mapping_row_item">
+            <p className="charticulator__file-view-mapping_row_button_toolbar">
+              <div className="charticulator__file-view-mapping_row_item">
               <Button
                 onClick={() => {
                   if (
@@ -143,12 +144,15 @@ export class FileViewImport extends ContextedComponent<
                   ).length == 0
                 }
               />
+              </div>
+              <div className="charticulator__file-view-mapping_row_item">
               <Button
                 onClick={() => {
                   this.props.onClose();
                 }}
                 text={"Cancel"}
               />
+              </div>
             </p>
           </section>
         </section>
