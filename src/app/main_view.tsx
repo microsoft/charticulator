@@ -190,27 +190,23 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           ref={(e) => (this.refMenuBar = e)}
         />
         <section className="charticulator__panel-container">
-          {[
-            this.viewConfiguration.ColumnsPosition == "left" && datasetPanel(),
-            <div className="charticulator__panel charticulator__panel-editor">
-              {this.viewConfiguration.ToolbarPosition == "top" &&
-                toolBarCreator("horizontal")}
-              <div className="charticulator__panel-editor-panel-container">
-                {[
-                  this.viewConfiguration.EditorPanelsPosition == "left" &&
-                    editorPanels(),
-                  this.viewConfiguration.ToolbarPosition == "left" &&
-                    toolBarCreator("vertical"),
-                  chartPanel(),
-                  this.viewConfiguration.ToolbarPosition == "right" &&
-                    toolBarCreator("vertical"),
-                  this.viewConfiguration.EditorPanelsPosition == "right" &&
-                    editorPanels(),
-                ]}
-              </div>
-            </div>,
-            this.viewConfiguration.ColumnsPosition == "right" && datasetPanel(),
-          ]}
+          {this.viewConfiguration.ColumnsPosition == "left" && datasetPanel()}
+          <div className="charticulator__panel charticulator__panel-editor">
+            {this.viewConfiguration.ToolbarPosition == "top" &&
+              toolBarCreator("horizontal")}
+            <div className="charticulator__panel-editor-panel-container">
+              {this.viewConfiguration.EditorPanelsPosition == "left" &&
+                editorPanels()}
+              {this.viewConfiguration.ToolbarPosition == "left" &&
+                toolBarCreator("vertical")}
+              {chartPanel()}
+              {this.viewConfiguration.ToolbarPosition == "right" &&
+                toolBarCreator("vertical")}
+              {this.viewConfiguration.EditorPanelsPosition == "right" &&
+                editorPanels()}
+            </div>
+          </div>
+          {this.viewConfiguration.ColumnsPosition == "right" && datasetPanel()}
         </section>
         <div className="charticulator__floating-panels">
           {this.state.glyphViewMaximized ? (
