@@ -145,6 +145,30 @@ export class ChartTemplate {
               );
             }
           }
+          if (plotSegment.properties.xData) {
+            if ((plotSegment.properties.xData as any).expression) {
+              (plotSegment.properties.xData as any).expression = this.transformExpression(
+                (plotSegment.properties.xData as any).expression,
+                originalTable
+              );
+            }
+          }
+          if (plotSegment.properties.yData) {
+            if ((plotSegment.properties.yData as any).expression) {
+              (plotSegment.properties.yData as any).expression = this.transformExpression(
+                (plotSegment.properties.yData as any).expression,
+                originalTable
+              );
+            }
+          }
+          if (plotSegment.properties.axis) {
+            if ((plotSegment.properties.axis as any).expression) {
+              (plotSegment.properties.axis as any).expression = this.transformExpression(
+                (plotSegment.properties.axis as any).expression,
+                originalTable
+              );
+            }
+          }
         }
         // Links
         if (Prototypes.isType(item.chartElement.classID, "links")) {
