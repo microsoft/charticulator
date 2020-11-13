@@ -4,8 +4,7 @@
 import { Color, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 
-import { LegendClass, LegendProperties } from "./legend";
-import { buildAxisAppearanceWidgets } from "../plot_segments/axis";
+import { LegendClass, LegendMarkerShape, LegendProperties } from "./legend";
 import { Controls } from "..";
 
 export interface CategoricalLegendItem {
@@ -142,11 +141,46 @@ export class CategoricalLegendClass extends LegendClass {
       switch (item.type) {
         case "color":
           {
-            gItem.elements.push(
-              Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                fillColor: item.value as Color,
-              })
-            );
+            switch (this.object.properties.markerShape) {
+              case "rectangle":
+                gItem.elements.push(
+                  Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
+                    fillColor: item.value as Color,
+                  })
+                );
+                break;
+              case "triangle":
+                gItem.elements.push(
+                  Graphics.makePolygon(
+                    [
+                      {
+                        x: lineHeight / 2 + 4,
+                        y: lineHeight - 2,
+                      },
+                      {
+                        x: 0 + 4 + 2,
+                        y: 0 + 2,
+                      },
+                      {
+                        x: lineHeight + 4 - 2,
+                        y: 0 + 2,
+                      },
+                    ],
+                    {
+                      fillColor: item.value as Color,
+                    }
+                  )
+                );
+
+                break;
+              case "circle":
+              default:
+                gItem.elements.push(
+                  Graphics.makeCircle(16, 12, lineHeight / 2.5, {
+                    fillColor: item.value as Color,
+                  })
+                );
+            }
           }
           break;
       }
