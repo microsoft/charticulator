@@ -9,7 +9,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
-import { FunctionCall, Variable } from "../../../core/expression";
+import { FunctionCall, NumberValue, Variable } from "../../../core/expression";
 
 export interface ScaleValueSelectorProps {
   scale: Specification.Scale;
@@ -34,7 +34,8 @@ export class ScaleValueSelector extends React.Component<
     const parsedExpression = Expression.parse(
       this.props.scaleMapping.expression
     ) as FunctionCall;
-    const selectedIndex = +(parsedExpression.args[1] as any).value;
+    const selectedIndex = (((parsedExpression.args[0] as FunctionCall)
+      .args[0] as FunctionCall).args[1] as NumberValue).value;
 
     this.state = {
       selectedIndex,
