@@ -4,7 +4,7 @@
 import { Color, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 
-import { LegendClass, LegendMarkerShape, LegendProperties } from "./legend";
+import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
 
 export interface CategoricalLegendItem {
