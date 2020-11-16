@@ -72,4 +72,5 @@ export interface TextboxElementProperties extends ObjectProperties {
   paddingY: number;
   alignX: "start" | "middle" | "end";
   alignY: "start" | "middle" | "end";
+  wordWrap: boolean;
 }

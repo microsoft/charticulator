@@ -3,6 +3,7 @@
 
 import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
+import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import {
@@ -47,6 +48,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     paddingY: 0,
     alignX: "middle",
     alignY: "middle",
+    wordWrap: false,
   };
 
   public static defaultMappingValues: Partial<TextboxElementAttributes> = {
@@ -175,6 +177,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
+      manager.row(
+        "Word wrap",
+        manager.inputBoolean(
+          { property: "wordWrap" },
+          {
+            type: "checkbox",
+          }
+        )
+      ),
+
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
       manager.mappingEditor("Outline", "outline", {}),
@@ -257,7 +269,6 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       attrs.fontSize
     );
     const helper = new Graphics.CoordinateSystemHelper(cs);
-    const pathMaker = new Graphics.PathMaker();
     const cheight = (metrics.middle - metrics.ideographicBaseline) * 2;
     let y = 0;
     switch (props.alignY) {
@@ -277,58 +288,107 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         }
         break;
     }
-    helper.lineTo(
-      pathMaker,
-      attrs.x1 + offset.x + props.paddingX,
-      y + offset.y,
-      attrs.x2 + offset.x - props.paddingX,
-      y + offset.y,
-      true
-    );
-    const cmds = pathMaker.path.cmds;
-    const textElement: Graphics.TextOnPath = {
-      type: "text-on-path",
-      pathCmds: cmds,
-      text: attrs.text,
-      fontFamily: attrs.fontFamily,
-      fontSize: attrs.fontSize,
-      align: props.alignX,
-    };
-    if (attrs.outline) {
-      if (attrs.color) {
-        const g = Graphics.makeGroup([
-          {
+    let textElement: Graphics.Element;
+    const applyStyles = (
+      textElement: Graphics.TextOnPath,
+      attrs: TextboxElementAttributes
+    ) => {
+      if (attrs.outline) {
+        if (attrs.color) {
+          const g = Graphics.makeGroup([
+            {
+              ...textElement,
+              style: {
+                strokeColor: attrs.outline,
+              },
+            } as Graphics.TextOnPath,
+            {
+              ...textElement,
+              style: {
+                fillColor: attrs.color,
+              },
+            } as Graphics.TextOnPath,
+          ]);
+          g.style = { opacity: attrs.opacity };
+          return g;
+        } else {
+          return {
             ...textElement,
             style: {
               strokeColor: attrs.outline,
+              opacity: attrs.opacity,
             },
-          } as Graphics.TextOnPath,
-          {
-            ...textElement,
-            style: {
-              fillColor: attrs.color,
-            },
-          } as Graphics.TextOnPath,
-        ]);
-        g.style = { opacity: attrs.opacity };
-        return g;
+          } as Graphics.TextOnPath;
+        }
       } else {
         return {
           ...textElement,
           style: {
-            strokeColor: attrs.outline,
+            fillColor: attrs.color,
             opacity: attrs.opacity,
           },
         } as Graphics.TextOnPath;
       }
+    };
+    if (props.wordWrap) {
+      const height = attrs.fontSize;
+      const maxLines = Math.floor(Math.abs(attrs.y2 - attrs.y1) / height);
+      const textContent = splitByWidth(
+        attrs.text,
+        Math.abs(attrs.x2 - attrs.x1) - 10,
+        maxLines,
+        attrs.fontFamily,
+        attrs.fontSize
+      );
+      const lines: Graphics.Element[] = [];
+      for (let index = 0; index < textContent.length; index++) {
+        const pathMaker = new Graphics.PathMaker();
+        helper.lineTo(
+          pathMaker,
+          attrs.x1 + offset.x + props.paddingX,
+          y + offset.y - height * index,
+          attrs.x2 + offset.x - props.paddingX,
+          y + offset.y - height * index,
+          true
+        );
+        const cmds = pathMaker.path.cmds;
+
+        const textElement = applyStyles(
+          {
+            key: index,
+            type: "text-on-path",
+            pathCmds: cmds,
+            text: textContent[index],
+            fontFamily: attrs.fontFamily,
+            fontSize: attrs.fontSize,
+            align: props.alignX,
+          } as Graphics.TextOnPath,
+          attrs
+        );
+        lines.push(textElement);
+      }
+
+      return Graphics.makeGroup(lines);
     } else {
-      return {
-        ...textElement,
-        style: {
-          fillColor: attrs.color,
-          opacity: attrs.opacity,
-        },
+      const pathMaker = new Graphics.PathMaker();
+      helper.lineTo(
+        pathMaker,
+        attrs.x1 + offset.x + props.paddingX,
+        y + offset.y,
+        attrs.x2 + offset.x - props.paddingX,
+        y + offset.y,
+        true
+      );
+      const cmds = pathMaker.path.cmds;
+      textElement = {
+        type: "text-on-path",
+        pathCmds: cmds,
+        text: attrs.text,
+        fontFamily: attrs.fontFamily,
+        fontSize: attrs.fontSize,
+        align: props.alignX,
       } as Graphics.TextOnPath;
+      return applyStyles(textElement as Graphics.TextOnPath, attrs);
     }
   }
 
@@ -675,6 +735,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.opacity,
+      });
+    }
+    if (this.object.properties.wordWrap !== undefined) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "wordWrap",
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.object.properties.wordWrap,
       });
     }
 
