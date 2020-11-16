@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { keys } from "d3";
 import { Prototypes, zipArray } from "../../../container";
+import { string } from "../../expression";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -9,6 +11,7 @@ import {
   Variable,
 } from "../../solver";
 import * as Specification from "../../specification";
+import { AttributeMap, ObjectState } from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
@@ -18,11 +21,13 @@ import {
   Controls,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
-import { PolarState } from "../plot_segments/region_2d/polar";
+import { CartesianPlotSegment } from "../plot_segments";
+// import { PolarState } from "../plot_segments/region_2d/polar";
 import { ChartStateManager } from "../state";
 
-export interface PolarGuideCoordinatorAttributes
-  extends Specification.AttributeMap {
+export interface PolarGuideCoordinatorAttributesExtend {
+  x: number;
+  y: number;
   x1: number;
   y1: number;
   x2: number;
@@ -34,12 +39,16 @@ export interface PolarGuideCoordinatorAttributes
   radial2: number;
 }
 
-export interface PolarGuideState extends Specification.PlotSegmentState {
+export interface PolarGuideCoordinatorAttributes
+  extends PolarGuideCoordinatorAttributesExtend,
+    Specification.AttributeMap {}
+
+export interface PolarGuideState
+  extends ObjectState<PolarGuideCoordinatorAttributes> {
   attributes: PolarGuideCoordinatorAttributes;
 }
 
-export interface PolarGuideCoordinatorProperties
-  extends Specification.AttributeMap {
+interface PolarGuideCoordinatorPropertiesExtend {
   startAngle: number;
   endAngle: number;
   innerRatio: number;
@@ -48,9 +57,24 @@ export interface PolarGuideCoordinatorProperties
   radialGuidesCount: number;
 }
 
+export interface PolarGuideCoordinatorProperties
+  extends PolarGuideCoordinatorPropertiesExtend,
+    Specification.AttributeMap {}
+
+export const PolarGuidePropertyNames: Array<Extract<
+  keyof PolarGuideCoordinatorPropertiesExtend,
+  string
+>> = [
+  "angularGuidesCount",
+  "endAngle",
+  "innerRatio",
+  "outerRatio",
+  "radialGuidesCount",
+  "startAngle",
+];
+
 export interface GuidePolarCoordinatorProperties
   extends Specification.AttributeMap {
-  axis: "x" | "y";
   properties: PolarGuideCoordinatorProperties;
 }
 
@@ -58,6 +82,20 @@ export interface PolarGuideObject
   extends Specification.Object<PolarGuideCoordinatorProperties> {
   properties: PolarGuideCoordinatorProperties;
 }
+
+export const PolarGuideBaseAttributeNames: Array<Extract<
+  keyof PolarGuideCoordinatorAttributes,
+  string
+>> = ["x", "y", "x1", "y1", "x2", "y2", "angle1", "angle2", "radial1"];
+
+export const getAngularValueName = (index: number) => `angularValue${index}`;
+export const getRadialValueName = (index: number) => `radialValue${index}`;
+
+export const getPointValueName = (
+  angularIndex: number,
+  radialIndex: number,
+  axis: "X" | "Y"
+) => `point${angularIndex}${radialIndex}${axis}`;
 
 export class GuidePolarCoordinatorClass extends ChartElementClass<
   PolarGuideCoordinatorProperties,
@@ -68,17 +106,16 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuidePolarCoordinator",
-    iconPath: "plot-segment/polar", // TODO change
+    iconPath: "plot-segment/polar",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
     },
   };
 
-  public readonly state: PolarState;
+  public readonly state: PolarGuideState;
 
   public static defaultAttributes: Partial<PolarGuideCoordinatorAttributes> = {
-    axis: "xy",
     angularGuidesCount: 4,
     radialGuidesCount: 4,
   };
@@ -314,7 +351,9 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
                 manager.chart.elements,
                 manager.chartState.elements
               )) {
-                if (Prototypes.isType(element.classID, "plot-segment")) {
+                if (
+                  Prototypes.isType(element.classID, CartesianPlotSegment.type)
+                ) {
                   const plotSegment = element as Specification.PlotSegment;
                   const plotSegmentState = elementState as Specification.PlotSegmentState;
                   for (const glyphState of plotSegmentState.glyphs) {
@@ -346,7 +385,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   public getValueNamesForAngular(): string[] {
     const attrs = [];
     for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
-      const name = `angularValue${i}`;
+      const name = getAngularValueName(i);
       attrs.push(name);
       if (this.state) {
         if (this.state.attributes[name] == null) {
@@ -360,7 +399,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   public getValueNamesForRadial(): string[] {
     const attrs = [];
     for (let i = 0; i < this.object.properties.radialGuidesCount; i++) {
-      const name = `radialValue${i}`;
+      const name = getRadialValueName(i);
       attrs.push(name);
       if (this.state) {
         if (this.state.attributes[name] == null) {
@@ -375,14 +414,14 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     const attrs = [];
     for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
       for (let j = 0; j < this.object.properties.radialGuidesCount; j++) {
-        const nameX = `point${i}${j}X`;
+        const nameX = getPointValueName(i, j, "X");
         attrs.push(nameX);
         if (this.state) {
           if (this.state.attributes[nameX] == null) {
             this.state.attributes[nameX] = 0;
           }
         }
-        const nameY = `point${i}${j}Y`;
+        const nameY = getPointValueName(i, j, "Y");
         attrs.push(nameY);
         if (this.state) {
           if (this.state.attributes[nameX] == null) {
@@ -395,96 +434,24 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   }
 
   public get attributeNames(): string[] {
-    return [
-      "x",
-      "y",
-      "x1",
-      "y1",
-      "x2",
-      "y2",
-      "angle1",
-      "angle2",
-      "radial1",
-      "radial2",
-    ]
-      .concat(this.getValueNamesForAngular())
-      .concat(this.getValueNamesForRadial());
+    return PolarGuideBaseAttributeNames.concat(
+      this.getValueNamesForAngular()
+    ).concat(this.getValueNamesForRadial());
   }
 
   public get attributes(): { [name: string]: AttributeDescription } {
-    const r: { [name: string]: AttributeDescription } = {
-      x1: {
-        name: "x1",
-        type: Specification.AttributeType.Number,
-      },
-      y1: {
-        name: "y1",
-        type: Specification.AttributeType.Number,
-      },
-      x2: {
-        name: "x2",
-        type: Specification.AttributeType.Number,
-      },
-      y2: {
-        name: "y2",
-        type: Specification.AttributeType.Number,
-      },
-      angle1: {
-        name: "angle1",
-        type: Specification.AttributeType.Number,
-        defaultValue: -90,
-      },
-      angle2: {
-        name: "angle2",
-        type: Specification.AttributeType.Number,
-        defaultValue: 90,
-      },
-      radial1: {
-        name: "radial1",
-        type: Specification.AttributeType.Number,
-      },
-      radial2: {
-        name: "radial2",
-        type: Specification.AttributeType.Number,
-      },
-      x: {
-        name: "x",
-        type: Specification.AttributeType.Number,
-      },
-      y: {
-        name: "y",
-        type: Specification.AttributeType.Number,
-      },
-    };
-    for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
-      const name = `angularValue${i}`;
-      r[name] = {
+    const attributesType = this.attributeNames.map((name: string) => {
+      return {
         name,
         type: Specification.AttributeType.Number,
       };
-    }
-    for (let i = 0; i < this.object.properties.radialGuidesCount; i++) {
-      const name = `radialValue${i}`;
-      r[name] = {
-        name,
-        type: Specification.AttributeType.Number,
-      };
-    }
-    for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
-      for (let j = 0; j < this.object.properties.radialGuidesCount; j++) {
-        const nameX = `point${i}${j}X`;
-        r[nameX] = {
-          name,
-          type: Specification.AttributeType.Number,
-        };
-        const nameY = `point${i}${j}Y`;
-        r[nameY] = {
-          name,
-          type: Specification.AttributeType.Number,
-        };
-      }
-    }
-    return r;
+    });
+
+    const attributes: { [name: string]: AttributeDescription } = {};
+
+    attributesType.forEach((attr) => (attributes[attr.name] = attr));
+
+    return attributes;
   }
 
   public initializeState() {
@@ -592,7 +559,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     ];
   }
 
-  public getBoundingBox(): BoundingBox.Description {
+  public getBoundingBox(): BoundingBox.Circle {
     const attrs = this.state.attributes;
     const { x, y, x2, y2, x1, y1 } = attrs;
 
@@ -611,12 +578,12 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     } as BoundingBox.Circle;
   }
 
-  public getSnappingGuides(): SnappingGuides.Description[] {
+  public getSnappingGuides(): SnappingGuides.PolarAxis[] {
     const result: SnappingGuides.PolarAxis[] = [];
     for (let i = 0; i < this.object.properties.angularGuidesCount; i++) {
       for (let j = 0; j < this.object.properties.radialGuidesCount; j++) {
-        const nameX = `point${i}${j}X`;
-        const nameY = `point${i}${j}Y`;
+        const nameX = getPointValueName(i, j, "X");
+        const nameY = getPointValueName(i, j, "Y");
 
         result.push({
           type: "point",
@@ -629,8 +596,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           visible: true,
           cx: this.state.attributes.x,
           cy: this.state.attributes.y,
-          visibleAngle: this.state.attributes[`angularValue${i}`],
-          visibleRadius: this.state.attributes[`radialValue${j}`],
+          visibleAngle: this.state.attributes[getAngularValueName(i)],
+          visibleRadius: this.state.attributes[getRadialValueName(j)],
         } as SnappingGuides.PolarAxis);
       }
     }

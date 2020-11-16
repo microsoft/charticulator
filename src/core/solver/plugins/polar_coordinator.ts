@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Specification, zipArray } from "../..";
 import { ChartStateManager } from "../../prototypes";
+import { getPointValueName } from "../../prototypes/guides/polar_coordinator";
 import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
@@ -61,8 +62,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
       );
 
       for (let j = 0; j < this.radialVarable.length; j++) {
-        const attrXname = `point${i}${j}X`;
-        const attrYname = `point${i}${j}Y`;
+        const attrXname = getPointValueName(i, j, "X");
+        const attrYname = getPointValueName(i, j, "Y");
 
         const radialAttr = this.solver.attr(
           attrs,
