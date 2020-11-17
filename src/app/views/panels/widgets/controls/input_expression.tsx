@@ -48,7 +48,9 @@ export class InputExpression extends React.Component<
       });
       this.props.onEnter(null);
     } else {
-      const result = this.props.validate(this.refInput.value);
+      const result = this.props.validate(
+        this.refInput.value.replace(/\\n/g, "\n").replace(/\\t/g, "\t")
+      );
       if (result.pass) {
         this.setState({
           value: result.formatted,
@@ -85,7 +87,7 @@ export class InputExpression extends React.Component<
           )}
           type="text"
           ref={(e) => (this.refInput = e)}
-          value={this.state.value}
+          value={this.state.value.replace(/\n/g, "\\n").replace(/\t/g, "\\t")}
           placeholder={this.props.placeholder}
           onKeyDown={(e) => {
             if (e.key == "Enter") {
@@ -110,9 +112,12 @@ export class InputExpression extends React.Component<
                 errorIndicator: false,
               });
             } else {
-              const result = Expression.verifyUserExpression(newValue, {
-                textExpression: this.props.textExpression,
-              });
+              const result = Expression.verifyUserExpression(
+                newValue.replace(/\\n/g, "\n").replace(/\\t/g, "\t"),
+                {
+                  textExpression: this.props.textExpression,
+                }
+              );
               this.setState({
                 value: this.refInput.value,
                 errorIndicator: !result.pass,

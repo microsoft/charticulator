@@ -108,19 +108,44 @@ export class TextElementClass extends EmphasizableMarkClass<
     );
     const p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
     p.angle += props.rotation;
-    const text = Graphics.makeText(
-      dx,
-      dy,
-      attrs.text,
-      attrs.fontFamily,
-      attrs.fontSize,
-      {
-        strokeColor: attrs.outline,
-        fillColor: attrs.color,
-        opacity: attrs.opacity,
-        ...this.generateEmphasisStyle(empasized),
+    let text: Graphics.Element = null;
+    if (attrs.text.split(/\n/g).length > 1) {
+      const height = attrs.fontSize;
+      const textContent = attrs.text.split(/\n/g);
+      const lines: Graphics.Element[] = [];
+      for (let index = 0; index < textContent.length; index++) {
+        lines.push(
+          Graphics.makeText(
+            dx,
+            dy - height * index,
+            textContent[index],
+            attrs.fontFamily,
+            attrs.fontSize,
+            {
+              strokeColor: attrs.outline,
+              fillColor: attrs.color,
+              opacity: attrs.opacity,
+              ...this.generateEmphasisStyle(empasized),
+            }
+          )
+        );
       }
-    );
+      text = Graphics.makeGroup(lines);
+    } else {
+      text = Graphics.makeText(
+        dx,
+        dy,
+        attrs.text,
+        attrs.fontFamily,
+        attrs.fontSize,
+        {
+          strokeColor: attrs.outline,
+          fillColor: attrs.color,
+          opacity: attrs.opacity,
+          ...this.generateEmphasisStyle(empasized),
+        }
+      );
+    }
     const g = Graphics.makeGroup([text]);
     g.transform = p;
     return g;

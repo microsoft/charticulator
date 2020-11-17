@@ -110,7 +110,7 @@ export class TextMeasurer {
 }
 
 export const SPACE = " ";
-export const BREAKERS_REGEX = /[\s\n]+/g;
+export const BREAKERS_REGEX = /[\s]+/g;
 
 export function split(str: string): string[] {
   return str.split(BREAKERS_REGEX);

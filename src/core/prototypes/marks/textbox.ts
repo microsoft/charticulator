@@ -49,6 +49,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     alignX: "middle",
     alignY: "middle",
     wordWrap: false,
+    overFlow: true,
+    alignText: "start",
   };
 
   public static defaultMappingValues: Partial<TextboxElementAttributes> = {
@@ -177,8 +179,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
+      manager.sectionHeader("Word wrap"),
       manager.row(
-        "Word wrap",
+        "Wrap words",
         manager.inputBoolean(
           { property: "wordWrap" },
           {
@@ -186,7 +189,34 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           }
         )
       ),
-
+      props.wordWrap
+        ? manager.row(
+            "Align text",
+            manager.horizontal(
+              [0, 1],
+              manager.inputSelect(
+                { property: "alignText" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: ["align/bottom", "align/y-middle", "align/top"],
+                  labels: ["Bottom", "Middle", "Top"],
+                }
+              )
+            )
+          )
+        : null,
+      props.wordWrap
+        ? manager.row(
+            "Overflow",
+            manager.inputBoolean(
+              { property: "overFlow" },
+              {
+                type: "checkbox",
+              }
+            )
+          )
+        : null,
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
       manager.mappingEditor("Outline", "outline", {}),
@@ -330,25 +360,50 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         } as Graphics.TextOnPath;
       }
     };
-    if (props.wordWrap) {
+    if ((attrs.text && attrs.text.split(/\n/g).length > 1) || props.wordWrap) {
       const height = attrs.fontSize;
-      const maxLines = Math.floor(Math.abs(attrs.y2 - attrs.y1) / height);
-      const textContent = splitByWidth(
-        attrs.text,
-        Math.abs(attrs.x2 - attrs.x1) - 10,
-        maxLines,
-        attrs.fontFamily,
-        attrs.fontSize
-      );
+      // set limit of lines depends of height bounding box
+      let maxLines = 1000;
+      // if option enabled and no space for rest of text, set limit of lines count
+      if (!props.overFlow) {
+        maxLines = Math.floor(Math.abs(attrs.y2 - attrs.y1) / height);
+      }
+
+      let textContent = [attrs.text];
+      // auto wrap text content
+      if (props.wordWrap) {
+        textContent = splitByWidth(
+          attrs.text.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+          Math.abs(attrs.x2 - attrs.x1) - 10,
+          maxLines,
+          attrs.fontFamily,
+          attrs.fontSize
+        );
+      }
+      // add user input wrap
+      textContent = textContent.flatMap((line) => line.split(/\\n/g));
       const lines: Graphics.Element[] = [];
+      let textBoxShift = 0;
+      switch (props.alignText) {
+        case "start":
+          textBoxShift = 0;
+          break;
+        case "middle":
+          textBoxShift = (textContent.length * height) / 2;
+          break;
+        case "end":
+          textBoxShift = textContent.length * height - height;
+          break;
+      }
+
       for (let index = 0; index < textContent.length; index++) {
         const pathMaker = new Graphics.PathMaker();
         helper.lineTo(
           pathMaker,
           attrs.x1 + offset.x + props.paddingX,
-          y + offset.y - height * index,
+          y + offset.y + textBoxShift - height * index,
           attrs.x2 + offset.x - props.paddingX,
-          y + offset.y - height * index,
+          y + offset.y + textBoxShift - height * index,
           true
         );
         const cmds = pathMaker.path.cmds;
