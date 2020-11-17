@@ -496,7 +496,7 @@ export class AxisRenderer {
                 0,
                 0,
                 AxisRenderer.textMeasurer.measure(textContent[index]),
-                "middle",
+                style.wordWrap ? "middle" : side * cos > 0 ? "right" : "left",
                 side * cos > 0 ? "top" : "bottom",
                 0
               );
