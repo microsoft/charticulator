@@ -452,8 +452,9 @@ export class AxisRenderer {
         g.elements.push(gText);
       } else {
         if (
+          !style.wordWrap &&
           maxTextWidth > maxTickDistance &&
-          tick.label.split(/\\n/g).length === 0
+          tick.label.split(/\\n/g).length === 1
         ) {
           const [px, py] = TextMeasurer.ComputeTextPosition(
             0,
@@ -475,7 +476,7 @@ export class AxisRenderer {
           };
           g.elements.push(gText);
         } else {
-          if (style.wordWrap || tick.label.split(/\\n/g).length > 0) {
+          if (style.wordWrap || tick.label.split(/\\n/g).length > 1) {
             let textContent = [
               tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
             ];
@@ -495,7 +496,7 @@ export class AxisRenderer {
                 0,
                 0,
                 AxisRenderer.textMeasurer.measure(textContent[index]),
-                side * cos > 0 ? "right" : "left",
+                "middle",
                 side * cos > 0 ? "top" : "bottom",
                 0
               );
@@ -596,7 +597,7 @@ export class AxisRenderer {
       const ty = Math.cos(radians) * radius;
 
       const lablel = tick.label.replace(/\n/g, "\\n");
-      if (style.wordWrap || lablel.split(/\\n/g).length > 0) {
+      if (style.wordWrap || lablel.split(/\\n/g).length > 1) {
         let textContent = [lablel];
         if (style.wordWrap) {
           textContent = splitByWidth(
