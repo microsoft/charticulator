@@ -198,7 +198,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 { property: "alignText" },
                 {
                   type: "radio",
-                  options: ["start", "middle", "end"],
+                  options: ["end", "middle", "start"],
                   icons: ["align/bottom", "align/y-middle", "align/top"],
                   labels: ["Bottom", "Middle", "Top"],
                 }
@@ -388,15 +388,52 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       textContent = textContent.flatMap((line) => line.split(/\\n/g));
       const lines: Graphics.Element[] = [];
       let textBoxShift = 0;
-      switch (props.alignText) {
+
+      switch (props.alignY) {
         case "start":
-          textBoxShift = 0;
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = -height;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2 - height;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height - height;
+                break;
+            }
+          }
           break;
         case "middle":
-          textBoxShift = (textContent.length * height) / 2;
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = -height / 2;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2 - height / 2;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height - height / 2;
+                break;
+            }
+          }
           break;
         case "end":
-          textBoxShift = textContent.length * height - height;
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = 0;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height;
+                break;
+            }
+          }
           break;
       }
 
