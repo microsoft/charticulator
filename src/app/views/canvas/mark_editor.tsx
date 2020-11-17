@@ -750,6 +750,58 @@ export class SingleMarkView
             />
           );
         }
+        if (theGuide.type == "point") {
+          const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
+
+          return (
+            <>
+              <circle
+                className="mark-guide"
+                key={`ck${idx}`}
+                cx={
+                  axisGuide.angle * this.state.zoom.scale +
+                  this.state.zoom.centerX
+                }
+                cy={
+                  -axisGuide.radius * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                r={Math.abs(3 * this.state.zoom.scale)}
+              />
+              <circle
+                className="mark-guide"
+                key={`ck${idx}display`}
+                cx={
+                  axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                }
+                cy={
+                  -axisGuide.cy * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                r={Math.abs(axisGuide.visibleRadius * this.state.zoom.scale)}
+              />
+              <line
+                key={`lk${idx}display`}
+                className="mark-guide"
+                x1={
+                  axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                }
+                y1={
+                  -axisGuide.cy * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                x2={
+                  axisGuide.angle * this.state.zoom.scale +
+                  this.state.zoom.centerX
+                }
+                y2={
+                  -axisGuide.radius * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+              />
+            </>
+          );
+        }
       }
     });
   }
@@ -1091,7 +1143,7 @@ export class SingleMarkView
       const elementClass = this.store.chartManager.getMarkClass(elementState);
       const guides = elementClass.getSnappingGuides();
       for (const item of guides) {
-        if (item.type == "label") {
+        if (item.type == "label" || item.type == "point") {
           allLabels.push(item);
         }
       }
@@ -1101,22 +1153,51 @@ export class SingleMarkView
     }
     return (
       <g>
-        {allLabels.map((guide: Prototypes.SnappingGuides.Label, i: number) => {
-          const x = guide.x * this.state.zoom.scale + this.state.zoom.centerX;
-          const y = -guide.y * this.state.zoom.scale + this.state.zoom.centerY;
-          return (
-            <g
-              transform={`translate(${x},${y})`}
-              className="snapping-guide-label"
-              key={i}
-            >
-              <circle cx={0} cy={0} r={2} />
-              <text x={5} y={5} transform={`rotate(45)`}>
-                {guide.text}
-              </text>
-            </g>
-          );
-        })}
+        {allLabels.map(
+          (guide: Prototypes.SnappingGuides.Description, i: number) => {
+            switch (guide.type) {
+              case "point": {
+                const axisGuide = (guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
+                return (
+                  <>
+                    <circle
+                      className="snapping-guide"
+                      key={`k${i}`}
+                      cx={
+                        axisGuide.angle * this.state.zoom.scale +
+                        this.state.zoom.centerX
+                      }
+                      cy={
+                        -axisGuide.radius * this.state.zoom.scale +
+                        this.state.zoom.centerY
+                      }
+                      r={Math.abs(5 * this.state.zoom.scale)}
+                    />
+                  </>
+                );
+              }
+              case "label": {
+                const label = guide as Prototypes.SnappingGuides.Label;
+                const x =
+                  label.x * this.state.zoom.scale + this.state.zoom.centerX;
+                const y =
+                  -label.y * this.state.zoom.scale + this.state.zoom.centerY;
+                return (
+                  <g
+                    transform={`translate(${x},${y})`}
+                    className="snapping-guide-label"
+                    key={i}
+                  >
+                    <circle cx={0} cy={0} r={2} />
+                    <text x={5} y={5} transform={`rotate(45)`}>
+                      {label.text}
+                    </text>
+                  </g>
+                );
+              }
+            }
+          }
+        )}
       </g>
     );
   }
@@ -1380,6 +1461,31 @@ export class SingleMarkView
             };
           }
           break;
+        // Uncomment to allow polar guide coordinates in mark/glyph editor
+        // case "guide-coordinator-polar":
+        //   {
+        //     mode = "rectangle";
+        //     onCreate = (x1, y1, x2, y2) => {
+        //       this.dispatch(
+        //         new Actions.AddMarkToGlyph(
+        //           this.props.glyph,
+        //           "guide.guide-coordinator-polar",
+        //           { x: 0, y: 0 },
+        //           { x1, y1, x2, y2 },
+        //           {
+        //             axis: "xy",
+        //             angularGuidesCount: 4,
+        //             radialGuidesCount: 2,
+        //             startAngle: 45,
+        //             endAngle: 405,
+        //             innerRatio: 0.0,
+        //             outerRatio: 1,
+        //           }
+        //         )
+        //       );
+        //     };
+        //   }
+        //   break;
       }
       return (
         <CreatingComponent

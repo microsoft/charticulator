@@ -124,9 +124,9 @@ let COMMANDS = {
     isProd
       ? () => copyFolder("./public", "./dist")
       : [
-          () => copyFolder("./public", "./dist"),
-          () => copyFolder("./public_test", "./dist")
-        ],
+        () => copyFolder("./public", "./dist"),
+        () => copyFolder("./public_test", "./dist")
+      ],
 
     // Copy all of the extensions
     () => copyFolder("./extensions", "./dist/extensions"),
@@ -209,21 +209,21 @@ let COMMANDS = {
   // Add ?sha256=... and integrity tags to script and css
   add_hash: () => addHASHToHTMLs(),
 
-  ssl_server: "http-server ./dist -a 127.0.0.1 -p 4000 -c-1 -s --ssl --cors",
+  ssl_server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors",
   ssl_public_server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors",
-  server: "http-server ./dist -a 127.0.0.1 -p 4000 -c-1 -s",
+  server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   public_server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   watch: {
     tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
     sass: "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
-    server: "http-server ./dist -a 127.0.0.1 -p 4000 -c-1 -s",
+    server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   },
   ssl_watch: {
     tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
     sass: "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
-    server: "http-server ./dist -a 127.0.0.1 -p 4000 -c-1 -s --ssl --cors"
+    server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
   dev: () => runCommands(devSequence)
 };
