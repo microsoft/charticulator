@@ -10,8 +10,11 @@ import {
   makeText,
   Style,
 } from "../../graphics";
-import { TextMeasurer } from "../../graphics/renderer/text_measurer";
-import { Specification } from "../../index";
+import {
+  splitByWidth,
+  TextMeasurer,
+} from "../../graphics/renderer/text_measurer";
+import { Graphics, Specification } from "../../index";
 import { Controls, TemplateParameters } from "../common";
 import { format } from "d3-format";
 import { AttributeMap, DataKind, DataType } from "../../specification";
@@ -22,6 +25,7 @@ export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   fontFamily: "Arial",
   fontSize: 12,
   tickSize: 5,
+  wordWrap: false,
 };
 
 function fillDefaultAxisStyle(
@@ -362,26 +366,70 @@ export class AxisRenderer {
         dy = -side * (tickSize + offset) * cos;
 
       if (Math.abs(cos) < 0.5) {
-        // 60 ~ 120 degree
-        const [px, py] = TextMeasurer.ComputeTextPosition(
-          0,
-          0,
-          tick.measure,
-          side * sin < 0 ? "right" : "left",
-          "middle",
-          0
-        );
-        const gText = makeGroup([
-          makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-            fillColor: style.tickColor,
-          }),
-        ]);
-        gText.transform = {
-          x: tx + dx,
-          y: ty + dy,
-          angle: 0,
-        };
-        g.elements.push(gText);
+        if (style.wordWrap || tick.label.split(/\\n/g).length > 0) {
+          let textContent: string[] = splitByWidth(
+            tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+            maxTickDistance,
+            10000,
+            style.fontFamily,
+            style.fontSize
+          );
+          textContent = textContent.flatMap((line) => line.split(/\\n/g));
+          const lines: Graphics.Element[] = [];
+          for (let index = 0; index < textContent.length; index++) {
+            const [px, py] = TextMeasurer.ComputeTextPosition(
+              0,
+              0,
+              AxisRenderer.textMeasurer.measure(textContent[index]),
+              side * sin < 0 ? "right" : "left",
+              "middle",
+              0
+            );
+            const text = makeText(
+              px,
+              py -
+                style.fontSize * index +
+                (side * cos > 0
+                  ? 0
+                  : (textContent.length * style.fontSize - style.fontSize) / 2),
+              textContent[index],
+              style.fontFamily,
+              style.fontSize,
+              {
+                fillColor: style.tickColor,
+              }
+            );
+            lines.push(text);
+            const gText = makeGroup(lines);
+            gText.transform = {
+              x: tx + dx,
+              y: ty + dy,
+              angle: 0,
+            };
+            g.elements.push(gText);
+          }
+        } else {
+          // 60 ~ 120 degree
+          const [px, py] = TextMeasurer.ComputeTextPosition(
+            0,
+            0,
+            tick.measure,
+            side * sin < 0 ? "right" : "left",
+            "middle",
+            0
+          );
+          const gText = makeGroup([
+            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+              fillColor: style.tickColor,
+            }),
+          ]);
+          gText.transform = {
+            x: tx + dx,
+            y: ty + dy,
+            angle: 0,
+          };
+          g.elements.push(gText);
+        }
       } else if (Math.abs(cos) < Math.sqrt(3) / 2) {
         const [px, py] = TextMeasurer.ComputeTextPosition(
           0,
@@ -403,7 +451,10 @@ export class AxisRenderer {
         };
         g.elements.push(gText);
       } else {
-        if (maxTextWidth > maxTickDistance) {
+        if (
+          maxTextWidth > maxTickDistance &&
+          tick.label.split(/\\n/g).length === 0
+        ) {
           const [px, py] = TextMeasurer.ComputeTextPosition(
             0,
             0,
@@ -424,25 +475,76 @@ export class AxisRenderer {
           };
           g.elements.push(gText);
         } else {
-          const [px, py] = TextMeasurer.ComputeTextPosition(
-            0,
-            0,
-            tick.measure,
-            "middle",
-            side * cos > 0 ? "top" : "bottom",
-            0
-          );
-          const gText = makeGroup([
-            makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
-              fillColor: style.tickColor,
-            }),
-          ]);
-          gText.transform = {
-            x: tx + dx,
-            y: ty + dy,
-            angle: 0,
-          };
-          g.elements.push(gText);
+          if (style.wordWrap || tick.label.split(/\\n/g).length > 0) {
+            let textContent = [
+              tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+            ];
+            if (style.wordWrap) {
+              textContent = splitByWidth(
+                tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+                maxTickDistance,
+                10000,
+                style.fontFamily,
+                style.fontSize
+              );
+            }
+            textContent = textContent.flatMap((line) => line.split(/\\n/g));
+            const lines: Graphics.Element[] = [];
+            for (let index = 0; index < textContent.length; index++) {
+              const [px, py] = TextMeasurer.ComputeTextPosition(
+                0,
+                0,
+                AxisRenderer.textMeasurer.measure(textContent[index]),
+                side * cos > 0 ? "right" : "left",
+                side * cos > 0 ? "top" : "bottom",
+                0
+              );
+              const text = makeText(
+                px,
+                py -
+                  style.fontSize * index +
+                  (side * cos > 0 ? 0 : textContent.length * style.fontSize),
+                textContent[index],
+                style.fontFamily,
+                style.fontSize,
+                {
+                  fillColor: style.tickColor,
+                }
+              );
+              lines.push(text);
+            }
+            const gText = makeGroup(lines);
+            gText.transform = {
+              x: tx + dx,
+              y: ty + dy,
+              angle: style.wordWrap
+                ? 0
+                : cos > 0
+                ? 36 + angle
+                : 36 + angle - 180,
+            };
+            g.elements.push(gText);
+          } else {
+            const [px, py] = TextMeasurer.ComputeTextPosition(
+              0,
+              0,
+              tick.measure,
+              "middle",
+              side * cos > 0 ? "top" : "bottom",
+              0
+            );
+            const gText = makeGroup([
+              makeText(px, py, tick.label, style.fontFamily, style.fontSize, {
+                fillColor: style.tickColor,
+              }),
+            ]);
+            gText.transform = {
+              x: tx + dx,
+              y: ty + dy,
+              angle: 0,
+            };
+            g.elements.push(gText);
+          }
         }
       }
     }
@@ -685,6 +787,15 @@ export function buildAxisAppearanceWidgets(
             m.inputNumber(
               { property: axisProperty, field: ["style", "fontSize"] },
               { showUpdown: true, updownStyle: "font", updownTick: 2 }
+            )
+          ),
+          m.row(
+            "Wrap words",
+            m.inputBoolean(
+              { property: axisProperty, field: ["style", "wordWrap"] },
+              {
+                type: "checkbox",
+              }
             )
           )
         )

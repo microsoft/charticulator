@@ -39,6 +39,7 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontFamily: string;
   fontSize: number;
   tickSize: number;
+  wordWrap: boolean;
 }
 
 export interface TextAlignment extends AttributeMap {
