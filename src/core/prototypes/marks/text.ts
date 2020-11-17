@@ -109,9 +109,9 @@ export class TextElementClass extends EmphasizableMarkClass<
     const p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
     p.angle += props.rotation;
     let text: Graphics.Element = null;
-    if (attrs.text.split(/\n/g).length > 1) {
+    if (attrs.text.replace(/\\n/g, "\n").split(/\n/g).length > 1) {
       const height = attrs.fontSize;
-      const textContent = attrs.text.split(/\n/g);
+      const textContent = attrs.text.replace(/\\n/g, "\n").split(/\n/g);
       const lines: Graphics.Element[] = [];
       for (let index = 0; index < textContent.length; index++) {
         lines.push(

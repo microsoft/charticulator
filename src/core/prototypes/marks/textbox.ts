@@ -360,7 +360,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         } as Graphics.TextOnPath;
       }
     };
-    if ((attrs.text && attrs.text.split(/\n/g).length > 1) || props.wordWrap) {
+    if (
+      (attrs.text &&
+        attrs.text.replace(/\\n/g, "\n").split(/\n/g).length > 1) ||
+      props.wordWrap
+    ) {
       const height = attrs.fontSize;
       // set limit of lines depends of height bounding box
       let maxLines = 1000;
@@ -373,7 +377,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       // auto wrap text content
       if (props.wordWrap) {
         textContent = splitByWidth(
-          attrs.text.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+          attrs.text.replace(/\n/g, "\\n"),
           Math.abs(attrs.x2 - attrs.x1) - 10,
           maxLines,
           attrs.fontFamily,
