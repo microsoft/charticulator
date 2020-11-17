@@ -505,6 +505,26 @@ export class ChartEditorView
             };
           }
           break;
+        case "guide-coordinator-polar":
+          {
+            mode = "rectangle";
+            onCreate = (x1, y1, x2, y2) => {
+              new Actions.AddChartElement(
+                "guide.guide-coordinator-polar",
+                { x1, y1, x2, y2 },
+                {
+                  axis: "xy",
+                  angularGuidesCount: 4,
+                  radialGuidesCount: 1,
+                  startAngle: 0,
+                  endAngle: 360,
+                  innerRatio: 0.0,
+                  outerRatio: 1,
+                }
+              ).dispatch(this.props.store.dispatcher);
+            };
+          }
+          break;
       }
       return (
         <CreatingComponent
@@ -569,6 +589,46 @@ export class ChartEditorView
                 -guide.value * this.state.zoom.scale + this.state.zoom.centerY
               }
             />
+          );
+        }
+
+        if (theGuide.type == "point") {
+          const axisGuide = theGuide as Prototypes.SnappingGuides.PolarAxis;
+
+          return (
+            <React.Fragment key={`fk${idx}`}>
+              <circle
+                className="mark-guide"
+                key={`ck${idx}display`}
+                cx={
+                  axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                }
+                cy={
+                  -axisGuide.cy * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                r={Math.abs(axisGuide.visibleRadius * this.state.zoom.scale)}
+              />
+              <line
+                key={`lk${idx}display`}
+                className="mark-guide"
+                x1={
+                  axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                }
+                y1={
+                  -axisGuide.cy * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                x2={
+                  axisGuide.angle * this.state.zoom.scale +
+                  this.state.zoom.centerX
+                }
+                y2={
+                  -axisGuide.radius * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+              />
+            </React.Fragment>
           );
         }
       }
@@ -963,6 +1023,90 @@ export class ChartEditorView
               x1={0}
               x2={this.state.viewWidth}
             />
+          );
+        }
+        case "point": {
+          const axisGuide = (guide.guide as unknown) as Prototypes.SnappingGuides.PolarAxis;
+          return (
+            <>
+              {axisGuide.visibleRadius ? (
+                <circle
+                  className="snapping-guide"
+                  key={`ck${idx}display`}
+                  cx={
+                    axisGuide.cx * this.state.zoom.scale +
+                    this.state.zoom.centerX
+                  }
+                  cy={
+                    -axisGuide.cy * this.state.zoom.scale +
+                    this.state.zoom.centerY
+                  }
+                  r={Math.abs(axisGuide.visibleRadius * this.state.zoom.scale)}
+                />
+              ) : (
+                <>
+                  <line
+                    key={`lk${idx}display1`}
+                    className="snapping-guide"
+                    x1={
+                      axisGuide.cx * this.state.zoom.scale +
+                      this.state.zoom.centerX
+                    }
+                    y1={
+                      -(axisGuide.cy - 10) * this.state.zoom.scale +
+                      this.state.zoom.centerY
+                    }
+                    x2={
+                      axisGuide.cx * this.state.zoom.scale +
+                      this.state.zoom.centerX
+                    }
+                    y2={
+                      -(axisGuide.cy + 10) * this.state.zoom.scale +
+                      this.state.zoom.centerY
+                    }
+                  />
+                  <line
+                    key={`lk${idx}display1`}
+                    className="snapping-guide"
+                    x1={
+                      (axisGuide.cx - 10) * this.state.zoom.scale +
+                      this.state.zoom.centerX
+                    }
+                    y1={
+                      -axisGuide.cy * this.state.zoom.scale +
+                      this.state.zoom.centerY
+                    }
+                    x2={
+                      (axisGuide.cx + 10) * this.state.zoom.scale +
+                      this.state.zoom.centerX
+                    }
+                    y2={
+                      -axisGuide.cy * this.state.zoom.scale +
+                      this.state.zoom.centerY
+                    }
+                  />
+                </>
+              )}
+              <line
+                key={`lk${idx}display`}
+                className="snapping-guide"
+                x1={
+                  axisGuide.cx * this.state.zoom.scale + this.state.zoom.centerX
+                }
+                y1={
+                  -axisGuide.cy * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+                x2={
+                  axisGuide.angle * this.state.zoom.scale +
+                  this.state.zoom.centerX
+                }
+                y2={
+                  -axisGuide.radius * this.state.zoom.scale +
+                  this.state.zoom.centerY
+                }
+              />
+            </>
           );
         }
       }
