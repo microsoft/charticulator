@@ -587,33 +587,87 @@ export class AxisRenderer {
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
+    const maxTickDistance =
+      (Math.PI * radius * ((rangeMax - rangeMin) / this.ticks.length)) / 180; // lenght of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
       const radians = (angle / 180) * Math.PI;
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const metrics = AxisRenderer.textMeasurer.measure(tick.label);
-      const [textX, textY] = TextMeasurer.ComputeTextPosition(
-        0,
-        style.tickSize * side,
-        metrics,
-        "middle",
-        side > 0 ? "bottom" : "top",
-        0,
-        2
-      );
-      const gt = makeGroup([
-        makeLine(0, 0, 0, style.tickSize * side, lineStyle),
-        makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
-          fillColor: style.tickColor,
-        }),
-      ]);
+      const lablel = tick.label.replace(/\n/g, "\\n");
+      if (style.wordWrap || lablel.split(/\\n/g).length > 0) {
+        let textContent = [lablel];
+        if (style.wordWrap) {
+          textContent = splitByWidth(
+            lablel,
+            maxTickDistance,
+            10000,
+            style.fontFamily,
+            style.fontSize
+          );
+        }
+        textContent = textContent.flatMap((line) => line.split(/\\n/g));
+        const lines: Graphics.Element[] = [];
+        for (let index = 0; index < textContent.length; index++) {
+          const [textX, textY] = TextMeasurer.ComputeTextPosition(
+            0,
+            style.tickSize * side,
+            AxisRenderer.textMeasurer.measure(textContent[index]),
+            "middle",
+            side > 0 ? "bottom" : "top",
+            0,
+            2
+          );
 
-      gt.transform.angle = -angle;
-      gt.transform.x = tx;
-      gt.transform.y = ty;
-      g.elements.push(gt);
+          const gt = makeText(
+            textX,
+            textY -
+              style.fontSize * index +
+              (side > 0
+                ? style.fontSize * textContent.length - style.fontSize
+                : 0),
+            textContent[index],
+            style.fontFamily,
+            style.fontSize,
+            {
+              fillColor: style.tickColor,
+            }
+          );
+          lines.push(gt);
+        }
+
+        const gt = makeGroup([
+          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+          ...lines,
+        ]);
+
+        gt.transform.angle = -angle;
+        gt.transform.x = tx;
+        gt.transform.y = ty;
+        g.elements.push(gt);
+      } else {
+        const [textX, textY] = TextMeasurer.ComputeTextPosition(
+          0,
+          style.tickSize * side,
+          AxisRenderer.textMeasurer.measure(tick.label),
+          "middle",
+          side > 0 ? "bottom" : "top",
+          0,
+          2
+        );
+        const gt = makeGroup([
+          makeLine(0, 0, 0, style.tickSize * side, lineStyle),
+          makeText(textX, textY, tick.label, style.fontFamily, style.fontSize, {
+            fillColor: style.tickColor,
+          }),
+        ]);
+
+        gt.transform.angle = -angle;
+        gt.transform.x = tx;
+        gt.transform.y = ty;
+        g.elements.push(gt);
+      }
     }
     return g;
   }
