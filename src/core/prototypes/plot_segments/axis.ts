@@ -588,8 +588,10 @@ export class AxisRenderer {
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
+    const margins = 10;
     const maxTickDistance =
-      (Math.PI * radius * ((rangeMax - rangeMin) / this.ticks.length)) / 180; // lenght of arc for all ticks
+      (Math.PI * radius * ((rangeMax - rangeMin) / this.ticks.length)) / 180 -
+      margins * 2; // lenght of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
       const radians = (angle / 180) * Math.PI;
@@ -845,7 +847,7 @@ export function buildAxisAppearanceWidgets(
             )
           ),
           m.row(
-            "Wrap words",
+            "Wrap text",
             m.inputBoolean(
               { property: axisProperty, field: ["style", "wordWrap"] },
               {

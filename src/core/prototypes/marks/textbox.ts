@@ -179,9 +179,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
-      manager.sectionHeader("Word wrap"),
+      manager.sectionHeader("Layout"),
       manager.row(
-        "Wrap words",
+        "Wrap text",
         manager.inputBoolean(
           { property: "wordWrap" },
           {
@@ -191,7 +191,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       ),
       props.wordWrap
         ? manager.row(
-            "Align text",
+            "Alignment",
             manager.horizontal(
               [0, 1],
               manager.inputSelect(
