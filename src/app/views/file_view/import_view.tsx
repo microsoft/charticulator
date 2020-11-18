@@ -27,13 +27,13 @@ const typeDisplayNames: { [key in Specification.DataType]: string } = {
   boolean: "Boolean",
   date: "Date",
   number: "Number",
-  string: "String"
+  string: "String",
 };
 
 export class FileViewImport extends ContextedComponent<
   FileViewImportProps,
   FileViewImportState
-  > {
+> {
   public state: FileViewImportState = {
     columnMappings: new Map(),
   };
@@ -94,8 +94,9 @@ export class FileViewImport extends ContextedComponent<
                               (this.props.tableMapping.get(table.name) ||
                                 table.name)
                           )
-                          .columns
-                          .filter((pbiColumn) => pbiColumn.type === column.type)
+                          .columns.filter(
+                            (pbiColumn) => pbiColumn.type === column.type
+                          )
                           .map((pbiColumn) => {
                             let selected = false;
                             if (pbiColumn.displayName === column.name) {
@@ -107,7 +108,9 @@ export class FileViewImport extends ContextedComponent<
                         return (
                           <React.Fragment key={`${table.name}-${column.name}`}>
                             <div className="charticulator__file-view-mapping_row_item">
-                              <span>{column.name} ({typeDisplayNames[column.type]})</span>
+                              <span>
+                                {column.name} ({typeDisplayNames[column.type]})
+                              </span>
                               <Select
                                 labels={optionValues}
                                 icons={null}
@@ -144,7 +147,8 @@ export class FileViewImport extends ContextedComponent<
                   active={
                     this.props.unmappedColumns.filter(
                       (unmapped) =>
-                        this.state.columnMappings.get(unmapped.name) === undefined
+                        this.state.columnMappings.get(unmapped.name) ===
+                        undefined
                     ).length == 0
                   }
                 />
