@@ -2,17 +2,12 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import * as R from "../../resources";
 
-import { CurrentChartView } from ".";
-import { ButtonRaised, FloatingPanel, SVGImageIcon } from "../../components";
+import { FloatingPanel } from "../../components";
 import { ContextedComponent } from "../../context_component";
-import { Actions } from "../../actions";
 import { Specification } from "../../../core";
 import { Button, Select } from "../panels/widgets/controls";
 import { Table } from "../../../core/dataset/dataset";
-import { PopupContainer, PopupController } from "../../controllers";
-import * as globals from "./../../globals";
 
 export interface FileViewImportProps {
   tables: Specification.Template.Table[];
@@ -28,10 +23,17 @@ export interface FileViewImportState {
   columnMappings: Map<string, string>;
 }
 
+const typeDisplayNames: { [key in Specification.DataType]: string } = {
+  boolean: "Boolean",
+  date: "Date",
+  number: "Number",
+  string: "String"
+};
+
 export class FileViewImport extends ContextedComponent<
   FileViewImportProps,
   FileViewImportState
-> {
+  > {
   public state: FileViewImportState = {
     columnMappings: new Map(),
   };
@@ -92,7 +94,9 @@ export class FileViewImport extends ContextedComponent<
                               (this.props.tableMapping.get(table.name) ||
                                 table.name)
                           )
-                          .columns.map((pbiColumn) => {
+                          .columns
+                          .filter((pbiColumn) => pbiColumn.type === column.type)
+                          .map((pbiColumn) => {
                             let selected = false;
                             if (pbiColumn.displayName === column.name) {
                               selected = true;
@@ -103,7 +107,7 @@ export class FileViewImport extends ContextedComponent<
                         return (
                           <React.Fragment key={`${table.name}-${column.name}`}>
                             <div className="charticulator__file-view-mapping_row_item">
-                              <span>{column.name}</span>
+                              <span>{column.name} ({typeDisplayNames[column.type]})</span>
                               <Select
                                 labels={optionValues}
                                 icons={null}
@@ -124,34 +128,34 @@ export class FileViewImport extends ContextedComponent<
               })}
             <p className="charticulator__file-view-mapping_row_button_toolbar">
               <div className="charticulator__file-view-mapping_row_item">
-              <Button
-                onClick={() => {
-                  if (
+                <Button
+                  onClick={() => {
+                    if (
+                      this.props.unmappedColumns.filter(
+                        (unmapped) =>
+                          this.state.columnMappings.get(unmapped.name) ===
+                          undefined
+                      ).length == 0
+                    ) {
+                      this.props.onSave(this.state.columnMappings);
+                    }
+                  }}
+                  text={"Save mapping"}
+                  active={
                     this.props.unmappedColumns.filter(
                       (unmapped) =>
-                        this.state.columnMappings.get(unmapped.name) ===
-                        undefined
+                        this.state.columnMappings.get(unmapped.name) === undefined
                     ).length == 0
-                  ) {
-                    this.props.onSave(this.state.columnMappings);
                   }
-                }}
-                text={"Save mapping"}
-                active={
-                  this.props.unmappedColumns.filter(
-                    (unmapped) =>
-                      this.state.columnMappings.get(unmapped.name) === undefined
-                  ).length == 0
-                }
-              />
+                />
               </div>
               <div className="charticulator__file-view-mapping_row_item">
-              <Button
-                onClick={() => {
-                  this.props.onClose();
-                }}
-                text={"Cancel"}
-              />
+                <Button
+                  onClick={() => {
+                    this.props.onClose();
+                  }}
+                  text={"Cancel"}
+                />
               </div>
             </p>
           </section>
