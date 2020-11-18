@@ -598,8 +598,8 @@ export class AxisRenderer {
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const lablel = tick.label.replace(/\n/g, "\\n");
-      if (style.wordWrap || lablel.split(/\\n/g).length > 1) {
+      const lablel = tick.label && tick.label.replace(/\n/g, "\\n");
+      if (lablel && (style.wordWrap || lablel.split(/\\n/g).length > 1)) {
         let textContent = [lablel];
         if (style.wordWrap) {
           textContent = splitByWidth(

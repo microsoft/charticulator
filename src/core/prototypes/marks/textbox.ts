@@ -360,9 +360,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         } as Graphics.TextOnPath;
       }
     };
+    const textContent = attrs.text.replace(/\\n/g, "\n");
     if (
-      (attrs.text &&
-        attrs.text.replace(/\\n/g, "\n").split(/\n/g).length > 1) ||
+      (textContent && textContent.split(/\n/g).length > 1) ||
       props.wordWrap
     ) {
       const height = attrs.fontSize;
@@ -373,10 +373,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         maxLines = Math.floor(Math.abs(attrs.y2 - attrs.y1) / height);
       }
 
-      let textContent = [attrs.text];
+      let textContentList = [textContent];
       // auto wrap text content
       if (props.wordWrap) {
-        textContent = splitByWidth(
+        textContentList = splitByWidth(
           attrs.text.replace(/\n/g, "\\n"),
           Math.abs(attrs.x2 - attrs.x1) - 10,
           maxLines,
@@ -385,7 +385,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         );
       }
       // add user input wrap
-      textContent = textContent.flatMap((line) => line.split(/\\n/g));
+      textContentList = textContentList.flatMap((line) => line.split(/\\n/g));
       const lines: Graphics.Element[] = [];
       let textBoxShift = 0;
 
