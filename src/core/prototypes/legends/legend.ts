@@ -25,6 +25,7 @@ export interface LegendProperties extends Specification.AttributeMap {
   fontFamily: string;
   fontSize: number;
   textColor: Color;
+  markerShape: "rectangle" | "circle" | "triangle";
 }
 
 export interface LegendState extends Specification.ObjectState {
@@ -54,6 +55,7 @@ export abstract class LegendClass extends ChartElementClass {
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],
+    markerShape: "circle",
   };
 
   public attributeNames: string[] = ["x", "y"];
@@ -176,6 +178,19 @@ export abstract class LegendClass extends ChartElementClass {
         )
       ),
       manager.row("Color", manager.inputColor({ property: "textColor" })),
+      manager.row(
+        "Shape",
+        manager.inputSelect(
+          { property: "markerShape" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
+            labels: ["Rectangle", "Triangle", "Circle"],
+            options: ["rectangle", "triangle", "circle"],
+          }
+        )
+      ),
       manager.sectionHeader("Layout"),
       manager.row(
         "Alignment",
@@ -238,6 +253,16 @@ export abstract class LegendClass extends ChartElementClass {
         },
         type: Specification.AttributeType.Color,
         default: rgbToHex(this.object.properties.textColor),
+      });
+    }
+    if (this.object.properties.markerShape) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          property: "markerShape",
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.markerShape,
       });
     }
     if (this.object.properties.alignY) {

@@ -186,6 +186,12 @@ export class Toolbar extends ContextedComponent<
           icon="guide/coordinator-y"
           noDragging={true}
         />
+        <ObjectButton
+          classID="guide-coordinator-polar"
+          title="Guide polar"
+          icon="plot-segment/polar"
+          noDragging={true}
+        />
       </>
     );
 

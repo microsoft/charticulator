@@ -39,7 +39,8 @@ export abstract class ChartElementClass<
   /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    context: BuildConstraintsContext,
+    manager: ChartStateManager
   ): void {}
 
   /** Get the graphics that represent this layout */
