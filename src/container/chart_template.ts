@@ -72,11 +72,20 @@ export class ChartTemplate {
 
   /** Get variable map for a given table */
   public getVariableMap(table: string) {
+    let variableMap = {};
     if (this.columnAssignment[table]) {
-      return this.columnAssignment[table];
-    } else {
-      return {};
+      variableMap = {
+        ...this.columnAssignment[table]
+      }
     }
+    if (this.tableAssignment) {
+      variableMap = {
+        ...variableMap,
+        ...this.tableAssignment
+      }
+    }
+
+    return variableMap;
   }
 
   public transformExpression(expr: string, table?: string) {
