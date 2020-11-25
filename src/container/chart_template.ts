@@ -271,7 +271,7 @@ export class ChartTemplate {
         if (axisDataBinding.tickDataExpression) {
           axisDataBinding.tickDataExpression = null; // TODO: fixme
         }
-        if (!inference.disableAutoMin || !inference.disableAutoMax) {
+        if (inference.autoDomainMin || inference.autoDomainMax) {
           // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
           // If disableAuto is true, the same scales will be used for data
           // Example: If disableAuto is true, axis values will be same for all new data sets.
@@ -311,17 +311,17 @@ export class ChartTemplate {
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
-            if (!inference.disableAutoMin) {
+            if (inference.autoDomainMin) {
               axisDataBinding.domainMin = scale.domainMin;
             }
-            if (!inference.disableAutoMax) {
+            if (!inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
             }
           }
         }
       }
       if (inference.scale) {
-        if (!inference.disableAutoMin || !inference.disableAutoMax) {
+        if (inference.autoDomainMin || inference.autoDomainMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
             this.transformExpression(x, inference.dataSource.table)
@@ -337,10 +337,10 @@ export class ChartTemplate {
             )
           );
 
-          if (!inference.disableAutoMin) {
+          if (inference.autoDomainMin) {
             vectors.push([object.properties.domainMin]);
           }
-          if (!inference.disableAutoMax) {
+          if (inference.autoDomainMax) {
             vectors.push([object.properties.domainMax]);
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
