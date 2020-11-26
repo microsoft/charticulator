@@ -80,9 +80,6 @@ export class MessagePanel extends ContextedComponent<
                   <span className="el-text">{message}</span>
                   <SVGImageIcon url={R.getSVGIcon("general/cross")} />
                 </div>
-                {/* <ReorderListView enabled={true} onReorder={(a, b) => {}}>
-              <p>Error</p>
-            </ReorderListView> */}
               </div>
             );
           }
