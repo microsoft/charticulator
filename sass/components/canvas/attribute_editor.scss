@@ -341,7 +341,7 @@
   }
 
   .is-active {
-    background: #cecece;
+    background: $gray-230;
   }
 }
 
@@ -522,11 +522,11 @@
       }
 
       &:hover {
-        background: $gray-200;
+        background: $gray-220;
       }
 
       &.is-active {
-        background: $gray-190;
+        background: $color-is-active;
       }
 
       &.auto-height {
@@ -1160,7 +1160,7 @@
         border-radius: 2px;
 
         &.has-text {
-          background: $gray-200;
+          background: $gray-230;
         }
 
         transition: background-color $transition-default;
@@ -1179,7 +1179,7 @@
         }
 
         &.is-active {
-          background-color: $gray-100;
+          background-color: $gray-230;
 
           .svg-image-icon {
             filter: invert(100%);
@@ -1394,7 +1394,7 @@
         transition: background-color $transition-default;
 
         &.has-text {
-          background: $gray-200;
+          background: $gray-230;
         }
 
         &:hover,
@@ -1547,7 +1547,7 @@
         vertical-align: top;
         height: $line-height;
         border-radius: 2px;
-        background: $gray-200;
+        background: $gray-230;
         overflow: hidden;
 
         &-item {
@@ -1672,7 +1672,7 @@
           margin: 2px 0;
           overflow: hidden;
           border-radius: 2px;
-          background: $gray-200;
+          background: $gray-230;
           transition: background $transition-default;
           cursor: pointer;
 
@@ -1860,7 +1860,7 @@
   }
 
   & > .el-scale-editor {
-    background: $gray-220;
+    background: $theme-secondary-background;
     position: absolute;
     left: calc(100% + 5px);
     bottom: 0;

@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><ellipse cx="16" cy="16" rx="6.58174" ry="10.84876" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <ellipse cx="16" cy="16" rx="6.58174" ry="10.84876"
+        style="fill-opacity:0.0
+        ;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+</svg>

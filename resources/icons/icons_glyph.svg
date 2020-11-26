@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><polygon points="13 25.79 6.71 17.5 13 6.21 25.29 17.5 13 25.79" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round"/><polyline points="13 6.21 14 15.5 13 25.79" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5px"/><polyline points="6.71 17.5 14 15.5 25.29 17.5" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5px"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <polygon points="13 25.79 6.71 17.5 13 6.21 25.29 17.5 13 25.79"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+    <polyline points="13 6.21 14 15.5 13 25.79"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5px" />
+    <polyline points="6.71 17.5 14 15.5 25.29 17.5"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5px" />
+</svg>

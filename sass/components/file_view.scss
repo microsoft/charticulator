@@ -43,7 +43,7 @@
   &-tabs {
     flex-shrink: 0;
     width: 120px;
-    background: $theme-primary-background;
+    background: $color-header;
     color: $theme-primary-foreground;
 
     .el-sep {
@@ -58,7 +58,7 @@
       padding-right: 20px;
       padding-left: 40px;
       font-size: 14px;
-      color: $gray-200;
+      color: $gray-230;
       height: 36px;
       line-height: 36px;
       margin-bottom: 2px;

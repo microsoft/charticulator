@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><circle cx="6.4998" cy="8.3745" r="1.53847" style="opacity:0.4"/><circle cx="6.4998" cy="13.45162" r="1.53847" style="opacity:0.4"/><circle cx="6.5002" cy="18.52873" r="1.53847" style="opacity:0.4"/><circle cx="6.4998" cy="23.60584" r="1.53847" style="opacity:0.4"/><circle cx="25.4998" cy="8.3745" r="1.53847" style="opacity:0.4"/><circle cx="25.4998" cy="13.45162" r="1.53847" style="opacity:0.4"/><circle cx="25.5002" cy="18.52873" r="1.53847" style="opacity:0.4"/><circle cx="25.4998" cy="23.60584" r="1.53847" style="opacity:0.4"/><line x1="8.98782" y1="8.92796" x2="23.01181" y2="12.89817" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px"/><line x1="8.98779" y1="14.78128" x2="23.01183" y2="22.27619" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px"/><line x1="8.98778" y1="22.94103" x2="23.01182" y2="19.19365" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px"/><line x1="8.98778" y1="17.19926" x2="23.01182" y2="9.70419" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <circle cx="6.4998" cy="8.3745" r="1.53847" style="opacity:0.8" />
+    <circle cx="6.4998" cy="13.45162" r="1.53847" style="opacity:0.8" />
+    <circle cx="6.5002" cy="18.52873" r="1.53847" style="opacity:0.8" />
+    <circle cx="6.4998" cy="23.60584" r="1.53847" style="opacity:0.8" />
+    <circle cx="25.4998" cy="8.3745" r="1.53847" style="opacity:0.8" />
+    <circle cx="25.4998" cy="13.45162" r="1.53847" style="opacity:0.8" />
+    <circle cx="25.5002" cy="18.52873" r="1.53847" style="opacity:0.8" />
+    <circle cx="25.4998" cy="23.60584" r="1.53847" style="opacity:0.8" />
+    <line x1="8.98782" y1="8.92796" x2="23.01181" y2="12.89817"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.0px" />
+    <line x1="8.98779" y1="14.78128" x2="23.01183" y2="22.27619"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.0px" />
+    <line x1="8.98778" y1="22.94103" x2="23.01182" y2="19.19365"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.0px" />
+    <line x1="8.98778" y1="17.19926" x2="23.01182" y2="9.70419"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.0px" />
+</svg>

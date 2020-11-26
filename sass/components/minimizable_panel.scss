@@ -29,7 +29,7 @@
         }
       }
 
-      background-color: $gray-220;
+      background-color: $gray-225;
 
       @include shadow-ambient;
 
@@ -89,7 +89,7 @@
   border: 1px solid $gray-100;
   border-radius: 2px;
   box-sizing: border-box;
-  background: $gray-210;
+  background: $theme-secondary-background;
   position: absolute;
   width: 322px;
   left: 100px;
@@ -125,7 +125,7 @@
 
     $header-height: 28px;
 
-    background-color: $gray-220;
+    background-color: $gray-225;
 
     @include shadow-ambient;
 

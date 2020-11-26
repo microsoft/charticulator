@@ -1,1 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><rect x="9.0785" y="10.41578" width="4.64344" height="13.88905" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><line x1="6.27502" y1="7.69837" x2="7.2915" y2="7.69837" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><line x1="6.27502" y1="24.30483" x2="7.2915" y2="24.30483" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><line x1="6.27502" y1="11.84998" x2="7.2915" y2="11.84998" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><line x1="6.27502" y1="16.0016" x2="7.2915" y2="16.0016" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><line x1="6.27502" y1="20.15321" x2="7.2915" y2="20.15321" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><rect x="15.08002" y="13.17831" width="4.64344" height="11.12652" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><rect x="21.08154" y="7.69837" width="4.64344" height="16.60646" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><rect x="9.0785" y="19.35037" width="4.64344" height="4.95446" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><rect x="15.08002" y="17.36031" width="4.64344" height="6.94452" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><rect x="21.08154" y="15.02388" width="4.64344" height="9.28096" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px"/><line x1="7.2915" y1="7.69837" x2="7.2915" y2="24.30483" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px"/><g style="opacity:0.5"><polyline points="28.616 26.862 28.616 28.606 26.872 28.606" style="fill:none;stroke:#000;stroke-linejoin:round"/><line x1="25.59256" y1="28.60607" x2="5.76794" y2="28.60607" style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498"/><polyline points="5.128 28.606 3.384 28.606 3.384 26.862" style="fill:none;stroke:#000;stroke-linejoin:round"/><line x1="3.38409" y1="25.58273" x2="3.38409" y2="5.75811" style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498"/><polyline points="3.384 5.119 3.384 3.374 5.128 3.374" style="fill:none;stroke:#000;stroke-linejoin:round"/><line x1="6.40744" y1="3.37428" x2="26.23206" y2="3.37428" style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498"/><polyline points="26.872 3.374 28.616 3.374 28.616 5.119" style="fill:none;stroke:#000;stroke-linejoin:round"/><line x1="28.61591" y1="6.39761" x2="28.61591" y2="26.22224" style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <rect x="9.0785" y="10.41578" width="4.64344" height="13.88905"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <line x1="6.27502" y1="7.69837" x2="7.2915" y2="7.69837"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <line x1="6.27502" y1="24.30483" x2="7.2915" y2="24.30483"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <line x1="6.27502" y1="11.84998" x2="7.2915" y2="11.84998"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <line x1="6.27502" y1="16.0016" x2="7.2915" y2="16.0016"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <line x1="6.27502" y1="20.15321" x2="7.2915" y2="20.15321"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <rect x="15.08002" y="13.17831" width="4.64344" height="11.12652"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <rect x="21.08154" y="7.69837" width="4.64344" height="16.60646"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <rect x="9.0785" y="19.35037" width="4.64344" height="4.95446"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <rect x="15.08002" y="17.36031" width="4.64344" height="6.94452"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <rect x="21.08154" y="15.02388" width="4.64344" height="9.28096"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.844685614260513px" />
+    <line x1="7.2915" y1="7.69837" x2="7.2915" y2="24.30483"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.26702842139077px" />
+    <g style="opacity:0.8">
+        <polyline points="28.616 26.862 28.616 28.606 26.872 28.606"
+            style="fill:none;stroke:#000;stroke-linejoin:round" />
+        <line x1="25.59256" y1="28.60607" x2="5.76794" y2="28.60607"
+            style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498" />
+        <polyline points="5.128 28.606 3.384 28.606 3.384 26.862" style="fill:none;stroke:#000;stroke-linejoin:round" />
+        <line x1="3.38409" y1="25.58273" x2="3.38409" y2="5.75811"
+            style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498" />
+        <polyline points="3.384 5.119 3.384 3.374 5.128 3.374" style="fill:none;stroke:#000;stroke-linejoin:round" />
+        <line x1="6.40744" y1="3.37428" x2="26.23206" y2="3.37428"
+            style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498" />
+        <polyline points="26.872 3.374 28.616 3.374 28.616 5.119" style="fill:none;stroke:#000;stroke-linejoin:round" />
+        <line x1="28.61591" y1="6.39761" x2="28.61591" y2="26.22224"
+            style="fill:none;stroke:#000;stroke-linejoin:round;stroke-dasharray:3.8370230197906494,1.2790076732635498" />
+    </g>
+</svg>

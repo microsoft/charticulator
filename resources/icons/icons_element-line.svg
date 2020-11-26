@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><line x1="7.93835" y1="24.46282" x2="24.06165" y2="7.53718" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <line x1="7.93835" y1="24.46282" x2="24.06165" y2="7.53718"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10" />
+</svg>

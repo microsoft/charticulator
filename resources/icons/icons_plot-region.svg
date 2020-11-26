@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><circle cx="6.4177" cy="6.4177" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/><circle cx="25.5823" cy="6.4177" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/><circle cx="25.5823" cy="25.5823" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/><circle cx="6.4177" cy="25.5823" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/><line x1="8.47256" y1="6.4177" x2="23.52744" y2="6.4177" style="fill:none;stroke:#000;stroke-miterlimit:10"/><line x1="25.5823" y1="8.47256" x2="25.5823" y2="23.52744" style="fill:none;stroke:#000;stroke-miterlimit:10"/><line x1="23.52744" y1="25.5823" x2="8.47256" y2="25.5823" style="fill:none;stroke:#000;stroke-miterlimit:10"/><line x1="6.4177" y1="23.52744" x2="6.4177" y2="8.47256" style="fill:none;stroke:#000;stroke-miterlimit:10"/><rect x="8.47652" y="16.57949" width="4.22984" height="5.26028" style="fill-opacity:0.2"/><rect x="13.88706" y="10.14058" width="4.22984" height="11.69919" style="fill-opacity:0.2"/><rect x="19.2976" y="13.54217" width="4.22984" height="8.29759" style="fill-opacity:0.2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <circle cx="6.4177" cy="6.4177" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <circle cx="25.5823" cy="6.4177" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <circle cx="25.5823" cy="25.5823" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <circle cx="6.4177" cy="25.5823" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <line x1="8.47256" y1="6.4177" x2="23.52744" y2="6.4177" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <line x1="25.5823" y1="8.47256" x2="25.5823" y2="23.52744" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <line x1="23.52744" y1="25.5823" x2="8.47256" y2="25.5823" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <line x1="6.4177" y1="23.52744" x2="6.4177" y2="8.47256" style="fill:none;stroke:#000;stroke-miterlimit:10" />
+    <rect x="8.47652" y="16.57949" width="4.22984" height="5.26028" style="fill-opacity:0.8" />
+    <rect x="13.88706" y="10.14058" width="4.22984" height="11.69919" style="fill-opacity:0.8" />
+    <rect x="19.2976" y="13.54217" width="4.22984" height="8.29759" style="fill-opacity:0.8" />
+</svg>

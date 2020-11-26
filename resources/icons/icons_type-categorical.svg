@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><circle cx="9.60445" cy="10.21872" r="5.48478" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-miterlimit:10"/><polygon points="11.428 17.473 5.774 27.266 17.082 27.266 11.428 17.473" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round"/><polygon points="21.845 9.733 23.71 13.512 27.88 14.118 24.863 17.059 25.575 21.212 21.845 19.251 18.115 21.212 18.828 17.059 15.81 14.118 19.98 13.512 21.845 9.733" style="fill-opacity:0.2;stroke:#000;stroke-linecap:round;stroke-linejoin:round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <circle cx="9.60445" cy="10.21872" r="5.48478"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-miterlimit:10" />
+    <polygon points="11.428 17.473 5.774 27.266 17.082 27.266 11.428 17.473"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+    <polygon
+        points="21.845 9.733 23.71 13.512 27.88 14.118 24.863 17.059 25.575 21.212 21.845 19.251 18.115 21.212 18.828 17.059 15.81 14.118 19.98 13.512 21.845 9.733"
+        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+</svg>

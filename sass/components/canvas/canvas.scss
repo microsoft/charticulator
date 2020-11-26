@@ -7,6 +7,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1px solid $gray-200;
+  border-radius: 10px;
 
   .glyph-tabs {
     display: inline-block;
@@ -18,10 +20,10 @@
       padding: 0 4px;
       border-radius: 0 0 2px 2px;
       &.is-active {
-        background: $gray-220;
+        background: $color-is-active;
       }
       &:hover {
-        background: $gray-230;
+        background: $gray-220;
       }
       margin-right: 1px;
       transition: background-color $transition-default;
@@ -94,7 +96,7 @@
 }
 
 .canvas-controls {
-  background: $gray-210;
+  background: $gray-230;
   line-height: 24px;
   height: 24px;
   font-size: 12px;
@@ -175,8 +177,7 @@
 
 .canvas-view {
   display: block;
-  background: $gray-220;
-
+  background: $gray-225;
   .drop-indicator {
     fill: transparentize($color-primary, 0.95);
     stroke: $color-primary;

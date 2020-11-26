@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><polyline points="4.043 25.997 4.043 23.186 27.957 23.186 27.957 25.997" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round"/><rect x="4.04317" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.2"/><rect x="22.38924" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.2"/><rect x="13.21729" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <polyline points="4.043 25.997 4.043 23.186 27.957 23.186 27.957 25.997"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+    <rect x="4.04317" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
+    <rect x="22.38924" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
+    <rect x="13.21729" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
+</svg>

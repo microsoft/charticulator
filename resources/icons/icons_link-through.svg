@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><circle cx="5.14209" cy="17.17263" r="1.53847" style="opacity:0.4"/><circle cx="12.3807" cy="11.27549" r="1.53847" style="opacity:0.4"/><circle cx="19.6193" cy="20.72451" r="1.53847" style="opacity:0.4"/><circle cx="26.85791" cy="14.40872" r="1.53847" style="opacity:0.4"/><line x1="21.5321" y1="19.05557" x2="24.94581" y2="16.07705" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px"/><line x1="13.92357" y1="13.28951" x2="18.07713" y2="18.71142" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px"/><line x1="7.10812" y1="15.57095" x2="10.41415" y2="12.8776" style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <circle cx="5.14209" cy="17.17263" r="1.53847" style="opacity:0.8" />
+    <circle cx="12.3807" cy="11.27549" r="1.53847" style="opacity:0.8" />
+    <circle cx="19.6193" cy="20.72451" r="1.53847" style="opacity:0.8" />
+    <circle cx="26.85791" cy="14.40872" r="1.53847" style="opacity:0.8" />
+    <line x1="21.5321" y1="19.05557" x2="24.94581" y2="16.07705"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.0px" />
+    <line x1="13.92357" y1="13.28951" x2="18.07713" y2="18.71142"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.0px" />
+    <line x1="7.10812" y1="15.57095" x2="10.41415" y2="12.8776"
+        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.0px" />
+</svg>
