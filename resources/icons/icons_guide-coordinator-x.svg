@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
     <title>icons</title>
-    <line x1="27.40954" y1="12.19682" x2="6.15384" y2="12.19682"
+    <line x1="12.19682" y1="4.59046" x2="12.19682" y2="25.84616"
         style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:3,2;opacity:0.8" />
-    <line x1="27.40954" y1="4.59046" x2="6.15384" y2="4.59046"
+    <line x1="4.59046" y1="4.59046" x2="4.59046" y2="25.84616"
         style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:3,2;opacity:0.8" />
-    <line x1="27.40954" y1="27.40954" x2="6.15384" y2="27.40954"
+    <line x1="27.40954" y1="4.59046" x2="27.40954" y2="25.84616"
         style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:3,2;opacity:0.8" />
-    <line x1="27.40954" y1="19.80318" x2="6.15384" y2="19.80318"
+    <line x1="19.80318" y1="4.59046" x2="19.80318" y2="25.84616"
         style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:3,2;opacity:0.8" />
-    <polyline points="4.59 4.59 6.154 4.59 6.154 27.41 4.59 27.41"
+    <polyline points="4.59 27.41 4.59 25.846 27.41 25.846 27.41 27.41"
         style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
 </svg>

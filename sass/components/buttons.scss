@@ -56,7 +56,7 @@
   &-tool {
     @include button-base(32px);
     @include icon-size(24px);
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     padding: 4px;
 
@@ -99,7 +99,7 @@
 
   &-multi-tool {
     margin-right: 4px;
-    @include shadow-ambient;
+    // @include shadow-ambient;
     border-radius: 2px;
     background: $color-well;
 
@@ -176,7 +176,7 @@
   &-raised {
     @include button-base(32px);
     @include icon-size(20px, 6px);
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     .el-text {
       font-size: 14px;
@@ -185,7 +185,7 @@
     background: $gray-230;
     color: $gray-040;
 
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     &:hover {
       background: lighten($color-well, 5%);
@@ -216,7 +216,7 @@
       &:hover,
       &:active {
         background: $gray-230;
-        @include shadow-ambient;
+        // @include shadow-ambient;
       }
     }
   }

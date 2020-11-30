@@ -235,7 +235,7 @@ export class MenuBar extends ContextedComponent<
     return (
       <>
         <MenuButton
-          url={R.getSVGIcon("toolbar/import")}
+          url={R.getSVGIcon("toolbar/import-template")}
           text=""
           title="Import template"
           onClick={async () => {
@@ -318,7 +318,7 @@ export class MenuBar extends ContextedComponent<
           }}
         />
         <MenuButton
-          url={R.getSVGIcon("toolbar/export")}
+          url={R.getSVGIcon("toolbar/export-template")}
           text=""
           title="Export template"
           onClick={() => {

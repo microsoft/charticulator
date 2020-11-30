@@ -108,6 +108,10 @@ addSVGIcon(
   require("resources/icons/icons_toolbar-download.svg")
 );
 addSVGIcon(
+  "toolbar/export-template",
+  require("resources/icons/icons_toolbar-export-template.svg")
+);
+addSVGIcon(
   "toolbar/export",
   require("resources/icons/icons_toolbar-export.svg")
 );
@@ -117,6 +121,10 @@ addSVGIcon("toolbar/help", require("resources/icons/icons_toolbar-help.svg"));
 addSVGIcon(
   "toolbar/import",
   require("resources/icons/icons_toolbar-import.svg")
+);
+addSVGIcon(
+  "toolbar/import-template",
+  require("resources/icons/icons_toolbar-import-template.svg")
 );
 addSVGIcon("toolbar/back", require("resources/icons/icons_toolbar-back.svg"));
 addSVGIcon("toolbar/trash", require("resources/icons/icons_toolbar-trash.svg"));

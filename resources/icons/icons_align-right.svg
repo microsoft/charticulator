@@ -1,6 +1,3 @@
-<svg width="32" height="32" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-        transform="translate(1, 1.5) scale(0.75)"
-        d="M16.875 0V18H15.75V0H16.875ZM4.5 3.375H14.625V7.875H4.5V3.375ZM5.625 6.75H13.5V4.5H5.625V6.75ZM0 10.125H14.625V14.625H0V10.125ZM1.125 13.5H13.5V11.25H1.125V13.5Z"
-        fill="#252525" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+  <path d="M1920 0v2048h-128V0h128zM512 384h1152v512H512V384zm128 384h896V512H640v256zM0 1152h1664v512H0v-512zm128 384h1408v-256H128v256z" />
 </svg>

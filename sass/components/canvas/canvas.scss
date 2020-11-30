@@ -7,8 +7,8 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid $gray-200;
-  border-radius: 10px;
+  // border: 1px solid $gray-200;
+  // border-radius: 10px;
 
   .glyph-tabs {
     display: inline-block;
@@ -46,6 +46,7 @@
       font-size: 14px;
       color: $gray-100;
       background: $gray-220;
+      border-radius: 20px;
     }
   }
 }
@@ -96,6 +97,7 @@
 }
 
 .canvas-controls {
+  padding-top: 10px;
   background: $gray-230;
   line-height: 24px;
   height: 24px;
@@ -178,6 +180,9 @@
 .canvas-view {
   border-left: 1px solid $gray-200;
   border-bottom: 1px solid $gray-200;
+  border-top: 1px solid $gray-200;
+  border-right: 1px solid $gray-200;
+  margin-right: 10px;
   display: block;
   background: $gray-225;
   .drop-indicator {
@@ -194,6 +199,7 @@
 
   &.canvas-view-mark {
     background: #ffffff;
+    border-radius: 20px;
   }
 
   .canvas-region {

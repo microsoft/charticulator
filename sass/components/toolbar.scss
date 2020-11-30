@@ -64,7 +64,7 @@ $elements-margin: 4px;
 
     &:hover {
       cursor: pointer;
-      @include shadow-ambient;
+      // @include shadow-ambient;
       background: $gray-220;
     }
   }
