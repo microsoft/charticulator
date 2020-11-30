@@ -29,4 +29,5 @@ export {
   convertColumnType,
   inferColumnType,
   inferAndConvertColumn,
+  dataTypes
 } from "./data_types";
