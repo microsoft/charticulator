@@ -1,18 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>icons</title>
-    <polyline points="5.835 12.899 5.835 5.835 12.899 5.835"
-        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd" />
-    <polyline points="19.101 5.835 26.165 5.835 26.165 12.899"
-        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd" />
-    <polyline points="26.165 19.101 26.165 26.165 19.101 26.165"
-        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd" />
-    <polyline points="12.899 26.165 5.835 26.165 5.835 19.101"
-        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill-rule:evenodd" />
-    <g style="opacity:0.8">
-        <polygon points="22.2 12.273 16.01 9.032 9.82 12.273 16.01 15.513 22.2 12.273" />
-        <polygon points="16.41 22.621 22.6 19.381 22.6 12.9 16.41 16.141 16.41 22.621" />
-        <polygon points="16.41 22.621 22.6 19.381 16.41 22.621 16.41 22.621" />
-        <polygon points="9.42 12.9 9.42 19.381 15.61 22.621 15.61 16.141 9.42 12.9" />
-        <polygon points="15.61 22.621 15.61 22.621 9.42 19.381 15.61 22.621" />
-    </g>
+<svg width="32" height="32" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.38867 2.67188L3.86133 2.13867L6 0L8.13867 2.13867L7.61133 2.67188L6 1.06055L4.38867 2.67188ZM7.61133 9.32812L8.13867 9.86133L6 12L3.86133 9.86133L4.38867 9.32812L6 10.9395L7.61133 9.32812ZM2.67188 4.38867L1.06055 6L2.67188 7.61133L2.13867 8.13867L0 6L2.13867 3.86133L2.67188 4.38867ZM12 6L9.86133 8.13867L9.32812 7.61133L10.9395 6L9.32812 4.38867L9.86133 3.86133L12 6ZM3.75 3.75H8.25V8.25H3.75V3.75ZM4.5 7.5H7.5V4.5H4.5V7.5Z" fill="#252423"/>
 </svg>

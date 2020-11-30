@@ -1,5 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>icons</title>
-    <rect x="9.41826" y="5.15124" width="13.16348" height="21.69752"
-        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+<svg width="32" height="32" viewBox="0 0 12 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.625 18L0.374999 18L0.375 -6.39279e-07L11.625 -1.47526e-07L11.625 18ZM10.5 16.875L10.5 1.125L1.5 1.125L1.5 16.875L10.5 16.875Z" fill="#252525"/>
 </svg>

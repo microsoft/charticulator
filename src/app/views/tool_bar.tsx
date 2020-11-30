@@ -162,7 +162,42 @@ export class Toolbar extends ContextedComponent<
             Guides
           </span>
         )}
-        <ObjectButton
+        <MultiObjectButton
+          compact={this.props.layout === "vertical"}
+          tools={[
+            {
+              classID:"guide-y",
+              title:"Guide Y",
+              icon:"guide/x",
+              options: '{"shape":"rectangle"}',
+            },
+            {
+              classID:"guide-x",
+              title:"Guide X",
+              icon:"guide/y",
+              options: '{"shape":"ellipse"}',
+            },
+            {
+              classID:"guide-coordinator-x",
+              title:"Guide X",
+              icon:"guide/coordinator-x",
+              options: '{"shape":"triangle"}',
+            },
+            {
+              classID:"guide-coordinator-y",
+              title:"Guide Y",
+              icon:"guide/coordinator-y",
+              options: '{"shape":"triangle"}',
+            },
+            {
+              classID:"guide-coordinator-polar",
+              title: "Guide polar",
+              icon:"plot-segment/polar",
+              options: '{"shape":"triangle"}',
+            },
+          ]}
+        />
+        {/* <ObjectButton
           classID="guide-y"
           title="Guide Y"
           icon="guide/x"
@@ -175,8 +210,8 @@ export class Toolbar extends ContextedComponent<
           noDragging={true}
         />
         <ObjectButton
-          classID="guide-coordinator-y"
-          title="Guide Y"
+          classID="guide-coordinator-x"
+          title="Guide X"
           icon="guide/coordinator-x"
           noDragging={true}
         />
@@ -191,7 +226,7 @@ export class Toolbar extends ContextedComponent<
           title="Guide polar"
           icon="plot-segment/polar"
           noDragging={true}
-        />
+        /> */}
       </>
     );
 
@@ -579,7 +614,7 @@ export class LegendButton extends ContextedComponent<{}, {}> {
     return (
       <span ref={(e) => (this.container = e)}>
         <ToolButton
-          title="Link"
+          title="Legend"
           icon={R.getSVGIcon("legend/legend")}
           active={this.store.currentTool == "legend"}
           onClick={() => {

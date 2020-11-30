@@ -176,6 +176,8 @@
 }
 
 .canvas-view {
+  border-left: 1px solid $gray-200;
+  border-bottom: 1px solid $gray-200;
   display: block;
   background: $gray-225;
   .drop-indicator {
