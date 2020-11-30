@@ -9,13 +9,16 @@ import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
-import { ModalView, PopupView } from "../controllers";
+import { ModalView, PopupContainer, PopupController, PopupView } from "../controllers";
 
 import { FileView } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
 import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
-import { ChartTemplate } from "../../container";
+import { ChartTemplate, Specification } from "../../container";
+import { TableType } from "../../core/dataset";
+import { map } from "d3";
+import { FileViewImport } from "./file_view/import_view";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -93,9 +96,9 @@ export class MenuBar extends ContextedComponent<
     name?: string;
   },
   {}
-> {
+> {  
   protected subs: EventSubscription;
-
+  private popupController: PopupController = new PopupController();
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
     this.subs = this.context.store.addListener(
@@ -238,27 +241,80 @@ export class MenuBar extends ContextedComponent<
           onClick={async () => {
             const file = await showOpenFileDialog(["tmplt"]);
             const str = await readFileAsString(file);
-            const data = JSON.parse(str);
-            const template = new ChartTemplate(data);
-            for (const table of this.store.dataset.tables) {
-              const tTable = template.getDatasetSchema()[0];
-              template.assignTable(tTable.name, table.name);
-              for (const column of tTable.columns) {
-                template.assignColumn(tTable.name, column.name, column.name);
-              }
-            }
-            const instance = template.instantiate(
-              this.store.dataset,
-              false // no scale inference
-            );
+            const data = JSON.parse(str) as Specification.Template.ChartTemplate;
 
-            this.store.dispatcher.dispatch(
-              new Actions.ImportChartAndDataset(
-                instance.chart,
+            let unmappedColumns: Specification.Template.Column[] = [];
+            data.tables[0].columns.forEach(column => {
+              unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Main));
+            });
+            if (data.tables[1]) {
+              data.tables[1].columns.forEach(column => {
+                unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Links));
+              });
+            }
+
+            const tableMapping = new Map<string, string>();
+            tableMapping.set(data.tables[0].name, this.store.dataset.tables[0].name);
+            if (data.tables[1] && this.store.dataset.tables[1]) {
+              tableMapping.set(data.tables[1].name, this.store.dataset.tables[1].name);
+            }
+
+            const loadTemplateIntoState = (tableMapping: Map<string, string>, columnMapping: Map<string, string>) => {
+              const template = new ChartTemplate(data);
+
+              for (const table of template.getDatasetSchema()) {
+                template.assignTable(table.name, tableMapping.get(table.name) || table.name);
+                for (const column of table.columns) {
+                  template.assignColumn(table.name, column.name, columnMapping.get(column.name) || column.name);
+                }
+              }
+              const instance = template.instantiate(
                 this.store.dataset,
-                {}
-              )
-            );
+                false // no scale inference
+              );
+
+              this.store.dispatcher.dispatch(
+                new Actions.ImportChartAndDataset(
+                  instance.chart,
+                  this.store.dataset,
+                  {}
+                )
+              );
+              this.store.dispatcher.dispatch(new Actions.ReplaceDataset(this.store.dataset));
+            }
+
+            if (unmappedColumns.length > 0) {
+              // mapping show dialog then call loadTemplateIntoState
+              this.popupController.showModal(
+                (context) => {
+                  return (
+                    <ModalView context={context}>
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                      <FileViewImport
+                        tables={data.tables}
+                        datasetTables={this.store.dataset.tables}
+                        tableMapping={tableMapping}
+                        unmappedColumns={unmappedColumns}
+                        onSave={(mapping) => {
+                          loadTemplateIntoState(tableMapping, mapping);
+                          // TODO check mappings
+                          context.close();
+                        }}
+                        onClose={() => {
+                          context.close();
+                        }}
+                      />
+                      </div>
+                    </ModalView>
+                  );
+                },
+                { anchor: null }
+              );
+            } else {
+              loadTemplateIntoState(tableMapping, new Map());
+            }
           }}
         />
         <MenuButton
@@ -285,6 +341,16 @@ export class MenuBar extends ContextedComponent<
         />
       </>
     );
+  }
+
+  private checkColumnsMapping(column: Specification.Template.Column,tableType: TableType): Specification.Template.Column[] {
+    const unmappedColumns: Specification.Template.Column[] = [];
+    const dataTable = this.store.dataset.tables.find(t => t.type === tableType);
+    const found = dataTable.columns.find(c => c.name === column.name);
+    if (!found) {
+      unmappedColumns.push(column);
+    }
+    return unmappedColumns;
   }
 
   public renderSaveEmbedded() {
@@ -341,6 +407,8 @@ export class MenuBar extends ContextedComponent<
 
   public render() {
     return (
+      <>
+      <PopupContainer controller={this.popupController} />
       <section className="charticulator__menu-bar">
         <div className="charticulator__menu-bar-left">
           <AppButton
@@ -358,9 +426,7 @@ export class MenuBar extends ContextedComponent<
             ? this.renderSaveEmbedded()
             : null}
           <span className="charticulator__menu-bar-separator" />
-          {this.context.store.editorType === "embedded"
-            ? this.renderExportImportButtons()
-            : null}
+          {this.renderExportImportButtons()}
           <span className="charticulator__menu-bar-separator" />
           <MenuButton
             url={R.getSVGIcon("toolbar/undo")}
@@ -438,6 +504,7 @@ export class MenuBar extends ContextedComponent<
           <HelpButton />
         </div>
       </section>
+      </>
     );
   }
 }
