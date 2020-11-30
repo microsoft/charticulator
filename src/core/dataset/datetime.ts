@@ -19,7 +19,7 @@
  * @param str the date string
  * @returns the parsed Date's unix timestamp (in milliseconds) or null if unable to parse
  */
-export function parseDate(str: string, addTimeZoneShift: boolean = false) {
+export function parseDate(str: string) {
   str = str.trim();
   let m;
   // ISO8601 full date: https://stackoverflow.com/a/37563868
