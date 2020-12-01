@@ -1379,4 +1379,14 @@ export class AppStore extends BaseStore {
   public setLocaleFileFormat(value: LocaleFileFormat) {
     this.localeFileFormat = value;
   }
+
+  public checkColumnsMapping(column: Specification.Template.Column,tableType: TableType, dataset: Dataset.Dataset): Specification.Template.Column[] {
+    const unmappedColumns: Specification.Template.Column[] = [];
+    const dataTable = dataset.tables.find(t => t.type === tableType);
+    const found = dataTable.columns.find(c => c.name === column.name);
+    if (!found) {
+      unmappedColumns.push(column);
+    }
+    return unmappedColumns;
+  }
 }

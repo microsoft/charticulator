@@ -245,11 +245,11 @@ export class MenuBar extends ContextedComponent<
 
             let unmappedColumns: Specification.Template.Column[] = [];
             data.tables[0].columns.forEach(column => {
-              unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Main));
+              unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Main, this.store.dataset));
             });
             if (data.tables[1]) {
               data.tables[1].columns.forEach(column => {
-                unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Links));
+                unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Links, this.store.dataset));
               });
             }
 
@@ -341,16 +341,6 @@ export class MenuBar extends ContextedComponent<
         />
       </>
     );
-  }
-
-  private checkColumnsMapping(column: Specification.Template.Column,tableType: TableType): Specification.Template.Column[] {
-    const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = this.store.dataset.tables.find(t => t.type === tableType);
-    const found = dataTable.columns.find(c => c.name === column.name);
-    if (!found) {
-      unmappedColumns.push(column);
-    }
-    return unmappedColumns;
   }
 
   public renderSaveEmbedded() {
