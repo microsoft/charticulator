@@ -17,6 +17,8 @@ import { InferParametersOptions } from "./scale";
 export interface LinearScaleProperties extends Specification.AttributeMap {
   domainMin: number;
   domainMax: number;
+  autoDomainMin: number;
+  autoDomainMax: number;
 }
 
 export interface LinearScaleAttributes extends Specification.AttributeMap {
@@ -32,7 +34,12 @@ export class LinearScale extends ScaleClass<
   public static type = "scale";
 
   public static defaultMappingValues: Specification.AttributeMap = {
-    rangeMin: 0,
+    rangeMin: 0
+  };
+
+  public static defaultProperties: Specification.AttributeMap = {
+    autoDomainMin: true,
+    autoDomainMax: true,
   };
 
   public attributeNames: string[] = ["rangeMin", "rangeMax"];
@@ -132,6 +139,38 @@ export class LinearScale extends ScaleClass<
       manager.sectionHeader("Range"),
       manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
       manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
+      manager.sectionHeader("Scale export properties"),
+      manager.row(
+        "",
+        manager.vertical(
+          manager.horizontal(
+            [0, 1],
+            manager.label("Auto range min value"),
+            null,
+            manager.inputBoolean(
+              {
+                property: "autoDomainMin",
+              },
+              {
+                type: "checkbox",
+              }
+            )
+          ),
+          manager.horizontal(
+            [0, 1],
+            manager.label("Auto range max value"),
+            null,
+            manager.inputBoolean(
+              {
+                property: "autoDomainMax",
+              },
+              {
+                type: "checkbox",
+              }
+            )
+          )
+        )
+      )
     ];
   }
 

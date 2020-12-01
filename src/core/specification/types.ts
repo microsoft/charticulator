@@ -20,6 +20,10 @@ export interface AxisDataBinding extends AttributeMap {
   domainMin?: number;
   domainMax?: number;
 
+  /** Export properties of axis for auto scale ranges */
+  autoDomainMin?: boolean;
+  autoDomainMax?: boolean;
+
   /** Categories for categorical type */
   categories?: string[];
   gapRatio?: number;
