@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, rgbToHex } from "../../common";
+import { Point, replaceNewLineBySymbol, rgbToHex, splitStringByNewLine } from "../../common";
 import * as Graphics from "../../graphics";
 import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
@@ -360,7 +360,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         } as Graphics.TextOnPath;
       }
     };
-    const textContent = attrs.text.replace(/\\n/g, "\n");
+    const textContent = replaceNewLineBySymbol(attrs.text);
     if (
       (textContent && textContent.split(/\n/g).length > 1) ||
       props.wordWrap
@@ -385,7 +385,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         );
       }
       // add user input wrap
-      textContentList = textContentList.flatMap((line) => line.split(/\\n/g));
+      textContentList = textContentList.flatMap((line) => splitStringByNewLine(line));
       const lines: Graphics.Element[] = [];
       let textBoxShift = 0;
 

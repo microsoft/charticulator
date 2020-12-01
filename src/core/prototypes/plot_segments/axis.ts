@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -366,7 +366,7 @@ export class AxisRenderer {
         dy = -side * (tickSize + offset) * cos;
 
       if (Math.abs(cos) < 0.5) {
-        if (style.wordWrap || tick.label.split(/\\n/g).length > 0) {
+        if (style.wordWrap || splitStringByNewLine(tick.label).length > 0) {
           let textContent: string[] = splitByWidth(
             tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
             maxTickDistance,
@@ -374,7 +374,7 @@ export class AxisRenderer {
             style.fontFamily,
             style.fontSize
           );
-          textContent = textContent.flatMap((line) => line.split(/\\n/g));
+          textContent = textContent.flatMap((line) => splitStringByNewLine(line));
           const lines: Graphics.Element[] = [];
           for (let index = 0; index < textContent.length; index++) {
             const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -454,7 +454,7 @@ export class AxisRenderer {
         if (
           !style.wordWrap &&
           maxTextWidth > maxTickDistance &&
-          tick.label.split(/\\n/g).length === 1
+          splitStringByNewLine(tick.label).length === 1
         ) {
           const [px, py] = TextMeasurer.ComputeTextPosition(
             0,
@@ -476,7 +476,7 @@ export class AxisRenderer {
           };
           g.elements.push(gText);
         } else {
-          if (style.wordWrap || tick.label.split(/\\n/g).length > 1) {
+          if (style.wordWrap || splitStringByNewLine(tick.label).length > 1) {
             let textContent = [
               tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
             ];
@@ -489,7 +489,7 @@ export class AxisRenderer {
                 style.fontSize
               );
             }
-            textContent = textContent.flatMap((line) => line.split(/\\n/g));
+            textContent = textContent.flatMap((line) => splitStringByNewLine(line));
             const lines: Graphics.Element[] = [];
             for (let index = 0; index < textContent.length; index++) {
               const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -599,7 +599,7 @@ export class AxisRenderer {
       const ty = Math.cos(radians) * radius;
 
       const lablel = tick.label && tick.label.replace(/\n/g, "\\n");
-      if (lablel && (style.wordWrap || lablel.split(/\\n/g).length > 1)) {
+      if (lablel && (style.wordWrap || splitStringByNewLine(lablel).length > 1)) {
         let textContent = [lablel];
         if (style.wordWrap) {
           textContent = splitByWidth(
@@ -610,7 +610,7 @@ export class AxisRenderer {
             style.fontSize
           );
         }
-        textContent = textContent.flatMap((line) => line.split(/\\n/g));
+        textContent = textContent.flatMap((line) => splitStringByNewLine(line));
         const lines: Graphics.Element[] = [];
         for (let index = 0; index < textContent.length; index++) {
           const [textX, textY] = TextMeasurer.ComputeTextPosition(

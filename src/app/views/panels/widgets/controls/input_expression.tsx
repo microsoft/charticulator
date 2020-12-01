@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Expression } from "../../../../../core";
+import { Expression, replaceNewLineBySymbol, replaceTabBySymbol } from "../../../../../core";
 import { classNames } from "../../../../utils";
 
 export interface InputExpressionProps {
@@ -49,7 +49,7 @@ export class InputExpression extends React.Component<
       this.props.onEnter(null);
     } else {
       const result = this.props.validate(
-        this.refInput.value.replace(/\\n/g, "\n").replace(/\\t/g, "\t")
+        replaceTabBySymbol(replaceNewLineBySymbol(this.refInput.value))
       );
       if (result.pass) {
         this.setState({
@@ -113,7 +113,7 @@ export class InputExpression extends React.Component<
               });
             } else {
               const result = Expression.verifyUserExpression(
-                newValue.replace(/\\n/g, "\n").replace(/\\t/g, "\t"),
+                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
                 {
                   textExpression: this.props.textExpression,
                 }

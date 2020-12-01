@@ -625,3 +625,15 @@ export function refineColumnName(name: string) {
 export function getTimeZoneOffset(date: number) {
   return new Date(date).getTimezoneOffset() * 60 * 1000;
 }
+
+export function replaceNewLineBySymbol(str: string) {
+  return str.replace(/\\n/g, "\n");
+}
+
+export function splitStringByNewLine(str: string) {
+  return str.split(/\\n/g);
+}
+
+export function replaceTabBySymbol(str: string) {
+  return str.replace(/\\t/g, "\t")
+}
