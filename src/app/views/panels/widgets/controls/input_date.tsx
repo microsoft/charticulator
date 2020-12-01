@@ -51,7 +51,7 @@ export class InputDate extends React.Component<InputDateProps, {}> {
                 this.props.interval
               )}
               onEnter={(str) => {
-                const date = parseDate(str, true);
+                const date = parseDate(str);
                 this.props.onEnter(date);
                 return date != null;
               }}

@@ -23,9 +23,6 @@ import {
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
-import { DataType } from "../../../specification";
-import { TextExpression, FunctionCall, Variable } from "../../../expression";
-import { DataflowTable } from "../../dataflow";
 import { getSortDirection } from "../../..";
 
 export type CartesianAxisMode =
@@ -119,7 +116,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
       },
-    },
+    }
   };
 
   public readonly state: CartesianState;

@@ -243,21 +243,18 @@ export class ChartTemplateBuilder {
             this.chart,
             inference.objectID
           );
-          const keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
-          const keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
 
-          inference.disableAutoMax = templateObject.properties[
-            keyDisableAutoMax
-          ] as boolean;
-          inference.disableAutoMin = templateObject.properties[
-            keyDisableAutoMin
-          ] as boolean;
-
-          if (inference.disableAutoMax === undefined) {
-            inference.disableAutoMax = false;
+          if ((templateObject.properties[inference.axis.property as string] as any).autoDomainMin !== "undefined") {
+            inference.autoDomainMin = (templateObject.properties[inference.axis.property as string] as any).autoDomainMin as boolean;
           }
-          if (inference.disableAutoMin === undefined) {
-            inference.disableAutoMin = false;
+          if ((templateObject.properties[inference.axis.property as string] as any).autoDomainMax !== "undefined") {
+            inference.autoDomainMax = (templateObject.properties[inference.axis.property as string] as any).autoDomainMax as boolean;
+          }
+          if (inference.autoDomainMax === undefined) {
+            inference.autoDomainMax = true;
+          }
+          if (inference.autoDomainMax === undefined) {
+            inference.autoDomainMax = true;
           }
         }
         template.inference.push(inference);
