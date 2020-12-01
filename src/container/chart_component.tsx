@@ -99,15 +99,19 @@ export class ChartComponent extends React.Component<
     });
   }
 
+  /**
+   * TODO rework the method https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html
+   * @param newProps React component properties
+   */
   public componentWillReceiveProps(newProps: ChartComponentProps) {
     if (this.updateWithNewProps(newProps)) {
-      this.setState({ working: true });
+      setTimeout(() => this.setState({ working: true }));
       this.scheduleUpdate();
     } else if (newProps.selection != this.props.selection) {
       this.applySelection(newProps.selection);
-      this.setState({
+      setTimeout(() => this.setState({
         graphics: this.renderer.render(),
-      });
+      }));
     }
   }
 
