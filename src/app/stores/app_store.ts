@@ -1214,6 +1214,8 @@ export class AppStore extends BaseStore {
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
+      autoDomainMax: true,
+      autoDomainMin: true
     };
 
     let expressions = [groupExpression];

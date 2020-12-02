@@ -388,114 +388,200 @@ export class ExportTemplateView extends ContextedComponent<
             template.specification,
             inference.objectID
           );
-          if (!descriptionMin || !descriptionMax) {
-            const objectName = object.properties.name;
-            if (inference.scale) {
-              descriptionMin = `Auto min domain and range for ${objectName}`;
-              descriptionMax = `Auto max domain and range for ${objectName}`;
-            }
-            if (inference.axis) {
-              descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
-              descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
-            }
+          const objectName = object.properties.name;
+          if (inference.scale) {
+            descriptionMin = `Auto min domain and range for ${objectName}`;
+            descriptionMax = `Auto max domain and range for ${objectName}`;
           }
-          let keyDisableAutoMin = "disableAutoMin";
-          let keyDisableAutoMax = "disableAutoMax";
           if (inference.axis) {
-            keyDisableAutoMin = `${inference.axis.property}DisableAutoMin`;
-            keyDisableAutoMax = `${inference.axis.property}DisableAutoMax`;
+            descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
+            descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
           }
-          if (object.properties[keyDisableAutoMax] === undefined) {
-            // object.properties[keyPropertyAutoMax] = false;
-            this.dispatch(
-              new Actions.SetObjectProperty(
-                object,
-                keyDisableAutoMax,
-                null,
-                false,
-                true,
-                true
-              )
-            );
-            temaplteObject.properties[keyDisableAutoMax] = false;
-            inference.disableAutoMax = false;
-          } else {
-            inference.disableAutoMax = temaplteObject.properties[
-              keyDisableAutoMax
-            ] as boolean;
+          const keyAutoDomainMin = "autoDomainMin";
+          const keyAutoDomainMax = "autoDomainMax";
+          
+          let onClickAutoDomainMin = () => {
+
           }
-          if (object.properties[keyDisableAutoMin] === undefined) {
-            // object.properties[keyPropertyAutoMin] = false;
-            this.dispatch(
-              new Actions.SetObjectProperty(
-                object,
-                keyDisableAutoMin,
-                null,
-                false,
-                true,
-                true
-              )
-            );
-            temaplteObject.properties[keyDisableAutoMin] = false;
-            inference.disableAutoMin = false;
-          } else {
-            inference.disableAutoMin = object.properties[
-              keyDisableAutoMin
-            ] as boolean;
+          
+          let onClickAutoDomainMax = () => {
+
+          }
+
+          let getAutoDomainMinPropertyValue: () => boolean = null;
+          
+          let getAutoDomainMaxPropertyValue: () => boolean = null;
+          
+          if (inference.axis) {
+            if ((object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] === undefined) {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  inference.axis.property as string,
+                  keyAutoDomainMax,
+                  false,
+                  true,
+                  true
+                )
+              );
+              temaplteObject.properties[keyAutoDomainMax] = false;
+              inference.autoDomainMax = true;
+            } else {
+              inference.autoDomainMax = (object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean;
+            }
+          
+            onClickAutoDomainMax = () => {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  inference.axis.property as string,
+                  keyAutoDomainMax,
+                  !((object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean),
+                  true,
+                  true
+                )
+              );
+              this.setState({ template });
+            };
+            getAutoDomainMaxPropertyValue = () => {
+              return (object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean;
+            }
+          } 
+          if (inference.scale) {
+            if (object.properties[keyAutoDomainMax] === undefined) {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  keyAutoDomainMax,
+                  null,
+                  false,
+                  true,
+                  true
+                )
+              );
+              temaplteObject.properties[keyAutoDomainMax] = false;
+              inference.autoDomainMax = true;
+            } else {
+              inference.autoDomainMax = temaplteObject.properties[
+                keyAutoDomainMax
+              ] as boolean;
+            }
+          
+            onClickAutoDomainMax = () => {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  keyAutoDomainMax,
+                  null,
+                  !object.properties[keyAutoDomainMax],
+                  true,
+                  true
+                )
+              );
+              this.setState({ template });  
+            }
+            getAutoDomainMaxPropertyValue = () => {
+              return object.properties[keyAutoDomainMax] as boolean;
+            }
+          }
+
+          if (inference.axis) {
+            if ((object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] === undefined) {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  inference.axis.property as string,
+                  keyAutoDomainMin,
+                  false,
+                  true,
+                  true
+                )
+              );
+              temaplteObject.properties[keyAutoDomainMin] = false;
+              inference.autoDomainMin = true;
+            } else {
+              inference.autoDomainMin = (object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean;
+            }
+
+            onClickAutoDomainMin = () => {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  inference.axis.property as string,
+                  keyAutoDomainMin,
+                  !((object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean),
+                  true,
+                  true
+                )
+              );
+              this.setState({ template });
+            }
+            getAutoDomainMinPropertyValue = () => {
+              return (object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean;
+            }
+          } 
+          if (inference.scale) {
+            if (object.properties[keyAutoDomainMin] === undefined) {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  keyAutoDomainMin,
+                  null,
+                  false,
+                  true,
+                  true
+                )
+              );
+              temaplteObject.properties[keyAutoDomainMin] = false;
+              inference.autoDomainMin = true;
+            } else {
+              inference.autoDomainMin = object.properties[
+                keyAutoDomainMin
+              ] as boolean;
+            }
+
+            onClickAutoDomainMin = () => {
+              this.dispatch(
+                new Actions.SetObjectProperty(
+                  object,
+                  keyAutoDomainMin,
+                  null,
+                  !object.properties[keyAutoDomainMin],
+                  true,
+                  true
+                )
+              );
+              this.setState({ template });
+            }
+            getAutoDomainMinPropertyValue = () => {
+              return object.properties[keyAutoDomainMin] as boolean;
+            }
           }
 
           return (
             <React.Fragment key={index}>
               <div
                 className="el-inference-item"
-                onClick={() => {
-                  // inference.disableAutoMin = !object.properties[keyDisableAutoMin];
-                  // temaplteObject.properties[keyDisableAutoMin] = !object.properties[keyDisableAutoMin];
-                  this.dispatch(
-                    new Actions.SetObjectProperty(
-                      object,
-                      keyDisableAutoMin,
-                      null,
-                      !object.properties[keyDisableAutoMin],
-                      true,
-                      true
-                    )
-                  );
-                  this.setState({ template });
-                }}
+                onClick={onClickAutoDomainMin}
               >
                 <SVGImageIcon
                   url={
-                    object.properties[keyDisableAutoMin]
-                      ? R.getSVGIcon("checkbox/empty")
-                      : R.getSVGIcon("checkbox/checked")
+                    getAutoDomainMinPropertyValue()
+                      ? R.getSVGIcon("checkbox/checked")
+                      : R.getSVGIcon("checkbox/empty")
                   }
                 />
                 <span className="el-text">{descriptionMin}</span>
               </div>
               <div
                 className="el-inference-item"
-                onClick={() => {
-                  // inference.disableAutoMax = !object.properties[keyDisableAutoMax];
-                  // temaplteObject.properties[keyDisableAutoMax] = !object.properties[keyDisableAutoMax];
-                  this.dispatch(
-                    new Actions.SetObjectProperty(
-                      object,
-                      keyDisableAutoMax,
-                      null,
-                      !object.properties[keyDisableAutoMax],
-                      true,
-                      true
-                    )
-                  );
-                  this.setState({ template });
-                }}
+                onClick={onClickAutoDomainMax}
               >
                 <SVGImageIcon
                   url={
-                    object.properties[keyDisableAutoMax]
-                      ? R.getSVGIcon("checkbox/empty")
-                      : R.getSVGIcon("checkbox/checked")
+                    getAutoDomainMaxPropertyValue()
+                      ? R.getSVGIcon("checkbox/checked")
+                      : R.getSVGIcon("checkbox/empty")
                   }
                 />
                 <span className="el-text">{descriptionMax}</span>

@@ -16,8 +16,9 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, TemplateParameters } from "../common";
+import { Specification } from "../../index";
 import { format } from "d3-format";
-import { AttributeMap, DataKind, DataType } from "../../specification";
+import { AttributeMap } from "../../specification";
 
 export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -1060,6 +1061,42 @@ export function buildAxisWidgets(
         }
         break;
     }
+    widgets.push(m.sectionHeader(axisName + " export properties"));
+    widgets.push(
+      m.row(
+        "",
+        m.vertical(
+          m.horizontal(
+            [0, 1],
+            m.label("Auto range min value"),
+            null,
+            m.inputBoolean(
+              {
+                property: axisProperty,
+                field: "autoDomainMin",
+              },
+              {
+                type: "checkbox",
+              }
+            )
+          ),
+          m.horizontal(
+            [0, 1],
+            m.label("Auto range max value"),
+            null,
+            m.inputBoolean(
+              {
+                property: axisProperty,
+                field: "autoDomainMax",
+              },
+              {
+                type: "checkbox",
+              }
+            )
+          )
+        )
+      )
+    );
   } else {
     widgets.push(m.sectionHeader(axisName + ": (none)", null, dropzoneOptions));
   }
