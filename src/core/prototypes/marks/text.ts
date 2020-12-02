@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, replaceNewLineBySymbol, rgbToHex } from "../../common";
+import { Point, replaceNewLineBySymbol, splitStringByNewLine, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
@@ -110,7 +110,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     p.angle += props.rotation;
     let text: Graphics.Element = null;
     const textContent =
-      attrs.text && replaceNewLineBySymbol(attrs.text).split(/\n/g);
+      attrs.text && splitStringByNewLine(replaceNewLineBySymbol(attrs.text));
     if (textContent && textContent.length > 1) {
       const height = attrs.fontSize;
       const lines: Graphics.Element[] = [];

@@ -362,7 +362,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     };
     const textContent = replaceNewLineBySymbol(attrs.text);
     if (
-      (textContent && textContent.split(/\n/g).length > 1) ||
+      (textContent && splitStringByNewLine(textContent).length > 1) ||
       props.wordWrap
     ) {
       const height = attrs.fontSize;
