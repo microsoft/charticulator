@@ -207,7 +207,7 @@ export class ColumnsView extends React.Component<
                                   context.close();
                                 }}
                                 onClose={() => {
-                                  // context.close();
+                                  context.close();
                                 }}
                               />
                               </div>
