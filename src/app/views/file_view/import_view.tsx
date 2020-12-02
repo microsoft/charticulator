@@ -71,6 +71,7 @@ export class FileViewImport extends ContextedComponent<
         closeButtonIcon={"general/cross"}
         height={400}
         width={650}
+        onClose={this.props.onClose}
       >
         <section className="charticulator__file-view-mapping_view">
           <section>

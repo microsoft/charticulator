@@ -352,10 +352,15 @@
 
   &-mapping_table {
     min-width: 200px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
+
+    h4 {
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
   }
 
   &-mapping_rows {
@@ -370,6 +375,10 @@
     flex-direction: row;
     align-items: center;
     margin: 5px;
+
+    :first-child {
+      margin-right: 5px;
+    }
   }
 
   &-mapping_row_button_toolbar {
