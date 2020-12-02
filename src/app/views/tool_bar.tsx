@@ -128,15 +128,6 @@ export class Toolbar extends ContextedComponent<
 
     buckets.push(
       <>
-        {
-          <span
-            className={
-              this.props.layout === "vertical"
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
-            }
-          />
-        }
         <LegendButton />
       </>
     );
@@ -243,13 +234,6 @@ export class Toolbar extends ContextedComponent<
       <>
         {labels && (
           <>
-            <span
-              className={
-                this.props.layout === "vertical"
-                  ? "chartaccent__toolbar-vertical-separator"
-                  : "chartaccent__toolbar-separator"
-              }
-            />
             <span
               className={
                 this.props.layout === "vertical"

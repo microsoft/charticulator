@@ -60,7 +60,7 @@
 
     padding: 4px;
 
-    margin-right: 4px;
+    margin-right: 0px;
 
     background: $color-well;
 
@@ -135,13 +135,16 @@
 
     .charticulator__button-tool {
       box-shadow: none;
-      margin-right: 4px;
+      margin-right: 0px;
+      padding-right: 0px;
     }
     .el-dropdown {
       @include button-base(32px);
       @include icon-size(20px, 6px);
+      margin-left: -5px;
+      z-index: 1;
       .el-svg-icon {
-        margin-left: -2px;
+        margin-left: 0px;
         margin-right: 0;
       }
       vertical-align: top;
@@ -166,6 +169,7 @@
     }
 
     &-dropdown {
+      margin-right: 4px;
       padding: 2px;
       .charticulator__button-tool {
         margin-right: 0;
