@@ -130,7 +130,7 @@ export class FileViewImport extends ContextedComponent<
                   </div>
                 );
               })}
-            <p className="charticulator__file-view-mapping_row_button_toolbar">
+            <div className="charticulator__file-view-mapping_row_button_toolbar">
               <div className="charticulator__file-view-mapping_row_item">
                 <Button
                   onClick={() => {
@@ -162,7 +162,7 @@ export class FileViewImport extends ContextedComponent<
                   text={"Cancel"}
                 />
               </div>}
-            </p>
+            </div>
           </section>
         </section>
       </FloatingPanel>
