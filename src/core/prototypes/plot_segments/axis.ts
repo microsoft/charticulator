@@ -16,7 +16,6 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, TemplateParameters } from "../common";
-import { Specification } from "../../index";
 import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
