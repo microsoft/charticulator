@@ -342,8 +342,9 @@
   }
 
   &-mapping_view {
-    width: 100%;
-    height: 100%;
+    // width: 100%;
+    // height: 100%;
+    flex: 1;
 
     padding: 5px;
     overflow-y: scroll;
@@ -356,28 +357,54 @@
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
+    // flex: 1;
+    display: flex;
+    flex-direction: column;
 
     h4 {
       margin-top: 5px;
       margin-bottom: 10px;
     }
+
+    td, th {
+      border: 1px $gray-200 solid;
+    }
+
+    thead {
+      background-color: $color-header;
+      color: $white;
+    }
   }
 
   &-mapping_rows {
-    border: 1px #d6d6d6 solid;
     display: flex;
-    flex-direction: column;
-    margin-top: 5px;
+    flex-direction: row;
+    // margin-top: 5px;
+
+    * > {
+      flex: 1
+    }
   }
 
   &-mapping_row_item {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 5px;
+    padding: 5px;
+    flex: 1;
 
     :first-child {
       margin-right: 5px;
+    }
+
+    .charticulator__widget-control-select {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+
+      .el-text {
+        flex: 1;
+      }
     }
   }
 
@@ -386,6 +413,11 @@
     flex-direction: row;
     align-items: center;
     margin: 5px;
+    margin-left: 10px;
+
+    :first-child {
+      margin-right: 5px;
+    }
   }
 }
 

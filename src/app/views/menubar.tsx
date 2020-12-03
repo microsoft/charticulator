@@ -346,7 +346,7 @@ export class MenuBar extends ContextedComponent<
   private checkColumnsMapping(column: Specification.Template.Column,tableType: TableType): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
     const dataTable = this.store.dataset.tables.find(t => t.type === tableType);
-    const found = dataTable.columns.find(c => c.name === column.name);
+    const found = dataTable && dataTable.columns.find(c => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }

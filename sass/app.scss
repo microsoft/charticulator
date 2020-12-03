@@ -147,7 +147,7 @@ body {
 
     &-dataset {
       flex-shrink: 0;
-      width: 250px;
+      max-width: 250px;
       overflow: hidden;
       box-sizing: border-box;
       background: $theme-dataset-background;
@@ -203,7 +203,7 @@ body {
         overflow: hidden;
 
         &-panes {
-          width: 320px;
+          max-width: 320px;
           flex-shrink: 0;
           border-right: $panel-border-width solid $panel-border-color;
           border-left: $panel-border-width solid $panel-border-color;
