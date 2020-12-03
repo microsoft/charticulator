@@ -299,7 +299,6 @@ export class MenuBar extends ContextedComponent<
                         unmappedColumns={unmappedColumns}
                         onSave={(mapping) => {
                           loadTemplateIntoState(tableMapping, mapping);
-                          // TODO check mappings
                           context.close();
                         }}
                         onClose={() => {

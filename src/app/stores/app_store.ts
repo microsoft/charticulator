@@ -1077,10 +1077,20 @@ export class AppStore extends BaseStore {
    */
   public updateScales() {
     try {
+      const chartElements = this.chart.elements;
+      const glyphElements = this.chart.glyphs.flatMap(gl => gl.marks);
       this.chart.scales.forEach(scale => {
-        const mappings = [...this.chart.elements, ...this.chart.glyphs.flatMap(gl => gl.marks)].flatMap(el => {
-          return Object.keys(el.mappings).map(key => {return {element: el, key, mapping: el.mappings[key]}})
-        }).filter( (mapping) => mapping.mapping.type === "scale" && (mapping.mapping as ScaleMapping).scale === scale._id) as {
+        const mappings = [...chartElements, ...glyphElements]
+        .flatMap(el => {
+          return Object.keys(el.mappings).map(key => {
+            return {
+              element: el,
+              key,
+              mapping: el.mappings[key]
+            }
+          });
+        })
+        .filter((mapping) => mapping.mapping.type === "scale" && (mapping.mapping as ScaleMapping).scale === scale._id) as {
           element: Specification.Element<Specification.ObjectProperties>,
           key: string,
           mapping: ScaleMapping
