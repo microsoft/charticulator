@@ -66,7 +66,7 @@ export class ToolButton extends React.Component<
             style={{
               position: "relative",
               bottom: "-7px",
-              left: "-30px",
+              left: "-20px",
             }}
             onClick={onClick}
           >

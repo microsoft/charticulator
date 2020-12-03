@@ -138,6 +138,8 @@ $elements-margin: 4px;
     border-right: 0px solid $gray-190;
     border-bottom: 1px solid $gray-190;
     margin-bottom: 8px;
+    position: relative;
+    left: 4px;
   }
 
   &-label {
