@@ -49,10 +49,12 @@ import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import {
+  AttributeType,
   DataKind,
   DataType,
   DataValue,
   Mapping,
+  ScaleMapping,
 } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
@@ -1070,6 +1072,44 @@ export class AppStore extends BaseStore {
     }
   }
 
+  /**
+   * Updates all scales values
+   */
+  public updateScales() {
+    try {
+      const chartElements = this.chart.elements;
+      const glyphElements = this.chart.glyphs.flatMap(gl => gl.marks);
+      this.chart.scales.forEach(scale => {
+        const mappings = [...chartElements, ...glyphElements]
+        .flatMap(el => {
+          return Object.keys(el.mappings).map(key => {
+            return {
+              element: el,
+              key,
+              mapping: el.mappings[key]
+            }
+          });
+        })
+        .filter((mapping) => mapping.mapping.type === "scale" && (mapping.mapping as ScaleMapping).scale === scale._id) as {
+          element: Specification.Element<Specification.ObjectProperties>,
+          key: string,
+          mapping: ScaleMapping
+        }[];
+  
+        mappings.forEach(mapping => {
+          const scaleClass = this.chartManager.getClassById(scale._id)as Prototypes.Scales.ScaleClass;
+          const values = this.chartManager.getGroupedExpressionVector(mapping.mapping.table, null, mapping.mapping.expression);
+          scaleClass.inferParameters(values as Specification.DataValue[], {
+            newScale: true
+          });
+        });
+      });
+    }
+    catch(ex) {
+      console.error("Updating of scales failed with error", ex);
+    }
+  }
+
   public updatePlotSegments() {
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
@@ -1378,5 +1418,15 @@ export class AppStore extends BaseStore {
 
   public setLocaleFileFormat(value: LocaleFileFormat) {
     this.localeFileFormat = value;
+  }
+
+  public checkColumnsMapping(column: Specification.Template.Column,tableType: TableType, dataset: Dataset.Dataset): Specification.Template.Column[] {
+    const unmappedColumns: Specification.Template.Column[] = [];
+    const dataTable = dataset.tables.find(t => t.type === tableType);
+    const found = dataTable.columns.find(c => c.name === column.name);
+    if (!found) {
+      unmappedColumns.push(column);
+    }
+    return unmappedColumns;
   }
 }
