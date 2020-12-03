@@ -111,10 +111,6 @@ export class FileViewImport extends ContextedComponent<
                     key={table.name}
                   >
                     <h4>Table name: {table.name}</h4>
-                    {/* <div
-                      className="charticulator__file-view-mapping_rows"
-                      key={table.name}
-                    > */}
                       <table className="charticulator__file-view-mapping_table">
                         <thead>
                           <tr className="charticulator__file-view-mapping_rows">
@@ -172,7 +168,6 @@ export class FileViewImport extends ContextedComponent<
                         </tbody>
                       </table>
                     </div>
-                  // </div>
                 );
               })}
               <div className="charticulator__file-view-mapping_row_button_toolbar">
@@ -204,9 +199,6 @@ export class FileViewImport extends ContextedComponent<
                   text={"Cancel"}
                 />
               </div>
-              {/* <div className="charticulator__file-view-mapping_row_item">
-                
-              </div> */}
           </section>
         </section>
       </FloatingPanel>
