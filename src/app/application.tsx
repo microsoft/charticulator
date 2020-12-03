@@ -109,6 +109,11 @@ export class Application {
   public extensionContext: ApplicationExtensionContext;
 
   private config: CharticulatorAppConfig;
+  private containerID: string;
+
+  public destroy() {
+    ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
+  }
 
   public async initialize(
     config: CharticulatorAppConfig,
@@ -116,6 +121,7 @@ export class Application {
     workerScriptContent: string
   ) {
     this.config = config;
+    this.containerID = containerID;
     await initialize(config);
 
     this.worker = new CharticulatorWorker(workerScriptContent);

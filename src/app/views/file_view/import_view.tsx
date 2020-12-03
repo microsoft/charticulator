@@ -71,6 +71,7 @@ export class FileViewImport extends ContextedComponent<
         closeButtonIcon={"general/cross"}
         height={400}
         width={650}
+        onClose={() => this.props.onClose()}
       >
         <section className="charticulator__file-view-mapping_view">
           <section>
@@ -129,7 +130,7 @@ export class FileViewImport extends ContextedComponent<
                   </div>
                 );
               })}
-            <p className="charticulator__file-view-mapping_row_button_toolbar">
+            <div className="charticulator__file-view-mapping_row_button_toolbar">
               <div className="charticulator__file-view-mapping_row_item">
                 <Button
                   onClick={() => {
@@ -153,15 +154,15 @@ export class FileViewImport extends ContextedComponent<
                   }
                 />
               </div>
-              <div className="charticulator__file-view-mapping_row_item">
+              {this.props.onClose && <div className="charticulator__file-view-mapping_row_item">
                 <Button
                   onClick={() => {
                     this.props.onClose();
                   }}
                   text={"Cancel"}
                 />
-              </div>
-            </p>
+              </div>}
+            </div>
           </section>
         </section>
       </FloatingPanel>
