@@ -51,7 +51,6 @@ export class FileViewImport extends ContextedComponent<
         return mapped;
       }
 
-      console.log(name, "Unmapped", newMapping);
       return "Unmapped";
     };
 
@@ -61,6 +60,35 @@ export class FileViewImport extends ContextedComponent<
         columnMappings: newMapping,
       });
     };
+
+    tables.forEach((table, tableIndex ) => {
+      const filteredByTableColumns = this.props.datasetTables[tableIndex]?.columns;
+      if (!filteredByTableColumns) {
+        return;
+      }
+      const usedColumns = new Set();
+      // match columns by name and type
+      table.columns.forEach(column => {
+          filteredByTableColumns.forEach(pbiColumn => {
+              if (pbiColumn.displayName === column.name && column.type === pbiColumn.type && !newMapping.get(column.name)) {
+                  newMapping.set(column.name, pbiColumn.name);
+                  usedColumns.add(pbiColumn);
+              }
+          });
+      });
+      // match columns by type
+      table.columns.forEach(column => {
+          // Set default column by type
+          if (!newMapping.get(column.name)) {
+              filteredByTableColumns.forEach(pbiColumn => {
+                  if (column.type === pbiColumn.type && !usedColumns.has(pbiColumn)) {
+                      newMapping.set(column.name, pbiColumn.name);
+                      usedColumns.add(pbiColumn);
+                  }
+              });
+          }
+      });
+    });    
 
     return (
       <FloatingPanel
