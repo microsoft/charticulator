@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Expression, replaceNewLineBySymbol, replaceTabBySymbol } from "../../../../../core";
+import { Expression, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, replaceTabBySymbol } from "../../../../../core";
 import { classNames } from "../../../../utils";
 
 export interface InputExpressionProps {
@@ -23,7 +23,7 @@ export interface InputExpressionState {
 export class InputExpression extends React.Component<
   InputExpressionProps,
   InputExpressionState
-> {
+  > {
   protected refInput: HTMLInputElement;
   public state: InputExpressionState = {
     errorMessage: null,
@@ -87,7 +87,7 @@ export class InputExpression extends React.Component<
           )}
           type="text"
           ref={(e) => (this.refInput = e)}
-          value={this.state.value.replace(/\n/g, "\\n").replace(/\t/g, "\\t")}
+          value={replaceSymbolByTab(replaceSymbolByNewLine(this.state.value))}
           placeholder={this.props.placeholder}
           onKeyDown={(e) => {
             if (e.key == "Enter") {

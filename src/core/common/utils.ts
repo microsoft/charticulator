@@ -462,7 +462,7 @@ export abstract class HashMap<KeyType, ValueType> {
 export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
-> {
+  > {
   protected separator: string = Math.random().toString(36).substr(2);
   protected hash(key: string[]): string {
     return key.join(this.separator);
@@ -536,10 +536,10 @@ export function hexToRgb(hex: string): Color {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
     : null;
 }
 
@@ -568,8 +568,8 @@ export function getSortFunctionByData(values: string[]) {
         return +aNum < +bNum
           ? 1
           : +a.split("-").pop() < +b.split("-").pop()
-          ? 1
-          : -1;
+            ? 1
+            : -1;
       }
     };
   }
@@ -635,5 +635,13 @@ export function splitStringByNewLine(str: string) {
 }
 
 export function replaceTabBySymbol(str: string) {
-  return str.replace(/\\t/g, "\t")
+  return str.replace(/\\t/g, "\t");
+}
+
+export function replaceSymbolByNewLine(str: string) {
+  return str.replace(/\n/g, "\\n");
+}
+
+export function replaceSymbolByTab(str: string) {
+  return str.replace(/\t/g, "\\t");
 }

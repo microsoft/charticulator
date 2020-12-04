@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -182,7 +182,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -224,7 +224,7 @@ export class AxisRenderer {
       const tx =
         ((Math.log(ticks[i]) - Math.log(domainMin)) /
           (Math.log(domainMax) - Math.log(domainMin))) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -258,7 +258,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-          (rangeMax - rangeMin) +
+        (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -368,7 +368,7 @@ export class AxisRenderer {
       if (Math.abs(cos) < 0.5) {
         if (style.wordWrap || splitStringByNewLine(tick.label).length > 0) {
           let textContent: string[] = splitByWidth(
-            tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+            replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
             maxTickDistance,
             10000,
             style.fontFamily,
@@ -388,10 +388,10 @@ export class AxisRenderer {
             const text = makeText(
               px,
               py -
-                style.fontSize * index +
-                (side * cos > 0
-                  ? 0
-                  : (textContent.length * style.fontSize - style.fontSize) / 2),
+              style.fontSize * index +
+              (side * cos > 0
+                ? 0
+                : (textContent.length * style.fontSize - style.fontSize) / 2),
               textContent[index],
               style.fontFamily,
               style.fontSize,
@@ -478,11 +478,11 @@ export class AxisRenderer {
         } else {
           if (style.wordWrap || splitStringByNewLine(tick.label).length > 1) {
             let textContent = [
-              tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+              replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
             ];
             if (style.wordWrap) {
               textContent = splitByWidth(
-                tick.label.replace(/\n/g, "\\n").replace(/\t/g, "\\t"),
+                replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
                 maxTickDistance,
                 10000,
                 style.fontFamily,
@@ -503,8 +503,8 @@ export class AxisRenderer {
               const text = makeText(
                 px,
                 py -
-                  style.fontSize * index +
-                  (side * cos > 0 ? 0 : textContent.length * style.fontSize),
+                style.fontSize * index +
+                (side * cos > 0 ? 0 : textContent.length * style.fontSize),
                 textContent[index],
                 style.fontFamily,
                 style.fontSize,
@@ -521,8 +521,8 @@ export class AxisRenderer {
               angle: style.wordWrap
                 ? 0
                 : cos > 0
-                ? 36 + angle
-                : 36 + angle - 180,
+                  ? 36 + angle
+                  : 36 + angle - 180,
             };
             g.elements.push(gText);
           } else {
@@ -598,7 +598,7 @@ export class AxisRenderer {
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const lablel = tick.label && tick.label.replace(/\n/g, "\\n");
+      const lablel = tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
       if (lablel && (style.wordWrap || splitStringByNewLine(lablel).length > 1)) {
         let textContent = [lablel];
         if (style.wordWrap) {
@@ -626,10 +626,10 @@ export class AxisRenderer {
           const gt = makeText(
             textX,
             textY -
-              style.fontSize * index +
-              (side > 0
-                ? style.fontSize * textContent.length - style.fontSize
-                : 0),
+            style.fontSize * index +
+            (side > 0
+              ? style.fontSize * textContent.length - style.fontSize
+              : 0),
             textContent[index],
             style.fontFamily,
             style.fontSize,

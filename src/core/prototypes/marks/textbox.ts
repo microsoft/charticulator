@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, replaceNewLineBySymbol, rgbToHex, splitStringByNewLine } from "../../common";
+import { Point, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, rgbToHex, splitStringByNewLine } from "../../common";
 import * as Graphics from "../../graphics";
 import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
@@ -29,7 +29,7 @@ export { TextboxElementAttributes, TextboxElementProperties };
 export class TextboxElementClass extends EmphasizableMarkClass<
   TextboxElementProperties,
   TextboxElementAttributes
-> {
+  > {
   public static classID = "mark.textbox";
   public static type = "mark";
 
@@ -138,16 +138,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignX != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingX" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber(
+                { property: "paddingX" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                }
               )
+            )
             : null
         )
       ),
@@ -166,16 +166,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignY != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingY" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber(
+                { property: "paddingY" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                }
               )
+            )
             : null
         )
       ),
@@ -191,31 +191,31 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       ),
       props.wordWrap
         ? manager.row(
-            "Alignment",
-            manager.horizontal(
-              [0, 1],
-              manager.inputSelect(
-                { property: "alignText" },
-                {
-                  type: "radio",
-                  options: ["end", "middle", "start"],
-                  icons: ["align/bottom", "align/y-middle", "align/top"],
-                  labels: ["Bottom", "Middle", "Top"],
-                }
-              )
-            )
-          )
-        : null,
-      props.wordWrap
-        ? manager.row(
-            "Overflow",
-            manager.inputBoolean(
-              { property: "overFlow" },
+          "Alignment",
+          manager.horizontal(
+            [0, 1],
+            manager.inputSelect(
+              { property: "alignText" },
               {
-                type: "checkbox",
+                type: "radio",
+                options: ["end", "middle", "start"],
+                icons: ["align/bottom", "align/y-middle", "align/top"],
+                labels: ["Bottom", "Middle", "Top"],
               }
             )
           )
+        )
+        : null,
+      props.wordWrap
+        ? manager.row(
+          "Overflow",
+          manager.inputBoolean(
+            { property: "overFlow" },
+            {
+              type: "checkbox",
+            }
+          )
+        )
         : null,
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
@@ -377,7 +377,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       // auto wrap text content
       if (props.wordWrap) {
         textContentList = splitByWidth(
-          attrs.text.replace(/\n/g, "\\n"),
+          replaceSymbolByTab(replaceSymbolByNewLine(attrs.text)),
           Math.abs(attrs.x2 - attrs.x1) - 10,
           maxLines,
           attrs.fontFamily,
