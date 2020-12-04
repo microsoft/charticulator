@@ -245,11 +245,11 @@ export class MenuBar extends ContextedComponent<
 
             let unmappedColumns: Specification.Template.Column[] = [];
             data.tables[0].columns.forEach(column => {
-              unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Main));
+              unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Main, this.store.dataset));
             });
             if (data.tables[1]) {
               data.tables[1].columns.forEach(column => {
-                unmappedColumns = unmappedColumns.concat(this.checkColumnsMapping(column, TableType.Links));
+                unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Links, this.store.dataset));
               });
             }
 
@@ -299,7 +299,6 @@ export class MenuBar extends ContextedComponent<
                         unmappedColumns={unmappedColumns}
                         onSave={(mapping) => {
                           loadTemplateIntoState(tableMapping, mapping);
-                          // TODO check mappings
                           context.close();
                         }}
                         onClose={() => {
