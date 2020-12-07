@@ -23,6 +23,9 @@ export function getSVGIcon(path: string): string {
   }
 }
 
+addSVGIcon("general/chevron-down", require("resources/icons/icons_chevron_down.svg"));
+addSVGIcon("general/chevron-right", require("resources/icons/icons_chevron_right.svg"));
+
 // General icons
 addSVGIcon("general/cross", require("resources/icons/icons_cross.svg"));
 addSVGIcon("general/plus", require("resources/icons/icons_plus.svg"));
@@ -105,6 +108,10 @@ addSVGIcon(
   require("resources/icons/icons_toolbar-download.svg")
 );
 addSVGIcon(
+  "toolbar/export-template",
+  require("resources/icons/icons_toolbar-export-template.svg")
+);
+addSVGIcon(
   "toolbar/export",
   require("resources/icons/icons_toolbar-export.svg")
 );
@@ -114,6 +121,10 @@ addSVGIcon("toolbar/help", require("resources/icons/icons_toolbar-help.svg"));
 addSVGIcon(
   "toolbar/import",
   require("resources/icons/icons_toolbar-import.svg")
+);
+addSVGIcon(
+  "toolbar/import-template",
+  require("resources/icons/icons_toolbar-import-template.svg")
 );
 addSVGIcon("toolbar/back", require("resources/icons/icons_toolbar-back.svg"));
 addSVGIcon("toolbar/trash", require("resources/icons/icons_toolbar-trash.svg"));

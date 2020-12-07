@@ -12,6 +12,7 @@
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid $gray-160;
 
     & > .header {
       .buttons {
@@ -29,13 +30,12 @@
         }
       }
 
-      background-color: $gray-220;
+      // background-color: $gray-225;
 
-      @include shadow-ambient;
+      // @include shadow-ambient;
 
-      // border-top: 1px solid $gray-160;
       // border-bottom: 1px solid $gray-160;
-      color: $gray-100;
+      // color: $gray-100;
       height: $header-height;
       line-height: $header-height;
       font-size: 14px;
@@ -54,7 +54,7 @@
       &:hover {
         background-color: $gray-230;
 
-        @include shadow-focused;
+        // @include shadow-focused;
       }
 
       transition: background-color $transition-default,
@@ -63,7 +63,10 @@
 
     & > .content {
       flex-shrink: 0;
-      padding: 10px;
+      padding-top: 0px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 10px;
     }
 
     &.minimizable-pane-scrollable {
@@ -89,7 +92,7 @@
   border: 1px solid $gray-100;
   border-radius: 2px;
   box-sizing: border-box;
-  background: $gray-210;
+  background: $theme-secondary-background;
   position: absolute;
   width: 322px;
   left: 100px;
@@ -125,7 +128,7 @@
 
     $header-height: 28px;
 
-    background-color: $gray-220;
+    background-color: $gray-225;
 
     @include shadow-ambient;
 

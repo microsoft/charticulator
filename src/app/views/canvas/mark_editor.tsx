@@ -158,7 +158,7 @@ export class MarkEditorView extends ContextedComponent<
             glyphState={this.getGlyphState(currentGlyph)}
             parent={this}
             width={this.state.width}
-            height={this.state.height - 24}
+            height={this.state.height - 30}
           />
         ) : (
           <div className="mark-editor-single-view">
@@ -1521,7 +1521,7 @@ export class SingleMarkView
               ref="canvas"
               x={0}
               y={0}
-              width={this.props.width}
+              width={this.props.width - 4}
               height={this.props.height}
             >
               <rect
@@ -1555,7 +1555,7 @@ export class SingleMarkView
             ref="canvas"
             x={0}
             y={0}
-            width={this.props.width}
+            width={this.props.width - 4}
             height={this.props.height}
           >
             <rect

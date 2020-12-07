@@ -138,8 +138,8 @@ body {
 
   &__panel {
     $panel-color: $theme-primary-background;
-    $panel-border-color: $gray-200;
-    $panel-border-width: 2px;
+    $panel-border-color: #C8C6C4;
+    $panel-border-width: 1px;
 
     display: flex;
     flex-direction: column;
@@ -147,11 +147,12 @@ body {
 
     &-dataset {
       flex-shrink: 0;
-      width: 250px;
+      max-width: 250px;
       overflow: hidden;
       box-sizing: border-box;
       background: $theme-dataset-background;
       border-right: $panel-border-width solid $panel-border-color;
+      border-left: $panel-border-width solid $panel-border-color;
       // padding: 10px;
       // overflow-y: scroll;
       // z-index: 10;
@@ -166,16 +167,20 @@ body {
       flex-direction: column;
 
       &-toolbar-horizontal {
-        padding: 10px;
-        background: $gray-210;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 5px;
+        background: $gray-230;
         border-bottom: $panel-border-width solid $panel-border-color;
+        border-left: $panel-border-width solid $panel-border-color;
         // z-index: 9;
         // box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       }
 
       &-toolbar-vertical {
         padding: 10px;
-        background: $gray-210;
+        background: $gray-230;
         border-bottom: $panel-border-width solid $panel-border-color;
 
         border-right: 1px solid $gray-190;
@@ -198,9 +203,10 @@ body {
         overflow: hidden;
 
         &-panes {
-          width: 320px;
+          max-width: 320px;
           flex-shrink: 0;
           border-right: $panel-border-width solid $panel-border-color;
+          border-left: $panel-border-width solid $panel-border-color;
           display: flex;
           flex-direction: column;
         }

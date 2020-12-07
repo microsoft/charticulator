@@ -235,7 +235,7 @@ export class MenuBar extends ContextedComponent<
     return (
       <>
         <MenuButton
-          url={R.getSVGIcon("toolbar/import")}
+          url={R.getSVGIcon("toolbar/import-template")}
           text=""
           title="Import template"
           onClick={async () => {
@@ -317,7 +317,7 @@ export class MenuBar extends ContextedComponent<
           }}
         />
         <MenuButton
-          url={R.getSVGIcon("toolbar/export")}
+          url={R.getSVGIcon("toolbar/export-template")}
           text=""
           title="Export template"
           onClick={() => {
@@ -340,6 +340,16 @@ export class MenuBar extends ContextedComponent<
         />
       </>
     );
+  }
+
+  private checkColumnsMapping(column: Specification.Template.Column,tableType: TableType): Specification.Template.Column[] {
+    const unmappedColumns: Specification.Template.Column[] = [];
+    const dataTable = this.store.dataset.tables.find(t => t.type === tableType);
+    const found = dataTable && dataTable.columns.find(c => c.name === column.name);
+    if (!found) {
+      unmappedColumns.push(column);
+    }
+    return unmappedColumns;
   }
 
   public renderSaveEmbedded() {

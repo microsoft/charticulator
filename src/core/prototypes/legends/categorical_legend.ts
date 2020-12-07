@@ -155,15 +155,15 @@ export class CategoricalLegendClass extends LegendClass {
                     [
                       {
                         x: lineHeight / 2 + 4,
-                        y: lineHeight - 2,
+                        y: lineHeight - 4,
                       },
                       {
                         x: 0 + 4 + 2,
-                        y: 0 + 2,
+                        y: 0 + 4,
                       },
                       {
                         x: lineHeight + 4 - 2,
-                        y: 0 + 2,
+                        y: 0 + 4,
                       },
                     ],
                     {
@@ -176,7 +176,7 @@ export class CategoricalLegendClass extends LegendClass {
               case "circle":
               default:
                 gItem.elements.push(
-                  Graphics.makeCircle(16, 12, lineHeight / 2.5, {
+                  Graphics.makeCircle(lineHeight / 2, lineHeight /2, lineHeight / 3, {
                     fillColor: item.value as Color,
                   })
                 );

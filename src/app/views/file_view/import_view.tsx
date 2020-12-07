@@ -23,7 +23,7 @@ export interface FileViewImportState {
   columnMappings: Map<string, string>;
 }
 
-const typeDisplayNames: { [key in Specification.DataType]: string } = {
+export const typeDisplayNames: { [key in Specification.DataType]: string } = {
   boolean: "Boolean",
   date: "Date",
   number: "Number",
@@ -51,7 +51,6 @@ export class FileViewImport extends ContextedComponent<
         return mapped;
       }
 
-      console.log(name, "Unmapped", newMapping);
       return "Unmapped";
     };
 
@@ -62,6 +61,35 @@ export class FileViewImport extends ContextedComponent<
       });
     };
 
+    tables.forEach((table, tableIndex ) => {
+      const filteredByTableColumns = this.props.datasetTables[tableIndex]?.columns;
+      if (!filteredByTableColumns) {
+        return;
+      }
+      const usedColumns = new Set();
+      // match columns by name and type
+      table.columns.forEach(column => {
+          filteredByTableColumns.forEach(pbiColumn => {
+              if (pbiColumn.displayName === column.name && column.type === pbiColumn.type && !newMapping.get(column.name)) {
+                  newMapping.set(column.name, pbiColumn.name);
+                  usedColumns.add(pbiColumn);
+              }
+          });
+      });
+      // match columns by type
+      table.columns.forEach(column => {
+          // Set default column by type
+          if (!newMapping.get(column.name)) {
+              filteredByTableColumns.forEach(pbiColumn => {
+                  if (column.type === pbiColumn.type && !usedColumns.has(pbiColumn)) {
+                      newMapping.set(column.name, pbiColumn.name);
+                      usedColumns.add(pbiColumn);
+                  }
+              });
+          }
+      });
+    });    
+
     return (
       <FloatingPanel
         floatInCenter={true}
@@ -71,7 +99,7 @@ export class FileViewImport extends ContextedComponent<
         closeButtonIcon={"general/cross"}
         height={400}
         width={650}
-        onClose={() => this.props.onClose()}
+        onClose={this.props.onClose}
       >
         <section className="charticulator__file-view-mapping_view">
           <section>
@@ -83,55 +111,66 @@ export class FileViewImport extends ContextedComponent<
                     key={table.name}
                   >
                     <h4>Table name: {table.name}</h4>
-                    <div
-                      className="charticulator__file-view-mapping_rows"
-                      key={table.name}
-                    >
-                      {table.columns.map((column) => {
-                        const optionValues = this.props.datasetTables
-                          .find(
-                            (t) =>
-                              t.name ===
-                              (this.props.tableMapping.get(table.name) ||
-                                table.name)
-                          )
-                          .columns.filter(
-                            (pbiColumn) => pbiColumn.type === column.type
-                          )
-                          .map((pbiColumn) => {
-                            let selected = false;
-                            if (pbiColumn.displayName === column.name) {
-                              selected = true;
-                            }
-                            return pbiColumn.displayName;
-                          });
+                      <table className="charticulator__file-view-mapping_table">
+                        <thead>
+                          <tr className="charticulator__file-view-mapping_rows">
+                            <th className="charticulator__file-view-mapping_row_item">Template column</th>
+                            <th className="charticulator__file-view-mapping_row_item">Required data type</th>
+                            <th className="charticulator__file-view-mapping_row_item">Dataset column</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {table.columns.map((column) => {
+                            const datasetTable = this.props.datasetTables
+                              .find(
+                                (t) =>
+                                  t.name ===
+                                  (this.props.tableMapping.get(table.name) ||
+                                    table.name)
+                              )
 
-                        return (
-                          <React.Fragment key={`${table.name}-${column.name}`}>
-                            <div className="charticulator__file-view-mapping_row_item">
-                              <span>
-                                {column.name} ({typeDisplayNames[column.type]})
-                              </span>
-                              <Select
-                                labels={optionValues}
-                                icons={null}
-                                options={optionValues}
-                                value={getDefaultValue(
-                                  column.name
-                                )().toString()}
-                                showText={true}
-                                onChange={onChange(column.name)}
-                              />
-                            </div>
-                          </React.Fragment>
-                        );
-                      })}
+                              const optionValues = datasetTable?.columns.filter(
+                                (pbiColumn) => pbiColumn.type === column.type
+                              )
+                              .map((pbiColumn) => {
+                                let selected = false;
+                                if (pbiColumn.displayName === column.name) {
+                                  selected = true;
+                                }
+                                return pbiColumn.displayName;
+                              }) || [];
+
+                            return (
+                              <React.Fragment key={`${table.name}-${column.name}`}>
+                                <tr className="charticulator__file-view-mapping_rows"> {/*  className="charticulator__file-view-mapping_row_item" */}
+                                  <td className="charticulator__file-view-mapping_row_item">
+                                    {column.name}
+                                  </td>
+                                  <td className="charticulator__file-view-mapping_row_item">
+                                    {typeDisplayNames[column.type]}
+                                  </td>
+                                  <td className="charticulator__file-view-mapping_row_item">
+                                    <Select
+                                      labels={optionValues}
+                                      icons={null}
+                                      options={optionValues}
+                                      value={getDefaultValue(
+                                        column.name
+                                      )().toString()}
+                                      showText={true}
+                                      onChange={onChange(column.name)}
+                                    />
+                                  </td>
+                                </tr>
+                              </React.Fragment>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     </div>
-                  </div>
                 );
               })}
-            <div className="charticulator__file-view-mapping_row_button_toolbar">
-              <div className="charticulator__file-view-mapping_row_item">
+              <div className="charticulator__file-view-mapping_row_button_toolbar">
                 <Button
                   onClick={() => {
                     if (
@@ -153,16 +192,13 @@ export class FileViewImport extends ContextedComponent<
                     ).length == 0
                   }
                 />
-              </div>
-              {this.props.onClose && <div className="charticulator__file-view-mapping_row_item">
                 <Button
                   onClick={() => {
                     this.props.onClose();
                   }}
                   text={"Cancel"}
                 />
-              </div>}
-            </div>
+              </div>
           </section>
         </section>
       </FloatingPanel>

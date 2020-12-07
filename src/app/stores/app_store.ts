@@ -1098,7 +1098,9 @@ export class AppStore extends BaseStore {
   
         mappings.forEach(mapping => {
           const scaleClass = this.chartManager.getClassById(scale._id)as Prototypes.Scales.ScaleClass;
-          const values = this.chartManager.getGroupedExpressionVector(mapping.mapping.table, null, mapping.mapping.expression);
+          const parsedExpression = this.chartManager.dataflow.cache.parse(mapping.mapping.expression);
+          const table = this.chartManager.dataflow.getTable(mapping.mapping.table);
+          const values = parsedExpression.getValue(table);
           scaleClass.inferParameters(values as Specification.DataValue[], {
             newScale: true
           });

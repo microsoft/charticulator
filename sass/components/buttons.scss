@@ -56,11 +56,11 @@
   &-tool {
     @include button-base(32px);
     @include icon-size(24px);
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     padding: 4px;
 
-    margin-right: 4px;
+    margin-right: 0px;
 
     background: $color-well;
 
@@ -99,7 +99,7 @@
 
   &-multi-tool {
     margin-right: 4px;
-    @include shadow-ambient;
+    // @include shadow-ambient;
     border-radius: 2px;
     background: $color-well;
 
@@ -135,13 +135,16 @@
 
     .charticulator__button-tool {
       box-shadow: none;
-      margin-right: 4px;
+      margin-right: 0px;
+      padding-right: 0px;
     }
     .el-dropdown {
       @include button-base(32px);
       @include icon-size(20px, 6px);
+      margin-left: -5px;
+      z-index: 1;
       .el-svg-icon {
-        margin-left: -2px;
+        margin-left: 0px;
         margin-right: 0;
       }
       vertical-align: top;
@@ -166,6 +169,7 @@
     }
 
     &-dropdown {
+      margin-right: 4px;
       padding: 2px;
       .charticulator__button-tool {
         margin-right: 0;
@@ -176,19 +180,19 @@
   &-raised {
     @include button-base(32px);
     @include icon-size(20px, 6px);
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     .el-text {
       font-size: 14px;
     }
 
-    background: $gray-230;
+    background: $primary-button-color;
     color: $gray-040;
 
-    @include shadow-ambient;
+    // @include shadow-ambient;
 
     &:hover {
-      background: lighten($color-well, 5%);
+      background: lighten($primary-button-color, 5%);
     }
 
     transition: box-shadow $transition-default,
@@ -216,7 +220,7 @@
       &:hover,
       &:active {
         background: $gray-230;
-        @include shadow-ambient;
+        // @include shadow-ambient;
       }
     }
   }
@@ -310,7 +314,7 @@
       height: $button-size;
       display: inline-block;
       vertical-align: top;
-      filter: invert(90%);
+      filter: invert(100%);
 
       @include disable-user-drag;
     }
@@ -318,7 +322,7 @@
     touch-action: none;
     cursor: pointer;
     &:hover {
-      background: $gray-070;
+      background: $theme-hover-background;
       .el-svg-icon {
         filter: invert(100%);
       }
@@ -403,12 +407,12 @@
     cursor: pointer;
 
     &:hover {
-      background: $gray-070;
+      background: $theme-hover-background;
       color: $white;
     }
     &.is-active,
     &:active {
-      background: $gray-020;
+      background: $color-header-active;
     }
   }
 }

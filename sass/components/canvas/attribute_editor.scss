@@ -341,7 +341,7 @@
   }
 
   .is-active {
-    background: #cecece;
+    background: $gray-230;
   }
 }
 
@@ -522,11 +522,11 @@
       }
 
       &:hover {
-        background: $gray-200;
+        background: $gray-220;
       }
 
       &.is-active {
-        background: $gray-190;
+        background: $color-is-active;
       }
 
       &.auto-height {
@@ -1391,10 +1391,11 @@
         cursor: pointer;
         height: $line-height;
         border-radius: 2px;
+        border: 1px solid $gray-200;
         transition: background-color $transition-default;
 
         &.has-text {
-          background: $gray-200;
+          background: $gray-230;
         }
 
         &:hover,
@@ -1547,7 +1548,7 @@
         vertical-align: top;
         height: $line-height;
         border-radius: 2px;
-        background: $gray-200;
+        background: $gray-230;
         overflow: hidden;
 
         &-item {
@@ -1658,7 +1659,7 @@
             vertical-align: top;
             margin: 1px;
             margin-right: 8px;
-            border: 1px solid $white;
+            border: 1px solid $gray-200;
           }
         }
 
@@ -1672,7 +1673,7 @@
           margin: 2px 0;
           overflow: hidden;
           border-radius: 2px;
-          background: $gray-200;
+          background: $gray-230;
           transition: background $transition-default;
           cursor: pointer;
 
@@ -1860,7 +1861,7 @@
   }
 
   & > .el-scale-editor {
-    background: $gray-220;
+    background: $theme-secondary-background;
     position: absolute;
     left: calc(100% + 5px);
     bottom: 0;

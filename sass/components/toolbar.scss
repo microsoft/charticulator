@@ -28,7 +28,7 @@ $elements-margin: 4px;
 
   &-label {
     margin: 0 10px;
-    margin-left: 2px;
+    margin-left: 0px;
     font-size: 14px;
     line-height: $toolbar-height;
     height: $toolbar-height;
@@ -44,7 +44,7 @@ $elements-margin: 4px;
     margin-bottom: 2px;
     border-right: 1px solid $gray-190;
     width: 4px;
-    margin-left: 4px;
+    margin-left: 0px;
     margin-right: 8px;
   }
 
@@ -64,7 +64,7 @@ $elements-margin: 4px;
 
     &:hover {
       cursor: pointer;
-      @include shadow-ambient;
+      // @include shadow-ambient;
       background: $gray-220;
     }
   }
@@ -138,6 +138,8 @@ $elements-margin: 4px;
     border-right: 0px solid $gray-190;
     border-bottom: 1px solid $gray-190;
     margin-bottom: 8px;
+    position: relative;
+    left: 4px;
   }
 
   &-label {

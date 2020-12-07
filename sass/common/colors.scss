@@ -24,13 +24,14 @@ $gray-190: #cecece;
 $gray-200: #dadada;
 $gray-210: #e6e6e6;
 $gray-220: #f2f2f2;
+$gray-225: #FCFBFB;
 $gray-230: #ffffff;
 
 // Black and white
 $black: $gray-000;
 $white: $gray-230;
 
-$color-well: $gray-220;
+$color-well: $gray-230;
 $color-border: $gray-180;
 
 // Colors
@@ -43,6 +44,14 @@ $color-active: #fa9e13;
 $color-active-dark: #b86a05;
 
 $color-secondary: #38bf23;
+
+$color-header: #0063B1;
+$color-header-hover: #06528b;
+$color-header-active: #022947;
+$color-is-active: #F3F2F1;
+
+$primary-button-color: #F2C811;
+
 
 // Shadows
 @mixin shadow-ambient {
