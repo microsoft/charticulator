@@ -186,13 +186,13 @@
       font-size: 14px;
     }
 
-    background: $gray-230;
+    background: $primary-button-color;
     color: $gray-040;
 
     // @include shadow-ambient;
 
     &:hover {
-      background: lighten($color-well, 5%);
+      background: lighten($primary-button-color, 5%);
     }
 
     transition: box-shadow $transition-default,
