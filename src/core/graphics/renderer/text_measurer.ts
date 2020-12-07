@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+import { Graphics } from "../..";
+
+// Licensed under the MIT license.
 export interface TextMeasurement {
   width: number;
   fontSize: number;
@@ -103,4 +107,78 @@ export class TextMeasurer {
     }
     return [x - cx, y - cheight + cy - metrics.ideographicBaseline];
   }
+}
+
+export const SPACE = " ";
+export const BREAKERS_REGEX = /[\s]+/g;
+
+export function split(str: string): string[] {
+  return str.split(BREAKERS_REGEX);
+}
+
+/**
+ * Splits text to fragments do display text with word wrap
+ * Source code taken from https://github.com/microsoft/powerbi-visuals-utils-formattingutils/blob/master/src/wordBreaker.ts#L130
+ * @param content source of text
+ * @param maxWidth max awailable with for text
+ * @param maxNumLines limit lines count, rest of words will be drew in the last line
+ * @param fontFamily font family
+ * @param fontSize font size in px
+ */
+export function splitByWidth(
+  content: string,
+  maxWidth: number,
+  maxNumLines: number,
+  fontFamily: string,
+  fontSize: number
+): string[] {
+  // Default truncator returns string as-is
+
+  const result: string[] = [];
+  const words = split(content);
+
+  let usedWidth = 0;
+  let wordsInLine: string[] = [];
+
+  for (const word of words) {
+    // Last line? Just add whatever is left
+    if (maxNumLines > 0 && result.length >= maxNumLines - 1) {
+      wordsInLine.push(word);
+      continue;
+    }
+
+    // Determine width if we add this word
+    // Account for SPACE we will add when joining...
+    const metrics = Graphics.TextMeasurer.Measure(word, fontFamily, fontSize);
+    const wordWidth = metrics.width;
+
+    // If width would exceed max width,
+    // then push used words and start new split result
+    if (usedWidth + wordWidth > maxWidth) {
+      // Word alone exceeds max width, just add it.
+      if (wordsInLine.length === 0) {
+        result.push(word);
+
+        usedWidth = 0;
+        wordsInLine = [];
+        continue;
+      }
+
+      result.push(wordsInLine.join(SPACE));
+
+      usedWidth = 0;
+      wordsInLine = [];
+    }
+
+    // ...otherwise, add word and continue
+    wordsInLine.push(word);
+    usedWidth += wordWidth;
+  }
+
+  // Push remaining words onto result (if any)
+  if (wordsInLine && wordsInLine.length) {
+    result.push(wordsInLine.join(SPACE));
+  }
+
+  return result;
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Expression } from "../../../../../core";
+import { Expression, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, replaceTabBySymbol } from "../../../../../core";
 import { classNames } from "../../../../utils";
 
 export interface InputExpressionProps {
@@ -23,7 +23,7 @@ export interface InputExpressionState {
 export class InputExpression extends React.Component<
   InputExpressionProps,
   InputExpressionState
-> {
+  > {
   protected refInput: HTMLInputElement;
   public state: InputExpressionState = {
     errorMessage: null,
@@ -48,7 +48,9 @@ export class InputExpression extends React.Component<
       });
       this.props.onEnter(null);
     } else {
-      const result = this.props.validate(this.refInput.value);
+      const result = this.props.validate(
+        replaceTabBySymbol(replaceNewLineBySymbol(this.refInput.value))
+      );
       if (result.pass) {
         this.setState({
           value: result.formatted,
@@ -85,7 +87,7 @@ export class InputExpression extends React.Component<
           )}
           type="text"
           ref={(e) => (this.refInput = e)}
-          value={this.state.value}
+          value={replaceSymbolByTab(replaceSymbolByNewLine(this.state.value))}
           placeholder={this.props.placeholder}
           onKeyDown={(e) => {
             if (e.key == "Enter") {
@@ -110,9 +112,12 @@ export class InputExpression extends React.Component<
                 errorIndicator: false,
               });
             } else {
-              const result = Expression.verifyUserExpression(newValue, {
-                textExpression: this.props.textExpression,
-              });
+              const result = Expression.verifyUserExpression(
+                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
+                {
+                  textExpression: this.props.textExpression,
+                }
+              );
               this.setState({
                 value: this.refInput.value,
                 errorIndicator: !result.pass,

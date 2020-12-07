@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, rgbToHex } from "../../common";
+import { Point, replaceNewLineBySymbol, splitStringByNewLine, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
@@ -108,19 +108,45 @@ export class TextElementClass extends EmphasizableMarkClass<
     );
     const p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
     p.angle += props.rotation;
-    const text = Graphics.makeText(
-      dx,
-      dy,
-      attrs.text,
-      attrs.fontFamily,
-      attrs.fontSize,
-      {
-        strokeColor: attrs.outline,
-        fillColor: attrs.color,
-        opacity: attrs.opacity,
-        ...this.generateEmphasisStyle(empasized),
+    let text: Graphics.Element = null;
+    const textContent =
+      attrs.text && splitStringByNewLine(replaceNewLineBySymbol(attrs.text));
+    if (textContent && textContent.length > 1) {
+      const height = attrs.fontSize;
+      const lines: Graphics.Element[] = [];
+      for (let index = 0; index < textContent.length; index++) {
+        lines.push(
+          Graphics.makeText(
+            dx,
+            dy - height * index,
+            textContent[index],
+            attrs.fontFamily,
+            attrs.fontSize,
+            {
+              strokeColor: attrs.outline,
+              fillColor: attrs.color,
+              opacity: attrs.opacity,
+              ...this.generateEmphasisStyle(empasized),
+            }
+          )
+        );
       }
-    );
+      text = Graphics.makeGroup(lines);
+    } else {
+      text = Graphics.makeText(
+        dx,
+        dy,
+        attrs.text,
+        attrs.fontFamily,
+        attrs.fontSize,
+        {
+          strokeColor: attrs.outline,
+          fillColor: attrs.color,
+          opacity: attrs.opacity,
+          ...this.generateEmphasisStyle(empasized),
+        }
+      );
+    }
     const g = Graphics.makeGroup([text]);
     g.transform = p;
     return g;
