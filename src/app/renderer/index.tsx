@@ -386,7 +386,6 @@ export function renderGraphicalElementSVG(
       const text = element as Graphics.TextOnPath;
       style.fontFamily = text.fontFamily;
       style.fontSize = text.fontSize + "px";
-      console.log(text);
       return (
         <TextOnPath
           text={text.text}

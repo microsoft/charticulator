@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, rgbToHex } from "../../common";
+import { Point, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, rgbToHex, splitStringByNewLine } from "../../common";
 import * as Graphics from "../../graphics";
+import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
 import {
@@ -28,7 +29,7 @@ export { TextboxElementAttributes, TextboxElementProperties };
 export class TextboxElementClass extends EmphasizableMarkClass<
   TextboxElementProperties,
   TextboxElementAttributes
-> {
+  > {
   public static classID = "mark.textbox";
   public static type = "mark";
 
@@ -47,6 +48,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     paddingY: 0,
     alignX: "middle",
     alignY: "middle",
+    wordWrap: false,
+    overFlow: true,
+    alignText: "start",
   };
 
   public static defaultMappingValues: Partial<TextboxElementAttributes> = {
@@ -134,16 +138,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignX != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingX" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber(
+                { property: "paddingX" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                }
               )
+            )
             : null
         )
       ),
@@ -162,19 +166,57 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           ),
           props.alignY != "middle"
             ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "paddingY" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+              [0, 1],
+              manager.label("Margin:"),
+              manager.inputNumber(
+                { property: "paddingY" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                }
               )
+            )
             : null
         )
       ),
+      manager.sectionHeader("Layout"),
+      manager.row(
+        "Wrap text",
+        manager.inputBoolean(
+          { property: "wordWrap" },
+          {
+            type: "checkbox",
+          }
+        )
+      ),
+      props.wordWrap
+        ? manager.row(
+          "Alignment",
+          manager.horizontal(
+            [0, 1],
+            manager.inputSelect(
+              { property: "alignText" },
+              {
+                type: "radio",
+                options: ["end", "middle", "start"],
+                icons: ["align/bottom", "align/y-middle", "align/top"],
+                labels: ["Bottom", "Middle", "Top"],
+              }
+            )
+          )
+        )
+        : null,
+      props.wordWrap
+        ? manager.row(
+          "Overflow",
+          manager.inputBoolean(
+            { property: "overFlow" },
+            {
+              type: "checkbox",
+            }
+          )
+        )
+        : null,
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
       manager.mappingEditor("Outline", "outline", {}),
@@ -257,7 +299,6 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       attrs.fontSize
     );
     const helper = new Graphics.CoordinateSystemHelper(cs);
-    const pathMaker = new Graphics.PathMaker();
     const cheight = (metrics.middle - metrics.ideographicBaseline) * 2;
     let y = 0;
     switch (props.alignY) {
@@ -277,58 +318,173 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         }
         break;
     }
-    helper.lineTo(
-      pathMaker,
-      attrs.x1 + offset.x + props.paddingX,
-      y + offset.y,
-      attrs.x2 + offset.x - props.paddingX,
-      y + offset.y,
-      true
-    );
-    const cmds = pathMaker.path.cmds;
-    const textElement: Graphics.TextOnPath = {
-      type: "text-on-path",
-      pathCmds: cmds,
-      text: attrs.text,
-      fontFamily: attrs.fontFamily,
-      fontSize: attrs.fontSize,
-      align: props.alignX,
-    };
-    if (attrs.outline) {
-      if (attrs.color) {
-        const g = Graphics.makeGroup([
-          {
+    let textElement: Graphics.Element;
+    const applyStyles = (
+      textElement: Graphics.TextOnPath,
+      attrs: TextboxElementAttributes
+    ) => {
+      if (attrs.outline) {
+        if (attrs.color) {
+          const g = Graphics.makeGroup([
+            {
+              ...textElement,
+              style: {
+                strokeColor: attrs.outline,
+              },
+            } as Graphics.TextOnPath,
+            {
+              ...textElement,
+              style: {
+                fillColor: attrs.color,
+              },
+            } as Graphics.TextOnPath,
+          ]);
+          g.style = { opacity: attrs.opacity };
+          return g;
+        } else {
+          return {
             ...textElement,
             style: {
               strokeColor: attrs.outline,
+              opacity: attrs.opacity,
             },
-          } as Graphics.TextOnPath,
-          {
-            ...textElement,
-            style: {
-              fillColor: attrs.color,
-            },
-          } as Graphics.TextOnPath,
-        ]);
-        g.style = { opacity: attrs.opacity };
-        return g;
+          } as Graphics.TextOnPath;
+        }
       } else {
         return {
           ...textElement,
           style: {
-            strokeColor: attrs.outline,
+            fillColor: attrs.color,
             opacity: attrs.opacity,
           },
         } as Graphics.TextOnPath;
       }
+    };
+    const textContent = replaceNewLineBySymbol(attrs.text);
+    if (
+      (textContent && splitStringByNewLine(textContent).length > 1) ||
+      props.wordWrap
+    ) {
+      const height = attrs.fontSize;
+      // set limit of lines depends of height bounding box
+      let maxLines = 1000;
+      // if option enabled and no space for rest of text, set limit of lines count
+      if (!props.overFlow) {
+        maxLines = Math.floor(Math.abs(attrs.y2 - attrs.y1) / height);
+      }
+
+      let textContentList = [textContent];
+      // auto wrap text content
+      if (props.wordWrap) {
+        textContentList = splitByWidth(
+          replaceSymbolByTab(replaceSymbolByNewLine(attrs.text)),
+          Math.abs(attrs.x2 - attrs.x1) - 10,
+          maxLines,
+          attrs.fontFamily,
+          attrs.fontSize
+        );
+      }
+      // add user input wrap
+      textContentList = textContentList.flatMap((line) => splitStringByNewLine(line));
+      const lines: Graphics.Element[] = [];
+      let textBoxShift = 0;
+
+      switch (props.alignY) {
+        case "start":
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = -height;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2 - height;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height - height;
+                break;
+            }
+          }
+          break;
+        case "middle":
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = -height / 2;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2 - height / 2;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height - height / 2;
+                break;
+            }
+          }
+          break;
+        case "end":
+          {
+            switch (props.alignText) {
+              case "start":
+                textBoxShift = 0;
+                break;
+              case "middle":
+                textBoxShift = (textContent.length * height) / 2;
+                break;
+              case "end":
+                textBoxShift = textContent.length * height;
+                break;
+            }
+          }
+          break;
+      }
+
+      for (let index = 0; index < textContent.length; index++) {
+        const pathMaker = new Graphics.PathMaker();
+        helper.lineTo(
+          pathMaker,
+          attrs.x1 + offset.x + props.paddingX,
+          y + offset.y + textBoxShift - height * index,
+          attrs.x2 + offset.x - props.paddingX,
+          y + offset.y + textBoxShift - height * index,
+          true
+        );
+        const cmds = pathMaker.path.cmds;
+
+        const textElement = applyStyles(
+          {
+            key: index,
+            type: "text-on-path",
+            pathCmds: cmds,
+            text: textContent[index],
+            fontFamily: attrs.fontFamily,
+            fontSize: attrs.fontSize,
+            align: props.alignX,
+          } as Graphics.TextOnPath,
+          attrs
+        );
+        lines.push(textElement);
+      }
+
+      return Graphics.makeGroup(lines);
     } else {
-      return {
-        ...textElement,
-        style: {
-          fillColor: attrs.color,
-          opacity: attrs.opacity,
-        },
+      const pathMaker = new Graphics.PathMaker();
+      helper.lineTo(
+        pathMaker,
+        attrs.x1 + offset.x + props.paddingX,
+        y + offset.y,
+        attrs.x2 + offset.x - props.paddingX,
+        y + offset.y,
+        true
+      );
+      const cmds = pathMaker.path.cmds;
+      textElement = {
+        type: "text-on-path",
+        pathCmds: cmds,
+        text: attrs.text,
+        fontFamily: attrs.fontFamily,
+        fontSize: attrs.fontSize,
+        align: props.alignX,
       } as Graphics.TextOnPath;
+      return applyStyles(textElement as Graphics.TextOnPath, attrs);
     }
   }
 
@@ -675,6 +831,16 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         },
         type: Specification.AttributeType.Number,
         default: this.state.attributes.opacity,
+      });
+    }
+    if (this.object.properties.wordWrap !== undefined) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: "wordWrap",
+        },
+        type: Specification.AttributeType.Boolean,
+        default: this.object.properties.wordWrap,
       });
     }
 
