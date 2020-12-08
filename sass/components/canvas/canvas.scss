@@ -351,6 +351,7 @@
 
   line.mark-guide {
     stroke: $gray-200;
+    stroke-dasharray: 3 2;
     fill: none;
   }
 
