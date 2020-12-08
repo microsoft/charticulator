@@ -352,3 +352,19 @@ export function isInIFrame() {
     return true;
   }
 }
+
+export function getAligntment(anchor: Element) {
+  let alignX:
+    | "start-outer"
+    | "inner"
+    | "outer"
+    | "start-inner"
+    | "end-inner"
+    | "end-outer";
+  let alignLeft: boolean = false;
+  if (window.innerWidth - anchor.getBoundingClientRect().x < 500) {
+    alignX = "start-outer";
+    alignLeft = true;
+  }
+  return { alignLeft, alignX };
+}
