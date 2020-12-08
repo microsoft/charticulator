@@ -5,18 +5,18 @@ import { MainTabs } from "./app/views/file_view";
 import { DataType } from "./core/specification";
 
 export const strings = {
-    mainTabs: <{ [key in MainTabs]: string }>{
-        about: "About",
-        export: "Export",
-        new: "New",
-        open: "Open",
-        options: "Options",
-        save: "Save As"
-    },
-    typeDisplayNames: <{ [key in DataType]: string }>{
-        boolean: "Boolean",
-        date: "Date",
-        number: "Number",
-        string: "String",
-    }
+  mainTabs: {
+    about: "About",
+    export: "Export",
+    new: "New",
+    open: "Open",
+    options: "Options",
+    save: "Save As",
+  } as { [key in MainTabs]: string },
+  typeDisplayNames: {
+    boolean: "Boolean",
+    date: "Date",
+    number: "Number",
+    string: "String",
+  } as { [key in DataType]: string },
 };
