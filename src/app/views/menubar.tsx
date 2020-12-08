@@ -93,6 +93,7 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
+    alignButtons: "left" | "right"
     name?: string;
   },
   {}
@@ -404,17 +405,9 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  public render() {
+  public toolbarButtons() {
     return (
       <>
-      <PopupContainer controller={this.popupController} />
-      <section className="charticulator__menu-bar">
-        <div className="charticulator__menu-bar-left">
-          <AppButton
-            name={this.props.name}
-            onClick={() => this.showFileModalWindow("open")}
-          />
-          <span className="charticulator__menu-bar-separator" />
           {this.context.store.editorType === "nested"
             ? this.renderSaveNested()
             : null}
@@ -498,8 +491,37 @@ export class MenuBar extends ContextedComponent<
               }
             }}
           />
+      </>
+    )
+  }
+
+  public render() {
+    return (
+      <>
+      <PopupContainer controller={this.popupController} />
+      <section className="charticulator__menu-bar">
+        <div className="charticulator__menu-bar-left">
+          <AppButton
+            name={this.props.name}
+            onClick={() => this.showFileModalWindow("open")}
+          />
+          {this.props.alignButtons === "left" ? 
+          <>
+          <span className="charticulator__menu-bar-separator" />
+          {this.toolbarButtons()}
+          </>
+          : null}
+        </div>
+        <div className="charticulator__menu-bar-center el-text">
+          <p>{this.context.store.chart?.properties.name} - Charticualtor</p>
         </div>
         <div className="charticulator__menu-bar-right">
+          {this.props.alignButtons === "right" ?
+          <>
+          {this.toolbarButtons()}
+          <span className="charticulator__menu-bar-separator" />
+          </>
+          : null}
           <HelpButton />
         </div>
       </section>

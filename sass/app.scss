@@ -60,6 +60,12 @@ body {
       align-items: center;
       flex: 1;
     }
+    &-center {
+      display: flex;
+      align-self: center;
+      justify-self: center;
+      flex: 1;
+    }
     &-right {
       display: flex;
       align-items: center;
