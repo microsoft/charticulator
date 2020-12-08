@@ -5,6 +5,7 @@ import * as React from "react";
 import { CurrentChartView } from ".";
 import { deepClone, Specification, Prototypes } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
+import { strings } from "../../../strings";
 import { Actions } from "../../actions";
 import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
@@ -150,7 +151,7 @@ export class FileViewExport extends ContextedComponent<
   public render() {
     return (
       <div className="charticulator__file-view-content">
-        <h1>Export</h1>
+        <h1>{strings.mainTabs.export}</h1>
         <div className="el-horizontal-layout">
           <div className="el-horizontal-layout-item">
             <div className="charticulator__list-view">
@@ -399,21 +400,21 @@ export class ExportTemplateView extends ContextedComponent<
           }
           const keyAutoDomainMin = "autoDomainMin";
           const keyAutoDomainMax = "autoDomainMax";
-          
-          let onClickAutoDomainMin = () => {
 
-          }
-          
-          let onClickAutoDomainMax = () => {
+          let onClickAutoDomainMin = () => {};
 
-          }
+          let onClickAutoDomainMax = () => {};
 
           let getAutoDomainMinPropertyValue: () => boolean = null;
-          
+
           let getAutoDomainMaxPropertyValue: () => boolean = null;
-          
+
           if (inference.axis) {
-            if ((object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] === undefined) {
+            if (
+              (object.properties[inference.axis.property as string] as any)[
+                keyAutoDomainMax
+              ] === undefined
+            ) {
               this.dispatch(
                 new Actions.SetObjectProperty(
                   object,
@@ -427,16 +428,20 @@ export class ExportTemplateView extends ContextedComponent<
               temaplteObject.properties[keyAutoDomainMax] = false;
               inference.autoDomainMax = true;
             } else {
-              inference.autoDomainMax = (object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean;
+              inference.autoDomainMax = (object.properties[
+                inference.axis.property as string
+              ] as any)[keyAutoDomainMax] as boolean;
             }
-          
+
             onClickAutoDomainMax = () => {
               this.dispatch(
                 new Actions.SetObjectProperty(
                   object,
                   inference.axis.property as string,
                   keyAutoDomainMax,
-                  !((object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean),
+                  !((object.properties[
+                    inference.axis.property as string
+                  ] as any)[keyAutoDomainMax] as boolean),
                   true,
                   true
                 )
@@ -444,9 +449,11 @@ export class ExportTemplateView extends ContextedComponent<
               this.setState({ template });
             };
             getAutoDomainMaxPropertyValue = () => {
-              return (object.properties[inference.axis.property as string] as any)[keyAutoDomainMax] as boolean;
-            }
-          } 
+              return (object.properties[
+                inference.axis.property as string
+              ] as any)[keyAutoDomainMax] as boolean;
+            };
+          }
           if (inference.scale) {
             if (object.properties[keyAutoDomainMax] === undefined) {
               this.dispatch(
@@ -466,7 +473,7 @@ export class ExportTemplateView extends ContextedComponent<
                 keyAutoDomainMax
               ] as boolean;
             }
-          
+
             onClickAutoDomainMax = () => {
               this.dispatch(
                 new Actions.SetObjectProperty(
@@ -478,15 +485,19 @@ export class ExportTemplateView extends ContextedComponent<
                   true
                 )
               );
-              this.setState({ template });  
-            }
+              this.setState({ template });
+            };
             getAutoDomainMaxPropertyValue = () => {
               return object.properties[keyAutoDomainMax] as boolean;
-            }
+            };
           }
 
           if (inference.axis) {
-            if ((object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] === undefined) {
+            if (
+              (object.properties[inference.axis.property as string] as any)[
+                keyAutoDomainMin
+              ] === undefined
+            ) {
               this.dispatch(
                 new Actions.SetObjectProperty(
                   object,
@@ -500,7 +511,9 @@ export class ExportTemplateView extends ContextedComponent<
               temaplteObject.properties[keyAutoDomainMin] = false;
               inference.autoDomainMin = true;
             } else {
-              inference.autoDomainMin = (object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean;
+              inference.autoDomainMin = (object.properties[
+                inference.axis.property as string
+              ] as any)[keyAutoDomainMin] as boolean;
             }
 
             onClickAutoDomainMin = () => {
@@ -509,17 +522,21 @@ export class ExportTemplateView extends ContextedComponent<
                   object,
                   inference.axis.property as string,
                   keyAutoDomainMin,
-                  !((object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean),
+                  !((object.properties[
+                    inference.axis.property as string
+                  ] as any)[keyAutoDomainMin] as boolean),
                   true,
                   true
                 )
               );
               this.setState({ template });
-            }
+            };
             getAutoDomainMinPropertyValue = () => {
-              return (object.properties[inference.axis.property as string] as any)[keyAutoDomainMin] as boolean;
-            }
-          } 
+              return (object.properties[
+                inference.axis.property as string
+              ] as any)[keyAutoDomainMin] as boolean;
+            };
+          }
           if (inference.scale) {
             if (object.properties[keyAutoDomainMin] === undefined) {
               this.dispatch(
@@ -552,18 +569,15 @@ export class ExportTemplateView extends ContextedComponent<
                 )
               );
               this.setState({ template });
-            }
+            };
             getAutoDomainMinPropertyValue = () => {
               return object.properties[keyAutoDomainMin] as boolean;
-            }
+            };
           }
 
           return (
             <React.Fragment key={index}>
-              <div
-                className="el-inference-item"
-                onClick={onClickAutoDomainMin}
-              >
+              <div className="el-inference-item" onClick={onClickAutoDomainMin}>
                 <SVGImageIcon
                   url={
                     getAutoDomainMinPropertyValue()
@@ -573,10 +587,7 @@ export class ExportTemplateView extends ContextedComponent<
                 />
                 <span className="el-text">{descriptionMin}</span>
               </div>
-              <div
-                className="el-inference-item"
-                onClick={onClickAutoDomainMax}
-              >
+              <div className="el-inference-item" onClick={onClickAutoDomainMax}>
                 <SVGImageIcon
                   url={
                     getAutoDomainMaxPropertyValue()
