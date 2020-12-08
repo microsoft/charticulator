@@ -45,7 +45,7 @@ export enum MainTabs {
   new = "new",
   open = "open",
   options = "options",
-  save = "save"
+  save = "save",
 }
 
 const tabOrder: MainTabs[] = [
@@ -55,7 +55,7 @@ const tabOrder: MainTabs[] = [
   MainTabs.export,
   MainTabs.options,
   null,
-  MainTabs.about
+  MainTabs.about,
 ];
 
 export class CurrentChartView extends React.PureComponent<
@@ -148,18 +148,20 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div className="el-button-back" onClick={() => this.props.onClose()}>
             <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
           </div>
-          {tabOrder.map(t => t === null ?
-            <div className="el-sep" />
-            :
-            <div
-              className={classNames("el-tab", [
-                "active",
-                this.state.currentTab == t,
-              ])}
-              onClick={() => this.switchTab(t)}
-            >
-              {strings.mainTabs[t]}
-            </div>
+          {tabOrder.map((t) =>
+            t === null ? (
+              <div className="el-sep" />
+            ) : (
+              <div
+                className={classNames("el-tab", [
+                  "active",
+                  this.state.currentTab == t,
+                ])}
+                onClick={() => this.switchTab(t)}
+              >
+                {strings.mainTabs[t]}
+              </div>
+            )
           )}
         </div>
         <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
