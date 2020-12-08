@@ -8,6 +8,7 @@ import { CurrentChartView } from ".";
 import { ButtonRaised, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Actions } from "../../actions";
+import { strings } from "../../../strings";
 
 export interface FileViewSaveAsProps {
   onClose: () => void;
@@ -28,7 +29,7 @@ export class FileViewSaveAs extends ContextedComponent<
 
     return (
       <section className="charticulator__file-view-content is-fix-width">
-        <h1>Save As</h1>
+        <h1>{strings.mainTabs.save}</h1>
         <section>
           <CurrentChartView store={this.store} />
           <div className="form-group">

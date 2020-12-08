@@ -8,6 +8,7 @@ import { ContextedComponent } from "../../context_component";
 import { Specification } from "../../../core";
 import { Button, Select } from "../panels/widgets/controls";
 import { Table } from "../../../core/dataset/dataset";
+import { strings } from "../../../strings";
 
 export interface FileViewImportProps {
   tables: Specification.Template.Table[];
@@ -22,13 +23,6 @@ export interface FileViewImportState {
   error?: string;
   columnMappings: Map<string, string>;
 }
-
-export const typeDisplayNames: { [key in Specification.DataType]: string } = {
-  boolean: "Boolean",
-  date: "Date",
-  number: "Number",
-  string: "String",
-};
 
 export class FileViewImport extends ContextedComponent<
   FileViewImportProps,
@@ -147,7 +141,7 @@ export class FileViewImport extends ContextedComponent<
                                     {column.name}
                                   </td>
                                   <td className="charticulator__file-view-mapping_row_item">
-                                    {typeDisplayNames[column.type]}
+                                    {strings.typeDisplayNames[column.type]}
                                   </td>
                                   <td className="charticulator__file-view-mapping_row_item">
                                     <Select

@@ -11,7 +11,7 @@ import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import { ModalView, PopupContainer, PopupController, PopupView } from "../controllers";
 
-import { FileView } from "./file_view";
+import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
 import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
@@ -139,12 +139,12 @@ export class MenuBar extends ContextedComponent<
         switch (command) {
           case "new":
             {
-              this.showFileModalWindow("open");
+              this.showFileModalWindow(MainTabs.open);
             }
             break;
           case "open":
             {
-              this.showFileModalWindow("open");
+              this.showFileModalWindow(MainTabs.open);
             }
             break;
           case "save":
@@ -158,14 +158,14 @@ export class MenuBar extends ContextedComponent<
                 if (this.context.store.currentChartID) {
                   this.dispatch(new Actions.Save());
                 } else {
-                  this.showFileModalWindow("save");
+                  this.showFileModalWindow(MainTabs.save);
                 }
               }
             }
             break;
           case "export":
             {
-              this.showFileModalWindow("export");
+              this.showFileModalWindow(MainTabs.export);
             }
             break;
           case "undo":
@@ -193,11 +193,11 @@ export class MenuBar extends ContextedComponent<
       }
     }
   };
-  public hideFileModalWindow(defaultTab: string = "open") {
+  public hideFileModalWindow() {
     globals.popupController.reset();
   }
 
-  public showFileModalWindow(defaultTab: string = "open") {
+  public showFileModalWindow(defaultTab: MainTabs = MainTabs.open) {
     if (this.context.store.disableFileView) {
       return;
     }
@@ -372,14 +372,14 @@ export class MenuBar extends ContextedComponent<
           url={R.getSVGIcon("toolbar/new")}
           title="New (Ctrl-N)"
           onClick={() => {
-            this.showFileModalWindow("new");
+            this.showFileModalWindow(MainTabs.new);
           }}
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/open")}
           title="Open (Ctrl-O)"
           onClick={() => {
-            this.showFileModalWindow("open");
+            this.showFileModalWindow(MainTabs.open);
           }}
         />
         <MenuButton
@@ -389,7 +389,7 @@ export class MenuBar extends ContextedComponent<
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
             } else {
-              this.showFileModalWindow("save");
+              this.showFileModalWindow(MainTabs.save);
             }
           }}
         />
@@ -397,7 +397,7 @@ export class MenuBar extends ContextedComponent<
           url={R.getSVGIcon("toolbar/export")}
           title="Export"
           onClick={() => {
-            this.showFileModalWindow("export");
+            this.showFileModalWindow(MainTabs.export);
           }}
         />
       </>
@@ -412,7 +412,7 @@ export class MenuBar extends ContextedComponent<
         <div className="charticulator__menu-bar-left">
           <AppButton
             name={this.props.name}
-            onClick={() => this.showFileModalWindow("open")}
+            onClick={() => this.showFileModalWindow(MainTabs.open)}
           />
           <span className="charticulator__menu-bar-separator" />
           {this.context.store.editorType === "nested"

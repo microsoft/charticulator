@@ -37,6 +37,26 @@ import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
 import { FileViewOptions } from "./options_view";
+import { strings } from "../../../strings";
+
+export enum MainTabs {
+  about = "about",
+  export = "export",
+  new = "new",
+  open = "open",
+  options = "options",
+  save = "save"
+}
+
+const tabOrder: MainTabs[] = [
+  MainTabs.new,
+  MainTabs.open,
+  MainTabs.save,
+  MainTabs.export,
+  MainTabs.options,
+  null,
+  MainTabs.about
+];
 
 export class CurrentChartView extends React.PureComponent<
   { store: AppStore },
@@ -67,12 +87,12 @@ export class CurrentChartView extends React.PureComponent<
 export interface FileViewProps {
   store: AppStore;
   backend: AbstractBackend;
-  defaultTab?: string;
+  defaultTab?: MainTabs;
   onClose: () => void;
 }
 
 export interface FileViewState {
-  currentTab: string;
+  currentTab: MainTabs;
 }
 
 export class FileView extends React.Component<FileViewProps, FileViewState> {
@@ -83,31 +103,29 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
   constructor(props: FileViewProps) {
     super(props);
     this.state = {
-      currentTab: this.props.defaultTab || "open",
+      currentTab: this.props.defaultTab || MainTabs.open,
     };
   }
 
-  public switchTab(name: string) {
-    this.setState({
-      currentTab: name,
-    });
+  public switchTab(currentTab: MainTabs) {
+    this.setState({ currentTab });
   }
 
   public renderContent() {
     switch (this.state.currentTab) {
-      case "new": {
+      case MainTabs.new: {
         return <FileViewNew onClose={this.props.onClose} />;
       }
-      case "save": {
+      case MainTabs.save: {
         return <FileViewSaveAs onClose={this.props.onClose} />;
       }
-      case "export": {
+      case MainTabs.export: {
         return <FileViewExport onClose={this.props.onClose} />;
       }
-      case "options": {
+      case MainTabs.options: {
         return <FileViewOptions onClose={this.props.onClose} />;
       }
-      case "about": {
+      case MainTabs.about: {
         return (
           <iframe
             className="charticulator__file-view-about"
@@ -116,7 +134,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           />
         );
       }
-      case "open":
+      case MainTabs.open:
       default: {
         return <FileViewOpen onClose={this.props.onClose} />;
       }
@@ -130,61 +148,19 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div className="el-button-back" onClick={() => this.props.onClose()}>
             <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
           </div>
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "new",
-            ])}
-            onClick={() => this.switchTab("new")}
-          >
-            New
-          </div>
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "open",
-            ])}
-            onClick={() => this.switchTab("open")}
-          >
-            Open
-          </div>
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "save",
-            ])}
-            onClick={() => this.switchTab("save")}
-          >
-            Save As
-          </div>
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "export",
-            ])}
-            onClick={() => this.switchTab("export")}
-          >
-            Export
-          </div>
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "options",
-            ])}
-            onClick={() => this.switchTab("options")}
-          >
-            Options
-          </div>
-          <div className="el-sep" />
-          <div
-            className={classNames("el-tab", [
-              "active",
-              this.state.currentTab == "about",
-            ])}
-            onClick={() => this.switchTab("about")}
-          >
-            About
-          </div>
+          {tabOrder.map(t => t === null ?
+            <div className="el-sep" />
+            :
+            <div
+              className={classNames("el-tab", [
+                "active",
+                this.state.currentTab == t,
+              ])}
+              onClick={() => this.switchTab(t)}
+            >
+              {strings.mainTabs[t]}
+            </div>
+          )}
         </div>
         <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
       </div>

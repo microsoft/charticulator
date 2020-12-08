@@ -5,6 +5,7 @@ import * as React from "react";
 import { CurrentChartView } from ".";
 import { deepClone, Specification, Prototypes } from "../../../core";
 import { findObjectById } from "../../../core/prototypes";
+import { strings } from "../../../strings";
 import { Actions } from "../../actions";
 import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
@@ -150,7 +151,7 @@ export class FileViewExport extends ContextedComponent<
   public render() {
     return (
       <div className="charticulator__file-view-content">
-        <h1>Export</h1>
+        <h1>{strings.mainTabs.export}</h1>
         <div className="el-horizontal-layout">
           <div className="el-horizontal-layout-item">
             <div className="charticulator__list-view">
