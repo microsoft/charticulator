@@ -233,7 +233,7 @@ export function getConvertableDataKind(
       types = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Number:
-      types = [DataKind.Categorical, DataKind.Numerical, DataKind.Ordinal];
+      types = [DataKind.Categorical, DataKind.Numerical];
       break;
   }
 
