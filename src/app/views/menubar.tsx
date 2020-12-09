@@ -93,11 +93,11 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
-    alignButtons: "left" | "right"
+    alignButtons: "left" | "right";
     name?: string;
   },
   {}
-> {  
+> {
   protected subs: EventSubscription;
   private popupController: PopupController = new PopupController();
   public componentDidMount() {
@@ -242,31 +242,61 @@ export class MenuBar extends ContextedComponent<
           onClick={async () => {
             const file = await showOpenFileDialog(["tmplt"]);
             const str = await readFileAsString(file);
-            const data = JSON.parse(str) as Specification.Template.ChartTemplate;
+            const data = JSON.parse(
+              str
+            ) as Specification.Template.ChartTemplate;
 
             let unmappedColumns: Specification.Template.Column[] = [];
-            data.tables[0].columns.forEach(column => {
-              unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Main, this.store.dataset));
+            data.tables[0].columns.forEach((column) => {
+              unmappedColumns = unmappedColumns.concat(
+                this.store.checkColumnsMapping(
+                  column,
+                  TableType.Main,
+                  this.store.dataset
+                )
+              );
             });
             if (data.tables[1]) {
-              data.tables[1].columns.forEach(column => {
-                unmappedColumns = unmappedColumns.concat(this.store.checkColumnsMapping(column, TableType.Links, this.store.dataset));
+              data.tables[1].columns.forEach((column) => {
+                unmappedColumns = unmappedColumns.concat(
+                  this.store.checkColumnsMapping(
+                    column,
+                    TableType.Links,
+                    this.store.dataset
+                  )
+                );
               });
             }
 
             const tableMapping = new Map<string, string>();
-            tableMapping.set(data.tables[0].name, this.store.dataset.tables[0].name);
+            tableMapping.set(
+              data.tables[0].name,
+              this.store.dataset.tables[0].name
+            );
             if (data.tables[1] && this.store.dataset.tables[1]) {
-              tableMapping.set(data.tables[1].name, this.store.dataset.tables[1].name);
+              tableMapping.set(
+                data.tables[1].name,
+                this.store.dataset.tables[1].name
+              );
             }
 
-            const loadTemplateIntoState = (tableMapping: Map<string, string>, columnMapping: Map<string, string>) => {
+            const loadTemplateIntoState = (
+              tableMapping: Map<string, string>,
+              columnMapping: Map<string, string>
+            ) => {
               const template = new ChartTemplate(data);
 
               for (const table of template.getDatasetSchema()) {
-                template.assignTable(table.name, tableMapping.get(table.name) || table.name);
+                template.assignTable(
+                  table.name,
+                  tableMapping.get(table.name) || table.name
+                );
                 for (const column of table.columns) {
-                  template.assignColumn(table.name, column.name, columnMapping.get(column.name) || column.name);
+                  template.assignColumn(
+                    table.name,
+                    column.name,
+                    columnMapping.get(column.name) || column.name
+                  );
                 }
               }
               const instance = template.instantiate(
@@ -281,8 +311,10 @@ export class MenuBar extends ContextedComponent<
                   {}
                 )
               );
-              this.store.dispatcher.dispatch(new Actions.ReplaceDataset(this.store.dataset));
-            }
+              this.store.dispatcher.dispatch(
+                new Actions.ReplaceDataset(this.store.dataset)
+              );
+            };
 
             if (unmappedColumns.length > 0) {
               // mapping show dialog then call loadTemplateIntoState
@@ -290,22 +322,20 @@ export class MenuBar extends ContextedComponent<
                 (context) => {
                   return (
                     <ModalView context={context}>
-                      <div
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                      <FileViewImport
-                        tables={data.tables}
-                        datasetTables={this.store.dataset.tables}
-                        tableMapping={tableMapping}
-                        unmappedColumns={unmappedColumns}
-                        onSave={(mapping) => {
-                          loadTemplateIntoState(tableMapping, mapping);
-                          context.close();
-                        }}
-                        onClose={() => {
-                          context.close();
-                        }}
-                      />
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <FileViewImport
+                          tables={data.tables}
+                          datasetTables={this.store.dataset.tables}
+                          tableMapping={tableMapping}
+                          unmappedColumns={unmappedColumns}
+                          onSave={(mapping) => {
+                            loadTemplateIntoState(tableMapping, mapping);
+                            context.close();
+                          }}
+                          onClose={() => {
+                            context.close();
+                          }}
+                        />
                       </div>
                     </ModalView>
                   );
@@ -343,10 +373,16 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  private checkColumnsMapping(column: Specification.Template.Column,tableType: TableType): Specification.Template.Column[] {
+  private checkColumnsMapping(
+    column: Specification.Template.Column,
+    tableType: TableType
+  ): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = this.store.dataset.tables.find(t => t.type === tableType);
-    const found = dataTable && dataTable.columns.find(c => c.name === column.name);
+    const dataTable = this.store.dataset.tables.find(
+      (t) => t.type === tableType
+    );
+    const found =
+      dataTable && dataTable.columns.find((c) => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }
@@ -409,123 +445,123 @@ export class MenuBar extends ContextedComponent<
   public toolbarButtons() {
     return (
       <>
-          {this.context.store.editorType === "nested"
-            ? this.renderSaveNested()
-            : null}
-          {this.context.store.editorType === "chart"
-            ? this.renderNewOpenSave()
-            : null}
-          {this.context.store.editorType === "embedded"
-            ? this.renderSaveEmbedded()
-            : null}
-          <span className="charticulator__menu-bar-separator" />
-          {this.renderExportImportButtons()}
-          <span className="charticulator__menu-bar-separator" />
-          <MenuButton
-            url={R.getSVGIcon("toolbar/undo")}
-            title="Undo (Ctrl-Z)"
-            onClick={() =>
-              new Actions.Undo().dispatch(this.context.store.dispatcher)
-            }
-          />
-          <MenuButton
-            url={R.getSVGIcon("toolbar/redo")}
-            title="Redo (Ctrl-Y)"
-            onClick={() =>
-              new Actions.Redo().dispatch(this.context.store.dispatcher)
-            }
-          />
-          <span className="charticulator__menu-bar-separator" />
-          <MenuButton
-            url={R.getSVGIcon("toolbar/trash")}
-            title="Reset"
-            onClick={() => {
-              if (isInIFrame()) {
-                globals.popupController.showModal(
-                  (context) => {
-                    return (
+        {this.context.store.editorType === "nested"
+          ? this.renderSaveNested()
+          : null}
+        {this.context.store.editorType === "chart"
+          ? this.renderNewOpenSave()
+          : null}
+        {this.context.store.editorType === "embedded"
+          ? this.renderSaveEmbedded()
+          : null}
+        <span className="charticulator__menu-bar-separator" />
+        {this.renderExportImportButtons()}
+        <span className="charticulator__menu-bar-separator" />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/undo")}
+          title="Undo (Ctrl-Z)"
+          onClick={() =>
+            new Actions.Undo().dispatch(this.context.store.dispatcher)
+          }
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/redo")}
+          title="Redo (Ctrl-Y)"
+          onClick={() =>
+            new Actions.Redo().dispatch(this.context.store.dispatcher)
+          }
+        />
+        <span className="charticulator__menu-bar-separator" />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/trash")}
+          title="Reset"
+          onClick={() => {
+            if (isInIFrame()) {
+              globals.popupController.showModal(
+                (context) => {
+                  return (
+                    <div
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className={"charticulator__reset_chart_dialog"}
+                    >
                       <div
-                        onMouseDown={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className={"charticulator__reset_chart_dialog"}
+                        className={"charticulator__reset_chart_dialog-inner"}
                       >
-                        <div
-                          className={"charticulator__reset_chart_dialog-inner"}
-                        >
-                          {/* <ModalView context={context}> */}
-                          <>
-                            <p>Are you really willing to reset the chart?</p>
-                            <div
-                              className={
-                                "charticulator__reset_chart_dialog-buttons"
-                              }
-                            >
-                              <Button
-                                text="Yes"
-                                onClick={() => {
-                                  this.context.store.dispatcher.dispatch(
-                                    new Actions.Reset()
-                                  );
-                                  context.close();
-                                }}
-                              />
-                              <Button
-                                text="No"
-                                onClick={() => {
-                                  context.close();
-                                }}
-                              />
-                            </div>
-                          </>
-                          {/* </ModalView> */}
-                        </div>
+                        {/* <ModalView context={context}> */}
+                        <>
+                          <p>Are you really willing to reset the chart?</p>
+                          <div
+                            className={
+                              "charticulator__reset_chart_dialog-buttons"
+                            }
+                          >
+                            <Button
+                              text="Yes"
+                              onClick={() => {
+                                this.context.store.dispatcher.dispatch(
+                                  new Actions.Reset()
+                                );
+                                context.close();
+                              }}
+                            />
+                            <Button
+                              text="No"
+                              onClick={() => {
+                                context.close();
+                              }}
+                            />
+                          </div>
+                        </>
+                        {/* </ModalView> */}
                       </div>
-                    );
-                  },
-                  { anchor: null }
-                );
-              } else {
-                if (confirm("Are you really willing to reset the chart?")) {
-                  new Actions.Reset().dispatch(this.context.store.dispatcher);
-                }
+                    </div>
+                  );
+                },
+                { anchor: null }
+              );
+            } else {
+              if (confirm("Are you really willing to reset the chart?")) {
+                new Actions.Reset().dispatch(this.context.store.dispatcher);
               }
-            }}
-          />
+            }
+          }}
+        />
       </>
-    )
+    );
   }
 
   public render() {
     return (
       <>
-      <PopupContainer controller={this.popupController} />
-      <section className="charticulator__menu-bar">
-        <div className="charticulator__menu-bar-left">
-          <AppButton
-            name={this.props.name}
-            onClick={() => this.showFileModalWindow("open")}
-          />
-          {this.props.alignButtons === "left" ? 
-          <>
-          <span className="charticulator__menu-bar-separator" />
-          {this.toolbarButtons()}
-          </>
-          : null}
-        </div>
-        <div className="charticulator__menu-bar-center el-text">
-          <p>{this.context.store.chart?.properties.name} - Charticualtor</p>
-        </div>
-        <div className="charticulator__menu-bar-right">
-          {this.props.alignButtons === "right" ?
-          <>
-          {this.toolbarButtons()}
-          <span className="charticulator__menu-bar-separator" />
-          </>
-          : null}
-          <HelpButton />
-        </div>
-      </section>
+        <PopupContainer controller={this.popupController} />
+        <section className="charticulator__menu-bar">
+          <div className="charticulator__menu-bar-left">
+            <AppButton
+              name={this.props.name}
+              onClick={() => this.showFileModalWindow("open")}
+            />
+            {this.props.alignButtons === "left" ? (
+              <>
+                <span className="charticulator__menu-bar-separator" />
+                {this.toolbarButtons()}
+              </>
+            ) : null}
+          </div>
+          <div className="charticulator__menu-bar-center el-text">
+            <p>{this.context.store.chart?.properties.name} - Charticualtor</p>
+          </div>
+          <div className="charticulator__menu-bar-right">
+            {this.props.alignButtons === "right" ? (
+              <>
+                {this.toolbarButtons()}
+                <span className="charticulator__menu-bar-separator" />
+              </>
+            ) : null}
+            <HelpButton />
+          </div>
+        </section>
       </>
     );
   }
