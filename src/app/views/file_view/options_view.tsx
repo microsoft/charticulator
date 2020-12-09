@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ContextedComponent } from "../../context_component";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
+import { strings } from "../../../strings";
 
 export class FileViewOptions extends ContextedComponent<
   {
@@ -19,7 +20,7 @@ export class FileViewOptions extends ContextedComponent<
     const localeFileFormat = this.context.store.getLocaleFileFormat();
     return (
       <section className="charticulator__file-view-content">
-        <h1>Options</h1>
+        <h1>{strings.mainTabs.options}</h1>
         <div>
           <h2>Import file format</h2>
           <div>

@@ -25,6 +25,7 @@ import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
 import { TableType } from "../core/dataset";
 import { LocaleFileFormat } from "../core/dataset/dsv_parser";
+import { MainTabs } from "./views/file_view";
 
 function makeDefaultDataset(): Dataset.Dataset {
   const rows: any[] = [];
@@ -312,7 +313,7 @@ export class Application {
       const json = await value.json();
       this.appStore.dispatcher.dispatch(new Actions.Load(json.state));
     } else {
-      this.mainView.refMenuBar.showFileModalWindow("new");
+      this.mainView.refMenuBar.showFileModalWindow(MainTabs.new);
     }
   }
 

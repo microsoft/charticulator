@@ -15,6 +15,7 @@ import {
 import { ContextedComponent } from "../../context_component";
 import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
+import { strings } from "../../../strings";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
@@ -167,7 +168,7 @@ export class FileViewOpen extends ContextedComponent<
   public render() {
     return (
       <section className="charticulator__file-view-content is-fix-width">
-        <h1>Open</h1>
+        <h1>{strings.mainTabs.open}</h1>
         <div style={{ marginBottom: "12px" }}>
           <ButtonRaised
             url={R.getSVGIcon("toolbar/open")}

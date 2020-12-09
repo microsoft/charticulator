@@ -8,6 +8,7 @@ import { ContextedComponent } from "../../context_component";
 import { Specification } from "../../../core";
 import { Button, Select } from "../panels/widgets/controls";
 import { Table } from "../../../core/dataset/dataset";
+import { strings } from "../../../strings";
 
 export interface FileViewImportProps {
   tables: Specification.Template.Table[];
@@ -22,13 +23,6 @@ export interface FileViewImportState {
   error?: string;
   columnMappings: Map<string, string>;
 }
-
-export const typeDisplayNames: { [key in Specification.DataType]: string } = {
-  boolean: "Boolean",
-  date: "Date",
-  number: "Number",
-  string: "String",
-};
 
 export class FileViewImport extends ContextedComponent<
   FileViewImportProps,
@@ -61,34 +55,39 @@ export class FileViewImport extends ContextedComponent<
       });
     };
 
-    tables.forEach((table, tableIndex ) => {
-      const filteredByTableColumns = this.props.datasetTables[tableIndex]?.columns;
+    tables.forEach((table, tableIndex) => {
+      const filteredByTableColumns = this.props.datasetTables[tableIndex]
+        ?.columns;
       if (!filteredByTableColumns) {
         return;
       }
       const usedColumns = new Set();
       // match columns by name and type
-      table.columns.forEach(column => {
-          filteredByTableColumns.forEach(pbiColumn => {
-              if (pbiColumn.displayName === column.name && column.type === pbiColumn.type && !newMapping.get(column.name)) {
-                  newMapping.set(column.name, pbiColumn.name);
-                  usedColumns.add(pbiColumn);
-              }
-          });
+      table.columns.forEach((column) => {
+        filteredByTableColumns.forEach((pbiColumn) => {
+          if (
+            pbiColumn.displayName === column.name &&
+            column.type === pbiColumn.type &&
+            !newMapping.get(column.name)
+          ) {
+            newMapping.set(column.name, pbiColumn.name);
+            usedColumns.add(pbiColumn);
+          }
+        });
       });
       // match columns by type
-      table.columns.forEach(column => {
-          // Set default column by type
-          if (!newMapping.get(column.name)) {
-              filteredByTableColumns.forEach(pbiColumn => {
-                  if (column.type === pbiColumn.type && !usedColumns.has(pbiColumn)) {
-                      newMapping.set(column.name, pbiColumn.name);
-                      usedColumns.add(pbiColumn);
-                  }
-              });
-          }
+      table.columns.forEach((column) => {
+        // Set default column by type
+        if (!newMapping.get(column.name)) {
+          filteredByTableColumns.forEach((pbiColumn) => {
+            if (column.type === pbiColumn.type && !usedColumns.has(pbiColumn)) {
+              newMapping.set(column.name, pbiColumn.name);
+              usedColumns.add(pbiColumn);
+            }
+          });
+        }
       });
-    });    
+    });
 
     return (
       <FloatingPanel
@@ -111,25 +110,32 @@ export class FileViewImport extends ContextedComponent<
                     key={table.name}
                   >
                     <h4>Table name: {table.name}</h4>
-                      <table className="charticulator__file-view-mapping_table">
-                        <thead>
-                          <tr className="charticulator__file-view-mapping_rows">
-                            <th className="charticulator__file-view-mapping_row_item">Template column</th>
-                            <th className="charticulator__file-view-mapping_row_item">Required data type</th>
-                            <th className="charticulator__file-view-mapping_row_item">Dataset column</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {table.columns.map((column) => {
-                            const datasetTable = this.props.datasetTables
-                              .find(
-                                (t) =>
-                                  t.name ===
-                                  (this.props.tableMapping.get(table.name) ||
-                                    table.name)
-                              )
+                    <table className="charticulator__file-view-mapping_table">
+                      <thead>
+                        <tr className="charticulator__file-view-mapping_rows">
+                          <th className="charticulator__file-view-mapping_row_item">
+                            Template column
+                          </th>
+                          <th className="charticulator__file-view-mapping_row_item">
+                            Required data type
+                          </th>
+                          <th className="charticulator__file-view-mapping_row_item">
+                            Dataset column
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {table.columns.map((column) => {
+                          const datasetTable = this.props.datasetTables.find(
+                            (t) =>
+                              t.name ===
+                              (this.props.tableMapping.get(table.name) ||
+                                table.name)
+                          );
 
-                              const optionValues = datasetTable?.columns.filter(
+                          const optionValues =
+                            datasetTable?.columns
+                              .filter(
                                 (pbiColumn) => pbiColumn.type === column.type
                               )
                               .map((pbiColumn) => {
@@ -140,65 +146,68 @@ export class FileViewImport extends ContextedComponent<
                                 return pbiColumn.displayName;
                               }) || [];
 
-                            return (
-                              <React.Fragment key={`${table.name}-${column.name}`}>
-                                <tr className="charticulator__file-view-mapping_rows"> {/*  className="charticulator__file-view-mapping_row_item" */}
-                                  <td className="charticulator__file-view-mapping_row_item">
-                                    {column.name}
-                                  </td>
-                                  <td className="charticulator__file-view-mapping_row_item">
-                                    {typeDisplayNames[column.type]}
-                                  </td>
-                                  <td className="charticulator__file-view-mapping_row_item">
-                                    <Select
-                                      labels={optionValues}
-                                      icons={null}
-                                      options={optionValues}
-                                      value={getDefaultValue(
-                                        column.name
-                                      )().toString()}
-                                      showText={true}
-                                      onChange={onChange(column.name)}
-                                    />
-                                  </td>
-                                </tr>
-                              </React.Fragment>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
+                          return (
+                            <React.Fragment
+                              key={`${table.name}-${column.name}`}
+                            >
+                              <tr className="charticulator__file-view-mapping_rows">
+                                {" "}
+                                {/*  className="charticulator__file-view-mapping_row_item" */}
+                                <td className="charticulator__file-view-mapping_row_item">
+                                  {column.name}
+                                </td>
+                                <td className="charticulator__file-view-mapping_row_item">
+                                  {strings.typeDisplayNames[column.type]}
+                                </td>
+                                <td className="charticulator__file-view-mapping_row_item">
+                                  <Select
+                                    labels={optionValues}
+                                    icons={null}
+                                    options={optionValues}
+                                    value={getDefaultValue(
+                                      column.name
+                                    )().toString()}
+                                    showText={true}
+                                    onChange={onChange(column.name)}
+                                  />
+                                </td>
+                              </tr>
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 );
               })}
-              <div className="charticulator__file-view-mapping_row_button_toolbar">
-                <Button
-                  onClick={() => {
-                    if (
-                      this.props.unmappedColumns.filter(
-                        (unmapped) =>
-                          this.state.columnMappings.get(unmapped.name) ===
-                          undefined
-                      ).length == 0
-                    ) {
-                      this.props.onSave(this.state.columnMappings);
-                    }
-                  }}
-                  text={"Save mapping"}
-                  active={
+            <div className="charticulator__file-view-mapping_row_button_toolbar">
+              <Button
+                onClick={() => {
+                  if (
                     this.props.unmappedColumns.filter(
                       (unmapped) =>
                         this.state.columnMappings.get(unmapped.name) ===
                         undefined
                     ).length == 0
+                  ) {
+                    this.props.onSave(this.state.columnMappings);
                   }
-                />
-                <Button
-                  onClick={() => {
-                    this.props.onClose();
-                  }}
-                  text={"Cancel"}
-                />
-              </div>
+                }}
+                text={"Save mapping"}
+                active={
+                  this.props.unmappedColumns.filter(
+                    (unmapped) =>
+                      this.state.columnMappings.get(unmapped.name) === undefined
+                  ).length == 0
+                }
+              />
+              <Button
+                onClick={() => {
+                  this.props.onClose();
+                }}
+                text={"Cancel"}
+              />
+            </div>
           </section>
         </section>
       </FloatingPanel>
