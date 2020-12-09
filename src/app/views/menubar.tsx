@@ -357,7 +357,7 @@ export class MenuBar extends ContextedComponent<
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text=""
+        text="Save"
         title="Save (Ctrl-S)"
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -386,6 +386,7 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}
           title="Save (Ctrl-S)"
+          text="Save"
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
