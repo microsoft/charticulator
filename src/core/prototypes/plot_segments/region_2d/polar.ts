@@ -357,17 +357,17 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const innerRadius = attrs.radial1;
     const outerRadius = attrs.radial2;
     if (radialData && radialData.visible) {
+      const axisRenderer = new AxisRenderer();
+      axisRenderer.setAxisDataBinding(
+        radialData,
+        innerRadius,
+        outerRadius,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
       g.elements.push(
-        new AxisRenderer()
-          .setAxisDataBinding(
-            radialData,
-            innerRadius,
-            outerRadius,
-            false,
-            true,
-            this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
-          )
-          .renderLine(
+        axisRenderer.renderLine(
             cx,
             cy,
             90 - (radialData.side == "opposite" ? angleEnd : angleStart),
@@ -376,8 +376,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
     }
     if (angularData && angularData.visible) {
-      g.elements.push(
-        new AxisRenderer()
+      const axisRenderer = new AxisRenderer()
           .setAxisDataBinding(
             angularData,
             angleStart,
@@ -385,8 +384,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
             builder.config.xAxisPrePostGap,
             false,
             this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          )
-          .renderPolar(
+          );
+      g.elements.push(
+        axisRenderer.renderPolar(
             cx,
             cy,
             angularData.side == "opposite" ? innerRadius : outerRadius,

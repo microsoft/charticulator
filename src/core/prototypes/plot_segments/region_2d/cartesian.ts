@@ -235,7 +235,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...builder.buildPanelWidgets(manager),
+      ...builder.buildPanelWidgets(manager)
     ];
   }
 
@@ -292,6 +292,14 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           "x"
         )
       );
+      g.elements.push(
+        axisRenderer.renderGridlinesForAxes(
+          attrs.x1,
+          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          "x",
+          attrs.y2 - attrs.y1
+        )
+      );
     }
     if (props.yData && props.yData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
@@ -310,6 +318,14 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
           "y"
+        )
+      );
+      g.elements.push(
+        axisRenderer.renderGridlinesForAxes(
+          props.yData.side != "default" ? attrs.x2 : attrs.x1,
+          attrs.y1,
+          "y",
+          attrs.x2 - attrs.x1
         )
       );
     }

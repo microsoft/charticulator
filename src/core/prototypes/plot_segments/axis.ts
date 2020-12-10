@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -15,7 +15,7 @@ import {
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
-import { Controls, TemplateParameters } from "../common";
+import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common";
 import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
@@ -26,6 +26,13 @@ export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   fontSize: 12,
   tickSize: 5,
   wordWrap: false,
+  gridlineStyle: "none",
+  gridlineColor: {
+    r: 234,
+    g: 234,
+    b: 234
+  } as Color,
+  gridlineWidth: 1
 };
 
 function fillDefaultAxisStyle(
@@ -305,6 +312,55 @@ export class AxisRenderer {
     return this;
   }
 
+  public renderGridLine(x: number, y: number, angle: number, side: number, size: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const cos = Math.cos((angle / 180) * Math.PI);
+    const sin = Math.sin((angle / 180) * Math.PI);
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const x1 = x + rangeMin * cos;
+    const y1 = y + rangeMin * sin;
+    const x2 = x + rangeMax * cos;
+    const y2 = y + rangeMax * sin;
+    const tickSize = size;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      // strokeColor: style.lineColor,
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    // Base line
+    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    // Ticks
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])) {
+      const tx = x + tickPosition * cos;
+      const ty = y + tickPosition * sin;
+      const dx = -side * tickSize * sin;
+      const dy = side * tickSize * cos;
+      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+    }
+
+    return g;
+  }
+
+  public renderGridlinesForAxes(x: number, y: number, axis: "x" | "y", size: number): Group {
+    switch (axis) {
+      case "x": {
+        return this.renderGridLine(x,y, 0, 1, size);
+      }
+      case "y": {
+        return this.renderGridLine(x, y, 90, -1, size);
+      }
+    }
+  }
+
   public renderLine(x: number, y: number, angle: number, side: number): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -333,10 +389,10 @@ export class AxisRenderer {
     for (const tickPosition of this.ticks
       .map((x) => x.position)
       .concat([rangeMin, rangeMax])) {
-      const tx = x + tickPosition * cos,
-        ty = y + tickPosition * sin;
-      const dx = side * tickSize * sin,
-        dy = -side * tickSize * cos;
+      const tx = x + tickPosition * cos;
+      const ty = y + tickPosition * sin;
+      const dx = side * tickSize * sin;
+      const dy = -side * tickSize * cos;
       g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
     }
     // Tick texts
@@ -791,73 +847,75 @@ export function buildAxisAppearanceWidgets(
   m: Controls.WidgetManager
 ) {
   if (isVisible) {
-    return m.row(
-      "Visible",
-      m.horizontal(
-        [0, 0, 1, 0],
-        m.inputBoolean(
-          { property: axisProperty, field: "visible" },
-          { type: "checkbox" }
-        ),
-        m.label("Position:"),
-        m.inputSelect(
-          { property: axisProperty, field: "side" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["default", "opposite"],
-            labels: ["Default", "Opposite"],
-          }
-        ),
-        m.detailsButton(
-          m.sectionHeader("Axis Style"),
-          m.row(
-            "Line Color",
-            m.inputColor({
-              property: axisProperty,
-              field: ["style", "lineColor"],
-            })
+    return [
+      m.row(
+        "Visible",
+        m.horizontal(
+          [0, 0, 1, 0],
+          m.inputBoolean(
+            { property: axisProperty, field: "visible" },
+            { type: "checkbox" }
           ),
-          m.row(
-            "Tick Color",
-            m.inputColor({
-              property: axisProperty,
-              field: ["style", "tickColor"],
-            })
+          m.label("Position:"),
+          m.inputSelect(
+            { property: axisProperty, field: "side" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              options: ["default", "opposite"],
+              labels: ["Default", "Opposite"],
+            }
           ),
-          m.row(
-            "Tick Size",
-            m.inputNumber({
-              property: axisProperty,
-              field: ["style", "tickSize"],
-            })
-          ),
-          m.row(
-            "Font Family",
-            m.inputFontFamily({
-              property: axisProperty,
-              field: ["style", "fontFamily"],
-            })
-          ),
-          m.row(
-            "Font Size",
-            m.inputNumber(
-              { property: axisProperty, field: ["style", "fontSize"] },
-              { showUpdown: true, updownStyle: "font", updownTick: 2 }
-            )
-          ),
-          m.row(
-            "Wrap text",
-            m.inputBoolean(
-              { property: axisProperty, field: ["style", "wordWrap"] },
-              {
-                type: "checkbox",
-              }
+          m.detailsButton(
+            m.sectionHeader("Axis Style"),
+            m.row(
+              "Line Color",
+              m.inputColor({
+                property: axisProperty,
+                field: ["style", "lineColor"],
+              })
+            ),
+            m.row(
+              "Tick Color",
+              m.inputColor({
+                property: axisProperty,
+                field: ["style", "tickColor"],
+              })
+            ),
+            m.row(
+              "Tick Size",
+              m.inputNumber({
+                property: axisProperty,
+                field: ["style", "tickSize"],
+              })
+            ),
+            m.row(
+              "Font Family",
+              m.inputFontFamily({
+                property: axisProperty,
+                field: ["style", "fontFamily"],
+              })
+            ),
+            m.row(
+              "Font Size",
+              m.inputNumber(
+                { property: axisProperty, field: ["style", "fontSize"] },
+                { showUpdown: true, updownStyle: "font", updownTick: 2 }
+              )
+            ),
+            m.row(
+              "Wrap text",
+              m.inputBoolean(
+                { property: axisProperty, field: ["style", "wordWrap"] },
+                {
+                  type: "checkbox",
+                }
+              )
             )
           )
         )
       )
-    );
+    ];
   } else {
     return m.row(
       "Visible",
