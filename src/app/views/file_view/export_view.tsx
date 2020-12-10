@@ -350,7 +350,7 @@ export class ExportTemplateView extends ContextedComponent<
           .map((column) => (
             <div key={column.name}>
               {this.renderInput(
-                column.name,
+                column.name + " name",
                 "string",
                 column.displayName,
                 null,
