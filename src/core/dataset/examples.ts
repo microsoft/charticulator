@@ -1,22 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Column, Table } from "./dataset";
+import { Column, DataKind, DataType, Table } from "./dataset";
 
-export function ensureColumnsHaveExamples(t: Table) {
-  console.log("table name", t.name);
-  t.columns.forEach((c) => {
-    console.log(`column ${c.name}`, c.metadata);
+const exampleCount = 3;
+const delim = ",";
+
+export function ensureColumnsHaveExamples(table: Table) {
+  table.columns.forEach((c) => {
+    console.log("ensureColumnsHaveExamples");
     if (!c.metadata.examples) {
-      populateExamples(t, c);
+      let examples: string[] = [];
+      if (c.type === DataType.Boolean) {
+        examples = ["true", "false"];
+      } else {
+        const distinct = getDistinctValues(table, c);
+        if (c.metadata.kind === DataKind.Ordinal) {
+          distinct.sort();
+        }
+        examples = distinct.slice(0, exampleCount);
+      }
+      examples = examples.map((e) => {
+        if (e.indexOf(delim) >= 0) {
+          return JSON.stringify(e);
+        } else {
+          return e;
+        }
+      });
+      c.metadata.examples = examples.join(`${delim} `);
     }
   });
 }
 
-function populateExamples(t: Table, c: Column) {
-  const examples: string[] = [];
+function getDistinctValues(t: Table, c: Column) {
+  const o: { [key: string]: null } = {};
   t.rows.forEach((r) => {
-    examples.push(r[c.name].toString());
+    const valueKey = r[c.name].toString();
+    o[valueKey] = null;
   });
-  c.metadata.examples = examples.join("");
+  return Object.keys(o);
 }
