@@ -8,7 +8,6 @@ const delim = ",";
 
 export function ensureColumnsHaveExamples(table: Table) {
   table.columns.forEach((c) => {
-    console.log("ensureColumnsHaveExamples");
     if (!c.metadata.examples) {
       let examples: string[] = [];
       if (c.type === DataType.Boolean) {
