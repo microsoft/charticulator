@@ -8,6 +8,8 @@ import {
   makeGroup,
   makeLine,
   makeText,
+  PathMaker,
+  makePath,
   Style,
 } from "../../graphics";
 import {
@@ -617,6 +619,70 @@ export class AxisRenderer {
         return this.renderLine(x, y, 90, -1);
       }
     }
+  }
+
+  public renderPolarRadialGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const gridineArcRotate = 90;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])
+      ) {
+      const cos = Math.cos(((-tickPosition + gridineArcRotate) / 180) * Math.PI);
+      const sin = Math.sin(((-tickPosition + gridineArcRotate) / 180) * Math.PI);
+      const tx1 = x + cos * innerRadius;
+      const ty1 = y + sin * innerRadius;
+      const tx2 = x + cos * outerRadius;
+      const ty2 = y + sin * outerRadius;
+      g.elements.push(makeLine(tx1, ty1, tx2, ty2, lineStyle));
+    }
+
+    return g;
+  }
+
+  public renderPolarArcGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const startCos = Math.cos(((startAngle) / 180) * Math.PI);
+    const startSin = Math.sin(((startAngle) / 180) * Math.PI);
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const gridineArcRotate = 90;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    let radius = ((outerRadius - innerRadius) / this.ticks.length)
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])) {
+      const tx1 = x + tickPosition * startCos;
+      const ty1 = y + tickPosition * startSin;
+      const arc = makePath(lineStyle);
+      arc.moveTo(tx1, ty1);
+      arc.polarLineTo(x, y, -startAngle + gridineArcRotate, tickPosition, -endAngle + gridineArcRotate, tickPosition, true);
+      g.elements.push(arc.path);
+      radius += radius;
+    }
+
+    return g;
   }
 
   public renderPolar(

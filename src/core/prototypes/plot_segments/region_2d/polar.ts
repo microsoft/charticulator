@@ -367,6 +367,16 @@ export class PolarPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
       );
       g.elements.push(
+        axisRenderer.renderPolarArcGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
+      );
+      g.elements.push(
         axisRenderer.renderLine(
             cx,
             cy,
@@ -385,6 +395,17 @@ export class PolarPlotSegment extends PlotSegmentClass<
             false,
             this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
           );
+      
+      g.elements.push(
+        axisRenderer.renderPolarRadialGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
+      ); 
       g.elements.push(
         axisRenderer.renderPolar(
             cx,
@@ -392,7 +413,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
             angularData.side == "opposite" ? innerRadius : outerRadius,
             angularData.side == "opposite" ? -1 : 1
           )
-      );
+      );     
     }
     return g;
   }
