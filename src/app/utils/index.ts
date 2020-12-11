@@ -361,8 +361,10 @@ export function getAligntment(anchor: Element) {
     | "start-inner"
     | "end-inner"
     | "end-outer";
+  const avgPopupWindowWidth = 500;
+  const anchorCloseToWindowBorder = window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
   let alignLeft: boolean = false;
-  if (window.innerWidth - anchor.getBoundingClientRect().x < 500) {
+  if (anchorCloseToWindowBorder) {
     alignX = "start-outer";
     alignLeft = true;
   }

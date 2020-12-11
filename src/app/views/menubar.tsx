@@ -494,7 +494,6 @@ export class MenuBar extends ContextedComponent<
                       <div
                         className={"charticulator__reset_chart_dialog-inner"}
                       >
-                        {/* <ModalView context={context}> */}
                         <>
                           <p>Are you really willing to reset the chart?</p>
                           <div
@@ -519,7 +518,6 @@ export class MenuBar extends ContextedComponent<
                             />
                           </div>
                         </>
-                        {/* </ModalView> */}
                       </div>
                     </div>
                   );
