@@ -51,7 +51,7 @@ export abstract class LegendClass extends ChartElementClass {
     alignX: "start",
     alignY: "end",
     fontFamily: "Arial",
-    fontSize: 14,
+    fontSize: 10,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],

@@ -27,6 +27,7 @@ export interface MainViewConfig {
   ColumnsPosition: "left" | "right";
   EditorPanelsPosition: "left" | "right";
   ToolbarPosition: "top" | "right" | "left";
+  MenuBarButtons: "left" | "right"
   Name?: string;
 }
 
@@ -55,6 +56,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         ColumnsPosition: "left",
         EditorPanelsPosition: "left",
         ToolbarPosition: "top",
+        MenuBarButtons: "left"
       };
     } else {
       this.viewConfiguration = props.viewConfiguration;
@@ -186,6 +188,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         onDrop={(e) => e.preventDefault()}
       >
         <MenuBar
+          alignButtons={this.viewConfiguration.MenuBarButtons}
           name={this.viewConfiguration.Name}
           ref={(e) => (this.refMenuBar = e)}
         />
