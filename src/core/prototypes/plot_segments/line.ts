@@ -289,6 +289,7 @@ export class LineGuide extends PlotSegmentClass {
       ...buildAxisWidgets(props.axis, "axis", manager, "Axis"),
     ];
   }
+
   /**
    * Renders gridlines for axis. Returns empty array to diable widgets for line plot segment.
    * Not implemented yet

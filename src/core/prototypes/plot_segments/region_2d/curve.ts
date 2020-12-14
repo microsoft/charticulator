@@ -576,7 +576,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     };
   }
 
-    /**
+  /**
    * Renders gridlines for axis. Returns empty array to diable widgets for curve plot segment.
    * Not implemented yet
    * @param data axis data binding
