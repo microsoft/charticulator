@@ -31,6 +31,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     ColumnsPosition: "left" | "right";
     EditorPanelsPosition: "left" | "right";
     ToolbarPosition: "top" | "right" | "left";
+    MenuBarButtons: "left" | "right";
   };
 }
 
