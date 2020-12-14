@@ -367,16 +367,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
       );
       g.elements.push(
-        axisRenderer.renderPolarArcGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
-      );
-      g.elements.push(
         axisRenderer.renderLine(
             cx,
             cy,
@@ -395,17 +385,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
             false,
             this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
           );
-      
-      g.elements.push(
-        axisRenderer.renderPolarRadialGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
-      ); 
       g.elements.push(
         axisRenderer.renderPolar(
             cx,
@@ -415,6 +394,68 @@ export class PolarPlotSegment extends PlotSegmentClass<
           )
       );     
     }
+    return g;
+  }
+
+  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    
+    const builder = this.createBuilder();
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    const cx = (attrs.x1 + attrs.x2) / 2;
+    const cy = (attrs.y1 + attrs.y2) / 2;
+    const radialData = props.yData;
+    const angularData = props.xData;
+    const angleStart = props.startAngle;
+    const angleEnd = props.endAngle;
+    const innerRadius = attrs.radial1;
+    const outerRadius = attrs.radial2;
+
+    if (radialData && radialData.visible) {
+      const axisRenderer = new AxisRenderer();
+      axisRenderer.setAxisDataBinding(
+        radialData,
+        innerRadius,
+        outerRadius,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderPolarArcGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
+      );
+    }
+
+    if (angularData && angularData.visible) {
+      const axisRenderer = new AxisRenderer()
+          .setAxisDataBinding(
+            angularData,
+            angleStart,
+            angleEnd,
+            builder.config.xAxisPrePostGap,
+            false,
+            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+          );
+      g.elements.push(
+        axisRenderer.renderPolarRadialGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
+      );   
+    }
+
     return g;
   }
 

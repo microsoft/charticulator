@@ -292,14 +292,6 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           "x"
         )
       );
-      g.elements.push(
-        axisRenderer.renderGridlinesForAxes(
-          attrs.x1,
-          props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x",
-          attrs.y2 - attrs.y1
-        )
-      );
     }
     if (props.yData && props.yData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
@@ -320,6 +312,43 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           "y"
         )
       );
+    }
+    return g;
+  }
+
+  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    
+    if (props.xData && props.xData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderGridlinesForAxes(
+          attrs.x1,
+          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          "x",
+          attrs.y2 - attrs.y1
+        )
+      );
+    }
+
+    if (props.yData && props.yData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
       g.elements.push(
         axisRenderer.renderGridlinesForAxes(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
@@ -329,6 +358,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         )
       );
     }
+
     return g;
   }
 

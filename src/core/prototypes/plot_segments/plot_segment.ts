@@ -43,6 +43,13 @@ export abstract class PlotSegmentClass<
     return Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
   }
 
+  /** Get the graphics that represent this layout */
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Element {
+    return null;
+  }   
+
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     return new Graphics.CartesianCoordinates();
   }
