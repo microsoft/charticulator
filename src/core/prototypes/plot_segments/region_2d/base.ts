@@ -2300,63 +2300,8 @@ export class Region2DConstraintBuilder {
     const axisProperty = axis == "x" ? "xData" : "yData";
     return  [
       ...buildAxisWidgets(data, axisProperty, m, axisName),
-      ...this.buildGridLineWidgets(data, m, axisProperty)
+      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty)
     ];
-  }
-
-  public buildGridLineWidgets(
-    data: Specification.Types.AxisDataBinding,
-    manager: Controls.WidgetManager,
-    axisProperty: string
-  ) {
-    if (!data) {
-      return [];
-    }
-    return [
-      manager.sectionHeader(
-        "Gridline"
-      ),
-      manager.row(
-        "Style",
-        manager.horizontal(
-          [1, 1],
-          manager.inputSelect(
-            { property: axisProperty, field: ["style", "gridlineStyle"] },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: ["general/cross","stroke/solid", "stroke/dashed", "stroke/dotted"],
-              options: ["none", "solid", "dashed", "dotted"],
-              labels: ["None", "Solid", "Dashed", "Dotted"],
-            }
-          )
-        )
-      ),
-      manager.row(
-        "Color",
-        manager.horizontal(
-          [1, 1],
-          manager.inputColor({
-            property: axisProperty,
-            field: ["style", "gridlineColor"],
-          })
-        )
-      ),
-      manager.row(
-        "Width",
-        manager.horizontal(
-          [1, 1],
-          manager.inputNumber({
-            property: axisProperty,
-            field: ["style", "gridlineWidth"],
-          }, {
-            minimum: 0,
-            maximum: 100,
-            showUpdown: true
-          })
-        )
-      ),
-    ]
   }
 
   public buildPanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {

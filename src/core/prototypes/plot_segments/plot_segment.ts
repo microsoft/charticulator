@@ -68,6 +68,69 @@ export abstract class PlotSegmentClass<
     return null;
   }
 
+
+  
+  /**
+   * Renders gridlines for axis
+   * @param data axis data binding
+   * @param manager widgets manager
+   * @param axisProperty property name of plotsegment with axis properties (xData, yData, axis)
+   */
+  public buildGridLineWidgets(
+    data: Specification.Types.AxisDataBinding,
+    manager: Controls.WidgetManager,
+    axisProperty: string
+  ) {
+    if (!data) {
+      return [];
+    }
+    return [
+      manager.sectionHeader(
+        "Gridline"
+      ),
+      manager.row(
+        "Style",
+        manager.horizontal(
+          [1, 1],
+          manager.inputSelect(
+            { property: axisProperty, field: ["style", "gridlineStyle"] },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: ["general/cross","stroke/solid", "stroke/dashed", "stroke/dotted"],
+              options: ["none", "solid", "dashed", "dotted"],
+              labels: ["None", "Solid", "Dashed", "Dotted"],
+            }
+          )
+        )
+      ),
+      manager.row(
+        "Color",
+        manager.horizontal(
+          [1, 1],
+          manager.inputColor({
+            property: axisProperty,
+            field: ["style", "gridlineColor"],
+          })
+        )
+      ),
+      manager.row(
+        "Width",
+        manager.horizontal(
+          [1, 1],
+          manager.inputNumber({
+            property: axisProperty,
+            field: ["style", "gridlineWidth"],
+          }, {
+            minimum: 0,
+            maximum: 100,
+            showUpdown: true
+          })
+        )
+      ),
+    ]
+  }
+
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
