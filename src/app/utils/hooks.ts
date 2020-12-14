@@ -1,42 +1,31 @@
-import { useState, useEffect } from 'react';
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import { useState } from "react";
 
-export function useLocalStorage<Type extends string | number | boolean | object> (initialValue: Type, storageKey: string): [Type, (newValue: Type) => void] {
-    const storedValue = localStorage.getItem(storageKey);
-    const [currentValue, setCurrentValue] = useState<Type>(initialValue);
-
-    const convert = (storedValue: string) => {
-        try {
-            const parsedJson = JSON.parse(storedValue);
-            if (parsedJson) {
-                return parsedJson;
-            }
-        } catch (error) {
-            
-        }
-
-        try {
-            const parsedFloat = Number.parseFloat(storedValue);
-            if (parsedFloat) {
-                return parsedFloat;
-            }
-        } catch (error) {
-            
-        }
+export function useLocalStorage<
+  Type extends string | number | boolean | object
+>(initialValue: Type, storageKey: string): [Type, (newValue: Type) => void] {
+  const [currentValue, setCurrentValue] = useState<Type>(() => {
+    try {
+      const item = window.localStorage.getItem(storageKey);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (ex) {
+      console.log(ex);
+      return initialValue;
     }
+  });
 
-    useEffect(() => {
-        if (!storedValue) {
-            localStorage.setItem(storageKey, JSON.stringify(currentValue));
-        }
-        setCurrentValue(storedValue as any);
-    })
+  const setValue = (value: Type) => {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(value));
+      setCurrentValue(value);
+      return true;
+    } catch (ex) {
+      console.log(ex);
 
-    return [
-        storedValue ? convert(storedValue) : initialValue,
-        (newValue: Type) => {
-            localStorage.setItem(storageKey, JSON.stringify(newValue));
-            setCurrentValue(newValue);
-        }
-    ]
+      return false;
+    }
+  };
 
+  return [currentValue, setValue];
 }
