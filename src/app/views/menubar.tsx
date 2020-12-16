@@ -98,6 +98,7 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
+    undoRedoLocation: "toolbar" | "menubar";
     alignButtons: "left" | "right";
     name?: string;
   },
@@ -462,20 +463,24 @@ export class MenuBar extends ContextedComponent<
         <span className="charticulator__menu-bar-separator" />
         {this.renderExportImportButtons()}
         <span className="charticulator__menu-bar-separator" />
-        <MenuButton
-          url={R.getSVGIcon("toolbar/undo")}
-          title="Undo (Ctrl-Z)"
-          onClick={() =>
-            new Actions.Undo().dispatch(this.context.store.dispatcher)
-          }
-        />
-        <MenuButton
-          url={R.getSVGIcon("toolbar/redo")}
-          title="Redo (Ctrl-Y)"
-          onClick={() =>
-            new Actions.Redo().dispatch(this.context.store.dispatcher)
-          }
-        />
+        {this.props.undoRedoLocation === "menubar" ?
+          (<>
+            <MenuButton
+              url={R.getSVGIcon("toolbar/undo")}
+              title="Undo (Ctrl-Z)"
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <MenuButton
+              url={R.getSVGIcon("toolbar/redo")}
+              title="Redo (Ctrl-Y)"
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+          </>)
+        : null}
         <span className="charticulator__menu-bar-separator" />
         <MenuButton
           url={R.getSVGIcon("toolbar/trash")}

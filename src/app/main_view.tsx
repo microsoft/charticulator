@@ -29,6 +29,8 @@ export interface MainViewConfig {
   ToolbarPosition: "top" | "right" | "left";
   MenuBarButtons: "left" | "right"
   Name?: string;
+  ToolbarLabels: boolean,
+  UndoRedoLocation: "menubar" | "toolbar"
 }
 
 export interface MainViewProps {
@@ -56,7 +58,9 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         ColumnsPosition: "left",
         EditorPanelsPosition: "left",
         ToolbarPosition: "top",
-        MenuBarButtons: "left"
+        MenuBarButtons: "left",
+        ToolbarLabels: true,
+        UndoRedoLocation: "menubar"
       };
     } else {
       this.viewConfiguration = props.viewConfiguration;
@@ -83,10 +87,14 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public render() {
-    const toolBarCreator = (layout: "vertical" | "horizontal") => {
+    const toolBarCreator = (config: {
+      undoRedoLocation: "menubar" | "toolbar"
+      layout: "vertical" | "horizontal"
+      toolbarLabels: boolean
+    }) => {
       return (
-        <div className={`charticulator__panel-editor-toolbar-${layout}`}>
-          <Toolbar layout={layout} />
+        <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
+          <Toolbar toolbarLabels={config.toolbarLabels} undoRedoLocation={config.undoRedoLocation} layout={config.layout} />
         </div>
       );
     };
@@ -189,6 +197,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       >
         <MenuBar
           alignButtons={this.viewConfiguration.MenuBarButtons}
+          undoRedoLocation={this.viewConfiguration.UndoRedoLocation}
           name={this.viewConfiguration.Name}
           ref={(e) => (this.refMenuBar = e)}
         />
@@ -196,15 +205,27 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           {this.viewConfiguration.ColumnsPosition == "left" && datasetPanel()}
           <div className="charticulator__panel charticulator__panel-editor">
             {this.viewConfiguration.ToolbarPosition == "top" &&
-              toolBarCreator("horizontal")}
+              toolBarCreator({
+                layout:"horizontal",
+                toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+              })}
             <div className="charticulator__panel-editor-panel-container">
               {this.viewConfiguration.EditorPanelsPosition == "left" &&
                 editorPanels()}
               {this.viewConfiguration.ToolbarPosition == "left" &&
-                toolBarCreator("vertical")}
+                toolBarCreator({
+                  layout:"vertical",
+                  toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                  undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+                })}
               {chartPanel()}
               {this.viewConfiguration.ToolbarPosition == "right" &&
-                toolBarCreator("vertical")}
+                toolBarCreator({
+                  layout:"vertical",
+                  toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                  undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+                })}
               {this.viewConfiguration.EditorPanelsPosition == "right" &&
                 editorPanels()}
             </div>

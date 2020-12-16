@@ -5,6 +5,21 @@
 $tool-icon-size: 32px;
 $elements-margin: 4px;
 
+.charticulator__toolbar-buttons-align-left {
+  align-self: flex-start;
+  justify-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.charticulator__toolbar-buttons-align-right {
+  align-self: flex-end;
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: row;
+}
+
 .chartaccent__toolbar-horizontal {
   @include font-main;
 
@@ -12,6 +27,7 @@ $elements-margin: 4px;
   line-height: $toolbar-height;
   white-space: nowrap;
 
+  flex: 1;
   display: flex;
   flex-direction: row;
 
