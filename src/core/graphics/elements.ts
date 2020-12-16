@@ -25,7 +25,7 @@
  * @preferred
  */
 
-import { Color, Point } from "../common";
+import { Color, Geometry, Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 
@@ -344,15 +344,14 @@ export class PathMaker {
     r2: number,
     moveTo: boolean = false
   ) {
-    const deg2rad = Math.PI / 180;
     if (moveTo) {
-      const p1x = cx + Math.cos(angle1 * deg2rad) * r1;
-      const p1y = cy + Math.sin(angle1 * deg2rad) * r1;
+      const p1x = cx + Math.cos(Geometry.degreesToRadians(angle1)) * r1;
+      const p1y = cy + Math.sin(Geometry.degreesToRadians(angle1)) * r1;
       this.moveTo(p1x, p1y);
     }
     if (Math.abs(angle2 - angle1) < 1e-6) {
-      const p2x = cx + Math.cos(angle2 * deg2rad) * r2;
-      const p2y = cy + Math.sin(angle2 * deg2rad) * r2;
+      const p2x = cx + Math.cos(Geometry.degreesToRadians(angle2)) * r2;
+      const p2y = cy + Math.sin(Geometry.degreesToRadians(angle2)) * r2;
       this.lineTo(p2x, p2y);
     } else {
       if (Math.abs(r1 - r2) < 1e-6) {
@@ -363,8 +362,8 @@ export class PathMaker {
             if (a2 > a1 + 180) {
               a2 = a1 + 180;
             }
-            const p2x = cx + Math.cos(a2 * deg2rad) * r1;
-            const p2y = cy + Math.sin(a2 * deg2rad) * r1;
+            const p2x = cx + Math.cos(Geometry.degreesToRadians(a2)) * r1;
+            const p2y = cy + Math.sin(Geometry.degreesToRadians(a2)) * r1;
             this.arcTo(r1, r1, 0, 0, 0, p2x, p2y);
             a1 = a2;
           }
@@ -375,8 +374,8 @@ export class PathMaker {
             if (a2 < a1 - 180) {
               a2 = a1 - 180;
             }
-            const p2x = cx + Math.cos(a2 * deg2rad) * r1;
-            const p2y = cy + Math.sin(a2 * deg2rad) * r1;
+            const p2x = cx + Math.cos(Geometry.degreesToRadians(a2)) * r1;
+            const p2y = cy + Math.sin(Geometry.degreesToRadians(a2)) * r1;
             this.arcTo(r1, r1, 0, 0, 1, p2x, p2y);
             a1 = a2;
           }
@@ -388,9 +387,9 @@ export class PathMaker {
           cx,
           cy,
           a,
-          b / deg2rad,
-          angle1 * deg2rad,
-          angle2 * deg2rad
+          b / Math.PI / 180,
+          Geometry.degreesToRadians(angle1),
+          Geometry.degreesToRadians(angle2)
         );
       }
     }
@@ -417,7 +416,7 @@ export function rotation(angle: number): RigidTransform {
 
 /** Concat two transforms, f(p) := a(b(p))  */
 export function concatTransform(a: RigidTransform, b: RigidTransform) {
-  const theta = (a.angle / 180) * Math.PI;
+  const theta = Geometry.degreesToRadians(a.angle);
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {
@@ -428,7 +427,7 @@ export function concatTransform(a: RigidTransform, b: RigidTransform) {
 }
 
 export function transform(transform: RigidTransform, a: Point): Point {
-  const theta = (transform.angle / 180) * Math.PI;
+  const theta = Geometry.degreesToRadians(transform.angle);
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {
@@ -438,7 +437,7 @@ export function transform(transform: RigidTransform, a: Point): Point {
 }
 
 export function transformDirection(transform: RigidTransform, a: Point): Point {
-  const theta = (transform.angle / 180) * Math.PI;
+  const theta = Geometry.degreesToRadians(transform.angle);
   const cos = Math.cos(theta);
   const sin = Math.sin(theta);
   return {

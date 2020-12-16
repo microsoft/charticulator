@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color, Geometry } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -21,7 +21,7 @@ import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common"
 import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
-export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
+export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: "Arial",
@@ -320,8 +320,8 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const cos = Math.cos((angle / 180) * Math.PI);
-    const sin = Math.sin((angle / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
     const x1 = x + rangeMin * cos;
@@ -379,8 +379,8 @@ export class AxisRenderer {
       side = -side;
     }
 
-    const cos = Math.cos((angle / 180) * Math.PI);
-    const sin = Math.sin((angle / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
     const x1 = x + rangeMin * cos;
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
@@ -640,8 +640,8 @@ export class AxisRenderer {
       .map((x) => x.position)
       .concat([rangeMin, rangeMax])
       ) {
-      const cos = Math.cos(((-tickPosition + gridineArcRotate) / 180) * Math.PI);
-      const sin = Math.sin(((-tickPosition + gridineArcRotate) / 180) * Math.PI);
+      const cos = Math.cos(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
+      const sin = Math.sin(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
       const tx1 = x + cos * innerRadius;
       const ty1 = y + sin * innerRadius;
       const tx2 = x + cos * outerRadius;
@@ -658,8 +658,8 @@ export class AxisRenderer {
       return;
     }
     const g = makeGroup([]);
-    const startCos = Math.cos(((startAngle) / 180) * Math.PI);
-    const startSin = Math.sin(((startAngle) / 180) * Math.PI);
+    const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
+    const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
     const gridineArcRotate = 90;
@@ -712,11 +712,11 @@ export class AxisRenderer {
 
     const margins = 10;
     const maxTickDistance =
-      (Math.PI * radius * ((rangeMax - rangeMin) / this.ticks.length)) / 180 -
+      Geometry.degreesToRadians(radius * ((rangeMax - rangeMin) / this.ticks.length)) -
       margins * 2; // lenght of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
-      const radians = (angle / 180) * Math.PI;
+      const radians = Geometry.degreesToRadians(angle);
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 

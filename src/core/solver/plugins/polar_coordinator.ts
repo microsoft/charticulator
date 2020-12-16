@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Specification, zipArray } from "../..";
+import { Geometry, Specification, zipArray } from "../..";
 import { ChartStateManager } from "../../prototypes";
 import { getPointValueName } from "../../prototypes/guides/polar_coordinator";
 import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
@@ -82,7 +82,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
         });
 
         const angle = this.solver.getValue(angleAttr);
-        const radians = (angle / 180) * Math.PI;
+        const radians = Geometry.degreesToRadians(angle);
 
         const radius = Math.abs(this.solver.getValue(radialAttr));
         const tx = Math.sin(radians) * radius;
