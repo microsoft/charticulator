@@ -98,6 +98,7 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
+    alignButtons: "left" | "right";
     name?: string;
   },
   {}
@@ -397,7 +398,7 @@ export class MenuBar extends ContextedComponent<
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text=""
+        text="Save"
         title="Save (Ctrl-S)"
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -426,6 +427,7 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}
           title="Save (Ctrl-S)"
+          text="Save"
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -445,6 +447,94 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
+  public toolbarButtons() {
+    return (
+      <>
+        {this.context.store.editorType === "nested"
+          ? this.renderSaveNested()
+          : null}
+        {this.context.store.editorType === "chart"
+          ? this.renderNewOpenSave()
+          : null}
+        {this.context.store.editorType === "embedded"
+          ? this.renderSaveEmbedded()
+          : null}
+        <span className="charticulator__menu-bar-separator" />
+        {this.renderExportImportButtons()}
+        <span className="charticulator__menu-bar-separator" />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/undo")}
+          title="Undo (Ctrl-Z)"
+          onClick={() =>
+            new Actions.Undo().dispatch(this.context.store.dispatcher)
+          }
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/redo")}
+          title="Redo (Ctrl-Y)"
+          onClick={() =>
+            new Actions.Redo().dispatch(this.context.store.dispatcher)
+          }
+        />
+        <span className="charticulator__menu-bar-separator" />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/trash")}
+          title="Reset"
+          onClick={() => {
+            if (isInIFrame()) {
+              globals.popupController.showModal(
+                (context) => {
+                  return (
+                    <div
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className={"charticulator__reset_chart_dialog"}
+                    >
+                      <div
+                        className={"charticulator__reset_chart_dialog-inner"}
+                      >
+                        <>
+                          <p>Are you really willing to reset the chart?</p>
+                          <div
+                            className={
+                              "charticulator__reset_chart_dialog-buttons"
+                            }
+                          >
+                            <Button
+                              text="Yes"
+                              onClick={() => {
+                                this.context.store.dispatcher.dispatch(
+                                  new Actions.Reset()
+                                );
+                                context.close();
+                              }}
+                            />
+                            <Button
+                              text="No"
+                              onClick={() => {
+                                context.close();
+                              }}
+                            />
+                          </div>
+                        </>
+                      </div>
+                    </div>
+                  );
+                },
+                { anchor: null }
+              );
+            } else {
+              if (confirm("Are you really willing to reset the chart?")) {
+                new Actions.Reset().dispatch(this.context.store.dispatcher);
+              }
+            }
+          }}
+        />
+      </>
+    );
+  }
+
   public render() {
     return (
       <>
@@ -455,94 +545,23 @@ export class MenuBar extends ContextedComponent<
               name={this.props.name}
               onClick={() => this.showFileModalWindow(MainTabs.open)}
             />
-            <span className="charticulator__menu-bar-separator" />
-            {this.context.store.editorType === "nested"
-              ? this.renderSaveNested()
-              : null}
-            {this.context.store.editorType === "chart"
-              ? this.renderNewOpenSave()
-              : null}
-            {this.context.store.editorType === "embedded"
-              ? this.renderSaveEmbedded()
-              : null}
-            <span className="charticulator__menu-bar-separator" />
-            {this.renderExportImportButtons()}
-            <span className="charticulator__menu-bar-separator" />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
-              title="Undo (Ctrl-Z)"
-              onClick={() =>
-                new Actions.Undo().dispatch(this.context.store.dispatcher)
-              }
-            />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
-              title="Redo (Ctrl-Y)"
-              onClick={() =>
-                new Actions.Redo().dispatch(this.context.store.dispatcher)
-              }
-            />
-            <span className="charticulator__menu-bar-separator" />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/trash")}
-              title="Reset"
-              onClick={() => {
-                if (isInIFrame()) {
-                  globals.popupController.showModal(
-                    (context) => {
-                      return (
-                        <div
-                          onMouseDown={(e) => {
-                            e.stopPropagation();
-                          }}
-                          className={"charticulator__reset_chart_dialog"}
-                        >
-                          <div
-                            className={
-                              "charticulator__reset_chart_dialog-inner"
-                            }
-                          >
-                            {/* <ModalView context={context}> */}
-                            <>
-                              <p>Are you really willing to reset the chart?</p>
-                              <div
-                                className={
-                                  "charticulator__reset_chart_dialog-buttons"
-                                }
-                              >
-                                <Button
-                                  text="Yes"
-                                  onClick={() => {
-                                    this.context.store.dispatcher.dispatch(
-                                      new Actions.Reset()
-                                    );
-                                    context.close();
-                                  }}
-                                />
-                                <Button
-                                  text="No"
-                                  onClick={() => {
-                                    context.close();
-                                  }}
-                                />
-                              </div>
-                            </>
-                            {/* </ModalView> */}
-                          </div>
-                        </div>
-                      );
-                    },
-                    { anchor: null }
-                  );
-                } else {
-                  if (confirm("Are you really willing to reset the chart?")) {
-                    new Actions.Reset().dispatch(this.context.store.dispatcher);
-                  }
-                }
-              }}
-            />
+            {this.props.alignButtons === "left" ? (
+              <>
+                <span className="charticulator__menu-bar-separator" />
+                {this.toolbarButtons()}
+              </>
+            ) : null}
+          </div>
+          <div className="charticulator__menu-bar-center el-text">
+            <p>{this.context.store.chart?.properties.name} - Charticualtor</p>
           </div>
           <div className="charticulator__menu-bar-right">
+            {this.props.alignButtons === "right" ? (
+              <>
+                {this.toolbarButtons()}
+                <span className="charticulator__menu-bar-separator" />
+              </>
+            ) : null}
             <HelpButton />
           </div>
         </section>

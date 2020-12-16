@@ -25,6 +25,7 @@ export interface ColumnMetadata {
   format?: string;
   rawColumnName?: string;
   isRaw?: boolean;
+  examples?: string;
 }
 
 export interface Column {

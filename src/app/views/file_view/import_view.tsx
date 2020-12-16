@@ -120,6 +120,9 @@ export class FileViewImport extends ContextedComponent<
                             Required data type
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
+                            Examples
+                          </th>
+                          <th className="charticulator__file-view-mapping_row_item">
                             Dataset column
                           </th>
                         </tr>
@@ -158,6 +161,9 @@ export class FileViewImport extends ContextedComponent<
                                 </td>
                                 <td className="charticulator__file-view-mapping_row_item">
                                   {strings.typeDisplayNames[column.type]}
+                                </td>
+                                <td className="charticulator__file-view-mapping_row_item">
+                                  {column.metadata.examples}
                                 </td>
                                 <td className="charticulator__file-view-mapping_row_item">
                                   <Select
