@@ -35,6 +35,7 @@ import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
+  getAligntment,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -1331,7 +1332,9 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn }
+            { anchor: btn,
+              alignX: getAligntment(btn).alignX
+             }
           );
         }}
       />

@@ -233,7 +233,7 @@ export function getConvertableDataKind(
       types = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Number:
-      types = [DataKind.Categorical, DataKind.Numerical, DataKind.Ordinal];
+      types = [DataKind.Categorical, DataKind.Numerical];
       break;
   }
 
@@ -351,4 +351,22 @@ export function isInIFrame() {
   } catch (ex) {
     return true;
   }
+}
+
+export function getAligntment(anchor: Element) {
+  let alignX:
+    | "start-outer"
+    | "inner"
+    | "outer"
+    | "start-inner"
+    | "end-inner"
+    | "end-outer";
+  const avgPopupWindowWidth = 500;
+  const anchorCloseToWindowBorder = window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
+  let alignLeft: boolean = false;
+  if (anchorCloseToWindowBorder) {
+    alignX = "start-outer";
+    alignLeft = true;
+  }
+  return { alignLeft, alignX };
 }
