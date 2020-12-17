@@ -152,12 +152,8 @@ export class Application {
           scriptTag.src = ext.script.src + "?sha256=" + ext.script.sha256;
         }
         scriptTag.onload = () => {
-          // tslint:disable-next-line no-eval
-          eval(
-            "(function() { return function(application) { " +
-              ext.initialize +
-              " } })()"
-          )(this);
+          const initFn = new Function("application", ext.initialize);
+          initFn(this);
         };
         document.body.appendChild(scriptTag);
       });
