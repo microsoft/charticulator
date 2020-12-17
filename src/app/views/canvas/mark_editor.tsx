@@ -322,8 +322,8 @@ export class SingleMarkView
           case "anchored-rectangle":
             {
               const bboxRect = bbox as Prototypes.BoundingBox.AnchoredRectangle;
-              const cos = Math.cos((bboxRect.rotation / 180) * Math.PI);
-              const sin = Math.sin((bboxRect.rotation / 180) * Math.PI);
+              const cos = Math.cos(Geometry.degreesToRadians(bboxRect.rotation));
+              const sin = Math.sin(Geometry.degreesToRadians(bboxRect.rotation));
               xBounds = [
                 bboxRect.anchorX +
                   bboxRect.cx +

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, replaceNewLineBySymbol, splitStringByNewLine, rgbToHex } from "../../common";
+import { Point, replaceNewLineBySymbol, splitStringByNewLine, rgbToHex, Geometry } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
@@ -227,8 +227,8 @@ export class TextElementClass extends EmphasizableMarkClass<
     const cy = dy + metrics.middle;
 
     const rotation = this.object.properties.rotation;
-    const cos = Math.cos((rotation / 180) * Math.PI);
-    const sin = Math.sin((rotation / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(rotation));
+    const sin = Math.sin(Geometry.degreesToRadians(rotation));
     return {
       cx: attrs.x + cx * cos - cy * sin,
       cy: attrs.y + cx * sin + cy * cos,

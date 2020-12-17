@@ -84,8 +84,8 @@ export class TextAlignmentHandleView extends React.Component<
         yMargin: previousAlignment.yMargin,
       };
 
-      const cos = Math.cos((newRotation / 180) * Math.PI);
-      const sin = Math.sin((newRotation / 180) * Math.PI);
+      const cos = Math.cos(Geometry.degreesToRadians(newRotation));
+      const sin = Math.sin(Geometry.degreesToRadians(newRotation));
 
       const pdx = dx * cos + dy * sin;
       const pdy = -dx * sin + dy * cos;
@@ -289,8 +289,8 @@ export class TextAlignmentHandleView extends React.Component<
     alignment: Specification.Types.TextAlignment,
     rotation: number
   ) {
-    const cos = Math.cos((rotation / 180) * Math.PI);
-    const sin = Math.sin((rotation / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(rotation));
+    const sin = Math.sin(Geometry.degreesToRadians(rotation));
     let dx = 0,
       dy = 0;
     if (alignment.x == "left") {

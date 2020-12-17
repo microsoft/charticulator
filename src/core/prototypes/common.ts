@@ -499,7 +499,7 @@ export function getProperty(
   }
 }
 
-export type StrokeStyle = "solid" | "dashed" | "dotted";
+export type StrokeStyle = "solid" | "dashed" | "dotted" | "none";
 
 export function strokeStyleToDashArray(strokeStyle: StrokeStyle) {
   switch (strokeStyle) {
