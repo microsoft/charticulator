@@ -52,7 +52,6 @@ export { Application, ApplicationExtensionContext } from "./application";
 export { addSVGIcon, getSVGIcon } from "./resources";
 export { ExportTemplateTarget } from "./template";
 export { Widgets } from "./views/panels/index";
-export * as Buttons from "./components/buttons";
 export { PopupContainer } from "./controllers/popup_controller";
 // tslint:disable-next-line
 export * as globals from "./globals";
