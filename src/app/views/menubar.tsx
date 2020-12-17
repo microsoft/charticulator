@@ -379,22 +379,6 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  private checkColumnsMapping(
-    column: Specification.Template.Column,
-    tableType: TableType
-  ): Specification.Template.Column[] {
-    const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = this.store.dataset.tables.find(
-      (t) => t.type === tableType
-    );
-    const found =
-      dataTable && dataTable.columns.find((c) => c.name === column.name);
-    if (!found) {
-      unmappedColumns.push(column);
-    }
-    return unmappedColumns;
-  }
-
   public renderSaveEmbedded() {
     return (
       <MenuButton
@@ -558,7 +542,7 @@ export class MenuBar extends ContextedComponent<
             ) : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>{this.context.store.chart?.properties.name} - Charticualtor</p>
+            <p>{this.context.store.chart?.properties.name} - Microsoft Charticualtor</p>
           </div>
           <div className="charticulator__menu-bar-right">
             {this.props.alignButtons === "right" ? (

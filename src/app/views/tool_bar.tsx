@@ -157,7 +157,7 @@ export class Toolbar extends ContextedComponent<
   private getChartToolItems(labels: boolean = true) {
     return [
       <>
-        <LinkButton label/>
+        <LinkButton label={true}/>
         <LegendButton />
         <span className={"chartaccent__toolbar-horizontal-separator"}/>
         {labels && (
