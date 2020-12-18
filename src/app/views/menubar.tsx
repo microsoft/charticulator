@@ -453,14 +453,14 @@ export class MenuBar extends ContextedComponent<
           (<>
             <MenuButton
               url={R.getSVGIcon("toolbar/undo")}
-              title="Undo (Ctrl-Z)"
+              title={strings.menuBar.undo}
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
             />
             <MenuButton
               url={R.getSVGIcon("toolbar/redo")}
-              title="Redo (Ctrl-Y)"
+              title={strings.menuBar.redo}
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
