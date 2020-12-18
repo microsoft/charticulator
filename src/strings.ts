@@ -73,6 +73,8 @@ export const strings = {
     undo: "Undo (Ctrl-Z)",
   },
   toolbar: {
+    symbol: "Symbol",
+    marks: "Marks",
     curve: "Custom Curve",
     dataAxis: "Data Axis",
     ellipse: "Ellipse",

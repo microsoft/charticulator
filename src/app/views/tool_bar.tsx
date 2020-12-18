@@ -59,19 +59,19 @@ export class Toolbar extends ContextedComponent<
             tools={[
               {
                 classID: "mark.rect",
-                title: "Rectangle",
+                title: strings.toolbar.rectangle,
                 icon: "mark/rect",
                 options: '{"shape":"rectangle"}',
               },
               {
                 classID: "mark.rect",
-                title: "Ellipse",
+                title: strings.toolbar.ellipse,
                 icon: "mark/ellipse",
                 options: '{"shape":"ellipse"}',
               },
               {
                 classID: "mark.rect",
-                title: "Triangle",
+                title: strings.toolbar.triangle,
                 icon: "mark/triangle",
                 options: '{"shape":"triangle"}',
               },
@@ -79,14 +79,12 @@ export class Toolbar extends ContextedComponent<
           />
           <ObjectButton
             classID="mark.symbol"
-            title="Symbol"
-            // text="Symbol"
+            title={strings.toolbar.symbol}
             icon="mark/symbol"
           />
           <ObjectButton
             classID="mark.line"
-            title="Line"
-            // text="Line"
+            title={strings.toolbar.line}
             icon="mark/line"
           />
           <MultiObjectButton
@@ -94,12 +92,12 @@ export class Toolbar extends ContextedComponent<
             tools={[
               {
                 classID: "mark.text",
-                title: "Text",
+                title: strings.toolbar.text,
                 icon: "mark/text",
               },
               {
                 classID: "mark.textbox",
-                title: "Textbox",
+                title: strings.toolbar.textbox,
                 icon: "mark/textbox",
               },
             ]}
@@ -109,20 +107,19 @@ export class Toolbar extends ContextedComponent<
             tools={[
               {
                 classID: "mark.icon",
-                title: "Icon",
+                title: strings.toolbar.icon,
                 icon: "mark/icon",
               },
               {
                 classID: "mark.image",
-                title: "Image",
+                title: strings.toolbar.image,
                 icon: "mark/image",
               },
             ]}
           />
           <ObjectButton
             classID="mark.data-axis"
-            title="Data Axis"
-            // text="Data Axis"
+            title={strings.toolbar.dataAxis}
             icon="mark/data-axis"
           />
           {/* Nested chart doesn't supported */}
@@ -136,14 +133,14 @@ export class Toolbar extends ContextedComponent<
             <>
               <span className={"chartaccent__toolbar-horizontal-separator"}/>
               <ToolButton
-                title="Undo (Ctrl-Z)"
+                title={strings.menuBar.undo}
                 icon={R.getSVGIcon("toolbar/undo")}
                 onClick={() =>
                   new Actions.Undo().dispatch(this.context.store.dispatcher)
                 }
               />
               <ToolButton
-                title="Redo (Ctrl-Y)"
+                title={strings.menuBar.redo}
                 icon={R.getSVGIcon("toolbar/redo")}
                 onClick={() =>
                   new Actions.Redo().dispatch(this.context.store.dispatcher)
@@ -178,31 +175,31 @@ export class Toolbar extends ContextedComponent<
           tools={[
             {
               classID: "guide-y",
-              title: "Guide Y",
+              title: strings.toolbar.guideY,
               icon: "guide/x",
               options: '{"shape":"rectangle"}',
             },
             {
               classID: "guide-x",
-              title: "Guide X",
+              title: strings.toolbar.guideX,
               icon: "guide/y",
               options: '{"shape":"ellipse"}',
             },
             {
               classID: "guide-coordinator-x",
-              title: "Guide X",
+              title: strings.toolbar.guideX,
               icon: "guide/coordinator-x",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-y",
-              title: "Guide Y",
+              title: strings.toolbar.guideY,
               icon: "guide/coordinator-y",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-polar",
-              title: "Guide polar",
+              title: strings.toolbar.guidePolar,
               icon: "plot-segment/polar",
               options: '{"shape":"triangle"}',
             },
@@ -224,13 +221,13 @@ export class Toolbar extends ContextedComponent<
         )}
         <ObjectButton
           classID="plot-segment.cartesian"
-          title="2D Region"
+          title={strings.toolbar.region2D}
           icon="plot/region"
           noDragging={true}
         />
         <ObjectButton
           classID="plot-segment.line"
-          title="Line"
+          title={strings.toolbar.line}
           icon="plot/line"
           noDragging={true}
         />
@@ -249,25 +246,25 @@ export class Toolbar extends ContextedComponent<
           )}
           <ScaffoldButton
             type="cartesian-x"
-            title="Horizontal Line"
+            title={strings.toolbar.lineH}
             icon="scaffold/cartesian-x"
             currentTool={this.store.currentTool}
           />
           <ScaffoldButton
             type="cartesian-y"
-            title="Vertical Line"
+            title={strings.toolbar.lineV}
             icon="scaffold/cartesian-y"
             currentTool={this.store.currentTool}
           />
           <ScaffoldButton
             type="polar"
-            title="Polar"
+            title={strings.toolbar.polar}
             icon="scaffold/circle"
             currentTool={this.store.currentTool}
           />
           <ScaffoldButton
             type="curve"
-            title="Custom Curve"
+            title={strings.toolbar.curve}
             icon="scaffold/curve"
             currentTool={this.store.currentTool}
           />
@@ -287,7 +284,7 @@ export class Toolbar extends ContextedComponent<
                 : "chartaccent__toolbar-label"
             }
           >
-            Marks
+            {strings.toolbar.marks}
           </span>
         )}
         <MultiObjectButton
@@ -761,7 +758,7 @@ export class LinkButton extends ContextedComponent<{
     return (
       <span ref={(e) => (this.container = e)}>
         <ToolButton
-          title="Link"
+          title={strings.toolbar.link}
           text={this.props.label ? strings.toolbar.link : ""}
           icon={R.getSVGIcon("link/tool")}
           active={this.store.currentTool == "link"}
