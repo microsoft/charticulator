@@ -2,6 +2,18 @@
 // Licensed under the MIT license.
 import { CharticulatorCoreConfig, getConfig as coreGetConfig } from "../core";
 
+export interface AppExtension {
+  script:
+    | string
+    | {
+        src: string;
+        sha256: string;
+        integrity: string;
+      };
+  style: string;
+  initialize: string;
+}
+
 export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   LegalNotices: {
     /** HTML representation of the privacy statement */
@@ -10,11 +22,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   /** Should we disable the file view */
   DisableFileView?: boolean;
   /** Load extensions */
-  Extensions?: Array<{
-    script: string | { src: string; sha256: string; integrity: string };
-    style: string;
-    initialize: string;
-  }>;
+  Extensions?: Array<AppExtension>;
   /** Sample datasets to show */
   SampleDatasets?: Array<{
     name: string;
