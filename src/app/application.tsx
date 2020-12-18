@@ -23,68 +23,10 @@ import { ExportTemplateTarget } from "./template";
 import { parseHashString } from "./utils";
 import { Actions } from "./actions";
 import { DatasetSourceSpecification } from "../core/dataset/loader";
-import { TableType } from "../core/dataset";
 import { LocaleFileFormat } from "../core/dataset/dsv_parser";
 import { MainTabs } from "./views/file_view";
-
-function makeDefaultDataset(): Dataset.Dataset {
-  const rows: any[] = [];
-  const months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(",");
-  let monthIndex = 0;
-  for (const month of months) {
-    let cityIndex = 0;
-    for (const city of ["City1", "City2", "City3"]) {
-      const value =
-        50 +
-        30 *
-          Math.sin(
-            ((monthIndex + 0.5) * Math.PI) / 12 + (cityIndex * Math.PI) / 2
-          );
-      rows.push({
-        _id: "ID" + rows.length,
-        Month: month,
-        City: city,
-        Value: +value.toFixed(1),
-      });
-      cityIndex += 1;
-    }
-    monthIndex += 1;
-  }
-  return {
-    tables: [
-      {
-        name: "Temperature",
-        displayName: "Temperature",
-        columns: [
-          {
-            name: "Month",
-            displayName: "Month",
-            type: Dataset.DataType.String,
-            metadata: {
-              kind: Dataset.DataKind.Categorical,
-              order: months,
-            },
-          },
-          {
-            name: "City",
-            displayName: "City",
-            type: Dataset.DataType.String,
-            metadata: { kind: Dataset.DataKind.Categorical },
-          },
-          {
-            name: "Value",
-            displayName: "Value",
-            type: Dataset.DataType.Number,
-            metadata: { kind: Dataset.DataKind.Numerical, format: ".1f" },
-          },
-        ],
-        rows,
-        type: TableType.Main,
-      },
-    ],
-    name: "demo",
-  };
-}
+import { makeDefaultDataset } from "./default_dataset";
+import { strings } from "../strings";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -281,7 +223,7 @@ export class Application {
     const hashParsed = parseHashString(document.location.hash);
 
     if (hashParsed.nestedEditor) {
-      document.title = "Nested Chart | Charticulator";
+      document.title = strings.app.nestedChartTitle;
       this.setupNestedEditor(hashParsed.nestedEditor);
     } else if (hashParsed.loadDataset) {
       // Load from a dataset specification json format
