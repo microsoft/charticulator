@@ -22,12 +22,13 @@ import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
+import { strings } from "../strings";
 
 export interface MainViewConfig {
   ColumnsPosition: "left" | "right";
   EditorPanelsPosition: "left" | "right";
   ToolbarPosition: "top" | "right" | "left";
-  MenuBarButtons: "left" | "right"
+  MenuBarButtons: "left" | "right";
   Name?: string;
 }
 
@@ -56,7 +57,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         ColumnsPosition: "left",
         EditorPanelsPosition: "left",
         ToolbarPosition: "top",
-        MenuBarButtons: "left"
+        MenuBarButtons: "left",
       };
     } else {
       this.viewConfiguration = props.viewConfiguration;
@@ -95,14 +96,18 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       return (
         <div className="charticulator__panel charticulator__panel-dataset">
           <MinimizablePanelView>
-            <MinimizablePane title="Dataset" scroll={true} hideHeader={true}>
+            <MinimizablePane
+              title={strings.mainView.datasetPanelTitle}
+              scroll={true}
+              hideHeader={true}
+            >
               <ErrorBoundary>
                 <DatasetView store={this.props.store} />
               </ErrorBoundary>
             </MinimizablePane>
             {this.state.scaleViewMaximized ? null : (
               <MinimizablePane
-                title="Scales"
+                title={strings.mainView.scalesPanelTitle}
                 scroll={true}
                 onMaximize={() => this.setState({ scaleViewMaximized: true })}
               >
@@ -132,7 +137,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           <MinimizablePanelView>
             {this.state.glyphViewMaximized ? null : (
               <MinimizablePane
-                title="Glyph"
+                title={strings.mainView.glyphPaneltitle}
                 scroll={false}
                 onMaximize={() => this.setState({ glyphViewMaximized: true })}
               >
@@ -143,7 +148,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             )}
             {this.state.layersViewMaximized ? null : (
               <MinimizablePane
-                title="Layers"
+                title={strings.mainView.layersPanelTitle}
                 scroll={true}
                 maxHeight={200}
                 onMaximize={() => this.setState({ layersViewMaximized: true })}
@@ -155,7 +160,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             )}
             {this.state.attributeViewMaximized ? null : (
               <MinimizablePane
-                title="Attributes"
+                title={strings.mainView.attributesPaneltitle}
                 scroll={true}
                 onMaximize={() =>
                   this.setState({ attributeViewMaximized: true })
@@ -215,7 +220,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           {this.state.glyphViewMaximized ? (
             <FloatingPanel
               peerGroup="panels"
-              title="Glyph"
+              title={strings.mainView.glyphPaneltitle}
               onClose={() => this.setState({ glyphViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -227,7 +232,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Layers"
+              title={strings.mainView.layersPanelTitle}
               onClose={() => this.setState({ layersViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -239,7 +244,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Attributes"
+              title={strings.mainView.attributesPaneltitle}
               onClose={() => this.setState({ attributeViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -251,7 +256,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Scales"
+              title={strings.mainView.scalesPanelTitle}
               onClose={() => this.setState({ scaleViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -267,7 +272,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               floatInCenter={true}
               scroll={true}
               peerGroup="messages"
-              title="Errors"
+              title={strings.mainView.errorsPanelTitle}
               closeButtonIcon={"general/cross"}
               height={200}
               width={350}

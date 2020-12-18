@@ -3,6 +3,7 @@
 import * as React from "react";
 import { AppStore } from "./stores";
 import { Action } from "./actions/actions";
+import { strings } from "../strings";
 
 export interface MainContext {
   store: AppStore;
@@ -13,7 +14,7 @@ export let MainContextTypes = {
     if (props[propName] instanceof AppStore) {
       return null;
     } else {
-      return new Error(`store not found in component ${componentName}`);
+      return new Error(strings.error.storeNotFound(componentName));
     }
   },
 };
