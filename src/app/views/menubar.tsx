@@ -24,13 +24,14 @@ import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { map } from "d3";
 import { FileViewImport } from "./file_view/import_view";
+import { strings } from "../../strings";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/help")}
-        title="Help"
+        title={strings.menuBar.help}
         ref="helpButton"
         onClick={() => {
           globals.popupController.popupAt(
@@ -49,7 +50,7 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://charticulator.com/docs/getting-started.html"
                       >
-                        Getting Started
+                        {strings.help.gettingStarted}
                       </a>
                     </div>
                     <div className="el-item">
@@ -57,7 +58,7 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://charticulator.com/gallery/index.html"
                       >
-                        Example Gallery
+                        {strings.help.gallery}
                       </a>
                     </div>
                     <div className="el-item">
@@ -65,21 +66,21 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://github.com/Microsoft/charticulator/issues/new"
                       >
-                        Report an Issue
+                        {strings.help.issues}
                       </a>
                     </div>
                     <div className="el-item">
                       <a target="_blank" href="https://charticulator.com/">
-                        Charticulator Home
+                        {strings.help.home}
                       </a>
                     </div>
                     <div className="el-item">
                       <a href="mailto:charticulator@microsoft.com">
-                        Contact Us
+                        {strings.help.contact}
                       </a>
                     </div>
                     <div className="el-item-version">
-                      Version: {CHARTICULATOR_PACKAGE.version}
+                      {strings.help.version(CHARTICULATOR_PACKAGE.version)}
                     </div>
                   </div>
                 </PopupView>
@@ -229,8 +230,8 @@ export class MenuBar extends ContextedComponent<
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text="Save Nested Chart"
-        title="Save (Ctrl-S)"
+        text={strings.menuBar.saveNested}
+        title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
@@ -244,7 +245,7 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/import-template")}
           text=""
-          title="Import template"
+          title={strings.menuBar.importTemplate}
           onClick={async () => {
             const file = await showOpenFileDialog(["tmplt"]);
             const str = await readFileAsString(file);
@@ -356,11 +357,11 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/export-template")}
           text=""
-          title="Export template"
+          title={strings.menuBar.exportTemplate}
           onClick={() => {
             const template = deepClone(this.store.buildChartTemplate());
             const target = this.store.createExportTemplateTarget(
-              "Charticulator Template",
+              strings.menuBar.defaultTemplateName,
               template
             );
             const targetProperties: { [name: string]: string } = {};
@@ -383,8 +384,8 @@ export class MenuBar extends ContextedComponent<
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text="Save"
-        title="Save (Ctrl-S)"
+        text={strings.menuBar.saveButton}
+        title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
@@ -397,22 +398,22 @@ export class MenuBar extends ContextedComponent<
       <>
         <MenuButton
           url={R.getSVGIcon("toolbar/new")}
-          title="New (Ctrl-N)"
+          title={strings.menuBar.new}
           onClick={() => {
             this.showFileModalWindow(MainTabs.new);
           }}
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/open")}
-          title="Open (Ctrl-O)"
+          title={strings.menuBar.open}
           onClick={() => {
             this.showFileModalWindow(MainTabs.open);
           }}
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}
-          title="Save (Ctrl-S)"
-          text="Save"
+          title={strings.menuBar.save}
+          text={strings.menuBar.saveButton}
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -423,7 +424,7 @@ export class MenuBar extends ContextedComponent<
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/export")}
-          title="Export"
+          title={strings.menuBar.export}
           onClick={() => {
             this.showFileModalWindow(MainTabs.export);
           }}
@@ -468,7 +469,7 @@ export class MenuBar extends ContextedComponent<
         <span className="charticulator__menu-bar-separator" />
         <MenuButton
           url={R.getSVGIcon("toolbar/trash")}
-          title="Reset"
+          title={strings.menuBar.reset}
           onClick={() => {
             if (isInIFrame()) {
               globals.popupController.showModal(
@@ -484,14 +485,14 @@ export class MenuBar extends ContextedComponent<
                         className={"charticulator__reset_chart_dialog-inner"}
                       >
                         <>
-                          <p>Are you really willing to reset the chart?</p>
+                          <p>{strings.dialog.resetConfirm}</p>
                           <div
                             className={
                               "charticulator__reset_chart_dialog-buttons"
                             }
                           >
                             <Button
-                              text="Yes"
+                              text={strings.button.yes}
                               onClick={() => {
                                 this.context.store.dispatcher.dispatch(
                                   new Actions.Reset()
@@ -500,7 +501,7 @@ export class MenuBar extends ContextedComponent<
                               }}
                             />
                             <Button
-                              text="No"
+                              text={strings.button.no}
                               onClick={() => {
                                 context.close();
                               }}
@@ -514,7 +515,7 @@ export class MenuBar extends ContextedComponent<
                 { anchor: null }
               );
             } else {
-              if (confirm("Are you really willing to reset the chart?")) {
+              if (confirm(strings.dialog.resetConfirm)) {
                 new Actions.Reset().dispatch(this.context.store.dispatcher);
               }
             }
@@ -532,6 +533,7 @@ export class MenuBar extends ContextedComponent<
           <div className="charticulator__menu-bar-left">
             {this.context.store.editorType === "embedded" ? null : (<AppButton
               name={this.props.name}
+              title={strings.menuBar.home}
               onClick={() => this.showFileModalWindow(MainTabs.open)}
             />)}
             {this.props.alignButtons === "left" ? (
@@ -542,7 +544,7 @@ export class MenuBar extends ContextedComponent<
             ) : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>{this.context.store.chart?.properties.name} - Microsoft Charticualtor</p>
+            <p>{this.context.store.chart?.properties.name} - {strings.app.name}</p>
           </div>
           <div className="charticulator__menu-bar-right">
             {this.props.alignButtons === "right" ? (
