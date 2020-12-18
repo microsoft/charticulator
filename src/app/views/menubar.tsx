@@ -25,6 +25,7 @@ import { TableType } from "../../core/dataset";
 import { map } from "d3";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
+import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -99,8 +100,8 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
-    undoRedoLocation: "toolbar" | "menubar";
-    alignButtons: "left" | "right";
+    undoRedoLocation: UndoRedoLocation;
+    alignButtons: PositionsLeftRight;
     name?: string;
   },
   {}

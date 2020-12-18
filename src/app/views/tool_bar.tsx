@@ -16,11 +16,12 @@ import { LinkCreationPanel } from "./panels/link_creator";
 import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
+import { UndoRedoLocation } from "../main_view";
 
 export class Toolbar extends ContextedComponent<
   {
     layout: "vertical" | "horizontal";
-    undoRedoLocation: "toolbar" | "menubar";
+    undoRedoLocation: UndoRedoLocation;
     toolbarLabels: boolean;
   },
   {}
@@ -130,7 +131,7 @@ export class Toolbar extends ContextedComponent<
             title="Nested Chart"
             icon="mark/nested-chart"
           /> */}
-          {this.props.undoRedoLocation === "toolbar" ? 
+          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? 
           (
             <>
               <span className={"chartaccent__toolbar-horizontal-separator"}/>
