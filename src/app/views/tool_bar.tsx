@@ -16,11 +16,11 @@ import { LinkCreationPanel } from "./panels/link_creator";
 import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
-import { UndoRedoLocation } from "../main_view";
+import { LayoutDirection, UndoRedoLocation } from "../main_view";
 
 export class Toolbar extends ContextedComponent<
   {
-    layout: "vertical" | "horizontal";
+    layout: LayoutDirection;
     undoRedoLocation: UndoRedoLocation;
     toolbarLabels: boolean;
   },
@@ -46,7 +46,7 @@ export class Toolbar extends ContextedComponent<
           {labels && (
             <span
               className={
-                this.props.layout === "vertical"
+                this.props.layout === LayoutDirection.Vertical
                   ? "chartaccent__toolbar-vertical-label"
                   : "chartaccent__toolbar-label"
               }
@@ -55,7 +55,7 @@ export class Toolbar extends ContextedComponent<
             </span>
           )}
           <MultiObjectButton
-            compact={this.props.layout === "vertical"}
+            compact={this.props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.rect",
@@ -90,7 +90,7 @@ export class Toolbar extends ContextedComponent<
             icon="mark/line"
           />
           <MultiObjectButton
-            compact={this.props.layout === "vertical"}
+            compact={this.props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.text",
@@ -105,7 +105,7 @@ export class Toolbar extends ContextedComponent<
             ]}
           />
           <MultiObjectButton
-            compact={this.props.layout === "vertical"}
+            compact={this.props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.icon",
@@ -165,7 +165,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === "vertical"
+              this.props.layout ===LayoutDirection.Vertical
                 ? "chartaccent__toolbar-vertical-label"
                 : "chartaccent__toolbar-label"
             }
@@ -174,7 +174,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === "vertical"}
+          compact={this.props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "guide-y",
@@ -213,12 +213,12 @@ export class Toolbar extends ContextedComponent<
           <>
             <span
               className={
-                this.props.layout === "vertical"
+                this.props.layout === LayoutDirection.Vertical
                   ? "chartaccent__toolbar-vertical-label"
                   : "chartaccent__toolbar-label"
               }
             >
-              {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
+              {this.props.layout === LayoutDirection.Vertical ? "Plot" : "Plot Segments"}
             </span>
           </>
         )}
@@ -239,7 +239,7 @@ export class Toolbar extends ContextedComponent<
           {labels && (
             <span
               className={
-                this.props.layout === "vertical"
+                this.props.layout === LayoutDirection.Vertical
                   ? "chartaccent__toolbar-vertical-label"
                   : "chartaccent__toolbar-label"
               }
@@ -272,17 +272,6 @@ export class Toolbar extends ContextedComponent<
             currentTool={this.store.currentTool}
           />
         </>
-        {/* {labels && (
-          <span
-            className={
-              this.props.layout === "vertical"
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
-            }
-          >
-            Links
-          </span>
-        )} */}
       </>
     ];
   }
@@ -290,28 +279,10 @@ export class Toolbar extends ContextedComponent<
   private getToolItems(labels: boolean = true) {
     return (
       <>
-        {/* {this.context.store.editorType !== "embedded" ?
-          (<>
-            <ToolButton
-              title="Undo (Ctrl-Z)"
-              icon={R.getSVGIcon("toolbar/undo")}
-              onClick={() =>
-                new Actions.Undo().dispatch(this.context.store.dispatcher)
-              }
-            />
-            <ToolButton
-              title="Redo (Ctrl-Y)"
-              icon={R.getSVGIcon("toolbar/redo")}
-              onClick={() =>
-                new Actions.Redo().dispatch(this.context.store.dispatcher)
-              }
-            />
-          </>)
-        : null} */}
         {labels && (
           <span
             className={
-              this.props.layout === "vertical"
+              this.props.layout === LayoutDirection.Vertical
                 ? "chartaccent__toolbar-vertical-label"
                 : "chartaccent__toolbar-label"
             }
@@ -320,7 +291,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === "vertical"}
+          compact={this.props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.rect",
@@ -345,7 +316,7 @@ export class Toolbar extends ContextedComponent<
         <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
         <ObjectButton classID="mark.line" title="Line" icon="mark/line" />
         <MultiObjectButton
-          compact={this.props.layout === "vertical"}
+          compact={this.props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.text",
@@ -360,7 +331,7 @@ export class Toolbar extends ContextedComponent<
           ]}
         />
         <MultiObjectButton
-          compact={this.props.layout === "vertical"}
+          compact={this.props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.icon",
@@ -393,7 +364,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === "vertical"
+              this.props.layout === LayoutDirection.Vertical
                 ? "chartaccent__toolbar-vertical-label"
                 : "chartaccent__toolbar-label"
             }
@@ -402,7 +373,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === "vertical"}
+          compact={this.props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "guide-y",
@@ -441,12 +412,12 @@ export class Toolbar extends ContextedComponent<
           <>
             <span
               className={
-                this.props.layout === "vertical"
+                this.props.layout === LayoutDirection.Vertical
                   ? "chartaccent__toolbar-vertical-label"
                   : "chartaccent__toolbar-label"
               }
             >
-              {this.props.layout === "vertical" ? "Plot" : "Plot Segments"}
+              {this.props.layout === LayoutDirection.Vertical ? "Plot" : "Plot Segments"}
             </span>
           </>
         )}
@@ -466,7 +437,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === "vertical"
+              this.props.layout === LayoutDirection.Vertical
                 ? "chartaccent__toolbar-vertical-label"
                 : "chartaccent__toolbar-label"
             }
@@ -518,7 +489,7 @@ export class Toolbar extends ContextedComponent<
       <>
         <div
           className={
-            this.props.layout === "vertical"
+            this.props.layout === LayoutDirection.Vertical
               ? "chartaccent__toolbar-vertical"
               : "chartaccent__toolbar-horizontal"
           }
@@ -530,20 +501,13 @@ export class Toolbar extends ContextedComponent<
                   <div
                     key={index}
                     className={
-                      this.props.layout === "vertical"
+                      this.props.layout === LayoutDirection.Vertical
                         ? "chartaccent__toolbar-vertical-group"
                         : "chartaccent__toolbar-horizontal-group"
                     }
                   >
                     {item}
                   </div>
-                  {/* <span
-                    className={
-                      this.props.layout === "vertical"
-                        ? "chartaccent__toolbar-vertical-separator"
-                        : "chartaccent__toolbar-horizontal-separator"
-                    }
-                  /> */}
                 </React.Fragment>
               );
             })}

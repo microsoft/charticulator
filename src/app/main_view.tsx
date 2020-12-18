@@ -40,6 +40,11 @@ export enum PositionsLeftRightTop {
   Top = "top"
 }
 
+export enum LayoutDirection {
+  Vertical = "vertical",
+  Horizontal = "horizontal"
+}
+
 export interface MainViewConfig {
   ColumnsPosition: PositionsLeftRight;
   EditorPanelsPosition: PositionsLeftRight;
@@ -106,7 +111,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   public render() {
     const toolBarCreator = (config: {
       undoRedoLocation: UndoRedoLocation
-      layout: "vertical" | "horizontal"
+      layout: LayoutDirection
       toolbarLabels: boolean
     }) => {
       return (
@@ -227,7 +232,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           <div className="charticulator__panel charticulator__panel-editor">
             {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Top &&
               toolBarCreator({
-                layout:"horizontal",
+                layout: LayoutDirection.Horizontal,
                 toolbarLabels: this.viewConfiguration.ToolbarLabels,
                 undoRedoLocation: this.viewConfiguration.UndoRedoLocation
               })}
@@ -236,14 +241,14 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                 editorPanels()}
               {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Left &&
                 toolBarCreator({
-                  layout:"vertical",
+                  layout: LayoutDirection.Vertical,
                   toolbarLabels: this.viewConfiguration.ToolbarLabels,
                   undoRedoLocation: this.viewConfiguration.UndoRedoLocation
                 })}
               {chartPanel()}
               {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Right &&
                 toolBarCreator({
-                  layout:"vertical",
+                  layout: LayoutDirection.Vertical,
                   toolbarLabels: this.viewConfiguration.ToolbarLabels,
                   undoRedoLocation: this.viewConfiguration.UndoRedoLocation
                 })}
