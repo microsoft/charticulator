@@ -447,10 +447,11 @@ export class ColumnView extends React.Component<
             c.type,
             <ButtonFlat
               title="Show derived fields"
+              stopPropagation={true}
               url={
                 this.state.isExpanded
-                  ? R.getSVGIcon("general/minus")
-                  : R.getSVGIcon("general/more-vertical")
+                  ? R.getSVGIcon("general/chevron-down")
+                  : R.getSVGIcon("general/chevron-left")
               }
               onClick={() => {
                 this.setState({ isExpanded: !this.state.isExpanded });
