@@ -10,6 +10,7 @@ export interface ButtonProps {
   text?: string;
   title?: string;
   active?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -21,10 +22,14 @@ export class Button extends React.Component<ButtonProps, {}> {
           "charticulator__widget-control-button",
           ["is-active", this.props.active],
           ["has-text", this.props.text != null],
-          ["has-icon", this.props.icon != null]
+          ["has-icon", this.props.icon != null],
+          ["is-disabled", this.props.disabled]
         )}
         title={this.props.title}
         onClick={(e) => {
+          if (this.props.disabled === true) {
+            return;
+          }
           e.stopPropagation();
           if (this.props.onClick) {
             this.props.onClick();
