@@ -530,10 +530,10 @@ export class MenuBar extends ContextedComponent<
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            <AppButton
+            {this.context.store.editorType === "embedded" ? null : (<AppButton
               name={this.props.name}
               onClick={() => this.showFileModalWindow(MainTabs.open)}
-            />
+            />)}
             {this.props.alignButtons === "left" ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
