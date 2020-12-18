@@ -143,6 +143,10 @@ export namespace Geometry {
       y: (pt.y - zoom.centerY) / zoom.scale,
     };
   }
+
+  export function degreesToRadians(degrees: number) {
+    return (degrees / 180) * Math.PI
+  }
 }
 
 export function prettyNumber(x: number, digits: number = 8) {

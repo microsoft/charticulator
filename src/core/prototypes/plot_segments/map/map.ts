@@ -4,7 +4,7 @@ import * as Graphics from "../../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../../solver";
 import * as Specification from "../../../specification";
 
-import { getById, max, Point, uniqueID, zipArray } from "../../../common";
+import { Geometry, getById, max, Point, uniqueID, zipArray } from "../../../common";
 import {
   AttributeDescription,
   BoundingBox,
@@ -164,7 +164,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       (128 / 180) *
       (180 -
         (180 / Math.PI) *
-          Math.log(Math.tan(Math.PI / 4 + ((lat / 180) * Math.PI) / 2)));
+          Math.log(Math.tan(Math.PI / 4 + (Geometry.degreesToRadians(lat)) / 2)));
 
     return [x, y];
 

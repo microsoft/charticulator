@@ -130,8 +130,8 @@ export class PolarCoordinates extends CoordinateSystem {
 
   public transformPoint(angle: number, radial: number): Point {
     return {
-      x: this.transformRadial(radial) * Math.sin(angle * (Math.PI / 180)),
-      y: this.transformRadial(radial) * Math.cos(angle * (Math.PI / 180)),
+      x: this.transformRadial(radial) * Math.sin(Geometry.degreesToRadians(angle)),
+      y: this.transformRadial(radial) * Math.cos(Geometry.degreesToRadians(angle)),
     };
   }
 
@@ -141,7 +141,7 @@ export class PolarCoordinates extends CoordinateSystem {
     dx: number,
     dy: number
   ): Point {
-    const t = -angle * (Math.PI / 180);
+    const t = Geometry.degreesToRadians(-angle);
     return {
       x: dx * Math.cos(t) - dy * Math.sin(t),
       y: dx * Math.sin(t) + dy * Math.cos(t),
@@ -149,7 +149,7 @@ export class PolarCoordinates extends CoordinateSystem {
   }
 
   public getLocalTransform(angle: number, radial: number): RigidTransform {
-    const t = angle * (Math.PI / 180);
+    const t = Geometry.degreesToRadians(angle);
     return {
       x: this.transformRadial(radial) * Math.sin(t),
       y: this.transformRadial(radial) * Math.cos(t),
@@ -158,7 +158,7 @@ export class PolarCoordinates extends CoordinateSystem {
   }
 
   public transformPointWithBase(angle: number, radial: number): Point {
-    const t = angle * (Math.PI / 180);
+    const t = Geometry.degreesToRadians(angle);
     return {
       x: this.transformRadial(radial) * Math.sin(t) + this.origin.x,
       y: this.transformRadial(radial) * Math.cos(t) + this.origin.y,
@@ -171,7 +171,7 @@ export class PolarCoordinates extends CoordinateSystem {
     dx: number,
     dy: number
   ): Point {
-    const t = -angle * (Math.PI / 180);
+    const t = Geometry.degreesToRadians(-angle);
     return {
       x: dx * Math.cos(t) - dy * Math.sin(t),
       y: dx * Math.sin(t) + dy * Math.cos(t),
@@ -380,8 +380,8 @@ export class CoordinateSystemHelper {
           );
 
           const len = Geometry.pointDistance(frame, framePrevious) / 3;
-          const angle1 = (framePrevious.angle / 180) * Math.PI + direction;
-          const angle2 = (frame.angle / 180) * Math.PI + direction;
+          const angle1 = Geometry.degreesToRadians(framePrevious.angle) + direction;
+          const angle2 = Geometry.degreesToRadians(frame.angle) + direction;
 
           path.cubicBezierCurveTo(
             framePrevious.x + Math.cos(angle1) * len,

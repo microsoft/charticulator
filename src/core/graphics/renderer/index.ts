@@ -160,11 +160,18 @@ export class ChartRenderer {
         const glyphElements = transpose(glyphArrays).map((x) => makeGroup(x));
         const gGlyphs = makeGroup(glyphElements);
         gGlyphs.transform = coordinateSystem.getBaseTransform();
-        const gElement = makeGroup([]);
         const g = plotSegmentClass.getPlotSegmentGraphics(
           gGlyphs,
           this.manager
         );
+        // render plotsegment background elements
+        const gBackgroundElements = makeGroup([]);
+        const plotSegmentBackgroundElements = plotSegmentClass.getPlotSegmentBackgroundGraphics(
+          this.manager
+        );
+        gBackgroundElements.elements.push(plotSegmentBackgroundElements);
+        const gElement = makeGroup([]);
+        gElement.elements.push(gBackgroundElements);
         gElement.elements.push(g);
         gElement.key = element._id;
         graphics.push(gElement);
