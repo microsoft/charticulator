@@ -152,6 +152,7 @@ export class Application {
           scriptTag.src = ext.script.src + "?sha256=" + ext.script.sha256;
         }
         scriptTag.onload = () => {
+          // An extension may include script for its initialization
           const initFn = new Function("application", ext.initialize);
           initFn(this);
         };
