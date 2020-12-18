@@ -6,7 +6,7 @@ import { DataType } from "./core/specification";
 
 export const strings = {
   app: {
-    name: "Charticulator",
+    name: "Microsoft Charticulator",
     nestedChartTitle: "Nested Chart | Charticulator",
   },
   about: {
@@ -73,6 +73,8 @@ export const strings = {
     undo: "Undo (Ctrl-Z)",
   },
   toolbar: {
+    symbol: "Symbol",
+    marks: "Marks",
     curve: "Custom Curve",
     dataAxis: "Data Axis",
     ellipse: "Ellipse",

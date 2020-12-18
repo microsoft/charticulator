@@ -25,6 +25,7 @@ import { TableType } from "../../core/dataset";
 import { map } from "d3";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
+import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
@@ -99,7 +100,8 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
-    alignButtons: "left" | "right";
+    undoRedoLocation: UndoRedoLocation;
+    alignButtons: PositionsLeftRight;
     name?: string;
   },
   {}
@@ -379,22 +381,6 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  private checkColumnsMapping(
-    column: Specification.Template.Column,
-    tableType: TableType
-  ): Specification.Template.Column[] {
-    const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = this.store.dataset.tables.find(
-      (t) => t.type === tableType
-    );
-    const found =
-      dataTable && dataTable.columns.find((c) => c.name === column.name);
-    if (!found) {
-      unmappedColumns.push(column);
-    }
-    return unmappedColumns;
-  }
-
   public renderSaveEmbedded() {
     return (
       <MenuButton
@@ -463,20 +449,24 @@ export class MenuBar extends ContextedComponent<
         <span className="charticulator__menu-bar-separator" />
         {this.renderExportImportButtons()}
         <span className="charticulator__menu-bar-separator" />
-        <MenuButton
-          url={R.getSVGIcon("toolbar/undo")}
-          title={strings.menuBar.undo}
-          onClick={() =>
-            new Actions.Undo().dispatch(this.context.store.dispatcher)
-          }
-        />
-        <MenuButton
-          url={R.getSVGIcon("toolbar/redo")}
-          title={strings.menuBar.redo}
-          onClick={() =>
-            new Actions.Redo().dispatch(this.context.store.dispatcher)
-          }
-        />
+        {this.props.undoRedoLocation === "menubar" ?
+          (<>
+            <MenuButton
+              url={R.getSVGIcon("toolbar/undo")}
+              title={strings.menuBar.undo}
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <MenuButton
+              url={R.getSVGIcon("toolbar/redo")}
+              title={strings.menuBar.redo}
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+          </>)
+        : null}
         <span className="charticulator__menu-bar-separator" />
         <MenuButton
           url={R.getSVGIcon("toolbar/trash")}
@@ -542,11 +532,11 @@ export class MenuBar extends ContextedComponent<
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            <AppButton
+            {this.context.store.editorType === "embedded" ? null : (<AppButton
               name={this.props.name}
               title={strings.menuBar.home}
               onClick={() => this.showFileModalWindow(MainTabs.open)}
-            />
+            />)}
             {this.props.alignButtons === "left" ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
@@ -555,9 +545,7 @@ export class MenuBar extends ContextedComponent<
             ) : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>
-              {this.context.store.chart?.properties.name} - {strings.app.name}
-            </p>
+            <p>{this.context.store.chart?.properties.name} - {strings.app.name}</p>
           </div>
           <div className="charticulator__menu-bar-right">
             {this.props.alignButtons === "right" ? (
