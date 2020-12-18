@@ -193,12 +193,12 @@ export class DropZoneView
         ) => {
           const angleOffset = -90;
           const start = [
-            x + radius * Math.cos(((angleOffset + startAngle) * Math.PI) / 180),
-            y + radius * Math.sin(((angleOffset + startAngle) * Math.PI) / 180),
+            x + radius * Math.cos(Geometry.degreesToRadians(angleOffset + startAngle)),
+            y + radius * Math.sin(Geometry.degreesToRadians(angleOffset + startAngle)),
           ];
           const end = [
-            x + radius * Math.cos(((angleOffset + endAngle) * Math.PI) / 180),
-            y + radius * Math.sin(((angleOffset + endAngle) * Math.PI) / 180),
+            x + radius * Math.cos(Geometry.degreesToRadians(angleOffset + endAngle)),
+            y + radius * Math.sin(Geometry.degreesToRadians(angleOffset + endAngle)),
           ];
           const largeArcFlag = endAngle - startAngle < 180 ? 0 : 1;
           return [
@@ -239,14 +239,14 @@ export class DropZoneView
           zcenter,
           Geometry.vectorRotate(
             { x: zradius + 5, y: 0 },
-            ((-angleCenter + 1 + 90) / 180) * Math.PI
+            Geometry.degreesToRadians(-angleCenter + 1 + 90)
           )
         );
         const p2 = Geometry.vectorAdd(
           zcenter,
           Geometry.vectorRotate(
             { x: zradius + 5, y: 0 },
-            ((-angleCenter - 1 + 90) / 180) * Math.PI
+            Geometry.degreesToRadians(-angleCenter - 1 + 90)
           )
         );
         return (

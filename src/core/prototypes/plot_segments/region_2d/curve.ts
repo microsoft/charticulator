@@ -576,6 +576,17 @@ export class CurvePlotSegment extends PlotSegmentClass<
     };
   }
 
+  /**
+   * Renders gridlines for axis. Returns empty array to diable widgets for curve plot segment.
+   * Not implemented yet
+   * @param data axis data binding
+   * @param manager widgets manager
+   * @param axisProperty property name of plotsegment with axis properties (xData, yData, axis)
+   */
+  public buildGridLineWidgets(): Controls.Widget[] {
+    return [];
+  }
+
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {

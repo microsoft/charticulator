@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point } from "../../common";
+import { Geometry, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
 import {
@@ -226,8 +226,8 @@ export class IconElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const rotation = this.object.properties.rotation;
     const layout = this.getLayoutProps();
-    const cos = Math.cos((rotation / 180) * Math.PI);
-    const sin = Math.sin((rotation / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(rotation));
+    const sin = Math.sin(Geometry.degreesToRadians(rotation));
     const dx = layout.dx - layout.width / 2;
     const dy = layout.dy - layout.height / 2;
     return {

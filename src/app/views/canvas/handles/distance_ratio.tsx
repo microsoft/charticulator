@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
-import { Graphics, Prototypes } from "../../../../core";
+import { Geometry, Graphics, Prototypes } from "../../../../core";
 import { classNames } from "../../../utils";
 import { renderSVGPath } from "../../../renderer";
 import { HandlesDragContext, HandleViewProps } from "./common";
@@ -136,11 +136,11 @@ export class DistanceRatioHandleView extends React.Component<
       return renderSVGPath(path.path.cmds);
     };
     const px = (value: number) => {
-      const alpha = ((90 - handle.startAngle) / 180) * Math.PI;
+      const alpha = Geometry.degreesToRadians(90 - handle.startAngle);
       return Math.cos(alpha) * fRadius(value);
     };
     const py = (value: number) => {
-      const alpha = ((90 - handle.startAngle) / 180) * Math.PI;
+      const alpha = Geometry.degreesToRadians(90 - handle.startAngle);
       return -Math.sin(alpha) * fRadius(value);
     };
     return (

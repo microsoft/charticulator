@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import { Color } from "../common";
 import { DataKind } from "../dataset";
+import { StrokeStyle } from "../prototypes";
 import { AttributeMap, Expression, DataType } from "./index";
 
 /** Common parameter and mapping types */
@@ -44,6 +45,9 @@ export interface AxisRenderingStyle extends AttributeMap {
   fontSize: number;
   tickSize: number;
   wordWrap: boolean;
+  gridlineStyle: StrokeStyle;
+  gridlineColor: Color;
+  gridlineWidth: number;
 }
 
 export interface TextAlignment extends AttributeMap {

@@ -290,6 +290,17 @@ export class LineGuide extends PlotSegmentClass {
     ];
   }
 
+  /**
+   * Renders gridlines for axis. Returns empty array to diable widgets for line plot segment.
+   * Not implemented yet
+   * @param data axis data binding
+   * @param manager widgets manager
+   * @param axisProperty property name of plotsegment with axis properties (xData, yData, axis)
+   */
+  public buildGridLineWidgets(): Controls.Widget[] {
+    return [];
+  }
+
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
