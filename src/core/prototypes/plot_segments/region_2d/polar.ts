@@ -735,7 +735,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     }
     if (this.object.properties.yData) {
       r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      p = p.concat(buildAxisProperties(this.object, "yData"));
     }
     if (
       this.object.properties.sublayout.order &&
