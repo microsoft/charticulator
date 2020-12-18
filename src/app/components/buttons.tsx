@@ -7,6 +7,7 @@ import { DraggableElement, ClickableSVGElement } from "./draggable";
 import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
+import { strings } from "../../strings";
 
 export interface ToolButtonProps {
   icon?: string;
@@ -120,6 +121,7 @@ export abstract class BaseButton<
 
 export interface AppButtonProps extends ButtonProps {
   name?: string;
+  title: string;
 }
 
 export class AppButton extends BaseButton<AppButtonProps> {
@@ -127,11 +129,11 @@ export class AppButton extends BaseButton<AppButtonProps> {
     return (
       <span
         className="charticulator__button-menu-app charticulator-title__button"
-        title="Open file menu"
+        title={this.props.title}
         onClick={this._doClick}
       >
         <SVGImageIcon url={R.getSVGIcon("app-icon")} />
-        <span className="el-text">{this.props.name || "Charticulator"}</span>
+        <span className="el-text">{this.props.name || strings.app.name}</span>
       </span>
     );
   }
