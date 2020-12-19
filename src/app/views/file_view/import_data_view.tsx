@@ -25,6 +25,7 @@ import { PopupView } from "../../controllers";
 import { TableType } from "../../../core/dataset";
 import { AppStore } from "../../stores";
 import { AddMessage, RemoveMessage } from "../../actions/actions";
+import { strings } from "../../../strings";
 
 export interface FileUploaderProps {
   onChange: (file: File) => void;
@@ -153,7 +154,7 @@ export class FileUploader extends React.Component<
         {this.state.filename == null ? (
           <span className="charticulator__file-uploader-prompt">
             <SVGImageIcon url={R.getSVGIcon("toolbar/import")} />
-            Open or Drop File
+            {strings.fileImport.fileUpload}
           </span>
         ) : (
           <span className="charticulator__file-uploader-filename">
@@ -239,7 +240,7 @@ export class ImportDataView extends React.Component<
         {sampleDatasets != null ? (
           <div ref={(e) => (sampleDatasetDiv = e)}>
             <ButtonRaised
-              text="Load Sample Dataset..."
+              text={strings.fileImport.loadSample}
               onClick={() => {
                 globals.popupController.popupAt(
                   (context) => {
@@ -328,9 +329,9 @@ export class ImportDataView extends React.Component<
               }
             )}
             <ButtonRaised
-              text="Remove"
+              text={strings.fileImport.removeButtonText}
               url={R.getSVGIcon("general/cross")}
-              title="Remove this table"
+              title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({
                   dataTable: null,
@@ -357,7 +358,7 @@ export class ImportDataView extends React.Component<
           />
         )}
         <h2>
-          Links
+          {strings.fileImport.links}
           {this.state.linkTable ? ": " + this.state.linkTable.name : null}
         </h2>
         {this.state.linkTable ? (
@@ -390,9 +391,9 @@ export class ImportDataView extends React.Component<
               }
             )}
             <ButtonRaised
-              text="Remove"
+              text={strings.fileImport.removeButtonText}
               url={R.getSVGIcon("general/cross")}
-              title="Remove this table"
+              title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({
                   linkTable: null,
@@ -421,9 +422,9 @@ export class ImportDataView extends React.Component<
         )}
         <div className="el-actions">
           <ButtonRaised
-            text="Done"
+            text={strings.fileImport.doneButtonText}
             url={R.getSVGIcon("general/confirm")}
-            title="Finish importing data"
+            title={strings.fileImport.doneButtonTitle}
             disabled={
               this.state.dataTable == null ||
               this.props.store.messageState.get("noID") !== undefined ||
@@ -473,7 +474,10 @@ export class ImportDataView extends React.Component<
     if (table && countOfKeyColumns < 2) {
       this.props.store.dispatcher.dispatch(
         new AddMessage("noSourceOrTargetID", {
-          text: `No ${LinkSourceKeyColumn} or ${LinkTargetKeyColumn} colums are specified in links table`,
+          text: strings.fileImport.messageNoSourceOrTargetID(
+            LinkSourceKeyColumn,
+            LinkTargetKeyColumn
+          ),
         })
       );
     } else {
@@ -490,7 +494,7 @@ export class ImportDataView extends React.Component<
     if (!isKeyColumn && linksTable) {
       this.props.store.dispatcher.dispatch(
         new AddMessage("noID", {
-          text: `No ${KeyColumn} colum are specified in main table`,
+          text: strings.fileImport.messageNoID(KeyColumn),
         })
       );
     } else {

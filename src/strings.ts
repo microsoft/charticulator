@@ -88,6 +88,22 @@ export const strings = {
     typePNG: "PNG",
     typeSVG: "SVG",
   },
+  fileImport: {
+    doneButtonText: "Done",
+    doneButtonTitle: "Finish importing data",
+    fileUpload: "Open or Drop File",
+    loadSample: "Load Sample Dataset...",
+    links: "Links",
+    messageNoID: (keyColumn: string) =>
+      `No ${keyColumn} colum are specified in main table`,
+    messageNoSourceOrTargetID: (
+      linkSourceKeyColumn: string,
+      LinkTargetKeyColumn: string
+    ) =>
+      `No ${linkSourceKeyColumn} or ${linkTargetKeyColumn} colums are specified in links table`,
+    removeButtonText: "Remove",
+    removeButtonTitle: "Remove this table",
+  },
   handles: {
     drawSpiral: "Draw Spiral",
     startAngle: "Start Angle",
