@@ -98,7 +98,7 @@ export const strings = {
       `No ${keyColumn} colum are specified in main table`,
     messageNoSourceOrTargetID: (
       linkSourceKeyColumn: string,
-      LinkTargetKeyColumn: string
+      linkTargetKeyColumn: string
     ) =>
       `No ${linkSourceKeyColumn} or ${linkTargetKeyColumn} colums are specified in links table`,
     removeButtonText: "Remove",
