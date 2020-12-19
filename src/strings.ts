@@ -160,6 +160,15 @@ export const strings = {
     saveNested: "Save Nested Chart",
     undo: "Undo (Ctrl-Z)",
   },
+  options: {
+    comma: "comma",
+    delimiter: "CSV Delimiter",
+    fileFormat: "Import file format",
+    numberFormat: "Number Format",
+    numberFormatComma: "Decimal: comma / Separator: dot",
+    numberFormatDot: "Decimal: dot / Separator: comma",
+    semicolon: "semicolon",
+  },
   templateImport: {
     columnName: "Column name from the template",
     dataType: "Required data type",
