@@ -11,7 +11,12 @@ import * as React from "react";
 import { Dataset, Expression, Specification } from "../../../core";
 import { DragData, Actions } from "../../actions";
 import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
-import { ModalView, PopupContainer, PopupController, PopupView } from "../../controllers";
+import {
+  ModalView,
+  PopupContainer,
+  PopupController,
+  PopupView,
+} from "../../controllers";
 import * as globals from "../../globals";
 import * as R from "../../resources";
 import { AppStore } from "../../stores";
@@ -29,6 +34,7 @@ import { DataType, DataKind } from "../../../core/specification";
 import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
 import { FileViewImport } from "../file_view/import_view";
+import { strings } from "../../../strings";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -69,7 +75,7 @@ export class DatasetView extends React.Component<
   }
 
   public onImportConnections() {
-    alert("Not implemented yet");
+    alert(strings.error.notImplemented);
   }
 }
 
@@ -86,7 +92,6 @@ export class ColumnsView extends React.Component<
   ColumnsViewProps,
   ColumnsViewState
 > {
-  
   private popupController: PopupController = new PopupController();
 
   constructor(props: ColumnsViewProps) {
@@ -101,181 +106,227 @@ export class ColumnsView extends React.Component<
     let anchor: HTMLDivElement;
     return (
       <>
-      <PopupContainer controller={this.popupController} />
-      <div
-        className="charticulator__dataset-view-columns"
-        ref={(e) => (anchor = e)}
-      >
-        <h2 className="el-title">
-          <span className="el-text">
-            {this.props.table.type === TableType.Links
-              ? "Link Data"
-              : "Columns"}
-          </span>
-          {this.props.store.editorType === "chart" ? <Button
-            icon="general/replace"
-            title="Replace data with CSV file"
-            active={false}
-            onClick={() => {
-              showOpenFileDialog(["csv"]).then((file) => {
-                const loader = new Dataset.DatasetLoader();
-                const reader = new FileReader();
-                reader.onload = () => {
-                  const newTable = loader.loadDSVFromContents(
-                    table.name,
-                    reader.result as string,
-                    this.props.store.getLocaleFileFormat()
-                  );
-                  newTable.displayName = getFileNameWithoutExtension(file.name);
-                  newTable.name = table.name;
-                  newTable.type = table.type;
-                  const store = this.props.store;
-                  const newDataset: Dataset.Dataset = {
-                    name: store.dataset.name,
-                    tables: store.dataset.tables.map((x) => {
-                      if (x.name == table.name) {
-                        return newTable;
-                      } else {
-                        return x;
-                      }
-                    }),
-                  };
-                  {
-                    const builder = new ChartTemplateBuilder(
-                      store.chart,
-                      store.dataset,
-                      store.chartManager
-                    );
-                    const template = builder.build();
-                
-                    let unmappedColumns: Specification.Template.Column[] = [];
-                    template.tables[0].columns.forEach(column => {
-                      unmappedColumns = unmappedColumns.concat(store.checkColumnsMapping(column, TableType.Main, newDataset));
-                    });
-                    if (template.tables[1]) {
-                      template.tables[1].columns.forEach(column => {
-                        unmappedColumns = unmappedColumns.concat(store.checkColumnsMapping(column, TableType.Links, newDataset));
-                      });
-                    }
-                
-                    const tableMapping = new Map<string, string>();
-                    tableMapping.set(template.tables[0].name, store.dataset.tables[0].name);
-                    if (template.tables[1] && store.dataset.tables[1]) {
-                      tableMapping.set(template.tables[1].name, store.dataset.tables[1].name);
-                    }
+        <PopupContainer controller={this.popupController} />
+        <div
+          className="charticulator__dataset-view-columns"
+          ref={(e) => (anchor = e)}
+        >
+          <h2 className="el-title">
+            <span className="el-text">
+              {this.props.table.type === TableType.Links
+                ? strings.dataset.tableTitleLinks
+                : strings.dataset.tableTitleColumns}
+            </span>
+            {this.props.store.editorType === "chart" ? (
+              <Button
+                icon="general/replace"
+                title={strings.dataset.replaceWithCSV}
+                active={false}
+                onClick={() => {
+                  showOpenFileDialog(["csv"]).then((file) => {
+                    const loader = new Dataset.DatasetLoader();
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      const newTable = loader.loadDSVFromContents(
+                        table.name,
+                        reader.result as string,
+                        this.props.store.getLocaleFileFormat()
+                      );
+                      newTable.displayName = getFileNameWithoutExtension(
+                        file.name
+                      );
+                      newTable.name = table.name;
+                      newTable.type = table.type;
+                      const store = this.props.store;
+                      const newDataset: Dataset.Dataset = {
+                        name: store.dataset.name,
+                        tables: store.dataset.tables.map((x) => {
+                          if (x.name == table.name) {
+                            return newTable;
+                          } else {
+                            return x;
+                          }
+                        }),
+                      };
+                      {
+                        const builder = new ChartTemplateBuilder(
+                          store.chart,
+                          store.dataset,
+                          store.chartManager
+                        );
+                        const template = builder.build();
 
-                    const loadTemplateIntoState = (store: AppStore,tableMapping: Map<string, string>, columnMapping: Map<string, string>, template: Specification.Template.ChartTemplate) => {
-                      const templateInstance = new ChartTemplate(template);
-
-                      for (const table of templateInstance.getDatasetSchema()) {
-                        templateInstance.assignTable(table.name, tableMapping.get(table.name) || table.name);
-                        for (const column of table.columns) {
-                          templateInstance.assignColumn(table.name, column.name, columnMapping.get(column.name) || column.name);
-                        }
-                      }
-                      const instance = templateInstance.instantiate(
-                        newDataset,
-                        false // no scale inference
-                      );
-        
-                      store.dispatcher.dispatch(
-                        new Actions.ImportChartAndDataset(
-                          instance.chart,
-                          newDataset,
-                          {}
-                        )
-                      );
-                      store.dispatcher.dispatch(new Actions.ReplaceDataset(newDataset));
-                    }
-                
-                    if (unmappedColumns.length > 0) {
-                      this.popupController.showModal(
-                        (context) => {
-                          return (
-                            <ModalView context={context}>
-                              <div
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                              <FileViewImport
-                                tables={template.tables}
-                                datasetTables={newDataset.tables}
-                                tableMapping={tableMapping}
-                                unmappedColumns={unmappedColumns}
-                                onSave={(mapping) => {
-                                  loadTemplateIntoState(store, tableMapping, mapping, template); 
-                                  // TODO check mappings
-                                  context.close();
-                                }}
-                                onClose={() => {
-                                  context.close();
-                                }}
-                              />
-                              </div>
-                            </ModalView>
-                          );
-                        },
-                        { anchor: null }
-                      );
-                    } else {
-                      store.dispatcher.dispatch(
-                        new Actions.ReplaceDataset(newDataset)
-                      );
-                    }
-                  }
-                };
-                reader.readAsText(file);
-              });
-            }}
-          /> : null}
-          <Button
-            icon="general/more-horizontal"
-            title="Show data values"
-            active={false}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => (
-                  <PopupView context={context}>
-                    <div className="charticulator__dataset-view-detail">
-                      <h2>{table.displayName || table.name}</h2>
-                      <p>
-                        {table.rows.length} rows, {table.columns.length} columns
-                      </p>
-                      <TableView
-                        table={table}
-                        onTypeChange={this.props.store.editorType === "chart" ? (column, type) => {
-                          const store = this.props.store;
-
-                          store.dispatcher.dispatch(
-                            new Actions.ConvertColumnDataType(
-                              table.name,
+                        let unmappedColumns: Specification.Template.Column[] = [];
+                        template.tables[0].columns.forEach((column) => {
+                          unmappedColumns = unmappedColumns.concat(
+                            store.checkColumnsMapping(
                               column,
-                              type as DataType
+                              TableType.Main,
+                              newDataset
                             )
                           );
-                        } : null}
-                      />
-                    </div>
-                  </PopupView>
-                ),
-                { anchor, alignX: "outer", alignY: "start-inner" }
-              );
-            }}
-          />
-        </h2>
-        <p className="el-details">{table.displayName || table.name}</p>
-        {table.columns
-          .filter((c) => !c.metadata.isRaw)
-          .map((c, idx) => (
-            <ColumnView
-              key={`t${idx}`}
-              store={this.props.store}
-              table={this.props.table}
-              column={c}
+                        });
+                        if (template.tables[1]) {
+                          template.tables[1].columns.forEach((column) => {
+                            unmappedColumns = unmappedColumns.concat(
+                              store.checkColumnsMapping(
+                                column,
+                                TableType.Links,
+                                newDataset
+                              )
+                            );
+                          });
+                        }
+
+                        const tableMapping = new Map<string, string>();
+                        tableMapping.set(
+                          template.tables[0].name,
+                          store.dataset.tables[0].name
+                        );
+                        if (template.tables[1] && store.dataset.tables[1]) {
+                          tableMapping.set(
+                            template.tables[1].name,
+                            store.dataset.tables[1].name
+                          );
+                        }
+
+                        const loadTemplateIntoState = (
+                          store: AppStore,
+                          tableMapping: Map<string, string>,
+                          columnMapping: Map<string, string>,
+                          template: Specification.Template.ChartTemplate
+                        ) => {
+                          const templateInstance = new ChartTemplate(template);
+
+                          for (const table of templateInstance.getDatasetSchema()) {
+                            templateInstance.assignTable(
+                              table.name,
+                              tableMapping.get(table.name) || table.name
+                            );
+                            for (const column of table.columns) {
+                              templateInstance.assignColumn(
+                                table.name,
+                                column.name,
+                                columnMapping.get(column.name) || column.name
+                              );
+                            }
+                          }
+                          const instance = templateInstance.instantiate(
+                            newDataset,
+                            false // no scale inference
+                          );
+
+                          store.dispatcher.dispatch(
+                            new Actions.ImportChartAndDataset(
+                              instance.chart,
+                              newDataset,
+                              {}
+                            )
+                          );
+                          store.dispatcher.dispatch(
+                            new Actions.ReplaceDataset(newDataset)
+                          );
+                        };
+
+                        if (unmappedColumns.length > 0) {
+                          this.popupController.showModal(
+                            (context) => {
+                              return (
+                                <ModalView context={context}>
+                                  <div onClick={(e) => e.stopPropagation()}>
+                                    <FileViewImport
+                                      tables={template.tables}
+                                      datasetTables={newDataset.tables}
+                                      tableMapping={tableMapping}
+                                      unmappedColumns={unmappedColumns}
+                                      onSave={(mapping) => {
+                                        loadTemplateIntoState(
+                                          store,
+                                          tableMapping,
+                                          mapping,
+                                          template
+                                        );
+                                        // TODO check mappings
+                                        context.close();
+                                      }}
+                                      onClose={() => {
+                                        context.close();
+                                      }}
+                                    />
+                                  </div>
+                                </ModalView>
+                              );
+                            },
+                            { anchor: null }
+                          );
+                        } else {
+                          store.dispatcher.dispatch(
+                            new Actions.ReplaceDataset(newDataset)
+                          );
+                        }
+                      }
+                    };
+                    reader.readAsText(file);
+                  });
+                }}
+              />
+            ) : null}
+            <Button
+              icon="general/more-horizontal"
+              title={strings.dataset.showDataValues}
+              active={false}
+              onClick={() => {
+                globals.popupController.popupAt(
+                  (context) => (
+                    <PopupView context={context}>
+                      <div className="charticulator__dataset-view-detail">
+                        <h2>{table.displayName || table.name}</h2>
+                        <p>
+                          {strings.dataset.dimensions(
+                            table.rows.length,
+                            table.columns.length
+                          )}
+                        </p>
+                        <TableView
+                          table={table}
+                          onTypeChange={
+                            this.props.store.editorType === "chart"
+                              ? (column, type) => {
+                                  const store = this.props.store;
+
+                                  store.dispatcher.dispatch(
+                                    new Actions.ConvertColumnDataType(
+                                      table.name,
+                                      column,
+                                      type as DataType
+                                    )
+                                  );
+                                }
+                              : null
+                          }
+                        />
+                      </div>
+                    </PopupView>
+                  ),
+                  { anchor, alignX: "outer", alignY: "start-inner" }
+                );
+              }}
             />
-          ))}
-      </div>
-     </>
-     );
+          </h2>
+          <p className="el-details">{table.displayName || table.name}</p>
+          {table.columns
+            .filter((c) => !c.metadata.isRaw)
+            .map((c, idx) => (
+              <ColumnView
+                key={`t${idx}`}
+                store={this.props.store}
+                table={this.props.table}
+                column={c}
+              />
+            ))}
+        </div>
+      </>
+    );
   }
 }
 
@@ -446,7 +497,7 @@ export class ColumnView extends React.Component<
             ).toString(),
             c.type,
             <ButtonFlat
-              title="Show derived fields"
+              title={strings.dataset.showDerivedFields}
               stopPropagation={true}
               url={
                 this.state.isExpanded

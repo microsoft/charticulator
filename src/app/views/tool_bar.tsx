@@ -42,7 +42,7 @@ export class Toolbar extends ContextedComponent<
     return [
       <>
         <>
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+          <span className={"chartaccent__toolbar-horizontal-separator"} />
           {labels && (
             <span
               className={
@@ -51,7 +51,7 @@ export class Toolbar extends ContextedComponent<
                   : "chartaccent__toolbar-label"
               }
             >
-              Marks
+              {strings.toolbar.marks}
             </span>
           )}
           <MultiObjectButton
@@ -128,10 +128,9 @@ export class Toolbar extends ContextedComponent<
             title="Nested Chart"
             icon="mark/nested-chart"
           /> */}
-          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? 
-          (
+          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
             <>
-              <span className={"chartaccent__toolbar-horizontal-separator"}/>
+              <span className={"chartaccent__toolbar-horizontal-separator"} />
               <ToolButton
                 title={strings.menuBar.undo}
                 icon={R.getSVGIcon("toolbar/undo")}
@@ -147,7 +146,7 @@ export class Toolbar extends ContextedComponent<
                 }
               />
             </>
-          ) : null} 
+          ) : null}
         </>
       </>,
     ];
@@ -156,18 +155,18 @@ export class Toolbar extends ContextedComponent<
   private getChartToolItems(labels: boolean = true) {
     return [
       <>
-        <LinkButton label={true}/>
+        <LinkButton label={true} />
         <LegendButton />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
-              this.props.layout ===LayoutDirection.Vertical
+              this.props.layout === LayoutDirection.Vertical
                 ? "chartaccent__toolbar-vertical-label"
                 : "chartaccent__toolbar-label"
             }
           >
-            Guides
+            {strings.toolbar.guides}
           </span>
         )}
         <MultiObjectButton
@@ -205,7 +204,7 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         {labels && (
           <>
             <span
@@ -215,7 +214,9 @@ export class Toolbar extends ContextedComponent<
                   : "chartaccent__toolbar-label"
               }
             >
-              {this.props.layout === LayoutDirection.Vertical ? "Plot" : "Plot Segments"}
+              {this.props.layout === LayoutDirection.Vertical
+                ? "Plot"
+                : "Plot Segments"}
             </span>
           </>
         )}
@@ -232,7 +233,7 @@ export class Toolbar extends ContextedComponent<
           noDragging={true}
         />
         <>
-          <span className={"chartaccent__toolbar-horizontal-separator"}/>
+          <span className={"chartaccent__toolbar-horizontal-separator"} />
           {labels && (
             <span
               className={
@@ -241,7 +242,7 @@ export class Toolbar extends ContextedComponent<
                   : "chartaccent__toolbar-label"
               }
             >
-              Scaffolds
+              {strings.toolbar.scaffolds}
             </span>
           )}
           <ScaffoldButton
@@ -269,7 +270,7 @@ export class Toolbar extends ContextedComponent<
             currentTool={this.store.currentTool}
           />
         </>
-      </>
+      </>,
     ];
   }
 
@@ -342,7 +343,7 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         <ObjectButton
           classID="mark.data-axis"
           title={strings.toolbar.dataAxis}
@@ -353,11 +354,9 @@ export class Toolbar extends ContextedComponent<
           title={strings.toolbar.nestedChart}
           icon="mark/nested-chart"
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
-        <LinkButton
-          label={labels}
-        />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <LinkButton label={labels} />
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
@@ -404,7 +403,7 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         {labels && (
           <>
             <span
@@ -414,7 +413,9 @@ export class Toolbar extends ContextedComponent<
                   : "chartaccent__toolbar-label"
               }
             >
-              {this.props.layout === LayoutDirection.Vertical ? "Plot" : "Plot Segments"}
+              {this.props.layout === LayoutDirection.Vertical
+                ? "Plot"
+                : "Plot Segments"}
             </span>
           </>
         )}
@@ -430,7 +431,7 @@ export class Toolbar extends ContextedComponent<
           icon="plot/line"
           noDragging={true}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"}/>
+        <span className={"chartaccent__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
@@ -466,18 +467,15 @@ export class Toolbar extends ContextedComponent<
           icon="scaffold/curve"
           currentTool={this.store.currentTool}
         />
-      </>);
+      </>
+    );
   }
 
   public render() {
     let tooltipsItems = [];
     if (this.context.store.editorType === "embedded") {
-      const chartToolItems = this.getChartToolItems(
-        this.props.toolbarLabels
-      );
-      const glyphToolItems = this.getGlyphToolItems(
-        this.props.toolbarLabels
-      );
+      const chartToolItems = this.getChartToolItems(this.props.toolbarLabels);
+      const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
       tooltipsItems = [...chartToolItems, ...glyphToolItems];
     } else {
       tooltipsItems = [this.getToolItems(this.props.toolbarLabels)];
@@ -749,9 +747,12 @@ export class ScaffoldButton extends ContextedComponent<
   }
 }
 
-export class LinkButton extends ContextedComponent<{
-  label: boolean
-}, {}> {
+export class LinkButton extends ContextedComponent<
+  {
+    label: boolean;
+  },
+  {}
+> {
   public container: HTMLSpanElement;
 
   public render() {

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Dataset } from "../../../core";
+import { strings } from "../../../strings";
 
 export const kind2Icon: { [name in Dataset.DataKind]: string } = {
   categorical: "type/categorical",
@@ -84,20 +85,7 @@ export const type2DerivedColumns: {
       function: "date.month",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        order: strings.dataset.months,
       },
     },
     {
@@ -142,7 +130,7 @@ export const type2DerivedColumns: {
       function: "date.weekday",
       metadata: {
         kind: Dataset.DataKind.Categorical,
-        order: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        order: strings.dataset.weekday,
       },
     },
     {

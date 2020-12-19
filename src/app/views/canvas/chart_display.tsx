@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { Dataset, Graphics, Prototypes, Specification } from "../../../core";
+import { strings } from "../../../strings";
 import {
   GraphicalElementDisplay,
   renderGraphicalElementSVG,
@@ -80,7 +81,7 @@ export function renderChartToLocalString(
           resolve(canvas.toDataURL("image/png"));
         };
         img.onerror = () => {
-          reject(new Error(`failed to retrieve map image at url ${url}`));
+          reject(new Error(strings.error.imageLoad(url)));
         };
         img.src = url;
       }).then((dataurl) => {

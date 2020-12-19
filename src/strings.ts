@@ -8,6 +8,7 @@ export const strings = {
   app: {
     name: "Microsoft Charticulator",
     nestedChartTitle: "Nested Chart | Charticulator",
+    working: "Working...",
   },
   about: {
     version: (version: string, url: string) =>
@@ -18,10 +19,40 @@ export const strings = {
     no: "No",
     yes: "Yes",
   },
+  canvas: {
+    markContainer: "To edit this glyph, please create a plot segment with it.",
+    newGlyph: "New glyph",
+    zoomAuto: "Auto zoom",
+    zoomIn: "Zoom in",
+    zoomOut: "Zoom out",
+  },
+  dataset: {
+    dimensions: (rows: number, columns: number) =>
+      `${rows} rows, ${columns} columns`,
+    months: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    replaceWithCSV: "Replace data with CSV file",
+    showDataValues: "Show data values",
+    showDerivedFields: "Show derived fields",
+    tableTitleColumns: "Columns",
+    tableTitleLinks: "Links",
+    weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  },
   defaultDataset: {
     city: "City",
     month: "Month",
-    months: "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
     temperature: "Temperature",
     value: "Value",
   },
@@ -29,8 +60,38 @@ export const strings = {
     resetConfirm: "Are you really willing to reset the chart?",
   },
   error: {
+    imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
+    notImplemented: "Not implemented yet",
     storeNotFound: (componentName: string) =>
       `store not found in component ${componentName}`,
+  },
+  fileExport: {
+    asHTML: "Export as HTML",
+    asImage: "Export as Image",
+    inferAxisMin: (objectName: string, inferenceAxisProperty: string) =>
+      `Auto axis min range for ${objectName}/${inferenceAxisProperty}`,
+    inferAxisMax: (objectName: string, inferenceAxisProperty: string) =>
+      `Auto axis max range for ${objectName}/${inferenceAxisProperty}`,
+    inferScaleMin: (objectName: string) =>
+      `Auto min domain and range for ${objectName}`,
+    inferScaleMax: (objectName: string) =>
+      `Auto max domain and range for ${objectName}`,
+    imageDPI: "DPI (for PNG/JPEG)",
+    labelAxesAndScales: "Axes and Scales",
+    labelExposedObjects: "Exposed Objects",
+    labelProperties: (exportKind: string) => `${exportKind} Properties`,
+    labelSlots: "Data Mapping Slots",
+    slotColumnExample: (columnName: string) => `${columnName} examples`,
+    slotColumnName: (columnName: string) => `${columnName} name`,
+    typeHTML: "HTML",
+    typeJPEG: "JPEG",
+    typePNG: "PNG",
+    typeSVG: "SVG",
+  },
+  handles: {
+    drawSpiral: "Draw Spiral",
+    startAngle: "Start Angle",
+    windings: "Windings",
   },
   help: {
     contact: "Contact Us",
