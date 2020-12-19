@@ -115,6 +115,10 @@ export const strings = {
     open: "Open Chart",
     noChart: "(no chart to show)",
   },
+  fileSave: {
+    saveButton: "Save to My Charts",
+    chartName: "Chart Name",
+  },
   handles: {
     drawSpiral: "Draw Spiral",
     startAngle: "Start Angle",

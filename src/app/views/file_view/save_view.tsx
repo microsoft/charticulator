@@ -39,7 +39,7 @@ export class FileViewSaveAs extends ContextedComponent<
               required={true}
               defaultValue={this.store.dataset.name}
             />
-            <label>Chart Name</label>
+            <label>{strings.fileSave.chartName}</label>
             <i className="bar" />
           </div>
           <div className="buttons">
@@ -50,7 +50,7 @@ export class FileViewSaveAs extends ContextedComponent<
             </span>
             <ButtonRaised
               url={R.getSVGIcon("toolbar/save")}
-              text="Save to My Charts"
+              text={strings.fileSave.saveButton}
               onClick={() => {
                 const name = inputSaveChartName.value.trim();
                 this.setState(
