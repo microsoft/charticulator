@@ -215,8 +215,8 @@ export class Toolbar extends ContextedComponent<
               }
             >
               {this.props.layout === LayoutDirection.Vertical
-                ? "Plot"
-                : "Plot Segments"}
+                ? strings.toolbar.plot
+                : strings.toolbar.plotSegments}
             </span>
           </>
         )}
@@ -414,8 +414,8 @@ export class Toolbar extends ContextedComponent<
               }
             >
               {this.props.layout === LayoutDirection.Vertical
-                ? "Plot"
-                : "Plot Segments"}
+                ? strings.toolbar.plot
+                : strings.toolbar.plotSegments}
             </span>
           </>
         )}

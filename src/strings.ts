@@ -152,6 +152,8 @@ export const strings = {
     link: "Link",
     links: "Links",
     nestedChart: "Nested Chart",
+    plot: "Plot",
+    plotSegments: "Plot Segments",
     polar: "Polar",
     rectangle: "Rectangle",
     region2D: "2D Region",
