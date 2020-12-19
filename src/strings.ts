@@ -6,6 +6,7 @@ import { DataType } from "./core/specification";
 
 export const strings = {
   app: {
+    loading: "Loading...",
     name: "Microsoft Charticulator",
     nestedChartTitle: "Nested Chart | Charticulator",
     working: "Working...",
@@ -104,6 +105,15 @@ export const strings = {
       `No ${linkSourceKeyColumn} or ${linkTargetKeyColumn} colums are specified in links table`,
     removeButtonText: "Remove",
     removeButtonTitle: "Remove this table",
+  },
+  fileOpen: {
+    copy: "Copy this chart",
+    deleteConfirmation: (chartName: string) =>
+      `Do you want to delete the chart "${chartName}"?`,
+    delete: "Delete this chart",
+    download: "Download this chart",
+    open: "Open Chart",
+    noChart: "(no chart to show)",
   },
   handles: {
     drawSpiral: "Draw Spiral",
