@@ -16,6 +16,7 @@ export const strings = {
     license: "Show License",
   },
   button: {
+    cancel: "Cancel",
     no: "No",
     yes: "Yes",
   },
@@ -148,6 +149,16 @@ export const strings = {
     saveButton: "Save",
     saveNested: "Save Nested Chart",
     undo: "Undo (Ctrl-Z)",
+  },
+  templateImport: {
+    columnName: "Column name from the template",
+    dataType: "Required data type",
+    examples: "Example data values",
+    mapped: "Column name in the dataset",
+    save: "Save mapping",
+    tableName: "Table name",
+    title: "Import template",
+    unmapped: "Unmapped",
   },
   toolbar: {
     symbol: "Symbol",
