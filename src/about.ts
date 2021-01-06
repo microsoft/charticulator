@@ -4,6 +4,8 @@
  * @preferred
  */
 
+import { strings } from "./strings";
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 fetch("data/THIRD_PARTY.json")
@@ -28,12 +30,12 @@ fetch("data/THIRD_PARTY.json")
           createElement(
             "p",
             { class: "description" },
-            "Version: " + item.version + ", URL: " + item.url
+            strings.about.version(item.version, item.url)
           )
         );
 
         const licenseContainer = createElement("p", { class: "description" });
-        const link = createElement("a", { href: "#" }, "Show License");
+        const link = createElement("a", { href: "#" }, strings.about.license);
         link.onclick = () => {
           licenseContainer.appendChild(
             createElement("pre", { class: "license" }, item.license)

@@ -239,7 +239,7 @@ export class InputCurveHandleView extends React.Component<
                             this.props.handle,
                             dragContext
                           );
-                          const thetaStart = (startAngle / 180) * Math.PI;
+                          const thetaStart = Geometry.degreesToRadians(startAngle);
                           const thetaEnd = thetaStart + windings * Math.PI * 2;
                           const N = 64;
                           const a = 1 / thetaEnd; // r = a theta

@@ -60,6 +60,12 @@ body {
       align-items: center;
       flex: 1;
     }
+    &-center {
+      display: flex;
+      align-self: center;
+      justify-self: center;
+      flex: 1;
+    }
     &-right {
       display: flex;
       align-items: center;
@@ -148,6 +154,7 @@ body {
     &-dataset {
       flex-shrink: 0;
       max-width: 250px;
+      min-width: 200px;
       overflow: hidden;
       box-sizing: border-box;
       background: $theme-dataset-background;
@@ -167,6 +174,8 @@ body {
       flex-direction: column;
 
       &-toolbar-horizontal {
+        display: flex;
+        flex-direction: row;
         padding-top: 10px;
         padding-left: 10px;
         padding-right: 10px;

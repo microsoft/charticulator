@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color, Geometry } from "../../common";
 import {
   CoordinateSystem,
   Group,
   makeGroup,
   makeLine,
   makeText,
+  PathMaker,
+  makePath,
   Style,
 } from "../../graphics";
 import {
@@ -15,17 +17,24 @@ import {
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
-import { Controls, TemplateParameters } from "../common";
+import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common";
 import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
-export let defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
+export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   lineColor: { r: 0, g: 0, b: 0 },
   fontFamily: "Arial",
   fontSize: 12,
   tickSize: 5,
   wordWrap: false,
+  gridlineStyle: "none",
+  gridlineColor: {
+    r: 234,
+    g: 234,
+    b: 234
+  } as Color,
+  gridlineWidth: 1
 };
 
 function fillDefaultAxisStyle(
@@ -305,6 +314,55 @@ export class AxisRenderer {
     return this;
   }
 
+  public renderGridLine(x: number, y: number, angle: number, side: number, size: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const x1 = x + rangeMin * cos;
+    const y1 = y + rangeMin * sin;
+    const x2 = x + rangeMax * cos;
+    const y2 = y + rangeMax * sin;
+    const tickSize = size;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      // strokeColor: style.lineColor,
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    // Base line
+    g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
+    // Ticks
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])) {
+      const tx = x + tickPosition * cos;
+      const ty = y + tickPosition * sin;
+      const dx = -side * tickSize * sin;
+      const dy = side * tickSize * cos;
+      g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
+    }
+
+    return g;
+  }
+
+  public renderGridlinesForAxes(x: number, y: number, axis: "x" | "y", size: number): Group {
+    switch (axis) {
+      case "x": {
+        return this.renderGridLine(x,y, 0, 1, size);
+      }
+      case "y": {
+        return this.renderGridLine(x, y, 90, -1, size);
+      }
+    }
+  }
+
   public renderLine(x: number, y: number, angle: number, side: number): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -321,8 +379,8 @@ export class AxisRenderer {
       side = -side;
     }
 
-    const cos = Math.cos((angle / 180) * Math.PI);
-    const sin = Math.sin((angle / 180) * Math.PI);
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
     const x1 = x + rangeMin * cos;
     const y1 = y + rangeMin * sin;
     const x2 = x + rangeMax * cos;
@@ -333,10 +391,10 @@ export class AxisRenderer {
     for (const tickPosition of this.ticks
       .map((x) => x.position)
       .concat([rangeMin, rangeMax])) {
-      const tx = x + tickPosition * cos,
-        ty = y + tickPosition * sin;
-      const dx = side * tickSize * sin,
-        dy = -side * tickSize * cos;
+      const tx = x + tickPosition * cos;
+      const ty = y + tickPosition * sin;
+      const dx = side * tickSize * sin;
+      const dy = -side * tickSize * cos;
       g.elements.push(makeLine(tx, ty, tx + dx, ty + dy, lineStyle));
     }
     // Tick texts
@@ -563,6 +621,70 @@ export class AxisRenderer {
     }
   }
 
+  public renderPolarRadialGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const gridineArcRotate = 90;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])
+      ) {
+      const cos = Math.cos(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
+      const sin = Math.sin(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
+      const tx1 = x + cos * innerRadius;
+      const ty1 = y + sin * innerRadius;
+      const tx2 = x + cos * outerRadius;
+      const ty2 = y + sin * outerRadius;
+      g.elements.push(makeLine(tx1, ty1, tx2, ty2, lineStyle));
+    }
+
+    return g;
+  }
+
+  public renderPolarArcGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+    const style = this.style;
+    if (style.gridlineStyle === "none") {
+      return;
+    }
+    const g = makeGroup([]);
+    const startCos = Math.cos(Geometry.degreesToRadians(startAngle));
+    const startSin = Math.sin(Geometry.degreesToRadians(startAngle));
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+    const gridineArcRotate = 90;
+    const lineStyle: Style = {
+      strokeLinecap: "round",
+      strokeColor: style.gridlineColor,
+      strokeWidth: style.gridlineWidth,
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+    };
+    let radius = ((outerRadius - innerRadius) / this.ticks.length)
+    for (const tickPosition of this.ticks
+      .map((x) => x.position)
+      .concat([rangeMin, rangeMax])) {
+      const tx1 = x + tickPosition * startCos;
+      const ty1 = y + tickPosition * startSin;
+      const arc = makePath(lineStyle);
+      arc.moveTo(tx1, ty1);
+      arc.polarLineTo(x, y, -startAngle + gridineArcRotate, tickPosition, -endAngle + gridineArcRotate, tickPosition, true);
+      g.elements.push(arc.path);
+      radius += radius;
+    }
+
+    return g;
+  }
+
   public renderPolar(
     cx: number,
     cy: number,
@@ -590,11 +712,11 @@ export class AxisRenderer {
 
     const margins = 10;
     const maxTickDistance =
-      (Math.PI * radius * ((rangeMax - rangeMin) / this.ticks.length)) / 180 -
+      Geometry.degreesToRadians(radius * ((rangeMax - rangeMin) / this.ticks.length)) -
       margins * 2; // lenght of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
-      const radians = (angle / 180) * Math.PI;
+      const radians = Geometry.degreesToRadians(angle);
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
@@ -791,73 +913,75 @@ export function buildAxisAppearanceWidgets(
   m: Controls.WidgetManager
 ) {
   if (isVisible) {
-    return m.row(
-      "Visible",
-      m.horizontal(
-        [0, 0, 1, 0],
-        m.inputBoolean(
-          { property: axisProperty, field: "visible" },
-          { type: "checkbox" }
-        ),
-        m.label("Position:"),
-        m.inputSelect(
-          { property: axisProperty, field: "side" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["default", "opposite"],
-            labels: ["Default", "Opposite"],
-          }
-        ),
-        m.detailsButton(
-          m.sectionHeader("Axis Style"),
-          m.row(
-            "Line Color",
-            m.inputColor({
-              property: axisProperty,
-              field: ["style", "lineColor"],
-            })
+    return [
+      m.row(
+        "Visible",
+        m.horizontal(
+          [0, 0, 1, 0],
+          m.inputBoolean(
+            { property: axisProperty, field: "visible" },
+            { type: "checkbox" }
           ),
-          m.row(
-            "Tick Color",
-            m.inputColor({
-              property: axisProperty,
-              field: ["style", "tickColor"],
-            })
+          m.label("Position:"),
+          m.inputSelect(
+            { property: axisProperty, field: "side" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              options: ["default", "opposite"],
+              labels: ["Default", "Opposite"],
+            }
           ),
-          m.row(
-            "Tick Size",
-            m.inputNumber({
-              property: axisProperty,
-              field: ["style", "tickSize"],
-            })
-          ),
-          m.row(
-            "Font Family",
-            m.inputFontFamily({
-              property: axisProperty,
-              field: ["style", "fontFamily"],
-            })
-          ),
-          m.row(
-            "Font Size",
-            m.inputNumber(
-              { property: axisProperty, field: ["style", "fontSize"] },
-              { showUpdown: true, updownStyle: "font", updownTick: 2 }
-            )
-          ),
-          m.row(
-            "Wrap text",
-            m.inputBoolean(
-              { property: axisProperty, field: ["style", "wordWrap"] },
-              {
-                type: "checkbox",
-              }
+          m.detailsButton(
+            m.sectionHeader("Axis Style"),
+            m.row(
+              "Line Color",
+              m.inputColor({
+                property: axisProperty,
+                field: ["style", "lineColor"],
+              })
+            ),
+            m.row(
+              "Tick Color",
+              m.inputColor({
+                property: axisProperty,
+                field: ["style", "tickColor"],
+              })
+            ),
+            m.row(
+              "Tick Size",
+              m.inputNumber({
+                property: axisProperty,
+                field: ["style", "tickSize"],
+              })
+            ),
+            m.row(
+              "Font Family",
+              m.inputFontFamily({
+                property: axisProperty,
+                field: ["style", "fontFamily"],
+              })
+            ),
+            m.row(
+              "Font Size",
+              m.inputNumber(
+                { property: axisProperty, field: ["style", "fontSize"] },
+                { showUpdown: true, updownStyle: "font", updownTick: 2 }
+              )
+            ),
+            m.row(
+              "Wrap text",
+              m.inputBoolean(
+                { property: axisProperty, field: ["style", "wordWrap"] },
+                {
+                  type: "checkbox",
+                }
+              )
             )
           )
         )
       )
-    );
+    ];
   } else {
     return m.row(
       "Visible",

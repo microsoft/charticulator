@@ -1201,6 +1201,18 @@
           width: $line-height - $button-margin * 2;
           height: $line-height - $button-margin * 2;
         }
+
+        &.is-disabled {
+          color: $gray-180;
+          cursor: not-allowed;
+          .el-svg-icon {
+            filter: invert(80%);
+          }
+          &:hover,
+          &:active {
+            background: $gray-200;
+          }
+        }
       }
 
       &-checkbox {

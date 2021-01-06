@@ -357,17 +357,17 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const innerRadius = attrs.radial1;
     const outerRadius = attrs.radial2;
     if (radialData && radialData.visible) {
+      const axisRenderer = new AxisRenderer();
+      axisRenderer.setAxisDataBinding(
+        radialData,
+        innerRadius,
+        outerRadius,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
       g.elements.push(
-        new AxisRenderer()
-          .setAxisDataBinding(
-            radialData,
-            innerRadius,
-            outerRadius,
-            false,
-            true,
-            this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
-          )
-          .renderLine(
+        axisRenderer.renderLine(
             cx,
             cy,
             90 - (radialData.side == "opposite" ? angleEnd : angleStart),
@@ -376,8 +376,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
     }
     if (angularData && angularData.visible) {
-      g.elements.push(
-        new AxisRenderer()
+      const axisRenderer = new AxisRenderer()
           .setAxisDataBinding(
             angularData,
             angleStart,
@@ -385,15 +384,78 @@ export class PolarPlotSegment extends PlotSegmentClass<
             builder.config.xAxisPrePostGap,
             false,
             this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          )
-          .renderPolar(
+          );
+      g.elements.push(
+        axisRenderer.renderPolar(
             cx,
             cy,
             angularData.side == "opposite" ? innerRadius : outerRadius,
             angularData.side == "opposite" ? -1 : 1
           )
+      );     
+    }
+    return g;
+  }
+
+  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+    const g = Graphics.makeGroup([]);
+    
+    const builder = this.createBuilder();
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    const cx = (attrs.x1 + attrs.x2) / 2;
+    const cy = (attrs.y1 + attrs.y2) / 2;
+    const radialData = props.yData;
+    const angularData = props.xData;
+    const angleStart = props.startAngle;
+    const angleEnd = props.endAngle;
+    const innerRadius = attrs.radial1;
+    const outerRadius = attrs.radial2;
+
+    if (radialData && radialData.visible) {
+      const axisRenderer = new AxisRenderer();
+      axisRenderer.setAxisDataBinding(
+        radialData,
+        innerRadius,
+        outerRadius,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderPolarArcGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
       );
     }
+
+    if (angularData && angularData.visible) {
+      const axisRenderer = new AxisRenderer()
+          .setAxisDataBinding(
+            angularData,
+            angleStart,
+            angleEnd,
+            builder.config.xAxisPrePostGap,
+            false,
+            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+          );
+      g.elements.push(
+        axisRenderer.renderPolarRadialGridLine(
+            cx,
+            cy,
+            innerRadius,
+            outerRadius,
+            angleStart,
+            angleEnd
+          )
+      );   
+    }
+
     return g;
   }
 
@@ -673,7 +735,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     }
     if (this.object.properties.yData) {
       r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      p = p.concat(buildAxisProperties(this.object, "yData"));
     }
     if (
       this.object.properties.sublayout.order &&

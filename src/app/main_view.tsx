@@ -22,12 +22,37 @@ import { MenuBar } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
+import { strings } from "../strings";
+
+export enum UndoRedoLocation {
+  MenuBar = "menubar",
+  ToolBar = "toolbar"
+}
+
+export enum PositionsLeftRight {
+  Left = "left",
+  Right = "right"
+}
+
+export enum PositionsLeftRightTop {
+  Left = "left",
+  Right = "right",
+  Top = "top"
+}
+
+export enum LayoutDirection {
+  Vertical = "vertical",
+  Horizontal = "horizontal"
+}
 
 export interface MainViewConfig {
-  ColumnsPosition: "left" | "right";
-  EditorPanelsPosition: "left" | "right";
-  ToolbarPosition: "top" | "right" | "left";
+  ColumnsPosition: PositionsLeftRight;
+  EditorPanelsPosition: PositionsLeftRight;
+  ToolbarPosition: PositionsLeftRightTop;
+  MenuBarButtons: PositionsLeftRight;
   Name?: string;
+  ToolbarLabels: boolean,
+  UndoRedoLocation: UndoRedoLocation
 }
 
 export interface MainViewProps {
@@ -52,9 +77,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
     if (!props.viewConfiguration) {
       this.viewConfiguration = {
-        ColumnsPosition: "left",
-        EditorPanelsPosition: "left",
-        ToolbarPosition: "top",
+        ColumnsPosition: PositionsLeftRight.Left,
+        EditorPanelsPosition: PositionsLeftRight.Left,
+        ToolbarPosition: PositionsLeftRightTop.Top,
+        MenuBarButtons: PositionsLeftRight.Left,
+        ToolbarLabels: true,
+        UndoRedoLocation: UndoRedoLocation.MenuBar
       };
     } else {
       this.viewConfiguration = props.viewConfiguration;
@@ -81,10 +109,14 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
   }
 
   public render() {
-    const toolBarCreator = (layout: "vertical" | "horizontal") => {
+    const toolBarCreator = (config: {
+      undoRedoLocation: UndoRedoLocation
+      layout: LayoutDirection
+      toolbarLabels: boolean
+    }) => {
       return (
-        <div className={`charticulator__panel-editor-toolbar-${layout}`}>
-          <Toolbar layout={layout} />
+        <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
+          <Toolbar toolbarLabels={config.toolbarLabels} undoRedoLocation={config.undoRedoLocation} layout={config.layout} />
         </div>
       );
     };
@@ -93,14 +125,18 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       return (
         <div className="charticulator__panel charticulator__panel-dataset">
           <MinimizablePanelView>
-            <MinimizablePane title="Dataset" scroll={true} hideHeader={true}>
+            <MinimizablePane
+              title={strings.mainView.datasetPanelTitle}
+              scroll={true}
+              hideHeader={true}
+            >
               <ErrorBoundary>
                 <DatasetView store={this.props.store} />
               </ErrorBoundary>
             </MinimizablePane>
             {this.state.scaleViewMaximized ? null : (
               <MinimizablePane
-                title="Scales"
+                title={strings.mainView.scalesPanelTitle}
                 scroll={true}
                 onMaximize={() => this.setState({ scaleViewMaximized: true })}
               >
@@ -130,7 +166,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           <MinimizablePanelView>
             {this.state.glyphViewMaximized ? null : (
               <MinimizablePane
-                title="Glyph"
+                title={strings.mainView.glyphPaneltitle}
                 scroll={false}
                 onMaximize={() => this.setState({ glyphViewMaximized: true })}
               >
@@ -141,7 +177,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             )}
             {this.state.layersViewMaximized ? null : (
               <MinimizablePane
-                title="Layers"
+                title={strings.mainView.layersPanelTitle}
                 scroll={true}
                 maxHeight={200}
                 onMaximize={() => this.setState({ layersViewMaximized: true })}
@@ -153,7 +189,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             )}
             {this.state.attributeViewMaximized ? null : (
               <MinimizablePane
-                title="Attributes"
+                title={strings.mainView.attributesPaneltitle}
                 scroll={true}
                 onMaximize={() =>
                   this.setState({ attributeViewMaximized: true })
@@ -186,33 +222,47 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         onDrop={(e) => e.preventDefault()}
       >
         <MenuBar
+          alignButtons={this.viewConfiguration.MenuBarButtons}
+          undoRedoLocation={this.viewConfiguration.UndoRedoLocation}
           name={this.viewConfiguration.Name}
           ref={(e) => (this.refMenuBar = e)}
         />
         <section className="charticulator__panel-container">
-          {this.viewConfiguration.ColumnsPosition == "left" && datasetPanel()}
+          {this.viewConfiguration.ColumnsPosition == PositionsLeftRight.Left && datasetPanel()}
           <div className="charticulator__panel charticulator__panel-editor">
-            {this.viewConfiguration.ToolbarPosition == "top" &&
-              toolBarCreator("horizontal")}
+            {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Top &&
+              toolBarCreator({
+                layout: LayoutDirection.Horizontal,
+                toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+              })}
             <div className="charticulator__panel-editor-panel-container">
-              {this.viewConfiguration.EditorPanelsPosition == "left" &&
+              {this.viewConfiguration.EditorPanelsPosition == PositionsLeftRight.Left &&
                 editorPanels()}
-              {this.viewConfiguration.ToolbarPosition == "left" &&
-                toolBarCreator("vertical")}
+              {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Left &&
+                toolBarCreator({
+                  layout: LayoutDirection.Vertical,
+                  toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                  undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+                })}
               {chartPanel()}
-              {this.viewConfiguration.ToolbarPosition == "right" &&
-                toolBarCreator("vertical")}
-              {this.viewConfiguration.EditorPanelsPosition == "right" &&
+              {this.viewConfiguration.ToolbarPosition == PositionsLeftRightTop.Right &&
+                toolBarCreator({
+                  layout: LayoutDirection.Vertical,
+                  toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                  undoRedoLocation: this.viewConfiguration.UndoRedoLocation
+                })}
+              {this.viewConfiguration.EditorPanelsPosition == PositionsLeftRight.Right &&
                 editorPanels()}
             </div>
           </div>
-          {this.viewConfiguration.ColumnsPosition == "right" && datasetPanel()}
+          {this.viewConfiguration.ColumnsPosition == PositionsLeftRight.Right && datasetPanel()}
         </section>
         <div className="charticulator__floating-panels">
           {this.state.glyphViewMaximized ? (
             <FloatingPanel
               peerGroup="panels"
-              title="Glyph"
+              title={strings.mainView.glyphPaneltitle}
               onClose={() => this.setState({ glyphViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -224,7 +274,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Layers"
+              title={strings.mainView.layersPanelTitle}
               onClose={() => this.setState({ layersViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -236,7 +286,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Attributes"
+              title={strings.mainView.attributesPaneltitle}
               onClose={() => this.setState({ attributeViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -248,7 +298,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             <FloatingPanel
               scroll={true}
               peerGroup="panels"
-              title="Scales"
+              title={strings.mainView.scalesPanelTitle}
               onClose={() => this.setState({ scaleViewMaximized: false })}
             >
               <ErrorBoundary>
@@ -264,7 +314,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               floatInCenter={true}
               scroll={true}
               peerGroup="messages"
-              title="Errors"
+              title={strings.mainView.errorsPanelTitle}
               closeButtonIcon={"general/cross"}
               height={200}
               width={350}

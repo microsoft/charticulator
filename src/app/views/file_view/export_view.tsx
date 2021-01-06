@@ -4,6 +4,7 @@
 import * as React from "react";
 import { CurrentChartView } from ".";
 import { deepClone, Specification, Prototypes } from "../../../core";
+import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
 import { Actions } from "../../actions";
@@ -214,6 +215,7 @@ export class ExportTemplateView extends ContextedComponent<
   public state = this.getDefaultState(this.props.exportKind);
 
   public getDefaultState(kind: string): ExportTemplateViewState {
+    this.store.dataset.tables.forEach((t) => ensureColumnsHaveExamples(t));
     const template = deepClone(this.store.buildChartTemplate());
     const target = this.store.createExportTemplateTarget(kind, template);
     const targetProperties: { [name: string]: string } = {};
@@ -348,19 +350,36 @@ export class ExportTemplateView extends ContextedComponent<
           .map((column) => (
             <div key={column.name}>
               {this.renderInput(
-                column.name,
+                column.name + " name",
                 "string",
                 column.displayName,
                 null,
                 (value) => {
-                  const dataTable = this.store.dataset.tables.find(
-                    (t) => t.name === table.name
+                  const originalColumn = this.getOriginalColumn(
+                    table.name,
+                    column.name
                   );
-                  const dataColumn = dataTable.columns.find(
-                    (c) => c.name === column.name
+                  [originalColumn, column].forEach(
+                    (c) => (c.displayName = value)
                   );
-                  dataColumn.displayName = value;
-                  column.displayName = value;
+                  this.setState({
+                    template: this.state.template,
+                  });
+                }
+              )}
+              {this.renderInput(
+                column.name + " examples",
+                "string",
+                column.metadata.examples,
+                null,
+                (value) => {
+                  const originalColumn = this.getOriginalColumn(
+                    table.name,
+                    column.name
+                  );
+                  [originalColumn, column].forEach(
+                    (c) => (c.metadata.examples = value)
+                  );
                   this.setState({
                     template: this.state.template,
                   });
@@ -370,6 +389,14 @@ export class ExportTemplateView extends ContextedComponent<
           ))}
       </div>
     ));
+  }
+
+  private getOriginalColumn(tableName: string, columnName: string) {
+    const dataTable = this.store.dataset.tables.find(
+      (t) => t.name === tableName
+    );
+    const dataColumn = dataTable.columns.find((c) => c.name === columnName);
+    return dataColumn;
   }
 
   public renderInferences() {

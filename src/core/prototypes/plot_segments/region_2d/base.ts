@@ -2298,7 +2298,10 @@ export class Region2DConstraintBuilder {
     const props = this.plotSegment.object.properties;
     const data = axis == "x" ? props.xData : props.yData;
     const axisProperty = axis == "x" ? "xData" : "yData";
-    return buildAxisWidgets(data, axisProperty, m, axisName);
+    return  [
+      ...buildAxisWidgets(data, axisProperty, m, axisName),
+      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty)
+    ];
   }
 
   public buildPanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {

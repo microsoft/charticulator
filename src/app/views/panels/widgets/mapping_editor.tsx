@@ -26,6 +26,7 @@ import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall, Variable } from "../../../../core/expression";
+import { getAligntment } from "../../../utils";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
@@ -62,7 +63,7 @@ export class MappingEditor extends React.Component<
     const {
       alignLeft,
       alignX,
-    }: { alignLeft: boolean; alignX: any } = this.getAligntment(anchor);
+    }: { alignLeft: boolean; alignX: any } = getAligntment(anchor);
 
     globals.popupController.popupAt(
       (context) => {
@@ -83,29 +84,13 @@ export class MappingEditor extends React.Component<
     );
   }
 
-  private getAligntment(anchor: Element) {
-    let alignX:
-      | "start-outer"
-      | "inner"
-      | "outer"
-      | "start-inner"
-      | "end-inner"
-      | "end-outer";
-    let alignLeft: boolean = false;
-    if (window.innerWidth - anchor.getBoundingClientRect().x < 500) {
-      alignX = "start-outer";
-      alignLeft = true;
-    }
-    return { alignLeft, alignX };
-  }
-
   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
     const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
 
-    const { alignX }: { alignLeft: boolean; alignX: any } = this.getAligntment(
+    const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
       anchor
     );
 
@@ -372,7 +357,7 @@ export class MappingEditor extends React.Component<
                     const {
                       alignLeft,
                       alignX,
-                    }: { alignLeft: boolean; alignX: any } = this.getAligntment(
+                    }: { alignLeft: boolean; alignX: any } = getAligntment(
                       this.scaleMappingDisplay
                     );
 

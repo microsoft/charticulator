@@ -1,6 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { CharticulatorCoreConfig, getConfig as coreGetConfig } from "../core";
+import { MainViewConfig } from "./main_view";
+
+export interface AppExtension {
+  script:
+    | string
+    | {
+        src: string;
+        sha256: string;
+        integrity: string;
+      };
+  style: string;
+  initialize: string;
+}
 
 export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   LegalNotices: {
@@ -10,11 +23,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   /** Should we disable the file view */
   DisableFileView?: boolean;
   /** Load extensions */
-  Extensions?: Array<{
-    script: string | { src: string; sha256: string; integrity: string };
-    style: string;
-    initialize: string;
-  }>;
+  Extensions?: Array<AppExtension>;
   /** Sample datasets to show */
   SampleDatasets?: Array<{
     name: string;
@@ -27,11 +36,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
     TargetOrigins: string;
     Embedded: boolean;
   };
-  MainView: {
-    ColumnsPosition: "left" | "right";
-    EditorPanelsPosition: "left" | "right";
-    ToolbarPosition: "top" | "right" | "left";
-  };
+  MainView: MainViewConfig;
 }
 
 export function getConfig(): CharticulatorAppConfig {

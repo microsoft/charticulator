@@ -364,7 +364,7 @@
     cursor: pointer;
 
     &:hover {
-      background: $gray-070;
+      background: $theme-hover-background;
       .el-svg-icon {
         filter: invert(100%);
       }

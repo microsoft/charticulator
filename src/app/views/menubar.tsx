@@ -24,13 +24,15 @@ import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { map } from "d3";
 import { FileViewImport } from "./file_view/import_view";
+import { strings } from "../../strings";
+import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 
 export class HelpButton extends React.Component<{}, {}> {
   public render() {
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/help")}
-        title="Help"
+        title={strings.menuBar.help}
         ref="helpButton"
         onClick={() => {
           globals.popupController.popupAt(
@@ -49,7 +51,7 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://charticulator.com/docs/getting-started.html"
                       >
-                        Getting Started
+                        {strings.help.gettingStarted}
                       </a>
                     </div>
                     <div className="el-item">
@@ -57,7 +59,7 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://charticulator.com/gallery/index.html"
                       >
-                        Example Gallery
+                        {strings.help.gallery}
                       </a>
                     </div>
                     <div className="el-item">
@@ -65,21 +67,21 @@ export class HelpButton extends React.Component<{}, {}> {
                         target="_blank"
                         href="https://github.com/Microsoft/charticulator/issues/new"
                       >
-                        Report an Issue
+                        {strings.help.issues}
                       </a>
                     </div>
                     <div className="el-item">
                       <a target="_blank" href="https://charticulator.com/">
-                        Charticulator Home
+                        {strings.help.home}
                       </a>
                     </div>
                     <div className="el-item">
                       <a href="mailto:charticulator@microsoft.com">
-                        Contact Us
+                        {strings.help.contact}
                       </a>
                     </div>
                     <div className="el-item-version">
-                      Version: {CHARTICULATOR_PACKAGE.version}
+                      {strings.help.version(CHARTICULATOR_PACKAGE.version)}
                     </div>
                   </div>
                 </PopupView>
@@ -98,6 +100,8 @@ export class HelpButton extends React.Component<{}, {}> {
 
 export class MenuBar extends ContextedComponent<
   {
+    undoRedoLocation: UndoRedoLocation;
+    alignButtons: PositionsLeftRight;
     name?: string;
   },
   {}
@@ -227,8 +231,8 @@ export class MenuBar extends ContextedComponent<
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text="Save Nested Chart"
-        title="Save (Ctrl-S)"
+        text={strings.menuBar.saveNested}
+        title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
@@ -242,7 +246,7 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/import-template")}
           text=""
-          title="Import template"
+          title={strings.menuBar.importTemplate}
           onClick={async () => {
             const file = await showOpenFileDialog(["tmplt"]);
             const str = await readFileAsString(file);
@@ -354,11 +358,11 @@ export class MenuBar extends ContextedComponent<
         <MenuButton
           url={R.getSVGIcon("toolbar/export-template")}
           text=""
-          title="Export template"
+          title={strings.menuBar.exportTemplate}
           onClick={() => {
             const template = deepClone(this.store.buildChartTemplate());
             const target = this.store.createExportTemplateTarget(
-              "Charticulator Template",
+              strings.menuBar.defaultTemplateName,
               template
             );
             const targetProperties: { [name: string]: string } = {};
@@ -377,28 +381,12 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  private checkColumnsMapping(
-    column: Specification.Template.Column,
-    tableType: TableType
-  ): Specification.Template.Column[] {
-    const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = this.store.dataset.tables.find(
-      (t) => t.type === tableType
-    );
-    const found =
-      dataTable && dataTable.columns.find((c) => c.name === column.name);
-    if (!found) {
-      unmappedColumns.push(column);
-    }
-    return unmappedColumns;
-  }
-
   public renderSaveEmbedded() {
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/save")}
-        text=""
-        title="Save (Ctrl-S)"
+        text={strings.menuBar.saveButton}
+        title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
@@ -411,21 +399,22 @@ export class MenuBar extends ContextedComponent<
       <>
         <MenuButton
           url={R.getSVGIcon("toolbar/new")}
-          title="New (Ctrl-N)"
+          title={strings.menuBar.new}
           onClick={() => {
             this.showFileModalWindow(MainTabs.new);
           }}
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/open")}
-          title="Open (Ctrl-O)"
+          title={strings.menuBar.open}
           onClick={() => {
             this.showFileModalWindow(MainTabs.open);
           }}
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}
-          title="Save (Ctrl-S)"
+          title={strings.menuBar.save}
+          text={strings.menuBar.saveButton}
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -436,9 +425,101 @@ export class MenuBar extends ContextedComponent<
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/export")}
-          title="Export"
+          title={strings.menuBar.export}
           onClick={() => {
             this.showFileModalWindow(MainTabs.export);
+          }}
+        />
+      </>
+    );
+  }
+
+  public toolbarButtons() {
+    return (
+      <>
+        {this.context.store.editorType === "nested"
+          ? this.renderSaveNested()
+          : null}
+        {this.context.store.editorType === "chart"
+          ? this.renderNewOpenSave()
+          : null}
+        {this.context.store.editorType === "embedded"
+          ? this.renderSaveEmbedded()
+          : null}
+        <span className="charticulator__menu-bar-separator" />
+        {this.renderExportImportButtons()}
+        <span className="charticulator__menu-bar-separator" />
+        {this.props.undoRedoLocation === "menubar" ?
+          (<>
+            <MenuButton
+              url={R.getSVGIcon("toolbar/undo")}
+              title={strings.menuBar.undo}
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <MenuButton
+              url={R.getSVGIcon("toolbar/redo")}
+              title={strings.menuBar.redo}
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+          </>)
+        : null}
+        <span className="charticulator__menu-bar-separator" />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/trash")}
+          title={strings.menuBar.reset}
+          onClick={() => {
+            if (isInIFrame()) {
+              globals.popupController.showModal(
+                (context) => {
+                  return (
+                    <div
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className={"charticulator__reset_chart_dialog"}
+                    >
+                      <div
+                        className={"charticulator__reset_chart_dialog-inner"}
+                      >
+                        <>
+                          <p>{strings.dialog.resetConfirm}</p>
+                          <div
+                            className={
+                              "charticulator__reset_chart_dialog-buttons"
+                            }
+                          >
+                            <Button
+                              text={strings.button.yes}
+                              onClick={() => {
+                                this.context.store.dispatcher.dispatch(
+                                  new Actions.Reset()
+                                );
+                                context.close();
+                              }}
+                            />
+                            <Button
+                              text={strings.button.no}
+                              onClick={() => {
+                                context.close();
+                              }}
+                            />
+                          </div>
+                        </>
+                      </div>
+                    </div>
+                  );
+                },
+                { anchor: null }
+              );
+            } else {
+              if (confirm(strings.dialog.resetConfirm)) {
+                new Actions.Reset().dispatch(this.context.store.dispatcher);
+              }
+            }
           }}
         />
       </>
@@ -451,98 +532,28 @@ export class MenuBar extends ContextedComponent<
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            <AppButton
+            {this.context.store.editorType === "embedded" ? null : (<AppButton
               name={this.props.name}
+              title={strings.menuBar.home}
               onClick={() => this.showFileModalWindow(MainTabs.open)}
-            />
-            <span className="charticulator__menu-bar-separator" />
-            {this.context.store.editorType === "nested"
-              ? this.renderSaveNested()
-              : null}
-            {this.context.store.editorType === "chart"
-              ? this.renderNewOpenSave()
-              : null}
-            {this.context.store.editorType === "embedded"
-              ? this.renderSaveEmbedded()
-              : null}
-            <span className="charticulator__menu-bar-separator" />
-            {this.renderExportImportButtons()}
-            <span className="charticulator__menu-bar-separator" />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
-              title="Undo (Ctrl-Z)"
-              onClick={() =>
-                new Actions.Undo().dispatch(this.context.store.dispatcher)
-              }
-            />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
-              title="Redo (Ctrl-Y)"
-              onClick={() =>
-                new Actions.Redo().dispatch(this.context.store.dispatcher)
-              }
-            />
-            <span className="charticulator__menu-bar-separator" />
-            <MenuButton
-              url={R.getSVGIcon("toolbar/trash")}
-              title="Reset"
-              onClick={() => {
-                if (isInIFrame()) {
-                  globals.popupController.showModal(
-                    (context) => {
-                      return (
-                        <div
-                          onMouseDown={(e) => {
-                            e.stopPropagation();
-                          }}
-                          className={"charticulator__reset_chart_dialog"}
-                        >
-                          <div
-                            className={
-                              "charticulator__reset_chart_dialog-inner"
-                            }
-                          >
-                            {/* <ModalView context={context}> */}
-                            <>
-                              <p>Are you really willing to reset the chart?</p>
-                              <div
-                                className={
-                                  "charticulator__reset_chart_dialog-buttons"
-                                }
-                              >
-                                <Button
-                                  text="Yes"
-                                  onClick={() => {
-                                    this.context.store.dispatcher.dispatch(
-                                      new Actions.Reset()
-                                    );
-                                    context.close();
-                                  }}
-                                />
-                                <Button
-                                  text="No"
-                                  onClick={() => {
-                                    context.close();
-                                  }}
-                                />
-                              </div>
-                            </>
-                            {/* </ModalView> */}
-                          </div>
-                        </div>
-                      );
-                    },
-                    { anchor: null }
-                  );
-                } else {
-                  if (confirm("Are you really willing to reset the chart?")) {
-                    new Actions.Reset().dispatch(this.context.store.dispatcher);
-                  }
-                }
-              }}
-            />
+            />)}
+            {this.props.alignButtons === "left" ? (
+              <>
+                <span className="charticulator__menu-bar-separator" />
+                {this.toolbarButtons()}
+              </>
+            ) : null}
+          </div>
+          <div className="charticulator__menu-bar-center el-text">
+            <p>{this.context.store.chart?.properties.name} - {strings.app.name}</p>
           </div>
           <div className="charticulator__menu-bar-right">
+            {this.props.alignButtons === "right" ? (
+              <>
+                {this.toolbarButtons()}
+                <span className="charticulator__menu-bar-separator" />
+              </>
+            ) : null}
             <HelpButton />
           </div>
         </section>

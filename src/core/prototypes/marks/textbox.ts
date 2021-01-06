@@ -397,10 +397,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 textBoxShift = -height;
                 break;
               case "middle":
-                textBoxShift = (textContent.length * height) / 2 - height;
+                textBoxShift = (textContentList.length * height) / 2 - height;
                 break;
               case "end":
-                textBoxShift = textContent.length * height - height;
+                textBoxShift = textContentList.length * height - height;
                 break;
             }
           }
@@ -412,10 +412,10 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 textBoxShift = -height / 2;
                 break;
               case "middle":
-                textBoxShift = (textContent.length * height) / 2 - height / 2;
+                textBoxShift = (textContentList.length * height) / 2 - height / 2;
                 break;
               case "end":
-                textBoxShift = textContent.length * height - height / 2;
+                textBoxShift = textContentList.length * height - height / 2;
                 break;
             }
           }
@@ -427,17 +427,17 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 textBoxShift = 0;
                 break;
               case "middle":
-                textBoxShift = (textContent.length * height) / 2;
+                textBoxShift = (textContentList.length * height) / 2;
                 break;
               case "end":
-                textBoxShift = textContent.length * height;
+                textBoxShift = textContentList.length * height;
                 break;
             }
           }
           break;
       }
 
-      for (let index = 0; index < textContent.length; index++) {
+      for (let index = 0; index < textContentList.length; index++) {
         const pathMaker = new Graphics.PathMaker();
         helper.lineTo(
           pathMaker,
@@ -454,7 +454,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             key: index,
             type: "text-on-path",
             pathCmds: cmds,
-            text: textContent[index],
+            text: textContentList[index],
             fontFamily: attrs.fontFamily,
             fontSize: attrs.fontSize,
             align: props.alignX,

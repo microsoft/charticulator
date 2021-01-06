@@ -112,7 +112,7 @@ export class ColumnsView extends React.Component<
               ? "Link Data"
               : "Columns"}
           </span>
-          <Button
+          {this.props.store.editorType === "chart" ? <Button
             icon="general/replace"
             title="Replace data with CSV file"
             active={false}
@@ -226,7 +226,7 @@ export class ColumnsView extends React.Component<
                 reader.readAsText(file);
               });
             }}
-          />
+          /> : null}
           <Button
             icon="general/more-horizontal"
             title="Show data values"
@@ -242,7 +242,7 @@ export class ColumnsView extends React.Component<
                       </p>
                       <TableView
                         table={table}
-                        onTypeChange={(column, type) => {
+                        onTypeChange={this.props.store.editorType === "chart" ? (column, type) => {
                           const store = this.props.store;
 
                           store.dispatcher.dispatch(
@@ -252,7 +252,7 @@ export class ColumnsView extends React.Component<
                               type as DataType
                             )
                           );
-                        }}
+                        } : null}
                       />
                     </div>
                   </PopupView>
@@ -447,10 +447,11 @@ export class ColumnView extends React.Component<
             c.type,
             <ButtonFlat
               title="Show derived fields"
+              stopPropagation={true}
               url={
                 this.state.isExpanded
-                  ? R.getSVGIcon("general/minus")
-                  : R.getSVGIcon("general/more-vertical")
+                  ? R.getSVGIcon("general/chevron-down")
+                  : R.getSVGIcon("general/chevron-left")
               }
               onClick={() => {
                 this.setState({ isExpanded: !this.state.isExpanded });

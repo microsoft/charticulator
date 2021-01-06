@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+import { Geometry } from "./math";
+
 /** Color in RGB */
 export interface Color {
   r: number;
@@ -97,7 +100,7 @@ function hcl_to_lab(
   c: number,
   l: number
 ): [number, number, number] {
-  const h = (h_degree / 180) * Math.PI;
+  const h = Geometry.degreesToRadians(h_degree);
   return [l, c * Math.cos(h), c * Math.sin(h)];
 }
 
