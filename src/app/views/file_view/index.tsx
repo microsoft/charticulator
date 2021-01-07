@@ -148,12 +148,12 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
           <div className="el-button-back" onClick={() => this.props.onClose()}>
             <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
           </div>
-          {tabOrder.map((t, i) =>
+          {tabOrder.map((t, index) =>
             t === null ? (
-              <div key={i} className="el-sep" />
+              <div key={index} className="el-sep" />
             ) : (
               <div
-                key={i}
+                key={index}
                 className={classNames("el-tab", [
                   "active",
                   this.state.currentTab == t,
