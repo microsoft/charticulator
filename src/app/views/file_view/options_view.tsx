@@ -11,11 +11,20 @@ export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
-const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({store, onClose}) => {
+const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
+  store,
+  onClose,
+}) => {
   const localeFileFormat = store.getLocaleFileFormat();
 
-  const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(localeFileFormat.numberFormat.decimal, "numberFormatRemove");
-  const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(localeFileFormat.delimiter, "delimiterSymbol");
+  const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(
+    localeFileFormat.numberFormat.decimal,
+    "numberFormatRemove"
+  );
+  const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(
+    localeFileFormat.delimiter,
+    "delimiterSymbol"
+  );
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
     store.setLocaleFileFormat(localeFileFormat);
@@ -25,24 +34,25 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({stor
     <section className="charticulator__file-view-content">
       <h1>{strings.mainTabs.options}</h1>
       <div>
-        <h2>Import file format</h2>
+        <h2>{strings.options.fileFormat}</h2>
         <div>
           <div className="form-group">
             <select
               onChange={(e) => {
-                  changeLocaleFileFormat({
-                    ...localeFileFormat,
-                    delimiter: e.target.options[e.target.selectedIndex].value,
-                  });
-                  setDelimiterSymbol(e.target.options[e.target.selectedIndex].value)
-                }
-              }
+                changeLocaleFileFormat({
+                  ...localeFileFormat,
+                  delimiter: e.target.options[e.target.selectedIndex].value,
+                });
+                setDelimiterSymbol(
+                  e.target.options[e.target.selectedIndex].value
+                );
+              }}
               value={delimiterSymbol}
             >
-              <option value=",">comma</option>
-              <option value=";">semicolon</option>
+              <option value=",">{strings.options.comma}</option>
+              <option value=";">{strings.options.semicolon}</option>
             </select>
-            <label>CSV Delimiter</label>
+            <label>{strings.options.delimiter}</label>
           </div>
 
           <div className="form-group">
@@ -57,14 +67,16 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({stor
                     remove: isDot ? "," : ".",
                   },
                 });
-                setNumberFormatDecimal(e.target.options[e.target.selectedIndex].value);
+                setNumberFormatDecimal(
+                  e.target.options[e.target.selectedIndex].value
+                );
               }}
               value={numberFormatDecimal}
             >
-              <option value=".">Decimal: dot / Separator: comma</option>
-              <option value=",">Decimal: comma / Separator: dot</option>
+              <option value=".">{strings.options.numberFormatDot}</option>
+              <option value=",">{strings.options.numberFormatComma}</option>
             </select>
-            <label>Number format</label>
+            <label>{strings.options.numberFormat}</label>
           </div>
         </div>
       </div>
@@ -79,8 +91,12 @@ export class FileViewOptions extends ContextedComponent<
   },
   {}
 > {
-  
   public render() {
-    return (<FileViewOptionsView onClose={this.props.onClose} store={this.context.store} />);
+    return (
+      <FileViewOptionsView
+        onClose={this.props.onClose}
+        store={this.context.store}
+      />
+    );
   }
 }
