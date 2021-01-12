@@ -54,12 +54,12 @@ export class FileViewOpen extends ContextedComponent<
     if (this.state.chartList == null) {
       return (
         <p className="loading-indicator">
-          <SVGImageIcon url={R.getSVGIcon("loading")} /> loading...
+          <SVGImageIcon url={R.getSVGIcon("loading")} /> {strings.app.loading}
         </p>
       );
     } else {
       if (this.state.chartCount == 0) {
-        return <p>(no chart to show)</p>;
+        return <p>{strings.fileOpen.noChart}</p>;
       } else {
         return (
           <ul className="chart-list">
@@ -106,12 +106,14 @@ export class FileViewOpen extends ContextedComponent<
                       <div className="actions">
                         <ButtonFlat
                           url={R.getSVGIcon("toolbar/trash")}
-                          title="Delete this chart"
+                          title={strings.fileOpen.delete}
                           stopPropagation={true}
                           onClick={() => {
                             if (
                               confirm(
-                                `Do you want to delete the chart "${chart.metadata.name}"?`
+                                strings.fileOpen.deleteConfirmation(
+                                  chart.metadata.name
+                                )
                               )
                             ) {
                               backend.delete(chart.id).then(() => {
@@ -122,7 +124,7 @@ export class FileViewOpen extends ContextedComponent<
                         />
                         <ButtonFlat
                           url={R.getSVGIcon("toolbar/copy")}
-                          title="Copy this chart"
+                          title={strings.fileOpen.copy}
                           stopPropagation={true}
                           onClick={() => {
                             backend.get(chart.id).then((chart) => {
@@ -136,7 +138,7 @@ export class FileViewOpen extends ContextedComponent<
                         />
                         <ButtonFlat
                           url={R.getSVGIcon("toolbar/download")}
-                          title="Download this chart"
+                          title={strings.fileOpen.download}
                           stopPropagation={true}
                           onClick={() => {
                             backend.get(chart.id).then((chart) => {
@@ -172,7 +174,7 @@ export class FileViewOpen extends ContextedComponent<
         <div style={{ marginBottom: "12px" }}>
           <ButtonRaised
             url={R.getSVGIcon("toolbar/open")}
-            text="Open Chart"
+            text={strings.fileOpen.open}
             onClick={async () => {
               const file = await showOpenFileDialog(["chart"]);
               const str = await readFileAsString(file);

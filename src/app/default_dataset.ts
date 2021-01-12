@@ -7,7 +7,7 @@ import { strings } from "../strings";
 
 export function makeDefaultDataset(): Dataset.Dataset {
   const rows: any[] = [];
-  const months = strings.defaultDataset.months.split(",");
+  const months = strings.dataset.months;
   let monthIndex = 0;
   for (const month of months) {
     let cityIndex = 0;

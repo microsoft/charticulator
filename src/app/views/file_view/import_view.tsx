@@ -45,7 +45,7 @@ export class FileViewImport extends ContextedComponent<
         return mapped;
       }
 
-      return "Unmapped";
+      return strings.templateImport.unmapped;
     };
 
     const onChange = (columnName: string) => (value: string) => {
@@ -94,7 +94,7 @@ export class FileViewImport extends ContextedComponent<
         floatInCenter={true}
         scroll={true}
         peerGroup="import"
-        title="Import template"
+        title={strings.templateImport.title}
         closeButtonIcon={"general/cross"}
         height={400}
         width={650}
@@ -109,21 +109,23 @@ export class FileViewImport extends ContextedComponent<
                     className="charticulator__file-view-mapping_table"
                     key={table.name}
                   >
-                    <h4>Table name: {table.name}</h4>
+                    <h4>
+                      {strings.templateImport.title}: {table.name}
+                    </h4>
                     <table className="charticulator__file-view-mapping_table">
                       <thead>
                         <tr className="charticulator__file-view-mapping_rows">
                           <th className="charticulator__file-view-mapping_row_item">
-                            Column name from the template
+                            {strings.templateImport.columnName}
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
-                            Required data type
+                            {strings.templateImport.dataType}
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
-                            Example data values
+                            {strings.templateImport.examples}
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
-                            Column name in the dataset
+                            {strings.templateImport.mapped}
                           </th>
                         </tr>
                       </thead>
@@ -199,7 +201,7 @@ export class FileViewImport extends ContextedComponent<
                     this.props.onSave(this.state.columnMappings);
                   }
                 }}
-                text={"Save mapping"}
+                text={strings.templateImport.save}
                 active={
                   this.props.unmappedColumns.filter(
                     (unmapped) =>
@@ -211,7 +213,7 @@ export class FileViewImport extends ContextedComponent<
                 onClick={() => {
                   this.props.onClose();
                 }}
-                text={"Cancel"}
+                text={strings.button.cancel}
               />
             </div>
           </section>

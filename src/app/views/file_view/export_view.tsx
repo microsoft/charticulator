@@ -59,7 +59,7 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
       <div className="el-horizontal-layout-item is-fix-width">
         <CurrentChartView store={this.store} />
         <InputGroup
-          label="DPI (for PNG/JPEG)"
+          label={strings.fileExport.imageDPI}
           value={this.state.dpi}
           onChange={(newValue) => {
             this.setState({
@@ -69,7 +69,7 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
         />
         <div className="buttons">
           <ButtonRaised
-            text="PNG"
+            text={strings.fileExport.typePNG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
               this.dispatch(
@@ -78,7 +78,7 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
             }}
           />{" "}
           <ButtonRaised
-            text="JPEG"
+            text={strings.fileExport.typeJPEG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
               this.dispatch(
@@ -87,7 +87,7 @@ export class ExportImageView extends ContextedComponent<{}, { dpi: string }> {
             }}
           />{" "}
           <ButtonRaised
-            text="SVG"
+            text={strings.fileExport.typeSVG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
               this.dispatch(new Actions.Export("svg"));
@@ -106,7 +106,7 @@ export class ExportHTMLView extends ContextedComponent<{}, {}> {
         <CurrentChartView store={this.store} />
         <div className="buttons">
           <ButtonRaised
-            text="HTML"
+            text={strings.fileExport.typeHTML}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
               this.dispatch(new Actions.Export("html"));
@@ -164,7 +164,7 @@ export class FileViewExport extends ContextedComponent<
                 onClick={() => this.setState({ exportMode: "image" })}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
-                <span className="el-text">Export as Image</span>
+                <span className="el-text">{strings.fileExport.asImage}</span>
               </div>
               <div
                 className={classNames("el-item", [
@@ -174,7 +174,7 @@ export class FileViewExport extends ContextedComponent<
                 onClick={() => this.setState({ exportMode: "html" })}
               >
                 <SVGImageIcon url={R.getSVGIcon("toolbar/export")} />
-                <span className="el-text">Export as HTML</span>
+                <span className="el-text">{strings.fileExport.asHTML}</span>
               </div>
               {this.store.listExportTemplateTargets().map((name) => (
                 <div
@@ -350,7 +350,7 @@ export class ExportTemplateView extends ContextedComponent<
           .map((column) => (
             <div key={column.name}>
               {this.renderInput(
-                column.name + " name",
+                strings.fileExport.slotColumnName(column.name),
                 "string",
                 column.displayName,
                 null,
@@ -368,7 +368,7 @@ export class ExportTemplateView extends ContextedComponent<
                 }
               )}
               {this.renderInput(
-                column.name + " examples",
+                strings.fileExport.slotColumnExample(column.name),
                 "string",
                 column.metadata.examples,
                 null,
@@ -418,12 +418,18 @@ export class ExportTemplateView extends ContextedComponent<
           );
           const objectName = object.properties.name;
           if (inference.scale) {
-            descriptionMin = `Auto min domain and range for ${objectName}`;
-            descriptionMax = `Auto max domain and range for ${objectName}`;
+            descriptionMin = strings.fileExport.inferScaleMin(objectName);
+            descriptionMax = strings.fileExport.inferScaleMax(objectName);
           }
           if (inference.axis) {
-            descriptionMin = `Auto axis min range for ${objectName}/${inference.axis.property.toString()}`;
-            descriptionMax = `Auto axis max range for ${objectName}/${inference.axis.property.toString()}`;
+            descriptionMin = strings.fileExport.inferAxisMin(
+              objectName,
+              inference.axis.property.toString()
+            );
+            descriptionMax = strings.fileExport.inferAxisMax(
+              objectName,
+              inference.axis.property.toString()
+            );
           }
           const keyAutoDomainMin = "autoDomainMin";
           const keyAutoDomainMax = "autoDomainMax";
@@ -719,13 +725,13 @@ export class ExportTemplateView extends ContextedComponent<
   public render() {
     return (
       <div className="charticulator__export-template-view">
-        <h2>Data Mapping Slots</h2>
+        <h2>{strings.fileExport.labelSlots}</h2>
         {this.renderSlots()}
-        <h2>Axes and Scales</h2>
+        <h2>{strings.fileExport.labelAxesAndScales}</h2>
         {this.renderInferences()}
-        <h2>Exposed Objects</h2>
+        <h2>{strings.fileExport.labelExposedObjects}</h2>
         {this.renderExposedProperties()}
-        <h2>{this.props.exportKind} Properties</h2>
+        <h2>{strings.fileExport.labelProperties(this.props.exportKind)}</h2>
         {this.renderTargetProperties()}
         <div className="buttons">
           <ButtonRaised

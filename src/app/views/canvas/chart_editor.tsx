@@ -40,6 +40,7 @@ import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
+import { strings } from "../../../strings";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1371,7 +1372,7 @@ export class ChartEditorView
           <div className="solving-hint">
             <div className="el-box">
               <img src={R.getSVGIcon("loading")} />
-              Working...
+              {strings.app.working}
             </div>
           </div>
         ) : null}

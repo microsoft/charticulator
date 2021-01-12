@@ -34,6 +34,7 @@ import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
 import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
+import { strings } from "../../../strings";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -193,7 +194,7 @@ export class MarkEditorView extends ContextedComponent<
             </span>
             <Button
               icon="general/plus"
-              title="New glyph"
+              title={strings.canvas.newGlyph}
               onClick={() => {
                 this.dispatch(new Actions.AddGlyph("glyph.rectangle"));
               }}
@@ -202,18 +203,21 @@ export class MarkEditorView extends ContextedComponent<
           <div className="canvas-controls-right">
             <Button
               icon="general/zoom-in"
+              title={strings.canvas.zoomIn}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1.1);
               }}
             />
             <Button
               icon="general/zoom-out"
+              title={strings.canvas.zoomOut}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1 / 1.1);
               }}
             />
             <Button
               icon="general/zoom-auto"
+              title={strings.canvas.zoomAuto}
               onClick={() => {
                 this.refSingleMarkView.doZoomAuto();
               }}
@@ -322,8 +326,12 @@ export class SingleMarkView
           case "anchored-rectangle":
             {
               const bboxRect = bbox as Prototypes.BoundingBox.AnchoredRectangle;
-              const cos = Math.cos(Geometry.degreesToRadians(bboxRect.rotation));
-              const sin = Math.sin(Geometry.degreesToRadians(bboxRect.rotation));
+              const cos = Math.cos(
+                Geometry.degreesToRadians(bboxRect.rotation)
+              );
+              const sin = Math.sin(
+                Geometry.degreesToRadians(bboxRect.rotation)
+              );
               xBounds = [
                 bboxRect.anchorX +
                   bboxRect.cx +
@@ -1534,7 +1542,7 @@ export class SingleMarkView
               />
             </svg>
             <div className="mark-view-container-notice">
-              To edit this glyph, please create a plot segment with it.
+              {strings.canvas.markContainer}
             </div>
           </div>
         </div>

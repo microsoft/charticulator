@@ -10,6 +10,7 @@ import { PopupView } from "../../../controllers";
 import { ButtonRaised } from "../../../components";
 import { InputNumber } from "../../panels/widgets/controls";
 import { HandlesDragContext, HandleViewProps } from "./common";
+import { strings } from "../../../../strings";
 
 export interface InputCurveHandleViewProps extends HandleViewProps {
   handle: Prototypes.Handles.InputCurve;
@@ -205,7 +206,7 @@ export class InputCurveHandleView extends React.Component<
                   <div style={{ padding: "10px" }}>
                     <div className="charticulator__widget-row">
                       <span className="charticulator__widget-row-label">
-                        Windings:
+                        {strings.handles.windings}:
                       </span>
                       <InputNumber
                         defaultValue={windings}
@@ -217,7 +218,7 @@ export class InputCurveHandleView extends React.Component<
                     </div>
                     <div className="charticulator__widget-row">
                       <span className="charticulator__widget-row-label">
-                        Start Angle:
+                        {strings.handles.startAngle}:
                       </span>
                       <InputNumber
                         defaultValue={startAngle}
@@ -229,7 +230,7 @@ export class InputCurveHandleView extends React.Component<
                     </div>
                     <div style={{ textAlign: "right", marginTop: "10px" }}>
                       <ButtonRaised
-                        text="Draw Spiral"
+                        text={strings.handles.drawSpiral}
                         onClick={() => {
                           context.close();
                           // Make sprial and emit.
@@ -239,7 +240,9 @@ export class InputCurveHandleView extends React.Component<
                             this.props.handle,
                             dragContext
                           );
-                          const thetaStart = Geometry.degreesToRadians(startAngle);
+                          const thetaStart = Geometry.degreesToRadians(
+                            startAngle
+                          );
                           const thetaEnd = thetaStart + windings * Math.PI * 2;
                           const N = 64;
                           const a = 1 / thetaEnd; // r = a theta

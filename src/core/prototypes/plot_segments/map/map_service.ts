@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { strings } from "../../../../strings";
 import { getConfig } from "../../../config";
 
 export interface Location {
@@ -38,7 +39,7 @@ export abstract class StaticMapService {
         resolve(canvas.toDataURL("image/png"));
       };
       img.onerror = () => {
-        reject(new Error(`failed to retrieve map image at url ${url}`));
+        reject(new Error(strings.error.imageLoad(url)));
       };
       img.src = url;
     });
