@@ -140,8 +140,8 @@
     }
     .el-dropdown {
       @include button-base(32px);
-      @include icon-size(20px, 6px);
-      margin-left: -5px;
+      @include icon-size(18px, 6px);
+      margin-left: -3px;
       z-index: 1;
       .el-svg-icon {
         margin-left: 0px;
