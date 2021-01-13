@@ -75,14 +75,14 @@ export class ChartTemplate {
     let variableMap = {};
     if (this.columnAssignment[table]) {
       variableMap = {
-        ...this.columnAssignment[table]
-      }
+        ...this.columnAssignment[table],
+      };
     }
     if (this.tableAssignment) {
       variableMap = {
         ...variableMap,
-        ...this.tableAssignment
-      }
+        ...this.tableAssignment,
+      };
     }
 
     return variableMap;
@@ -156,7 +156,8 @@ export class ChartTemplate {
           }
           if (plotSegment.properties.xData) {
             if ((plotSegment.properties.xData as any).expression) {
-              (plotSegment.properties.xData as any).expression = this.transformExpression(
+              (plotSegment.properties
+                .xData as any).expression = this.transformExpression(
                 (plotSegment.properties.xData as any).expression,
                 originalTable
               );
@@ -164,7 +165,8 @@ export class ChartTemplate {
           }
           if (plotSegment.properties.yData) {
             if ((plotSegment.properties.yData as any).expression) {
-              (plotSegment.properties.yData as any).expression = this.transformExpression(
+              (plotSegment.properties
+                .yData as any).expression = this.transformExpression(
                 (plotSegment.properties.yData as any).expression,
                 originalTable
               );
@@ -172,7 +174,8 @@ export class ChartTemplate {
           }
           if (plotSegment.properties.axis) {
             if ((plotSegment.properties.axis as any).expression) {
-              (plotSegment.properties.axis as any).expression = this.transformExpression(
+              (plotSegment.properties
+                .axis as any).expression = this.transformExpression(
                 (plotSegment.properties.axis as any).expression,
                 originalTable
               );
@@ -323,7 +326,7 @@ export class ChartTemplate {
             if (inference.autoDomainMin) {
               axisDataBinding.domainMin = scale.domainMin;
             }
-            if (!inference.autoDomainMax) {
+            if (inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
             }
           }
