@@ -277,6 +277,25 @@ export class Toolbar extends ContextedComponent<
   private getToolItems(labels: boolean = true) {
     return (
       <>
+        {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+          <>
+            <ToolButton
+              title={strings.menuBar.undo}
+              icon={R.getSVGIcon("toolbar/undo")}
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <ToolButton
+              title={strings.menuBar.redo}
+              icon={R.getSVGIcon("toolbar/redo")}
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <span className={"chartaccent__toolbar-horizontal-separator"} />
+          </>
+        ) : null}
         {labels && (
           <span
             className={
