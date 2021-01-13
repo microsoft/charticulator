@@ -220,17 +220,22 @@ export class Toolbar extends ContextedComponent<
             </span>
           </>
         )}
-        <ObjectButton
-          classID="plot-segment.cartesian"
-          title={strings.toolbar.region2D}
-          icon="plot/region"
-          noDragging={true}
-        />
-        <ObjectButton
-          classID="plot-segment.line"
-          title={strings.toolbar.line}
-          icon="plot/line"
-          noDragging={true}
+        <MultiObjectButton
+          compact={this.props.layout === LayoutDirection.Vertical}
+          tools={[
+            {
+              classID: "plot-segment.cartesian",
+              title: strings.toolbar.region2D,
+              icon: "plot/region",
+              noDragging: true
+            },
+            {
+              classID:"plot-segment.line",
+              title: strings.toolbar.line,
+              icon:"plot/line",
+              noDragging: true
+            },
+          ]}
         />
         <>
           <span className={"chartaccent__toolbar-horizontal-separator"} />
@@ -245,29 +250,38 @@ export class Toolbar extends ContextedComponent<
               {strings.toolbar.scaffolds}
             </span>
           )}
-          <ScaffoldButton
-            type="cartesian-x"
-            title={strings.toolbar.lineH}
-            icon="scaffold/cartesian-x"
-            currentTool={this.store.currentTool}
-          />
-          <ScaffoldButton
-            type="cartesian-y"
-            title={strings.toolbar.lineV}
-            icon="scaffold/cartesian-y"
-            currentTool={this.store.currentTool}
-          />
-          <ScaffoldButton
-            type="polar"
-            title={strings.toolbar.polar}
-            icon="scaffold/circle"
-            currentTool={this.store.currentTool}
-          />
-          <ScaffoldButton
-            type="curve"
-            title={strings.toolbar.curve}
-            icon="scaffold/curve"
-            currentTool={this.store.currentTool}
+          <MultiObjectButton
+            compact={this.props.layout === LayoutDirection.Vertical}
+            tools={[
+              {
+                classID: "",
+                title: strings.toolbar.lineH,
+                icon: "scaffold/cartesian-x",
+                onClick: () => null,
+                onDrag: () => new DragData.ScaffoldType("cartesian-x")
+              },
+              {
+                classID: "",
+                title: strings.toolbar.lineV,
+                icon: "scaffold/cartesian-y",
+                onClick: () => null,
+                onDrag: () => new DragData.ScaffoldType("cartesian-y")
+              },
+              {
+                classID: "",
+                title: strings.toolbar.polar,
+                icon: "scaffold/circle",
+                onClick: () => null,
+                onDrag: () => new DragData.ScaffoldType("polar")
+              },
+              {
+                classID: "",
+                title: strings.toolbar.curve,
+                icon: "scaffold/curve",
+                onClick: () => null,
+                onDrag: () => new DragData.ScaffoldType("curve")
+              },
+            ]}
           />
         </>
       </>,
@@ -540,6 +554,7 @@ export interface ObjectButtonProps {
   options?: string;
   noDragging?: boolean;
   onClick?: () => void;
+  onDrag?: () => any;
   compact?: boolean;
 }
 
@@ -585,7 +600,7 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
         dragData={
           this.props.noDragging
             ? null
-            : () => {
+            : this.props.onDrag ? this.props.onDrag : () => {
                 return new DragData.ObjectType(
                   this.props.classID,
                   this.props.options
@@ -680,7 +695,7 @@ export class MultiObjectButton extends ContextedComponent<
                 >
                   <ObjectButton
                     {...tool}
-                    noDragging={true}
+                    noDragging={tool.noDragging !== undefined ? tool.noDragging : true}
                     onClick={() => context.close()}
                   />
                 </div>
