@@ -117,7 +117,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
         {props.labels != null && props.showText ? (
           <span className="el-text">{props.labels[currentIndex]}</span>
         ) : null}
-        <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+        <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
       </span>
     );
   }

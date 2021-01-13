@@ -785,11 +785,23 @@
 
   @include shadow-focused;
 
-  border-radius: 2px;
 
   $line-height: 24px;
+  @mixin icon-size {
+    height: $line-height;
+    width: $line-height;
+  }
+
+  border-radius: 2px;
 
   padding: 3px;
+
+  .charticulator__widget-control-select, .charticulator__widget-control-order-widget, .charticulator__widget-control-button {
+    height: 32px;
+    .svg-image-icon {
+      @include icon-size;
+    }
+  }
 }
 
 .handle-text-view-popup {

@@ -604,7 +604,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         }}
       >
         <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-        <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+        <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
       </DropZoneView>
     );
   }

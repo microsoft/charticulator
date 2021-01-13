@@ -713,7 +713,7 @@ export class MultiObjectButton extends ContextedComponent<
           onClick={onClickContextMenu}
         >
           {this.props.compact ? null : (
-            <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
           )}
         </span>
       </div>
