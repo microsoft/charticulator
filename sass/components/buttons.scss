@@ -345,7 +345,7 @@
     display: inline-block;
 
     .el-text {
-      @include font-bold;
+      @include font-main;
       margin: 0 5px;
     }
 

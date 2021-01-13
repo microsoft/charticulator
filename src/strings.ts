@@ -158,7 +158,7 @@ export const strings = {
     new: "New (Ctrl-N)",
     open: "Open (Ctrl-O)",
     redo: "Redo (Ctrl-Y)",
-    reset: "Reset",
+    reset: "Delete",
     save: "Save (Ctrl-S)",
     saveButton: "Save",
     saveNested: "Save Nested Chart",
