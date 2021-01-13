@@ -453,12 +453,12 @@ export class ExportTemplateView extends ContextedComponent<
                   object,
                   inference.axis.property as string,
                   keyAutoDomainMax,
-                  false,
+                  true,
                   true,
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMax] = false;
+              temaplteObject.properties[keyAutoDomainMax] = true;
               inference.autoDomainMax = true;
             } else {
               inference.autoDomainMax = (object.properties[
@@ -494,12 +494,12 @@ export class ExportTemplateView extends ContextedComponent<
                   object,
                   keyAutoDomainMax,
                   null,
-                  false,
+                  true,
                   true,
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMax] = false;
+              temaplteObject.properties[keyAutoDomainMax] = true;
               inference.autoDomainMax = true;
             } else {
               inference.autoDomainMax = temaplteObject.properties[
@@ -536,12 +536,12 @@ export class ExportTemplateView extends ContextedComponent<
                   object,
                   inference.axis.property as string,
                   keyAutoDomainMin,
-                  false,
+                  true,
                   true,
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMin] = false;
+              temaplteObject.properties[keyAutoDomainMin] = true;
               inference.autoDomainMin = true;
             } else {
               inference.autoDomainMin = (object.properties[
@@ -577,12 +577,12 @@ export class ExportTemplateView extends ContextedComponent<
                   object,
                   keyAutoDomainMin,
                   null,
-                  false,
+                  true,
                   true,
                   true
                 )
               );
-              temaplteObject.properties[keyAutoDomainMin] = false;
+              temaplteObject.properties[keyAutoDomainMin] = true;
               inference.autoDomainMin = true;
             } else {
               inference.autoDomainMin = object.properties[
