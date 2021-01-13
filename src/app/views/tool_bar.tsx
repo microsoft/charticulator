@@ -387,6 +387,7 @@ export class Toolbar extends ContextedComponent<
           title={strings.toolbar.nestedChart}
           icon="mark/nested-chart"
         />
+        <LegendButton />
         <span className={"chartaccent__toolbar-horizontal-separator"} />
         <LinkButton label={labels} />
         <span className={"chartaccent__toolbar-horizontal-separator"} />

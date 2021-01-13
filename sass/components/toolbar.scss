@@ -30,6 +30,10 @@ $elements-margin: 4px;
   flex: 1;
   display: flex;
   flex-direction: row;
+  
+  .el-text {
+    margin: 0 0em;
+  }
 
   &-group {
     display: flex;
