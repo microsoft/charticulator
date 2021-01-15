@@ -506,8 +506,13 @@ export class MenuBar extends ContextedComponent<
         {this.context.store.editorType === "embedded"
           ? this.renderSaveEmbedded()
           : null}
-        <span className="charticulator__menu-bar-separator" />
-        {this.renderExportImportButtons()}
+        {this.context.store.editorType === "embedded" ?
+        (
+          <>
+          <span className="charticulator__menu-bar-separator" />
+          {this.renderExportImportButtons()}
+          </>
+        ) : null}
         <span className="charticulator__menu-bar-separator" />
         {this.props.undoRedoLocation === "menubar" ?
           (<>
