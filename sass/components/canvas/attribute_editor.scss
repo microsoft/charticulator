@@ -1397,7 +1397,18 @@
         }
       }
 
+      &-select-container {
+        display: flex;
+        flex-direction: column;
+        :last-child {
+          margin-top: 5px;
+        }
+      }
+
       &-select {
+        :last-child {
+          float: right;
+        }
         display: inline-block;
         vertical-align: top;
         cursor: pointer;

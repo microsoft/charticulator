@@ -15,10 +15,17 @@ export interface Property {
   noComputeLayout?: boolean;
 }
 
+export const enum LabelPosition {
+  Right,
+  Bottom,
+  Left,
+  Top
+}
+
 export interface InputSelectOptions {
   type: "radio" | "dropdown";
   showLabel?: boolean;
-
+  labelPosition?: LabelPosition;
   options: string[];
   icons?: string[];
   labels?: string[];
@@ -46,6 +53,8 @@ export interface DropTargetOptions {
 
 export interface OrderWidgetOptions {
   table: string;
+  displayLabel?: boolean;
+  labelPosition?: LabelPosition;
 }
 
 export interface MappingEditorOptions {

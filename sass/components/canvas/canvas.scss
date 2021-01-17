@@ -798,9 +798,60 @@
 
   .charticulator__widget-control-select, .charticulator__widget-control-order-widget, .charticulator__widget-control-button {
     height: 32px;
+    font-family: 'Segoe UI';
     .svg-image-icon {
       @include icon-size;
     }
+
+    .el-text {
+      font-family: 'Segoe UI';
+      margin-top: 7px;
+    }
+
+    &:hover {
+      .el-text {
+        color: $gray-000;
+      }
+    }
+  }
+
+  .charticulator__widget-control-select-container {
+    .el-text {
+      font-family: 'Segoe UI';
+      white-space: break-spaces;
+      max-width: 55px;
+    }
+  }
+
+  .charticulator__widget-control-order-widget {
+    display: flex;
+    flex-direction: column;
+    :last-child {
+      float: right;
+    }
+    .el-text:hover {
+      color: $gray-000;
+    }
+
+    &:active {
+      background-color: $color-primary;
+
+      .el-text {
+        color: $gray-000;
+      }
+    }
+  }
+
+  .charticulator__widget-control-select.has-text {
+    background: #F5F5F5;
+  }
+
+  .has-text {
+    background: #F5F5F5;
+  }
+
+  .el-layout-item {
+    margin: 13px;
   }
 }
 

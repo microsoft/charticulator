@@ -66,7 +66,7 @@ import {
 } from "../../../../core/expression";
 import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
-import { ScaleMapping } from "../../../../core/specification";
+import { AttributeMap, AttributeValue, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
 
@@ -309,6 +309,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           labels={options.labels}
           icons={options.icons}
           options={options.options}
+          labelPosition={options.labelPosition}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
           onChange={(value) => {
@@ -603,8 +604,25 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           );
         }}
       >
-        <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-        <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+        {options.displayLabel != null && options.displayLabel ?
+          (
+            <>
+              <div>
+                <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+                <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+
+                
+              </div>
+              <span className="el-text">{
+                  (this.getPropertyValue(property) as AttributeMap)?.expression || "(default)"
+                }</span>
+            </>
+          ) :
+          (<>
+            <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+          </>)}
+        
       </DropZoneView>
     );
   }
