@@ -74,6 +74,7 @@
       @include shadow-ambient;
       margin-bottom: 6px;
       border-radius: 2px;
+      border: 1px #A19F9D solid;
       background: $color-well;
 
       transition: box-shadow $transition-default,
