@@ -20,7 +20,7 @@ $elements-margin: 4px;
   flex-direction: row;
 }
 
-.chartaccent__toolbar-horizontal {
+.charticulator__toolbar-horizontal {
   @include font-main;
 
   $toolbar-height: $tool-icon-size;
@@ -90,8 +90,8 @@ $elements-margin: 4px;
   }
 }
 
-.chartaccent__toolbar-vertical {
-  @extend .chartaccent__toolbar-horizontal;
+.charticulator__toolbar-vertical {
+  @extend .charticulator__toolbar-horizontal;
   $toolbar-height: $tool-icon-size;
   $col2-breakpoint-height: 815px;
   $col3-breakpoint-height: 550px;
@@ -152,7 +152,7 @@ $elements-margin: 4px;
   }
 
   &-separator {
-    @extend .chartaccent__toolbar-horizontal-separator;
+    @extend .charticulator__toolbar-horizontal-separator;
     width: 100%;
     height: 5px;
     border-right: 0px solid $gray-190;

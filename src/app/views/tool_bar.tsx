@@ -42,13 +42,13 @@ export class Toolbar extends ContextedComponent<
     return [
       <>
         <>
-          <span className={"chartaccent__toolbar-horizontal-separator"} />
+          <span className={"charticulator__toolbar-horizontal-separator"} />
           {labels && (
             <span
               className={
                 this.props.layout === LayoutDirection.Vertical
-                  ? "chartaccent__toolbar-vertical-label"
-                  : "chartaccent__toolbar-label"
+                  ? "charticulator__toolbar-vertical-label"
+                  : "charticulator__toolbar-label"
               }
             >
               {strings.toolbar.marks}
@@ -130,7 +130,7 @@ export class Toolbar extends ContextedComponent<
           /> */}
           {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
             <>
-              <span className={"chartaccent__toolbar-horizontal-separator"} />
+              <span className={"charticulator__toolbar-horizontal-separator"} />
               <ToolButton
                 title={strings.menuBar.undo}
                 icon={R.getSVGIcon("toolbar/undo")}
@@ -157,13 +157,13 @@ export class Toolbar extends ContextedComponent<
       <>
         <LinkButton label={true} />
         <LegendButton />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
               this.props.layout === LayoutDirection.Vertical
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
+                ? "charticulator__toolbar-vertical-label"
+                : "charticulator__toolbar-label"
             }
           >
             {strings.toolbar.guides}
@@ -204,14 +204,14 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <>
             <span
               className={
                 this.props.layout === LayoutDirection.Vertical
-                  ? "chartaccent__toolbar-vertical-label"
-                  : "chartaccent__toolbar-label"
+                  ? "charticulator__toolbar-vertical-label"
+                  : "charticulator__toolbar-label"
               }
             >
               {this.props.layout === LayoutDirection.Vertical
@@ -238,13 +238,13 @@ export class Toolbar extends ContextedComponent<
           ]}
         />
         <>
-          <span className={"chartaccent__toolbar-horizontal-separator"} />
+          <span className={"charticulator__toolbar-horizontal-separator"} />
           {labels && (
             <span
               className={
                 this.props.layout === LayoutDirection.Vertical
-                  ? "chartaccent__toolbar-vertical-label"
-                  : "chartaccent__toolbar-label"
+                  ? "charticulator__toolbar-vertical-label"
+                  : "charticulator__toolbar-label"
               }
             >
               {strings.toolbar.scaffolds}
@@ -307,15 +307,15 @@ export class Toolbar extends ContextedComponent<
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
             />
-            <span className={"chartaccent__toolbar-horizontal-separator"} />
+            <span className={"charticulator__toolbar-horizontal-separator"} />
           </>
         ) : null}
         {labels && (
           <span
             className={
               this.props.layout === LayoutDirection.Vertical
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
+                ? "charticulator__toolbar-vertical-label"
+                : "charticulator__toolbar-label"
             }
           >
             {strings.toolbar.marks}
@@ -376,7 +376,7 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         <ObjectButton
           classID="mark.data-axis"
           title={strings.toolbar.dataAxis}
@@ -388,15 +388,15 @@ export class Toolbar extends ContextedComponent<
           icon="mark/nested-chart"
         />
         <LegendButton />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         <LinkButton label={labels} />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
               this.props.layout === LayoutDirection.Vertical
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
+                ? "charticulator__toolbar-vertical-label"
+                : "charticulator__toolbar-label"
             }
           >
             {strings.toolbar.guides}
@@ -437,14 +437,14 @@ export class Toolbar extends ContextedComponent<
             },
           ]}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <>
             <span
               className={
                 this.props.layout === LayoutDirection.Vertical
-                  ? "chartaccent__toolbar-vertical-label"
-                  : "chartaccent__toolbar-label"
+                  ? "charticulator__toolbar-vertical-label"
+                  : "charticulator__toolbar-label"
               }
             >
               {this.props.layout === LayoutDirection.Vertical
@@ -465,13 +465,13 @@ export class Toolbar extends ContextedComponent<
           icon="plot/line"
           noDragging={true}
         />
-        <span className={"chartaccent__toolbar-horizontal-separator"} />
+        <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
             className={
               this.props.layout === LayoutDirection.Vertical
-                ? "chartaccent__toolbar-vertical-label"
-                : "chartaccent__toolbar-label"
+                ? "charticulator__toolbar-vertical-label"
+                : "charticulator__toolbar-label"
             }
           >
             {strings.toolbar.scaffolds}
@@ -519,8 +519,8 @@ export class Toolbar extends ContextedComponent<
         <div
           className={
             this.props.layout === LayoutDirection.Vertical
-              ? "chartaccent__toolbar-vertical"
-              : "chartaccent__toolbar-horizontal"
+              ? "charticulator__toolbar-vertical"
+              : "charticulator__toolbar-horizontal"
           }
         >
           <div className="charticulator__toolbar-buttons-align-left">
@@ -531,8 +531,8 @@ export class Toolbar extends ContextedComponent<
                     key={index}
                     className={
                       this.props.layout === LayoutDirection.Vertical
-                        ? "chartaccent__toolbar-vertical-group"
-                        : "chartaccent__toolbar-horizontal-group"
+                        ? "charticulator__toolbar-vertical-group"
+                        : "charticulator__toolbar-horizontal-group"
                     }
                   >
                     {item}
@@ -851,7 +851,7 @@ export class CheckboxButton extends React.Component<
   public render() {
     return (
       <span
-        className="chartaccent__toolbar-checkbox"
+        className="charticulator__toolbar-checkbox"
         onClick={() => {
           const nv = !this.props.value;
           if (this.props.onChange) {
