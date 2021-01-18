@@ -48,6 +48,7 @@ export interface SelectProps {
   labels?: string[];
   showText?: boolean;
   labelPosition?: LabelPosition;
+  tooltip?: string;
   value: string;
   onChange: (active: string) => void;
 }
@@ -104,7 +105,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
     const props = this.props;
     if (props.labelPosition === LabelPosition.Bottom) {
       return (
-        <div className="charticulator__widget-control-select-container">
+        <div className="charticulator__widget-control-select-container" title={props.tooltip}>
           <span
             className={classNames(
               "charticulator__widget-control-select",

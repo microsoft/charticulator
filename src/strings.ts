@@ -27,6 +27,11 @@ export const strings = {
     zoomAuto: "Auto zoom",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
+    sublayoutType: "Sublayout type",
+    elementOrders: "Order of elements",
+    gridDirection: "Grid row direction",
+    alignItemsOnX: "Align items on X axis",
+    alignItemsOnY: "Align items on Y axis",
   },
   dataset: {
     dimensions: (rows: number, columns: number) =>

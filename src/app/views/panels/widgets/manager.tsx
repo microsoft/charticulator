@@ -310,6 +310,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           icons={options.icons}
           options={options.options}
           labelPosition={options.labelPosition}
+          tooltip={options.tooltip}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
           onChange={(value) => {
@@ -323,6 +324,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           labels={options.labels}
           icons={options.icons}
           options={options.options}
+          tooltip={options.tooltip}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
           onChange={(value) => {
@@ -607,7 +609,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         {options.displayLabel != null && options.displayLabel ?
           (
             <>
-              <div>
+              <div title={options.tooltip}>
                 <SVGImageIcon url={R.getSVGIcon("general/sort")} />
                 <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
 
@@ -618,10 +620,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                 }</span>
             </>
           ) :
-          (<>
+          (<div  title={options.tooltip}>
             <SVGImageIcon url={R.getSVGIcon("general/sort")} />
             <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
-          </>)}
+          </div>)}
         
       </DropZoneView>
     );

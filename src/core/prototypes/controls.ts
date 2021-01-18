@@ -29,6 +29,7 @@ export interface InputSelectOptions {
   options: string[];
   icons?: string[];
   labels?: string[];
+  tooltip?: string;
 }
 
 export interface InputBooleanOptions {
@@ -55,6 +56,7 @@ export interface OrderWidgetOptions {
   table: string;
   displayLabel?: boolean;
   labelPosition?: LabelPosition;
+  tooltip?: string;
 }
 
 export interface MappingEditorOptions {
