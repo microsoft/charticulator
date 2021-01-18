@@ -453,7 +453,7 @@
     line-height: $height;
     height: $height;
     @include icon-size($height - 2px, 1px);
-    padding: 2px 0;
+    padding: 10px;
 
     transition: background-color $transition-default;
 
