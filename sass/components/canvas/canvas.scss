@@ -812,6 +812,9 @@
       .el-text {
         color: $gray-000;
       }
+      .svg-image-icon {
+        filter: invert(30%);
+      }
     }
   }
 
