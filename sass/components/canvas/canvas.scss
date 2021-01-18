@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @import "attribute_editor.scss";
+@import "./../../common/colors.scss";
 
 .mark-editor-view {
   flex: 1 1;
@@ -781,7 +782,7 @@
   position: absolute;
   white-space: nowrap;
   background: $gray-220;
-  border: 1px solid $gray-100;
+  border: 1px solid $color-canvas-tool;
 
   @include shadow-focused;
 
