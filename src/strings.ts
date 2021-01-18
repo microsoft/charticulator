@@ -53,7 +53,7 @@ export const strings = {
     replaceWithCSV: "Replace data with CSV file",
     showDataValues: "Show data values",
     showDerivedFields: "Show derived fields",
-    tableTitleColumns: "Columns",
+    tableTitleColumns: "Fields",
     tableTitleLinks: "Links",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
