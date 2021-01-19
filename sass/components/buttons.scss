@@ -214,6 +214,7 @@
 
     &.is-disabled {
       color: $gray-180;
+      background: $gray-210;
       cursor: not-allowed;
       .el-svg-icon {
         filter: invert(80%);
