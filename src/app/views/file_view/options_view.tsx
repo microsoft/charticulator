@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
+import { setFormatOptions } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
 import { ContextedComponent, MainContext } from "../../context_component";
@@ -28,6 +29,7 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
     store.setLocaleFileFormat(localeFileFormat);
+    store.solveConstraintsAndUpdateGraphics();
   };
 
   return (
@@ -70,6 +72,12 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
                 setNumberFormatDecimal(
                   e.target.options[e.target.selectedIndex].value
                 );
+                setFormatOptions({
+                  decimal: isDot ? "." : ",",
+                  thousands: isDot ? "," : ".",
+                  currency: ["Р", ""],
+                  grouping: [3]                  
+                })
               }}
               value={numberFormatDecimal}
             >

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { utcFormat } from "d3-time-format";
-import { format } from "d3-format";
+// import { format } from "d3-format";
 import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
+import { getFormat } from "../common";
 
 export let constants: { [name: string]: ValueType } = {};
 export let functions: {
@@ -248,7 +249,7 @@ functions.date = {
 };
 
 functions.format = makeArrayCapable2((value: number, spec: string) => {
-  return format(spec)(value);
+  return getFormat()(spec)(value);
 });
 
 // JSON format
