@@ -128,7 +128,6 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
               defaultValue={groupSymbol}
               placeholder={"group"}
               onEnter={(value) => {
-                debugger;
                 setFormatOptions({
                   decimal: localeFileFormat.numberFormat.decimal,
                   thousands:
