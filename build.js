@@ -192,8 +192,8 @@ let COMMANDS = {
 
   // Compile sass files
   sass: {
-    app: "node-sass sass/app.scss -o dist/styles",
-    page: "node-sass sass/page.scss -o dist/styles"
+    app: "sass sass/app.scss:dist/styles/app.css",
+    page: "sass sass/page.scss:dist/styles/page.css"
   },
 
   // Compile the PEGJS parser
@@ -216,13 +216,13 @@ let COMMANDS = {
   watch: {
     tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
-    sass: "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
+    sass: "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   },
   ssl_watch: {
     tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
-    sass: "node-sass --watch sass/app.scss sass/page.scss -o dist/styles",
+    sass: "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"
   },
   dev: () => runCommands(devSequence)
