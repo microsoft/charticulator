@@ -10,6 +10,8 @@ import {
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
   KeyColumn,
+  defaultCurrency,
+  defaultDigitsGroup,
 } from "../../../core";
 import {
   classNames,
@@ -215,6 +217,8 @@ export class ImportDataView extends React.Component<
           return loader.loadDSVFromContents(filename, contents, {
             delimiter: "\t",
             numberFormat: localeFileFormat.numberFormat,
+            currency: null,
+            group: null,
           });
         }
       }

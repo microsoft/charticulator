@@ -1,30 +1,43 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { setFormatOptions } from "../../../core/common";
+import { defaultCurrency, defaultDigitsGroup, parseSafe, setFormatOptions } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
 import { ContextedComponent, MainContext } from "../../context_component";
+import { LocalStorageKeys } from "../../globals";
 import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
+import { InputText } from "../panels/widgets/controls";
 
 export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
+
 const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
   store,
   onClose,
 }) => {
-  const localeFileFormat = store.getLocaleFileFormat();
+  const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
   const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(
     localeFileFormat.numberFormat.decimal,
-    "numberFormatRemove"
+    LocalStorageKeys.NumberFormatRemove
   );
   const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(
     localeFileFormat.delimiter,
-    "delimiterSymbol"
+    LocalStorageKeys.DelimiterSymbol
+  );
+
+  const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
+    localeFileFormat.currency,
+    LocalStorageKeys.CurrencySymbol
+  );
+
+  const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
+    localeFileFormat.group,
+    LocalStorageKeys.GroupSymbol
   );
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
@@ -75,9 +88,9 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
                 setFormatOptions({
                   decimal: isDot ? "." : ",",
                   thousands: isDot ? "," : ".",
-                  currency: ["Р", ""],
-                  grouping: [3]                  
-                })
+                  currency: parseSafe(localeFileFormat.currency, defaultCurrency),
+                  grouping: parseSafe(localeFileFormat.group, defaultDigitsGroup),
+                });
               }}
               value={numberFormatDecimal}
             >
@@ -85,6 +98,53 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
               <option value=",">{strings.options.numberFormatComma}</option>
             </select>
             <label>{strings.options.numberFormat}</label>
+          </div>
+
+          <div className="form-group">
+            <InputText
+              defaultValue={currencySymbol}
+              placeholder={"currency"}
+              onEnter={(value) => {
+                setFormatOptions({
+                  decimal: localeFileFormat.numberFormat.decimal,
+                  thousands:
+                    localeFileFormat.numberFormat.decimal === "," ? "." : ",",
+                  grouping: parseSafe(localeFileFormat.group, defaultDigitsGroup),
+                  currency: parseSafe(value, defaultCurrency),
+                });
+                setCurrencySymbol(value);
+                changeLocaleFileFormat({
+                  ...localeFileFormat,
+                  currency: value,
+                });
+                return true;
+              }}
+            />
+            <label>{strings.options.currencyFormat}</label>
+          </div>
+
+          <div className="form-group">
+            <InputText
+              defaultValue={groupSymbol}
+              placeholder={"group"}
+              onEnter={(value) => {
+                debugger;
+                setFormatOptions({
+                  decimal: localeFileFormat.numberFormat.decimal,
+                  thousands:
+                    localeFileFormat.numberFormat.decimal === "," ? "." : ",",
+                  grouping: parseSafe(value, defaultDigitsGroup),
+                  currency: parseSafe(localeFileFormat.currency, defaultCurrency),
+                });
+                setGroupSymbol(value);
+                changeLocaleFileFormat({
+                  ...localeFileFormat,
+                  group: value,
+                });
+                return true;
+              }}
+            />
+            <label>{strings.options.groups}</label>
           </div>
         </div>
       </div>

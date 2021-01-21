@@ -124,6 +124,8 @@ export class AppStore extends BaseStore {
       remove: ",",
       decimal: ".",
     },
+    currency: '["$", ""]',
+    group: "[3]",
   };
   public currentTool: string;
   public currentToolOptions: string;
@@ -1078,36 +1080,45 @@ export class AppStore extends BaseStore {
   public updateScales() {
     try {
       const chartElements = this.chart.elements;
-      const glyphElements = this.chart.glyphs.flatMap(gl => gl.marks);
-      this.chart.scales.forEach(scale => {
+      const glyphElements = this.chart.glyphs.flatMap((gl) => gl.marks);
+      this.chart.scales.forEach((scale) => {
         const mappings = [...chartElements, ...glyphElements]
-        .flatMap(el => {
-          return Object.keys(el.mappings).map(key => {
-            return {
-              element: el,
-              key,
-              mapping: el.mappings[key]
-            }
-          });
-        })
-        .filter((mapping) => mapping.mapping.type === "scale" && (mapping.mapping as ScaleMapping).scale === scale._id) as {
-          element: Specification.Element<Specification.ObjectProperties>,
-          key: string,
-          mapping: ScaleMapping
+          .flatMap((el) => {
+            return Object.keys(el.mappings).map((key) => {
+              return {
+                element: el,
+                key,
+                mapping: el.mappings[key],
+              };
+            });
+          })
+          .filter(
+            (mapping) =>
+              mapping.mapping.type === "scale" &&
+              (mapping.mapping as ScaleMapping).scale === scale._id
+          ) as {
+          element: Specification.Element<Specification.ObjectProperties>;
+          key: string;
+          mapping: ScaleMapping;
         }[];
-  
-        mappings.forEach(mapping => {
-          const scaleClass = this.chartManager.getClassById(scale._id)as Prototypes.Scales.ScaleClass;
-          const parsedExpression = this.chartManager.dataflow.cache.parse(mapping.mapping.expression);
-          const table = this.chartManager.dataflow.getTable(mapping.mapping.table);
+
+        mappings.forEach((mapping) => {
+          const scaleClass = this.chartManager.getClassById(
+            scale._id
+          ) as Prototypes.Scales.ScaleClass;
+          const parsedExpression = this.chartManager.dataflow.cache.parse(
+            mapping.mapping.expression
+          );
+          const table = this.chartManager.dataflow.getTable(
+            mapping.mapping.table
+          );
           const values = parsedExpression.getValue(table);
           scaleClass.inferParameters(values as Specification.DataValue[], {
-            newScale: true
+            newScale: true,
           });
         });
       });
-    }
-    catch(ex) {
+    } catch (ex) {
       console.error("Updating of scales failed with error", ex);
     }
   }
@@ -1257,7 +1268,7 @@ export class AppStore extends BaseStore {
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
       autoDomainMax: true,
-      autoDomainMin: true
+      autoDomainMin: true,
     };
 
     let expressions = [groupExpression];
@@ -1422,10 +1433,14 @@ export class AppStore extends BaseStore {
     this.localeFileFormat = value;
   }
 
-  public checkColumnsMapping(column: Specification.Template.Column,tableType: TableType, dataset: Dataset.Dataset): Specification.Template.Column[] {
+  public checkColumnsMapping(
+    column: Specification.Template.Column,
+    tableType: TableType,
+    dataset: Dataset.Dataset
+  ): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
-    const dataTable = dataset.tables.find(t => t.type === tableType);
-    const found = dataTable.columns.find(c => c.name === column.name);
+    const dataTable = dataset.tables.find((t) => t.type === tableType);
+    const found = dataTable.columns.find((c) => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }

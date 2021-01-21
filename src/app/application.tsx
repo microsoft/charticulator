@@ -12,6 +12,13 @@ import {
   Specification,
   Dataset,
   deepClone,
+  getFormatOptions,
+  setFormatOptions,
+  defaultCurrency,
+  defaultDelimiter,
+  defaultDigitsGroup,
+  defaultNumberFormat,
+  parseSafe,
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -27,6 +34,8 @@ import { LocaleFileFormat } from "../core/dataset/dsv_parser";
 import { MainTabs } from "./views/file_view";
 import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
+import { LocalStorageKeys } from "./globals";
+import { delimiter } from "path";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -71,6 +80,29 @@ export class Application {
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
+
+    const CurrencySymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.CurrencySymbol), defaultCurrency);
+    const DelimiterSymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) || defaultDelimiter, defaultDelimiter);
+    const GroupSymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.GroupSymbol), defaultDigitsGroup);
+    const NumberFormatRemove = parseSafe(window.localStorage.getItem(LocalStorageKeys.NumberFormatRemove) || defaultNumberFormat.remove, defaultNumberFormat.remove) ;
+
+    this.appStore.setLocaleFileFormat({
+      currency: parseSafe(CurrencySymbol, defaultCurrency),
+      delimiter: DelimiterSymbol,
+      group: parseSafe(GroupSymbol, defaultDigitsGroup),
+      numberFormat: {
+        decimal: NumberFormatRemove === "." ? "." : ",",
+        remove: NumberFormatRemove === "." ? "," : "."
+      }
+    });
+
+    setFormatOptions({
+      currency: parseSafe(CurrencySymbol, defaultCurrency),
+      grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
+      decimal: NumberFormatRemove === "." ? "." : ",",
+      thousands: NumberFormatRemove === "." ? "," : ".",
+    });
+
     (window as any).mainStore = this.appStore;
     ReactDOM.render(
       <MainView
@@ -232,11 +264,10 @@ export class Application {
       // Quick load from one or two CSV files
       // default to comma delimiter, and en-US number format
       const localeFileFormat: LocaleFileFormat = {
-        delimiter: ",",
-        numberFormat: {
-          remove: ",",
-          decimal: ".",
-        },
+        delimiter: defaultDelimiter,
+        numberFormat: defaultNumberFormat,
+        currency: null,
+        group: null,
       };
       const spec: DatasetSourceSpecification = {
         tables: hashParsed.loadCSV

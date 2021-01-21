@@ -655,6 +655,12 @@ let formatOptions: FormatLocaleDefinition = {
   currency: ["$", ""]
 };
 
+export function getFormatOptions(): FormatLocaleDefinition {
+  return {
+    ...formatOptions
+  };
+}
+
 export function setFormatOptions(options: FormatLocaleDefinition) {
   formatOptions = {
     ...options
@@ -663,4 +669,12 @@ export function setFormatOptions(options: FormatLocaleDefinition) {
 
 export function getFormat() {
   return formatLocale(formatOptions).format;
+}
+
+export function parseSafe(value: string, defaultValue: any = null) {
+  try {
+    return JSON.parse(value);
+  } catch(ex) {
+    return defaultValue;
+  }
 }
