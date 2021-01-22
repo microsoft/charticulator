@@ -99,8 +99,9 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
             </select>
             <label>{strings.options.numberFormat}</label>
           </div>
-
-          <div className="form-group">
+          {/* Uncomment to enable configuration for locale: currency symbol and groupping digits */}
+          {/*
+            <div className="form-group">
             <InputText
               defaultValue={currencySymbol}
               placeholder={"currency"}
@@ -144,7 +145,7 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
               }}
             />
             <label>{strings.options.groups}</label>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
