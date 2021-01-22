@@ -289,7 +289,7 @@ export class ChartContainer extends EventEmitter {
     ReactDOM.render(this.reactMount(this.width, this.height), this.container);
   }
 
-  public setFormatOptions(options: FormatLocaleDefinition) {
+  public static setFormatOptions(options: FormatLocaleDefinition) {
     setFormatOptions(options);
   }
 
