@@ -81,27 +81,45 @@ export class Application {
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
 
-    const CurrencySymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.CurrencySymbol), defaultCurrency);
-    const DelimiterSymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) || defaultDelimiter, defaultDelimiter);
-    const GroupSymbol = parseSafe(window.localStorage.getItem(LocalStorageKeys.GroupSymbol), defaultDigitsGroup);
-    const NumberFormatRemove = parseSafe(window.localStorage.getItem(LocalStorageKeys.NumberFormatRemove) || defaultNumberFormat.remove, defaultNumberFormat.remove) ;
+    try {
+      const CurrencySymbol = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.CurrencySymbol),
+        defaultCurrency
+      );
+      const DelimiterSymbol = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.DelimiterSymbol) ||
+          defaultDelimiter,
+        defaultDelimiter
+      );
+      const GroupSymbol = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.GroupSymbol),
+        defaultDigitsGroup
+      );
+      const NumberFormatRemove = parseSafe(
+        window.localStorage.getItem(LocalStorageKeys.NumberFormatRemove) ||
+          defaultNumberFormat.remove,
+        defaultNumberFormat.remove
+      );
 
-    this.appStore.setLocaleFileFormat({
-      currency: parseSafe(CurrencySymbol, defaultCurrency),
-      delimiter: DelimiterSymbol,
-      group: parseSafe(GroupSymbol, defaultDigitsGroup),
-      numberFormat: {
+      this.appStore.setLocaleFileFormat({
+        currency: parseSafe(CurrencySymbol, defaultCurrency),
+        delimiter: DelimiterSymbol,
+        group: parseSafe(GroupSymbol, defaultDigitsGroup),
+        numberFormat: {
+          decimal: NumberFormatRemove === "." ? "." : ",",
+          remove: NumberFormatRemove === "." ? "," : ".",
+        },
+      });
+
+      setFormatOptions({
+        currency: parseSafe(CurrencySymbol, defaultCurrency),
+        grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
         decimal: NumberFormatRemove === "." ? "." : ",",
-        remove: NumberFormatRemove === "." ? "," : "."
-      }
-    });
-
-    setFormatOptions({
-      currency: parseSafe(CurrencySymbol, defaultCurrency),
-      grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
-      decimal: NumberFormatRemove === "." ? "." : ",",
-      thousands: NumberFormatRemove === "." ? "," : ".",
-    });
+        thousands: NumberFormatRemove === "." ? "," : ".",
+      });
+    } catch (ex) {
+      console.warn("Loadin localization settings failed");
+    }
 
     (window as any).mainStore = this.appStore;
     ReactDOM.render(
