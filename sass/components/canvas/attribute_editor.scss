@@ -1265,7 +1265,8 @@
       &-slider {
         cursor: default;
         height: $line-height;
-
+        width: 100%;
+        
         svg {
           pointer-events: all;
           cursor: pointer;

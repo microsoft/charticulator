@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 import * as React from "react";
 
+import { ITextField, TextField } from "@fluentui/react";
+
 export interface InputTextProps {
   defaultValue?: string;
   placeholder?: string;
@@ -9,12 +11,17 @@ export interface InputTextProps {
   onCancel?: () => void;
 }
 
-export class InputText extends React.Component<InputTextProps, {}> {
-  public inputElement: HTMLInputElement;
+export class InputText extends React.Component<InputTextProps, {
+  value: string;
+}> {
+  public inputElement: ITextField;
 
   public componentWillUpdate(newProps: InputTextProps) {
-    this.inputElement.value =
-      newProps.defaultValue != null ? newProps.defaultValue : "";
+    // this.inputElement.value =
+      // newProps.defaultValue != null ? newProps.defaultValue : "";
+      // this.setState({
+      //   value: newProps.defaultValue != null ? newProps.defaultValue : ""
+      // });
   }
 
   public doEnter() {
@@ -27,12 +34,18 @@ export class InputText extends React.Component<InputTextProps, {}> {
     if (this.props.onEnter) {
       const ret = this.props.onEnter(this.inputElement.value);
       if (!ret) {
-        this.inputElement.value =
-          this.props.defaultValue != null ? this.props.defaultValue : "";
+        // this.inputElement.value =
+        //   this.props.defaultValue != null ? this.props.defaultValue : "";
+        this.setState({
+          value: this.props.defaultValue != null ? this.props.defaultValue : ""
+        });
       }
     } else {
-      this.inputElement.value =
-        this.props.defaultValue != null ? this.props.defaultValue : "";
+      // this.inputElement.value =
+      //   this.props.defaultValue != null ? this.props.defaultValue : "";
+      this.setState({
+        value: this.props.defaultValue != null ? this.props.defaultValue : ""
+      });
     }
   }
 
@@ -48,20 +61,16 @@ export class InputText extends React.Component<InputTextProps, {}> {
     return this.inputElement.value;
   }
 
-  public set value(v: string) {
-    this.inputElement.value = v;
-  }
+  // public set value(v: string) {
+  //   this.inputElement.value = v;
+  // }
 
   public render() {
     return (
-      <input
-        className="charticulator__widget-control-input-field"
-        type="text"
-        ref={(e) => (this.inputElement = e)}
-        defaultValue={
-          this.props.defaultValue != null ? this.props.defaultValue : ""
-        }
-        placeholder={this.props.placeholder}
+      <TextField
+        componentRef={(component)=> {
+          this.inputElement = component;
+        }}
         onKeyDown={(e) => {
           if (e.key == "Enter") {
             this.doEnter();
@@ -74,14 +83,48 @@ export class InputText extends React.Component<InputTextProps, {}> {
           // Select the text, with backward selection
           this.inputElement.setSelectionRange(
             0,
-            this.inputElement.value.length,
-            "backward"
+            this.inputElement.value.length
           );
         }}
         onBlur={() => {
           this.doEnter();
         }}
+        placeholder={this.props.placeholder}
+        defaultValue={
+          this.props.defaultValue != null ? this.props.defaultValue : ""
+        }
+        type="text"
       />
-    );
+    )
+    // return (
+    //   <input
+    //     className="charticulator__widget-control-input-field"
+    //     type="text"
+    //     ref={(e) => (this.inputElement = e)}
+    //     defaultValue={
+    //       this.props.defaultValue != null ? this.props.defaultValue : ""
+    //     }
+    //     placeholder={this.props.placeholder}
+    //     onKeyDown={(e) => {
+    //       if (e.key == "Enter") {
+    //         this.doEnter();
+    //       }
+    //       if (e.key == "Escape") {
+    //         this.doCancel();
+    //       }
+    //     }}
+    //     onFocus={(e) => {
+    //       // Select the text, with backward selection
+    //       this.inputElement.setSelectionRange(
+    //         0,
+    //         this.inputElement.value.length,
+    //         "backward"
+    //       );
+    //     }}
+    //     onBlur={() => {
+    //       this.doEnter();
+    //     }}
+    //   />
+    // );
   }
 }
