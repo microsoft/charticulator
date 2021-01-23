@@ -9,6 +9,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -37,7 +38,7 @@ export class ScaleEditor extends React.Component<
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new WidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping

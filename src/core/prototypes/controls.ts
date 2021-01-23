@@ -72,6 +72,7 @@ export interface InputNumberOptions {
   digits?: number;
   minimum?: number;
   maximum?: number;
+  step?: number;
   percentage?: boolean;
 
   showSlider?: boolean;
@@ -82,6 +83,7 @@ export interface InputNumberOptions {
   updownTick?: number;
   updownRange?: [number, number];
   updownStyle?: "normal" | "font";
+  label?: string;
 }
 
 export interface InputDateOptions {

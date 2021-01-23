@@ -41,6 +41,7 @@ import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
+import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -945,7 +946,7 @@ export class ChartEditorView
                 const layoutClass = this.props.store.chartManager.getPlotSegmentClass(
                   layoutState
                 );
-                const manager = new WidgetManager(
+                const manager = new FluentUIWidgetManager(
                   this.props.store,
                   layoutClass
                 );

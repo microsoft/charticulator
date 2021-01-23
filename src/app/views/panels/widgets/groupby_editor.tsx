@@ -5,10 +5,10 @@ import { Expression, Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { Button, InputExpression, Select } from "./controls";
-import { WidgetManager } from "./manager";
+import { CharticulatorPropertyAccessor } from "./manager";
 
 export interface GroupByEditorProps {
-  manager: WidgetManager;
+  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessor;
   options: Prototypes.Controls.GroupByEditorOptions;
   value: Specification.Types.GroupBy;
 }

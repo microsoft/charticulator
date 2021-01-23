@@ -64,11 +64,11 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { DataExpression } from "../../../actions/drag_data";
+
+import { TextField, Slider, DatePicker, PrimaryButton, DayOfWeek, IDatePickerStrings, SpinButton } from "@fluentui/react";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -85,23 +85,11 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export interface CharticulatorPropertyAccessor {
-  emitSetProperty: (
-    property: Prototypes.Controls.Property,
-    value: Specification.AttributeValue
-  ) => void
-  store: AppStore;
-
-  getAttributeMapping: (attribute: string) => Specification.Mapping;
-  onEditMappingHandler: OnEditMappingHandler;
-  onMapDataHandler: OnMapDataHandler;
-}
-
-export class WidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessor {
+export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
-  ) {}
+  ) { }
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
@@ -223,21 +211,88 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager, Chartic
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
     const value = this.getPropertyValue(property) as number;
+
+    if (options.showUpdown) {
+      return (
+        <div className="charticulator__widget-control-input-number-input">
+          <SpinButton
+            defaultValue={value.toString()}
+            label={options.label}
+            min={options.minimum}
+            max={options.maximum}
+            step={options.step}
+            iconProps={{ iconName: 'IncreaseIndentLegacy' }}
+            incrementButtonAriaLabel={'Increase value by 1'}
+            decrementButtonAriaLabel={'Decrease value by 1'}
+          />
+        </div>
+      )
+    }
+    if (options.showSlider) {
+      return (
+        <div className="charticulator__widget-control-input-number-input">
+          <Slider
+            min={options.sliderRange?.[0]}
+            max={options.sliderRange?.[1]}
+            defaultValue={value}
+            step={options.step || 0.1}
+            // mapping={this.props.sliderFunction}
+            onChange={(newValue) => {
+              if (value == null) {
+                this.emitSetProperty(property, null);
+                return true;
+              } else {
+                this.emitSetProperty(property, newValue);
+                return true;
+              }
+            }}
+          />
+        </div>
+      )
+    }
+
+    const parseNumber =(str: string) => {
+      str = str.trim();
+      if (str == "") {
+        return null;
+      }
+      if (options.percentage) {
+        str = str.replace(/\%$/, "");
+        return +str / 100;
+      } else {
+        return +str;
+      }
+    }
+
     return (
-      <InputNumber
-        {...options}
-        defaultValue={value}
-        onEnter={(value) => {
-          if (value == null) {
-            this.emitSetProperty(property, null);
-            return true;
-          } else {
-            this.emitSetProperty(property, value);
-            return true;
-          }
-          return false;
-        }}
-      />
+      <div className="charticulator__widget-control-input-number-input">
+        <TextField
+          type="number"
+          label={options.label}
+          validateOnFocusOut={true}
+          defaultValue={value.toString()}
+          onChange={(event, value) => {
+            if (value == null) {
+              this.emitSetProperty(property, null);
+              return true;
+            } else {
+              this.emitSetProperty(property, value);
+              return true;
+            }
+            return false;
+          }}
+          onGetErrorMessage={(value: string) => {
+            try {
+              const numberValue = parseNumber(value);
+              if (!numberValue) {
+                return "Invalid value";
+              }
+            } catch(ex) {
+              return "Invalid value";
+            }
+          }}
+        />
+      </div>
     );
   }
 
@@ -247,38 +302,71 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager, Chartic
   ) {
     const value = this.getPropertyValue(property) as number;
     const format = this.getDateFormat(property) as string;
+
     return (
-      <InputDate
-        {...options}
+      <DatePicker
+        firstDayOfWeek={DayOfWeek.Sunday}
+        placeholder="Select a date..."
+        ariaLabel="Select a date"
         defaultValue={value}
-        dateDisplayFormat={format}
-        onEnter={(value) => {
+        onSelectDate={(value: Date) => {
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
           } else {
-            this.emitSetProperty(property, value);
+            this.emitSetProperty(property, value as any);
             return true;
           }
         }}
       />
-    );
+    )
   }
 
   public inputText(
     property: Prototypes.Controls.Property,
     placeholder?: string
   ) {
+    // return (
+    //   <InputText
+    //     defaultValue={this.getPropertyValue(property) as string}
+    //     placeholder={placeholder}
+    //     onEnter={(value) => {
+    //       this.emitSetProperty(property, value);
+    //       return true;
+    //     }}
+    //   />
+    // );
+    const doEnter = () => {
+
+    }
+
+    const doCancel = () => {
+
+    };
     return (
-      <InputText
+      <TextField
         defaultValue={this.getPropertyValue(property) as string}
-        placeholder={placeholder}
-        onEnter={(value) => {
-          this.emitSetProperty(property, value);
-          return true;
+        onKeyDown={(e) => {
+          if (e.key == "Enter") {
+            doEnter();
+          }
+          if (e.key == "Escape") {
+            doCancel();
+          }
         }}
+        onFocus={(e) => {
+
+        }}
+        onBlur={() => {
+          doEnter();
+        }}
+        placeholder={placeholder}
+        onChange={(event, value) => {
+          this.emitSetProperty(property, value);
+        }}
+        type="text"
       />
-    );
+    )
   }
 
   public inputFontFamily(property: Prototypes.Controls.Property) {
@@ -590,9 +678,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager, Chartic
                         defaultValue={
                           currentExpression
                             ? {
-                                table: options.table,
-                                expression: currentExpression,
-                              }
+                              table: options.table,
+                              expression: currentExpression,
+                            }
                             : null
                         }
                         onChange={(value) => {
@@ -1229,8 +1317,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-          ? this.props.draggingHint()
-          : this.props.children}
+            ? this.props.draggingHint()
+            : this.props.children}
       </div>
     );
   }
@@ -1244,7 +1332,7 @@ export class ReorderStringsValue extends React.Component<
     onReset?: () => string[];
   },
   { items: string[] }
-> {
+  > {
   public state: { items: string[] } = {
     items: this.props.items.slice(),
   };
@@ -1315,10 +1403,10 @@ export class ReorderStringsValue extends React.Component<
 export class DetailsButton extends React.Component<
   {
     widgets: JSX.Element[];
-    manager: WidgetManager;
+    manager: Prototypes.Controls.WidgetManager;
   },
   {}
-> {
+  > {
   public inner: DetailsButtonInner;
   public componentDidUpdate() {
     if (this.inner) {
@@ -1344,9 +1432,10 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn,
+            {
+              anchor: btn,
               alignX: getAligntment(btn).alignX
-             }
+            }
           );
         }}
       />
@@ -1357,7 +1446,7 @@ export class DetailsButton extends React.Component<
 export class DetailsButtonInner extends React.Component<
   { parent: DetailsButton },
   {}
-> {
+  > {
   public render() {
     const parent = this.props.parent;
     return (

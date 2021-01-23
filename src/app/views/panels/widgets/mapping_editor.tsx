@@ -21,7 +21,7 @@ import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
 import { Button, InputExpression } from "./controls";
-import { DropZoneView, WidgetManager } from "./manager";
+import { CharticulatorPropertyAccessor, DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
@@ -29,7 +29,7 @@ import { FunctionCall, Variable } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 
 export interface MappingEditorProps {
-  parent: WidgetManager;
+  parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessor;
   attribute: string;
   type: Specification.AttributeType;
   options: Prototypes.Controls.MappingEditorOptions;
