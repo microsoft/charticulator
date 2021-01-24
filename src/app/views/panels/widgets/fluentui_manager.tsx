@@ -68,7 +68,7 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
-import { TextField, Slider, DatePicker, PrimaryButton, DayOfWeek, IDatePickerStrings, SpinButton } from "@fluentui/react";
+import { TextField, Slider, DatePicker, PrimaryButton, DayOfWeek, IDatePickerStrings, SpinButton, Checkbox } from "@fluentui/react";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -251,7 +251,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
       )
     }
 
-    const parseNumber =(str: string) => {
+    const parseNumber = (str: string) => {
       str = str.trim();
       if (str == "") {
         return null;
@@ -287,7 +287,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
               if (!numberValue) {
                 return "Invalid value";
               }
-            } catch(ex) {
+            } catch (ex) {
               return "Invalid value";
             }
           }}
@@ -439,12 +439,8 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
       case "checkbox-fill-width":
       case "checkbox": {
         return (
-          <CheckBox
-            value={this.getPropertyValue(property) as boolean}
-            text={options.label}
-            title={options.label}
-            fillWidth={options.type == "checkbox-fill-width"}
-            onChange={(v) => {
+          <Checkbox label={options.label}
+            onChange={(event, v) => {
               this.emitSetProperty(property, v);
             }}
           />
