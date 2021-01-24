@@ -1004,7 +1004,7 @@
           width: $line-height - 4px;
           height: $line-height - 4px;
           vertical-align: top;
-          margin: 1px;
+          margin: 5px;
           margin-right: 8px;
           border: 1px solid $white;
         }
@@ -1266,7 +1266,7 @@
         cursor: default;
         height: $line-height;
         width: 100%;
-        
+
         svg {
           pointer-events: all;
           cursor: pointer;
@@ -1670,7 +1670,7 @@
             width: $line-height - 4px;
             height: $line-height - 4px;
             vertical-align: top;
-            margin: 1px;
+            margin: 5px;
             margin-right: 8px;
             border: 1px solid $gray-200;
           }
