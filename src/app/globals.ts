@@ -9,3 +9,10 @@ import {
 export let dragController = new DragController();
 export let popupController = new PopupController();
 export let resizeListeners = new ResizeListeners();
+
+export enum LocalStorageKeys {
+  NumberFormatRemove = "numberFormatRemove",
+  DelimiterSymbol = "delimiterSymbol",
+  CurrencySymbol = "currencySymbol",
+  GroupSymbol = "groupSymbol"
+}

@@ -28,14 +28,12 @@ export class SimpleContext implements Context {
 }
 
 import { constants, functions, operators, precedences } from "./intrinsics";
-import { format } from "d3-format";
 import { parse } from "./parser";
-import { DatasetContext } from "../dataset";
 import {
   DataflowTable,
   DataflowTableGroupedContext,
 } from "../prototypes/dataflow";
-import { Specification } from "..";
+import { getFormat, Specification } from "..";
 
 export type PatternReplacer = (expr: Expression) => Expression | void;
 
@@ -112,7 +110,7 @@ export class TextExpression {
           const val = part.expression.getValue(context);
           if (part.format) {
             try {
-              return format(part.format)(+val);
+              return getFormat()(part.format)(+val);
             } catch (ex) {
               // try to handle specific format
               if (part.format.match(/^\%raw$/).length > 0) {

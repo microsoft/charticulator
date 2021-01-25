@@ -1,5 +1,7 @@
 import { Color } from "./color";
-import { timeFormat, utcFormat } from "d3-time-format";
+import { utcFormat } from "d3-time-format";
+
+import { formatLocale, FormatLocaleDefinition } from "d3-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -627,21 +629,52 @@ export function getTimeZoneOffset(date: number) {
 }
 
 export function replaceNewLineBySymbol(str: string) {
-  return str.replace(/\\n/g, "\n");
+  return str?.replace(/\\n/g, "\n");
 }
 
 export function splitStringByNewLine(str: string) {
-  return str.split(/\\n/g);
+  return str?.split(/\\n/g);
 }
 
 export function replaceTabBySymbol(str: string) {
-  return str.replace(/\\t/g, "\t");
+  return str?.replace(/\\t/g, "\t");
 }
 
 export function replaceSymbolByNewLine(str: string) {
-  return str.replace(/\n/g, "\\n");
+  return str?.replace(/\n/g, "\\n");
 }
 
 export function replaceSymbolByTab(str: string) {
-  return str.replace(/\t/g, "\\t");
+  return str?.replace(/\t/g, "\\t");
+}
+
+let formatOptions: FormatLocaleDefinition = {
+  decimal: ".",
+  thousands: ",",
+  grouping: [3],
+  currency: ["$", ""]
+};
+
+export function getFormatOptions(): FormatLocaleDefinition {
+  return {
+    ...formatOptions
+  };
+}
+
+export function setFormatOptions(options: FormatLocaleDefinition) {
+  formatOptions = {
+    ...options
+  };
+}
+
+export function getFormat() {
+  return formatLocale(formatOptions).format;
+}
+
+export function parseSafe(value: string, defaultValue: any = null) {
+  try {
+    return JSON.parse(value);
+  } catch(ex) {
+    return defaultValue;
+  }
 }
