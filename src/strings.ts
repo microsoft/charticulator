@@ -169,7 +169,7 @@ export const strings = {
     delimiter: "CSV Delimiter",
     fileFormat: "Import file format",
     numberFormat: "Number Format",
-    currencyFormat: "Currenc Format",
+    currencyFormat: "Currency Format",
     groups: "Groups",
     numberFormatComma: "Decimal: comma / Separator: dot",
     numberFormatDot: "Decimal: dot / Separator: comma",

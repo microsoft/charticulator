@@ -18,7 +18,6 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common";
-// import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
