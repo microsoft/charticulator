@@ -261,7 +261,7 @@ export class CategoricalLegendClass extends LegendClass {
             {
               type: "radio",
               showLabel: false,
-              icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
+              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
               labels: ["Vertical", "Horizontal"],
               options: ["vertical", "horizontal"],
             }

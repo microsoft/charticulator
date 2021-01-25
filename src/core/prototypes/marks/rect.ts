@@ -187,7 +187,7 @@ export class RectElementClass extends EmphasizableMarkClass<
           {
             type: "dropdown",
             showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
+            icons: ["RectangleShape", "TriangleShape", "Ellipse"],
             labels: ["Rectangle", "Triangle", "Ellipse"],
             options: ["rectangle", "triangle", "ellipse"],
           }
