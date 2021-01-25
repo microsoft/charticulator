@@ -20,13 +20,21 @@ import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
-import { Button, InputExpression } from "./controls";
-import { CharticulatorPropertyAccessors, DropZoneView, WidgetManager } from "./manager";
+import { Button } from "./controls";
+import {
+  CharticulatorPropertyAccessors,
+  DropZoneView,
+  WidgetManager,
+} from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall, Variable } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
+import { FluentValueEditor } from "./fluentui_value_editor";
+import { FluentInputExpression } from "./controls/fluentui_input_expression";
+
+import { TextField } from "@fluentui/react";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -40,7 +48,7 @@ export interface MappingEditorState {
   showNoneAsValue: boolean;
 }
 
-export class MappingEditor extends React.Component<
+export class FluentMappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
 > {
@@ -211,7 +219,7 @@ export class MappingEditor extends React.Component<
       placeholderText = this.props.options.defaultValue.toString();
     }
     return (
-      <ValueEditor
+      <FluentValueEditor
         value={value}
         type={this.props.type}
         placeholder={placeholderText}
@@ -250,10 +258,26 @@ export class MappingEditor extends React.Component<
         } else {
           if (options.defaultAuto) {
             return (
-              <span
-                className="el-clickable-label"
-                ref={(e) => (this.noneLabel = e)}
-                onClick={() => {
+              // <span
+              //   className="el-clickable-label"
+              //   ref={(e) => (this.noneLabel = e)}
+              //   onClick={() => {
+              //     if (
+              //       !mapping ||
+              //       (mapping as any).valueIndex === undefined ||
+              //       (mapping as any).valueIndex === null
+              //     ) {
+              //       this.initiateValueEditor();
+              //     }
+              //   }}
+              // >
+              //   (auto)
+              // </span>
+              <TextField
+                // disabled
+                placeholder={"(auto)"}
+                onBlur={() => {
+                  debugger;
                   if (
                     !mapping ||
                     (mapping as any).valueIndex === undefined ||
@@ -262,16 +286,29 @@ export class MappingEditor extends React.Component<
                     this.initiateValueEditor();
                   }
                 }}
-              >
-                (auto)
-              </span>
+              />
             );
           } else {
             return (
-              <span
-                className="el-clickable-label"
-                ref={(e) => (this.noneLabel = e)}
-                onClick={() => {
+              // <span
+              //   className="el-clickable-label"
+              //   ref={(e) => (this.noneLabel = e)}
+              //   onClick={() => {
+              //     if (
+              //       !mapping ||
+              //       (mapping as any).valueIndex === undefined ||
+              //       (mapping as any).valueIndex === null
+              //     ) {
+              //       this.initiateValueEditor();
+              //     }
+              //   }}
+              // >
+              //   (none)
+              // </span>
+              <TextField
+                // disabled
+                placeholder={"(none)"}
+                onBlur={() => {
                   if (
                     !mapping ||
                     (mapping as any).valueIndex === undefined ||
@@ -280,9 +317,7 @@ export class MappingEditor extends React.Component<
                     this.initiateValueEditor();
                   }
                 }}
-              >
-                (none)
-              </span>
+              />
             );
           }
         }
@@ -296,7 +331,7 @@ export class MappingEditor extends React.Component<
         case "text": {
           const textMapping = mapping as Specification.TextMapping;
           return (
-            <InputExpression
+            <FluentInputExpression
               defaultValue={textMapping.textExpression}
               textExpression={true}
               validate={(value) =>
@@ -541,7 +576,7 @@ export interface DataMappAndScaleEditorProps {
   attribute: string;
   defaultMapping: Specification.Mapping;
   options: Prototypes.Controls.MappingEditorOptions;
-  parent: MappingEditor;
+  parent: FluentMappingEditor;
   onClose: () => void;
   alignLeft?: boolean;
 }

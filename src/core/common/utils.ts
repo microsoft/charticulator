@@ -627,21 +627,21 @@ export function getTimeZoneOffset(date: number) {
 }
 
 export function replaceNewLineBySymbol(str: string) {
-  return str.replace(/\\n/g, "\n");
+  return str?.replace(/\\n/g, "\n");
 }
 
 export function splitStringByNewLine(str: string) {
-  return str.split(/\\n/g);
+  return str?.split(/\\n/g);
 }
 
 export function replaceTabBySymbol(str: string) {
-  return str.replace(/\\t/g, "\t");
+  return str?.replace(/\\t/g, "\t");
 }
 
 export function replaceSymbolByNewLine(str: string) {
-  return str.replace(/\n/g, "\\n");
+  return str?.replace(/\n/g, "\\n");
 }
 
 export function replaceSymbolByTab(str: string) {
-  return str.replace(/\t/g, "\\t");
+  return str?.replace(/\t/g, "\\t");
 }

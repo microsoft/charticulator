@@ -41,21 +41,15 @@ import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
   Button,
-  InputColor,
   InputColorGradient,
   InputImage,
-  InputNumber,
-  InputText,
   Radio,
   Select,
   ComboBoxFontFamily,
-  ComboBox,
-  CheckBox,
-  InputExpression,
   InputImageProperty,
+  FluentComboBoxFontFamily,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
 import { InputDate } from "./controls/input_date";
@@ -68,7 +62,13 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
-import { TextField, Slider, DatePicker, PrimaryButton, DayOfWeek, IDatePickerStrings, SpinButton, Checkbox } from "@fluentui/react";
+import { IconButton, IIconProps, TextField, Slider, DatePicker, ChoiceGroup, DayOfWeek, IDatePickerStrings, SpinButton, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
+import { FluentMappingEditor } from "./fluent_mapping_editor";
+import { CharticulatorPropertyAccessors as CharticulatorPropertyAccessors } from "./manager";
+import { FluentInputColor } from "./controls/fluentui_input_color";
+import { FluentInputExpression } from "./controls/fluentui_input_expression";
+
+import { Icon } from '@fluentui/react/lib/Icon';
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -85,7 +85,7 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager {
+export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
@@ -115,7 +115,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
 
     return this.row(
       name,
-      <MappingEditor
+      <FluentMappingEditor
         store={this.store}
         parent={this}
         attribute={attribute}
@@ -216,7 +216,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
       return (
         <div className="charticulator__widget-control-input-number-input">
           <SpinButton
-            defaultValue={value.toString()}
+            defaultValue={value?.toString()}
             label={options.label}
             min={options.minimum}
             max={options.maximum}
@@ -270,7 +270,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
           type="number"
           label={options.label}
           validateOnFocusOut={true}
-          defaultValue={value.toString()}
+          defaultValue={value?.toString()}
           onChange={(event, value) => {
             if (value == null) {
               this.emitSetProperty(property, null);
@@ -300,6 +300,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
+    debugger;
     const value = this.getPropertyValue(property) as number;
     const format = this.getDateFormat(property) as string;
 
@@ -308,7 +309,8 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
         firstDayOfWeek={DayOfWeek.Sunday}
         placeholder="Select a date..."
         ariaLabel="Select a date"
-        defaultValue={value}
+        defaultValue={format}
+        // value={value}
         onSelectDate={(value: Date) => {
           if (value == null) {
             this.emitSetProperty(property, null);
@@ -326,40 +328,9 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     property: Prototypes.Controls.Property,
     placeholder?: string
   ) {
-    // return (
-    //   <InputText
-    //     defaultValue={this.getPropertyValue(property) as string}
-    //     placeholder={placeholder}
-    //     onEnter={(value) => {
-    //       this.emitSetProperty(property, value);
-    //       return true;
-    //     }}
-    //   />
-    // );
-    const doEnter = () => {
-
-    }
-
-    const doCancel = () => {
-
-    };
     return (
       <TextField
         defaultValue={this.getPropertyValue(property) as string}
-        onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            doEnter();
-          }
-          if (e.key == "Escape") {
-            doCancel();
-          }
-        }}
-        onFocus={(e) => {
-
-        }}
-        onBlur={() => {
-          doEnter();
-        }}
         placeholder={placeholder}
         onChange={(event, value) => {
           this.emitSetProperty(property, value);
@@ -371,7 +342,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
 
   public inputFontFamily(property: Prototypes.Controls.Property) {
     return (
-      <ComboBoxFontFamily
+      <FluentComboBoxFontFamily
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
@@ -383,16 +354,21 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
 
   public inputComboBox(
     property: Prototypes.Controls.Property,
-    values: string[],
-    valuesOnly: boolean = false
+    options: Prototypes.Controls.InputComboboxOptions
   ) {
     return (
       <ComboBox
-        defaultValue={this.getPropertyValue(property) as string}
-        options={values}
-        optionsOnly={valuesOnly}
-        onEnter={(value) => {
-          this.emitSetProperty(property, value);
+        selectedKey={this.getPropertyValue(property) as string}
+        label={options.label}
+        autoComplete="on"
+        options={options.defaultRange.map(rangeValue => {
+          return {
+            key: rangeValue,
+            text: rangeValue
+          }
+        })}
+        onChange={(event, value) => {
+          this.emitSetProperty(property, value.key);
           return true;
         }}
       />
@@ -404,30 +380,91 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     options: Prototypes.Controls.InputSelectOptions
   ) {
     if (options.type == "dropdown") {
+      const iconStyles = { marginRight: '8px' };
+
+      const onRenderOption = (option: IDropdownOption): JSX.Element => {
+        return (
+          <>
+            {option.data && option.data.icon && (
+              <Icon style={iconStyles} iconName={option.data.icon} aria-hidden="true" title={option.data.icon} />
+            )}
+            <span>{option.text}</span>
+          </>
+        );
+      };
+
+      const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
+        const option = options[0];
+      
+        return (
+          <div>
+            {option.data && option.data.icon && (
+              <Icon style={iconStyles} iconName={option.data.icon} aria-hidden="true" title={option.data.icon} />
+            )}
+            <span>{option.text}</span>
+          </div>
+        );
+      };
+
       return (
-        <Select
-          labels={options.labels}
-          icons={options.icons}
-          options={options.options}
-          value={this.getPropertyValue(property) as string}
-          showText={options.showLabel}
-          onChange={(value) => {
-            this.emitSetProperty(property, value);
+        <Dropdown
+          selectedKey={this.getPropertyValue(property) as string}
+          label={options.label}
+          onRenderOption={onRenderOption}
+          onRenderTitle={onRenderTitle}
+          options={options.options.map((rangeValue, index) => {
+            return {
+              key: rangeValue,
+              text: options.labels[index],
+              data: {
+                icon: options.icons?.[index]
+              }
+            }
+          })}
+          onChange={(event, value) => {
+            this.emitSetProperty(property, value.key);
+            return true;
           }}
         />
       );
     } else {
       return (
-        <Radio
-          labels={options.labels}
-          icons={options.icons}
-          options={options.options}
-          value={this.getPropertyValue(property) as string}
-          showText={options.showLabel}
-          onChange={(value) => {
-            this.emitSetProperty(property, value);
-          }}
-        />
+        // <ChoiceGroup
+        //   selectedKey={this.getPropertyValue(property) as string}
+        //   value={this.getPropertyValue(property) as string}
+        //   label={options.label}
+        //   options={options.options.map((option, index) => {
+        //     return {
+        //       key: option,
+        //       text: options.labels[index],
+        //       iconProps: {
+        //         iconName: options.icons?.[index]
+        //       },
+        //       imageSize: {
+        //         height: 24,
+        //         width: 24
+        //       }
+        //     }
+        //   })}
+        //   onChange={(ev, option) => {
+        //     this.emitSetProperty(property, option.key);
+        //   }}
+        // />
+        <>
+          {options.options.map((option, index) => {
+            return (
+              <IconButton iconProps={{
+                iconName: options.icons[index]
+              }}
+              title={options.labels[index]}
+              checked={option === this.getPropertyValue(property) as string}
+              onClick={() => {
+                this.emitSetProperty(property, option);
+              }}
+            />
+            )
+          })}
+        </>
       );
     }
   }
@@ -466,7 +503,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
     return (
-      <InputExpression
+      <FluentInputExpression
         defaultValue={this.getPropertyValue(property) as string}
         validate={(value) => {
           if (value && value.trim() !== "") {
@@ -497,7 +534,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
   ): JSX.Element {
     const color = this.getPropertyValue(property) as Color;
     return (
-      <InputColor
+      <FluentInputColor
         store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}
@@ -858,7 +895,8 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     );
   }
   public label(title: string) {
-    return <span className="charticulator__widget-label">{title}</span>;
+    // return <span className="charticulator__widget-label">{title}</span>;
+    return <Label>{title}</Label>;
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {
     return (
@@ -898,9 +936,10 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          <span className="charticulator__widget-section-header-title">
+          {/* <span className="charticulator__widget-section-header-title">
             {title}
-          </span>
+          </span> */}
+          <Label>{title}</Label>
           {widget}
           <Button
             icon={"general/bind-data"}
@@ -957,9 +996,10 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <span className="charticulator__widget-section-header-title">
+          <Label>{title}</Label>
+          {/* <span className="charticulator__widget-section-header-title">
             {title}
-          </span>
+          </span> */}
           {widget}
         </div>
       );
@@ -1160,6 +1200,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
           <span className="charticulator__widget-row-label el-layout-item">
             {title}
           </span>
+          // <Label>{title}</Label>
         ) : null}
         {widget}
       </div>

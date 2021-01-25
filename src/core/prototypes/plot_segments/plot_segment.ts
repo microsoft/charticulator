@@ -206,7 +206,7 @@ export abstract class PlotSegmentClass<
         table.rows.forEach((row) => {
           const value = row[columnName];
           const rawValue = row[rawColumnName];
-          if (value !== undefined && rawValue !== undefined) {
+          if (value !== undefined && value !== null && rawValue !== undefined) {
             const stringValue = value.toString();
             const rawValueString = (
               rawValue || row[refineColumnName(rawColumnName)]

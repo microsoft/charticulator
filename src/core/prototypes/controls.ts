@@ -15,6 +15,12 @@ export interface Property {
   noComputeLayout?: boolean;
 }
 
+export interface InputComboboxOptions {
+  defaultRange: string[],
+  valuesOnly?: boolean,
+  label?: string
+}
+
 export interface InputSelectOptions {
   type: "radio" | "dropdown";
   showLabel?: boolean;
@@ -22,6 +28,7 @@ export interface InputSelectOptions {
   options: string[];
   icons?: string[];
   labels?: string[];
+  label?: string;
 }
 
 export interface InputBooleanOptions {
@@ -157,8 +164,7 @@ export interface WidgetManager {
   inputText(property: Property, placeholder?: string): Widget;
   inputComboBox(
     property: Property,
-    values: string[],
-    valuesOnly?: boolean
+    options: InputComboboxOptions
   ): Widget;
   inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;

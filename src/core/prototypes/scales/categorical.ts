@@ -359,8 +359,10 @@ export class CategoricalScaleEnum extends ScaleClass<
             manager.text(key, "right"),
             manager.inputComboBox(
               { property: "mapping", field: key },
-              props.defaultRange,
-              false
+              {
+                defaultRange: props.defaultRange,
+                valuesOnly: false
+              }
             )
           )
         )

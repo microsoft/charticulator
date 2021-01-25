@@ -29,8 +29,9 @@ import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
-import { initializeIcons } from '@fluentui/react/lib/Icons';
-initializeIcons(/* optional base url */);
+// import { initializeIcons } from '@fluentui/react/lib/Icons';
+import { initializeIcons } from '@uifabric/icons';
+initializeIcons();
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}

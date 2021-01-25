@@ -51,7 +51,9 @@
     "hammerjs": "^2.0.8",
     "lscg-solver": "^1.2.1",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "@uifabric/icons": "7.5.18",
+    "@fluentui/react": "^7.155.1"
   },
   "license-check-and-add-config": {
     "folder": ".",

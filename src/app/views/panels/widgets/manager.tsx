@@ -69,6 +69,7 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
+import { InputComboboxOptions } from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -85,7 +86,7 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export interface CharticulatorPropertyAccessor {
+export interface CharticulatorPropertyAccessors {
   emitSetProperty: (
     property: Prototypes.Controls.Property,
     value: Specification.AttributeValue
@@ -295,14 +296,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager, Chartic
 
   public inputComboBox(
     property: Prototypes.Controls.Property,
-    values: string[],
-    valuesOnly: boolean = false
+    options: InputComboboxOptions
   ) {
     return (
       <ComboBox
         defaultValue={this.getPropertyValue(property) as string}
-        options={values}
-        optionsOnly={valuesOnly}
+        options={options.defaultRange}
+        optionsOnly={options.valuesOnly}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
