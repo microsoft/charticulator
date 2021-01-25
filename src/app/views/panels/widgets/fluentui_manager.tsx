@@ -284,7 +284,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager 
           onGetErrorMessage={(value: string) => {
             try {
               const numberValue = parseNumber(value);
-              if (!numberValue) {
+              if (numberValue === null) {
                 return "Invalid value";
               }
             } catch (ex) {

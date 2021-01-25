@@ -2,8 +2,7 @@
 // Licensed under the MIT license.
 import * as Hammer from "hammerjs";
 import * as React from "react";
-
-import { Slider as FluentSlider } from "@fluentui/react";
+import { classNames } from "../../../../utils";
 
 export interface SliderProps {
   width: number;
@@ -73,43 +72,43 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   }
 
   public componentDidMount() {
-    // this.hammer = new Hammer(this.refs.svg);
-    // this.hammer.add(new Hammer.Pan({ threshold: 0 }));
-    // this.hammer.add(new Hammer.Tap());
+    this.hammer = new Hammer(this.refs.svg);
+    this.hammer.add(new Hammer.Pan({ threshold: 0 }));
+    this.hammer.add(new Hammer.Tap());
 
     const margin = 13;
 
-    // this.hammer.on("panstart pan panend tap", (e) => {
-    //   const left = this.refs.svg.getBoundingClientRect().left;
-    //   const x = e.center.x - left;
-    //   let pos = (x - margin) / (this.props.width - margin - margin);
-    //   pos = Math.max(0, Math.min(1, pos));
-    //   const value = this.niceValue(this.ratioToValue(pos));
-    //   this.setState({
-    //     currentValue: value,
-    //   });
-    //   if (this.props.onChange) {
-    //     if (e.type == "panend" || e.type == "tap") {
-    //       this.props.onChange(value, true);
-    //     } else {
-    //       this.props.onChange(value, false);
-    //     }
-    //   }
-    //   if (e.type == "panstart") {
-    //     this.setState({
-    //       dragging: true,
-    //     });
-    //   }
-    //   if (e.type == "panend") {
-    //     this.setState({
-    //       dragging: false,
-    //     });
-    //   }
-    // });
+    this.hammer.on("panstart pan panend tap", (e) => {
+      const left = this.refs.svg.getBoundingClientRect().left;
+      const x = e.center.x - left;
+      let pos = (x - margin) / (this.props.width - margin - margin);
+      pos = Math.max(0, Math.min(1, pos));
+      const value = this.niceValue(this.ratioToValue(pos));
+      this.setState({
+        currentValue: value,
+      });
+      if (this.props.onChange) {
+        if (e.type == "panend" || e.type == "tap") {
+          this.props.onChange(value, true);
+        } else {
+          this.props.onChange(value, false);
+        }
+      }
+      if (e.type == "panstart") {
+        this.setState({
+          dragging: true,
+        });
+      }
+      if (e.type == "panend") {
+        this.setState({
+          dragging: false,
+        });
+      }
+    });
   }
 
   public componentWillUnmount() {
-    // this.hammer?.destroy();
+    this.hammer.destroy();
   }
 
   public render() {
@@ -126,39 +125,26 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     );
     return (
       <span className="charticulator__widget-control-slider">
-        <FluentSlider
-          min={min}
-          max={max}
-          step={0.1}
-          value={this.state.currentValue || this.props.defaultValue}
-          showValue
-          // eslint-disable-next-line react/jsx-no-bind
-          onChange={(value) => this.props.onChange(value, true)}
-        />
+        <svg
+          width={width}
+          height={height}
+          ref="svg"
+          className={classNames(
+            ["invalid", this.state.currentValue == null],
+            ["active", this.state.dragging]
+          )}
+        >
+          <line
+            className="track"
+            x1={margin}
+            x2={width - margin}
+            y1={y}
+            y2={y}
+          />
+          <line className="track-highlight" x1={margin} x2={px} y1={y} y2={y} />
+          <circle className="indicator" cx={px} cy={y} r={(height / 2) * 0.5} />
+        </svg>
       </span>
-    )
-    // return (
-    //   <span className="charticulator__widget-control-slider">
-    //     <svg
-    //       width={width}
-    //       height={height}
-    //       ref="svg"
-    //       className={classNames(
-    //         ["invalid", this.state.currentValue == null],
-    //         ["active", this.state.dragging]
-    //       )}
-    //     >
-    //       <line
-    //         className="track"
-    //         x1={margin}
-    //         x2={width - margin}
-    //         y1={y}
-    //         y2={y}
-    //       />
-    //       <line className="track-highlight" x1={margin} x2={px} y1={y} y2={y} />
-    //       <circle className="indicator" cx={px} cy={y} r={(height / 2) * 0.5} />
-    //     </svg>
-    //   </span>
-    // );
+    );
   }
 }

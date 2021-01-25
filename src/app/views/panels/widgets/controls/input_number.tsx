@@ -6,7 +6,6 @@ import { Button, UpdownButton } from "./button";
 import { InputText } from "./input_text";
 import { Slider } from "./slider";
 
-
 export interface InputNumberProps {
   defaultValue?: number;
   placeholder?: string;
@@ -100,13 +99,10 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
         defaultValue={this.props.defaultValue}
         mapping={this.props.sliderFunction}
         onChange={(newValue, isFinished) => {
-          // this.textInput.value = this.formatNumber(newValue);
+          this.textInput.value = this.formatNumber(newValue);
           if (isFinished) {
             this.reportValue(newValue);
           }
-          this.textInput?.setState({
-            value: newValue.toString()
-          });
         }}
       />
     );
@@ -146,26 +142,21 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
     }
   }
 
-  public renderTextBox() {
-    return (
-      <div className="charticulator__widget-control-input-number-input">
-      <InputText
-        ref={(e) => (this.textInput = e)}
-        placeholder={this.props.placeholder}
-        defaultValue={this.formatNumber(this.props.defaultValue)}
-        onEnter={(str) => {
-          const num = this.parseNumber(str);
-          return this.reportValue(num);
-        }}
-      />
-    </div>
-    )
-  }
-
   public render() {
     return (
       <span className="charticulator__widget-control-input-number">
-        {this.props.showSlider ? this.renderSlider() : this.renderTextBox()}
+        <div className="charticulator__widget-control-input-number-input">
+          <InputText
+            ref={(e) => (this.textInput = e)}
+            placeholder={this.props.placeholder}
+            defaultValue={this.formatNumber(this.props.defaultValue)}
+            onEnter={(str) => {
+              const num = this.parseNumber(str);
+              return this.reportValue(num);
+            }}
+          />
+        </div>
+        {this.props.showSlider ? this.renderSlider() : null}
         {this.props.showUpdown ? this.renderUpdown() : null}
       </span>
     );
