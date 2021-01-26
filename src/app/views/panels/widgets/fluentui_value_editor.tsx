@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { TextField } from "@fluentui/react";
+import { Dropdown, TextField } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
@@ -266,17 +266,22 @@ export class FluentValueEditor extends ContextedComponent<
         const str = value as string;
         const strings = this.props.hints.rangeEnum;
         return (
-          <ComboBox
-            defaultValue={str}
-            onEnter={(newValue) => {
-              if (newValue == null) {
+          <Dropdown
+            selectedKey={str}
+            options={strings.map((str, index) => {
+              return {
+                key: str,
+                text: str
+              };
+            })}
+            onChange={(event, value) => {
+              if (value == null) {
                 this.emitClearValue();
               } else {
-                this.emitSetValue(newValue);
+                this.emitSetValue(value.key);
               }
               return true;
             }}
-            options={strings || []}
           />
         );
       }

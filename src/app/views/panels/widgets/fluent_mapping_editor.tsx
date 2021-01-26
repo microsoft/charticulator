@@ -34,7 +34,8 @@ import { getAligntment } from "../../../utils";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { TextField } from "@fluentui/react";
+import { DefaultButton, TextField, ActionButton } from "@fluentui/react";
+import { FluentActionButton, FluentButton } from "./controls/fluentui_buttons";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -277,7 +278,6 @@ export class FluentMappingEditor extends React.Component<
                 // disabled
                 placeholder={"(auto)"}
                 onBlur={() => {
-                  debugger;
                   if (
                     !mapping ||
                     (mapping as any).valueIndex === undefined ||
@@ -380,70 +380,58 @@ export class FluentMappingEditor extends React.Component<
               scaleIcon = <SVGImageIcon url={R.getSVGIcon("scale/color")} />;
             }
             return (
-              <span
-                className="el-mapping-scale"
-                ref={(e) => (this.scaleMappingDisplay = e)}
-                onClick={() => {
-                  if (
-                    !scaleMapping ||
-                    scaleMapping.valueIndex === undefined ||
-                    scaleMapping.valueIndex === null
-                  ) {
-                    const {
-                      alignLeft,
-                      alignX,
-                    }: { alignLeft: boolean; alignX: any } = getAligntment(
-                      this.scaleMappingDisplay
-                    );
-
-                    globals.popupController.popupAt(
-                      (context) => (
-                        <PopupView context={context}>
-                          <DataMappAndScaleEditor
-                            attribute={this.props.attribute}
-                            parent={this}
-                            defaultMapping={mapping}
-                            options={options}
-                            alignLeft={alignLeft}
-                            onClose={() => context.close()}
-                          />
-                        </PopupView>
-                      ),
-                      { anchor: this.scaleMappingDisplay, alignX }
-                    );
-                  } else {
-                    this.beginDataFieldValueSelection();
-                  }
-                }}
-              >
-                <span className="el-mapping-scale-scale is-left">
-                  {scaleIcon}
-                </span>
-                <svg width={6} height={20}>
-                  <path d="M3.2514,10A17.37314,17.37314,0,0,1,6,0H0V20H6A17.37342,17.37342,0,0,1,3.2514,10Z" />
-                </svg>
-                <span className="el-mapping-scale-column">
-                  {scaleMapping.expression}
-                </span>
-                <svg width={6} height={20}>
-                  <path d="M2.7486,10A17.37314,17.37314,0,0,0,0,0H6V20H0A17.37342,17.37342,0,0,0,2.7486,10Z" />
-                </svg>
-              </span>
+              <FluentActionButton>
+                <ActionButton
+                  elementRef={e => this.scaleMappingDisplay = e}
+                  onClick={() => {
+                    if (
+                      !scaleMapping ||
+                      scaleMapping.valueIndex === undefined ||
+                      scaleMapping.valueIndex === null
+                    ) {
+                      const {
+                        alignLeft,
+                        alignX,
+                      }: { alignLeft: boolean; alignX: any } = getAligntment(
+                        this.scaleMappingDisplay
+                      );
+  
+                      globals.popupController.popupAt(
+                        (context) => (
+                          <PopupView context={context}>
+                            <DataMappAndScaleEditor
+                              attribute={this.props.attribute}
+                              parent={this}
+                              defaultMapping={mapping}
+                              options={options}
+                              alignLeft={alignLeft}
+                              onClose={() => context.close()}
+                            />
+                          </PopupView>
+                        ),
+                        { anchor: this.scaleMappingDisplay, alignX }
+                      );
+                    } else {
+                      this.beginDataFieldValueSelection();
+                    }
+                  }}
+                  text={scaleMapping.expression}
+                  iconProps={{
+                    iconName: "ColumnFunction"
+                  }}
+                />
+              </FluentActionButton>
             );
           } else {
             return (
-              <span className="el-mapping-scale">
-                <span className="el-mapping-scale-scale is-left">=</span>
-                <svg width={6} height={20}>
-                  <path d="M3.2514,10A17.37314,17.37314,0,0,1,6,0H0V20H6A17.37342,17.37342,0,0,1,3.2514,10Z" />
-                </svg>
-                <span className="el-mapping-scale-column">
-                  {scaleMapping.expression}
-                </span>
-                <svg width={6} height={20}>
-                  <path d="M2.7486,10A17.37314,17.37314,0,0,0,0,0H6V20H0A17.37342,17.37342,0,0,0,2.7486,10Z" />
-                </svg>
-              </span>
+              <FluentActionButton>
+                <ActionButton
+                  text={scaleMapping.expression}
+                  iconProps={{
+                    iconName: "ColumnFunction"
+                  }}
+                />
+              </FluentActionButton>
             );
           }
         }
@@ -524,33 +512,52 @@ export class FluentMappingEditor extends React.Component<
           this.renderCurrentAttributeMapping(),
           <span>
             {shouldShowEraser ? (
-              <Button
-                icon="general/eraser"
-                active={false}
-                title="Remove"
-                onClick={() => {
-                  if (parent.getAttributeMapping(attribute)) {
-                    this.clearMapping();
-                  }
-                  this.setState({
-                    showNoneAsValue: false,
-                  });
-                }}
-              />
+              <FluentButton>
+                <DefaultButton
+                  iconProps={{
+                    iconName: "EraseTool"
+                  }}
+                  checked={false}
+                  title="Remove"
+                  onClick={() => {
+                    if (parent.getAttributeMapping(attribute)) {
+                      this.clearMapping();
+                    }
+                    this.setState({
+                      showNoneAsValue: false,
+                    });
+                  }}
+                />
+              </FluentButton>
             ) : null}
             {(valueIndex === undefined || valueIndex === null) &&
             shouldShowBindData ? (
-              <Button
-                icon={"general/bind-data"}
-                title="Bind data"
-                ref={(e) =>
-                  (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                }
-                onClick={() => {
-                  this.beginDataFieldSelection();
-                }}
-                active={isDataMapping}
-              />
+              // <Button
+              //   icon={"general/bind-data"}
+              //   title="Bind data"
+              //   ref={(e) =>
+              //     (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+              //   }
+              //   onClick={() => {
+              //     this.beginDataFieldSelection();
+              //   }}
+              //   active={isDataMapping}
+              // />
+              <FluentButton>
+                <DefaultButton
+                  elementRef={(e) =>
+                    (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+                  }
+                  iconProps={{
+                    iconName: "Link"
+                  }}
+                  title="Bind data"
+                  onClick={() => {
+                    this.beginDataFieldSelection();
+                  }}
+                  checked={isDataMapping}
+                />
+              </FluentButton>
             ) : null}
             {valueIndex !== undefined && valueIndex !== null ? (
               <Button
