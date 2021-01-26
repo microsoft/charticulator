@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Dropdown, TextField } from "@fluentui/react";
+import { DefaultButton, Dropdown, TextField } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
@@ -25,6 +25,8 @@ import {
   InputText,
 } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
+
+import { strings } from "../../../../strings";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -290,26 +292,30 @@ export class FluentValueEditor extends ContextedComponent<
         let ref: Element;
         if (this.props.onEmitMapping) {
           return (
-            <Button
-              active={false}
-              text="Conditioned by..."
-              ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
+            <DefaultButton
+              text={strings.attributesPanel.conditionedBy}
+              elementRef={(e) =>
+                (ref = ReactDOM.findDOMNode(e) as Element)
+              }
               onClick={() => {
-                // this.beginDataFieldSelection(ref);
                 this.props.onBeginDataFieldSelection(ref);
               }}
             />
           );
         } else {
           return (
-            <Button
-              active={false}
-              icon={boolean ? "checkbox/checked" : "checkbox/empty"}
-              ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
-              onClick={() => {
-                this.emitSetValue(!boolean);
-              }}
-            />
+            <DefaultButton
+            checked={false}
+            iconProps={{
+              iconName: boolean ? "CheckboxComposite" : "Checkbox"
+            }}
+            elementRef={(e) =>
+              (ref = ReactDOM.findDOMNode(e) as Element)
+            }
+            onClick={() => {
+              this.emitSetValue(!boolean);
+            }}
+          />
           );
         }
       }
