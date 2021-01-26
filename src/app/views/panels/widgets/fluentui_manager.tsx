@@ -62,13 +62,14 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
-import { IconButton, IIconProps, TextField, Slider, DatePicker, ChoiceGroup, DayOfWeek, IDatePickerStrings, SpinButton, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
+import { IconButton, TextField, Slider, DatePicker, DefaultButton, DayOfWeek, SpinButton, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors as CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { Icon } from '@fluentui/react/lib/Icon';
+import { FluentButton } from "./controls/fluentui_buttons";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -85,11 +86,12 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
+export class FluentUIWidgetManager
+  implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
-  ) { }
+  ) {}
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
@@ -221,11 +223,11 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
             min={options.minimum}
             max={options.maximum}
             step={options.step}
-            incrementButtonAriaLabel={'Increase value by 1'}
-            decrementButtonAriaLabel={'Decrease value by 1'}
+            incrementButtonAriaLabel={"Increase value by 1"}
+            decrementButtonAriaLabel={"Decrease value by 1"}
           />
         </div>
-      )
+      );
     }
     if (options.showSlider) {
       return (
@@ -247,7 +249,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
             }}
           />
         </div>
-      )
+      );
     }
 
     const parseNumber = (str: string) => {
@@ -261,7 +263,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
       } else {
         return +str;
       }
-    }
+    };
 
     return (
       <div className="charticulator__widget-control-input-number-input">
@@ -299,7 +301,6 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputDateOptions = {}
   ) {
-    debugger;
     const value = this.getPropertyValue(property) as number;
     const format = this.getDateFormat(property) as string;
 
@@ -320,7 +321,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
           }
         }}
       />
-    )
+    );
   }
 
   public inputText(
@@ -336,7 +337,7 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
         }}
         type="text"
       />
-    )
+    );
   }
 
   public inputFontFamily(property: Prototypes.Controls.Property) {
@@ -360,11 +361,11 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
         selectedKey={this.getPropertyValue(property) as string}
         label={options.label}
         autoComplete="on"
-        options={options.defaultRange.map(rangeValue => {
+        options={options.defaultRange.map((rangeValue) => {
           return {
             key: rangeValue,
-            text: rangeValue
-          }
+            text: rangeValue,
+          };
         })}
         onChange={(event, value) => {
           this.emitSetProperty(property, value.key);
@@ -379,13 +380,18 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
     options: Prototypes.Controls.InputSelectOptions
   ) {
     if (options.type == "dropdown") {
-      const iconStyles = { marginRight: '8px' };
+      const iconStyles = { marginRight: "8px" };
 
       const onRenderOption = (option: IDropdownOption): JSX.Element => {
         return (
           <>
             {option.data && option.data.icon && (
-              <Icon style={iconStyles} iconName={option.data.icon} aria-hidden="true" title={option.data.icon} />
+              <Icon
+                style={iconStyles}
+                iconName={option.data.icon}
+                aria-hidden="true"
+                title={option.data.icon}
+              />
             )}
             <span>{option.text}</span>
           </>
@@ -394,11 +400,16 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
 
       const onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
         const option = options[0];
-      
+
         return (
           <div>
             {option.data && option.data.icon && (
-              <Icon style={iconStyles} iconName={option.data.icon} aria-hidden="true" title={option.data.icon} />
+              <Icon
+                style={iconStyles}
+                iconName={option.data.icon}
+                aria-hidden="true"
+                title={option.data.icon}
+              />
             )}
             <span>{option.text}</span>
           </div>
@@ -416,9 +427,9 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
               key: rangeValue,
               text: options.labels[index],
               data: {
-                icon: options.icons?.[index]
-              }
-            }
+                icon: options.icons?.[index],
+              },
+            };
           })}
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
@@ -428,40 +439,20 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
       );
     } else {
       return (
-        // <ChoiceGroup
-        //   selectedKey={this.getPropertyValue(property) as string}
-        //   value={this.getPropertyValue(property) as string}
-        //   label={options.label}
-        //   options={options.options.map((option, index) => {
-        //     return {
-        //       key: option,
-        //       text: options.labels[index],
-        //       iconProps: {
-        //         iconName: options.icons?.[index]
-        //       },
-        //       imageSize: {
-        //         height: 24,
-        //         width: 24
-        //       }
-        //     }
-        //   })}
-        //   onChange={(ev, option) => {
-        //     this.emitSetProperty(property, option.key);
-        //   }}
-        // />
         <>
           {options.options.map((option, index) => {
             return (
-              <IconButton iconProps={{
-                iconName: options.icons[index]
-              }}
-              title={options.labels[index]}
-              checked={option === this.getPropertyValue(property) as string}
-              onClick={() => {
-                this.emitSetProperty(property, option);
-              }}
-            />
-            )
+              <IconButton
+                iconProps={{
+                  iconName: options.icons[index],
+                }}
+                title={options.labels[index]}
+                checked={option === (this.getPropertyValue(property) as string)}
+                onClick={() => {
+                  this.emitSetProperty(property, option);
+                }}
+              />
+            );
           })}
         </>
       );
@@ -475,7 +466,8 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
       case "checkbox-fill-width":
       case "checkbox": {
         return (
-          <Checkbox label={options.label}
+          <Checkbox
+            label={options.label}
             onChange={(event, v) => {
               this.emitSetProperty(property, v);
             }}
@@ -594,16 +586,19 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
       />
     );
   }
+
   public clearButton(property: Prototypes.Controls.Property, icon?: string) {
     return (
-      <Button
-        icon={icon || "general/eraser"}
-        onClick={() => {
-          this.emitSetProperty(property, null);
-        }}
-      />
+      <FluentButton>
+        <DefaultButton
+          iconProps={{
+            iconName: "EraseTool",
+          }}
+        />
+      </FluentButton>
     );
   }
+
   public setButton(
     property: Prototypes.Controls.Property,
     value: Specification.AttributeValue,
@@ -611,9 +606,18 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
     text?: string
   ) {
     return (
-      <Button
+      // <Button
+      //   text={text}
+      //   icon={icon}
+      //   onClick={() => {
+      //     this.emitSetProperty(property, value);
+      //   }}
+      // />
+      <DefaultButton
+        iconProps={{
+          iconName: icon,
+        }}
         text={text}
-        icon={icon}
         onClick={() => {
           this.emitSetProperty(property, value);
         }}
@@ -710,9 +714,9 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
                         defaultValue={
                           currentExpression
                             ? {
-                              table: options.table,
-                              expression: currentExpression,
-                            }
+                                table: options.table,
+                                expression: currentExpression,
+                              }
                             : null
                         }
                         onChange={(value) => {
@@ -1199,8 +1203,8 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
           <span className="charticulator__widget-row-label el-layout-item">
             {title}
           </span>
-          // <Label>{title}</Label>
-        ) : null}
+        ) : // <Label>{title}</Label>
+        null}
         {widget}
       </div>
     );
