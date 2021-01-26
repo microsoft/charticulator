@@ -295,9 +295,9 @@ export class IconElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "text-align/left",
-                "text-align/x-middle",
-                "text-align/right",
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
               ],
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
@@ -321,9 +321,9 @@ export class IconElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "text-align/top",
-                "text-align/y-middle",
-                "text-align/bottom",
+                "AlignVerticalTop",
+                "AlignVerticalCenter",
+                "AlignVerticalBottom",
               ],
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],

@@ -132,7 +132,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
               labels: ["Left", "Middle", "Right"],
             }
           ),
@@ -160,7 +160,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
               labels: ["Bottom", "Middle", "Top"],
             }
           ),
@@ -199,7 +199,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
               {
                 type: "radio",
                 options: ["end", "middle", "start"],
-                icons: ["align/bottom", "align/y-middle", "align/top"],
+                icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
                 labels: ["Bottom", "Middle", "Top"],
               }
             )

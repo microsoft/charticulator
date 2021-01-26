@@ -128,7 +128,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
                   {
                     type: "radio",
                     options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
+                    icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
                     labels: ["Left", "Middle", "Right"],
                   }
                 ),
@@ -137,7 +137,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
                   {
                     type: "radio",
                     options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
+                    icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
                     labels: ["Bottom", "Middle", "Top"],
                   }
                 )
