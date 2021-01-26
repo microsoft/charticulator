@@ -53,7 +53,8 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "@uifabric/icons": "7.5.18",
-    "@fluentui/react": "^7.155.1"
+    "@fluentui/react": "^7.155.1",
+    "styled-components": "5.2.0"
   },
   "license-check-and-add-config": {
     "folder": ".",
@@ -89,6 +90,7 @@
     "@types/node": "^13.13.4",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
+    "@types/styled-components": "5.1.7",
     "chai": "^4.2.0",
     "dts-bundle": "^0.7.3",
     "file-loader": "^2.0.0",
