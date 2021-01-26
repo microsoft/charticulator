@@ -221,7 +221,6 @@ export class FluentUIWidgetManager implements Prototypes.Controls.WidgetManager,
             min={options.minimum}
             max={options.maximum}
             step={options.step}
-            iconProps={{ iconName: 'IncreaseIndentLegacy' }}
             incrementButtonAriaLabel={'Increase value by 1'}
             decrementButtonAriaLabel={'Decrease value by 1'}
           />

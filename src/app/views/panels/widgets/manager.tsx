@@ -55,7 +55,7 @@ import {
   InputImageProperty,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
+import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
 import { InputDate } from "./controls/input_date";
@@ -64,11 +64,9 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { DataExpression } from "../../../actions/drag_data";
 import { InputComboboxOptions } from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
@@ -98,7 +96,7 @@ export interface CharticulatorPropertyAccessors {
   onMapDataHandler: OnMapDataHandler;
 }
 
-export class WidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessor {
+export class WidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
