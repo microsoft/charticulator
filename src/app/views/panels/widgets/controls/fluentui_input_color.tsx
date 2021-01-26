@@ -70,7 +70,6 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
           placeholder={this.props.allowNull ? "(none)" : ""}
           value={hex}
           onChange={(event, newValue) => {
-            debugger;
             newValue = newValue.trim();
             if (newValue == "") {
               if (this.props.allowNull) {

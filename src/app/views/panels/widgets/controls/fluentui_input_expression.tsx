@@ -10,7 +10,7 @@ import {
 } from "../../../../../core";
 import { classNames } from "../../../../utils";
 
-import { TextField } from "@fluentui/react";
+import { ITextField, TextField } from "@fluentui/react";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
@@ -36,17 +36,17 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const [errorIndicator, setErrorIndicator] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
-  const refInput = React.useRef<HTMLInputElement>();
+  let textComponent: ITextField;
 
   const doEnter = React.useCallback(() => {
-    if (props.allowNull && refInput.current.value.trim() == "") {
+    if (props.allowNull && textComponent.value.trim() == "") {
       setValue("");
       setErrorIndicator(false);
       setErrorMessage(null);
       props.onEnter?.(null);
     } else {
       const result = props.validate(
-        replaceTabBySymbol(replaceNewLineBySymbol(refInput.current.value))
+        replaceTabBySymbol(replaceNewLineBySymbol(textComponent.value))
       );
       if (result.pass) {
         setValue(result.formatted);
@@ -79,7 +79,6 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
     setErrorMessage,
   ]);
 
-  debugger;
   return (
     <span className="charticulator__widget-control-input-expression">
       {/* <input
@@ -92,6 +91,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
         /> */}
       <TextField
         label={props.label}
+        componentRef={component => textComponent = component}
         placeholder={props.placeholder}
         type="text"
         onGetErrorMessage={() => {
@@ -113,7 +113,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
                 textExpression: props.textExpression,
               }
             );
-            setValue(refInput.current.value);
+            setValue(textComponent.value);
             setErrorIndicator(!result.pass);
           }
         }}
