@@ -70,6 +70,7 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { Icon } from '@fluentui/react/lib/Icon';
 import { FluentButton } from "./controls/fluentui_buttons";
+import { FluentInputNumber } from "./controls/fluentui_input_number";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -207,93 +208,25 @@ export class FluentUIWidgetManager
     ).dispatch(this.store.dispatcher);
   }
 
-  // Property widgets
   public inputNumber(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputNumberOptions = {}
   ) {
     const value = this.getPropertyValue(property) as number;
-
-    if (options.showUpdown) {
-      return (
-        <div className="charticulator__widget-control-input-number-input">
-          <SpinButton
-            defaultValue={value?.toString()}
-            label={options.label}
-            min={options.minimum}
-            max={options.maximum}
-            step={options.step}
-            incrementButtonAriaLabel={"Increase value by 1"}
-            decrementButtonAriaLabel={"Decrease value by 1"}
-          />
-        </div>
-      );
-    }
-    if (options.showSlider) {
-      return (
-        <div className="charticulator__widget-control-input-number-input">
-          <Slider
-            min={options.sliderRange?.[0]}
-            max={options.sliderRange?.[1]}
-            defaultValue={value}
-            step={options.step || 0.1}
-            // mapping={this.props.sliderFunction}
-            onChange={(newValue) => {
-              if (value == null) {
-                this.emitSetProperty(property, null);
-                return true;
-              } else {
-                this.emitSetProperty(property, newValue);
-                return true;
-              }
-            }}
-          />
-        </div>
-      );
-    }
-
-    const parseNumber = (str: string) => {
-      str = str.trim();
-      if (str == "") {
-        return null;
-      }
-      if (options.percentage) {
-        str = str.replace(/\%$/, "");
-        return +str / 100;
-      } else {
-        return +str;
-      }
-    };
-
     return (
-      <div className="charticulator__widget-control-input-number-input">
-        <TextField
-          type="number"
-          label={options.label}
-          validateOnFocusOut={true}
-          defaultValue={value?.toString()}
-          onChange={(event, value) => {
-            if (value == null) {
-              this.emitSetProperty(property, null);
-              return true;
-            } else {
-              this.emitSetProperty(property, value);
-              return true;
-            }
-            return false;
-          }}
-          onGetErrorMessage={(value: string) => {
-            try {
-              const numberValue = parseNumber(value);
-              if (numberValue === null) {
-                return "Invalid value";
-              }
-            } catch (ex) {
-              return "Invalid value";
-            }
-          }}
-        />
-      </div>
+      <FluentInputNumber
+        {...options}
+        defaultValue={value}
+        onEnter={(value) => {
+          if (value == null) {
+            this.emitSetProperty(property, null);
+            return true;
+          } else {
+            this.emitSetProperty(property, value);
+            return true;
+          }
+        }}
+      />
     );
   }
 
