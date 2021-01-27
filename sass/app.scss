@@ -112,7 +112,7 @@ body {
         color: $black;
         &:hover,
         &:active {
-          background: $gray-200;
+          background: unset;
         }
       }
     }
@@ -144,7 +144,7 @@ body {
 
   &__panel {
     $panel-color: $theme-primary-background;
-    $panel-border-color: #C8C6C4;
+    $panel-border-color: #c8c6c4;
     $panel-border-width: 1px;
 
     display: flex;

@@ -109,9 +109,11 @@ export class ChartComponent extends React.Component<
       this.scheduleUpdate();
     } else if (newProps.selection != this.props.selection) {
       this.applySelection(newProps.selection);
-      setTimeout(() => this.setState({
-        graphics: this.renderer.render(),
-      }));
+      setTimeout(() =>
+        this.setState({
+          graphics: this.renderer.render(),
+        })
+      );
     }
   }
 

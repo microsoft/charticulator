@@ -12,9 +12,15 @@ export enum MessageType {
 }
 
 export const messageTypes = Object.values(MessageType);
-
 export const LinkSourceKeyColumn = "source_id";
-
 export const LinkTargetKeyColumn = "target_id";
 
 export const KeyColumn = "id";
+
+export const defaultDelimiter = ",";
+export const defaultNumberFormat = Object.freeze({
+  remove: ",",
+  decimal: ".",
+});
+export const defaultCurrency: [string, string] = ["$",""];
+export const defaultDigitsGroup: number[] = [3];

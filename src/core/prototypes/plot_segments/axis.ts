@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color, Geometry } from "../../common";
+import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color, Geometry, getFormat } from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -18,7 +18,6 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common";
-import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -160,7 +159,7 @@ export class AxisRenderer {
       // {.0%}
       return (value: number) => {
         return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
-          return format(spec)(value);
+          return getFormat()(spec)(value);
         });
       };
     }
