@@ -23,13 +23,11 @@ import { ScaleEditor } from "../scale_editor";
 import { Button } from "./controls";
 import {
   CharticulatorPropertyAccessors,
-  DropZoneView,
-  WidgetManager,
+  DropZoneView
 } from "./manager";
-import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall, Variable } from "../../../../core/expression";
+import { FunctionCall } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
