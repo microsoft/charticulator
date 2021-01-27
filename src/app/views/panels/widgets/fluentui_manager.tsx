@@ -62,7 +62,7 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
-import { IconButton, TextField, Slider, DatePicker, DefaultButton, DayOfWeek, SpinButton, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
+import { IconButton, TextField, DatePicker, DefaultButton, DayOfWeek, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors as CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
@@ -71,6 +71,7 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { Icon } from '@fluentui/react/lib/Icon';
 import { FluentButton } from "./controls/fluentui_buttons";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
+import { text } from "d3";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -409,10 +410,14 @@ export class FluentUIWidgetManager
       }
       case "highlight": {
         return (
-          <Button
-            icon={options.icon}
+          <IconButton
+            iconProps={{
+              iconName: options.icon
+            }}
+            title={options.label}
             text={options.label}
-            active={this.getPropertyValue(property) as boolean}
+            ariaLabel={options.label}
+            checked={this.getPropertyValue(property) as boolean}
             onClick={() => {
               const v = this.getPropertyValue(property) as boolean;
               this.emitSetProperty(property, !v);

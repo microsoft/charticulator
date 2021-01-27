@@ -2240,7 +2240,7 @@ export class Region2DConstraintBuilder {
               ),
               m.inputBoolean(
                 { property: "sublayout", field: "orderReversed" },
-                { type: "highlight", icon: "general/order-reversed" }
+                { type: "highlight", icon: "Sort" }
               )
             )
           )
