@@ -946,7 +946,7 @@ export class ChartEditorView
                 const layoutClass = this.props.store.chartManager.getPlotSegmentClass(
                   layoutState
                 );
-                const manager = new FluentUIWidgetManager(
+                const manager = new WidgetManager(
                   this.props.store,
                   layoutClass
                 );
