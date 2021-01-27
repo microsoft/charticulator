@@ -18,8 +18,6 @@ import { ContextedComponent } from "../../../context_component";
 import { PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import {
-  Button,
-  ComboBox,
   FluentComboBoxFontFamily,
   InputImage,
   InputText,
@@ -155,23 +153,6 @@ export class FluentValueEditor extends ContextedComponent<
                 );
               }}
             />
-            {/* <InputText
-              defaultValue={hex}
-              onEnter={(newValue) => {
-                newValue = newValue.trim();
-                if (newValue == "") {
-                  this.emitClearValue();
-                } else {
-                  const newColor = colorFromHTMLColor(newValue);
-                  if (newColor) {
-                    this.emitSetValue(newColor);
-                    return true;
-                  } else {
-                    return false;
-                  }
-                }
-              }}
-            /> */}
             <TextField
               placeholder={this.props.placeholder}
               defaultValue={hex}
@@ -249,18 +230,21 @@ export class FluentValueEditor extends ContextedComponent<
           );
         } else {
           return (
-            <InputText
-              defaultValue={str}
-              placeholder={placeholderText}
-              onEnter={(newValue) => {
-                if (newValue == null) {
-                  this.emitClearValue();
-                } else {
-                  this.emitSetValue(newValue);
-                }
-                return true;
-              }}
-            />
+            <>
+              <TextField
+                defaultValue={str}
+                value={str}
+                placeholder={placeholderText}
+                onChange={(event, newValue) => {
+                  if (newValue == null) {
+                    this.emitClearValue();
+                  } else {
+                    this.emitSetValue(newValue);
+                  }
+                  return true;
+                }}
+              />
+            </>
           );
         }
       }
