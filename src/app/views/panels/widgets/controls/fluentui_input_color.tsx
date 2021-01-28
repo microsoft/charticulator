@@ -20,10 +20,12 @@ import { InputText } from "./input_text";
 import { AppStore } from "../../../../stores";
 
 import { TextField } from "@fluentui/react";
+import { FluentTextField } from "./fluentui_customized_components";
 
 export interface InputColorProps {
   defaultValue: Color;
   allowNull?: boolean;
+  label?: string;
   onEnter: (value: Color) => boolean;
   store?: AppStore;
 }
@@ -37,6 +39,29 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
     let colorButton: HTMLSpanElement;
     return (
       <span className="charticulator__widget-control-input-color">
+        <FluentTextField>
+          <TextField
+            label={this.props.label}
+            defaultValue={hex}
+            placeholder={this.props.allowNull ? "(none)" : ""}
+            value={hex}
+            onChange={(event, newValue) => {
+              newValue = newValue.trim();
+              if (newValue == "") {
+                if (this.props.allowNull) {
+                  return this.props.onEnter(null);
+                } else {
+                  return false;
+                }
+              }
+              const color = colorFromHTMLColor(newValue);
+              if (!color) {
+                return false;
+              }
+              return this.props.onEnter(color);
+            }}
+          />
+        </FluentTextField>
         <span
           className="el-color-display"
           style={{ backgroundColor: hex == "" ? "transparent" : hex }}
@@ -63,26 +88,6 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
               },
               { anchor: colorButton }
             );
-          }}
-        />
-        <TextField
-          defaultValue={hex}
-          placeholder={this.props.allowNull ? "(none)" : ""}
-          value={hex}
-          onChange={(event, newValue) => {
-            newValue = newValue.trim();
-            if (newValue == "") {
-              if (this.props.allowNull) {
-                return this.props.onEnter(null);
-              } else {
-                return false;
-              }
-            }
-            const color = colorFromHTMLColor(newValue);
-            if (!color) {
-              return false;
-            }
-            return this.props.onEnter(color);
           }}
         />
       </span>

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { TextField, Slider, SpinButton } from "@fluentui/react";
+import { TextField, Slider, SpinButton, Label } from "@fluentui/react";
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 
@@ -22,6 +22,8 @@ export interface InputNumberProps {
   updownTick?: number;
   updownRange?: [number, number];
   updownStyle?: "normal" | "font";
+
+  label?: string;
 }
 
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
@@ -36,18 +38,12 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     }
     if (props.percentage) {
       return (
-        prettyNumber(
-          value * 100,
-          props.digits != null ? props.digits : 2
-        ) + "%"
+        prettyNumber(value * 100, props.digits != null ? props.digits : 2) + "%"
       );
     } else {
-      return prettyNumber(
-        value,
-        props.digits != null ? props.digits : 2
-      );
+      return prettyNumber(value, props.digits != null ? props.digits : 2);
     }
-  }
+  };
 
   const parseNumber = (str: string) => {
     str = str.trim();
@@ -60,7 +56,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     } else {
       return +str;
     }
-  }
+  };
 
   const reportValue = (value: number) => {
     if (value == null) {
@@ -74,7 +70,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       }
       return props.onEnter(value);
     }
-  }
+  };
 
   const renderSlider = () => {
     let sliderMin = 0;
@@ -99,7 +95,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         max={sliderMax}
         value={value}
         defaultValue={value}
-        showValue
+        showValue={true}
         step={props.percentage ? 0.01 : 1}
         // eslint-disable-next-line react/jsx-no-bind
         onChange={(newValue) => {
@@ -108,46 +104,54 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         }}
       />
     );
-  }
+  };
 
   const renderUpdown = () => {
     const tick = props.updownTick || 0.1;
-      return (
-          <SpinButton
-            defaultValue={formatNumber(value)}
-            value={formatNumber(value)}
-            iconProps={props.updownStyle == "font" ? {
-              iconName: "Font"
-            } : null}
-            step={tick}
-            onIncrement={(value) => {
-              if (reportValue(parseNumber(value) + tick)) {
-                setValue(parseNumber(value) + tick);                
-              }
-            }}
-            onDecrement={(value) => {
-              if (reportValue(parseNumber(value) - tick)) {
-                setValue(parseNumber(value) - tick);
-              }
-            }}
-            onValidate={(value) => {
-              const num = parseNumber(value);
-              if (reportValue(num)) {
-                setValue(num);
-                return formatNumber(parseNumber(value))
-              }
-            }}
-          />
-      );
-  }
+    return (
+      <>
+        {props.label ? <Label>{props.label}</Label> : null}
+        <SpinButton
+          defaultValue={formatNumber(value)}
+          value={formatNumber(value)}
+          iconProps={
+            props.updownStyle == "font"
+              ? {
+                  iconName: "Font",
+                }
+              : null
+          }
+          step={tick}
+          onIncrement={(value) => {
+            if (reportValue(parseNumber(value) + tick)) {
+              setValue(parseNumber(value) + tick);
+            }
+          }}
+          onDecrement={(value) => {
+            if (reportValue(parseNumber(value) - tick)) {
+              setValue(parseNumber(value) - tick);
+            }
+          }}
+          onValidate={(value) => {
+            const num = parseNumber(value);
+            if (reportValue(num)) {
+              setValue(num);
+              return formatNumber(parseNumber(value));
+            }
+          }}
+        />
+      </>
+    );
+  };
 
   return (
-    <span >
+    <span>
       <div>
-        {props.showUpdown ? 
+        {props.showUpdown ? (
           renderUpdown()
-        : (
+        ) : (
           <TextField
+            label={props.label}
             placeholder={props.placeholder}
             defaultValue={formatNumber(value)}
             value={formatNumber(value)}
@@ -159,9 +163,8 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
             }}
           />
         )}
-        
       </div>
       {props.showSlider ? renderSlider() : null}
     </span>
   );
-}
+};

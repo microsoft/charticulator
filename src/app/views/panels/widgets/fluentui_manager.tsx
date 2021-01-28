@@ -411,12 +411,15 @@ export class FluentUIWidgetManager
       case "checkbox-fill-width":
       case "checkbox": {
         return (
-          <Checkbox
-            label={options.label}
-            onChange={(event, v) => {
-              this.emitSetProperty(property, v);
-            }}
-          />
+          <>
+            {options.headerLabel ? <Label>{options.headerLabel}</Label> : null}
+            <Checkbox
+              label={options.label}
+              onChange={(event, v) => {
+                this.emitSetProperty(property, v);
+              }}
+            />
+          </>
         );
       }
       case "highlight": {
@@ -478,6 +481,7 @@ export class FluentUIWidgetManager
     const color = this.getPropertyValue(property) as Color;
     return (
       <FluentInputColor
+        label={options.label}
         store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}

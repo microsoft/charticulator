@@ -38,6 +38,7 @@ export interface InputFontComboboxOptions {
 export interface InputBooleanOptions {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
+  headerLabel?: string;
   label?: string;
 }
 
@@ -107,6 +108,7 @@ export interface InputDateOptions {
 
 export interface InputColorOptions {
   allowNull?: boolean;
+  label?: string;
 }
 
 export interface TableOptions {}

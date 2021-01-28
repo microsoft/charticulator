@@ -975,83 +975,87 @@ export function buildAxisAppearanceWidgets(
   if (isVisible) {
     return [
       m.row(
-        "Visible",
+        "",
         m.horizontal(
           [0, 0, 1, 0],
           m.inputBoolean(
             { property: axisProperty, field: "visible" },
-            { type: "checkbox" }
+            { type: "checkbox", label: "Visible" }
           ),
-          m.label("Position:"),
+          // m.label("Position:"),
           m.inputSelect(
             { property: axisProperty, field: "side" },
             {
               type: "dropdown",
               showLabel: true,
+              label: "Position:",
               options: ["default", "opposite"],
               labels: ["Default", "Opposite"],
             }
           ),
           m.detailsButton(
             m.sectionHeader("Axis Style"),
-            m.row(
-              "Line Color",
-              m.inputColor({
+            m.inputColor(
+              {
                 property: axisProperty,
                 field: ["style", "lineColor"],
-              })
+              },
+              {
+                label: "Line Color",
+              }
             ),
-            m.row(
-              "Tick Color",
-              m.inputColor({
+            m.inputColor(
+              {
                 property: axisProperty,
                 field: ["style", "tickColor"],
-              })
+              },
+              {
+                label: "Tick Color",
+              }
             ),
-            m.row(
-              "Tick Size",
-              m.inputNumber({
+            m.inputNumber(
+              {
                 property: axisProperty,
                 field: ["style", "tickSize"],
-              })
+              },
+              {
+                label: "Tick Size",
+              }
             ),
-            m.row(
-              "Font Family",
-              m.inputFontFamily(
-                {
-                  property: axisProperty,
-                  field: ["style", "fontFamily"],
-                },
-                {}
-              )
+            m.inputFontFamily(
+              {
+                property: axisProperty,
+                field: ["style", "fontFamily"],
+              },
+              {
+                label: "Font Family",
+              }
             ),
-            m.row(
-              "Font Size",
-              m.inputNumber(
-                { property: axisProperty, field: ["style", "fontSize"] },
-                { showUpdown: true, updownStyle: "font", updownTick: 2 }
-              )
+            m.inputNumber(
+              { property: axisProperty, field: ["style", "fontSize"] },
+              {
+                showUpdown: true,
+                updownStyle: "font",
+                updownTick: 2,
+                label: "Font Size",
+              }
             ),
-            m.row(
-              "Wrap text",
-              m.inputBoolean(
-                { property: axisProperty, field: ["style", "wordWrap"] },
-                {
-                  type: "checkbox",
-                }
-              )
+            m.inputBoolean(
+              { property: axisProperty, field: ["style", "wordWrap"] },
+              {
+                type: "checkbox",
+                headerLabel: "Text displaying",
+                label: "Wrap text",
+              }
             )
           )
         )
       ),
     ];
   } else {
-    return m.row(
-      "Visible",
-      m.inputBoolean(
-        { property: axisProperty, field: "visible" },
-        { type: "checkbox" }
-      )
+    return m.inputBoolean(
+      { property: axisProperty, field: "visible" },
+      { type: "checkbox", label: "Visible" }
     );
   }
 }
