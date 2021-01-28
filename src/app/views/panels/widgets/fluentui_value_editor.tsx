@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { DefaultButton, Dropdown, TextField } from "@fluentui/react";
+import { DefaultButton, Dropdown, Label, TextField } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
@@ -17,18 +17,19 @@ import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
-import {
-  FluentComboBoxFontFamily,
-  InputImage,
-  InputText,
-} from "./controls";
+import { FluentComboBoxFontFamily, InputImage, InputText } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
+import {
+  FluentButton,
+  FluentTextField,
+} from "./controls/fluentui_customized_components";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
   type: Specification.AttributeType;
+  label?: string;
 
   /** When value is null, show defaultValue in editor */
   defaultValue?: Specification.AttributeValue;
@@ -80,24 +81,8 @@ export class FluentValueEditor extends ContextedComponent<
           numberOptions = {};
         }
         return (
-          // <InputNumber
-          //   defaultValue={number}
-          //   placeholder={placeholderText}
-          //   {...numberOptions}
-          //   onEnter={(newValue) => {
-          //     if (newValue == null) {
-          //       this.emitClearValue();
-          //       return true;
-          //     }
-          //     if (newValue == newValue) {
-          //       this.emitSetValue(newValue);
-          //       return true;
-          //     } else {
-          //       return false;
-          //     }
-          //   }}
-          // />
           <TextField
+            label={this.props.label}
             placeholder={this.props.placeholder}
             defaultValue={
               this.props.defaultValue != null
@@ -126,6 +111,29 @@ export class FluentValueEditor extends ContextedComponent<
         let colorItem: Element;
         return (
           <span className="el-color-value">
+            <FluentTextField>
+              <TextField
+                label={this.props.label}
+                placeholder={this.props.placeholder}
+                defaultValue={hex}
+                value={hex}
+                type="text"
+                onChange={(event, newValue) => {
+                  newValue = newValue.trim();
+                  if (newValue == "") {
+                    this.emitClearValue();
+                  } else {
+                    const newColor = colorFromHTMLColor(newValue);
+                    if (newColor) {
+                      this.emitSetValue(newColor);
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
+                }}
+              />
+            </FluentTextField>
             <span
               className="el-color-item"
               ref={(e) => (colorItem = e)}
@@ -153,45 +161,26 @@ export class FluentValueEditor extends ContextedComponent<
                 );
               }}
             />
-            <TextField
-              placeholder={this.props.placeholder}
-              defaultValue={hex}
-              value={hex}
-              type="text"
-              onChange={(event, newValue) => {
-                newValue = newValue.trim();
-                if (newValue == "") {
-                  this.emitClearValue();
-                } else {
-                  const newColor = colorFromHTMLColor(newValue);
-                  if (newColor) {
-                    this.emitSetValue(newColor);
-                    return true;
-                  } else {
-                    return false;
-                  }
-                }
-              }}
-            />
           </span>
         );
       }
       case Specification.AttributeType.FontFamily:
         return (
           <FluentComboBoxFontFamily
+            label={this.props.label}
             defaultValue={value as string}
             onEnter={(value) => {
               this.emitSetValue(value);
               return true;
             }}
           />
-
         );
       case Specification.AttributeType.Text: {
         const str = value as string;
         if (this.props.onEmitMapping) {
           return (
             <FluentInputExpression
+              label={this.props.label}
               textExpression={true}
               validate={(value) =>
                 this.context.store.verifyUserExpressionWithTable(
@@ -232,6 +221,7 @@ export class FluentValueEditor extends ContextedComponent<
           return (
             <>
               <TextField
+                label={this.props.label}
                 defaultValue={str}
                 value={str}
                 placeholder={placeholderText}
@@ -253,11 +243,12 @@ export class FluentValueEditor extends ContextedComponent<
         const strings = this.props.hints.rangeEnum;
         return (
           <Dropdown
+            label={this.props.label}
             selectedKey={str}
             options={strings.map((str, index) => {
               return {
                 key: str,
-                text: str
+                text: str,
               };
             })}
             onChange={(event, value) => {
@@ -276,30 +267,32 @@ export class FluentValueEditor extends ContextedComponent<
         let ref: Element;
         if (this.props.onEmitMapping) {
           return (
-            <DefaultButton
-              text={strings.attributesPanel.conditionedBy}
-              elementRef={(e) =>
-                (ref = ReactDOM.findDOMNode(e) as Element)
-              }
-              onClick={() => {
-                this.props.onBeginDataFieldSelection(ref);
-              }}
-            />
+            <>
+              <Label>Visibility</Label>
+              <DefaultButton
+                text={strings.attributesPanel.conditionedBy}
+                elementRef={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
+                onClick={() => {
+                  this.props.onBeginDataFieldSelection(ref);
+                }}
+              />
+            </>
           );
         } else {
           return (
-            <DefaultButton
-            checked={false}
-            iconProps={{
-              iconName: boolean ? "CheckboxComposite" : "Checkbox"
-            }}
-            elementRef={(e) =>
-              (ref = ReactDOM.findDOMNode(e) as Element)
-            }
-            onClick={() => {
-              this.emitSetValue(!boolean);
-            }}
-          />
+            <>
+              <Label>Visibility</Label>
+              <DefaultButton
+                checked={false}
+                iconProps={{
+                  iconName: boolean ? "CheckboxComposite" : "Checkbox",
+                }}
+                elementRef={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
+                onClick={() => {
+                  this.emitSetValue(!boolean);
+                }}
+              />
+            </>
           );
         }
       }
@@ -307,6 +300,7 @@ export class FluentValueEditor extends ContextedComponent<
         const str = value as Specification.Types.Image;
         return (
           <InputImage
+            // label={this.props.label}
             value={str}
             onChange={(newValue) => {
               if (newValue == null) {

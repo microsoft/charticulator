@@ -144,10 +144,12 @@ export class LegendCreationPanel extends ContextedComponent<
                 const table = this.store.chartManager.dataflow.getTable(
                   tableName
                 );
-                
+
                 const data = (columns as any[])
                   .map((ex) => {
-                    const index = table.columns.findIndex(col => col.name == ex.columnName)
+                    const index = table.columns.findIndex(
+                      (col) => col.name == ex.columnName
+                    );
                     return `get(get(${ex.table}.columns, ${index}), "displayName")`;
                   })
                   .filter((v) => v != null);
@@ -159,7 +161,7 @@ export class LegendCreationPanel extends ContextedComponent<
                   .join(",")})`;
 
                 const parsedExpression = this.store.chartManager.dataflow.cache.parse(
-                      expression
+                  expression
                 );
                 const expressionData = parsedExpression.getValue(table);
 
@@ -208,6 +210,9 @@ export class LegendCreationPanel extends ContextedComponent<
                   allowSelectValue: true,
                 } as Specification.ScaleMapping;
 
+                if (!newLegend.mappings) {
+                  newLegend.mappings = {};
+                }
                 newLegend.mappings.mappingOptions = mappingOptions;
               } else {
                 const kind = (this.groupBySelector

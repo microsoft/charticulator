@@ -77,6 +77,8 @@ export interface MappingEditorOptions {
   openMapping?: boolean;
   /** Enables value selector from mapping */
   allowSelectValue?: boolean;
+  /** Text lael of input */
+  label?: string;
 }
 
 export interface InputNumberOptions {

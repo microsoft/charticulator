@@ -76,7 +76,7 @@ import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { Icon } from "@fluentui/react/lib/Icon";
-import { FluentButton } from "./controls/fluentui_buttons";
+import { FluentButton } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import { InputFontComboboxOptions } from "../../../../core/prototypes/controls";
 
@@ -124,8 +124,7 @@ export class FluentUIWidgetManager
       }, 0);
     }
 
-    return this.row(
-      name,
+    return (
       <FluentMappingEditor
         store={this.store}
         parent={this}
@@ -133,6 +132,7 @@ export class FluentUIWidgetManager
         type={info.type}
         options={{
           ...options,
+          label: name,
           openMapping,
         }}
       />
