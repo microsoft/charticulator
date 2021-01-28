@@ -649,44 +649,37 @@ export abstract class LinksClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widgets = [
-      manager.sectionHeader("Line Type"),
-      manager.row(
-        "Type",
-        manager.inputSelect(
-          { property: "interpolationType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["line", "bezier", "circle"],
-            labels: ["Line", "Bezier", "Arc"],
-          }
-        )
+      manager.inputSelect(
+        { property: "interpolationType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["line", "bezier", "circle"],
+          labels: ["Line", "Bezier", "Arc"],
+          label: "Line Type",
+        }
       ),
-      manager.row(
-        "Line mark type",
-        manager.inputSelect(
-          { property: "linkMarkType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["", "8", "1 10"],
-            labels: ["Solid", "Dashed", "Dotted"],
-          }
-        )
+      manager.inputSelect(
+        { property: "linkMarkType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["", "8", "1 10"],
+          labels: ["Solid", "Dashed", "Dotted"],
+          label: "Line mark type",
+        }
       ),
     ];
     if (props.interpolationType == "bezier") {
       widgets.push(
-        manager.row(
-          "Curveness",
-          manager.inputNumber(
-            { property: "curveness" },
-            {
-              showSlider: true,
-              minimum: 0,
-              sliderRange: [0, 500],
-            }
-          )
+        manager.inputNumber(
+          { property: "curveness" },
+          {
+            showSlider: true,
+            minimum: 0,
+            sliderRange: [0, 500],
+            label: "Curveness",
+          }
         )
       );
     }
