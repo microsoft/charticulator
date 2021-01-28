@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, replaceNewLineBySymbol, splitStringByNewLine, rgbToHex, Geometry } from "../../common";
+import {
+  Point,
+  replaceNewLineBySymbol,
+  splitStringByNewLine,
+  rgbToHex,
+  Geometry,
+} from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
@@ -268,7 +274,6 @@ export class TextElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     return [
-      manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
         defaultValue: "Arial",
@@ -284,70 +289,54 @@ export class TextElementClass extends EmphasizableMarkClass<
         },
       }),
       manager.sectionHeader("Anchor & Rotation"),
-      manager.row(
-        "Anchor X",
-        manager.horizontal(
-          [0, 1],
-          manager.inputSelect(
-            { property: "alignment", field: "x" },
-            {
-              type: "radio",
-              icons: [
-                "AlignHorizontalLeft",
-                "AlignHorizontalCenter",
-                "AlignHorizontalRight",
-              ],
-              labels: ["Left", "Middle", "Right"],
-              options: ["left", "middle", "right"],
-            }
-          ),
-          props.alignment.x != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "xMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
-              )
-            : null
-        )
+      manager.inputSelect(
+        { property: "alignment", field: "x" },
+        {
+          type: "radio",
+          icons: [
+            "AlignHorizontalLeft",
+            "AlignHorizontalCenter",
+            "AlignHorizontalRight",
+          ],
+          labels: ["Left", "Middle", "Right"],
+          options: ["left", "middle", "right"],
+          label: "Anchor X",
+        }
       ),
-      manager.row(
-        "Anchor Y",
-        manager.horizontal(
-          [0, 1],
-          manager.inputSelect(
-            { property: "alignment", field: "y" },
+      props.alignment.x != "middle"
+        ? manager.inputNumber(
+            { property: "alignment", field: "xMargin" },
             {
-              type: "radio",
-              icons: [
-                "AlignVerticalTop",
-                "AlignVerticalCenter",
-                "AlignVerticalBottom",
-              ],
-              labels: ["Top", "Middle", "Bottom"],
-              options: ["top", "middle", "bottom"],
+              updownTick: 1,
+              showUpdown: true,
+              label: "Margin",
             }
-          ),
-          props.alignment.y != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "yMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
-              )
-            : null
-        )
+          )
+        : null,
+      manager.inputSelect(
+        { property: "alignment", field: "y" },
+        {
+          type: "radio",
+          icons: [
+            "AlignVerticalTop",
+            "AlignVerticalCenter",
+            "AlignVerticalBottom",
+          ],
+          labels: ["Top", "Middle", "Bottom"],
+          options: ["top", "middle", "bottom"],
+          label: "Anchor Y",
+        }
       ),
+      props.alignment.y != "middle"
+        ? manager.inputNumber(
+            { property: "alignment", field: "yMargin" },
+            {
+              updownTick: 1,
+              showUpdown: true,
+              label: "Margin",
+            }
+          )
+        : null,
       // manager.row("Rotation", manager.inputNumber({ property: "rotation" })),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
