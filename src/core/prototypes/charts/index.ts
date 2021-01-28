@@ -510,19 +510,16 @@ export class RectangleChart extends ChartClass {
       manager.mappingEditor("Top", "marginTop", {}),
       manager.mappingEditor("Bottom", "marginBottom", {}),
       manager.sectionHeader("Background"),
-      manager.row(
-        "Color",
-        manager.inputColor({ property: "backgroundColor" }, { allowNull: true })
+      manager.inputColor(
+        { property: "backgroundColor" },
+        { allowNull: true, label: "Color" }
       ),
     ];
     if (this.object.properties.backgroundColor != null) {
       result.push(
-        manager.row(
-          "Opacity",
-          manager.inputNumber(
-            { property: "backgroundOpacity" },
-            { showSlider: true, sliderRange: [0, 1] }
-          )
+        manager.inputNumber(
+          { property: "backgroundOpacity" },
+          { showSlider: true, sliderRange: [0, 1], label: "Opacity" }
         )
       );
     }
