@@ -594,8 +594,8 @@ export class CurvePlotSegment extends PlotSegmentClass<
     return [
       ...super.getAttributePanelWidgets(manager),
       manager.sectionHeader("Curve Coordinates"),
-      manager.row(
-        "Normal",
+      manager.vertical(
+        manager.label("Normal"),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "normalStart" }),
