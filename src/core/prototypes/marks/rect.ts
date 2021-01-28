@@ -180,18 +180,16 @@ export class RectElementClass extends EmphasizableMarkClass<
         acceptKinds: [DataKind.Numerical],
         defaultAuto: true,
       }),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "shape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-            labels: ["Rectangle", "Triangle", "Ellipse"],
-            options: ["rectangle", "triangle", "ellipse"],
-          }
-        )
+      manager.inputSelect(
+        { property: "shape" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          label: "Shape",
+          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+          labels: ["Rectangle", "Triangle", "Ellipse"],
+          options: ["rectangle", "triangle", "ellipse"],
+        }
       ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
@@ -205,20 +203,16 @@ export class RectElementClass extends EmphasizableMarkClass<
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
         })
       );
-      widgets.push(
-        manager.row(
-          "Line Style",
-          manager.inputSelect(
-            { property: "strokeStyle" },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
-              labels: ["Solid", "Dashed", "Dotted"],
-              options: ["solid", "dashed", "dotted"],
-            }
-          )
-        )
+      manager.inputSelect(
+        { property: "strokeStyle" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          label: "Line Style",
+          icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+          labels: ["Solid", "Dashed", "Dotted"],
+          options: ["solid", "dashed", "dotted"],
+        }
       );
     }
 
