@@ -16,9 +16,9 @@ export interface Property {
 }
 
 export interface InputComboboxOptions {
-  defaultRange: string[],
-  valuesOnly?: boolean,
-  label?: string
+  defaultRange: string[];
+  valuesOnly?: boolean;
+  label?: string;
 }
 
 export interface InputSelectOptions {
@@ -28,6 +28,10 @@ export interface InputSelectOptions {
   options: string[];
   icons?: string[];
   labels?: string[];
+  label?: string;
+}
+
+export interface InputFontComboboxOptions {
   label?: string;
 }
 
@@ -148,6 +152,7 @@ export interface ScrollListOptions {
 
 export interface InputExpressionOptions {
   table?: string;
+  label?: string;
 }
 
 export interface WidgetManager {
@@ -162,11 +167,11 @@ export interface WidgetManager {
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputDate(property: Property, options?: InputDateOptions): Widget;
   inputText(property: Property, placeholder?: string): Widget;
-  inputComboBox(
+  inputComboBox(property: Property, options: InputComboboxOptions): Widget;
+  inputFontFamily(
     property: Property,
-    options: InputComboboxOptions
+    options: InputFontComboboxOptions
   ): Widget;
-  inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;

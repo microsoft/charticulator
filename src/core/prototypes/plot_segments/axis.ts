@@ -1,7 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { deepClone, fillDefaults, Scale, rgbToHex, splitStringByNewLine, replaceSymbolByTab, replaceSymbolByNewLine, Color, Geometry } from "../../common";
+import {
+  deepClone,
+  fillDefaults,
+  Scale,
+  rgbToHex,
+  splitStringByNewLine,
+  replaceSymbolByTab,
+  replaceSymbolByNewLine,
+  Color,
+  Geometry,
+} from "../../common";
 import {
   CoordinateSystem,
   Group,
@@ -17,7 +27,11 @@ import {
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
-import { Controls, strokeStyleToDashArray, TemplateParameters } from "../common";
+import {
+  Controls,
+  strokeStyleToDashArray,
+  TemplateParameters,
+} from "../common";
 import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
@@ -32,9 +46,9 @@ export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   gridlineColor: {
     r: 234,
     g: 234,
-    b: 234
+    b: 234,
   } as Color,
-  gridlineWidth: 1
+  gridlineWidth: 1,
 };
 
 function fillDefaultAxisStyle(
@@ -191,7 +205,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -233,7 +247,7 @@ export class AxisRenderer {
       const tx =
         ((Math.log(ticks[i]) - Math.log(domainMin)) /
           (Math.log(domainMax) - Math.log(domainMin))) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -267,7 +281,7 @@ export class AxisRenderer {
     for (let i = 0; i < ticks.length; i++) {
       const tx =
         ((ticks[i] - domainMin) / (domainMax - domainMin)) *
-        (rangeMax - rangeMin) +
+          (rangeMax - rangeMin) +
         rangeMin;
       r.push({
         position: tx,
@@ -314,7 +328,13 @@ export class AxisRenderer {
     return this;
   }
 
-  public renderGridLine(x: number, y: number, angle: number, side: number, size: number) {
+  public renderGridLine(
+    x: number,
+    y: number,
+    angle: number,
+    side: number,
+    size: number
+  ) {
     const style = this.style;
     if (style.gridlineStyle === "none") {
       return;
@@ -334,7 +354,7 @@ export class AxisRenderer {
       // strokeColor: style.lineColor,
       strokeColor: style.gridlineColor,
       strokeWidth: style.gridlineWidth,
-      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     // Base line
     g.elements.push(makeLine(x1, y1, x2, y2, lineStyle));
@@ -352,10 +372,15 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderGridlinesForAxes(x: number, y: number, axis: "x" | "y", size: number): Group {
+  public renderGridlinesForAxes(
+    x: number,
+    y: number,
+    axis: "x" | "y",
+    size: number
+  ): Group {
     switch (axis) {
       case "x": {
-        return this.renderGridLine(x,y, 0, 1, size);
+        return this.renderGridLine(x, y, 0, 1, size);
       }
       case "y": {
         return this.renderGridLine(x, y, 90, -1, size);
@@ -432,7 +457,9 @@ export class AxisRenderer {
             style.fontFamily,
             style.fontSize
           );
-          textContent = textContent.flatMap((line) => splitStringByNewLine(line));
+          textContent = textContent.flatMap((line) =>
+            splitStringByNewLine(line)
+          );
           const lines: Graphics.Element[] = [];
           for (let index = 0; index < textContent.length; index++) {
             const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -446,10 +473,10 @@ export class AxisRenderer {
             const text = makeText(
               px,
               py -
-              style.fontSize * index +
-              (side * cos > 0
-                ? 0
-                : (textContent.length * style.fontSize - style.fontSize) / 2),
+                style.fontSize * index +
+                (side * cos > 0
+                  ? 0
+                  : (textContent.length * style.fontSize - style.fontSize) / 2),
               textContent[index],
               style.fontFamily,
               style.fontSize,
@@ -547,7 +574,9 @@ export class AxisRenderer {
                 style.fontSize
               );
             }
-            textContent = textContent.flatMap((line) => splitStringByNewLine(line));
+            textContent = textContent.flatMap((line) =>
+              splitStringByNewLine(line)
+            );
             const lines: Graphics.Element[] = [];
             for (let index = 0; index < textContent.length; index++) {
               const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -561,8 +590,8 @@ export class AxisRenderer {
               const text = makeText(
                 px,
                 py -
-                style.fontSize * index +
-                (side * cos > 0 ? 0 : textContent.length * style.fontSize),
+                  style.fontSize * index +
+                  (side * cos > 0 ? 0 : textContent.length * style.fontSize),
                 textContent[index],
                 style.fontFamily,
                 style.fontSize,
@@ -579,8 +608,8 @@ export class AxisRenderer {
               angle: style.wordWrap
                 ? 0
                 : cos > 0
-                  ? 36 + angle
-                  : 36 + angle - 180,
+                ? 36 + angle
+                : 36 + angle - 180,
             };
             g.elements.push(gText);
           } else {
@@ -621,7 +650,14 @@ export class AxisRenderer {
     }
   }
 
-  public renderPolarRadialGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+  public renderPolarRadialGridLine(
+    x: number,
+    y: number,
+    innerRadius: number,
+    outerRadius: number,
+    startAngle: number,
+    endAngle: number
+  ) {
     const style = this.style;
     if (style.gridlineStyle === "none") {
       return;
@@ -634,14 +670,17 @@ export class AxisRenderer {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
       strokeWidth: style.gridlineWidth,
-      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
     for (const tickPosition of this.ticks
       .map((x) => x.position)
-      .concat([rangeMin, rangeMax])
-      ) {
-      const cos = Math.cos(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
-      const sin = Math.sin(Geometry.degreesToRadians(-tickPosition + gridineArcRotate));
+      .concat([rangeMin, rangeMax])) {
+      const cos = Math.cos(
+        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+      );
+      const sin = Math.sin(
+        Geometry.degreesToRadians(-tickPosition + gridineArcRotate)
+      );
       const tx1 = x + cos * innerRadius;
       const ty1 = y + sin * innerRadius;
       const tx2 = x + cos * outerRadius;
@@ -652,7 +691,14 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderPolarArcGridLine(x: number, y: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number) {
+  public renderPolarArcGridLine(
+    x: number,
+    y: number,
+    innerRadius: number,
+    outerRadius: number,
+    startAngle: number,
+    endAngle: number
+  ) {
     const style = this.style;
     if (style.gridlineStyle === "none") {
       return;
@@ -667,9 +713,9 @@ export class AxisRenderer {
       strokeLinecap: "round",
       strokeColor: style.gridlineColor,
       strokeWidth: style.gridlineWidth,
-      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle)
+      strokeDasharray: strokeStyleToDashArray(style.gridlineStyle),
     };
-    let radius = ((outerRadius - innerRadius) / this.ticks.length)
+    let radius = (outerRadius - innerRadius) / this.ticks.length;
     for (const tickPosition of this.ticks
       .map((x) => x.position)
       .concat([rangeMin, rangeMax])) {
@@ -677,7 +723,15 @@ export class AxisRenderer {
       const ty1 = y + tickPosition * startSin;
       const arc = makePath(lineStyle);
       arc.moveTo(tx1, ty1);
-      arc.polarLineTo(x, y, -startAngle + gridineArcRotate, tickPosition, -endAngle + gridineArcRotate, tickPosition, true);
+      arc.polarLineTo(
+        x,
+        y,
+        -startAngle + gridineArcRotate,
+        tickPosition,
+        -endAngle + gridineArcRotate,
+        tickPosition,
+        true
+      );
       g.elements.push(arc.path);
       radius += radius;
     }
@@ -712,7 +766,9 @@ export class AxisRenderer {
 
     const margins = 10;
     const maxTickDistance =
-      Geometry.degreesToRadians(radius * ((rangeMax - rangeMin) / this.ticks.length)) -
+      Geometry.degreesToRadians(
+        radius * ((rangeMax - rangeMin) / this.ticks.length)
+      ) -
       margins * 2; // lenght of arc for all ticks
     for (const tick of this.ticks) {
       const angle = tick.position;
@@ -720,8 +776,12 @@ export class AxisRenderer {
       const tx = Math.sin(radians) * radius;
       const ty = Math.cos(radians) * radius;
 
-      const lablel = tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
-      if (lablel && (style.wordWrap || splitStringByNewLine(lablel).length > 1)) {
+      const lablel =
+        tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
+      if (
+        lablel &&
+        (style.wordWrap || splitStringByNewLine(lablel).length > 1)
+      ) {
         let textContent = [lablel];
         if (style.wordWrap) {
           textContent = splitByWidth(
@@ -748,10 +808,10 @@ export class AxisRenderer {
           const gt = makeText(
             textX,
             textY -
-            style.fontSize * index +
-            (side > 0
-              ? style.fontSize * textContent.length - style.fontSize
-              : 0),
+              style.fontSize * index +
+              (side > 0
+                ? style.fontSize * textContent.length - style.fontSize
+                : 0),
             textContent[index],
             style.fontFamily,
             style.fontSize,
@@ -957,10 +1017,13 @@ export function buildAxisAppearanceWidgets(
             ),
             m.row(
               "Font Family",
-              m.inputFontFamily({
-                property: axisProperty,
-                field: ["style", "fontFamily"],
-              })
+              m.inputFontFamily(
+                {
+                  property: axisProperty,
+                  field: ["style", "fontFamily"],
+                },
+                {}
+              )
             ),
             m.row(
               "Font Size",
@@ -980,7 +1043,7 @@ export function buildAxisAppearanceWidgets(
             )
           )
         )
-      )
+      ),
     ];
   } else {
     return m.row(

@@ -43,16 +43,12 @@ import {
   Button,
   InputColorGradient,
   InputImage,
-  Radio,
-  Select,
-  ComboBoxFontFamily,
   InputImageProperty,
   FluentComboBoxFontFamily,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate } from "../../../../container";
-import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
   FunctionCall,
@@ -62,16 +58,27 @@ import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
-import { IconButton, TextField, DatePicker, DefaultButton, DayOfWeek, Checkbox, Label, ComboBox, Dropdown, IDropdownOption } from "@fluentui/react";
+import {
+  IconButton,
+  TextField,
+  DatePicker,
+  DefaultButton,
+  DayOfWeek,
+  Checkbox,
+  Label,
+  ComboBox,
+  Dropdown,
+  IDropdownOption,
+} from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
-import { CharticulatorPropertyAccessors as CharticulatorPropertyAccessors } from "./manager";
+import { CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { Icon } from '@fluentui/react/lib/Icon';
+import { Icon } from "@fluentui/react/lib/Icon";
 import { FluentButton } from "./controls/fluentui_buttons";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { text } from "d3";
+import { InputFontComboboxOptions } from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -274,9 +281,13 @@ export class FluentUIWidgetManager
     );
   }
 
-  public inputFontFamily(property: Prototypes.Controls.Property) {
+  public inputFontFamily(
+    property: Prototypes.Controls.Property,
+    options: InputFontComboboxOptions
+  ) {
     return (
       <FluentComboBoxFontFamily
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
@@ -412,9 +423,10 @@ export class FluentUIWidgetManager
         return (
           <IconButton
             iconProps={{
-              iconName: options.icon
+              iconName: options.icon,
             }}
             title={options.label}
+            label={options.label}
             text={options.label}
             ariaLabel={options.label}
             checked={this.getPropertyValue(property) as boolean}
@@ -427,12 +439,14 @@ export class FluentUIWidgetManager
       }
     }
   }
+
   public inputExpression(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
     return (
       <FluentInputExpression
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         validate={(value) => {
           if (value && value.trim() !== "") {
@@ -1295,8 +1309,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-            ? this.props.draggingHint()
-            : this.props.children}
+          ? this.props.draggingHint()
+          : this.props.children}
       </div>
     );
   }
@@ -1310,7 +1324,7 @@ export class ReorderStringsValue extends React.Component<
     onReset?: () => string[];
   },
   { items: string[] }
-  > {
+> {
   public state: { items: string[] } = {
     items: this.props.items.slice(),
   };
@@ -1384,7 +1398,7 @@ export class DetailsButton extends React.Component<
     manager: Prototypes.Controls.WidgetManager;
   },
   {}
-  > {
+> {
   public inner: DetailsButtonInner;
   public componentDidUpdate() {
     if (this.inner) {
@@ -1412,7 +1426,7 @@ export class DetailsButton extends React.Component<
             },
             {
               anchor: btn,
-              alignX: getAligntment(btn).alignX
+              alignX: getAligntment(btn).alignX,
             }
           );
         }}
@@ -1424,7 +1438,7 @@ export class DetailsButton extends React.Component<
 export class DetailsButtonInner extends React.Component<
   { parent: DetailsButton },
   {}
-  > {
+> {
   public render() {
     const parent = this.props.parent;
     return (

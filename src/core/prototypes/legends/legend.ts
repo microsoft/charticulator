@@ -169,7 +169,10 @@ export abstract class LegendClass extends ChartElementClass {
     const props = this.object.properties;
     const widget = [
       manager.sectionHeader("Labels"),
-      manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
+      manager.row(
+        "Font",
+        manager.inputFontFamily({ property: "fontFamily" }, {})
+      ),
       manager.row(
         "Size",
         manager.inputNumber(
@@ -201,7 +204,11 @@ export abstract class LegendClass extends ChartElementClass {
             { property: "alignX" },
             {
               type: "radio",
-              icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
               options: ["start", "middle", "end"],
             }
@@ -211,7 +218,11 @@ export abstract class LegendClass extends ChartElementClass {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
             }
           ),

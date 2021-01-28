@@ -67,7 +67,10 @@ import {
 import { getDateFormat } from "../../../../core/dataset/datetime";
 import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { InputComboboxOptions } from "../../../../core/prototypes/controls";
+import {
+  InputComboboxOptions,
+  InputFontComboboxOptions,
+} from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -88,7 +91,7 @@ export interface CharticulatorPropertyAccessors {
   emitSetProperty: (
     property: Prototypes.Controls.Property,
     value: Specification.AttributeValue
-  ) => void
+  ) => void;
   store: AppStore;
 
   getAttributeMapping: (attribute: string) => Specification.Mapping;
@@ -96,7 +99,8 @@ export interface CharticulatorPropertyAccessors {
   onMapDataHandler: OnMapDataHandler;
 }
 
-export class WidgetManager implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
+export class WidgetManager
+  implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
@@ -280,9 +284,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager, Chartic
     );
   }
 
-  public inputFontFamily(property: Prototypes.Controls.Property) {
+  public inputFontFamily(
+    property: Prototypes.Controls.Property,
+    options: InputFontComboboxOptions
+  ) {
     return (
       <ComboBoxFontFamily
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
@@ -1342,9 +1350,7 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn,
-              alignX: getAligntment(btn).alignX
-             }
+            { anchor: btn, alignX: getAligntment(btn).alignX }
           );
         }}
       />
