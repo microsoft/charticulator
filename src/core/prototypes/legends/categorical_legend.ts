@@ -176,9 +176,14 @@ export class CategoricalLegendClass extends LegendClass {
               case "circle":
               default:
                 gItem.elements.push(
-                  Graphics.makeCircle(lineHeight / 2, lineHeight /2, lineHeight / 3, {
-                    fillColor: item.value as Color,
-                  })
+                  Graphics.makeCircle(
+                    lineHeight / 2,
+                    lineHeight / 2,
+                    lineHeight / 3,
+                    {
+                      fillColor: item.value as Color,
+                    }
+                  )
                 );
             }
           }
@@ -251,22 +256,16 @@ export class CategoricalLegendClass extends LegendClass {
 
     return [
       ...widgets,
-      manager.row(
-        "Orientation",
-        manager.horizontal(
-          [0, 0],
-          null,
-          manager.inputSelect(
-            { property: "orientation" },
-            {
-              type: "radio",
-              showLabel: false,
-              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
-              labels: ["Vertical", "Horizontal"],
-              options: ["vertical", "horizontal"],
-            }
-          )
-        )
+      manager.inputSelect(
+        { property: "orientation" },
+        {
+          type: "radio",
+          showLabel: false,
+          icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+          labels: ["Vertical", "Horizontal"],
+          options: ["vertical", "horizontal"],
+          label: "Orientation",
+        }
       ),
     ];
   }

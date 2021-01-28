@@ -169,34 +169,26 @@ export abstract class LegendClass extends ChartElementClass {
     const props = this.object.properties;
     const widget = [
       manager.sectionHeader("Labels"),
-      manager.row(
-        "Font",
-        manager.inputFontFamily({ property: "fontFamily" }, {})
+      manager.inputFontFamily({ property: "fontFamily" }, { label: "Font" }),
+      manager.inputNumber(
+        { property: "fontSize" },
+        { showUpdown: true, updownStyle: "font", updownTick: 2, label: "Size" }
       ),
-      manager.row(
-        "Size",
-        manager.inputNumber(
-          { property: "fontSize" },
-          { showUpdown: true, updownStyle: "font", updownTick: 2 }
-        )
-      ),
-      manager.row("Color", manager.inputColor({ property: "textColor" })),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "markerShape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-            labels: ["Rectangle", "Triangle", "Circle"],
-            options: ["rectangle", "triangle", "circle"],
-          }
-        )
+      manager.inputColor({ property: "textColor" }, { label: "Color" }),
+      manager.inputSelect(
+        { property: "markerShape" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+          labels: ["Rectangle", "Triangle", "Circle"],
+          options: ["rectangle", "triangle", "circle"],
+          label: "Shape",
+        }
       ),
       manager.sectionHeader("Layout"),
-      manager.row(
-        "Alignment",
+      manager.vertical(
+        manager.label("Alignment"),
         manager.horizontal(
           [0, 0],
           null,
