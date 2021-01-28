@@ -333,17 +333,15 @@ export class DataAxisClass extends MarkClass<
     );
     const r = [...axisWidgets];
     r.push(
-      manager.row(
-        "Visible On",
-        manager.inputSelect(
-          { property: "visibleOn" },
-          {
-            labels: ["All", "First", "Last"],
-            showLabel: true,
-            options: ["all", "first", "last"],
-            type: "dropdown",
-          }
-        )
+      manager.inputSelect(
+        { property: "visibleOn" },
+        {
+          labels: ["All", "First", "Last"],
+          showLabel: true,
+          options: ["all", "first", "last"],
+          type: "dropdown",
+          label: "Visible On",
+        }
       )
     );
     if (props.dataExpressions.length > 0) {
