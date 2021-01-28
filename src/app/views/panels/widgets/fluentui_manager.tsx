@@ -78,7 +78,10 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { Icon } from "@fluentui/react/lib/Icon";
 import { FluentButton } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { InputFontComboboxOptions } from "../../../../core/prototypes/controls";
+import {
+  InputFontComboboxOptions,
+  InputTextOptions,
+} from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -267,12 +270,13 @@ export class FluentUIWidgetManager
 
   public inputText(
     property: Prototypes.Controls.Property,
-    placeholder?: string
+    options: InputTextOptions
   ) {
     return (
       <TextField
         defaultValue={this.getPropertyValue(property) as string}
-        placeholder={placeholder}
+        placeholder={options.placeholder}
+        label={options.label}
         onChange={(event, value) => {
           this.emitSetProperty(property, value);
         }}
@@ -364,6 +368,7 @@ export class FluentUIWidgetManager
       return (
         <Dropdown
           selectedKey={this.getPropertyValue(property) as string}
+          defaultValue={this.getPropertyValue(property) as string}
           label={options.label}
           onRenderOption={onRenderOption}
           onRenderTitle={onRenderTitle}
@@ -385,6 +390,7 @@ export class FluentUIWidgetManager
     } else {
       return (
         <>
+          {options.label ? <Label>{options.label}</Label> : null}
           {options.options.map((option, index) => {
             return (
               <IconButton
@@ -980,8 +986,10 @@ export class FluentUIWidgetManager
     );
   }
 
-  public detailsButton(...widgets: JSX.Element[]): JSX.Element {
-    return <DetailsButton widgets={widgets} manager={this} />;
+  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
+    return (
+      <FluentDetailsButton label={label} widgets={widgets} manager={this} />
+    );
   }
 
   public filterEditor(
@@ -1396,10 +1404,11 @@ export class ReorderStringsValue extends React.Component<
   }
 }
 
-export class DetailsButton extends React.Component<
+export class FluentDetailsButton extends React.Component<
   {
     widgets: JSX.Element[];
     manager: Prototypes.Controls.WidgetManager;
+    label?: string;
   },
   {}
 > {
@@ -1413,34 +1422,39 @@ export class DetailsButton extends React.Component<
   public render() {
     let btn: Element;
     return (
-      <Button
-        icon={"general/more-horizontal"}
-        ref={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              return (
-                <PopupView context={context}>
-                  <DetailsButtonInner
-                    parent={this}
-                    ref={(e) => (this.inner = e)}
-                  />
-                </PopupView>
-              );
-            },
-            {
-              anchor: btn,
-              alignX: getAligntment(btn).alignX,
-            }
-          );
-        }}
-      />
+      <>
+        {this.props.label ? <Label>{this.props.label}</Label> : null}
+        <DefaultButton
+          iconProps={{
+            iconName: "More",
+          }}
+          componentRef={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
+          onClick={() => {
+            globals.popupController.popupAt(
+              (context) => {
+                return (
+                  <PopupView context={context}>
+                    <DetailsButtonInner
+                      parent={this}
+                      ref={(e) => (this.inner = e)}
+                    />
+                  </PopupView>
+                );
+              },
+              {
+                anchor: btn,
+                alignX: getAligntment(btn).alignX,
+              }
+            );
+          }}
+        />
+      </>
     );
   }
 }
 
 export class DetailsButtonInner extends React.Component<
-  { parent: DetailsButton },
+  { parent: FluentDetailsButton },
   {}
 > {
   public render() {

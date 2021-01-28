@@ -35,6 +35,11 @@ export interface InputFontComboboxOptions {
   label?: string;
 }
 
+export interface InputTextOptions {
+  label?: string;
+  placeholder?: string;
+}
+
 export interface InputBooleanOptions {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
@@ -170,7 +175,7 @@ export interface WidgetManager {
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputDate(property: Property, options?: InputDateOptions): Widget;
-  inputText(property: Property, placeholder?: string): Widget;
+  inputText(property: Property, options: InputTextOptions): Widget;
   inputComboBox(property: Property, options: InputComboboxOptions): Widget;
   inputFontFamily(
     property: Property,
@@ -219,7 +224,7 @@ export interface WidgetManager {
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
-  detailsButton(...widgets: Widget[]): Widget;
+  detailsButton(label: string, ...widgets: Widget[]): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;

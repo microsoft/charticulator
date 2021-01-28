@@ -2141,7 +2141,11 @@ export class Region2DConstraintBuilder {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
             }
           )
@@ -2154,7 +2158,11 @@ export class Region2DConstraintBuilder {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
             }
           )
@@ -2163,12 +2171,15 @@ export class Region2DConstraintBuilder {
       alignmentWidgets.push(null);
 
       extra.push(
-        m.row("Alignment", m.horizontal([0, 0], ...alignmentWidgets.reverse()))
+        m.vertical(
+          m.label("Alignment"),
+          m.horizontal([0, 0], ...alignmentWidgets.reverse())
+        )
       );
       if (type == "grid") {
         extra.push(
-          m.row(
-            "Gap",
+          m.vertical(
+            m.label("Gap"),
             m.horizontal(
               [0, 1, 0, 1],
               m.label("x: "),
@@ -2186,22 +2197,25 @@ export class Region2DConstraintBuilder {
         );
       } else {
         extra.push(
-          m.row(
-            "Gap",
-            m.inputNumber(
-              {
-                property: "sublayout",
-                field: type == "dodge-x" ? "ratioX" : "ratioY",
-              },
-              { minimum: 0, maximum: 1, percentage: true, showSlider: true }
-            )
+          m.inputNumber(
+            {
+              property: "sublayout",
+              field: type == "dodge-x" ? "ratioX" : "ratioY",
+            },
+            {
+              minimum: 0,
+              maximum: 1,
+              percentage: true,
+              showSlider: true,
+              label: "Gap",
+            }
           )
         );
       }
       if (type == "grid") {
         extra.push(
-          m.row(
-            "Direction",
+          m.vertical(
+            m.label("Direction"),
             m.horizontal(
               [0, 0, 1],
               m.inputSelect(
@@ -2215,23 +2229,27 @@ export class Region2DConstraintBuilder {
                     this.terminology.gridDirectionY,
                   ],
                 }
-              ),
-              m.label("Count:"),
-              m.inputNumber({
+              )
+            ),
+            m.inputNumber(
+              {
                 property: "sublayout",
                 field:
                   props.sublayout.grid.direction == "x"
                     ? ["grid", "xCount"]
                     : ["grid", "yCount"],
-              })
+              },
+              {
+                label: "Count",
+              }
             )
           )
         );
       }
       if (type != "overlap") {
         extra.push(
-          m.row(
-            "Order",
+          m.vertical(
+            m.label("Order"),
             m.horizontal(
               [0, 0],
               m.orderByWidget(
@@ -2249,20 +2267,15 @@ export class Region2DConstraintBuilder {
     }
     if (type == "packing") {
       extra.push(
-        m.row(
-          "Gravity",
-          m.horizontal(
-            [0, 1, 0, 1],
-            m.label("x: "),
-            m.inputNumber(
-              { property: "sublayout", field: ["packing", "gravityX"] },
-              { minimum: 0.1, maximum: 15 }
-            ),
-            m.label("y: "),
-            m.inputNumber(
-              { property: "sublayout", field: ["packing", "gravityY"] },
-              { minimum: 0.1, maximum: 15 }
-            )
+        m.vertical(
+          m.label("Gravity"),
+          m.inputNumber(
+            { property: "sublayout", field: ["packing", "gravityX"] },
+            { minimum: 0.1, maximum: 15, label: "X" }
+          ),
+          m.inputNumber(
+            { property: "sublayout", field: ["packing", "gravityY"] },
+            { minimum: 0.1, maximum: 15, label: "Y" }
           )
         )
       );
@@ -2270,21 +2283,15 @@ export class Region2DConstraintBuilder {
     const options = this.applicableSublayoutOptions();
     return [
       m.sectionHeader("Sub-layout"),
-      m.row(
-        "Type",
-        m.horizontal(
-          [0, 0],
-          null,
-          m.inputSelect(
-            { property: "sublayout", field: "type" },
-            {
-              type: "radio",
-              options: options.map((x) => x.value),
-              icons: options.map((x) => x.icon),
-              labels: options.map((x) => x.label),
-            }
-          )
-        )
+      m.inputSelect(
+        { property: "sublayout", field: "type" },
+        {
+          type: "radio",
+          options: options.map((x) => x.value),
+          icons: options.map((x) => x.icon),
+          labels: options.map((x) => x.label),
+          label: "Type",
+        }
       ),
       ...extra,
     ];
@@ -2298,9 +2305,9 @@ export class Region2DConstraintBuilder {
     const props = this.plotSegment.object.properties;
     const data = axis == "x" ? props.xData : props.yData;
     const axisProperty = axis == "x" ? "xData" : "yData";
-    return  [
+    return [
       ...buildAxisWidgets(data, axisProperty, m, axisName),
-      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty)
+      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty),
     ];
   }
 

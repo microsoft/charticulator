@@ -48,7 +48,7 @@ export abstract class PlotSegmentClass<
     manager: ChartStateManager
   ): Graphics.Element {
     return null;
-  }   
+  }
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     return new Graphics.CartesianCoordinates();
@@ -68,8 +68,6 @@ export abstract class PlotSegmentClass<
     return null;
   }
 
-
-  
   /**
    * Renders gridlines for axis
    * @param data axis data binding
@@ -85,50 +83,51 @@ export abstract class PlotSegmentClass<
       return [];
     }
     return [
-      manager.sectionHeader(
-        "Gridline"
-      ),
-      manager.row(
-        "Style",
-        manager.horizontal(
-          [1, 1],
-          manager.inputSelect(
-            { property: axisProperty, field: ["style", "gridlineStyle"] },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: ["general/cross","stroke/solid", "stroke/dashed", "stroke/dotted"],
-              options: ["none", "solid", "dashed", "dotted"],
-              labels: ["None", "Solid", "Dashed", "Dotted"],
-            }
-          )
+      manager.sectionHeader("Gridline"),
+      manager.horizontal(
+        [1, 1],
+        manager.inputSelect(
+          { property: axisProperty, field: ["style", "gridlineStyle"] },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: [
+              "general/cross",
+              "stroke/solid",
+              "stroke/dashed",
+              "stroke/dotted",
+            ],
+            options: ["none", "solid", "dashed", "dotted"],
+            labels: ["None", "Solid", "Dashed", "Dotted"],
+            label: "Style",
+          }
         )
       ),
-      manager.row(
-        "Color",
-        manager.horizontal(
-          [1, 1],
-          manager.inputColor({
+      manager.horizontal(
+        [1, 1],
+        manager.inputColor(
+          {
             property: axisProperty,
             field: ["style", "gridlineColor"],
-          })
+          },
+          {
+            label: "Color",
+          }
         )
       ),
-      manager.row(
-        "Width",
-        manager.horizontal(
-          [1, 1],
-          manager.inputNumber({
-            property: axisProperty,
-            field: ["style", "gridlineWidth"],
-          }, {
-            minimum: 0,
-            maximum: 100,
-            showUpdown: true
-          })
-        )
+      manager.inputNumber(
+        {
+          property: axisProperty,
+          field: ["style", "gridlineWidth"],
+        },
+        {
+          minimum: 0,
+          maximum: 100,
+          showUpdown: true,
+          label: "Width",
+        }
       ),
-    ]
+    ];
   }
 
   public getAttributePanelWidgets(

@@ -974,80 +974,76 @@ export function buildAxisAppearanceWidgets(
 ) {
   if (isVisible) {
     return [
-      m.row(
-        "",
-        m.horizontal(
-          [0, 0, 1, 0],
-          m.inputBoolean(
-            { property: axisProperty, field: "visible" },
-            { type: "checkbox", label: "Visible" }
-          ),
-          // m.label("Position:"),
-          m.inputSelect(
-            { property: axisProperty, field: "side" },
+      m.vertical(
+        m.inputBoolean(
+          { property: axisProperty, field: "visible" },
+          { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
+        ),
+        m.inputSelect(
+          { property: axisProperty, field: "side" },
+          {
+            type: "dropdown",
+            showLabel: true,
+            label: "Position:",
+            options: ["default", "opposite"],
+            labels: ["Default", "Opposite"],
+          }
+        ),
+        m.detailsButton(
+          "Axis Style",
+          m.sectionHeader("Axis Style"),
+          m.inputColor(
             {
-              type: "dropdown",
-              showLabel: true,
-              label: "Position:",
-              options: ["default", "opposite"],
-              labels: ["Default", "Opposite"],
+              property: axisProperty,
+              field: ["style", "lineColor"],
+            },
+            {
+              label: "Line Color",
             }
           ),
-          m.detailsButton(
-            m.sectionHeader("Axis Style"),
-            m.inputColor(
-              {
-                property: axisProperty,
-                field: ["style", "lineColor"],
-              },
-              {
-                label: "Line Color",
-              }
-            ),
-            m.inputColor(
-              {
-                property: axisProperty,
-                field: ["style", "tickColor"],
-              },
-              {
-                label: "Tick Color",
-              }
-            ),
-            m.inputNumber(
-              {
-                property: axisProperty,
-                field: ["style", "tickSize"],
-              },
-              {
-                label: "Tick Size",
-              }
-            ),
-            m.inputFontFamily(
-              {
-                property: axisProperty,
-                field: ["style", "fontFamily"],
-              },
-              {
-                label: "Font Family",
-              }
-            ),
-            m.inputNumber(
-              { property: axisProperty, field: ["style", "fontSize"] },
-              {
-                showUpdown: true,
-                updownStyle: "font",
-                updownTick: 2,
-                label: "Font Size",
-              }
-            ),
-            m.inputBoolean(
-              { property: axisProperty, field: ["style", "wordWrap"] },
-              {
-                type: "checkbox",
-                headerLabel: "Text displaying",
-                label: "Wrap text",
-              }
-            )
+          m.inputColor(
+            {
+              property: axisProperty,
+              field: ["style", "tickColor"],
+            },
+            {
+              label: "Tick Color",
+            }
+          ),
+          m.inputNumber(
+            {
+              property: axisProperty,
+              field: ["style", "tickSize"],
+            },
+            {
+              label: "Tick Size",
+            }
+          ),
+          m.inputFontFamily(
+            {
+              property: axisProperty,
+              field: ["style", "fontFamily"],
+            },
+            {
+              label: "Font Family",
+            }
+          ),
+          m.inputNumber(
+            { property: axisProperty, field: ["style", "fontSize"] },
+            {
+              showUpdown: true,
+              updownStyle: "font",
+              updownTick: 2,
+              label: "Font Size",
+            }
+          ),
+          m.inputBoolean(
+            { property: axisProperty, field: ["style", "wordWrap"] },
+            {
+              type: "checkbox",
+              headerLabel: "Text displaying",
+              label: "Wrap text",
+            }
           )
         )
       ),
@@ -1055,7 +1051,7 @@ export function buildAxisAppearanceWidgets(
   } else {
     return m.inputBoolean(
       { property: axisProperty, field: "visible" },
-      { type: "checkbox", label: "Visible" }
+      { type: "checkbox", label: "Visible", headerLabel: "Appearance" }
     );
   }
 }
@@ -1090,12 +1086,14 @@ export function buildAxisWidgets(
           );
           if (axisName != "Data Axis") {
             widgets.push(
-              m.row(
-                "Data",
-                m.inputExpression({
+              m.inputExpression(
+                {
                   property: axisProperty,
                   field: "expression",
-                })
+                },
+                {
+                  label: "Data",
+                }
               )
             );
           }
@@ -1119,8 +1117,8 @@ export function buildAxisWidgets(
             );
           } else {
             widgets.push(
-              m.row(
-                "Range",
+              m.vertical(
+                m.label("Range"),
                 m.horizontal(
                   [1, 0, 1],
                   m.inputNumber({ property: axisProperty, field: "domainMin" }),
@@ -1132,39 +1130,39 @@ export function buildAxisWidgets(
           }
           if (data.numericalMode != "temporal") {
             widgets.push(
-              m.row(
-                "Mode",
-                m.inputSelect(
-                  { property: axisProperty, field: "numericalMode" },
-                  {
-                    options: ["linear", "logarithmic"],
-                    labels: ["Linear", "Logarithmic"],
-                    showLabel: true,
-                    type: "dropdown",
-                  }
-                )
+              m.inputSelect(
+                { property: axisProperty, field: "numericalMode" },
+                {
+                  options: ["linear", "logarithmic"],
+                  labels: ["Linear", "Logarithmic"],
+                  showLabel: true,
+                  type: "dropdown",
+                  label: "Mode",
+                }
               )
             );
           }
           widgets.push(
-            m.row(
-              "Tick Data",
-              m.inputExpression({
+            m.inputExpression(
+              {
                 property: axisProperty,
                 field: "tickDataExpression",
-              })
+              },
+              {
+                label: "Tick Data",
+              }
             )
           );
           widgets.push(
-            m.row(
-              "Tick Format",
-              m.inputText(
-                {
-                  property: axisProperty,
-                  field: "tickFormat",
-                },
-                "(auto)"
-              )
+            m.inputText(
+              {
+                property: axisProperty,
+                field: "tickFormat",
+              },
+              {
+                placeholder: "(auto)",
+                label: "Tick Format",
+              }
             )
           );
           widgets.push(makeAppearance());
@@ -1180,8 +1178,8 @@ export function buildAxisWidgets(
             )
           );
           widgets.push(
-            m.row(
-              "Data",
+            m.vertical(
+              m.label("Data"),
               m.horizontal(
                 [1, 0],
                 m.inputExpression({
@@ -1197,34 +1195,39 @@ export function buildAxisWidgets(
           );
           if (data.valueType === "date") {
             widgets.push(
-              m.row(
-                "Tick Data",
-                m.inputExpression({
+              m.inputExpression(
+                {
                   property: axisProperty,
                   field: "tickDataExpression",
-                })
+                },
+                {
+                  label: "Tick Data",
+                }
               )
             );
             widgets.push(
-              m.row(
-                "Tick Format",
-                m.inputText(
-                  {
-                    property: axisProperty,
-                    field: "tickFormat",
-                  },
-                  "(auto)"
-                )
+              m.inputText(
+                {
+                  property: axisProperty,
+                  field: "tickFormat",
+                },
+                {
+                  placeholder: "(auto)",
+                  label: "Tick Format",
+                }
               )
             );
           }
           widgets.push(
-            m.row(
-              "Gap",
-              m.inputNumber(
-                { property: axisProperty, field: "gapRatio" },
-                { minimum: 0, maximum: 1, percentage: true, showSlider: true }
-              )
+            m.inputNumber(
+              { property: axisProperty, field: "gapRatio" },
+              {
+                minimum: 0,
+                maximum: 1,
+                percentage: true,
+                showSlider: true,
+                label: "Gap",
+              }
             )
           );
           widgets.push(makeAppearance());
@@ -1240,12 +1243,15 @@ export function buildAxisWidgets(
             )
           );
           widgets.push(
-            m.row(
-              "Gap",
-              m.inputNumber(
-                { property: axisProperty, field: "gapRatio" },
-                { minimum: 0, maximum: 1, percentage: true, showSlider: true }
-              )
+            m.inputNumber(
+              { property: axisProperty, field: "gapRatio" },
+              {
+                minimum: 0,
+                maximum: 1,
+                percentage: true,
+                showSlider: true,
+                label: "Gap",
+              }
             )
           );
         }

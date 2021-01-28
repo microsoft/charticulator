@@ -672,6 +672,35 @@
       }
     }
 
+    &-row-fluentui {
+      display: flex;
+      flex-direction: column;
+      margin: 2px 0;
+
+      &-label {
+        word-break: keep-all;
+        white-space: nowrap;
+        font-size: 12px;
+        width: 70px;
+        flex: 0 0;
+        flex-basis: 70px;
+        line-height: $line-height;
+        text-align: right;
+        padding-right: 4px;
+        margin-right: 4px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        color: $gray-100;
+        transition: background-color $transition-default;
+      }
+
+      &-widget {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
     &-grid {
       display: flex;
       flex-direction: row;

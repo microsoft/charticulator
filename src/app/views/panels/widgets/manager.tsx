@@ -70,6 +70,7 @@ import { ScaleValueSelector } from "../scale_value_selector";
 import {
   InputComboboxOptions,
   InputFontComboboxOptions,
+  InputTextOptions,
 } from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
@@ -270,12 +271,12 @@ export class WidgetManager
 
   public inputText(
     property: Prototypes.Controls.Property,
-    placeholder?: string
+    options: InputTextOptions
   ) {
     return (
       <InputText
         defaultValue={this.getPropertyValue(property) as string}
-        placeholder={placeholder}
+        placeholder={options.placeholder}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
@@ -903,7 +904,7 @@ export class WidgetManager
     );
   }
 
-  public detailsButton(...widgets: JSX.Element[]): JSX.Element {
+  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
     return <DetailsButton widgets={widgets} manager={this} />;
   }
 
