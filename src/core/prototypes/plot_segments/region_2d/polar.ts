@@ -368,38 +368,39 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderLine(
-            cx,
-            cy,
-            90 - (radialData.side == "opposite" ? angleEnd : angleStart),
-            -1
-          )
+          cx,
+          cy,
+          90 - (radialData.side == "opposite" ? angleEnd : angleStart),
+          -1
+        )
       );
     }
     if (angularData && angularData.visible) {
-      const axisRenderer = new AxisRenderer()
-          .setAxisDataBinding(
-            angularData,
-            angleStart,
-            angleEnd,
-            builder.config.xAxisPrePostGap,
-            false,
-            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          );
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        angularData,
+        angleStart,
+        angleEnd,
+        builder.config.xAxisPrePostGap,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
       g.elements.push(
         axisRenderer.renderPolar(
-            cx,
-            cy,
-            angularData.side == "opposite" ? innerRadius : outerRadius,
-            angularData.side == "opposite" ? -1 : 1
-          )
-      );     
+          cx,
+          cy,
+          angularData.side == "opposite" ? innerRadius : outerRadius,
+          angularData.side == "opposite" ? -1 : 1
+        )
+      );
     }
     return g;
   }
 
-  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
-    
+
     const builder = this.createBuilder();
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -424,36 +425,35 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderPolarArcGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
+          cx,
+          cy,
+          innerRadius,
+          outerRadius,
+          angleStart,
+          angleEnd
+        )
       );
     }
 
     if (angularData && angularData.visible) {
-      const axisRenderer = new AxisRenderer()
-          .setAxisDataBinding(
-            angularData,
-            angleStart,
-            angleEnd,
-            builder.config.xAxisPrePostGap,
-            false,
-            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          );
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        angularData,
+        angleStart,
+        angleEnd,
+        builder.config.xAxisPrePostGap,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
       g.elements.push(
         axisRenderer.renderPolarRadialGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
-      );   
+          cx,
+          cy,
+          innerRadius,
+          outerRadius,
+          angleStart,
+          angleEnd
+        )
+      );
     }
 
     return g;
@@ -696,8 +696,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     return [
       ...super.getAttributePanelWidgets(manager),
       manager.sectionHeader("Polar Coordinates"),
-      manager.row(
-        "Angle",
+      manager.vertical(
+        manager.label("Angle"),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "startAngle" }),
@@ -705,8 +705,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
           manager.inputNumber({ property: "endAngle" })
         )
       ),
-      manager.row(
-        "Radius",
+      manager.vertical(
+        manager.label("Radius"),
         manager.horizontal(
           [0, 1, 0, 1],
           manager.label("Inner:"),
@@ -715,12 +715,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
           manager.inputNumber({ property: "outerRatio" })
         )
       ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "equalizeArea" },
-          { type: "checkbox", label: "Height to Area" }
-        )
+      manager.inputBoolean(
+        { property: "equalizeArea" },
+        {
+          type: "checkbox",
+          label: "Height to Area",
+          headerLabel: "Equalize area",
+        }
       ),
       ...builder.buildPanelWidgets(manager),
     ];

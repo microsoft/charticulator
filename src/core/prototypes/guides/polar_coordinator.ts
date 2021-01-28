@@ -627,18 +627,16 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Guide Coordinator"),
-      manager.row(
-        "Angular",
-        manager.inputNumber(
-          { property: "angularGuidesCount" },
-          {
-            showUpdown: true,
-            updownTick: 1,
-            updownRange: [1, 100],
-            minimum: 2,
-            maximum: 100,
-          }
-        )
+      manager.inputNumber(
+        { property: "angularGuidesCount" },
+        {
+          showUpdown: true,
+          updownTick: 1,
+          updownRange: [1, 100],
+          minimum: 2,
+          maximum: 100,
+          label: "Angular",
+        }
       ),
       // uncomment to allow configure count of guides in different radiuses
       // manager.row(
@@ -654,8 +652,8 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       //     }
       //   )
       // ),
-      manager.row(
-        "Angle",
+      manager.vertical(
+        manager.label("Angle"),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "startAngle" }),
