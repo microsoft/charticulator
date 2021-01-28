@@ -36,6 +36,7 @@ import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
 import { delimiter } from "path";
+import { MenuBarHandlers } from "./views/menubar";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -70,7 +71,10 @@ export class Application {
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
-    workerScriptContent: string
+    workerScriptContent: string,
+    handlers?: {
+      menuBarHandlers?: MenuBarHandlers;
+    }
   ) {
     this.config = config;
     this.containerID = containerID;
@@ -127,6 +131,7 @@ export class Application {
         store={this.appStore}
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
+        menuBarHandlers={handlers?.menuBarHandlers}
       />,
       document.getElementById(containerID)
     );
