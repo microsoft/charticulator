@@ -989,62 +989,59 @@ export function buildAxisAppearanceWidgets(
             labels: ["Default", "Opposite"],
           }
         ),
-        m.detailsButton(
-          "Axis Style",
-          m.sectionHeader("Axis Style"),
-          m.inputColor(
-            {
-              property: axisProperty,
-              field: ["style", "lineColor"],
-            },
-            {
-              label: "Line Color",
-            }
-          ),
-          m.inputColor(
-            {
-              property: axisProperty,
-              field: ["style", "tickColor"],
-            },
-            {
-              label: "Tick Color",
-            }
-          ),
-          m.inputNumber(
-            {
-              property: axisProperty,
-              field: ["style", "tickSize"],
-            },
-            {
-              label: "Tick Size",
-            }
-          ),
-          m.inputFontFamily(
-            {
-              property: axisProperty,
-              field: ["style", "fontFamily"],
-            },
-            {
-              label: "Font Family",
-            }
-          ),
-          m.inputNumber(
-            { property: axisProperty, field: ["style", "fontSize"] },
-            {
-              showUpdown: true,
-              updownStyle: "font",
-              updownTick: 2,
-              label: "Font Size",
-            }
-          ),
-          m.inputBoolean(
-            { property: axisProperty, field: ["style", "wordWrap"] },
-            {
-              type: "checkbox",
-              headerLabel: "Text displaying",
-              label: "Wrap text",
-            }
-          )
+        m.sectionHeader("Axis Style"),
+        m.inputColor(
+          {
+            property: axisProperty,
+            field: ["style", "lineColor"],
+          },
+          {
+            label: "Line Color",
+          }
+        ),
+        m.inputColor(
+          {
+            property: axisProperty,
+            field: ["style", "tickColor"],
+          },
+          {
+            label: "Tick Color",
+          }
+        ),
+        m.inputNumber(
+          {
+            property: axisProperty,
+            field: ["style", "tickSize"],
+          },
+          {
+            label: "Tick Size",
+          }
+        ),
+        m.inputFontFamily(
+          {
+            property: axisProperty,
+            field: ["style", "fontFamily"],
+          },
+          {
+            label: "Font Family",
+          }
+        ),
+        m.inputNumber(
+          { property: axisProperty, field: ["style", "fontSize"] },
+          {
+            showUpdown: true,
+            updownStyle: "font",
+            updownTick: 2,
+            label: "Font Size",
+          }
+        ),
+        m.inputBoolean(
+          { property: axisProperty, field: ["style", "wordWrap"] },
+          {
+            type: "checkbox",
+            headerLabel: "Text displaying",
+            label: "Wrap text",
+          }
         )
       ),
     ];
