@@ -15,6 +15,7 @@ import { ITextField, TextField } from "@fluentui/react";
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
   defaultValue?: string;
+  value?: string;
   placeholder?: string;
   onEnter?: (value: string) => boolean;
   onCancel?: () => void;
@@ -32,11 +33,17 @@ export interface InputExpressionState {
 export const FluentInputExpression: React.FC<InputExpressionProps> = (
   props: InputExpressionProps
 ) => {
-  const [value, setValue] = React.useState(props.defaultValue);
+  const [value, setValue] = React.useState(props.value);
   const [errorIndicator, setErrorIndicator] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
   let textComponent: ITextField;
+
+  React.useEffect(() => {
+    if (props.value != value) {
+      setValue(props.value);
+    }
+  }, [value, props.value]);
 
   const doEnter = React.useCallback(() => {
     if (props.allowNull && textComponent.value.trim() == "") {
@@ -64,6 +71,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
     setValue,
     setErrorIndicator,
     setErrorMessage,
+    props.value,
   ]);
 
   const doCancel = React.useCallback(() => {
@@ -77,21 +85,15 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
     setValue,
     setErrorIndicator,
     setErrorMessage,
+    ,
+    props.value,
   ]);
 
   return (
     <span className="charticulator__widget-control-input-expression">
-      {/* <input
-          className={classNames(
-            "charticulator__widget-control-input-expression-input",
-            ["is-error", errorIndicator]
-          )}
-          type="text"
-          ref={refInput}
-        /> */}
       <TextField
         label={props.label}
-        componentRef={component => textComponent = component}
+        componentRef={(component) => (textComponent = component)}
         placeholder={props.placeholder}
         type="text"
         onGetErrorMessage={() => {
@@ -99,7 +101,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
             return errorMessage;
           }
         }}
-        // defaultValue={props.defaultValue}
+        // defaultValue={replaceSymbolByTab(replaceSymbolByNewLine(props.defaultValue))}
         value={replaceSymbolByTab(replaceSymbolByNewLine(value))}
         onChange={(event, newValue) => {
           // Check for parse errors while input
@@ -121,7 +123,6 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
           doEnter();
         }}
         onFocus={(e) => {
-          // refInput.current.select();
           e.target.select();
         }}
         onKeyDown={(e) => {
@@ -133,11 +134,6 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
           }
         }}
       />
-      {/* {errorMessage != null ? (
-          <span className="charticulator__widget-control-input-expression-error">
-            {errorMessage}
-          </span>
-        ) : null} */}
     </span>
   );
 };

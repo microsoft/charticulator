@@ -3,8 +3,8 @@
 
 import styled from "styled-components";
 
-export const FluentButton = styled.div`
-  margin-top: 24px;
+export const FluentButton = styled.div<{ marginTop?: string }>`
+  margin-top: ${({ marginTop }) => marginTop || "24px"};
   display: inline-block;
   padding: 0px 4px 0px 4px;
   button {

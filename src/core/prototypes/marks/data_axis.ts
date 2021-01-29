@@ -31,6 +31,7 @@ import {
   DataAxisProperties,
   DataAxisExpression,
 } from "./data_axis.attrs";
+import React = require("react");
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -349,8 +350,8 @@ export class DataAxisClass extends MarkClass<
       r.push(
         manager.arrayWidget(
           { property: "dataExpressions" },
-          (item) => {
-            return manager.inputExpression(
+          (item, index) => {
+            const expressionInput = manager.inputExpression(
               {
                 property: "dataExpressions",
                 field:
@@ -359,6 +360,11 @@ export class DataAxisClass extends MarkClass<
                     : [item.field, "expression"],
               },
               { table: this.getGlyphClass().object.table }
+            );
+            return React.createElement(
+              "fragment",
+              { key: index },
+              expressionInput
             );
           },
           {

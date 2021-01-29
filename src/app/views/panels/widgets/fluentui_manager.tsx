@@ -69,6 +69,7 @@ import {
   ComboBox,
   Dropdown,
   IDropdownOption,
+  FontIcon,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
@@ -82,6 +83,8 @@ import {
   InputFontComboboxOptions,
   InputTextOptions,
 } from "../../../../core/prototypes/controls";
+
+import { mergeStyles } from "office-ui-fabric-react/lib/Styling";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -453,10 +456,12 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputExpressionOptions = {}
   ) {
+    const value = this.getPropertyValue(property) as string;
     return (
       <FluentInputExpression
         label={options.label}
-        defaultValue={this.getPropertyValue(property) as string}
+        value={value}
+        defaultValue={value}
         validate={(value) => {
           if (value && value.trim() !== "") {
             return this.store.verifyUserExpressionWithTable(
@@ -797,7 +802,14 @@ export class FluentUIWidgetManager
               >
                 {options.allowReorder ? (
                   <span className="charticulator__widget-array-view-control charticulator__widget-array-view-order">
-                    <SVGImageIcon url={R.getSVGIcon("general/order")} />
+                    <FontIcon
+                      className={mergeStyles({
+                        fontSize: "20px",
+                        margin: "5px",
+                      })}
+                      iconName={"CheckListText"}
+                    />
+                    {/* <SVGImageIcon url={R.getSVGIcon("general/order")} /> */}
                   </span>
                 ) : null}
                 <span className="charticulator__widget-array-view-content">
@@ -812,13 +824,17 @@ export class FluentUIWidgetManager
                 </span>
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
-                    <Button
-                      icon="general/cross"
-                      onClick={() => {
-                        items.splice(index, 1);
-                        this.emitSetProperty(property, items);
-                      }}
-                    />
+                    <FluentButton marginTop={"0px"}>
+                      <DefaultButton
+                        iconProps={{
+                          iconName: "Delete",
+                        }}
+                        onClick={() => {
+                          items.splice(index, 1);
+                          this.emitSetProperty(property, items);
+                        }}
+                      />
+                    </FluentButton>
                   </span>
                 ) : null}
               </div>
@@ -1428,7 +1444,9 @@ export class FluentDetailsButton extends React.Component<
           iconProps={{
             iconName: "More",
           }}
-          componentRef={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
+          componentRef={(e) =>
+            (btn = ReactDOM.findDOMNode(e as any) as Element)
+          }
           onClick={() => {
             globals.popupController.popupAt(
               (context) => {

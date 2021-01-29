@@ -208,7 +208,7 @@ export interface WidgetManager {
 
   arrayWidget(
     property: Property,
-    item: (item: Property) => Widget,
+    item: (item: Property, index?: number) => Widget,
     options?: ArrayWidgetOptions
   ): Widget;
 
