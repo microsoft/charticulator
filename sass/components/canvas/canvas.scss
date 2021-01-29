@@ -786,7 +786,6 @@
 
   @include shadow-focused;
 
-
   $line-height: 24px;
   @mixin icon-size {
     height: $line-height;
@@ -797,15 +796,17 @@
 
   padding: 3px;
 
-  .charticulator__widget-control-select, .charticulator__widget-control-order-widget, .charticulator__widget-control-button {
+  .charticulator__widget-control-select,
+  .charticulator__widget-control-order-widget,
+  .charticulator__widget-control-button {
     height: 32px;
-    font-family: 'Segoe UI';
+    @include font-main;
     .svg-image-icon {
       @include icon-size;
     }
 
     .el-text {
-      font-family: 'Segoe UI';
+      @include font-main;
       margin-top: 7px;
     }
 
@@ -821,7 +822,7 @@
 
   .charticulator__widget-control-select-container {
     .el-text {
-      font-family: 'Segoe UI';
+      @include font-main;
       white-space: break-spaces;
       max-width: 55px;
     }
@@ -847,11 +848,11 @@
   }
 
   .charticulator__widget-control-select.has-text {
-    background: #F5F5F5;
+    background: $gray-227;
   }
 
   .has-text {
-    background: #F5F5F5;
+    background: $gray-227;
   }
 
   .el-layout-item {
