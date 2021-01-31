@@ -47,7 +47,7 @@ import {
 } from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
-import { ValueType } from "../../core/expression/classes";
+import { TextExpression, ValueType } from "../../core/expression/classes";
 import {
   AttributeType,
   DataKind,
@@ -1080,43 +1080,63 @@ export class AppStore extends BaseStore {
   public updateScales() {
     try {
       const chartElements = this.chart.elements;
-      const glyphElements = this.chart.glyphs.flatMap((gl) => gl.marks);
       this.chart.scales.forEach((scale) => {
-        const mappings = [...chartElements, ...glyphElements]
-          .flatMap((el) => {
-            return Object.keys(el.mappings).map((key) => {
-              return {
-                element: el,
-                key,
-                mapping: el.mappings[key],
-              };
-            });
-          })
-          .filter(
-            (mapping) =>
-              mapping.mapping.type === "scale" &&
-              (mapping.mapping as ScaleMapping).scale === scale._id
-          ) as {
-          element: Specification.Element<Specification.ObjectProperties>;
-          key: string;
-          mapping: ScaleMapping;
-        }[];
+        const updateScalesInternal = (
+          mappings: Specification.Guide<Specification.ObjectProperties>[],
+          context: { glyph: Specification.Glyph; chart: Specification.Chart }
+        ) => {
+          const filteredMappings = mappings
+            .flatMap((el) => {
+              return Object.keys(el.mappings).map((key) => {
+                return {
+                  element: el,
+                  key,
+                  mapping: el.mappings[key],
+                };
+              });
+            })
+            .filter(
+              (mapping) =>
+                mapping.mapping.type === "scale" &&
+                (mapping.mapping as ScaleMapping).scale === scale._id
+            ) as {
+            element: Specification.Element<Specification.ObjectProperties>;
+            key: string;
+            mapping: ScaleMapping;
+          }[];
 
-        mappings.forEach((mapping) => {
-          const scaleClass = this.chartManager.getClassById(
-            scale._id
-          ) as Prototypes.Scales.ScaleClass;
-          const parsedExpression = this.chartManager.dataflow.cache.parse(
-            mapping.mapping.expression
-          );
-          const table = this.chartManager.dataflow.getTable(
-            mapping.mapping.table
-          );
-          const values = parsedExpression.getValue(table);
-          scaleClass.inferParameters(values as Specification.DataValue[], {
-            newScale: true,
+          // Figure out the groupBy
+          let groupBy: Specification.Types.GroupBy = null;
+          if (context.glyph) {
+            // Find plot segments that use the glyph.
+            this.chartManager.enumeratePlotSegments((cls) => {
+              if (cls.object.glyph == context.glyph._id) {
+                groupBy = cls.object.groupBy;
+              }
+            });
+          }
+
+          filteredMappings.forEach((mapping) => {
+            const scaleClass = this.chartManager.getClassById(
+              scale._id
+            ) as Prototypes.Scales.ScaleClass;
+
+            const values = this.chartManager.getGroupedExpressionVector(
+              mapping.mapping.table,
+              groupBy,
+              mapping.mapping.expression
+            );
+
+            scaleClass.inferParameters(values as any, {
+              newScale: true,
+            });
           });
-        });
+        };
+
+        updateScalesInternal(chartElements, { chart: this.chart, glyph: null });
+        this.chart.glyphs.forEach((gl) =>
+          updateScalesInternal(gl.marks, { chart: this.chart, glyph: gl })
+        );
       });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
