@@ -16,7 +16,6 @@ import {
 } from "../../../../components";
 import { PopupView } from "../../../../controllers/popup_controller";
 
-import { InputText } from "./input_text";
 import { AppStore } from "../../../../stores";
 
 import { TextField } from "@fluentui/react";

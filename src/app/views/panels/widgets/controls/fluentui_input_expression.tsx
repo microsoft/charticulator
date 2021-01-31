@@ -46,14 +46,14 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   }, [value, props.value]);
 
   const doEnter = React.useCallback(() => {
-    if (props.allowNull && textComponent.value.trim() == "") {
+    if (props.allowNull && value?.trim() == "") {
       setValue("");
       setErrorIndicator(false);
       setErrorMessage(null);
       props.onEnter?.(null);
     } else {
       const result = props.validate(
-        replaceTabBySymbol(replaceNewLineBySymbol(textComponent.value))
+        replaceTabBySymbol(replaceNewLineBySymbol(textComponent?.value))
       );
       if (result.pass) {
         setValue(result.formatted);

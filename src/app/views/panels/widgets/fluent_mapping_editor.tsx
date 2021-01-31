@@ -258,21 +258,6 @@ export class FluentMappingEditor extends React.Component<
         } else {
           if (options.defaultAuto) {
             return (
-              // <span
-              //   className="el-clickable-label"
-              //   ref={(e) => (this.noneLabel = e)}
-              //   onClick={() => {
-              //     if (
-              //       !mapping ||
-              //       (mapping as any).valueIndex === undefined ||
-              //       (mapping as any).valueIndex === null
-              //     ) {
-              //       this.initiateValueEditor();
-              //     }
-              //   }}
-              // >
-              //   (auto)
-              // </span>
               <TextField
                 label={this.props.options.label}
                 placeholder={"(auto)"}
@@ -289,21 +274,6 @@ export class FluentMappingEditor extends React.Component<
             );
           } else {
             return (
-              // <span
-              //   className="el-clickable-label"
-              //   ref={(e) => (this.noneLabel = e)}
-              //   onClick={() => {
-              //     if (
-              //       !mapping ||
-              //       (mapping as any).valueIndex === undefined ||
-              //       (mapping as any).valueIndex === null
-              //     ) {
-              //       this.initiateValueEditor();
-              //     }
-              //   }}
-              // >
-              //   (none)
-              // </span>
               <TextField
                 label={this.props.options.label}
                 placeholder={"(none)"}
@@ -334,6 +304,7 @@ export class FluentMappingEditor extends React.Component<
               label={this.props.options.label}
               defaultValue={textMapping.textExpression}
               textExpression={true}
+              value={textMapping.textExpression}
               validate={(value) =>
                 parent.store.verifyUserExpressionWithTable(
                   value,
