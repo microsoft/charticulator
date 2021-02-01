@@ -1656,23 +1656,17 @@
         &.is-dragging-over {
           outline: 1px solid $color-active;
           background: $color-active;
-          height: 32px;
-          line-height: 32px;
-
-          & > * {
-            display: none;
-          }
 
           &:after {
             display: block;
             position: absolute;
+            right: 10px;
             left: 0;
             top: 0;
-            height: $line-height;
-            line-height: $line-height;
             padding-left: 4px;
             padding-top: 4px;
             content: "Drop here to map data";
+            text-align: end;
             color: white;
           }
         }

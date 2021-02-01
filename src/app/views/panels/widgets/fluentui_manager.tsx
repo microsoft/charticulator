@@ -661,60 +661,63 @@ export class FluentUIWidgetManager
           this.emitSetProperty(property, { expression: data.expression });
         }}
         ref={(e) => (ref = e)}
-        className={classNames("charticulator__widget-control-order-widget", [
-          "is-active",
-          this.getPropertyValue(property) != null,
-        ])}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              let fieldSelector: DataFieldSelector;
-              let currentExpression: string = null;
-              const currentSortBy = this.getPropertyValue(
-                property
-              ) as Specification.Types.SortBy;
-              if (currentSortBy != null) {
-                currentExpression = currentSortBy.expression;
-              }
-              return (
-                <PopupView context={context}>
-                  <div className="charticulator__widget-popup-order-widget">
-                    <div className="el-row">
-                      <DataFieldSelector
-                        ref={(e) => (fieldSelector = e)}
-                        nullDescription="(default order)"
-                        datasetStore={this.store}
-                        useAggregation={true}
-                        defaultValue={
-                          currentExpression
-                            ? {
-                                table: options.table,
-                                expression: currentExpression,
-                              }
-                            : null
-                        }
-                        onChange={(value) => {
-                          if (value != null) {
-                            this.emitSetProperty(property, {
-                              expression: value.expression,
-                            });
-                          } else {
-                            this.emitSetProperty(property, null);
-                          }
-                          context.close();
-                        }}
-                      />
-                    </div>
-                  </div>
-                </PopupView>
-              );
-            },
-            { anchor: ref.dropContainer }
-          );
-        }}
+        className={""}
       >
-        <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-        <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+        <FluentButton marginTop={"0px"}>
+          <DefaultButton
+            checked={this.getPropertyValue(property) != null}
+            iconProps={{
+              iconName: "SortLines",
+            }}
+            onClick={() => {
+              globals.popupController.popupAt(
+                (context) => {
+                  let fieldSelector: DataFieldSelector;
+                  let currentExpression: string = null;
+                  const currentSortBy = this.getPropertyValue(
+                    property
+                  ) as Specification.Types.SortBy;
+                  if (currentSortBy != null) {
+                    currentExpression = currentSortBy.expression;
+                  }
+                  return (
+                    <PopupView context={context}>
+                      <div className="charticulator__widget-popup-order-widget">
+                        <div className="el-row">
+                          <DataFieldSelector
+                            ref={(e) => (fieldSelector = e)}
+                            nullDescription="(default order)"
+                            datasetStore={this.store}
+                            useAggregation={true}
+                            defaultValue={
+                              currentExpression
+                                ? {
+                                    table: options.table,
+                                    expression: currentExpression,
+                                  }
+                                : null
+                            }
+                            onChange={(value) => {
+                              if (value != null) {
+                                this.emitSetProperty(property, {
+                                  expression: value.expression,
+                                });
+                              } else {
+                                this.emitSetProperty(property, null);
+                              }
+                              context.close();
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </PopupView>
+                  );
+                },
+                { anchor: ref.dropContainer }
+              );
+            }}
+          />
+        </FluentButton>
       </DropZoneView>
     );
   }
@@ -726,59 +729,62 @@ export class FluentUIWidgetManager
     let container: HTMLSpanElement;
     return (
       <span ref={(e) => (container = e)}>
-        <Button
-          icon={"general/sort"}
-          active={false}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                const items = this.getPropertyValue(property) as string[];
-                return (
-                  <PopupView context={context}>
-                    <ReorderStringsValue
-                      items={items}
-                      onConfirm={(items) => {
-                        this.emitSetProperty(property, items);
-                        context.close();
-                      }}
-                      onReset={() => {
-                        const axisDataBinding = {
-                          ...(this.objectClass.object.properties[
-                            property.property
-                          ] as any),
-                        };
+        <FluentButton marginTop={"0px"}>
+          <DefaultButton
+            iconProps={{
+              iconName: "SortLines",
+            }}
+            onClick={() => {
+              globals.popupController.popupAt(
+                (context) => {
+                  const items = this.getPropertyValue(property) as string[];
+                  return (
+                    <PopupView context={context}>
+                      <ReorderStringsValue
+                        items={items}
+                        onConfirm={(items) => {
+                          this.emitSetProperty(property, items);
+                          context.close();
+                        }}
+                        onReset={() => {
+                          const axisDataBinding = {
+                            ...(this.objectClass.object.properties[
+                              property.property
+                            ] as any),
+                          };
 
-                        axisDataBinding.table = this.store.chartManager.getTable(
-                          (this.objectClass.object as any).table
-                        );
-                        axisDataBinding.metadata = {
-                          kind: axisDataBinding.dataKind,
-                          orderMode: "order",
-                        };
+                          axisDataBinding.table = this.store.chartManager.getTable(
+                            (this.objectClass.object as any).table
+                          );
+                          axisDataBinding.metadata = {
+                            kind: axisDataBinding.dataKind,
+                            orderMode: "order",
+                          };
 
-                        const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
-                          this.objectClass.object
-                        );
-                        const values = this.store.chartManager.getGroupedExpressionVector(
-                          (this.objectClass.object as any).table,
-                          groupBy,
-                          axisDataBinding.expression
-                        );
+                          const groupBy: Specification.Types.GroupBy = this.store.getGroupingExpression(
+                            this.objectClass.object
+                          );
+                          const values = this.store.chartManager.getGroupedExpressionVector(
+                            (this.objectClass.object as any).table,
+                            groupBy,
+                            axisDataBinding.expression
+                          );
 
-                        return this.store.getCategoriesForDataBinding(
-                          axisDataBinding.metadata,
-                          values
-                        );
-                      }}
-                      allowReset={allowReset}
-                    />
-                  </PopupView>
-                );
-              },
-              { anchor: container }
-            );
-          }}
-        />
+                          return this.store.getCategoriesForDataBinding(
+                            axisDataBinding.metadata,
+                            values
+                          );
+                        }}
+                        allowReset={allowReset}
+                      />
+                    </PopupView>
+                  );
+                },
+                { anchor: container }
+              );
+            }}
+          />
+        </FluentButton>
       </span>
     );
   }
