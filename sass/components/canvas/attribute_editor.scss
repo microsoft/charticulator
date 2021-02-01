@@ -549,6 +549,7 @@
 
   &__widget {
     $line-height: 24px;
+    $line-header-height: 30px;
 
     // Vertical layout
     &-vertical {
@@ -751,8 +752,8 @@
     &-section-header {
       color: $gray-100;
       font-size: 12px;
-      height: $line-height;
-      line-height: $line-height;
+      height: $line-header-height;
+      line-height: $line-header-height;
       display: flex;
       flex-direction: row;
       margin: 2px 0;

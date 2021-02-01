@@ -554,12 +554,19 @@ export class FluentUIWidgetManager
     );
   }
 
-  public clearButton(property: Prototypes.Controls.Property, icon?: string) {
+  public clearButton(
+    property: Prototypes.Controls.Property,
+    icon?: string,
+    isHeader?: boolean
+  ) {
     return (
-      <FluentButton>
+      <FluentButton marginTop={isHeader ? "0px" : null}>
         <DefaultButton
           iconProps={{
-            iconName: "EraseTool",
+            iconName: icon || "EraseTool",
+          }}
+          onClick={() => {
+            this.emitSetProperty(property, null);
           }}
         />
       </FluentButton>
@@ -922,56 +929,62 @@ export class FluentUIWidgetManager
           </span> */}
           <Label>{title}</Label>
           {widget}
-          <Button
-            icon={"general/bind-data"}
-            ref={(e) => (refButton = ReactDOM.findDOMNode(e) as Element)}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  return (
-                    <PopupView context={context}>
-                      <DataFieldSelector
-                        datasetStore={this.store}
-                        defaultValue={
-                          current && current.expression
-                            ? { table: null, expression: current.expression }
-                            : null
-                        }
-                        useAggregation={true}
-                        nullDescription={"(none)"}
-                        nullNotHighlightable={true}
-                        onChange={(value) => {
-                          if (!value) {
-                            this.emitSetProperty(
-                              { property: options.dropzone.property },
-                              null
-                            );
-                          } else {
-                            const data = new DragData.DataExpression(
-                              this.store.getTable(value.table),
-                              value.expression,
-                              value.type,
-                              value.metadata,
-                              value.rawExpression
-                            );
-                            new Actions.BindDataToAxis(
-                              this.objectClass
-                                .object as Specification.PlotSegment,
-                              options.dropzone.property,
-                              null,
-                              data
-                            ).dispatch(this.store.dispatcher);
+          <FluentButton marginTop={"0px"}>
+            <DefaultButton
+              iconProps={{
+                iconName: "Link",
+              }}
+              // ref={(e) => (refButton = ReactDOM.findDOMNode(e) as Element)}
+              elementRef={(e) =>
+                (refButton = ReactDOM.findDOMNode(e) as Element)
+              }
+              onClick={() => {
+                globals.popupController.popupAt(
+                  (context) => {
+                    return (
+                      <PopupView context={context}>
+                        <DataFieldSelector
+                          datasetStore={this.store}
+                          defaultValue={
+                            current && current.expression
+                              ? { table: null, expression: current.expression }
+                              : null
                           }
-                        }}
-                      />
-                    </PopupView>
-                  );
-                },
-                { anchor: refButton }
-              );
-            }}
-            active={false}
-          />
+                          useAggregation={true}
+                          nullDescription={"(none)"}
+                          nullNotHighlightable={true}
+                          onChange={(value) => {
+                            if (!value) {
+                              this.emitSetProperty(
+                                { property: options.dropzone.property },
+                                null
+                              );
+                            } else {
+                              const data = new DragData.DataExpression(
+                                this.store.getTable(value.table),
+                                value.expression,
+                                value.type,
+                                value.metadata,
+                                value.rawExpression
+                              );
+                              new Actions.BindDataToAxis(
+                                this.objectClass
+                                  .object as Specification.PlotSegment,
+                                options.dropzone.property,
+                                null,
+                                data
+                              ).dispatch(this.store.dispatcher);
+                            }
+                          }}
+                        />
+                      </PopupView>
+                    );
+                  },
+                  { anchor: refButton }
+                );
+              }}
+            />
+          </FluentButton>
         </DropZoneView>
       );
     } else {

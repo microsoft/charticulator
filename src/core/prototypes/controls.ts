@@ -190,7 +190,7 @@ export interface WidgetManager {
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
   // A button, once clicked, set the property to null.
-  clearButton(property: Property, icon?: string): Widget;
+  clearButton(property: Property, icon?: string, isHeader?: boolean): Widget;
   setButton(
     property: Property,
     value: Specification.AttributeValue,

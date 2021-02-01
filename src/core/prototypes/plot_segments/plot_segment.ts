@@ -135,7 +135,7 @@ export abstract class PlotSegmentClass<
   ): Controls.Widget[] {
     return [
       manager.row(
-        "Data",
+        manager.label("Data"),
         manager.horizontal(
           [0, 1],
           manager.filterEditor({

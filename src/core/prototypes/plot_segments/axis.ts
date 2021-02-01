@@ -1077,7 +1077,7 @@ export function buildAxisWidgets(
           widgets.push(
             m.sectionHeader(
               axisName + ": Numerical",
-              m.clearButton({ property: axisProperty }),
+              m.clearButton({ property: axisProperty }, null, true),
               dropzoneOptions
             )
           );
@@ -1170,7 +1170,7 @@ export function buildAxisWidgets(
           widgets.push(
             m.sectionHeader(
               axisName + ": Categorical",
-              m.clearButton({ property: axisProperty }),
+              m.clearButton({ property: axisProperty }, null, true),
               dropzoneOptions
             )
           );
@@ -1235,7 +1235,7 @@ export function buildAxisWidgets(
           widgets.push(
             m.sectionHeader(
               axisName + ": Stacking",
-              m.clearButton({ property: axisProperty }),
+              m.clearButton({ property: axisProperty }, null, true),
               dropzoneOptions
             )
           );
