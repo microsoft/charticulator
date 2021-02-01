@@ -1032,7 +1032,7 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     switch (options.mode) {
       case "button":
-        let button: Button;
+        let button: HTMLElement;
         let text = "Filter by...";
         if (options.value) {
           if (options.value.categories) {
@@ -1043,26 +1043,28 @@ export class FluentUIWidgetManager
           }
         }
         return (
-          <Button
-            text={text}
-            ref={(e) => (button = e)}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  return (
-                    <PopupView context={context}>
-                      <FilterEditor
-                        manager={this}
-                        value={options.value}
-                        options={options}
-                      />
-                    </PopupView>
-                  );
-                },
-                { anchor: ReactDOM.findDOMNode(button) as Element }
-              );
-            }}
-          />
+          <FluentButton marginTop={"0px"}>
+            <DefaultButton
+              text={text}
+              elementRef={(e) => (button = e)}
+              onClick={() => {
+                globals.popupController.popupAt(
+                  (context) => {
+                    return (
+                      <PopupView context={context}>
+                        <FilterEditor
+                          manager={this}
+                          value={options.value}
+                          options={options}
+                        />
+                      </PopupView>
+                    );
+                  },
+                  { anchor: ReactDOM.findDOMNode(button) as Element }
+                );
+              }}
+            />
+          </FluentButton>
         );
       case "panel":
         return (
@@ -1080,7 +1082,7 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     switch (options.mode) {
       case "button":
-        let button: Button;
+        let button: HTMLElement;
         let text = "Group by...";
         if (options.value) {
           if (options.value.expression) {
@@ -1088,26 +1090,28 @@ export class FluentUIWidgetManager
           }
         }
         return (
-          <Button
-            text={text}
-            ref={(e) => (button = e)}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  return (
-                    <PopupView context={context}>
-                      <GroupByEditor
-                        manager={this}
-                        value={options.value}
-                        options={options}
-                      />
-                    </PopupView>
-                  );
-                },
-                { anchor: ReactDOM.findDOMNode(button) as Element }
-              );
-            }}
-          />
+          <FluentButton marginTop={"0px"}>
+            <DefaultButton
+              text={text}
+              elementRef={(e) => (button = e)}
+              onClick={() => {
+                globals.popupController.popupAt(
+                  (context) => {
+                    return (
+                      <PopupView context={context}>
+                        <GroupByEditor
+                          manager={this}
+                          value={options.value}
+                          options={options}
+                        />
+                      </PopupView>
+                    );
+                  },
+                  { anchor: ReactDOM.findDOMNode(button) as Element }
+                );
+              }}
+            />
+          </FluentButton>
         );
       case "panel":
         return (
