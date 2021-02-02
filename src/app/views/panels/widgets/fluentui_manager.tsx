@@ -77,7 +77,10 @@ import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { Icon } from "@fluentui/react/lib/Icon";
-import { FluentButton } from "./controls/fluentui_customized_components";
+import {
+  FluentButton,
+  FluentCheckbox,
+} from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
@@ -422,12 +425,14 @@ export class FluentUIWidgetManager
         return (
           <>
             {options.headerLabel ? <Label>{options.headerLabel}</Label> : null}
-            <Checkbox
-              label={options.label}
-              onChange={(event, v) => {
-                this.emitSetProperty(property, v);
-              }}
-            />
+            <FluentCheckbox>
+              <Checkbox
+                label={options.label}
+                onChange={(event, v) => {
+                  this.emitSetProperty(property, v);
+                }}
+              />
+            </FluentCheckbox>
           </>
         );
       }

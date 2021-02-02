@@ -1257,38 +1257,27 @@ export function buildAxisWidgets(
     }
     widgets.push(m.sectionHeader(axisName + " export properties"));
     widgets.push(
-      m.row(
-        "",
-        m.vertical(
-          m.horizontal(
-            [0, 1],
-            m.label("Auto range min value"),
-            null,
-            m.inputBoolean(
-              {
-                property: axisProperty,
-                field: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
-          ),
-          m.horizontal(
-            [0, 1],
-            m.label("Auto range max value"),
-            null,
-            m.inputBoolean(
-              {
-                property: axisProperty,
-                field: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
-          )
-        )
+      m.inputBoolean(
+        {
+          property: axisProperty,
+          field: "autoDomainMin",
+        },
+        {
+          type: "checkbox",
+          label: "Auto range min value",
+        }
+      )
+    );
+    widgets.push(
+      m.inputBoolean(
+        {
+          property: axisProperty,
+          field: "autoDomainMax",
+        },
+        {
+          type: "checkbox",
+          label: "Auto range max value",
+        }
       )
     );
   } else {

@@ -27,3 +27,8 @@ export const FluentTextField = styled.div`
     flex: 1;
   }
 `;
+
+export const FluentCheckbox = styled.div`
+  margin-top: 2px;
+  margin-bottom: 2px;
+`;
