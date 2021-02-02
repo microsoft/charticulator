@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @import "attribute_editor.scss";
+@import "./../../common/colors.scss";
 
 .mark-editor-view {
   flex: 1 1;
@@ -781,15 +782,82 @@
   position: absolute;
   white-space: nowrap;
   background: $gray-220;
-  border: 1px solid $gray-100;
+  border: 1px solid $color-canvas-tool;
 
   @include shadow-focused;
 
+  $line-height: 24px;
+  @mixin icon-size {
+    height: $line-height;
+    width: $line-height;
+  }
+
   border-radius: 2px;
 
-  $line-height: 24px;
-
   padding: 3px;
+
+  .charticulator__widget-control-select,
+  .charticulator__widget-control-order-widget,
+  .charticulator__widget-control-button {
+    height: 32px;
+    @include font-main;
+    .svg-image-icon {
+      @include icon-size;
+    }
+
+    .el-text {
+      @include font-main;
+      margin-top: 7px;
+    }
+
+    &:hover {
+      .el-text {
+        color: $gray-000;
+      }
+      .svg-image-icon {
+        filter: invert(30%);
+      }
+    }
+  }
+
+  .charticulator__widget-control-select-container {
+    .el-text {
+      @include font-main;
+      white-space: break-spaces;
+      max-width: 55px;
+    }
+  }
+
+  .charticulator__widget-control-order-widget {
+    display: flex;
+    flex-direction: column;
+    :last-child {
+      float: right;
+    }
+    .el-text:hover {
+      color: $gray-000;
+    }
+
+    &:active {
+      background-color: $color-primary;
+
+      .el-text {
+        color: $gray-000;
+      }
+    }
+  }
+
+  .charticulator__widget-control-select.has-text {
+    background: $gray-227;
+  }
+
+  .has-text {
+    background: $gray-227;
+  }
+
+  .el-layout-item {
+    margin: 13px;
+  }
 }
 
 .handle-text-view-popup {
