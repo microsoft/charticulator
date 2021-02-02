@@ -39,6 +39,8 @@ export function parseHints(hints: string) {
 export interface LocaleFileFormat {
   delimiter: string;
   numberFormat: LocaleNumberFormat;
+  currency: string;
+  group: string;
 }
 
 /**

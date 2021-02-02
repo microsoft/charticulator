@@ -1,5 +1,7 @@
 import { Color } from "./color";
-import { timeFormat, utcFormat } from "d3-time-format";
+import { utcFormat } from "d3-time-format";
+
+import { formatLocale, FormatLocaleDefinition } from "d3-format";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -462,7 +464,7 @@ export abstract class HashMap<KeyType, ValueType> {
 export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
-  > {
+> {
   protected separator: string = Math.random().toString(36).substr(2);
   protected hash(key: string[]): string {
     return key.join(this.separator);
@@ -536,10 +538,10 @@ export function hexToRgb(hex: string): Color {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
     : null;
 }
 
@@ -568,8 +570,8 @@ export function getSortFunctionByData(values: string[]) {
         return +aNum < +bNum
           ? 1
           : +a.split("-").pop() < +b.split("-").pop()
-            ? 1
-            : -1;
+          ? 1
+          : -1;
       }
     };
   }
@@ -644,4 +646,35 @@ export function replaceSymbolByNewLine(str: string) {
 
 export function replaceSymbolByTab(str: string) {
   return str?.replace(/\t/g, "\\t");
+}
+
+let formatOptions: FormatLocaleDefinition = {
+  decimal: ".",
+  thousands: ",",
+  grouping: [3],
+  currency: ["$", ""],
+};
+
+export function getFormatOptions(): FormatLocaleDefinition {
+  return {
+    ...formatOptions,
+  };
+}
+
+export function setFormatOptions(options: FormatLocaleDefinition) {
+  formatOptions = {
+    ...options,
+  };
+}
+
+export function getFormat() {
+  return formatLocale(formatOptions).format;
+}
+
+export function parseSafe(value: string, defaultValue: any = null) {
+  try {
+    return JSON.parse(value);
+  } catch (ex) {
+    return defaultValue;
+  }
 }

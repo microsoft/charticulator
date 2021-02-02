@@ -1,10 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>icons</title>
-    <rect x="5.29587" y="19.56804" width="7.13609" height="7.13609"
-        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
-    <polygon points="12.432 12.432 12.432 19.568 12.432 26.704 19.568 26.704 19.568 19.568 19.568 12.432 12.432 12.432"
-        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
-    <polygon
-        points="19.568 5.296 19.568 12.432 19.568 19.568 19.568 26.704 26.704 26.704 26.704 19.568 26.704 12.432 26.704 5.296 19.568 5.296"
-        style="fill-opacity:0.0;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+  <path d="M1536 256h384v1536h-384V256zm256 1408V384h-128v1280h128zm-768 128V640h384v1152h-384zm128-1024v896h128V768h-128zM512 1792v-768h384v768H512zm128-640v512h128v-512H640zM0 1792v-384h384v384H0zm128-256v128h128v-128H128z" />
 </svg>

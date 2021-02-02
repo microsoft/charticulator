@@ -27,6 +27,11 @@ export const strings = {
     zoomAuto: "Auto zoom",
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
+    sublayoutType: "Sublayout type",
+    elementOrders: "Order of elements",
+    gridDirection: "Grid row direction",
+    alignItemsOnX: "Align items on X axis",
+    alignItemsOnY: "Align items on Y axis",
   },
   dataset: {
     dimensions: (rows: number, columns: number) =>
@@ -48,7 +53,7 @@ export const strings = {
     replaceWithCSV: "Replace data with CSV file",
     showDataValues: "Show data values",
     showDerivedFields: "Show derived fields",
-    tableTitleColumns: "Columns",
+    tableTitleColumns: "Fields",
     tableTitleLinks: "Links",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
@@ -158,7 +163,7 @@ export const strings = {
     new: "New (Ctrl-N)",
     open: "Open (Ctrl-O)",
     redo: "Redo (Ctrl-Y)",
-    reset: "Reset",
+    reset: "Delete",
     save: "Save (Ctrl-S)",
     saveButton: "Save",
     saveNested: "Save Nested Chart",
@@ -169,6 +174,8 @@ export const strings = {
     delimiter: "CSV Delimiter",
     fileFormat: "Import file format",
     numberFormat: "Number Format",
+    currencyFormat: "Currency Format",
+    groups: "Groups",
     numberFormatComma: "Decimal: comma / Separator: dot",
     numberFormatDot: "Decimal: dot / Separator: comma",
     semicolon: "semicolon",
@@ -219,6 +226,6 @@ export const strings = {
     string: "String",
   } as { [key in DataType]: string },
   attributesPanel: {
-    conditionedBy: "Conditioned by..."
-  }
+    conditionedBy: "Conditioned by...",
+  },
 };

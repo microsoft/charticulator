@@ -65,7 +65,11 @@ import {
   Variable,
 } from "../../../../core/expression";
 import { getDateFormat } from "../../../../core/dataset/datetime";
-import { ScaleMapping } from "../../../../core/specification";
+import {
+  AttributeMap,
+  AttributeValue,
+  ScaleMapping,
+} from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import {
   InputComboboxOptions,
@@ -328,6 +332,8 @@ export class WidgetManager
           labels={options.labels}
           icons={options.icons}
           options={options.options}
+          labelPosition={options.labelPosition}
+          tooltip={options.tooltip}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
           onChange={(value) => {
@@ -341,6 +347,7 @@ export class WidgetManager
           labels={options.labels}
           icons={options.icons}
           options={options.options}
+          tooltip={options.tooltip}
           value={this.getPropertyValue(property) as string}
           showText={options.showLabel}
           onChange={(value) => {
@@ -622,8 +629,23 @@ export class WidgetManager
           );
         }}
       >
-        <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-        <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
+        {options.displayLabel != null && options.displayLabel ? (
+          <>
+            <div title={options.tooltip}>
+              <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+              <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            </div>
+            <span className="el-text">
+              {(this.getPropertyValue(property) as AttributeMap)?.expression ||
+                "(default)"}
+            </span>
+          </>
+        ) : (
+          <div title={options.tooltip}>
+            <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+          </div>
+        )}
       </DropZoneView>
     );
   }

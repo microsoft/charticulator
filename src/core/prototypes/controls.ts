@@ -21,23 +21,21 @@ export interface InputComboboxOptions {
   label?: string;
 }
 
+export const enum LabelPosition {
+  Right,
+  Bottom,
+  Left,
+  Top,
+}
+
 export interface InputSelectOptions {
   type: "radio" | "dropdown";
   showLabel?: boolean;
-
+  labelPosition?: LabelPosition;
   options: string[];
   icons?: string[];
   labels?: string[];
-  label?: string;
-}
-
-export interface InputFontComboboxOptions {
-  label?: string;
-}
-
-export interface InputTextOptions {
-  label?: string;
-  placeholder?: string;
+  tooltip?: string;
 }
 
 export interface InputBooleanOptions {
@@ -63,6 +61,9 @@ export interface DropTargetOptions {
 
 export interface OrderWidgetOptions {
   table: string;
+  displayLabel?: boolean;
+  labelPosition?: LabelPosition;
+  tooltip?: string;
 }
 
 export interface MappingEditorOptions {

@@ -9,6 +9,7 @@ import {
 } from "../../../solver";
 import * as Specification from "../../../specification";
 import { BuildConstraintsContext, Controls } from "../../common";
+import { LabelPosition } from "../../controls";
 import { DataflowTable } from "../../dataflow";
 import {
   buildAxisWidgets,
@@ -16,6 +17,8 @@ import {
   getNumericalInterpolate,
 } from "../axis";
 import { PlotSegmentClass } from "../plot_segment";
+
+import { strings } from "./../../../../strings";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   type: "overlap" | "dodge-x" | "dodge-y" | "grid" | "packing";
@@ -2147,6 +2150,7 @@ export class Region2DConstraintBuilder {
                 "AlignVerticalTop",
               ],
               labels: ["Bottom", "Middle", "Top"],
+              tooltip: strings.canvas.alignItemsOnY,
             }
           )
         );
@@ -2164,6 +2168,7 @@ export class Region2DConstraintBuilder {
                 "AlignHorizontalRight",
               ],
               labels: ["Left", "Middle", "Right"],
+              tooltip: strings.canvas.alignItemsOnX,
             }
           )
         );
@@ -2347,6 +2352,8 @@ export class Region2DConstraintBuilder {
               { property: "sublayout", field: ["align", "x"] },
               {
                 type: "dropdown",
+                showLabel: true,
+                labelPosition: LabelPosition.Bottom,
                 options: ["start", "middle", "end"],
                 icons: [
                   this.terminology.xMinIcon,
@@ -2358,6 +2365,7 @@ export class Region2DConstraintBuilder {
                   this.terminology.xMiddle,
                   this.terminology.xMax,
                 ],
+                tooltip: strings.canvas.alignItemsOnX,
               }
             )
           );
@@ -2368,6 +2376,8 @@ export class Region2DConstraintBuilder {
               { property: "sublayout", field: ["align", "y"] },
               {
                 type: "dropdown",
+                showLabel: true,
+                labelPosition: LabelPosition.Bottom,
                 options: ["start", "middle", "end"],
                 icons: [
                   this.terminology.yMinIcon,
@@ -2379,6 +2389,7 @@ export class Region2DConstraintBuilder {
                   this.terminology.yMiddle,
                   this.terminology.yMax,
                 ],
+                tooltip: strings.canvas.alignItemsOnY,
               }
             )
           );
@@ -2389,12 +2400,15 @@ export class Region2DConstraintBuilder {
               { property: "sublayout", field: ["grid", "direction"] },
               {
                 type: "dropdown",
+                showLabel: true,
+                labelPosition: LabelPosition.Bottom,
                 options: ["x", "y"],
                 icons: ["scaffold/xwrap", "scaffold/ywrap"],
                 labels: [
                   this.terminology.gridDirectionX,
                   this.terminology.gridDirectionY,
                 ],
+                tooltip: strings.canvas.gridDirection,
               }
             )
           );
@@ -2404,7 +2418,11 @@ export class Region2DConstraintBuilder {
           extra.push(
             m.orderByWidget(
               { property: "sublayout", field: "order" },
-              { table: this.plotSegment.object.table }
+              {
+                table: this.plotSegment.object.table,
+                displayLabel: true,
+                tooltip: strings.canvas.elementOrders,
+              }
             ),
             m.inputBoolean(
               { property: "sublayout", field: "orderReversed" },
@@ -2419,9 +2437,12 @@ export class Region2DConstraintBuilder {
           { property: "sublayout", field: "type" },
           {
             type: "dropdown",
+            showLabel: true,
+            labelPosition: LabelPosition.Bottom,
             options: options.map((x) => x.value),
             icons: options.map((x) => x.icon),
             labels: options.map((x) => x.label),
+            tooltip: strings.canvas.sublayoutType,
           }
         ),
         ...extra,
@@ -2439,6 +2460,8 @@ export class Region2DConstraintBuilder {
           { property: "sublayout", field: ["align", "y"] },
           {
             type: "dropdown",
+            showLabel: true,
+            labelPosition: LabelPosition.Bottom,
             options: ["start", "middle", "end"],
             icons: [
               this.terminology.yMinIcon,
@@ -2463,6 +2486,8 @@ export class Region2DConstraintBuilder {
           { property: "sublayout", field: ["align", "x"] },
           {
             type: "dropdown",
+            showLabel: true,
+            labelPosition: LabelPosition.Bottom,
             options: ["start", "middle", "end"],
             icons: [
               this.terminology.xMinIcon,

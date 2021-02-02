@@ -11,6 +11,7 @@ import {
   replaceSymbolByNewLine,
   Color,
   Geometry,
+  getFormat,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -174,7 +175,7 @@ export class AxisRenderer {
       // {.0%}
       return (value: number) => {
         return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
-          return format(spec)(value);
+          return getFormat()(spec)(value);
         });
       };
     }

@@ -140,8 +140,8 @@
     }
     .el-dropdown {
       @include button-base(32px);
-      @include icon-size(20px, 6px);
-      margin-left: -5px;
+      @include icon-size(18px, 6px);
+      margin-left: -3px;
       z-index: 1;
       .el-svg-icon {
         margin-left: 0px;
@@ -170,6 +170,7 @@
 
     &-dropdown {
       margin-right: 4px;
+      margin-left: 4px;
       padding: 2px;
       .charticulator__button-tool {
         margin-right: 0;
@@ -213,6 +214,7 @@
 
     &.is-disabled {
       color: $gray-180;
+      background: $gray-210;
       cursor: not-allowed;
       .el-svg-icon {
         filter: invert(80%);
@@ -345,7 +347,7 @@
     display: inline-block;
 
     .el-text {
-      @include font-bold;
+      @include font-main;
       margin: 0 5px;
     }
 
@@ -452,7 +454,7 @@
     line-height: $height;
     height: $height;
     @include icon-size($height - 2px, 1px);
-    padding: 2px 0;
+    padding: 10px;
 
     transition: background-color $transition-default;
 

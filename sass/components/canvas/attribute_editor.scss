@@ -1430,13 +1430,24 @@
         }
       }
 
+      &-select-container {
+        display: flex;
+        flex-direction: column;
+        :last-child {
+          margin-top: 5px;
+        }
+      }
+
       &-select {
+        :last-child {
+          float: right;
+        }
         display: inline-block;
         vertical-align: top;
         cursor: pointer;
         height: $line-height;
         border-radius: 2px;
-        border: 1px solid $gray-200;
+        border: 0px solid $gray-200;
         transition: background-color $transition-default;
 
         &.has-text {
@@ -1927,25 +1938,6 @@
     margin-top: 10px;
   }
 }
-
-// .charticulator__plot-segment-selector {
-//     $line-height: 32px;
-//     display: block;
-//     .el-item {
-//         display: block;
-//         height: $line-height;
-//         line-height: $line-height;
-//         cursor: pointer;
-
-//         &.is-active {
-//             background: $color-primary;
-//             color: white;
-//             .el-svg-icon {
-//                 filter: invert(100%);
-//             }
-//         }
-//     }
-// }
 
 .charticulator__filter-editor {
   width: 300px;

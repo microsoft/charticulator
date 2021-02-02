@@ -93,7 +93,10 @@ export class CategoricalLegendClass extends LegendClass {
 
   public getLegendSize(): [number, number] {
     const items = this.getLegendItems();
-    if (this.object.properties.orientation === "vertical") {
+    if (
+      this.object.properties.orientation === "vertical" ||
+      this.object.properties.orientation === undefined
+    ) {
       return [
         this.getLineWidth() + this.getLineHeight(),
         items.length * this.getLineHeight(),
@@ -211,7 +214,10 @@ export class CategoricalLegendClass extends LegendClass {
   }
 
   public getLayoutBox(): { x1: number; y1: number; x2: number; y2: number } {
-    if (this.object.properties.orientation === "vertical") {
+    if (
+      this.object.properties.orientation === "vertical" ||
+      this.object.properties.orientation === undefined
+    ) {
       return super.getLayoutBox();
     }
 

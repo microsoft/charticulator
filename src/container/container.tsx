@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { FormatLocaleDefinition } from "d3-format";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -9,6 +10,7 @@ import {
   Specification,
   EventSubscription,
   Prototypes,
+  setFormatOptions,
 } from "../core";
 import {
   ChartComponent,
@@ -285,6 +287,10 @@ export class ChartContainer extends EventEmitter {
   public setChart(chart: Specification.Chart) {
     this.chart = chart;
     ReactDOM.render(this.reactMount(this.width, this.height), this.container);
+  }
+
+  public static setFormatOptions(options: FormatLocaleDefinition) {
+    setFormatOptions(options);
   }
 
   public reactMount(width: number = 1200, height: number = 800) {
