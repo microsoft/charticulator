@@ -1,8 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>icons</title>
-    <polyline points="4.043 25.997 4.043 23.186 27.957 23.186 27.957 25.997"
-        style="fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round" />
-    <rect x="4.04317" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
-    <rect x="22.38924" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
-    <rect x="13.21729" y="6.00304" width="5.5676" height="15.43186" style="fill-opacity:0.8" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048" height="2048">
+  <path transform="translate(2048, 000) rotate(90)"
+    d="M 1920 0 v 2048 h -128 V 0 h 128 z M 512 384 h 1152 v 512 H 0 V 384 z m 128 384 h 896 V 512 H 128v 256 z M 0 1152 h 1664 v 512 H 0 v -512 z m 128 384 h 1408 v -256 H 128 v 256 z" />
 </svg>
