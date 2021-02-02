@@ -36,6 +36,17 @@ export interface InputSelectOptions {
   icons?: string[];
   labels?: string[];
   tooltip?: string;
+  label?: string;
+}
+
+export interface InputFontComboboxOptions {
+  label?: string;
+}
+
+export interface InputTextOptions {
+  label?: string;
+  placeholder?: string;
+  tooltip?: string;
 }
 
 export interface InputBooleanOptions {
