@@ -2228,7 +2228,7 @@ export class Region2DConstraintBuilder {
                 {
                   type: "radio",
                   options: ["x", "y"],
-                  icons: ["scaffold/xwrap", "scaffold/ywrap"],
+                  icons: ["GripperBarHorizontal", "GripperBarVertical"],
                   labels: [
                     this.terminology.gridDirectionX,
                     this.terminology.gridDirectionY,
@@ -2403,7 +2403,7 @@ export class Region2DConstraintBuilder {
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
                 options: ["x", "y"],
-                icons: ["scaffold/xwrap", "scaffold/ywrap"],
+                icons: ["GripperBarHorizontal", "GripperBarVertical"],
                 labels: [
                   this.terminology.gridDirectionX,
                   this.terminology.gridDirectionY,

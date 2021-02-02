@@ -23,9 +23,18 @@ export function getSVGIcon(path: string): string {
   }
 }
 
-addSVGIcon("general/chevron-down", require("resources/icons/icons_chevron_down.svg"));
-addSVGIcon("general/chevron-right", require("resources/icons/icons_chevron_right.svg"));
-addSVGIcon("general/chevron-left", require("resources/icons/icons_chevron_left.svg"));
+addSVGIcon(
+  "general/chevron-down",
+  require("resources/icons/icons_chevron_down.svg")
+);
+addSVGIcon(
+  "general/chevron-right",
+  require("resources/icons/icons_chevron_right.svg")
+);
+addSVGIcon(
+  "general/chevron-left",
+  require("resources/icons/icons_chevron_left.svg")
+);
 
 // General icons
 addSVGIcon("general/cross", require("resources/icons/icons_cross.svg"));
@@ -154,11 +163,11 @@ addSVGIcon(
   require("resources/icons/icons_scaffold-spiral.svg")
 );
 addSVGIcon(
-  "scaffold/xwrap",
+  "GripperBarHorizontal",
   require("resources/icons/icons_scaffold-xwrap.svg")
 );
 addSVGIcon(
-  "scaffold/ywrap",
+  "GripperBarVertical",
   require("resources/icons/icons_scaffold-ywrap.svg")
 );
 addSVGIcon("scaffold/map", require("resources/icons/icons_scaffold-map.svg"));
@@ -239,16 +248,13 @@ addSVGIcon("stroke/dotted", require("resources/icons/icons_stroke-dotted.svg"));
 addSVGIcon("stroke/solid", require("resources/icons/icons_stroke-solid.svg"));
 
 // Handle icons
+addSVGIcon("Stack", require("resources/icons/icons_sublayout-overlap.svg"));
 addSVGIcon(
-  "sublayout/overlap",
-  require("resources/icons/icons_sublayout-overlap.svg")
-);
-addSVGIcon(
-  "sublayout/dodge-x",
+  "HorizontalDistributeCenter",
   require("resources/icons/icons_sublayout-dodge-horizontal.svg")
 );
 addSVGIcon(
-  "sublayout/dodge-y",
+  "VerticalDistributeCenter",
   require("resources/icons/icons_sublayout-dodge-vertical.svg")
 );
 addSVGIcon(
@@ -260,7 +266,7 @@ addSVGIcon(
   require("resources/icons/icons_sublayout-dodge-radial.svg")
 );
 addSVGIcon(
-  "sublayout/grid",
+  "GridViewSmall",
   require("resources/icons/icons_sublayout-grid.svg")
 );
 addSVGIcon(
@@ -271,15 +277,21 @@ addSVGIcon(
   "sublayout/packing",
   require("resources/icons/icons_sublayout-packing.svg")
 );
-addSVGIcon("align/left", require("resources/icons/icons_align-left.svg"));
 addSVGIcon(
-  "align/x-middle",
+  "AlignHorizontalLeft",
+  require("resources/icons/icons_align-left.svg")
+);
+addSVGIcon(
+  "AlignHorizontalCenter",
   require("resources/icons/icons_align-x-middle.svg")
 );
-addSVGIcon("align/right", require("resources/icons/icons_align-right.svg"));
+addSVGIcon(
+  "AlignHorizontalRight",
+  require("resources/icons/icons_align-right.svg")
+);
 addSVGIcon("align/top", require("resources/icons/icons_align-top.svg"));
 addSVGIcon(
-  "align/y-middle",
+  "AlignVerticalCenter",
   require("resources/icons/icons_align-y-middle.svg")
 );
 addSVGIcon("align/bottom", require("resources/icons/icons_align-bottom.svg"));

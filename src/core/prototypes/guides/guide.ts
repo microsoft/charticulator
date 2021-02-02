@@ -378,7 +378,11 @@ export class GuideClass extends ChartElementClass<
       options = hOptions;
       labels = ["Left", "Center", "Right"];
 
-      icons = ["align/left", "align/x-middle", "align/right"];
+      icons = [
+        "AlignHorizontalLeft",
+        "AlignHorizontalCenter",
+        "AlignHorizontalRight",
+      ];
     } else {
       const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
       options = vOptions;

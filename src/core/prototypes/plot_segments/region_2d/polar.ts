@@ -60,11 +60,11 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
   xAxis: "Angular Axis",
   yAxis: "Radial Axis",
   xMin: "Left",
-  xMinIcon: "align/left",
+  xMinIcon: "AlignHorizontalLeft",
   xMiddle: "Middle",
-  xMiddleIcon: "align/x-middle",
+  xMiddleIcon: "AlignHorizontalCenter",
   xMax: "Right",
-  xMaxIcon: "align/right",
+  xMaxIcon: "AlignHorizontalRight",
   yMiddle: "Middle",
   yMiddleIcon: "align/y-middle",
   yMin: "Bottom",
@@ -82,7 +82,7 @@ export let polarTerminology: Region2DConfiguration["terminology"] = {
   packing: "Packing",
   packingIcon: "sublayout/packing",
   overlap: "Overlap",
-  overlapIcon: "sublayout/overlap",
+  overlapIcon: "Stack",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<

@@ -50,29 +50,29 @@ export let cartesianTerminology: Region2DConfiguration = {
     xAxis: "X Axis", // X Axis / Angular Axis
     yAxis: "Y Axis", // Y Axis / Radial Axis
     xMin: "Left",
-    xMinIcon: "align/left",
+    xMinIcon: "AlignHorizontalLeft",
     xMiddle: "Middle",
-    xMiddleIcon: "align/x-middle",
+    xMiddleIcon: "AlignHorizontalCenter",
     xMax: "Right",
-    xMaxIcon: "align/right",
+    xMaxIcon: "AlignHorizontalRight",
     yMiddle: "Middle",
-    yMiddleIcon: "align/y-middle",
+    yMiddleIcon: "AlignVerticalCenter",
     yMin: "Bottom",
     yMinIcon: "align/bottom",
     yMax: "Top",
     yMaxIcon: "align/top",
     dodgeX: "Stack X",
-    dodgeXIcon: "sublayout/dodge-x",
+    dodgeXIcon: "HorizontalDistributeCenter",
     dodgeY: "Stack Y",
-    dodgeYIcon: "sublayout/dodge-y",
+    dodgeYIcon: "VerticalDistributeCenter",
     grid: "Grid",
-    gridIcon: "sublayout/grid",
+    gridIcon: "GridViewSmall",
     gridDirectionX: "X",
     gridDirectionY: "Y",
     packing: "Packing",
     packingIcon: "sublayout/packing",
     overlap: "Overlap",
-    overlapIcon: "sublayout/overlap",
+    overlapIcon: "Stack",
   },
   xAxisPrePostGap: false,
   yAxisPrePostGap: false,
@@ -116,7 +116,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
       },
-    }
+    },
   };
 
   public readonly state: CartesianState;
@@ -235,7 +235,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...builder.buildPanelWidgets(manager)
+      ...builder.buildPanelWidgets(manager),
     ];
   }
 
@@ -316,11 +316,13 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return g;
   }
 
-  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    
+
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
