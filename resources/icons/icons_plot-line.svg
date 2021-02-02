@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>icons</title><line x1="7.23467" y1="10.57384" x2="24.76533" y2="21.42616" style="fill:none;stroke:#000;stroke-miterlimit:10"/><circle cx="5.31141" cy="9.38326" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/><circle cx="26.68859" cy="22.61674" r="2.05487" style="fill:none;stroke:#000;stroke-miterlimit:10"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <title>icons</title>
+    <line x1="7.23467" y1="10.57384" x2="24.76533" y2="21.42616" style="fill:none;stroke:#000;stroke-width:1.5px" />
+    <circle cx="5.31141" cy="9.38326" r="2.05487" style="fill:none;stroke:#000;stroke-width:1.5px" />
+    <circle cx="26.68859" cy="22.61674" r="2.05487" style="fill:none;stroke:#000;stroke-width:1.5px" />
+</svg>
