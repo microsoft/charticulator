@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
+import { LabelPosition } from "../../../../../core/prototypes/controls";
 import { SVGImageIcon } from "../../../../components";
 import {
   PopupContext,
@@ -46,6 +47,8 @@ export interface SelectProps {
   options: string[];
   labels?: string[];
   showText?: boolean;
+  labelPosition?: LabelPosition;
+  tooltip?: string;
   value: string;
   onChange: (active: string) => void;
 }
@@ -100,26 +103,49 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
   public render() {
     const currentIndex = this.props.options.indexOf(this.props.value);
     const props = this.props;
-    return (
-      <span
-        className={classNames(
-          "charticulator__widget-control-select",
-          ["is-active", this.state.active],
-          ["has-text", this.props.labels != null && props.showText],
-          ["has-icon", this.props.icons != null]
-        )}
-        ref={(e) => (this.anchor = e)}
-        onClick={this._startDropdown}
-      >
-        {props.icons != null ? (
-          <SVGImageIcon url={R.getSVGIcon(props.icons[currentIndex])} />
-        ) : null}
-        {props.labels != null && props.showText ? (
+    if (props.labelPosition === LabelPosition.Bottom) {
+      return (
+        <div className="charticulator__widget-control-select-container" title={props.tooltip}>
+          <span
+            className={classNames(
+              "charticulator__widget-control-select",
+              ["is-active", this.state.active],
+              ["has-text", this.props.labels != null && props.showText],
+              ["has-icon", this.props.icons != null]
+            )}
+            ref={(e) => (this.anchor = e)}
+            onClick={this._startDropdown}
+          >
+            {props.icons != null ? (
+              <SVGImageIcon url={R.getSVGIcon(props.icons[currentIndex])} />
+            ) : null}
+            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+          </span>
           <span className="el-text">{props.labels[currentIndex]}</span>
-        ) : null}
-        <SVGImageIcon url={R.getSVGIcon("general/dropdown")} />
-      </span>
-    );
+        </div>
+      )
+    } else {
+      return (
+        <span
+          className={classNames(
+            "charticulator__widget-control-select",
+            ["is-active", this.state.active],
+            ["has-text", this.props.labels != null && props.showText],
+            ["has-icon", this.props.icons != null]
+          )}
+          ref={(e) => (this.anchor = e)}
+          onClick={this._startDropdown}
+        >
+          {props.icons != null ? (
+            <SVGImageIcon url={R.getSVGIcon(props.icons[currentIndex])} />
+          ) : null}
+          {props.labels != null && props.showText ? (
+            <span className="el-text">{props.labels[currentIndex]}</span>
+          ) : null}
+          <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+        </span>
+      );
+    }
   }
 }
 

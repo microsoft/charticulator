@@ -394,6 +394,66 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
+  public renderDelete(showLabel: boolean) {
+    return (
+      <MenuButton
+          url={R.getSVGIcon("toolbar/trash")}
+          title={strings.menuBar.reset}
+          text={strings.menuBar.reset}
+          onClick={() => {
+            if (isInIFrame()) {
+              globals.popupController.showModal(
+                (context) => {
+                  return (
+                    <div
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className={"charticulator__reset_chart_dialog"}
+                    >
+                      <div
+                        className={"charticulator__reset_chart_dialog-inner"}
+                      >
+                        <>
+                          <p>{strings.dialog.resetConfirm}</p>
+                          <div
+                            className={
+                              "charticulator__reset_chart_dialog-buttons"
+                            }
+                          >
+                            <Button
+                              text={strings.button.yes}
+                              onClick={() => {
+                                this.context.store.dispatcher.dispatch(
+                                  new Actions.Reset()
+                                );
+                                context.close();
+                              }}
+                            />
+                            <Button
+                              text={strings.button.no}
+                              onClick={() => {
+                                context.close();
+                              }}
+                            />
+                          </div>
+                        </>
+                      </div>
+                    </div>
+                  );
+                },
+                { anchor: null }
+              );
+            } else {
+              if (confirm(strings.dialog.resetConfirm)) {
+                new Actions.Reset().dispatch(this.context.store.dispatcher);
+              }
+            }
+          }}
+        />
+    );
+  }
+
   public renderNewOpenSave() {
     return (
       <>
@@ -446,8 +506,13 @@ export class MenuBar extends ContextedComponent<
         {this.context.store.editorType === "embedded"
           ? this.renderSaveEmbedded()
           : null}
-        <span className="charticulator__menu-bar-separator" />
-        {this.renderExportImportButtons()}
+        {this.context.store.editorType === "embedded" ?
+        (
+          <>
+          <span className="charticulator__menu-bar-separator" />
+          {this.renderExportImportButtons()}
+          </>
+        ) : null}
         <span className="charticulator__menu-bar-separator" />
         {this.props.undoRedoLocation === "menubar" ?
           (<>
@@ -468,60 +533,9 @@ export class MenuBar extends ContextedComponent<
           </>)
         : null}
         <span className="charticulator__menu-bar-separator" />
-        <MenuButton
-          url={R.getSVGIcon("toolbar/trash")}
-          title={strings.menuBar.reset}
-          onClick={() => {
-            if (isInIFrame()) {
-              globals.popupController.showModal(
-                (context) => {
-                  return (
-                    <div
-                      onMouseDown={(e) => {
-                        e.stopPropagation();
-                      }}
-                      className={"charticulator__reset_chart_dialog"}
-                    >
-                      <div
-                        className={"charticulator__reset_chart_dialog-inner"}
-                      >
-                        <>
-                          <p>{strings.dialog.resetConfirm}</p>
-                          <div
-                            className={
-                              "charticulator__reset_chart_dialog-buttons"
-                            }
-                          >
-                            <Button
-                              text={strings.button.yes}
-                              onClick={() => {
-                                this.context.store.dispatcher.dispatch(
-                                  new Actions.Reset()
-                                );
-                                context.close();
-                              }}
-                            />
-                            <Button
-                              text={strings.button.no}
-                              onClick={() => {
-                                context.close();
-                              }}
-                            />
-                          </div>
-                        </>
-                      </div>
-                    </div>
-                  );
-                },
-                { anchor: null }
-              );
-            } else {
-              if (confirm(strings.dialog.resetConfirm)) {
-                new Actions.Reset().dispatch(this.context.store.dispatcher);
-              }
-            }
-          }}
-        />
+        {this.context.store.editorType === "embedded"
+          ? this.renderDelete(true)
+          : this.renderDelete(false)}
       </>
     );
   }

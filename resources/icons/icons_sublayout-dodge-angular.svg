@@ -2,8 +2,8 @@
     <title>icons</title>
     <path
         d="M18.40921,9.19211l-1.523,11.67151a6.83354,6.83354,0,0,1,3.96124,1.94421l2.12317-2.12317L25.091,18.5643l4.09717-4.09717A18.63386,18.63386,0,0,0,18.40921,9.19211Z"
-        style="fill-opacity:0.0;stroke:#000;stroke-linejoin:round" />
+        style="fill-opacity:0.0;stroke:#000;stroke-linejoin:round;stroke-width:1.6px" />
     <path
         d="M15.11374,20.86362l-1.523-11.67151A18.63425,18.63425,0,0,0,2.81186,14.46725L6.909,18.5643l2.12036,2.12036,2.12323,2.12323A6.83327,6.83327,0,0,1,15.11374,20.86362Z"
-        style="fill-opacity:0.0;stroke:#000;stroke-linejoin:round" />
+        style="fill-opacity:0.0;stroke:#000;stroke-linejoin:round;stroke-width:1.6px" />
 </svg>
