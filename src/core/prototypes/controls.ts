@@ -120,6 +120,7 @@ export interface InputNumberOptions {
 export interface InputDateOptions {
   defaultValue?: number | Date;
   placeholder?: string;
+  label?: string;
   onEnter?: (value: number) => boolean;
 }
 

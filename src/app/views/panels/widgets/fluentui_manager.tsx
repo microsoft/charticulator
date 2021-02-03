@@ -257,10 +257,11 @@ export class FluentUIWidgetManager
     return (
       <DatePicker
         firstDayOfWeek={DayOfWeek.Sunday}
-        placeholder="Select a date..."
-        ariaLabel="Select a date"
+        placeholder={options.placeholder}
+        ariaLabel={options.placeholder}
         defaultValue={format}
-        // value={value}
+        value={new Date(value)}
+        label={options.label}
         onSelectDate={(value: Date) => {
           if (value == null) {
             this.emitSetProperty(property, null);

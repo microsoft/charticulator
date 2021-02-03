@@ -1096,21 +1096,17 @@ export function buildAxisWidgets(
             );
           }
           if (data.valueType === "date") {
+            widgets.push(m.label("Range"));
             widgets.push(
-              m.row(
-                "Range",
-                m.vertical(
-                  m.horizontal(
-                    [0, 1],
-                    m.label("start"),
-                    m.inputDate({ property: axisProperty, field: "domainMin" })
-                  ),
-                  m.horizontal(
-                    [0, 1],
-                    m.label("end"),
-                    m.inputDate({ property: axisProperty, field: "domainMax" })
-                  )
-                )
+              m.inputDate(
+                { property: axisProperty, field: "domainMin" },
+                { label: "Start" }
+              )
+            );
+            widgets.push(
+              m.inputDate(
+                { property: axisProperty, field: "domainMax" },
+                { label: "End" }
               )
             );
           } else {
