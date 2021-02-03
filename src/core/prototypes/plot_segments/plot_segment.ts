@@ -134,22 +134,25 @@ export abstract class PlotSegmentClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.row(
+      manager.horizontal(
+        [0, 1, 1],
         manager.label("Data"),
         manager.horizontal(
-          [0, 1],
-          manager.filterEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.filter,
-            mode: "button",
-          }),
-          manager.groupByEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.groupBy,
-            mode: "button",
-          })
+          [1],
+          [
+            manager.filterEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.filter,
+              mode: "button",
+            }),
+            manager.groupByEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.groupBy,
+              mode: "button",
+            }),
+          ]
         )
       ),
     ];
