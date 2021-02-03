@@ -55,6 +55,7 @@ import {
   DataValue,
   Mapping,
   ScaleMapping,
+  ValueMapping,
 } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
@@ -1129,6 +1130,11 @@ export class AppStore extends BaseStore {
 
             scaleClass.inferParameters(values as any, {
               newScale: true,
+              reuseRange: false,
+              rangeNumber: [
+                (scale.mappings.rangeMin as ValueMapping)?.value as number,
+                (scale.mappings.rangeMax as ValueMapping)?.value as number,
+              ],
             });
           });
         };
