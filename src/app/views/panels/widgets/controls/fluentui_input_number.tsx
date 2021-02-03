@@ -3,6 +3,10 @@
 import { TextField, Slider, SpinButton, Label } from "@fluentui/react";
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
+import {
+  FluentLayoutItem,
+  FluentRowLayout,
+} from "./fluentui_customized_components";
 
 export interface InputNumberProps {
   defaultValue?: number;
@@ -110,7 +114,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     const tick = props.updownTick || 0.1;
     return (
       <>
-        {props.label ? <Label>{props.label}</Label> : null}
         <SpinButton
           defaultValue={formatNumber(value)}
           value={formatNumber(value)}
@@ -145,26 +148,30 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
   };
 
   return (
-    <span>
-      <div>
-        {props.showUpdown ? (
-          renderUpdown()
-        ) : (
-          <TextField
-            label={props.label}
-            placeholder={props.placeholder}
-            defaultValue={formatNumber(value)}
-            value={formatNumber(value)}
-            onChange={(event, str) => {
-              const num = parseNumber(str);
-              if (reportValue(num)) {
-                setValue(num);
-              }
-            }}
-          />
-        )}
-      </div>
-      {props.showSlider ? renderSlider() : null}
-    </span>
+    <>
+      <Label>{props.label}</Label>
+      <FluentRowLayout>
+        {props.showSlider ? (
+          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
+        ) : null}
+        <FluentLayoutItem flex={1}>
+          {props.showUpdown ? (
+            renderUpdown()
+          ) : (
+            <TextField
+              placeholder={props.placeholder}
+              defaultValue={formatNumber(value)}
+              value={formatNumber(value)}
+              onChange={(event, str) => {
+                const num = parseNumber(str);
+                if (reportValue(num)) {
+                  setValue(num);
+                }
+              }}
+            />
+          )}
+        </FluentLayoutItem>
+      </FluentRowLayout>
+    </>
   );
 };

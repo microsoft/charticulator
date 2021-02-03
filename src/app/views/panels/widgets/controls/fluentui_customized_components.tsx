@@ -32,3 +32,12 @@ export const FluentCheckbox = styled.div`
   margin-top: 2px;
   margin-bottom: 2px;
 `;
+
+export const FluentRowLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const FluentLayoutItem = styled.div<{ flex: number }>`
+  flex: ${({ flex }) => flex || "1"};
+`;
