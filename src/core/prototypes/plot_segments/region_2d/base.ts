@@ -2185,8 +2185,7 @@ export class Region2DConstraintBuilder {
         extra.push(
           m.vertical(
             m.label("Gap"),
-            m.horizontal(
-              [0, 1, 0, 1],
+            m.vertical(
               m.label("x: "),
               m.inputNumber(
                 { property: "sublayout", field: "ratioX" },
