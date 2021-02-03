@@ -1172,6 +1172,7 @@ export class AppStore extends BaseStore {
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
+            orderMode: xDataProperty.valueType === "string" ? "order" : null,
           },
           xDataProperty.rawColumnExpr
         );
@@ -1199,6 +1200,7 @@ export class AppStore extends BaseStore {
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
+            orderMode: yDataProperty.valueType === "string" ? "order" : null,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1224,6 +1226,7 @@ export class AppStore extends BaseStore {
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axis.type,
+            orderMode: axis.valueType === "string" ? "order" : null,
           },
           yDataProperty.rawColumnExpr
         );
