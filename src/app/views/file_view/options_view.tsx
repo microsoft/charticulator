@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
+import { useContext } from "react";
 import {
   defaultCurrency,
   defaultDigitsGroup,
@@ -9,7 +10,11 @@ import {
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
-import { ContextedComponent, MainContext } from "../../context_component";
+import {
+  ContextedComponent,
+  MainContextInterface,
+} from "../../context_component";
+import { MainContext } from "../../context_provider";
 import { LocalStorageKeys } from "../../globals";
 import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
@@ -19,10 +24,11 @@ export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
-const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
-  store,
+export const FileViewOptions: React.FC<FileViewOptionsProps> = ({
   onClose,
 }) => {
+  const { store } = useContext(MainContext);
+
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
   const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(
@@ -161,20 +167,3 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
     </section>
   );
 };
-
-// TODO create HOC
-export class FileViewOptions extends ContextedComponent<
-  {
-    onClose: () => void;
-  },
-  {}
-> {
-  public render() {
-    return (
-      <FileViewOptionsView
-        onClose={this.props.onClose}
-        store={this.context.store}
-      />
-    );
-  }
-}

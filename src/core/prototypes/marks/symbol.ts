@@ -37,7 +37,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Symbol",
-    iconPath: "mark/symbol",
+    iconPath: "Shapes",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },

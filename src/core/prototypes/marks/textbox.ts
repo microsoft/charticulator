@@ -1,7 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Point, replaceNewLineBySymbol, replaceSymbolByTab, replaceSymbolByNewLine, rgbToHex, splitStringByNewLine } from "../../common";
+import {
+  Point,
+  replaceNewLineBySymbol,
+  replaceSymbolByTab,
+  replaceSymbolByNewLine,
+  rgbToHex,
+  splitStringByNewLine,
+} from "../../common";
 import * as Graphics from "../../graphics";
 import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
@@ -29,13 +36,13 @@ export { TextboxElementAttributes, TextboxElementProperties };
 export class TextboxElementClass extends EmphasizableMarkClass<
   TextboxElementProperties,
   TextboxElementAttributes
-  > {
+> {
   public static classID = "mark.textbox";
   public static type = "mark";
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Textbox",
-    iconPath: "mark/textbox",
+    iconPath: "TextField",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -132,22 +139,26 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
             }
           ),
           props.alignX != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "paddingX" },
-                {
-                  updownTick: 1,
-                  showUpdown: true,
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingX" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true,
+                  }
+                )
               )
-            )
             : null
         )
       ),
@@ -160,22 +171,26 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
             }
           ),
           props.alignY != "middle"
             ? manager.horizontal(
-              [0, 1],
-              manager.label("Margin:"),
-              manager.inputNumber(
-                { property: "paddingY" },
-                {
-                  updownTick: 1,
-                  showUpdown: true,
-                }
+                [0, 1],
+                manager.label("Margin:"),
+                manager.inputNumber(
+                  { property: "paddingY" },
+                  {
+                    updownTick: 1,
+                    showUpdown: true,
+                  }
+                )
               )
-            )
             : null
         )
       ),
@@ -191,31 +206,35 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       ),
       props.wordWrap
         ? manager.row(
-          "Alignment",
-          manager.horizontal(
-            [0, 1],
-            manager.inputSelect(
-              { property: "alignText" },
-              {
-                type: "radio",
-                options: ["end", "middle", "start"],
-                icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
-                labels: ["Bottom", "Middle", "Top"],
-              }
+            "Alignment",
+            manager.horizontal(
+              [0, 1],
+              manager.inputSelect(
+                { property: "alignText" },
+                {
+                  type: "radio",
+                  options: ["end", "middle", "start"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: ["Bottom", "Middle", "Top"],
+                }
+              )
             )
           )
-        )
         : null,
       props.wordWrap
         ? manager.row(
-          "Overflow",
-          manager.inputBoolean(
-            { property: "overFlow" },
-            {
-              type: "checkbox",
-            }
+            "Overflow",
+            manager.inputBoolean(
+              { property: "overFlow" },
+              {
+                type: "checkbox",
+              }
+            )
           )
-        )
         : null,
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),
@@ -385,7 +404,9 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         );
       }
       // add user input wrap
-      textContentList = textContentList.flatMap((line) => splitStringByNewLine(line));
+      textContentList = textContentList.flatMap((line) =>
+        splitStringByNewLine(line)
+      );
       const lines: Graphics.Element[] = [];
       let textBoxShift = 0;
 
@@ -412,7 +433,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 textBoxShift = -height / 2;
                 break;
               case "middle":
-                textBoxShift = (textContentList.length * height) / 2 - height / 2;
+                textBoxShift =
+                  (textContentList.length * height) / 2 - height / 2;
                 break;
               case "end":
                 textBoxShift = textContentList.length * height - height / 2;

@@ -38,6 +38,7 @@ import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
 import { FileViewOptions } from "./options_view";
 import { strings } from "../../../strings";
+import { MainContext } from "../../context_provider";
 
 export enum MainTabs {
   about = "about",
@@ -143,30 +144,35 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
 
   public render() {
     return (
-      <div className="charticulator__file-view">
-        <div className="charticulator__file-view-tabs">
-          <div className="el-button-back" onClick={() => this.props.onClose()}>
-            <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+      <MainContext.Provider value={{ store: this.props.store }}>
+        <div className="charticulator__file-view">
+          <div className="charticulator__file-view-tabs">
+            <div
+              className="el-button-back"
+              onClick={() => this.props.onClose()}
+            >
+              <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+            </div>
+            {tabOrder.map((t, index) =>
+              t === null ? (
+                <div key={index} className="el-sep" />
+              ) : (
+                <div
+                  key={index}
+                  className={classNames("el-tab", [
+                    "active",
+                    this.state.currentTab == t,
+                  ])}
+                  onClick={() => this.switchTab(t)}
+                >
+                  {strings.mainTabs[t]}
+                </div>
+              )
+            )}
           </div>
-          {tabOrder.map((t, index) =>
-            t === null ? (
-              <div key={index} className="el-sep" />
-            ) : (
-              <div
-                key={index}
-                className={classNames("el-tab", [
-                  "active",
-                  this.state.currentTab == t,
-                ])}
-                onClick={() => this.switchTab(t)}
-              >
-                {strings.mainTabs[t]}
-              </div>
-            )
-          )}
+          <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
         </div>
-        <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
-      </div>
+      </MainContext.Provider>
     );
   }
 }

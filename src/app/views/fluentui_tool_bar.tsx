@@ -7,7 +7,12 @@ import * as R from "../resources";
 
 import { EventSubscription } from "../../core";
 import { Actions, DragData } from "../actions";
-import { MenuButton, SVGImageIcon, ToolButton } from "../components";
+import {
+  FluentToolButton,
+  MenuButton,
+  SVGImageIcon,
+  ToolButton,
+} from "../components";
 import { ContextedComponent } from "../context_component";
 import { PopupView } from "../controllers";
 
@@ -17,28 +22,31 @@ import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
+import { MainContext } from "../context_provider";
+import { useContext } from "react";
+import { ActionButton, Dialog, IconButton, IIconProps } from "@fluentui/react";
+import {
+  FluentColumnLayout,
+  FluentRowLayout,
+} from "./panels/widgets/controls/fluentui_customized_components";
 
-export class Toolbar extends ContextedComponent<
-  {
-    layout: LayoutDirection;
-    undoRedoLocation: UndoRedoLocation;
-    toolbarLabels: boolean;
-  },
-  {}
-> {
-  public token: EventSubscription;
+export const FluentUIToolbar: React.FC<{
+  layout: LayoutDirection;
+  undoRedoLocation: UndoRedoLocation;
+  toolbarLabels: boolean;
+}> = (props) => {
+  const { store } = useContext(MainContext);
+  let token: EventSubscription = null;
 
-  public componentDidMount() {
-    this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
-      this.forceUpdate();
-    });
-  }
+  React.useCallback(() => {
+    token = store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {});
 
-  public componentWillUnmount() {
-    this.token.remove();
-  }
+    return () => {
+      token?.remove();
+    };
+  }, [store.currentTool]);
 
-  private getGlyphToolItems(labels: boolean = true) {
+  const getGlyphToolItems = (labels: boolean = true) => {
     return [
       <>
         <>
@@ -46,7 +54,7 @@ export class Toolbar extends ContextedComponent<
           {labels && (
             <span
               className={
-                this.props.layout === LayoutDirection.Vertical
+                props.layout === LayoutDirection.Vertical
                   ? "charticulator__toolbar-vertical-label"
                   : "charticulator__toolbar-label"
               }
@@ -55,7 +63,7 @@ export class Toolbar extends ContextedComponent<
             </span>
           )}
           <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
+            compact={props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.rect",
@@ -88,7 +96,7 @@ export class Toolbar extends ContextedComponent<
             icon="Line"
           />
           <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
+            compact={props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.text",
@@ -103,7 +111,7 @@ export class Toolbar extends ContextedComponent<
             ]}
           />
           <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
+            compact={props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "mark.icon",
@@ -128,31 +136,27 @@ export class Toolbar extends ContextedComponent<
             title="Nested Chart"
             icon="BarChartVerticalFilter"
           /> */}
-          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+          {props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
             <>
               <span className={"charticulator__toolbar-horizontal-separator"} />
-              <ToolButton
+              <FluentToolButton
                 title={strings.menuBar.undo}
-                icon={R.getSVGIcon("Undo")}
-                onClick={() =>
-                  new Actions.Undo().dispatch(this.context.store.dispatcher)
-                }
+                icon={"Undo"}
+                onClick={() => new Actions.Undo().dispatch(store.dispatcher)}
               />
-              <ToolButton
+              <FluentToolButton
                 title={strings.menuBar.redo}
-                icon={R.getSVGIcon("Redo")}
-                onClick={() =>
-                  new Actions.Redo().dispatch(this.context.store.dispatcher)
-                }
+                icon={"Redo"}
+                onClick={() => new Actions.Redo().dispatch(store.dispatcher)}
               />
             </>
           ) : null}
         </>
       </>,
     ];
-  }
+  };
 
-  private getChartToolItems(labels: boolean = true) {
+  const getChartToolItems = (labels: boolean = true) => {
     return [
       <>
         <LinkButton label={true} />
@@ -161,7 +165,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === LayoutDirection.Vertical
+              props.layout === LayoutDirection.Vertical
                 ? "charticulator__toolbar-vertical-label"
                 : "charticulator__toolbar-label"
             }
@@ -170,7 +174,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "guide-y",
@@ -209,19 +213,19 @@ export class Toolbar extends ContextedComponent<
           <>
             <span
               className={
-                this.props.layout === LayoutDirection.Vertical
+                props.layout === LayoutDirection.Vertical
                   ? "charticulator__toolbar-vertical-label"
                   : "charticulator__toolbar-label"
               }
             >
-              {this.props.layout === LayoutDirection.Vertical
+              {props.layout === LayoutDirection.Vertical
                 ? strings.toolbar.plot
                 : strings.toolbar.plotSegments}
             </span>
           </>
         )}
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "plot-segment.cartesian",
@@ -242,7 +246,7 @@ export class Toolbar extends ContextedComponent<
           {labels && (
             <span
               className={
-                this.props.layout === LayoutDirection.Vertical
+                props.layout === LayoutDirection.Vertical
                   ? "charticulator__toolbar-vertical-label"
                   : "charticulator__toolbar-label"
               }
@@ -251,7 +255,7 @@ export class Toolbar extends ContextedComponent<
             </span>
           )}
           <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
+            compact={props.layout === LayoutDirection.Vertical}
             tools={[
               {
                 classID: "",
@@ -286,26 +290,22 @@ export class Toolbar extends ContextedComponent<
         </>
       </>,
     ];
-  }
+  };
 
-  private getToolItems(labels: boolean = true) {
+  const getToolItems = (labels: boolean = true) => {
     return (
       <>
-        {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+        {props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
           <>
-            <ToolButton
+            <FluentToolButton
               title={strings.menuBar.undo}
-              icon={R.getSVGIcon("Undo")}
-              onClick={() =>
-                new Actions.Undo().dispatch(this.context.store.dispatcher)
-              }
+              icon={"Undo"}
+              onClick={() => new Actions.Undo().dispatch(store.dispatcher)}
             />
-            <ToolButton
+            <FluentToolButton
               title={strings.menuBar.redo}
-              icon={R.getSVGIcon("Redo")}
-              onClick={() =>
-                new Actions.Redo().dispatch(this.context.store.dispatcher)
-              }
+              icon={"Redo"}
+              onClick={() => new Actions.Redo().dispatch(store.dispatcher)}
             />
             <span className={"charticulator__toolbar-horizontal-separator"} />
           </>
@@ -313,7 +313,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === LayoutDirection.Vertical
+              props.layout === LayoutDirection.Vertical
                 ? "charticulator__toolbar-vertical-label"
                 : "charticulator__toolbar-label"
             }
@@ -322,7 +322,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.rect",
@@ -347,7 +347,7 @@ export class Toolbar extends ContextedComponent<
         <ObjectButton classID="mark.symbol" title="Symbol" icon="Shapes" />
         <ObjectButton classID="mark.line" title="Line" icon="Line" />
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.text",
@@ -362,7 +362,7 @@ export class Toolbar extends ContextedComponent<
           ]}
         />
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "mark.icon",
@@ -372,7 +372,7 @@ export class Toolbar extends ContextedComponent<
             {
               classID: "mark.image",
               title: strings.toolbar.image,
-              icon: "mark/image",
+              icon: "FileImage",
             },
           ]}
         />
@@ -394,7 +394,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === LayoutDirection.Vertical
+              props.layout === LayoutDirection.Vertical
                 ? "charticulator__toolbar-vertical-label"
                 : "charticulator__toolbar-label"
             }
@@ -403,7 +403,7 @@ export class Toolbar extends ContextedComponent<
           </span>
         )}
         <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
+          compact={props.layout === LayoutDirection.Vertical}
           tools={[
             {
               classID: "guide-y",
@@ -442,12 +442,12 @@ export class Toolbar extends ContextedComponent<
           <>
             <span
               className={
-                this.props.layout === LayoutDirection.Vertical
+                props.layout === LayoutDirection.Vertical
                   ? "charticulator__toolbar-vertical-label"
                   : "charticulator__toolbar-label"
               }
             >
-              {this.props.layout === LayoutDirection.Vertical
+              {props.layout === LayoutDirection.Vertical
                 ? strings.toolbar.plot
                 : strings.toolbar.plotSegments}
             </span>
@@ -469,7 +469,7 @@ export class Toolbar extends ContextedComponent<
         {labels && (
           <span
             className={
-              this.props.layout === LayoutDirection.Vertical
+              props.layout === LayoutDirection.Vertical
                 ? "charticulator__toolbar-vertical-label"
                 : "charticulator__toolbar-label"
             }
@@ -481,71 +481,69 @@ export class Toolbar extends ContextedComponent<
           type="cartesian-x"
           title={strings.toolbar.lineH}
           icon="scaffold/cartesian-x"
-          currentTool={this.store.currentTool}
+          currentTool={store.currentTool}
         />
         <ScaffoldButton
           type="cartesian-y"
           title={strings.toolbar.lineV}
           icon="scaffold/cartesian-y"
-          currentTool={this.store.currentTool}
+          currentTool={store.currentTool}
         />
         <ScaffoldButton
           type="polar"
           title={strings.toolbar.polar}
           icon="scaffold/circle"
-          currentTool={this.store.currentTool}
+          currentTool={store.currentTool}
         />
         <ScaffoldButton
           type="curve"
           title={strings.toolbar.curve}
           icon="scaffold/curve"
-          currentTool={this.store.currentTool}
+          currentTool={store.currentTool}
         />
       </>
     );
-  }
+  };
 
-  public render() {
-    let tooltipsItems = [];
-    if (this.context.store.editorType === "embedded") {
-      const chartToolItems = this.getChartToolItems(this.props.toolbarLabels);
-      const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
-      tooltipsItems = [...chartToolItems, ...glyphToolItems];
-    } else {
-      tooltipsItems = [this.getToolItems(this.props.toolbarLabels)];
-    }
-    return (
-      <>
-        <div
-          className={
-            this.props.layout === LayoutDirection.Vertical
-              ? "charticulator__toolbar-vertical"
-              : "charticulator__toolbar-horizontal"
-          }
-        >
-          <div className="charticulator__toolbar-buttons-align-left">
-            {tooltipsItems.map((item, index) => {
-              return (
-                <React.Fragment key={index}>
-                  <div
-                    key={index}
-                    className={
-                      this.props.layout === LayoutDirection.Vertical
-                        ? "charticulator__toolbar-vertical-group"
-                        : "charticulator__toolbar-horizontal-group"
-                    }
-                  >
-                    {item}
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </div>
-      </>
-    );
+  let tooltipsItems = [];
+  if (store.editorType === "embedded") {
+    const chartToolItems = getChartToolItems(props.toolbarLabels);
+    const glyphToolItems = getGlyphToolItems(props.toolbarLabels);
+    tooltipsItems = [...chartToolItems, ...glyphToolItems];
+  } else {
+    tooltipsItems = [getToolItems(props.toolbarLabels)];
   }
-}
+  return (
+    <>
+      <div
+        className={
+          props.layout === LayoutDirection.Vertical
+            ? "charticulator__toolbar-vertical"
+            : "charticulator__toolbar-horizontal"
+        }
+      >
+        <div className="charticulator__toolbar-buttons-align-left">
+          {tooltipsItems.map((item, index) => {
+            return (
+              <React.Fragment key={index}>
+                <div
+                  key={index}
+                  className={
+                    props.layout === LayoutDirection.Vertical
+                      ? "charticulator__toolbar-vertical-group"
+                      : "charticulator__toolbar-horizontal-group"
+                  }
+                >
+                  {item}
+                </div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+};
 
 export interface ObjectButtonProps {
   title: string;
@@ -584,33 +582,24 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
 
   public render() {
     return (
-      <ToolButton
-        icon={R.getSVGIcon(this.props.icon)}
-        active={this.getIsActive()}
-        title={this.props.title}
-        text={this.props.text}
-        compact={this.props.compact}
-        onClick={() => {
-          this.dispatch(
-            new Actions.SetCurrentTool(this.props.classID, this.props.options)
-          );
-          if (this.props.onClick) {
-            this.props.onClick();
-          }
-        }}
-        dragData={
-          this.props.noDragging
-            ? null
-            : this.props.onDrag
-            ? this.props.onDrag
-            : () => {
-                return new DragData.ObjectType(
-                  this.props.classID,
-                  this.props.options
-                );
-              }
-        }
-      />
+      <>
+        <IconButton
+          iconProps={{
+            iconName: this.props.icon,
+          }}
+          title={this.props.title}
+          text={this.props.text}
+          checked={this.getIsActive()}
+          onClick={() => {
+            this.dispatch(
+              new Actions.SetCurrentTool(this.props.classID, this.props.options)
+            );
+            if (this.props.onClick) {
+              this.props.onClick();
+            }
+          }}
+        />
+      </>
     );
   }
 }
@@ -633,7 +622,6 @@ export class MultiObjectButton extends ContextedComponent<
       options: this.props.tools[0].options,
     },
   };
-  private refButton: ObjectButton;
   public token: EventSubscription;
 
   public isActive() {
@@ -686,163 +674,167 @@ export class MultiObjectButton extends ContextedComponent<
   }
 
   public render() {
-    const openContextMenu = () => {
-      globals.popupController.popupAt(
-        (context) => {
-          return (
-            <PopupView context={context}>
-              {this.props.tools.map((tool, index) => (
-                <div
-                  key={index}
-                  className="charticulator__button-multi-tool-dropdown"
-                >
-                  <ObjectButton
-                    {...tool}
-                    noDragging={
-                      tool.noDragging !== undefined ? tool.noDragging : true
-                    }
-                    onClick={() => context.close()}
-                  />
-                </div>
-              ))}
-            </PopupView>
-          );
-        },
-        {
-          anchor: ReactDOM.findDOMNode(this.refButton) as Element,
-          alignX: "end-outer",
-          alignY: "start-inner",
-        }
-      );
-    };
-
-    const onClick = () => {
-      if (this.props.compact) {
-        openContextMenu();
-      }
-    };
-
-    const onClickContextMenu = () => {
-      if (!this.props.compact) {
-        openContextMenu();
-      }
-    };
+    const currentTool = this.getSelectedTool();
 
     return (
-      <div
-        className={classNames("charticulator__button-multi-tool", [
-          "is-active",
-          this.isActive(),
-        ])}
-      >
-        <ObjectButton
-          ref={(e) => (this.refButton = e)}
-          {...this.getSelectedTool()}
-          onClick={onClick}
-          compact={this.props.compact}
-        />
-        <span
-          className="el-dropdown"
-          ref={(e) => {
-            if (this.props.compact) {
-              return;
+      <IconButton
+        split={true}
+        menuProps={{
+          items: this.props.tools.map((tool, index) => {
+            return {
+              key: tool.classID + index,
+              data: {
+                classID: tool.classID,
+                options: tool.options,
+              },
+              text: tool.title,
+              iconProps: { iconName: tool.icon },
+            };
+          }),
+          onItemClick: (ev, item) => {
+            if (item.data) {
+              this.dispatch(
+                new Actions.SetCurrentTool(item.data.classID, item.data.options)
+              );
             }
-            this.refButton = e as any;
-          }}
-          onClick={onClickContextMenu}
-        >
-          {this.props.compact ? null : (
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
-          )}
-        </span>
-      </div>
-    );
-  }
-}
-
-export class ScaffoldButton extends ContextedComponent<
-  {
-    currentTool: string;
-    title: string;
-    type: string;
-    icon: string;
-  },
-  {}
-> {
-  public render() {
-    return (
-      <ToolButton
-        icon={R.getSVGIcon(this.props.icon)}
-        active={this.props.currentTool == this.props.type}
-        title={this.props.title}
-        onClick={() => {
-          // this.dispatch(new Actions.SetCurrentTool(this.props.type));
+          },
+          // onRenderMenuList: (props, defaultRender) => {
+          //   return (
+          //     <>
+          //       {props.items.map((tool, index) => {
+          //         return (
+          //           <>
+          //             <FluentColumnLayout>
+          //               <ActionButton
+          //                 iconProps={tool.iconProps}
+          //                 text={tool.text}
+          //                 title={tool.text}
+          //                 onClick={() => {
+          //                   if (!tool.data) {
+          //                     return;
+          //                   }
+          //                   this.dispatch(
+          //                     new Actions.SetCurrentTool(
+          //                       tool.data.classID,
+          //                       tool.data.options
+          //                     )
+          //                   );
+          //                 }}
+          //               />
+          //             </FluentColumnLayout>
+          //           </>
+          //         )
+          //       })}
+          //     </>
+          //   );
+          // }
         }}
-        dragData={() => {
-          return new DragData.ScaffoldType(this.props.type);
+        iconProps={{
+          iconName: currentTool.icon,
+        }}
+        onMenuClick={() => {
+          if (currentTool) {
+            this.dispatch(
+              new Actions.SetCurrentTool(
+                currentTool.classID,
+                currentTool.options
+              )
+            );
+          }
         }}
       />
     );
   }
 }
 
-export class LinkButton extends ContextedComponent<
-  {
-    label: boolean;
-  },
-  {}
-> {
-  public container: HTMLSpanElement;
+export const ScaffoldButton: React.FC<{
+  currentTool: string;
+  title: string;
+  type: string;
+  icon: string;
+}> = (props) => {
+  return (
+    <FluentToolButton
+      icon={R.getSVGIcon(props.icon)}
+      active={props.currentTool == props.type}
+      title={props.title}
+      onClick={() => {
+        // this.dispatch(new Actions.SetCurrentTool(this.props.type));
+      }}
+      dragData={() => {
+        return new DragData.ScaffoldType(props.type);
+      }}
+    />
+  );
+};
 
-  public render() {
-    return (
-      <span ref={(e) => (this.container = e)}>
-        <ToolButton
-          title={strings.toolbar.link}
-          text={this.props.label ? strings.toolbar.link : ""}
-          icon={R.getSVGIcon("link/tool")}
-          active={this.store.currentTool == "link"}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => (
-                <PopupView context={context}>
-                  <LinkCreationPanel onFinish={() => context.close()} />
-                </PopupView>
-              ),
-              { anchor: this.container }
-            );
-          }}
-        />
-      </span>
-    );
-  }
-}
+export const LinkButton: React.FC<{
+  label: boolean;
+}> = (props) => {
+  let container: HTMLSpanElement;
 
-export class LegendButton extends ContextedComponent<{}, {}> {
-  public container: HTMLSpanElement;
+  const { store } = React.useContext(MainContext);
+  const [isOpen, openDialog] = React.useState(false);
 
-  public render() {
-    return (
-      <span ref={(e) => (this.container = e)}>
-        <ToolButton
-          title={strings.toolbar.legend}
-          icon={R.getSVGIcon("BulletedList2")}
-          active={this.store.currentTool == "legend"}
-          onClick={() => {
-            globals.popupController.popupAt(
-              (context) => (
-                <PopupView context={context}>
-                  <LegendCreationPanel onFinish={() => context.close()} />
-                </PopupView>
-              ),
-              { anchor: this.container }
-            );
-          }}
-        />
-      </span>
-    );
-  }
-}
+  return (
+    <span ref={(e) => (container = e)}>
+      <IconButton
+        title={strings.toolbar.link}
+        text={props.label ? strings.toolbar.link : ""}
+        iconProps={{
+          iconName: "link/tool",
+        }}
+        checked={store.currentTool == "link"}
+        onClick={() => {
+          openDialog(true);
+        }}
+      />
+      <Dialog
+        hidden={!isOpen}
+        onDismiss={() => openDialog(false)}
+        dialogContentProps={{
+          title: "Create link",
+          showCloseButton: true,
+          onDismiss: () => openDialog(false),
+        }}
+      >
+        <LinkCreationPanel onFinish={() => openDialog(false)} />
+      </Dialog>
+    </span>
+  );
+};
+
+export const LegendButton: React.FC = () => {
+  let container: HTMLSpanElement;
+
+  const { store } = React.useContext(MainContext);
+  const [isOpen, openDialog] = React.useState(false);
+
+  return (
+    <span ref={(e) => (container = e)}>
+      <IconButton
+        iconProps={{
+          iconName: "BulletedList2",
+        }}
+        checked={store.currentTool == "legend"}
+        onClick={() => {
+          openDialog(true);
+        }}
+      />
+      <Dialog
+        hidden={!isOpen}
+        onDismiss={() => openDialog(false)}
+        dialogContentProps={{
+          title: "Create legend",
+          showCloseButton: true,
+          onDismiss: () => openDialog(false),
+        }}
+      >
+        <LegendCreationPanel onFinish={() => openDialog(false)} />
+      </Dialog>
+    </span>
+  );
+};
 
 export class CheckboxButton extends React.Component<
   {

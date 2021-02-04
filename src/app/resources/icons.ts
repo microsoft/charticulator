@@ -125,8 +125,8 @@ addSVGIcon(
   "toolbar/export",
   require("resources/icons/icons_toolbar-export.svg")
 );
-addSVGIcon("toolbar/undo", require("resources/icons/icons_toolbar-undo.svg"));
-addSVGIcon("toolbar/redo", require("resources/icons/icons_toolbar-redo.svg"));
+addSVGIcon("Undo", require("resources/icons/icons_toolbar-undo.svg"));
+addSVGIcon("Redo", require("resources/icons/icons_toolbar-redo.svg"));
 addSVGIcon("toolbar/help", require("resources/icons/icons_toolbar-help.svg"));
 addSVGIcon(
   "toolbar/import",
@@ -172,9 +172,9 @@ addSVGIcon(
 );
 addSVGIcon("scaffold/map", require("resources/icons/icons_scaffold-map.svg"));
 
-addSVGIcon("plot/line", require("resources/icons/icons_plot-line.svg"));
+addSVGIcon("Line", require("resources/icons/icons_plot-line.svg"));
 addSVGIcon("plot/curve", require("resources/icons/icons_plot-curve.svg"));
-addSVGIcon("plot/region", require("resources/icons/icons_plot-region.svg"));
+addSVGIcon("BorderDot", require("resources/icons/icons_plot-region.svg"));
 
 // Chart & Glyph
 addSVGIcon("chart", require("resources/icons/icons_chart.svg"));
@@ -220,27 +220,21 @@ addSVGIcon("link/through", require("resources/icons/icons_link-through.svg"));
 
 // Mark element icons
 addSVGIcon("mark/anchor", require("resources/icons/icons_element-anchor.svg"));
-addSVGIcon("mark/rect", require("resources/icons/icons_element-rect.svg"));
+addSVGIcon("RectangleShape", require("resources/icons/icons_element-rect.svg"));
+addSVGIcon("Ellipse", require("resources/icons/icons_element-ellipse.svg"));
 addSVGIcon(
-  "mark/ellipse",
-  require("resources/icons/icons_element-ellipse.svg")
-);
-addSVGIcon(
-  "mark/triangle",
+  "TriangleShape",
   require("resources/icons/icons_element-triangle.svg")
 );
-addSVGIcon("mark/image", require("resources/icons/icons_element-image.svg"));
-addSVGIcon("mark/icon", require("resources/icons/icons_element-icon.svg"));
-addSVGIcon("mark/symbol", require("resources/icons/icons_element-symbol.svg"));
-addSVGIcon("mark/line", require("resources/icons/icons_element-line.svg"));
-addSVGIcon("mark/text", require("resources/icons/icons_element-text.svg"));
-addSVGIcon(
-  "mark/textbox",
-  require("resources/icons/icons_element-textbox.svg")
-);
+addSVGIcon("FileImage", require("resources/icons/icons_element-image.svg"));
+addSVGIcon("ImagePixel", require("resources/icons/icons_element-icon.svg"));
+addSVGIcon("Shapes", require("resources/icons/icons_element-symbol.svg"));
+addSVGIcon("Line", require("resources/icons/icons_element-line.svg"));
+addSVGIcon("FontColorA", require("resources/icons/icons_element-text.svg"));
+addSVGIcon("TextField", require("resources/icons/icons_element-textbox.svg"));
 addSVGIcon("mark/data-axis", require("resources/icons/icons_data-axis.svg"));
 addSVGIcon(
-  "mark/nested-chart",
+  "BarChartVerticalFilter",
   require("resources/icons/icons_nested-chart.svg")
 );
 addSVGIcon("stroke/dashed", require("resources/icons/icons_stroke-dashed.svg"));
@@ -343,7 +337,7 @@ addSVGIcon(
   require("resources/icons/icons_checkbox-checked.svg")
 );
 
-addSVGIcon("legend/legend", require("resources/icons/icons_legend.svg"));
+addSVGIcon("BulletedList2", require("resources/icons/icons_legend.svg"));
 addSVGIcon("scale/scale", require("resources/icons/icons_scale.svg"));
 addSVGIcon("scale/color", require("resources/icons/icons_scale-color.svg"));
 

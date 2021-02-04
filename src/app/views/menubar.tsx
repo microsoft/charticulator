@@ -514,14 +514,14 @@ export class MenuBar extends ContextedComponent<
         {this.props.undoRedoLocation === "menubar" ? (
           <>
             <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
+              url={R.getSVGIcon("Undo")}
               title={strings.menuBar.undo}
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
             />
             <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
+              url={R.getSVGIcon("Redo")}
               title={strings.menuBar.redo}
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)

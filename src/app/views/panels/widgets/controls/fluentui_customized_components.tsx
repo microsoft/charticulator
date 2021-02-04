@@ -38,6 +38,11 @@ export const FluentRowLayout = styled.div`
   flex-direction: row;
 `;
 
+export const FluentColumnLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const FluentLayoutItem = styled.div<{ flex: number }>`
   flex: ${({ flex }) => flex || "1"};
 `;

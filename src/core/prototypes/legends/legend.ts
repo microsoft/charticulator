@@ -42,7 +42,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "BulletedList2",
   };
 
   public static defaultProperties: LegendProperties = {

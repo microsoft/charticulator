@@ -76,7 +76,7 @@ export class ScaleEditor extends React.Component<
             {canAddLegend ? (
               <div className="action-buttons">
                 <ButtonRaised
-                  url={R.getSVGIcon("legend/legend")}
+                  url={R.getSVGIcon("BulletedList2")}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? "Remove Legend"

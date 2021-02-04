@@ -39,7 +39,7 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Text",
-    iconPath: "mark/text",
+    iconPath: "FontColorA",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
