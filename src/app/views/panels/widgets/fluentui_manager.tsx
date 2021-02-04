@@ -1053,6 +1053,9 @@ export class FluentUIWidgetManager
             <DefaultButton
               text={text}
               elementRef={(e) => (button = e)}
+              iconProps={{
+                iconName: "Filter",
+              }}
               onClick={() => {
                 globals.popupController.popupAt(
                   (context) => {
@@ -1100,6 +1103,9 @@ export class FluentUIWidgetManager
             <DefaultButton
               text={text}
               elementRef={(e) => (button = e)}
+              iconProps={{
+                iconName: "RowsGroup",
+              }}
               onClick={() => {
                 globals.popupController.popupAt(
                   (context) => {
