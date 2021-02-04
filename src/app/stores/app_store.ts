@@ -1080,7 +1080,9 @@ export class AppStore extends BaseStore {
    */
   public updateScales() {
     try {
-      const chartElements = this.chart.elements;
+      const chartElements = this.chart.elements.filter((el) =>
+        Prototypes.isType(el.classID, "legend")
+      );
       this.chart.scales.forEach((scale) => {
         const updateScalesInternal = (
           mappings: Specification.Guide<Specification.ObjectProperties>[],
@@ -1129,20 +1131,13 @@ export class AppStore extends BaseStore {
             );
 
             scaleClass.inferParameters(values as any, {
-              newScale: true,
+              newScale: false,
               reuseRange: false,
-              rangeNumber: [
-                (scale.mappings.rangeMin as ValueMapping)?.value as number,
-                (scale.mappings.rangeMax as ValueMapping)?.value as number,
-              ],
             });
           });
         };
 
         updateScalesInternal(chartElements, { chart: this.chart, glyph: null });
-        this.chart.glyphs.forEach((gl) =>
-          updateScalesInternal(gl.marks, { chart: this.chart, glyph: gl })
-        );
       });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
