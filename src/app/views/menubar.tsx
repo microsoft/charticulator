@@ -22,7 +22,6 @@ import { Button } from "./panels/widgets/controls";
 import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
 import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
-import { map } from "d3";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
@@ -98,14 +97,18 @@ export class HelpButton extends React.Component<{}, {}> {
   }
 }
 
-export class MenuBar extends ContextedComponent<
-  {
-    undoRedoLocation: UndoRedoLocation;
-    alignButtons: PositionsLeftRight;
-    name?: string;
-  },
-  {}
-> {
+export interface MenuBarHandlers {
+  onImportTemplateClick: () => void;
+}
+
+export interface MenuBarProps {
+  undoRedoLocation: UndoRedoLocation;
+  alignButtons: PositionsLeftRight;
+  name?: string;
+  handlers: MenuBarHandlers;
+}
+
+export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   protected subs: EventSubscription;
   private popupController: PopupController = new PopupController();
   public componentDidMount() {
@@ -240,120 +243,123 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  public renderExportImportButtons() {
+  public renderExportImportButtons(props: MenuBarProps) {
     return (
       <>
         <MenuButton
           url={R.getSVGIcon("toolbar/import-template")}
           text=""
           title={strings.menuBar.importTemplate}
-          onClick={async () => {
-            const file = await showOpenFileDialog(["tmplt"]);
-            const str = await readFileAsString(file);
-            const data = JSON.parse(
-              str
-            ) as Specification.Template.ChartTemplate;
+          onClick={
+            props.handlers?.onImportTemplateClick ||
+            (async () => {
+              const file = await showOpenFileDialog(["tmplt"]);
+              const str = await readFileAsString(file);
+              const data = JSON.parse(
+                str
+              ) as Specification.Template.ChartTemplate;
 
-            let unmappedColumns: Specification.Template.Column[] = [];
-            data.tables[0].columns.forEach((column) => {
-              unmappedColumns = unmappedColumns.concat(
-                this.store.checkColumnsMapping(
-                  column,
-                  TableType.Main,
-                  this.store.dataset
-                )
-              );
-            });
-            if (data.tables[1]) {
-              data.tables[1].columns.forEach((column) => {
+              let unmappedColumns: Specification.Template.Column[] = [];
+              data.tables[0].columns.forEach((column) => {
                 unmappedColumns = unmappedColumns.concat(
                   this.store.checkColumnsMapping(
                     column,
-                    TableType.Links,
+                    TableType.Main,
                     this.store.dataset
                   )
                 );
               });
-            }
-
-            const tableMapping = new Map<string, string>();
-            tableMapping.set(
-              data.tables[0].name,
-              this.store.dataset.tables[0].name
-            );
-            if (data.tables[1] && this.store.dataset.tables[1]) {
-              tableMapping.set(
-                data.tables[1].name,
-                this.store.dataset.tables[1].name
-              );
-            }
-
-            const loadTemplateIntoState = (
-              tableMapping: Map<string, string>,
-              columnMapping: Map<string, string>
-            ) => {
-              const template = new ChartTemplate(data);
-
-              for (const table of template.getDatasetSchema()) {
-                template.assignTable(
-                  table.name,
-                  tableMapping.get(table.name) || table.name
-                );
-                for (const column of table.columns) {
-                  template.assignColumn(
-                    table.name,
-                    column.name,
-                    columnMapping.get(column.name) || column.name
+              if (data.tables[1]) {
+                data.tables[1].columns.forEach((column) => {
+                  unmappedColumns = unmappedColumns.concat(
+                    this.store.checkColumnsMapping(
+                      column,
+                      TableType.Links,
+                      this.store.dataset
+                    )
                   );
-                }
+                });
               }
-              const instance = template.instantiate(
-                this.store.dataset,
-                false // no scale inference
-              );
 
-              this.store.dispatcher.dispatch(
-                new Actions.ImportChartAndDataset(
-                  instance.chart,
-                  this.store.dataset,
-                  {}
-                )
+              const tableMapping = new Map<string, string>();
+              tableMapping.set(
+                data.tables[0].name,
+                this.store.dataset.tables[0].name
               );
-              this.store.dispatcher.dispatch(
-                new Actions.ReplaceDataset(this.store.dataset)
-              );
-            };
+              if (data.tables[1] && this.store.dataset.tables[1]) {
+                tableMapping.set(
+                  data.tables[1].name,
+                  this.store.dataset.tables[1].name
+                );
+              }
 
-            if (unmappedColumns.length > 0) {
-              // mapping show dialog then call loadTemplateIntoState
-              this.popupController.showModal(
-                (context) => {
-                  return (
-                    <ModalView context={context}>
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <FileViewImport
-                          tables={data.tables}
-                          datasetTables={this.store.dataset.tables}
-                          tableMapping={tableMapping}
-                          unmappedColumns={unmappedColumns}
-                          onSave={(mapping) => {
-                            loadTemplateIntoState(tableMapping, mapping);
-                            context.close();
-                          }}
-                          onClose={() => {
-                            context.close();
-                          }}
-                        />
-                      </div>
-                    </ModalView>
+              const loadTemplateIntoState = (
+                tableMapping: Map<string, string>,
+                columnMapping: Map<string, string>
+              ) => {
+                const template = new ChartTemplate(data);
+
+                for (const table of template.getDatasetSchema()) {
+                  template.assignTable(
+                    table.name,
+                    tableMapping.get(table.name) || table.name
                   );
-                },
-                { anchor: null }
-              );
-            } else {
-              loadTemplateIntoState(tableMapping, new Map());
-            }
-          }}
+                  for (const column of table.columns) {
+                    template.assignColumn(
+                      table.name,
+                      column.name,
+                      columnMapping.get(column.name) || column.name
+                    );
+                  }
+                }
+                const instance = template.instantiate(
+                  this.store.dataset,
+                  false // no scale inference
+                );
+
+                this.store.dispatcher.dispatch(
+                  new Actions.ImportChartAndDataset(
+                    instance.chart,
+                    this.store.dataset,
+                    {}
+                  )
+                );
+                this.store.dispatcher.dispatch(
+                  new Actions.ReplaceDataset(this.store.dataset)
+                );
+              };
+
+              if (unmappedColumns.length > 0) {
+                // mapping show dialog then call loadTemplateIntoState
+                this.popupController.showModal(
+                  (context) => {
+                    return (
+                      <ModalView context={context}>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <FileViewImport
+                            tables={data.tables}
+                            datasetTables={this.store.dataset.tables}
+                            tableMapping={tableMapping}
+                            unmappedColumns={unmappedColumns}
+                            onSave={(mapping) => {
+                              loadTemplateIntoState(tableMapping, mapping);
+                              context.close();
+                            }}
+                            onClose={() => {
+                              context.close();
+                            }}
+                          />
+                        </div>
+                      </ModalView>
+                    );
+                  },
+                  { anchor: null }
+                );
+              } else {
+                loadTemplateIntoState(tableMapping, new Map());
+              }
+            })
+          }
         />
         <MenuButton
           url={R.getSVGIcon("toolbar/export-template")}
@@ -492,7 +498,7 @@ export class MenuBar extends ContextedComponent<
     );
   }
 
-  public toolbarButtons() {
+  public toolbarButtons(props: MenuBarProps) {
     return (
       <>
         {this.context.store.editorType === "nested"
@@ -507,7 +513,7 @@ export class MenuBar extends ContextedComponent<
         {this.context.store.editorType === "embedded" ? (
           <>
             <span className="charticulator__menu-bar-separator" />
-            {this.renderExportImportButtons()}
+            {this.renderExportImportButtons(props)}
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
@@ -553,7 +559,7 @@ export class MenuBar extends ContextedComponent<
             {this.props.alignButtons === "left" ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
-                {this.toolbarButtons()}
+                {this.toolbarButtons(this.props)}
               </>
             ) : null}
           </div>
@@ -565,7 +571,7 @@ export class MenuBar extends ContextedComponent<
           <div className="charticulator__menu-bar-right">
             {this.props.alignButtons === "right" ? (
               <>
-                {this.toolbarButtons()}
+                {this.toolbarButtons(this.props)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}

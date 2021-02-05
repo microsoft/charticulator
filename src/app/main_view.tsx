@@ -18,7 +18,7 @@ import {
   DatasetView,
   MarkEditorView,
 } from "./views";
-import { MenuBar } from "./views/menubar";
+import { MenuBar, MenuBarHandlers } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
@@ -60,6 +60,7 @@ export interface MainViewConfig {
 export interface MainViewProps {
   store: AppStore;
   viewConfiguration: MainViewConfig;
+  menuBarHandlers?: MenuBarHandlers;
 }
 
 export interface MainViewState {
@@ -234,6 +235,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             undoRedoLocation={this.viewConfiguration.UndoRedoLocation}
             name={this.viewConfiguration.Name}
             ref={(e) => (this.refMenuBar = e)}
+            handlers={this.props.menuBarHandlers}
           />
           <section className="charticulator__panel-container">
             {this.viewConfiguration.ColumnsPosition ==

@@ -55,6 +55,7 @@ import {
   DataValue,
   Mapping,
   ScaleMapping,
+  ValueMapping,
 } from "../../core/specification";
 
 export interface ChartStoreStateSolverStatus {
@@ -1079,7 +1080,9 @@ export class AppStore extends BaseStore {
    */
   public updateScales() {
     try {
-      const chartElements = this.chart.elements;
+      const chartElements = this.chart.elements.filter((el) =>
+        Prototypes.isType(el.classID, "legend")
+      );
       this.chart.scales.forEach((scale) => {
         const updateScalesInternal = (
           mappings: Specification.Guide<Specification.ObjectProperties>[],
@@ -1128,15 +1131,13 @@ export class AppStore extends BaseStore {
             );
 
             scaleClass.inferParameters(values as any, {
-              newScale: true,
+              newScale: false,
+              reuseRange: false,
             });
           });
         };
 
         updateScalesInternal(chartElements, { chart: this.chart, glyph: null });
-        this.chart.glyphs.forEach((gl) =>
-          updateScalesInternal(gl.marks, { chart: this.chart, glyph: gl })
-        );
       });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
@@ -1166,6 +1167,7 @@ export class AppStore extends BaseStore {
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
+            orderMode: xDataProperty.valueType === "string" ? "order" : null,
           },
           xDataProperty.rawColumnExpr
         );
@@ -1193,6 +1195,7 @@ export class AppStore extends BaseStore {
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
+            orderMode: yDataProperty.valueType === "string" ? "order" : null,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1218,6 +1221,7 @@ export class AppStore extends BaseStore {
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axis.type,
+            orderMode: axis.valueType === "string" ? "order" : null,
           },
           yDataProperty.rawColumnExpr
         );

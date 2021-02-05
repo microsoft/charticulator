@@ -34,7 +34,7 @@ export class LinearScale extends ScaleClass<
   public static type = "scale";
 
   public static defaultMappingValues: Specification.AttributeMap = {
-    rangeMin: 0
+    rangeMin: 0,
   };
 
   public static defaultProperties: Specification.AttributeMap = {
@@ -116,14 +116,22 @@ export class LinearScale extends ScaleClass<
         attrs.rangeMin = 0;
         attrs.rangeMax = 100;
       }
-      this.object.mappings.rangeMin = {
-        type: "value",
-        value: 0,
-      } as Specification.ValueMapping;
+
       if (!options.autoRange) {
+        this.object.mappings.rangeMin = {
+          type: "value",
+          value: attrs.rangeMin,
+        } as Specification.ValueMapping;
         this.object.mappings.rangeMax = {
           type: "value",
           value: attrs.rangeMax,
+        } as Specification.ValueMapping;
+      }
+
+      if (options.startWithZero === "always") {
+        this.object.mappings.rangeMin = {
+          type: "value",
+          value: 0,
         } as Specification.ValueMapping;
       }
     }
@@ -170,7 +178,7 @@ export class LinearScale extends ScaleClass<
             )
           )
         )
-      )
+      ),
     ];
   }
 
