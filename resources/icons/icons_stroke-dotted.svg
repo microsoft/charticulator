@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>
-        icons
-    </title>
-    <line x1="4.59046" y1="16" x2="27.40954" y2="16" style="fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:1.5,4"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+<path d="M1,8v0.992H0V8H1z M3,8v0.992H2V8H3z M5,8v0.992H4V8H5z M7,8v0.992H6V8H7z M9,8v0.992H8V8H9z M11,8v0.992h-1V8H11z M13,8
+	v0.992h-1V8H13z M15,8v0.992h-1V8H15z"/>
 </svg>

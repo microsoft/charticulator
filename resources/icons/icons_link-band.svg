@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-    <title>icons</title>
-    <rect x="2.73807" y="15.43789" width="3.07775" height="9.29131" style="fill-opacity:0.8" />
-    <rect x="26.18418" y="7.25115" width="3.07775" height="17.47805" style="fill-opacity:0.8" />
-    <polygon points="7.936 24.229 7.936 15.753 24.064 8.044 24.064 24.229 7.936 24.229" style="opacity:0.0" />
-    <path
-        d="M23.56448,8.83744V23.7292H8.43552V16.06829l15.129-7.23085m1-1.58629L7.43552,15.4379v9.2913h17.129V7.25115Z" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+<path d="M1,7v6H0V7H1L1,7z M16,3h-1v10h1V3L16,3z M13,4.387L3,7.721V12h10V4.387 M14,3v10H2V7L14,3L14,3z"/>
 </svg>

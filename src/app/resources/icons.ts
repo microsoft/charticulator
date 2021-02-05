@@ -23,9 +23,18 @@ export function getSVGIcon(path: string): string {
   }
 }
 
-addSVGIcon("general/chevron-down", require("resources/icons/icons_chevron_down.svg"));
-addSVGIcon("general/chevron-right", require("resources/icons/icons_chevron_right.svg"));
-addSVGIcon("general/chevron-left", require("resources/icons/icons_chevron_left.svg"));
+addSVGIcon(
+  "general/chevron-down",
+  require("resources/icons/icons_chevron_down.svg")
+);
+addSVGIcon(
+  "general/chevron-right",
+  require("resources/icons/icons_chevron_right.svg")
+);
+addSVGIcon(
+  "general/chevron-left",
+  require("resources/icons/icons_chevron_left.svg")
+);
 
 // General icons
 addSVGIcon("general/cross", require("resources/icons/icons_cross.svg"));
@@ -199,6 +208,10 @@ addSVGIcon(
 addSVGIcon(
   "guide/coordinator-y",
   require("resources/icons/icons_guide-coordinator-y.svg")
+);
+addSVGIcon(
+  "guide/coordinator-polar",
+  require("resources/icons/icons_guide-coordinator-polar.svg")
 );
 
 // Link icons
