@@ -210,7 +210,9 @@ export class ChartRenderer {
       this.manager.chart,
       this.manager.chartState
     );
-    this.renderEvents?.afterRendered && this.renderEvents.afterRendered();
+    if (this.renderEvents?.afterRendered) {
+      this.renderEvents.afterRendered();
+    }
     return group;
   }
 }
