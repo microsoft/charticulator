@@ -12,6 +12,7 @@ import {
   Prototypes,
   setFormatOptions,
 } from "../core";
+import { RenderEvents } from "../core/graphics";
 import {
   ChartComponent,
   DataSelection,
@@ -32,6 +33,7 @@ export interface ChartContainerComponentProps {
     data: { table: string; rowIndices: number[] },
     modifiers: any
   ) => void;
+  renderEvents?: RenderEvents;
 }
 
 export interface ChartContainerComponentState {
@@ -177,6 +179,7 @@ export class ChartContainerComponent extends React.Component<
         onGlyphMouseEnter={this.handleGlyphMouseEnter}
         onGlyphMouseLeave={this.handleGlyphMouseLeave}
         onGlyphContextMenuClick={this.handleGlyphContextMenuClick}
+        renderEvents={this.props.renderEvents}
       />
     );
   }
@@ -198,7 +201,8 @@ export class ChartContainer extends EventEmitter {
 
   constructor(
     public readonly instance: TemplateInstance,
-    public readonly dataset: Dataset.Dataset
+    public readonly dataset: Dataset.Dataset,
+    public renderEvents?: RenderEvents
   ) {
     super();
     this.chart = instance.chart;
@@ -337,6 +341,7 @@ export class ChartContainer extends EventEmitter {
             modifiers
           );
         }}
+        renderEvents={this.renderEvents}
       />
     );
   }
