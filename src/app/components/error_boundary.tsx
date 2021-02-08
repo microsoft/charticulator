@@ -4,9 +4,21 @@ import * as React from "react";
 import { ButtonRaised } from "./index";
 import { copyToClipboard } from "../utils";
 
+export enum TelemetryActionType {
+  Exception = "exception",
+  ExportTemplate = "exportTempalte",
+}
+
+export interface TelemetryRecorder {
+  record(type: TelemetryActionType, payload: object): void;
+}
+
 export interface ErrorBoundaryProps {
   maxWidth?: number;
+  telemetryRecorder?: TelemetryRecorder;
 }
+
+export const TelemetrContext = React.createContext<TelemetryRecorder>(null);
 
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
@@ -25,6 +37,12 @@ export class ErrorBoundary extends React.Component<
       errorString: `${error.name} \n ${error.message} \n ${
         error.stack && error.stack
       } \n ${info.componentStack}`,
+    });
+
+    this.props.telemetryRecorder?.record(TelemetryActionType.Exception, {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
     });
 
     console.log(error, info);
