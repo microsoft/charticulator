@@ -37,6 +37,7 @@ import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
 import { delimiter } from "path";
 import { MenuBarHandlers } from "./views/menubar";
+import { TelemetryRecorder } from "./components";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -74,6 +75,7 @@ export class Application {
     workerScriptContent: string,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
+      telemetry?: TelemetryRecorder;
     }
   ) {
     this.config = config;
@@ -132,6 +134,7 @@ export class Application {
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
+        telemetry={handlers?.telemetry}
       />,
       document.getElementById(containerID)
     );
