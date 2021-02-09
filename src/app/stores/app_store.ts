@@ -57,6 +57,7 @@ import {
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
+import { RenderEvents } from "../../core/graphics";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -114,6 +115,8 @@ export class AppStore extends BaseStore {
   public chart: Specification.Chart;
   /** The current chart state */
   public chartState: Specification.ChartState;
+  /** Rendering Events */
+  public renderEvents?: RenderEvents;
 
   public currentSelection: Selection;
   public currentAttributeFocus: string;
