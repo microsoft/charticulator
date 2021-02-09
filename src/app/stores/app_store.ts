@@ -180,7 +180,7 @@ export class AppStore extends BaseStore {
               displayName: "Name",
               name: "name",
               type: "string",
-              default: "template",
+              default: template.specification.properties?.name || "template",
             },
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
