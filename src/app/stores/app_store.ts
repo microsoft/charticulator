@@ -1080,11 +1080,15 @@ export class AppStore extends BaseStore {
 
   public updateScales() {
     try {
+      const updatedScales: string[] = [];
       const updateScalesInternal = (
         scaleId: string,
         mappings: Specification.Guide<Specification.ObjectProperties>[],
         context: { glyph: Specification.Glyph; chart: Specification.Chart }
       ) => {
+        if (updatedScales.find((scale) => scale === scaleId)) {
+          return;
+        }
         const scale = Prototypes.findObjectById(
           this.chart,
           scaleId
@@ -1125,20 +1129,35 @@ export class AppStore extends BaseStore {
             scaleId
           ) as Prototypes.Scales.ScaleClass;
 
-          const values = this.chartManager.getGroupedExpressionVector(
-            mapping.mapping.table,
-            groupBy,
-            mapping.mapping.expression
-          );
+          let values = [];
+          let reuseRange = false;
 
+          // special case for legend to draw column names
+          if (mapping.element.classID === "legend.custom") {
+            reuseRange = true; // to save colors assigned for each column
+            const table = this.chartManager.dataflow.getTable(
+              mapping.mapping.table
+            );
+            const parsedExpression = this.chartManager.dataflow.cache.parse(
+              mapping.mapping.expression
+            );
+            values = parsedExpression.getValue(table) as ValueType[];
+          } else {
+            values = this.chartManager.getGroupedExpressionVector(
+              mapping.mapping.table,
+              groupBy,
+              mapping.mapping.expression
+            );
+          }
           scaleClass.inferParameters(values as any, {
             newScale: true,
-            reuseRange: false,
+            reuseRange,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
             ],
           });
+          updatedScales.push(scaleId);
         });
       };
 
