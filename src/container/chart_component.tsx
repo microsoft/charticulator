@@ -17,6 +17,7 @@ import {
   DataSelection,
   GraphicalElementEventHandler,
 } from "../app/renderer";
+import { RenderEvents } from "../core/graphics";
 
 export { DataSelection };
 
@@ -46,6 +47,7 @@ export interface ChartComponentProps {
   onGlyphMouseEnter?: GlyphEventHandler;
   onGlyphMouseLeave?: GlyphEventHandler;
   onGlyphContextMenuClick?: GlyphEventHandler;
+  renderEvents?: RenderEvents;
 }
 
 export interface ChartComponentState {
@@ -114,6 +116,12 @@ export class ChartComponent extends React.Component<
           graphics: this.renderer.render(),
         })
       );
+    } else {
+      setTimeout(() => {
+        if (newProps.renderEvents?.afterRendered) {
+          newProps.renderEvents.afterRendered();
+        }
+      });
     }
   }
 
@@ -170,7 +178,10 @@ export class ChartComponent extends React.Component<
       null,
       props.defaultAttributes
     );
-    this.renderer = new Graphics.ChartRenderer(this.manager);
+    this.renderer = new Graphics.ChartRenderer(
+      this.manager,
+      props.renderEvents
+    );
   }
 
   protected timer: any;

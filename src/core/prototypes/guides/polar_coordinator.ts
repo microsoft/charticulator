@@ -106,7 +106,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuidePolarCoordinator",
-    iconPath: "plot-segment/polar",
+    iconPath: "guide/coordinator-polar",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },

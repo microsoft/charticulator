@@ -209,6 +209,10 @@ addSVGIcon(
   "guide/coordinator-y",
   require("resources/icons/icons_guide-coordinator-y.svg")
 );
+addSVGIcon(
+  "guide/coordinator-polar",
+  require("resources/icons/icons_guide-coordinator-polar.svg")
+);
 
 // Link icons
 addSVGIcon("link/tool", require("resources/icons/icons_link-tool.svg"));

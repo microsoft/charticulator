@@ -306,7 +306,10 @@ export class ChartEditorView
   }
 
   protected getGraphics(): Graphics.Element {
-    const renderer = new Graphics.ChartRenderer(this.props.store.chartManager);
+    const renderer = new Graphics.ChartRenderer(
+      this.props.store.chartManager,
+      this.props.store.renderEvents
+    );
     return renderer.render();
   }
 

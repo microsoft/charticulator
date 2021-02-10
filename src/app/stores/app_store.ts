@@ -57,6 +57,7 @@ import {
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
+import { RenderEvents } from "../../core/graphics";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -114,6 +115,8 @@ export class AppStore extends BaseStore {
   public chart: Specification.Chart;
   /** The current chart state */
   public chartState: Specification.ChartState;
+  /** Rendering Events */
+  public renderEvents?: RenderEvents;
 
   public currentSelection: Selection;
   public currentAttributeFocus: string;
@@ -177,7 +180,7 @@ export class AppStore extends BaseStore {
               displayName: "Name",
               name: "name",
               type: "string",
-              default: "template",
+              default: template.specification.properties?.name || "template",
             },
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
@@ -1075,69 +1078,108 @@ export class AppStore extends BaseStore {
     }
   }
 
-  /**
-   * Updates all scales values
-   */
   public updateScales() {
     try {
-      const chartElements = this.chart.elements.filter((el) =>
-        Prototypes.isType(el.classID, "legend")
-      );
-      this.chart.scales.forEach((scale) => {
-        const updateScalesInternal = (
-          mappings: Specification.Guide<Specification.ObjectProperties>[],
-          context: { glyph: Specification.Glyph; chart: Specification.Chart }
-        ) => {
-          const filteredMappings = mappings
-            .flatMap((el) => {
-              return Object.keys(el.mappings).map((key) => {
-                return {
-                  element: el,
-                  key,
-                  mapping: el.mappings[key],
-                };
-              });
-            })
-            .filter(
-              (mapping) =>
-                mapping.mapping.type === "scale" &&
-                (mapping.mapping as ScaleMapping).scale === scale._id
-            ) as {
-            element: Specification.Element<Specification.ObjectProperties>;
-            key: string;
-            mapping: ScaleMapping;
-          }[];
-
-          // Figure out the groupBy
-          let groupBy: Specification.Types.GroupBy = null;
-          if (context.glyph) {
-            // Find plot segments that use the glyph.
-            this.chartManager.enumeratePlotSegments((cls) => {
-              if (cls.object.glyph == context.glyph._id) {
-                groupBy = cls.object.groupBy;
-              }
+      const updatedScales: string[] = [];
+      const updateScalesInternal = (
+        scaleId: string,
+        mappings: Specification.Guide<Specification.ObjectProperties>[],
+        context: { glyph: Specification.Glyph; chart: Specification.Chart }
+      ) => {
+        if (updatedScales.find((scale) => scale === scaleId)) {
+          return;
+        }
+        const scale = Prototypes.findObjectById(
+          this.chart,
+          scaleId
+        ) as Specification.Scale;
+        const filteredMappings = mappings
+          .flatMap((el) => {
+            return Object.keys(el.mappings).map((key) => {
+              return {
+                element: el,
+                key,
+                mapping: el.mappings[key],
+              };
             });
-          }
+          })
+          .filter(
+            (mapping) =>
+              mapping.mapping.type === "scale" &&
+              (mapping.mapping as ScaleMapping).scale === scaleId
+          ) as {
+          element: Specification.Element<Specification.ObjectProperties>;
+          key: string;
+          mapping: ScaleMapping;
+        }[];
 
-          filteredMappings.forEach((mapping) => {
-            const scaleClass = this.chartManager.getClassById(
-              scale._id
-            ) as Prototypes.Scales.ScaleClass;
+        // Figure out the groupBy
+        let groupBy: Specification.Types.GroupBy = null;
+        if (context.glyph) {
+          // Find plot segments that use the glyph.
+          this.chartManager.enumeratePlotSegments((cls) => {
+            if (cls.object.glyph == context.glyph._id) {
+              groupBy = cls.object.groupBy;
+            }
+          });
+        }
 
-            const values = this.chartManager.getGroupedExpressionVector(
+        filteredMappings.forEach((mapping) => {
+          const scaleClass = this.chartManager.getClassById(
+            scaleId
+          ) as Prototypes.Scales.ScaleClass;
+
+          let values = [];
+          let reuseRange = false;
+
+          // special case for legend to draw column names
+          if (mapping.element.classID === "legend.custom") {
+            reuseRange = true; // to save colors assigned for each column
+            const table = this.chartManager.dataflow.getTable(
+              mapping.mapping.table
+            );
+            const parsedExpression = this.chartManager.dataflow.cache.parse(
+              mapping.mapping.expression
+            );
+            values = parsedExpression.getValue(table) as ValueType[];
+          } else {
+            values = this.chartManager.getGroupedExpressionVector(
               mapping.mapping.table,
               groupBy,
               mapping.mapping.expression
             );
-
-            scaleClass.inferParameters(values as any, {
-              newScale: false,
-              reuseRange: false,
-            });
+          }
+          scaleClass.inferParameters(values as any, {
+            newScale: true,
+            reuseRange,
+            rangeNumber: [
+              (scale.mappings.rangeMin as ValueMapping)?.value as number,
+              (scale.mappings.rangeMax as ValueMapping)?.value as number,
+            ],
           });
-        };
+          updatedScales.push(scaleId);
+        });
+      };
 
-        updateScalesInternal(chartElements, { chart: this.chart, glyph: null });
+      const chartElements = this.chart.elements;
+
+      const legendScales = chartElements
+        .filter((el) => Prototypes.isType(el.classID, "legend"))
+        .flatMap((el) => {
+          return el.properties.scale as string;
+        });
+
+      legendScales.forEach((scale) => {
+        updateScalesInternal(scale, chartElements, {
+          chart: this.chart,
+          glyph: null,
+        });
+        this.chart.glyphs.forEach((gl) =>
+          updateScalesInternal(scale, gl.marks, {
+            chart: this.chart,
+            glyph: gl,
+          })
+        );
       });
     } catch (ex) {
       console.error("Updating of scales failed with error", ex);
@@ -1261,6 +1303,7 @@ export class AppStore extends BaseStore {
     const { object, property, appendToProperty, dataExpression } = options;
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
+    const propertyValue = object.properties[options.property] as any;
     const type = dataExpression.type
       ? options.type
       : this.getBindingByDataKind(options.dataExpression.metadata.kind);
@@ -1279,15 +1322,14 @@ export class AppStore extends BaseStore {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
       expression:
-        appendToProperty === "dataExpressions" &&
-        object.properties[options.property]
-          ? ((object.properties[options.property] as any).expression as string)
+        appendToProperty === "dataExpressions" && propertyValue
+          ? ((propertyValue as any).expression as string)
           : groupExpression,
       rawExpression: dataExpression.rawColumnExpression,
       valueType,
-      gapRatio: 0.1,
+      gapRatio: propertyValue?.gapRatio || 0.1,
       visible: true,
-      side: "default",
+      side: propertyValue?.side || "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
