@@ -243,17 +243,17 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               ref={(e) => (this.refMenuBar = e)}
               handlers={this.props.menuBarHandlers}
             />
+            {this.viewConfiguration.ToolbarPosition ==
+              PositionsLeftRightTop.Top &&
+              toolBarCreator({
+                layout: LayoutDirection.Horizontal,
+                toolbarLabels: this.viewConfiguration.ToolbarLabels,
+                undoRedoLocation: this.viewConfiguration.UndoRedoLocation,
+              })}
             <section className="charticulator__panel-container">
               {this.viewConfiguration.ColumnsPosition ==
                 PositionsLeftRight.Left && datasetPanel()}
               <div className="charticulator__panel charticulator__panel-editor">
-                {this.viewConfiguration.ToolbarPosition ==
-                  PositionsLeftRightTop.Top &&
-                  toolBarCreator({
-                    layout: LayoutDirection.Horizontal,
-                    toolbarLabels: this.viewConfiguration.ToolbarLabels,
-                    undoRedoLocation: this.viewConfiguration.UndoRedoLocation,
-                  })}
                 <div className="charticulator__panel-editor-panel-container">
                   {this.viewConfiguration.EditorPanelsPosition ==
                     PositionsLeftRight.Left && editorPanels()}
