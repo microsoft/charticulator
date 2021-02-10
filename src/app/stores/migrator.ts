@@ -109,6 +109,14 @@ export class Migrator {
       state = this.setValueToLayoutPropertyOfLegend(state);
     }
 
+    if (
+      compareVersion(state.version, "2.0.0") < 0 &&
+      compareVersion(targetVersion, "2.0.0") >= 0
+    ) {
+      // Minor change at version 1.7.0: Add default value for property layout in legend
+      state = this.setValueItemShapeOfLegend(state);
+    }
+
     // After migration, set version to targetVersion
     state.version = targetVersion;
 
@@ -316,6 +324,19 @@ export class Migrator {
         const legend = element as ChartElement<LegendProperties>;
         if (legend.properties.orientation === undefined) {
           legend.properties.orientation = "vertical";
+        }
+      }
+    }
+
+    return state;
+  }
+
+  public setValueItemShapeOfLegend(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (Prototypes.isType(element.classID, "legend")) {
+        const legend = element as ChartElement<LegendProperties>;
+        if (legend.properties.markerShape === undefined) {
+          legend.properties.markerShape = "circle";
         }
       }
     }
