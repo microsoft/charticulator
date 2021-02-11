@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { DataValue, DataType, DataKind } from "../specification";
+import { OrderMode } from "../specification/types";
 import { LocaleNumberFormat } from "./data_types";
 
 export { DataValue, DataType, DataKind };
@@ -20,7 +21,7 @@ export interface ColumnMetadata {
   unit?: string;
   /** Order of categories for categorical type */
   order?: string[];
-  orderMode?: "alphabetically" | "occurrence" | "order";
+  orderMode?: OrderMode;
   /** Formatting for other data types */
   format?: string;
   rawColumnName?: string;

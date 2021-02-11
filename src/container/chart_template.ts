@@ -20,6 +20,7 @@ import {
   DefaultAttributes,
 } from "../core/prototypes";
 import { CompiledGroupBy } from "../core/prototypes/group_by";
+import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
 import { AttributeList } from "../core/specification";
 
@@ -352,7 +353,7 @@ export class ChartTemplate {
           }
           if (axis.type == "categorical") {
             const scale = new Scale.CategoricalScale();
-            scale.inferParameters(vector, "order");
+            scale.inferParameters(vector, OrderMode.order);
             axisDataBinding.categories = new Array<string>(scale.domain.size);
             scale.domain.forEach((index, key) => {
               axisDataBinding.categories[index] = key;

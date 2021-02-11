@@ -58,6 +58,7 @@ import {
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
+import { OrderMode } from "../../core/specification/types";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1207,7 +1208,12 @@ export class AppStore extends BaseStore {
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
-            orderMode: xDataProperty.valueType === "string" ? "order" : null,
+            orderMode: xDataProperty.orderMode
+              ? xDataProperty.orderMode
+              : xDataProperty.valueType === "string"
+              ? "order"
+              : null,
+            order: xDataProperty.order,
           },
           xDataProperty.rawColumnExpr
         );
@@ -1235,7 +1241,12 @@ export class AppStore extends BaseStore {
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
-            orderMode: yDataProperty.valueType === "string" ? "order" : null,
+            orderMode: yDataProperty.orderMode
+              ? yDataProperty.orderMode
+              : yDataProperty.valueType === "string"
+              ? "order"
+              : null,
+            order: yDataProperty.order,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1261,9 +1272,14 @@ export class AppStore extends BaseStore {
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axis.type,
-            orderMode: axis.valueType === "string" ? "order" : null,
+            orderMode: axis.orderMode
+              ? axis.orderMode
+              : axis.valueType === "string"
+              ? "order"
+              : null,
+            order: axis.order,
           },
-          yDataProperty.rawColumnExpr
+          axis.rawColumnExpr
         );
 
         this.bindDataToAxis({
@@ -1331,6 +1347,8 @@ export class AppStore extends BaseStore {
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
+      order: dataExpression.metadata.order,
+      orderMode: dataExpression.metadata.orderMode,
       autoDomainMax: true,
       autoDomainMin: true,
     };
@@ -1451,8 +1469,8 @@ export class AppStore extends BaseStore {
       categories = metadata.order.slice();
     } else {
       const scale = new Scale.CategoricalScale();
-      let orderMode: "alphabetically" | "occurrence" | "order" =
-        "alphabetically";
+      let orderMode: OrderMode =
+      OrderMode.alphabetically;
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
       }

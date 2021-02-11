@@ -14,6 +14,7 @@ import { ScaleClass } from "./index";
 import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
+import { OrderMode } from "../../specification/types";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -106,7 +107,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter((x) => typeof x == "string") as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     props.mapping = {};
 
@@ -211,7 +212,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -315,7 +316,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -395,7 +396,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -478,7 +479,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
