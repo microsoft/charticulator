@@ -1131,11 +1131,9 @@ export class AppStore extends BaseStore {
           ) as Prototypes.Scales.ScaleClass;
 
           let values = [];
-          let reuseRange = false;
 
           // special case for legend to draw column names
           if (mapping.element.classID === "legend.custom") {
-            reuseRange = true; // to save colors assigned for each column
             const table = this.chartManager.dataflow.getTable(
               mapping.mapping.table
             );
@@ -1152,7 +1150,7 @@ export class AppStore extends BaseStore {
           }
           scaleClass.inferParameters(values as any, {
             newScale: true,
-            reuseRange,
+            reuseRange: false,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
