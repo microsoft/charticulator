@@ -5,6 +5,12 @@ import { ColumnMetadata, DataKind } from "../dataset";
 import { StrokeStyle } from "../prototypes";
 import { AttributeMap, Expression, DataType } from "./index";
 
+export enum OrderMode {
+  alphabetically = "alphabetically",
+  occurrence = "occurrence",
+  order = "order"  
+}
+
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: "default" | "numerical" | "categorical";
@@ -37,7 +43,7 @@ export interface AxisDataBinding extends AttributeMap {
   style?: AxisRenderingStyle;
   dataKind?: DataKind;
   order?: string[];
-  orderMode?: "alphabetically" | "occurrence" | "order";
+  orderMode?: OrderMode;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

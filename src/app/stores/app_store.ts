@@ -58,6 +58,7 @@ import {
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
+import { OrderMode } from "../../core/specification/types";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1470,8 +1471,8 @@ export class AppStore extends BaseStore {
       categories = metadata.order.slice();
     } else {
       const scale = new Scale.CategoricalScale();
-      let orderMode: "alphabetically" | "occurrence" | "order" =
-        "alphabetically";
+      let orderMode: OrderMode =
+      OrderMode.alphabetically;
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
       }

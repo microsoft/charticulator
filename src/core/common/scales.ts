@@ -3,6 +3,7 @@
 
 import { scaleUtc, scaleLinear, scaleLog } from "d3-scale";
 import { getSortFunctionByData } from ".";
+import { OrderMode } from "../specification/types";
 
 export namespace Scale {
   /** Base scale class */
@@ -127,7 +128,7 @@ export namespace Scale {
 
     public inferParameters(
       values: string[],
-      order: "alphabetically" | "occurrence" | "order" = "alphabetically"
+      order: OrderMode = OrderMode.alphabetically
     ) {
       const vals = new Map<string, number>();
       const domain: string[] = [];
