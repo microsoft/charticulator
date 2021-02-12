@@ -20,6 +20,9 @@ import {
   DefaultAttributes,
 } from "../core/prototypes";
 import { CompiledGroupBy } from "../core/prototypes/group_by";
+import { OrderMode } from "../core/specification/types";
+import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
+import { AttributeList } from "../core/specification";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -212,6 +215,41 @@ export class ChartTemplate {
         item.glyph.table = this.tableAssignment[item.glyph.table];
       }
 
+      if (item.kind == "mark") {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          try {
+            const glyphId = item.glyph._id;
+
+            const glyphPlotSegment = [...forEachObject(chart)].find(
+              (item) =>
+                item.kind == "chart-element" &&
+                Prototypes.isType(item.chartElement.classID, "plot-segment") &&
+                (item.chartElement as any).glyph === glyphId
+            );
+
+            const dataExpressions = item.mark.properties
+              .dataExpressions as DataAxisExpression[];
+
+            // table name in plotSegment can be replaced already
+            const table =
+              Object.keys(this.tableAssignment).find(
+                (key) =>
+                  this.tableAssignment[key] ===
+                  (glyphPlotSegment.chartElement as any).table
+              ) || (glyphPlotSegment.chartElement as any).table;
+
+            dataExpressions.forEach((expression) => {
+              expression.expression = this.transformExpression(
+                expression.expression,
+                table
+              );
+            });
+          } catch (ex) {
+            console.error(ex);
+          }
+        }
+      }
+
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
       for (const [attr, mapping] of forEachMapping(mappings)) {
@@ -315,7 +353,7 @@ export class ChartTemplate {
           }
           if (axis.type == "categorical") {
             const scale = new Scale.CategoricalScale();
-            scale.inferParameters(vector, "order");
+            scale.inferParameters(vector, OrderMode.order);
             axisDataBinding.categories = new Array<string>(scale.domain.size);
             scale.domain.forEach((index, key) => {
               axisDataBinding.categories[index] = key;

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { OrderMode } from "../specification/types";
 import { DataValue, DataType, DataKind, ColumnMetadata } from "./dataset";
 import {
   parseDate,
@@ -167,7 +168,7 @@ export function inferAndConvertColumn(
             metadata: {
               unit: "__year",
               kind: DataKind.Ordinal,
-              orderMode: "alphabetically",
+              orderMode: OrderMode.alphabetically,
             },
           };
         }
@@ -251,7 +252,7 @@ export function inferAndConvertColumn(
         metadata.order = hints.order.split(",");
         metadata.kind = DataKind.Ordinal;
       } else {
-        metadata.orderMode = "order";
+        metadata.orderMode = OrderMode.alphabetically;
         metadata.kind = DataKind.Categorical;
       }
       return {

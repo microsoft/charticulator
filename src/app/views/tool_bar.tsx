@@ -227,13 +227,13 @@ export class Toolbar extends ContextedComponent<
               classID: "plot-segment.cartesian",
               title: strings.toolbar.region2D,
               icon: "plot/region",
-              noDragging: true
+              noDragging: true,
             },
             {
-              classID:"plot-segment.line",
+              classID: "plot-segment.line",
               title: strings.toolbar.line,
-              icon:"plot/line",
-              noDragging: true
+              icon: "plot/line",
+              noDragging: true,
             },
           ]}
         />
@@ -254,32 +254,36 @@ export class Toolbar extends ContextedComponent<
             compact={this.props.layout === LayoutDirection.Vertical}
             tools={[
               {
-                classID: "",
+                classID: "scaffold/cartesian-x",
                 title: strings.toolbar.lineH,
                 icon: "scaffold/cartesian-x",
+                noDragging: false,
                 onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("cartesian-x")
+                onDrag: () => new DragData.ScaffoldType("cartesian-x"),
               },
               {
-                classID: "",
+                classID: "scaffold/cartesian-y",
                 title: strings.toolbar.lineV,
                 icon: "scaffold/cartesian-y",
+                noDragging: false,
                 onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("cartesian-y")
+                onDrag: () => new DragData.ScaffoldType("cartesian-y"),
               },
               {
-                classID: "",
+                classID: "scaffold/circle",
                 title: strings.toolbar.polar,
                 icon: "scaffold/circle",
+                noDragging: false,
                 onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("polar")
+                onDrag: () => new DragData.ScaffoldType("polar"),
               },
               {
-                classID: "",
+                classID: "scaffold/curve",
                 title: strings.toolbar.curve,
                 icon: "scaffold/curve",
+                noDragging: false,
                 onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("curve")
+                onDrag: () => new DragData.ScaffoldType("curve"),
               },
             ]}
           />
@@ -601,7 +605,9 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
         dragData={
           this.props.noDragging
             ? null
-            : this.props.onDrag ? this.props.onDrag : () => {
+            : this.props.onDrag
+            ? this.props.onDrag
+            : () => {
                 return new DragData.ObjectType(
                   this.props.classID,
                   this.props.options
@@ -696,7 +702,9 @@ export class MultiObjectButton extends ContextedComponent<
                 >
                   <ObjectButton
                     {...tool}
-                    noDragging={tool.noDragging !== undefined ? tool.noDragging : true}
+                    noDragging={
+                      tool.noDragging !== undefined ? tool.noDragging : true
+                    }
                     onClick={() => context.close()}
                   />
                 </div>

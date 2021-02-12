@@ -565,7 +565,11 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           </div>
           <div className="charticulator__menu-bar-center el-text">
             <p>
-              {this.context.store.chart?.properties.name} - {strings.app.name}
+              {`${this.context.store.chart?.properties.name}${
+                this.context.store.editorType === "embedded"
+                  ? " - " + strings.app.name
+                  : ""
+              }`}
             </p>
           </div>
           <div className="charticulator__menu-bar-right">
