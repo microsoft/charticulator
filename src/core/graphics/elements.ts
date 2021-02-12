@@ -383,13 +383,14 @@ export class PathMaker {
       } else {
         const b = (r2 - r1) / (angle2 - angle1);
         const a = r1 - b * angle1;
+        const deg2rad = Math.PI / 180;
         this.archimedeanSpiral(
           cx,
           cy,
           a,
-          b / Math.PI / 180,
-          Geometry.degreesToRadians(angle1),
-          Geometry.degreesToRadians(angle2)
+          b / deg2rad,
+          angle1 * deg2rad,
+          angle2 * deg2rad
         );
       }
     }
