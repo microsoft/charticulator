@@ -22,7 +22,7 @@ import {
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
-import { AttributeList } from "../core/specification";
+import { AttributeList, ScaleMapping } from "../core/specification";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -129,6 +129,16 @@ export class ChartTemplate {
     for (const item of forEachObject(chart)) {
       // Replace table with assigned table
       if (item.kind == "chart-element") {
+        // legend with column names
+        if (Prototypes.isType(item.chartElement.classID, "legend.custom")) {
+          const scaleMapping = item.chartElement.mappings
+            .mappingOptions as ScaleMapping;
+          scaleMapping.expression = this.transformExpression(
+            scaleMapping.expression,
+            scaleMapping.table
+          );
+        }
+
         // PlotSegment
         if (Prototypes.isType(item.chartElement.classID, "plot-segment")) {
           const plotSegment = item.chartElement as Specification.PlotSegment;
