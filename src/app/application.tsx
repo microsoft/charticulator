@@ -110,16 +110,16 @@ export class Application {
         delimiter: DelimiterSymbol,
         group: parseSafe(GroupSymbol, defaultDigitsGroup),
         numberFormat: {
-          decimal: NumberFormatRemove === "." ? "." : ",",
-          remove: NumberFormatRemove === "." ? "," : ".",
+          decimal: NumberFormatRemove === "," ? "." : ",",
+          remove: NumberFormatRemove === "," ? "," : ".",
         },
       });
 
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
-        decimal: NumberFormatRemove === "." ? "." : ",",
-        thousands: NumberFormatRemove === "." ? "," : ".",
+        decimal: NumberFormatRemove === "," ? "." : ",",
+        thousands: NumberFormatRemove === "," ? "," : ".",
       });
     } catch (ex) {
       console.warn("Loadin localization settings failed");
