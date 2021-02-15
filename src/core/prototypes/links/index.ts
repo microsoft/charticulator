@@ -1072,7 +1072,7 @@ export class TableLinksClass extends LinksClass {
         rowItem.source_id &&
         tables[0].id2RowGlyphIndex.get(rowItem.source_id.toString());
       const r2 =
-        rowItem.source_id &&
+        rowItem.target_id &&
         tables[1].id2RowGlyphIndex.get(rowItem.target_id.toString());
 
       if (!r1 || !r2) {
