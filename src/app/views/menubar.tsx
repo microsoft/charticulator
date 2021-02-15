@@ -567,7 +567,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <p>
               {`${this.context.store.chart?.properties.name}${
                 this.context.store.editorType === "embedded"
-                  ? " - " + strings.app.name
+                  ? " - " + this.props.name || strings.app.name
                   : ""
               }`}
             </p>
