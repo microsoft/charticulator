@@ -1130,7 +1130,10 @@ export class AppStore extends BaseStore {
             scaleId
           ) as Prototypes.Scales.ScaleClass;
 
-          let values = [];
+          let values: any = [];
+          let newScale = true;
+          let reuseRange = false;
+          let extendScale = true;
 
           // special case for legend to draw column names
           if (mapping.element.classID === "legend.custom") {
@@ -1141,7 +1144,19 @@ export class AppStore extends BaseStore {
               mapping.mapping.expression
             );
             values = parsedExpression.getValue(table) as ValueType[];
+            newScale = true;
+            extendScale = false;
+            reuseRange = false;
           } else {
+            if (scale.classID == "scale.categorical<string,color>") {
+              newScale = true;
+              extendScale = true;
+              reuseRange = false;
+            } else {
+              newScale = false;
+              extendScale = true;
+              reuseRange = true;
+            }
             values = this.chartManager.getGroupedExpressionVector(
               mapping.mapping.table,
               groupBy,
@@ -1149,8 +1164,9 @@ export class AppStore extends BaseStore {
             );
           }
           scaleClass.inferParameters(values as any, {
-            newScale: true,
-            reuseRange: false,
+            newScale,
+            reuseRange,
+            extendScale,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
