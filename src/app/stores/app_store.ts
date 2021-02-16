@@ -1151,7 +1151,7 @@ export class AppStore extends BaseStore {
             if (scale.classID == "scale.categorical<string,color>") {
               newScale = true;
               extendScale = true;
-              reuseRange = false;
+              reuseRange = true;
             } else {
               newScale = false;
               extendScale = true;
@@ -1485,8 +1485,7 @@ export class AppStore extends BaseStore {
       categories = metadata.order.slice();
     } else {
       const scale = new Scale.CategoricalScale();
-      let orderMode: OrderMode =
-      OrderMode.alphabetically;
+      let orderMode: OrderMode = OrderMode.alphabetically;
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
       }
