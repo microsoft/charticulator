@@ -128,25 +128,6 @@ export class Toolbar extends ContextedComponent<
             title="Nested Chart"
             icon="mark/nested-chart"
           /> */}
-          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
-            <>
-              <span className={"charticulator__toolbar-horizontal-separator"} />
-              <ToolButton
-                title={strings.menuBar.undo}
-                icon={R.getSVGIcon("toolbar/undo")}
-                onClick={() =>
-                  new Actions.Undo().dispatch(this.context.store.dispatcher)
-                }
-              />
-              <ToolButton
-                title={strings.menuBar.redo}
-                icon={R.getSVGIcon("toolbar/redo")}
-                onClick={() =>
-                  new Actions.Redo().dispatch(this.context.store.dispatcher)
-                }
-              />
-            </>
-          ) : null}
         </>
       </>,
     ];
@@ -155,6 +136,25 @@ export class Toolbar extends ContextedComponent<
   private getChartToolItems(labels: boolean = true) {
     return [
       <>
+        {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+          <>
+            <ToolButton
+              title={strings.menuBar.undo}
+              icon={R.getSVGIcon("toolbar/undo")}
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <ToolButton
+              title={strings.menuBar.redo}
+              icon={R.getSVGIcon("toolbar/redo")}
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <span className={"charticulator__toolbar-horizontal-separator"} />
+          </>
+        ) : null}
         <LinkButton label={true} />
         <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
