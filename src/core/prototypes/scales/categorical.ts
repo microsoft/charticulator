@@ -230,7 +230,7 @@ export class CategoricalScaleColor extends ScaleClass<
         }
         s.domain.forEach((v, d) => {
           // If we still don't have enough colors, reuse them
-          // TODO: fix this with a better method
+          // NEEDTO: fix this with a better method
           if (!mapping[d]) {
             mapping[d] = colorList[v % colorList.length];
           }
@@ -252,7 +252,7 @@ export class CategoricalScaleColor extends ScaleClass<
       }
       s.domain.forEach((v, d) => {
         // If we still don't have enough colors, reuse them
-        // TODO: fix this with a better method
+        // NEEDTO: fix this with a better method
         props.mapping[d] = colorList[v % colorList.length];
       });
     }
