@@ -34,7 +34,7 @@ function reuseMapping<T>(
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
     if (!result.hasOwnProperty(d)) {
-      if (available.length > 1) {
+      if (available.length > 0) {
         result[d] = available[0];
         available.splice(0, 1);
       } else {
@@ -176,7 +176,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             )
           )
         )
-      )
+      ),
     ];
   }
 }
@@ -220,7 +220,26 @@ export class CategoricalScaleColor extends ScaleClass<
 
       // Otherwise, if we already have a mapping, try to reuse it
     } else if (props.mapping != null) {
-      props.mapping = reuseMapping(s.domain, props.mapping);
+      if (options.extendScale) {
+        const mapping = reuseMapping(s.domain, props.mapping);
+
+        let colorList = literalColorValues(values);
+        if (!colorList) {
+          // Find a good default color palette
+          colorList = getDefaultColorPalette(s.length);
+        }
+        s.domain.forEach((v, d) => {
+          // If we still don't have enough colors, reuse them
+          // NEEDTO: fix this with a better method
+          if (!mapping[d]) {
+            mapping[d] = colorList[v % colorList.length];
+          }
+        });
+
+        props.mapping = mapping;
+      } else {
+        props.mapping = reuseMapping(s.domain, props.mapping);
+      }
     }
     if (props.mapping == null) {
       // If we can't reuse existing colors, infer from scratch
@@ -233,7 +252,7 @@ export class CategoricalScaleColor extends ScaleClass<
       }
       s.domain.forEach((v, d) => {
         // If we still don't have enough colors, reuse them
-        // TODO: fix this with a better method
+        // NEEDTO: fix this with a better method
         props.mapping[d] = colorList[v % colorList.length];
       });
     }
