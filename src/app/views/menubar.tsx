@@ -26,7 +26,12 @@ import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 
-export class HelpButton extends React.Component<{}, {}> {
+export class HelpButton extends React.Component<
+  {
+    hideReportIssues: boolean;
+  },
+  {}
+> {
   public render() {
     return (
       <MenuButton
@@ -61,14 +66,16 @@ export class HelpButton extends React.Component<{}, {}> {
                         {strings.help.gallery}
                       </a>
                     </div>
-                    <div className="el-item">
-                      <a
-                        target="_blank"
-                        href="https://github.com/Microsoft/charticulator/issues/new"
-                      >
-                        {strings.help.issues}
-                      </a>
-                    </div>
+                    {this.props.hideReportIssues ? null : (
+                      <div className="el-item">
+                        <a
+                          target="_blank"
+                          href="https://github.com/Microsoft/charticulator/issues/new"
+                        >
+                          {strings.help.issues}
+                        </a>
+                      </div>
+                    )}
                     <div className="el-item">
                       <a target="_blank" href="https://charticulator.com/">
                         {strings.help.home}
@@ -579,7 +586,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
-            <HelpButton />
+            <HelpButton
+              hideReportIssues={this.context.store.editorType === "embedded"}
+            />
           </div>
         </section>
       </>
