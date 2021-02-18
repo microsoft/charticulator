@@ -733,6 +733,29 @@ export class SetObjectProperty extends Action {
   }
 }
 
+export class DeleteObjectProperty extends Action {
+  constructor(
+    public object: Specification.Object,
+    public property: string,
+    public field: number | string | Array<number | string>,
+    public noUpdateState: boolean = false,
+    public noComputeLayout: boolean = false
+  ) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "DeleteObjectProperty",
+      object: objectDigest(this.object),
+      property: this.property,
+      field: this.field,
+      noUpdateState: this.noUpdateState,
+      noComputeLayout: this.noComputeLayout,
+    };
+  }
+}
+
 export class SetObjectMappingScale extends Action {
   constructor(
     public object: Specification.Object,
