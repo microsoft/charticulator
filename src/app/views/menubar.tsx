@@ -20,7 +20,7 @@ import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
 import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
-import { ChartTemplate, Specification } from "../../container";
+import { ChartTemplate, MessageType, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
@@ -106,6 +106,7 @@ export class HelpButton extends React.Component<
 
 export interface MenuBarHandlers {
   onImportTemplateClick: () => void;
+  onExportTemplateClick: () => void;
 }
 
 export interface MenuBarProps {
@@ -250,7 +251,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public renderExportImportButtons(props: MenuBarProps) {
+  public renderImportButton(props: MenuBarProps) {
     return (
       <>
         <MenuButton
@@ -259,136 +260,161 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           title={strings.menuBar.importTemplate}
           onClick={
             props.handlers?.onImportTemplateClick ||
-            (async () => {
-              const file = await showOpenFileDialog(["tmplt"]);
-              const str = await readFileAsString(file);
-              const data = JSON.parse(
-                str
-              ) as Specification.Template.ChartTemplate;
+            (() => {
+              const inputElement = document.createElement("input");
+              inputElement.type = "file";
+              let file = null;
+              inputElement.accept = ["tmplt"].map((x) => "." + x).join(",");
+              inputElement.onchange = (e) => {
+                if (inputElement.files.length == 1) {
+                  file = inputElement.files[0];
+                  if (file) {
+                    const str = readFileAsString(file).then((str) => {
+                      const data = JSON.parse(
+                        str
+                      ) as Specification.Template.ChartTemplate;
 
-              let unmappedColumns: Specification.Template.Column[] = [];
-              data.tables[0].columns.forEach((column) => {
-                unmappedColumns = unmappedColumns.concat(
-                  this.store.checkColumnsMapping(
-                    column,
-                    TableType.Main,
-                    this.store.dataset
-                  )
-                );
-              });
-              if (data.tables[1]) {
-                data.tables[1].columns.forEach((column) => {
-                  unmappedColumns = unmappedColumns.concat(
-                    this.store.checkColumnsMapping(
-                      column,
-                      TableType.Links,
-                      this.store.dataset
-                    )
-                  );
-                });
-              }
+                      let unmappedColumns: Specification.Template.Column[] = [];
+                      data.tables[0].columns.forEach((column) => {
+                        unmappedColumns = unmappedColumns.concat(
+                          this.store.checkColumnsMapping(
+                            column,
+                            TableType.Main,
+                            this.store.dataset
+                          )
+                        );
+                      });
+                      if (data.tables[1]) {
+                        data.tables[1].columns.forEach((column) => {
+                          unmappedColumns = unmappedColumns.concat(
+                            this.store.checkColumnsMapping(
+                              column,
+                              TableType.Links,
+                              this.store.dataset
+                            )
+                          );
+                        });
+                      }
 
-              const tableMapping = new Map<string, string>();
-              tableMapping.set(
-                data.tables[0].name,
-                this.store.dataset.tables[0].name
-              );
-              if (data.tables[1] && this.store.dataset.tables[1]) {
-                tableMapping.set(
-                  data.tables[1].name,
-                  this.store.dataset.tables[1].name
-                );
-              }
+                      const tableMapping = new Map<string, string>();
+                      tableMapping.set(
+                        data.tables[0].name,
+                        this.store.dataset.tables[0].name
+                      );
+                      if (data.tables[1] && this.store.dataset.tables[1]) {
+                        tableMapping.set(
+                          data.tables[1].name,
+                          this.store.dataset.tables[1].name
+                        );
+                      }
 
-              const loadTemplateIntoState = (
-                tableMapping: Map<string, string>,
-                columnMapping: Map<string, string>
-              ) => {
-                const template = new ChartTemplate(data);
+                      const loadTemplateIntoState = (
+                        tableMapping: Map<string, string>,
+                        columnMapping: Map<string, string>
+                      ) => {
+                        const template = new ChartTemplate(data);
 
-                for (const table of template.getDatasetSchema()) {
-                  template.assignTable(
-                    table.name,
-                    tableMapping.get(table.name) || table.name
-                  );
-                  for (const column of table.columns) {
-                    template.assignColumn(
-                      table.name,
-                      column.name,
-                      columnMapping.get(column.name) || column.name
-                    );
+                        for (const table of template.getDatasetSchema()) {
+                          template.assignTable(
+                            table.name,
+                            tableMapping.get(table.name) || table.name
+                          );
+                          for (const column of table.columns) {
+                            template.assignColumn(
+                              table.name,
+                              column.name,
+                              columnMapping.get(column.name) || column.name
+                            );
+                          }
+                        }
+                        const instance = template.instantiate(
+                          this.store.dataset,
+                          false // no scale inference
+                        );
+
+                        this.store.dispatcher.dispatch(
+                          new Actions.ImportChartAndDataset(
+                            instance.chart,
+                            this.store.dataset,
+                            {}
+                          )
+                        );
+                        this.store.dispatcher.dispatch(
+                          new Actions.ReplaceDataset(this.store.dataset)
+                        );
+                      };
+
+                      if (unmappedColumns.length > 0) {
+                        // mapping show dialog then call loadTemplateIntoState
+                        this.popupController.showModal(
+                          (context) => {
+                            return (
+                              <ModalView context={context}>
+                                <div onClick={(e) => e.stopPropagation()}>
+                                  <FileViewImport
+                                    tables={data.tables}
+                                    datasetTables={this.store.dataset.tables}
+                                    tableMapping={tableMapping}
+                                    unmappedColumns={unmappedColumns}
+                                    onSave={(mapping) => {
+                                      loadTemplateIntoState(
+                                        tableMapping,
+                                        mapping
+                                      );
+                                      context.close();
+                                    }}
+                                    onClose={() => {
+                                      context.close();
+                                    }}
+                                  />
+                                </div>
+                              </ModalView>
+                            );
+                          },
+                          { anchor: null }
+                        );
+                      } else {
+                        loadTemplateIntoState(tableMapping, new Map());
+                      }
+                    });
                   }
                 }
-                const instance = template.instantiate(
-                  this.store.dataset,
-                  false // no scale inference
-                );
-
-                this.store.dispatcher.dispatch(
-                  new Actions.ImportChartAndDataset(
-                    instance.chart,
-                    this.store.dataset,
-                    {}
-                  )
-                );
-                this.store.dispatcher.dispatch(
-                  new Actions.ReplaceDataset(this.store.dataset)
-                );
               };
-
-              if (unmappedColumns.length > 0) {
-                // mapping show dialog then call loadTemplateIntoState
-                this.popupController.showModal(
-                  (context) => {
-                    return (
-                      <ModalView context={context}>
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <FileViewImport
-                            tables={data.tables}
-                            datasetTables={this.store.dataset.tables}
-                            tableMapping={tableMapping}
-                            unmappedColumns={unmappedColumns}
-                            onSave={(mapping) => {
-                              loadTemplateIntoState(tableMapping, mapping);
-                              context.close();
-                            }}
-                            onClose={() => {
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </ModalView>
-                    );
-                  },
-                  { anchor: null }
-                );
-              } else {
-                loadTemplateIntoState(tableMapping, new Map());
-              }
+              inputElement.click();
             })
           }
         />
+      </>
+    );
+  }
+
+  public renderExportButton(props: MenuBarProps) {
+    return (
+      <>
         <MenuButton
           url={R.getSVGIcon("toolbar/export-template")}
           text=""
           title={strings.menuBar.exportTemplate}
-          onClick={() => {
-            const template = deepClone(this.store.buildChartTemplate());
-            const target = this.store.createExportTemplateTarget(
-              strings.menuBar.defaultTemplateName,
-              template
-            );
-            const targetProperties: { [name: string]: string } = {};
-            for (const property of target.getProperties()) {
-              targetProperties[property.name] =
-                this.store.getPropertyExportName(property.name) ||
-                property.default;
-            }
+          onClick={
+            props.handlers?.onExportTemplateClick ||
+            (() => {
+              const template = deepClone(this.store.buildChartTemplate());
+              const target = this.store.createExportTemplateTarget(
+                strings.menuBar.defaultTemplateName,
+                template
+              );
+              const targetProperties: { [name: string]: string } = {};
+              for (const property of target.getProperties()) {
+                targetProperties[property.name] =
+                  this.store.getPropertyExportName(property.name) ||
+                  property.default;
+              }
 
-            this.dispatch(
-              new Actions.ExportTemplate("", target, targetProperties)
-            );
-          }}
+              this.dispatch(
+                new Actions.ExportTemplate("", target, targetProperties)
+              );
+            })
+          }
         />
       </>
     );
@@ -520,7 +546,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.context.store.editorType === "embedded" ? (
           <>
             <span className="charticulator__menu-bar-separator" />
-            {this.renderExportImportButtons(props)}
+            {this.renderImportButton(props)}
+            {this.renderExportButton(props)}
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
