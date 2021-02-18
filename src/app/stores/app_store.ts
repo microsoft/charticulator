@@ -1357,7 +1357,8 @@ export class AppStore extends BaseStore {
           : groupExpression,
       rawExpression: dataExpression.rawColumnExpression,
       valueType,
-      gapRatio: propertyValue?.gapRatio || 0.1,
+      gapRatio:
+        propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible: true,
       side: propertyValue?.side || "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
