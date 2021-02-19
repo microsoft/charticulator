@@ -218,7 +218,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           action.valueType == Specification.DataType.Number) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
-        let format;
+        let format: string;
         // don't apply format to numbers if data kind is categorical to draw as are
         if (action.valueMetadata.kind === DataKind.Categorical) {
           format = undefined;
