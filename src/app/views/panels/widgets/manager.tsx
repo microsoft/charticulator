@@ -66,7 +66,11 @@ import {
 } from "../../../../core/expression";
 import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
-import { AttributeMap, AttributeValue, ScaleMapping } from "../../../../core/specification";
+import {
+  AttributeMap,
+  AttributeValue,
+  ScaleMapping,
+} from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
 
@@ -606,25 +610,23 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           );
         }}
       >
-        {options.displayLabel != null && options.displayLabel ?
-          (
-            <>
-              <div title={options.tooltip}>
-                <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-                <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
-
-                
-              </div>
-              <span className="el-text">{
-                  (this.getPropertyValue(property) as AttributeMap)?.expression || "(default)"
-                }</span>
-            </>
-          ) :
-          (<div  title={options.tooltip}>
+        {options.displayLabel != null && options.displayLabel ? (
+          <>
+            <div title={options.tooltip}>
+              <SVGImageIcon url={R.getSVGIcon("general/sort")} />
+              <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            </div>
+            <span className="el-text">
+              {(this.getPropertyValue(property) as AttributeMap)?.expression ||
+                "(default)"}
+            </span>
+          </>
+        ) : (
+          <div title={options.tooltip}>
             <SVGImageIcon url={R.getSVGIcon("general/sort")} />
             <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
-          </div>)}
-        
+          </div>
+        )}
       </DropZoneView>
     );
   }
@@ -677,6 +679,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
                         return this.store.getCategoriesForDataBinding(
                           axisDataBinding.metadata,
+                          axisDataBinding.type,
                           values
                         );
                       }}
@@ -1352,9 +1355,7 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn,
-              alignX: getAligntment(btn).alignX
-             }
+            { anchor: btn, alignX: getAligntment(btn).alignX }
           );
         }}
       />
