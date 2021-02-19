@@ -1481,7 +1481,7 @@ export class AppStore extends BaseStore {
 
   public getCategoriesForDataBinding(
     metadata: Dataset.ColumnMetadata,
-    type: string,
+    type: DataType,
     values: ValueType[]
   ) {
     let categories: string[];

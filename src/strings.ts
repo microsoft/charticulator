@@ -225,4 +225,7 @@ export const strings = {
     number: "Number",
     string: "String",
   } as { [key in DataType]: string },
+  core: {
+    default: "(default)",
+  },
 };

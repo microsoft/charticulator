@@ -73,6 +73,7 @@ import {
 } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
+import { strings } from "../../../../strings";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -618,7 +619,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             </div>
             <span className="el-text">
               {(this.getPropertyValue(property) as AttributeMap)?.expression ||
-                "(default)"}
+                strings.core.default}
             </span>
           </>
         ) : (
