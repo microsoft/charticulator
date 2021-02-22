@@ -530,17 +530,21 @@ export class FluentMappingEditor extends React.Component<
               </FluentButton>
             ) : null}
             {valueIndex !== undefined && valueIndex !== null ? (
-              <Button
-                icon={"general/bind-data"}
-                title="Bind data value"
-                ref={(e) =>
-                  (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                }
-                onClick={() => {
-                  this.beginDataFieldValueSelection();
-                }}
-                active={isDataMapping}
-              />
+              <FluentButton>
+                <DefaultButton
+                  iconProps={{
+                    iconName: "Link",
+                  }}
+                  title="Bind data value"
+                  ref={(e) =>
+                    (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+                  }
+                  onClick={() => {
+                    this.beginDataFieldValueSelection();
+                  }}
+                  checked={isDataMapping}
+                />
+              </FluentButton>
             ) : null}
           </span>
         )}
