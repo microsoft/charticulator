@@ -366,6 +366,26 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
+  REG.add(Actions.DeleteObjectProperty, function (action) {
+    if (action.property === "name") {
+      return;
+    }
+    this.saveHistory();
+
+    if (action.field == null) {
+      delete action.object.properties[action.property];
+    } else {
+      const obj = action.object.properties[action.property] as any;
+      delete obj[action.field as any];
+    }
+
+    if (action.noUpdateState) {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } else {
+      this.solveConstraintsAndUpdateGraphics(action.noComputeLayout);
+    }
+  });
+
   REG.add(Actions.ExtendPlotSegment, function (action) {
     this.saveHistory();
 

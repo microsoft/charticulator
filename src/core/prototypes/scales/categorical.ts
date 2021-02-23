@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Scale, getDefaultColorPalette } from "../../common";
+import {
+  Color,
+  Scale,
+  getDefaultColorPalette,
+  getDefaultColorPaletteByValue,
+  getDefaultColorPaletteGenerator,
+} from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import {
   DataValue,
@@ -15,6 +21,7 @@ import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
 import { OrderMode } from "../../specification/types";
+import { ReservedMappingKeyNamePrefix } from "../legends/categorical_legend";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -236,6 +243,18 @@ export class CategoricalScaleColor extends ScaleClass<
           }
         });
 
+        // Find unused mapping and save them, if count if new mapping domain is less thant old.
+        const newMappingKeys = Object.keys(mapping);
+        const oldMappingKeys = Object.keys(props.mapping);
+        if (newMappingKeys.length < oldMappingKeys.length) {
+          oldMappingKeys
+            .slice(newMappingKeys.length, oldMappingKeys.length)
+            .filter((key) => key.startsWith(ReservedMappingKeyNamePrefix))
+            .forEach((key) => {
+              mapping[key] = props.mapping[key];
+            });
+        }
+
         props.mapping = mapping;
       } else {
         props.mapping = reuseMapping(s.domain, props.mapping);
@@ -246,15 +265,20 @@ export class CategoricalScaleColor extends ScaleClass<
       props.mapping = {};
       // try to use literal values as color
       let colorList = literalColorValues(values);
-      if (!colorList) {
-        // Find a good default color palette
+      if (colorList) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
+      } else if (getDefaultColorPaletteGenerator()) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = getDefaultColorPaletteByValue(d, s.length);
+        });
+      } else {
         colorList = getDefaultColorPalette(s.length);
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
       }
-      s.domain.forEach((v, d) => {
-        // If we still don't have enough colors, reuse them
-        // NEEDTO: fix this with a better method
-        props.mapping[d] = colorList[v % colorList.length];
-      });
     }
   }
 
@@ -295,6 +319,7 @@ function literalColorValues(values: string[]) {
     if (cache[value]) {
       continue;
     }
+
     const d3c = d3color(value);
     if (!d3c) {
       return null;
