@@ -21,6 +21,7 @@ import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
 import { OrderMode } from "../../specification/types";
+import { ReserverMappingKeyNamePrefix } from "../legends/categorical_legend";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -241,6 +242,18 @@ export class CategoricalScaleColor extends ScaleClass<
             mapping[d] = colorList[v % colorList.length];
           }
         });
+
+        // Find unused mapping and save them, if count if new mapping domain is less thant old.
+        const newMappingKeys = Object.keys(mapping);
+        const oldMappingKeys = Object.keys(props.mapping);
+        if (newMappingKeys.length < oldMappingKeys.length) {
+          oldMappingKeys
+            .slice(newMappingKeys.length, oldMappingKeys.length)
+            .filter((key) => key.startsWith(ReserverMappingKeyNamePrefix))
+            .forEach((key) => {
+              mapping[key] = props.mapping[key];
+            });
+        }
 
         props.mapping = mapping;
       } else {

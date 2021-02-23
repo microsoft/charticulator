@@ -1145,8 +1145,8 @@ export class AppStore extends BaseStore {
             );
             values = parsedExpression.getValue(table) as ValueType[];
             newScale = true;
-            extendScale = false;
-            reuseRange = false;
+            extendScale = true;
+            reuseRange = true;
           } else {
             if (scale.classID == "scale.categorical<string,color>") {
               newScale = true;
