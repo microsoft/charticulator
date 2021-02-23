@@ -29,7 +29,7 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { AbstractBackend } from "../../backend/abstract";
-import { ErrorBoundary, SVGImageIcon } from "../../components";
+import { ErrorBoundary, SVGImageIcon, TelemetrContext } from "../../components";
 import { AppStore } from "../../stores";
 import { classNames, stringToDataURL } from "../../utils";
 import { FileViewExport } from "./export_view";
@@ -165,7 +165,15 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
             )
           )}
         </div>
-        <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
+        <TelemetrContext.Consumer>
+          {(telemetryRecorder) => {
+            return (
+              <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                {this.renderContent()}
+              </ErrorBoundary>
+            );
+          }}
+        </TelemetrContext.Consumer>
       </div>
     );
   }
