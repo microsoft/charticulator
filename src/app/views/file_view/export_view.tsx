@@ -12,7 +12,7 @@ import {
   ButtonRaised,
   ErrorBoundary,
   SVGImageIcon,
-  TelemetrContext,
+  TelemetryContext,
 } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import * as R from "../../resources";
@@ -196,7 +196,7 @@ export class FileViewExport extends ContextedComponent<
               ))}
             </div>
           </div>
-          <TelemetrContext.Consumer>
+          <TelemetryContext.Consumer>
             {(telemetryRecorder) => {
               return (
                 <ErrorBoundary
@@ -210,7 +210,7 @@ export class FileViewExport extends ContextedComponent<
                 </ErrorBoundary>
               );
             }}
-          </TelemetrContext.Consumer>
+          </TelemetryContext.Consumer>
         </div>
       </div>
     );

@@ -10,7 +10,7 @@ import {
   MinimizablePanelView,
   MessagePanel,
   TelemetryRecorder,
-  TelemetrContext,
+  TelemetryContext,
 } from "./components";
 import { DragStateView, PopupContainer } from "./controllers";
 import { AppStore } from "./stores";
@@ -235,7 +235,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
             store: this.props.store,
           }}
         >
-          <TelemetrContext.Provider value={this.props.telemetry}>
+          <TelemetryContext.Provider value={this.props.telemetry}>
             <MenuBar
               alignButtons={this.viewConfiguration.MenuBarButtons}
               undoRedoLocation={this.viewConfiguration.UndoRedoLocation}
@@ -349,7 +349,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               </div>
             ) : null}
             <DragStateView controller={globals.dragController} />
-          </TelemetrContext.Provider>
+          </TelemetryContext.Provider>
         </MainReactContext.Provider>
       </div>
     );

@@ -18,7 +18,7 @@ export interface ErrorBoundaryProps {
   telemetryRecorder?: TelemetryRecorder;
 }
 
-export const TelemetrContext = React.createContext<TelemetryRecorder>(null);
+export const TelemetryContext = React.createContext<TelemetryRecorder>(null);
 
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
