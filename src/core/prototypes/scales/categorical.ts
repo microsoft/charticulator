@@ -21,7 +21,7 @@ import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
 import { OrderMode } from "../../specification/types";
-import { ReserverMappingKeyNamePrefix } from "../legends/categorical_legend";
+import { ReservedMappingKeyNamePrefix } from "../legends/categorical_legend";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -249,7 +249,7 @@ export class CategoricalScaleColor extends ScaleClass<
         if (newMappingKeys.length < oldMappingKeys.length) {
           oldMappingKeys
             .slice(newMappingKeys.length, oldMappingKeys.length)
-            .filter((key) => key.startsWith(ReserverMappingKeyNamePrefix))
+            .filter((key) => key.startsWith(ReservedMappingKeyNamePrefix))
             .forEach((key) => {
               mapping[key] = props.mapping[key];
             });

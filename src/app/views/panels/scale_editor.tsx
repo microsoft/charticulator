@@ -9,7 +9,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
-import { ReserverMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
+import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
 
 export interface ScaleEditorProps {
@@ -90,7 +90,7 @@ export class ScaleEditor extends React.Component<
                   new Actions.SetObjectProperty(
                     scale,
                     "mapping",
-                    ReserverMappingKeyNamePrefix + uniqueID(),
+                    ReservedMappingKeyNamePrefix + uniqueID(),
                     value,
                     true,
                     true
@@ -105,7 +105,7 @@ export class ScaleEditor extends React.Component<
                   const theLastMapping: string = mappingsKey[
                     mappingsKey.length - 1
                   ] as string;
-                  if (theLastMapping.startsWith(ReserverMappingKeyNamePrefix)) {
+                  if (theLastMapping.startsWith(ReservedMappingKeyNamePrefix)) {
                     new Actions.DeleteObjectProperty(
                       scale,
                       "mapping",
