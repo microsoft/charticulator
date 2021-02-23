@@ -3,7 +3,7 @@
 import * as React from "react";
 import { EventEmitter, EventSubscription } from "../../core";
 import { classNames } from "../utils";
-import { ErrorBoundary } from "../components";
+import { ErrorBoundary, TelemetryContext } from "../components";
 
 export interface PopupOptions {
   parent?: PopupContext;
@@ -443,7 +443,15 @@ export class PopupView extends React.Component<
             ]
           )}
         >
-          <ErrorBoundary>{this.props.children}</ErrorBoundary>
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                  {this.props.children}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
       </div>
     );
