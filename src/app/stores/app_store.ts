@@ -1357,7 +1357,8 @@ export class AppStore extends BaseStore {
           : groupExpression,
       rawExpression: dataExpression.rawColumnExpression,
       valueType,
-      gapRatio: propertyValue?.gapRatio || 0.1,
+      gapRatio:
+        propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible: true,
       side: propertyValue?.side || "default",
       style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
@@ -1426,6 +1427,7 @@ export class AppStore extends BaseStore {
             dataBinding.valueType = dataExpression.valueType;
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
           }
@@ -1451,6 +1453,7 @@ export class AppStore extends BaseStore {
             dataBinding.numericalMode = "temporal";
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
           }
@@ -1478,16 +1481,21 @@ export class AppStore extends BaseStore {
 
   public getCategoriesForDataBinding(
     metadata: Dataset.ColumnMetadata,
+    type: DataType,
     values: ValueType[]
   ) {
     let categories: string[];
     if (metadata.order) {
       categories = metadata.order.slice();
     } else {
-      const scale = new Scale.CategoricalScale();
       let orderMode: OrderMode = OrderMode.alphabetically;
+      const scale = new Scale.CategoricalScale();
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
+      }
+      if (type === "number") {
+        values = (values as number[]).sort((a, b) => a - b);
+        orderMode = OrderMode.order;
       }
       scale.inferParameters(values as string[], orderMode);
       categories = new Array<string>(scale.length);

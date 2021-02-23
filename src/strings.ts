@@ -64,7 +64,7 @@ export const strings = {
     value: "Value",
   },
   dialog: {
-    resetConfirm: "Are you really willing to reset the chart?",
+    resetConfirm: "Are you sure you want to delete the chart?",
   },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
@@ -225,4 +225,7 @@ export const strings = {
     number: "Number",
     string: "String",
   } as { [key in DataType]: string },
+  core: {
+    default: "(default)",
+  },
 };
