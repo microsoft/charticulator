@@ -66,6 +66,12 @@ export const strings = {
   dialog: {
     resetConfirm: "Are you sure you want to delete the chart?",
   },
+  scaleEditor: {
+    add: "Add",
+    removeLast: "Remove the last",
+    addLegend: "Add Legend",
+    removeLegend: "Remove Legend",
+  },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
     notImplemented: "Not implemented yet",

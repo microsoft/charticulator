@@ -13,6 +13,8 @@ export interface CategoricalLegendItem {
   value: number | Color | boolean;
 }
 
+export const ReservedMappingKeyNamePrefix = "reserved_";
+
 export class CategoricalLegendClass extends LegendClass {
   public static classID: string = "legend.categorical";
   public static type: string = "legend";
@@ -33,7 +35,10 @@ export class CategoricalLegendClass extends LegendClass {
       };
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
-        if (mapping.hasOwnProperty(key)) {
+        if (
+          mapping.hasOwnProperty(key) &&
+          !key.startsWith(ReservedMappingKeyNamePrefix)
+        ) {
           switch (scaleObject.classID) {
             case "scale.categorical<string,boolean>":
               {

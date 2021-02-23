@@ -3,12 +3,14 @@
 import * as React from "react";
 import * as R from "../../resources";
 
-import { EventSubscription, Specification } from "../../../core";
+import { EventSubscription, Specification, uniqueID } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
+import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
+import { strings } from "../../../strings";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -47,13 +49,14 @@ export class ScaleEditor extends React.Component<
       );
     };
     let canAddLegend = true;
+    const canExtendLegend = true;
     if (scale.classID.startsWith("scale.format")) {
       canAddLegend = false;
     }
     return (
       <div
         className="scale-editor-view"
-        style={{ width: "400px", padding: "10px" }}
+        style={{ width: "550px", padding: "10px" }}
       >
         <div className="attribute-editor">
           <section className="attribute-editor-element">
@@ -72,14 +75,54 @@ export class ScaleEditor extends React.Component<
               />
             </div>
             {manager.vertical(...scaleClass.getAttributePanelWidgets(manager))}
-            {canAddLegend ? (
-              <div className="action-buttons">
+            <div className="action-buttons">
+              <ButtonRaised
+                url={R.getSVGIcon("general/plus")}
+                text={strings.scaleEditor.add}
+                onClick={() => {
+                  const mappingsKey = Object.keys(scale.properties.mapping);
+                  const theLastMapping: any = mappingsKey[
+                    mappingsKey.length - 1
+                  ] as any;
+                  const value = (scale.properties.mapping as any)[
+                    theLastMapping
+                  ] as any;
+                  new Actions.SetObjectProperty(
+                    scale,
+                    "mapping",
+                    ReservedMappingKeyNamePrefix + uniqueID(),
+                    value,
+                    true,
+                    true
+                  ).dispatch(this.props.store.dispatcher);
+                }}
+              />
+              <ButtonRaised
+                url={R.getSVGIcon("general/minus")}
+                text={strings.scaleEditor.removeLast}
+                onClick={() => {
+                  const mappingsKey = Object.keys(scale.properties.mapping);
+                  const theLastMapping: string = mappingsKey[
+                    mappingsKey.length - 1
+                  ] as string;
+                  if (theLastMapping.startsWith(ReservedMappingKeyNamePrefix)) {
+                    new Actions.DeleteObjectProperty(
+                      scale,
+                      "mapping",
+                      theLastMapping,
+                      true,
+                      true
+                    ).dispatch(this.props.store.dispatcher);
+                  }
+                }}
+              />
+              {canAddLegend ? (
                 <ButtonRaised
                   url={R.getSVGIcon("legend/legend")}
                   text={
                     store.isLegendExistForScale(scale._id)
-                      ? "Remove Legend"
-                      : "Add Legend"
+                      ? strings.scaleEditor.removeLegend
+                      : strings.scaleEditor.addLegend
                   }
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
@@ -88,8 +131,8 @@ export class ScaleEditor extends React.Component<
                     ).dispatch(store.dispatcher);
                   }}
                 />
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </section>
         </div>
       </div>
