@@ -27,16 +27,13 @@ export interface NumericalNumberLegendAttributes
   y2: number;
 }
 
-export interface NumericalNumberLegendAxisProperties
-  extends Specification.AttributeMap {
-  visible: boolean;
-  side: AxisSide;
-  style: Specification.Types.AxisRenderingStyle;
-}
-
 export interface NumericalNumberLegendProperties
   extends Specification.AttributeMap {
-  axis: NumericalNumberLegendAxisProperties;
+  axis: {
+    visible: boolean;
+    side: AxisSide;
+    style: Specification.Types.AxisRenderingStyle;
+  };
 }
 
 export class NumericalNumberLegendClass extends ChartElementClass<
