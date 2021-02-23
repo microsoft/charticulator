@@ -10,6 +10,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 import { ReserverMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
+import { strings } from "../../../strings";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -77,7 +78,7 @@ export class ScaleEditor extends React.Component<
             <div className="action-buttons">
               <ButtonRaised
                 url={R.getSVGIcon("general/plus")}
-                text={"Add mapping"}
+                text={strings.scaleEditor.add}
                 onClick={() => {
                   const mappingsKey = Object.keys(scale.properties.mapping);
                   const theLastMapping: any = mappingsKey[
@@ -98,7 +99,7 @@ export class ScaleEditor extends React.Component<
               />
               <ButtonRaised
                 url={R.getSVGIcon("general/minus")}
-                text={"Remove the last mapping"}
+                text={strings.scaleEditor.removeLast}
                 onClick={() => {
                   const mappingsKey = Object.keys(scale.properties.mapping);
                   const theLastMapping: string = mappingsKey[
@@ -120,8 +121,8 @@ export class ScaleEditor extends React.Component<
                   url={R.getSVGIcon("legend/legend")}
                   text={
                     store.isLegendExistForScale(scale._id)
-                      ? "Remove Legend"
-                      : "Add Legend"
+                      ? strings.scaleEditor.removeLegend
+                      : strings.scaleEditor.addLegend
                   }
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
