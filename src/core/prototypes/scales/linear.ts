@@ -4,6 +4,7 @@
 import { interpolateColors, Scale } from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   AttributeDescription,
   Controls,
@@ -119,18 +120,18 @@ export class LinearScale extends ScaleClass<
 
       if (!options.autoRange) {
         this.object.mappings.rangeMin = {
-          type: "value",
+          type: MappingType.value,
           value: attrs.rangeMin,
         } as Specification.ValueMapping;
         this.object.mappings.rangeMax = {
-          type: "value",
+          type: MappingType.value,
           value: attrs.rangeMax,
         } as Specification.ValueMapping;
       }
 
       if (options.startWithZero === "always") {
         this.object.mappings.rangeMin = {
-          type: "value",
+          type: MappingType.value,
           value: 0,
         } as Specification.ValueMapping;
       }

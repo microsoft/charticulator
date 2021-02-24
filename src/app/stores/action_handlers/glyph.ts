@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Solver, Specification } from "../../../core";
+import { MappingType } from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
@@ -93,7 +94,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       if (action.mappings.hasOwnProperty(attr)) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {
-          if (mapping.type == "_element") {
+          if (mapping.type == MappingType._element) {
             action.glyph.constraints.push({
               type: "snap",
               attributes: {
@@ -132,19 +133,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.image":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
             // Move anchor to bottom
@@ -154,19 +155,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.line":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix2",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }
@@ -176,11 +177,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.icon":
           {
             mark.mappings.x = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icx",
             } as Specification.ParentMapping;
             mark.mappings.y = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icy",
             } as Specification.ParentMapping;
           }
@@ -188,19 +189,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         case "mark.data-axis":
           {
             mark.mappings.x1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y1 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy1",
             } as Specification.ParentMapping;
             mark.mappings.x2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "ix1",
             } as Specification.ParentMapping;
             mark.mappings.y2 = {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "iy2",
             } as Specification.ParentMapping;
           }

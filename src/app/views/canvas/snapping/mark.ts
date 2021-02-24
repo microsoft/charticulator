@@ -6,6 +6,7 @@ import { GuideClass } from "../../../../core/prototypes/guides";
 import { isType } from "../../../../core/prototypes";
 import { SnappingAction, SnappableGuide } from "./common";
 import { SnappingSession } from "./session";
+import { MappingType } from "../../../../core/specification";
 
 export type MarkSnappableGuide = SnappableGuide<Specification.Element>;
 
@@ -64,7 +65,7 @@ export class MarkSnappingSession extends SnappingSession<
                   this.element,
                   action.attribute,
                   {
-                    type: "parent",
+                    type: MappingType.parent,
                     parentAttribute: action.snapAttribute,
                   } as Specification.ParentMapping
                 )
@@ -108,7 +109,7 @@ export class MarkSnappingSession extends SnappingSession<
                 this.element,
                 action.attribute,
                 {
-                  type: "value",
+                  type: MappingType.value,
                   value: action.value,
                 } as Specification.ValueMapping
               )

@@ -19,6 +19,7 @@ import { ChartStateManager } from "../state";
 import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
+import { MappingType } from "../../specification";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -722,7 +723,7 @@ export abstract class LinksClass extends ChartElementClass {
 
     if (
       this.object.mappings.color &&
-      this.object.mappings.color.type === "value"
+      this.object.mappings.color.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -741,7 +742,7 @@ export abstract class LinksClass extends ChartElementClass {
 
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -758,7 +759,7 @@ export abstract class LinksClass extends ChartElementClass {
 
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
