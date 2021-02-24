@@ -10,6 +10,7 @@ import {
   Expression,
 } from "../../../core";
 import { DataKind } from "../../../core/dataset";
+import { MappingType } from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
@@ -192,7 +193,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
-        type: "scale",
+        type: MappingType.scale,
         table: action.glyph.table,
         expression: action.expression,
         valueType: action.valueType,
@@ -230,7 +231,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
               : undefined;
         }
         action.mark.mappings[action.attribute] = {
-          type: "text",
+          type: MappingType.text,
           table: action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },

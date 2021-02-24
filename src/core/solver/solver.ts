@@ -13,6 +13,7 @@ import { PlotSegmentClass } from "../prototypes/plot_segments";
 import { DataflowTableGroupedContext } from "../prototypes/dataflow";
 import { FunctionCall } from "../expression";
 import { ChartStateManager } from "../prototypes";
+import { MappingType } from "../specification";
 
 /** Solves constraints in the scope of a chart */
 export class ChartConstraintSolver {
@@ -74,7 +75,7 @@ export class ChartConstraintSolver {
   ) {
     if (
       rowContext == null &&
-      (mapping.type == "scale" || mapping.type == "text")
+      (mapping.type == MappingType.scale || mapping.type == MappingType.text)
     ) {
       const xMapping =
         (mapping as Specification.ScaleMapping) ||
@@ -82,7 +83,7 @@ export class ChartConstraintSolver {
       rowContext = this.manager.getChartDataContext(xMapping.table);
     }
     switch (mapping.type) {
-      case "scale":
+      case MappingType.scale:
         {
           const scaleMapping = mapping as Specification.ScaleMapping;
           if (scaleMapping.scale != null) {
@@ -115,7 +116,7 @@ export class ChartConstraintSolver {
           }
         }
         break;
-      case "text":
+      case MappingType.text:
         {
           const textMapping = mapping as Specification.TextMapping;
           const expr = this.expressionCache.parseTextExpression(
@@ -136,7 +137,7 @@ export class ChartConstraintSolver {
           }
         }
         break;
-      case "value":
+      case MappingType.value:
         {
           const valueMapping = mapping as Specification.ValueMapping;
           attrs[attr] = valueMapping.value;
@@ -146,7 +147,7 @@ export class ChartConstraintSolver {
           // this.registry.makeConstant(attrs, attr);
         }
         break;
-      case "parent":
+      case MappingType.parent:
         {
           const parentMapping = mapping as Specification.ParentMapping;
           this.solver.addEquals(
@@ -262,7 +263,7 @@ export class ChartConstraintSolver {
       }
       for (const name in element.mappings) {
         const mapping = element.mappings[name];
-        if (mapping.type == "parent") {
+        if (mapping.type == MappingType.parent) {
           attached.add(
             (mapping as Specification.ParentMapping).parentAttribute
           );
@@ -625,7 +626,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     parentAttrs: Specification.AttributeMap
   ) {
     switch (mapping.type) {
-      case "scale":
+      case MappingType.scale:
         {
           const scaleMapping = mapping as Specification.ScaleMapping;
           this.addInputAttribute(
@@ -638,7 +639,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
           );
         }
         break;
-      case "value":
+      case MappingType.value:
         {
           const valueMapping = mapping as Specification.ValueMapping;
           attrs[attr] = valueMapping.value;
@@ -649,7 +650,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
           );
         }
         break;
-      case "parent":
+      case MappingType.parent:
         {
           const parentMapping = mapping as Specification.ParentMapping;
           this.addEquals(

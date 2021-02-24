@@ -22,7 +22,11 @@ import {
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
-import { AttributeList, ScaleMapping } from "../core/specification";
+import {
+  AttributeList,
+  MappingType,
+  ScaleMapping,
+} from "../core/specification";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -263,7 +267,7 @@ export class ChartTemplate {
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
       for (const [attr, mapping] of forEachMapping(mappings)) {
-        if (mapping.type == "scale") {
+        if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
           scaleMapping.expression = this.transformExpression(
             scaleMapping.expression,
@@ -271,7 +275,7 @@ export class ChartTemplate {
           );
           scaleMapping.table = this.tableAssignment[scaleMapping.table];
         }
-        if (mapping.type == "text") {
+        if (mapping.type == MappingType.text) {
           const textMapping = mapping as Specification.TextMapping;
           textMapping.textExpression = this.transformTextExpression(
             textMapping.textExpression,

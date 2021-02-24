@@ -3,6 +3,7 @@
 // Special element: Anchor
 
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   AttributeDescription,
   Controls,
@@ -83,11 +84,11 @@ export class AnchorElement extends MarkClass {
   ): Specification.Element {
     const element = super.createDefault(glyph);
     element.mappings.x = {
-      type: "parent",
+      type: MappingType.parent,
       parentAttribute: "icx",
     } as Specification.ParentMapping;
     element.mappings.y = {
-      type: "parent",
+      type: MappingType.parent,
       parentAttribute: "icy",
     } as Specification.ParentMapping;
     return element;

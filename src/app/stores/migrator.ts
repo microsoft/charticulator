@@ -17,7 +17,7 @@ import {
   LegendClass,
   LegendProperties,
 } from "../../core/prototypes/legends/legend";
-import { ChartElement } from "../../core/specification";
+import { ChartElement, MappingType } from "../../core/specification";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -259,14 +259,17 @@ export class Migrator {
         for (const key in mark.mappings) {
           if (mark.mappings.hasOwnProperty(key)) {
             const mapping = mark.mappings[key];
-            if (mapping.type == "scale") {
+            if (mapping.type == MappingType.scale) {
               const scaleMapping = mapping as Specification.ScaleMapping;
               scaleMapping.expression = this.addAggregationToExpression(
                 scaleMapping.expression,
                 scaleMapping.valueType
               );
             }
-            if (mapping.type == "scale" || mapping.type == "text") {
+            if (
+              mapping.type == MappingType.scale ||
+              mapping.type == MappingType.text
+            ) {
               (mapping as any).table = glyph.table;
             }
           }
