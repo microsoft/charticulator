@@ -81,6 +81,10 @@ body {
       width: 0px;
       border-left: 1px solid $gray-080;
     }
+
+    .charticulator__button-menu-text {
+      flex-shrink: 0;
+    }
   }
 
   &__menu-popup {
