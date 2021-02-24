@@ -58,7 +58,8 @@ import {
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
-import { OrderMode } from "../../core/specification/types";
+import { AxisSide, OrderMode } from "../../core/specification/types";
+import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -863,25 +864,50 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
+      let x1Attr: string;
+      let y1Attr: string;
+      let x2Attr: string;
+      let y2Attr: string;
+      let side: AxisSide;
+      switch (mapping.attribute) {
+        case "height": {
+          x1Attr = "x1";
+          y1Attr = "y1";
+          x2Attr = "x1";
+          y2Attr = "y2";
+          side = "default";
+          break;
+        }
+        case "width": {
+          x1Attr = "x1";
+          y1Attr = "y1";
+          x2Attr = "x2";
+          y2Attr = "y1";
+          side = "opposite";
+          break;
+        }
+      }
       newLegend = this.chartManager.createObject(
         `legend.numerical-number`
       ) as Specification.ChartElement;
-      newLegend.properties.scale = scale;
+      const properties = newLegend.properties as NumericalNumberLegendProperties;
+      properties.scale = scale;
+      properties.axis.side = side;
       newLegend.mappings.x1 = {
         type: "parent",
-        parentAttribute: "x1",
+        parentAttribute: x1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y1 = {
         type: "parent",
-        parentAttribute: "y1",
+        parentAttribute: y1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.x2 = {
         type: "parent",
-        parentAttribute: "x1",
+        parentAttribute: x2Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y2 = {
         type: "parent",
-        parentAttribute: "y2",
+        parentAttribute: y2Attr,
       } as Specification.ParentMapping;
     }
 

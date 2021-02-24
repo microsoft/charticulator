@@ -4,6 +4,7 @@
 import { deepClone, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
+import { AxisSide } from "../../specification/types";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
@@ -30,7 +31,7 @@ export interface NumericalNumberLegendProperties
   extends Specification.AttributeMap {
   axis: {
     visible: boolean;
-    side: string;
+    side: AxisSide;
     style: Specification.Types.AxisRenderingStyle;
   };
 }
@@ -47,7 +48,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     iconPath: "legend/legend",
   };
 
-  public static defaultProperties = {
+  public static defaultProperties: NumericalNumberLegendProperties = {
     visible: true,
     axis: {
       side: "default",
@@ -165,6 +166,8 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     const length = Math.sqrt(dx * dx + dy * dy);
 
     const renderer = new AxisRenderer();
+    renderer.oppositeSide = this.object.properties.axis.side === "opposite";
+
     // Extend/shrink range, and update the domain accordingly. Keep the scaling factor.
     const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
     renderer.setLinearScale(

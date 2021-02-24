@@ -8,14 +8,16 @@ import { AttributeMap, Expression, DataType } from "./index";
 export enum OrderMode {
   alphabetically = "alphabetically",
   occurrence = "occurrence",
-  order = "order"  
+  order = "order",
 }
+
+export type AxisSide = "default" | "opposite";
 
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: "default" | "numerical" | "categorical";
   visible: boolean;
-  side: "default" | "opposite";
+  side: AxisSide;
 
   /** Data mapping expression */
   expression?: Expression;
