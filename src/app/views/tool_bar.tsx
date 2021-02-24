@@ -530,15 +530,15 @@ export class Toolbar extends ContextedComponent<
 
   public render() {
     let tooltipsItems = [];
-    // if (this.context.store.editorType === "embedded") {
-    const chartToolItems = this.getChartToolItems(this.props.toolbarLabels);
-    const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
-    tooltipsItems = [...chartToolItems, ...glyphToolItems];
-    // } else {
-    //   tooltipsItems = [
-    //     this.getToolItems(this.props.toolbarLabels, this.state?.innerWidth),
-    //   ];
-    // }
+    if (this.context.store.editorType === "embedded") {
+      const chartToolItems = this.getChartToolItems(this.props.toolbarLabels);
+      const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
+      tooltipsItems = [...chartToolItems, ...glyphToolItems];
+    } else {
+      tooltipsItems = [
+        this.getToolItems(this.props.toolbarLabels, this.state?.innerWidth),
+      ];
+    }
     return (
       <>
         <div
