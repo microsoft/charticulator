@@ -10,6 +10,7 @@ import {
   ValueMapping,
   baselineH,
   baselineV,
+  MappingType,
 } from "../../core/specification";
 import {
   GuideAxis,
@@ -75,7 +76,7 @@ function upgradeChartGuides(parentElement: Chart, parentState: ChartState) {
 
     // convert mappings to actual values
     const parentMapping = element.mappings.value as ParentMapping;
-    if (parentMapping && parentMapping.type === "parent") {
+    if (parentMapping && parentMapping.type === MappingType.parent) {
       const { parentAttribute } = parentMapping;
       // set value to actual mapped attr value
       state.attributes[GuideAttributeNames.value] =
@@ -166,7 +167,7 @@ function upgradeGlyphGuides(
           if (nested) {
             // nested charts store in mappings
             const valueMapping: ValueMapping = {
-              type: "value",
+              type: MappingType.value,
               value: newGuide.state.attributes[GuideAttributeNames.value],
             };
             newGuide.element.mappings.value = valueMapping;

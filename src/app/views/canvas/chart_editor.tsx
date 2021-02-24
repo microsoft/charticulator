@@ -41,6 +41,7 @@ import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
+import { MappingType } from "../../../core/specification";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -305,7 +306,10 @@ export class ChartEditorView
   }
 
   protected getGraphics(): Graphics.Element {
-    const renderer = new Graphics.ChartRenderer(this.props.store.chartManager, this.props.store.renderEvents);
+    const renderer = new Graphics.ChartRenderer(
+      this.props.store.chartManager,
+      this.props.store.renderEvents
+    );
     return renderer.render();
   }
 
@@ -698,7 +702,7 @@ export class ChartEditorView
                     continue;
                   }
                   new Actions.SetChartAttribute(name, {
-                    type: "value",
+                    type: MappingType.value,
                     value: updates[name],
                   } as Specification.ValueMapping).dispatch(
                     this.props.store.dispatcher

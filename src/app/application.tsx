@@ -38,6 +38,7 @@ import { LocalStorageKeys } from "./globals";
 import { delimiter } from "path";
 import { MenuBarHandlers } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
+import { MappingType } from "../core/specification";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -181,11 +182,11 @@ export class Application {
         };
       } = data;
       info.specification.mappings.width = {
-        type: "value",
+        type: MappingType.value,
         value: info.width,
       } as Specification.ValueMapping;
       info.specification.mappings.height = {
-        type: "value",
+        type: MappingType.value,
         value: info.height,
       } as Specification.ValueMapping;
       appStore.dispatcher.dispatch(

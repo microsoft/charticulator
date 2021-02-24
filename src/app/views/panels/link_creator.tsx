@@ -26,6 +26,7 @@ import {
 import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
+import { MappingType } from "../../../core/specification";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -187,19 +188,25 @@ export class LinkCreationPanel extends ContextedComponent<
       case "line":
         {
           color = {
-            type: "value",
+            type: MappingType.value,
             value: { r: 0, g: 0, b: 0 },
           } as Specification.ValueMapping;
-          opacity = { type: "value", value: 1 } as Specification.ValueMapping;
+          opacity = {
+            type: MappingType.value,
+            value: 1,
+          } as Specification.ValueMapping;
         }
         break;
       case "band":
         {
           color = {
-            type: "value",
+            type: MappingType.value,
             value: { r: 0, g: 0, b: 0 },
           } as Specification.ValueMapping;
-          opacity = { type: "value", value: 0.5 } as Specification.ValueMapping;
+          opacity = {
+            type: MappingType.value,
+            value: 0.5,
+          } as Specification.ValueMapping;
         }
         break;
     }
@@ -472,14 +479,20 @@ export class LinkCreationPanel extends ContextedComponent<
     switch (this.state.linkType) {
       case "line":
         {
-          defaultColor = { type: "value", value: { r: 0, g: 0, b: 0 } };
-          defaultOpacity = { type: "value", value: 0.5 };
+          defaultColor = {
+            type: MappingType.value,
+            value: { r: 0, g: 0, b: 0 },
+          };
+          defaultOpacity = { type: MappingType.value, value: 0.5 };
         }
         break;
       case "band":
         {
-          defaultColor = { type: "value", value: { r: 0, g: 0, b: 0 } };
-          defaultOpacity = { type: "value", value: 0.5 };
+          defaultColor = {
+            type: MappingType.value,
+            value: { r: 0, g: 0, b: 0 },
+          };
+          defaultOpacity = { type: MappingType.value, value: 0.5 };
         }
         break;
     }

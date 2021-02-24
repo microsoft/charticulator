@@ -12,6 +12,7 @@ import {
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
+import { MappingType } from "../../../../core/specification";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { PopupView } from "../../../controllers";
@@ -185,12 +186,12 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                     Expression.parseTextExpression(newValue).isTrivialString()
                   ) {
                     this.emitMapping({
-                      type: "value",
+                      type: MappingType.value,
                       value: newValue,
                     } as Specification.ValueMapping);
                   } else {
                     this.emitMapping({
-                      type: "text",
+                      type: MappingType.text,
                       table: this.props.getTable(),
                       textExpression: newValue,
                     } as Specification.TextMapping);

@@ -27,6 +27,7 @@ import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall, Variable } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
+import { MappingType } from "../../../../core/specification";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
@@ -174,7 +175,7 @@ export class MappingEditor extends React.Component<
 
   private setValueMapping(value: Specification.AttributeValue) {
     this.props.parent.onEditMappingHandler(this.props.attribute, {
-      type: "value",
+      type: MappingType.value,
       value,
     } as Specification.ValueMapping);
   }
@@ -289,11 +290,11 @@ export class MappingEditor extends React.Component<
       }
     } else {
       switch (mapping.type) {
-        case "value": {
+        case MappingType.value: {
           const valueMapping = mapping as Specification.ValueMapping;
           return this.renderValueEditor(valueMapping.value);
         }
-        case "text": {
+        case MappingType.text: {
           const textMapping = mapping as Specification.TextMapping;
           return (
             <InputExpression
@@ -317,7 +318,7 @@ export class MappingEditor extends React.Component<
                     this.props.parent.onEditMappingHandler(
                       this.props.attribute,
                       {
-                        type: "value",
+                        type: MappingType.value,
                         value: newValue,
                       } as Specification.ValueMapping
                     );
@@ -325,7 +326,7 @@ export class MappingEditor extends React.Component<
                     this.props.parent.onEditMappingHandler(
                       this.props.attribute,
                       {
-                        type: "text",
+                        type: MappingType.text,
                         table: textMapping.table,
                         textExpression: newValue,
                       } as Specification.TextMapping
@@ -337,7 +338,7 @@ export class MappingEditor extends React.Component<
             />
           );
         }
-        case "scale": {
+        case MappingType.scale: {
           const scaleMapping = mapping as Specification.ScaleMapping;
           if (scaleMapping.scale) {
             let scaleIcon = <span>f</span>;
@@ -427,13 +428,13 @@ export class MappingEditor extends React.Component<
     // If there is a mapping, also not having default or using auto
     let shouldShowEraser =
       currentMapping != null &&
-      (currentMapping.type != "value" ||
+      (currentMapping.type != MappingType.value ||
         !options.defaultValue ||
         options.defaultAuto);
     shouldShowEraser = shouldShowEraser || this.state.showNoneAsValue;
     const shouldShowBindData = parent.onMapDataHandler != null;
     const isDataMapping =
-      currentMapping != null && currentMapping.type == "scale";
+      currentMapping != null && currentMapping.type == MappingType.scale;
     shouldShowEraser = isDataMapping;
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
@@ -579,7 +580,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
 
   public renderScaleEditor() {
     const mapping = this.state.currentMapping;
-    if (mapping && mapping.type == "scale") {
+    if (mapping && mapping.type == MappingType.scale) {
       const scaleMapping = mapping as Specification.ScaleMapping;
       if (scaleMapping.scale) {
         const scaleObject = getById(
@@ -603,7 +604,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     let currentExpression: string = null;
     const mapping = this.state.currentMapping;
 
-    if (mapping != null && mapping.type == "scale") {
+    if (mapping != null && mapping.type == MappingType.scale) {
       currentExpression = (mapping as Specification.ScaleMapping).expression;
     }
 

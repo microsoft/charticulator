@@ -54,6 +54,7 @@ import {
   DataType,
   DataValue,
   Mapping,
+  MappingType,
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
@@ -281,7 +282,7 @@ export class AppStore extends BaseStore {
       scaleId: string
     ) {
       for (const map in mappings) {
-        if (mappings[map].type === "scale") {
+        if (mappings[map].type === MappingType.scale) {
           if ((mappings[map] as any).scale === scaleId) {
             return true;
           }
@@ -658,7 +659,7 @@ export class AppStore extends BaseStore {
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }
-          if (mappings[name].type == "scale") {
+          if (mappings[name].type == MappingType.scale) {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
@@ -825,15 +826,15 @@ export class AppStore extends BaseStore {
       }
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -847,15 +848,15 @@ export class AppStore extends BaseStore {
       ) as Specification.ChartElement;
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -894,25 +895,25 @@ export class AppStore extends BaseStore {
       properties.scale = scale;
       properties.axis.side = side;
       newLegend.mappings.x1 = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: x1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y1 = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: y1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.x2 = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: x2Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y2 = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: y2Attr,
       } as Specification.ParentMapping;
     }
 
     const mappingOptions = {
-      type: "scale",
+      type: MappingType.scale,
       table: mapping.table,
       expression: mapping.expression,
       valueType: mapping.valueType,
@@ -1132,7 +1133,7 @@ export class AppStore extends BaseStore {
           })
           .filter(
             (mapping) =>
-              mapping.mapping.type === "scale" &&
+              mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
           element: Specification.Element<Specification.ObjectProperties>;
