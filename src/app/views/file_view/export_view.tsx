@@ -8,7 +8,12 @@ import { ensureColumnsHaveExamples } from "../../../core/dataset/examples";
 import { findObjectById } from "../../../core/prototypes";
 import { strings } from "../../../strings";
 import { Actions } from "../../actions";
-import { ButtonRaised, ErrorBoundary, SVGImageIcon } from "../../components";
+import {
+  ButtonRaised,
+  ErrorBoundary,
+  SVGImageIcon,
+  TelemetryContext,
+} from "../../components";
 import { ContextedComponent } from "../../context_component";
 import * as R from "../../resources";
 import { ExportTemplateTarget } from "../../template";
@@ -191,11 +196,21 @@ export class FileViewExport extends ContextedComponent<
               ))}
             </div>
           </div>
-          <ErrorBoundary maxWidth={300}>
-            {this.state.exportMode == "image" || this.state.exportMode == "html"
-              ? this.renderExportView(this.state.exportMode)
-              : this.renderExportTemplate()}
-          </ErrorBoundary>
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary
+                  maxWidth={300}
+                  telemetryRecorder={telemetryRecorder}
+                >
+                  {this.state.exportMode == "image" ||
+                  this.state.exportMode == "html"
+                    ? this.renderExportView(this.state.exportMode)
+                    : this.renderExportTemplate()}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
       </div>
     );
