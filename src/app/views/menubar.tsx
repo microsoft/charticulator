@@ -520,6 +520,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             }
           }}
         />
+        {this.renderImportButton(this.props)}
         <MenuButton
           url={R.getSVGIcon("toolbar/export")}
           title={strings.menuBar.export}
@@ -546,10 +547,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.context.store.editorType === "embedded" ? (
           <>
             <span className="charticulator__menu-bar-separator" />
+            {this.renderImportButton(props)}
             {this.renderExportButton(props)}
           </>
         ) : null}
-        {this.renderImportButton(props)}
         <span className="charticulator__menu-bar-separator" />
         {this.props.undoRedoLocation === "menubar" ? (
           <>
