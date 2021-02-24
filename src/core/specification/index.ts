@@ -101,11 +101,11 @@ export interface Mappings {
 }
 
 export enum MappingType {
-  _element = "_elementx",
-  parent = "parentx",
-  scale = "scalex",
-  text = "textx",
-  value = "valuex",
+  _element = "_element",
+  parent = "parent",
+  scale = "scale",
+  text = "text",
+  value = "value",
 }
 
 /** Attribute mapping */
