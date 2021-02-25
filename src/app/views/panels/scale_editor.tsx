@@ -11,6 +11,7 @@ import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
+import { AttributeMap } from "../../../core/specification";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -49,9 +50,15 @@ export class ScaleEditor extends React.Component<
       );
     };
     let canAddLegend = true;
-    const canExtendLegend = true;
     if (scale.classID.startsWith("scale.format")) {
       canAddLegend = false;
+    }
+    let canExtendLegend = false;
+    if (
+      scale.classID === "scale.categorical<string,color>" ||
+      scale.classID === "scale.categorical<date,color>"
+    ) {
+      canExtendLegend = true;
     }
     return (
       <div
@@ -76,46 +83,51 @@ export class ScaleEditor extends React.Component<
             </div>
             {manager.vertical(...scaleClass.getAttributePanelWidgets(manager))}
             <div className="action-buttons">
-              <ButtonRaised
-                url={R.getSVGIcon("general/plus")}
-                text={strings.scaleEditor.add}
-                onClick={() => {
-                  const mappingsKey = Object.keys(scale.properties.mapping);
-                  const theLastMapping: any = mappingsKey[
-                    mappingsKey.length - 1
-                  ] as any;
-                  const value = (scale.properties.mapping as any)[
-                    theLastMapping
-                  ] as any;
-                  new Actions.SetObjectProperty(
-                    scale,
-                    "mapping",
-                    ReservedMappingKeyNamePrefix + uniqueID(),
-                    value,
-                    true,
-                    true
-                  ).dispatch(this.props.store.dispatcher);
-                }}
-              />
-              <ButtonRaised
-                url={R.getSVGIcon("general/minus")}
-                text={strings.scaleEditor.removeLast}
-                onClick={() => {
-                  const mappingsKey = Object.keys(scale.properties.mapping);
-                  const theLastMapping: string = mappingsKey[
-                    mappingsKey.length - 1
-                  ] as string;
-                  if (theLastMapping.startsWith(ReservedMappingKeyNamePrefix)) {
-                    new Actions.DeleteObjectProperty(
-                      scale,
-                      "mapping",
-                      theLastMapping,
-                      true,
-                      true
-                    ).dispatch(this.props.store.dispatcher);
-                  }
-                }}
-              />
+              {canExtendLegend ? (
+                <>
+                  <ButtonRaised
+                    url={R.getSVGIcon("general/plus")}
+                    text={strings.scaleEditor.add}
+                    onClick={() => {
+                      const mappingsKey = Object.keys(scale.properties.mapping);
+                      const theLastMapping: string =
+                        mappingsKey[mappingsKey.length - 1];
+                      const value = (scale.properties.mapping as AttributeMap)[
+                        theLastMapping
+                      ];
+                      new Actions.SetObjectProperty(
+                        scale,
+                        "mapping",
+                        ReservedMappingKeyNamePrefix + uniqueID(),
+                        value,
+                        true,
+                        true
+                      ).dispatch(this.props.store.dispatcher);
+                    }}
+                  />
+                  <ButtonRaised
+                    url={R.getSVGIcon("general/minus")}
+                    text={strings.scaleEditor.removeLast}
+                    onClick={() => {
+                      const mappingsKey = Object.keys(scale.properties.mapping);
+                      const theLastMapping: string = mappingsKey[
+                        mappingsKey.length - 1
+                      ] as string;
+                      if (
+                        theLastMapping.startsWith(ReservedMappingKeyNamePrefix)
+                      ) {
+                        new Actions.DeleteObjectProperty(
+                          scale,
+                          "mapping",
+                          theLastMapping,
+                          true,
+                          true
+                        ).dispatch(this.props.store.dispatcher);
+                      }
+                    }}
+                  />
+                </>
+              ) : null}
               {canAddLegend ? (
                 <ButtonRaised
                   url={R.getSVGIcon("legend/legend")}
