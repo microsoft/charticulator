@@ -32,6 +32,8 @@ export interface PolarGuideCoordinatorAttributesExtend {
   y1: number;
   x2: number;
   y2: number;
+  cx: number;
+  cy: number;
 
   angle1: number;
   angle2: number;
