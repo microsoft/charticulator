@@ -11,7 +11,10 @@ import {
   Prototypes,
 } from "../../../core";
 import { SnappableGuide } from "./snapping/common";
-import { MappingType } from "../../../core/specification";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
 
 export interface CreatingComponentProps {
   width: number;
@@ -32,12 +35,6 @@ export interface CreatingComponentState {
   activeGuides: Array<SnappableGuide<any>>;
   hoverCandidateX: [number, Specification.Mapping];
   hoverCandidateY: [number, Specification.Mapping];
-}
-
-export interface SnappingElementMapping extends Specification.Mapping {
-  type: MappingType._element;
-  element: string;
-  attribute: string;
 }
 
 export class PointSnapping {
