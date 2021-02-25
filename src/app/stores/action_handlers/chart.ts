@@ -515,7 +515,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.ToggleLegendForScale, function (action) {
     this.saveHistory();
 
-    this.toggleLegendForScale(action.scale, action.mapping);
+    this.toggleLegendForScale(action.scale, action.mapping, action.plotSegment);
 
     this.solveConstraintsAndUpdateGraphics();
   });

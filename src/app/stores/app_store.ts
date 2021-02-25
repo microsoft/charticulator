@@ -68,6 +68,7 @@ import {
 } from "../../core/specification/types";
 import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
 import { domain } from "process";
+import { isType, ObjectClass } from "../../core/prototypes";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -689,7 +690,7 @@ export class AppStore extends BaseStore {
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                  getExpressionUnit(expression) &&
+                getExpressionUnit(expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
@@ -803,7 +804,8 @@ export class AppStore extends BaseStore {
 
   public toggleLegendForScale(
     scale: string,
-    mapping: Specification.ScaleMapping
+    mapping: Specification.ScaleMapping,
+    plotSegment: ObjectClass
   ) {
     const scaleObject = getById(this.chartManager.chart.scales, scale);
     // See if we already have a legend
@@ -872,51 +874,58 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
-      let x1Attr: string;
-      let y1Attr: string;
-      let x2Attr: string;
-      let y2Attr: string;
-      let side: AxisSide;
-      switch (mapping.attribute) {
-        case "height": {
-          x1Attr = "x1";
-          y1Attr = "y1";
-          x2Attr = "x1";
-          y2Attr = "y2";
-          side = "default";
-          break;
-        }
-        case "width": {
-          x1Attr = "x1";
-          y1Attr = "y1";
-          x2Attr = "x2";
-          y2Attr = "y1";
-          side = "opposite";
-          break;
-        }
-      }
       newLegend = this.chartManager.createObject(
         `legend.numerical-number`
       ) as Specification.ChartElement;
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
-      properties.axis.side = side;
-      newLegend.mappings.x1 = {
-        type: MappingType.parent,
-        parentAttribute: x1Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.y1 = {
-        type: MappingType.parent,
-        parentAttribute: y1Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.x2 = {
-        type: MappingType.parent,
-        parentAttribute: x2Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.y2 = {
-        type: MappingType.parent,
-        parentAttribute: y2Attr,
-      } as Specification.ParentMapping;
+
+      console.log("plot segment is", plotSegment);
+
+      if (isType(plotSegment.object.classID, "plot-segment.polar")) {
+        console.log("POLAR");
+      } else {
+        let x1Attr: string;
+        let y1Attr: string;
+        let x2Attr: string;
+        let y2Attr: string;
+        let side: AxisSide;
+        switch (mapping.attribute) {
+          case "height": {
+            x1Attr = "x1";
+            y1Attr = "y1";
+            x2Attr = "x1";
+            y2Attr = "y2";
+            side = "default";
+            break;
+          }
+          case "width": {
+            x1Attr = "x1";
+            y1Attr = "y1";
+            x2Attr = "x2";
+            y2Attr = "y1";
+            side = "opposite";
+            break;
+          }
+        }
+        properties.axis.side = side;
+        newLegend.mappings.x1 = {
+          type: MappingType.parent,
+          parentAttribute: x1Attr,
+        } as Specification.ParentMapping;
+        newLegend.mappings.y1 = {
+          type: MappingType.parent,
+          parentAttribute: y1Attr,
+        } as Specification.ParentMapping;
+        newLegend.mappings.x2 = {
+          type: MappingType.parent,
+          parentAttribute: x2Attr,
+        } as Specification.ParentMapping;
+        newLegend.mappings.y2 = {
+          type: MappingType.parent,
+          parentAttribute: y2Attr,
+        } as Specification.ParentMapping;
+      }
     }
 
     const mappingOptions = {
@@ -1143,10 +1152,10 @@ export class AppStore extends BaseStore {
               mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
-          element: Specification.Element<Specification.ObjectProperties>;
-          key: string;
-          mapping: ScaleMapping;
-        }[];
+            element: Specification.Element<Specification.ObjectProperties>;
+            key: string;
+            mapping: ScaleMapping;
+          }[];
 
         // Figure out the groupBy
         let groupBy: Specification.Types.GroupBy = null;
@@ -1255,14 +1264,14 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-              xDataProperty.numericalMode === "temporal"
+                xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
-              ? "order"
-              : null,
+                ? "order"
+                : null,
             order: xDataProperty.order,
           },
           xDataProperty.rawColumnExpr
@@ -1292,14 +1301,14 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-              yDataProperty.numericalMode === "temporal"
+                yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
-              ? "order"
-              : null,
+                ? "order"
+                : null,
             order: yDataProperty.order,
           },
           yDataProperty.rawColumnExpr
@@ -1333,8 +1342,8 @@ export class AppStore extends BaseStore {
             orderMode: axis.orderMode
               ? axis.orderMode
               : axis.valueType === "string"
-              ? "order"
-              : null,
+                ? "order"
+                : null,
             order: axis.order,
           },
           axis.rawColumnExpr

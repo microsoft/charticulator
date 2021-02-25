@@ -12,19 +12,21 @@ import { WidgetManager } from "./widgets/manager";
 import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
+import { ObjectClass } from "../../../core/prototypes";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
   scaleMapping: Specification.ScaleMapping;
   store: AppStore;
+  plotSegment: ObjectClass;
 }
 
-export interface ScaleEditorState {}
+export interface ScaleEditorState { }
 
 export class ScaleEditor extends React.Component<
   ScaleEditorProps,
   ScaleEditorState
-> {
+  > {
   public token: EventSubscription;
 
   public componentDidMount() {
@@ -139,7 +141,8 @@ export class ScaleEditor extends React.Component<
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
                       scale._id,
-                      scaleMapping
+                      scaleMapping,
+                      this.props.plotSegment
                     ).dispatch(store.dispatcher);
                   }}
                 />
