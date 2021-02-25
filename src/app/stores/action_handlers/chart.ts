@@ -16,7 +16,10 @@ import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 import { BindDataToAxis } from "../../actions/actions";
-import { MappingType } from "../../../core/specification";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
 
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function (action) {
@@ -96,13 +99,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
           if (mapping.type == MappingType._element) {
+            const elementMapping = mapping as SnappingElementMapping;
             this.chartManager.chart.constraints.push({
               type: "snap",
               attributes: {
                 element: newChartElement._id,
                 attribute: key,
-                targetElement: (mapping as any).element,
-                targetAttribute: (mapping as any).attribute,
+                targetElement: elementMapping.element,
+                targetAttribute: elementMapping.attribute,
                 gap: 0,
               },
             });

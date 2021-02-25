@@ -11,10 +11,7 @@ import {
   Prototypes,
 } from "../../../core";
 import { SnappableGuide } from "./snapping/common";
-import {
-  MappingType,
-  SnappingElementMapping,
-} from "../../../core/specification";
+import { MappingType } from "../../../core/specification";
 
 export interface CreatingComponentProps {
   width: number;
@@ -69,16 +66,18 @@ export class PointSnapping {
             ) {
               candidateDistance = d;
               if (guide.element == null) {
-                candidate = {
+                const parentMapping: Specification.ParentMapping = {
                   type: MappingType.parent,
                   parentAttribute: axis.attribute,
-                } as Specification.ParentMapping;
+                };
+                candidate = parentMapping;
               } else {
-                candidate = {
+                const elementMapping: Specification.SnappingElementMapping = {
                   type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
-                } as SnappingElementMapping;
+                };
+                candidate = elementMapping;
               }
               candidateValue = axis.value;
               candidateGuide = guide;
@@ -112,16 +111,18 @@ export class PointSnapping {
             ) {
               candidateDistance = d;
               if (guide.element == null) {
-                candidate = {
+                const parentMapping: Specification.ParentMapping = {
                   type: MappingType.parent,
                   parentAttribute: axis.attribute,
-                } as Specification.ParentMapping;
+                };
+                candidate = parentMapping;
               } else {
-                candidate = {
+                const elementMapping: Specification.SnappingElementMapping = {
                   type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
-                } as SnappingElementMapping;
+                };
+                candidate = elementMapping;
               }
               candidateValue = axis.value;
               candidateGuide = guide;

@@ -2,7 +2,10 @@
 // Licensed under the MIT license.
 
 import { Solver, Specification } from "../../../core";
-import { MappingType } from "../../../core/specification";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
@@ -95,13 +98,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {
           if (mapping.type == MappingType._element) {
+            const elementMapping = mapping as SnappingElementMapping;
             action.glyph.constraints.push({
               type: "snap",
               attributes: {
                 element: mark._id,
                 attribute: attr,
-                targetElement: (mapping as any).element,
-                targetAttribute: (mapping as any).attribute,
+                targetElement: elementMapping.element,
+                targetAttribute: elementMapping.attribute,
                 gap: 0,
               },
             });
