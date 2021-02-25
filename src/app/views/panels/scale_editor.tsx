@@ -11,6 +11,7 @@ import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
+import { AttributeMap } from "../../../core/specification";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -89,12 +90,11 @@ export class ScaleEditor extends React.Component<
                     text={strings.scaleEditor.add}
                     onClick={() => {
                       const mappingsKey = Object.keys(scale.properties.mapping);
-                      const theLastMapping: any = mappingsKey[
-                        mappingsKey.length - 1
-                      ] as any;
-                      const value = (scale.properties.mapping as any)[
+                      const theLastMapping: string =
+                        mappingsKey[mappingsKey.length - 1];
+                      const value = (scale.properties.mapping as AttributeMap)[
                         theLastMapping
-                      ] as any;
+                      ];
                       new Actions.SetObjectProperty(
                         scale,
                         "mapping",
