@@ -86,6 +86,10 @@ export interface AxisInference {
   style?: AxisRenderingStyle;
   /** Infer axis data and assign to this property */
   property: PropertyField;
+
+  orderMode?: Types.OrderMode;
+  order?: string[];
+  rawExpression?: string;
 }
 
 /** Infer scale parameter, set to scale's domain property */
