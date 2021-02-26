@@ -25,6 +25,7 @@ import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
+import { getConfig } from "../config";
 
 export class HelpButton extends React.Component<
   {
@@ -82,7 +83,12 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a href="mailto:charticulator@microsoft.com">
+                      <a
+                        href={
+                          getConfig().ContactUsHref ||
+                          "mailto:charticulator@microsoft.com"
+                        }
+                      >
                         {strings.help.contact}
                       </a>
                     </div>
