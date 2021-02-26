@@ -47,14 +47,12 @@ import {
 } from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
-import { TextExpression, ValueType } from "../../core/expression/classes";
+import { ValueType } from "../../core/expression/classes";
 import {
   AttributeMap,
   AttributeType,
   DataKind,
   DataType,
-  DataValue,
-  Mapping,
   MappingType,
   ObjectProperties,
   ScaleMapping,
@@ -817,7 +815,7 @@ export class AppStore extends BaseStore {
         }
       }
     }
-    let newLegend = null;
+    let newLegend: Specification.ChartElement;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
       if (
@@ -825,13 +823,9 @@ export class AppStore extends BaseStore {
         mapping.valueIndex !== undefined &&
         mapping.valueIndex !== null
       ) {
-        newLegend = this.chartManager.createObject(
-          `legend.custom`
-        ) as Specification.ChartElement;
+        newLegend = this.chartManager.createObject(`legend.custom`);
       } else {
-        newLegend = this.chartManager.createObject(
-          `legend.categorical`
-        ) as Specification.ChartElement;
+        newLegend = this.chartManager.createObject(`legend.categorical`);
       }
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
@@ -852,9 +846,7 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,color>" ||
       scaleObject.classID == "scale.linear<integer,color>"
     ) {
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-color`
-      ) as Specification.ChartElement;
+      newLegend = this.chartManager.createObject(`legend.numerical-color`);
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
         type: MappingType.parent,
@@ -874,58 +866,51 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-number`
-      ) as Specification.ChartElement;
+      newLegend = this.chartManager.createObject(`legend.numerical-number`);
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
-
-      console.log("plot segment is", plotSegment);
-
+      let elementMappingsAttrs: string[];
       if (isType(plotSegment.object.classID, "plot-segment.polar")) {
-        console.log("POLAR");
+        console.log("POLAR", mapping.attribute);
       } else {
-        let x1Attr: string;
-        let y1Attr: string;
-        let x2Attr: string;
-        let y2Attr: string;
-        let side: AxisSide;
         switch (mapping.attribute) {
           case "height": {
-            x1Attr = "x1";
-            y1Attr = "y1";
-            x2Attr = "x1";
-            y2Attr = "y2";
-            side = "default";
+            elementMappingsAttrs = ["x1", "y1", "x1", "y2"];
+            properties.axis.side = "default";
             break;
           }
           case "width": {
-            x1Attr = "x1";
-            y1Attr = "y1";
-            x2Attr = "x2";
-            y2Attr = "y1";
-            side = "opposite";
+            elementMappingsAttrs = ["x1", "y1", "x2", "y1"];
+            properties.axis.side = "opposite";
             break;
           }
         }
-        properties.axis.side = side;
-        newLegend.mappings.x1 = {
-          type: MappingType.parent,
-          parentAttribute: x1Attr,
-        } as Specification.ParentMapping;
-        newLegend.mappings.y1 = {
-          type: MappingType.parent,
-          parentAttribute: y1Attr,
-        } as Specification.ParentMapping;
-        newLegend.mappings.x2 = {
-          type: MappingType.parent,
-          parentAttribute: x2Attr,
-        } as Specification.ParentMapping;
-        newLegend.mappings.y2 = {
-          type: MappingType.parent,
-          parentAttribute: y2Attr,
-        } as Specification.ParentMapping;
       }
+      ["x1", "y1", "x2", "y2"].forEach((key, i) => {
+        // //snap legend to plot segment
+        // this.chartManager.chart.constraints.push({
+        //   type: "snap",
+        //   attributes: {
+        //     element: plotSegment.object._id,
+        //     attribute: elementMappingsAttrs[i],
+        //     targetElement: newLegend._id,
+        //     targetAttribute: key,
+        //     gap: 0,
+        //   },
+        // });
+
+        // snap plot segment to legend
+        this.chartManager.chart.constraints.push({
+          type: "snap",
+          attributes: {
+            element: newLegend._id,
+            attribute: key,
+            targetElement: plotSegment.object._id,
+            targetAttribute: elementMappingsAttrs[i],
+            gap: 0,
+          },
+        });
+      });
     }
 
     const mappingOptions = {
