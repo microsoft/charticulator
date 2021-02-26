@@ -49,17 +49,23 @@ import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { TextExpression, ValueType } from "../../core/expression/classes";
 import {
+  AttributeMap,
   AttributeType,
   DataKind,
   DataType,
   DataValue,
   Mapping,
   MappingType,
+  ObjectProperties,
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
-import { AxisSide, OrderMode } from "../../core/specification/types";
+import {
+  AxisRenderingStyle,
+  AxisSide,
+  OrderMode,
+} from "../../core/specification/types";
 import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
 
 export interface ChartStoreStateSolverStatus {
@@ -1388,7 +1394,8 @@ export class AppStore extends BaseStore {
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible: true,
       side: propertyValue?.side || "default",
-      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
+      style: (object.properties[options.property] as ObjectProperties)
+        ?.style as AxisRenderingStyle,
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
       order: dataExpression.metadata.order,
