@@ -16,6 +16,7 @@ export interface AppExtension {
 }
 
 export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
+  ContactUsHref?: string;
   LegalNotices: {
     /** HTML representation of the privacy statement */
     privacyStatementHTML: string;

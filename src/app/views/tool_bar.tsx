@@ -427,7 +427,7 @@ export class Toolbar extends ContextedComponent<
             <ObjectButton
               classID="guide-x"
               title={strings.toolbar.guideX}
-              icon="guide/x"
+              icon="guide/y"
             />
             <ObjectButton
               classID="coordinator-x"
