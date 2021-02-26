@@ -57,7 +57,7 @@ import {
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
-import { ChartTemplate } from "../../../../container";
+import { ChartTemplate, getSortFunctionByData } from "../../../../container";
 import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
@@ -1292,7 +1292,11 @@ export class ReorderStringsValue extends React.Component<
             icon={"general/sort"}
             text="Sort"
             onClick={() => {
-              this.setState({ items: this.state.items.sort() });
+              this.setState({
+                items: this.state.items.sort(
+                  getSortFunctionByData(this.state.items)
+                ),
+              });
             }}
           />
           {this.props.allowReset && (
