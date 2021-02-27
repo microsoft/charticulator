@@ -27,6 +27,7 @@ import {
   MappingType,
   ScaleMapping,
 } from "../core/specification";
+import { GuideAttributeNames } from "../core/prototypes/guides";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -141,6 +142,20 @@ export class ChartTemplate {
             scaleMapping.expression,
             scaleMapping.table
           );
+        }
+
+        // Guide
+        if (Prototypes.isType(item.chartElement.classID, "guide.guide")) {
+          const valueProp = this.template.properties.filter(
+            (p) =>
+              p.objectID === item.chartElement._id &&
+              p.target.attribute === GuideAttributeNames.value
+          )[0];
+          const valueMapping: Specification.ValueMapping = {
+            type: MappingType.value,
+            value: valueProp.default as number,
+          };
+          item.chartElement.mappings.value = valueMapping;
         }
 
         // PlotSegment
