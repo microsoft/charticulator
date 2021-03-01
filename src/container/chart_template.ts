@@ -401,19 +401,32 @@ export class ChartTemplate {
             )
           );
 
-          if (inference.autoDomainMin) {
+          if (
+            inference.autoDomainMin &&
+            object.properties.domainMin !== undefined
+          ) {
             vectors.push([object.properties.domainMin]);
           }
-          if (inference.autoDomainMax) {
+          if (
+            inference.autoDomainMax &&
+            object.properties.domainMax != undefined
+          ) {
             vectors.push([object.properties.domainMax]);
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},
           }) as Prototypes.Scales.ScaleClass;
-          scaleClass.inferParameters(vector, {
-            reuseRange: true,
-          });
+          if (object.classID === "scale.categorical<string,color>") {
+            scaleClass.inferParameters(vector, {
+              reuseRange: true,
+              extendScale: true,
+            });
+          } else {
+            scaleClass.inferParameters(vector, {
+              extendScale: true,
+            });
+          }
         }
       }
       if (inference.nestedChart) {

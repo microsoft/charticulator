@@ -67,6 +67,7 @@ import {
   OrderMode,
 } from "../../core/specification/types";
 import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
+import { domain } from "process";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1274,6 +1275,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: xDataProperty.numericalMode,
+          autoDomainMax: xDataProperty.autoDomainMax,
+          autoDomainMin: xDataProperty.autoDomainMin,
+          domainMin: xDataProperty.domainMin,
+          domainMax: xDataProperty.domainMax,
         });
       }
 
@@ -1307,6 +1312,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: yDataProperty.numericalMode,
+          autoDomainMax: yDataProperty.autoDomainMax,
+          autoDomainMin: yDataProperty.autoDomainMin,
+          domainMin: yDataProperty.domainMin,
+          domainMax: yDataProperty.domainMax,
         });
       }
 
@@ -1338,6 +1347,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: axis.numericalMode,
+          autoDomainMax: axis.autoDomainMax,
+          autoDomainMin: axis.autoDomainMin,
+          domainMin: axis.domainMin,
+          domainMax: axis.domainMax,
         });
       }
     });
@@ -1361,6 +1374,10 @@ export class AppStore extends BaseStore {
     dataExpression: DragData.DataExpression;
     type?: "default" | "numerical" | "categorical";
     numericalMode?: "linear" | "logarithmic" | "temporal";
+    autoDomainMax: boolean;
+    autoDomainMin: boolean;
+    domainMin: number;
+    domainMax: number;
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
@@ -1400,8 +1417,8 @@ export class AppStore extends BaseStore {
       dataKind: dataExpression.metadata.kind,
       order: dataExpression.metadata.order,
       orderMode: dataExpression.metadata.orderMode,
-      autoDomainMax: true,
-      autoDomainMin: true,
+      autoDomainMax: options.autoDomainMax,
+      autoDomainMin: options.autoDomainMin,
     };
 
     let expressions = [groupExpression];
@@ -1471,8 +1488,16 @@ export class AppStore extends BaseStore {
           {
             const scale = new Scale.LinearScale();
             scale.inferParameters(values as number[]);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
+            if (dataBinding.autoDomainMin) {
+              dataBinding.domainMin = scale.domainMin;
+            } else {
+              dataBinding.domainMin = options.domainMin;
+            }
+            if (dataBinding.autoDomainMax) {
+              dataBinding.domainMax = scale.domainMax;
+            } else {
+              dataBinding.domainMax = options.domainMax;
+            }
             dataBinding.type = "numerical";
             dataBinding.numericalMode = "linear";
           }
@@ -1481,8 +1506,16 @@ export class AppStore extends BaseStore {
           {
             const scale = new Scale.DateScale();
             scale.inferParameters(values as number[], false);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
+            if (dataBinding.autoDomainMin) {
+              dataBinding.domainMin = scale.domainMin;
+            } else {
+              dataBinding.domainMin = options.domainMin;
+            }
+            if (dataBinding.autoDomainMax) {
+              dataBinding.domainMax = scale.domainMax;
+            } else {
+              dataBinding.domainMax = options.domainMax;
+            }
             dataBinding.type = "numerical";
             dataBinding.numericalMode = "temporal";
             dataBinding.categories = this.getCategoriesForDataBinding(
