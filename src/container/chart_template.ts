@@ -151,11 +151,13 @@ export class ChartTemplate {
               p.objectID === item.chartElement._id &&
               p.target.attribute === GuideAttributeNames.value
           )[0];
-          const valueMapping: Specification.ValueMapping = {
-            type: MappingType.value,
-            value: valueProp.default as number,
-          };
-          item.chartElement.mappings.value = valueMapping;
+          if (valueProp) {
+            const valueMapping: Specification.ValueMapping = {
+              type: MappingType.value,
+              value: valueProp.default as number,
+            };
+            item.chartElement.mappings.value = valueMapping;
+          }
         }
 
         // PlotSegment
