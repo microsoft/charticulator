@@ -385,7 +385,13 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
-        if (inference.autoDomainMin || inference.autoDomainMax) {
+        // uses disableAutoMin disableAutoMax for handle old templates
+        if (
+          inference.autoDomainMin ||
+          inference.autoDomainMax ||
+          !inference.disableAutoMin ||
+          !inference.disableAutoMax
+        ) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
             this.transformExpression(x, inference.dataSource.table)
@@ -402,13 +408,13 @@ export class ChartTemplate {
           );
 
           if (
-            inference.autoDomainMin &&
+            (inference.autoDomainMin || !inference.disableAutoMin) &&
             object.properties.domainMin !== undefined
           ) {
             vectors.push([object.properties.domainMin]);
           }
           if (
-            inference.autoDomainMax &&
+            (inference.autoDomainMax || !inference.disableAutoMax) &&
             object.properties.domainMax != undefined
           ) {
             vectors.push([object.properties.domainMax]);

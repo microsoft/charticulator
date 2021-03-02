@@ -69,6 +69,15 @@ export interface Inference {
   /** Disable any automatic domain/range/axis behavior for max of range */
   autoDomainMax?: boolean;
 
+  /**
+   * @deprecated Use autoDomainMin
+   */
+  disableAutoMin?: boolean;
+  /**
+   * @deprecated Use autoDomainMax
+   */
+  disableAutoMax?: boolean;
+
   axis?: AxisInference;
   scale?: ScaleInference;
   expression?: ExpressionInference;
