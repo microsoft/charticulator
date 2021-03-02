@@ -24,9 +24,11 @@ import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
 import {
   AttributeList,
+  AttributeMap,
   MappingType,
   ScaleMapping,
 } from "../core/specification";
+import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -194,6 +196,17 @@ export class ChartTemplate {
               (plotSegment.properties
                 .axis as any).expression = this.transformExpression(
                 (plotSegment.properties.axis as any).expression,
+                originalTable
+              );
+            }
+          }
+          if (plotSegment.properties.sublayout) {
+            const expression = (plotSegment.properties
+              .sublayout as Region2DSublayoutOptions).order?.expression;
+            if (expression) {
+              (plotSegment.properties
+                .sublayout as Region2DSublayoutOptions).order.expression = this.transformExpression(
+                expression,
                 originalTable
               );
             }
