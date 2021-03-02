@@ -30,10 +30,17 @@ import { getConfig } from "../config";
 export class HelpButton extends React.Component<
   {
     hideReportIssues: boolean;
+    handlers: MenuBarHandlers;
   },
   {}
 > {
   public render() {
+    const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+      onClick: this.props.handlers?.onContactUsLink
+    };
+    if (!contactUsLinkProps.onClick) {
+      contactUsLinkProps.href = getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
+    }
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/help")}
@@ -84,10 +91,7 @@ export class HelpButton extends React.Component<
                     </div>
                     <div className="el-item">
                       <a
-                        href={
-                          getConfig().ContactUsHref ||
-                          "mailto:charticulator@microsoft.com"
-                        }
+                        {...contactUsLinkProps}
                       >
                         {strings.help.contact}
                       </a>
@@ -111,8 +115,9 @@ export class HelpButton extends React.Component<
 }
 
 export interface MenuBarHandlers {
-  onImportTemplateClick: () => void;
-  onExportTemplateClick: () => void;
+  onContactUsLink?: () => void;
+  onImportTemplateClick?: () => void;
+  onExportTemplateClick?: () => void;
 }
 
 export interface MenuBarProps {
@@ -621,6 +626,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               </>
             ) : null}
             <HelpButton
+              handlers={this.props.handlers}
               hideReportIssues={this.context.store.editorType === "embedded"}
             />
           </div>
