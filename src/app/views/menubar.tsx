@@ -25,14 +25,22 @@ import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
+import { getConfig } from "../config";
 
 export class HelpButton extends React.Component<
   {
     hideReportIssues: boolean;
+    handlers: MenuBarHandlers;
   },
   {}
 > {
   public render() {
+    const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+      onClick: this.props.handlers?.onContactUsLink
+    };
+    if (!contactUsLinkProps.onClick) {
+      contactUsLinkProps.href = getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
+    }
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/help")}
@@ -82,7 +90,9 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a href="mailto:charticulator@microsoft.com">
+                      <a
+                        {...contactUsLinkProps}
+                      >
                         {strings.help.contact}
                       </a>
                     </div>
@@ -105,8 +115,9 @@ export class HelpButton extends React.Component<
 }
 
 export interface MenuBarHandlers {
-  onImportTemplateClick: () => void;
-  onExportTemplateClick: () => void;
+  onContactUsLink?: () => void;
+  onImportTemplateClick?: () => void;
+  onExportTemplateClick?: () => void;
 }
 
 export interface MenuBarProps {
@@ -615,6 +626,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               </>
             ) : null}
             <HelpButton
+              handlers={this.props.handlers}
               hideReportIssues={this.context.store.editorType === "embedded"}
             />
           </div>
