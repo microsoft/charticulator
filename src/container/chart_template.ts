@@ -27,6 +27,7 @@ import {
   AttributeMap,
   MappingType,
   ScaleMapping,
+  ValueMapping,
 } from "../core/specification";
 import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 
@@ -436,6 +437,7 @@ export class ChartTemplate {
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},
           }) as Prototypes.Scales.ScaleClass;
+
           if (object.classID === "scale.categorical<string,color>") {
             scaleClass.inferParameters(vector, {
               reuseRange: true,
@@ -444,6 +446,11 @@ export class ChartTemplate {
           } else {
             scaleClass.inferParameters(vector, {
               extendScale: true,
+              reuseRange: true,
+              rangeNumber: [
+                (object.mappings.rangeMin as ValueMapping)?.value as number,
+                (object.mappings.rangeMax as ValueMapping)?.value as number,
+              ],
             });
           }
         }
