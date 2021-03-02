@@ -384,7 +384,10 @@ export class ChartTemplate {
           }
           if (axis.type == "categorical") {
             const scale = new Scale.CategoricalScale();
-            scale.inferParameters(vector, OrderMode.order);
+            scale.inferParameters(
+              vector,
+              inference.axis.orderMode || OrderMode.order
+            );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
             scale.domain.forEach((index, key) => {
               axisDataBinding.categories[index] = key;
