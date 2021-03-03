@@ -45,10 +45,15 @@ export interface PolarAttributes extends Region2DAttributes {
   radial1: number;
   radial2: number;
 
-  r1x: number;
-  r1y: number;
-  r2x: number;
-  r2y: number;
+  a1r1x: number;
+  a1r1y: number;
+  a1r2x: number;
+  a1r2y: number;
+
+  a2r1x: number;
+  a2r1y: number;
+  a2r2x: number;
+  a2r2y: number;
 }
 
 export interface PolarState extends Specification.PlotSegmentState {
@@ -157,10 +162,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "y",
     "cx",
     "cy",
-    "r1x",
-    "r1y",
-    "r2x",
-    "r2y",
+    "a1r1x",
+    "a1r1y",
+    "a1r2x",
+    "a1r2y",
+    "a2r1x",
+    "a2r1y",
+    "a2r2x",
+    "a2r2y",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -223,20 +232,36 @@ export class PolarPlotSegment extends PlotSegmentClass<
       name: "cy",
       type: Specification.AttributeType.Number,
     },
-    r1x: {
-      name: "r1x",
+    a1r1x: {
+      name: "a1r1x",
       type: Specification.AttributeType.Number,
     },
-    r1y: {
-      name: "r1y",
+    a1r1y: {
+      name: "a1r1y",
       type: Specification.AttributeType.Number,
     },
-    r2x: {
-      name: "r2x",
+    a1r2x: {
+      name: "a1r2x",
       type: Specification.AttributeType.Number,
     },
-    r2y: {
-      name: "r2y",
+    a1r2y: {
+      name: "a1r2y",
+      type: Specification.AttributeType.Number,
+    },
+    a2r1x: {
+      name: "a2r1x",
+      type: Specification.AttributeType.Number,
+    },
+    a2r1y: {
+      name: "a2r1y",
+      type: Specification.AttributeType.Number,
+    },
+    a2r2x: {
+      name: "a2r2x",
+      type: Specification.AttributeType.Number,
+    },
+    a2r2y: {
+      name: "a2r2y",
       type: Specification.AttributeType.Number,
     },
   };
@@ -257,10 +282,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.gapY = 4;
     attrs.cx = 0;
     attrs.cy = 0;
-    attrs.r1x = 0;
-    attrs.r1y = 0;
-    attrs.r2x = 0;
-    attrs.r2y = 0;
+    attrs.a1r1x = 0;
+    attrs.a1r1y = 0;
+    attrs.a1r2x = 0;
+    attrs.a1r2y = 0;
+    attrs.a2r1x = 0;
+    attrs.a2r1y = 0;
+    attrs.a2r2x = 0;
+    attrs.a2r2y = 0;
   }
 
   public createBuilder(
@@ -307,10 +336,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
       outerRadius,
       cx,
       cy,
-      r1x,
-      r1y,
-      r2x,
-      r2y,
+      a1r1x,
+      a1r1y,
+      a1r2x,
+      a1r2y,
+      a2r1x,
+      a2r1y,
+      a2r2x,
+      a2r2y,
     ] = solver.attrs(attrs, [
       "x1",
       "y1",
@@ -320,10 +353,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
       "radial2",
       "cx",
       "cy",
-      "r1x",
-      "r1y",
-      "r2x",
-      "r2y",
+      "a1r1x",
+      "a1r1y",
+      "a1r2x",
+      "a1r2y",
+      "a2r1x",
+      "a2r1y",
+      "a2r2x",
+      "a2r2y",
     ]);
 
     attrs.angle1 = props.startAngle;
@@ -377,10 +414,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
     solver.makeConstant(attrs, "cx");
     solver.makeConstant(attrs, "cy");
-    solver.makeConstant(attrs, "r1x");
-    solver.makeConstant(attrs, "r1y");
-    solver.makeConstant(attrs, "r2x");
-    solver.makeConstant(attrs, "r2y");
+    solver.makeConstant(attrs, "a1r1x");
+    solver.makeConstant(attrs, "a1r1y");
+    solver.makeConstant(attrs, "a1r2x");
+    solver.makeConstant(attrs, "a1r2y");
+    solver.makeConstant(attrs, "a2r1x");
+    solver.makeConstant(attrs, "a2r1y");
+    solver.makeConstant(attrs, "a2r2x");
+    solver.makeConstant(attrs, "a2r2y");
 
     solver.addPlugin(
       new ConstraintPlugins.PolarPlotSegmentPlugin(solver, attrs)
@@ -410,7 +451,22 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy, r1x, r1y, r2x, r2y } = attrs;
+    const {
+      x1,
+      y1,
+      x2,
+      y2,
+      cx,
+      cy,
+      a1r1x,
+      a1r1y,
+      a1r2x,
+      a1r2y,
+      a2r1x,
+      a2r1y,
+      a2r2x,
+      a2r2y,
+    } = attrs;
     return [
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
@@ -418,10 +474,16 @@ export class PolarPlotSegment extends PlotSegmentClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
-      { type: "x", value: r1x, attribute: "r1x" } as SnappingGuides.Axis,
-      { type: "y", value: r1y, attribute: "r1y" } as SnappingGuides.Axis,
-      { type: "x", value: r2x, attribute: "r2x" } as SnappingGuides.Axis,
-      { type: "y", value: r2y, attribute: "r2y" } as SnappingGuides.Axis,
+
+      // do we need snapping to these ??????????
+      { type: "x", value: a1r1x, attribute: "a1r1x" } as SnappingGuides.Axis,
+      { type: "y", value: a1r1y, attribute: "a1r1y" } as SnappingGuides.Axis,
+      { type: "x", value: a1r2x, attribute: "a1r2x" } as SnappingGuides.Axis,
+      { type: "y", value: a1r2y, attribute: "a1r2y" } as SnappingGuides.Axis,
+      { type: "x", value: a2r1x, attribute: "a2r1x" } as SnappingGuides.Axis,
+      { type: "y", value: a2r1y, attribute: "a2r1y" } as SnappingGuides.Axis,
+      { type: "x", value: a2r2x, attribute: "a2r2x" } as SnappingGuides.Axis,
+      { type: "y", value: a2r2y, attribute: "a2r2y" } as SnappingGuides.Axis,
     ];
   }
 
