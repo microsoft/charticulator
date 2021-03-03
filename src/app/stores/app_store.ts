@@ -871,7 +871,20 @@ export class AppStore extends BaseStore {
       properties.scale = scale;
       let elementMappingsAttrs: string[];
       if (isType(plotSegment.object.classID, "plot-segment.polar")) {
-        console.log("POLAR", mapping.attribute);
+        switch (mapping.attribute) {
+          case "height": {
+            // radial
+            elementMappingsAttrs = ["a1r1x", "a1r1y", "a1r2x", "a1r2y"];
+            properties.axis.side = "default";
+            break;
+          }
+          case "width": {
+            // angular
+            elementMappingsAttrs = ["?", "?", "?", "?"]; // ?????????????????? TODO angular attributes
+            properties.axis.side = "opposite";
+            break;
+          }
+        }
       } else {
         switch (mapping.attribute) {
           case "height": {
