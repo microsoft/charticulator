@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { keys } from "d3";
 import { Prototypes, zipArray } from "../../../container";
-import { string } from "../../expression";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -11,7 +9,7 @@ import {
   Variable,
 } from "../../solver";
 import * as Specification from "../../specification";
-import { AttributeMap, ObjectState } from "../../specification";
+import { ObjectState } from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
   AttributeDescription,
@@ -21,11 +19,12 @@ import {
   Controls,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
-import { CartesianPlotSegment } from "../plot_segments";
+import { Region2DAttributes } from "../plot_segments";
 // import { PolarState } from "../plot_segments/region_2d/polar";
 import { ChartStateManager } from "../state";
 
-export interface PolarGuideCoordinatorAttributesExtend {
+export interface PolarGuideCoordinatorAttributesExtend
+  extends Region2DAttributes {
   x: number;
   y: number;
   x1: number;
@@ -34,8 +33,6 @@ export interface PolarGuideCoordinatorAttributesExtend {
   y2: number;
   cx: number;
   cy: number;
-  ry1: number;
-  ry2: number;
 
   angle1: number;
   angle2: number;
@@ -340,46 +337,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           attrs,
           chartConstraints,
           this.object._id,
-          (elementID: string, attribute: string, value: any) => {
-            const found = zipArray(
-              manager.chart.elements,
-              manager.chartState.elements
-            ).find(([element, elementState]) => {
-              return element._id === elementID;
-            });
-            if (found) {
-              const elementState = found[1];
-              elementState.attributes[attribute] = value;
-            } else {
-              for (const [element, elementState] of zipArray(
-                manager.chart.elements,
-                manager.chartState.elements
-              )) {
-                if (
-                  Prototypes.isType(element.classID, CartesianPlotSegment.type)
-                ) {
-                  const plotSegment = element as Specification.PlotSegment;
-                  const plotSegmentState = elementState as Specification.PlotSegmentState;
-                  for (const glyphState of plotSegmentState.glyphs) {
-                    const glyph = Prototypes.findObjectById(
-                      manager.chart,
-                      plotSegment.glyph
-                    ) as Specification.Glyph;
-                    const found = zipArray(glyph.marks, glyphState.marks).find(
-                      ([element, elementState]) => {
-                        return element._id === elementID;
-                      }
-                    );
-
-                    if (found) {
-                      const elementState = found[1];
-                      elementState.attributes[attribute] = value;
-                    }
-                  }
-                }
-              }
-            }
-          },
           manager
         )
       );

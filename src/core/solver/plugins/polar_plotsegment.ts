@@ -4,9 +4,17 @@
 import { ConstraintPlugin, ConstraintSolver } from "../abstract";
 import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
 import { Geometry } from "../../common";
+import { Constraint } from "../../specification";
+import { ChartStateManager } from "../../prototypes";
+import { snapToAttribute } from "../../prototypes/update_attribute";
 
 export class PolarPlotSegmentPlugin extends ConstraintPlugin {
-  constructor(public solver: ConstraintSolver, private attrs: PolarAttributes) {
+  constructor(
+    private attrs: PolarAttributes,
+    private chartConstraints: Constraint[],
+    private objectID: string,
+    private manager: ChartStateManager
+  ) {
     super();
   }
   public apply(): boolean {
@@ -42,39 +50,25 @@ export class PolarPlotSegmentPlugin extends ConstraintPlugin {
     attrs.a2r2x = a2r2.x;
     attrs.a2r2y = a2r2.y;
 
-    // TODO take snapped attributes and apply new value
-
-    // this.chartConstraints
-    //   .filter(
-    //     (constraint) =>
-    //       constraint.type == "snap" &&
-    //       constraint.attributes.targetAttribute === attrXname &&
-    //       constraint.attributes.targetElement === this.coordinatoObjectID
-    //   )
-    //   .forEach((constraint) => {
-    //     // UpdateChartElementAttribute
-    //     this.onUpdateAttribute(
-    //       constraint.attributes.element,
-    //       constraint.attributes.attribute,
-    //       cx + tx
-    //     );
-    //   });
-
-    // this.chartConstraints
-    //   .filter(
-    //     (constraint) =>
-    //       constraint.type == "snap" &&
-    //       constraint.attributes.targetAttribute === attrYname &&
-    //       constraint.attributes.targetElement === this.coordinatoObjectID
-    //   )
-    //   .forEach((constraint) => {
-    //     // UpdateChartElementAttribute
-    //     this.onUpdateAttribute(
-    //       constraint.attributes.element,
-    //       constraint.attributes.attribute,
-    //       cy + ty
-    //     );
-    //   });
+    // take snapped attributes and apply new value
+    [
+      "a1r1x",
+      "a1r1y",
+      "a1r2x",
+      "a1r2y",
+      "a2r1x",
+      "a2r1y",
+      "a2r2x",
+      "a2r2y",
+    ].forEach((attrName) => {
+      snapToAttribute(
+        this.manager,
+        this.chartConstraints,
+        this.objectID,
+        attrName,
+        attrs[attrName]
+      );
+    });
 
     return true;
   }

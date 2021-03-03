@@ -322,7 +322,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public buildConstraints(
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    context: BuildConstraintsContext,
+    manager: ChartStateManager
   ): void {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -424,7 +425,12 @@ export class PolarPlotSegment extends PlotSegmentClass<
     solver.makeConstant(attrs, "a2r2y");
 
     solver.addPlugin(
-      new ConstraintPlugins.PolarPlotSegmentPlugin(solver, attrs)
+      new ConstraintPlugins.PolarPlotSegmentPlugin(
+        attrs,
+        this.parent.object.constraints,
+        this.object._id,
+        manager
+      )
     );
   }
 
