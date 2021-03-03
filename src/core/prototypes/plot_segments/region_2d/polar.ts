@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Graphics from "../../../graphics";
-import { ConstraintSolver, ConstraintStrength } from "../../../solver";
+import {
+  ConstraintPlugins,
+  ConstraintSolver,
+  ConstraintStrength,
+  Variable,
+} from "../../../solver";
 import * as Specification from "../../../specification";
 import {
   AttributeDescription,
@@ -35,8 +40,6 @@ export interface PolarAttributes extends Region2DAttributes {
   y2: number;
   cx: number;
   cy: number;
-  ry1: number;
-  ry2: number;
 
   angle1: number;
   angle2: number;
@@ -150,8 +153,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "y",
     "cx",
     "cy",
-    "ry1",
-    "ry2",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -214,14 +215,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       name: "cy",
       type: Specification.AttributeType.Number,
     },
-    ry1: {
-      name: "ry1",
-      type: Specification.AttributeType.Number,
-    },
-    ry2: {
-      name: "ry2",
-      type: Specification.AttributeType.Number,
-    },
   };
 
   public initializeState(): void {
@@ -240,8 +233,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.gapY = 4;
     attrs.cx = 0;
     attrs.cy = 0;
-    attrs.ry1 = 0;
-    attrs.ry2 = 0;
   }
 
   public createBuilder(
@@ -288,8 +279,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       outerRadius,
       cx,
       cy,
-      ry1,
-      ry2,
     ] = solver.attrs(attrs, [
       "x1",
       "y1",
@@ -299,8 +288,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       "radial2",
       "cx",
       "cy",
-      "ry1",
-      "ry2",
     ]);
 
     attrs.angle1 = props.startAngle;
@@ -351,45 +338,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     }
-    // add constraint x1 + x2 = 2 * xc
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cx]],
-      [
-        [1, x1],
-        [1, x2],
-      ]
-    );
-    // add constraint y1 + y2 = 2 * yc
-    solver.addLinear(
-      ConstraintStrength.HARD,
-      0,
-      [[2, cy]],
-      [
-        [1, y1],
-        [1, y2],
-      ]
-    );
-    // add constraint cy + innerRadius = 1 * ry1
-    solver.addLinear(
-      ConstraintStrength.WEAK,
-      0,
-      [[1, ry1]],
-      [
-        [1, cy],
-        [1, innerRadius],
-      ]
-    );
-    // add constraint cy + outerRadius = 1 * ry2
-    solver.addLinear(
-      ConstraintStrength.WEAK,
-      0,
-      [[1, ry2]],
-      [
-        [1, cy],
-        [1, outerRadius],
-      ]
+    solver.makeConstant(attrs, "cx");
+    solver.makeConstant(attrs, "cy");
+
+    solver.addPlugin(
+      new ConstraintPlugins.PolarPlotSegmentPlugin(solver, attrs)
     );
   }
 
@@ -416,15 +369,14 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy, ry1, ry2 } = attrs;
+    const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: ry1, attribute: "ry1" } as SnappingGuides.Axis,
-      { type: "y", value: ry2, attribute: "ry2" } as SnappingGuides.Axis,
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
     ];
   }
 
