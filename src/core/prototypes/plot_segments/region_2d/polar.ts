@@ -5,7 +5,6 @@ import {
   ConstraintPlugins,
   ConstraintSolver,
   ConstraintStrength,
-  Variable,
 } from "../../../solver";
 import * as Specification from "../../../specification";
 import {
@@ -45,6 +44,11 @@ export interface PolarAttributes extends Region2DAttributes {
   angle2: number;
   radial1: number;
   radial2: number;
+
+  r1x: number;
+  r1y: number;
+  r2x: number;
+  r2y: number;
 }
 
 export interface PolarState extends Specification.PlotSegmentState {
@@ -153,6 +157,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "y",
     "cx",
     "cy",
+    "r1x",
+    "r1y",
+    "r2x",
+    "r2y",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -215,6 +223,22 @@ export class PolarPlotSegment extends PlotSegmentClass<
       name: "cy",
       type: Specification.AttributeType.Number,
     },
+    r1x: {
+      name: "r1x",
+      type: Specification.AttributeType.Number,
+    },
+    r1y: {
+      name: "r1y",
+      type: Specification.AttributeType.Number,
+    },
+    r2x: {
+      name: "r2x",
+      type: Specification.AttributeType.Number,
+    },
+    r2y: {
+      name: "r2y",
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public initializeState(): void {
@@ -233,6 +257,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.gapY = 4;
     attrs.cx = 0;
     attrs.cy = 0;
+    attrs.r1x = 0;
+    attrs.r1y = 0;
+    attrs.r2x = 0;
+    attrs.r2y = 0;
   }
 
   public createBuilder(
@@ -279,6 +307,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
       outerRadius,
       cx,
       cy,
+      r1x,
+      r1y,
+      r2x,
+      r2y,
     ] = solver.attrs(attrs, [
       "x1",
       "y1",
@@ -288,6 +320,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
       "radial2",
       "cx",
       "cy",
+      "r1x",
+      "r1y",
+      "r2x",
+      "r2y",
     ]);
 
     attrs.angle1 = props.startAngle;
@@ -338,8 +374,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     }
+
     solver.makeConstant(attrs, "cx");
     solver.makeConstant(attrs, "cy");
+    solver.makeConstant(attrs, "r1x");
+    solver.makeConstant(attrs, "r1y");
+    solver.makeConstant(attrs, "r2x");
+    solver.makeConstant(attrs, "r2y");
 
     solver.addPlugin(
       new ConstraintPlugins.PolarPlotSegmentPlugin(solver, attrs)
@@ -356,11 +397,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
-    const { x1, x2, y1, y2 } = attrs;
+    const { x1, x2, y1, y2, cx, cy } = attrs;
     return {
       type: "rectangle",
-      cx: (x1 + x2) / 2,
-      cy: (y1 + y2) / 2,
+      cx,
+      cy,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
@@ -369,7 +410,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, cx, cy } = attrs;
+    const { x1, y1, x2, y2, cx, cy, r1x, r1y, r2x, r2y } = attrs;
     return [
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
@@ -377,6 +418,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      { type: "x", value: r1x, attribute: "r1x" } as SnappingGuides.Axis,
+      { type: "y", value: r1y, attribute: "r1y" } as SnappingGuides.Axis,
+      { type: "x", value: r2x, attribute: "r2x" } as SnappingGuides.Axis,
+      { type: "y", value: r2y, attribute: "r2y" } as SnappingGuides.Axis,
     ];
   }
 
@@ -385,8 +430,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const cx = (attrs.x1 + attrs.x2) / 2;
-    const cy = (attrs.y1 + attrs.y2) / 2;
+    const { cx } = attrs;
+    const { cy } = attrs;
     const [angularMode, radialMode] = this.getAxisModes();
     const radialData = props.yData;
     const angularData = props.xData;
@@ -442,8 +487,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const cx = (attrs.x1 + attrs.x2) / 2;
-    const cy = (attrs.y1 + attrs.y2) / 2;
+    const { cx } = attrs;
+    const { cy } = attrs;
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
@@ -513,9 +558,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes as PolarAttributes;
-    const { x1, y1, x2, y2, radial1, radial2 } = attrs;
-    const cx = (x1 + x2) / 2;
-    const cy = (y1 + y2) / 2;
+    const { x1, y1, x2, y2, radial1, radial2, cx, cy } = attrs;
     const zones: DropZones.Description[] = [];
     zones.push({
       type: "region",
@@ -576,10 +619,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const rows = this.parent.dataflow.getTable(this.object.table).rows;
-    const { x1, x2, y1, y2 } = attrs;
+    const { x1, x2, y1, y2, cx, cy } = attrs;
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-    const cx = (x1 + x2) / 2,
-      cy = (y1 + y2) / 2;
     const builder = this.createBuilder();
     return [
       {
