@@ -8,7 +8,7 @@ import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
-import { refineColumnName } from "../..";
+import { getSortFunctionByData, refineColumnName } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
 import { getDateFormat } from "../../dataset/datetime";
@@ -48,7 +48,7 @@ export abstract class PlotSegmentClass<
     manager: ChartStateManager
   ): Graphics.Element {
     return null;
-  }   
+  }
 
   public getCoordinateSystem(): Graphics.CoordinateSystem {
     return new Graphics.CartesianCoordinates();
@@ -68,8 +68,6 @@ export abstract class PlotSegmentClass<
     return null;
   }
 
-
-  
   /**
    * Renders gridlines for axis
    * @param data axis data binding
@@ -85,9 +83,7 @@ export abstract class PlotSegmentClass<
       return [];
     }
     return [
-      manager.sectionHeader(
-        "Gridline"
-      ),
+      manager.sectionHeader("Gridline"),
       manager.row(
         "Style",
         manager.horizontal(
@@ -97,7 +93,12 @@ export abstract class PlotSegmentClass<
             {
               type: "dropdown",
               showLabel: true,
-              icons: ["general/cross","stroke/solid", "stroke/dashed", "stroke/dotted"],
+              icons: [
+                "general/cross",
+                "stroke/solid",
+                "stroke/dashed",
+                "stroke/dotted",
+              ],
               options: ["none", "solid", "dashed", "dotted"],
               labels: ["None", "Solid", "Dashed", "Dotted"],
             }
@@ -118,17 +119,20 @@ export abstract class PlotSegmentClass<
         "Width",
         manager.horizontal(
           [1, 1],
-          manager.inputNumber({
-            property: axisProperty,
-            field: ["style", "gridlineWidth"],
-          }, {
-            minimum: 0,
-            maximum: 100,
-            showUpdown: true
-          })
+          manager.inputNumber(
+            {
+              property: axisProperty,
+              field: ["style", "gridlineWidth"],
+            },
+            {
+              minimum: 0,
+              maximum: 100,
+              showUpdown: true,
+            }
+          )
         )
       ),
-    ]
+    ];
   }
 
   public getAttributePanelWidgets(
@@ -278,13 +282,8 @@ export abstract class PlotSegmentClass<
         const vj = orderExpression.getValue(
           table.getGroupedContext(dateRowIndices[j])
         );
-        if (vi < vj) {
-          return -1;
-        } else if (vi > vj) {
-          return 1;
-        } else {
-          return 0;
-        }
+
+        return getSortFunctionByData([vi + "", vj + ""])(vi, vj);
       };
       groups.sort(compare);
     }
