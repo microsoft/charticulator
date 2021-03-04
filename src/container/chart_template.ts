@@ -24,9 +24,12 @@ import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
 import {
   AttributeList,
+  AttributeMap,
   MappingType,
   ScaleMapping,
+  ValueMapping,
 } from "../core/specification";
+import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 import { GuideAttributeNames } from "../core/prototypes/guides";
 
 export interface TemplateInstance {
@@ -211,6 +214,17 @@ export class ChartTemplate {
               (plotSegment.properties
                 .axis as any).expression = this.transformExpression(
                 (plotSegment.properties.axis as any).expression,
+                originalTable
+              );
+            }
+          }
+          if (plotSegment.properties.sublayout) {
+            const expression = (plotSegment.properties
+              .sublayout as Region2DSublayoutOptions).order?.expression;
+            if (expression) {
+              (plotSegment.properties
+                .sublayout as Region2DSublayoutOptions).order.expression = this.transformExpression(
+                expression,
                 originalTable
               );
             }
@@ -405,7 +419,13 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
-        if (inference.autoDomainMin || inference.autoDomainMax) {
+        // uses disableAutoMin disableAutoMax for handle old templates
+        if (
+          inference.autoDomainMin ||
+          inference.autoDomainMax ||
+          !inference.disableAutoMin ||
+          !inference.disableAutoMax
+        ) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
             this.transformExpression(x, inference.dataSource.table)
@@ -421,19 +441,38 @@ export class ChartTemplate {
             )
           );
 
-          if (inference.autoDomainMin) {
+          if (
+            (inference.autoDomainMin || !inference.disableAutoMin) &&
+            object.properties.domainMin !== undefined
+          ) {
             vectors.push([object.properties.domainMin]);
           }
-          if (inference.autoDomainMax) {
+          if (
+            (inference.autoDomainMax || !inference.disableAutoMax) &&
+            object.properties.domainMax != undefined
+          ) {
             vectors.push([object.properties.domainMax]);
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},
           }) as Prototypes.Scales.ScaleClass;
-          scaleClass.inferParameters(vector, {
-            reuseRange: true,
-          });
+
+          if (object.classID === "scale.categorical<string,color>") {
+            scaleClass.inferParameters(vector, {
+              reuseRange: true,
+              extendScale: true,
+            });
+          } else {
+            scaleClass.inferParameters(vector, {
+              extendScale: true,
+              reuseRange: true,
+              rangeNumber: [
+                (object.mappings.rangeMin as ValueMapping)?.value as number,
+                (object.mappings.rangeMax as ValueMapping)?.value as number,
+              ],
+            });
+          }
         }
       }
       if (inference.nestedChart) {

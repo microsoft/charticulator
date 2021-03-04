@@ -307,7 +307,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.BindDataToAxis, function (action: BindDataToAxis) {
-    this.bindDataToAxis(action);
+    this.bindDataToAxis({
+      ...action,
+      autoDomainMax: true,
+      autoDomainMin: true,
+      domainMax: null,
+      domainMin: null,
+    });
     this.solveConstraintsAndUpdateGraphics();
   });
 
