@@ -869,18 +869,19 @@ export class AppStore extends BaseStore {
       newLegend = this.chartManager.createObject(`legend.numerical-number`);
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
-      let elementMappingsAttrs: string[];
+      const legendAttributes = ["x1", "y1", "x2", "y2"];
+      let targetAttributes: string[];
       if (isType(plotSegment.object.classID, "plot-segment.polar")) {
         switch (mapping.attribute) {
           case "height": {
             // radial
-            elementMappingsAttrs = ["a1r1x", "a1r1y", "a1r2x", "a1r2y"];
+            targetAttributes = ["a1r1x", "a1r1y", "a1r2x", "a1r2y"];
             properties.axis.side = "default";
             break;
           }
           case "width": {
             // angular
-            elementMappingsAttrs = ["?", "?", "?", "?"]; // ?????????????????? TODO angular attributes
+            targetAttributes = ["?", "?", "?", "?"]; // ?????????????????? TODO angular attributes
             properties.axis.side = "opposite";
             break;
           }
@@ -888,26 +889,26 @@ export class AppStore extends BaseStore {
       } else {
         switch (mapping.attribute) {
           case "height": {
-            elementMappingsAttrs = ["x1", "y1", "x1", "y2"];
+            targetAttributes = ["x1", "y1", "x1", "y2"];
             properties.axis.side = "default";
             break;
           }
           case "width": {
-            elementMappingsAttrs = ["x1", "y1", "x2", "y1"];
+            targetAttributes = ["x1", "y1", "x2", "y1"];
             properties.axis.side = "opposite";
             break;
           }
         }
       }
-      ["x1", "y1", "x2", "y2"].forEach((key, i) => {
+      legendAttributes.forEach((attribute, i) => {
         // //snap legend to plot segment
         this.chartManager.chart.constraints.push({
           type: "snap",
           attributes: {
             element: newLegend._id,
-            attribute: key,
+            attribute,
             targetElement: plotSegment.object._id,
-            targetAttribute: elementMappingsAttrs[i],
+            targetAttribute: targetAttributes[i],
             gap: 0,
           },
         });
