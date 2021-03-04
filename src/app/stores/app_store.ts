@@ -688,7 +688,7 @@ export class AppStore extends BaseStore {
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                getExpressionUnit(expression) &&
+                  getExpressionUnit(expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
@@ -901,18 +901,6 @@ export class AppStore extends BaseStore {
       }
       ["x1", "y1", "x2", "y2"].forEach((key, i) => {
         // //snap legend to plot segment
-        // this.chartManager.chart.constraints.push({
-        //   type: "snap",
-        //   attributes: {
-        //     element: plotSegment.object._id,
-        //     attribute: elementMappingsAttrs[i],
-        //     targetElement: newLegend._id,
-        //     targetAttribute: key,
-        //     gap: 0,
-        //   },
-        // });
-
-        // snap plot segment to legend
         this.chartManager.chart.constraints.push({
           type: "snap",
           attributes: {
@@ -1150,10 +1138,10 @@ export class AppStore extends BaseStore {
               mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
-            element: Specification.Element<Specification.ObjectProperties>;
-            key: string;
-            mapping: ScaleMapping;
-          }[];
+          element: Specification.Element<Specification.ObjectProperties>;
+          key: string;
+          mapping: ScaleMapping;
+        }[];
 
         // Figure out the groupBy
         let groupBy: Specification.Types.GroupBy = null;
@@ -1262,14 +1250,14 @@ export class AppStore extends BaseStore {
           {
             kind:
               xDataProperty.type === "numerical" &&
-                xDataProperty.numericalMode === "temporal"
+              xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
-                ? "order"
-                : null,
+              ? "order"
+              : null,
             order: xDataProperty.order,
           },
           xDataProperty.rawColumnExpr
@@ -1299,14 +1287,14 @@ export class AppStore extends BaseStore {
           {
             kind:
               yDataProperty.type === "numerical" &&
-                yDataProperty.numericalMode === "temporal"
+              yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
-                ? "order"
-                : null,
+              ? "order"
+              : null,
             order: yDataProperty.order,
           },
           yDataProperty.rawColumnExpr
@@ -1340,8 +1328,8 @@ export class AppStore extends BaseStore {
             orderMode: axis.orderMode
               ? axis.orderMode
               : axis.valueType === "string"
-                ? "order"
-                : null,
+              ? "order"
+              : null,
             order: axis.order,
           },
           axis.rawColumnExpr
