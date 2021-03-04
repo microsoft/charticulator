@@ -480,16 +480,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
       { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
       { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
-
-      // do we need snapping to these ??????????
-      { type: "x", value: a1r1x, attribute: "a1r1x" } as SnappingGuides.Axis,
-      { type: "y", value: a1r1y, attribute: "a1r1y" } as SnappingGuides.Axis,
-      { type: "x", value: a1r2x, attribute: "a1r2x" } as SnappingGuides.Axis,
-      { type: "y", value: a1r2y, attribute: "a1r2y" } as SnappingGuides.Axis,
-      { type: "x", value: a2r1x, attribute: "a2r1x" } as SnappingGuides.Axis,
-      { type: "y", value: a2r1y, attribute: "a2r1y" } as SnappingGuides.Axis,
-      { type: "x", value: a2r2x, attribute: "a2r2x" } as SnappingGuides.Axis,
-      { type: "y", value: a2r2y, attribute: "a2r2y" } as SnappingGuides.Axis,
     ];
   }
 
