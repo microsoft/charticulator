@@ -138,7 +138,11 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     attrs.y1 = 0;
     attrs.x2 = 0;
     attrs.y2 = 0;
-    // TODO add cx, cy, radius ??
+    attrs.cx = 0;
+    attrs.cy = 0;
+    attrs.radius = 0;
+    attrs.startAngle = 0;
+    attrs.endAngle = 0;
   }
 
   public getScale(): [Specification.Scale, Specification.ScaleState] {

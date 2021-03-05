@@ -60,7 +60,7 @@ describe("Chart Solver", () => {
         fs.readFileSync(path.join(pathPrefix, filename), "utf-8")
       ).state;
 
-      state = new Migrator().migrate(state, "1.7.0");
+      state = new Migrator().migrate(state, "2.0.1");
 
       const manager = new Prototypes.ChartStateManager(
         state.chart,
