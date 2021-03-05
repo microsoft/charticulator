@@ -52,7 +52,10 @@ export class ScaleEditor extends React.Component<
       );
     };
     let canAddLegend = true;
-    if (scale.classID.startsWith("scale.format")) {
+    if (
+      scale.classID.startsWith("scale.format") ||
+      scale.classID === "scale.categorical<string,image>"
+    ) {
       canAddLegend = false;
     }
     let canExtendLegend = false;

@@ -201,6 +201,15 @@ export class ChartTemplateBuilder {
                     }
                   } else if (
                     item.kind == "chart-element" &&
+                    Prototypes.isType(
+                      item.chartElement.classID,
+                      "legend.custom"
+                    )
+                  ) {
+                    // don't add column names legend expression into inferences
+                    expressions.delete(scaleMapping.expression);
+                  } else if (
+                    item.kind == "chart-element" &&
                     Prototypes.isType(item.chartElement.classID, "links")
                   ) {
                     const linkTable = item.object.properties.linkTable as any;
