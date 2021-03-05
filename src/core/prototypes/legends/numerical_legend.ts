@@ -19,12 +19,34 @@ import {
   defaultAxisStyle,
 } from "../plot_segments/axis";
 
+export enum NumericalNumberLegendAttributeNames {
+  x1 = "x1",
+  y1 = "y1",
+  x2 = "x2",
+  y2 = "y2",
+  cx = "cx",
+  cy = "cy",
+  radius = "radius",
+  startAngle = "startAngle",
+  endAngle = "endAngle",
+}
+
 export interface NumericalNumberLegendAttributes
   extends Specification.AttributeMap {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
+  cx?: number;
+  cy?: number;
+  radius?: number;
+  startAngle?: number;
+  endAngle?: number;
+}
+
+interface NumericalNumberLegendAttributeDescription
+  extends AttributeDescription {
+  name: NumericalNumberLegendAttributeNames;
 }
 
 export interface NumericalNumberLegendProperties
@@ -34,6 +56,7 @@ export interface NumericalNumberLegendProperties
     side: AxisSide;
     style: Specification.Types.AxisRenderingStyle;
   };
+  polarAngularMode?: boolean;
 }
 
 export class NumericalNumberLegendClass extends ChartElementClass<
@@ -57,22 +80,54 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     },
   };
 
-  public attributeNames: string[] = ["x1", "y1", "x2", "y2"];
-  public attributes: { [name: string]: AttributeDescription } = {
+  public attributeNames: NumericalNumberLegendAttributeNames[] = [
+    NumericalNumberLegendAttributeNames.x1,
+    NumericalNumberLegendAttributeNames.y1,
+    NumericalNumberLegendAttributeNames.x2,
+    NumericalNumberLegendAttributeNames.y2,
+    NumericalNumberLegendAttributeNames.cx,
+    NumericalNumberLegendAttributeNames.cy,
+    NumericalNumberLegendAttributeNames.radius,
+    NumericalNumberLegendAttributeNames.startAngle,
+    NumericalNumberLegendAttributeNames.endAngle,
+  ];
+  public attributes: {
+    [name in NumericalNumberLegendAttributeNames]: NumericalNumberLegendAttributeDescription;
+  } = {
     x1: {
-      name: "x1",
+      name: NumericalNumberLegendAttributeNames.x1,
       type: Specification.AttributeType.Number,
     },
     y1: {
-      name: "y1",
+      name: NumericalNumberLegendAttributeNames.y1,
       type: Specification.AttributeType.Number,
     },
     x2: {
-      name: "x2",
+      name: NumericalNumberLegendAttributeNames.x2,
       type: Specification.AttributeType.Number,
     },
     y2: {
-      name: "y2",
+      name: NumericalNumberLegendAttributeNames.y2,
+      type: Specification.AttributeType.Number,
+    },
+    cx: {
+      name: NumericalNumberLegendAttributeNames.cx,
+      type: Specification.AttributeType.Number,
+    },
+    cy: {
+      name: NumericalNumberLegendAttributeNames.cx,
+      type: Specification.AttributeType.Number,
+    },
+    radius: {
+      name: NumericalNumberLegendAttributeNames.radius,
+      type: Specification.AttributeType.Number,
+    },
+    startAngle: {
+      name: NumericalNumberLegendAttributeNames.startAngle,
+      type: Specification.AttributeType.Number,
+    },
+    endAngle: {
+      name: NumericalNumberLegendAttributeNames.endAngle,
       type: Specification.AttributeType.Number,
     },
   };
@@ -83,6 +138,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     attrs.y1 = 0;
     attrs.x2 = 0;
     attrs.y2 = 0;
+    // TODO add cx, cy, radius ??
   }
 
   public getScale(): [Specification.Scale, Specification.ScaleState] {
@@ -102,44 +158,102 @@ export class NumericalNumberLegendClass extends ChartElementClass<
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    return {
-      type: "line",
-      x1: this.state.attributes.x1,
-      y1: this.state.attributes.y1,
-      x2: this.state.attributes.x2,
-      y2: this.state.attributes.y2,
-    } as BoundingBox.Line;
+    if (this.object.properties.polarAngularMode) {
+      const { cx, cy, radius } = this.state.attributes;
+      const bbox: BoundingBox.Circle = {
+        type: "circle",
+        cx,
+        cy,
+        radius,
+      };
+      return bbox;
+    } else {
+      const { x1, y1, x2, y2 } = this.state.attributes;
+      const bbox: BoundingBox.Line = {
+        type: "line",
+        x1,
+        y1,
+        x2,
+        y2,
+      };
+      return bbox;
+    }
   }
 
   public getHandles(): Handles.Description[] {
-    const attrs = this.state.attributes;
-    const { x1, y1, x2, y2 } = attrs;
-    return [
-      {
-        type: "point",
-        x: x1,
-        y: y1,
-        actions: [
-          { type: "attribute", source: "x", attribute: "x1" },
-          { type: "attribute", source: "y", attribute: "y1" },
-        ],
-        options: {
-          snapToClosestPoint: true,
+    const { attributes } = this.state;
+    if (this.object.properties.polarAngularMode) {
+      const { cx, cy } = attributes;
+      // TODO is there a circle handle?????
+      const points: Handles.Point[] = [
+        {
+          type: "point",
+          x: cx,
+          y: cy,
+          actions: [
+            {
+              type: "attribute",
+              source: "x",
+              attribute: NumericalNumberLegendAttributeNames.cx,
+            },
+            {
+              type: "attribute",
+              source: "y",
+              attribute: NumericalNumberLegendAttributeNames.cy,
+            },
+          ],
+          options: {
+            snapToClosestPoint: true,
+          },
         },
-      } as Handles.Point,
-      {
-        type: "point",
-        x: x2,
-        y: y2,
-        actions: [
-          { type: "attribute", source: "x", attribute: "x2" },
-          { type: "attribute", source: "y", attribute: "y2" },
-        ],
-        options: {
-          snapToClosestPoint: true,
+      ];
+      return points;
+    } else {
+      const { x1, y1, x2, y2 } = attributes;
+      const points: Handles.Point[] = [
+        {
+          type: "point",
+          x: x1,
+          y: y1,
+          actions: [
+            {
+              type: "attribute",
+              source: "x",
+              attribute: NumericalNumberLegendAttributeNames.x1,
+            },
+            {
+              type: "attribute",
+              source: "y",
+              attribute: NumericalNumberLegendAttributeNames.y1,
+            },
+          ],
+          options: {
+            snapToClosestPoint: true,
+          },
         },
-      } as Handles.Point,
-    ];
+        {
+          type: "point",
+          x: x2,
+          y: y2,
+          actions: [
+            {
+              type: "attribute",
+              source: "x",
+              attribute: NumericalNumberLegendAttributeNames.x2,
+            },
+            {
+              type: "attribute",
+              source: "y",
+              attribute: NumericalNumberLegendAttributeNames.y2,
+            },
+          ],
+          options: {
+            snapToClosestPoint: true,
+          },
+        },
+      ];
+      return points;
+    }
   }
 
   public getGraphics(): Graphics.Element {
@@ -157,6 +271,39 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     const domainMin = scale[0].properties.domainMin as number;
     const domainMax = scale[0].properties.domainMax as number;
 
+    if (this.object.properties.polarAngularMode) {
+      return this.getPolarAxisGraphics(domainMin, domainMax);
+    } else {
+      return this.getLineAxisGraphics(rangeMin, rangeMax, domainMin, domainMax);
+    }
+  }
+
+  private getPolarAxisGraphics(
+    domainMin: number,
+    domainMax: number
+  ): Graphics.Element {
+    const renderer = new AxisRenderer();
+    renderer.oppositeSide = this.object.properties.axis.side === "opposite";
+
+    const { startAngle, endAngle } = this.state.attributes;
+
+    renderer.setLinearScale(domainMin, domainMax, startAngle, endAngle, null);
+    renderer.setStyle(this.object.properties.axis.style);
+
+    return renderer.renderPolar(
+      this.state.attributes.cx,
+      this.state.attributes.cy,
+      this.state.attributes.radius,
+      renderer.oppositeSide ? -1 : 1
+    );
+  }
+
+  private getLineAxisGraphics(
+    rangeMin: number,
+    rangeMax: number,
+    domainMin: number,
+    domainMax: number
+  ): Graphics.Element {
     const dx =
       (this.state.attributes.x2 as number) -
       (this.state.attributes.x1 as number);

@@ -49,8 +49,6 @@ import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import {
-  AttributeMap,
-  AttributeType,
   DataKind,
   DataType,
   MappingType,
@@ -59,12 +57,11 @@ import {
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
+import { AxisRenderingStyle, OrderMode } from "../../core/specification/types";
 import {
-  AxisRenderingStyle,
-  AxisSide,
-  OrderMode,
-} from "../../core/specification/types";
-import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
+  NumericalNumberLegendAttributeNames,
+  NumericalNumberLegendProperties,
+} from "../../core/prototypes/legends/numerical_legend";
 import { domain } from "process";
 import { isType, ObjectClass } from "../../core/prototypes";
 
@@ -869,7 +866,12 @@ export class AppStore extends BaseStore {
       newLegend = this.chartManager.createObject(`legend.numerical-number`);
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
-      const legendAttributes = ["x1", "y1", "x2", "y2"];
+      let legendAttributes: NumericalNumberLegendAttributeNames[] = [
+        NumericalNumberLegendAttributeNames.x1,
+        NumericalNumberLegendAttributeNames.y1,
+        NumericalNumberLegendAttributeNames.x2,
+        NumericalNumberLegendAttributeNames.y2,
+      ];
       let targetAttributes: string[];
       if (isType(plotSegment.object.classID, "plot-segment.polar")) {
         switch (mapping.attribute) {
@@ -881,8 +883,16 @@ export class AppStore extends BaseStore {
           }
           case "width": {
             // angular
-            targetAttributes = ["?", "?", "?", "?"]; // ?????????????????? TODO angular attributes
-            properties.axis.side = "opposite";
+            legendAttributes = [
+              NumericalNumberLegendAttributeNames.cx,
+              NumericalNumberLegendAttributeNames.cy,
+              NumericalNumberLegendAttributeNames.radius,
+              NumericalNumberLegendAttributeNames.startAngle,
+              NumericalNumberLegendAttributeNames.endAngle,
+            ];
+            targetAttributes = ["cx", "cy", "radial2", "angle1", "angle2"];
+            properties.axis.side = "default";
+            properties.polarAngularMode = true;
             break;
           }
         }
