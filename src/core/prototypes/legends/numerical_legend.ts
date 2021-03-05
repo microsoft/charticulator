@@ -276,13 +276,20 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     const domainMax = scale[0].properties.domainMax as number;
 
     if (this.object.properties.polarAngularMode) {
-      return this.getPolarAxisGraphics(domainMin, domainMax);
+      return this.getPolarAxisGraphics(
+        rangeMin,
+        rangeMax,
+        domainMin,
+        domainMax
+      );
     } else {
       return this.getLineAxisGraphics(rangeMin, rangeMax, domainMin, domainMax);
     }
   }
 
   private getPolarAxisGraphics(
+    rangeMin: number,
+    rangeMax: number,
     domainMin: number,
     domainMax: number
   ): Graphics.Element {
@@ -290,8 +297,16 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     renderer.oppositeSide = this.object.properties.axis.side === "opposite";
 
     const { startAngle, endAngle } = this.state.attributes;
+    const length = endAngle - startAngle;
 
-    renderer.setLinearScale(domainMin, domainMax, startAngle, endAngle, null);
+    const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
+    renderer.setLinearScale(
+      domainMin,
+      domainMin + (length - rangeMin / 360) / scaling,
+      startAngle,
+      endAngle,
+      null
+    );
     renderer.setStyle(this.object.properties.axis.style);
 
     return renderer.renderPolar(
