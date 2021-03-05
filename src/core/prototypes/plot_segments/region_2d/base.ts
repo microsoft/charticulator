@@ -85,41 +85,46 @@ export interface Region2DProperties extends Specification.AttributeMap {
   marginY2?: number;
 }
 
-export interface Region2DConfiguration {
-  terminology: {
-    xAxis: string;
-    yAxis: string;
-    /** Items alignments */
-    xMin: string;
-    xMinIcon: string;
-    xMiddle: string;
-    xMiddleIcon: string;
-    xMax: string;
-    xMaxIcon: string;
-    yMin: string;
-    yMinIcon: string;
-    yMiddle: string;
-    yMiddleIcon: string;
-    yMax: string;
-    yMaxIcon: string;
-    /** Stack X */
-    dodgeX: string;
-    dodgeXIcon: string;
-    /** Stack Y */
-    dodgeY: string;
-    dodgeYIcon: string;
-    /** Grid */
-    grid: string;
-    gridIcon: string;
-    gridDirectionX: string;
-    gridDirectionY: string;
-    /** Packing force layout */
-    packing: string;
-    packingIcon: string;
-    overlap: string;
-    overlapIcon: string;
-  };
+export interface Region2DConfigurationTerminology {
+  xAxis: string;
+  yAxis: string;
+  /** Items alignments */
+  xMin: string;
+  xMiddle: string;
+  xMax: string;
+  yMin: string;
+  yMiddle: string;
+  yMax: string;
+  /** Stack X */
+  dodgeX: string;
+  /** Stack Y */
+  dodgeY: string;
+  /** Grid */
+  grid: string;
+  gridDirectionX: string;
+  gridDirectionY: string;
+  /** Packing force layout */
+  packing: string;
+  overlap: string;
+}
 
+export interface Region2DConfigurationIcons {
+  xMinIcon: string;
+  xMiddleIcon: string;
+  xMaxIcon: string;
+  yMinIcon: string;
+  yMiddleIcon: string;
+  yMaxIcon: string;
+  dodgeXIcon: string;
+  dodgeYIcon: string;
+  gridIcon: string;
+  packingIcon: string;
+  overlapIcon: string;
+}
+
+export interface Region2DConfiguration {
+  terminology: Region2DConfigurationTerminology;
+  icons: Region2DConfigurationIcons;
   xAxisPrePostGap: boolean;
   yAxisPrePostGap: boolean;
 
@@ -213,8 +218,6 @@ export interface SublayoutContext {
  * The builder creates constraints depends on sublayout
  */
 export class Region2DConstraintBuilder {
-  public terminology: Region2DConfiguration["terminology"];
-
   constructor(
     public plotSegment: PlotSegmentClass<
       Region2DProperties,
@@ -227,9 +230,7 @@ export class Region2DConstraintBuilder {
     public y2Name: string,
     public solver?: ConstraintSolver,
     public solverContext?: BuildConstraintsContext
-  ) {
-    this.terminology = config.terminology;
-  }
+  ) {}
 
   public getTableContext(): DataflowTable {
     return this.plotSegment.parent.dataflow.getTable(
@@ -2067,30 +2068,31 @@ export class Region2DConstraintBuilder {
   }
 
   public applicableSublayoutOptions() {
+    const { icons, terminology } = this.config;
     const overlapOption = {
       value: "overlap",
-      label: this.terminology.overlap,
-      icon: this.terminology.overlapIcon,
+      label: terminology.overlap,
+      icon: icons.overlapIcon,
     };
     const packingOption = {
       value: "packing",
-      label: this.terminology.packing,
-      icon: this.terminology.packingIcon,
+      label: terminology.packing,
+      icon: icons.packingIcon,
     };
     const dodgeXOption = {
       value: "dodge-x",
-      label: this.terminology.dodgeX,
-      icon: this.terminology.dodgeXIcon,
+      label: terminology.dodgeX,
+      icon: icons.dodgeXIcon,
     };
     const dodgeYOption = {
       value: "dodge-y",
-      label: this.terminology.dodgeY,
-      icon: this.terminology.dodgeYIcon,
+      label: terminology.dodgeY,
+      icon: icons.dodgeYIcon,
     };
     const gridOption = {
       value: "grid",
-      label: this.terminology.grid,
-      icon: this.terminology.gridIcon,
+      label: terminology.grid,
+      icon: icons.gridIcon,
     };
     const props = this.plotSegment.object.properties;
     const xMode = props.xData ? props.xData.type : "null";
@@ -2146,7 +2148,7 @@ export class Region2DConstraintBuilder {
               options: ["start", "middle", "end"],
               icons: ["align/bottom", "align/y-middle", "align/top"],
               labels: ["Bottom", "Middle", "Top"],
-              tooltip: strings.canvas.alignItemsOnY
+              tooltip: strings.canvas.alignItemsOnY,
             }
           )
         );
@@ -2160,7 +2162,7 @@ export class Region2DConstraintBuilder {
               options: ["start", "middle", "end"],
               icons: ["align/left", "align/x-middle", "align/right"],
               labels: ["Left", "Middle", "Right"],
-              tooltip: strings.canvas.alignItemsOnX
+              tooltip: strings.canvas.alignItemsOnX,
             }
           )
         );
@@ -2204,6 +2206,7 @@ export class Region2DConstraintBuilder {
         );
       }
       if (type == "grid") {
+        const { terminology } = this.config;
         extra.push(
           m.row(
             "Direction",
@@ -2216,8 +2219,8 @@ export class Region2DConstraintBuilder {
                   options: ["x", "y"],
                   icons: ["scaffold/xwrap", "scaffold/ywrap"],
                   labels: [
-                    this.terminology.gridDirectionX,
-                    this.terminology.gridDirectionY,
+                    terminology.gridDirectionX,
+                    terminology.gridDirectionY,
                   ],
                 }
               ),
@@ -2303,29 +2306,31 @@ export class Region2DConstraintBuilder {
     const props = this.plotSegment.object.properties;
     const data = axis == "x" ? props.xData : props.yData;
     const axisProperty = axis == "x" ? "xData" : "yData";
-    return  [
+    return [
       ...buildAxisWidgets(data, axisProperty, m, axisName),
-      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty)
+      ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty),
     ];
   }
 
   public buildPanelWidgets(m: Controls.WidgetManager): Controls.Widget[] {
+    const { terminology } = this.config;
     if (this.isSublayoutApplicable()) {
       return [
-        ...this.buildAxisWidgets(m, this.terminology.xAxis, "x"),
-        ...this.buildAxisWidgets(m, this.terminology.yAxis, "y"),
+        ...this.buildAxisWidgets(m, terminology.xAxis, "x"),
+        ...this.buildAxisWidgets(m, terminology.yAxis, "y"),
         ...this.buildSublayoutWidgets(m),
       ];
     } else {
       return [
-        ...this.buildAxisWidgets(m, this.terminology.xAxis, "x"),
-        ...this.buildAxisWidgets(m, this.terminology.yAxis, "y"),
+        ...this.buildAxisWidgets(m, terminology.xAxis, "x"),
+        ...this.buildAxisWidgets(m, terminology.yAxis, "y"),
       ];
     }
   }
 
   public buildPopupWidgets(m: Controls.WidgetManager): Controls.Widget[] {
     const props = this.plotSegment.object.properties;
+    const { icons, terminology } = this.config;
     let sublayout: Controls.Widget[] = [];
 
     if (this.isSublayoutApplicable()) {
@@ -2348,17 +2353,13 @@ export class Region2DConstraintBuilder {
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
                 options: ["start", "middle", "end"],
-                icons: [
-                  this.terminology.xMinIcon,
-                  this.terminology.xMiddleIcon,
-                  this.terminology.xMaxIcon,
-                ],
+                icons: [icons.xMinIcon, icons.xMiddleIcon, icons.xMaxIcon],
                 labels: [
-                  this.terminology.xMin,
-                  this.terminology.xMiddle,
-                  this.terminology.xMax,
+                  terminology.xMin,
+                  terminology.xMiddle,
+                  terminology.xMax,
                 ],
-                tooltip: strings.canvas.alignItemsOnX
+                tooltip: strings.canvas.alignItemsOnX,
               }
             )
           );
@@ -2372,17 +2373,13 @@ export class Region2DConstraintBuilder {
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
                 options: ["start", "middle", "end"],
-                icons: [
-                  this.terminology.yMinIcon,
-                  this.terminology.yMiddleIcon,
-                  this.terminology.yMaxIcon,
-                ],
+                icons: [icons.yMinIcon, icons.yMiddleIcon, icons.yMaxIcon],
                 labels: [
-                  this.terminology.yMin,
-                  this.terminology.yMiddle,
-                  this.terminology.yMax,
+                  terminology.yMin,
+                  terminology.yMiddle,
+                  terminology.yMax,
                 ],
-                tooltip: strings.canvas.alignItemsOnY
+                tooltip: strings.canvas.alignItemsOnY,
               }
             )
           );
@@ -2398,10 +2395,10 @@ export class Region2DConstraintBuilder {
                 options: ["x", "y"],
                 icons: ["scaffold/xwrap", "scaffold/ywrap"],
                 labels: [
-                  this.terminology.gridDirectionX,
-                  this.terminology.gridDirectionY,
+                  terminology.gridDirectionX,
+                  terminology.gridDirectionY,
                 ],
-                tooltip: strings.canvas.gridDirection
+                tooltip: strings.canvas.gridDirection,
               }
             )
           );
@@ -2414,7 +2411,7 @@ export class Region2DConstraintBuilder {
               {
                 table: this.plotSegment.object.table,
                 displayLabel: true,
-                tooltip: strings.canvas.elementOrders
+                tooltip: strings.canvas.elementOrders,
               }
             ),
             m.inputBoolean(
@@ -2435,7 +2432,7 @@ export class Region2DConstraintBuilder {
             options: options.map((x) => x.value),
             icons: options.map((x) => x.icon),
             labels: options.map((x) => x.label),
-            tooltip: strings.canvas.sublayoutType
+            tooltip: strings.canvas.sublayoutType,
           }
         ),
         ...extra,
@@ -2446,7 +2443,7 @@ export class Region2DConstraintBuilder {
     const isYStacking = props.yData && props.yData.type == "default";
     if (isXStacking && !isYStacking) {
       if (props.xData.type == "default") {
-        sublayout.push(m.label(this.terminology.xAxis + ": Stacking"));
+        sublayout.push(m.label(terminology.xAxis + ": Stacking"));
       }
       sublayout.push(
         m.inputSelect(
@@ -2456,23 +2453,15 @@ export class Region2DConstraintBuilder {
             showLabel: true,
             labelPosition: LabelPosition.Bottom,
             options: ["start", "middle", "end"],
-            icons: [
-              this.terminology.yMinIcon,
-              this.terminology.yMiddleIcon,
-              this.terminology.yMaxIcon,
-            ],
-            labels: [
-              this.terminology.yMin,
-              this.terminology.yMiddle,
-              this.terminology.yMax,
-            ],
+            icons: [icons.yMinIcon, icons.yMiddleIcon, icons.yMaxIcon],
+            labels: [terminology.yMin, terminology.yMiddle, terminology.yMax],
           }
         )
       );
     }
     if (isYStacking && !isXStacking) {
       if (props.yData.type == "default") {
-        sublayout.push(m.label(this.terminology.yAxis + ": Stacking"));
+        sublayout.push(m.label(terminology.yAxis + ": Stacking"));
       }
       sublayout.push(
         m.inputSelect(
@@ -2482,16 +2471,8 @@ export class Region2DConstraintBuilder {
             showLabel: true,
             labelPosition: LabelPosition.Bottom,
             options: ["start", "middle", "end"],
-            icons: [
-              this.terminology.xMinIcon,
-              this.terminology.xMiddleIcon,
-              this.terminology.xMaxIcon,
-            ],
-            labels: [
-              this.terminology.xMin,
-              this.terminology.xMiddle,
-              this.terminology.xMax,
-            ],
+            icons: [icons.xMinIcon, icons.xMiddleIcon, icons.xMaxIcon],
+            labels: [terminology.xMin, terminology.xMiddle, terminology.xMax],
           }
         )
       );
@@ -2499,12 +2480,7 @@ export class Region2DConstraintBuilder {
     if (isXStacking && isYStacking) {
       if (props.yData.type == "default") {
         sublayout.push(
-          m.label(
-            this.terminology.xAxis +
-              " & " +
-              this.terminology.yAxis +
-              ": Stacking"
-          )
+          m.label(terminology.xAxis + " & " + terminology.yAxis + ": Stacking")
         );
       }
     }

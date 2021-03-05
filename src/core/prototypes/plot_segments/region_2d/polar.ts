@@ -22,12 +22,14 @@ import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
+import { strings } from "../../../../strings";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -72,32 +74,17 @@ export interface PolarObject extends Specification.PlotSegment {
   properties: PolarProperties;
 }
 
-export let polarTerminology: Region2DConfiguration["terminology"] = {
-  xAxis: "Angular Axis",
-  yAxis: "Radial Axis",
-  xMin: "Left",
+export let icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
-  xMiddle: "Middle",
   xMiddleIcon: "align/x-middle",
-  xMax: "Right",
   xMaxIcon: "align/right",
-  yMiddle: "Middle",
   yMiddleIcon: "align/y-middle",
-  yMin: "Bottom",
   yMinIcon: "align/bottom",
-  yMax: "Top",
   yMaxIcon: "align/top",
-  dodgeX: "Stack Angular",
   dodgeXIcon: "sublayout/dodge-angular",
-  dodgeY: "Stack Radial",
   dodgeYIcon: "sublayout/dodge-radial",
-  grid: "Grid",
   gridIcon: "sublayout/polar-grid",
-  gridDirectionX: "Angular",
-  gridDirectionY: "Radial",
-  packing: "Packing",
   packingIcon: "sublayout/packing",
-  overlap: "Overlap",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -297,8 +284,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
     context?: BuildConstraintsContext
   ) {
     const props = this.object.properties;
-    const config = {
-      terminology: polarTerminology,
+    const config: Region2DConfiguration = {
+      terminology: strings.polarTerminology,
+      icons,
       xAxisPrePostGap: (props.endAngle - props.startAngle) % 360 == 0,
       yAxisPrePostGap: false,
       getXYScale: () => {
@@ -328,40 +316,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
 
-    const [
-      x1,
-      y1,
-      x2,
-      y2,
-      innerRadius,
-      outerRadius,
-      cx,
-      cy,
-      a1r1x,
-      a1r1y,
-      a1r2x,
-      a1r2y,
-      a2r1x,
-      a2r1y,
-      a2r2x,
-      a2r2y,
-    ] = solver.attrs(attrs, [
+    const [x1, y1, x2, y2, innerRadius, outerRadius] = solver.attrs(attrs, [
       "x1",
       "y1",
       "x2",
       "y2",
       "radial1",
       "radial2",
-      "cx",
-      "cy",
-      "a1r1x",
-      "a1r1y",
-      "a1r2x",
-      "a1r2y",
-      "a2r1x",
-      "a2r1y",
-      "a2r2x",
-      "a2r2y",
     ]);
 
     attrs.angle1 = props.startAngle;

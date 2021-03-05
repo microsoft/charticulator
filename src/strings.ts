@@ -2,7 +2,62 @@
 // Licensed under the MIT license.
 
 import { MainTabs } from "./app/views/file_view";
+import { Region2DConfigurationTerminology } from "./core/prototypes/plot_segments/region_2d/base";
 import { DataType } from "./core/specification";
+
+const cartesianTerminology: Region2DConfigurationTerminology = {
+  xAxis: "X Axis", // X Axis / Angular Axis
+  yAxis: "Y Axis", // Y Axis / Radial Axis
+  xMin: "Left",
+  xMiddle: "Middle",
+  xMax: "Right",
+  yMiddle: "Middle",
+  yMin: "Bottom",
+  yMax: "Top",
+  dodgeX: "Stack X",
+  dodgeY: "Stack Y",
+  grid: "Grid",
+  gridDirectionX: "X",
+  gridDirectionY: "Y",
+  packing: "Packing",
+  overlap: "Overlap",
+};
+
+const curveTerminology: Region2DConfigurationTerminology = {
+  xAxis: "Tangent Axis",
+  yAxis: "Normal Axis",
+  xMin: "Left",
+  xMiddle: "Middle",
+  xMax: "Right",
+  yMiddle: "Middle",
+  yMin: "Bottom",
+  yMax: "Top",
+  dodgeX: "Stack Tangential",
+  dodgeY: "Stack Normal",
+  grid: "Grid",
+  gridDirectionX: "Tangent",
+  gridDirectionY: "Normal",
+  packing: "Packing",
+  overlap: "Overlap",
+};
+
+const polarTerminology: Region2DConfigurationTerminology = {
+  xAxis: "Angular Axis",
+  yAxis: "Radial Axis",
+  xMin: "Left",
+  xMiddle: "Middle",
+  xMax: "Right",
+  yMiddle: "Middle",
+  yMin: "Bottom",
+  yMax: "Top",
+  dodgeX: "Stack Angular",
+  dodgeY: "Stack Radial",
+  grid: "Grid",
+  gridDirectionX: "Angular",
+  gridDirectionY: "Radial",
+  packing: "Packing",
+  overlap: "Overlap",
+};
 
 export const strings = {
   app: {
@@ -234,4 +289,7 @@ export const strings = {
   core: {
     default: "(default)",
   },
+  cartesianTerminology,
+  curveTerminology,
+  polarTerminology,
 };
