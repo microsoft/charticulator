@@ -796,7 +796,7 @@ export class MultiObjectButton extends ContextedComponent<
           onClick={onClickContextMenu}
         >
           {this.props.compact ? null : (
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
           )}
         </span>
       </div>
@@ -844,7 +844,7 @@ export class LinkButton extends ContextedComponent<
         <ToolButton
           title={strings.toolbar.link}
           text={this.props.label ? strings.toolbar.link : ""}
-          icon={R.getSVGIcon("link/tool")}
+          icon={R.getSVGIcon("CharticulatorLine")}
           active={this.store.currentTool == "link"}
           onClick={() => {
             globals.popupController.popupAt(
@@ -870,7 +870,7 @@ export class LegendButton extends ContextedComponent<{}, {}> {
       <span ref={(e) => (this.container = e)}>
         <ToolButton
           title={strings.toolbar.legend}
-          icon={R.getSVGIcon("BulletedList2")}
+          icon={R.getSVGIcon("CharticulatorLegend")}
           active={this.store.currentTool == "legend"}
           onClick={() => {
             globals.popupController.popupAt(

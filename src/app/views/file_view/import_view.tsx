@@ -95,7 +95,7 @@ export class FileViewImport extends ContextedComponent<
         scroll={true}
         peerGroup="import"
         title={strings.templateImport.title}
-        closeButtonIcon={"general/cross"}
+        closeButtonIcon={"ChromeClose"}
         height={400}
         width={650}
         onClose={this.props.onClose}

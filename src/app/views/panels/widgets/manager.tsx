@@ -635,7 +635,7 @@ export class WidgetManager
           <>
             <div title={options.tooltip}>
               <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-              <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+              <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
             </div>
             <span className="el-text">
               {(this.getPropertyValue(property) as AttributeMap)?.expression ||
@@ -645,7 +645,7 @@ export class WidgetManager
         ) : (
           <div title={options.tooltip}>
             <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
           </div>
         )}
       </DropZoneView>
@@ -759,7 +759,7 @@ export class WidgetManager
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
                     <Button
-                      icon="general/cross"
+                      icon="ChromeClose"
                       onClick={() => {
                         items.splice(index, 1);
                         this.emitSetProperty(property, items);
@@ -1302,7 +1302,7 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={"general/order-reversed"}
+            icon={"Sort"}
             text="Reverse"
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });

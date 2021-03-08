@@ -501,8 +501,8 @@ export class ColumnView extends React.Component<
               stopPropagation={true}
               url={
                 this.state.isExpanded
-                  ? R.getSVGIcon("general/chevron-down")
-                  : R.getSVGIcon("general/chevron-left")
+                  ? R.getSVGIcon("ChevronDown")
+                  : R.getSVGIcon("ChevronLeft")
               }
               onClick={() => {
                 this.setState({ isExpanded: !this.state.isExpanded });

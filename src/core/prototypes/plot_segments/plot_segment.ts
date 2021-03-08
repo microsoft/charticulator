@@ -92,7 +92,7 @@ export abstract class PlotSegmentClass<
             type: "dropdown",
             showLabel: true,
             icons: [
-              "general/cross",
+              "ChromeClose",
               "stroke/solid",
               "stroke/dashed",
               "stroke/dotted",

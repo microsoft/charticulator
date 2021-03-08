@@ -339,7 +339,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   scroll={true}
                   peerGroup="messages"
                   title={strings.mainView.errorsPanelTitle}
-                  closeButtonIcon={"general/cross"}
+                  closeButtonIcon={"ChromeClose"}
                   height={200}
                   width={350}
                 >

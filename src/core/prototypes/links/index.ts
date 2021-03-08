@@ -122,7 +122,7 @@ export abstract class LinksClass extends ChartElementClass {
   public readonly state: Specification.ObjectState;
 
   public static metadata: ObjectClassMetadata = {
-    iconPath: "link/tool",
+    iconPath: "CharticulatorLine",
   };
 
   public attributeNames: string[] = ["color", "opacity"];

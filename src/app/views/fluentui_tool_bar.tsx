@@ -24,7 +24,7 @@ import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 // import { MainContext } from "../context_provider";
 import { useContext } from "react";
-import { ActionButton, Dialog, IconButton, IIconProps } from "@fluentui/react";
+import { Dialog, IconButton, IIconProps } from "@fluentui/react";
 import {
   FluentColumnLayout,
   FluentRowLayout,
@@ -41,9 +41,8 @@ export const FluentUIToolbar: React.FC<{
   React.useCallback(() => {
     token = store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {});
 
-    return () => {
-      token?.remove();
-    };
+    return () => {};
+    token?.remove();
   }, [store.currentTool]);
 
   const getGlyphToolItems = (labels: boolean = true) => {
@@ -191,19 +190,19 @@ export const FluentUIToolbar: React.FC<{
             {
               classID: "guide-coordinator-x",
               title: strings.toolbar.guideX,
-              icon: "guide/coordinator-x",
+              icon: "CharticulatorGuideX",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-y",
               title: strings.toolbar.guideY,
-              icon: "guide/coordinator-y",
+              icon: "CharticulatorGuideY",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-polar",
               title: strings.toolbar.guidePolar,
-              icon: "plot-segment/polar",
+              icon: "CharticulatorGuideCoordinator",
               options: '{"shape":"triangle"}',
             },
           ]}
@@ -420,19 +419,19 @@ export const FluentUIToolbar: React.FC<{
             {
               classID: "guide-coordinator-x",
               title: strings.toolbar.guideX,
-              icon: "guide/coordinator-x",
+              icon: "CharticulatorGuideX",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-y",
               title: strings.toolbar.guideY,
-              icon: "guide/coordinator-y",
+              icon: "CharticulatorGuideY",
               options: '{"shape":"triangle"}',
             },
             {
               classID: "guide-coordinator-polar",
               title: strings.toolbar.guidePolar,
-              icon: "plot-segment/polar",
+              icon: "CharticulatorGuideY",
               options: '{"shape":"triangle"}',
             },
           ]}
@@ -691,7 +690,7 @@ export class MultiObjectButton extends ContextedComponent<
               iconProps: { iconName: tool.icon },
             };
           }),
-          onItemClick: (ev, item) => {
+          onItemClick: (ev: any, item: any) => {
             if (item.data) {
               this.dispatch(
                 new Actions.SetCurrentTool(item.data.classID, item.data.options)
@@ -782,7 +781,7 @@ export const LinkButton: React.FC<{
         title={strings.toolbar.link}
         text={props.label ? strings.toolbar.link : ""}
         iconProps={{
-          iconName: "link/tool",
+          iconName: "CharticulatorLine",
         }}
         checked={store.currentTool == "link"}
         onClick={() => {
@@ -814,7 +813,7 @@ export const LegendButton: React.FC = () => {
     <span ref={(e) => (container = e)}>
       <IconButton
         iconProps={{
-          iconName: "BulletedList2",
+          iconName: "CharticulatorLegend",
         }}
         checked={store.currentTool == "legend"}
         onClick={() => {

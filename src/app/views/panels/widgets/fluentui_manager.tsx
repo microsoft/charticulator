@@ -87,7 +87,7 @@ import {
   InputTextOptions,
 } from "../../../../core/prototypes/controls";
 
-import { mergeStyles } from "office-ui-fabric-react/lib/Styling";
+import { mergeStyles } from "@fluentui/merge-styles";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1414,7 +1414,7 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={"general/order-reversed"}
+            icon={"Sort"}
             text="Reverse"
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });

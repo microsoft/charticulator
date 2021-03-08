@@ -334,7 +334,7 @@ export class ImportDataView extends React.Component<
             )}
             <ButtonRaised
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
+              url={R.getSVGIcon("ChromeClose")}
               title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({
@@ -396,7 +396,7 @@ export class ImportDataView extends React.Component<
             )}
             <ButtonRaised
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
+              url={R.getSVGIcon("ChromeClose")}
               title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({

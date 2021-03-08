@@ -1357,7 +1357,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="general/zoom-auto"
+              icon="ZoomToFit"
               onClick={() => {
                 const newZoom = this.getFitViewZoom(
                   this.state.viewWidth,

@@ -41,8 +41,7 @@ import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
 
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
-// import { initializeIcons } from '@fluentui/react/lib/Icons';
-import { initializeIcons } from "@uifabric/icons";
+import { initializeIcons } from "../fabric-icons/src/index";
 initializeIcons();
 
 export class ApplicationExtensionContext implements ExtensionContext {

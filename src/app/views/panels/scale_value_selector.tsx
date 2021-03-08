@@ -128,7 +128,7 @@ export class ScaleValueSelector extends React.Component<
             {canSelectValue ? (
               <div className="action-buttons">
                 <ButtonRaised
-                  url={R.getSVGIcon("BulletedList2")}
+                  url={R.getSVGIcon("CharticulatorLegend")}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? "Remove Legend"

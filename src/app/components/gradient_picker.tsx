@@ -187,7 +187,7 @@ export class GradientPicker extends React.Component<
                         }}
                       />
                       <Button
-                        icon={"general/cross"}
+                        icon={"ChromeClose"}
                         onClick={() => {
                           if (this.state.currentGradient.colors.length > 1) {
                             const newGradient = deepClone(
@@ -214,7 +214,7 @@ export class GradientPicker extends React.Component<
                 }}
               />{" "}
               <Button
-                icon={"general/order-reversed"}
+                icon={"Sort"}
                 text="Reverse"
                 onClick={() => {
                   const newGradient = deepClone(this.state.currentGradient);

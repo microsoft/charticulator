@@ -131,7 +131,7 @@ export class ScaleEditor extends React.Component<
               ) : null}
               {canAddLegend ? (
                 <ButtonRaised
-                  url={R.getSVGIcon("BulletedList2")}
+                  url={R.getSVGIcon("CharticulatorLegend")}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? strings.scaleEditor.removeLegend
