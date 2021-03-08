@@ -55,6 +55,8 @@ export abstract class ScaleClass<
       inferences: [
         {
           objectID: this.object._id,
+          autoDomainMax: this.object.properties.autoDomainMax as boolean,
+          autoDomainMin: this.object.properties.autoDomainMin as boolean,
           scale: {
             classID: this.object.classID,
             expressions: [],

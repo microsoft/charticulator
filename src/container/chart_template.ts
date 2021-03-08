@@ -20,6 +20,17 @@ import {
   DefaultAttributes,
 } from "../core/prototypes";
 import { CompiledGroupBy } from "../core/prototypes/group_by";
+import { OrderMode } from "../core/specification/types";
+import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
+import {
+  AttributeList,
+  AttributeMap,
+  MappingType,
+  ScaleMapping,
+  ValueMapping,
+} from "../core/specification";
+import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
+import { GuideAttributeNames } from "../core/prototypes/guides";
 
 export interface TemplateInstance {
   chart: Specification.Chart;
@@ -126,6 +137,32 @@ export class ChartTemplate {
     for (const item of forEachObject(chart)) {
       // Replace table with assigned table
       if (item.kind == "chart-element") {
+        // legend with column names
+        if (Prototypes.isType(item.chartElement.classID, "legend.custom")) {
+          const scaleMapping = item.chartElement.mappings
+            .mappingOptions as ScaleMapping;
+          scaleMapping.expression = this.transformExpression(
+            scaleMapping.expression,
+            scaleMapping.table
+          );
+        }
+
+        // Guide
+        if (Prototypes.isType(item.chartElement.classID, "guide.guide")) {
+          const valueProp = this.template.properties.filter(
+            (p) =>
+              p.objectID === item.chartElement._id &&
+              p.target.attribute === GuideAttributeNames.value
+          )[0];
+          if (valueProp) {
+            const valueMapping: Specification.ValueMapping = {
+              type: MappingType.value,
+              value: valueProp.default as number,
+            };
+            item.chartElement.mappings.value = valueMapping;
+          }
+        }
+
         // PlotSegment
         if (Prototypes.isType(item.chartElement.classID, "plot-segment")) {
           const plotSegment = item.chartElement as Specification.PlotSegment;
@@ -181,6 +218,17 @@ export class ChartTemplate {
               );
             }
           }
+          if (plotSegment.properties.sublayout) {
+            const expression = (plotSegment.properties
+              .sublayout as Region2DSublayoutOptions).order?.expression;
+            if (expression) {
+              (plotSegment.properties
+                .sublayout as Region2DSublayoutOptions).order.expression = this.transformExpression(
+                expression,
+                originalTable
+              );
+            }
+          }
         }
         // Links
         if (Prototypes.isType(item.chartElement.classID, "links")) {
@@ -212,10 +260,45 @@ export class ChartTemplate {
         item.glyph.table = this.tableAssignment[item.glyph.table];
       }
 
+      if (item.kind == "mark") {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          try {
+            const glyphId = item.glyph._id;
+
+            const glyphPlotSegment = [...forEachObject(chart)].find(
+              (item) =>
+                item.kind == "chart-element" &&
+                Prototypes.isType(item.chartElement.classID, "plot-segment") &&
+                (item.chartElement as any).glyph === glyphId
+            );
+
+            const dataExpressions = item.mark.properties
+              .dataExpressions as DataAxisExpression[];
+
+            // table name in plotSegment can be replaced already
+            const table =
+              Object.keys(this.tableAssignment).find(
+                (key) =>
+                  this.tableAssignment[key] ===
+                  (glyphPlotSegment.chartElement as any).table
+              ) || (glyphPlotSegment.chartElement as any).table;
+
+            dataExpressions.forEach((expression) => {
+              expression.expression = this.transformExpression(
+                expression.expression,
+                table
+              );
+            });
+          } catch (ex) {
+            console.error(ex);
+          }
+        }
+      }
+
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
       for (const [attr, mapping] of forEachMapping(mappings)) {
-        if (mapping.type == "scale") {
+        if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
           scaleMapping.expression = this.transformExpression(
             scaleMapping.expression,
@@ -223,7 +306,7 @@ export class ChartTemplate {
           );
           scaleMapping.table = this.tableAssignment[scaleMapping.table];
         }
-        if (mapping.type == "text") {
+        if (mapping.type == MappingType.text) {
           const textMapping = mapping as Specification.TextMapping;
           textMapping.textExpression = this.transformTextExpression(
             textMapping.textExpression,
@@ -315,7 +398,10 @@ export class ChartTemplate {
           }
           if (axis.type == "categorical") {
             const scale = new Scale.CategoricalScale();
-            scale.inferParameters(vector, "order");
+            scale.inferParameters(
+              vector,
+              inference.axis.orderMode || OrderMode.order
+            );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
             scale.domain.forEach((index, key) => {
               axisDataBinding.categories[index] = key;
@@ -333,7 +419,13 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
-        if (inference.autoDomainMin || inference.autoDomainMax) {
+        // uses disableAutoMin disableAutoMax for handle old templates
+        if (
+          inference.autoDomainMin ||
+          inference.autoDomainMax ||
+          !inference.disableAutoMin ||
+          !inference.disableAutoMax
+        ) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
             this.transformExpression(x, inference.dataSource.table)
@@ -349,19 +441,38 @@ export class ChartTemplate {
             )
           );
 
-          if (inference.autoDomainMin) {
+          if (
+            (inference.autoDomainMin || !inference.disableAutoMin) &&
+            object.properties.domainMin !== undefined
+          ) {
             vectors.push([object.properties.domainMin]);
           }
-          if (inference.autoDomainMax) {
+          if (
+            (inference.autoDomainMax || !inference.disableAutoMax) &&
+            object.properties.domainMax != undefined
+          ) {
             vectors.push([object.properties.domainMax]);
           }
           const vector = vectors.reduce((a, b) => a.concat(b), []);
           const scaleClass = Prototypes.ObjectClasses.Create(null, object, {
             attributes: {},
           }) as Prototypes.Scales.ScaleClass;
-          scaleClass.inferParameters(vector, {
-            reuseRange: true,
-          });
+
+          if (object.classID === "scale.categorical<string,color>") {
+            scaleClass.inferParameters(vector, {
+              reuseRange: true,
+              extendScale: true,
+            });
+          } else {
+            scaleClass.inferParameters(vector, {
+              extendScale: true,
+              reuseRange: true,
+              rangeNumber: [
+                (object.mappings.rangeMin as ValueMapping)?.value as number,
+                (object.mappings.rangeMax as ValueMapping)?.value as number,
+              ],
+            });
+          }
         }
       }
       if (inference.nestedChart) {

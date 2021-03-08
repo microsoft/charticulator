@@ -49,15 +49,25 @@ import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { TextExpression, ValueType } from "../../core/expression/classes";
 import {
+  AttributeMap,
   AttributeType,
   DataKind,
   DataType,
   DataValue,
   Mapping,
+  MappingType,
+  ObjectProperties,
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
+import {
+  AxisRenderingStyle,
+  AxisSide,
+  OrderMode,
+} from "../../core/specification/types";
+import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
+import { domain } from "process";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -279,7 +289,7 @@ export class AppStore extends BaseStore {
       scaleId: string
     ) {
       for (const map in mappings) {
-        if (mappings[map].type === "scale") {
+        if (mappings[map].type === MappingType.scale) {
           if ((mappings[map] as any).scale === scaleId) {
             return true;
           }
@@ -656,7 +666,7 @@ export class AppStore extends BaseStore {
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }
-          if (mappings[name].type == "scale") {
+          if (mappings[name].type == MappingType.scale) {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
@@ -823,15 +833,15 @@ export class AppStore extends BaseStore {
       }
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -845,15 +855,15 @@ export class AppStore extends BaseStore {
       ) as Specification.ChartElement;
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "x2",
       } as Specification.ParentMapping;
       newLegend.mappings.y = {
-        type: "parent",
+        type: MappingType.parent,
         parentAttribute: "y2",
       } as Specification.ParentMapping;
       this.chartManager.chart.mappings.marginRight = {
-        type: "value",
+        type: MappingType.value,
         value: 100,
       } as Specification.ValueMapping;
     }
@@ -862,30 +872,55 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
+      let x1Attr: string;
+      let y1Attr: string;
+      let x2Attr: string;
+      let y2Attr: string;
+      let side: AxisSide;
+      switch (mapping.attribute) {
+        case "height": {
+          x1Attr = "x1";
+          y1Attr = "y1";
+          x2Attr = "x1";
+          y2Attr = "y2";
+          side = "default";
+          break;
+        }
+        case "width": {
+          x1Attr = "x1";
+          y1Attr = "y1";
+          x2Attr = "x2";
+          y2Attr = "y1";
+          side = "opposite";
+          break;
+        }
+      }
       newLegend = this.chartManager.createObject(
         `legend.numerical-number`
       ) as Specification.ChartElement;
-      newLegend.properties.scale = scale;
+      const properties = newLegend.properties as NumericalNumberLegendProperties;
+      properties.scale = scale;
+      properties.axis.side = side;
       newLegend.mappings.x1 = {
-        type: "parent",
-        parentAttribute: "x1",
+        type: MappingType.parent,
+        parentAttribute: x1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y1 = {
-        type: "parent",
-        parentAttribute: "y1",
+        type: MappingType.parent,
+        parentAttribute: y1Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.x2 = {
-        type: "parent",
-        parentAttribute: "x1",
+        type: MappingType.parent,
+        parentAttribute: x2Attr,
       } as Specification.ParentMapping;
       newLegend.mappings.y2 = {
-        type: "parent",
-        parentAttribute: "y2",
+        type: MappingType.parent,
+        parentAttribute: y2Attr,
       } as Specification.ParentMapping;
     }
 
     const mappingOptions = {
-      type: "scale",
+      type: MappingType.scale,
       table: mapping.table,
       expression: mapping.expression,
       valueType: mapping.valueType,
@@ -1105,7 +1140,7 @@ export class AppStore extends BaseStore {
           })
           .filter(
             (mapping) =>
-              mapping.mapping.type === "scale" &&
+              mapping.mapping.type === MappingType.scale &&
               (mapping.mapping as ScaleMapping).scale === scaleId
           ) as {
           element: Specification.Element<Specification.ObjectProperties>;
@@ -1129,12 +1164,13 @@ export class AppStore extends BaseStore {
             scaleId
           ) as Prototypes.Scales.ScaleClass;
 
-          let values = [];
+          let values: any = [];
+          let newScale = true;
           let reuseRange = false;
+          let extendScale = true;
 
           // special case for legend to draw column names
           if (mapping.element.classID === "legend.custom") {
-            reuseRange = true; // to save colors assigned for each column
             const table = this.chartManager.dataflow.getTable(
               mapping.mapping.table
             );
@@ -1142,7 +1178,19 @@ export class AppStore extends BaseStore {
               mapping.mapping.expression
             );
             values = parsedExpression.getValue(table) as ValueType[];
+            newScale = true;
+            extendScale = true;
+            reuseRange = true;
           } else {
+            if (scale.classID == "scale.categorical<string,color>") {
+              newScale = true;
+              extendScale = true;
+              reuseRange = true;
+            } else {
+              newScale = false;
+              extendScale = true;
+              reuseRange = true;
+            }
             values = this.chartManager.getGroupedExpressionVector(
               mapping.mapping.table,
               groupBy,
@@ -1150,8 +1198,9 @@ export class AppStore extends BaseStore {
             );
           }
           scaleClass.inferParameters(values as any, {
-            newScale: true,
+            newScale,
             reuseRange,
+            extendScale,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
@@ -1209,7 +1258,12 @@ export class AppStore extends BaseStore {
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : xDataProperty.type,
-            orderMode: xDataProperty.valueType === "string" ? "order" : null,
+            orderMode: xDataProperty.orderMode
+              ? xDataProperty.orderMode
+              : xDataProperty.valueType === "string"
+              ? "order"
+              : null,
+            order: xDataProperty.order,
           },
           xDataProperty.rawColumnExpr
         );
@@ -1221,6 +1275,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: xDataProperty.numericalMode,
+          autoDomainMax: xDataProperty.autoDomainMax,
+          autoDomainMin: xDataProperty.autoDomainMin,
+          domainMin: xDataProperty.domainMin,
+          domainMax: xDataProperty.domainMax,
         });
       }
 
@@ -1237,7 +1295,12 @@ export class AppStore extends BaseStore {
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : yDataProperty.type,
-            orderMode: yDataProperty.valueType === "string" ? "order" : null,
+            orderMode: yDataProperty.orderMode
+              ? yDataProperty.orderMode
+              : yDataProperty.valueType === "string"
+              ? "order"
+              : null,
+            order: yDataProperty.order,
           },
           yDataProperty.rawColumnExpr
         );
@@ -1249,6 +1312,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: yDataProperty.numericalMode,
+          autoDomainMax: yDataProperty.autoDomainMax,
+          autoDomainMin: yDataProperty.autoDomainMin,
+          domainMin: yDataProperty.domainMin,
+          domainMax: yDataProperty.domainMax,
         });
       }
 
@@ -1263,9 +1330,14 @@ export class AppStore extends BaseStore {
               axis.type === "numerical" && axis.numericalMode === "temporal"
                 ? DataKind.Temporal
                 : axis.type,
-            orderMode: axis.valueType === "string" ? "order" : null,
+            orderMode: axis.orderMode
+              ? axis.orderMode
+              : axis.valueType === "string"
+              ? "order"
+              : null,
+            order: axis.order,
           },
-          yDataProperty.rawColumnExpr
+          axis.rawColumnExpr
         );
 
         this.bindDataToAxis({
@@ -1275,6 +1347,10 @@ export class AppStore extends BaseStore {
           appendToProperty: null,
           type: null, // TODO get type for column, from current dataset
           numericalMode: axis.numericalMode,
+          autoDomainMax: axis.autoDomainMax,
+          autoDomainMin: axis.autoDomainMin,
+          domainMin: axis.domainMin,
+          domainMax: axis.domainMax,
         });
       }
     });
@@ -1298,6 +1374,10 @@ export class AppStore extends BaseStore {
     dataExpression: DragData.DataExpression;
     type?: "default" | "numerical" | "categorical";
     numericalMode?: "linear" | "logarithmic" | "temporal";
+    autoDomainMax: boolean;
+    autoDomainMin: boolean;
+    domainMin: number;
+    domainMax: number;
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
@@ -1327,14 +1407,18 @@ export class AppStore extends BaseStore {
           : groupExpression,
       rawExpression: dataExpression.rawColumnExpression,
       valueType,
-      gapRatio: propertyValue?.gapRatio || 0.1,
+      gapRatio:
+        propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible: true,
       side: propertyValue?.side || "default",
-      style: deepClone(Prototypes.PlotSegments.defaultAxisStyle),
+      style: (object.properties[options.property] as ObjectProperties)
+        ?.style as AxisRenderingStyle,
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
-      autoDomainMax: true,
-      autoDomainMin: true,
+      order: dataExpression.metadata.order,
+      orderMode: dataExpression.metadata.orderMode,
+      autoDomainMax: options.autoDomainMax,
+      autoDomainMin: options.autoDomainMin,
     };
 
     let expressions = [groupExpression];
@@ -1394,6 +1478,7 @@ export class AppStore extends BaseStore {
             dataBinding.valueType = dataExpression.valueType;
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
           }
@@ -1403,8 +1488,16 @@ export class AppStore extends BaseStore {
           {
             const scale = new Scale.LinearScale();
             scale.inferParameters(values as number[]);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
+            if (dataBinding.autoDomainMin) {
+              dataBinding.domainMin = scale.domainMin;
+            } else {
+              dataBinding.domainMin = options.domainMin;
+            }
+            if (dataBinding.autoDomainMax) {
+              dataBinding.domainMax = scale.domainMax;
+            } else {
+              dataBinding.domainMax = options.domainMax;
+            }
             dataBinding.type = "numerical";
             dataBinding.numericalMode = "linear";
           }
@@ -1413,12 +1506,21 @@ export class AppStore extends BaseStore {
           {
             const scale = new Scale.DateScale();
             scale.inferParameters(values as number[], false);
-            dataBinding.domainMin = scale.domainMin;
-            dataBinding.domainMax = scale.domainMax;
+            if (dataBinding.autoDomainMin) {
+              dataBinding.domainMin = scale.domainMin;
+            } else {
+              dataBinding.domainMin = options.domainMin;
+            }
+            if (dataBinding.autoDomainMax) {
+              dataBinding.domainMax = scale.domainMax;
+            } else {
+              dataBinding.domainMax = options.domainMax;
+            }
             dataBinding.type = "numerical";
             dataBinding.numericalMode = "temporal";
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
+              dataExpression.valueType,
               values
             );
           }
@@ -1446,17 +1548,21 @@ export class AppStore extends BaseStore {
 
   public getCategoriesForDataBinding(
     metadata: Dataset.ColumnMetadata,
+    type: DataType,
     values: ValueType[]
   ) {
     let categories: string[];
     if (metadata.order) {
       categories = metadata.order.slice();
     } else {
+      let orderMode: OrderMode = OrderMode.alphabetically;
       const scale = new Scale.CategoricalScale();
-      let orderMode: "alphabetically" | "occurrence" | "order" =
-        "alphabetically";
       if (metadata.orderMode) {
         orderMode = metadata.orderMode;
+      }
+      if (type === "number") {
+        values = (values as number[]).sort((a, b) => a - b);
+        orderMode = OrderMode.order;
       }
       scale.inferParameters(values as string[], orderMode);
       categories = new Array<string>(scale.length);

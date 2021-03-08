@@ -28,7 +28,7 @@ import { ReorderListView } from "./object_list_editor";
 import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
-import { AttributeType } from "../../../core/specification";
+import { AttributeType, MappingType } from "../../../core/specification";
 
 export interface LegendCreationPanelProps {
   onFinish?: () => void;
@@ -188,21 +188,21 @@ export class LegendCreationPanel extends ContextedComponent<
                 ) as Specification.ChartElement;
                 newLegend.properties.scale = newScale._id;
                 newLegend.mappings.x = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "x2",
                 } as Specification.ParentMapping;
                 newLegend.mappings.y = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "y2",
                 } as Specification.ParentMapping;
                 this.store.chartManager.addChartElement(newLegend);
                 this.store.chartManager.chart.mappings.marginRight = {
-                  type: "value",
+                  type: MappingType.value,
                   value: 100,
                 } as Specification.ValueMapping;
 
                 const mappingOptions = {
-                  type: "scale",
+                  type: MappingType.scale,
                   table: tableName,
                   expression,
                   valueType,
@@ -261,16 +261,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
-                      type: "value",
+                      type: MappingType.value,
                       value: 100,
                     } as Specification.ValueMapping;
                     break;
@@ -281,16 +281,16 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x2",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                     this.store.chartManager.chart.mappings.marginRight = {
-                      type: "value",
+                      type: MappingType.value,
                       value: 100,
                     } as Specification.ValueMapping;
                     break;
@@ -301,26 +301,26 @@ export class LegendCreationPanel extends ContextedComponent<
                     ) as Specification.ChartElement;
                     newLegend.properties.scale = inferred;
                     newLegend.mappings.x1 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y1 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.x2 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "x1",
                     } as Specification.ParentMapping;
                     newLegend.mappings.y2 = {
-                      type: "parent",
+                      type: MappingType.parent,
                       parentAttribute: "y2",
                     } as Specification.ParentMapping;
                     this.store.chartManager.addChartElement(newLegend);
                 }
 
                 newLegend.mappings.mappingOptions = {
-                  type: "scale",
+                  type: MappingType.scale,
                   table,
                   expression: aggregatedExpression,
                   valueType: columns[0].type,

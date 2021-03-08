@@ -57,7 +57,7 @@ import {
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
-import { ChartTemplate } from "../../../../container";
+import { ChartTemplate, getSortFunctionByData } from "../../../../container";
 import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
@@ -71,6 +71,8 @@ import {
   ScaleMapping,
 } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
+import { DataExpression } from "../../../actions/drag_data";
+import { strings } from "../../../../strings";
 import {
   InputComboboxOptions,
   InputFontComboboxOptions,
@@ -637,7 +639,7 @@ export class WidgetManager
             </div>
             <span className="el-text">
               {(this.getPropertyValue(property) as AttributeMap)?.expression ||
-                "(default)"}
+                strings.core.default}
             </span>
           </>
         ) : (
@@ -698,6 +700,7 @@ export class WidgetManager
 
                         return this.store.getCategoriesForDataBinding(
                           axisDataBinding.metadata,
+                          axisDataBinding.type,
                           values
                         );
                       }}
@@ -1309,7 +1312,11 @@ export class ReorderStringsValue extends React.Component<
             icon={"general/sort"}
             text="Sort"
             onClick={() => {
-              this.setState({ items: this.state.items.sort() });
+              this.setState({
+                items: this.state.items.sort(
+                  getSortFunctionByData(this.state.items)
+                ),
+              });
             }}
           />
           {this.props.allowReset && (

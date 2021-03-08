@@ -37,6 +37,8 @@ import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
 import { delimiter } from "path";
 import { MenuBarHandlers } from "./views/menubar";
+import { TelemetryRecorder } from "./components";
+import { MappingType } from "../core/specification";
 
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
 // import { initializeIcons } from '@fluentui/react/lib/Icons';
@@ -79,6 +81,7 @@ export class Application {
     workerScriptContent: string,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
+      telemetry?: TelemetryRecorder;
     }
   ) {
     this.config = config;
@@ -115,16 +118,16 @@ export class Application {
         delimiter: DelimiterSymbol,
         group: parseSafe(GroupSymbol, defaultDigitsGroup),
         numberFormat: {
-          decimal: NumberFormatRemove === "." ? "." : ",",
-          remove: NumberFormatRemove === "." ? "," : ".",
+          decimal: NumberFormatRemove === "," ? "." : ",",
+          remove: NumberFormatRemove === "," ? "," : ".",
         },
       });
 
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
-        decimal: NumberFormatRemove === "." ? "." : ",",
-        thousands: NumberFormatRemove === "." ? "," : ".",
+        decimal: NumberFormatRemove === "," ? "." : ",",
+        thousands: NumberFormatRemove === "," ? "," : ".",
       });
     } catch (ex) {
       console.warn("Loadin localization settings failed");
@@ -137,6 +140,7 @@ export class Application {
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
+        telemetry={handlers?.telemetry}
       />,
       document.getElementById(containerID)
     );
@@ -183,11 +187,11 @@ export class Application {
         };
       } = data;
       info.specification.mappings.width = {
-        type: "value",
+        type: MappingType.value,
         value: info.width,
       } as Specification.ValueMapping;
       info.specification.mappings.height = {
-        type: "value",
+        type: MappingType.value,
         value: info.height,
       } as Specification.ValueMapping;
       appStore.dispatcher.dispatch(

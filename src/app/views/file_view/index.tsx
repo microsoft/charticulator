@@ -29,16 +29,20 @@ import * as React from "react";
 import * as R from "../../resources";
 
 import { AbstractBackend } from "../../backend/abstract";
-import { ErrorBoundary, SVGImageIcon } from "../../components";
+import {
+  ErrorBoundary,
+  SVGImageIcon,
+  TelemetryContext,
+} from "../../components";
 import { AppStore } from "../../stores";
 import { classNames, stringToDataURL } from "../../utils";
 import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
-import { FileViewOptions } from "./options_view";
+import { FileViewOptionsView } from "./options_view";
 import { strings } from "../../../strings";
-import { MainContext } from "../../context_provider";
+import { MainReactContext } from "../../context_component";
 
 export enum MainTabs {
   about = "about",
@@ -124,7 +128,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
         return <FileViewExport onClose={this.props.onClose} />;
       }
       case MainTabs.options: {
-        return <FileViewOptions onClose={this.props.onClose} />;
+        return <FileViewOptionsView onClose={this.props.onClose} />;
       }
       case MainTabs.about: {
         return (
@@ -144,7 +148,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
 
   public render() {
     return (
-      <MainContext.Provider value={{ store: this.props.store }}>
+      <MainReactContext.Provider value={{ store: this.props.store }}>
         <div className="charticulator__file-view">
           <div className="charticulator__file-view-tabs">
             <div
@@ -170,9 +174,17 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
               )
             )}
           </div>
-          <ErrorBoundary>{this.renderContent()}</ErrorBoundary>
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                  {this.renderContent()}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
-      </MainContext.Provider>
+      </MainReactContext.Provider>
     );
   }
 }

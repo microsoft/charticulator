@@ -16,6 +16,7 @@ import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 import { BindDataToAxis } from "../../actions/actions";
+import { MappingType } from "../../../core/specification";
 
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function (action) {
@@ -31,7 +32,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     if (inferred != null) {
       action.chartElement.mappings[action.attribute] = {
-        type: "scale",
+        type: MappingType.scale,
         table: action.table,
         expression: action.expression,
         valueType: action.valueType,
@@ -50,7 +51,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const format =
           action.valueType == Specification.DataType.Number ? ".1f" : undefined;
         action.chartElement.mappings[action.attribute] = {
-          type: "text",
+          type: MappingType.text,
           table: action.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },
@@ -94,7 +95,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       if (action.mappings.hasOwnProperty(key)) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
-          if (mapping.type == "_element") {
+          if (mapping.type == MappingType._element) {
             this.chartManager.chart.constraints.push({
               type: "snap",
               attributes: {
@@ -264,7 +265,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     if (
       action.scaleId == null ||
-      action.object.mappings[action.property].type != "scale"
+      action.object.mappings[action.property].type != MappingType.scale
     ) {
       return;
     } else {
@@ -306,7 +307,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.BindDataToAxis, function (action: BindDataToAxis) {
-    this.bindDataToAxis(action);
+    this.bindDataToAxis({
+      ...action,
+      autoDomainMax: true,
+      autoDomainMin: true,
+      domainMax: null,
+      domainMin: null,
+    });
     this.solveConstraintsAndUpdateGraphics();
   });
 
@@ -328,11 +335,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.chartState.attributes.width = action.width;
     this.chartState.attributes.height = action.height;
     this.chart.mappings.width = {
-      type: "value",
+      type: MappingType.value,
       value: action.width,
     } as Specification.ValueMapping;
     this.chart.mappings.height = {
-      type: "value",
+      type: MappingType.value,
       value: action.height,
     } as Specification.ValueMapping;
 
@@ -357,6 +364,26 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         action.field,
         action.value
       );
+    }
+
+    if (action.noUpdateState) {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } else {
+      this.solveConstraintsAndUpdateGraphics(action.noComputeLayout);
+    }
+  });
+
+  REG.add(Actions.DeleteObjectProperty, function (action) {
+    if (action.property === "name") {
+      return;
+    }
+    this.saveHistory();
+
+    if (action.field == null) {
+      delete action.object.properties[action.property];
+    } else {
+      const obj = action.object.properties[action.property] as any;
+      delete obj[action.field as any];
     }
 
     if (action.noUpdateState) {

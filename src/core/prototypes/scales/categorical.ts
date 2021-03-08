@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { Color, Scale, getDefaultColorPalette } from "../../common";
+import {
+  Color,
+  Scale,
+  getDefaultColorPalette,
+  getDefaultColorPaletteByValue,
+  getDefaultColorPaletteGenerator,
+} from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import {
   DataValue,
@@ -14,6 +20,8 @@ import { ScaleClass } from "./index";
 import { AttributeDescriptions } from "../object";
 import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
+import { OrderMode } from "../../specification/types";
+import { ReservedMappingKeyNamePrefix } from "../legends/categorical_legend";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -33,7 +41,7 @@ function reuseMapping<T>(
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
     if (!result.hasOwnProperty(d)) {
-      if (available.length > 1) {
+      if (available.length > 0) {
         result[d] = available[0];
         available.splice(0, 1);
       } else {
@@ -106,7 +114,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
     const values = column.filter((x) => typeof x == "string") as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     props.mapping = {};
 
@@ -175,7 +183,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             )
           )
         )
-      )
+      ),
     ];
   }
 }
@@ -211,7 +219,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -219,22 +227,58 @@ export class CategoricalScaleColor extends ScaleClass<
 
       // Otherwise, if we already have a mapping, try to reuse it
     } else if (props.mapping != null) {
-      props.mapping = reuseMapping(s.domain, props.mapping);
+      if (options.extendScale) {
+        const mapping = reuseMapping(s.domain, props.mapping);
+
+        let colorList = literalColorValues(values);
+        if (!colorList) {
+          // Find a good default color palette
+          colorList = getDefaultColorPalette(s.length);
+        }
+        s.domain.forEach((v, d) => {
+          // If we still don't have enough colors, reuse them
+          // NEEDTO: fix this with a better method
+          if (!mapping[d]) {
+            mapping[d] = colorList[v % colorList.length];
+          }
+        });
+
+        // Find unused mapping and save them, if count if new mapping domain is less thant old.
+        const newMappingKeys = Object.keys(mapping);
+        const oldMappingKeys = Object.keys(props.mapping);
+        if (newMappingKeys.length < oldMappingKeys.length) {
+          oldMappingKeys
+            .slice(newMappingKeys.length, oldMappingKeys.length)
+            .filter((key) => key.startsWith(ReservedMappingKeyNamePrefix))
+            .forEach((key) => {
+              mapping[key] = props.mapping[key];
+            });
+        }
+
+        props.mapping = mapping;
+      } else {
+        props.mapping = reuseMapping(s.domain, props.mapping);
+      }
     }
     if (props.mapping == null) {
       // If we can't reuse existing colors, infer from scratch
       props.mapping = {};
       // try to use literal values as color
       let colorList = literalColorValues(values);
-      if (!colorList) {
-        // Find a good default color palette
+      if (colorList) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
+      } else if (getDefaultColorPaletteGenerator()) {
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = getDefaultColorPaletteByValue(d, s.length);
+        });
+      } else {
         colorList = getDefaultColorPalette(s.length);
+        s.domain.forEach((v, d) => {
+          props.mapping[d] = colorList[v % colorList.length];
+        });
       }
-      s.domain.forEach((v, d) => {
-        // If we still don't have enough colors, reuse them
-        // TODO: fix this with a better method
-        props.mapping[d] = colorList[v % colorList.length];
-      });
     }
   }
 
@@ -275,6 +319,7 @@ function literalColorValues(values: string[]) {
     if (cache[value]) {
       continue;
     }
+
     const d3c = d3color(value);
     if (!d3c) {
       return null;
@@ -315,7 +360,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -361,7 +406,7 @@ export class CategoricalScaleEnum extends ScaleClass<
               { property: "mapping", field: key },
               {
                 defaultRange: props.defaultRange,
-                valuesOnly: false
+                valuesOnly: false,
               }
             )
           )
@@ -397,7 +442,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
@@ -480,7 +525,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const values = column
       .filter((x) => x != null)
       .map((x) => x.toString()) as string[];
-    s.inferParameters(values, "order");
+    s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {

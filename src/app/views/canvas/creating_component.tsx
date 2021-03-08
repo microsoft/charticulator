@@ -11,6 +11,7 @@ import {
   Prototypes,
 } from "../../../core";
 import { SnappableGuide } from "./snapping/common";
+import { MappingType } from "../../../core/specification";
 
 export interface CreatingComponentProps {
   width: number;
@@ -34,7 +35,7 @@ export interface CreatingComponentState {
 }
 
 export interface SnappingElementMapping extends Specification.Mapping {
-  type: "_element";
+  type: MappingType._element;
   element: string;
   attribute: string;
 }
@@ -72,12 +73,12 @@ export class PointSnapping {
               candidateDistance = d;
               if (guide.element == null) {
                 candidate = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: axis.attribute,
                 } as Specification.ParentMapping;
               } else {
                 candidate = {
-                  type: "_element",
+                  type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
                 } as SnappingElementMapping;
@@ -115,12 +116,12 @@ export class PointSnapping {
               candidateDistance = d;
               if (guide.element == null) {
                 candidate = {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: axis.attribute,
                 } as Specification.ParentMapping;
               } else {
                 candidate = {
-                  type: "_element",
+                  type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
                 } as SnappingElementMapping;
@@ -479,7 +480,7 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
       mappings[attr] = [
         null,
         {
-          type: "value",
+          type: MappingType.value,
           value: desc.valueMappings[attr],
         } as Specification.ValueMapping,
       ];

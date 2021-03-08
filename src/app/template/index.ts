@@ -21,6 +21,7 @@ import {
   Specification,
 } from "../../core";
 import { TableType } from "../../core/dataset";
+import { MappingType } from "../../core/specification";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -178,7 +179,7 @@ export class ChartTemplateBuilder {
             for (const [, mapping] of Prototypes.forEachMapping(
               item.object.mappings
             )) {
-              if (mapping.type == "scale") {
+              if (mapping.type == MappingType.scale) {
                 const scaleMapping = mapping as Specification.ScaleMapping;
                 if (scaleMapping.scale == inference.objectID) {
                   expressions.add(scaleMapping.expression);
@@ -244,11 +245,23 @@ export class ChartTemplateBuilder {
             inference.objectID
           );
 
-          if ((templateObject.properties[inference.axis.property as string] as any).autoDomainMin !== "undefined") {
-            inference.autoDomainMin = (templateObject.properties[inference.axis.property as string] as any).autoDomainMin as boolean;
+          if (
+            (templateObject.properties[
+              inference.axis.property as string
+            ] as any).autoDomainMin !== "undefined"
+          ) {
+            inference.autoDomainMin = (templateObject.properties[
+              inference.axis.property as string
+            ] as any).autoDomainMin as boolean;
           }
-          if ((templateObject.properties[inference.axis.property as string] as any).autoDomainMax !== "undefined") {
-            inference.autoDomainMax = (templateObject.properties[inference.axis.property as string] as any).autoDomainMax as boolean;
+          if (
+            (templateObject.properties[
+              inference.axis.property as string
+            ] as any).autoDomainMax !== "undefined"
+          ) {
+            inference.autoDomainMax = (templateObject.properties[
+              inference.axis.property as string
+            ] as any).autoDomainMax as boolean;
           }
           if (inference.autoDomainMax === undefined) {
             inference.autoDomainMax = true;
@@ -299,14 +312,14 @@ export class ChartTemplateBuilder {
     for (const [, mapping] of Prototypes.forEachMapping(
       objectClass.object.mappings
     )) {
-      if (mapping.type == "scale") {
+      if (mapping.type == MappingType.scale) {
         const scaleMapping = mapping as Specification.ScaleMapping;
         this.addColumnsFromExpression(
           scaleMapping.table,
           scaleMapping.expression
         );
       }
-      if (mapping.type == "text") {
+      if (mapping.type == MappingType.text) {
         const textMapping = mapping as Specification.TextMapping;
         this.addColumnsFromExpression(
           textMapping.table,

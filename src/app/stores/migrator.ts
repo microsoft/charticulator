@@ -17,7 +17,7 @@ import {
   LegendClass,
   LegendProperties,
 } from "../../core/prototypes/legends/legend";
-import { ChartElement } from "../../core/specification";
+import { ChartElement, MappingType } from "../../core/specification";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -107,6 +107,14 @@ export class Migrator {
     ) {
       // Minor change at version 1.7.0: Add default value for property layout in legend
       state = this.setValueToLayoutPropertyOfLegend(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.0") < 0 &&
+      compareVersion(targetVersion, "2.0.0") >= 0
+    ) {
+      // Minor change at version 1.7.0: Add default value for property layout in legend
+      state = this.setValueItemShapeOfLegend(state);
     }
 
     // After migration, set version to targetVersion
@@ -251,14 +259,17 @@ export class Migrator {
         for (const key in mark.mappings) {
           if (mark.mappings.hasOwnProperty(key)) {
             const mapping = mark.mappings[key];
-            if (mapping.type == "scale") {
+            if (mapping.type == MappingType.scale) {
               const scaleMapping = mapping as Specification.ScaleMapping;
               scaleMapping.expression = this.addAggregationToExpression(
                 scaleMapping.expression,
                 scaleMapping.valueType
               );
             }
-            if (mapping.type == "scale" || mapping.type == "text") {
+            if (
+              mapping.type == MappingType.scale ||
+              mapping.type == MappingType.text
+            ) {
               (mapping as any).table = glyph.table;
             }
           }
@@ -316,6 +327,19 @@ export class Migrator {
         const legend = element as ChartElement<LegendProperties>;
         if (legend.properties.orientation === undefined) {
           legend.properties.orientation = "vertical";
+        }
+      }
+    }
+
+    return state;
+  }
+
+  public setValueItemShapeOfLegend(state: AppStoreState) {
+    for (const element of state.chart.elements) {
+      if (Prototypes.isType(element.classID, "legend")) {
+        const legend = element as ChartElement<LegendProperties>;
+        if (legend.properties.markerShape === undefined) {
+          legend.properties.markerShape = "circle";
         }
       }
     }

@@ -778,6 +778,7 @@ export class FluentUIWidgetManager
 
                           return this.store.getCategoriesForDataBinding(
                             axisDataBinding.metadata,
+                            axisDataBinding.type,
                             values
                           );
                         }}

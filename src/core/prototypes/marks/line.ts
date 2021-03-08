@@ -24,6 +24,7 @@ import {
 import * as Graphics from "../../graphics";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
+import { MappingType } from "../../specification";
 
 export { LineElementAttributes, LineElementProperties };
 
@@ -303,7 +304,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     const properties: Specification.Template.Property[] = [];
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -316,7 +317,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -331,7 +332,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -352,7 +353,7 @@ export class LineElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,

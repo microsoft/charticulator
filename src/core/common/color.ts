@@ -352,7 +352,28 @@ const brewer12 = [
   "#b15928",
 ].map(colorFromHTMLColor);
 
+let defaultColorGeneratorFunction: (key: string) => Color = null;
+
+export function setDefaultColorPaletteGenerator(
+  generatorFunction: (key: string) => Color
+) {
+  defaultColorGeneratorFunction = generatorFunction;
+}
+
+export function getDefaultColorPaletteGenerator() {
+  return defaultColorGeneratorFunction;
+}
+
+export function getDefaultColorPaletteByValue(value: string, count: number) {
+  return defaultColorGeneratorFunction?.(value);
+}
+
 export function getDefaultColorPalette(count: number) {
+  if (defaultColorGeneratorFunction) {
+    return new Array(count)
+      .fill(null)
+      .map((v, index) => defaultColorGeneratorFunction(index.toString()));
+  }
   let r = brewer12;
   if (count <= 3) {
     r = brewer3;

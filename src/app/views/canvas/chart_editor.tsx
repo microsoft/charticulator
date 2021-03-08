@@ -42,6 +42,7 @@ import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
+import { MappingType } from "../../../core/specification";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -702,7 +703,7 @@ export class ChartEditorView
                     continue;
                   }
                   new Actions.SetChartAttribute(name, {
-                    type: "value",
+                    type: MappingType.value,
                     value: updates[name],
                   } as Specification.ValueMapping).dispatch(
                     this.props.store.dispatcher

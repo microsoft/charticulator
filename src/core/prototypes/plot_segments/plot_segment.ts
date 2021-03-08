@@ -8,7 +8,7 @@ import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
-import { refineColumnName } from "../..";
+import { getSortFunctionByData, refineColumnName } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
 import { getDateFormat } from "../../dataset/datetime";
@@ -280,13 +280,8 @@ export abstract class PlotSegmentClass<
         const vj = orderExpression.getValue(
           table.getGroupedContext(dateRowIndices[j])
         );
-        if (vi < vj) {
-          return -1;
-        } else if (vi > vj) {
-          return 1;
-        } else {
-          return 0;
-        }
+
+        return getSortFunctionByData([vi + "", vj + ""])(vi, vj);
       };
       groups.sort(compare);
     }

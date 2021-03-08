@@ -13,7 +13,7 @@ import {
   SVGImageIcon,
   ToolButton,
 } from "../components";
-import { ContextedComponent } from "../context_component";
+import { ContextedComponent, MainReactContext } from "../context_component";
 import { PopupView } from "../controllers";
 
 import { classNames } from "../utils";
@@ -22,7 +22,7 @@ import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
-import { MainContext } from "../context_provider";
+// import { MainContext } from "../context_provider";
 import { useContext } from "react";
 import { ActionButton, Dialog, IconButton, IIconProps } from "@fluentui/react";
 import {
@@ -35,7 +35,7 @@ export const FluentUIToolbar: React.FC<{
   undoRedoLocation: UndoRedoLocation;
   toolbarLabels: boolean;
 }> = (props) => {
-  const { store } = useContext(MainContext);
+  const { store } = useContext(MainReactContext);
   let token: EventSubscription = null;
 
   React.useCallback(() => {
@@ -773,7 +773,7 @@ export const LinkButton: React.FC<{
 }> = (props) => {
   let container: HTMLSpanElement;
 
-  const { store } = React.useContext(MainContext);
+  const { store } = React.useContext(MainReactContext);
   const [isOpen, openDialog] = React.useState(false);
 
   return (
@@ -807,7 +807,7 @@ export const LinkButton: React.FC<{
 export const LegendButton: React.FC = () => {
   let container: HTMLSpanElement;
 
-  const { store } = React.useContext(MainContext);
+  const { store } = React.useContext(MainReactContext);
   const [isOpen, openDialog] = React.useState(false);
 
   return (

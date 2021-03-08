@@ -9,6 +9,8 @@ import {
   Specification,
   Expression,
 } from "../../../core";
+import { DataKind } from "../../../core/dataset";
+import { MappingType } from "../../../core/specification";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
@@ -191,7 +193,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {
-        type: "scale",
+        type: MappingType.scale,
         table: action.glyph.table,
         expression: action.expression,
         valueType: action.valueType,
@@ -217,11 +219,19 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
           action.valueType == Specification.DataType.Number) &&
         action.attributeType == Specification.AttributeType.Text
       ) {
-        // If the valueType is a number, use a format
-        const format =
-          action.valueType == Specification.DataType.Number ? ".1f" : undefined;
+        let format: string;
+        // don't apply format to numbers if data kind is categorical to draw as are
+        if (action.valueMetadata.kind === DataKind.Categorical) {
+          format = undefined;
+        } else {
+          // If the valueType is a number and kind is not categorical, use a format
+          format =
+            action.valueType == Specification.DataType.Number
+              ? ".1f"
+              : undefined;
+        }
         action.mark.mappings[action.attribute] = {
-          type: "text",
+          type: MappingType.text,
           table: action.glyph.table,
           textExpression: new Expression.TextExpression([
             { expression: Expression.parse(action.expression), format },

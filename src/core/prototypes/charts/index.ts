@@ -22,6 +22,7 @@ import {
 import { Color } from "../../common";
 import * as Scales from "../scales";
 import { ChartStateManager } from "../state";
+import { MappingType } from "../../specification";
 
 export abstract class ChartClass extends ObjectClass {
   public readonly object: Specification.Chart;
@@ -51,11 +52,11 @@ export abstract class ChartClass extends ObjectClass {
     defaultValue: Specification.AttributeValue
   ): (row: Expression.Context) => Specification.AttributeValue {
     if (mapping) {
-      if (mapping.type == "value") {
+      if (mapping.type == MappingType.value) {
         const value = (mapping as Specification.ValueMapping).value;
         return () => value;
       }
-      if (mapping.type == "scale") {
+      if (mapping.type == MappingType.scale) {
         const scaleMapping = mapping as Specification.ScaleMapping;
         const idx = indexOf(
           this.object.scales,
@@ -529,7 +530,7 @@ export class RectangleChart extends ChartClass {
   public getTemplateParameters(): TemplateParameters {
     if (
       this.object.mappings.text &&
-      this.object.mappings.text.type == "scale"
+      this.object.mappings.text.type == MappingType.scale
     ) {
       return null;
     } else {

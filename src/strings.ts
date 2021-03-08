@@ -64,7 +64,13 @@ export const strings = {
     value: "Value",
   },
   dialog: {
-    resetConfirm: "Are you really willing to reset the chart?",
+    resetConfirm: "Are you sure you want to delete the chart?",
+  },
+  scaleEditor: {
+    add: "Add",
+    removeLast: "Remove the last",
+    addLegend: "Add Legend",
+    removeLegend: "Remove Legend",
   },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
@@ -227,5 +233,8 @@ export const strings = {
   } as { [key in DataType]: string },
   attributesPanel: {
     conditionedBy: "Conditioned by...",
+  },
+  core: {
+    default: "(default)",
   },
 };

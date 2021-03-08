@@ -5,6 +5,7 @@ import * as Specification from "../specification";
 
 import { TemplateParameters } from ".";
 import { Controls, CreatingInteraction } from "./common";
+import { MappingType } from "../specification";
 
 export interface AttributeDescription {
   name: string;
@@ -128,7 +129,7 @@ export abstract class ObjectClass<
       if (this.defaultMappingValues.hasOwnProperty(attr)) {
         const value = deepClone(this.defaultMappingValues[attr]);
         obj.mappings[attr] = {
-          type: "value",
+          type: MappingType.value,
           value,
         } as Specification.ValueMapping;
       }

@@ -4,7 +4,7 @@
 import { Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
-import { DataKind, AttributeType } from "../../specification";
+import { DataKind, AttributeType, MappingType } from "../../specification";
 import * as Specification from "../../specification";
 import {
   BoundingBox,
@@ -86,7 +86,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
     if (
       this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
+      this.object.mappings.fill.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -99,7 +99,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -112,7 +112,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -125,7 +125,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -146,7 +146,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,

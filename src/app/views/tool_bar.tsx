@@ -18,24 +18,234 @@ import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 
+const minWidthToColapseButtons = Object.freeze({
+  guides: 1090,
+  plotSegments: 1120,
+  scaffolds: 1211,
+});
+
 export class Toolbar extends ContextedComponent<
   {
     layout: LayoutDirection;
     undoRedoLocation: UndoRedoLocation;
     toolbarLabels: boolean;
   },
-  {}
+  {
+    innerWidth: number;
+  }
 > {
   public token: EventSubscription;
+
+  public state = {
+    innerWidth: window.innerWidth,
+  };
+
+  private resizeListener: (this: Window, ev: UIEvent) => any;
 
   public componentDidMount() {
     this.token = this.store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {
       this.forceUpdate();
     });
+
+    this.resizeListener = () => {
+      this.setState({
+        innerWidth: window.innerWidth,
+      });
+    };
+
+    window.addEventListener("resize", this.resizeListener);
   }
 
   public componentWillUnmount() {
     this.token.remove();
+    window.removeEventListener("resize", this.resizeListener);
+  }
+
+  private renderGuidesButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "guide-y",
+            title: strings.toolbar.guideY,
+            icon: "guide/x",
+          },
+          {
+            classID: "guide-x",
+            title: strings.toolbar.guideX,
+            icon: "guide/y",
+          },
+          {
+            classID: "guide-coordinator-x",
+            title: strings.toolbar.guideX,
+            icon: "guide/coordinator-x",
+          },
+          {
+            classID: "guide-coordinator-y",
+            title: strings.toolbar.guideY,
+            icon: "guide/coordinator-y",
+          },
+          {
+            classID: "guide-coordinator-polar",
+            title: strings.toolbar.guidePolar,
+            icon: "plot-segment/polar",
+          },
+        ]}
+      />
+    );
+  }
+
+  private renderPlotSegmentsButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "plot-segment.cartesian",
+            title: strings.toolbar.region2D,
+            icon: "plot/region",
+            noDragging: true,
+          },
+          {
+            classID: "plot-segment.line",
+            title: strings.toolbar.line,
+            icon: "plot/line",
+            noDragging: true,
+          },
+        ]}
+      />
+    );
+  }
+
+  private renderMarksButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "mark.rect",
+            title: strings.toolbar.rectangle,
+            icon: "mark/rect",
+            options: '{"shape":"rectangle"}',
+          },
+          {
+            classID: "mark.rect",
+            title: strings.toolbar.ellipse,
+            icon: "mark/ellipse",
+            options: '{"shape":"ellipse"}',
+          },
+          {
+            classID: "mark.rect",
+            title: strings.toolbar.triangle,
+            icon: "mark/triangle",
+            options: '{"shape":"triangle"}',
+          },
+        ]}
+      />
+    );
+  }
+
+  private renderSymbolButton() {
+    return (
+      <ObjectButton classID="mark.symbol" title="Symbol" icon="mark/symbol" />
+    );
+  }
+
+  private renderLineButton() {
+    return <ObjectButton classID="mark.line" title="Line" icon="mark/line" />;
+  }
+
+  private renderTextButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "mark.text",
+            title: strings.toolbar.text,
+            icon: "mark/text",
+          },
+          {
+            classID: "mark.textbox",
+            title: strings.toolbar.textbox,
+            icon: "mark/textbox",
+          },
+        ]}
+      />
+    );
+  }
+
+  private renderIconButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "mark.icon",
+            title: strings.toolbar.icon,
+            icon: "mark/icon",
+          },
+          {
+            classID: "mark.image",
+            title: strings.toolbar.image,
+            icon: "mark/image",
+          },
+        ]}
+      />
+    );
+  }
+
+  private renderDataAxisButton() {
+    return (
+      <ObjectButton
+        classID="mark.data-axis"
+        title={strings.toolbar.dataAxis}
+        icon="mark/data-axis"
+      />
+    );
+  }
+
+  private renderScaffoldButton() {
+    return (
+      <MultiObjectButton
+        compact={this.props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "scaffold/cartesian-x",
+            title: strings.toolbar.lineH,
+            icon: "scaffold/cartesian-x",
+            noDragging: false,
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("cartesian-x"),
+          },
+          {
+            classID: "scaffold/cartesian-y",
+            title: strings.toolbar.lineV,
+            icon: "scaffold/cartesian-y",
+            noDragging: false,
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("cartesian-y"),
+          },
+          {
+            classID: "scaffold/circle",
+            title: strings.toolbar.polar,
+            icon: "scaffold/circle",
+            noDragging: false,
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("polar"),
+          },
+          {
+            classID: "scaffold/curve",
+            title: strings.toolbar.curve,
+            icon: "scaffold/curve",
+            noDragging: false,
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("curve"),
+          },
+        ]}
+      />
+    );
   }
 
   private getGlyphToolItems(labels: boolean = true) {
@@ -54,74 +264,12 @@ export class Toolbar extends ContextedComponent<
               {strings.toolbar.marks}
             </span>
           )}
-          <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
-            tools={[
-              {
-                classID: "mark.rect",
-                title: strings.toolbar.rectangle,
-                icon: "RectangleShape",
-                options: '{"shape":"rectangle"}',
-              },
-              {
-                classID: "mark.rect",
-                title: strings.toolbar.ellipse,
-                icon: "Ellipse",
-                options: '{"shape":"ellipse"}',
-              },
-              {
-                classID: "mark.rect",
-                title: strings.toolbar.triangle,
-                icon: "TriangleShape",
-                options: '{"shape":"triangle"}',
-              },
-            ]}
-          />
-          <ObjectButton
-            classID="mark.symbol"
-            title={strings.toolbar.symbol}
-            icon="Shapes"
-          />
-          <ObjectButton
-            classID="mark.line"
-            title={strings.toolbar.line}
-            icon="Line"
-          />
-          <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
-            tools={[
-              {
-                classID: "mark.text",
-                title: strings.toolbar.text,
-                icon: "FontColorA",
-              },
-              {
-                classID: "mark.textbox",
-                title: strings.toolbar.textbox,
-                icon: "TextField",
-              },
-            ]}
-          />
-          <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
-            tools={[
-              {
-                classID: "mark.icon",
-                title: strings.toolbar.icon,
-                icon: "ImagePixel",
-              },
-              {
-                classID: "mark.image",
-                title: strings.toolbar.image,
-                icon: "FileImage",
-              },
-            ]}
-          />
-          <ObjectButton
-            classID="mark.data-axis"
-            title={strings.toolbar.dataAxis}
-            icon="mark/data-axis"
-          />
+          {this.renderMarksButton()}
+          {this.renderSymbolButton()}
+          {this.renderLineButton()}
+          {this.renderTextButton()}
+          {this.renderIconButton()}
+          {this.renderDataAxisButton()}
           {/* Nested chart doesn't supported */}
           {/* <ObjectButton
             classID="mark.nested-chart"
@@ -155,6 +303,25 @@ export class Toolbar extends ContextedComponent<
   private getChartToolItems(labels: boolean = true) {
     return [
       <>
+        {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+          <>
+            <ToolButton
+              title={strings.menuBar.undo}
+              icon={R.getSVGIcon("toolbar/undo")}
+              onClick={() =>
+                new Actions.Undo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <ToolButton
+              title={strings.menuBar.redo}
+              icon={R.getSVGIcon("toolbar/redo")}
+              onClick={() =>
+                new Actions.Redo().dispatch(this.context.store.dispatcher)
+              }
+            />
+            <span className={"charticulator__toolbar-horizontal-separator"} />
+          </>
+        ) : null}
         <LinkButton label={true} />
         <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
@@ -169,41 +336,7 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.guides}
           </span>
         )}
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "guide-y",
-              title: strings.toolbar.guideY,
-              icon: "guide/x",
-              options: '{"shape":"rectangle"}',
-            },
-            {
-              classID: "guide-x",
-              title: strings.toolbar.guideX,
-              icon: "guide/y",
-              options: '{"shape":"ellipse"}',
-            },
-            {
-              classID: "guide-coordinator-x",
-              title: strings.toolbar.guideX,
-              icon: "guide/coordinator-x",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-y",
-              title: strings.toolbar.guideY,
-              icon: "guide/coordinator-y",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-polar",
-              title: strings.toolbar.guidePolar,
-              icon: "plot-segment/polar",
-              options: '{"shape":"triangle"}',
-            },
-          ]}
-        />
+        {this.renderGuidesButton()}
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <>
@@ -220,23 +353,7 @@ export class Toolbar extends ContextedComponent<
             </span>
           </>
         )}
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "plot-segment.cartesian",
-              title: strings.toolbar.region2D,
-              icon: "BorderDot",
-              noDragging: true,
-            },
-            {
-              classID: "plot-segment.line",
-              title: strings.toolbar.line,
-              icon: "Line",
-              noDragging: true,
-            },
-          ]}
-        />
+        {this.renderPlotSegmentsButton()}
         <>
           <span className={"charticulator__toolbar-horizontal-separator"} />
           {labels && (
@@ -250,45 +367,16 @@ export class Toolbar extends ContextedComponent<
               {strings.toolbar.scaffolds}
             </span>
           )}
-          <MultiObjectButton
-            compact={this.props.layout === LayoutDirection.Vertical}
-            tools={[
-              {
-                classID: "",
-                title: strings.toolbar.lineH,
-                icon: "scaffold/cartesian-x",
-                onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("cartesian-x"),
-              },
-              {
-                classID: "",
-                title: strings.toolbar.lineV,
-                icon: "scaffold/cartesian-y",
-                onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("cartesian-y"),
-              },
-              {
-                classID: "",
-                title: strings.toolbar.polar,
-                icon: "scaffold/circle",
-                onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("polar"),
-              },
-              {
-                classID: "",
-                title: strings.toolbar.curve,
-                icon: "scaffold/curve",
-                onClick: () => null,
-                onDrag: () => new DragData.ScaffoldType("curve"),
-              },
-            ]}
-          />
+          {this.renderScaffoldButton()}
         </>
       </>,
     ];
   }
 
-  private getToolItems(labels: boolean = true) {
+  private getToolItems(
+    labels: boolean = true,
+    innerWidth: number = window.innerWidth
+  ) {
     return (
       <>
         {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
@@ -321,67 +409,13 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.marks}
           </span>
         )}
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "mark.rect",
-              title: strings.toolbar.rectangle,
-              icon: "RectangleShape",
-              options: '{"shape":"rectangle"}',
-            },
-            {
-              classID: "mark.rect",
-              title: strings.toolbar.ellipse,
-              icon: "Ellipse",
-              options: '{"shape":"ellipse"}',
-            },
-            {
-              classID: "mark.rect",
-              title: strings.toolbar.triangle,
-              icon: "TriangleShape",
-              options: '{"shape":"triangle"}',
-            },
-          ]}
-        />
-        <ObjectButton classID="mark.symbol" title="Symbol" icon="Shapes" />
-        <ObjectButton classID="mark.line" title="Line" icon="Line" />
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "mark.text",
-              title: strings.toolbar.text,
-              icon: "FontColorA",
-            },
-            {
-              classID: "mark.textbox",
-              title: strings.toolbar.textbox,
-              icon: "TextField",
-            },
-          ]}
-        />
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "mark.icon",
-              title: strings.toolbar.icon,
-              icon: "ImagePixel",
-            },
-            {
-              classID: "mark.image",
-              title: strings.toolbar.image,
-              icon: "mark/image",
-            },
-          ]}
-        />
+        {this.renderMarksButton()}
+        {this.renderSymbolButton()}
+        {this.renderLineButton()}
+        {this.renderTextButton()}
+        {this.renderIconButton()}
         <span className={"charticulator__toolbar-horizontal-separator"} />
-        <ObjectButton
-          classID="mark.data-axis"
-          title={strings.toolbar.dataAxis}
-          icon="mark/data-axis"
-        />
+        {this.renderDataAxisButton()}
         <ObjectButton
           classID="mark.nested-chart"
           title={strings.toolbar.nestedChart}
@@ -402,41 +436,37 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.guides}
           </span>
         )}
-        <MultiObjectButton
-          compact={this.props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "guide-y",
-              title: strings.toolbar.guideY,
-              icon: "guide/x",
-              options: '{"shape":"rectangle"}',
-            },
-            {
-              classID: "guide-x",
-              title: strings.toolbar.guideX,
-              icon: "guide/y",
-              options: '{"shape":"ellipse"}',
-            },
-            {
-              classID: "guide-coordinator-x",
-              title: strings.toolbar.guideX,
-              icon: "guide/coordinator-x",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-y",
-              title: strings.toolbar.guideY,
-              icon: "guide/coordinator-y",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-polar",
-              title: strings.toolbar.guidePolar,
-              icon: "plot-segment/polar",
-              options: '{"shape":"triangle"}',
-            },
-          ]}
-        />
+        {innerWidth > minWidthToColapseButtons.guides ? (
+          <>
+            <ObjectButton
+              classID="guide-y"
+              title={strings.toolbar.guideY}
+              icon="guide/x"
+            />
+            <ObjectButton
+              classID="guide-x"
+              title={strings.toolbar.guideX}
+              icon="guide/y"
+            />
+            <ObjectButton
+              classID="coordinator-x"
+              title={strings.toolbar.guideX}
+              icon="guide/coordinator-x"
+            />
+            <ObjectButton
+              classID="coordinator-y"
+              title={strings.toolbar.guideY}
+              icon="guide/coordinator-y"
+            />
+            <ObjectButton
+              classID="coordinator-polar"
+              title={strings.toolbar.guideY}
+              icon="plot-segment/polar"
+            />
+          </>
+        ) : (
+          this.renderGuidesButton()
+        )}
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <>
@@ -453,18 +483,24 @@ export class Toolbar extends ContextedComponent<
             </span>
           </>
         )}
-        <ObjectButton
-          classID="plot-segment.cartesian"
-          title={strings.toolbar.region2D}
-          icon="BorderDot"
-          noDragging={true}
-        />
-        <ObjectButton
-          classID="plot-segment.line"
-          title={strings.toolbar.line}
-          icon="Line"
-          noDragging={true}
-        />
+        {innerWidth > minWidthToColapseButtons.plotSegments ? (
+          <>
+            <ObjectButton
+              classID="plot-segment.cartesian"
+              title={strings.toolbar.region2D}
+              icon="plot/region"
+              noDragging={true}
+            />
+            <ObjectButton
+              classID="plot-segment.line"
+              title={strings.toolbar.line}
+              icon="plot/line"
+              noDragging={true}
+            />
+          </>
+        ) : (
+          this.renderPlotSegmentsButton()
+        )}
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
@@ -477,30 +513,36 @@ export class Toolbar extends ContextedComponent<
             {strings.toolbar.scaffolds}
           </span>
         )}
-        <ScaffoldButton
-          type="cartesian-x"
-          title={strings.toolbar.lineH}
-          icon="scaffold/cartesian-x"
-          currentTool={this.store.currentTool}
-        />
-        <ScaffoldButton
-          type="cartesian-y"
-          title={strings.toolbar.lineV}
-          icon="scaffold/cartesian-y"
-          currentTool={this.store.currentTool}
-        />
-        <ScaffoldButton
-          type="polar"
-          title={strings.toolbar.polar}
-          icon="scaffold/circle"
-          currentTool={this.store.currentTool}
-        />
-        <ScaffoldButton
-          type="curve"
-          title={strings.toolbar.curve}
-          icon="scaffold/curve"
-          currentTool={this.store.currentTool}
-        />
+        {innerWidth > minWidthToColapseButtons.scaffolds ? (
+          <>
+            <ScaffoldButton
+              type="cartesian-x"
+              title={strings.toolbar.lineH}
+              icon="scaffold/cartesian-x"
+              currentTool={this.store.currentTool}
+            />
+            <ScaffoldButton
+              type="cartesian-y"
+              title={strings.toolbar.lineV}
+              icon="scaffold/cartesian-y"
+              currentTool={this.store.currentTool}
+            />
+            <ScaffoldButton
+              type="polar"
+              title={strings.toolbar.polar}
+              icon="scaffold/circle"
+              currentTool={this.store.currentTool}
+            />
+            <ScaffoldButton
+              type="curve"
+              title={strings.toolbar.curve}
+              icon="scaffold/curve"
+              currentTool={this.store.currentTool}
+            />
+          </>
+        ) : (
+          this.renderScaffoldButton()
+        )}
       </>
     );
   }
@@ -512,7 +554,9 @@ export class Toolbar extends ContextedComponent<
       const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
       tooltipsItems = [...chartToolItems, ...glyphToolItems];
     } else {
-      tooltipsItems = [this.getToolItems(this.props.toolbarLabels)];
+      tooltipsItems = [
+        this.getToolItems(this.props.toolbarLabels, this.state?.innerWidth),
+      ];
     }
     return (
       <>

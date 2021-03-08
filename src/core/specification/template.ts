@@ -69,6 +69,15 @@ export interface Inference {
   /** Disable any automatic domain/range/axis behavior for max of range */
   autoDomainMax?: boolean;
 
+  /**
+   * @deprecated Use autoDomainMin
+   */
+  disableAutoMin?: boolean;
+  /**
+   * @deprecated Use autoDomainMax
+   */
+  disableAutoMax?: boolean;
+
   axis?: AxisInference;
   scale?: ScaleInference;
   expression?: ExpressionInference;
@@ -86,6 +95,10 @@ export interface AxisInference {
   style?: AxisRenderingStyle;
   /** Infer axis data and assign to this property */
   property: PropertyField;
+
+  orderMode?: Types.OrderMode;
+  order?: string[];
+  rawExpression?: string;
 }
 
 /** Infer scale parameter, set to scale's domain property */

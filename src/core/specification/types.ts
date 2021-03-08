@@ -1,15 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from "../common";
-import { DataKind } from "../dataset";
+import { ColumnMetadata, DataKind } from "../dataset";
 import { StrokeStyle } from "../prototypes";
 import { AttributeMap, Expression, DataType } from "./index";
+
+export enum OrderMode {
+  alphabetically = "alphabetically",
+  occurrence = "occurrence",
+  order = "order",
+}
+
+export type AxisSide = "default" | "opposite";
 
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
   type: "default" | "numerical" | "categorical";
   visible: boolean;
-  side: "default" | "opposite";
+  side: AxisSide;
 
   /** Data mapping expression */
   expression?: Expression;
@@ -36,6 +44,8 @@ export interface AxisDataBinding extends AttributeMap {
 
   style?: AxisRenderingStyle;
   dataKind?: DataKind;
+  order?: string[];
+  orderMode?: OrderMode;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

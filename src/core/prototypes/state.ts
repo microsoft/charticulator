@@ -18,6 +18,7 @@ import { CompiledFilter } from "./filter";
 import { ObjectClass, ObjectClasses } from "./object";
 import { ChartConstraintSolver } from "../solver";
 import { ValueType } from "../expression/classes";
+import { MappingType } from "../specification";
 
 /**
  * Represents a set of default attributes
@@ -349,11 +350,11 @@ export class ChartStateManager {
           properties: { name: "Anchor" },
           mappings: {
             x: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icx",
             } as Specification.ParentMapping,
             y: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "icy",
             } as Specification.ParentMapping,
           },

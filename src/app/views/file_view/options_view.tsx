@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { useContext } from "react";
+
 import {
   defaultCurrency,
   defaultDigitsGroup,
@@ -10,29 +11,23 @@ import {
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
-import {
-  ContextedComponent,
-  MainContextInterface,
-} from "../../context_component";
-import { MainContext } from "../../context_provider";
+import { MainReactContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
-import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
-import { InputText } from "../panels/widgets/controls";
 
 export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
-export const FileViewOptions: React.FC<FileViewOptionsProps> = ({
+export const FileViewOptionsView: React.FC<FileViewOptionsProps> = ({
   onClose,
 }) => {
-  const { store } = useContext(MainContext);
+  const { store } = useContext(MainReactContext);
 
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
-  const [numberFormatDecimal, setNumberFormatDecimal] = useLocalStorage<string>(
-    localeFileFormat.numberFormat.decimal,
+  const [numberFormatRemove, setNumberFormatRemove] = useLocalStorage<string>(
+    localeFileFormat.numberFormat.remove,
     LocalStorageKeys.NumberFormatRemove
   );
   const [delimiterSymbol, setDelimiterSymbol] = useLocalStorage<string>(
@@ -83,21 +78,19 @@ export const FileViewOptions: React.FC<FileViewOptionsProps> = ({
           <div className="form-group">
             <select
               onChange={(e) => {
-                const isDot =
-                  e.target.options[e.target.selectedIndex].value === ".";
+                const isDecimalDot =
+                  e.target.options[e.target.selectedIndex].value === ","; // values is removeal
                 changeLocaleFileFormat({
                   ...localeFileFormat,
                   numberFormat: {
-                    decimal: isDot ? "." : ",",
-                    remove: isDot ? "," : ".",
+                    decimal: isDecimalDot ? "." : ",",
+                    remove: isDecimalDot ? "," : ".",
                   },
                 });
-                setNumberFormatDecimal(
-                  e.target.options[e.target.selectedIndex].value
-                );
+                setNumberFormatRemove(isDecimalDot ? "," : ".");
                 setFormatOptions({
-                  decimal: isDot ? "." : ",",
-                  thousands: isDot ? "," : ".",
+                  decimal: isDecimalDot ? "." : ",",
+                  thousands: isDecimalDot ? "," : ".",
                   currency: parseSafe(
                     localeFileFormat.currency,
                     defaultCurrency
@@ -108,10 +101,10 @@ export const FileViewOptions: React.FC<FileViewOptionsProps> = ({
                   ),
                 });
               }}
-              value={numberFormatDecimal}
+              value={numberFormatRemove}
             >
-              <option value=".">{strings.options.numberFormatDot}</option>
-              <option value=",">{strings.options.numberFormatComma}</option>
+              <option value=",">{strings.options.numberFormatDot}</option>
+              <option value=".">{strings.options.numberFormatComma}</option>
             </select>
             <label>{strings.options.numberFormat}</label>
           </div>

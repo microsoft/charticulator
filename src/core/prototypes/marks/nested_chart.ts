@@ -23,6 +23,7 @@ import {
   NestedChartElementProperties,
 } from "./nested_chart.attrs";
 import { TableType } from "../../dataset";
+import { MappingType } from "../../specification";
 
 export { NestedChartElementAttributes, NestedChartElementProperties };
 
@@ -428,13 +429,22 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
         backgroundOpacity: 1,
       },
       mappings: {
-        marginTop: { type: "value", value: 25 } as Specification.ValueMapping,
+        marginTop: {
+          type: MappingType.value,
+          value: 25,
+        } as Specification.ValueMapping,
         marginBottom: {
-          type: "value",
+          type: MappingType.value,
           value: 10,
         } as Specification.ValueMapping,
-        marginLeft: { type: "value", value: 10 } as Specification.ValueMapping,
-        marginRight: { type: "value", value: 10 } as Specification.ValueMapping,
+        marginLeft: {
+          type: MappingType.value,
+          value: 10,
+        } as Specification.ValueMapping,
+        marginRight: {
+          type: MappingType.value,
+          value: 10,
+        } as Specification.ValueMapping,
       },
       glyphs: [
         {
@@ -449,11 +459,11 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               properties: { name: "Anchor" },
               mappings: {
                 x: {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "icx",
                 } as Specification.ParentMapping,
                 y: {
-                  type: "parent",
+                  type: MappingType.parent,
                   parentAttribute: "icy",
                 } as Specification.ParentMapping,
               },
@@ -472,19 +482,19 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           filter: null,
           mappings: {
             x1: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "x1",
             } as Specification.ParentMapping,
             y1: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "y1",
             } as Specification.ParentMapping,
             x2: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "x2",
             } as Specification.ParentMapping,
             y2: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "y2",
             } as Specification.ParentMapping,
           },
@@ -523,23 +533,23 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
           },
           mappings: {
             x: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "cx",
             } as Specification.ParentMapping,
             y: {
-              type: "parent",
+              type: MappingType.parent,
               parentAttribute: "oy2",
             } as Specification.ParentMapping,
             text: {
-              type: "value",
+              type: MappingType.value,
               value: "Nested Chart",
             } as Specification.ValueMapping,
             fontSize: {
-              type: "value",
+              type: MappingType.value,
               value: 12,
             } as Specification.ValueMapping,
             color: {
-              type: "value",
+              type: MappingType.value,
               value: { r: 0, g: 0, b: 0 },
             } as Specification.ValueMapping,
           },

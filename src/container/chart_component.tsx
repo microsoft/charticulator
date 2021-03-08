@@ -18,6 +18,7 @@ import {
   GraphicalElementEventHandler,
 } from "../app/renderer";
 import { RenderEvents } from "../core/graphics";
+import { MappingType } from "../core/specification";
 
 export { DataSelection };
 
@@ -152,7 +153,7 @@ export class ChartComponent extends React.Component<
         (this.manager.chart.mappings.width as Specification.ValueMapping).value
     ) {
       this.manager.chart.mappings.width = {
-        type: "value",
+        type: MappingType.value,
         value: newProps.width,
       } as Specification.ValueMapping;
       changed = true;
@@ -163,7 +164,7 @@ export class ChartComponent extends React.Component<
         (this.manager.chart.mappings.height as Specification.ValueMapping).value
     ) {
       this.manager.chart.mappings.height = {
-        type: "value",
+        type: MappingType.value,
         value: newProps.height,
       } as Specification.ValueMapping;
       changed = true;

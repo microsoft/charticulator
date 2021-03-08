@@ -4,6 +4,7 @@
 import { Point, Color, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -339,7 +340,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
 
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -352,7 +353,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
+      this.object.mappings.fill.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -365,7 +366,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -378,7 +379,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -391,7 +392,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.size &&
-      this.object.mappings.size.type === "value"
+      this.object.mappings.size.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -404,7 +405,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -417,7 +418,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.symbol &&
-      this.object.mappings.symbol.type === "value"
+      this.object.mappings.symbol.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,

@@ -33,7 +33,6 @@ import {
   strokeStyleToDashArray,
   TemplateParameters,
 } from "../common";
-import { format } from "d3-format";
 import { AttributeMap } from "../../specification";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
@@ -1299,6 +1298,9 @@ export function buildAxisInference(
       expression: axis.expression,
       type: axis.type,
       style: axis.style,
+      order: axis.order,
+      orderMode: axis.orderMode,
+      rawExpression: axis.rawExpression,
       property,
     },
   };

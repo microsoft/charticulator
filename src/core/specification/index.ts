@@ -100,10 +100,18 @@ export interface Mappings {
   [name: string]: Mapping;
 }
 
+export enum MappingType {
+  _element = "_element",
+  parent = "parent",
+  scale = "scale",
+  text = "text",
+  value = "value",
+}
+
 /** Attribute mapping */
 export interface Mapping {
   /** Mapping type */
-  type: string;
+  type: MappingType;
 }
 
 export type baselineH = "left" | "center" | "right";
@@ -112,7 +120,7 @@ export type baseline = baselineH | baselineV;
 
 /** Scale mapping: use a scale */
 export interface ScaleMapping extends Mapping {
-  type: "scale";
+  type: MappingType.scale;
   /** The table to draw data from */
   table: string;
   /** The data column */
@@ -129,7 +137,7 @@ export interface ScaleMapping extends Mapping {
 
 /** Text mapping: map data to text */
 export interface TextMapping extends Mapping {
-  type: "text";
+  type: MappingType.text;
   /** The table to draw data from */
   table: string;
   /** The text expression */
@@ -138,14 +146,14 @@ export interface TextMapping extends Mapping {
 
 /** Value mapping: a constant value */
 export interface ValueMapping extends Mapping {
-  type: "value";
+  type: MappingType.value;
   /** The constant value */
   value: AttributeValue;
 }
 
 /** Parent mapping: use an attribute of the item's parent item */
 export interface ParentMapping extends Mapping {
-  type: "parent";
+  type: MappingType.parent;
   /** The attribute of the parent item */
   parentAttribute: string;
 }

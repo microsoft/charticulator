@@ -5,6 +5,7 @@ import { Geometry, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -128,7 +129,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
                   {
                     type: "radio",
                     options: ["start", "middle", "end"],
-                    icons: ["AlignHorizontalLeft", "AlignHorizontalCenter", "AlignHorizontalRight"],
+                    icons: [
+                      "AlignHorizontalLeft",
+                      "AlignHorizontalCenter",
+                      "AlignHorizontalRight",
+                    ],
                     labels: ["Left", "Middle", "Right"],
                   }
                 ),
@@ -137,7 +142,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
                   {
                     type: "radio",
                     options: ["start", "middle", "end"],
-                    icons: ["AlignVerticalBottom", "AlignVerticalCenter", "AlignVerticalTop"],
+                    icons: [
+                      "AlignVerticalBottom",
+                      "AlignVerticalCenter",
+                      "AlignVerticalTop",
+                    ],
                     labels: ["Bottom", "Middle", "Top"],
                   }
                 )
@@ -652,7 +661,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const properties = [];
     if (
       this.object.mappings.strokeWidth &&
-      this.object.mappings.strokeWidth.type === "value"
+      this.object.mappings.strokeWidth.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -665,7 +674,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -678,7 +687,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -691,7 +700,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.image &&
-      this.object.mappings.image.type === "value"
+      this.object.mappings.image.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -704,7 +713,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.fill &&
-      this.object.mappings.fill.type === "value"
+      this.object.mappings.fill.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -717,7 +726,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.stroke &&
-      this.object.mappings.stroke.type === "value"
+      this.object.mappings.stroke.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,

@@ -13,6 +13,7 @@ import * as Graphics from "../../graphics";
 import { splitByWidth } from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
 import * as Specification from "../../specification";
+import { MappingType } from "../../specification";
 import {
   BoundingBox,
   Controls,
@@ -779,7 +780,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     const properties = [];
     if (
       this.object.mappings.vistextible &&
-      this.object.mappings.text.type === "value"
+      this.object.mappings.text.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -792,7 +793,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.fontFamily &&
-      this.object.mappings.fontFamily.type === "value"
+      this.object.mappings.fontFamily.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -805,7 +806,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.fontSize &&
-      this.object.mappings.fontSize.type === "value"
+      this.object.mappings.fontSize.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -818,7 +819,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.color &&
-      this.object.mappings.color.type === "value"
+      this.object.mappings.color.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -831,7 +832,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.visible &&
-      this.object.mappings.visible.type === "value"
+      this.object.mappings.visible.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
@@ -844,7 +845,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     }
     if (
       this.object.mappings.opacity &&
-      this.object.mappings.opacity.type === "value"
+      this.object.mappings.opacity.type === MappingType.value
     ) {
       properties.push({
         objectID: this.object._id,
