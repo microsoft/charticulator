@@ -234,4 +234,21 @@ export const strings = {
   core: {
     default: "(default)",
   },
+  objects: {
+    contextMenu: "Context menu",
+    interactivity: "Interactivity",
+    chart: {
+      dimensions: "Dimensions",
+      width: "Width",
+      height: "Height",
+      margins: "Margins",
+      left: "Left",
+      right: "Right",
+      top: "Top",
+      bottom: "Bottom",
+      background: "Background",
+      color: "Color",
+      opacity: "Opacity",
+    },
+  },
 };
