@@ -23,6 +23,7 @@ import { Color } from "../../common";
 import * as Scales from "../scales";
 import { ChartStateManager } from "../state";
 import { MappingType } from "../../specification";
+import { strings } from "../../../strings";
 
 export abstract class ChartClass extends ObjectClass {
   public readonly object: Specification.Chart;
@@ -124,6 +125,7 @@ export class RectangleChart extends ChartClass {
   };
 
   public static defaultProperties: Specification.AttributeMap = {
+    ...ObjectClass.defaultProperties,
     backgroundColor: null,
     backgroundOpacity: 1,
   };
@@ -502,24 +504,35 @@ export class RectangleChart extends ChartClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const result = [
-      manager.sectionHeader("Dimensions"),
-      manager.mappingEditor("Width", "width", {}),
-      manager.mappingEditor("Height", "height", {}),
-      manager.sectionHeader("Margins"),
-      manager.mappingEditor("Left", "marginLeft", {}),
-      manager.mappingEditor("Right", "marginRight", {}),
-      manager.mappingEditor("Top", "marginTop", {}),
-      manager.mappingEditor("Bottom", "marginBottom", {}),
-      manager.sectionHeader("Background"),
+      manager.sectionHeader(strings.objects.chart.dimensions),
+      manager.mappingEditor(strings.objects.chart.width, "width", {}),
+      manager.mappingEditor(strings.objects.chart.height, "height", {}),
+      manager.sectionHeader(strings.objects.chart.margins),
+      manager.mappingEditor(strings.objects.chart.left, "marginLeft", {}),
+      manager.mappingEditor(strings.objects.chart.right, "marginRight", {}),
+      manager.mappingEditor(strings.objects.chart.top, "marginTop", {}),
+      manager.mappingEditor(strings.objects.chart.bottom, "marginBottom", {}),
+      manager.sectionHeader(strings.objects.chart.background),
       manager.row(
-        "Color",
+        strings.objects.chart.color,
         manager.inputColor({ property: "backgroundColor" }, { allowNull: true })
+      ),
+      manager.sectionHeader(strings.objects.interactivity),
+      manager.row(
+        "",
+        manager.inputBoolean(
+          { property: "enableContextMenu" },
+          {
+            type: "checkbox",
+            label: strings.objects.contextMenu,
+          }
+        )
       ),
     ];
     if (this.object.properties.backgroundColor != null) {
       result.push(
         manager.row(
-          "Opacity",
+          strings.objects.chart.opacity,
           manager.inputNumber(
             { property: "backgroundOpacity" },
             { showSlider: true, sliderRange: [0, 1] }
