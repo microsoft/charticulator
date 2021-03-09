@@ -269,6 +269,7 @@ export class Toolbar extends ContextedComponent<
           {this.renderLineButton()}
           {this.renderTextButton()}
           {this.renderIconButton()}
+          <span className={"charticulator__toolbar-horizontal-separator"} />
           {this.renderDataAxisButton()}
           {/* Nested chart doesn't supported */}
           {/* <ObjectButton
@@ -402,9 +403,9 @@ export class Toolbar extends ContextedComponent<
           title={strings.toolbar.nestedChart}
           icon="mark/nested-chart"
         />
-        <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
         <LinkButton label={labels} />
+        <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
@@ -823,8 +824,8 @@ export class LinkButton extends ContextedComponent<
     return (
       <span ref={(e) => (this.container = e)}>
         <ToolButton
-          title={strings.toolbar.link}
-          text={this.props.label ? strings.toolbar.link : ""}
+          title={strings.toolbar.links}
+          text={this.props.label ? strings.toolbar.links : ""}
           icon={R.getSVGIcon("link/tool")}
           active={this.store.currentTool == "link"}
           onClick={() => {
