@@ -754,7 +754,7 @@ export const ScaffoldButton: React.FC<{
 }> = (props) => {
   return (
     <FluentToolButton
-      icon={R.getSVGIcon(props.icon)}
+      icon={props.icon}
       active={props.currentTool == props.type}
       title={props.title}
       onClick={() => {

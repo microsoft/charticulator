@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="2048" height="2048">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048" width="16" height="16">
   <path transform="translate(2048, 000) rotate(90)"
     d="M 1920 0 v 2048 h -128 V 0 h 128 z M 512 384 h 1152 v 512 H 0 V 384 z m 128 384 h 896 V 512 H 128v 256 z M 0 1152 h 1664 v 512 H 0 v -512 z m 128 384 h 1408 v -256 H 128 v 256 z" />
 </svg>

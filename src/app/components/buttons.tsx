@@ -8,7 +8,8 @@ import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
-import { IconButton, CommandBarButton } from "@fluentui/react";
+import { CommandBarButton } from "@fluentui/react";
+import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export interface ToolButtonProps {
   icon?: string;
@@ -131,28 +132,32 @@ export class FluentToolButton extends React.Component<
             ];
           }}
         >
+          <FluentButton marginTop={"0px"}>
+            <CommandBarButton
+              onClick={onClick}
+              checked={this.props.active || this.state.dragging}
+              text={this.props.text}
+              title={this.props.title}
+              iconProps={{
+                iconName: this.props.icon,
+              }}
+            />
+          </FluentButton>
+        </DraggableElement>
+      );
+    } else {
+      return (
+        <FluentButton marginTop={"0px"}>
           <CommandBarButton
             onClick={onClick}
-            checked={this.props.active || this.state.dragging}
+            checked={this.props.active}
             text={this.props.text}
             title={this.props.title}
             iconProps={{
               iconName: this.props.icon,
             }}
           />
-        </DraggableElement>
-      );
-    } else {
-      return (
-        <CommandBarButton
-          onClick={onClick}
-          checked={this.props.active}
-          text={this.props.text}
-          title={this.props.title}
-          iconProps={{
-            iconName: this.props.icon,
-          }}
-        />
+        </FluentButton>
       );
     }
   }
