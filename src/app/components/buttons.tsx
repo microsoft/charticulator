@@ -8,7 +8,7 @@ import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
-import { IconButton } from "@fluentui/react";
+import { IconButton, CommandBarButton } from "@fluentui/react";
 
 export interface ToolButtonProps {
   icon?: string;
@@ -131,7 +131,7 @@ export class FluentToolButton extends React.Component<
             ];
           }}
         >
-          <IconButton
+          <CommandBarButton
             onClick={onClick}
             checked={this.props.active || this.state.dragging}
             text={this.props.text}
@@ -144,7 +144,7 @@ export class FluentToolButton extends React.Component<
       );
     } else {
       return (
-        <IconButton
+        <CommandBarButton
           onClick={onClick}
           checked={this.props.active}
           text={this.props.text}

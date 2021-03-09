@@ -1319,7 +1319,7 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
-              icon="general/zoom-in"
+              icon="ZoomIn"
               onClick={() => {
                 const { scale, centerX, centerY } = this.state.zoom;
                 const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
@@ -1338,7 +1338,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="general/zoom-out"
+              icon="ZoomOut"
               onClick={() => {
                 const { scale, centerX, centerY } = this.state.zoom;
                 const fixPoint = Geometry.unapplyZoom(this.state.zoom, {

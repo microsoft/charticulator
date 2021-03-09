@@ -2325,14 +2325,12 @@ export function initializeIcons(
           width="16"
           height="16"
         >
-          <title>icons</title>
           <circle
             cx="9.87143"
             cy="22.27563"
             r="5.33333"
             style={{
               fillOpacity: 0.0,
-              stroke: "#000000",
               strokeWidth: "2px",
             }}
           />
@@ -2342,7 +2340,6 @@ export function initializeIcons(
             r="5.33333"
             style={{
               fillOpacity: 0.0,
-              stroke: "#000000",
               strokeWidth: "2px",
             }}
           />
@@ -2352,7 +2349,6 @@ export function initializeIcons(
             r="5.33333"
             style={{
               fillOpacity: 0.0,
-              stroke: "#000000",
               strokeWidth: "2px",
             }}
           />

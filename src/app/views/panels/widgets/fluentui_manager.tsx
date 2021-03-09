@@ -670,7 +670,7 @@ export class FluentUIWidgetManager
         className={""}
       >
         <FluentButton marginTop={"0px"}>
-          <DefaultButton
+          <IconButton
             checked={this.getPropertyValue(property) != null}
             iconProps={{
               iconName: "SortLines",
