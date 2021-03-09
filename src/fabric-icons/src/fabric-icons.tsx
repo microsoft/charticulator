@@ -2292,6 +2292,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path d="M1472 0l576 576L576 2048 0 1472 1472 0zM181 1472l395 395L1867 576l-395-395-88 88 115 115-91 91-115-115-165 165 197 198-90 90-198-197-165 165 115 116-90 90-116-115-165 165 197 198-90 90-198-197-165 165 115 115-91 91-115-115-88 88z" />
         </svg>
@@ -2302,6 +2305,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path d="M512 1151v-127h384v127H512zm1024-127h384v127h-384v-127zM0 1151v-127h384v127H0zm1024 0v-127h384v127h-384z" />
         </svg>
@@ -2312,6 +2318,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <g transform="translate(2048, 50) rotate(90)">
             <path d="M512 1151v-127h384v127H512zm1024-127h384v127h-384v-127zM0 1151v-127h384v127H0zm1024 0v-127h384v127h-384z" />
@@ -2324,6 +2333,9 @@ export function initializeIcons(
           viewBox="0 0 32 32"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <circle
             cx="9.87143"
@@ -2360,6 +2372,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path
             transform="translate(2048, 000) rotate(90)"
@@ -2373,6 +2388,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path
             transform="translate(-125, 0) rotate(180, 1024, 1024)"
@@ -2386,6 +2404,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <title>icons</title>
           <g transform="translate(0, 0) scale(70)">
@@ -2409,6 +2430,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path d="M1984 1792q26 0 45 18t19 46q0 24-17 44-30 35-69 62t-83 47-91 29-92 10q-99 0-183-38t-152-110q-49-51-109-79t-132-29q-70 0-131 28t-110 80l-9 9q-9 9-23 22t-30 30-30 30-25 25-13 13q-19 19-45 19t-45-19-19-45q0-26 19-45 54-54 102-104t100-88 114-60 145-23q99 0 183 38t152 110q49 51 109 79t132 29q76 0 132-28t109-80q11-10 21-15t26-5zM1235 290q14 8 23 23t9 32q0 8-2 15t-5 14L553 1789q-9 19-28 28l-173 87q-32 16-69 16h-9q-4 0-10-1l-47 94q-8 16-23 25t-34 10q-26 0-45-19t-19-45q0-12 7-30t16-37 20-37 15-28q-26-40-26-87v-165q0-16 7-29L711 419l-65-32-237 474q-8 16-23 25t-34 10q-26 0-45-19t-19-45q0-13 7-29l239-478q16-32 43-50t63-19q35 0 66 17t62 32l71-142q8-17 23-26t34-9q13 0 22 4 12-24 23-47t26-43 36-30 53-12q32 0 61 15l94 47q32 16 50 42t19 64q0 34-15 63t-30 59zm-202-101l87 43 29-58-87-43-29 58zm84 185l-192-96-669 1337v150q0 11 8 19t19 8q4 0 16-5t29-13 35-17 36-19 30-16 19-10l669-1338z" />
         </svg>
@@ -2419,6 +2443,9 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+          }}
         >
           <path
             d="M9.5,1.5C5.916,1.5,3,4.416,3,8c0,2.895,2.355,5.25,5.25,5.25c2.895,0,5.25-2.355,5.25-5.25c0-2.206-1.794-4-4-4

@@ -47,14 +47,6 @@
   }
 }
 
-.ms-Icon,
-.ms-ContextualMenu-icon {
-  svg {
-    fill: #0078d4;
-    stroke: #0078d4;
-  }
-}
-
 @mixin dropdown-button-base($height: 24px) {
   @include button-base($height);
   @include icon-size($height - 4px, 2px);
