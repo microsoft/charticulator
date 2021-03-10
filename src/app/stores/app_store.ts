@@ -863,6 +863,10 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
+      if (!plotSegment) {
+        console.log("Numerical-number legend needs plot segment parameter.");
+        return;
+      }
       newLegend = this.chartManager.createObject(`legend.numerical-number`);
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
