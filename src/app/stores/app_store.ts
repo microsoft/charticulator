@@ -1410,6 +1410,9 @@ export class AppStore extends BaseStore {
       valueType = DataType.String;
     }
 
+    const objectProperties = object.properties[
+      options.property
+    ] as ObjectProperties;
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
@@ -1421,11 +1424,11 @@ export class AppStore extends BaseStore {
       valueType,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
-      visible: true,
+      visible: objectProperties?.visible,
       side: propertyValue?.side || "default",
       style:
-        ((object.properties[options.property] as ObjectProperties)
-          ?.style as AxisRenderingStyle) || deepClone(defaultAxisStyle),
+        (objectProperties?.style as AxisRenderingStyle) ||
+        deepClone(defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
       order: dataExpression.metadata.order,
