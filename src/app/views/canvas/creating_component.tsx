@@ -34,12 +34,6 @@ export interface CreatingComponentState {
   hoverCandidateY: [number, Specification.Mapping];
 }
 
-export interface SnappingElementMapping extends Specification.Mapping {
-  type: MappingType._element;
-  element: string;
-  attribute: string;
-}
-
 export class PointSnapping {
   public threshold: number;
   public guides: Array<SnappableGuide<any>>;
@@ -72,16 +66,18 @@ export class PointSnapping {
             ) {
               candidateDistance = d;
               if (guide.element == null) {
-                candidate = {
+                const parentMapping: Specification.ParentMapping = {
                   type: MappingType.parent,
                   parentAttribute: axis.attribute,
-                } as Specification.ParentMapping;
+                };
+                candidate = parentMapping;
               } else {
-                candidate = {
+                const elementMapping: Specification.SnappingElementMapping = {
                   type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
-                } as SnappingElementMapping;
+                };
+                candidate = elementMapping;
               }
               candidateValue = axis.value;
               candidateGuide = guide;
@@ -115,16 +111,18 @@ export class PointSnapping {
             ) {
               candidateDistance = d;
               if (guide.element == null) {
-                candidate = {
+                const parentMapping: Specification.ParentMapping = {
                   type: MappingType.parent,
                   parentAttribute: axis.attribute,
-                } as Specification.ParentMapping;
+                };
+                candidate = parentMapping;
               } else {
-                candidate = {
+                const elementMapping: Specification.SnappingElementMapping = {
                   type: MappingType._element,
                   element: guide.element._id,
                   attribute: axis.attribute,
-                } as SnappingElementMapping;
+                };
+                candidate = elementMapping;
               }
               candidateValue = axis.value;
               candidateGuide = guide;

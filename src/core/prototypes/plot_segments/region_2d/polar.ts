@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Graphics from "../../../graphics";
-import { ConstraintSolver, ConstraintStrength } from "../../../solver";
+import {
+  ConstraintPlugins,
+  ConstraintSolver,
+  ConstraintStrength,
+} from "../../../solver";
 import * as Specification from "../../../specification";
 import {
   AttributeDescription,
@@ -18,12 +22,14 @@ import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
+import { strings } from "../../../../strings";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -33,11 +39,23 @@ export interface PolarAttributes extends Region2DAttributes {
   y1: number;
   x2: number;
   y2: number;
+  cx: number;
+  cy: number;
 
   angle1: number;
   angle2: number;
   radial1: number;
   radial2: number;
+
+  a1r1x: number;
+  a1r1y: number;
+  a1r2x: number;
+  a1r2y: number;
+
+  a2r1x: number;
+  a2r1y: number;
+  a2r2x: number;
+  a2r2y: number;
 }
 
 export interface PolarState extends Specification.PlotSegmentState {
@@ -56,32 +74,17 @@ export interface PolarObject extends Specification.PlotSegment {
   properties: PolarProperties;
 }
 
-export let polarTerminology: Region2DConfiguration["terminology"] = {
-  xAxis: "Angular Axis",
-  yAxis: "Radial Axis",
-  xMin: "Left",
+export let icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
-  xMiddle: "Middle",
   xMiddleIcon: "align/x-middle",
-  xMax: "Right",
   xMaxIcon: "align/right",
-  yMiddle: "Middle",
   yMiddleIcon: "align/y-middle",
-  yMin: "Bottom",
   yMinIcon: "align/bottom",
-  yMax: "Top",
   yMaxIcon: "align/top",
-  dodgeX: "Stack Angular",
   dodgeXIcon: "sublayout/dodge-angular",
-  dodgeY: "Stack Radial",
   dodgeYIcon: "sublayout/dodge-radial",
-  grid: "Grid",
   gridIcon: "sublayout/polar-grid",
-  gridDirectionX: "Angular",
-  gridDirectionY: "Radial",
-  packing: "Packing",
   packingIcon: "sublayout/packing",
-  overlap: "Overlap",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -144,6 +147,16 @@ export class PolarPlotSegment extends PlotSegmentClass<
     "gapY",
     "x",
     "y",
+    "cx",
+    "cy",
+    "a1r1x",
+    "a1r1y",
+    "a1r2x",
+    "a1r2y",
+    "a2r1x",
+    "a2r1y",
+    "a2r2x",
+    "a2r2y",
   ];
   public attributes: { [name: string]: AttributeDescription } = {
     x1: {
@@ -198,6 +211,46 @@ export class PolarPlotSegment extends PlotSegmentClass<
       type: Specification.AttributeType.Number,
       editableInGlyphStage: true,
     },
+    cx: {
+      name: "cx",
+      type: Specification.AttributeType.Number,
+    },
+    cy: {
+      name: "cy",
+      type: Specification.AttributeType.Number,
+    },
+    a1r1x: {
+      name: "a1r1x",
+      type: Specification.AttributeType.Number,
+    },
+    a1r1y: {
+      name: "a1r1y",
+      type: Specification.AttributeType.Number,
+    },
+    a1r2x: {
+      name: "a1r2x",
+      type: Specification.AttributeType.Number,
+    },
+    a1r2y: {
+      name: "a1r2y",
+      type: Specification.AttributeType.Number,
+    },
+    a2r1x: {
+      name: "a2r1x",
+      type: Specification.AttributeType.Number,
+    },
+    a2r1y: {
+      name: "a2r1y",
+      type: Specification.AttributeType.Number,
+    },
+    a2r2x: {
+      name: "a2r2x",
+      type: Specification.AttributeType.Number,
+    },
+    a2r2y: {
+      name: "a2r2y",
+      type: Specification.AttributeType.Number,
+    },
   };
 
   public initializeState(): void {
@@ -214,6 +267,16 @@ export class PolarPlotSegment extends PlotSegmentClass<
     attrs.y = attrs.y2;
     attrs.gapX = 4;
     attrs.gapY = 4;
+    attrs.cx = 0;
+    attrs.cy = 0;
+    attrs.a1r1x = 0;
+    attrs.a1r1y = 0;
+    attrs.a1r2x = 0;
+    attrs.a1r2y = 0;
+    attrs.a2r1x = 0;
+    attrs.a2r1y = 0;
+    attrs.a2r2x = 0;
+    attrs.a2r2y = 0;
   }
 
   public createBuilder(
@@ -221,8 +284,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
     context?: BuildConstraintsContext
   ) {
     const props = this.object.properties;
-    const config = {
-      terminology: polarTerminology,
+    const config: Region2DConfiguration = {
+      terminology: strings.polarTerminology,
+      icons,
       xAxisPrePostGap: (props.endAngle - props.startAngle) % 360 == 0,
       yAxisPrePostGap: false,
       getXYScale: () => {
@@ -246,7 +310,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public buildConstraints(
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    context: BuildConstraintsContext,
+    manager: ChartStateManager
   ): void {
     const attrs = this.state.attributes;
     const props = this.object.properties;
@@ -308,6 +373,26 @@ export class PolarPlotSegment extends PlotSegmentClass<
         [[2, outerRadius]]
       );
     }
+
+    solver.makeConstant(attrs, "cx");
+    solver.makeConstant(attrs, "cy");
+    solver.makeConstant(attrs, "a1r1x");
+    solver.makeConstant(attrs, "a1r1y");
+    solver.makeConstant(attrs, "a1r2x");
+    solver.makeConstant(attrs, "a1r2y");
+    solver.makeConstant(attrs, "a2r1x");
+    solver.makeConstant(attrs, "a2r1y");
+    solver.makeConstant(attrs, "a2r2x");
+    solver.makeConstant(attrs, "a2r2y");
+
+    solver.addPlugin(
+      new ConstraintPlugins.PolarPlotSegmentPlugin(
+        attrs,
+        this.parent.object.constraints,
+        this.object._id,
+        manager
+      )
+    );
   }
 
   public buildGlyphConstraints(
@@ -320,11 +405,11 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
-    const { x1, x2, y1, y2 } = attrs;
+    const { x1, x2, y1, y2, cx, cy } = attrs;
     return {
       type: "rectangle",
-      cx: (x1 + x2) / 2,
-      cy: (y1 + y2) / 2,
+      cx,
+      cy,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
@@ -333,12 +418,29 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2 } = attrs;
+    const {
+      x1,
+      y1,
+      x2,
+      y2,
+      cx,
+      cy,
+      a1r1x,
+      a1r1y,
+      a1r2x,
+      a1r2y,
+      a2r1x,
+      a2r1y,
+      a2r2x,
+      a2r2y,
+    } = attrs;
     return [
       { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
       { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
       { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
       { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
+      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
     ];
   }
 
@@ -347,8 +449,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const cx = (attrs.x1 + attrs.x2) / 2;
-    const cy = (attrs.y1 + attrs.y2) / 2;
+    const { cx } = attrs;
+    const { cy } = attrs;
     const [angularMode, radialMode] = this.getAxisModes();
     const radialData = props.yData;
     const angularData = props.xData;
@@ -368,43 +470,44 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderLine(
-            cx,
-            cy,
-            90 - (radialData.side == "opposite" ? angleEnd : angleStart),
-            -1
-          )
+          cx,
+          cy,
+          90 - (radialData.side == "opposite" ? angleEnd : angleStart),
+          -1
+        )
       );
     }
     if (angularData && angularData.visible) {
-      const axisRenderer = new AxisRenderer()
-          .setAxisDataBinding(
-            angularData,
-            angleStart,
-            angleEnd,
-            builder.config.xAxisPrePostGap,
-            false,
-            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          );
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        angularData,
+        angleStart,
+        angleEnd,
+        builder.config.xAxisPrePostGap,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
       g.elements.push(
         axisRenderer.renderPolar(
-            cx,
-            cy,
-            angularData.side == "opposite" ? innerRadius : outerRadius,
-            angularData.side == "opposite" ? -1 : 1
-          )
-      );     
+          cx,
+          cy,
+          angularData.side == "opposite" ? innerRadius : outerRadius,
+          angularData.side == "opposite" ? -1 : 1
+        )
+      );
     }
     return g;
   }
 
-  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
-    
+
     const builder = this.createBuilder();
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const cx = (attrs.x1 + attrs.x2) / 2;
-    const cy = (attrs.y1 + attrs.y2) / 2;
+    const { cx } = attrs;
+    const { cy } = attrs;
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
@@ -424,36 +527,35 @@ export class PolarPlotSegment extends PlotSegmentClass<
       );
       g.elements.push(
         axisRenderer.renderPolarArcGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
+          cx,
+          cy,
+          innerRadius,
+          outerRadius,
+          angleStart,
+          angleEnd
+        )
       );
     }
 
     if (angularData && angularData.visible) {
-      const axisRenderer = new AxisRenderer()
-          .setAxisDataBinding(
-            angularData,
-            angleStart,
-            angleEnd,
-            builder.config.xAxisPrePostGap,
-            false,
-            this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
-          );
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        angularData,
+        angleStart,
+        angleEnd,
+        builder.config.xAxisPrePostGap,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
       g.elements.push(
         axisRenderer.renderPolarRadialGridLine(
-            cx,
-            cy,
-            innerRadius,
-            outerRadius,
-            angleStart,
-            angleEnd
-          )
-      );   
+          cx,
+          cy,
+          innerRadius,
+          outerRadius,
+          angleStart,
+          angleEnd
+        )
+      );
     }
 
     return g;
@@ -475,9 +577,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes as PolarAttributes;
-    const { x1, y1, x2, y2, radial1, radial2 } = attrs;
-    const cx = (x1 + x2) / 2;
-    const cy = (y1 + y2) / 2;
+    const { x1, y1, x2, y2, radial1, radial2, cx, cy } = attrs;
     const zones: DropZones.Description[] = [];
     zones.push({
       type: "region",
@@ -538,10 +638,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const rows = this.parent.dataflow.getTable(this.object.table).rows;
-    const { x1, x2, y1, y2 } = attrs;
+    const { x1, x2, y1, y2, cx, cy } = attrs;
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-    const cx = (x1 + x2) / 2,
-      cy = (y1 + y2) / 2;
     const builder = this.createBuilder();
     return [
       {

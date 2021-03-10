@@ -26,7 +26,8 @@ export abstract class PlotSegmentClass<
   /** Build intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
   public buildConstraints(
     solver: ConstraintSolver,
-    context: BuildConstraintsContext
+    context: BuildConstraintsContext,
+    manager: ChartStateManager
   ): void {}
 
   /** Build constraints for glyphs within */

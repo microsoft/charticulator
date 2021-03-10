@@ -19,11 +19,13 @@ import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
+import { strings } from "../../../../strings";
 
 export type CartesianAxisMode =
   | "null"
@@ -45,35 +47,23 @@ export interface CartesianState extends Specification.PlotSegmentState {
   attributes: CartesianAttributes;
 }
 
-export let cartesianTerminology: Region2DConfiguration = {
-  terminology: {
-    xAxis: "X Axis", // X Axis / Angular Axis
-    yAxis: "Y Axis", // Y Axis / Radial Axis
-    xMin: "Left",
-    xMinIcon: "align/left",
-    xMiddle: "Middle",
-    xMiddleIcon: "align/x-middle",
-    xMax: "Right",
-    xMaxIcon: "align/right",
-    yMiddle: "Middle",
-    yMiddleIcon: "align/y-middle",
-    yMin: "Bottom",
-    yMinIcon: "align/bottom",
-    yMax: "Top",
-    yMaxIcon: "align/top",
-    dodgeX: "Stack X",
-    dodgeXIcon: "sublayout/dodge-x",
-    dodgeY: "Stack Y",
-    dodgeYIcon: "sublayout/dodge-y",
-    grid: "Grid",
-    gridIcon: "sublayout/grid",
-    gridDirectionX: "X",
-    gridDirectionY: "Y",
-    packing: "Packing",
-    packingIcon: "sublayout/packing",
-    overlap: "Overlap",
-    overlapIcon: "sublayout/overlap",
-  },
+const icons: Region2DConfigurationIcons = {
+  xMinIcon: "align/left",
+  xMiddleIcon: "align/x-middle",
+  xMaxIcon: "align/right",
+  yMiddleIcon: "align/y-middle",
+  yMinIcon: "align/bottom",
+  yMaxIcon: "align/top",
+  dodgeXIcon: "sublayout/dodge-x",
+  dodgeYIcon: "sublayout/dodge-y",
+  gridIcon: "sublayout/grid",
+  packingIcon: "sublayout/packing",
+  overlapIcon: "sublayout/overlap",
+};
+
+export let config: Region2DConfiguration = {
+  terminology: strings.cartesianTerminology,
+  icons,
   xAxisPrePostGap: false,
   yAxisPrePostGap: false,
 };
@@ -116,7 +106,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
       },
-    }
+    },
   };
 
   public readonly state: CartesianState;
@@ -186,7 +176,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ) {
     const builder = new Region2DConstraintBuilder(
       this,
-      cartesianTerminology,
+      config,
       "x1",
       "x2",
       "y1",
@@ -235,7 +225,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      ...builder.buildPanelWidgets(manager)
+      ...builder.buildPanelWidgets(manager),
     ];
   }
 
@@ -316,11 +306,13 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return g;
   }
 
-  public getPlotSegmentBackgroundGraphics(manager: ChartStateManager): Graphics.Group {
+  public getPlotSegmentBackgroundGraphics(
+    manager: ChartStateManager
+  ): Graphics.Group {
     const g = Graphics.makeGroup([]);
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    
+
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
