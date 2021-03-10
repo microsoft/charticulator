@@ -137,7 +137,7 @@ export class ScaleValueSelector extends React.Component<
                     new Actions.ToggleLegendForScale(
                       scale._id,
                       scaleMapping,
-                      null // TODO find the plot segment
+                      null
                     ).dispatch(store.dispatcher);
                   }}
                 />
