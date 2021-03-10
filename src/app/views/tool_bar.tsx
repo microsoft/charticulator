@@ -431,18 +431,18 @@ export class Toolbar extends ContextedComponent<
               icon="guide/y"
             />
             <ObjectButton
-              classID="coordinator-x"
+              classID="guide-coordinator-x"
               title={strings.toolbar.guideX}
               icon="guide/coordinator-x"
             />
             <ObjectButton
-              classID="coordinator-y"
+              classID="guide-coordinator-y"
               title={strings.toolbar.guideY}
               icon="guide/coordinator-y"
             />
             <ObjectButton
-              classID="coordinator-polar"
-              title={strings.toolbar.guideY}
+              classID="guide-coordinator-polar"
+              title={strings.toolbar.guidePolar}
               icon="plot-segment/polar"
             />
           </>
