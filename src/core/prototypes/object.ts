@@ -51,7 +51,11 @@ export abstract class ObjectClass<
   public static metadata: ObjectClassMetadata = {};
 
   /** Default attributes */
-  public static defaultProperties: Specification.AttributeMap = {};
+  public static defaultProperties: Specification.AttributeMap = {
+    enableTooltips: true,
+    enableContextMenu: true,
+    enableSelection: true,
+  };
 
   /** Default mapping values */
   public static defaultMappingValues: Specification.AttributeMap = {};

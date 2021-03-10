@@ -19,7 +19,7 @@ import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
 import * as Specification from "../../specification";
 import { CartesianCoordinates, CoordinateSystem } from "../coordinate_system";
-import { Element, Group, makeGroup } from "../elements";
+import { Element, Group, makeGroup, makeRect } from "../elements";
 
 export function facetRows(
   rows: Dataset.Row[],
@@ -53,8 +53,10 @@ export interface RenderEvents {
  *
  */
 export class ChartRenderer {
-
-  constructor(private manager: Prototypes.ChartStateManager, private renderEvents?: RenderEvents) {
+  constructor(
+    private manager: Prototypes.ChartStateManager,
+    private renderEvents?: RenderEvents
+  ) {
     this.manager = manager;
   }
 
@@ -201,7 +203,33 @@ export class ChartRenderer {
       }
     }
 
-    return makeGroup(graphics);
+    const chartEventHandlerRect = makeRect(
+      chartState.attributes.x1 as number,
+      chartState.attributes.y1 as number,
+      chartState.attributes.x2 as number,
+      chartState.attributes.y2 as number,
+      {
+        fillColor: null,
+        opacity: 1,
+      }
+    );
+
+    // don't need to handle other events by chart.
+    if (chart.properties.enableContextMenu) {
+      chartEventHandlerRect.selectable = {
+        plotSegment: null,
+        glyphIndex: null,
+        rowIndices: null,
+        enableTooltips: false,
+        enableContextMenu:
+          chart.properties.enableContextMenu !== undefined
+            ? (chart.properties.enableContextMenu as boolean)
+            : true,
+        enableSelection: false,
+      };
+    }
+
+    return makeGroup([chartEventHandlerRect, ...graphics]);
   }
 
   public render(): Group {

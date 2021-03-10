@@ -271,7 +271,7 @@ export class ChartComponent extends React.Component<
         clientY: (event as any).clientY,
         event,
       };
-      handler({ table: element.plotSegment.table, rowIndices }, modifiers);
+      handler({ table: element.plotSegment?.table, rowIndices }, modifiers);
     };
   }
 
