@@ -68,6 +68,7 @@ import {
 } from "../../core/specification/types";
 import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
 import { domain } from "process";
+import { defaultAxisStyle } from "../../core/prototypes/plot_segments";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1411,8 +1412,9 @@ export class AppStore extends BaseStore {
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible: true,
       side: propertyValue?.side || "default",
-      style: (object.properties[options.property] as ObjectProperties)
-        ?.style as AxisRenderingStyle,
+      style:
+        ((object.properties[options.property] as ObjectProperties)
+          ?.style as AxisRenderingStyle) || deepClone(defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
       order: dataExpression.metadata.order,
