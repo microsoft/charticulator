@@ -1424,7 +1424,7 @@ export class AppStore extends BaseStore {
       valueType,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
-      visible: objectProperties?.visible,
+      visible: objectProperties?.visible !== undefined ? objectProperties?.visible : true,
       side: propertyValue?.side || "default",
       style:
         (objectProperties?.style as AxisRenderingStyle) ||
