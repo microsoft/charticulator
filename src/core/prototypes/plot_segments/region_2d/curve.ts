@@ -19,11 +19,13 @@ import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { ChartStateManager } from "../..";
+import { strings } from "../../../../strings";
 
 export type CurveAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -60,32 +62,17 @@ export interface CurveObject extends Specification.PlotSegment {
   properties: CurveProperties;
 }
 
-export let curveTerminology: Region2DConfiguration["terminology"] = {
-  xAxis: "Tangent Axis",
-  yAxis: "Normal Axis",
-  xMin: "Left",
+export let icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
-  xMiddle: "Middle",
   xMiddleIcon: "align/x-middle",
-  xMax: "Right",
   xMaxIcon: "align/right",
-  yMiddle: "Middle",
   yMiddleIcon: "align/y-middle",
-  yMin: "Bottom",
   yMinIcon: "align/bottom",
-  yMax: "Top",
   yMaxIcon: "align/top",
-  dodgeX: "Stack Tangential",
   dodgeXIcon: "sublayout/dodge-x",
-  dodgeY: "Stack Normal",
   dodgeYIcon: "sublayout/dodge-y",
-  grid: "Grid",
   gridIcon: "sublayout/grid",
-  gridDirectionX: "Tangent",
-  gridDirectionY: "Normal",
-  packing: "Packing",
   packingIcon: "sublayout/packing",
-  overlap: "Overlap",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -229,8 +216,9 @@ export class CurvePlotSegment extends PlotSegmentClass<
     context?: BuildConstraintsContext
   ) {
     const props = this.object.properties;
-    const config = {
-      terminology: curveTerminology,
+    const config: Region2DConfiguration = {
+      terminology: strings.curveTerminology,
+      icons,
       xAxisPrePostGap: false,
       yAxisPrePostGap: false,
     };

@@ -13,11 +13,9 @@ import {
 } from "../../core";
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
-import {
-  LegendClass,
-  LegendProperties,
-} from "../../core/prototypes/legends/legend";
+import { LegendProperties } from "../../core/prototypes/legends/legend";
 import { ChartElement, MappingType } from "../../core/specification";
+import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -72,14 +70,14 @@ export class Migrator {
       compareVersion(state.version, "1.5.0") < 0 &&
       compareVersion(targetVersion, "1.5.0") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.5.0: Links are not automatically sorted in rendering now
       state = this.addScaleMappings(state);
     }
     if (
       compareVersion(state.version, "1.5.1") < 0 &&
       compareVersion(targetVersion, "1.5.1") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.5.1: Links are not automatically sorted in rendering now
       state = this.addTableTypes(state);
     }
 
@@ -87,7 +85,7 @@ export class Migrator {
       compareVersion(state.version, "1.6.0") < 0 &&
       compareVersion(targetVersion, "1.6.0") >= 0
     ) {
-      // Major change at version 1.4.0: Links are not automatically sorted in rendering now
+      // Minor change at version 1.6.0: Links are not automatically sorted in rendering now
       state = this.addOriginDataSet(state);
     }
 
@@ -105,7 +103,7 @@ export class Migrator {
       compareVersion(state.version, "1.8.0") < 0 &&
       compareVersion(targetVersion, "1.8.0") >= 0
     ) {
-      // Minor change at version 1.7.0: Add default value for property layout in legend
+      // Minor change at version 1.8.0: Add default value for property layout in legend
       state = this.setValueToLayoutPropertyOfLegend(state);
     }
 
@@ -113,8 +111,16 @@ export class Migrator {
       compareVersion(state.version, "2.0.0") < 0 &&
       compareVersion(targetVersion, "2.0.0") >= 0
     ) {
-      // Minor change at version 1.7.0: Add default value for property layout in legend
+      // Major change at version 2.0.0: Add default value for property layout in legend
       state = this.setValueItemShapeOfLegend(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.1") < 0 &&
+      compareVersion(targetVersion, "2.0.1") >= 0
+    ) {
+      // Patch change at version 2.0.1: Add polar/angular legend
+      state = this.setPolarAngularLegend(state);
     }
 
     // After migration, set version to targetVersion
@@ -344,6 +350,23 @@ export class Migrator {
       }
     }
 
+    return state;
+  }
+
+  public setPolarAngularLegend(state: AppStoreState) {
+    for (let i = 0; i < state.chart.elements.length; i++) {
+      const element = state.chart.elements[i];
+      if (Prototypes.isType(element.classID, "legend")) {
+        const attrs = state.chartState.elements[i]
+          .attributes as NumericalNumberLegendAttributes;
+        // add new properties
+        attrs.cx = 0;
+        attrs.cy = 0;
+        attrs.radius = 0;
+        attrs.startAngle = 0;
+        attrs.endAngle = 0;
+      }
+    }
     return state;
   }
 }

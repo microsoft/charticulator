@@ -158,6 +158,13 @@ export interface ParentMapping extends Mapping {
   parentAttribute: string;
 }
 
+/** Snapping element mapping: use an attribute of another element */
+export interface SnappingElementMapping extends Mapping {
+  type: MappingType._element;
+  element: string;
+  attribute: string;
+}
+
 // ===========================================================================
 // Constraints
 // ===========================================================================
