@@ -3,7 +3,7 @@
 
 import * as React from "react";
 
-import { FloatingPanel } from "../../components";
+import { ButtonRaised, FloatingPanel } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Specification } from "../../../core";
 import { Button, Select } from "../panels/widgets/controls";
@@ -96,8 +96,8 @@ export class FileViewImport extends ContextedComponent<
         peerGroup="import"
         title={strings.templateImport.title}
         closeButtonIcon={"general/cross"}
-        height={400}
-        width={650}
+        height={600}
+        width={800}
         onClose={this.props.onClose}
       >
         <section className="charticulator__file-view-mapping_view">
@@ -189,31 +189,31 @@ export class FileViewImport extends ContextedComponent<
                 );
               })}
             <div className="charticulator__file-view-mapping_row_button_toolbar">
-              <Button
+              <ButtonRaised
+                onClick={() => {
+                  this.props.onClose();
+                }}
+                text={strings.button.cancel}
+              />
+              <ButtonRaised
                 onClick={() => {
                   if (
                     this.props.unmappedColumns.filter(
                       (unmapped) =>
                         this.state.columnMappings.get(unmapped.name) ===
                         undefined
-                    ).length == 0
+                    ).length === 0
                   ) {
                     this.props.onSave(this.state.columnMappings);
                   }
                 }}
                 text={strings.templateImport.save}
-                active={
+                disabled={
                   this.props.unmappedColumns.filter(
                     (unmapped) =>
                       this.state.columnMappings.get(unmapped.name) === undefined
-                  ).length == 0
+                  ).length !== 0
                 }
-              />
-              <Button
-                onClick={() => {
-                  this.props.onClose();
-                }}
-                text={strings.button.cancel}
               />
             </div>
           </section>

@@ -1424,7 +1424,10 @@ export class AppStore extends BaseStore {
       valueType,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
-      visible: objectProperties?.visible !== undefined ? objectProperties?.visible : true,
+      visible:
+        objectProperties?.visible !== undefined
+          ? objectProperties?.visible
+          : true,
       side: propertyValue?.side || "default",
       style:
         (objectProperties?.style as AxisRenderingStyle) ||
@@ -1628,7 +1631,7 @@ export class AppStore extends BaseStore {
   ): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
     const dataTable = dataset.tables.find((t) => t.type === tableType);
-    const found = dataTable.columns.find((c) => c.name === column.name);
+    const found = dataTable?.columns.find((c) => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }
