@@ -47,6 +47,7 @@ export interface ValueEditorProps {
 
   hints?: DataMappingHints;
   numberOptions?: InputNumberOptions;
+  anchorReference?: Element;
 }
 
 export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
@@ -246,8 +247,9 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
               text="Conditioned by..."
               ref={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
               onClick={() => {
-                // this.beginDataFieldSelection(ref);
-                this.props.onBeginDataFieldSelection(ref);
+                this.props.onBeginDataFieldSelection(
+                  this.props.anchorReference || ref
+                );
               }}
             />
           );

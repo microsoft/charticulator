@@ -230,6 +230,7 @@ export class MappingEditor extends React.Component<
         getTable={() => this.getTableOrDefault()}
         hints={this.props.options.hints}
         numberOptions={this.props.options.numberOptions}
+        anchorReference={this.mappingButton}
       />
     );
   }
