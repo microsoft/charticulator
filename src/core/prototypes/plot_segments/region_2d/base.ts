@@ -20,13 +20,32 @@ import { PlotSegmentClass } from "../plot_segment";
 
 import { strings } from "./../../../../strings";
 
+export enum Region2DSublayoutType {
+  Overlap = "overlap",
+  DodgeX = "dodge-x",
+  DodgeY = "dodge-y",
+  Grid = "grid",
+  Packing = "packing",
+}
+
+export enum SublayoutAlignment {
+  Start = "start",
+  Middle = "middle",
+  End = "end",
+}
+
+export enum GridDirection {
+  X = "x",
+  Y = "y",
+}
+
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
-  type: "overlap" | "dodge-x" | "dodge-y" | "grid" | "packing";
+  type: Region2DSublayoutType;
 
   /** Sublayout alignment (for dodge and grid) */
   align: {
-    x: "start" | "middle" | "end";
-    y: "start" | "middle" | "end";
+    x: SublayoutAlignment;
+    y: SublayoutAlignment;
   };
 
   ratioX: number;
@@ -35,7 +54,7 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   /** Grid options */
   grid?: {
     /** Grid direction */
-    direction: "x" | "y";
+    direction: GridDirection;
     /** Number of glyphs in X direction (direction == "x") */
     xCount?: number;
     /** Number of glyphs in Y direction (direction == "x") */

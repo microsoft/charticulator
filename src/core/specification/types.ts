@@ -13,9 +13,21 @@ export enum OrderMode {
 
 export type AxisSide = "default" | "opposite";
 
+export enum AxisDataBindingType {
+  Default = "default",
+  Numerical = "numerical",
+  Categorical = "categorical",
+}
+
+export enum NumericalMode {
+  Linear = "linear",
+  Logarithmic = "logarithmic",
+  Temporal = "temporal",
+}
+
 /** Common parameter and mapping types */
 export interface AxisDataBinding extends AttributeMap {
-  type: "default" | "numerical" | "categorical";
+  type: AxisDataBindingType;
   visible: boolean;
   side: AxisSide;
 
@@ -25,7 +37,7 @@ export interface AxisDataBinding extends AttributeMap {
   valueType?: DataType;
 
   /** Domain for linear/logarithm types */
-  numericalMode?: "linear" | "logarithmic" | "temporal";
+  numericalMode?: NumericalMode;
   domainMin?: number;
   domainMax?: number;
 
@@ -60,15 +72,32 @@ export interface AxisRenderingStyle extends AttributeMap {
   gridlineWidth: number;
 }
 
+export enum TextAlignmentHorizontal {
+  Left = "left",
+  Middle = "middle",
+  Right = "right",
+}
+
+export enum TextAlignmentVertical {
+  Top = "top",
+  Middle = "middle",
+  Bottom = "bottom",
+}
+
 export interface TextAlignment extends AttributeMap {
-  x: "left" | "middle" | "right";
-  y: "top" | "middle" | "bottom";
+  x: TextAlignmentHorizontal;
+  y: TextAlignmentVertical;
   xMargin: number;
   yMargin: number;
 }
 
+export enum Colorspace {
+  Hcl = "hcl",
+  Lab = "lab",
+}
+
 export interface ColorGradient extends AttributeMap {
-  colorspace: "hcl" | "lab";
+  colorspace: Colorspace;
   colors: Color[];
 }
 

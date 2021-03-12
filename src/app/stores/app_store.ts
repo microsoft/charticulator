@@ -57,15 +57,30 @@ import {
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
-import { AxisRenderingStyle, OrderMode } from "../../core/specification/types";
+import {
+  AxisDataBindingType,
+  AxisRenderingStyle,
+  NumericalMode,
+  OrderMode,
+} from "../../core/specification/types";
 import {
   NumericalNumberLegendAttributeNames,
   NumericalNumberLegendProperties,
 } from "../../core/prototypes/legends/numerical_legend";
 import { domain } from "process";
 
-import { defaultAxisStyle } from "../../core/prototypes/plot_segments";
+import {
+  CartesianPlotSegment,
+  defaultAxisStyle,
+  PlotSegmentClass,
+  Region2DProperties,
+} from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
+import {
+  LineGuide,
+  LineGuideProperties,
+} from "../../core/prototypes/plot_segments/line";
+import { Region2DSublayoutType } from "../../core/prototypes/plot_segments/region_2d/base";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1252,13 +1267,14 @@ export class AppStore extends BaseStore {
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
-    plotSegments.forEach((plot) => {
+    plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
         (table) => table.name === plot.table
       );
 
       // xData
-      const xDataProperty: any = plot.properties.xData;
+      const xDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
+        .xData;
       if (xDataProperty) {
         const xData = new DragData.DataExpression(
           table,
@@ -1269,15 +1285,15 @@ export class AppStore extends BaseStore {
               xDataProperty.type === "numerical" &&
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : xDataProperty.type,
+                : xDataProperty.dataKind,
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
-              ? "order"
+              ? OrderMode.order
               : null,
             order: xDataProperty.order,
           },
-          xDataProperty.rawColumnExpr
+          xDataProperty.rawColumnExpr as string
         );
 
         this.bindDataToAxis({
@@ -1285,7 +1301,7 @@ export class AppStore extends BaseStore {
           dataExpression: xData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
+          type: xDataProperty.type, // TODO get type for column, from current dataset
           numericalMode: xDataProperty.numericalMode,
           autoDomainMax: xDataProperty.autoDomainMax,
           autoDomainMin: xDataProperty.autoDomainMin,
@@ -1295,7 +1311,8 @@ export class AppStore extends BaseStore {
       }
 
       // yData
-      const yDataProperty: any = plot.properties.yData;
+      const yDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
+        .yData;
       if (yDataProperty) {
         const yData = new DragData.DataExpression(
           table,
@@ -1306,15 +1323,15 @@ export class AppStore extends BaseStore {
               yDataProperty.type === "numerical" &&
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : yDataProperty.type,
+                : yDataProperty.dataKind,
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
-              ? "order"
+              ? OrderMode.order
               : null,
             order: yDataProperty.order,
           },
-          yDataProperty.rawColumnExpr
+          yDataProperty.rawColumnExpr as string
         );
 
         this.bindDataToAxis({
@@ -1322,7 +1339,7 @@ export class AppStore extends BaseStore {
           dataExpression: yData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
+          type: yDataProperty.type, // TODO get type for column, from current dataset
           numericalMode: yDataProperty.numericalMode,
           autoDomainMax: yDataProperty.autoDomainMax,
           autoDomainMin: yDataProperty.autoDomainMin,
@@ -1331,25 +1348,27 @@ export class AppStore extends BaseStore {
         });
       }
 
-      const axis: any = plot.properties.axis;
-      if (axis) {
+      const axisProperty: Specification.Types.AxisDataBinding = (plot.properties as LineGuideProperties)
+        .axis;
+      if (axisProperty) {
         const axisData = new DragData.DataExpression(
           table,
-          axis.expression,
-          axis.valueType,
+          axisProperty.expression,
+          axisProperty.valueType,
           {
             kind:
-              axis.type === "numerical" && axis.numericalMode === "temporal"
+              axisProperty.type === "numerical" &&
+              axisProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : axis.type,
-            orderMode: axis.orderMode
-              ? axis.orderMode
-              : axis.valueType === "string"
-              ? "order"
+                : axisProperty.dataKind,
+            orderMode: axisProperty.orderMode
+              ? axisProperty.orderMode
+              : axisProperty.valueType === "string"
+              ? OrderMode.order
               : null,
-            order: axis.order,
+            order: axisProperty.order,
           },
-          axis.rawColumnExpr
+          axisProperty.rawColumnExpr as string
         );
 
         this.bindDataToAxis({
@@ -1357,12 +1376,12 @@ export class AppStore extends BaseStore {
           dataExpression: axisData,
           object: plot,
           appendToProperty: null,
-          type: null, // TODO get type for column, from current dataset
-          numericalMode: axis.numericalMode,
-          autoDomainMax: axis.autoDomainMax,
-          autoDomainMin: axis.autoDomainMin,
-          domainMin: axis.domainMin,
-          domainMax: axis.domainMax,
+          type: axisProperty.type, // TODO get type for column, from current dataset
+          numericalMode: axisProperty.numericalMode,
+          autoDomainMax: axisProperty.autoDomainMax,
+          autoDomainMin: axisProperty.autoDomainMin,
+          domainMin: axisProperty.domainMin,
+          domainMax: axisProperty.domainMax,
         });
       }
     });
@@ -1371,21 +1390,21 @@ export class AppStore extends BaseStore {
   private getBindingByDataKind(kind: DataKind) {
     switch (kind) {
       case DataKind.Numerical:
-        return "numerical";
+        return AxisDataBindingType.Numerical;
       case DataKind.Temporal:
       case DataKind.Ordinal:
       case DataKind.Categorical:
-        return "categorical";
+        return AxisDataBindingType.Categorical;
     }
   }
 
   public bindDataToAxis(options: {
-    object: Specification.Object;
+    object: Specification.PlotSegment;
     property?: string;
     appendToProperty?: string;
     dataExpression: DragData.DataExpression;
-    type?: "default" | "numerical" | "categorical";
-    numericalMode?: "linear" | "logarithmic" | "temporal";
+    type?: AxisDataBindingType;
+    numericalMode?: NumericalMode;
     autoDomainMax: boolean;
     autoDomainMin: boolean;
     domainMin: number;
@@ -1493,7 +1512,7 @@ export class AppStore extends BaseStore {
         case Specification.DataKind.Categorical:
         case Specification.DataKind.Ordinal:
           {
-            dataBinding.type = "categorical";
+            dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
@@ -1517,8 +1536,8 @@ export class AppStore extends BaseStore {
             } else {
               dataBinding.domainMax = options.domainMax;
             }
-            dataBinding.type = "numerical";
-            dataBinding.numericalMode = "linear";
+            dataBinding.type = AxisDataBindingType.Numerical;
+            dataBinding.numericalMode = NumericalMode.Linear;
           }
           break;
         case Specification.DataKind.Temporal:
@@ -1535,8 +1554,8 @@ export class AppStore extends BaseStore {
             } else {
               dataBinding.domainMax = options.domainMax;
             }
-            dataBinding.type = "numerical";
-            dataBinding.numericalMode = "temporal";
+            dataBinding.type = AxisDataBindingType.Numerical;
+            dataBinding.numericalMode = NumericalMode.Temporal;
             dataBinding.categories = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
@@ -1556,10 +1575,10 @@ export class AppStore extends BaseStore {
         props.sublayout.type == "grid"
       ) {
         if (props.xData && props.xData.type == "numerical") {
-          props.sublayout.type = "overlap";
+          props.sublayout.type = Region2DSublayoutType.Overlap;
         }
         if (props.yData && props.yData.type == "numerical") {
-          props.sublayout.type = "overlap";
+          props.sublayout.type = Region2DSublayoutType.Overlap;
         }
       }
     }
