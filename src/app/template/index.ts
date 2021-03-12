@@ -605,7 +605,6 @@ export class ChartTemplateBuilder {
       .toString();
   }
 
-  /** Get variable map for a given table */
   public trackTable(table: string) {
     if (!this.usedColumns[table]) {
       this.usedColumns[table] = {
