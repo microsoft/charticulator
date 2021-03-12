@@ -16,12 +16,22 @@ import {
   Dataset,
   deepClone,
   Expression,
+  getById,
   getByName,
+  isReservedColumnName,
+  LinkSourceKeyColumn,
   Prototypes,
   Specification,
 } from "../../core";
 import { TableType } from "../../core/dataset";
-import { MappingType } from "../../core/specification";
+import {
+  forEachMapping,
+  forEachObject,
+  ObjectItemKind,
+} from "../../core/prototypes";
+import { DataAxisExpression } from "../../core/prototypes/marks/data_axis.attrs";
+import { Region2DSublayoutOptions } from "../../core/prototypes/plot_segments/region_2d/base";
+import { MappingType, ScaleMapping } from "../../core/specification";
 
 export interface ExportTemplateTargetProperty {
   displayName: string;
@@ -339,6 +349,11 @@ export class ChartTemplateBuilder {
     }
   }
 
+  /**
+   * Builds template.
+   * All exposed objects should be initialized in {@link ChartTemplate} class
+   * @returns JSON structure of template
+   */
   public build(): Specification.Template.ChartTemplate {
     this.reset();
 
@@ -402,15 +417,159 @@ export class ChartTemplateBuilder {
 
     this.addObject(null, this.manager.getChartClass(this.manager.chartState));
 
+    // need to foreach objects to find all used columns
+    for (const item of forEachObject(this.manager.chart)) {
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (Prototypes.isType(item.chartElement.classID, "legend.custom")) {
+          const scaleMapping = item.chartElement.mappings
+            .mappingOptions as ScaleMapping;
+          scaleMapping.expression = this.trackColumnFromExpression(
+            scaleMapping.expression,
+            scaleMapping.table
+          );
+        }
+
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment")) {
+          const plotSegment = item.chartElement as Specification.PlotSegment;
+          // need to parse all expression to get column name
+          const originalTable = plotSegment.table;
+          const filter = plotSegment.filter;
+          if (filter) {
+            this.trackColumnFromExpression(filter.expression, originalTable);
+          }
+          const groupBy = plotSegment.groupBy;
+          if (groupBy) {
+            this.trackColumnFromExpression(groupBy.expression, originalTable);
+          }
+
+          const xAxisExpression = (plotSegment.properties.xData as any)
+            ?.expression;
+          if (xAxisExpression) {
+            this.trackColumnFromExpression(xAxisExpression, originalTable);
+          }
+          const yAxisExpression = (plotSegment.properties.yData as any)
+            ?.expression;
+          if (yAxisExpression) {
+            this.trackColumnFromExpression(yAxisExpression, originalTable);
+          }
+          const axisExpression = (plotSegment.properties.axis as any)
+            ?.expression;
+          if (axisExpression) {
+            this.trackColumnFromExpression(axisExpression, originalTable);
+          }
+          const sublayout = (plotSegment.properties
+            .sublayout as Region2DSublayoutOptions).order?.expression;
+          if (sublayout) {
+            this.trackColumnFromExpression(sublayout, originalTable);
+          }
+        }
+
+        if (Prototypes.isType(item.chartElement.classID, "links")) {
+          if (item.chartElement.classID == "links.through") {
+            const props = item.chartElement
+              .properties as Prototypes.Links.LinksProperties;
+            if (props.linkThrough.facetExpressions) {
+              props.linkThrough.facetExpressions = props.linkThrough.facetExpressions.map(
+                (x) =>
+                  this.trackColumnFromExpression(
+                    x,
+                    (getById(
+                      this.template.specification.elements,
+                      props.linkThrough.plotSegment
+                    ) as Specification.PlotSegment).table
+                  )
+              );
+            }
+          }
+          if (item.chartElement.classID == "links.table") {
+            const props = item.chartElement
+              .properties as Prototypes.Links.LinksProperties;
+            if (!this.usedColumns[props.linkTable.table]) {
+              this.trackTable(props.linkTable.table);
+            }
+          }
+        }
+      }
+
+      if (item.kind == "glyph") {
+        if (!this.usedColumns[item.glyph.table]) {
+          this.trackTable(item.glyph.table);
+        }
+      }
+
+      if (item.kind === ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          try {
+            const glyphId = item.glyph._id;
+
+            const glyphPlotSegment = [
+              ...forEachObject(this.manager.chart),
+            ].find(
+              (item) =>
+                item.kind == ObjectItemKind.ChartElement &&
+                Prototypes.isType(item.chartElement.classID, "plot-segment") &&
+                (item.chartElement as any).glyph === glyphId
+            );
+
+            const dataExpressions = item.mark.properties
+              .dataExpressions as DataAxisExpression[];
+
+            const table = (glyphPlotSegment.chartElement as any).table;
+
+            dataExpressions.forEach((expression) => {
+              expression.expression = this.trackColumnFromExpression(
+                expression.expression,
+                table
+              );
+            });
+          } catch (ex) {
+            console.error(ex);
+          }
+        }
+      }
+
+      const mappings = item.object.mappings;
+      for (const [attr, mapping] of forEachMapping(mappings)) {
+        if (mapping.type == MappingType.scale) {
+          const scaleMapping = mapping as Specification.ScaleMapping;
+          scaleMapping.expression = this.trackColumnFromExpression(
+            scaleMapping.expression,
+            scaleMapping.table
+          );
+          if (!this.usedColumns[scaleMapping.table]) {
+            this.trackTable(scaleMapping.table);
+          }
+        }
+        if (mapping.type == MappingType.text) {
+          const textMapping = mapping as Specification.TextMapping;
+          if (!this.usedColumns[textMapping.table]) {
+            this.trackTable(textMapping.table);
+          }
+          textMapping.textExpression = this.trackColumnFromExpression(
+            textMapping.textExpression,
+            textMapping.table,
+            true
+          );
+        }
+      }
+    }
+
     // Extract data tables
     template.tables = this.dataset.tables
       .map((table) => {
-        if (this.tableColumns.hasOwnProperty(table.name)) {
+        if (
+          this.tableColumns.hasOwnProperty(table.name) &&
+          this.usedColumns[table.name]
+        ) {
           return {
             name: table.name,
             columns: table.columns
               .filter((x) => {
-                return this.tableColumns[table.name].has(x.name);
+                return (
+                  (this.tableColumns[table.name].has(x.name) &&
+                    this.usedColumns[table.name]?.[x.name]) ||
+                  isReservedColumnName(x.name)
+                );
               })
               .map((x) => ({
                 displayName: x.displayName || x.name,
@@ -427,6 +586,36 @@ export class ChartTemplateBuilder {
 
     this.computeDefaultAttributes();
     return template;
+  }
+
+  private usedColumns: { [name: string]: { [name: string]: string } } = {};
+
+  private trackColumnFromExpression(
+    expr: string,
+    table?: string,
+    isText: boolean = false
+  ) {
+    if (isText) {
+      return Expression.parseTextExpression(expr)
+        .replace(Expression.variableReplacer(this.trackTable(table)))
+        .toString();
+    }
+    return Expression.parse(expr)
+      .replace(Expression.variableReplacer(this.trackTable(table)))
+      .toString();
+  }
+
+  /** Get variable map for a given table */
+  public trackTable(table: string) {
+    if (!this.usedColumns[table]) {
+      this.usedColumns[table] = {
+        hasOwnProperty: (v: string) => {
+          this.usedColumns[table][v] = v;
+          return true;
+        },
+      } as any;
+    }
+    return this.usedColumns[table];
   }
 
   /**
