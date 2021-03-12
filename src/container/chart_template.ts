@@ -125,7 +125,11 @@ export class ChartTemplate {
     }
   }
 
-  /** Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas */
+  /**
+   * Creates instance of chart object from template. Chart objecty can be loaded into container to display it in canvas
+   * On editing this method ensure that you made correspond changes in template builder ({@link ChartTemplateBuilder}).
+   * Any exposed into template objects should be initialized here
+   */
   public instantiate(
     dataset: Dataset.Dataset,
     inference: boolean = true

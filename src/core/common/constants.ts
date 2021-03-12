@@ -15,6 +15,14 @@ export const messageTypes = Object.values(MessageType);
 export const LinkSourceKeyColumn = "source_id";
 export const LinkTargetKeyColumn = "target_id";
 
+export const isReservedColumnName = (name: string) => {
+  return (
+    name === LinkSourceKeyColumn ||
+    name === LinkTargetKeyColumn ||
+    name === KeyColumn
+  );
+};
+
 export const KeyColumn = "id";
 
 export const defaultDelimiter = ",";
@@ -22,5 +30,5 @@ export const defaultNumberFormat = Object.freeze({
   remove: ",",
   decimal: ".",
 });
-export const defaultCurrency: [string, string] = ["$",""];
+export const defaultCurrency: [string, string] = ["$", ""];
 export const defaultDigitsGroup: number[] = [3];
