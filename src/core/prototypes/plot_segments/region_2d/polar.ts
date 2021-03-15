@@ -25,6 +25,7 @@ import {
   Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
@@ -111,7 +112,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,

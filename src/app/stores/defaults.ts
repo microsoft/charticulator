@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Dataset, Specification, uniqueID } from "../../core";
+import { Region2DSublayoutType } from "../../core/prototypes/plot_segments/region_2d/base";
 import { MappingType } from "../../core/specification";
 
 /** Create a default glyph */
@@ -70,7 +71,7 @@ export function createDefaultPlotSegment(
       marginX2: 0,
       marginY2: 0,
       sublayout: {
-        type: table.rows.length >= 100 ? "grid" : "dodge-x",
+        type: table.rows.length >= 100 ? "grid" : Region2DSublayoutType.DodgeX,
         order: null,
         ratioX: 0.1,
         ratioY: 0.1,

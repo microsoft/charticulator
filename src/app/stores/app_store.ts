@@ -1570,9 +1570,9 @@ export class AppStore extends BaseStore {
     const props = object.properties as Prototypes.PlotSegments.Region2DProperties;
     if (props.sublayout) {
       if (
-        props.sublayout.type == "dodge-x" ||
-        props.sublayout.type == "dodge-y" ||
-        props.sublayout.type == "grid"
+        props.sublayout.type == Region2DSublayoutType.DodgeX ||
+        props.sublayout.type == Region2DSublayoutType.DodgeY ||
+        props.sublayout.type == Region2DSublayoutType.Grid
       ) {
         if (props.xData && props.xData.type == "numerical") {
           props.sublayout.type = Region2DSublayoutType.Overlap;

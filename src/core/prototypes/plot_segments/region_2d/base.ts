@@ -1026,7 +1026,7 @@ export class Region2DConstraintBuilder {
       for (let index = 0; index < markStates.length; index++) {
         const m1 = markStates[index];
         if (axis == "x" || axis == "xy") {
-          if (alignment.x == "start") {
+          if (alignment.x == SublayoutAlignment.Start) {
             solver.addEquals(
               ConstraintStrength.HARD,
               solver.attr(m1.attributes, "x1"),
@@ -1035,7 +1035,7 @@ export class Region2DConstraintBuilder {
           } else {
             fitters.xMin.add(solver.attr(m1.attributes, "x1"), x1);
           }
-          if (alignment.x == "end") {
+          if (alignment.x == SublayoutAlignment.End) {
             solver.addEquals(
               ConstraintStrength.HARD,
               solver.attr(m1.attributes, "x2"),
@@ -1044,7 +1044,7 @@ export class Region2DConstraintBuilder {
           } else {
             fitters.xMax.add(solver.attr(m1.attributes, "x2"), x2);
           }
-          if (alignment.x == "middle") {
+          if (alignment.x == SublayoutAlignment.Middle) {
             solver.addLinear(
               ConstraintStrength.HARD,
               0,
@@ -1060,7 +1060,7 @@ export class Region2DConstraintBuilder {
           }
         }
         if (axis == "y" || axis == "xy") {
-          if (alignment.y == "start") {
+          if (alignment.y == SublayoutAlignment.Start) {
             solver.addEquals(
               ConstraintStrength.HARD,
               solver.attr(m1.attributes, "y1"),
@@ -1069,7 +1069,7 @@ export class Region2DConstraintBuilder {
           } else {
             fitters.yMin.add(solver.attr(m1.attributes, "y1"), y1);
           }
-          if (alignment.y == "end") {
+          if (alignment.y == SublayoutAlignment.End) {
             solver.addEquals(
               ConstraintStrength.HARD,
               solver.attr(m1.attributes, "y2"),
@@ -1078,7 +1078,7 @@ export class Region2DConstraintBuilder {
           } else {
             fitters.yMax.add(solver.attr(m1.attributes, "y2"), y2);
           }
-          if (alignment.y == "middle") {
+          if (alignment.y == SublayoutAlignment.Middle) {
             solver.addLinear(
               ConstraintStrength.HARD,
               0,
@@ -1110,29 +1110,29 @@ export class Region2DConstraintBuilder {
       this.orderMarkGroups(groups);
       const props = this.plotSegment.object.properties;
       if (context.mode == "x-only" || context.mode == "y-only") {
-        if (props.sublayout.type == "packing") {
+        if (props.sublayout.type == Region2DSublayoutType.Packing) {
           this.sublayoutPacking(groups, context.mode == "x-only" ? "x" : "y");
         } else {
           this.fitGroups(groups, axis);
         }
       } else {
-        if (props.sublayout.type == "overlap") {
+        if (props.sublayout.type == Region2DSublayoutType.Overlap) {
           this.fitGroups(groups, "xy");
         }
         // Stack X
-        if (props.sublayout.type == "dodge-x") {
+        if (props.sublayout.type == Region2DSublayoutType.DodgeX) {
           this.sublayoutDodging(groups, "x", context.xAxisPrePostGap);
         }
         // Stack Y
-        if (props.sublayout.type == "dodge-y") {
+        if (props.sublayout.type == Region2DSublayoutType.DodgeY) {
           this.sublayoutDodging(groups, "y", context.yAxisPrePostGap);
         }
         // Grid layout
-        if (props.sublayout.type == "grid") {
+        if (props.sublayout.type == Region2DSublayoutType.Grid) {
           this.sublayoutGrid(groups);
         }
         // Force layout
-        if (props.sublayout.type == "packing") {
+        if (props.sublayout.type == Region2DSublayoutType.Packing) {
           this.sublayoutPacking(groups);
         }
       }
@@ -1631,7 +1631,7 @@ export class Region2DConstraintBuilder {
       maxCount = Math.max(maxCount, g.group.length);
     }
 
-    if (props.sublayout.type == "dodge-x") {
+    if (props.sublayout.type == Region2DSublayoutType.DodgeX) {
       for (const group of groups) {
         for (let i = 0; i < group.group.length - 1; i++) {
           const state1 = state.glyphs[group.group[i]];
@@ -1665,7 +1665,7 @@ export class Region2DConstraintBuilder {
         }
       }
     }
-    if (props.sublayout.type == "dodge-y") {
+    if (props.sublayout.type == Region2DSublayoutType.DodgeY) {
       for (const group of groups) {
         for (let i = 0; i < group.group.length - 1; i++) {
           const state1 = state.glyphs[group.group[i]];
@@ -1699,7 +1699,7 @@ export class Region2DConstraintBuilder {
         }
       }
     }
-    if (props.sublayout.type == "grid") {
+    if (props.sublayout.type == Region2DSublayoutType.Grid) {
       // TODO: implement grid sublayout handles
     }
     return handles;
@@ -2089,27 +2089,27 @@ export class Region2DConstraintBuilder {
   public applicableSublayoutOptions() {
     const { icons, terminology } = this.config;
     const overlapOption = {
-      value: "overlap",
+      value: Region2DSublayoutType.Overlap,
       label: terminology.overlap,
       icon: icons.overlapIcon,
     };
     const packingOption = {
-      value: "packing",
+      value: Region2DSublayoutType.Packing,
       label: terminology.packing,
       icon: icons.packingIcon,
     };
     const dodgeXOption = {
-      value: "dodge-x",
+      value: Region2DSublayoutType.DodgeX,
       label: terminology.dodgeX,
       icon: icons.dodgeXIcon,
     };
     const dodgeYOption = {
-      value: "dodge-y",
+      value: Region2DSublayoutType.DodgeY,
       label: terminology.dodgeY,
       icon: icons.dodgeYIcon,
     };
     const gridOption = {
-      value: "grid",
+      value: Region2DSublayoutType.Grid,
       label: terminology.grid,
       icon: icons.gridIcon,
     };
@@ -2148,10 +2148,10 @@ export class Region2DConstraintBuilder {
     const props = this.plotSegment.object.properties;
     const type = props.sublayout.type;
     if (
-      type == "dodge-x" ||
-      type == "dodge-y" ||
-      type == "grid" ||
-      type == "overlap"
+      type == Region2DSublayoutType.DodgeX ||
+      type == Region2DSublayoutType.DodgeY ||
+      type == Region2DSublayoutType.Grid ||
+      type == Region2DSublayoutType.Overlap
     ) {
       const isXFixed = props.xData && props.xData.type == "numerical";
       const isYFixed = props.yData && props.yData.type == "numerical";
@@ -2191,7 +2191,7 @@ export class Region2DConstraintBuilder {
       extra.push(
         m.row("Alignment", m.horizontal([0, 0], ...alignmentWidgets.reverse()))
       );
-      if (type == "grid") {
+      if (type == Region2DSublayoutType.Grid) {
         extra.push(
           m.row(
             "Gap",
@@ -2217,14 +2217,15 @@ export class Region2DConstraintBuilder {
             m.inputNumber(
               {
                 property: "sublayout",
-                field: type == "dodge-x" ? "ratioX" : "ratioY",
+                field:
+                  type == Region2DSublayoutType.DodgeX ? "ratioX" : "ratioY",
               },
               { minimum: 0, maximum: 1, percentage: true, showSlider: true }
             )
           )
         );
       }
-      if (type == "grid") {
+      if (type == Region2DSublayoutType.Grid) {
         const { terminology } = this.config;
         extra.push(
           m.row(
@@ -2235,7 +2236,7 @@ export class Region2DConstraintBuilder {
                 { property: "sublayout", field: ["grid", "direction"] },
                 {
                   type: "radio",
-                  options: ["x", "y"],
+                  options: [GridDirection.X, GridDirection.Y],
                   icons: ["scaffold/xwrap", "scaffold/ywrap"],
                   labels: [
                     terminology.gridDirectionX,
@@ -2255,7 +2256,7 @@ export class Region2DConstraintBuilder {
           )
         );
       }
-      if (type != "overlap") {
+      if (type != Region2DSublayoutType.Overlap) {
         extra.push(
           m.row(
             "Order",
@@ -2274,7 +2275,7 @@ export class Region2DConstraintBuilder {
         );
       }
     }
-    if (type == "packing") {
+    if (type == Region2DSublayoutType.Packing) {
       extra.push(
         m.row(
           "Gravity",
@@ -2358,10 +2359,10 @@ export class Region2DConstraintBuilder {
       const isYFixed = props.yData && props.yData.type == "numerical";
       const type = props.sublayout.type;
       if (
-        type == "dodge-x" ||
-        type == "dodge-y" ||
-        type == "grid" ||
-        type == "overlap"
+        type == Region2DSublayoutType.DodgeX ||
+        type == Region2DSublayoutType.DodgeY ||
+        type == Region2DSublayoutType.Grid ||
+        type == Region2DSublayoutType.Overlap
       ) {
         if (!isXFixed) {
           extra.push(
@@ -2411,7 +2412,7 @@ export class Region2DConstraintBuilder {
                 type: "dropdown",
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
-                options: ["x", "y"],
+                options: [GridDirection.X, GridDirection.Y],
                 icons: ["scaffold/xwrap", "scaffold/ywrap"],
                 labels: [
                   terminology.gridDirectionX,
@@ -2422,7 +2423,7 @@ export class Region2DConstraintBuilder {
             )
           );
         }
-        if (type != "overlap") {
+        if (type != Region2DSublayoutType.Overlap) {
           extra.push(m.sep());
           extra.push(
             m.orderByWidget(
