@@ -449,7 +449,7 @@ export class AxisRenderer {
         dy = -side * (tickSize + offset) * cos;
 
       if (Math.abs(cos) < 0.5) {
-        if (style.wordWrap || splitStringByNewLine(tick.label).length > 0) {
+        if (style.wordWrap || splitStringByNewLine(tick.label).length > 1) {
           let textContent: string[] = splitByWidth(
             replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
             maxTickDistance,
