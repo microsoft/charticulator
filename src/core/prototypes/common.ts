@@ -427,9 +427,17 @@ export function findObjectById(
   return null;
 }
 
+export enum ObjectItemKind {
+  Chart = "chart",
+  ChartElement = "chart-element",
+  Glyph = "glyph",
+  Mark = "mark",
+  Scale = "scale",
+}
+
 export interface ObjectItem {
-  kind: "chart" | "chart-element" | "glyph" | "mark" | "scale";
   object: Specification.Object;
+  kind: ObjectItemKind;
 
   chartElement?: Specification.ChartElement;
   glyph?: Specification.Glyph;
@@ -440,18 +448,22 @@ export interface ObjectItem {
 export function* forEachObject(
   chart: Specification.Chart
 ): Iterable<ObjectItem> {
-  yield { kind: "chart", object: chart };
+  yield { kind: ObjectItemKind.Chart, object: chart };
   for (const chartElement of chart.elements) {
-    yield { kind: "chart-element", object: chartElement, chartElement };
+    yield {
+      kind: ObjectItemKind.ChartElement,
+      object: chartElement,
+      chartElement,
+    };
   }
   for (const glyph of chart.glyphs) {
-    yield { kind: "glyph", object: glyph, glyph };
+    yield { kind: ObjectItemKind.Glyph, object: glyph, glyph };
     for (const mark of glyph.marks) {
-      yield { kind: "mark", object: mark, glyph, mark };
+      yield { kind: ObjectItemKind.Mark, object: mark, glyph, mark };
     }
   }
   for (const scale of chart.scales) {
-    yield { kind: "scale", object: scale, scale };
+    yield { kind: ObjectItemKind.Scale, object: scale, scale };
   }
 }
 
