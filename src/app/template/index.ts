@@ -458,7 +458,7 @@ export class ChartTemplateBuilder {
             this.trackColumnFromExpression(axisExpression, originalTable);
           }
           const sublayout = (plotSegment.properties
-            .sublayout as Region2DSublayoutOptions).order?.expression;
+            .sublayout as Region2DSublayoutOptions)?.order?.expression;
           if (sublayout) {
             this.trackColumnFromExpression(sublayout, originalTable);
           }
