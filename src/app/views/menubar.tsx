@@ -441,7 +441,11 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             ? R.getSVGIcon("toolbar/save-changes")
             : R.getSVGIcon("toolbar/save")
         }
-        text={strings.menuBar.saveButton}
+        text={
+          hasUnsavedChanges
+            ? strings.menuBar.saveButton
+            : strings.menuBar.savedButton
+        }
         title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -536,7 +540,11 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               : R.getSVGIcon("toolbar/save")
           }
           title={strings.menuBar.save}
-          text={strings.menuBar.saveButton}
+          text={
+            hasUnsavedChanges
+              ? strings.menuBar.saveButton
+              : strings.menuBar.savedButton
+          }
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());

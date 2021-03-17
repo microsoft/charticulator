@@ -250,6 +250,7 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
+    this.emit(AppStore.EVENT_GRAPHICS);
   }
 
   public renderSVG() {
