@@ -69,6 +69,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.AddChartElement, function (action) {
     this.saveHistory();
 
+    if (action.classID === "mark.nested-chart") {
+      return; // prevent to add nested chart into chart, nested chart can be created only in glyph
+    }
+    
     let glyph = this.currentGlyph;
     if (!glyph || this.chart.glyphs.indexOf(glyph) < 0) {
       glyph = this.chart.glyphs[0];
