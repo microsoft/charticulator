@@ -23,7 +23,7 @@ import {
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
-import { CharticulatorWorker } from "../worker";
+import { CharticulatorWorker, WorkerInterface } from "../worker";
 import { CharticulatorAppConfig } from "./config";
 
 import { ExportTemplateTarget } from "./template";
@@ -58,13 +58,15 @@ export class ApplicationExtensionContext implements ExtensionContext {
 }
 
 export class Application {
-  public worker: CharticulatorWorker;
+  public worker: WorkerInterface;
   public appStore: AppStore;
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
 
   private config: CharticulatorAppConfig;
   private containerID: string;
+
+  private injectedRender: (element: React.ReactElement) => void;
 
   public destroy() {
     ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
@@ -73,7 +75,8 @@ export class Application {
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
-    workerScriptContent: string,
+    // workerScriptContent: string,
+    worker: WorkerInterface,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -83,7 +86,7 @@ export class Application {
     this.containerID = containerID;
     await initialize(config);
 
-    this.worker = new CharticulatorWorker(workerScriptContent);
+    this.worker = worker;
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -128,17 +131,23 @@ export class Application {
       console.warn("Loadin localization settings failed");
     }
 
-    (window as any).mainStore = this.appStore;
-    ReactDOM.render(
+    // (window as any).mainStore = this.appStore;
+
+    const mainView = (
       <MainView
         store={this.appStore}
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
         telemetry={handlers?.telemetry}
-      />,
-      document.getElementById(containerID)
+      />
     );
+
+    if (!this.injectedRender) {
+      ReactDOM.render(mainView, document.getElementById(containerID));
+    } else {
+      this.injectedRender(mainView);
+    }
 
     this.extensionContext = new ApplicationExtensionContext(this);
 
@@ -329,5 +338,9 @@ export class Application {
 
   public unregisterExportTemplateTarget(name: string) {
     this.appStore.unregisterExportTemplateTarget(name);
+  }
+
+  public injectRender(render: (element: React.ReactElement) => void) {
+    this.injectedRender = render;
   }
 }
