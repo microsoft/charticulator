@@ -430,9 +430,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
+    const originJson = JSON.stringify(this.context.store.originChart, null, "");
+    const chartJson = JSON.stringify(this.context.store.chart, null, "");
+    const hasUnsavedChanges = originJson !== chartJson;
+
     return (
       <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
+        url={
+          hasUnsavedChanges
+            ? R.getSVGIcon("toolbar/save-changes")
+            : R.getSVGIcon("toolbar/save")
+        }
         text={strings.menuBar.saveButton}
         title={strings.menuBar.save}
         onClick={() => {
@@ -501,6 +509,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderNewOpenSave() {
+    const originJson = JSON.stringify(this.context.store.originChart, null, "");
+    const chartJson = JSON.stringify(this.context.store.chart, null, "");
+    const hasUnsavedChanges = originJson !== chartJson;
+
     return (
       <>
         <MenuButton
@@ -518,7 +530,11 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           }}
         />
         <MenuButton
-          url={R.getSVGIcon("toolbar/save")}
+          url={
+            hasUnsavedChanges
+              ? R.getSVGIcon("toolbar/save-changes")
+              : R.getSVGIcon("toolbar/save")
+          }
           title={strings.menuBar.save}
           text={strings.menuBar.saveButton}
           onClick={() => {

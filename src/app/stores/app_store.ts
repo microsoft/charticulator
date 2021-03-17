@@ -117,6 +117,8 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
+  /** The chart created on import */
+  public originChart: Specification.Chart;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -232,6 +234,7 @@ export class AppStore extends BaseStore {
     this.dataset = state.dataset;
     this.originDataset = state.dataset;
     this.chart = state.chart;
+    this.originChart = deepClone(this.chart);
     this.chartState = state.chartState;
 
     this.chartManager = new Prototypes.ChartStateManager(
@@ -341,6 +344,9 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
+      this.originChart = deepClone(this.chart);
+
+      this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
     }
   }
@@ -366,6 +372,7 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_GRAPHICS);
     this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
