@@ -36,10 +36,11 @@ export class HelpButton extends React.Component<
 > {
   public render() {
     const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
-      onClick: this.props.handlers?.onContactUsLink
+      onClick: this.props.handlers?.onContactUsLink,
     };
     if (!contactUsLinkProps.onClick) {
-      contactUsLinkProps.href = getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
+      contactUsLinkProps.href =
+        getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
     }
     return (
       <MenuButton
@@ -90,11 +91,7 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a
-                        {...contactUsLinkProps}
-                      >
-                        {strings.help.contact}
-                      </a>
+                      <a {...contactUsLinkProps}>{strings.help.contact}</a>
                     </div>
                     <div className="el-item-version">
                       {strings.help.version(CHARTICULATOR_PACKAGE.version)}
@@ -123,6 +120,7 @@ export interface MenuBarHandlers {
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
+  alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
 }
@@ -543,7 +541,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public toolbarButtons(props: MenuBarProps) {
+  public toolbarButtons(
+    props: MenuBarProps,
+    toolbarButtons: PositionsLeftRight
+  ) {
     return (
       <>
         {this.context.store.editorType === "nested"
@@ -552,7 +553,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.context.store.editorType === "chart"
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded"
+        {this.context.store.editorType === "embedded" &&
+        props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
         {this.context.store.editorType === "embedded" ? (
@@ -602,12 +604,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 onClick={() => this.showFileModalWindow(MainTabs.open)}
               />
             )}
-            {this.props.alignButtons === "left" ? (
+            {this.props.alignButtons === PositionsLeftRight.Left ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Left)}
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Left &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
             <p>
@@ -619,12 +626,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             </p>
           </div>
           <div className="charticulator__menu-bar-right">
-            {this.props.alignButtons === "right" ? (
+            {this.props.alignButtons === PositionsLeftRight.Right ? (
               <>
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Right)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Right &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
             <HelpButton
               handlers={this.props.handlers}
               hideReportIssues={this.context.store.editorType === "embedded"}
