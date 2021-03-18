@@ -239,13 +239,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.originDataset = deepClone(this.dataset);
 
     this.chart = action.specification;
-    this.originChart = deepClone(this.chart);
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset
     );
     this.chartState = this.chartManager.chartState;
+    this.originTemplate = this.buildChartTemplate();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);

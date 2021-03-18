@@ -66,6 +66,7 @@ import { domain } from "process";
 
 import { defaultAxisStyle } from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
+import { ChartTemplate } from "../../container/chart_template";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -117,8 +118,8 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
-  /** The chart created on import */
-  public originChart: Specification.Chart;
+  /** The origin template on import */
+  public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -234,7 +235,6 @@ export class AppStore extends BaseStore {
     this.dataset = state.dataset;
     this.originDataset = state.dataset;
     this.chart = state.chart;
-    this.originChart = deepClone(this.chart);
     this.chartState = state.chartState;
 
     this.chartManager = new Prototypes.ChartStateManager(
@@ -242,6 +242,7 @@ export class AppStore extends BaseStore {
       this.dataset,
       this.chartState
     );
+    this.originTemplate = this.buildChartTemplate();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_GRAPHICS);
@@ -345,7 +346,7 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
-      this.originChart = deepClone(this.chart);
+      this.originTemplate = this.buildChartTemplate();
 
       this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);

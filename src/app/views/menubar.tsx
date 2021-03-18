@@ -19,13 +19,19 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
+import {
+  expect_deep_approximately_equals,
+  isInIFrame,
+  readFileAsString,
+  showOpenFileDialog,
+} from "../utils";
 import { ChartTemplate, MessageType, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
+import { ChartTemplateBuilder } from "../template";
 
 export class HelpButton extends React.Component<
   {
@@ -430,9 +436,21 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    const originJson = JSON.stringify(this.context.store.originChart, null, "");
-    const chartJson = JSON.stringify(this.context.store.chart, null, "");
-    const hasUnsavedChanges = originJson !== chartJson;
+    // const originJson = JSON.stringify(this.context.store.originChart, null, "");
+    // const chartJson = JSON.stringify(this.context.store.chart, null, "");
+    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
+    let hasUnsavedChanges = false;
+
+    try {
+      expect_deep_approximately_equals(
+        editorTemplate.specification,
+        this.context.store.originTemplate.specification,
+        1e-2
+      );
+    } catch (ex) {
+      console.log(ex.message);
+      hasUnsavedChanges = true;
+    }
 
     return (
       <MenuButton
@@ -513,9 +531,19 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderNewOpenSave() {
-    const originJson = JSON.stringify(this.context.store.originChart, null, "");
-    const chartJson = JSON.stringify(this.context.store.chart, null, "");
-    const hasUnsavedChanges = originJson !== chartJson;
+    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
+    let hasUnsavedChanges = false;
+
+    try {
+      expect_deep_approximately_equals(
+        editorTemplate,
+        this.context.store.originTemplate,
+        1e-2
+      );
+    } catch (ex) {
+      console.log(ex.message);
+      hasUnsavedChanges = true;
+    }
 
     return (
       <>
