@@ -2,11 +2,9 @@
 // Licensed under the MIT license.
 import { expect } from "chai";
 import { Application } from "../../app";
-import { initialize } from "./../../core";
+import { initialize } from "../../core";
 import { createWorker } from "./mock";
 import * as TestRenderer from "react-test-renderer";
-
-// let workerBundleJs = require("raw-loader!);
 
 describe("Plot segment", () => {
   // The directory containing test cases
