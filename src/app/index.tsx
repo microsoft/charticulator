@@ -52,6 +52,7 @@ export { Application, ApplicationExtensionContext } from "./application";
 export { addSVGIcon, getSVGIcon } from "./resources";
 export { ExportTemplateTarget } from "./template";
 export { Widgets } from "./views/panels/index";
+export { expect_deep_approximately_equals } from "./utils/index";
 export { PopupContainer } from "./controllers/popup_controller";
 // tslint:disable-next-line
 export * as globals from "./globals";
