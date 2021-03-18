@@ -112,6 +112,10 @@ addSVGIcon(
 addSVGIcon("toolbar/new", require("resources/icons/icons_toolbar-new.svg"));
 addSVGIcon("toolbar/open", require("resources/icons/icons_toolbar-open.svg"));
 addSVGIcon("toolbar/save", require("resources/icons/icons_toolbar-save.svg"));
+addSVGIcon(
+  "toolbar/save-changes",
+  require("resources/icons/icons_toolbar-save-has-changes.svg")
+);
 addSVGIcon("toolbar/copy", require("resources/icons/icons_toolbar-copy.svg"));
 addSVGIcon(
   "toolbar/download",

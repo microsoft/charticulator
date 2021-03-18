@@ -36,10 +36,11 @@ export class HelpButton extends React.Component<
 > {
   public render() {
     const contactUsLinkProps: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
-      onClick: this.props.handlers?.onContactUsLink
+      onClick: this.props.handlers?.onContactUsLink,
     };
     if (!contactUsLinkProps.onClick) {
-      contactUsLinkProps.href = getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
+      contactUsLinkProps.href =
+        getConfig().ContactUsHref || "mailto:charticulator@microsoft.com";
     }
     return (
       <MenuButton
@@ -90,11 +91,7 @@ export class HelpButton extends React.Component<
                       </a>
                     </div>
                     <div className="el-item">
-                      <a
-                        {...contactUsLinkProps}
-                      >
-                        {strings.help.contact}
-                      </a>
+                      <a {...contactUsLinkProps}>{strings.help.contact}</a>
                     </div>
                     <div className="el-item-version">
                       {strings.help.version(CHARTICULATOR_PACKAGE.version)}
@@ -123,6 +120,7 @@ export interface MenuBarHandlers {
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
+  alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
 }
@@ -432,10 +430,22 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
+    const originJson = JSON.stringify(this.context.store.originChart, null, "");
+    const chartJson = JSON.stringify(this.context.store.chart, null, "");
+    const hasUnsavedChanges = originJson !== chartJson;
+
     return (
       <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
-        text={strings.menuBar.saveButton}
+        url={
+          hasUnsavedChanges
+            ? R.getSVGIcon("toolbar/save-changes")
+            : R.getSVGIcon("toolbar/save")
+        }
+        text={
+          hasUnsavedChanges
+            ? strings.menuBar.saveButton
+            : strings.menuBar.savedButton
+        }
         title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -503,6 +513,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderNewOpenSave() {
+    const originJson = JSON.stringify(this.context.store.originChart, null, "");
+    const chartJson = JSON.stringify(this.context.store.chart, null, "");
+    const hasUnsavedChanges = originJson !== chartJson;
+
     return (
       <>
         <MenuButton
@@ -520,9 +534,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           }}
         />
         <MenuButton
-          url={R.getSVGIcon("toolbar/save")}
+          url={
+            hasUnsavedChanges
+              ? R.getSVGIcon("toolbar/save-changes")
+              : R.getSVGIcon("toolbar/save")
+          }
           title={strings.menuBar.save}
-          text={strings.menuBar.saveButton}
+          text={
+            hasUnsavedChanges
+              ? strings.menuBar.saveButton
+              : strings.menuBar.savedButton
+          }
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -543,7 +565,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public toolbarButtons(props: MenuBarProps) {
+  public toolbarButtons(
+    props: MenuBarProps,
+    toolbarButtons: PositionsLeftRight
+  ) {
     return (
       <>
         {this.context.store.editorType === "nested"
@@ -552,7 +577,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.context.store.editorType === "chart"
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded"
+        {this.context.store.editorType === "embedded" &&
+        props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
         {this.context.store.editorType === "embedded" ? (
@@ -602,12 +628,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 onClick={() => this.showFileModalWindow(MainTabs.open)}
               />
             )}
-            {this.props.alignButtons === "left" ? (
+            {this.props.alignButtons === PositionsLeftRight.Left ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Left)}
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Left &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
             <p>
@@ -619,12 +650,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             </p>
           </div>
           <div className="charticulator__menu-bar-right">
-            {this.props.alignButtons === "right" ? (
+            {this.props.alignButtons === PositionsLeftRight.Right ? (
               <>
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Right)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Right &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
             <HelpButton
               handlers={this.props.handlers}
               hideReportIssues={this.context.store.editorType === "embedded"}

@@ -239,6 +239,8 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.originDataset = deepClone(this.dataset);
 
     this.chart = action.specification;
+    this.originChart = deepClone(this.chart);
+
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset
@@ -251,8 +253,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.UpdatePlotSegments, function (action) {
-    this.saveHistory();
-
     this.updatePlotSegments();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
