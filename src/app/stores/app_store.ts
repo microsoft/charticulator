@@ -242,7 +242,6 @@ export class AppStore extends BaseStore {
       this.dataset,
       this.chartState
     );
-    this.originTemplate = this.buildChartTemplate();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_GRAPHICS);
@@ -283,6 +282,7 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
+    this.originTemplate = this.buildChartTemplate();
   }
 
   // removes unused scale objecs

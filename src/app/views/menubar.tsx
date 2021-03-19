@@ -436,8 +436,6 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    // const originJson = JSON.stringify(this.context.store.originChart, null, "");
-    // const chartJson = JSON.stringify(this.context.store.chart, null, "");
     const editorTemplate = deepClone(this.context.store.buildChartTemplate());
     let hasUnsavedChanges = false;
 
@@ -448,8 +446,11 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         1e-2
       );
     } catch (ex) {
-      console.log(ex.message);
-      hasUnsavedChanges = true;
+      if (!(ex.message as string).includes("expected")) {
+        console.error(ex.message);
+      } else {
+        hasUnsavedChanges = true;
+      }
     }
 
     return (
