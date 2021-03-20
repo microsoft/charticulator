@@ -435,11 +435,11 @@ export class ChartTemplateBuilder {
             // need to parse all expression to get column name
             const originalTable = plotSegment.table;
             const filter = plotSegment.filter;
-            if (filter) {
+            if (filter && filter.expression) {
               this.trackColumnFromExpression(filter.expression, originalTable);
             }
             const groupBy = plotSegment.groupBy;
-            if (groupBy) {
+            if (groupBy && groupBy.expression) {
               this.trackColumnFromExpression(groupBy.expression, originalTable);
             }
 
