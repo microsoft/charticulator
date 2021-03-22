@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
-    "rootDir": "./src/tests/",
+    "rootDir": "./tests/",
     "outDir": "./.tmp/tests",
     "moduleResolution": "node",
     "target": "es6",

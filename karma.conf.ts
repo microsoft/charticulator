@@ -4,7 +4,7 @@ import { Config, ConfigOptions } from "karma";
 
 const tsconfig = require("./tsconfig.test.json");
 
-const testRecursivePath = "./src/tests/karma/*.test.ts";
+const testRecursivePath = "./tests/*.test.ts";
 
 const styles = ["./dist/styles/app.css", "./dist/styles/page.css"];
 
@@ -14,11 +14,11 @@ module.exports = (config: Config) => {
   config.set({
     mode: "development",
     browserNoActivityTimeout: 100000,
-    browsers: ["Chrome"],
+    browsers: ["ChromeHeadless"],
     colors: true,
     frameworks: ["mocha", "karma-typescript"],
     reporters: ["mocha"],
-    singleRun: false,
+    singleRun: true,
     autoWatch: true,
     plugins: [
       require.resolve("karma-coverage"),
@@ -41,7 +41,7 @@ module.exports = (config: Config) => {
       ...styles,
     ],
     preprocessors: {
-      "./src/tests/**/*.ts": ["karma-typescript"],
+      "./tests/**/*.ts": ["karma-typescript"],
     },
     karmaTypescriptConfig: {
       ...tsconfig,

@@ -12,5 +12,5 @@
     "sourceMap": true,
     "lib": ["es2017", "dom", "esnext.array"]
   },
-  "exclude": ["karma.conf.ts", "node_modules", "dist"]
+  "exclude": ["karma.conf.ts", "node_modules", "dist", "test"]
 }

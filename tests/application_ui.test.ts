@@ -3,10 +3,12 @@
 
 import { expect } from "chai";
 
+import { Application } from "../dist/scripts/app/index";
+import { CharticulatorWorker } from "../dist/scripts/worker/index";
 declare const Charticulator: any;
 
 describe("Charticulator", () => {
-  let application: any = null;
+  let application: Application = null;
   // The directory containing test cases
   before(function (done) {
     this.timeout(10000);
