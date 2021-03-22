@@ -74,7 +74,7 @@ export class Application {
     config: CharticulatorAppConfig,
     containerID: string,
     // workerScriptContent: string,
-    worker: WorkerInterface,
+    worker: WorkerInterface | string,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -84,7 +84,12 @@ export class Application {
     this.containerID = containerID;
     await initialize(config);
 
-    this.worker = worker;
+    if (typeof worker === "object") {
+      this.worker = worker;
+    } else {
+      this.worker = new CharticulatorWorker(worker);
+    }
+
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
