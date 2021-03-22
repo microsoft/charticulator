@@ -4,7 +4,7 @@ import { Config, ConfigOptions } from "karma";
 
 const tsconfig = require("./tsconfig.test.json");
 
-const testRecursivePath = "./src/tests/unit/*.test.ts";
+const testRecursivePath = "./src/tests/karma/*.test.ts";
 
 const styles = ["./dist/styles/app.css", "./dist/styles/page.css"];
 

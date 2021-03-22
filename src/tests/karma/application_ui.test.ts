@@ -3,13 +3,13 @@
 
 import { expect } from "chai";
 
-declare const CHARTICULATOR_CONFIG: any;
-declare const CHARTICULATOR_PACKAGE: any;
 declare const Charticulator: any;
 
-describe("Plot segment", () => {
+describe("Charticulator", () => {
+  let application: any = null;
   // The directory containing test cases
-  before((done) => {
+  before(function (done) {
+    this.timeout(10000);
     fetch(`./base/dist/scripts/config.json`).then((responce) => {
       responce.text().then((config) => {
         fetch(`./base/dist/scripts/worker.bundle.js`).then((responce) => {
@@ -17,14 +17,10 @@ describe("Plot segment", () => {
             const blob = new Blob([script], { type: "application/javascript" });
 
             const workerScript = URL.createObjectURL(blob);
-            expect(Charticulator).to.not.null(
-              "",
-              "Charticulator name space is loaded"
-            );
             const container = document.createElement("div");
             container.id = "container";
             document.querySelector("body").appendChild(container);
-            const application = new Charticulator.Application();
+            application = new Charticulator.Application();
             application.initialize(config as any, "container", workerScript);
             done();
           });
@@ -33,7 +29,8 @@ describe("Plot segment", () => {
     });
   });
 
-  it("binding data to axis adds property", (done) => {
+  it("application is defined", (done) => {
+    const isDone = expect(application).to.not.null;
     done();
-  });
+  }).timeout(10000);
 }).timeout(100000);
