@@ -66,8 +66,6 @@ export class Application {
   private config: CharticulatorAppConfig;
   private containerID: string;
 
-  private injectedRender: (element: React.ReactElement) => void;
-
   public destroy() {
     ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
   }
@@ -143,11 +141,7 @@ export class Application {
       />
     );
 
-    if (!this.injectedRender) {
-      ReactDOM.render(mainView, document.getElementById(containerID));
-    } else {
-      this.injectedRender(mainView);
-    }
+    ReactDOM.render(mainView, document.getElementById(containerID));
 
     this.extensionContext = new ApplicationExtensionContext(this);
 
@@ -338,9 +332,5 @@ export class Application {
 
   public unregisterExportTemplateTarget(name: string) {
     this.appStore.unregisterExportTemplateTarget(name);
-  }
-
-  public injectRender(render: (element: React.ReactElement) => void) {
-    this.injectedRender = render;
   }
 }

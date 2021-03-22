@@ -10,6 +10,7 @@
     "jsx": "react",
     "noImplicitAny": true,
     "sourceMap": true,
-    "lib": [ "es2017", "dom", "esnext.array", ]
-  }
+    "lib": ["es2017", "dom", "esnext.array"]
+  },
+  "exclude": ["karma.conf.ts", "node_modules", "dist"]
 }

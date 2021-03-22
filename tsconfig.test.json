@@ -1,15 +1,16 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "allowJs": true,
     "declaration": true,
     "rootDir": "./src/tests/",
     "outDir": "./.tmp/tests",
-    "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
     "jsx": "react",
     "noImplicitAny": true,
     "sourceMap": true,
     "lib": ["es2017", "dom", "esnext.array"]
-  }
+  },
+  "exclude": ["karma.conf.ts", "node_modules", "dist"]
 }

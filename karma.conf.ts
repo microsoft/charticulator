@@ -2,13 +2,11 @@
 
 import { Config, ConfigOptions } from "karma";
 
-// const webpackConfig = require("./webpack.config.test.js");
 const tsconfig = require("./tsconfig.test.json");
 
-const testRecursivePath = "src/tests/unit/*.test.ts";
-const srcOriginalRecursivePath = "src/**/*.ts";
+const testRecursivePath = "./src/tests/unit/*.test.ts";
 
-const styles = [".dist\\styles\\app.css", ".\\dist\\styles\\page.css"];
+const styles = ["./dist/styles/app.css", "./dist/styles/page.css"];
 
 process.env.CHROME_BIN = require("puppeteer").executablePath();
 
@@ -18,14 +16,13 @@ module.exports = (config: Config) => {
     browserNoActivityTimeout: 100000,
     browsers: ["Chrome"],
     colors: true,
-    frameworks: ["mocha"],
+    frameworks: ["mocha", "karma-typescript"],
     reporters: ["mocha"],
-    singleRun: true,
+    singleRun: false,
     autoWatch: true,
     plugins: [
       require.resolve("karma-coverage"),
       require.resolve("karma-typescript"),
-      require.resolve("karma-webpack"),
       require.resolve("karma-mocha"),
       require.resolve("karma-mocha-reporter"),
       require.resolve("karma-sourcemap-loader"),
@@ -33,34 +30,24 @@ module.exports = (config: Config) => {
     ],
     files: [
       {
-        pattern: "./capabilities.json",
+        pattern: "./dist/scripts/config.json",
         watched: false,
         served: true,
         included: false,
       },
+      "./dist/scripts/app.bundle.js",
+      "./dist/scripts/worker.bundle.js",
       testRecursivePath,
       ...styles,
-      {
-        pattern: srcOriginalRecursivePath,
-        included: false,
-        served: true,
-      },
     ],
     preprocessors: {
-      [testRecursivePath]: ["webpack"],
-    },
-    typescriptPreprocessor: {
-      options: tsconfig.compilerOptions,
+      "./src/tests/**/*.ts": ["karma-typescript"],
     },
     karmaTypescriptConfig: {
-      compilerOptions: tsconfig.compilerOptions,
+      ...tsconfig,
     },
     mime: {
       "text/x-typescript": ["ts", "tsx"],
     },
-    // webpack: webpackConfig,
-    // webpackMiddleware: {
-    //   stats: "errors-only",
-    // },
   } as ConfigOptions);
 };
