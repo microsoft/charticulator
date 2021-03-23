@@ -56,13 +56,25 @@
   &-tool {
     @include button-base(32px);
     @include icon-size(24px);
-    // @include shadow-ambient;
 
     padding: 4px;
 
     margin-right: 0px;
 
     background: $color-well;
+
+    &.is-disabled {
+      color: $gray-180;
+      cursor: not-allowed;
+      .el-svg-icon {
+        filter: invert(80%);
+      }
+      &:hover,
+      &:active {
+        background: $gray-230;
+        @include no-shadow;
+      }
+    }
 
     .el-text {
       font-size: 14px;
