@@ -28,7 +28,8 @@ export class SimpleContext implements Context {
 }
 
 import { constants, functions, operators, precedences } from "./intrinsics";
-import { parse } from "./parser";
+const pegjs = require("./parser.pegjs");
+
 import {
   DataflowTable,
   DataflowTableGroupedContext,
@@ -72,7 +73,7 @@ export abstract class Expression {
   }
 
   public static Parse(expr: string): Expression {
-    return parse(expr) as Expression;
+    return pegjs.parse(expr) as Expression;
   }
 
   public replace(replacer: PatternReplacer): Expression {
@@ -149,7 +150,7 @@ export class TextExpression {
   }
 
   public static Parse(expr: string): TextExpression {
-    return parse(expr, { startRule: "start_text" }) as TextExpression;
+    return pegjs.parse(expr, { startRule: "start_text" }) as TextExpression;
   }
 
   public replace(r: PatternReplacer): TextExpression {

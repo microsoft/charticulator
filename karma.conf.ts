@@ -3,12 +3,13 @@
 import { Config, ConfigOptions } from "karma";
 
 const tsconfig = require("./tsconfig.test.json");
+const webpack = require("./webpack.config.test.js");
+const testRecursivePath = "./tests/karma/**/*.ts";
 
-const testRecursivePath = "./tests/*.test.ts";
-
-const styles = ["./dist/styles/app.css", "./dist/styles/page.css"];
+const styles = ["../dist/styles/app.css", "../dist/styles/page.css"];
 
 process.env.CHROME_BIN = require("puppeteer").executablePath();
+const webpackConfig = webpack(undefined, { mode: "developement" });
 
 module.exports = (config: Config) => {
   config.set({
@@ -16,7 +17,7 @@ module.exports = (config: Config) => {
     browserNoActivityTimeout: 100000,
     browsers: ["ChromeHeadless"],
     colors: true,
-    frameworks: ["mocha", "karma-typescript"],
+    frameworks: ["mocha", "webpack"],
     reporters: ["mocha"],
     singleRun: true,
     autoWatch: true,
@@ -27,27 +28,34 @@ module.exports = (config: Config) => {
       require.resolve("karma-mocha-reporter"),
       require.resolve("karma-sourcemap-loader"),
       require.resolve("karma-chrome-launcher"),
+      require.resolve("karma-webpack"),
     ],
+    basePath: __dirname + "/src",
     files: [
       {
-        pattern: "./dist/scripts/config.json",
+        pattern: "../dist/scripts/config.json",
         watched: false,
         served: true,
         included: false,
       },
-      "./dist/scripts/app.bundle.js",
-      "./dist/scripts/worker.bundle.js",
       testRecursivePath,
       ...styles,
     ],
     preprocessors: {
-      "./tests/**/*.ts": ["karma-typescript"],
+      [testRecursivePath]: ["webpack"],
+      // [srcRecursivePath]: ["webpack"],
+      // "./src/**/*.ts": ["karma-typescript", "webpack"],
     },
-    karmaTypescriptConfig: {
+    typescriptPreprocessor: {
       ...tsconfig,
+      options: tsconfig.compilerOptions,
     },
     mime: {
       "text/x-typescript": ["ts", "tsx"],
+    },
+    webpack: webpackConfig,
+    webpackMiddleware: {
+      stats: "errors-only",
     },
   } as ConfigOptions);
 };
