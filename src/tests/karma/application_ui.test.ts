@@ -8,40 +8,41 @@ import { ObjectItem } from "../../core/prototypes";
 import { DataKind, DataType } from "../../core/specification";
 import { OrderMode } from "../../core/specification/types";
 import { strings } from "../../strings";
-import { findElementsByClassID } from "./utils";
+import { closeStartMenuPanel, findElementsByClassID } from "./utils";
 import { DragData } from "../../app";
-// declare const Charticulator: any;
+import { CharticulatorWorker } from "../../worker";
+import { Expression } from "../../core";
+const config = require("../../../config.test.yml");
+const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
 
 describe("Charticulator", () => {
   let application: Application = null;
   // The directory containing test cases
   before(function (done) {
     this.timeout(10000);
-    fetch(`./base/dist/scripts/config.json`).then((responce) => {
-      responce.text().then((config) => {
-        fetch(`./base/dist/scripts/worker.bundle.js`).then((responce) => {
-          responce.text().then((script) => {
-            const blob = new Blob([script], { type: "application/javascript" });
+    const blob = new Blob([workerBundle], { type: "application/javascript" });
 
-            const workerScript = URL.createObjectURL(blob);
-            const container = document.createElement("div");
-            container.id = "container";
-            document.querySelector("body").appendChild(container);
-            application = new Application();
-            application.initialize(config as any, "container", workerScript);
-            done();
-          });
-        });
+    const workerScript = URL.createObjectURL(blob);
+    const container = document.createElement("div");
+    container.id = "container";
+    document.querySelector("body").appendChild(container);
+    application = new Application();
+    application
+      .initialize(config as any, "container", workerScript)
+      .then(() => {
+        closeStartMenuPanel();
+        done();
       });
-    });
   });
 
   it("application is defined", (done) => {
-    const isDone = expect(application).to.not.null;
+    const isDone =
+      expect(application).to.not.null &&
+      expect(application.appStore).to.not.null;
     done();
   }).timeout(1000000);
 
-  xit("binds data to X axis", (done) => {
+  it("binds data to X axis", (done) => {
     const store = application.appStore;
 
     const plotSegments = [
@@ -49,16 +50,23 @@ describe("Charticulator", () => {
     ];
 
     plotSegments.forEach((ps: ObjectItem) => {
+      const column = store.dataset.tables[0].columns[0];
+      const aggregation = Expression.getDefaultAggregationFunction(column.type);
+      const expression = Expression.functionCall(
+        aggregation,
+        Expression.variable(column.name)
+      ).toString();
+
       new Actions.BindDataToAxis(
         ps.object,
         "xData",
         null,
         new DragData.DataExpression(
           store.dataset.tables[0],
-          "avg(Month)",
-          DataType.Date,
+          expression,
+          DataType.String,
           {
-            kind: DataKind.Temporal,
+            kind: DataKind.Categorical,
             orderMode: OrderMode.order,
             order: strings.dataset.months,
           },
@@ -66,6 +74,9 @@ describe("Charticulator", () => {
         )
       ).dispatch(store.dispatcher);
     });
-    done();
-  }).timeout(1000000);
+    // wait the solver
+    setTimeout(() => {
+      done();
+    }, 1000);
+  });
 }).timeout(100000);

@@ -38,8 +38,17 @@ module.exports = (env, { mode }) => {
     module: {
       rules: [
         {
+          test: /\.ya?ml$/,
+          loader: 'js-yaml-loader'
+        },
+        {
           test: /\.pegjs$/,
-          loader: 'pegjs-loader?cache=true&optimize=size&allowedStartRules[]=RuleA,allowedStartRules[]=RuleB&trace=true'
+          loader: 'pegjs-loader',
+          options: {
+            allowedStartRules: ["start", "start_text"],
+            cache: true,
+            optimize: "size"
+          }
         },
         {
           test: /(\.ts)x|\.ts$/,

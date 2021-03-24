@@ -9,9 +9,13 @@ export function closeStartMenuPanel() {
     .click();
 }
 
+export function getChartCanvas() {
+  return document.querySelector<SVGRectElement>("rect.canvas-region");
+}
+
 export function* findElementsByClassID(chart: Chart, classID: string) {
   for (const item of Prototypes.forEachObject(chart)) {
-    if (item.object.classID === classID) {
+    if (Prototypes.isType(item.object.classID, classID)) {
       yield item;
     }
   }

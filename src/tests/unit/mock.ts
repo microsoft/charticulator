@@ -10,7 +10,6 @@ import {
   ObjectProperties,
 } from "../../core/specification";
 import { ConstraintStrength } from "../../core/solver";
-import { WorkerInterface } from "../../worker";
 
 export function createMockStore() {
   const store = new AppStore(
@@ -40,37 +39,4 @@ export function createMockStore() {
   );
   store.saveHistory = () => {};
   return store;
-}
-
-export class MockWorker implements WorkerInterface {
-  public initialize(config: CharticulatorCoreConfig) {
-    return new Promise<void>((resolve) => {
-      resolve();
-    });
-  }
-
-  public solveChartConstraints(
-    chart: Chart<ObjectProperties>,
-    chartState: ChartState<AttributeMap>,
-    dataset: Dataset.Dataset,
-    preSolveValues: [ConstraintStrength, AttributeMap, string, number][],
-    mappingOnly: boolean
-  ) {
-    return new Promise<ChartState<AttributeMap>>((resolve) => {
-      const manager = new Prototypes.ChartStateManager(
-        chart,
-        dataset,
-        null,
-        {}
-      );
-      manager.setState(chartState);
-
-      manager.solveConstraints(null, mappingOnly);
-      resolve(manager.chartState);
-    });
-  }
-}
-
-export function createWorker() {
-  return new MockWorker();
 }

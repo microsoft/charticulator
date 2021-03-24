@@ -43,8 +43,6 @@ module.exports = (config: Config) => {
     ],
     preprocessors: {
       [testRecursivePath]: ["webpack"],
-      // [srcRecursivePath]: ["webpack"],
-      // "./src/**/*.ts": ["karma-typescript", "webpack"],
     },
     typescriptPreprocessor: {
       ...tsconfig,
