@@ -22,3 +22,20 @@ export function* findElementsByClassID(chart: Chart, classID: string) {
     }
   }
 }
+
+export function clickOnToolbarButton(buttonName: string) {
+  const toolbarButtons = document.querySelectorAll<HTMLDivElement>(`
+    .charticulator__toolbar-horizontal .charticulator__button-multi-tool, 
+    .charticulator__button-tool, charticulator__toolbar-vertical 
+    .charticulator__button-multi-tool, .charticulator__button-tool`);
+
+  toolbarButtons.forEach((button) => {
+    if (button.title === buttonName) {
+      button.click();
+    }
+  });
+}
+
+export function getLinkTypePanel() {
+  return document.querySelector("div.charticulator__link-type-table");
+}

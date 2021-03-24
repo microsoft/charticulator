@@ -21,9 +21,9 @@ module.exports = (config: Config) => {
   config.set({
     mode: "development",
     browserNoActivityTimeout: 100000,
-    browsers: ["Chrome"],
+    browsers: ["ChromeHeadless"],
     colors: true,
-    frameworks: ["mocha", "webpack", "snapshot", "mocha-snapshot"],
+    frameworks: ["mocha", "webpack", "snapshot", "mocha-snapshot", "viewport"],
     reporters: ["mocha"],
     singleRun: true,
     autoWatch: true,
@@ -37,6 +37,7 @@ module.exports = (config: Config) => {
       require.resolve("karma-webpack"),
       require.resolve("karma-snapshot"),
       require.resolve("karma-mocha-snapshot"),
+      require.resolve("karma-viewport"),
     ],
     basePath: __dirname + "/src",
     files: [
@@ -55,11 +56,12 @@ module.exports = (config: Config) => {
       [karmaSnapshotsDirectory]: ["snapshot"],
     },
     snapshot: {
-      update: true,
+      update: false,
       prune: false,
-      checkSourceFile: true,
+      checkSourceFile: false,
       pathResolver: resolve,
     },
+    viewport: {},
     mochaReporter: {
       showDiff: true,
     },
