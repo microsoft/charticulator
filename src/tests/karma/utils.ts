@@ -10,7 +10,9 @@ export function closeStartMenuPanel() {
 }
 
 export function getChartCanvas() {
-  return document.querySelector<SVGRectElement>("rect.canvas-region");
+  return document.querySelector<SVGRectElement>(
+    "div.chart-editor-canvas-view > svg.canvas-view"
+  );
 }
 
 export function* findElementsByClassID(chart: Chart, classID: string) {

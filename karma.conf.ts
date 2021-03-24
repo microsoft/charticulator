@@ -1,12 +1,18 @@
 "use strict";
 
 import { Config, ConfigOptions } from "karma";
+const path = require("path");
 
 const tsconfig = require("./tsconfig.test.json");
 const webpack = require("./webpack.config.test.js");
 const testRecursivePath = "./tests/karma/**/*.ts";
+const karmaSnapshotsDirectory = "tests/karma/__snapshots__/**/*.md";
 
 const styles = ["../dist/styles/app.css", "../dist/styles/page.css"];
+
+function resolve(basePath: string, suiteName: string) {
+  return path.join(basePath, "tests/karma/__snapshots__", suiteName + ".md");
+}
 
 process.env.CHROME_BIN = require("puppeteer").executablePath();
 const webpackConfig = webpack(undefined, { mode: "developement" });
@@ -15,9 +21,9 @@ module.exports = (config: Config) => {
   config.set({
     mode: "development",
     browserNoActivityTimeout: 100000,
-    browsers: ["ChromeHeadless"],
+    browsers: ["Chrome"],
     colors: true,
-    frameworks: ["mocha", "webpack"],
+    frameworks: ["mocha", "webpack", "snapshot", "mocha-snapshot"],
     reporters: ["mocha"],
     singleRun: true,
     autoWatch: true,
@@ -29,6 +35,8 @@ module.exports = (config: Config) => {
       require.resolve("karma-sourcemap-loader"),
       require.resolve("karma-chrome-launcher"),
       require.resolve("karma-webpack"),
+      require.resolve("karma-snapshot"),
+      require.resolve("karma-mocha-snapshot"),
     ],
     basePath: __dirname + "/src",
     files: [
@@ -40,9 +48,26 @@ module.exports = (config: Config) => {
       },
       testRecursivePath,
       ...styles,
+      karmaSnapshotsDirectory,
     ],
     preprocessors: {
       [testRecursivePath]: ["webpack"],
+      [karmaSnapshotsDirectory]: ["snapshot"],
+    },
+    snapshot: {
+      update: true,
+      prune: false,
+      checkSourceFile: true,
+      pathResolver: resolve,
+    },
+    mochaReporter: {
+      showDiff: true,
+    },
+    client: {
+      mocha: {
+        reporter: "html",
+        ui: "bdd",
+      },
     },
     typescriptPreprocessor: {
       ...tsconfig,
