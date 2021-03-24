@@ -1,6 +1,8 @@
+const path = require("path");
 const webpack = require("webpack");
 const childProcess = require("child_process");
 const { version } = require("./package.json");
+const tsconfig = require("./tsconfig.json");
 
 let revision = "unknown";
 try {
@@ -13,6 +15,32 @@ try {
 module.exports = (env, { mode }) => {
   if (mode == null) {
     mode = "production";
+  }
+  const extensions = ['.tsx', '.ts', '.d.ts', '.jsx', '.js', '.css', 'svg'];
+  const pegjsConfig = {
+    test: /\.pegjs$/,
+    loader: 'pegjs-loader',
+    options: {
+      allowedStartRules: ["start", "start_text"],
+      cache: true,
+      optimize: "size"
+    }
+  };
+  const typescriptConfig = {
+    test: /(\.tsx)|(\.ts)$/,
+    use: [
+      {
+        loader: require.resolve('babel-loader')
+      },
+      {
+        loader: require.resolve('ts-loader'),
+        options: {
+          transpileOnly: false,
+          experimentalWatchApi: false,
+          compilerOptions: tsconfig.compilerOptions
+        }
+      }
+    ]
   }
   const plugins = [
     new webpack.DefinePlugin({
@@ -32,11 +60,11 @@ module.exports = (env, { mode }) => {
       entry:
         mode == "production"
           ? {
-            app: "./dist/scripts/app/index.js"
+            app: "./src/app/index.tsx"
           }
           : {
-            app: "./dist/scripts/app/index.js",
-            test: "./dist/scripts/tests/test_app/index.js"
+            app: "./src/app/index.tsx",
+            test: "./src/tests/test_app/index.tsx"
           },
       output: {
         filename: "[name].bundle.js",
@@ -47,41 +75,41 @@ module.exports = (env, { mode }) => {
       },
       module: {
         rules: [
+          pegjsConfig,
+          typescriptConfig,
           {
-              test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
-              use: [
-                  {
-                      loader: require.resolve('url-loader'),
-                      options: {
-                        esModule: false,
-                        limit: 65536
-                      }
-                  }
-              ]
+            test: /\.(woff|ttf|ico|woff2|jpg|jpeg|png|webp|svg)$/i,
+            use: [
+              {
+                loader: require.resolve('url-loader'),
+                options: {
+                  esModule: false,
+                  limit: 65536
+                }
+              }
+            ]
           }
         ]
       },
       resolve: {
         alias: {
-          resources: __dirname + "/resources"
-        }
+          resources: __dirname + "/resources",
+          src: path.resolve(__dirname, '/src'),
+        },
+        extensions: extensions
       },
       plugins
     },
     {
+      module: {
+        rules: [
+          pegjsConfig,
+          typescriptConfig
+        ]
+      },
       // devtool: "eval",
       entry: {
-        about: "./dist/scripts/about.js"
-      },
-      output: {
-        filename: "[name].bundle.js",
-        path: __dirname + "/dist/scripts"
-      },
-      plugins
-    },
-    {
-      entry: {
-        worker: "./dist/scripts/worker/worker_main.js"
+        about: "./src/about.ts"
       },
       output: {
         filename: "[name].bundle.js",
@@ -89,14 +117,46 @@ module.exports = (env, { mode }) => {
       },
       resolve: {
         alias: {
-          resources: __dirname + "/resources"
-        }
+          src: path.resolve(__dirname, '/src'),
+        },
+        extensions: extensions
       },
       plugins
     },
     {
+      module: {
+        rules: [
+          pegjsConfig,
+          typescriptConfig
+        ]
+      },
       entry: {
-        container: "./dist/scripts/container/index.js"
+        worker: "./src/worker/worker_main.ts"
+      },
+      output: {
+        filename: "[name].bundle.js",
+        path: __dirname + "/dist/scripts",
+        libraryTarget: "var",
+        library: "CharticulatorWorker"
+      },
+      resolve: {
+        alias: {
+          src: path.resolve(__dirname, '/src'),
+          resources: __dirname + "/resources"
+        },
+        extensions: extensions
+      },
+      plugins
+    },
+    {
+      module: {
+        rules: [
+          pegjsConfig,
+          typescriptConfig
+        ]
+      },
+      entry: {
+        container: "./src/container/index.ts"
       },
       output: {
         filename: "[name].bundle.js",
@@ -107,14 +167,16 @@ module.exports = (env, { mode }) => {
       },
       resolve: {
         alias: {
+          src: path.resolve(__dirname, '/src'),
           resources: __dirname + "/resources",
           react: "preact-compat",
           "react-dom": "preact-compat",
           // Not necessary unless you consume a module using `createClass`
           "create-react-class": "preact-compat/lib/create-react-class",
           // Not necessary unless you consume a module requiring `react-dom-factories`
-          "react-dom-factories": "preact-compat/lib/react-dom-factories"
-        }
+          "react-dom-factories": "preact-compat/lib/react-dom-factories",
+        },
+        extensions: extensions
       },
       plugins
     }
