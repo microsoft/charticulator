@@ -601,6 +601,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/undo")}
               title={strings.menuBar.undo}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -608,6 +611,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/redo")}
               title={strings.menuBar.redo}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
