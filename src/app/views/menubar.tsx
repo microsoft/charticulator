@@ -532,20 +532,6 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderNewOpenSave() {
-    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
-    let hasUnsavedChanges = false;
-
-    try {
-      expect_deep_approximately_equals(
-        editorTemplate,
-        this.context.store.originTemplate,
-        1e-2
-      );
-    } catch (ex) {
-      console.log(ex.message);
-      hasUnsavedChanges = true;
-    }
-
     return (
       <>
         <MenuButton
@@ -563,17 +549,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           }}
         />
         <MenuButton
-          url={
-            hasUnsavedChanges
-              ? R.getSVGIcon("toolbar/save-changes")
-              : R.getSVGIcon("toolbar/save")
-          }
+          url={R.getSVGIcon("toolbar/save")}
           title={strings.menuBar.save}
-          text={
-            hasUnsavedChanges
-              ? strings.menuBar.saveButton
-              : strings.menuBar.savedButton
-          }
+          text={strings.menuBar.saveButton}
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -623,6 +601,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/undo")}
               title={strings.menuBar.undo}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -630,6 +611,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/redo")}
               title={strings.menuBar.redo}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
