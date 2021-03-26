@@ -129,7 +129,6 @@ export class Migrator {
       compareVersion(state.version, "2.0.2") < 0 &&
       compareVersion(targetVersion, "2.0.2") >= 0
     ) {
-      // Patch change at version 2.0.1: Add polar/angular legend
       state = this.setAllowFlipToMarks(state);
     }
 
