@@ -56,4 +56,5 @@ export interface RectElementAttributes extends AttributeMap {
 export interface RectElementProperties extends AttributeMap {
   shape: "rectangle" | "ellipse" | "triangle";
   strokeStyle: StrokeStyle;
+  allowFlipping: boolean;
 }

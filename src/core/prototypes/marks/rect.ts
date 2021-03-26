@@ -47,6 +47,7 @@ export class RectElementClass extends EmphasizableMarkClass<
     visible: true,
     strokeStyle: "solid",
     shape: "rectangle",
+    allowFlipping: true,
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
@@ -193,6 +194,16 @@ export class RectElementClass extends EmphasizableMarkClass<
           }
         )
       ),
+      manager.row(
+        "Flipping",
+        manager.inputBoolean(
+          { property: "allowFlipping" },
+          {
+            type: "checkbox",
+            label: "",
+          }
+        )
+      ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
       manager.mappingEditor("Stroke", "stroke", {}),
@@ -294,6 +305,28 @@ export class RectElementClass extends EmphasizableMarkClass<
         [1, y2],
       ]
     );
+
+    if (
+      !this.object.properties.allowFlipping &&
+      this.object.properties.allowFlipping !== undefined
+    ) {
+      // Additional constraint to prevent flipping mark objects
+      // add constraint x2 >= x1
+      solver.addSoftInequality(
+        ConstraintStrength.WEAKER,
+        0,
+        [[1, x2]],
+        [[1, x1]]
+      );
+
+      // add constraint y2 >= y1
+      solver.addSoftInequality(
+        ConstraintStrength.WEAKER,
+        0,
+        [[1, y2]],
+        [[1, y1]]
+      );
+    }
   }
 
   // Get the graphical element from the element
