@@ -16,6 +16,8 @@ import { upgradeGuidesToBaseline } from "./migrator_baseline";
 import { LegendProperties } from "../../core/prototypes/legends/legend";
 import { ChartElement, MappingType } from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
+import { forEachObject } from "../../core/prototypes";
+import { RectElementProperties } from "../../core/prototypes/marks/rect.attrs";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -121,6 +123,14 @@ export class Migrator {
     ) {
       // Patch change at version 2.0.1: Add polar/angular legend
       state = this.setPolarAngularLegend(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.2") < 0 &&
+      compareVersion(targetVersion, "2.0.2") >= 0
+    ) {
+      // Patch change at version 2.0.1: Add polar/angular legend
+      state = this.setAllowFlipToMarks(state);
     }
 
     // After migration, set version to targetVersion
@@ -365,6 +375,18 @@ export class Migrator {
         attrs.radius = 0;
         attrs.startAngle = 0;
         attrs.endAngle = 0;
+      }
+    }
+    return state;
+  }
+
+  public setAllowFlipToMarks(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == "mark") {
+        // legend with column names
+        if (Prototypes.isType(item.mark.classID, "mark.rect")) {
+          (item.mark.properties as RectElementProperties).allowFlipping = true;
+        }
       }
     }
     return state;
