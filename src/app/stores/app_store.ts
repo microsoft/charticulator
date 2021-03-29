@@ -66,7 +66,11 @@ import { domain } from "process";
 
 import { defaultAxisStyle } from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
-import { ChartTemplate } from "../../container/chart_template";
+import { ScaleLinear } from "d3-scale";
+import {
+  LinearScale,
+  LinearScaleProperties,
+} from "../../core/prototypes/scales/linear";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -655,6 +659,53 @@ export class AppStore extends BaseStore {
     }
     let table = this.getTable(tableName);
 
+    // compares the ranges of two expression to determine similarity
+    const compareDomainRanges = (
+      scaleID: string,
+      expression: string
+    ): boolean => {
+      const scaleClass = this.chartManager.getClassById(
+        scaleID
+      ) as Prototypes.Scales.ScaleClass;
+
+      // compare onlt numerical scales
+      if (
+        !Prototypes.isType(
+          scaleClass.object.classID,
+          "scale.linear<number,number>"
+        )
+      ) {
+        return false;
+      }
+
+      const values = this.chartManager.getGroupedExpressionVector(
+        table.name,
+        groupBy,
+        expression
+      ) as number[];
+
+      const min = Math.min(...values);
+      const max = Math.min(...values);
+
+      const domainMin = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMin;
+      const domainMax = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMax;
+
+      const domainRange = Math.abs(domainMin - domainMax) * 2;
+
+      if (domainMin - domainRange < min && min < domainMax + domainRange) {
+        return true;
+      }
+      if (domainMin - domainRange < max && max < domainMax + domainRange) {
+        return true;
+      }
+
+      return false;
+    };
+
     // If there is an existing scale on the same column in the table, return that one
     if (!options.hints.newScale) {
       const getExpressionUnit = (expr: string) => {
@@ -681,7 +732,8 @@ export class AppStore extends BaseStore {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
-                scaleMapping.expression == options.expression &&
+                (compareDomainRanges(scaleMapping.scale, options.expression) ||
+                  scaleMapping.expression == options.expression) &&
                 (compareMarkAttributeNames(
                   options.markAttribute,
                   scaleMapping.attribute
@@ -743,7 +795,8 @@ export class AppStore extends BaseStore {
       if (this.chart.scaleMappings) {
         for (const scaleMapping of this.chart.scaleMappings) {
           if (
-            scaleMapping.expression == options.expression &&
+            (compareDomainRanges(scaleMapping.scale, options.expression) ||
+              scaleMapping.expression == options.expression) &&
             ((scaleMapping.attribute &&
               compareMarkAttributeNames(
                 scaleMapping.attribute,
