@@ -6,11 +6,19 @@ import styled from "styled-components";
 export const FluentButton = styled.div<{ marginTop?: string }>`
   margin-top: ${({ marginTop }) => marginTop || "24px"};
   display: inline-block;
-  padding: 0px 4px 0px 4px;
+  padding: 0px 4px 0px 0px;
   button {
     min-width: unset;
     padding: 4px;
   }
+`;
+
+export const FluentLabelHeader = styled.div<{
+  marginBottom?: string;
+  marginTop?: string;
+}>`
+  margin-bottom: ${({ marginBottom }) => marginBottom || "24px"};
+  margin-top: ${({ marginTop }) => marginTop || "24px"};
 `;
 
 export const FluentActionButton = styled.div`

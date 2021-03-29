@@ -80,6 +80,7 @@ import { Icon } from "@fluentui/react/lib/Icon";
 import {
   FluentButton,
   FluentCheckbox,
+  FluentLabelHeader,
 } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
@@ -895,9 +896,16 @@ export class FluentUIWidgetManager
       </span>
     );
   }
-  public label(title: string) {
+  public label(title: string, options?: { addMargins: boolean }) {
     // return <span className="charticulator__widget-label">{title}</span>;
-    return <Label>{title}</Label>;
+    return (
+      <FluentLabelHeader
+        marginBottom={options?.addMargins ? "5px" : "0px"}
+        marginTop={options?.addMargins ? "5px" : "0px"}
+      >
+        <Label>{title}</Label>
+      </FluentLabelHeader>
+    );
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {
     return (
@@ -940,7 +948,9 @@ export class FluentUIWidgetManager
           {/* <span className="charticulator__widget-section-header-title">
             {title}
           </span> */}
-          <Label>{title}</Label>
+          <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
+            <Label>{title}</Label>
+          </FluentLabelHeader>
           {widget}
           <FluentButton marginTop={"0px"}>
             <DefaultButton
@@ -1003,10 +1013,9 @@ export class FluentUIWidgetManager
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <Label>{title}</Label>
-          {/* <span className="charticulator__widget-section-header-title">
-            {title}
-          </span> */}
+          <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
+            <Label>{title}</Label>
+          </FluentLabelHeader>
           {widget}
         </div>
       );

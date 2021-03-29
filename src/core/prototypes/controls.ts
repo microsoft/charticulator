@@ -229,7 +229,7 @@ export interface WidgetManager {
 
   // Label and text
   icon(icon: string): Widget;
-  label(title: string): Widget;
+  label(title: string, options?: { addMargins: boolean }): Widget;
   text(text: string, align?: "left" | "center" | "right"): Widget;
   // Inline separator
   sep(): Widget;

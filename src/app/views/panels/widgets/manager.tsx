@@ -805,7 +805,7 @@ export class WidgetManager
       </span>
     );
   }
-  public label(title: string) {
+  public label(title: string, options?: { addMargins: boolean }) {
     return <span className="charticulator__widget-label">{title}</span>;
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {

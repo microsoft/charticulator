@@ -137,7 +137,9 @@ export abstract class PlotSegmentClass<
     return [
       manager.horizontal(
         [0, 1, 1],
-        manager.label("Data"),
+        manager.label("Data", {
+          addMargins: true,
+        }),
         manager.horizontal(
           [1],
           [
