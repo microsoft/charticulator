@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { CharticulatorWorkerInterface } from ".";
 import * as Core from "../core";
 import { WorkerHostProcess } from "./communication";
 
-class CharticulatorWorkerProcess extends WorkerHostProcess {
+export class CharticulatorWorkerProcess extends WorkerHostProcess implements CharticulatorWorkerInterface {
   constructor() {
     super();
     this.registerRPC("initialize", this.initialize.bind(this));
