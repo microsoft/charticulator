@@ -668,7 +668,7 @@ export class AppStore extends BaseStore {
         scaleID
       ) as Prototypes.Scales.ScaleClass;
 
-      // compare onlt numerical scales
+      // compare only numerical scales
       if (
         !Prototypes.isType(
           scaleClass.object.classID,
