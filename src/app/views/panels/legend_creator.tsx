@@ -239,11 +239,13 @@ export class LegendCreationPanel extends ContextedComponent<
                 const table = columns[0].table;
                 const inferred = this.store.scaleInference(
                   { chart: { table } },
-                  aggregatedExpression,
-                  columns[0].type,
-                  columns[0].metadata.kind,
-                  attributeType,
-                  {}
+                  {
+                    expression: aggregatedExpression,
+                    valueType: columns[0].type,
+                    valueKind: columns[0].metadata.kind,
+                    outputType: attributeType,
+                    hints: {},
+                  }
                 );
 
                 const scaleObject = getById(
