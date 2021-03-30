@@ -16,7 +16,10 @@ import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 import { BindDataToAxis } from "../../actions/actions";
-import { MappingType } from "../../../core/specification";
+import {
+  MappingType,
+  SnappingElementMapping,
+} from "../../../core/specification";
 
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function (action) {
@@ -24,11 +27,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
         { chart: { table: action.table } },
-        action.expression,
-        action.valueType,
-        action.valueMetadata.kind,
-        action.attributeType,
-        action.hints
+        {
+          expression: action.expression,
+          valueType: action.valueType,
+          valueKind: action.valueMetadata.kind,
+          outputType: action.attributeType,
+          hints: action.hints,
+        }
       );
     if (inferred != null) {
       action.chartElement.mappings[action.attribute] = {
@@ -66,6 +71,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.AddChartElement, function (action) {
     this.saveHistory();
 
+    if (action.classID === "mark.nested-chart") {
+      return; // prevent to add nested chart into chart, nested chart can be created only in glyph
+    }
+
     let glyph = this.currentGlyph;
     if (!glyph || this.chart.glyphs.indexOf(glyph) < 0) {
       glyph = this.chart.glyphs[0];
@@ -96,13 +105,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
           if (mapping.type == MappingType._element) {
+            const elementMapping = mapping as SnappingElementMapping;
             this.chartManager.chart.constraints.push({
               type: "snap",
               attributes: {
                 element: newChartElement._id,
                 attribute: key,
-                targetElement: (mapping as any).element,
-                targetAttribute: (mapping as any).attribute,
+                targetElement: elementMapping.element,
+                targetAttribute: elementMapping.attribute,
                 gap: 0,
               },
             });
@@ -511,7 +521,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.ToggleLegendForScale, function (action) {
     this.saveHistory();
 
-    this.toggleLegendForScale(action.scale, action.mapping);
+    this.toggleLegendForScale(action.scale, action.mapping, action.plotSegment);
 
     this.solveConstraintsAndUpdateGraphics();
   });

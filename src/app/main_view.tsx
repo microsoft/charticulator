@@ -53,6 +53,7 @@ export interface MainViewConfig {
   EditorPanelsPosition: PositionsLeftRight;
   ToolbarPosition: PositionsLeftRightTop;
   MenuBarButtons: PositionsLeftRight;
+  MenuBarSaveButtons: PositionsLeftRight;
   Name?: string;
   ToolbarLabels: boolean;
   UndoRedoLocation: UndoRedoLocation;
@@ -86,6 +87,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
         EditorPanelsPosition: PositionsLeftRight.Left,
         ToolbarPosition: PositionsLeftRightTop.Top,
         MenuBarButtons: PositionsLeftRight.Left,
+        MenuBarSaveButtons: PositionsLeftRight.Left,
         ToolbarLabels: true,
         UndoRedoLocation: UndoRedoLocation.MenuBar,
       };
@@ -239,6 +241,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
           <TelemetryContext.Provider value={this.props.telemetry}>
             <MenuBar
               alignButtons={this.viewConfiguration.MenuBarButtons}
+              alignSaveButton={this.viewConfiguration.MenuBarSaveButtons}
               undoRedoLocation={this.viewConfiguration.UndoRedoLocation}
               name={this.viewConfiguration.Name}
               ref={(e) => (this.refMenuBar = e)}

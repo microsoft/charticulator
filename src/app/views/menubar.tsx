@@ -19,13 +19,19 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
+import {
+  expect_deep_approximately_equals,
+  isInIFrame,
+  readFileAsString,
+  showOpenFileDialog,
+} from "../utils";
 import { ChartTemplate, MessageType, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
+import { ChartTemplateBuilder } from "../template";
 
 export class HelpButton extends React.Component<
   {
@@ -120,6 +126,7 @@ export interface MenuBarHandlers {
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
+  alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
 }
@@ -429,10 +436,35 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
+    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
+    let hasUnsavedChanges = false;
+
+    try {
+      expect_deep_approximately_equals(
+        editorTemplate.specification,
+        this.context.store.originTemplate.specification,
+        1e-2
+      );
+    } catch (ex) {
+      if (!(ex.message as string).includes("expected")) {
+        console.error(ex.message);
+      } else {
+        hasUnsavedChanges = true;
+      }
+    }
+
     return (
       <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
-        text={strings.menuBar.saveButton}
+        url={
+          hasUnsavedChanges
+            ? R.getSVGIcon("toolbar/save-changes")
+            : R.getSVGIcon("toolbar/save")
+        }
+        text={
+          hasUnsavedChanges
+            ? strings.menuBar.saveButton
+            : strings.menuBar.savedButton
+        }
         title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -540,7 +572,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public toolbarButtons(props: MenuBarProps) {
+  public toolbarButtons(
+    props: MenuBarProps,
+    toolbarButtons: PositionsLeftRight
+  ) {
     return (
       <>
         {this.context.store.editorType === "nested"
@@ -549,7 +584,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.context.store.editorType === "chart"
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded"
+        {this.context.store.editorType === "embedded" &&
+        props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
         {this.context.store.editorType === "embedded" ? (
@@ -565,6 +601,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("Undo")}
               title={strings.menuBar.undo}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -572,6 +611,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("Redo")}
               title={strings.menuBar.redo}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
@@ -599,12 +641,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 onClick={() => this.showFileModalWindow(MainTabs.open)}
               />
             )}
-            {this.props.alignButtons === "left" ? (
+            {this.props.alignButtons === PositionsLeftRight.Left ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Left)}
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Left &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
             <p>
@@ -616,12 +663,17 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             </p>
           </div>
           <div className="charticulator__menu-bar-right">
-            {this.props.alignButtons === "right" ? (
+            {this.props.alignButtons === PositionsLeftRight.Right ? (
               <>
-                {this.toolbarButtons(this.props)}
+                {this.toolbarButtons(this.props, PositionsLeftRight.Right)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.alignSaveButton == PositionsLeftRight.Right &&
+            this.props.alignSaveButton !== this.props.alignButtons
+              ? this.renderSaveEmbedded()
+              : null}
             <HelpButton
               handlers={this.props.handlers}
               hideReportIssues={this.context.store.editorType === "embedded"}

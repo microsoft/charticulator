@@ -18,6 +18,7 @@ export interface ToolButtonProps {
   onClick?: () => void;
   dragData?: () => any;
   active?: boolean;
+  disabled?: boolean;
   compact?: boolean;
 }
 
@@ -53,10 +54,11 @@ export class ToolButton extends React.Component<
           }}
         >
           <span
-            className={classNames("charticulator__button-tool", [
-              "is-active",
-              this.props.active || this.state.dragging,
-            ])}
+            className={classNames(
+              "charticulator__button-tool",
+              ["is-active", this.props.active || this.state.dragging],
+              ["is-disabled", this.props.disabled]
+            )}
             title={this.props.title}
             onClick={onClick}
           >
@@ -84,10 +86,11 @@ export class ToolButton extends React.Component<
     } else {
       return (
         <span
-          className={classNames("charticulator__button-tool", [
-            "is-active",
-            this.props.active,
-          ])}
+          className={classNames(
+            "charticulator__button-tool",
+            ["is-active", this.props.active],
+            ["is-disabled", this.props.disabled]
+          )}
           title={this.props.title}
           onClick={onClick}
         >

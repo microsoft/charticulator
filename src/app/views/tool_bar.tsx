@@ -269,6 +269,7 @@ export class Toolbar extends ContextedComponent<
           {this.renderLineButton()}
           {this.renderTextButton()}
           {this.renderIconButton()}
+          <span className={"charticulator__toolbar-horizontal-separator"} />
           {this.renderDataAxisButton()}
           {/* Nested chart doesn't supported */}
           {/* <ObjectButton
@@ -308,6 +309,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.undo}
               icon={R.getSVGIcon("toolbar/undo")}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -315,6 +319,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.redo}
               icon={R.getSVGIcon("toolbar/redo")}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
@@ -384,6 +391,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.undo}
               icon={R.getSVGIcon("Undo")}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -391,6 +401,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.redo}
               icon={R.getSVGIcon("Redo")}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
@@ -421,9 +434,9 @@ export class Toolbar extends ContextedComponent<
           title={strings.toolbar.nestedChart}
           icon="BarChartVerticalFilter"
         />
-        <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
         <LinkButton label={labels} />
+        <LegendButton />
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <span
@@ -449,18 +462,18 @@ export class Toolbar extends ContextedComponent<
               icon="guide/y"
             />
             <ObjectButton
-              classID="coordinator-x"
+              classID="guide-coordinator-x"
               title={strings.toolbar.guideX}
               icon="guide/coordinator-x"
             />
             <ObjectButton
-              classID="coordinator-y"
+              classID="guide-coordinator-y"
               title={strings.toolbar.guideY}
               icon="guide/coordinator-y"
             />
             <ObjectButton
-              classID="coordinator-polar"
-              title={strings.toolbar.guideY}
+              classID="guide-coordinator-polar"
+              title={strings.toolbar.guidePolar}
               icon="plot-segment/polar"
             />
           </>
@@ -842,8 +855,8 @@ export class LinkButton extends ContextedComponent<
     return (
       <span ref={(e) => (this.container = e)}>
         <ToolButton
-          title={strings.toolbar.link}
-          text={this.props.label ? strings.toolbar.link : ""}
+          title={strings.toolbar.links}
+          text={this.props.label ? strings.toolbar.links : ""}
           icon={R.getSVGIcon("CharticulatorLine")}
           active={this.store.currentTool == "link"}
           onClick={() => {

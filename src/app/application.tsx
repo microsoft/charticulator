@@ -178,6 +178,7 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
+        template: Specification.Template.ChartTemplate;
         width: number;
         height: number;
         filterCondition: {
@@ -198,6 +199,7 @@ export class Application {
           filterCondition: info.filterCondition,
         })
       );
+      appStore.originTemplate = info.template;
       appStore.setupNestedEditor(
         (newSpecification) => {
           const template = deepClone(appStore.buildChartTemplate());

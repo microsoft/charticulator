@@ -19,11 +19,13 @@ import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   Region2DAttributes,
   Region2DConfiguration,
+  Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
+import { strings } from "../../../../strings";
 
 export type CartesianAxisMode =
   | "null"
@@ -45,35 +47,23 @@ export interface CartesianState extends Specification.PlotSegmentState {
   attributes: CartesianAttributes;
 }
 
-export let cartesianTerminology: Region2DConfiguration = {
-  terminology: {
-    xAxis: "X Axis", // X Axis / Angular Axis
-    yAxis: "Y Axis", // Y Axis / Radial Axis
-    xMin: "Left",
-    xMinIcon: "AlignHorizontalLeft",
-    xMiddle: "Middle",
-    xMiddleIcon: "AlignHorizontalCenter",
-    xMax: "Right",
-    xMaxIcon: "AlignHorizontalRight",
-    yMiddle: "Middle",
-    yMiddleIcon: "AlignVerticalCenter",
-    yMin: "Bottom",
-    yMinIcon: "align/bottom",
-    yMax: "Top",
-    yMaxIcon: "align/top",
-    dodgeX: "Stack X",
-    dodgeXIcon: "HorizontalDistributeCenter",
-    dodgeY: "Stack Y",
-    dodgeYIcon: "VerticalDistributeCenter",
-    grid: "Grid",
-    gridIcon: "GridViewSmall",
-    gridDirectionX: "X",
-    gridDirectionY: "Y",
-    packing: "Packing",
-    packingIcon: "sublayout/packing",
-    overlap: "Overlap",
-    overlapIcon: "Stack",
-  },
+const icons: Region2DConfigurationIcons = {
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
+  xMaxIcon: "AlignHorizontalRight",
+  yMiddleIcon: "AlignVerticalCenter",
+  yMinIcon: "align/bottom",
+  yMaxIcon: "align/top",
+  dodgeXIcon: "HorizontalDistributeCenter",
+  dodgeYIcon: "VerticalDistributeCenter",
+  gridIcon: "GridViewSmall",
+  packingIcon: "sublayout/packing",
+  overlapIcon: "Stack",
+};
+
+export let config: Region2DConfiguration = {
+  terminology: strings.cartesianTerminology,
+  icons,
   xAxisPrePostGap: false,
   yAxisPrePostGap: false,
 };
@@ -186,7 +176,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   ) {
     const builder = new Region2DConstraintBuilder(
       this,
-      cartesianTerminology,
+      config,
       "x1",
       "x2",
       "y1",

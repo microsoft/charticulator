@@ -47,27 +47,30 @@ import {
 } from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
-import { TextExpression, ValueType } from "../../core/expression/classes";
+import { ValueType } from "../../core/expression/classes";
 import {
-  AttributeMap,
-  AttributeType,
   DataKind,
   DataType,
-  DataValue,
-  Mapping,
   MappingType,
   ObjectProperties,
   ScaleMapping,
   ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
+import { AxisRenderingStyle, OrderMode } from "../../core/specification/types";
 import {
-  AxisRenderingStyle,
-  AxisSide,
-  OrderMode,
-} from "../../core/specification/types";
-import { NumericalNumberLegendProperties } from "../../core/prototypes/legends/numerical_legend";
+  NumericalNumberLegendAttributeNames,
+  NumericalNumberLegendProperties,
+} from "../../core/prototypes/legends/numerical_legend";
 import { domain } from "process";
+
+import { defaultAxisStyle } from "../../core/prototypes/plot_segments";
+import { isType, ObjectClass } from "../../core/prototypes";
+import { ScaleLinear } from "d3-scale";
+import {
+  LinearScale,
+  LinearScaleProperties,
+} from "../../core/prototypes/scales/linear";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -90,6 +93,15 @@ export interface AppStoreState {
   dataset: Dataset.Dataset;
   chart: Specification.Chart;
   chartState: Specification.ChartState;
+}
+
+export interface ScaleInferenceOptions {
+  expression: string;
+  valueType: Specification.DataType;
+  valueKind: Specification.DataKind;
+  outputType: Specification.AttributeType;
+  hints?: Prototypes.DataMappingHints;
+  markAttribute?: string;
 }
 
 export class AppStore extends BaseStore {
@@ -119,6 +131,8 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
+  /** The origin template on import */
+  public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -249,6 +263,7 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
+    this.emit(AppStore.EVENT_GRAPHICS);
   }
 
   public renderSVG() {
@@ -280,6 +295,7 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
+    this.originTemplate = this.buildChartTemplate();
   }
 
   // removes unused scale objecs
@@ -343,6 +359,9 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
+      this.originTemplate = this.buildChartTemplate();
+
+      this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
     }
   }
@@ -368,6 +387,7 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_GRAPHICS);
     this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
@@ -617,12 +637,7 @@ export class AppStore extends BaseStore {
 
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
-    expression: string,
-    valueType: Specification.DataType,
-    valueKind: Specification.DataKind,
-    outputType: Specification.AttributeType,
-    hints: Prototypes.DataMappingHints = {},
-    markAttribute?: string
+    options: ScaleInferenceOptions
   ): string {
     // Figure out the source table
     let tableName: string = null;
@@ -644,8 +659,55 @@ export class AppStore extends BaseStore {
     }
     let table = this.getTable(tableName);
 
+    // compares the ranges of two expression to determine similarity
+    const compareDomainRanges = (
+      scaleID: string,
+      expression: string
+    ): boolean => {
+      const scaleClass = this.chartManager.getClassById(
+        scaleID
+      ) as Prototypes.Scales.ScaleClass;
+
+      // compare only numerical scales
+      if (
+        !Prototypes.isType(
+          scaleClass.object.classID,
+          "scale.linear<number,number>"
+        )
+      ) {
+        return false;
+      }
+
+      const values = this.chartManager.getGroupedExpressionVector(
+        table.name,
+        groupBy,
+        expression
+      ) as number[];
+
+      const min = Math.min(...values);
+      const max = Math.min(...values);
+
+      const domainMin = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMin;
+      const domainMax = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMax;
+
+      const domainRange = Math.abs(domainMin - domainMax) * 2;
+
+      if (domainMin - domainRange < min && min < domainMax + domainRange) {
+        return true;
+      }
+      if (domainMin - domainRange < max && max < domainMax + domainRange) {
+        return true;
+      }
+
+      return false;
+    };
+
     // If there is an existing scale on the same column in the table, return that one
-    if (!hints.newScale) {
+    if (!options.hints.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
         // In the case of an aggregation function
@@ -670,33 +732,34 @@ export class AppStore extends BaseStore {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
-                scaleMapping.expression == expression &&
+                (compareDomainRanges(scaleMapping.scale, options.expression) ||
+                  scaleMapping.expression == options.expression) &&
                 (compareMarkAttributeNames(
-                  markAttribute,
+                  options.markAttribute,
                   scaleMapping.attribute
                 ) ||
-                  !markAttribute ||
+                  !options.markAttribute ||
                   !scaleMapping.attribute)
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                  getExpressionUnit(expression) &&
+                  getExpressionUnit(options.expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
@@ -732,16 +795,17 @@ export class AppStore extends BaseStore {
       if (this.chart.scaleMappings) {
         for (const scaleMapping of this.chart.scaleMappings) {
           if (
-            scaleMapping.expression == expression &&
+            (compareDomainRanges(scaleMapping.scale, options.expression) ||
+              scaleMapping.expression == options.expression) &&
             ((scaleMapping.attribute &&
               compareMarkAttributeNames(
                 scaleMapping.attribute,
-                markAttribute
+                options.markAttribute
               )) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
-            if (scaleObject && scaleObject.outputType == outputType) {
+            if (scaleObject && scaleObject.outputType == options.outputType) {
               return scaleMapping.scale;
             }
           }
@@ -750,9 +814,9 @@ export class AppStore extends BaseStore {
     }
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      valueType,
-      valueKind,
-      outputType
+      options.valueType,
+      options.valueKind,
+      options.outputType
     );
 
     if (scaleClassID != null) {
@@ -760,8 +824,8 @@ export class AppStore extends BaseStore {
         scaleClassID
       ) as Specification.Scale;
       newScale.properties.name = this.chartManager.findUnusedName("Scale");
-      newScale.inputType = valueType;
-      newScale.outputType = outputType;
+      newScale.inputType = options.valueType;
+      newScale.outputType = options.outputType;
       this.chartManager.addScale(newScale);
       const scaleClass = this.chartManager.getClassById(
         newScale._id
@@ -778,9 +842,9 @@ export class AppStore extends BaseStore {
         this.chartManager.getGroupedExpressionVector(
           table.name,
           groupBy,
-          expression
+          options.expression
         ) as Specification.DataValue[],
-        hints
+        options.hints
       );
 
       return newScale._id;
@@ -803,7 +867,8 @@ export class AppStore extends BaseStore {
 
   public toggleLegendForScale(
     scale: string,
-    mapping: Specification.ScaleMapping
+    mapping: Specification.ScaleMapping,
+    plotSegment: ObjectClass
   ) {
     const scaleObject = getById(this.chartManager.chart.scales, scale);
     // See if we already have a legend
@@ -815,7 +880,7 @@ export class AppStore extends BaseStore {
         }
       }
     }
-    let newLegend = null;
+    let newLegend: Specification.ChartElement;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
       if (
@@ -823,13 +888,9 @@ export class AppStore extends BaseStore {
         mapping.valueIndex !== undefined &&
         mapping.valueIndex !== null
       ) {
-        newLegend = this.chartManager.createObject(
-          `legend.custom`
-        ) as Specification.ChartElement;
+        newLegend = this.chartManager.createObject(`legend.custom`);
       } else {
-        newLegend = this.chartManager.createObject(
-          `legend.categorical`
-        ) as Specification.ChartElement;
+        newLegend = this.chartManager.createObject(`legend.categorical`);
       }
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
@@ -850,9 +911,7 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,color>" ||
       scaleObject.classID == "scale.linear<integer,color>"
     ) {
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-color`
-      ) as Specification.ChartElement;
+      newLegend = this.chartManager.createObject(`legend.numerical-color`);
       newLegend.properties.scale = scale;
       newLegend.mappings.x = {
         type: MappingType.parent,
@@ -872,51 +931,70 @@ export class AppStore extends BaseStore {
       scaleObject.classID == "scale.linear<number,number>" ||
       scaleObject.classID == "scale.linear<integer,number>"
     ) {
-      let x1Attr: string;
-      let y1Attr: string;
-      let x2Attr: string;
-      let y2Attr: string;
-      let side: AxisSide;
-      switch (mapping.attribute) {
-        case "height": {
-          x1Attr = "x1";
-          y1Attr = "y1";
-          x2Attr = "x1";
-          y2Attr = "y2";
-          side = "default";
-          break;
-        }
-        case "width": {
-          x1Attr = "x1";
-          y1Attr = "y1";
-          x2Attr = "x2";
-          y2Attr = "y1";
-          side = "opposite";
-          break;
-        }
+      if (!plotSegment) {
+        console.log("Numerical-number legend needs plot segment parameter.");
+        return;
       }
-      newLegend = this.chartManager.createObject(
-        `legend.numerical-number`
-      ) as Specification.ChartElement;
+      newLegend = this.chartManager.createObject(`legend.numerical-number`);
       const properties = newLegend.properties as NumericalNumberLegendProperties;
       properties.scale = scale;
-      properties.axis.side = side;
-      newLegend.mappings.x1 = {
-        type: MappingType.parent,
-        parentAttribute: x1Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.y1 = {
-        type: MappingType.parent,
-        parentAttribute: y1Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.x2 = {
-        type: MappingType.parent,
-        parentAttribute: x2Attr,
-      } as Specification.ParentMapping;
-      newLegend.mappings.y2 = {
-        type: MappingType.parent,
-        parentAttribute: y2Attr,
-      } as Specification.ParentMapping;
+      let legendAttributes: NumericalNumberLegendAttributeNames[] = [
+        NumericalNumberLegendAttributeNames.x1,
+        NumericalNumberLegendAttributeNames.y1,
+        NumericalNumberLegendAttributeNames.x2,
+        NumericalNumberLegendAttributeNames.y2,
+      ];
+      let targetAttributes: string[];
+      if (isType(plotSegment.object.classID, "plot-segment.polar")) {
+        switch (mapping.attribute) {
+          case "height": {
+            // radial
+            targetAttributes = ["a1r1x", "a1r1y", "a1r2x", "a1r2y"];
+            properties.axis.side = "default";
+            break;
+          }
+          case "width": {
+            // angular
+            legendAttributes = [
+              NumericalNumberLegendAttributeNames.cx,
+              NumericalNumberLegendAttributeNames.cy,
+              NumericalNumberLegendAttributeNames.radius,
+              NumericalNumberLegendAttributeNames.startAngle,
+              NumericalNumberLegendAttributeNames.endAngle,
+            ];
+            targetAttributes = ["cx", "cy", "radial2", "angle1", "angle2"];
+            properties.axis.side = "default";
+            properties.polarAngularMode = true;
+            break;
+          }
+        }
+      } else {
+        switch (mapping.attribute) {
+          case "height": {
+            targetAttributes = ["x1", "y1", "x1", "y2"];
+            properties.axis.side = "default";
+            break;
+          }
+          case "width": {
+            targetAttributes = ["x1", "y1", "x2", "y1"];
+            properties.axis.side = "opposite";
+            break;
+          }
+        }
+      }
+      legendAttributes.forEach((attribute, i) => {
+        // //snap legend to plot segment
+        this.chartManager.chart.constraints.push({
+          type: "snap",
+          attributes: {
+            element: newLegend._id,
+            attribute,
+            targetElement: plotSegment.object._id,
+            targetAttribute: targetAttributes[i],
+            gap: 0,
+          },
+        });
+      });
     }
 
     const mappingOptions = {
@@ -1398,6 +1476,9 @@ export class AppStore extends BaseStore {
       valueType = DataType.String;
     }
 
+    const objectProperties = object.properties[
+      options.property
+    ] as ObjectProperties;
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
@@ -1409,10 +1490,14 @@ export class AppStore extends BaseStore {
       valueType,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
-      visible: true,
+      visible:
+        objectProperties?.visible !== undefined
+          ? objectProperties?.visible
+          : true,
       side: propertyValue?.side || "default",
-      style: (object.properties[options.property] as ObjectProperties)
-        ?.style as AxisRenderingStyle,
+      style:
+        (objectProperties?.style as AxisRenderingStyle) ||
+        deepClone(defaultAxisStyle),
       numericalMode: options.numericalMode,
       dataKind: dataExpression.metadata.kind,
       order: dataExpression.metadata.order,
@@ -1612,7 +1697,7 @@ export class AppStore extends BaseStore {
   ): Specification.Template.Column[] {
     const unmappedColumns: Specification.Template.Column[] = [];
     const dataTable = dataset.tables.find((t) => t.type === tableType);
-    const found = dataTable.columns.find((c) => c.name === column.name);
+    const found = dataTable?.columns.find((c) => c.name === column.name);
     if (!found) {
       unmappedColumns.push(column);
     }

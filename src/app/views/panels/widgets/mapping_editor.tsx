@@ -32,6 +32,7 @@ import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall, Variable } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
+import { ObjectClass } from "../../../../core/prototypes";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -75,6 +76,10 @@ export class MappingEditor extends React.Component<
         return (
           <PopupView context={context}>
             <DataMappAndScaleEditor
+              plotSegment={parentOfType(
+                this.props.parent.objectClass.parent,
+                "plot-segment"
+              )}
               attribute={attribute}
               parent={this}
               defaultMapping={mapping}
@@ -229,6 +234,7 @@ export class MappingEditor extends React.Component<
         getTable={() => this.getTableOrDefault()}
         hints={this.props.options.hints}
         numberOptions={this.props.options.numberOptions}
+        anchorReference={this.mappingButton}
       />
     );
   }
@@ -370,6 +376,10 @@ export class MappingEditor extends React.Component<
                       (context) => (
                         <PopupView context={context}>
                           <DataMappAndScaleEditor
+                            plotSegment={parentOfType(
+                              this.props.parent.objectClass.parent,
+                              "plot-segment"
+                            )}
                             attribute={this.props.attribute}
                             parent={this}
                             defaultMapping={mapping}
@@ -543,6 +553,7 @@ export class MappingEditor extends React.Component<
 }
 
 export interface DataMappAndScaleEditorProps {
+  plotSegment: ObjectClass;
   attribute: string;
   defaultMapping: Specification.Mapping;
   options: Prototypes.Controls.MappingEditorOptions;
@@ -593,6 +604,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
         );
         return (
           <ScaleEditor
+            plotSegment={this.props.plotSegment}
             scale={scaleObject}
             scaleMapping={scaleMapping}
             store={this.store}
@@ -670,5 +682,14 @@ export class DataMappAndScaleEditor extends ContextedComponent<
         </div>
       );
     }
+  }
+}
+
+function parentOfType(p: ObjectClass, typeSought: string) {
+  while (p) {
+    if (Prototypes.isType(p.object.classID, typeSought)) {
+      return p;
+    }
+    p = p.parent;
   }
 }

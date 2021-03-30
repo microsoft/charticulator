@@ -13,11 +13,13 @@ import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
+import { ObjectClass } from "../../../core/prototypes";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
   scaleMapping: Specification.ScaleMapping;
   store: AppStore;
+  plotSegment: ObjectClass;
 }
 
 export interface ScaleEditorState {}
@@ -51,7 +53,10 @@ export class ScaleEditor extends React.Component<
       );
     };
     let canAddLegend = true;
-    if (scale.classID.startsWith("scale.format")) {
+    if (
+      scale.classID.startsWith("scale.format") ||
+      scale.classID === "scale.categorical<string,image>"
+    ) {
       canAddLegend = false;
     }
     let canExtendLegend = false;
@@ -140,7 +145,8 @@ export class ScaleEditor extends React.Component<
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
                       scale._id,
-                      scaleMapping
+                      scaleMapping,
+                      this.props.plotSegment
                     ).dispatch(store.dispatcher);
                   }}
                 />

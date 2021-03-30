@@ -137,7 +137,8 @@ export class ScaleValueSelector extends React.Component<
                   onClick={() => {
                     new Actions.ToggleLegendForScale(
                       scale._id,
-                      scaleMapping
+                      scaleMapping,
+                      null
                     ).dispatch(store.dispatcher);
                   }}
                 />
