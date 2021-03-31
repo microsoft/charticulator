@@ -34,6 +34,7 @@ import {
   FluentActionButton,
   FluentButton,
 } from "./controls/fluentui_customized_components";
+import { ObjectClass } from "../../../../core/prototypes";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -77,6 +78,10 @@ export class FluentMappingEditor extends React.Component<
         return (
           <PopupView context={context}>
             <DataMappAndScaleEditor
+              plotSegment={parentOfType(
+                (this.props.parent as any).objectClass.parent,
+                "plot-segment"
+              )}
               attribute={attribute}
               parent={this}
               defaultMapping={mapping}
@@ -381,6 +386,10 @@ export class FluentMappingEditor extends React.Component<
                                 options={options}
                                 alignLeft={alignLeft}
                                 onClose={() => context.close()}
+                                plotSegment={parentOfType(
+                                  (this.props.parent as any).objectClass.parent,
+                                  "plot-segment"
+                                )}
                               />
                             </PopupView>
                           ),
@@ -560,6 +569,7 @@ export interface DataMappAndScaleEditorProps {
   parent: FluentMappingEditor;
   onClose: () => void;
   alignLeft?: boolean;
+  plotSegment: ObjectClass;
 }
 export interface DataMappAndScaleEditorState {
   currentMapping: Specification.Mapping;
@@ -607,6 +617,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
             scale={scaleObject}
             scaleMapping={scaleMapping}
             store={this.store}
+            plotSegment={this.props.plotSegment}
           />
         );
       }
@@ -682,4 +693,13 @@ export class DataMappAndScaleEditor extends ContextedComponent<
       );
     }
   }
+}
+function parentOfType(
+  parent: any,
+  arg1: string
+): Prototypes.ObjectClass<
+  Specification.AttributeMap,
+  Specification.AttributeMap
+> {
+  throw new Error("Function not implemented.");
 }

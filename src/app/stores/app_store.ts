@@ -18,7 +18,10 @@ import {
   compareMarkAttributeNames,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
-import { CharticulatorWorker } from "../../worker";
+import {
+  CharticulatorWorker,
+  CharticulatorWorkerInterface,
+} from "../../worker";
 import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
@@ -122,7 +125,7 @@ export class AppStore extends BaseStore {
   public static EVENT_SAVECHART = "savechart";
 
   /** The WebWorker for solving constraints */
-  public readonly worker: CharticulatorWorker;
+  public readonly worker: CharticulatorWorkerInterface;
 
   /** Is this app a nested chart editor? */
   public editorType: "chart" | "nested" | "embedded" = "chart";
@@ -176,7 +179,7 @@ export class AppStore extends BaseStore {
 
   public messageState: Map<MessageType | string, string>;
 
-  constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
+  constructor(worker: CharticulatorWorkerInterface, dataset: Dataset.Dataset) {
     super(null);
 
     /** Register action handlers */

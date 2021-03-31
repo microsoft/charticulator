@@ -10,8 +10,25 @@ import {
 } from "../core";
 import { WorkerRPC } from "./communication";
 
+export { CharticulatorWorkerProcess } from "./worker_main";
+
+export interface CharticulatorWorkerInterface {
+  initialize(config: CharticulatorCoreConfig): Promise<any>;
+  solveChartConstraints: (
+    chart: Specification.Chart,
+    chartState: Specification.ChartState,
+    dataset: Dataset.Dataset,
+    preSolveValues: Array<
+      [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
+    >,
+    mappingOnly: boolean
+  ) => Promise<any> | any;
+}
+
 /** The representation of the background worker. This is used from the main process. */
-export class CharticulatorWorker extends WorkerRPC {
+export class CharticulatorWorker
+  extends WorkerRPC
+  implements CharticulatorWorkerInterface {
   constructor(workerLocation: string) {
     super(workerLocation);
   }

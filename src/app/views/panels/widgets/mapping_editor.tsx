@@ -77,7 +77,7 @@ export class MappingEditor extends React.Component<
           <PopupView context={context}>
             <DataMappAndScaleEditor
               plotSegment={parentOfType(
-                this.props.parent.objectClass.parent,
+                (this.props.parent as any).objectClass.parent,
                 "plot-segment"
               )}
               attribute={attribute}
@@ -377,7 +377,7 @@ export class MappingEditor extends React.Component<
                         <PopupView context={context}>
                           <DataMappAndScaleEditor
                             plotSegment={parentOfType(
-                              this.props.parent.objectClass.parent,
+                              (this.props.parent as any).objectClass.parent,
                               "plot-segment"
                             )}
                             attribute={this.props.attribute}
