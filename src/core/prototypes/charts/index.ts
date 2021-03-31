@@ -518,15 +518,12 @@ export class RectangleChart extends ChartClass {
         { allowNull: true, label: strings.objects.chart.color }
       ),
       manager.sectionHeader(strings.objects.interactivity),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableContextMenu" },
-          {
-            type: "checkbox",
-            label: strings.objects.contextMenu,
-          }
-        )
+      manager.inputBoolean(
+        { property: "enableContextMenu" },
+        {
+          type: "checkbox",
+          label: strings.objects.contextMenu,
+        }
       ),
     ];
     if (this.object.properties.backgroundColor != null) {
