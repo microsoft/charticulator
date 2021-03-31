@@ -203,7 +203,7 @@ export const FluentUIToolbar: React.FC<{
               classID: "guide-coordinator-polar",
               title: strings.toolbar.guidePolar,
               icon: "CharticulatorGuideCoordinator",
-              options: '{"shape":"triangle"}',
+              options: "",
             },
           ]}
         />
@@ -431,8 +431,8 @@ export const FluentUIToolbar: React.FC<{
             {
               classID: "guide-coordinator-polar",
               title: strings.toolbar.guidePolar,
-              icon: "CharticulatorGuideY",
-              options: '{"shape":"triangle"}',
+              icon: "CharticulatorGuideCoordinator",
+              options: "",
             },
           ]}
         />
