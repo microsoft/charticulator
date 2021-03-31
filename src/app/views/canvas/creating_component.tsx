@@ -176,7 +176,7 @@ export class CreatingComponent extends React.Component<
 
   private isHammering = false;
 
-  public componentDidMount() {
+  private initHammer() {
     this.hammer = new Hammer(this.refs.handler);
     switch (this.props.mode) {
       case "point":
@@ -264,6 +264,14 @@ export class CreatingComponent extends React.Component<
         });
       }
     }
+  }
+
+  public componentDidUpdate() {
+    this.initHammer();
+  }
+
+  public componentDidMount() {
+    this.initHammer();
   }
 
   public componentWillUnmount() {
