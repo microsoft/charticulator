@@ -238,6 +238,8 @@ export class Region2DConstraintBuilder {
     public solverContext?: BuildConstraintsContext
   ) {}
 
+  public static defaultJitterPackingRadius = 5;
+
   public getTableContext(): DataflowTable {
     return this.plotSegment.parent.dataflow.getTable(
       this.plotSegment.object.table
@@ -1751,7 +1753,7 @@ export class Region2DConstraintBuilder {
           }
         }
         if (radius == 0) {
-          radius = 5;
+          radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
         }
         return [
           solver.attr(state.attributes, "x"),
@@ -1802,7 +1804,7 @@ export class Region2DConstraintBuilder {
           }
         }
         if (radius == 0) {
-          radius = 5;
+          radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
         }
         return [
           solver.attr(state.attributes, "x"),
