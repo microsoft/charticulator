@@ -17,6 +17,7 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConfigurationIcons,
@@ -405,7 +406,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       p2: { x: x1, y: y1 },
       title: "X Axis",
       dropAction: {
-        axisInference: { property: "xData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
     } as DropZones.Line);
     zones.push({
@@ -414,7 +415,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       p2: { x: x1, y: y2 },
       title: "Y Axis",
       dropAction: {
-        axisInference: { property: "yData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
     } as DropZones.Line);
     return zones;
@@ -528,12 +529,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -574,7 +583,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -589,7 +598,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },

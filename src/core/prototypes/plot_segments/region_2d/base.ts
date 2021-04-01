@@ -91,6 +91,12 @@ export interface Region2DHandleDescription {
   };
 }
 
+export enum PlotSegmentAxisPropertyNames {
+  xData = "xData",
+  yData = "xData",
+  axis = "axis",
+}
+
 export interface Region2DProperties extends Specification.AttributeMap {
   /** X axis data binding, set to null to remove the axis, set to { type: "none" } to keep the axis but don't bind data */
   xData?: Specification.Types.AxisDataBinding;
@@ -804,7 +810,10 @@ export class Region2DConstraintBuilder {
         handles.push({
           type: "gap",
           gap: {
-            property: { property: "xData", field: "gapRatio" },
+            property: {
+              property: PlotSegmentAxisPropertyNames.xData,
+              field: "gapRatio",
+            },
             axis: "x",
             reference: p1 * (x2 - x1) + x1,
             value: data.gapRatio,
@@ -822,7 +831,10 @@ export class Region2DConstraintBuilder {
         handles.push({
           type: "gap",
           gap: {
-            property: { property: "yData", field: "gapRatio" },
+            property: {
+              property: PlotSegmentAxisPropertyNames.yData,
+              field: "gapRatio",
+            },
             axis: "y",
             reference: p1 * (y2 - y1) + y1,
             value: data.gapRatio,
@@ -2325,7 +2337,10 @@ export class Region2DConstraintBuilder {
   ): Controls.Widget[] {
     const props = this.plotSegment.object.properties;
     const data = axis == "x" ? props.xData : props.yData;
-    const axisProperty = axis == "x" ? "xData" : "yData";
+    const axisProperty =
+      axis == "x"
+        ? PlotSegmentAxisPropertyNames.xData
+        : PlotSegmentAxisPropertyNames.yData;
     return [
       ...buildAxisWidgets(data, axisProperty, m, axisName),
       ...this.plotSegment.buildGridLineWidgets(data, m, axisProperty),

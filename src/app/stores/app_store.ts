@@ -80,7 +80,10 @@ import {
   LineGuide,
   LineGuideProperties,
 } from "../../core/prototypes/plot_segments/line";
-import { Region2DSublayoutType } from "../../core/prototypes/plot_segments/region_2d/base";
+import {
+  PlotSegmentAxisPropertyNames,
+  Region2DSublayoutType,
+} from "../../core/prototypes/plot_segments/region_2d/base";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1297,7 +1300,7 @@ export class AppStore extends BaseStore {
         );
 
         this.bindDataToAxis({
-          property: "xData",
+          property: PlotSegmentAxisPropertyNames.xData,
           dataExpression: xData,
           object: plot,
           appendToProperty: null,
@@ -1335,7 +1338,7 @@ export class AppStore extends BaseStore {
         );
 
         this.bindDataToAxis({
-          property: "yData",
+          property: PlotSegmentAxisPropertyNames.yData,
           dataExpression: yData,
           object: plot,
           appendToProperty: null,
@@ -1372,7 +1375,7 @@ export class AppStore extends BaseStore {
         );
 
         this.bindDataToAxis({
-          property: "axis",
+          property: PlotSegmentAxisPropertyNames.axis,
           dataExpression: axisData,
           object: plot,
           appendToProperty: null,
