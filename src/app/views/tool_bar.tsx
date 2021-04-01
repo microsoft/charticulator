@@ -290,6 +290,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.undo}
               icon={R.getSVGIcon("toolbar/undo")}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -297,6 +300,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.redo}
               icon={R.getSVGIcon("toolbar/redo")}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }
@@ -366,6 +372,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.undo}
               icon={R.getSVGIcon("toolbar/undo")}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -373,6 +382,9 @@ export class Toolbar extends ContextedComponent<
             <ToolButton
               title={strings.menuBar.redo}
               icon={R.getSVGIcon("toolbar/redo")}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }

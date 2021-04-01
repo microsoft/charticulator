@@ -23,7 +23,7 @@ import {
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
 
-import { CharticulatorWorker } from "../worker";
+import { CharticulatorWorker, CharticulatorWorkerInterface } from "../worker";
 import { CharticulatorAppConfig } from "./config";
 
 import { ExportTemplateTarget } from "./template";
@@ -39,6 +39,7 @@ import { delimiter } from "path";
 import { MenuBarHandlers } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
+import { CharticulatorWorkerProcess } from "../worker/worker_main";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -58,7 +59,7 @@ export class ApplicationExtensionContext implements ExtensionContext {
 }
 
 export class Application {
-  public worker: CharticulatorWorker;
+  public worker: CharticulatorWorkerInterface;
   public appStore: AppStore;
   public mainView: MainView;
   public extensionContext: ApplicationExtensionContext;
@@ -73,7 +74,10 @@ export class Application {
   public async initialize(
     config: CharticulatorAppConfig,
     containerID: string,
-    workerScriptContent: string,
+    workerConfig: {
+      workerScriptContent?: string;
+      worker?: CharticulatorWorkerInterface;
+    },
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -83,7 +87,11 @@ export class Application {
     this.containerID = containerID;
     await initialize(config);
 
-    this.worker = new CharticulatorWorker(workerScriptContent);
+    if (workerConfig.worker) {
+      this.worker = workerConfig.worker;
+    } else {
+      this.worker = new CharticulatorWorker(workerConfig.workerScriptContent);
+    }
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
@@ -174,6 +182,7 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
+        template: Specification.Template.ChartTemplate;
         width: number;
         height: number;
         filterCondition: {
@@ -194,6 +203,7 @@ export class Application {
           filterCondition: info.filterCondition,
         })
       );
+      appStore.originTemplate = info.template;
       appStore.setupNestedEditor(
         (newSpecification) => {
           const template = deepClone(appStore.buildChartTemplate());

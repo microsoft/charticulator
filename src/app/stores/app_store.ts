@@ -18,7 +18,10 @@ import {
   compareMarkAttributeNames,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
-import { CharticulatorWorker } from "../../worker";
+import {
+  CharticulatorWorker,
+  CharticulatorWorkerInterface,
+} from "../../worker";
 import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
@@ -76,10 +79,11 @@ import {
   Region2DProperties,
 } from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
+import { ScaleLinear } from "d3-scale";
 import {
-  LineGuide,
-  LineGuideProperties,
-} from "../../core/prototypes/plot_segments/line";
+  LinearScale,
+  LinearScaleProperties,
+} from "../../core/prototypes/scales/linear";
 import {
   PlotSegmentAxisPropertyNames,
   Region2DSublayoutType,
@@ -108,6 +112,15 @@ export interface AppStoreState {
   chartState: Specification.ChartState;
 }
 
+export interface ScaleInferenceOptions {
+  expression: string;
+  valueType: Specification.DataType;
+  valueKind: Specification.DataKind;
+  outputType: Specification.AttributeType;
+  hints?: Prototypes.DataMappingHints;
+  markAttribute?: string;
+}
+
 export class AppStore extends BaseStore {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
@@ -126,7 +139,7 @@ export class AppStore extends BaseStore {
   public static EVENT_SAVECHART = "savechart";
 
   /** The WebWorker for solving constraints */
-  public readonly worker: CharticulatorWorker;
+  public readonly worker: CharticulatorWorkerInterface;
 
   /** Is this app a nested chart editor? */
   public editorType: "chart" | "nested" | "embedded" = "chart";
@@ -135,6 +148,8 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
+  /** The origin template on import */
+  public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -178,7 +193,7 @@ export class AppStore extends BaseStore {
 
   public messageState: Map<MessageType | string, string>;
 
-  constructor(worker: CharticulatorWorker, dataset: Dataset.Dataset) {
+  constructor(worker: CharticulatorWorkerInterface, dataset: Dataset.Dataset) {
     super(null);
 
     /** Register action handlers */
@@ -265,6 +280,7 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
+    this.emit(AppStore.EVENT_GRAPHICS);
   }
 
   public renderSVG() {
@@ -296,6 +312,7 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
+    this.originTemplate = this.buildChartTemplate();
   }
 
   // removes unused scale objecs
@@ -359,6 +376,9 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
+      this.originTemplate = this.buildChartTemplate();
+
+      this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
     }
   }
@@ -384,6 +404,7 @@ export class AppStore extends BaseStore {
       }
     );
     this.currentChartID = id;
+    this.emit(AppStore.EVENT_GRAPHICS);
     this.emit(AppStore.EVENT_SAVECHART);
     return id;
   }
@@ -633,12 +654,7 @@ export class AppStore extends BaseStore {
 
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
-    expression: string,
-    valueType: Specification.DataType,
-    valueKind: Specification.DataKind,
-    outputType: Specification.AttributeType,
-    hints: Prototypes.DataMappingHints = {},
-    markAttribute?: string
+    options: ScaleInferenceOptions
   ): string {
     // Figure out the source table
     let tableName: string = null;
@@ -660,8 +676,55 @@ export class AppStore extends BaseStore {
     }
     let table = this.getTable(tableName);
 
+    // compares the ranges of two expression to determine similarity
+    const compareDomainRanges = (
+      scaleID: string,
+      expression: string
+    ): boolean => {
+      const scaleClass = this.chartManager.getClassById(
+        scaleID
+      ) as Prototypes.Scales.ScaleClass;
+
+      // compare only numerical scales
+      if (
+        !Prototypes.isType(
+          scaleClass.object.classID,
+          "scale.linear<number,number>"
+        )
+      ) {
+        return false;
+      }
+
+      const values = this.chartManager.getGroupedExpressionVector(
+        table.name,
+        groupBy,
+        expression
+      ) as number[];
+
+      const min = Math.min(...values);
+      const max = Math.min(...values);
+
+      const domainMin = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMin;
+      const domainMax = (scaleClass.object as Specification.Scale<
+        LinearScaleProperties
+      >).properties.domainMax;
+
+      const domainRange = Math.abs(domainMin - domainMax) * 2;
+
+      if (domainMin - domainRange < min && min < domainMax + domainRange) {
+        return true;
+      }
+      if (domainMin - domainRange < max && max < domainMax + domainRange) {
+        return true;
+      }
+
+      return false;
+    };
+
     // If there is an existing scale on the same column in the table, return that one
-    if (!hints.newScale) {
+    if (!options.hints.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
         // In the case of an aggregation function
@@ -686,33 +749,34 @@ export class AppStore extends BaseStore {
             const scaleMapping = mappings[name] as Specification.ScaleMapping;
             if (scaleMapping.scale != null) {
               if (
-                scaleMapping.expression == expression &&
+                (compareDomainRanges(scaleMapping.scale, options.expression) ||
+                  scaleMapping.expression == options.expression) &&
                 (compareMarkAttributeNames(
-                  markAttribute,
+                  options.markAttribute,
                   scaleMapping.attribute
                 ) ||
-                  !markAttribute ||
+                  !options.markAttribute ||
                   !scaleMapping.attribute)
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
               // TODO: Fix this part
               if (
                 getExpressionUnit(scaleMapping.expression) ==
-                  getExpressionUnit(expression) &&
+                  getExpressionUnit(options.expression) &&
                 getExpressionUnit(scaleMapping.expression) != null
               ) {
                 const scaleObject = getById(
                   this.chart.scales,
                   scaleMapping.scale
                 );
-                if (scaleObject.outputType == outputType) {
+                if (scaleObject.outputType == options.outputType) {
                   return scaleMapping.scale;
                 }
               }
@@ -748,16 +812,17 @@ export class AppStore extends BaseStore {
       if (this.chart.scaleMappings) {
         for (const scaleMapping of this.chart.scaleMappings) {
           if (
-            scaleMapping.expression == expression &&
+            (compareDomainRanges(scaleMapping.scale, options.expression) ||
+              scaleMapping.expression == options.expression) &&
             ((scaleMapping.attribute &&
               compareMarkAttributeNames(
                 scaleMapping.attribute,
-                markAttribute
+                options.markAttribute
               )) ||
               !scaleMapping.attribute)
           ) {
             const scaleObject = getById(this.chart.scales, scaleMapping.scale);
-            if (scaleObject && scaleObject.outputType == outputType) {
+            if (scaleObject && scaleObject.outputType == options.outputType) {
               return scaleMapping.scale;
             }
           }
@@ -766,9 +831,9 @@ export class AppStore extends BaseStore {
     }
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      valueType,
-      valueKind,
-      outputType
+      options.valueType,
+      options.valueKind,
+      options.outputType
     );
 
     if (scaleClassID != null) {
@@ -776,8 +841,8 @@ export class AppStore extends BaseStore {
         scaleClassID
       ) as Specification.Scale;
       newScale.properties.name = this.chartManager.findUnusedName("Scale");
-      newScale.inputType = valueType;
-      newScale.outputType = outputType;
+      newScale.inputType = options.valueType;
+      newScale.outputType = options.outputType;
       this.chartManager.addScale(newScale);
       const scaleClass = this.chartManager.getClassById(
         newScale._id
@@ -794,9 +859,9 @@ export class AppStore extends BaseStore {
         this.chartManager.getGroupedExpressionVector(
           table.name,
           groupBy,
-          expression
+          options.expression
         ) as Specification.DataValue[],
-        hints
+        options.hints
       );
 
       return newScale._id;

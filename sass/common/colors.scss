@@ -71,3 +71,7 @@ $primary-button-color: #f2c811;
 @mixin shadow-focused-left {
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.3);
 }
+
+@mixin no-shadow {
+  box-shadow: unset;
+}

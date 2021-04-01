@@ -27,11 +27,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
         { chart: { table: action.table } },
-        action.expression,
-        action.valueType,
-        action.valueMetadata.kind,
-        action.attributeType,
-        action.hints
+        {
+          expression: action.expression,
+          valueType: action.valueType,
+          valueKind: action.valueMetadata.kind,
+          outputType: action.attributeType,
+          hints: action.hints,
+        }
       );
     if (inferred != null) {
       action.chartElement.mappings[action.attribute] = {
@@ -68,6 +70,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.AddChartElement, function (action) {
     this.saveHistory();
+
+    if (action.classID === "mark.nested-chart") {
+      return; // prevent to add nested chart into chart, nested chart can be created only in glyph
+    }
 
     let glyph = this.currentGlyph;
     if (!glyph || this.chart.glyphs.indexOf(glyph) < 0) {

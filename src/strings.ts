@@ -227,6 +227,7 @@ export const strings = {
     reset: "Delete",
     save: "Save (Ctrl-S)",
     saveButton: "Save",
+    savedButton: "Saved",
     saveNested: "Save Nested Chart",
     undo: "Undo (Ctrl-Z)",
   },
