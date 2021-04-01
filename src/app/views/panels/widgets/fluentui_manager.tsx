@@ -70,13 +70,14 @@ import {
   Dropdown,
   IDropdownOption,
   FontIcon,
+  getTheme,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { Icon } from "@fluentui/react/lib/Icon";
+import { Icon, IIconStyleProps, IIconStyles } from "@fluentui/react/lib/Icon";
 import {
   defaultFontWeight,
   defaultLabelStyle,
@@ -91,6 +92,7 @@ import {
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
+import { CSSProperties } from "react";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -341,8 +343,9 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputSelectOptions
   ) {
+    const theme = getTheme();
     if (options.type == "dropdown") {
-      const iconStyles = { marginRight: "8px" };
+      const iconStyles: CSSProperties = { marginRight: "8px" };
 
       const onRenderOption = (option: IDropdownOption): JSX.Element => {
         return (
@@ -414,6 +417,9 @@ export class FluentUIWidgetManager
               <IconButton
                 iconProps={{
                   iconName: options.icons[index],
+                }}
+                style={{
+                  stroke: theme.palette.themePrimary,
                 }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
