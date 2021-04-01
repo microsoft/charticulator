@@ -139,6 +139,7 @@ export class FluentToolButton extends React.Component<
             <CommandBarButton
               onClick={onClick}
               checked={this.props.active || this.state.dragging}
+              disabled={this.props.disabled}
               text={this.props.text}
               title={this.props.title}
               iconProps={{
@@ -154,6 +155,7 @@ export class FluentToolButton extends React.Component<
           <CommandBarButton
             onClick={onClick}
             checked={this.props.active}
+            disabled={this.props.disabled}
             text={this.props.text}
             title={this.props.title}
             iconProps={{

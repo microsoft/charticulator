@@ -283,6 +283,9 @@ export class Toolbar extends ContextedComponent<
               <ToolButton
                 title={strings.menuBar.undo}
                 icon={R.getSVGIcon("Undo")}
+                disabled={
+                  this.context.store.historyManager.statesBefore.length === 0
+                }
                 onClick={() =>
                   new Actions.Undo().dispatch(this.context.store.dispatcher)
                 }
@@ -290,6 +293,9 @@ export class Toolbar extends ContextedComponent<
               <ToolButton
                 title={strings.menuBar.redo}
                 icon={R.getSVGIcon("Redo")}
+                disabled={
+                  this.context.store.historyManager.statesAfter.length === 0
+                }
                 onClick={() =>
                   new Actions.Redo().dispatch(this.context.store.dispatcher)
                 }

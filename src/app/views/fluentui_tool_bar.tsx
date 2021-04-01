@@ -136,11 +136,13 @@ export const FluentUIToolbar: React.FC<{
               <span className={"charticulator__toolbar-horizontal-separator"} />
               <FluentToolButton
                 title={strings.menuBar.undo}
+                disabled={store.historyManager.statesBefore.length === 0}
                 icon={"Undo"}
                 onClick={() => new Actions.Undo().dispatch(store.dispatcher)}
               />
               <FluentToolButton
                 title={strings.menuBar.redo}
+                disabled={store.historyManager.statesAfter.length === 0}
                 icon={"Redo"}
                 onClick={() => new Actions.Redo().dispatch(store.dispatcher)}
               />
@@ -294,11 +296,13 @@ export const FluentUIToolbar: React.FC<{
           <>
             <FluentToolButton
               title={strings.menuBar.undo}
+              disabled={store.historyManager.statesBefore.length === 0}
               icon={"Undo"}
               onClick={() => new Actions.Undo().dispatch(store.dispatcher)}
             />
             <FluentToolButton
               title={strings.menuBar.redo}
+              disabled={store.historyManager.statesAfter.length === 0}
               icon={"Redo"}
               onClick={() => new Actions.Redo().dispatch(store.dispatcher)}
             />
