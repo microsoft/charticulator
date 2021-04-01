@@ -562,7 +562,7 @@ export class ChartTemplateBuilder {
     }
 
     // Extract data tables
-    // usedColumns count is 0, error was happened, add all columns as used
+    // if usedColumns count is 0, error was happened, add all columns as used
     const noUsedColumns = Object.keys(this.usedColumns).length === 0;
     template.tables = this.dataset.tables
       .map((table) => {
