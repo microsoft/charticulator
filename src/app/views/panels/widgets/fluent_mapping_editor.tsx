@@ -706,12 +706,12 @@ export class DataMappAndScaleEditor extends ContextedComponent<
     }
   }
 }
-function parentOfType(
-  parent: any,
-  arg1: string
-): Prototypes.ObjectClass<
-  Specification.AttributeMap,
-  Specification.AttributeMap
-> {
-  throw new Error("Function not implemented.");
+
+function parentOfType(p: ObjectClass, typeSought: string) {
+  while (p) {
+    if (Prototypes.isType(p.object.classID, typeSought)) {
+      return p;
+    }
+    p = p.parent;
+  }
 }
