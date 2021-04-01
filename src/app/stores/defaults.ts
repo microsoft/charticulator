@@ -139,6 +139,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
       name: "Chart",
       backgroundColor: null,
       backgroundOpacity: 1,
+      enableContextMenu: true,
     },
     mappings: {
       marginTop: {
