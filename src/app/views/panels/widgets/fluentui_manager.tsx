@@ -755,7 +755,7 @@ export class FluentUIWidgetManager
     let container: HTMLSpanElement;
     return (
       <span ref={(e) => (container = e)}>
-        <FluentButton marginTop={"0px"}>
+        <FluentButton marginTop={"10px"}>
           <DefaultButton
             iconProps={{
               iconName: "SortLines",

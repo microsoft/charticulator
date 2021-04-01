@@ -164,6 +164,11 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
               onRenderLabel={({ label }) => (
                 <Label styles={defaultLabelStyle}>{label}</Label>
               )}
+              styles={{
+                root: {
+                  marginTop: -10,
+                },
+              }}
               placeholder={props.placeholder}
               defaultValue={formatNumber(value)}
               value={formatNumber(value)}
