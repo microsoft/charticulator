@@ -24,11 +24,8 @@ import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 // import { MainContext } from "../context_provider";
 import { useContext } from "react";
-import { Dialog, IconButton, IIconProps } from "@fluentui/react";
-import {
-  FluentColumnLayout,
-  FluentRowLayout,
-} from "./panels/widgets/controls/fluentui_customized_components";
+import { Dialog, getTheme, IconButton, IIconProps } from "@fluentui/react";
+const theme = getTheme();
 
 export const FluentUIToolbar: React.FC<{
   layout: LayoutDirection;
@@ -677,6 +674,9 @@ export class MultiObjectButton extends ContextedComponent<
 
     return (
       <IconButton
+        style={{
+          stroke: theme.palette.themePrimary,
+        }}
         split={true}
         menuProps={{
           items: this.props.tools.map((tool, index) => {
