@@ -22,7 +22,6 @@ import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
-// import { MainContext } from "../context_provider";
 import { useContext } from "react";
 import { Dialog, getTheme, IconButton, IIconProps } from "@fluentui/react";
 const theme = getTheme();
