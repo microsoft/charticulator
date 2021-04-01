@@ -18,8 +18,12 @@ import { PopupView } from "../../../../controllers/popup_controller";
 
 import { AppStore } from "../../../../stores";
 
-import { TextField } from "@fluentui/react";
-import { FluentTextField } from "./fluentui_customized_components";
+import { Label, TextField } from "@fluentui/react";
+import {
+  defaultFontWeight,
+  defaultLabelStyle,
+  FluentTextField,
+} from "./fluentui_customized_components";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -41,6 +45,9 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
         <FluentTextField>
           <TextField
             label={this.props.label}
+            onRenderLabel={({ label }) => (
+              <Label styles={defaultLabelStyle}>{label}</Label>
+            )}
             defaultValue={hex}
             placeholder={this.props.allowNull ? "(none)" : ""}
             value={hex}

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { ILabelStyles } from "@fluentui/react";
 import styled from "styled-components";
 
 export const FluentButton = styled.div<{ marginTop?: string }>`
@@ -54,3 +55,11 @@ export const FluentColumnLayout = styled.div`
 export const FluentLayoutItem = styled.div<{ flex: number }>`
   flex: ${({ flex }) => flex || "1"};
 `;
+
+export const defaultFontWeight = 400;
+
+export const defaultLabelStyle: ILabelStyles = {
+  root: {
+    fontWeight: defaultFontWeight,
+  },
+};

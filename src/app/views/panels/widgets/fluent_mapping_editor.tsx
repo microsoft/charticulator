@@ -31,6 +31,8 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { DefaultButton, TextField, ActionButton, Label } from "@fluentui/react";
 import {
+  defaultFontWeight,
+  defaultLabelStyle,
   FluentActionButton,
   FluentButton,
 } from "./controls/fluentui_customized_components";
@@ -265,6 +267,9 @@ export class FluentMappingEditor extends React.Component<
             return (
               <TextField
                 label={this.props.options.label}
+                onRenderLabel={({ label }) => (
+                  <Label styles={defaultLabelStyle}>{label}</Label>
+                )}
                 placeholder={"(auto)"}
                 onBlur={() => {
                   if (
@@ -281,6 +286,9 @@ export class FluentMappingEditor extends React.Component<
             return (
               <TextField
                 label={this.props.options.label}
+                onRenderLabel={({ label }) => (
+                  <Label styles={defaultLabelStyle}>{label}</Label>
+                )}
                 placeholder={"(none)"}
                 onBlur={() => {
                   if (
@@ -358,7 +366,9 @@ export class FluentMappingEditor extends React.Component<
             return (
               <>
                 {this.props.options.label ? (
-                  <Label>{this.props.options.label}</Label>
+                  <Label styles={defaultLabelStyle}>
+                    {this.props.options.label}
+                  </Label>
                 ) : null}
                 <FluentActionButton>
                   <ActionButton
@@ -411,7 +421,9 @@ export class FluentMappingEditor extends React.Component<
             return (
               <>
                 {this.props.options.label ? (
-                  <Label>{this.props.options.label}</Label>
+                  <Label styles={defaultLabelStyle}>
+                    {this.props.options.label}
+                  </Label>
                 ) : null}
                 <FluentActionButton>
                   <ActionButton

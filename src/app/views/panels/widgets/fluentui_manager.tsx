@@ -78,6 +78,8 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { Icon } from "@fluentui/react/lib/Icon";
 import {
+  defaultFontWeight,
+  defaultLabelStyle,
   FluentButton,
   FluentCheckbox,
   FluentLabelHeader,
@@ -285,6 +287,9 @@ export class FluentUIWidgetManager
         defaultValue={this.getPropertyValue(property) as string}
         placeholder={options.placeholder}
         label={options.label}
+        onRenderLabel={({ label }) => (
+          <Label styles={defaultLabelStyle}>{label}</Label>
+        )}
         onChange={(event, value) => {
           this.emitSetProperty(property, value);
         }}
@@ -378,6 +383,9 @@ export class FluentUIWidgetManager
           selectedKey={this.getPropertyValue(property) as string}
           defaultValue={this.getPropertyValue(property) as string}
           label={options.label}
+          onRenderLabel={({ label }) => (
+            <Label styles={defaultLabelStyle}>{label}</Label>
+          )}
           onRenderOption={onRenderOption}
           onRenderTitle={onRenderTitle}
           options={options.options.map((rangeValue, index) => {
@@ -398,7 +406,9 @@ export class FluentUIWidgetManager
     } else {
       return (
         <>
-          {options.label ? <Label>{options.label}</Label> : null}
+          {options.label ? (
+            <Label styles={defaultLabelStyle}>{options.label}</Label>
+          ) : null}
           {options.options.map((option, index) => {
             return (
               <IconButton
@@ -426,11 +436,16 @@ export class FluentUIWidgetManager
       case "checkbox": {
         return (
           <>
-            {options.headerLabel ? <Label>{options.headerLabel}</Label> : null}
+            {options.headerLabel ? (
+              <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
+            ) : null}
             <FluentCheckbox>
               <Checkbox
                 checked={this.getPropertyValue(property) as boolean}
                 label={options.label}
+                styles={{
+                  label: defaultLabelStyle,
+                }}
                 onChange={(event, v) => {
                   this.emitSetProperty(property, v);
                 }}
@@ -447,6 +462,9 @@ export class FluentUIWidgetManager
             }}
             title={options.label}
             label={options.label}
+            styles={{
+              label: defaultLabelStyle,
+            }}
             text={options.label}
             ariaLabel={options.label}
             checked={this.getPropertyValue(property) as boolean}
@@ -904,7 +922,7 @@ export class FluentUIWidgetManager
         marginBottom={options?.addMargins ? "5px" : "0px"}
         marginTop={options?.addMargins ? "5px" : "0px"}
       >
-        <Label>{title}</Label>
+        <Label styles={defaultLabelStyle}>{title}</Label>
       </FluentLabelHeader>
     );
   }
@@ -946,9 +964,6 @@ export class FluentUIWidgetManager
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          {/* <span className="charticulator__widget-section-header-title">
-            {title}
-          </span> */}
           <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
             <Label>{title}</Label>
           </FluentLabelHeader>
@@ -958,7 +973,6 @@ export class FluentUIWidgetManager
               iconProps={{
                 iconName: "Link",
               }}
-              // ref={(e) => (refButton = ReactDOM.findDOMNode(e) as Element)}
               elementRef={(e) =>
                 (refButton = ReactDOM.findDOMNode(e) as Element)
               }
@@ -1485,7 +1499,9 @@ export class FluentDetailsButton extends React.Component<
     let btn: Element;
     return (
       <>
-        {this.props.label ? <Label>{this.props.label}</Label> : null}
+        {this.props.label ? (
+          <Label styles={defaultLabelStyle}>{this.props.label}</Label>
+        ) : null}
         <DefaultButton
           iconProps={{
             iconName: "More",

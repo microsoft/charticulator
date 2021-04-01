@@ -4,6 +4,8 @@ import { TextField, Slider, SpinButton, Label } from "@fluentui/react";
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
+  defaultFontWeight,
+  defaultLabelStyle,
   FluentLayoutItem,
   FluentRowLayout,
 } from "./fluentui_customized_components";
@@ -149,7 +151,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
 
   return (
     <>
-      <Label>{props.label}</Label>
+      <Label styles={defaultLabelStyle}>{props.label}</Label>
       <FluentRowLayout>
         {props.showSlider ? (
           <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
@@ -159,6 +161,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
             renderUpdown()
           ) : (
             <TextField
+              onRenderLabel={({ label }) => (
+                <Label styles={defaultLabelStyle}>{label}</Label>
+              )}
               placeholder={props.placeholder}
               defaultValue={formatNumber(value)}
               value={formatNumber(value)}

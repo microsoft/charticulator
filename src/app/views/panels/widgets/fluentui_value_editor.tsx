@@ -22,6 +22,8 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
 import {
+  defaultFontWeight,
+  defaultLabelStyle,
   FluentButton,
   FluentTextField,
 } from "./controls/fluentui_customized_components";
@@ -84,6 +86,9 @@ export class FluentValueEditor extends ContextedComponent<
           <TextField
             label={this.props.label}
             placeholder={this.props.placeholder}
+            onRenderLabel={({ label }) => (
+              <Label styles={defaultLabelStyle}>{label}</Label>
+            )}
             defaultValue={
               this.props.defaultValue != null
                 ? (this.props.defaultValue as string)
@@ -116,6 +121,9 @@ export class FluentValueEditor extends ContextedComponent<
                 label={this.props.label}
                 placeholder={this.props.placeholder}
                 defaultValue={hex}
+                onRenderLabel={({ label }) => (
+                  <Label styles={defaultLabelStyle}>{label}</Label>
+                )}
                 value={hex}
                 type="text"
                 onChange={(event, newValue) => {
@@ -224,6 +232,9 @@ export class FluentValueEditor extends ContextedComponent<
                 label={this.props.label}
                 defaultValue={str}
                 value={str}
+                onRenderLabel={({ label }) => (
+                  <Label styles={defaultLabelStyle}>{label}</Label>
+                )}
                 placeholder={placeholderText}
                 onChange={(event, newValue) => {
                   if (newValue == null) {
@@ -244,6 +255,9 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <Dropdown
             label={this.props.label}
+            onRenderLabel={({ label }) => (
+              <Label styles={defaultLabelStyle}>{label}</Label>
+            )}
             selectedKey={str}
             options={strings.map((str, index) => {
               return {
@@ -268,7 +282,7 @@ export class FluentValueEditor extends ContextedComponent<
         if (this.props.onEmitMapping) {
           return (
             <>
-              <Label>Visibility</Label>
+              <Label styles={defaultLabelStyle}>Visibility</Label>
               <DefaultButton
                 text={strings.attributesPanel.conditionedBy}
                 elementRef={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
@@ -281,7 +295,7 @@ export class FluentValueEditor extends ContextedComponent<
         } else {
           return (
             <>
-              <Label>Visibility</Label>
+              <Label styles={defaultLabelStyle}>Visibility</Label>
               <DefaultButton
                 checked={false}
                 iconProps={{

@@ -1115,7 +1115,9 @@ export function buildAxisWidgets(
                 m.horizontal(
                   [1, 0, 1],
                   m.inputNumber({ property: axisProperty, field: "domainMin" }),
-                  m.label(" - "),
+                  m.label(" - ", {
+                    addMargins: true,
+                  }),
                   m.inputNumber({ property: axisProperty, field: "domainMax" })
                 )
               )
