@@ -17,9 +17,11 @@ export const FluentButton = styled.div<{ marginTop?: string }>`
 export const FluentLabelHeader = styled.div<{
   marginBottom?: string;
   marginTop?: string;
+  marginRight?: string;
 }>`
   margin-bottom: ${({ marginBottom }) => marginBottom || "24px"};
   margin-top: ${({ marginTop }) => marginTop || "24px"};
+  margin-right: ${({ marginRight: marginLeft }) => marginLeft || "0px"};
 `;
 
 export const FluentActionButton = styled.div`

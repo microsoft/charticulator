@@ -964,7 +964,11 @@ export class FluentUIWidgetManager
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
+          <FluentLabelHeader
+            marginBottom={"5px"}
+            marginTop={"-5px"}
+            marginRight={"4px"}
+          >
             <Label>{title}</Label>
           </FluentLabelHeader>
           {widget}
