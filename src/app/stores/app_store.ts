@@ -88,6 +88,7 @@ import {
   PlotSegmentAxisPropertyNames,
   Region2DSublayoutType,
 } from "../../core/prototypes/plot_segments/region_2d/base";
+import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
