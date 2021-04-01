@@ -252,6 +252,9 @@ export class ChartEditorView
     );
 
     const doResize = () => {
+      if (!this.refs.canvasContainer) {
+        return;
+      }
       const rect = this.refs.canvasContainer.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
