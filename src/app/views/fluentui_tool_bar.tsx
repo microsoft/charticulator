@@ -697,36 +697,6 @@ export class MultiObjectButton extends ContextedComponent<
               );
             }
           },
-          // onRenderMenuList: (props, defaultRender) => {
-          //   return (
-          //     <>
-          //       {props.items.map((tool, index) => {
-          //         return (
-          //           <>
-          //             <FluentColumnLayout>
-          //               <ActionButton
-          //                 iconProps={tool.iconProps}
-          //                 text={tool.text}
-          //                 title={tool.text}
-          //                 onClick={() => {
-          //                   if (!tool.data) {
-          //                     return;
-          //                   }
-          //                   this.dispatch(
-          //                     new Actions.SetCurrentTool(
-          //                       tool.data.classID,
-          //                       tool.data.options
-          //                     )
-          //                   );
-          //                 }}
-          //               />
-          //             </FluentColumnLayout>
-          //           </>
-          //         )
-          //       })}
-          //     </>
-          //   );
-          // }
         }}
         iconProps={{
           iconName: currentTool.icon,
@@ -823,6 +793,7 @@ export const LegendButton: React.FC = () => {
       <Dialog
         hidden={!isOpen}
         onDismiss={() => openDialog(false)}
+        maxWidth={600}
         dialogContentProps={{
           title: "Create legend",
           showCloseButton: true,
