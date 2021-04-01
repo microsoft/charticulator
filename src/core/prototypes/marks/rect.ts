@@ -194,15 +194,12 @@ export class RectElementClass extends EmphasizableMarkClass<
           options: ["rectangle", "triangle", "ellipse"],
         }
       ),
-      manager.row(
-        "Flipping",
-        manager.inputBoolean(
-          { property: "allowFlipping" },
-          {
-            type: "checkbox",
-            label: "",
-          }
-        )
+      manager.inputBoolean(
+        { property: "allowFlipping" },
+        {
+          type: "checkbox",
+          label: "Flipping",
+        }
       ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
