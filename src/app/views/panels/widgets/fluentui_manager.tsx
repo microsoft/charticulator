@@ -429,6 +429,7 @@ export class FluentUIWidgetManager
             {options.headerLabel ? <Label>{options.headerLabel}</Label> : null}
             <FluentCheckbox>
               <Checkbox
+                checked={this.getPropertyValue(property) as boolean}
                 label={options.label}
                 onChange={(event, v) => {
                   this.emitSetProperty(property, v);
