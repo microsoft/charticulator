@@ -16,6 +16,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -52,6 +53,7 @@ export class DataAxisClass extends MarkClass<
   };
 
   public static defaultProperties: Partial<DataAxisProperties> = {
+    ...ObjectClass.defaultProperties,
     dataExpressions: [],
     axis: null,
     visible: true,

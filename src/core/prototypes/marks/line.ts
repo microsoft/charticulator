@@ -14,6 +14,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
@@ -45,6 +46,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<LineElementProperties> = {
+    ...ObjectClass.defaultProperties,
     strokeStyle: "solid",
     visible: true,
   };

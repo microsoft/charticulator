@@ -20,6 +20,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -51,6 +52,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<TextboxElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     paddingX: 0,
     paddingY: 0,

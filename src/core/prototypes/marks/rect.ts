@@ -12,6 +12,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
@@ -44,6 +45,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<RectElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     strokeStyle: "solid",
     shape: "rectangle",

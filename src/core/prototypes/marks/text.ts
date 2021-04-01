@@ -17,6 +17,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -48,6 +49,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<TextElementAttributes> = {
+    ...ObjectClass.defaultProperties,
     text: "Text",
     fontFamily: "Arial",
     fontSize: 14,

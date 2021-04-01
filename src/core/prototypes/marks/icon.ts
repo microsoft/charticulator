@@ -11,6 +11,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -43,6 +44,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<IconElementProperties> = {
+    ...ObjectClass.defaultProperties,
     alignment: { x: "middle", y: "top", xMargin: 5, yMargin: 5 },
     rotation: 0,
     visible: true,

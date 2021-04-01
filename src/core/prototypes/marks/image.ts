@@ -12,6 +12,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -50,6 +51,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<ImageElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     imageMode: "letterbox",
     paddingX: 0,
