@@ -15,7 +15,7 @@ import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import { FluentComboBoxFontFamily, InputImage, InputText } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
@@ -161,7 +161,7 @@ export class FluentValueEditor extends ContextedComponent<
                       />
                     </PopupView>
                   ),
-                  { anchor: colorItem }
+                  { anchor: colorItem, alignX: getAlignment(colorItem).alignX }
                 );
               }}
             />

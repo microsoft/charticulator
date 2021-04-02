@@ -25,7 +25,8 @@ export function getAlignment(anchor: Element) {
   let alignX: PopupAlignment;
   const avgPopupWindowWidth = 500;
   const anchorCloseToWindowBorder =
-    window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
+    window.innerWidth - anchor.getBoundingClientRect().right <
+    avgPopupWindowWidth;
   let alignLeft: boolean = false;
   if (anchorCloseToWindowBorder) {
     alignX = PopupAlignment.StartOuter;
