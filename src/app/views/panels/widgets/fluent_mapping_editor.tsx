@@ -34,6 +34,7 @@ import {
   defaultLabelStyle,
   FluentActionButton,
   FluentButton,
+  labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
 
@@ -266,9 +267,7 @@ export class FluentMappingEditor extends React.Component<
             return (
               <TextField
                 label={this.props.options.label}
-                onRenderLabel={({ label }) => (
-                  <Label styles={defaultLabelStyle}>{label}</Label>
-                )}
+                onRenderLabel={labelRender}
                 placeholder={"(auto)"}
                 onBlur={() => {
                   if (
@@ -285,9 +284,7 @@ export class FluentMappingEditor extends React.Component<
             return (
               <TextField
                 label={this.props.options.label}
-                onRenderLabel={({ label }) => (
-                  <Label styles={defaultLabelStyle}>{label}</Label>
-                )}
+                onRenderLabel={labelRender}
                 placeholder={"(none)"}
                 onBlur={() => {
                   if (

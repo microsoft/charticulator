@@ -1,7 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { ILabelStyles } from "@fluentui/react";
+import * as React from "react";
+import {
+  IDropdownProps,
+  ILabelStyles,
+  IRenderFunction,
+  ITextFieldProps,
+  Label,
+} from "@fluentui/react";
 import styled from "styled-components";
 
 export const FluentButton = styled.div<{ marginTop?: string }>`
@@ -65,3 +72,7 @@ export const defaultLabelStyle: ILabelStyles = {
     fontWeight: defaultFontWeight,
   },
 };
+
+export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
+  label,
+}) => (label ? <Label styles={defaultLabelStyle}>{label}</Label> : null);

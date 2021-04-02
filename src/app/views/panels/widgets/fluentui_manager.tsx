@@ -23,7 +23,7 @@ import {
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -35,7 +35,6 @@ import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
-  getAligntment,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -84,6 +83,7 @@ import {
   FluentButton,
   FluentCheckbox,
   FluentLabelHeader,
+  labelRender,
 } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
@@ -289,9 +289,7 @@ export class FluentUIWidgetManager
         defaultValue={this.getPropertyValue(property) as string}
         placeholder={options.placeholder}
         label={options.label}
-        onRenderLabel={({ label }) => (
-          <Label styles={defaultLabelStyle}>{label}</Label>
-        )}
+        onRenderLabel={labelRender}
         onChange={(event, value) => {
           this.emitSetProperty(property, value);
         }}
@@ -386,9 +384,7 @@ export class FluentUIWidgetManager
           selectedKey={this.getPropertyValue(property) as string}
           defaultValue={this.getPropertyValue(property) as string}
           label={options.label}
-          onRenderLabel={({ label }) => (
-            <Label styles={defaultLabelStyle}>{label}</Label>
-          )}
+          onRenderLabel={labelRender}
           onRenderOption={onRenderOption}
           onRenderTitle={onRenderTitle}
           options={options.options.map((rangeValue, index) => {
@@ -1533,7 +1529,7 @@ export class FluentDetailsButton extends React.Component<
               },
               {
                 anchor: btn,
-                alignX: getAligntment(btn).alignX,
+                alignX: getAlignment(btn).alignX,
               }
             );
           }}

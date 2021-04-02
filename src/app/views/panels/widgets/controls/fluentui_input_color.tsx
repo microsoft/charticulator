@@ -26,6 +26,7 @@ import {
   defaultFontWeight,
   defaultLabelStyle,
   FluentTextField,
+  labelRender,
 } from "./fluentui_customized_components";
 
 export interface InputColorProps {
@@ -48,9 +49,7 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
         <FluentTextField>
           <TextField
             label={this.props.label}
-            onRenderLabel={({ label }) => (
-              <Label styles={defaultLabelStyle}>{label}</Label>
-            )}
+            onRenderLabel={labelRender}
             defaultValue={hex}
             placeholder={this.props.allowNull ? "(none)" : ""}
             value={hex}

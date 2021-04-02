@@ -14,6 +14,7 @@ import { ITextField, Label, TextField } from "@fluentui/react";
 import {
   defaultFontWeight,
   defaultLabelStyle,
+  labelRender,
 } from "./fluentui_customized_components";
 
 export interface InputExpressionProps {
@@ -97,9 +98,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
     <span className="charticulator__widget-control-input-expression">
       <TextField
         label={props.label}
-        onRenderLabel={({ label }) => (
-          <Label styles={defaultLabelStyle}>{label}</Label>
-        )}
+        onRenderLabel={labelRender}
         componentRef={(component) => (textComponent = component)}
         placeholder={props.placeholder}
         type="text"

@@ -8,6 +8,7 @@ import {
   defaultLabelStyle,
   FluentLayoutItem,
   FluentRowLayout,
+  labelRender,
 } from "./fluentui_customized_components";
 
 export interface InputNumberProps {
@@ -161,9 +162,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
             renderUpdown()
           ) : (
             <TextField
-              onRenderLabel={({ label }) => (
-                <Label styles={defaultLabelStyle}>{label}</Label>
-              )}
+              onRenderLabel={labelRender}
               styles={{
                 root: {
                   marginTop: -10,

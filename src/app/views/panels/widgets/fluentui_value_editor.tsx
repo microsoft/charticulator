@@ -26,6 +26,7 @@ import {
   defaultLabelStyle,
   FluentButton,
   FluentTextField,
+  labelRender,
 } from "./controls/fluentui_customized_components";
 
 export interface ValueEditorProps {
@@ -86,9 +87,7 @@ export class FluentValueEditor extends ContextedComponent<
           <TextField
             label={this.props.label}
             placeholder={this.props.placeholder}
-            onRenderLabel={({ label }) => (
-              <Label styles={defaultLabelStyle}>{label}</Label>
-            )}
+            onRenderLabel={labelRender}
             defaultValue={
               this.props.defaultValue != null
                 ? (this.props.defaultValue as string)
@@ -121,9 +120,7 @@ export class FluentValueEditor extends ContextedComponent<
                 label={this.props.label}
                 placeholder={this.props.placeholder}
                 defaultValue={hex}
-                onRenderLabel={({ label }) => (
-                  <Label styles={defaultLabelStyle}>{label}</Label>
-                )}
+                onRenderLabel={labelRender}
                 value={hex}
                 type="text"
                 onChange={(event, newValue) => {
@@ -232,9 +229,7 @@ export class FluentValueEditor extends ContextedComponent<
                 label={this.props.label}
                 defaultValue={str}
                 value={str}
-                onRenderLabel={({ label }) => (
-                  <Label styles={defaultLabelStyle}>{label}</Label>
-                )}
+                onRenderLabel={labelRender}
                 placeholder={placeholderText}
                 onChange={(event, newValue) => {
                   if (newValue == null) {
@@ -255,9 +250,7 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <Dropdown
             label={this.props.label}
-            onRenderLabel={({ label }) => (
-              <Label styles={defaultLabelStyle}>{label}</Label>
-            )}
+            onRenderLabel={labelRender}
             selectedKey={str}
             options={strings.map((str, index) => {
               return {
