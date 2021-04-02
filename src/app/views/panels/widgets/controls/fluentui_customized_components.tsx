@@ -36,6 +36,7 @@ export const FluentActionButton = styled.div`
     border: 1px solid;
     height: 32px;
     width: 100%;
+    overflow: hidden;
   }
 `;
 
