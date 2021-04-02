@@ -16,6 +16,10 @@ import * as DragData from "./drag_data";
 import { ExportTemplateTarget } from "../template";
 import { DataType } from "../../core/dataset";
 import { ObjectClass } from "../../core/prototypes";
+import {
+  AxisDataBindingType,
+  NumericalMode,
+} from "../../core/specification/types";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions
 export { Action, SelectMark, ClearSelection };
@@ -624,12 +628,12 @@ export class SnapChartElements extends Action {
 
 export class BindDataToAxis extends Action {
   constructor(
-    public object: Specification.Object,
+    public object: Specification.PlotSegment,
     public property: string,
     public appendToProperty: string,
     public dataExpression: DragData.DataExpression,
-    public type?: "default" | "numerical" | "categorical",
-    public numericalMode?: "linear" | "logarithmic" | "temporal"
+    public type?: AxisDataBindingType,
+    public numericalMode?: NumericalMode
   ) {
     super();
   }

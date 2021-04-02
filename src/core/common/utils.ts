@@ -678,3 +678,7 @@ export function parseSafe(value: string, defaultValue: any = null) {
     return defaultValue;
   }
 }
+
+export function getRandom(startRange: number, endRange: number) {
+  return startRange + Math.random() * (endRange - startRange);
+}

@@ -13,6 +13,10 @@ import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import { MappingType } from "../../specification";
 import {
+  TextAlignmentHorizontal,
+  TextAlignmentVertical,
+} from "../../specification/types";
+import {
   BoundingBox,
   Controls,
   DropZones,
@@ -59,7 +63,12 @@ export class TextElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<TextElementProperties> = {
-    alignment: { x: "middle", y: "top", xMargin: 5, yMargin: 5 },
+    alignment: {
+      x: TextAlignmentHorizontal.Middle,
+      y: TextAlignmentVertical.Top,
+      xMargin: 5,
+      yMargin: 5,
+    },
     rotation: 0,
     visible: true,
   };

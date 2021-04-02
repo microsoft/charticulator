@@ -24,6 +24,7 @@ import {
 } from "./nested_chart.attrs";
 import { TableType } from "../../dataset";
 import { MappingType } from "../../specification";
+import { Region2DSublayoutType } from "../plot_segments/region_2d/base";
 
 export { NestedChartElementAttributes, NestedChartElementProperties };
 
@@ -506,7 +507,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
             marginX2: 0,
             marginY2: 0,
             sublayout: {
-              type: "dodge-x",
+              type: Region2DSublayoutType.DodgeX,
               order: null,
               ratioX: 0.1,
               ratioY: 0.1,

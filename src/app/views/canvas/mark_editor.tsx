@@ -35,6 +35,7 @@ import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
+import { PlotSegment } from "../../../core/specification";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -1124,7 +1125,7 @@ export class SingleMarkView
                   return (point: Point, modifiers: DragModifiers) => {
                     this.dispatch(
                       new Actions.BindDataToAxis(
-                        element,
+                        element as PlotSegment,
                         zone.dropAction.axisInference.property,
                         zone.dropAction.axisInference.appendToProperty,
                         data
