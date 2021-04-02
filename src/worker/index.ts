@@ -26,7 +26,9 @@ export interface CharticulatorWorkerInterface {
 }
 
 /** The representation of the background worker. This is used from the main process. */
-export class CharticulatorWorker extends WorkerRPC implements CharticulatorWorkerInterface{
+export class CharticulatorWorker
+  extends WorkerRPC
+  implements CharticulatorWorkerInterface {
   constructor(workerLocation: string) {
     super(workerLocation);
   }

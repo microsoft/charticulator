@@ -4,7 +4,9 @@ import { CharticulatorWorkerInterface } from ".";
 import * as Core from "../core";
 import { WorkerHostProcess } from "./communication";
 
-export class CharticulatorWorkerProcess extends WorkerHostProcess implements CharticulatorWorkerInterface {
+export class CharticulatorWorkerProcess
+  extends WorkerHostProcess
+  implements CharticulatorWorkerInterface {
   constructor() {
     super();
     this.registerRPC("initialize", this.initialize.bind(this));

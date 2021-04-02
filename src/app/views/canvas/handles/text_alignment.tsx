@@ -8,6 +8,10 @@ import { classNames } from "../../../utils";
 import { PopupView } from "../../../controllers";
 import { EditableTextView } from "../../../components";
 import { HandlesDragContext, HandleViewProps } from "./common";
+import {
+  TextAlignmentHorizontal,
+  TextAlignmentVertical,
+} from "../../../../core/specification/types";
 
 export interface TextAlignmentHandleViewProps extends HandleViewProps {
   handle: Prototypes.Handles.TextAlignment;
@@ -95,30 +99,30 @@ export class TextAlignmentHandleView extends React.Component<
       const npcx = pcx + pdx;
       const npcy = pcy + pdy;
       if (snapping && Math.abs(npcy) < 5 / this.props.zoom.scale) {
-        newAlignment.y = "middle";
+        newAlignment.y = TextAlignmentVertical.Middle;
       } else if (npcy < 0) {
-        newAlignment.y = "top";
+        newAlignment.y = TextAlignmentVertical.Top;
         newAlignment.yMargin = -npcy - this.props.handle.textHeight / 2;
         if (Math.abs(newAlignment.yMargin) < 5 / this.props.zoom.scale) {
           newAlignment.yMargin = 0;
         }
       } else {
-        newAlignment.y = "bottom";
+        newAlignment.y = TextAlignmentVertical.Bottom;
         newAlignment.yMargin = npcy - this.props.handle.textHeight / 2;
         if (Math.abs(newAlignment.yMargin) < 5 / this.props.zoom.scale) {
           newAlignment.yMargin = 0;
         }
       }
       if (snapping && Math.abs(npcx) < 5 / this.props.zoom.scale) {
-        newAlignment.x = "middle";
+        newAlignment.x = TextAlignmentHorizontal.Middle;
       } else if (npcx < 0) {
-        newAlignment.x = "right";
+        newAlignment.x = TextAlignmentHorizontal.Right;
         newAlignment.xMargin = -npcx - this.props.handle.textWidth / 2;
         if (Math.abs(newAlignment.xMargin) < 5 / this.props.zoom.scale) {
           newAlignment.xMargin = 0;
         }
       } else {
-        newAlignment.x = "left";
+        newAlignment.x = TextAlignmentHorizontal.Left;
         newAlignment.xMargin = npcx - this.props.handle.textWidth / 2;
         if (Math.abs(newAlignment.xMargin) < 5 / this.props.zoom.scale) {
           newAlignment.xMargin = 0;

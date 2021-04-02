@@ -17,11 +17,13 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { ChartStateManager } from "../..";
@@ -100,7 +102,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,
@@ -439,7 +441,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     //         p1: { x: cx + radial1, y: cy }, p2: { x: cx + radial2, y: cy },
     //         title: "Radial Axis",
     //         dropAction: {
-    //             axisInference: { property: "yData" }
+    //             axisInference: { property: AxisPropertiesNames.yData }
     //         }
     //     }
     // );
@@ -451,7 +453,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
     //         angleStart: attrs.angle1, angleEnd: attrs.angle2,
     //         title: "Angular Axis",
     //         dropAction: {
-    //             axisInference: { property: "xData" }
+    //             axisInference: { property: AxisPropertiesNames.xData }
     //         }
     //     }
     // );
@@ -606,12 +608,20 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -634,7 +644,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -647,7 +657,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },

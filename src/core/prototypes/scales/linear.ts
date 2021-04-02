@@ -5,6 +5,7 @@ import { interpolateColors, Scale } from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
 import { MappingType } from "../../specification";
+import { Colorspace } from "../../specification/types";
 import {
   AttributeDescription,
   Controls,
@@ -228,7 +229,7 @@ export interface LinearColorScaleProperties extends LinearScaleProperties {
 
 function getDefaultGradient(): Specification.Types.ColorGradient {
   return {
-    colorspace: "lab",
+    colorspace: Colorspace.Lab,
     colors: [
       { r: 255, g: 255, b: 255 },
       { r: 0, g: 0, b: 0 },

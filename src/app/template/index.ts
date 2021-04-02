@@ -508,7 +508,10 @@ export class ChartTemplateBuilder {
               ].find(
                 (item) =>
                   item.kind == ObjectItemKind.ChartElement &&
-                  Prototypes.isType(item.chartElement.classID, "plot-segment") &&
+                  Prototypes.isType(
+                    item.chartElement.classID,
+                    "plot-segment"
+                  ) &&
                   (item.chartElement as any).glyph === glyphId
               );
 
@@ -554,13 +557,12 @@ export class ChartTemplateBuilder {
           }
         }
       }
-    }
-    catch (ex) {
+    } catch (ex) {
       console.error(ex);
     }
 
     // Extract data tables
-    // usedColumns count is 0, error was happened, add all columns as used
+    // if usedColumns count is 0, error was happened, add all columns as used
     const noUsedColumns = Object.keys(this.usedColumns).length === 0;
     template.tables = this.dataset.tables
       .map((table) => {
