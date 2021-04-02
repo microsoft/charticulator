@@ -23,7 +23,7 @@ import {
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -35,7 +35,6 @@ import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
-  getAligntment,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -1380,7 +1379,7 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn, alignX: getAligntment(btn).alignX }
+            { anchor: btn, alignX: getAlignment(btn).alignX }
           );
         }}
       />
