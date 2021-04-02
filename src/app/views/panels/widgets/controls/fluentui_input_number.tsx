@@ -112,8 +112,8 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         showValue={true}
         step={props.percentage ? 0.01 : 1}
         // eslint-disable-next-line react/jsx-no-bind
-        onChange={(newValue) => {
-          setValue(newValue);
+        onChange={(newValue: number) => {
+          setValue(+newValue.toFixed(4));
           reportValue(newValue);
         }}
       />
@@ -126,9 +126,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       <>
         <FluentLabelFontWeight>
           <SpinButton
-            label={props.label}
+            label={!props.showSlider ? props.label : null}
             labelPosition={Position.top}
-            defaultValue={formatNumber(value)}
+            value={formatNumber(value)}
             iconProps={
               props.updownStyle == "font"
                 ? {
@@ -162,6 +162,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
 
   return (
     <>
+      {props.showSlider ? (
+        <Label styles={defaultLabelStyle}>{props.label}</Label>
+      ) : null}
       <FluentRowLayout>
         {props.showSlider ? (
           <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
@@ -172,7 +175,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           ) : (
             <TextField
               onRenderLabel={labelRender}
-              label={props.label}
+              label={!props.showSlider ? props.label : null}
               placeholder={props.placeholder}
               defaultValue={formatNumber(value)}
               value={formatNumber(value)}
