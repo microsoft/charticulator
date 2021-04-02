@@ -68,6 +68,12 @@ export const FluentLayoutItem = styled.div<{ flex: number }>`
 
 export const defaultFontWeight = 400;
 
+export const FluentLabelFontWeight = styled.div`
+  label {
+    font-weight: ${defaultFontWeight};
+  }
+`;
+
 export const defaultLabelStyle: ILabelStyles = {
   root: {
     fontWeight: defaultFontWeight,

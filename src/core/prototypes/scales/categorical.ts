@@ -156,31 +156,23 @@ export class CategoricalScaleNumber extends ScaleClass<
       manager.row(
         "",
         manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMin",
+            },
+            {
+              type: "checkbox",
+              label: "Auto range min value",
+            }
           ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMax",
+            },
+            {
+              type: "checkbox",
+              label: "Auto range max value",
+            }
           )
         )
       ),

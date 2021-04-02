@@ -1,11 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { TextField, Slider, SpinButton, Label } from "@fluentui/react";
+import {
+  TextField,
+  Slider,
+  SpinButton,
+  Label,
+  Position,
+} from "@fluentui/react";
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
   defaultFontWeight,
   defaultLabelStyle,
+  FluentLabelFontWeight,
   FluentLayoutItem,
   FluentRowLayout,
   labelRender,
@@ -117,41 +124,44 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     const tick = props.updownTick || 0.1;
     return (
       <>
-        <SpinButton
-          defaultValue={formatNumber(value)}
-          iconProps={
-            props.updownStyle == "font"
-              ? {
-                  iconName: "Font",
-                }
-              : null
-          }
-          step={tick}
-          onIncrement={(value) => {
-            if (reportValue(parseNumber(value) + tick)) {
-              setValue(parseNumber(value) + tick);
+        <FluentLabelFontWeight>
+          <SpinButton
+            label={props.label}
+            labelPosition={Position.top}
+            defaultValue={formatNumber(value)}
+            iconProps={
+              props.updownStyle == "font"
+                ? {
+                    iconName: "Font",
+                  }
+                : null
             }
-          }}
-          onDecrement={(value) => {
-            if (reportValue(parseNumber(value) - tick)) {
-              setValue(parseNumber(value) - tick);
-            }
-          }}
-          onValidate={(value) => {
-            const num = parseNumber(value);
-            if (reportValue(num)) {
-              setValue(num);
-              return formatNumber(parseNumber(value));
-            }
-          }}
-        />
+            step={tick}
+            onIncrement={(value) => {
+              if (reportValue(parseNumber(value) + tick)) {
+                setValue(parseNumber(value) + tick);
+              }
+            }}
+            onDecrement={(value) => {
+              if (reportValue(parseNumber(value) - tick)) {
+                setValue(parseNumber(value) - tick);
+              }
+            }}
+            onValidate={(value) => {
+              const num = parseNumber(value);
+              if (reportValue(num)) {
+                setValue(num);
+                return formatNumber(parseNumber(value));
+              }
+            }}
+          />
+        </FluentLabelFontWeight>
       </>
     );
   };
 
   return (
     <>
-      <Label styles={defaultLabelStyle}>{props.label}</Label>
       <FluentRowLayout>
         {props.showSlider ? (
           <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
@@ -162,11 +172,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           ) : (
             <TextField
               onRenderLabel={labelRender}
-              styles={{
-                root: {
-                  marginTop: -10,
-                },
-              }}
+              label={props.label}
               placeholder={props.placeholder}
               defaultValue={formatNumber(value)}
               value={formatNumber(value)}
