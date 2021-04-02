@@ -20,6 +20,7 @@ const cartesianTerminology: Region2DConfigurationTerminology = {
   gridDirectionX: "X",
   gridDirectionY: "Y",
   packing: "Packing",
+  jitter: "Jitter",
   overlap: "Overlap",
 };
 
@@ -38,6 +39,7 @@ const curveTerminology: Region2DConfigurationTerminology = {
   gridDirectionX: "Tangent",
   gridDirectionY: "Normal",
   packing: "Packing",
+  jitter: "Jitter",
   overlap: "Overlap",
 };
 
@@ -56,6 +58,7 @@ const polarTerminology: Region2DConfigurationTerminology = {
   gridDirectionX: "Angular",
   gridDirectionY: "Radial",
   packing: "Packing",
+  jitter: "Jitter",
   overlap: "Overlap",
 };
 

@@ -58,6 +58,7 @@ const icons: Region2DConfigurationIcons = {
   dodgeYIcon: "sublayout/dodge-y",
   gridIcon: "sublayout/grid",
   packingIcon: "sublayout/packing",
+  jitterIcon: "sublayout/jitter",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -86,7 +87,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public static defaultMappingValues: Specification.AttributeMap = {};
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: CartesianProperties = {
     marginX1: 0,
     marginY1: 0,
     marginX2: 0,
@@ -106,6 +107,15 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
       },
+      jitter: {
+        horizontal: true,
+        vertical: true,
+      },
+      packing: {
+        gravityX: 0.1,
+        gravityY: 0.1,
+      },
+      orderReversed: null,
     },
   };
 

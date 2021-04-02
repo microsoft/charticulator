@@ -87,6 +87,10 @@ export function createDefaultPlotSegment(
           gravityX: 0.1,
           gravityY: 0.1,
         },
+        jitter: {
+          vertical: true,
+          horizontal: true,
+        },
       },
     },
   } as Specification.PlotSegment;

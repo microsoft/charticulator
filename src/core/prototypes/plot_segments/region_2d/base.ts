@@ -21,7 +21,7 @@ import { PlotSegmentClass } from "../plot_segment";
 import { strings } from "./../../../../strings";
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
-  type: "overlap" | "dodge-x" | "dodge-y" | "grid" | "packing";
+  type: "overlap" | "dodge-x" | "dodge-y" | "grid" | "packing" | "jitter";
 
   /** Sublayout alignment (for dodge and grid) */
   align: {
@@ -49,6 +49,10 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   packing: {
     gravityX: number;
     gravityY: number;
+  };
+  jitter: {
+    vertical: boolean;
+    horizontal: boolean;
   };
 }
 
@@ -106,6 +110,7 @@ export interface Region2DConfigurationTerminology {
   /** Packing force layout */
   packing: string;
   overlap: string;
+  jitter: string;
 }
 
 export interface Region2DConfigurationIcons {
@@ -119,6 +124,7 @@ export interface Region2DConfigurationIcons {
   dodgeYIcon: string;
   gridIcon: string;
   packingIcon: string;
+  jitterIcon: string;
   overlapIcon: string;
 }
 
@@ -231,6 +237,8 @@ export class Region2DConstraintBuilder {
     public solver?: ConstraintSolver,
     public solverContext?: BuildConstraintsContext
   ) {}
+
+  public static defaultJitterPackingRadius = 5;
 
   public getTableContext(): DataflowTable {
     return this.plotSegment.parent.dataflow.getTable(
@@ -1093,6 +1101,8 @@ export class Region2DConstraintBuilder {
       if (context.mode == "x-only" || context.mode == "y-only") {
         if (props.sublayout.type == "packing") {
           this.sublayoutPacking(groups, context.mode == "x-only" ? "x" : "y");
+        } else if (props.sublayout.type == "jitter") {
+          this.sublayoutJitter(groups, context.mode == "x-only" ? "x" : "y");
         } else {
           this.fitGroups(groups, axis);
         }
@@ -1115,6 +1125,10 @@ export class Region2DConstraintBuilder {
         // Force layout
         if (props.sublayout.type == "packing") {
           this.sublayoutPacking(groups);
+        }
+        // Jitter layout
+        if (props.sublayout.type == "jitter") {
+          this.sublayoutJitter(groups);
         }
       }
     }
@@ -1739,7 +1753,7 @@ export class Region2DConstraintBuilder {
           }
         }
         if (radius == 0) {
-          radius = 5;
+          radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
         }
         return [
           solver.attr(state.attributes, "x"),
@@ -1759,6 +1773,60 @@ export class Region2DConstraintBuilder {
             gravityX: packingProps && packingProps.gravityX,
             gravityY: packingProps && packingProps.gravityY,
           }
+        )
+      );
+    });
+  }
+
+  public sublayoutJitter(groups: SublayoutGroup[], axisOnly?: "x" | "y") {
+    const solver = this.solver;
+    const state = this.plotSegment.state;
+    const jitterProps = this.plotSegment.object.properties.sublayout.jitter;
+
+    groups.forEach((group) => {
+      const markStates = group.group.map((index) => state.glyphs[index]);
+      const { x1, y1, x2, y2 } = group;
+
+      const points = markStates.map((state) => {
+        let radius = 0;
+        for (const e of state.marks) {
+          if (e.attributes.size != null) {
+            radius = Math.max(
+              radius,
+              Math.sqrt((e.attributes.size as number) / Math.PI)
+            );
+          } else {
+            const w = e.attributes.width as number;
+            const h = e.attributes.height as number;
+            if (w != null && h != null) {
+              radius = Math.max(radius, Math.sqrt(w * w + h * h) / 2);
+            }
+          }
+        }
+        if (radius == 0) {
+          radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
+        }
+        return [
+          solver.attr(state.attributes, "x"),
+          solver.attr(state.attributes, "y"),
+          radius,
+        ] as [Variable, Variable, number];
+      });
+      solver.addPlugin(
+        new ConstraintPlugins.JitterPlugin(
+          solver,
+          x1,
+          y1,
+          x2,
+          y2,
+          points,
+          axisOnly,
+          jitterProps
+            ? jitterProps
+            : {
+                horizontal: true,
+                vertical: true,
+              }
         )
       );
     });
@@ -2094,6 +2162,11 @@ export class Region2DConstraintBuilder {
       label: terminology.grid,
       icon: icons.gridIcon,
     };
+    const jitterOption = {
+      value: "jitter",
+      label: terminology.jitter,
+      icon: icons.jitterIcon,
+    };
     const props = this.plotSegment.object.properties;
     const xMode = props.xData ? props.xData.type : "null";
     const yMode = props.yData ? props.yData.type : "null";
@@ -2107,9 +2180,10 @@ export class Region2DConstraintBuilder {
         dodgeYOption,
         gridOption,
         packingOption,
+        jitterOption,
       ];
     }
-    return [overlapOption, packingOption];
+    return [overlapOption, packingOption, jitterOption];
   }
 
   public isSublayoutApplicable() {
@@ -2270,6 +2344,24 @@ export class Region2DConstraintBuilder {
             m.inputNumber(
               { property: "sublayout", field: ["packing", "gravityY"] },
               { minimum: 0.1, maximum: 15 }
+            )
+          )
+        )
+      );
+    }
+    if (type == "jitter") {
+      extra.push(
+        m.row(
+          "Distribution",
+          m.horizontal(
+            [0, 1, 1],
+            m.inputBoolean(
+              { property: "sublayout", field: ["jitter", "horizontal"] },
+              { type: "highlight", icon: "sublayout/dodge-x" }
+            ),
+            m.inputBoolean(
+              { property: "sublayout", field: ["jitter", "vertical"] },
+              { type: "highlight", icon: "sublayout/dodge-y" }
             )
           )
         )
