@@ -14,7 +14,7 @@ import {
 import { DragData } from "../../../actions";
 import { ColorPicker, SVGImageIcon } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
@@ -25,7 +25,6 @@ import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";
-import { getAligntment } from "../../../utils";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
@@ -73,7 +72,7 @@ export class FluentMappingEditor extends React.Component<
     const {
       alignLeft,
       alignX,
-    }: { alignLeft: boolean; alignX: any } = getAligntment(anchor);
+    }: { alignLeft: boolean; alignX: PopupAlignment } = getAlignment(anchor);
 
     globals.popupController.popupAt(
       (context) => {
@@ -104,7 +103,7 @@ export class FluentMappingEditor extends React.Component<
     const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
 
-    const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
+    const { alignX }: { alignLeft: boolean; alignX: any } = getAlignment(
       anchor
     );
 
@@ -382,7 +381,7 @@ export class FluentMappingEditor extends React.Component<
                         const {
                           alignLeft,
                           alignX,
-                        }: { alignLeft: boolean; alignX: any } = getAligntment(
+                        }: { alignLeft: boolean; alignX: any } = getAlignment(
                           this.scaleMappingDisplay
                         );
 

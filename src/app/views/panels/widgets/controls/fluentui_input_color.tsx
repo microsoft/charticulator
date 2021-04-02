@@ -14,7 +14,10 @@ import {
   GradientPicker,
   GradientView,
 } from "../../../../components";
-import { PopupView } from "../../../../controllers/popup_controller";
+import {
+  PopupAlignment,
+  PopupView,
+} from "../../../../controllers/popup_controller";
 
 import { AppStore } from "../../../../stores";
 
@@ -73,6 +76,12 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
           style={{ backgroundColor: hex == "" ? "transparent" : hex }}
           ref={(e) => (colorButton = e)}
           onClick={() => {
+            const space =
+              window.innerWidth - colorButton.getBoundingClientRect().x;
+            let panelAlignment: PopupAlignment;
+            if (space < 330) {
+              panelAlignment = PopupAlignment.EndInner;
+            }
             globals.popupController.popupAt(
               (context) => {
                 return (
@@ -92,7 +101,7 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
                   </PopupView>
                 );
               },
-              { anchor: colorButton }
+              { anchor: colorButton, alignX: panelAlignment }
             );
           }}
         />

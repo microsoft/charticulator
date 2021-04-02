@@ -11,6 +11,7 @@ import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -108,7 +109,7 @@ export class HelpButton extends React.Component<
             },
             {
               anchor: ReactDOM.findDOMNode(this.refs.helpButton) as Element,
-              alignX: "end-inner",
+              alignX: PopupAlignment.EndInner,
             }
           );
         }}

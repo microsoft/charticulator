@@ -13,6 +13,7 @@ import { DragData, Actions } from "../../actions";
 import { ButtonFlat, DraggableElement, SVGImageIcon } from "../../components";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -308,7 +309,11 @@ export class ColumnsView extends React.Component<
                       </div>
                     </PopupView>
                   ),
-                  { anchor, alignX: "outer", alignY: "start-inner" }
+                  {
+                    anchor,
+                    alignX: PopupAlignment.Outer,
+                    alignY: PopupAlignment.StartInner,
+                  }
                 );
               }}
             />
@@ -443,7 +448,11 @@ export class ColumnView extends React.Component<
                 </div>
               </PopupView>
             ),
-            { anchor, alignX: "outer", alignY: "start-inner" }
+            {
+              anchor,
+              alignX: PopupAlignment.Outer,
+              alignY: PopupAlignment.StartInner,
+            }
           );
         }}
       >

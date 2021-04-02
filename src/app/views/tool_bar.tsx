@@ -9,7 +9,7 @@ import { EventSubscription } from "../../core";
 import { Actions, DragData } from "../actions";
 import { MenuButton, SVGImageIcon, ToolButton } from "../components";
 import { ContextedComponent } from "../context_component";
-import { PopupView } from "../controllers";
+import { PopupAlignment, PopupView } from "../controllers";
 
 import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
@@ -773,8 +773,8 @@ export class MultiObjectButton extends ContextedComponent<
         },
         {
           anchor: ReactDOM.findDOMNode(this.refButton) as Element,
-          alignX: "end-outer",
-          alignY: "start-inner",
+          alignX: PopupAlignment.EndOuter,
+          alignY: PopupAlignment.StartInner,
         }
       );
     };

@@ -354,25 +354,6 @@ export function isInIFrame() {
   }
 }
 
-export function getAligntment(anchor: Element) {
-  let alignX:
-    | "start-outer"
-    | "inner"
-    | "outer"
-    | "start-inner"
-    | "end-inner"
-    | "end-outer";
-  const avgPopupWindowWidth = 500;
-  const anchorCloseToWindowBorder =
-    window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
-  let alignLeft: boolean = false;
-  if (anchorCloseToWindowBorder) {
-    alignX = "start-outer";
-    alignLeft = true;
-  }
-  return { alignLeft, alignX };
-}
-
 /** Test if a deep equals b with tolerance on numeric values */
 export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
   if (a == null || b == null) {
