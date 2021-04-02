@@ -121,7 +121,6 @@ export class FluentValueEditor extends ContextedComponent<
                 placeholder={this.props.placeholder}
                 defaultValue={hex}
                 onRenderLabel={labelRender}
-                value={hex}
                 type="text"
                 onChange={(event, newValue) => {
                   newValue = newValue.trim();
@@ -228,7 +227,6 @@ export class FluentValueEditor extends ContextedComponent<
               <TextField
                 label={this.props.label}
                 defaultValue={str}
-                value={str}
                 onRenderLabel={labelRender}
                 placeholder={placeholderText}
                 onChange={(event, newValue) => {

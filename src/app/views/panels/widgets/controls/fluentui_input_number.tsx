@@ -119,7 +119,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       <>
         <SpinButton
           defaultValue={formatNumber(value)}
-          value={formatNumber(value)}
           iconProps={
             props.updownStyle == "font"
               ? {
