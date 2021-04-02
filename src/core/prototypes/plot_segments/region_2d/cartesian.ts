@@ -17,6 +17,7 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  GridDirection,
   PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
@@ -24,6 +25,7 @@ import {
   Region2DConstraintBuilder,
   Region2DProperties,
   Region2DSublayoutType,
+  SublayoutAlignment,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
@@ -60,6 +62,7 @@ const icons: Region2DConfigurationIcons = {
   dodgeYIcon: "sublayout/dodge-y",
   gridIcon: "sublayout/grid",
   packingIcon: "sublayout/packing",
+  jitterIcon: "sublayout/jitter",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -88,7 +91,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public static defaultMappingValues: Specification.AttributeMap = {};
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: CartesianProperties = {
     marginX1: 0,
     marginY1: 0,
     marginX2: 0,
@@ -100,14 +103,23 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       ratioX: 0.1,
       ratioY: 0.1,
       align: {
-        x: "start",
-        y: "start",
+        x: SublayoutAlignment.Start,
+        y: SublayoutAlignment.Start,
       },
       grid: {
-        direction: "x",
+        direction: GridDirection.X,
         xCount: null,
         yCount: null,
       },
+      jitter: {
+        horizontal: true,
+        vertical: true,
+      },
+      packing: {
+        gravityX: 0.1,
+        gravityY: 0.1,
+      },
+      orderReversed: null,
     },
   };
 

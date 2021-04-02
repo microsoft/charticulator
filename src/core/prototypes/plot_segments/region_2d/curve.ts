@@ -75,6 +75,7 @@ export let icons: Region2DConfigurationIcons = {
   dodgeYIcon: "sublayout/dodge-y",
   gridIcon: "sublayout/grid",
   packingIcon: "sublayout/packing",
+  jitterIcon: "sublayout/jitter",
   overlapIcon: "sublayout/overlap",
 };
 

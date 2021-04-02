@@ -88,6 +88,7 @@ export let icons: Region2DConfigurationIcons = {
   gridIcon: "sublayout/polar-grid",
   packingIcon: "sublayout/packing",
   overlapIcon: "sublayout/overlap",
+  jitterIcon: "sublayout/jitter",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
