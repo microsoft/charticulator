@@ -38,17 +38,9 @@ export interface InputExpressionState {
 export const FluentInputExpression: React.FC<InputExpressionProps> = (
   props: InputExpressionProps
 ) => {
-  const [value, setValue] = React.useState(props.value);
+  const [value, setValue] = React.useState(props.defaultValue);
   const [errorIndicator, setErrorIndicator] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
-
-  let textComponent: ITextField;
-
-  React.useEffect(() => {
-    if (props.value != value) {
-      setValue(props.value);
-    }
-  }, [value, props.value]);
 
   const doEnter = React.useCallback(() => {
     if (props.allowNull && value?.trim() == "") {
@@ -58,7 +50,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
       props.onEnter?.(null);
     } else {
       const result = props.validate(
-        replaceTabBySymbol(replaceNewLineBySymbol(textComponent?.value))
+        replaceTabBySymbol(replaceNewLineBySymbol(value))
       );
       if (result.pass) {
         setValue(result.formatted);
@@ -70,14 +62,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
         setErrorMessage(result.error);
       }
     }
-  }, [
-    props.allowNull,
-    props.onEnter,
-    setValue,
-    setErrorIndicator,
-    setErrorMessage,
-    props.value,
-  ]);
+  }, [setValue, setErrorIndicator, setErrorMessage, props, value]);
 
   const doCancel = React.useCallback(() => {
     setValue(props.defaultValue || "");
@@ -99,16 +84,17 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
       <TextField
         label={props.label}
         onRenderLabel={labelRender}
-        componentRef={(component) => (textComponent = component)}
         placeholder={props.placeholder}
         type="text"
         onGetErrorMessage={() => {
-          if (!props.validate?.(value)) {
-            return errorMessage;
+          const validateResults = props.validate?.(value);
+          if (!validateResults.pass) {
+            return validateResults.error;
           }
         }}
-        // defaultValue={replaceSymbolByTab(replaceSymbolByNewLine(props.defaultValue))}
-        value={replaceSymbolByTab(replaceSymbolByNewLine(value))}
+        value={replaceSymbolByTab(
+          replaceSymbolByNewLine(value || props.defaultValue)
+        )}
         onChange={(event, newValue) => {
           // Check for parse errors while input
           if (props.allowNull && newValue.trim() == "") {
@@ -121,7 +107,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
                 textExpression: props.textExpression,
               }
             );
-            setValue(textComponent.value);
+            setValue(newValue);
             setErrorIndicator(!result.pass);
           }
         }}

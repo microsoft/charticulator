@@ -286,7 +286,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <TextField
-        defaultValue={this.getPropertyValue(property) as string}
+        value={this.getPropertyValue(property) as string}
         placeholder={options.placeholder}
         label={options.label}
         onRenderLabel={labelRender}
