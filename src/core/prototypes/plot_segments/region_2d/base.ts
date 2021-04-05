@@ -98,7 +98,7 @@ export interface Region2DHandleDescription {
 
 export enum PlotSegmentAxisPropertyNames {
   xData = "xData",
-  yData = "xData",
+  yData = "yData",
   axis = "axis",
 }
 
