@@ -14,24 +14,27 @@ import {
 import { DragData } from "../../../actions";
 import { ColorPicker, SVGImageIcon } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
 import { Button, InputExpression } from "./controls";
-import { DropZoneView, WidgetManager } from "./manager";
+import {
+  CharticulatorPropertyAccessors,
+  DropZoneView,
+  WidgetManager,
+} from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall, Variable } from "../../../../core/expression";
-import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";
 
 export interface MappingEditorProps {
-  parent: WidgetManager;
+  parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
   attribute: string;
   type: Specification.AttributeType;
   options: Prototypes.Controls.MappingEditorOptions;
@@ -65,7 +68,7 @@ export class MappingEditor extends React.Component<
     const {
       alignLeft,
       alignX,
-    }: { alignLeft: boolean; alignX: any } = getAligntment(anchor);
+    }: { alignLeft: boolean; alignX: PopupAlignment } = getAlignment(anchor);
 
     globals.popupController.popupAt(
       (context) => {
@@ -73,7 +76,7 @@ export class MappingEditor extends React.Component<
           <PopupView context={context}>
             <DataMappAndScaleEditor
               plotSegment={parentOfType(
-                this.props.parent.objectClass.parent,
+                (this.props.parent as any).objectClass.parent,
                 "plot-segment"
               )}
               attribute={attribute}
@@ -96,9 +99,9 @@ export class MappingEditor extends React.Component<
     const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
 
-    const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
-      anchor
-    );
+    const {
+      alignX,
+    }: { alignLeft: boolean; alignX: PopupAlignment } = getAlignment(anchor);
 
     globals.popupController.popupAt(
       (context) => {
@@ -364,16 +367,17 @@ export class MappingEditor extends React.Component<
                     const {
                       alignLeft,
                       alignX,
-                    }: { alignLeft: boolean; alignX: any } = getAligntment(
-                      this.scaleMappingDisplay
-                    );
+                    }: {
+                      alignLeft: boolean;
+                      alignX: PopupAlignment;
+                    } = getAlignment(this.scaleMappingDisplay);
 
                     globals.popupController.popupAt(
                       (context) => (
                         <PopupView context={context}>
                           <DataMappAndScaleEditor
                             plotSegment={parentOfType(
-                              this.props.parent.objectClass.parent,
+                              (this.props.parent as any).objectClass.parent,
                               "plot-segment"
                             )}
                             attribute={this.props.attribute}

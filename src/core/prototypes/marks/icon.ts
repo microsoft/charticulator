@@ -15,6 +15,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -39,7 +40,7 @@ export class IconElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Icon",
-    iconPath: "mark/icon",
+    iconPath: "ImagePixel",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
@@ -47,6 +48,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<IconElementProperties> = {
+    ...ObjectClass.defaultProperties,
     alignment: {
       x: TextAlignmentHorizontal.Middle,
       y: TextAlignmentVertical.Top,
@@ -305,9 +307,9 @@ export class IconElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "text-align/left",
-                "text-align/x-middle",
-                "text-align/right",
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
               ],
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
@@ -331,9 +333,9 @@ export class IconElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               icons: [
-                "text-align/top",
-                "text-align/y-middle",
-                "text-align/bottom",
+                "AlignVerticalTop",
+                "AlignVerticalCenter",
+                "AlignVerticalBottom",
               ],
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],

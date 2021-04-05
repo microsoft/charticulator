@@ -85,53 +85,48 @@ export abstract class PlotSegmentClass<
     }
     return [
       manager.sectionHeader("Gridline"),
-      manager.row(
-        "Style",
-        manager.horizontal(
-          [1, 1],
-          manager.inputSelect(
-            { property: axisProperty, field: ["style", "gridlineStyle"] },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: [
-                "general/cross",
-                "stroke/solid",
-                "stroke/dashed",
-                "stroke/dotted",
-              ],
-              options: ["none", "solid", "dashed", "dotted"],
-              labels: ["None", "Solid", "Dashed", "Dotted"],
-            }
-          )
+      manager.horizontal(
+        [1, 1],
+        manager.inputSelect(
+          { property: axisProperty, field: ["style", "gridlineStyle"] },
+          {
+            type: "dropdown",
+            showLabel: true,
+            icons: [
+              "ChromeClose",
+              "stroke/solid",
+              "stroke/dashed",
+              "stroke/dotted",
+            ],
+            options: ["none", "solid", "dashed", "dotted"],
+            labels: ["None", "Solid", "Dashed", "Dotted"],
+            label: "Style",
+          }
         )
       ),
-      manager.row(
-        "Color",
-        manager.horizontal(
-          [1, 1],
-          manager.inputColor({
+      manager.horizontal(
+        [1, 1],
+        manager.inputColor(
+          {
             property: axisProperty,
             field: ["style", "gridlineColor"],
-          })
+          },
+          {
+            label: "Color",
+          }
         )
       ),
-      manager.row(
-        "Width",
-        manager.horizontal(
-          [1, 1],
-          manager.inputNumber(
-            {
-              property: axisProperty,
-              field: ["style", "gridlineWidth"],
-            },
-            {
-              minimum: 0,
-              maximum: 100,
-              showUpdown: true,
-            }
-          )
-        )
+      manager.inputNumber(
+        {
+          property: axisProperty,
+          field: ["style", "gridlineWidth"],
+        },
+        {
+          minimum: 0,
+          maximum: 100,
+          showUpdown: true,
+          label: "Width",
+        }
       ),
     ];
   }
@@ -140,22 +135,27 @@ export abstract class PlotSegmentClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.row(
-        "Data",
+      manager.horizontal(
+        [0, 1, 1],
+        manager.label("Data", {
+          addMargins: true,
+        }),
         manager.horizontal(
-          [0, 1],
-          manager.filterEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.filter,
-            mode: "button",
-          }),
-          manager.groupByEditor({
-            table: this.object.table,
-            target: { plotSegment: this.object },
-            value: this.object.groupBy,
-            mode: "button",
-          })
+          [1],
+          [
+            manager.filterEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.filter,
+              mode: "button",
+            }),
+            manager.groupByEditor({
+              table: this.object.table,
+              target: { plotSegment: this.object },
+              value: this.object.groupBy,
+              mode: "button",
+            }),
+          ]
         )
       ),
     ];
@@ -211,7 +211,7 @@ export abstract class PlotSegmentClass<
         table.rows.forEach((row) => {
           const value = row[columnName];
           const rawValue = row[rawColumnName];
-          if (value !== undefined && rawValue !== undefined) {
+          if (value !== undefined && value !== null && rawValue !== undefined) {
             const stringValue = value.toString();
             const rawValueString = (
               rawValue || row[refineColumnName(rawColumnName)]

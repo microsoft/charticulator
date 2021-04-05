@@ -178,7 +178,7 @@ export class InputCurveHandleView extends React.Component<
       >
         <rect x={cx - 16} y={cy - 16} width={32} height={32} />
         <image
-          xlinkHref={R.getSVGIcon("general/edit")}
+          xlinkHref={R.getSVGIcon("Edit")}
           x={cx - 12}
           y={cy - 12}
           width={24}

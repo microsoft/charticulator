@@ -156,31 +156,23 @@ export class CategoricalScaleNumber extends ScaleClass<
       manager.row(
         "",
         manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMin",
+            },
+            {
+              type: "checkbox",
+              label: "Auto range min value",
+            }
           ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMax",
+            },
+            {
+              type: "checkbox",
+              label: "Auto range max value",
+            }
           )
         )
       ),
@@ -298,12 +290,16 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.text(key, "right"),
-            manager.inputColor({
-              property: "mapping",
-              field: key,
-              noComputeLayout: true,
-            })
+            manager.inputColor(
+              {
+                property: "mapping",
+                field: key,
+                noComputeLayout: true,
+              },
+              {
+                label: key,
+              }
+            )
           )
         )
       ),
@@ -404,8 +400,10 @@ export class CategoricalScaleEnum extends ScaleClass<
             manager.text(key, "right"),
             manager.inputComboBox(
               { property: "mapping", field: key },
-              props.defaultRange,
-              false
+              {
+                defaultRange: props.defaultRange,
+                valuesOnly: false,
+              }
             )
           )
         )

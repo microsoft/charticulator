@@ -144,42 +144,29 @@ export class LinearScale extends ScaleClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader("Domain"),
-      manager.row("Start", manager.inputNumber({ property: "domainMin" })),
-      manager.row("End", manager.inputNumber({ property: "domainMax" })),
+      manager.inputNumber({ property: "domainMin" }, { label: "Start" }),
+      manager.inputNumber({ property: "domainMax" }, { label: "End" }),
       manager.sectionHeader("Range"),
       manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
       manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
       manager.sectionHeader("Scale export properties"),
-      manager.row(
-        "",
-        manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
-          ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
-          )
-        )
+      manager.inputBoolean(
+        {
+          property: "autoDomainMin",
+        },
+        {
+          type: "checkbox",
+          label: "Auto range min value",
+        }
+      ),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMax",
+        },
+        {
+          type: "checkbox",
+          label: "Auto range max value",
+        }
       ),
     ];
   }

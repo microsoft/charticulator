@@ -10,6 +10,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
 import { FunctionCall, NumberValue, Variable } from "../../../core/expression";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 
 export interface ScaleValueSelectorProps {
   scale: Specification.Scale;
@@ -55,7 +56,7 @@ export class ScaleValueSelector extends React.Component<
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new WidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping
@@ -111,12 +112,16 @@ export class ScaleValueSelector extends React.Component<
                       >
                         {manager.horizontal(
                           [2, 3],
-                          manager.text(key, "right"),
-                          manager.inputColor({
-                            property: "mapping",
-                            field: key,
-                            noComputeLayout: true,
-                          })
+                          manager.inputColor(
+                            {
+                              property: "mapping",
+                              field: key,
+                              noComputeLayout: true,
+                            },
+                            {
+                              label: key,
+                            }
+                          )
                         )}
                       </div>
                     );
@@ -127,7 +132,7 @@ export class ScaleValueSelector extends React.Component<
             {canSelectValue ? (
               <div className="action-buttons">
                 <ButtonRaised
-                  url={R.getSVGIcon("legend/legend")}
+                  url={R.getSVGIcon("CharticulatorLegend")}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? "Remove Legend"

@@ -20,6 +20,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -43,7 +44,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Textbox",
-    iconPath: "mark/textbox",
+    iconPath: "TextField",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -51,6 +52,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<TextboxElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     paddingX: 0,
     paddingY: 0,
@@ -140,7 +142,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
             }
           ),
@@ -168,7 +174,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
             }
           ),
@@ -207,7 +217,11 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                 {
                   type: "radio",
                   options: ["end", "middle", "start"],
-                  icons: ["align/bottom", "align/y-middle", "align/top"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
                   labels: ["Bottom", "Middle", "Top"],
                 }
               )

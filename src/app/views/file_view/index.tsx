@@ -40,8 +40,9 @@ import { FileViewExport } from "./export_view";
 import { FileViewNew } from "./new_view";
 import { FileViewOpen } from "./open_view";
 import { FileViewSaveAs } from "./save_view";
-import { FileViewOptions } from "./options_view";
+import { FileViewOptionsView } from "./options_view";
 import { strings } from "../../../strings";
+import { MainReactContext } from "../../context_component";
 
 export enum MainTabs {
   about = "about",
@@ -127,7 +128,7 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
         return <FileViewExport onClose={this.props.onClose} />;
       }
       case MainTabs.options: {
-        return <FileViewOptions onClose={this.props.onClose} />;
+        return <FileViewOptionsView onClose={this.props.onClose} />;
       }
       case MainTabs.about: {
         return (
@@ -147,38 +148,43 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
 
   public render() {
     return (
-      <div className="charticulator__file-view">
-        <div className="charticulator__file-view-tabs">
-          <div className="el-button-back" onClick={() => this.props.onClose()}>
-            <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+      <MainReactContext.Provider value={{ store: this.props.store }}>
+        <div className="charticulator__file-view">
+          <div className="charticulator__file-view-tabs">
+            <div
+              className="el-button-back"
+              onClick={() => this.props.onClose()}
+            >
+              <SVGImageIcon url={R.getSVGIcon("toolbar/back")} />
+            </div>
+            {tabOrder.map((t, index) =>
+              t === null ? (
+                <div key={index} className="el-sep" />
+              ) : (
+                <div
+                  key={index}
+                  className={classNames("el-tab", [
+                    "active",
+                    this.state.currentTab == t,
+                  ])}
+                  onClick={() => this.switchTab(t)}
+                >
+                  {strings.mainTabs[t]}
+                </div>
+              )
+            )}
           </div>
-          {tabOrder.map((t, index) =>
-            t === null ? (
-              <div key={index} className="el-sep" />
-            ) : (
-              <div
-                key={index}
-                className={classNames("el-tab", [
-                  "active",
-                  this.state.currentTab == t,
-                ])}
-                onClick={() => this.switchTab(t)}
-              >
-                {strings.mainTabs[t]}
-              </div>
-            )
-          )}
+          <TelemetryContext.Consumer>
+            {(telemetryRecorder) => {
+              return (
+                <ErrorBoundary telemetryRecorder={telemetryRecorder}>
+                  {this.renderContent()}
+                </ErrorBoundary>
+              );
+            }}
+          </TelemetryContext.Consumer>
         </div>
-        <TelemetryContext.Consumer>
-          {(telemetryRecorder) => {
-            return (
-              <ErrorBoundary telemetryRecorder={telemetryRecorder}>
-                {this.renderContent()}
-              </ErrorBoundary>
-            );
-          }}
-        </TelemetryContext.Consumer>
-      </div>
+      </MainReactContext.Provider>
     );
   }
 }

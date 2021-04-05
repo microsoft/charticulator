@@ -21,6 +21,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -44,7 +45,7 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Text",
-    iconPath: "mark/text",
+    iconPath: "FontColorA",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
@@ -52,6 +53,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<TextElementAttributes> = {
+    ...ObjectClass.defaultProperties,
     text: "Text",
     fontFamily: "Arial",
     fontSize: 14,
@@ -284,7 +286,6 @@ export class TextElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     return [
-      manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
         defaultValue: "Arial",
@@ -300,70 +301,54 @@ export class TextElementClass extends EmphasizableMarkClass<
         },
       }),
       manager.sectionHeader("Anchor & Rotation"),
-      manager.row(
-        "Anchor X",
-        manager.horizontal(
-          [0, 1],
-          manager.inputSelect(
-            { property: "alignment", field: "x" },
-            {
-              type: "radio",
-              icons: [
-                "text-align/left",
-                "text-align/x-middle",
-                "text-align/right",
-              ],
-              labels: ["Left", "Middle", "Right"],
-              options: ["left", "middle", "right"],
-            }
-          ),
-          props.alignment.x != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "xMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
-              )
-            : null
-        )
+      manager.inputSelect(
+        { property: "alignment", field: "x" },
+        {
+          type: "radio",
+          icons: [
+            "AlignHorizontalLeft",
+            "AlignHorizontalCenter",
+            "AlignHorizontalRight",
+          ],
+          labels: ["Left", "Middle", "Right"],
+          options: ["left", "middle", "right"],
+          label: "Anchor X",
+        }
       ),
-      manager.row(
-        "Anchor Y",
-        manager.horizontal(
-          [0, 1],
-          manager.inputSelect(
-            { property: "alignment", field: "y" },
+      props.alignment.x != "middle"
+        ? manager.inputNumber(
+            { property: "alignment", field: "xMargin" },
             {
-              type: "radio",
-              icons: [
-                "text-align/top",
-                "text-align/y-middle",
-                "text-align/bottom",
-              ],
-              labels: ["Top", "Middle", "Bottom"],
-              options: ["top", "middle", "bottom"],
+              updownTick: 1,
+              showUpdown: true,
+              label: "Margin",
             }
-          ),
-          props.alignment.y != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "yMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
-              )
-            : null
-        )
+          )
+        : null,
+      manager.inputSelect(
+        { property: "alignment", field: "y" },
+        {
+          type: "radio",
+          icons: [
+            "AlignVerticalTop",
+            "AlignVerticalCenter",
+            "AlignVerticalBottom",
+          ],
+          labels: ["Top", "Middle", "Bottom"],
+          options: ["top", "middle", "bottom"],
+          label: "Anchor Y",
+        }
       ),
+      props.alignment.y != "middle"
+        ? manager.inputNumber(
+            { property: "alignment", field: "yMargin" },
+            {
+              updownTick: 1,
+              showUpdown: true,
+              label: "Margin",
+            }
+          )
+        : null,
       // manager.row("Rotation", manager.inputNumber({ property: "rotation" })),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Color", "color", {}),

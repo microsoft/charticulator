@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 const iconRegistry = new Map<string, string>();
 
+import { IIconOptions, IIconSubset, registerIcons } from "@uifabric/styling";
+
 export function addSVGIcon(path: string | string[], svgDataURL: string) {
   if (path instanceof Array) {
     for (const p of path) {
@@ -18,38 +20,27 @@ export function getSVGIcon(path: string): string {
     return r;
   } else {
     console.warn(`Icon ${path} is undefined, using default instead`);
-    addSVGIcon(path, getSVGIcon("general/cross"));
-    return getSVGIcon("general/cross");
+    addSVGIcon(path, getSVGIcon("ChromeClose"));
+    return getSVGIcon("ChromeClose");
   }
 }
 
-addSVGIcon(
-  "general/chevron-down",
-  require("resources/icons/icons_chevron_down.svg")
-);
-addSVGIcon(
-  "general/chevron-right",
-  require("resources/icons/icons_chevron_right.svg")
-);
-addSVGIcon(
-  "general/chevron-left",
-  require("resources/icons/icons_chevron_left.svg")
-);
+addSVGIcon("ChevronDown", require("resources/icons/icons_chevron_down.svg"));
+addSVGIcon("ChevronRight", require("resources/icons/icons_chevron_right.svg"));
+addSVGIcon("ChevronLeft", require("resources/icons/icons_chevron_left.svg"));
 
 // General icons
-addSVGIcon("general/cross", require("resources/icons/icons_cross.svg"));
+addSVGIcon("ChromeClose", require("resources/icons/icons_cross.svg"));
 addSVGIcon("general/plus", require("resources/icons/icons_plus.svg"));
 addSVGIcon("general/minus", require("resources/icons/icons_minus.svg"));
-addSVGIcon("general/copy", require("resources/icons/icons_copy.svg"));
+addSVGIcon("Copy", require("resources/icons/icons_copy.svg"));
 addSVGIcon("general/sort", require("resources/icons/icons_sort.svg"));
-addSVGIcon(
-  "general/order-reversed",
-  require("resources/icons/icons_reverse-order.svg")
-);
+addSVGIcon("Sort", require("resources/icons/icons_reverse-order.svg"));
 addSVGIcon("general/dropdown", require("resources/icons/icons_dropdown.svg"));
-addSVGIcon("general/edit", require("resources/icons/icons_edit.svg"));
+addSVGIcon("Edit", require("resources/icons/icons_edit.svg"));
 addSVGIcon("general/eraser", require("resources/icons/icons_eraser.svg"));
 addSVGIcon("general/bind-data", require("resources/icons/icons_bind-data.svg"));
+
 addSVGIcon("general/confirm", require("resources/icons/icons_confirm.svg"));
 addSVGIcon(
   "general/more-horizontal",
@@ -64,11 +55,11 @@ addSVGIcon("general/eye", require("resources/icons/icons_eye.svg"));
 addSVGIcon("general/eye-faded", require("resources/icons/icons_eye-faded.svg"));
 
 addSVGIcon("general/popout", require("resources/icons/icons_popout.svg"));
-addSVGIcon("general/order", require("resources/icons/icons_order.svg"));
+addSVGIcon("SortLines", require("resources/icons/icons_order.svg"));
 
-addSVGIcon("general/zoom-in", require("resources/icons/icons_zoom-in.svg"));
-addSVGIcon("general/zoom-out", require("resources/icons/icons_zoom-out.svg"));
-addSVGIcon("general/zoom-auto", require("resources/icons/icons_zoom-auto.svg"));
+addSVGIcon("ZoomIn", require("resources/icons/icons_zoom-in.svg"));
+addSVGIcon("ZoomOut", require("resources/icons/icons_zoom-out.svg"));
+addSVGIcon("ZoomToFit", require("resources/icons/icons_zoom-auto.svg"));
 
 addSVGIcon(
   "general/triangle-up",
@@ -129,8 +120,8 @@ addSVGIcon(
   "toolbar/export",
   require("resources/icons/icons_toolbar-export.svg")
 );
-addSVGIcon("toolbar/undo", require("resources/icons/icons_toolbar-undo.svg"));
-addSVGIcon("toolbar/redo", require("resources/icons/icons_toolbar-redo.svg"));
+addSVGIcon("Undo", require("resources/icons/icons_toolbar-undo.svg"));
+addSVGIcon("Redo", require("resources/icons/icons_toolbar-redo.svg"));
 addSVGIcon("toolbar/help", require("resources/icons/icons_toolbar-help.svg"));
 addSVGIcon(
   "toolbar/import",
@@ -167,18 +158,18 @@ addSVGIcon(
   require("resources/icons/icons_scaffold-spiral.svg")
 );
 addSVGIcon(
-  "scaffold/xwrap",
+  "GripperBarHorizontal",
   require("resources/icons/icons_scaffold-xwrap.svg")
 );
 addSVGIcon(
-  "scaffold/ywrap",
+  "GripperBarVertical",
   require("resources/icons/icons_scaffold-ywrap.svg")
 );
 addSVGIcon("scaffold/map", require("resources/icons/icons_scaffold-map.svg"));
 
-addSVGIcon("plot/line", require("resources/icons/icons_plot-line.svg"));
+addSVGIcon("Line", require("resources/icons/icons_plot-line.svg"));
 addSVGIcon("plot/curve", require("resources/icons/icons_plot-curve.svg"));
-addSVGIcon("plot/region", require("resources/icons/icons_plot-region.svg"));
+addSVGIcon("BorderDot", require("resources/icons/icons_plot-region.svg"));
 
 // Chart & Glyph
 addSVGIcon("chart", require("resources/icons/icons_chart.svg"));
@@ -219,7 +210,7 @@ addSVGIcon(
 );
 
 // Link icons
-addSVGIcon("link/tool", require("resources/icons/icons_link-tool.svg"));
+addSVGIcon("CharticulatorLine", require("resources/icons/icons_link-tool.svg"));
 addSVGIcon("link/line", require("resources/icons/icons_link-line.svg"));
 addSVGIcon("link/band", require("resources/icons/icons_link-band.svg"));
 addSVGIcon("link/between", require("resources/icons/icons_link-between.svg"));
@@ -228,27 +219,22 @@ addSVGIcon("link/through", require("resources/icons/icons_link-through.svg"));
 
 // Mark element icons
 addSVGIcon("mark/anchor", require("resources/icons/icons_element-anchor.svg"));
-addSVGIcon("mark/rect", require("resources/icons/icons_element-rect.svg"));
+addSVGIcon("RectangleShape", require("resources/icons/icons_element-rect.svg"));
+addSVGIcon("Ellipse", require("resources/icons/icons_element-ellipse.svg"));
 addSVGIcon(
-  "mark/ellipse",
-  require("resources/icons/icons_element-ellipse.svg")
-);
-addSVGIcon(
-  "mark/triangle",
+  "TriangleShape",
   require("resources/icons/icons_element-triangle.svg")
 );
-addSVGIcon("mark/image", require("resources/icons/icons_element-image.svg"));
-addSVGIcon("mark/icon", require("resources/icons/icons_element-icon.svg"));
-addSVGIcon("mark/symbol", require("resources/icons/icons_element-symbol.svg"));
-addSVGIcon("mark/line", require("resources/icons/icons_element-line.svg"));
-addSVGIcon("mark/text", require("resources/icons/icons_element-text.svg"));
-addSVGIcon(
-  "mark/textbox",
-  require("resources/icons/icons_element-textbox.svg")
-);
+addSVGIcon("FileImage", require("resources/icons/icons_element-image.svg"));
+addSVGIcon("ImagePixel", require("resources/icons/icons_element-icon.svg"));
+addSVGIcon("Shapes", require("resources/icons/icons_element-symbol.svg"));
+addSVGIcon("Line", require("resources/icons/icons_element-line.svg"));
+addSVGIcon("FontColorA", require("resources/icons/icons_element-text.svg"));
+addSVGIcon("TextField", require("resources/icons/icons_element-textbox.svg"));
 addSVGIcon("mark/data-axis", require("resources/icons/icons_data-axis.svg"));
+
 addSVGIcon(
-  "mark/nested-chart",
+  "BarChartVerticalFilter",
   require("resources/icons/icons_nested-chart.svg")
 );
 addSVGIcon("stroke/dashed", require("resources/icons/icons_stroke-dashed.svg"));
@@ -256,28 +242,25 @@ addSVGIcon("stroke/dotted", require("resources/icons/icons_stroke-dotted.svg"));
 addSVGIcon("stroke/solid", require("resources/icons/icons_stroke-solid.svg"));
 
 // Handle icons
+addSVGIcon("Stack", require("resources/icons/icons_sublayout-overlap.svg"));
 addSVGIcon(
-  "sublayout/overlap",
-  require("resources/icons/icons_sublayout-overlap.svg")
-);
-addSVGIcon(
-  "sublayout/dodge-x",
+  "HorizontalDistributeCenter",
   require("resources/icons/icons_sublayout-dodge-horizontal.svg")
 );
 addSVGIcon(
-  "sublayout/dodge-y",
+  "VerticalDistributeCenter",
   require("resources/icons/icons_sublayout-dodge-vertical.svg")
 );
 addSVGIcon(
-  "sublayout/dodge-angular",
+  "CharticulatorArrangePolar",
   require("resources/icons/icons_sublayout-dodge-angular.svg")
 );
 addSVGIcon(
-  "sublayout/dodge-radial",
+  "CharticulatorStackRadial",
   require("resources/icons/icons_sublayout-dodge-radial.svg")
 );
 addSVGIcon(
-  "sublayout/grid",
+  "GridViewSmall",
   require("resources/icons/icons_sublayout-grid.svg")
 );
 addSVGIcon(
@@ -294,13 +277,20 @@ addSVGIcon(
 );
 addSVGIcon("align/left", require("resources/icons/icons_align-left.svg"));
 addSVGIcon(
-  "align/x-middle",
+  "AlignHorizontalLeft",
+  require("resources/icons/icons_align-left.svg")
+);
+addSVGIcon(
+  "AlignHorizontalCenter",
   require("resources/icons/icons_align-x-middle.svg")
 );
-addSVGIcon("align/right", require("resources/icons/icons_align-right.svg"));
+addSVGIcon(
+  "AlignHorizontalRight",
+  require("resources/icons/icons_align-right.svg")
+);
 addSVGIcon("align/top", require("resources/icons/icons_align-top.svg"));
 addSVGIcon(
-  "align/y-middle",
+  "AlignVerticalCenter",
   require("resources/icons/icons_align-y-middle.svg")
 );
 addSVGIcon("align/bottom", require("resources/icons/icons_align-bottom.svg"));
@@ -352,7 +342,7 @@ addSVGIcon(
   require("resources/icons/icons_checkbox-checked.svg")
 );
 
-addSVGIcon("legend/legend", require("resources/icons/icons_legend.svg"));
+addSVGIcon("CharticulatorLegend", require("resources/icons/icons_legend.svg"));
 addSVGIcon("scale/scale", require("resources/icons/icons_scale.svg"));
 addSVGIcon("scale/color", require("resources/icons/icons_scale-color.svg"));
 

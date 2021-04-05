@@ -52,18 +52,18 @@ export interface CartesianState extends Specification.PlotSegmentState {
 }
 
 const icons: Region2DConfigurationIcons = {
-  xMinIcon: "align/left",
-  xMiddleIcon: "align/x-middle",
-  xMaxIcon: "align/right",
-  yMiddleIcon: "align/y-middle",
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
+  xMaxIcon: "AlignHorizontalRight",
+  yMiddleIcon: "AlignVerticalCenter",
   yMinIcon: "align/bottom",
   yMaxIcon: "align/top",
-  dodgeXIcon: "sublayout/dodge-x",
-  dodgeYIcon: "sublayout/dodge-y",
-  gridIcon: "sublayout/grid",
+  dodgeXIcon: "HorizontalDistributeCenter",
+  dodgeYIcon: "VerticalDistributeCenter",
+  gridIcon: "GridViewSmall",
   packingIcon: "sublayout/packing",
   jitterIcon: "sublayout/jitter",
-  overlapIcon: "sublayout/overlap",
+  overlapIcon: "Stack",
 };
 
 export let config: Region2DConfiguration = {

@@ -5,23 +5,34 @@ import { EventEmitter, EventSubscription } from "../../core";
 import { classNames } from "../utils";
 import { ErrorBoundary, TelemetryContext } from "../components";
 
+export enum PopupAlignment {
+  Inner = "inner",
+  Outer = "outer",
+  StartInner = "start-inner",
+  StartOuter = "start-outer",
+  EndInner = "end-inner",
+  EndOuter = "end-outer",
+}
+
 export interface PopupOptions {
   parent?: PopupContext;
   anchor: Element;
-  alignX?:
-    | "inner"
-    | "outer"
-    | "start-inner"
-    | "start-outer"
-    | "end-inner"
-    | "end-outer";
-  alignY?:
-    | "inner"
-    | "outer"
-    | "start-inner"
-    | "start-outer"
-    | "end-inner"
-    | "end-outer";
+  alignX?: PopupAlignment;
+  alignY?: PopupAlignment;
+}
+
+export function getAlignment(anchor: Element) {
+  let alignX: PopupAlignment;
+  const avgPopupWindowWidth = 500;
+  const anchorCloseToWindowBorder =
+    window.innerWidth - anchor.getBoundingClientRect().right <
+    avgPopupWindowWidth;
+  let alignLeft: boolean = false;
+  if (anchorCloseToWindowBorder) {
+    alignX = PopupAlignment.StartOuter;
+    alignLeft = true;
+  }
+  return { alignLeft, alignX };
 }
 
 const popupViewMapping = new WeakMap<HTMLDivElement, PopupContext>();
@@ -103,10 +114,10 @@ export class PopupController extends EventEmitter {
     options: PopupOptions
   ) {
     if (options.alignX == undefined) {
-      options.alignX = "start-inner";
+      options.alignX = PopupAlignment.StartInner;
     }
     if (options.alignY == undefined) {
-      options.alignY = "outer";
+      options.alignY = PopupAlignment.Outer;
     }
     if (!options.parent && options.anchor) {
       options.parent = findParentPopup(options.anchor);
@@ -296,11 +307,11 @@ export class PopupView extends React.Component<
         {
           if ((position.left + position.right) / 2 < window.innerWidth / 2) {
             style.left = position.left + "px";
-            alignX = "start-inner";
+            alignX = PopupAlignment.StartInner;
           } else {
             style.right =
               window.innerWidth - (position.left + position.width) + "px";
-            alignX = "end-inner";
+            alignX = PopupAlignment.EndInner;
           }
         }
         break;
@@ -308,10 +319,10 @@ export class PopupView extends React.Component<
         {
           if ((position.left + position.right) / 2 > window.innerWidth / 2) {
             style.right = window.innerWidth - position.left + marginX + "px";
-            alignX = "start-outer";
+            alignX = PopupAlignment.StartOuter;
           } else {
             style.left = position.left + position.width + marginX + "px";
-            alignX = "end-outer";
+            alignX = PopupAlignment.EndOuter;
           }
         }
         break;
@@ -342,11 +353,11 @@ export class PopupView extends React.Component<
         {
           if ((position.top + position.bottom) / 2 < window.innerHeight / 2) {
             style.top = position.top + "px";
-            alignY = "start-inner";
+            alignY = PopupAlignment.StartInner;
           } else {
             style.bottom =
               window.innerHeight - (position.top + position.height) + "px";
-            alignY = "end-inner";
+            alignY = PopupAlignment.EndInner;
           }
         }
         break;
@@ -354,10 +365,10 @@ export class PopupView extends React.Component<
         {
           if ((position.top + position.bottom) / 2 > window.innerHeight / 2) {
             style.bottom = window.innerHeight - position.top + marginY + "px";
-            alignY = "start-outer";
+            alignY = PopupAlignment.StartOuter;
           } else {
             style.top = position.top + position.height + marginY + "px";
-            alignY = "end-outer";
+            alignY = PopupAlignment.EndOuter;
           }
         }
         break;

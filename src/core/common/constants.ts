@@ -32,3 +32,24 @@ export const defaultNumberFormat = Object.freeze({
 });
 export const defaultCurrency: [string, string] = ["$", ""];
 export const defaultDigitsGroup: number[] = [3];
+
+export const fontList = [
+  "Arial Black",
+  "Arial",
+  "Comic Sans MS",
+  "Consolas",
+  "Courier New",
+  "Geneva",
+  "Georgia",
+  "Helvetica",
+  "Impact",
+  "Inconsolata",
+  "Lato",
+  "Lucida Console",
+  "Lucida Grande",
+  "Palatino",
+  "Tahoma",
+  "Times",
+  "Trebuchet MS",
+  "Verdana",
+];

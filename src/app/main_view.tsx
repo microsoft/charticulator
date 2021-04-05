@@ -22,9 +22,9 @@ import {
 } from "./views";
 import { MenuBar, MenuBarHandlers } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
-import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
 import { strings } from "../strings";
+import { FluentUIToolbar } from "./views/fluentui_tool_bar";
 import { MainReactContext } from "./context_component";
 
 export enum UndoRedoLocation {
@@ -123,7 +123,8 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
     }) => {
       return (
         <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
-          <Toolbar
+          {/* <Toolbar toolbarLabels={config.toolbarLabels} undoRedoLocation={config.undoRedoLocation} layout={config.layout} /> */}
+          <FluentUIToolbar
             toolbarLabels={config.toolbarLabels}
             undoRedoLocation={config.undoRedoLocation}
             layout={config.layout}
@@ -341,7 +342,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   scroll={true}
                   peerGroup="messages"
                   title={strings.mainView.errorsPanelTitle}
-                  closeButtonIcon={"general/cross"}
+                  closeButtonIcon={"ChromeClose"}
                   height={200}
                   width={350}
                 >

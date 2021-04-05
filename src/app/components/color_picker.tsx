@@ -399,7 +399,7 @@ export class ColorPicker extends React.Component<
             <div className="color-picker-null">
               <Button
                 text={"none"}
-                icon="general/cross"
+                icon="ChromeClose"
                 onClick={() => {
                   this.setState({
                     currentColor: null,

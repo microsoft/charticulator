@@ -145,12 +145,12 @@ export namespace Geometry {
   }
 
   export function degreesToRadians(degrees: number) {
-    return (degrees / 180) * Math.PI
+    return (degrees / 180) * Math.PI;
   }
 }
 
 export function prettyNumber(x: number, digits: number = 8) {
   return x
-    .toFixed(digits)
+    ?.toFixed(digits)
     .replace(/^([\+\-]?[0-9]*(\.[0-9]*[1-9]+)?)\.?0+$/, "$1");
 }

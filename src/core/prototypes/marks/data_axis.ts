@@ -16,6 +16,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -31,6 +32,7 @@ import {
   DataAxisProperties,
   DataAxisExpression,
 } from "./data_axis.attrs";
+import React = require("react");
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -51,6 +53,7 @@ export class DataAxisClass extends MarkClass<
   };
 
   public static defaultProperties: Partial<DataAxisProperties> = {
+    ...ObjectClass.defaultProperties,
     dataExpressions: [],
     axis: null,
     visible: true,
@@ -333,17 +336,15 @@ export class DataAxisClass extends MarkClass<
     );
     const r = [...axisWidgets];
     r.push(
-      manager.row(
-        "Visible On",
-        manager.inputSelect(
-          { property: "visibleOn" },
-          {
-            labels: ["All", "First", "Last"],
-            showLabel: true,
-            options: ["all", "first", "last"],
-            type: "dropdown",
-          }
-        )
+      manager.inputSelect(
+        { property: "visibleOn" },
+        {
+          labels: ["All", "First", "Last"],
+          showLabel: true,
+          options: ["all", "first", "last"],
+          type: "dropdown",
+          label: "Visible On",
+        }
       )
     );
     if (props.dataExpressions.length > 0) {
@@ -351,8 +352,8 @@ export class DataAxisClass extends MarkClass<
       r.push(
         manager.arrayWidget(
           { property: "dataExpressions" },
-          (item) => {
-            return manager.inputExpression(
+          (item, index) => {
+            const expressionInput = manager.inputExpression(
               {
                 property: "dataExpressions",
                 field:
@@ -361,6 +362,11 @@ export class DataAxisClass extends MarkClass<
                     : [item.field, "expression"],
               },
               { table: this.getGlyphClass().object.table }
+            );
+            return React.createElement(
+              "fragment",
+              { key: index },
+              expressionInput
             );
           },
           {

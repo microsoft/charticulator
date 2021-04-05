@@ -68,7 +68,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
   };
 
   public static defaultProperties: NumericalNumberLegendProperties = {

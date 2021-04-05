@@ -11,6 +11,7 @@ import { AppButton, MenuButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -108,7 +109,7 @@ export class HelpButton extends React.Component<
             },
             {
               anchor: ReactDOM.findDOMNode(this.refs.helpButton) as Element,
-              alignX: "end-inner",
+              alignX: PopupAlignment.EndInner,
             }
           );
         }}
@@ -599,7 +600,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         {this.props.undoRedoLocation === "menubar" ? (
           <>
             <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
+              url={R.getSVGIcon("Undo")}
               title={strings.menuBar.undo}
               disabled={
                 this.context.store.historyManager.statesBefore.length === 0
@@ -609,7 +610,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               }
             />
             <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
+              url={R.getSVGIcon("Redo")}
               title={strings.menuBar.redo}
               disabled={
                 this.context.store.historyManager.statesAfter.length === 0

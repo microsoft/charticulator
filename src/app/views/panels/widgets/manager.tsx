@@ -23,7 +23,7 @@ import {
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -35,7 +35,6 @@ import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
-  getAligntment,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -55,7 +54,7 @@ import {
   InputImageProperty,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
+import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import { ChartTemplate, getSortFunctionByData } from "../../../../container";
 import { InputDate } from "./controls/input_date";
@@ -64,7 +63,6 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
 import {
   AttributeMap,
@@ -74,6 +72,11 @@ import {
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
 import { strings } from "../../../../strings";
+import {
+  InputComboboxOptions,
+  InputFontComboboxOptions,
+  InputTextOptions,
+} from "../../../../core/prototypes/controls";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -90,7 +93,20 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export class WidgetManager implements Prototypes.Controls.WidgetManager {
+export interface CharticulatorPropertyAccessors {
+  emitSetProperty: (
+    property: Prototypes.Controls.Property,
+    value: Specification.AttributeValue
+  ) => void;
+  store: AppStore;
+
+  getAttributeMapping: (attribute: string) => Specification.Mapping;
+  onEditMappingHandler: OnEditMappingHandler;
+  onMapDataHandler: OnMapDataHandler;
+}
+
+export class WidgetManager
+  implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
@@ -260,12 +276,12 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public inputText(
     property: Prototypes.Controls.Property,
-    placeholder?: string
+    options: InputTextOptions
   ) {
     return (
       <InputText
         defaultValue={this.getPropertyValue(property) as string}
-        placeholder={placeholder}
+        placeholder={options.placeholder}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
@@ -274,9 +290,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public inputFontFamily(property: Prototypes.Controls.Property) {
+  public inputFontFamily(
+    property: Prototypes.Controls.Property,
+    options: InputFontComboboxOptions
+  ) {
     return (
       <ComboBoxFontFamily
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
@@ -288,14 +308,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public inputComboBox(
     property: Prototypes.Controls.Property,
-    values: string[],
-    valuesOnly: boolean = false
+    options: InputComboboxOptions
   ) {
     return (
       <ComboBox
         defaultValue={this.getPropertyValue(property) as string}
-        options={values}
-        optionsOnly={valuesOnly}
+        options={options.defaultRange}
+        optionsOnly={options.valuesOnly}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
@@ -515,23 +534,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <Button
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
-        // icon={icon}
         onClick={() => {
           const options = {
             allowSelectValue: true,
           };
-          // const mapping = this.getAttributeMapping(attribute);
           globals.popupController.popupAt(
             (context) => {
               return (
                 <PopupView context={context}>
-                  {/* <DataMappAndScaleEditor
-                    attribute={attribute}
-                    parent={parent as any}
-                    defaultMapping={mapping}
-                    options={options}
-                    onClose={() => context.close()}
-                  /> */}
                   <ScaleValueSelector
                     scale={scaleObject}
                     scaleMapping={mapping}
@@ -615,7 +625,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           <>
             <div title={options.tooltip}>
               <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-              <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+              <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
             </div>
             <span className="el-text">
               {(this.getPropertyValue(property) as AttributeMap)?.expression ||
@@ -625,7 +635,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         ) : (
           <div title={options.tooltip}>
             <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
           </div>
         )}
       </DropZoneView>
@@ -739,7 +749,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
                     <Button
-                      icon="general/cross"
+                      icon="ChromeClose"
                       onClick={() => {
                         items.splice(index, 1);
                         this.emitSetProperty(property, items);
@@ -785,7 +795,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       </span>
     );
   }
-  public label(title: string) {
+  public label(title: string, options?: { addMargins: boolean }) {
     return <span className="charticulator__widget-label">{title}</span>;
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {
@@ -909,7 +919,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public detailsButton(...widgets: JSX.Element[]): JSX.Element {
+  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
     return <DetailsButton widgets={widgets} manager={this} />;
   }
 
@@ -1282,7 +1292,7 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={"general/order-reversed"}
+            icon={"Sort"}
             text="Reverse"
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });
@@ -1360,7 +1370,7 @@ export class DetailsButton extends React.Component<
                 </PopupView>
               );
             },
-            { anchor: btn, alignX: getAligntment(btn).alignX }
+            { anchor: btn, alignX: getAlignment(btn).alignX }
           );
         }}
       />

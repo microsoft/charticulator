@@ -41,6 +41,7 @@ import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
+import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 import { MappingType } from "../../../core/specification";
 
 export interface ChartEditorViewProps {
@@ -251,6 +252,9 @@ export class ChartEditorView
     );
 
     const doResize = () => {
+      if (!this.refs.canvasContainer) {
+        return;
+      }
       const rect = this.refs.canvasContainer.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
@@ -1318,7 +1322,7 @@ export class ChartEditorView
           <div className="canvas-controls-left" />
           <div className="canvas-controls-right">
             <Button
-              icon="general/zoom-in"
+              icon="ZoomIn"
               onClick={() => {
                 const { scale, centerX, centerY } = this.state.zoom;
                 const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
@@ -1337,7 +1341,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="general/zoom-out"
+              icon="ZoomOut"
               onClick={() => {
                 const { scale, centerX, centerY } = this.state.zoom;
                 const fixPoint = Geometry.unapplyZoom(this.state.zoom, {
@@ -1356,7 +1360,7 @@ export class ChartEditorView
               }}
             />
             <Button
-              icon="general/zoom-auto"
+              icon="ZoomToFit"
               onClick={() => {
                 const newZoom = this.getFitViewZoom(
                   this.state.viewWidth,

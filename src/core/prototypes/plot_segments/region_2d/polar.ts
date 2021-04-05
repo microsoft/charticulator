@@ -77,18 +77,18 @@ export interface PolarObject extends Specification.PlotSegment {
 }
 
 export let icons: Region2DConfigurationIcons = {
-  xMinIcon: "align/left",
-  xMiddleIcon: "align/x-middle",
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
   xMaxIcon: "align/right",
-  yMiddleIcon: "align/y-middle",
+  yMiddleIcon: "AlignHorizontalRight",
   yMinIcon: "align/bottom",
   yMaxIcon: "align/top",
-  dodgeXIcon: "sublayout/dodge-angular",
-  dodgeYIcon: "sublayout/dodge-radial",
+  dodgeXIcon: "CharticulatorArrangePolar",
+  dodgeYIcon: "CharticulatorStackRadial",
   gridIcon: "sublayout/polar-grid",
   packingIcon: "sublayout/packing",
   overlapIcon: "sublayout/overlap",
-  jitterIcon: "sublayout/jitter",
+  jitterIcon: "Stack",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
@@ -797,8 +797,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
     return [
       ...super.getAttributePanelWidgets(manager),
       manager.sectionHeader("Polar Coordinates"),
-      manager.row(
-        "Angle",
+      manager.vertical(
+        manager.label("Angle"),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "startAngle" }),
@@ -806,8 +806,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
           manager.inputNumber({ property: "endAngle" })
         )
       ),
-      manager.row(
-        "Radius",
+      manager.vertical(
+        manager.label("Radius"),
         manager.horizontal(
           [0, 1, 0, 1],
           manager.label("Inner:"),
@@ -816,12 +816,13 @@ export class PolarPlotSegment extends PlotSegmentClass<
           manager.inputNumber({ property: "outerRatio" })
         )
       ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "equalizeArea" },
-          { type: "checkbox", label: "Height to Area" }
-        )
+      manager.inputBoolean(
+        { property: "equalizeArea" },
+        {
+          type: "checkbox",
+          label: "Height to Area",
+          headerLabel: "Equalize area",
+        }
       ),
       ...builder.buildPanelWidgets(manager),
     ];

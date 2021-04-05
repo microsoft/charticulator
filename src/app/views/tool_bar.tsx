@@ -9,7 +9,7 @@ import { EventSubscription } from "../../core";
 import { Actions, DragData } from "../actions";
 import { MenuButton, SVGImageIcon, ToolButton } from "../components";
 import { ContextedComponent } from "../context_component";
-import { PopupView } from "../controllers";
+import { PopupAlignment, PopupView } from "../controllers";
 
 import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
@@ -275,8 +275,33 @@ export class Toolbar extends ContextedComponent<
           {/* <ObjectButton
             classID="mark.nested-chart"
             title="Nested Chart"
-            icon="mark/nested-chart"
+            icon="BarChartVerticalFilter"
           /> */}
+          {this.props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
+            <>
+              <span className={"charticulator__toolbar-horizontal-separator"} />
+              <ToolButton
+                title={strings.menuBar.undo}
+                icon={R.getSVGIcon("Undo")}
+                disabled={
+                  this.context.store.historyManager.statesBefore.length === 0
+                }
+                onClick={() =>
+                  new Actions.Undo().dispatch(this.context.store.dispatcher)
+                }
+              />
+              <ToolButton
+                title={strings.menuBar.redo}
+                icon={R.getSVGIcon("Redo")}
+                disabled={
+                  this.context.store.historyManager.statesAfter.length === 0
+                }
+                onClick={() =>
+                  new Actions.Redo().dispatch(this.context.store.dispatcher)
+                }
+              />
+            </>
+          ) : null}
         </>
       </>,
     ];
@@ -371,7 +396,7 @@ export class Toolbar extends ContextedComponent<
           <>
             <ToolButton
               title={strings.menuBar.undo}
-              icon={R.getSVGIcon("toolbar/undo")}
+              icon={R.getSVGIcon("Undo")}
               disabled={
                 this.context.store.historyManager.statesBefore.length === 0
               }
@@ -381,7 +406,7 @@ export class Toolbar extends ContextedComponent<
             />
             <ToolButton
               title={strings.menuBar.redo}
-              icon={R.getSVGIcon("toolbar/redo")}
+              icon={R.getSVGIcon("Redo")}
               disabled={
                 this.context.store.historyManager.statesAfter.length === 0
               }
@@ -413,7 +438,7 @@ export class Toolbar extends ContextedComponent<
         <ObjectButton
           classID="mark.nested-chart"
           title={strings.toolbar.nestedChart}
-          icon="mark/nested-chart"
+          icon="BarChartVerticalFilter"
         />
         <span className={"charticulator__toolbar-horizontal-separator"} />
         <LinkButton label={labels} />
@@ -748,8 +773,8 @@ export class MultiObjectButton extends ContextedComponent<
         },
         {
           anchor: ReactDOM.findDOMNode(this.refButton) as Element,
-          alignX: "end-outer",
-          alignY: "start-inner",
+          alignX: PopupAlignment.EndOuter,
+          alignY: PopupAlignment.StartInner,
         }
       );
     };
@@ -790,7 +815,7 @@ export class MultiObjectButton extends ContextedComponent<
           onClick={onClickContextMenu}
         >
           {this.props.compact ? null : (
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
           )}
         </span>
       </div>
@@ -838,7 +863,7 @@ export class LinkButton extends ContextedComponent<
         <ToolButton
           title={strings.toolbar.links}
           text={this.props.label ? strings.toolbar.links : ""}
-          icon={R.getSVGIcon("link/tool")}
+          icon={R.getSVGIcon("CharticulatorLine")}
           active={this.store.currentTool == "link"}
           onClick={() => {
             globals.popupController.popupAt(
@@ -864,7 +889,7 @@ export class LegendButton extends ContextedComponent<{}, {}> {
       <span ref={(e) => (this.container = e)}>
         <ToolButton
           title={strings.toolbar.legend}
-          icon={R.getSVGIcon("legend/legend")}
+          icon={R.getSVGIcon("CharticulatorLegend")}
           active={this.store.currentTool == "legend"}
           onClick={() => {
             globals.popupController.popupAt(

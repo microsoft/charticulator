@@ -14,6 +14,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
@@ -37,7 +38,7 @@ export class LineElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Line",
-    iconPath: "mark/line",
+    iconPath: "Line",
     creatingInteraction: {
       type: "line-segment",
       mapping: { x1: "x1", y1: "y1", x2: "x2", y2: "y2" },
@@ -45,6 +46,7 @@ export class LineElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<LineElementProperties> = {
+    ...ObjectClass.defaultProperties,
     strokeStyle: "solid",
     visible: true,
   };

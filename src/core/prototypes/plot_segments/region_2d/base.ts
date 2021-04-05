@@ -2252,7 +2252,11 @@ export class Region2DConstraintBuilder {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
               tooltip: strings.canvas.alignItemsOnY,
             }
@@ -2266,7 +2270,11 @@ export class Region2DConstraintBuilder {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
               tooltip: strings.canvas.alignItemsOnX,
             }
@@ -2276,14 +2284,16 @@ export class Region2DConstraintBuilder {
       alignmentWidgets.push(null);
 
       extra.push(
-        m.row("Alignment", m.horizontal([0, 0], ...alignmentWidgets.reverse()))
+        m.vertical(
+          m.label("Alignment"),
+          m.horizontal([0, 0], ...alignmentWidgets.reverse())
+        )
       );
       if (type == Region2DSublayoutType.Grid) {
         extra.push(
-          m.row(
-            "Gap",
-            m.horizontal(
-              [0, 1, 0, 1],
+          m.vertical(
+            m.label("Gap"),
+            m.vertical(
               m.label("x: "),
               m.inputNumber(
                 { property: "sublayout", field: "ratioX" },
@@ -2299,24 +2309,26 @@ export class Region2DConstraintBuilder {
         );
       } else {
         extra.push(
-          m.row(
-            "Gap",
-            m.inputNumber(
-              {
-                property: "sublayout",
-                field:
-                  type == Region2DSublayoutType.DodgeX ? "ratioX" : "ratioY",
-              },
-              { minimum: 0, maximum: 1, percentage: true, showSlider: true }
-            )
+          m.inputNumber(
+            {
+              property: "sublayout",
+              field: type == Region2DSublayoutType.DodgeX ? "ratioX" : "ratioY",
+            },
+            {
+              minimum: 0,
+              maximum: 1,
+              percentage: true,
+              showSlider: true,
+              label: "Gap",
+            }
           )
         );
       }
       if (type == Region2DSublayoutType.Grid) {
         const { terminology } = this.config;
         extra.push(
-          m.row(
-            "Direction",
+          m.vertical(
+            m.label("Direction"),
             m.horizontal(
               [0, 0, 1],
               m.inputSelect(
@@ -2324,29 +2336,33 @@ export class Region2DConstraintBuilder {
                 {
                   type: "radio",
                   options: [GridDirection.X, GridDirection.Y],
-                  icons: ["scaffold/xwrap", "scaffold/ywrap"],
+                  icons: ["GripperBarHorizontal", "GripperBarVertical"],
                   labels: [
                     terminology.gridDirectionX,
                     terminology.gridDirectionY,
                   ],
                 }
-              ),
-              m.label("Count:"),
-              m.inputNumber({
+              )
+            ),
+            m.inputNumber(
+              {
                 property: "sublayout",
                 field:
                   props.sublayout.grid.direction == "x"
                     ? ["grid", "xCount"]
                     : ["grid", "yCount"],
-              })
+              },
+              {
+                label: "Count",
+              }
             )
           )
         );
       }
       if (type != Region2DSublayoutType.Overlap) {
         extra.push(
-          m.row(
-            "Order",
+          m.vertical(
+            m.label("Order"),
             m.horizontal(
               [0, 0],
               m.orderByWidget(
@@ -2355,7 +2371,7 @@ export class Region2DConstraintBuilder {
               ),
               m.inputBoolean(
                 { property: "sublayout", field: "orderReversed" },
-                { type: "highlight", icon: "general/order-reversed" }
+                { type: "highlight", icon: "Sort" }
               )
             )
           )
@@ -2364,20 +2380,15 @@ export class Region2DConstraintBuilder {
     }
     if (type == Region2DSublayoutType.Packing) {
       extra.push(
-        m.row(
-          "Gravity",
-          m.horizontal(
-            [0, 1, 0, 1],
-            m.label("x: "),
-            m.inputNumber(
-              { property: "sublayout", field: ["packing", "gravityX"] },
-              { minimum: 0.1, maximum: 15 }
-            ),
-            m.label("y: "),
-            m.inputNumber(
-              { property: "sublayout", field: ["packing", "gravityY"] },
-              { minimum: 0.1, maximum: 15 }
-            )
+        m.vertical(
+          m.label("Gravity"),
+          m.inputNumber(
+            { property: "sublayout", field: ["packing", "gravityX"] },
+            { minimum: 0.1, maximum: 15, label: "X" }
+          ),
+          m.inputNumber(
+            { property: "sublayout", field: ["packing", "gravityY"] },
+            { minimum: 0.1, maximum: 15, label: "Y" }
           )
         )
       );
@@ -2403,21 +2414,15 @@ export class Region2DConstraintBuilder {
     const options = this.applicableSublayoutOptions();
     return [
       m.sectionHeader("Sub-layout"),
-      m.row(
-        "Type",
-        m.horizontal(
-          [0, 0],
-          null,
-          m.inputSelect(
-            { property: "sublayout", field: "type" },
-            {
-              type: "radio",
-              options: options.map((x) => x.value),
-              icons: options.map((x) => x.icon),
-              labels: options.map((x) => x.label),
-            }
-          )
-        )
+      m.inputSelect(
+        { property: "sublayout", field: "type" },
+        {
+          type: "radio",
+          options: options.map((x) => x.value),
+          icons: options.map((x) => x.icon),
+          labels: options.map((x) => x.label),
+          label: "Type",
+        }
       ),
       ...extra,
     ];
@@ -2521,7 +2526,7 @@ export class Region2DConstraintBuilder {
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
                 options: [GridDirection.X, GridDirection.Y],
-                icons: ["scaffold/xwrap", "scaffold/ywrap"],
+                icons: ["GripperBarHorizontal", "GripperBarVertical"],
                 labels: [
                   terminology.gridDirectionX,
                   terminology.gridDirectionY,
@@ -2544,7 +2549,7 @@ export class Region2DConstraintBuilder {
             ),
             m.inputBoolean(
               { property: "sublayout", field: "orderReversed" },
-              { type: "highlight", icon: "general/order-reversed" }
+              { type: "highlight", icon: "Sort" }
             )
           );
         }

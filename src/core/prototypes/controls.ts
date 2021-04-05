@@ -15,11 +15,17 @@ export interface Property {
   noComputeLayout?: boolean;
 }
 
+export interface InputComboboxOptions {
+  defaultRange: string[];
+  valuesOnly?: boolean;
+  label?: string;
+}
+
 export const enum LabelPosition {
   Right,
   Bottom,
   Left,
-  Top
+  Top,
 }
 
 export interface InputSelectOptions {
@@ -30,11 +36,23 @@ export interface InputSelectOptions {
   icons?: string[];
   labels?: string[];
   tooltip?: string;
+  label?: string;
+}
+
+export interface InputFontComboboxOptions {
+  label?: string;
+}
+
+export interface InputTextOptions {
+  label?: string;
+  placeholder?: string;
+  tooltip?: string;
 }
 
 export interface InputBooleanOptions {
   type: "checkbox" | "highlight" | "checkbox-fill-width";
   icon?: string;
+  headerLabel?: string;
   label?: string;
 }
 
@@ -77,12 +95,15 @@ export interface MappingEditorOptions {
   openMapping?: boolean;
   /** Enables value selector from mapping */
   allowSelectValue?: boolean;
+  /** Text lael of input */
+  label?: string;
 }
 
 export interface InputNumberOptions {
   digits?: number;
   minimum?: number;
   maximum?: number;
+  step?: number;
   percentage?: boolean;
 
   showSlider?: boolean;
@@ -93,16 +114,19 @@ export interface InputNumberOptions {
   updownTick?: number;
   updownRange?: [number, number];
   updownStyle?: "normal" | "font";
+  label?: string;
 }
 
 export interface InputDateOptions {
   defaultValue?: number | Date;
   placeholder?: string;
+  label?: string;
   onEnter?: (value: number) => boolean;
 }
 
 export interface InputColorOptions {
   allowNull?: boolean;
+  label?: string;
 }
 
 export interface TableOptions {}
@@ -150,6 +174,7 @@ export interface ScrollListOptions {
 
 export interface InputExpressionOptions {
   table?: string;
+  label?: string;
 }
 
 export interface WidgetManager {
@@ -163,13 +188,12 @@ export interface WidgetManager {
   // Basic property widgets
   inputNumber(property: Property, options?: InputNumberOptions): Widget;
   inputDate(property: Property, options?: InputDateOptions): Widget;
-  inputText(property: Property, placeholder?: string): Widget;
-  inputComboBox(
+  inputText(property: Property, options: InputTextOptions): Widget;
+  inputComboBox(property: Property, options: InputComboboxOptions): Widget;
+  inputFontFamily(
     property: Property,
-    values: string[],
-    valuesOnly?: boolean
+    options: InputFontComboboxOptions
   ): Widget;
-  inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
@@ -179,7 +203,7 @@ export interface WidgetManager {
   inputColorGradient(property: Property, inline?: boolean): Widget;
 
   // A button, once clicked, set the property to null.
-  clearButton(property: Property, icon?: string): Widget;
+  clearButton(property: Property, icon?: string, isHeader?: boolean): Widget;
   setButton(
     property: Property,
     value: Specification.AttributeValue,
@@ -197,7 +221,7 @@ export interface WidgetManager {
 
   arrayWidget(
     property: Property,
-    item: (item: Property) => Widget,
+    item: (item: Property, index?: number) => Widget,
     options?: ArrayWidgetOptions
   ): Widget;
 
@@ -205,7 +229,7 @@ export interface WidgetManager {
 
   // Label and text
   icon(icon: string): Widget;
-  label(title: string): Widget;
+  label(title: string, options?: { addMargins: boolean }): Widget;
   text(text: string, align?: "left" | "center" | "right"): Widget;
   // Inline separator
   sep(): Widget;
@@ -213,7 +237,7 @@ export interface WidgetManager {
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
-  detailsButton(...widgets: Widget[]): Widget;
+  detailsButton(label: string, ...widgets: Widget[]): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;

@@ -203,21 +203,21 @@ export class MarkEditorView extends ContextedComponent<
           </div>
           <div className="canvas-controls-right">
             <Button
-              icon="general/zoom-in"
+              icon="ZoomIn"
               title={strings.canvas.zoomIn}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1.1);
               }}
             />
             <Button
-              icon="general/zoom-out"
+              icon="ZoomOut"
               title={strings.canvas.zoomOut}
               onClick={() => {
                 this.refSingleMarkView.doZoom(1 / 1.1);
               }}
             />
             <Button
-              icon="general/zoom-auto"
+              icon="ZoomToFit"
               title={strings.canvas.zoomAuto}
               onClick={() => {
                 this.refSingleMarkView.doZoomAuto();

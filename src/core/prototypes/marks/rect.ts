@@ -12,6 +12,7 @@ import {
   DropZones,
   Handles,
   LinkAnchor,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
@@ -36,7 +37,7 @@ export class RectElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Shape",
-    iconPath: "mark/rect",
+    iconPath: "RectangleShape",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -44,6 +45,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<RectElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
     strokeStyle: "solid",
     shape: "rectangle",
@@ -181,28 +183,23 @@ export class RectElementClass extends EmphasizableMarkClass<
         acceptKinds: [DataKind.Numerical],
         defaultAuto: true,
       }),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "shape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Ellipse"],
-            options: ["rectangle", "triangle", "ellipse"],
-          }
-        )
+      manager.inputSelect(
+        { property: "shape" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          label: "Shape",
+          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+          labels: ["Rectangle", "Triangle", "Ellipse"],
+          options: ["rectangle", "triangle", "ellipse"],
+        }
       ),
-      manager.row(
-        "Flipping",
-        manager.inputBoolean(
-          { property: "allowFlipping" },
-          {
-            type: "checkbox",
-            label: "",
-          }
-        )
+      manager.inputBoolean(
+        { property: "allowFlipping" },
+        {
+          type: "checkbox",
+          label: "Flipping",
+        }
       ),
       manager.sectionHeader("Style"),
       manager.mappingEditor("Fill", "fill", {}),
@@ -216,20 +213,16 @@ export class RectElementClass extends EmphasizableMarkClass<
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
         })
       );
-      widgets.push(
-        manager.row(
-          "Line Style",
-          manager.inputSelect(
-            { property: "strokeStyle" },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
-              labels: ["Solid", "Dashed", "Dotted"],
-              options: ["solid", "dashed", "dotted"],
-            }
-          )
-        )
+      manager.inputSelect(
+        { property: "strokeStyle" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          label: "Line Style",
+          icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+          labels: ["Solid", "Dashed", "Dotted"],
+          options: ["solid", "dashed", "dotted"],
+        }
       );
     }
 

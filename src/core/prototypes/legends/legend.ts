@@ -42,7 +42,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
   };
 
   public static defaultProperties: LegendProperties = {
@@ -169,31 +169,26 @@ export abstract class LegendClass extends ChartElementClass {
     const props = this.object.properties;
     const widget = [
       manager.sectionHeader("Labels"),
-      manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
-      manager.row(
-        "Size",
-        manager.inputNumber(
-          { property: "fontSize" },
-          { showUpdown: true, updownStyle: "font", updownTick: 2 }
-        )
+      manager.inputFontFamily({ property: "fontFamily" }, { label: "Font" }),
+      manager.inputNumber(
+        { property: "fontSize" },
+        { showUpdown: true, updownStyle: "font", updownTick: 2, label: "Size" }
       ),
-      manager.row("Color", manager.inputColor({ property: "textColor" })),
-      manager.row(
-        "Shape",
-        manager.inputSelect(
-          { property: "markerShape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Circle"],
-            options: ["rectangle", "triangle", "circle"],
-          }
-        )
+      manager.inputColor({ property: "textColor" }, { label: "Color" }),
+      manager.inputSelect(
+        { property: "markerShape" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+          labels: ["Rectangle", "Triangle", "Circle"],
+          options: ["rectangle", "triangle", "circle"],
+          label: "Shape",
+        }
       ),
       manager.sectionHeader("Layout"),
-      manager.row(
-        "Alignment",
+      manager.vertical(
+        manager.label("Alignment"),
         manager.horizontal(
           [0, 0],
           null,
@@ -201,7 +196,11 @@ export abstract class LegendClass extends ChartElementClass {
             { property: "alignX" },
             {
               type: "radio",
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
               options: ["start", "middle", "end"],
             }
@@ -211,7 +210,11 @@ export abstract class LegendClass extends ChartElementClass {
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
             }
           ),

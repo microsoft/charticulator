@@ -14,5 +14,5 @@ export enum LocalStorageKeys {
   NumberFormatRemove = "numberFormatRemove",
   DelimiterSymbol = "delimiterSymbol",
   CurrencySymbol = "currencySymbol",
-  GroupSymbol = "groupSymbol"
+  GroupSymbol = "groupSymbol",
 }

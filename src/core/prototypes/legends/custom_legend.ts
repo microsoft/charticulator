@@ -49,7 +49,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },

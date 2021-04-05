@@ -290,6 +290,9 @@ export const strings = {
     number: "Number",
     string: "String",
   } as { [key in DataType]: string },
+  attributesPanel: {
+    conditionedBy: "Conditioned by...",
+  },
   core: {
     default: "(default)",
   },

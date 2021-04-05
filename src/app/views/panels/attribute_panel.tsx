@@ -14,6 +14,7 @@ import {
   MarkSelection,
 } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
@@ -59,7 +60,7 @@ export class AttributePanel extends React.Component<
     const selection = this.props.store.currentSelection;
     let object: Specification.Object;
     let objectClass: Prototypes.ObjectClass;
-    let manager: WidgetManager;
+    let manager: FluentUIWidgetManager;
     if (selection) {
       if (selection instanceof GlyphSelection) {
         if (!selection.plotSegment) {
@@ -76,7 +77,7 @@ export class AttributePanel extends React.Component<
             this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetGlyphAttribute(glyph, attribute, mapping).dispatch(
             this.props.store.dispatcher
@@ -100,7 +101,7 @@ export class AttributePanel extends React.Component<
             this.props.store.getSelectedGlyphIndex(selection.plotSegment._id)
           )
         );
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetMarkAttribute(
             glyph,
@@ -129,7 +130,7 @@ export class AttributePanel extends React.Component<
         );
         object = markLayout;
         objectClass = layoutClass;
-        manager = new WidgetManager(this.props.store, objectClass);
+        manager = new FluentUIWidgetManager(this.props.store, objectClass);
         manager.onEditMappingHandler = (attribute, mapping) => {
           new Actions.SetChartElementMapping(
             markLayout,
@@ -157,7 +158,7 @@ export class AttributePanel extends React.Component<
       );
       object = chart;
       objectClass = boundClass;
-      manager = new WidgetManager(this.props.store, objectClass);
+      manager = new FluentUIWidgetManager(this.props.store, objectClass);
       manager.onEditMappingHandler = (attribute, mapping) => {
         new Actions.SetChartAttribute(attribute, mapping).dispatch(
           this.props.store.dispatcher

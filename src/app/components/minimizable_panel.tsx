@@ -48,7 +48,7 @@ export class MinimizablePane extends React.Component<
       >
         <SVGImageIcon
           url={getSVGIcon(
-            this.state.minimized ? "general/chevron-right" : "general/chevron-down"
+            this.state.minimized ? "ChevronRight" : "ChevronDown"
           )}
         />
         <span className="title">{this.props.title}</span>
