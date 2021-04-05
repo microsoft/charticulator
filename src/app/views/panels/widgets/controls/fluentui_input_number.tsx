@@ -108,7 +108,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         min={sliderMin}
         max={sliderMax}
         value={value}
-        defaultValue={value}
         showValue={true}
         step={props.percentage ? 0.01 : 1}
         // eslint-disable-next-line react/jsx-no-bind
@@ -177,7 +176,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
               onRenderLabel={labelRender}
               label={!props.showSlider ? props.label : null}
               placeholder={props.placeholder}
-              defaultValue={formatNumber(value)}
               value={formatNumber(value)}
               onChange={(event, str) => {
                 const num = parseNumber(str);

@@ -119,6 +119,10 @@ export class FluentUIWidgetManager
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
 
+  private getKeyFromProperty(property: Prototypes.Controls.Property) {
+    return `${property?.property}-${property?.field?.toString()}`;
+  }
+
   public mappingEditor(
     name: string,
     attribute: string,
@@ -140,6 +144,7 @@ export class FluentUIWidgetManager
 
     return (
       <FluentMappingEditor
+        key={name + attribute}
         store={this.store}
         parent={this}
         attribute={attribute}
@@ -238,6 +243,7 @@ export class FluentUIWidgetManager
     return (
       <FluentInputNumber
         {...options}
+        key={this.getKeyFromProperty(property)}
         defaultValue={value}
         onEnter={(value) => {
           if (value == null) {
@@ -261,6 +267,7 @@ export class FluentUIWidgetManager
 
     return (
       <DatePicker
+        key={this.getKeyFromProperty(property)}
         firstDayOfWeek={DayOfWeek.Sunday}
         placeholder={options.placeholder}
         ariaLabel={options.placeholder}
@@ -286,6 +293,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <TextField
+        key={this.getKeyFromProperty(property)}
         value={this.getPropertyValue(property) as string}
         placeholder={options.placeholder}
         label={options.label}
@@ -304,6 +312,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <FluentComboBoxFontFamily
+        key={this.getKeyFromProperty(property)}
         label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
@@ -320,6 +329,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <ComboBox
+        key={this.getKeyFromProperty(property)}
         selectedKey={this.getPropertyValue(property) as string}
         label={options.label}
         autoComplete="on"
@@ -381,6 +391,9 @@ export class FluentUIWidgetManager
 
       return (
         <Dropdown
+          key={`${this.getKeyFromProperty(property)}-${options.label}-${
+            options.type
+          }`}
           selectedKey={this.getPropertyValue(property) as string}
           defaultValue={this.getPropertyValue(property) as string}
           label={options.label}
@@ -404,13 +417,20 @@ export class FluentUIWidgetManager
       );
     } else {
       return (
-        <>
+        <React.Fragment
+          key={`${this.getKeyFromProperty(property)}-${options.label}-${
+            options.type
+          }`}
+        >
           {options.label ? (
             <Label styles={defaultLabelStyle}>{options.label}</Label>
           ) : null}
           {options.options.map((option, index) => {
             return (
               <IconButton
+                key={`${this.getKeyFromProperty(property)}-${options.label}-${
+                  options.type
+                }-${index}`}
                 iconProps={{
                   iconName: options.icons[index],
                 }}
@@ -425,7 +445,7 @@ export class FluentUIWidgetManager
               />
             );
           })}
-        </>
+        </React.Fragment>
       );
     }
   }
@@ -437,7 +457,7 @@ export class FluentUIWidgetManager
       case "checkbox-fill-width":
       case "checkbox": {
         return (
-          <>
+          <React.Fragment key={this.getKeyFromProperty(property)}>
             {options.headerLabel ? (
               <Label styles={defaultLabelStyle}>{options.headerLabel}</Label>
             ) : null}
@@ -453,12 +473,13 @@ export class FluentUIWidgetManager
                 }}
               />
             </FluentCheckbox>
-          </>
+          </React.Fragment>
         );
       }
       case "highlight": {
         return (
           <IconButton
+            key={this.getKeyFromProperty(property)}
             iconProps={{
               iconName: options.icon,
             }}
@@ -487,6 +508,7 @@ export class FluentUIWidgetManager
     const value = this.getPropertyValue(property) as string;
     return (
       <FluentInputExpression
+        key={this.getKeyFromProperty(property)}
         label={options.label}
         value={value}
         defaultValue={value}
@@ -520,6 +542,7 @@ export class FluentUIWidgetManager
     const color = this.getPropertyValue(property) as Color;
     return (
       <FluentInputColor
+        key={this.getKeyFromProperty(property)}
         label={options.label}
         store={this.store}
         defaultValue={color}
@@ -540,6 +563,7 @@ export class FluentUIWidgetManager
       return (
         <span className="charticulator__widget-control-input-color-gradient-inline">
           <GradientPicker
+            key={this.getKeyFromProperty(property)}
             defaultValue={gradient}
             onPick={(value: any) => {
               this.emitSetProperty(property, value);
@@ -550,6 +574,7 @@ export class FluentUIWidgetManager
     } else {
       return (
         <InputColorGradient
+          key={this.getKeyFromProperty(property)}
           defaultValue={gradient}
           onEnter={(value: any) => {
             this.emitSetProperty(property, value);
@@ -562,6 +587,7 @@ export class FluentUIWidgetManager
   public inputImage(property: Prototypes.Controls.Property) {
     return (
       <InputImage
+        key={this.getKeyFromProperty(property)}
         value={this.getPropertyValue(property) as Specification.Types.Image}
         onChange={(image) => {
           this.emitSetProperty(property, image as Specification.Types.Image);
@@ -573,6 +599,7 @@ export class FluentUIWidgetManager
   public inputImageProperty(property: Prototypes.Controls.Property) {
     return (
       <InputImageProperty
+        key={this.getKeyFromProperty(property)}
         value={this.getPropertyValue(property) as Specification.Types.Image}
         onChange={(image) => {
           this.emitSetProperty(property, image as Specification.Types.Image);
@@ -588,7 +615,10 @@ export class FluentUIWidgetManager
     isHeader?: boolean
   ) {
     return (
-      <FluentButton marginTop={isHeader ? "0px" : null}>
+      <FluentButton
+        key={this.getKeyFromProperty(property)}
+        marginTop={isHeader ? "0px" : null}
+      >
         <DefaultButton
           iconProps={{
             iconName: icon || "EraseTool",
@@ -608,14 +638,8 @@ export class FluentUIWidgetManager
     text?: string
   ) {
     return (
-      // <Button
-      //   text={text}
-      //   icon={icon}
-      //   onClick={() => {
-      //     this.emitSetProperty(property, value);
-      //   }}
-      // />
       <DefaultButton
+        key={this.getKeyFromProperty(property)}
         iconProps={{
           iconName: icon,
         }}
@@ -643,25 +667,17 @@ export class FluentUIWidgetManager
 
     return (
       <Button
+        key={attribute}
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
-        // icon={icon}
         onClick={() => {
           const options = {
             allowSelectValue: true,
           };
-          // const mapping = this.getAttributeMapping(attribute);
           globals.popupController.popupAt(
             (context) => {
               return (
                 <PopupView context={context}>
-                  {/* <DataMappAndScaleEditor
-                    attribute={attribute}
-                    parent={parent as any}
-                    defaultMapping={mapping}
-                    options={options}
-                    onClose={() => context.close()}
-                  /> */}
                   <ScaleValueSelector
                     scale={scaleObject}
                     scaleMapping={mapping}
@@ -684,6 +700,7 @@ export class FluentUIWidgetManager
     let ref: DropZoneView;
     return (
       <DropZoneView
+        key={this.getKeyFromProperty(property)}
         filter={(data) => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(property, { expression: data.expression });
@@ -756,7 +773,10 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
-      <span ref={(e) => (container = e)}>
+      <span
+        ref={(e) => (container = e)}
+        key={this.getKeyFromProperty(property)}
+      >
         <FluentButton marginTop={"10px"}>
           <DefaultButton
             iconProps={{
@@ -828,7 +848,10 @@ export class FluentUIWidgetManager
   ): JSX.Element {
     const items = (this.getPropertyValue(property) as any[]).slice();
     return (
-      <div className="charticulator__widget-array-view">
+      <div
+        className="charticulator__widget-array-view"
+        key={this.getKeyFromProperty(property)}
+      >
         <ReorderListView
           enabled={options.allowReorder}
           onReorder={(dragIndex, dropIndex) => {
@@ -893,6 +916,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <DropZoneView
+        key={this.getKeyFromProperty(options?.property) + options.label}
         filter={(data) => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(options.property, {
@@ -912,7 +936,7 @@ export class FluentUIWidgetManager
   // Label and text
   public icon(icon: string) {
     return (
-      <span className="charticulator__widget-label">
+      <span className="charticulator__widget-label" key={icon}>
         <SVGImageIcon url={R.getSVGIcon(icon)} />
       </span>
     );
@@ -921,6 +945,7 @@ export class FluentUIWidgetManager
     // return <span className="charticulator__widget-label">{title}</span>;
     return (
       <FluentLabelHeader
+        key={title}
         marginBottom={options?.addMargins ? "5px" : "0px"}
         marginTop={options?.addMargins ? "5px" : "0px"}
       >
@@ -930,7 +955,11 @@ export class FluentUIWidgetManager
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {
     return (
-      <span className="charticulator__widget-text" style={{ textAlign: align }}>
+      <span
+        className="charticulator__widget-text"
+        style={{ textAlign: align }}
+        key={title + align}
+      >
         {title}
       </span>
     );
@@ -952,6 +981,7 @@ export class FluentUIWidgetManager
       }) as Specification.Types.AxisDataBinding;
       return (
         <DropZoneView
+          key={title}
           filter={(data) => data instanceof DragData.DataExpression}
           onDrop={(data: DragData.DataExpression) => {
             new Actions.BindDataToAxis(
@@ -1060,7 +1090,12 @@ export class FluentUIWidgetManager
 
   public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
     return (
-      <FluentDetailsButton label={label} widgets={widgets} manager={this} />
+      <FluentDetailsButton
+        label={label}
+        widgets={widgets}
+        manager={this}
+        key={label}
+      />
     );
   }
 
@@ -1080,7 +1115,14 @@ export class FluentUIWidgetManager
           }
         }
         return (
-          <FluentButton marginTop={"0px"}>
+          <FluentButton
+            marginTop={"0px"}
+            key={
+              this.getKeyFromProperty(options?.target?.property) +
+              options?.table +
+              options?.value
+            }
+          >
             <DefaultButton
               text={text}
               elementRef={(e) => (button = e)}
@@ -1109,6 +1151,11 @@ export class FluentUIWidgetManager
       case "panel":
         return (
           <FilterEditor
+            key={
+              this.getKeyFromProperty(options?.target?.property) +
+              options?.table +
+              options?.value
+            }
             manager={this}
             value={options.value}
             options={options}
@@ -1130,7 +1177,14 @@ export class FluentUIWidgetManager
           }
         }
         return (
-          <FluentButton marginTop={"0px"}>
+          <FluentButton
+            marginTop={"0px"}
+            key={
+              this.getKeyFromProperty(options.target?.property) +
+              options?.table +
+              options?.value
+            }
+          >
             <DefaultButton
               text={text}
               elementRef={(e) => (button = e)}
@@ -1159,6 +1213,11 @@ export class FluentUIWidgetManager
       case "panel":
         return (
           <GroupByEditor
+            key={
+              this.getKeyFromProperty(options?.target?.property) +
+              options.table +
+              options?.value
+            }
             manager={this}
             value={options.value}
             options={options}
@@ -1171,80 +1230,88 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.NestedChartEditorOptions
   ) {
-    return this.row(
-      "",
-      this.vertical(
-        <ButtonRaised
-          text="Edit Nested Chart..."
-          onClick={() => {
-            const editorID = uniqueID();
-            const newWindow = window.open(
-              "index.html#!nestedEditor=" + editorID,
-              "nested_chart_" + options.specification._id
-            );
-            const listener = (e: MessageEvent) => {
-              if (e.origin == document.location.origin) {
-                const data = e.data;
-                if (data.id == editorID) {
-                  switch (data.type) {
-                    case "initialized":
-                      {
-                        newWindow.postMessage(
+    return (
+      <React.Fragment key={this.getKeyFromProperty(property)}>
+        {this.row(
+          "",
+          this.vertical(
+            <ButtonRaised
+              text="Edit Nested Chart..."
+              onClick={() => {
+                const editorID = uniqueID();
+                const newWindow = window.open(
+                  "index.html#!nestedEditor=" + editorID,
+                  "nested_chart_" + options.specification._id
+                );
+                const listener = (e: MessageEvent) => {
+                  if (e.origin == document.location.origin) {
+                    const data = e.data;
+                    if (data.id == editorID) {
+                      switch (data.type) {
+                        case "initialized":
                           {
-                            id: editorID,
-                            type: "load",
-                            specification: options.specification,
-                            dataset: options.dataset,
-                            width: options.width,
-                            height: options.height,
-                            filterCondition: options.filterCondition,
-                          },
-                          document.location.origin
-                        );
+                            newWindow.postMessage(
+                              {
+                                id: editorID,
+                                type: "load",
+                                specification: options.specification,
+                                dataset: options.dataset,
+                                width: options.width,
+                                height: options.height,
+                                filterCondition: options.filterCondition,
+                              },
+                              document.location.origin
+                            );
+                          }
+                          break;
+                        case "save":
+                          {
+                            this.emitSetProperty(property, data.specification);
+                          }
+                          break;
                       }
-                      break;
-                    case "save":
-                      {
-                        this.emitSetProperty(property, data.specification);
-                      }
-                      break;
+                    }
                   }
-                }
-              }
-            };
-            window.addEventListener("message", listener);
-          }}
-        />,
-        <div style={{ marginTop: "5px" }}>
-          <ButtonRaised
-            text="Import Template..."
-            onClick={async () => {
-              const file = await showOpenFileDialog(["tmplt"]);
-              const str = await readFileAsString(file);
-              const data = JSON.parse(str);
-              const template = new ChartTemplate(data);
-              for (const table of options.dataset.tables) {
-                const tTable = template.getDatasetSchema()[0];
-                template.assignTable(tTable.name, table.name);
-                for (const column of tTable.columns) {
-                  template.assignColumn(tTable.name, column.name, column.name);
-                }
-              }
-              const instance = template.instantiate(
-                options.dataset,
-                false // no scale inference
-              );
-              this.emitSetProperty(property, instance.chart as any);
-            }}
-          />
-        </div>
-      )
+                };
+                window.addEventListener("message", listener);
+              }}
+            />,
+            <div style={{ marginTop: "5px" }}>
+              <ButtonRaised
+                text="Import Template..."
+                onClick={async () => {
+                  const file = await showOpenFileDialog(["tmplt"]);
+                  const str = await readFileAsString(file);
+                  const data = JSON.parse(str);
+                  const template = new ChartTemplate(data);
+                  for (const table of options.dataset.tables) {
+                    const tTable = template.getDatasetSchema()[0];
+                    template.assignTable(tTable.name, table.name);
+                    for (const column of tTable.columns) {
+                      template.assignColumn(
+                        tTable.name,
+                        column.name,
+                        column.name
+                      );
+                    }
+                  }
+                  const instance = template.instantiate(
+                    options.dataset,
+                    false // no scale inference
+                  );
+                  this.emitSetProperty(property, instance.chart as any);
+                }}
+              />
+            </div>
+          )
+        )}
+      </React.Fragment>
     );
   }
 
   public row(title?: string, widget?: JSX.Element) {
     return (
-      <div className="charticulator__widget-row">
+      <div className="charticulator__widget-row" key={title}>
         {title != null ? (
           <span className="charticulator__widget-row-label el-layout-item">
             {title}

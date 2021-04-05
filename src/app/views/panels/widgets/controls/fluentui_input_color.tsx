@@ -51,7 +51,6 @@ export class FluentInputColor extends React.Component<InputColorProps, {}> {
           <TextField
             label={this.props.label}
             onRenderLabel={labelRender}
-            defaultValue={hex}
             placeholder={this.props.allowNull ? "(none)" : ""}
             value={hex}
             onChange={(event, newValue) => {

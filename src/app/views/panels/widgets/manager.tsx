@@ -534,23 +534,14 @@ export class WidgetManager
       <Button
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
-        // icon={icon}
         onClick={() => {
           const options = {
             allowSelectValue: true,
           };
-          // const mapping = this.getAttributeMapping(attribute);
           globals.popupController.popupAt(
             (context) => {
               return (
                 <PopupView context={context}>
-                  {/* <DataMappAndScaleEditor
-                    attribute={attribute}
-                    parent={parent as any}
-                    defaultMapping={mapping}
-                    options={options}
-                    onClose={() => context.close()}
-                  /> */}
                   <ScaleValueSelector
                     scale={scaleObject}
                     scaleMapping={mapping}
