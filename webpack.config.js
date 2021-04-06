@@ -16,7 +16,7 @@ module.exports = (env, { mode }) => {
   if (mode == null) {
     mode = "production";
   }
-  const extensions = ['.tsx', '.ts', '.d.ts', '.jsx', '.js', '.css', 'svg'];
+  const extensions = ['.tsx', '.ts', '.jsx', '.js', '.css', 'svg'];
   const pegjsConfig = {
     test: /\.pegjs$/,
     loader: 'pegjs-loader',

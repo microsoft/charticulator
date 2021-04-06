@@ -3,7 +3,7 @@
 import { prettyNumber, ZoomInfo, Dataset } from "../../core";
 import { DataType, DataKind } from "../../core/specification";
 import { convertColumn } from "../../core/dataset/data_types";
-import { expect } from "chai";
+const chai = require("chai");
 
 export function classNames(...args: Array<string | [string, boolean]>) {
   return args
@@ -377,11 +377,11 @@ export function getAligntment(anchor: Element) {
 export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
   if (a == null || b == null) {
     // If either of a, b is null/undefined
-    expect(a).equals(b);
+    chai.expect(a).equals(b);
   } else if (typeof a == "object" && typeof b == "object") {
     if (a instanceof Array && b instanceof Array) {
       // Both are arrays, recursively test for each item in the arrays
-      expect(a.length).to.equals(b.length);
+      chai.expect(a.length).to.equals(b.length);
       for (let i = 0; i < a.length; i++) {
         expect_deep_approximately_equals(a[i], b[i], tol);
       }
@@ -392,7 +392,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       // Both are objects, recursively test for each key in the objects
       const keysA = Object.keys(a).sort();
       const keysB = Object.keys(b).sort();
-      expect(keysA).to.deep.equals(keysB);
+      chai.expect(keysA).to.deep.equals(keysB);
       for (const key of keysA) {
         expect_deep_approximately_equals(a[key], b[key], tol);
       }
@@ -400,10 +400,10 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
   } else {
     if (typeof a == "number" && typeof b == "number") {
       // If both are numbers, test approximately equals
-      expect(a as number).to.approximately(b as number, tol);
+      chai.expect(a as number).to.approximately(b as number, tol);
     } else {
       // Otherwise, use regular equals
-      expect(a).equals(b);
+      chai.expect(a).equals(b);
     }
   }
 }

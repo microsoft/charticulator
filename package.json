@@ -22,7 +22,7 @@
     "ssl_start": "node build.js dev ssl_watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
-    "unit_test": "mocha dist/scripts/tests/unit",
+    "unit_test": "karma start",
     "test": "yarn run lint && yarn run dev && yarn run unit_test",
     "karma": "karma start",
     "karma_dev": "karma start --single-run=false",

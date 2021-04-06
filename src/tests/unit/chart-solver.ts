@@ -15,10 +15,13 @@ import { APP_VERSION } from "../configuration";
 
 describe("Chart Solver", () => {
   // The directory containing test cases
-  const pathPrefix = "src/tests/unit/charts";
+  const pathPrefix = "tests/unit/charts";
 
   // Scan for test cases
-  const cases = fs.readdirSync(pathPrefix).filter((x) => x.endsWith(".json"));
+  const cases: string[] = [
+    `base/${pathPrefix}/bar-chart.json`,
+    `base/${pathPrefix}/side-by-side.json`,
+  ];
 
   // Run tests
   cases.forEach((filename) => {
@@ -26,9 +29,9 @@ describe("Chart Solver", () => {
       // The solver has to be initialized, other options can be omitted
       await initialize();
 
-      let state: AppStoreState = JSON.parse(
-        fs.readFileSync(path.join(pathPrefix, filename), "utf-8")
-      ).state;
+      const responce = await fetch(filename);
+      const json = await responce.text();
+      let state: AppStoreState = JSON.parse(json).state;
 
       state = new Migrator().migrate(state, APP_VERSION);
 

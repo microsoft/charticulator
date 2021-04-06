@@ -96,7 +96,7 @@ const devSequence = [
 
 let COMMANDS = {
   // Remove the entire build directory
-  cleanup: () => fs.remove("dist"),
+  cleanup: () => { fs.remove("dist"); fs.remove(".tmp") },
 
   // Create necessary directories
   makedirs: [
@@ -114,12 +114,6 @@ let COMMANDS = {
 
   // Copy files
   copy: [
-    () =>
-      fs.copy(
-        "src/core/expression/parser.d.ts",
-        "dist/scripts/core/expression/parser.d.ts"
-      ),
-
     // Copy all of the public files
     isProd
       ? () => copyFolder("./public", "./dist")
@@ -214,13 +208,13 @@ let COMMANDS = {
   server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   public_server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   watch: {
-    tsc: "tsc -w",
+    // tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
     sass: "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s",
   },
   ssl_watch: {
-    tsc: "tsc -w",
+    // tsc: "tsc -w",
     webpack: "webpack -w --mode=" + (isProd ? "production" : "development"),
     sass: "sass --watch sass/app.scss:dist/styles/app.css sass/page.scss:dist/styles/page.css",
     server: "http-server ./dist -a 0.0.0.0 -p 4000 -c-1 -s --ssl --cors"

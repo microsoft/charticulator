@@ -18,5 +18,6 @@
       "src/*": ["./*"]
     }
   },
-  "exclude": ["karma.conf.ts", "node_modules", "dist"]
+  "exclude": ["karma.conf.ts", "node_modules", "dist"],
+  "typeRoots": ["./core/expression", "../node_modules/@types"]
 }
