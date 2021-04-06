@@ -153,10 +153,16 @@ export interface Text extends Element {
   fontSize: number;
 }
 
+export enum PathTextAlignment {
+  Start = "start",
+  Middle = "middle",
+  End = "end",
+}
+
 export interface TextOnPath extends Element {
   type: "text-on-path";
   pathCmds: Path["cmds"];
-  align: "start" | "middle" | "end";
+  align: PathTextAlignment;
   text: string;
   fontFamily: string;
   fontSize: number;

@@ -19,13 +19,19 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString, showOpenFileDialog } from "../utils";
+import {
+  expect_deep_approximately_equals,
+  isInIFrame,
+  readFileAsString,
+  showOpenFileDialog,
+} from "../utils";
 import { ChartTemplate, MessageType, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
+import { ChartTemplateBuilder } from "../template";
 
 export class HelpButton extends React.Component<
   {
@@ -430,9 +436,22 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    const originJson = JSON.stringify(this.context.store.originChart, null, "");
-    const chartJson = JSON.stringify(this.context.store.chart, null, "");
-    const hasUnsavedChanges = originJson !== chartJson;
+    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
+    let hasUnsavedChanges = false;
+
+    try {
+      expect_deep_approximately_equals(
+        editorTemplate.specification,
+        this.context.store.originTemplate.specification,
+        1e-2
+      );
+    } catch (ex) {
+      if (!(ex.message as string).includes("expected")) {
+        console.error(ex.message);
+      } else {
+        hasUnsavedChanges = true;
+      }
+    }
 
     return (
       <MenuButton
@@ -513,10 +532,6 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderNewOpenSave() {
-    const originJson = JSON.stringify(this.context.store.originChart, null, "");
-    const chartJson = JSON.stringify(this.context.store.chart, null, "");
-    const hasUnsavedChanges = originJson !== chartJson;
-
     return (
       <>
         <MenuButton
@@ -534,17 +549,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           }}
         />
         <MenuButton
-          url={
-            hasUnsavedChanges
-              ? R.getSVGIcon("toolbar/save-changes")
-              : R.getSVGIcon("toolbar/save")
-          }
+          url={R.getSVGIcon("toolbar/save")}
           title={strings.menuBar.save}
-          text={
-            hasUnsavedChanges
-              ? strings.menuBar.saveButton
-              : strings.menuBar.savedButton
-          }
+          text={strings.menuBar.saveButton}
           onClick={() => {
             if (this.context.store.currentChartID) {
               this.dispatch(new Actions.Save());
@@ -594,6 +601,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/undo")}
               title={strings.menuBar.undo}
+              disabled={
+                this.context.store.historyManager.statesBefore.length === 0
+              }
               onClick={() =>
                 new Actions.Undo().dispatch(this.context.store.dispatcher)
               }
@@ -601,6 +611,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             <MenuButton
               url={R.getSVGIcon("toolbar/redo")}
               title={strings.menuBar.redo}
+              disabled={
+                this.context.store.historyManager.statesAfter.length === 0
+              }
               onClick={() =>
                 new Actions.Redo().dispatch(this.context.store.dispatcher)
               }

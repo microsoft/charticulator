@@ -20,11 +20,13 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
@@ -86,6 +88,7 @@ export let icons: Region2DConfigurationIcons = {
   gridIcon: "sublayout/polar-grid",
   packingIcon: "sublayout/packing",
   overlapIcon: "sublayout/overlap",
+  jitterIcon: "sublayout/jitter",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
@@ -111,7 +114,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,
@@ -609,7 +612,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       p2: { x: cx + radial2, y: cy },
       title: "Radial Axis",
       dropAction: {
-        axisInference: { property: "yData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
     } as DropZones.Line);
     zones.push({
@@ -620,7 +623,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       angleEnd: attrs.angle2,
       title: "Angular Axis",
       dropAction: {
-        axisInference: { property: "xData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
     } as DropZones.Arc);
     return zones;
@@ -828,12 +831,20 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -858,7 +869,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -873,7 +884,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },

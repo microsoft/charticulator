@@ -17,11 +17,15 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  GridDirection,
+  PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
   Region2DConfigurationIcons,
   Region2DConstraintBuilder,
   Region2DProperties,
+  Region2DSublayoutType,
+  SublayoutAlignment,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
@@ -58,6 +62,7 @@ const icons: Region2DConfigurationIcons = {
   dodgeYIcon: "sublayout/dodge-y",
   gridIcon: "sublayout/grid",
   packingIcon: "sublayout/packing",
+  jitterIcon: "sublayout/jitter",
   overlapIcon: "sublayout/overlap",
 };
 
@@ -86,26 +91,35 @@ export class CartesianPlotSegment extends PlotSegmentClass<
 
   public static defaultMappingValues: Specification.AttributeMap = {};
 
-  public static defaultProperties: Specification.AttributeMap = {
+  public static defaultProperties: CartesianProperties = {
     marginX1: 0,
     marginY1: 0,
     marginX2: 0,
     marginY2: 0,
     visible: true,
     sublayout: {
-      type: "dodge-x",
+      type: Region2DSublayoutType.DodgeX,
       order: null,
       ratioX: 0.1,
       ratioY: 0.1,
       align: {
-        x: "start",
-        y: "start",
+        x: SublayoutAlignment.Start,
+        y: SublayoutAlignment.Start,
       },
       grid: {
-        direction: "x",
+        direction: GridDirection.X,
         xCount: null,
         yCount: null,
       },
+      jitter: {
+        horizontal: true,
+        vertical: true,
+      },
+      packing: {
+        gravityX: 0.1,
+        gravityY: 0.1,
+      },
+      orderReversed: null,
     },
   };
 
@@ -404,7 +418,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       p2: { x: x1, y: y1 },
       title: "X Axis",
       dropAction: {
-        axisInference: { property: "xData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
     } as DropZones.Line);
     zones.push({
@@ -413,7 +427,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       p2: { x: x1, y: y2 },
       title: "Y Axis",
       dropAction: {
-        axisInference: { property: "yData" },
+        axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
     } as DropZones.Line);
     return zones;
@@ -527,12 +541,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.xData) {
-      r.push(buildAxisInference(this.object, "xData"));
-      p = p.concat(buildAxisProperties(this.object, "xData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.xData)
+      );
     }
     if (this.object.properties.yData) {
-      r.push(buildAxisInference(this.object, "yData"));
-      p = p.concat(buildAxisProperties(this.object, "yData"));
+      r.push(
+        buildAxisInference(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
+      p = p.concat(
+        buildAxisProperties(this.object, PlotSegmentAxisPropertyNames.yData)
+      );
     }
     if (
       this.object.properties.sublayout.order &&
@@ -573,7 +595,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "xData",
+            property: PlotSegmentAxisPropertyNames.xData,
             field: "categories",
           },
         },
@@ -588,7 +610,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         objectID: this.object._id,
         target: {
           property: {
-            property: "yData",
+            property: PlotSegmentAxisPropertyNames.yData,
             field: "categories",
           },
         },

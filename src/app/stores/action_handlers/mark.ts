@@ -184,12 +184,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
         { glyph: action.glyph },
-        action.expression,
-        action.valueType,
-        action.valueMetadata.kind,
-        action.attributeType,
-        action.hints,
-        action.attribute
+        {
+          expression: action.expression,
+          valueType: action.valueType,
+          valueKind: action.valueMetadata.kind,
+          outputType: action.attributeType,
+          hints: action.hints,
+          markAttribute: action.attribute,
+        }
       );
     if (inferred != null) {
       action.mark.mappings[action.attribute] = {

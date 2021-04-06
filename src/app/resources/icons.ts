@@ -288,6 +288,10 @@ addSVGIcon(
   "sublayout/packing",
   require("resources/icons/icons_sublayout-packing.svg")
 );
+addSVGIcon(
+  "sublayout/jitter",
+  require("resources/icons/icons_sublayout-jitter.svg")
+);
 addSVGIcon("align/left", require("resources/icons/icons_align-left.svg"));
 addSVGIcon(
   "align/x-middle",

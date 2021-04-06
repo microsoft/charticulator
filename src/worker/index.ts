@@ -11,8 +11,10 @@ import {
 import { AttributeMap, ChartState } from "../core/specification";
 import { WorkerRPC } from "./communication";
 
-export interface WorkerInterface {
-  initialize: (config: CharticulatorCoreConfig) => Promise<void>;
+export { CharticulatorWorkerProcess } from "./worker_main";
+
+export interface CharticulatorWorkerInterface {
+  initialize(config: CharticulatorCoreConfig): Promise<any>;
   solveChartConstraints: (
     chart: Specification.Chart,
     chartState: Specification.ChartState,
@@ -21,11 +23,13 @@ export interface WorkerInterface {
       [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
     >,
     mappingOnly: boolean
-  ) => Promise<ChartState<AttributeMap>>;
+  ) => Promise<any> | any;
 }
 
 /** The representation of the background worker. This is used from the main process. */
-export class CharticulatorWorker extends WorkerRPC implements WorkerInterface {
+export class CharticulatorWorker
+  extends WorkerRPC
+  implements CharticulatorWorkerInterface {
   constructor(workerLocation: string) {
     super(workerLocation);
   }

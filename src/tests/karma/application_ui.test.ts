@@ -5,7 +5,12 @@ import { expect, use } from "chai";
 import { Application } from "../../app/index";
 import { Actions } from "../../app/index";
 import { ObjectItem } from "../../core/prototypes";
-import { DataKind, DataType } from "../../core/specification";
+import {
+  DataKind,
+  DataType,
+  ObjectProperties,
+  PlotSegment,
+} from "../../core/specification";
 import { OrderMode } from "../../core/specification/types";
 import { strings } from "../../strings";
 import {
@@ -37,7 +42,9 @@ describe("Charticulator", () => {
     document.querySelector("body").appendChild(container);
     application = new Application();
     application
-      .initialize(config as any, "container", workerScript)
+      .initialize(config as any, "container", {
+        workerScriptContent: workerScript,
+      })
       .then(() => {
         closeStartMenuPanel();
         done();
@@ -67,7 +74,7 @@ describe("Charticulator", () => {
       ).toString();
 
       new Actions.BindDataToAxis(
-        ps.object,
+        ps.object as PlotSegment<ObjectProperties>,
         "xData",
         null,
         new DragData.DataExpression(

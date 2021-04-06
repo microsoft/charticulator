@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { expect } from "chai";
+import { ObjectProperties, PlotSegment } from "src/core/specification";
 import { BindDataToAxis, UpdatePlotSegments } from "../../app/actions/actions";
 import { DataExpression } from "../../app/actions/drag_data";
 import { AxisDataBinding } from "../../core/specification/types";
@@ -34,7 +35,7 @@ describe("Plot segment", () => {
 
         appStore.dispatcher.dispatch(
           new BindDataToAxis(
-            plotSegment,
+            plotSegment as PlotSegment<ObjectProperties>,
             plotsegmentProperty,
             null,
             new DataExpression(
@@ -99,7 +100,7 @@ describe("Plot segment", () => {
 
         appStore.dispatcher.dispatch(
           new BindDataToAxis(
-            plotSegment,
+            plotSegment as PlotSegment<ObjectProperties>,
             plotsegmentProperty,
             null,
             new DataExpression(

@@ -35,7 +35,9 @@
             application.initialize(
               CHARTICULATOR_CONFIG,
               "container",
-              workerScript
+              {
+                workerScriptContent: workerScript
+              }
             );
           });
         }
