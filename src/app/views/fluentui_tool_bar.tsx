@@ -8,6 +8,7 @@ import * as R from "../resources";
 import { EventSubscription } from "../../core";
 import { Actions, DragData } from "../actions";
 import {
+  DraggableElement,
   FluentToolButton,
   MenuButton,
   SVGImageIcon,
@@ -24,6 +25,7 @@ import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
 import { Dialog, getTheme, IconButton, IIconProps } from "@fluentui/react";
+import { getSVGIcon } from "../resources";
 const theme = getTheme();
 
 export const FluentUIToolbar: React.FC<{
@@ -582,22 +584,52 @@ export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
   public render() {
     return (
       <>
-        <IconButton
-          iconProps={{
-            iconName: this.props.icon,
+        <DraggableElement
+          dragData={
+            this.props.noDragging
+              ? null
+              : this.props.onDrag
+              ? this.props.onDrag
+              : () => {
+                  return new DragData.ObjectType(
+                    this.props.classID,
+                    this.props.options
+                  );
+                }
+          }
+          onDragStart={() => this.setState({ dragging: true })}
+          onDragEnd={() => this.setState({ dragging: false })}
+          renderDragElement={() => {
+            return [
+              <SVGImageIcon
+                url={getSVGIcon(this.props.icon)}
+                width={32}
+                height={32}
+              />,
+              { x: -16, y: -16 },
+            ];
           }}
-          title={this.props.title}
-          text={this.props.text}
-          checked={this.getIsActive()}
-          onClick={() => {
-            this.dispatch(
-              new Actions.SetCurrentTool(this.props.classID, this.props.options)
-            );
-            if (this.props.onClick) {
-              this.props.onClick();
-            }
-          }}
-        />
+        >
+          <IconButton
+            iconProps={{
+              iconName: this.props.icon,
+            }}
+            title={this.props.title}
+            text={this.props.text}
+            checked={this.getIsActive()}
+            onClick={() => {
+              this.dispatch(
+                new Actions.SetCurrentTool(
+                  this.props.classID,
+                  this.props.options
+                )
+              );
+              if (this.props.onClick) {
+                this.props.onClick();
+              }
+            }}
+          />
+        </DraggableElement>
       </>
     );
   }
@@ -613,6 +645,7 @@ export class MultiObjectButton extends ContextedComponent<
       classID: string;
       options: string;
     };
+    dragging: boolean;
   }
 > {
   public state = {
@@ -620,6 +653,7 @@ export class MultiObjectButton extends ContextedComponent<
       classID: this.props.tools[0].classID,
       options: this.props.tools[0].options,
     },
+    dragging: false,
   };
   public token: EventSubscription;
 
@@ -676,45 +710,69 @@ export class MultiObjectButton extends ContextedComponent<
     const currentTool = this.getSelectedTool();
 
     return (
-      <IconButton
-        style={{
-          stroke: theme.palette.themePrimary,
+      <DraggableElement
+        dragData={() => {
+          return new DragData.ObjectType(
+            this.store.currentTool,
+            this.store.currentToolOptions
+          );
         }}
-        split={true}
-        menuProps={{
-          items: this.props.tools.map((tool, index) => {
-            return {
-              key: tool.classID + index,
-              data: {
-                classID: tool.classID,
-                options: tool.options,
-              },
-              text: tool.title,
-              iconProps: { iconName: tool.icon },
-            };
-          }),
-          onItemClick: (ev: any, item: any) => {
-            if (item.data) {
+        onDragStart={() => this.setState({ dragging: true })}
+        onDragEnd={() => this.setState({ dragging: false })}
+        renderDragElement={() => {
+          return [
+            <SVGImageIcon
+              url={getSVGIcon(currentTool.icon)}
+              width={24}
+              height={24}
+            />,
+            { x: 16, y: 16 },
+          ];
+        }}
+      >
+        <IconButton
+          style={{
+            stroke: theme.palette.themePrimary,
+          }}
+          split={true}
+          menuProps={{
+            items: this.props.tools.map((tool, index) => {
+              return {
+                key: tool.classID + index,
+                data: {
+                  classID: tool.classID,
+                  options: tool.options,
+                },
+                text: tool.title,
+                iconProps: { iconName: tool.icon },
+              };
+            }),
+            onItemClick: (ev: any, item: any) => {
+              if (item.data) {
+                this.dispatch(
+                  new Actions.SetCurrentTool(
+                    item.data.classID,
+                    item.data.options
+                  )
+                );
+              }
+            },
+          }}
+          iconProps={{
+            iconName: currentTool.icon,
+          }}
+          onMenuClick={() => {
+            if (currentTool) {
               this.dispatch(
-                new Actions.SetCurrentTool(item.data.classID, item.data.options)
+                new Actions.SetCurrentTool(
+                  currentTool.classID,
+                  currentTool.options
+                )
               );
             }
-          },
-        }}
-        iconProps={{
-          iconName: currentTool.icon,
-        }}
-        onMenuClick={() => {
-          if (currentTool) {
-            this.dispatch(
-              new Actions.SetCurrentTool(
-                currentTool.classID,
-                currentTool.options
-              )
-            );
-          }
-        }}
-      />
+          }}
+        />
+      </DraggableElement>
     );
   }
 }
