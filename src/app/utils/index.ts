@@ -12,8 +12,14 @@ export function classNames(...args: Array<string | [string, boolean]>) {
     .join(" ");
 }
 
+let SVGNumberDigits = 8;
+
+export function setSVGNumberDigits(digits: number) {
+  SVGNumberDigits = digits;
+}
+
 export function toSVGNumber(x: number) {
-  return prettyNumber(x, 8);
+  return prettyNumber(x, SVGNumberDigits);
 }
 
 export function toSVGZoom(zoom: ZoomInfo) {

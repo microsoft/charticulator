@@ -27,12 +27,14 @@ import { DragData } from "../../app";
 import { Expression } from "../../core";
 import { matchSnapshot } from "chai-karma-snapshot";
 import { loadJSON, waitSolver } from "../unit/utils";
+import { setSVGNumberDigits } from "../../app/utils";
 declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
 
 describe("Charticulator", () => {
   use(matchSnapshot);
+  setSVGNumberDigits(2);
   let application: Application = null;
   // The directory containing test cases
   before(function (done) {

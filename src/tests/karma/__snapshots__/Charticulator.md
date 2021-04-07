@@ -360,7 +360,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-302.72727273,258)"
+                transform="translate(-302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -372,7 +372,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235.45454545,258)"
+                transform="translate(-235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -384,7 +384,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168.18181818,258)"
+                transform="translate(-168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -396,7 +396,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-100.90909091,258)"
+                transform="translate(-100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -408,7 +408,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-33.63636364,258)"
+                transform="translate(-33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -420,7 +420,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(33.63636364,258)"
+                transform="translate(33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -432,7 +432,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(100.90909091,258)"
+                transform="translate(100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -444,7 +444,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(168.18181818,258)"
+                transform="translate(168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -456,7 +456,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(235.45454545,258)"
+                transform="translate(235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -468,7 +468,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(302.72727273,258)"
+                transform="translate(302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -930,7 +930,7 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,112.73321235)rotate(0)"
+      transform="translate(699,112.73)rotate(0)"
     >
       <rect
         class="element-shape ghost"
@@ -1311,7 +1311,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-302.72727273,258)"
+                transform="translate(-302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1323,7 +1323,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235.45454545,258)"
+                transform="translate(-235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1335,7 +1335,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168.18181818,258)"
+                transform="translate(-168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1347,7 +1347,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-100.90909091,258)"
+                transform="translate(-100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1359,7 +1359,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-33.63636364,258)"
+                transform="translate(-33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1371,7 +1371,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(33.63636364,258)"
+                transform="translate(33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1383,7 +1383,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(100.90909091,258)"
+                transform="translate(100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1395,7 +1395,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(168.18181818,258)"
+                transform="translate(168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1407,7 +1407,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(235.45454545,258)"
+                transform="translate(235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1419,7 +1419,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(302.72727273,258)"
+                transform="translate(302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -1881,7 +1881,7 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,112.73321235)rotate(0)"
+      transform="translate(699,112.73)rotate(0)"
     >
       <rect
         class="element-shape ghost"
@@ -2143,7 +2143,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 0,-67.63792728 A 67.63792728,67.63792728,0,0,1,33.81896364,-58.57616329 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 0,-67.64 A 67.64,67.64,0,0,1,33.82,-58.58 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2152,7 +2152,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,-67.63792728 L 0,-75.80799144 A 75.80799144,75.80799144,0,0,1,37.90399572,-65.6516464 L 33.81896364,-58.57616329 A 67.63792728,67.63792728,0,0,0,0,-67.63792728 Z"
+                  d="M 0,-67.64 L 0,-75.81 A 75.81,75.81,0,0,1,37.9,-65.65 L 33.82,-58.58 A 67.64,67.64,0,0,0,0,-67.64 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2161,7 +2161,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,-75.80799144 L 0,-211.50000006 A 211.50000006,211.50000006,0,0,1,105.75000003,-183.16437296 L 37.90399572,-65.6516464 A 75.80799144,75.80799144,0,0,0,0,-75.80799144 Z"
+                  d="M 0,-75.81 L 0,-211.5 A 211.5,211.5,0,0,1,105.75,-183.16 L 37.9,-65.65 A 75.81,75.81,0,0,0,0,-75.81 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2170,7 +2170,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 35.69779496,-61.83039458 A 71.39558991,71.39558991,0,0,1,61.83039458,-35.69779496 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 35.7,-61.83 A 71.4,71.4,0,0,1,61.83,-35.7 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2179,7 +2179,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 35.69779496,-61.83039458 L 37.71727539,-65.3282373 A 75.43455079,75.43455079,0,0,1,65.3282373,-37.71727539 L 61.83039458,-35.69779496 A 71.39558991,71.39558991,0,0,0,35.69779496,-61.83039458 Z"
+                  d="M 35.7,-61.83 L 37.72,-65.33 A 75.43,75.43,0,0,1,65.33,-37.72 L 61.83,-35.7 A 71.4,71.4,0,0,0,35.7,-61.83 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2188,7 +2188,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 37.71727539,-65.3282373 L 94.37270752,-163.45832427 A 188.74541504,188.74541504,0,0,1,163.45832427,-94.37270752 L 65.3282373,-37.71727539 A 75.43455079,75.43455079,0,0,0,37.71727539,-65.3282373 Z"
+                  d="M 37.72,-65.33 L 94.37,-163.46 A 188.75,188.75,0,0,1,163.46,-94.37 L 65.33,-37.72 A 75.43,75.43,0,0,0,37.72,-65.33 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2197,7 +2197,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 42.67884331,-24.64064167 A 49.28128334,49.28128334,0,0,1,49.28128334,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 42.68,-24.64 A 49.28,49.28,0,0,1,49.28,0 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2206,7 +2206,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 42.67884331,-24.64064167 L 46.47971975,-26.83507871 A 53.67015742,53.67015742,0,0,1,53.67015742,0 L 49.28128334,0 A 49.28128334,49.28128334,0,0,0,42.67884331,-24.64064167 Z"
+                  d="M 42.68,-24.64 L 46.48,-26.84 A 53.67,53.67,0,0,1,53.67,0 L 49.28,0 A 49.28,49.28,0,0,0,42.68,-24.64 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2215,7 +2215,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 46.47971975,-26.83507871 L 122.15293705,-70.52503109 A 141.05006218,141.05006218,0,0,1,141.05006218,0 L 53.67015742,0 A 53.67015742,53.67015742,0,0,0,46.47971975,-26.83507871 Z"
+                  d="M 46.48,-26.84 L 122.15,-70.53 A 141.05,141.05,0,0,1,141.05,0 L 53.67,0 A 53.67,53.67,0,0,0,46.48,-26.84 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2224,7 +2224,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 28.3697307,0 A 28.3697307,28.3697307,0,0,1,24.56890748,14.18486535 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 28.37,0 A 28.37,28.37,0,0,1,24.57,14.18 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2233,7 +2233,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 28.3697307,-0 L 38.50458393,0 A 38.50458393,38.50458393,0,0,1,33.34594785,19.25229197 L 24.56890748,14.18486535 A 28.3697307,28.3697307,0,0,0,28.3697307,0 Z"
+                  d="M 28.37,-0 L 38.5,0 A 38.5,38.5,0,0,1,33.35,19.25 L 24.57,14.18 A 28.37,28.37,0,0,0,28.37,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2242,7 +2242,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 38.50458393,-0 L 90.65239401,0 A 90.65239401,90.65239401,0,0,1,78.50727612,45.326197 L 33.34594785,19.25229197 A 38.50458393,38.50458393,0,0,0,38.50458393,0 Z"
+                  d="M 38.5,-0 L 90.65,0 A 90.65,90.65,0,0,1,78.51,45.33 L 33.35,19.25 A 38.5,38.5,0,0,0,38.5,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2251,7 +2251,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 19.79471618,11.42848471 A 22.85696943,22.85696943,0,0,1,11.42848471,19.79471618 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 19.79,11.43 A 22.86,22.86,0,0,1,11.43,19.79 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2260,7 +2260,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 19.79471618,11.42848471 L 30.17849951,17.42356482 A 34.84712964,34.84712964,0,0,1,17.42356482,30.17849951 L 11.42848471,19.79471618 A 22.85696943,22.85696943,0,0,0,19.79471618,11.42848471 Z"
+                  d="M 19.79,11.43 L 30.18,17.42 A 34.85,34.85,0,0,1,17.42,30.18 L 11.43,19.79 A 22.86,22.86,0,0,0,19.79,11.43 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2269,7 +2269,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 30.17849951,17.42356482 L 79.31250002,45.79109324 A 91.58218648,91.58218648,0,0,1,45.79109324,79.31250002 L 17.42356482,30.17849951 A 34.84712964,34.84712964,0,0,0,30.17849951,17.42356482 Z"
+                  d="M 30.18,17.42 L 79.31,45.79 A 91.58,91.58,0,0,1,45.79,79.31 L 17.42,30.18 A 34.85,34.85,0,0,0,30.18,17.42 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2278,7 +2278,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 10.46089003,18.11879303 A 20.92178006,20.92178006,0,0,1,0,20.92178006 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 10.46,18.12 A 20.92,20.92,0,0,1,0,20.92 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2287,7 +2287,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 10.46089003,18.11879303 L 29.10672955,50.41433442 A 58.2134591,58.2134591,0,0,1,0,58.2134591 L 0,20.92178006 A 20.92178006,20.92178006,0,0,0,10.46089003,18.11879303 Z"
+                  d="M 10.46,18.12 L 29.11,50.41 A 58.21,58.21,0,0,1,0,58.21 L 0,20.92 A 20.92,20.92,0,0,0,10.46,18.12 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2296,7 +2296,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 29.10672955,50.41433442 L 60.64872136,105.04666681 A 121.29744272,121.29744272,0,0,1,0,121.29744272 L 0,58.2134591 A 58.2134591,58.2134591,0,0,0,29.10672955,50.41433442 Z"
+                  d="M 29.11,50.41 L 60.65,105.05 A 121.3,121.3,0,0,1,0,121.3 L 0,58.21 A 58.21,58.21,0,0,0,29.11,50.41 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2305,7 +2305,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L 0,21.58612836 A 21.58612836,21.58612836,0,0,1,-10.79306418,18.69413553 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L 0,21.59 A 21.59,21.59,0,0,1,-10.79,18.69 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2314,7 +2314,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,21.58612836 L 0,48.5597029 A 48.5597029,48.5597029,0,0,1,-24.27985145,42.05393631 L -10.79306418,18.69413553 A 21.58612836,21.58612836,0,0,0,0,21.58612836 Z"
+                  d="M 0,21.59 L 0,48.56 A 48.56,48.56,0,0,1,-24.28,42.05 L -10.79,18.69 A 21.59,21.59,0,0,0,0,21.59 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2323,7 +2323,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,48.5597029 L 0,88.04484994 A 88.04484994,88.04484994,0,0,1,-44.02242497,76.24907672 L -24.27985145,42.05393631 A 48.5597029,48.5597029,0,0,0,0,48.5597029 Z"
+                  d="M 0,48.56 L 0,88.04 A 88.04,88.04,0,0,1,-44.02,76.25 L -24.28,42.05 A 48.56,48.56,0,0,0,0,48.56 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2332,7 +2332,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L -9.39415657,16.27115647 A 18.78831313,18.78831313,0,0,1,-16.27115647,9.39415657 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L -9.39,16.27 A 18.79,18.79,0,0,1,-16.27,9.39 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2341,7 +2341,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -9.39415657,16.27115647 L -25.82966014,44.7382837 A 51.65932027,51.65932027,0,0,1,-44.7382837,25.82966014 L -16.27115647,9.39415657 A 18.78831313,18.78831313,0,0,0,-9.39415657,16.27115647 Z"
+                  d="M -9.39,16.27 L -25.83,44.74 A 51.66,51.66,0,0,1,-44.74,25.83 L -16.27,9.39 A 18.79,18.79,0,0,0,-9.39,16.27 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2350,7 +2350,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -25.82966014,44.7382837 L -48.70487423,84.35931675 A 97.40974847,97.40974847,0,0,1,-84.35931675,48.70487423 L -44.7382837,25.82966014 A 51.65932027,51.65932027,0,0,0,-25.82966014,44.7382837 Z"
+                  d="M -25.83,44.74 L -48.7,84.36 A 97.41,97.41,0,0,1,-84.36,48.7 L -44.74,25.83 A 51.66,51.66,0,0,0,-25.83,44.74 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2359,7 +2359,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L -14.55336477,8.40238907 A 16.80477814,16.80477814,0,0,1,-16.80477814,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L -14.55,8.4 A 16.8,16.8,0,0,1,-16.8,0 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2368,7 +2368,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -14.55336477,8.40238907 L -55.98791217,32.32463616 A 64.64927232,64.64927232,0,0,1,-64.64927232,0 L -16.80477814,0 A 16.80477814,16.80477814,0,0,0,-14.55336477,8.40238907 Z"
+                  d="M -14.55,8.4 L -55.99,32.32 A 64.65,64.65,0,0,1,-64.65,0 L -16.8,0 A 16.8,16.8,0,0,0,-14.55,8.4 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2377,7 +2377,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -55.98791217,32.32463616 L -71.6670101,41.37696757 A 82.75393515,82.75393515,0,0,1,-82.75393515,0 L -64.64927232,0 A 64.64927232,64.64927232,0,0,0,-55.98791217,32.32463616 Z"
+                  d="M -55.99,32.32 L -71.67,41.38 A 82.75,82.75,0,0,1,-82.75,0 L -64.65,0 A 64.65,64.65,0,0,0,-55.99,32.32 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2386,7 +2386,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L -15.94241235,0 A 15.94241235,15.94241235,0,0,1,-13.80653409,-7.97120617 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L -15.94,0 A 15.94,15.94,0,0,1,-13.81,-7.97 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2395,7 +2395,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -15.94241235,0 L -31.66262809,0 A 31.66262809,31.66262809,0,0,1,-27.42064028,-15.83131405 L -13.80653409,-7.97120617 A 15.94241235,15.94241235,0,0,0,-15.94241235,0 Z"
+                  d="M -15.94,0 L -31.66,0 A 31.66,31.66,0,0,1,-27.42,-15.83 L -13.81,-7.97 A 15.94,15.94,0,0,0,-15.94,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2404,7 +2404,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -31.66262809,0 L -53.00835458,0 A 53.00835458,53.00835458,0,0,1,-45.90658168,-26.50417729 L -27.42064028,-15.83131405 A 31.66262809,31.66262809,0,0,0,-31.66262809,0 Z"
+                  d="M -31.66,0 L -53.01,0 A 53.01,53.01,0,0,1,-45.91,-26.5 L -27.42,-15.83 A 31.66,31.66,0,0,0,-31.66,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2413,7 +2413,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L -18.40871212,-10.6282749 A 21.2565498,21.2565498,0,0,1,-10.6282749,-18.40871212 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L -18.41,-10.63 A 21.26,21.26,0,0,1,-10.63,-18.41 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2422,7 +2422,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -18.40871212,-10.6282749 L -26.23645146,-15.14762231 A 30.29524463,30.29524463,0,0,1,-15.14762231,-26.23645146 L -10.6282749,-18.40871212 A 21.2565498,21.2565498,0,0,0,-18.40871212,-10.6282749 Z"
+                  d="M -18.41,-10.63 L -26.24,-15.15 A 30.3,30.3,0,0,1,-15.15,-26.24 L -10.63,-18.41 A 21.26,21.26,0,0,0,-18.41,-10.63 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2431,7 +2431,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -26.23645146,-15.14762231 L -50.72844546,-29.28808164 A 58.57616329,58.57616329,0,0,1,-29.28808164,-50.72844546 L -15.14762231,-26.23645146 A 30.29524463,30.29524463,0,0,0,-26.23645146,-15.14762231 Z"
+                  d="M -26.24,-15.15 L -50.73,-29.29 A 58.58,58.58,0,0,1,-29.29,-50.73 L -15.15,-26.24 A 30.3,30.3,0,0,0,-26.24,-15.15 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2440,7 +2440,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M 0,0 L -9.94184082,-17.21977342 A 19.88368164,19.88368164,0,0,1,-0,-19.88368164 L 0,0 A 0,0,0,0,0,0,0 Z"
+                  d="M 0,0 L -9.94,-17.22 A 19.88,19.88,0,0,1,-0,-19.88 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2449,7 +2449,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -9.94184082,-17.21977342 L -12.74285395,-22.07127048 A 25.4857079,25.4857079,0,0,1,-0,-25.4857079 L -0,-19.88368164 A 19.88368164,19.88368164,0,0,0,-9.94184082,-17.21977342 Z"
+                  d="M -9.94,-17.22 L -12.74,-22.07 A 25.49,25.49,0,0,1,-0,-25.49 L -0,-19.88 A 19.88,19.88,0,0,0,-9.94,-17.22 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2458,7 +2458,7 @@
                 transform="translate(0,0)"
               >
                 <path
-                  d="M -12.74285395,-22.07127048 L -21.99115671,-38.08980073 A 43.98231341,43.98231341,0,0,1,-0,-43.98231341 L -0,-25.4857079 A 25.4857079,25.4857079,0,0,0,-12.74285395,-22.07127048 Z"
+                  d="M -12.74,-22.07 L -21.99,-38.09 A 43.98,43.98,0,0,1,-0,-43.98 L -0,-25.49 A 25.49,25.49,0,0,0,-12.74,-22.07 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2474,7 +2474,7 @@
             >
               <g
                 style="opacity: 1;"
-                transform="translate(54.74022804,-204.29331226) rotate(15)"
+                transform="translate(54.74,-204.29) rotate(15)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2493,7 +2493,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(149.55308422,-149.55308422) rotate(45)"
+                transform="translate(149.55,-149.55) rotate(45)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2512,7 +2512,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(204.29331226,-54.74022804) rotate(75)"
+                transform="translate(204.29,-54.74) rotate(75)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2531,7 +2531,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(204.29331226,54.74022804) rotate(105)"
+                transform="translate(204.29,54.74) rotate(105)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2550,7 +2550,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(149.55308422,149.55308422) rotate(135)"
+                transform="translate(149.55,149.55) rotate(135)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2569,7 +2569,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(54.74022804,204.29331226) rotate(165)"
+                transform="translate(54.74,204.29) rotate(165)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2588,7 +2588,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-54.74022804,204.29331226) rotate(195)"
+                transform="translate(-54.74,204.29) rotate(195)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2607,7 +2607,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-149.55308422,149.55308422) rotate(225)"
+                transform="translate(-149.55,149.55) rotate(225)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2626,7 +2626,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-204.29331226,54.74022804) rotate(255)"
+                transform="translate(-204.29,54.74) rotate(255)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2645,7 +2645,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-204.29331226,-54.74022804) rotate(285)"
+                transform="translate(-204.29,-54.74) rotate(285)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2664,7 +2664,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-149.55308422,-149.55308422) rotate(315)"
+                transform="translate(-149.55,-149.55) rotate(315)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -2683,7 +2683,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-54.74022804,-204.29331226) rotate(345)"
+                transform="translate(-54.74,-204.29) rotate(345)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -3188,11 +3188,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 0,-67.63792728 A 67.63792728,67.63792728,0,0,1,33.81896364,-58.57616329 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 0,-67.64 A 67.64,67.64,0,0,1,33.82,-58.58 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 0,-67.63792728 A 67.63792728,67.63792728,0,0,1,33.81896364,-58.57616329 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 0,-67.64 A 67.64,67.64,0,0,1,33.82,-58.58 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3201,11 +3201,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,-67.63792728 L 0,-75.80799144 A 75.80799144,75.80799144,0,0,1,37.90399572,-65.6516464 L 33.81896364,-58.57616329 A 67.63792728,67.63792728,0,0,0,0,-67.63792728 Z"
+            d="M 0,-67.64 L 0,-75.81 A 75.81,75.81,0,0,1,37.9,-65.65 L 33.82,-58.58 A 67.64,67.64,0,0,0,0,-67.64 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,-67.63792728 L 0,-75.80799144 A 75.80799144,75.80799144,0,0,1,37.90399572,-65.6516464 L 33.81896364,-58.57616329 A 67.63792728,67.63792728,0,0,0,0,-67.63792728 Z"
+            d="M 0,-67.64 L 0,-75.81 A 75.81,75.81,0,0,1,37.9,-65.65 L 33.82,-58.58 A 67.64,67.64,0,0,0,0,-67.64 Z"
           />
         </g>
         <g
@@ -3214,11 +3214,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,-75.80799144 L 0,-211.50000006 A 211.50000006,211.50000006,0,0,1,105.75000003,-183.16437296 L 37.90399572,-65.6516464 A 75.80799144,75.80799144,0,0,0,0,-75.80799144 Z"
+            d="M 0,-75.81 L 0,-211.5 A 211.5,211.5,0,0,1,105.75,-183.16 L 37.9,-65.65 A 75.81,75.81,0,0,0,0,-75.81 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,-75.80799144 L 0,-211.50000006 A 211.50000006,211.50000006,0,0,1,105.75000003,-183.16437296 L 37.90399572,-65.6516464 A 75.80799144,75.80799144,0,0,0,0,-75.80799144 Z"
+            d="M 0,-75.81 L 0,-211.5 A 211.5,211.5,0,0,1,105.75,-183.16 L 37.9,-65.65 A 75.81,75.81,0,0,0,0,-75.81 Z"
           />
         </g>
         <g
@@ -3227,11 +3227,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 35.69779496,-61.83039458 A 71.39558991,71.39558991,0,0,1,61.83039458,-35.69779496 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 35.7,-61.83 A 71.4,71.4,0,0,1,61.83,-35.7 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 35.69779496,-61.83039458 A 71.39558991,71.39558991,0,0,1,61.83039458,-35.69779496 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 35.7,-61.83 A 71.4,71.4,0,0,1,61.83,-35.7 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3240,11 +3240,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 35.69779496,-61.83039458 L 37.71727539,-65.3282373 A 75.43455079,75.43455079,0,0,1,65.3282373,-37.71727539 L 61.83039458,-35.69779496 A 71.39558991,71.39558991,0,0,0,35.69779496,-61.83039458 Z"
+            d="M 35.7,-61.83 L 37.72,-65.33 A 75.43,75.43,0,0,1,65.33,-37.72 L 61.83,-35.7 A 71.4,71.4,0,0,0,35.7,-61.83 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 35.69779496,-61.83039458 L 37.71727539,-65.3282373 A 75.43455079,75.43455079,0,0,1,65.3282373,-37.71727539 L 61.83039458,-35.69779496 A 71.39558991,71.39558991,0,0,0,35.69779496,-61.83039458 Z"
+            d="M 35.7,-61.83 L 37.72,-65.33 A 75.43,75.43,0,0,1,65.33,-37.72 L 61.83,-35.7 A 71.4,71.4,0,0,0,35.7,-61.83 Z"
           />
         </g>
         <g
@@ -3253,11 +3253,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 37.71727539,-65.3282373 L 94.37270752,-163.45832427 A 188.74541504,188.74541504,0,0,1,163.45832427,-94.37270752 L 65.3282373,-37.71727539 A 75.43455079,75.43455079,0,0,0,37.71727539,-65.3282373 Z"
+            d="M 37.72,-65.33 L 94.37,-163.46 A 188.75,188.75,0,0,1,163.46,-94.37 L 65.33,-37.72 A 75.43,75.43,0,0,0,37.72,-65.33 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 37.71727539,-65.3282373 L 94.37270752,-163.45832427 A 188.74541504,188.74541504,0,0,1,163.45832427,-94.37270752 L 65.3282373,-37.71727539 A 75.43455079,75.43455079,0,0,0,37.71727539,-65.3282373 Z"
+            d="M 37.72,-65.33 L 94.37,-163.46 A 188.75,188.75,0,0,1,163.46,-94.37 L 65.33,-37.72 A 75.43,75.43,0,0,0,37.72,-65.33 Z"
           />
         </g>
         <g
@@ -3266,11 +3266,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 42.67884331,-24.64064167 A 49.28128334,49.28128334,0,0,1,49.28128334,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 42.68,-24.64 A 49.28,49.28,0,0,1,49.28,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 42.67884331,-24.64064167 A 49.28128334,49.28128334,0,0,1,49.28128334,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 42.68,-24.64 A 49.28,49.28,0,0,1,49.28,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3279,11 +3279,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 42.67884331,-24.64064167 L 46.47971975,-26.83507871 A 53.67015742,53.67015742,0,0,1,53.67015742,0 L 49.28128334,0 A 49.28128334,49.28128334,0,0,0,42.67884331,-24.64064167 Z"
+            d="M 42.68,-24.64 L 46.48,-26.84 A 53.67,53.67,0,0,1,53.67,0 L 49.28,0 A 49.28,49.28,0,0,0,42.68,-24.64 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 42.67884331,-24.64064167 L 46.47971975,-26.83507871 A 53.67015742,53.67015742,0,0,1,53.67015742,0 L 49.28128334,0 A 49.28128334,49.28128334,0,0,0,42.67884331,-24.64064167 Z"
+            d="M 42.68,-24.64 L 46.48,-26.84 A 53.67,53.67,0,0,1,53.67,0 L 49.28,0 A 49.28,49.28,0,0,0,42.68,-24.64 Z"
           />
         </g>
         <g
@@ -3292,11 +3292,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 46.47971975,-26.83507871 L 122.15293705,-70.52503109 A 141.05006218,141.05006218,0,0,1,141.05006218,0 L 53.67015742,0 A 53.67015742,53.67015742,0,0,0,46.47971975,-26.83507871 Z"
+            d="M 46.48,-26.84 L 122.15,-70.53 A 141.05,141.05,0,0,1,141.05,0 L 53.67,0 A 53.67,53.67,0,0,0,46.48,-26.84 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 46.47971975,-26.83507871 L 122.15293705,-70.52503109 A 141.05006218,141.05006218,0,0,1,141.05006218,0 L 53.67015742,0 A 53.67015742,53.67015742,0,0,0,46.47971975,-26.83507871 Z"
+            d="M 46.48,-26.84 L 122.15,-70.53 A 141.05,141.05,0,0,1,141.05,0 L 53.67,0 A 53.67,53.67,0,0,0,46.48,-26.84 Z"
           />
         </g>
         <g
@@ -3305,11 +3305,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 28.3697307,0 A 28.3697307,28.3697307,0,0,1,24.56890748,14.18486535 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 28.37,0 A 28.37,28.37,0,0,1,24.57,14.18 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 28.3697307,0 A 28.3697307,28.3697307,0,0,1,24.56890748,14.18486535 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 28.37,0 A 28.37,28.37,0,0,1,24.57,14.18 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3318,11 +3318,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 28.3697307,-0 L 38.50458393,0 A 38.50458393,38.50458393,0,0,1,33.34594785,19.25229197 L 24.56890748,14.18486535 A 28.3697307,28.3697307,0,0,0,28.3697307,0 Z"
+            d="M 28.37,-0 L 38.5,0 A 38.5,38.5,0,0,1,33.35,19.25 L 24.57,14.18 A 28.37,28.37,0,0,0,28.37,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 28.3697307,-0 L 38.50458393,0 A 38.50458393,38.50458393,0,0,1,33.34594785,19.25229197 L 24.56890748,14.18486535 A 28.3697307,28.3697307,0,0,0,28.3697307,0 Z"
+            d="M 28.37,-0 L 38.5,0 A 38.5,38.5,0,0,1,33.35,19.25 L 24.57,14.18 A 28.37,28.37,0,0,0,28.37,0 Z"
           />
         </g>
         <g
@@ -3331,11 +3331,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 38.50458393,-0 L 90.65239401,0 A 90.65239401,90.65239401,0,0,1,78.50727612,45.326197 L 33.34594785,19.25229197 A 38.50458393,38.50458393,0,0,0,38.50458393,0 Z"
+            d="M 38.5,-0 L 90.65,0 A 90.65,90.65,0,0,1,78.51,45.33 L 33.35,19.25 A 38.5,38.5,0,0,0,38.5,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 38.50458393,-0 L 90.65239401,0 A 90.65239401,90.65239401,0,0,1,78.50727612,45.326197 L 33.34594785,19.25229197 A 38.50458393,38.50458393,0,0,0,38.50458393,0 Z"
+            d="M 38.5,-0 L 90.65,0 A 90.65,90.65,0,0,1,78.51,45.33 L 33.35,19.25 A 38.5,38.5,0,0,0,38.5,0 Z"
           />
         </g>
         <g
@@ -3344,11 +3344,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 19.79471618,11.42848471 A 22.85696943,22.85696943,0,0,1,11.42848471,19.79471618 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 19.79,11.43 A 22.86,22.86,0,0,1,11.43,19.79 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 19.79471618,11.42848471 A 22.85696943,22.85696943,0,0,1,11.42848471,19.79471618 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 19.79,11.43 A 22.86,22.86,0,0,1,11.43,19.79 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3357,11 +3357,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 19.79471618,11.42848471 L 30.17849951,17.42356482 A 34.84712964,34.84712964,0,0,1,17.42356482,30.17849951 L 11.42848471,19.79471618 A 22.85696943,22.85696943,0,0,0,19.79471618,11.42848471 Z"
+            d="M 19.79,11.43 L 30.18,17.42 A 34.85,34.85,0,0,1,17.42,30.18 L 11.43,19.79 A 22.86,22.86,0,0,0,19.79,11.43 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 19.79471618,11.42848471 L 30.17849951,17.42356482 A 34.84712964,34.84712964,0,0,1,17.42356482,30.17849951 L 11.42848471,19.79471618 A 22.85696943,22.85696943,0,0,0,19.79471618,11.42848471 Z"
+            d="M 19.79,11.43 L 30.18,17.42 A 34.85,34.85,0,0,1,17.42,30.18 L 11.43,19.79 A 22.86,22.86,0,0,0,19.79,11.43 Z"
           />
         </g>
         <g
@@ -3370,11 +3370,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 30.17849951,17.42356482 L 79.31250002,45.79109324 A 91.58218648,91.58218648,0,0,1,45.79109324,79.31250002 L 17.42356482,30.17849951 A 34.84712964,34.84712964,0,0,0,30.17849951,17.42356482 Z"
+            d="M 30.18,17.42 L 79.31,45.79 A 91.58,91.58,0,0,1,45.79,79.31 L 17.42,30.18 A 34.85,34.85,0,0,0,30.18,17.42 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 30.17849951,17.42356482 L 79.31250002,45.79109324 A 91.58218648,91.58218648,0,0,1,45.79109324,79.31250002 L 17.42356482,30.17849951 A 34.84712964,34.84712964,0,0,0,30.17849951,17.42356482 Z"
+            d="M 30.18,17.42 L 79.31,45.79 A 91.58,91.58,0,0,1,45.79,79.31 L 17.42,30.18 A 34.85,34.85,0,0,0,30.18,17.42 Z"
           />
         </g>
         <g
@@ -3383,11 +3383,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 10.46089003,18.11879303 A 20.92178006,20.92178006,0,0,1,0,20.92178006 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 10.46,18.12 A 20.92,20.92,0,0,1,0,20.92 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 10.46089003,18.11879303 A 20.92178006,20.92178006,0,0,1,0,20.92178006 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 10.46,18.12 A 20.92,20.92,0,0,1,0,20.92 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3396,11 +3396,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 10.46089003,18.11879303 L 29.10672955,50.41433442 A 58.2134591,58.2134591,0,0,1,0,58.2134591 L 0,20.92178006 A 20.92178006,20.92178006,0,0,0,10.46089003,18.11879303 Z"
+            d="M 10.46,18.12 L 29.11,50.41 A 58.21,58.21,0,0,1,0,58.21 L 0,20.92 A 20.92,20.92,0,0,0,10.46,18.12 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 10.46089003,18.11879303 L 29.10672955,50.41433442 A 58.2134591,58.2134591,0,0,1,0,58.2134591 L 0,20.92178006 A 20.92178006,20.92178006,0,0,0,10.46089003,18.11879303 Z"
+            d="M 10.46,18.12 L 29.11,50.41 A 58.21,58.21,0,0,1,0,58.21 L 0,20.92 A 20.92,20.92,0,0,0,10.46,18.12 Z"
           />
         </g>
         <g
@@ -3409,11 +3409,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 29.10672955,50.41433442 L 60.64872136,105.04666681 A 121.29744272,121.29744272,0,0,1,0,121.29744272 L 0,58.2134591 A 58.2134591,58.2134591,0,0,0,29.10672955,50.41433442 Z"
+            d="M 29.11,50.41 L 60.65,105.05 A 121.3,121.3,0,0,1,0,121.3 L 0,58.21 A 58.21,58.21,0,0,0,29.11,50.41 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 29.10672955,50.41433442 L 60.64872136,105.04666681 A 121.29744272,121.29744272,0,0,1,0,121.29744272 L 0,58.2134591 A 58.2134591,58.2134591,0,0,0,29.10672955,50.41433442 Z"
+            d="M 29.11,50.41 L 60.65,105.05 A 121.3,121.3,0,0,1,0,121.3 L 0,58.21 A 58.21,58.21,0,0,0,29.11,50.41 Z"
           />
         </g>
         <g
@@ -3422,11 +3422,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L 0,21.58612836 A 21.58612836,21.58612836,0,0,1,-10.79306418,18.69413553 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 0,21.59 A 21.59,21.59,0,0,1,-10.79,18.69 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L 0,21.58612836 A 21.58612836,21.58612836,0,0,1,-10.79306418,18.69413553 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L 0,21.59 A 21.59,21.59,0,0,1,-10.79,18.69 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3435,11 +3435,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,21.58612836 L 0,48.5597029 A 48.5597029,48.5597029,0,0,1,-24.27985145,42.05393631 L -10.79306418,18.69413553 A 21.58612836,21.58612836,0,0,0,0,21.58612836 Z"
+            d="M 0,21.59 L 0,48.56 A 48.56,48.56,0,0,1,-24.28,42.05 L -10.79,18.69 A 21.59,21.59,0,0,0,0,21.59 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,21.58612836 L 0,48.5597029 A 48.5597029,48.5597029,0,0,1,-24.27985145,42.05393631 L -10.79306418,18.69413553 A 21.58612836,21.58612836,0,0,0,0,21.58612836 Z"
+            d="M 0,21.59 L 0,48.56 A 48.56,48.56,0,0,1,-24.28,42.05 L -10.79,18.69 A 21.59,21.59,0,0,0,0,21.59 Z"
           />
         </g>
         <g
@@ -3448,11 +3448,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,48.5597029 L 0,88.04484994 A 88.04484994,88.04484994,0,0,1,-44.02242497,76.24907672 L -24.27985145,42.05393631 A 48.5597029,48.5597029,0,0,0,0,48.5597029 Z"
+            d="M 0,48.56 L 0,88.04 A 88.04,88.04,0,0,1,-44.02,76.25 L -24.28,42.05 A 48.56,48.56,0,0,0,0,48.56 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,48.5597029 L 0,88.04484994 A 88.04484994,88.04484994,0,0,1,-44.02242497,76.24907672 L -24.27985145,42.05393631 A 48.5597029,48.5597029,0,0,0,0,48.5597029 Z"
+            d="M 0,48.56 L 0,88.04 A 88.04,88.04,0,0,1,-44.02,76.25 L -24.28,42.05 A 48.56,48.56,0,0,0,0,48.56 Z"
           />
         </g>
         <g
@@ -3461,11 +3461,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L -9.39415657,16.27115647 A 18.78831313,18.78831313,0,0,1,-16.27115647,9.39415657 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -9.39,16.27 A 18.79,18.79,0,0,1,-16.27,9.39 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L -9.39415657,16.27115647 A 18.78831313,18.78831313,0,0,1,-16.27115647,9.39415657 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -9.39,16.27 A 18.79,18.79,0,0,1,-16.27,9.39 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3474,11 +3474,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -9.39415657,16.27115647 L -25.82966014,44.7382837 A 51.65932027,51.65932027,0,0,1,-44.7382837,25.82966014 L -16.27115647,9.39415657 A 18.78831313,18.78831313,0,0,0,-9.39415657,16.27115647 Z"
+            d="M -9.39,16.27 L -25.83,44.74 A 51.66,51.66,0,0,1,-44.74,25.83 L -16.27,9.39 A 18.79,18.79,0,0,0,-9.39,16.27 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -9.39415657,16.27115647 L -25.82966014,44.7382837 A 51.65932027,51.65932027,0,0,1,-44.7382837,25.82966014 L -16.27115647,9.39415657 A 18.78831313,18.78831313,0,0,0,-9.39415657,16.27115647 Z"
+            d="M -9.39,16.27 L -25.83,44.74 A 51.66,51.66,0,0,1,-44.74,25.83 L -16.27,9.39 A 18.79,18.79,0,0,0,-9.39,16.27 Z"
           />
         </g>
         <g
@@ -3487,11 +3487,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -25.82966014,44.7382837 L -48.70487423,84.35931675 A 97.40974847,97.40974847,0,0,1,-84.35931675,48.70487423 L -44.7382837,25.82966014 A 51.65932027,51.65932027,0,0,0,-25.82966014,44.7382837 Z"
+            d="M -25.83,44.74 L -48.7,84.36 A 97.41,97.41,0,0,1,-84.36,48.7 L -44.74,25.83 A 51.66,51.66,0,0,0,-25.83,44.74 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -25.82966014,44.7382837 L -48.70487423,84.35931675 A 97.40974847,97.40974847,0,0,1,-84.35931675,48.70487423 L -44.7382837,25.82966014 A 51.65932027,51.65932027,0,0,0,-25.82966014,44.7382837 Z"
+            d="M -25.83,44.74 L -48.7,84.36 A 97.41,97.41,0,0,1,-84.36,48.7 L -44.74,25.83 A 51.66,51.66,0,0,0,-25.83,44.74 Z"
           />
         </g>
         <g
@@ -3500,11 +3500,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L -14.55336477,8.40238907 A 16.80477814,16.80477814,0,0,1,-16.80477814,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -14.55,8.4 A 16.8,16.8,0,0,1,-16.8,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L -14.55336477,8.40238907 A 16.80477814,16.80477814,0,0,1,-16.80477814,0 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -14.55,8.4 A 16.8,16.8,0,0,1,-16.8,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3513,11 +3513,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -14.55336477,8.40238907 L -55.98791217,32.32463616 A 64.64927232,64.64927232,0,0,1,-64.64927232,0 L -16.80477814,0 A 16.80477814,16.80477814,0,0,0,-14.55336477,8.40238907 Z"
+            d="M -14.55,8.4 L -55.99,32.32 A 64.65,64.65,0,0,1,-64.65,0 L -16.8,0 A 16.8,16.8,0,0,0,-14.55,8.4 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -14.55336477,8.40238907 L -55.98791217,32.32463616 A 64.64927232,64.64927232,0,0,1,-64.64927232,0 L -16.80477814,0 A 16.80477814,16.80477814,0,0,0,-14.55336477,8.40238907 Z"
+            d="M -14.55,8.4 L -55.99,32.32 A 64.65,64.65,0,0,1,-64.65,0 L -16.8,0 A 16.8,16.8,0,0,0,-14.55,8.4 Z"
           />
         </g>
         <g
@@ -3526,11 +3526,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -55.98791217,32.32463616 L -71.6670101,41.37696757 A 82.75393515,82.75393515,0,0,1,-82.75393515,0 L -64.64927232,0 A 64.64927232,64.64927232,0,0,0,-55.98791217,32.32463616 Z"
+            d="M -55.99,32.32 L -71.67,41.38 A 82.75,82.75,0,0,1,-82.75,0 L -64.65,0 A 64.65,64.65,0,0,0,-55.99,32.32 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -55.98791217,32.32463616 L -71.6670101,41.37696757 A 82.75393515,82.75393515,0,0,1,-82.75393515,0 L -64.64927232,0 A 64.64927232,64.64927232,0,0,0,-55.98791217,32.32463616 Z"
+            d="M -55.99,32.32 L -71.67,41.38 A 82.75,82.75,0,0,1,-82.75,0 L -64.65,0 A 64.65,64.65,0,0,0,-55.99,32.32 Z"
           />
         </g>
         <g
@@ -3539,11 +3539,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L -15.94241235,0 A 15.94241235,15.94241235,0,0,1,-13.80653409,-7.97120617 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -15.94,0 A 15.94,15.94,0,0,1,-13.81,-7.97 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L -15.94241235,0 A 15.94241235,15.94241235,0,0,1,-13.80653409,-7.97120617 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -15.94,0 A 15.94,15.94,0,0,1,-13.81,-7.97 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3552,11 +3552,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -15.94241235,0 L -31.66262809,0 A 31.66262809,31.66262809,0,0,1,-27.42064028,-15.83131405 L -13.80653409,-7.97120617 A 15.94241235,15.94241235,0,0,0,-15.94241235,0 Z"
+            d="M -15.94,0 L -31.66,0 A 31.66,31.66,0,0,1,-27.42,-15.83 L -13.81,-7.97 A 15.94,15.94,0,0,0,-15.94,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -15.94241235,0 L -31.66262809,0 A 31.66262809,31.66262809,0,0,1,-27.42064028,-15.83131405 L -13.80653409,-7.97120617 A 15.94241235,15.94241235,0,0,0,-15.94241235,0 Z"
+            d="M -15.94,0 L -31.66,0 A 31.66,31.66,0,0,1,-27.42,-15.83 L -13.81,-7.97 A 15.94,15.94,0,0,0,-15.94,0 Z"
           />
         </g>
         <g
@@ -3565,11 +3565,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -31.66262809,0 L -53.00835458,0 A 53.00835458,53.00835458,0,0,1,-45.90658168,-26.50417729 L -27.42064028,-15.83131405 A 31.66262809,31.66262809,0,0,0,-31.66262809,0 Z"
+            d="M -31.66,0 L -53.01,0 A 53.01,53.01,0,0,1,-45.91,-26.5 L -27.42,-15.83 A 31.66,31.66,0,0,0,-31.66,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -31.66262809,0 L -53.00835458,0 A 53.00835458,53.00835458,0,0,1,-45.90658168,-26.50417729 L -27.42064028,-15.83131405 A 31.66262809,31.66262809,0,0,0,-31.66262809,0 Z"
+            d="M -31.66,0 L -53.01,0 A 53.01,53.01,0,0,1,-45.91,-26.5 L -27.42,-15.83 A 31.66,31.66,0,0,0,-31.66,0 Z"
           />
         </g>
         <g
@@ -3578,11 +3578,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L -18.40871212,-10.6282749 A 21.2565498,21.2565498,0,0,1,-10.6282749,-18.40871212 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -18.41,-10.63 A 21.26,21.26,0,0,1,-10.63,-18.41 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L -18.40871212,-10.6282749 A 21.2565498,21.2565498,0,0,1,-10.6282749,-18.40871212 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -18.41,-10.63 A 21.26,21.26,0,0,1,-10.63,-18.41 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3591,11 +3591,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -18.40871212,-10.6282749 L -26.23645146,-15.14762231 A 30.29524463,30.29524463,0,0,1,-15.14762231,-26.23645146 L -10.6282749,-18.40871212 A 21.2565498,21.2565498,0,0,0,-18.40871212,-10.6282749 Z"
+            d="M -18.41,-10.63 L -26.24,-15.15 A 30.3,30.3,0,0,1,-15.15,-26.24 L -10.63,-18.41 A 21.26,21.26,0,0,0,-18.41,-10.63 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -18.40871212,-10.6282749 L -26.23645146,-15.14762231 A 30.29524463,30.29524463,0,0,1,-15.14762231,-26.23645146 L -10.6282749,-18.40871212 A 21.2565498,21.2565498,0,0,0,-18.40871212,-10.6282749 Z"
+            d="M -18.41,-10.63 L -26.24,-15.15 A 30.3,30.3,0,0,1,-15.15,-26.24 L -10.63,-18.41 A 21.26,21.26,0,0,0,-18.41,-10.63 Z"
           />
         </g>
         <g
@@ -3604,11 +3604,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -26.23645146,-15.14762231 L -50.72844546,-29.28808164 A 58.57616329,58.57616329,0,0,1,-29.28808164,-50.72844546 L -15.14762231,-26.23645146 A 30.29524463,30.29524463,0,0,0,-26.23645146,-15.14762231 Z"
+            d="M -26.24,-15.15 L -50.73,-29.29 A 58.58,58.58,0,0,1,-29.29,-50.73 L -15.15,-26.24 A 30.3,30.3,0,0,0,-26.24,-15.15 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -26.23645146,-15.14762231 L -50.72844546,-29.28808164 A 58.57616329,58.57616329,0,0,1,-29.28808164,-50.72844546 L -15.14762231,-26.23645146 A 30.29524463,30.29524463,0,0,0,-26.23645146,-15.14762231 Z"
+            d="M -26.24,-15.15 L -50.73,-29.29 A 58.58,58.58,0,0,1,-29.29,-50.73 L -15.15,-26.24 A 30.3,30.3,0,0,0,-26.24,-15.15 Z"
           />
         </g>
         <g
@@ -3617,11 +3617,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M 0,0 L -9.94184082,-17.21977342 A 19.88368164,19.88368164,0,0,1,-0,-19.88368164 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -9.94,-17.22 A 19.88,19.88,0,0,1,-0,-19.88 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 0,0 L -9.94184082,-17.21977342 A 19.88368164,19.88368164,0,0,1,-0,-19.88368164 L 0,0 A 0,0,0,0,0,0,0 Z"
+            d="M 0,0 L -9.94,-17.22 A 19.88,19.88,0,0,1,-0,-19.88 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
@@ -3630,11 +3630,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -9.94184082,-17.21977342 L -12.74285395,-22.07127048 A 25.4857079,25.4857079,0,0,1,-0,-25.4857079 L -0,-19.88368164 A 19.88368164,19.88368164,0,0,0,-9.94184082,-17.21977342 Z"
+            d="M -9.94,-17.22 L -12.74,-22.07 A 25.49,25.49,0,0,1,-0,-25.49 L -0,-19.88 A 19.88,19.88,0,0,0,-9.94,-17.22 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -9.94184082,-17.21977342 L -12.74285395,-22.07127048 A 25.4857079,25.4857079,0,0,1,-0,-25.4857079 L -0,-19.88368164 A 19.88368164,19.88368164,0,0,0,-9.94184082,-17.21977342 Z"
+            d="M -9.94,-17.22 L -12.74,-22.07 A 25.49,25.49,0,0,1,-0,-25.49 L -0,-19.88 A 19.88,19.88,0,0,0,-9.94,-17.22 Z"
           />
         </g>
         <g
@@ -3643,11 +3643,11 @@
         >
           <path
             class="element-shape ghost"
-            d="M -12.74285395,-22.07127048 L -21.99115671,-38.08980073 A 43.98231341,43.98231341,0,0,1,-0,-43.98231341 L -0,-25.4857079 A 25.4857079,25.4857079,0,0,0,-12.74285395,-22.07127048 Z"
+            d="M -12.74,-22.07 L -21.99,-38.09 A 43.98,43.98,0,0,1,-0,-43.98 L -0,-25.49 A 25.49,25.49,0,0,0,-12.74,-22.07 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -12.74285395,-22.07127048 L -21.99115671,-38.08980073 A 43.98231341,43.98231341,0,0,1,-0,-43.98231341 L -0,-25.4857079 A 25.4857079,25.4857079,0,0,0,-12.74285395,-22.07127048 Z"
+            d="M -12.74,-22.07 L -21.99,-38.09 A 43.98,43.98,0,0,1,-0,-43.98 L -0,-25.49 A 25.49,25.49,0,0,0,-12.74,-22.07 Z"
           />
         </g>
       </g>
@@ -3673,7 +3673,7 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(649.35039894,92.89703441)rotate(0)"
+      transform="translate(649.35,92.9)rotate(0)"
     >
       <rect
         class="element-shape ghost"
@@ -4510,7 +4510,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-302.72727273,258)"
+                transform="translate(-302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4522,7 +4522,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235.45454545,258)"
+                transform="translate(-235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4534,7 +4534,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168.18181818,258)"
+                transform="translate(-168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4546,7 +4546,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-100.90909091,258)"
+                transform="translate(-100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4558,7 +4558,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-33.63636364,258)"
+                transform="translate(-33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4570,7 +4570,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(33.63636364,258)"
+                transform="translate(33.64,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4582,7 +4582,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(100.90909091,258)"
+                transform="translate(100.91,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4594,7 +4594,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(168.18181818,258)"
+                transform="translate(168.18,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4606,7 +4606,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(235.45454545,258)"
+                transform="translate(235.45,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -4618,7 +4618,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(302.72727273,258)"
+                transform="translate(302.73,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
@@ -5765,7 +5765,7 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,102.91855878)rotate(0)"
+      transform="translate(699,102.92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
