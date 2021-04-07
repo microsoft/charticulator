@@ -1,12 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import * as fs from "fs";
-import * as path from "path";
-import { expect } from "chai";
-import { AppStoreState } from "../../app/stores";
+
 import { Prototypes, initialize, deepClone } from "../../core";
 import { Migrator } from "../../app/stores/migrator";
-import { DefaultAttributes } from "../../core/prototypes";
 import {
   expect_deep_approximately_equals,
   loadJSON,

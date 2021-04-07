@@ -61,3 +61,7 @@ export async function loadJSON(url: string) {
   const json = await responce.text();
   return JSON.parse(json);
 }
+
+export async function waitSolver(): Promise<void> {
+  return new Promise<void>((resolve) => setTimeout(resolve, 1000));
+}

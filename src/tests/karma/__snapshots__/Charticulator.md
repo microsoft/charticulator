@@ -3712,3 +3712,2077 @@
   </g>
 </svg>
 ```
+
+#### `import template`
+
+```
+<svg
+  class="canvas-view"
+  height="847"
+  width="1398"
+  x="0"
+  y="0"
+>
+  <rect
+    class="interaction-handler"
+    height="847"
+    style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    width="1398"
+    x="0"
+    y="0"
+  />
+  <g>
+    <rect
+      class="canvas-region-outer2"
+      height="754.9285714285716"
+      width="1129.3928571428569"
+      x="134.30357142857144"
+      y="46.03571428571428"
+    />
+    <rect
+      class="canvas-region-outer"
+      height="750.9285714285716"
+      width="1125.3928571428569"
+      x="136.30357142857144"
+      y="48.03571428571428"
+    />
+    <rect
+      class="canvas-region"
+      height="748.9285714285716"
+      width="1123.3928571428569"
+      x="137.30357142857144"
+      y="49.03571428571428"
+    />
+    <g
+      class="handle handle-resize"
+      style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+    >
+      <g
+        style="cursor: ns-resize;"
+      >
+        <line
+          class="element-line handle-ghost"
+          x1="137.30357142857144"
+          x2="1260.6964285714284"
+          y1="797.9642857142858"
+          y2="797.9642857142858"
+        />
+        <line
+          class="element-line handle-highlight"
+          x1="137.30357142857144"
+          x2="1260.6964285714284"
+          y1="797.9642857142858"
+          y2="797.9642857142858"
+        />
+      </g>
+      <g
+        style="cursor: ns-resize;"
+      >
+        <line
+          class="element-line handle-ghost"
+          x1="137.30357142857144"
+          x2="1260.6964285714284"
+          y1="49.03571428571428"
+          y2="49.03571428571428"
+        />
+        <line
+          class="element-line handle-highlight"
+          x1="137.30357142857144"
+          x2="1260.6964285714284"
+          y1="49.03571428571428"
+          y2="49.03571428571428"
+        />
+      </g>
+      <g
+        style="cursor: ew-resize;"
+      >
+        <line
+          class="element-line handle-ghost"
+          x1="137.30357142857144"
+          x2="137.30357142857144"
+          y1="797.9642857142858"
+          y2="49.03571428571428"
+        />
+        <line
+          class="element-line handle-highlight"
+          x1="137.30357142857144"
+          x2="137.30357142857144"
+          y1="797.9642857142858"
+          y2="49.03571428571428"
+        />
+      </g>
+      <g
+        style="cursor: ew-resize;"
+      >
+        <line
+          class="element-line handle-ghost"
+          x1="1260.6964285714284"
+          x2="1260.6964285714284"
+          y1="797.9642857142858"
+          y2="49.03571428571428"
+        />
+        <line
+          class="element-line handle-highlight"
+          x1="1260.6964285714284"
+          x2="1260.6964285714284"
+          y1="797.9642857142858"
+          y2="49.03571428571428"
+        />
+      </g>
+      <circle
+        class="element-shape handle-ghost"
+        cx="137.30357142857144"
+        cy="797.9642857142858"
+        r="5"
+        style="cursor: nesw-resize;"
+      />
+      <circle
+        class="element-shape handle-ghost"
+        cx="1260.6964285714284"
+        cy="797.9642857142858"
+        r="5"
+        style="cursor: nwse-resize;"
+      />
+      <circle
+        class="element-shape handle-ghost"
+        cx="137.30357142857144"
+        cy="49.03571428571428"
+        r="5"
+        style="cursor: nwse-resize;"
+      />
+      <circle
+        class="element-shape handle-ghost"
+        cx="1260.6964285714284"
+        cy="49.03571428571428"
+        r="5"
+        style="cursor: nesw-resize;"
+      />
+    </g>
+  </g>
+  <line
+    class="mark-guide"
+    x1="199.71428571428572"
+    x2="199.71428571428572"
+    y1="0"
+    y2="847"
+  />
+  <line
+    class="mark-guide"
+    x1="1198.2857142857142"
+    x2="1198.2857142857142"
+    y1="0"
+    y2="847"
+  />
+  <line
+    class="mark-guide"
+    x1="0"
+    x2="1398"
+    y1="735.5535714285714"
+    y2="735.5535714285714"
+  />
+  <line
+    class="mark-guide"
+    x1="0"
+    x2="1398"
+    y1="148.89285714285717"
+    y2="148.89285714285717"
+  />
+  <line
+    class="mark-guide"
+    x1="699"
+    x2="699"
+    y1="0"
+    y2="847"
+  />
+  <line
+    class="mark-guide"
+    x1="0"
+    x2="1398"
+    y1="442.2232142857143"
+    y2="442.2232142857143"
+  />
+  <g
+    class="graphics"
+    transform="translate(699,423.5) scale(1.2482142857142857)"
+  >
+    <g
+      style="opacity: 1;"
+      transform="translate(0,0)"
+    >
+      <rect
+        height="470"
+        style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+        width="800"
+        x="-400"
+        y="-220"
+      />
+      <g
+        style="opacity: 1;"
+        transform="translate(0,0)"
+      />
+      <g
+        style="opacity: 1;"
+        transform="translate(0,0)"
+      >
+        <g
+          style="opacity: 1;"
+          transform="translate(0,0)"
+        >
+          <g
+            style="opacity: 1;"
+            transform="translate(0,0)"
+          />
+        </g>
+        <g
+          style="opacity: 1;"
+          transform="translate(0,0)"
+        >
+          <g
+            style="opacity: 1;"
+            transform="translate(0,0)"
+          >
+            <g
+              style="opacity: 1;"
+              transform="translate(0,0)"
+            />
+            <g
+              style="opacity: 1;"
+              transform="translate(0,0)"
+            >
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="317.8544542077589"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-400"
+                  y="-67.85445420775892"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="470.00000000664915"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-378.999999999964"
+                  y="-220.00000000664915"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="271.8569636173968"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-357.999999999928"
+                  y="-21.856963617396787"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="362.6725219624708"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-332.72727272727275"
+                  y="-112.6725219624708"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="458.205771650146"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-311.72727272723677"
+                  y="-208.205771650146"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="227.03889586268497"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="-290.7272727272007"
+                  y="22.961104137315033"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="402.77289837458136"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="-265.45454545454544"
+                  y="-152.77289837458136"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="435.2070263549649"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="-244.45454545450943"
+                  y="-185.2070263549649"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="186.9385194505744"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="-223.45454545447342"
+                  y="63.06148054942561"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="435.2070263549649"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="-198.18181818181822"
+                  y="-185.2070263549649"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="402.77289837458136"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="-177.1818181817822"
+                  y="-152.77289837458136"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="154.5043914701908"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="-156.1818181817462"
+                  y="95.4956085298092"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="458.205771650146"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="-130.9090909090909"
+                  y="-208.205771650146"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="362.6725219624708"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="-109.90909090905491"
+                  y="-112.6725219624708"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="131.5056461750097"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="-88.9090909090189"
+                  y="118.49435382499028"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="470.00000000664915"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="-63.636363636363654"
+                  y="-220.00000000664915"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="317.8544542077589"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000036007"
+                  x="-42.63636363632766"
+                  y="-67.85445420775892"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="119.71141781850662"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000036003"
+                  x="-21.636363636291644"
+                  y="130.28858218149338"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="470.00000000664915"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000036003"
+                  x="3.636363636363626"
+                  y="-220.00000000664915"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="271.8569636173968"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000036007"
+                  x="24.636363636399626"
+                  y="-21.856963617396787"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="119.71141781850662"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035996"
+                  x="45.63636363643563"
+                  y="130.28858218149338"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="458.205771650146"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="70.90909090909088"
+                  y="-208.205771650146"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="227.03889586268497"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="91.90909090912687"
+                  y="22.961104137315033"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="131.5056461750097"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035996"
+                  x="112.90909090916288"
+                  y="118.49435382499028"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="435.2070263549649"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="138.18181818181816"
+                  y="-185.2070263549649"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="186.9385194505744"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="159.18181818185417"
+                  y="63.06148054942561"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="154.5043914701908"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="180.18181818189018"
+                  y="95.4956085298092"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="402.77289837458136"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="205.4545454545455"
+                  y="-152.77289837458136"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="154.5043914701908"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.000000000035982"
+                  x="226.4545454545815"
+                  y="95.4956085298092"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="186.9385194505744"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003601"
+                  x="247.45454545461754"
+                  y="63.06148054942561"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="362.6725219624708"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="272.72727272727275"
+                  y="-112.6725219624708"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="131.5056461750097"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="293.72727272730873"
+                  y="118.49435382499028"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="227.03889586268497"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="314.72727272734477"
+                  y="22.961104137315033"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="317.8544542077589"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="340"
+                  y="-67.85445420775892"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="119.71141781850662"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="361.000000000036"
+                  y="130.28858218149338"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <rect
+                  height="271.8569636173968"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                  width="18.00000000003604"
+                  x="382.000000000072"
+                  y="-21.856963617396787"
+                />
+              </g>
+            </g>
+          </g>
+          <g
+            style="opacity: 1;"
+            transform="translate(0,0)"
+          >
+            <g
+              style="opacity: 1;"
+              transform="translate(0,0)"
+            >
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-400"
+                x2="400"
+                y1="250"
+                y2="250"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-370"
+                x2="-370"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-302.72727272727275"
+                x2="-302.72727272727275"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-235.45454545454544"
+                x2="-235.45454545454544"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-168.18181818181816"
+                x2="-168.18181818181816"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-100.90909090909088"
+                x2="-100.90909090909088"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-33.636363636363626"
+                x2="-33.636363636363626"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="33.636363636363626"
+                x2="33.636363636363626"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="100.90909090909088"
+                x2="100.90909090909088"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="168.18181818181813"
+                x2="168.18181818181813"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="235.4545454545455"
+                x2="235.4545454545455"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="302.72727272727275"
+                x2="302.72727272727275"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="370"
+                x2="370"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="-400"
+                x2="-400"
+                y1="250"
+                y2="255"
+              />
+              <line
+                style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
+                x1="400"
+                x2="400"
+                y1="250"
+                y2="255"
+              />
+              <g
+                style="opacity: 1;"
+                transform="translate(-370,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-9.673828125"
+                  y="10.396272568433318"
+                >
+                  Jan
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(-302.72727273,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.3388671875"
+                  y="10.396272568433318"
+                >
+                  Feb
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(-235.45454545,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.3330078125"
+                  y="10.396272568433318"
+                >
+                  Mar
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(-168.18181818,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-9.3369140625"
+                  y="10.396272568433318"
+                >
+                  Apr
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(-100.90909091,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-11.3349609375"
+                  y="10.396272568433318"
+                >
+                  May
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(-33.63636364,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-9.673828125"
+                  y="10.396272568433318"
+                >
+                  Jun
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(33.63636364,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-7.669921875"
+                  y="10.396272568433318"
+                >
+                  Jul
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(100.90909091,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.67578125"
+                  y="10.396272568433318"
+                >
+                  Aug
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(168.18181818,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.67578125"
+                  y="10.396272568433318"
+                >
+                  Sep
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(235.45454545,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-9.333984375"
+                  y="10.396272568433318"
+                >
+                  Oct
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(302.72727273,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.669921875"
+                  y="10.396272568433318"
+                >
+                  Nov
+                </text>
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(370,258)"
+              >
+                <text
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
+                  x="-10.669921875"
+                  y="10.396272568433318"
+                >
+                  Dec
+                </text>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+      <g
+        style="opacity: 1;"
+        transform="translate(0,0)"
+      >
+        <g
+          style="opacity: 1;"
+          transform="translate(0,-300)"
+        >
+          <text
+            style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
+            x="-30.017578125"
+            y="51.254979615608626"
+          >
+            demo
+          </text>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="199.71428571428572"
+              x2="199.71428571428572"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1198.2857142857142"
+              x2="1198.2857142857142"
+              y1="12905.642857142857"
+              y2="-12058.642857142857"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="148.89285714285717"
+              y2="148.89285714285717"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11783.142857142857"
+              x2="13181.142857142857"
+              y1="735.5535714285714"
+              y2="735.5535714285714"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="317.8544542077589"
+            width="18.00000000003604"
+            x="-400"
+            y="-67.85445420775892"
+          />
+          <rect
+            class="element-shape indicator"
+            height="317.8544542077589"
+            width="18.00000000003604"
+            x="-400"
+            y="-67.85445420775892"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="470.00000000664915"
+            width="18.00000000003604"
+            x="-378.999999999964"
+            y="-220.00000000664915"
+          />
+          <rect
+            class="element-shape indicator"
+            height="470.00000000664915"
+            width="18.00000000003604"
+            x="-378.999999999964"
+            y="-220.00000000664915"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="271.8569636173968"
+            width="18.00000000003604"
+            x="-357.999999999928"
+            y="-21.856963617396787"
+          />
+          <rect
+            class="element-shape indicator"
+            height="271.8569636173968"
+            width="18.00000000003604"
+            x="-357.999999999928"
+            y="-21.856963617396787"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="362.6725219624708"
+            width="18.00000000003604"
+            x="-332.72727272727275"
+            y="-112.6725219624708"
+          />
+          <rect
+            class="element-shape indicator"
+            height="362.6725219624708"
+            width="18.00000000003604"
+            x="-332.72727272727275"
+            y="-112.6725219624708"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="458.205771650146"
+            width="18.00000000003604"
+            x="-311.72727272723677"
+            y="-208.205771650146"
+          />
+          <rect
+            class="element-shape indicator"
+            height="458.205771650146"
+            width="18.00000000003604"
+            x="-311.72727272723677"
+            y="-208.205771650146"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="227.03889586268497"
+            width="18.00000000003604"
+            x="-290.7272727272007"
+            y="22.961104137315033"
+          />
+          <rect
+            class="element-shape indicator"
+            height="227.03889586268497"
+            width="18.00000000003604"
+            x="-290.7272727272007"
+            y="22.961104137315033"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="402.77289837458136"
+            width="18.00000000003601"
+            x="-265.45454545454544"
+            y="-152.77289837458136"
+          />
+          <rect
+            class="element-shape indicator"
+            height="402.77289837458136"
+            width="18.00000000003601"
+            x="-265.45454545454544"
+            y="-152.77289837458136"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="-244.45454545450943"
+            y="-185.2070263549649"
+          />
+          <rect
+            class="element-shape indicator"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="-244.45454545450943"
+            y="-185.2070263549649"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="186.9385194505744"
+            width="18.000000000035982"
+            x="-223.45454545447342"
+            y="63.06148054942561"
+          />
+          <rect
+            class="element-shape indicator"
+            height="186.9385194505744"
+            width="18.000000000035982"
+            x="-223.45454545447342"
+            y="63.06148054942561"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="-198.18181818181822"
+            y="-185.2070263549649"
+          />
+          <rect
+            class="element-shape indicator"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="-198.18181818181822"
+            y="-185.2070263549649"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="402.77289837458136"
+            width="18.000000000035982"
+            x="-177.1818181817822"
+            y="-152.77289837458136"
+          />
+          <rect
+            class="element-shape indicator"
+            height="402.77289837458136"
+            width="18.000000000035982"
+            x="-177.1818181817822"
+            y="-152.77289837458136"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="-156.1818181817462"
+            y="95.4956085298092"
+          />
+          <rect
+            class="element-shape indicator"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="-156.1818181817462"
+            y="95.4956085298092"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="458.205771650146"
+            width="18.00000000003601"
+            x="-130.9090909090909"
+            y="-208.205771650146"
+          />
+          <rect
+            class="element-shape indicator"
+            height="458.205771650146"
+            width="18.00000000003601"
+            x="-130.9090909090909"
+            y="-208.205771650146"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="362.6725219624708"
+            width="18.00000000003601"
+            x="-109.90909090905491"
+            y="-112.6725219624708"
+          />
+          <rect
+            class="element-shape indicator"
+            height="362.6725219624708"
+            width="18.00000000003601"
+            x="-109.90909090905491"
+            y="-112.6725219624708"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="131.5056461750097"
+            width="18.00000000003601"
+            x="-88.9090909090189"
+            y="118.49435382499028"
+          />
+          <rect
+            class="element-shape indicator"
+            height="131.5056461750097"
+            width="18.00000000003601"
+            x="-88.9090909090189"
+            y="118.49435382499028"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="470.00000000664915"
+            width="18.00000000003601"
+            x="-63.636363636363654"
+            y="-220.00000000664915"
+          />
+          <rect
+            class="element-shape indicator"
+            height="470.00000000664915"
+            width="18.00000000003601"
+            x="-63.636363636363654"
+            y="-220.00000000664915"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="317.8544542077589"
+            width="18.000000000036007"
+            x="-42.63636363632766"
+            y="-67.85445420775892"
+          />
+          <rect
+            class="element-shape indicator"
+            height="317.8544542077589"
+            width="18.000000000036007"
+            x="-42.63636363632766"
+            y="-67.85445420775892"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="119.71141781850662"
+            width="18.000000000036003"
+            x="-21.636363636291644"
+            y="130.28858218149338"
+          />
+          <rect
+            class="element-shape indicator"
+            height="119.71141781850662"
+            width="18.000000000036003"
+            x="-21.636363636291644"
+            y="130.28858218149338"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="470.00000000664915"
+            width="18.000000000036003"
+            x="3.636363636363626"
+            y="-220.00000000664915"
+          />
+          <rect
+            class="element-shape indicator"
+            height="470.00000000664915"
+            width="18.000000000036003"
+            x="3.636363636363626"
+            y="-220.00000000664915"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="271.8569636173968"
+            width="18.000000000036007"
+            x="24.636363636399626"
+            y="-21.856963617396787"
+          />
+          <rect
+            class="element-shape indicator"
+            height="271.8569636173968"
+            width="18.000000000036007"
+            x="24.636363636399626"
+            y="-21.856963617396787"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="119.71141781850662"
+            width="18.000000000035996"
+            x="45.63636363643563"
+            y="130.28858218149338"
+          />
+          <rect
+            class="element-shape indicator"
+            height="119.71141781850662"
+            width="18.000000000035996"
+            x="45.63636363643563"
+            y="130.28858218149338"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="458.205771650146"
+            width="18.00000000003601"
+            x="70.90909090909088"
+            y="-208.205771650146"
+          />
+          <rect
+            class="element-shape indicator"
+            height="458.205771650146"
+            width="18.00000000003601"
+            x="70.90909090909088"
+            y="-208.205771650146"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="227.03889586268497"
+            width="18.00000000003601"
+            x="91.90909090912687"
+            y="22.961104137315033"
+          />
+          <rect
+            class="element-shape indicator"
+            height="227.03889586268497"
+            width="18.00000000003601"
+            x="91.90909090912687"
+            y="22.961104137315033"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="131.5056461750097"
+            width="18.000000000035996"
+            x="112.90909090916288"
+            y="118.49435382499028"
+          />
+          <rect
+            class="element-shape indicator"
+            height="131.5056461750097"
+            width="18.000000000035996"
+            x="112.90909090916288"
+            y="118.49435382499028"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="138.18181818181816"
+            y="-185.2070263549649"
+          />
+          <rect
+            class="element-shape indicator"
+            height="435.2070263549649"
+            width="18.000000000035982"
+            x="138.18181818181816"
+            y="-185.2070263549649"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="186.9385194505744"
+            width="18.000000000035982"
+            x="159.18181818185417"
+            y="63.06148054942561"
+          />
+          <rect
+            class="element-shape indicator"
+            height="186.9385194505744"
+            width="18.000000000035982"
+            x="159.18181818185417"
+            y="63.06148054942561"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="180.18181818189018"
+            y="95.4956085298092"
+          />
+          <rect
+            class="element-shape indicator"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="180.18181818189018"
+            y="95.4956085298092"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="402.77289837458136"
+            width="18.000000000035982"
+            x="205.4545454545455"
+            y="-152.77289837458136"
+          />
+          <rect
+            class="element-shape indicator"
+            height="402.77289837458136"
+            width="18.000000000035982"
+            x="205.4545454545455"
+            y="-152.77289837458136"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="226.4545454545815"
+            y="95.4956085298092"
+          />
+          <rect
+            class="element-shape indicator"
+            height="154.5043914701908"
+            width="18.000000000035982"
+            x="226.4545454545815"
+            y="95.4956085298092"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="186.9385194505744"
+            width="18.00000000003601"
+            x="247.45454545461754"
+            y="63.06148054942561"
+          />
+          <rect
+            class="element-shape indicator"
+            height="186.9385194505744"
+            width="18.00000000003601"
+            x="247.45454545461754"
+            y="63.06148054942561"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="362.6725219624708"
+            width="18.00000000003604"
+            x="272.72727272727275"
+            y="-112.6725219624708"
+          />
+          <rect
+            class="element-shape indicator"
+            height="362.6725219624708"
+            width="18.00000000003604"
+            x="272.72727272727275"
+            y="-112.6725219624708"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="131.5056461750097"
+            width="18.00000000003604"
+            x="293.72727272730873"
+            y="118.49435382499028"
+          />
+          <rect
+            class="element-shape indicator"
+            height="131.5056461750097"
+            width="18.00000000003604"
+            x="293.72727272730873"
+            y="118.49435382499028"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="227.03889586268497"
+            width="18.00000000003604"
+            x="314.72727272734477"
+            y="22.961104137315033"
+          />
+          <rect
+            class="element-shape indicator"
+            height="227.03889586268497"
+            width="18.00000000003604"
+            x="314.72727272734477"
+            y="22.961104137315033"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="317.8544542077589"
+            width="18.00000000003604"
+            x="340"
+            y="-67.85445420775892"
+          />
+          <rect
+            class="element-shape indicator"
+            height="317.8544542077589"
+            width="18.00000000003604"
+            x="340"
+            y="-67.85445420775892"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="119.71141781850662"
+            width="18.00000000003604"
+            x="361.000000000036"
+            y="130.28858218149338"
+          />
+          <rect
+            class="element-shape indicator"
+            height="119.71141781850662"
+            width="18.00000000003604"
+            x="361.000000000036"
+            y="130.28858218149338"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="271.8569636173968"
+            width="18.00000000003604"
+            x="382.000000000072"
+            y="-21.856963617396787"
+          />
+          <rect
+            class="element-shape indicator"
+            height="271.8569636173968"
+            width="18.00000000003604"
+            x="382.000000000072"
+            y="-21.856963617396787"
+          />
+        </g>
+      </g>
+      <g
+        class="bounding-box interactable"
+        transform="translate(699,423.5) scale(1.24821429) translate(0,0)"
+      >
+        <rect
+          class="element-shape ghost"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
+        />
+        <rect
+          class="element-shape indicator"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
+        />
+      </g>
+    </g>
+    <g
+      class="bounding-box interactable"
+      transform="translate(699,102.91855878)rotate(0)"
+    >
+      <rect
+        class="element-shape ghost"
+        height="32.87283184957152"
+        width="74.93673967633929"
+        x="-37.46836983816964"
+        y="-16.43641592478576"
+      />
+      <rect
+        class="element-shape indicator"
+        height="32.87283184957152"
+        width="74.93673967633929"
+        x="-37.46836983816964"
+        y="-16.43641592478576"
+      />
+    </g>
+  </g>
+</svg>
+```
+

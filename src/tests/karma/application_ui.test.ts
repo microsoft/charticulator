@@ -26,13 +26,13 @@ import {
 import { DragData } from "../../app";
 import { Expression } from "../../core";
 import { matchSnapshot } from "chai-karma-snapshot";
-import { loadJSON } from "../unit/utils";
+import { loadJSON, waitSolver } from "../unit/utils";
 declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
-use(matchSnapshot);
 
 describe("Charticulator", () => {
+  use(matchSnapshot);
   let application: Application = null;
   // The directory containing test cases
   before(function (done) {
@@ -138,4 +138,25 @@ describe("Charticulator", () => {
     store.dispatcher.dispatch(new Actions.Load(chartFile.state));
     expect(getChartCanvas()).to.matchSnapshot();
   });
+
+  it("import template", async () => {
+    const chartFilePath = `base/${pathPrefix}/default.chart`;
+    const chartFile = await loadJSON(chartFilePath);
+    const store = application.appStore;
+    store.dispatcher.dispatch(new Actions.Load(chartFile.state));
+    await waitSolver();
+
+    const templateFilePath = `base/${pathPrefix}/default.tmplt`;
+    const templateFile = await loadJSON(templateFilePath);
+    store.dispatcher.dispatch(
+      new Actions.ImportChartAndDataset(
+        templateFile.specification,
+        store.dataset,
+        {}
+      )
+    );
+    await waitSolver();
+
+    expect(getChartCanvas()).to.matchSnapshot();
+  }).timeout(longTimeOut);
 }).timeout(longTimeOut);
