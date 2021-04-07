@@ -304,10 +304,10 @@ export function renderGraphicalElementSVG(
           {...mouseEvents}
           className={options.className || null}
           style={style}
-          x={Math.min(rect.x1, rect.x2)}
-          y={-Math.max(rect.y1, rect.y2)}
-          width={Math.abs(rect.x1 - rect.x2)}
-          height={Math.abs(rect.y1 - rect.y2)}
+          x={toSVGNumber(Math.min(rect.x1, rect.x2))}
+          y={toSVGNumber(-Math.max(rect.y1, rect.y2))}
+          width={toSVGNumber(Math.abs(rect.x1 - rect.x2))}
+          height={toSVGNumber(Math.abs(rect.y1 - rect.y2))}
         />
       );
     }
@@ -319,9 +319,9 @@ export function renderGraphicalElementSVG(
           {...mouseEvents}
           className={options.className || null}
           style={style}
-          cx={circle.cx}
-          cy={-circle.cy}
-          r={circle.r}
+          cx={toSVGNumber(circle.cx)}
+          cy={toSVGNumber(-circle.cy)}
+          r={toSVGNumber(circle.r)}
         />
       );
     }
@@ -333,10 +333,10 @@ export function renderGraphicalElementSVG(
           {...mouseEvents}
           className={options.className || null}
           style={style}
-          cx={(ellipse.x1 + ellipse.x2) / 2}
-          cy={-(ellipse.y1 + ellipse.y2) / 2}
-          rx={Math.abs(ellipse.x1 - ellipse.x2) / 2}
-          ry={Math.abs(ellipse.y1 - ellipse.y2) / 2}
+          cx={toSVGNumber((ellipse.x1 + ellipse.x2) / 2)}
+          cy={toSVGNumber(-(ellipse.y1 + ellipse.y2) / 2)}
+          rx={toSVGNumber(Math.abs(ellipse.x1 - ellipse.x2) / 2)}
+          ry={toSVGNumber(Math.abs(ellipse.y1 - ellipse.y2) / 2)}
         />
       );
     }
@@ -348,10 +348,10 @@ export function renderGraphicalElementSVG(
           {...mouseEvents}
           className={options.className || null}
           style={style}
-          x1={line.x1}
-          y1={-line.y1}
-          x2={line.x2}
-          y2={-line.y2}
+          x1={toSVGNumber(line.x1)}
+          y1={toSVGNumber(-line.y1)}
+          x2={toSVGNumber(line.x2)}
+          y2={toSVGNumber(-line.y2)}
         />
       );
     }
@@ -407,8 +407,8 @@ export function renderGraphicalElementSVG(
             {...mouseEvents}
             className={options.className || null}
             style={style2}
-            x={text.cx}
-            y={-text.cy}
+            x={toSVGNumber(text.cx)}
+            y={toSVGNumber(-text.cy)}
           >
             {text.text}
           </text>
@@ -419,8 +419,8 @@ export function renderGraphicalElementSVG(
             {...mouseEvents}
             className={options.className || null}
             style={style}
-            x={text.cx}
-            y={-text.cy}
+            x={toSVGNumber(text.cx)}
+            y={toSVGNumber(-text.cy)}
           >
             {text.text}
           </text>
@@ -438,8 +438,8 @@ export function renderGraphicalElementSVG(
             {...mouseEvents}
             className={options.className || null}
             style={style}
-            x={text.cx}
-            y={-text.cy}
+            x={toSVGNumber(text.cx)}
+            y={toSVGNumber(-text.cy)}
           >
             {text.text}
           </text>
@@ -469,10 +469,10 @@ export function renderGraphicalElementSVG(
               ? options.externalResourceResolver(image.src)
               : image.src
           }
-          x={image.x}
-          y={-image.y - image.height}
-          width={image.width}
-          height={image.height}
+          x={toSVGNumber(image.x)}
+          y={toSVGNumber(-image.y - image.height)}
+          width={toSVGNumber(image.width)}
+          height={toSVGNumber(image.height)}
         />
       );
     }

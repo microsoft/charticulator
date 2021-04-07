@@ -257,71 +257,71 @@
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-302.72727272727275"
-                x2="-302.72727272727275"
+                x1="-302.73"
+                x2="-302.73"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235.45454545454544"
-                x2="-235.45454545454544"
+                x1="-235.45"
+                x2="-235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168.18181818181816"
-                x2="-168.18181818181816"
+                x1="-168.18"
+                x2="-168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-100.90909090909088"
-                x2="-100.90909090909088"
+                x1="-100.91"
+                x2="-100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-33.636363636363626"
-                x2="-33.636363636363626"
+                x1="-33.64"
+                x2="-33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="33.636363636363626"
-                x2="33.636363636363626"
+                x1="33.64"
+                x2="33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="100.90909090909088"
-                x2="100.90909090909088"
+                x1="100.91"
+                x2="100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="168.18181818181813"
-                x2="168.18181818181813"
+                x1="168.18"
+                x2="168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="235.4545454545455"
-                x2="235.4545454545455"
+                x1="235.45"
+                x2="235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="302.72727272727275"
-                x2="302.72727272727275"
+                x1="302.73"
+                x2="302.73"
                 y1="250"
                 y2="255"
               />
@@ -352,8 +352,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jan
                 </text>
@@ -364,8 +364,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3388671875"
-                  y="10.396272568433318"
+                  x="-10.34"
+                  y="10.4"
                 >
                   Feb
                 </text>
@@ -376,8 +376,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3330078125"
-                  y="10.396272568433318"
+                  x="-10.33"
+                  y="10.4"
                 >
                   Mar
                 </text>
@@ -388,8 +388,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.3369140625"
-                  y="10.396272568433318"
+                  x="-9.34"
+                  y="10.4"
                 >
                   Apr
                 </text>
@@ -400,8 +400,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11.3349609375"
-                  y="10.396272568433318"
+                  x="-11.33"
+                  y="10.4"
                 >
                   May
                 </text>
@@ -412,8 +412,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jun
                 </text>
@@ -424,8 +424,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-7.669921875"
-                  y="10.396272568433318"
+                  x="-7.67"
+                  y="10.4"
                 >
                   Jul
                 </text>
@@ -436,8 +436,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Aug
                 </text>
@@ -448,8 +448,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Sep
                 </text>
@@ -460,8 +460,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.333984375"
-                  y="10.396272568433318"
+                  x="-9.33"
+                  y="10.4"
                 >
                   Oct
                 </text>
@@ -472,8 +472,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Nov
                 </text>
@@ -484,8 +484,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Dec
                 </text>
@@ -504,8 +504,8 @@
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-30.017578125"
-            y="51.254979615608626"
+            x="-30.02"
+            y="51.25"
           >
             demo
           </text>
@@ -1208,71 +1208,71 @@
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-302.72727272727275"
-                x2="-302.72727272727275"
+                x1="-302.73"
+                x2="-302.73"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235.45454545454544"
-                x2="-235.45454545454544"
+                x1="-235.45"
+                x2="-235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168.18181818181816"
-                x2="-168.18181818181816"
+                x1="-168.18"
+                x2="-168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-100.90909090909088"
-                x2="-100.90909090909088"
+                x1="-100.91"
+                x2="-100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-33.636363636363626"
-                x2="-33.636363636363626"
+                x1="-33.64"
+                x2="-33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="33.636363636363626"
-                x2="33.636363636363626"
+                x1="33.64"
+                x2="33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="100.90909090909088"
-                x2="100.90909090909088"
+                x1="100.91"
+                x2="100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="168.18181818181813"
-                x2="168.18181818181813"
+                x1="168.18"
+                x2="168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="235.4545454545455"
-                x2="235.4545454545455"
+                x1="235.45"
+                x2="235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="302.72727272727275"
-                x2="302.72727272727275"
+                x1="302.73"
+                x2="302.73"
                 y1="250"
                 y2="255"
               />
@@ -1303,8 +1303,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jan
                 </text>
@@ -1315,8 +1315,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3388671875"
-                  y="10.396272568433318"
+                  x="-10.34"
+                  y="10.4"
                 >
                   Feb
                 </text>
@@ -1327,8 +1327,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3330078125"
-                  y="10.396272568433318"
+                  x="-10.33"
+                  y="10.4"
                 >
                   Mar
                 </text>
@@ -1339,8 +1339,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.3369140625"
-                  y="10.396272568433318"
+                  x="-9.34"
+                  y="10.4"
                 >
                   Apr
                 </text>
@@ -1351,8 +1351,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11.3349609375"
-                  y="10.396272568433318"
+                  x="-11.33"
+                  y="10.4"
                 >
                   May
                 </text>
@@ -1363,8 +1363,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jun
                 </text>
@@ -1375,8 +1375,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-7.669921875"
-                  y="10.396272568433318"
+                  x="-7.67"
+                  y="10.4"
                 >
                   Jul
                 </text>
@@ -1387,8 +1387,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Aug
                 </text>
@@ -1399,8 +1399,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Sep
                 </text>
@@ -1411,8 +1411,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.333984375"
-                  y="10.396272568433318"
+                  x="-9.33"
+                  y="10.4"
                 >
                   Oct
                 </text>
@@ -1423,8 +1423,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Nov
                 </text>
@@ -1435,8 +1435,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Dec
                 </text>
@@ -1455,8 +1455,8 @@
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-30.017578125"
-            y="51.254979615608626"
+            x="-30.02"
+            y="51.25"
           >
             demo
           </text>
@@ -1908,7 +1908,7 @@
 <svg
   class="canvas-view"
   height="847"
-  width="1363.0625"
+  width="1398"
   x="0"
   y="0"
 >
@@ -1916,31 +1916,31 @@
     class="interaction-handler"
     height="847"
     style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-    width="1363.0625"
+    width="1398"
     x="0"
     y="0"
   />
   <g>
     <rect
       class="canvas-region-outer2"
-      height="778.3404255319149"
-      width="907.0638297872339"
-      x="227.999335106383"
-      y="34.329787234042556"
+      height="732"
+      width="853"
+      x="272.5"
+      y="57.5"
     />
     <rect
       class="canvas-region-outer"
-      height="774.3404255319149"
-      width="903.0638297872339"
-      x="229.999335106383"
-      y="36.329787234042556"
+      height="728"
+      width="849"
+      x="274.5"
+      y="59.5"
     />
     <rect
       class="canvas-region"
-      height="772.3404255319149"
-      width="901.0638297872339"
-      x="230.999335106383"
-      y="37.329787234042556"
+      height="726"
+      width="847"
+      x="275.5"
+      y="60.5"
     />
     <g
       class="handle handle-resize"
@@ -1951,17 +1951,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="230.999335106383"
-          x2="1132.0631648936169"
-          y1="809.6702127659574"
-          y2="809.6702127659574"
+          x1="275.5"
+          x2="1122.5"
+          y1="786.5"
+          y2="786.5"
         />
         <line
           class="element-line handle-highlight"
-          x1="230.999335106383"
-          x2="1132.0631648936169"
-          y1="809.6702127659574"
-          y2="809.6702127659574"
+          x1="275.5"
+          x2="1122.5"
+          y1="786.5"
+          y2="786.5"
         />
       </g>
       <g
@@ -1969,17 +1969,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="230.999335106383"
-          x2="1132.0631648936169"
-          y1="37.329787234042556"
-          y2="37.329787234042556"
+          x1="275.5"
+          x2="1122.5"
+          y1="60.5"
+          y2="60.5"
         />
         <line
           class="element-line handle-highlight"
-          x1="230.999335106383"
-          x2="1132.0631648936169"
-          y1="37.329787234042556"
-          y2="37.329787234042556"
+          x1="275.5"
+          x2="1122.5"
+          y1="60.5"
+          y2="60.5"
         />
       </g>
       <g
@@ -1987,17 +1987,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="230.999335106383"
-          x2="230.999335106383"
-          y1="809.6702127659574"
-          y2="37.329787234042556"
+          x1="275.5"
+          x2="275.5"
+          y1="786.5"
+          y2="60.5"
         />
         <line
           class="element-line handle-highlight"
-          x1="230.999335106383"
-          x2="230.999335106383"
-          y1="809.6702127659574"
-          y2="37.329787234042556"
+          x1="275.5"
+          x2="275.5"
+          y1="786.5"
+          y2="60.5"
         />
       </g>
       <g
@@ -2005,44 +2005,44 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="1132.0631648936169"
-          x2="1132.0631648936169"
-          y1="809.6702127659574"
-          y2="37.329787234042556"
+          x1="1122.5"
+          x2="1122.5"
+          y1="786.5"
+          y2="60.5"
         />
         <line
           class="element-line handle-highlight"
-          x1="1132.0631648936169"
-          x2="1132.0631648936169"
-          y1="809.6702127659574"
-          y2="37.329787234042556"
+          x1="1122.5"
+          x2="1122.5"
+          y1="786.5"
+          y2="60.5"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="230.999335106383"
-        cy="809.6702127659574"
+        cx="275.5"
+        cy="786.5"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1132.0631648936169"
-        cy="809.6702127659574"
+        cx="1122.5"
+        cy="786.5"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="230.999335106383"
-        cy="37.329787234042556"
+        cx="275.5"
+        cy="60.5"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1132.0631648936169"
-        cy="37.329787234042556"
+        cx="1122.5"
+        cy="60.5"
         r="5"
         style="cursor: nesw-resize;"
       />
@@ -2050,49 +2050,49 @@
   </g>
   <line
     class="mark-guide"
-    x1="295.36103723404256"
-    x2="295.36103723404256"
+    x1="336"
+    x2="336"
     y1="0"
     y2="847"
   />
   <line
     class="mark-guide"
-    x1="1003.3397606382978"
-    x2="1003.3397606382978"
-    y1="0"
-    y2="847"
-  />
-  <line
-    class="mark-guide"
-    x1="0"
-    x2="1363.0625"
-    y1="745.3085106382978"
-    y2="745.3085106382978"
-  />
-  <line
-    class="mark-guide"
-    x1="0"
-    x2="1363.0625"
-    y1="140.3085106382979"
-    y2="140.3085106382979"
-  />
-  <line
-    class="mark-guide"
-    x1="649.3503989361702"
-    x2="649.3503989361702"
+    x1="1001.5"
+    x2="1001.5"
     y1="0"
     y2="847"
   />
   <line
     class="mark-guide"
     x1="0"
-    x2="1363.0625"
-    y1="442.8085106382979"
-    y2="442.8085106382979"
+    x2="1398"
+    y1="726"
+    y2="726"
+  />
+  <line
+    class="mark-guide"
+    x1="0"
+    x2="1398"
+    y1="157.3"
+    y2="157.3"
+  />
+  <line
+    class="mark-guide"
+    x1="668.75"
+    x2="668.75"
+    y1="0"
+    y2="847"
+  />
+  <line
+    class="mark-guide"
+    x1="0"
+    x2="1398"
+    y1="441.65"
+    y2="441.65"
   />
   <g
     class="graphics"
-    transform="translate(681.53125,423.5) scale(1.2872340425531914)"
+    transform="translate(699,423.5) scale(1.21)"
   >
     <g
       style="opacity: 1;"
@@ -2485,8 +2485,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="-9.536377402446128"
+                  x="-9.67"
+                  y="-9.54"
                 >
                   Jan
                 </text>
@@ -2504,8 +2504,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3388671875"
-                  y="-9.536377402446128"
+                  x="-10.34"
+                  y="-9.54"
                 >
                   Feb
                 </text>
@@ -2523,8 +2523,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3330078125"
-                  y="-9.536377402446128"
+                  x="-10.33"
+                  y="-9.54"
                 >
                   Mar
                 </text>
@@ -2542,8 +2542,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.3369140625"
-                  y="-9.536377402446128"
+                  x="-9.34"
+                  y="-9.54"
                 >
                   Apr
                 </text>
@@ -2561,8 +2561,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11.3349609375"
-                  y="-9.536377402446128"
+                  x="-11.33"
+                  y="-9.54"
                 >
                   May
                 </text>
@@ -2580,8 +2580,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="-9.536377402446128"
+                  x="-9.67"
+                  y="-9.54"
                 >
                   Jun
                 </text>
@@ -2599,8 +2599,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-7.669921875"
-                  y="-9.536377402446128"
+                  x="-7.67"
+                  y="-9.54"
                 >
                   Jul
                 </text>
@@ -2618,8 +2618,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="-9.536377402446128"
+                  x="-10.68"
+                  y="-9.54"
                 >
                   Aug
                 </text>
@@ -2637,8 +2637,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="-9.536377402446128"
+                  x="-10.68"
+                  y="-9.54"
                 >
                   Sep
                 </text>
@@ -2656,8 +2656,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.333984375"
-                  y="-9.536377402446128"
+                  x="-9.33"
+                  y="-9.54"
                 >
                   Oct
                 </text>
@@ -2675,8 +2675,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="-9.536377402446128"
+                  x="-10.67"
+                  y="-9.54"
                 >
                   Nov
                 </text>
@@ -2694,8 +2694,8 @@
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="-9.536377402446128"
+                  x="-10.67"
+                  y="-9.54"
                 >
                   Dec
                 </text>
@@ -2714,8 +2714,8 @@
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-250.76953125"
-            y="51.25497961560861"
+            x="-250.77"
+            y="51.25"
           >
             The Causes of Mortality in the Army in the East
           </text>
@@ -2736,14 +2736,14 @@
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
               x="25"
-              y="-6.762900407687827"
+              y="-6.76"
             >
               Disease
             </text>
             <circle
               cx="10"
               cy="-10"
-              r="6.666666666666667"
+              r="6.67"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
@@ -2754,14 +2754,14 @@
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
               x="25"
-              y="-6.762900407687827"
+              y="-6.76"
             >
               Other
             </text>
             <circle
               cx="10"
               cy="-10"
-              r="6.666666666666667"
+              r="6.67"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
@@ -2772,14 +2772,14 @@
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
               x="25"
-              y="-6.762900407687827"
+              y="-6.76"
             >
               Wounds
             </text>
             <circle
               cx="10"
               cy="-10"
-              r="6.666666666666667"
+              r="6.67"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
@@ -2798,17 +2798,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -2822,17 +2822,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -2846,17 +2846,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
           </g>
         </g>
@@ -2870,17 +2870,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
           </g>
         </g>
@@ -2896,17 +2896,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -2920,17 +2920,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -2944,17 +2944,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
           </g>
         </g>
@@ -2968,17 +2968,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
           </g>
         </g>
@@ -2994,17 +2994,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -3018,17 +3018,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -3042,17 +3042,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
           </g>
         </g>
@@ -3066,17 +3066,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
           </g>
         </g>
@@ -3092,17 +3092,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="336"
+              x2="336"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -3116,17 +3116,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1001.5"
+              x2="1001.5"
+              y1="12523.5"
+              y2="-11676.5"
             />
           </g>
         </g>
@@ -3140,17 +3140,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-11401"
+              x2="12799"
+              y1="157.3"
+              y2="157.3"
             />
           </g>
         </g>
@@ -3164,17 +3164,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
             />
           </g>
         </g>
@@ -3184,7 +3184,7 @@
       <g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3197,7 +3197,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3210,7 +3210,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3223,7 +3223,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3236,7 +3236,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3249,7 +3249,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3262,7 +3262,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3275,7 +3275,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3288,7 +3288,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3301,7 +3301,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3314,7 +3314,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3327,7 +3327,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3340,7 +3340,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3353,7 +3353,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3366,7 +3366,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3379,7 +3379,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3392,7 +3392,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3405,7 +3405,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3418,7 +3418,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3431,7 +3431,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3444,7 +3444,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3457,7 +3457,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3470,7 +3470,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3483,7 +3483,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3496,7 +3496,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3509,7 +3509,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3522,7 +3522,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3535,7 +3535,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3548,7 +3548,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3561,7 +3561,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3574,7 +3574,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3587,7 +3587,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3600,7 +3600,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3613,7 +3613,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3626,7 +3626,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3639,7 +3639,7 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(681.53125,423.5) scale(1.28723404) translate(-25,15)"
+          transform="translate(699,423.5) scale(1.21) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
@@ -3653,7 +3653,7 @@
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(681.53125,423.5) scale(1.28723404) translate(0,0)"
+        transform="translate(699,423.5) scale(1.21) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
@@ -3673,38 +3673,38 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(649.35,92.9)rotate(0)"
+      transform="translate(668.75,112.73)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="33.900451802376736"
-        width="645.5981549202128"
-        x="-322.7990774601064"
-        y="-16.950225901188368"
+        height="31.866424694234134"
+        width="606.862265625"
+        x="-303.4311328125"
+        y="-15.933212347117067"
       />
       <rect
         class="element-shape indicator"
-        height="33.900451802376736"
-        width="645.5981549202128"
-        x="-322.7990774601064"
-        y="-16.950225901188368"
+        height="31.866424694234134"
+        width="606.862265625"
+        x="-303.4311328125"
+        y="-15.933212347117067"
       />
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(681.53125,423.5) scale(1.28723404) translate(0,0)"
+      transform="translate(699,423.5) scale(1.21) translate(0,0)"
     >
       <rect
         class="element-shape ghost"
         height="60"
-        width="66.50390625"
+        width="66.5"
         x="250"
         y="-220"
       />
       <rect
         class="element-shape indicator"
         height="60"
-        width="66.50390625"
+        width="66.5"
         x="250"
         y="-220"
       />
@@ -3954,11 +3954,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="317.8544542077589"
+                  height="317.85"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
+                  width="18"
                   x="-400"
-                  y="-67.85445420775892"
+                  y="-67.85"
                 />
               </g>
               <g
@@ -3966,11 +3966,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="470.00000000664915"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="-378.999999999964"
-                  y="-220.00000000664915"
+                  width="18"
+                  x="-379"
+                  y="-220"
                 />
               </g>
               <g
@@ -3978,11 +3978,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="271.8569636173968"
+                  height="271.86"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="-357.999999999928"
-                  y="-21.856963617396787"
+                  width="18"
+                  x="-358"
+                  y="-21.86"
                 />
               </g>
               <g
@@ -3990,11 +3990,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="362.6725219624708"
+                  height="362.67"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="-332.72727272727275"
-                  y="-112.6725219624708"
+                  width="18"
+                  x="-332.73"
+                  y="-112.67"
                 />
               </g>
               <g
@@ -4002,11 +4002,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="458.205771650146"
+                  height="458.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="-311.72727272723677"
-                  y="-208.205771650146"
+                  width="18"
+                  x="-311.73"
+                  y="-208.21"
                 />
               </g>
               <g
@@ -4014,11 +4014,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="227.03889586268497"
+                  height="227.04"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="-290.7272727272007"
-                  y="22.961104137315033"
+                  width="18"
+                  x="-290.73"
+                  y="22.96"
                 />
               </g>
               <g
@@ -4026,11 +4026,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="402.77289837458136"
+                  height="402.77"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="-265.45454545454544"
-                  y="-152.77289837458136"
+                  width="18"
+                  x="-265.45"
+                  y="-152.77"
                 />
               </g>
               <g
@@ -4038,11 +4038,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="435.2070263549649"
+                  height="435.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="-244.45454545450943"
-                  y="-185.2070263549649"
+                  width="18"
+                  x="-244.45"
+                  y="-185.21"
                 />
               </g>
               <g
@@ -4050,11 +4050,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="186.9385194505744"
+                  height="186.94"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="-223.45454545447342"
-                  y="63.06148054942561"
+                  width="18"
+                  x="-223.45"
+                  y="63.06"
                 />
               </g>
               <g
@@ -4062,11 +4062,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="435.2070263549649"
+                  height="435.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="-198.18181818181822"
-                  y="-185.2070263549649"
+                  width="18"
+                  x="-198.18"
+                  y="-185.21"
                 />
               </g>
               <g
@@ -4074,11 +4074,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="402.77289837458136"
+                  height="402.77"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="-177.1818181817822"
-                  y="-152.77289837458136"
+                  width="18"
+                  x="-177.18"
+                  y="-152.77"
                 />
               </g>
               <g
@@ -4086,11 +4086,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="154.5043914701908"
+                  height="154.5"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="-156.1818181817462"
-                  y="95.4956085298092"
+                  width="18"
+                  x="-156.18"
+                  y="95.5"
                 />
               </g>
               <g
@@ -4098,11 +4098,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="458.205771650146"
+                  height="458.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="-130.9090909090909"
-                  y="-208.205771650146"
+                  width="18"
+                  x="-130.91"
+                  y="-208.21"
                 />
               </g>
               <g
@@ -4110,11 +4110,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="362.6725219624708"
+                  height="362.67"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="-109.90909090905491"
-                  y="-112.6725219624708"
+                  width="18"
+                  x="-109.91"
+                  y="-112.67"
                 />
               </g>
               <g
@@ -4122,11 +4122,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="131.5056461750097"
+                  height="131.51"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="-88.9090909090189"
-                  y="118.49435382499028"
+                  width="18"
+                  x="-88.91"
+                  y="118.49"
                 />
               </g>
               <g
@@ -4134,11 +4134,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="470.00000000664915"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="-63.636363636363654"
-                  y="-220.00000000664915"
+                  width="18"
+                  x="-63.64"
+                  y="-220"
                 />
               </g>
               <g
@@ -4146,11 +4146,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="317.8544542077589"
+                  height="317.85"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000036007"
-                  x="-42.63636363632766"
-                  y="-67.85445420775892"
+                  width="18"
+                  x="-42.64"
+                  y="-67.85"
                 />
               </g>
               <g
@@ -4158,11 +4158,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="119.71141781850662"
+                  height="119.71"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000036003"
-                  x="-21.636363636291644"
-                  y="130.28858218149338"
+                  width="18"
+                  x="-21.64"
+                  y="130.29"
                 />
               </g>
               <g
@@ -4170,11 +4170,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="470.00000000664915"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000036003"
-                  x="3.636363636363626"
-                  y="-220.00000000664915"
+                  width="18"
+                  x="3.64"
+                  y="-220"
                 />
               </g>
               <g
@@ -4182,11 +4182,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="271.8569636173968"
+                  height="271.86"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000036007"
-                  x="24.636363636399626"
-                  y="-21.856963617396787"
+                  width="18"
+                  x="24.64"
+                  y="-21.86"
                 />
               </g>
               <g
@@ -4194,11 +4194,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="119.71141781850662"
+                  height="119.71"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035996"
-                  x="45.63636363643563"
-                  y="130.28858218149338"
+                  width="18"
+                  x="45.64"
+                  y="130.29"
                 />
               </g>
               <g
@@ -4206,11 +4206,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="458.205771650146"
+                  height="458.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="70.90909090909088"
-                  y="-208.205771650146"
+                  width="18"
+                  x="70.91"
+                  y="-208.21"
                 />
               </g>
               <g
@@ -4218,11 +4218,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="227.03889586268497"
+                  height="227.04"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="91.90909090912687"
-                  y="22.961104137315033"
+                  width="18"
+                  x="91.91"
+                  y="22.96"
                 />
               </g>
               <g
@@ -4230,11 +4230,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="131.5056461750097"
+                  height="131.51"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035996"
-                  x="112.90909090916288"
-                  y="118.49435382499028"
+                  width="18"
+                  x="112.91"
+                  y="118.49"
                 />
               </g>
               <g
@@ -4242,11 +4242,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="435.2070263549649"
+                  height="435.21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="138.18181818181816"
-                  y="-185.2070263549649"
+                  width="18"
+                  x="138.18"
+                  y="-185.21"
                 />
               </g>
               <g
@@ -4254,11 +4254,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="186.9385194505744"
+                  height="186.94"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="159.18181818185417"
-                  y="63.06148054942561"
+                  width="18"
+                  x="159.18"
+                  y="63.06"
                 />
               </g>
               <g
@@ -4266,11 +4266,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="154.5043914701908"
+                  height="154.5"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="180.18181818189018"
-                  y="95.4956085298092"
+                  width="18"
+                  x="180.18"
+                  y="95.5"
                 />
               </g>
               <g
@@ -4278,11 +4278,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="402.77289837458136"
+                  height="402.77"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="205.4545454545455"
-                  y="-152.77289837458136"
+                  width="18"
+                  x="205.45"
+                  y="-152.77"
                 />
               </g>
               <g
@@ -4290,11 +4290,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="154.5043914701908"
+                  height="154.5"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.000000000035982"
-                  x="226.4545454545815"
-                  y="95.4956085298092"
+                  width="18"
+                  x="226.45"
+                  y="95.5"
                 />
               </g>
               <g
@@ -4302,11 +4302,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="186.9385194505744"
+                  height="186.94"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003601"
-                  x="247.45454545461754"
-                  y="63.06148054942561"
+                  width="18"
+                  x="247.45"
+                  y="63.06"
                 />
               </g>
               <g
@@ -4314,11 +4314,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="362.6725219624708"
+                  height="362.67"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="272.72727272727275"
-                  y="-112.6725219624708"
+                  width="18"
+                  x="272.73"
+                  y="-112.67"
                 />
               </g>
               <g
@@ -4326,11 +4326,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="131.5056461750097"
+                  height="131.51"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="293.72727272730873"
-                  y="118.49435382499028"
+                  width="18"
+                  x="293.73"
+                  y="118.49"
                 />
               </g>
               <g
@@ -4338,11 +4338,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="227.03889586268497"
+                  height="227.04"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="314.72727272734477"
-                  y="22.961104137315033"
+                  width="18"
+                  x="314.73"
+                  y="22.96"
                 />
               </g>
               <g
@@ -4350,11 +4350,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="317.8544542077589"
+                  height="317.85"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
+                  width="18"
                   x="340"
-                  y="-67.85445420775892"
+                  y="-67.85"
                 />
               </g>
               <g
@@ -4362,11 +4362,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="119.71141781850662"
+                  height="119.71"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="361.000000000036"
-                  y="130.28858218149338"
+                  width="18"
+                  x="361"
+                  y="130.29"
                 />
               </g>
               <g
@@ -4374,11 +4374,11 @@
                 transform="translate(0,0)"
               >
                 <rect
-                  height="271.8569636173968"
+                  height="271.86"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                  width="18.00000000003604"
-                  x="382.000000000072"
-                  y="-21.856963617396787"
+                  width="18"
+                  x="382"
+                  y="-21.86"
                 />
               </g>
             </g>
@@ -4407,71 +4407,71 @@
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-302.72727272727275"
-                x2="-302.72727272727275"
+                x1="-302.73"
+                x2="-302.73"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235.45454545454544"
-                x2="-235.45454545454544"
+                x1="-235.45"
+                x2="-235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168.18181818181816"
-                x2="-168.18181818181816"
+                x1="-168.18"
+                x2="-168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-100.90909090909088"
-                x2="-100.90909090909088"
+                x1="-100.91"
+                x2="-100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-33.636363636363626"
-                x2="-33.636363636363626"
+                x1="-33.64"
+                x2="-33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="33.636363636363626"
-                x2="33.636363636363626"
+                x1="33.64"
+                x2="33.64"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="100.90909090909088"
-                x2="100.90909090909088"
+                x1="100.91"
+                x2="100.91"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="168.18181818181813"
-                x2="168.18181818181813"
+                x1="168.18"
+                x2="168.18"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="235.4545454545455"
-                x2="235.4545454545455"
+                x1="235.45"
+                x2="235.45"
                 y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="302.72727272727275"
-                x2="302.72727272727275"
+                x1="302.73"
+                x2="302.73"
                 y1="250"
                 y2="255"
               />
@@ -4502,8 +4502,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jan
                 </text>
@@ -4514,8 +4514,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3388671875"
-                  y="10.396272568433318"
+                  x="-10.34"
+                  y="10.4"
                 >
                   Feb
                 </text>
@@ -4526,8 +4526,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.3330078125"
-                  y="10.396272568433318"
+                  x="-10.33"
+                  y="10.4"
                 >
                   Mar
                 </text>
@@ -4538,8 +4538,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.3369140625"
-                  y="10.396272568433318"
+                  x="-9.34"
+                  y="10.4"
                 >
                   Apr
                 </text>
@@ -4550,8 +4550,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11.3349609375"
-                  y="10.396272568433318"
+                  x="-11.33"
+                  y="10.4"
                 >
                   May
                 </text>
@@ -4562,8 +4562,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.673828125"
-                  y="10.396272568433318"
+                  x="-9.67"
+                  y="10.4"
                 >
                   Jun
                 </text>
@@ -4574,8 +4574,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-7.669921875"
-                  y="10.396272568433318"
+                  x="-7.67"
+                  y="10.4"
                 >
                   Jul
                 </text>
@@ -4586,8 +4586,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Aug
                 </text>
@@ -4598,8 +4598,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.67578125"
-                  y="10.396272568433318"
+                  x="-10.68"
+                  y="10.4"
                 >
                   Sep
                 </text>
@@ -4610,8 +4610,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9.333984375"
-                  y="10.396272568433318"
+                  x="-9.33"
+                  y="10.4"
                 >
                   Oct
                 </text>
@@ -4622,8 +4622,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Nov
                 </text>
@@ -4634,8 +4634,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-10.669921875"
-                  y="10.396272568433318"
+                  x="-10.67"
+                  y="10.4"
                 >
                   Dec
                 </text>
@@ -4654,8 +4654,8 @@
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-30.017578125"
-            y="51.254979615608626"
+            x="-30.02"
+            y="51.25"
           >
             demo
           </text>
@@ -5064,17 +5064,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="317.8544542077589"
-            width="18.00000000003604"
+            height="317.85"
+            width="18"
             x="-400"
-            y="-67.85445420775892"
+            y="-67.85"
           />
           <rect
             class="element-shape indicator"
-            height="317.8544542077589"
-            width="18.00000000003604"
+            height="317.85"
+            width="18"
             x="-400"
-            y="-67.85445420775892"
+            y="-67.85"
           />
         </g>
         <g
@@ -5083,17 +5083,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="470.00000000664915"
-            width="18.00000000003604"
-            x="-378.999999999964"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="-379"
+            y="-220"
           />
           <rect
             class="element-shape indicator"
-            height="470.00000000664915"
-            width="18.00000000003604"
-            x="-378.999999999964"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="-379"
+            y="-220"
           />
         </g>
         <g
@@ -5102,17 +5102,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="271.8569636173968"
-            width="18.00000000003604"
-            x="-357.999999999928"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="-358"
+            y="-21.86"
           />
           <rect
             class="element-shape indicator"
-            height="271.8569636173968"
-            width="18.00000000003604"
-            x="-357.999999999928"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="-358"
+            y="-21.86"
           />
         </g>
         <g
@@ -5121,17 +5121,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="362.6725219624708"
-            width="18.00000000003604"
-            x="-332.72727272727275"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="-332.73"
+            y="-112.67"
           />
           <rect
             class="element-shape indicator"
-            height="362.6725219624708"
-            width="18.00000000003604"
-            x="-332.72727272727275"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="-332.73"
+            y="-112.67"
           />
         </g>
         <g
@@ -5140,17 +5140,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="458.205771650146"
-            width="18.00000000003604"
-            x="-311.72727272723677"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="-311.73"
+            y="-208.21"
           />
           <rect
             class="element-shape indicator"
-            height="458.205771650146"
-            width="18.00000000003604"
-            x="-311.72727272723677"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="-311.73"
+            y="-208.21"
           />
         </g>
         <g
@@ -5159,17 +5159,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="227.03889586268497"
-            width="18.00000000003604"
-            x="-290.7272727272007"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="-290.73"
+            y="22.96"
           />
           <rect
             class="element-shape indicator"
-            height="227.03889586268497"
-            width="18.00000000003604"
-            x="-290.7272727272007"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="-290.73"
+            y="22.96"
           />
         </g>
         <g
@@ -5178,17 +5178,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="402.77289837458136"
-            width="18.00000000003601"
-            x="-265.45454545454544"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="-265.45"
+            y="-152.77"
           />
           <rect
             class="element-shape indicator"
-            height="402.77289837458136"
-            width="18.00000000003601"
-            x="-265.45454545454544"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="-265.45"
+            y="-152.77"
           />
         </g>
         <g
@@ -5197,17 +5197,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="-244.45454545450943"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="-244.45"
+            y="-185.21"
           />
           <rect
             class="element-shape indicator"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="-244.45454545450943"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="-244.45"
+            y="-185.21"
           />
         </g>
         <g
@@ -5216,17 +5216,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="186.9385194505744"
-            width="18.000000000035982"
-            x="-223.45454545447342"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="-223.45"
+            y="63.06"
           />
           <rect
             class="element-shape indicator"
-            height="186.9385194505744"
-            width="18.000000000035982"
-            x="-223.45454545447342"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="-223.45"
+            y="63.06"
           />
         </g>
         <g
@@ -5235,17 +5235,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="-198.18181818181822"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="-198.18"
+            y="-185.21"
           />
           <rect
             class="element-shape indicator"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="-198.18181818181822"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="-198.18"
+            y="-185.21"
           />
         </g>
         <g
@@ -5254,17 +5254,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="402.77289837458136"
-            width="18.000000000035982"
-            x="-177.1818181817822"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="-177.18"
+            y="-152.77"
           />
           <rect
             class="element-shape indicator"
-            height="402.77289837458136"
-            width="18.000000000035982"
-            x="-177.1818181817822"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="-177.18"
+            y="-152.77"
           />
         </g>
         <g
@@ -5273,17 +5273,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="-156.1818181817462"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="-156.18"
+            y="95.5"
           />
           <rect
             class="element-shape indicator"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="-156.1818181817462"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="-156.18"
+            y="95.5"
           />
         </g>
         <g
@@ -5292,17 +5292,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="458.205771650146"
-            width="18.00000000003601"
-            x="-130.9090909090909"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="-130.91"
+            y="-208.21"
           />
           <rect
             class="element-shape indicator"
-            height="458.205771650146"
-            width="18.00000000003601"
-            x="-130.9090909090909"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="-130.91"
+            y="-208.21"
           />
         </g>
         <g
@@ -5311,17 +5311,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="362.6725219624708"
-            width="18.00000000003601"
-            x="-109.90909090905491"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="-109.91"
+            y="-112.67"
           />
           <rect
             class="element-shape indicator"
-            height="362.6725219624708"
-            width="18.00000000003601"
-            x="-109.90909090905491"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="-109.91"
+            y="-112.67"
           />
         </g>
         <g
@@ -5330,17 +5330,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="131.5056461750097"
-            width="18.00000000003601"
-            x="-88.9090909090189"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="-88.91"
+            y="118.49"
           />
           <rect
             class="element-shape indicator"
-            height="131.5056461750097"
-            width="18.00000000003601"
-            x="-88.9090909090189"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="-88.91"
+            y="118.49"
           />
         </g>
         <g
@@ -5349,17 +5349,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="470.00000000664915"
-            width="18.00000000003601"
-            x="-63.636363636363654"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="-63.64"
+            y="-220"
           />
           <rect
             class="element-shape indicator"
-            height="470.00000000664915"
-            width="18.00000000003601"
-            x="-63.636363636363654"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="-63.64"
+            y="-220"
           />
         </g>
         <g
@@ -5368,17 +5368,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="317.8544542077589"
-            width="18.000000000036007"
-            x="-42.63636363632766"
-            y="-67.85445420775892"
+            height="317.85"
+            width="18"
+            x="-42.64"
+            y="-67.85"
           />
           <rect
             class="element-shape indicator"
-            height="317.8544542077589"
-            width="18.000000000036007"
-            x="-42.63636363632766"
-            y="-67.85445420775892"
+            height="317.85"
+            width="18"
+            x="-42.64"
+            y="-67.85"
           />
         </g>
         <g
@@ -5387,17 +5387,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="119.71141781850662"
-            width="18.000000000036003"
-            x="-21.636363636291644"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="-21.64"
+            y="130.29"
           />
           <rect
             class="element-shape indicator"
-            height="119.71141781850662"
-            width="18.000000000036003"
-            x="-21.636363636291644"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="-21.64"
+            y="130.29"
           />
         </g>
         <g
@@ -5406,17 +5406,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="470.00000000664915"
-            width="18.000000000036003"
-            x="3.636363636363626"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="3.64"
+            y="-220"
           />
           <rect
             class="element-shape indicator"
-            height="470.00000000664915"
-            width="18.000000000036003"
-            x="3.636363636363626"
-            y="-220.00000000664915"
+            height="470"
+            width="18"
+            x="3.64"
+            y="-220"
           />
         </g>
         <g
@@ -5425,17 +5425,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="271.8569636173968"
-            width="18.000000000036007"
-            x="24.636363636399626"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="24.64"
+            y="-21.86"
           />
           <rect
             class="element-shape indicator"
-            height="271.8569636173968"
-            width="18.000000000036007"
-            x="24.636363636399626"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="24.64"
+            y="-21.86"
           />
         </g>
         <g
@@ -5444,17 +5444,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="119.71141781850662"
-            width="18.000000000035996"
-            x="45.63636363643563"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="45.64"
+            y="130.29"
           />
           <rect
             class="element-shape indicator"
-            height="119.71141781850662"
-            width="18.000000000035996"
-            x="45.63636363643563"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="45.64"
+            y="130.29"
           />
         </g>
         <g
@@ -5463,17 +5463,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="458.205771650146"
-            width="18.00000000003601"
-            x="70.90909090909088"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="70.91"
+            y="-208.21"
           />
           <rect
             class="element-shape indicator"
-            height="458.205771650146"
-            width="18.00000000003601"
-            x="70.90909090909088"
-            y="-208.205771650146"
+            height="458.21"
+            width="18"
+            x="70.91"
+            y="-208.21"
           />
         </g>
         <g
@@ -5482,17 +5482,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="227.03889586268497"
-            width="18.00000000003601"
-            x="91.90909090912687"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="91.91"
+            y="22.96"
           />
           <rect
             class="element-shape indicator"
-            height="227.03889586268497"
-            width="18.00000000003601"
-            x="91.90909090912687"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="91.91"
+            y="22.96"
           />
         </g>
         <g
@@ -5501,17 +5501,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="131.5056461750097"
-            width="18.000000000035996"
-            x="112.90909090916288"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="112.91"
+            y="118.49"
           />
           <rect
             class="element-shape indicator"
-            height="131.5056461750097"
-            width="18.000000000035996"
-            x="112.90909090916288"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="112.91"
+            y="118.49"
           />
         </g>
         <g
@@ -5520,17 +5520,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="138.18181818181816"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="138.18"
+            y="-185.21"
           />
           <rect
             class="element-shape indicator"
-            height="435.2070263549649"
-            width="18.000000000035982"
-            x="138.18181818181816"
-            y="-185.2070263549649"
+            height="435.21"
+            width="18"
+            x="138.18"
+            y="-185.21"
           />
         </g>
         <g
@@ -5539,17 +5539,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="186.9385194505744"
-            width="18.000000000035982"
-            x="159.18181818185417"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="159.18"
+            y="63.06"
           />
           <rect
             class="element-shape indicator"
-            height="186.9385194505744"
-            width="18.000000000035982"
-            x="159.18181818185417"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="159.18"
+            y="63.06"
           />
         </g>
         <g
@@ -5558,17 +5558,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="180.18181818189018"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="180.18"
+            y="95.5"
           />
           <rect
             class="element-shape indicator"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="180.18181818189018"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="180.18"
+            y="95.5"
           />
         </g>
         <g
@@ -5577,17 +5577,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="402.77289837458136"
-            width="18.000000000035982"
-            x="205.4545454545455"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="205.45"
+            y="-152.77"
           />
           <rect
             class="element-shape indicator"
-            height="402.77289837458136"
-            width="18.000000000035982"
-            x="205.4545454545455"
-            y="-152.77289837458136"
+            height="402.77"
+            width="18"
+            x="205.45"
+            y="-152.77"
           />
         </g>
         <g
@@ -5596,17 +5596,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="226.4545454545815"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="226.45"
+            y="95.5"
           />
           <rect
             class="element-shape indicator"
-            height="154.5043914701908"
-            width="18.000000000035982"
-            x="226.4545454545815"
-            y="95.4956085298092"
+            height="154.5"
+            width="18"
+            x="226.45"
+            y="95.5"
           />
         </g>
         <g
@@ -5615,17 +5615,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="186.9385194505744"
-            width="18.00000000003601"
-            x="247.45454545461754"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="247.45"
+            y="63.06"
           />
           <rect
             class="element-shape indicator"
-            height="186.9385194505744"
-            width="18.00000000003601"
-            x="247.45454545461754"
-            y="63.06148054942561"
+            height="186.94"
+            width="18"
+            x="247.45"
+            y="63.06"
           />
         </g>
         <g
@@ -5634,17 +5634,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="362.6725219624708"
-            width="18.00000000003604"
-            x="272.72727272727275"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="272.73"
+            y="-112.67"
           />
           <rect
             class="element-shape indicator"
-            height="362.6725219624708"
-            width="18.00000000003604"
-            x="272.72727272727275"
-            y="-112.6725219624708"
+            height="362.67"
+            width="18"
+            x="272.73"
+            y="-112.67"
           />
         </g>
         <g
@@ -5653,17 +5653,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="131.5056461750097"
-            width="18.00000000003604"
-            x="293.72727272730873"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="293.73"
+            y="118.49"
           />
           <rect
             class="element-shape indicator"
-            height="131.5056461750097"
-            width="18.00000000003604"
-            x="293.72727272730873"
-            y="118.49435382499028"
+            height="131.51"
+            width="18"
+            x="293.73"
+            y="118.49"
           />
         </g>
         <g
@@ -5672,17 +5672,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="227.03889586268497"
-            width="18.00000000003604"
-            x="314.72727272734477"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="314.73"
+            y="22.96"
           />
           <rect
             class="element-shape indicator"
-            height="227.03889586268497"
-            width="18.00000000003604"
-            x="314.72727272734477"
-            y="22.961104137315033"
+            height="227.04"
+            width="18"
+            x="314.73"
+            y="22.96"
           />
         </g>
         <g
@@ -5691,17 +5691,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="317.8544542077589"
-            width="18.00000000003604"
+            height="317.85"
+            width="18"
             x="340"
-            y="-67.85445420775892"
+            y="-67.85"
           />
           <rect
             class="element-shape indicator"
-            height="317.8544542077589"
-            width="18.00000000003604"
+            height="317.85"
+            width="18"
             x="340"
-            y="-67.85445420775892"
+            y="-67.85"
           />
         </g>
         <g
@@ -5710,17 +5710,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="119.71141781850662"
-            width="18.00000000003604"
-            x="361.000000000036"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="361"
+            y="130.29"
           />
           <rect
             class="element-shape indicator"
-            height="119.71141781850662"
-            width="18.00000000003604"
-            x="361.000000000036"
-            y="130.28858218149338"
+            height="119.71"
+            width="18"
+            x="361"
+            y="130.29"
           />
         </g>
         <g
@@ -5729,17 +5729,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="271.8569636173968"
-            width="18.00000000003604"
-            x="382.000000000072"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="382"
+            y="-21.86"
           />
           <rect
             class="element-shape indicator"
-            height="271.8569636173968"
-            width="18.00000000003604"
-            x="382.000000000072"
-            y="-21.856963617396787"
+            height="271.86"
+            width="18"
+            x="382"
+            y="-21.86"
           />
         </g>
       </g>
