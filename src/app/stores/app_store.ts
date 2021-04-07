@@ -78,7 +78,7 @@ import {
   PlotSegmentClass,
   Region2DProperties,
 } from "../../core/prototypes/plot_segments";
-import { isType, ObjectClass } from "../../core/prototypes";
+import { findObjectById, isType, ObjectClass } from "../../core/prototypes";
 import { ScaleLinear } from "d3-scale";
 import {
   LinearScale,
@@ -89,6 +89,11 @@ import {
   Region2DSublayoutType,
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import {
+  DataAxisAttributes,
+  DataAxisProperties,
+} from "../../core/prototypes/marks/data_axis.attrs";
+import { MarkClass } from "../../core/prototypes/marks";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -1454,6 +1459,110 @@ export class AppStore extends BaseStore {
         });
       }
     });
+  }
+
+  public updateDataAxes() {
+    const mapElementWithTable = (table: string) => (el: any) => {
+      return {
+        table,
+        element: el,
+      };
+    };
+
+    const table = this.dataset.tables.find((t) => t.type === TableType.Main);
+    this.chart.elements
+      .map(mapElementWithTable(table.name))
+      .concat(
+        this.chart.glyphs.flatMap((gl) =>
+          gl.marks.map(mapElementWithTable(gl.table))
+        )
+      )
+      .filter((element) =>
+        Prototypes.isType(element.element.classID, "mark.data-axis")
+      )
+      .forEach((dataAxisElement) => {
+        const dataAxis = dataAxisElement.element as Specification.ChartElement<
+          DataAxisProperties
+        >;
+        const dataExpressions = dataAxis.properties.dataExpressions;
+        // remove all and added again
+        dataAxis.properties.dataExpressions = [];
+        dataExpressions.forEach((dataExpression) => {
+          const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+            .axis;
+          if (axisProperty) {
+            const axisData = new DragData.DataExpression(
+              this.dataset.tables.find((t) => t.name == dataAxisElement.table),
+              dataExpression.expression,
+              axisProperty.valueType,
+              {
+                kind:
+                  axisProperty.type === "numerical" &&
+                  axisProperty.numericalMode === "temporal"
+                    ? DataKind.Temporal
+                    : axisProperty.dataKind,
+                orderMode: axisProperty.orderMode
+                  ? axisProperty.orderMode
+                  : axisProperty.valueType === "string"
+                  ? OrderMode.order
+                  : null,
+                order: axisProperty.order,
+              },
+              axisProperty.rawColumnExpr as string
+            );
+
+            this.bindDataToAxis({
+              property: PlotSegmentAxisPropertyNames.axis,
+              dataExpression: axisData,
+              object: dataAxis as any,
+              appendToProperty: "dataExpressions",
+              type: axisProperty.type, // TODO get type for column, from current dataset
+              numericalMode: axisProperty.numericalMode,
+              autoDomainMax: axisProperty.autoDomainMax,
+              autoDomainMin: axisProperty.autoDomainMin,
+              domainMin: axisProperty.domainMin,
+              domainMax: axisProperty.domainMax,
+            });
+          }
+        });
+
+        const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+          .axis;
+        if (axisProperty) {
+          const axisData = new DragData.DataExpression(
+            this.dataset.tables.find((t) => t.name == dataAxisElement.table),
+            axisProperty.expression,
+            axisProperty.valueType,
+            {
+              kind:
+                axisProperty.type === "numerical" &&
+                axisProperty.numericalMode === "temporal"
+                  ? DataKind.Temporal
+                  : axisProperty.dataKind,
+              orderMode: axisProperty.orderMode
+                ? axisProperty.orderMode
+                : axisProperty.valueType === "string"
+                ? OrderMode.order
+                : null,
+              order: axisProperty.order,
+            },
+            axisProperty.rawColumnExpr as string
+          );
+
+          this.bindDataToAxis({
+            property: PlotSegmentAxisPropertyNames.axis,
+            dataExpression: axisData,
+            object: dataAxis as any,
+            appendToProperty: null,
+            type: axisProperty.type, // TODO get type for column, from current dataset
+            numericalMode: axisProperty.numericalMode,
+            autoDomainMax: axisProperty.autoDomainMax,
+            autoDomainMin: axisProperty.autoDomainMin,
+            domainMin: axisProperty.domainMin,
+            domainMax: axisProperty.domainMax,
+          });
+        }
+      });
   }
 
   private getBindingByDataKind(kind: DataKind) {
