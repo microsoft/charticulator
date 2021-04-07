@@ -12,7 +12,6 @@ import {
   Specification,
   Dataset,
   deepClone,
-  getFormatOptions,
   setFormatOptions,
   defaultCurrency,
   defaultDelimiter,
@@ -35,11 +34,9 @@ import { MainTabs } from "./views/file_view";
 import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
-import { delimiter } from "path";
 import { MenuBarHandlers } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
-import { CharticulatorWorkerProcess } from "../worker/worker_main";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}

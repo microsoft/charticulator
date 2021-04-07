@@ -52,3 +52,12 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
     }
   }
 }
+
+// The directory containing chart cases
+export const pathPrefix = "tests/unit/charts";
+
+export async function loadJSON(url: string) {
+  const responce = await fetch(url);
+  const json = await responce.text();
+  return JSON.parse(json);
+}

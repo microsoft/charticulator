@@ -9,14 +9,13 @@ import { Migrator } from "../../app/stores/migrator";
 import { DefaultAttributes } from "../../core/prototypes";
 import {
   expect_deep_approximately_equals,
+  loadJSON,
   makeDefaultAttributes,
+  pathPrefix,
 } from "./utils";
 import { APP_VERSION } from "../configuration";
 
 describe("Chart Solver", () => {
-  // The directory containing test cases
-  const pathPrefix = "tests/unit/charts";
-
   // Scan for test cases
   const cases: string[] = [
     `base/${pathPrefix}/bar-chart.json`,
@@ -29,9 +28,7 @@ describe("Chart Solver", () => {
       // The solver has to be initialized, other options can be omitted
       await initialize();
 
-      const responce = await fetch(filename);
-      const json = await responce.text();
-      let state: AppStoreState = JSON.parse(json).state;
+      let state = (await loadJSON(filename)).state;
 
       state = new Migrator().migrate(state, APP_VERSION);
 

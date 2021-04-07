@@ -70,7 +70,6 @@ import {
   NumericalNumberLegendAttributeNames,
   NumericalNumberLegendProperties,
 } from "../../core/prototypes/legends/numerical_legend";
-import { domain } from "process";
 
 import {
   CartesianPlotSegment,

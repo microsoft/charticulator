@@ -19,7 +19,7 @@ function resolve(basePath: string, suiteName: string) {
 const pathPrefix = "tests/unit/charts";
 const cases: string[] = fs
   .readdirSync("./src/" + pathPrefix)
-  .filter((x: string) => x.endsWith(".json"))
+  // .filter((x: string) => x.endsWith(".json"))
   .map((testCase: string) => path.join(pathPrefix, testCase));
 
 process.env.CHROME_BIN = require("puppeteer").executablePath();

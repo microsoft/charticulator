@@ -19,10 +19,14 @@ import {
   findElementsByClassID,
   getChartCanvas,
   getLinkTypePanel,
+  longTimeOut,
+  mediumTimeOut,
+  pathPrefix,
 } from "./utils";
 import { DragData } from "../../app";
 import { Expression } from "../../core";
 import { matchSnapshot } from "chai-karma-snapshot";
+import { loadJSON } from "../unit/utils";
 declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
@@ -33,7 +37,7 @@ describe("Charticulator", () => {
   // The directory containing test cases
   before(function (done) {
     viewport.set(1920, 977);
-    this.timeout(10000);
+    this.timeout(mediumTimeOut);
     const blob = new Blob([workerBundle], { type: "application/javascript" });
 
     const workerScript = URL.createObjectURL(blob);
@@ -56,7 +60,7 @@ describe("Charticulator", () => {
       expect(application).to.not.null &&
       expect(application.appStore).to.not.null;
     done();
-  }).timeout(1000000);
+  }).timeout(longTimeOut);
 
   it("binds data to X axis", (done) => {
     const store = application.appStore;
@@ -124,5 +128,14 @@ describe("Charticulator", () => {
     createLegendButton.click();
     expect(getChartCanvas()).to.matchSnapshot();
     done();
-  }).timeout(1000000);
-}).timeout(100000);
+  }).timeout(longTimeOut);
+
+  // test checks that charticulator opens saved chart correctly
+  it("open chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
+    const chartFile = await loadJSON(chartFilePath);
+    const store = application.appStore;
+    store.dispatcher.dispatch(new Actions.Load(chartFile.state));
+    expect(getChartCanvas()).to.matchSnapshot();
+  });
+}).timeout(longTimeOut);

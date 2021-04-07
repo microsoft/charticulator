@@ -39,3 +39,9 @@ export function clickOnToolbarButton(buttonName: string) {
 export function getLinkTypePanel() {
   return document.querySelector("div.charticulator__link-type-table");
 }
+
+export const longTimeOut = 1000000;
+export const mediumTimeOut = 100000;
+export const shortTimeOut = 3000;
+// The directory containing chart cases
+export const pathPrefix = "tests/unit/charts";
