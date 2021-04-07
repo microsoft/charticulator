@@ -1,0 +1,1058 @@
+{
+  "specification": {
+    "_id": "1j6nq7322pi",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      },
+      "height": {
+        "type": "value",
+        "value": 800
+      },
+      "marginLeft": {
+        "type": "value",
+        "value": 60
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 40
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "uw1cm3cjbrc",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "world_population_2017",
+        "marks": [
+          {
+            "_id": "mcdo0ubehqd",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "zzgga3nybmq",
+            "classID": "mark.data-axis",
+            "properties": {
+              "dataExpressions": [
+                {
+                  "name": "zd07rv4nvui",
+                  "expression": "avg(Male)"
+                }
+              ],
+              "axis": {
+                "type": "numerical",
+                "expression": "avg(Male)",
+                "rawExpression": "first(Male)",
+                "valueType": "number",
+                "gapRatio": 0.1,
+                "visible": true,
+                "side": "opposite",
+                "style": {
+                  "tickColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "lineColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "fontFamily": "Arial",
+                  "fontSize": 12,
+                  "tickSize": 5,
+                  "wordWrap": false,
+                  "gridlineStyle": "none",
+                  "gridlineColor": {
+                    "r": 234,
+                    "g": 234,
+                    "b": 234
+                  },
+                  "gridlineWidth": 1
+                },
+                "numericalMode": "linear",
+                "dataKind": "numerical",
+                "autoDomainMax": true,
+                "autoDomainMin": true,
+                "domainMin": 0,
+                "domainMax": 400
+              },
+              "visible": true,
+              "visibleOn": "first",
+              "name": "DataAxis1",
+              "exposed": true
+            },
+            "mappings": {
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix2"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              }
+            }
+          },
+          {
+            "_id": "b26hi0vfapo",
+            "classID": "mark.data-axis",
+            "properties": {
+              "dataExpressions": [
+                {
+                  "name": "cj4dsrjd3h4",
+                  "expression": "avg(Female)"
+                }
+              ],
+              "axis": {
+                "type": "numerical",
+                "expression": "avg(Female)",
+                "rawExpression": "first(Female)",
+                "valueType": "number",
+                "gapRatio": 0.1,
+                "visible": true,
+                "side": "default",
+                "style": {
+                  "tickColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "lineColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "fontFamily": "Arial",
+                  "fontSize": 12,
+                  "tickSize": 5,
+                  "wordWrap": false,
+                  "gridlineStyle": "none",
+                  "gridlineColor": {
+                    "r": 234,
+                    "g": 234,
+                    "b": 234
+                  },
+                  "gridlineWidth": 1
+                },
+                "numericalMode": "linear",
+                "dataKind": "numerical",
+                "autoDomainMax": true,
+                "autoDomainMin": true,
+                "domainMin": 0,
+                "domainMax": 400,
+                "tickDataExpression": null
+              },
+              "visible": true,
+              "visibleOn": "first",
+              "name": "DataAxis2",
+              "exposed": true
+            },
+            "mappings": {
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              }
+            }
+          },
+          {
+            "_id": "lygx3n0r5ii",
+            "classID": "mark.rect",
+            "properties": {
+              "visible": true,
+              "strokeStyle": "solid",
+              "shape": "rectangle",
+              "name": "Shape1",
+              "allowFlipping": true,
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "value",
+                "value": {
+                  "r": 158,
+                  "g": 202,
+                  "b": 225
+                }
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              }
+            }
+          },
+          {
+            "_id": "n2gyvjj2pm9",
+            "classID": "mark.rect",
+            "properties": {
+              "visible": true,
+              "strokeStyle": "solid",
+              "shape": "rectangle",
+              "name": "Shape2",
+              "allowFlipping": true,
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "value",
+                "value": {
+                  "r": 252,
+                  "g": 187,
+                  "b": 161
+                }
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": [
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "lygx3n0r5ii",
+              "attribute": "x2",
+              "targetElement": "zzgga3nybmq",
+              "targetAttribute": "anchorXzd07rv4nvui",
+              "gap": 0
+            }
+          },
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "n2gyvjj2pm9",
+              "attribute": "x1",
+              "targetElement": "b26hi0vfapo",
+              "targetAttribute": "anchorXcj4dsrjd3h4",
+              "gap": 0
+            }
+          }
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "_id": "abhbksgj7h7",
+        "classID": "plot-segment.cartesian",
+        "glyph": "uw1cm3cjbrc",
+        "table": "world_population_2017",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "dodge-y",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "yData": {
+            "type": "categorical",
+            "expression": "first(Age)",
+            "valueType": "string",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "dataKind": "categorical",
+            "orderMode": "alphabetically",
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "categories": [
+              "100+",
+              "95-99",
+              "90-94",
+              "85-89",
+              "80-84",
+              "75-79",
+              "70-74",
+              "65-69",
+              "60-64",
+              "55-59",
+              "50-54",
+              "45-49",
+              "40-44",
+              "35-39",
+              "30-34",
+              "25-29",
+              "20-24",
+              "15-19",
+              "10-14",
+              "5-9",
+              "0-4"
+            ]
+          },
+          "exposed": true
+        }
+      },
+      {
+        "_id": "wumceigitab",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "World Population 2017"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      }
+    ],
+    "scales": [],
+    "scaleMappings": [],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "mcdo0ubehqd": {
+      "x": 0,
+      "y": 0
+    },
+    "zzgga3nybmq": {
+      "x1": 0,
+      "y1": -2.392857142857142,
+      "x2": 66.66664186299602,
+      "y2": -2.392857142857142,
+      "anchorXzd07rv4nvui": 30.22961573704132,
+      "anchorYzd07rv4nvui": -2.392857142857142
+    },
+    "b26hi0vfapo": {
+      "x1": 0,
+      "y1": -2.392857142857142,
+      "x2": -66.66664186299602,
+      "y2": -2.392857142857142,
+      "anchorXcj4dsrjd3h4": -29.693076254123945,
+      "anchorYcj4dsrjd3h4": -2.392857142857142
+    },
+    "lygx3n0r5ii": {
+      "x1": 0,
+      "y1": -1.4357142857142853,
+      "x2": 18.137769442224794,
+      "y2": 1.4357142857142853,
+      "cx": 9.068884721112397,
+      "cy": 0,
+      "width": 18.137769442224794,
+      "height": 2.8714285714285706,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "n2gyvjj2pm9": {
+      "x1": -17.815845752474367,
+      "y1": -1.4357142857142853,
+      "x2": 0,
+      "y2": 1.4357142857142853,
+      "cx": -8.907922876237183,
+      "cy": 0,
+      "width": 17.815845752474367,
+      "height": 2.8714285714285706,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "wumceigitab": {
+      "x": 2.5,
+      "y": 100,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "world_population_2017",
+      "columns": [
+        {
+          "displayName": "Age",
+          "name": "Age",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "0-4, 5-9, 10-14"
+          }
+        },
+        {
+          "displayName": "Female",
+          "name": "Female",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "327.601, 316.714, 301.011"
+          }
+        },
+        {
+          "displayName": "Male",
+          "name": "Male",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "350.321, 338.892, 322.363"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "abhbksgj7h7",
+      "dataSource": {
+        "table": "world_population_2017"
+      },
+      "axis": {
+        "expression": "first(Age)",
+        "type": "categorical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "orderMode": "alphabetically",
+        "property": "yData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "dataSource": {
+        "table": "world_population_2017",
+        "groupBy": null
+      },
+      "axis": {
+        "expression": "avg(Male)",
+        "additionalExpressions": [
+          "avg(Male)"
+        ],
+        "type": "numerical",
+        "property": "axis"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "dataSource": {
+        "table": "world_population_2017",
+        "groupBy": null
+      },
+      "expression": {
+        "expression": "avg(Male)",
+        "property": {
+          "property": "dataExpressions",
+          "field": [
+            0,
+            "expression"
+          ]
+        }
+      }
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "dataSource": {
+        "table": "world_population_2017",
+        "groupBy": null
+      },
+      "axis": {
+        "expression": "avg(Female)",
+        "additionalExpressions": [
+          "avg(Female)"
+        ],
+        "type": "numerical",
+        "property": "axis"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "dataSource": {
+        "table": "world_population_2017",
+        "groupBy": null
+      },
+      "expression": {
+        "expression": "avg(Female)",
+        "property": {
+          "property": "dataExpressions",
+          "field": [
+            0,
+            "expression"
+          ]
+        }
+      }
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/yData.style.tickSize"
+    },
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/yData.style.fontSize"
+    },
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/yData.style.fontFamily"
+    },
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.lineColor"
+    },
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/yData.style.tickColor"
+    },
+    {
+      "objectID": "abhbksgj7h7",
+      "target": {
+        "property": {
+          "property": "yData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "descending",
+      "displayName": "PlotSegment1/yData.categories"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "DataAxis1/axis.style.tickSize"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "DataAxis1/axis.style.fontSize"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "DataAxis1/axis.style.fontFamily"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis1/axis.style.lineColor"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis1/axis.style.tickColor"
+    },
+    {
+      "objectID": "zzgga3nybmq",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "DataAxis1/axis.categories"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "DataAxis2/axis.style.tickSize"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "DataAxis2/axis.style.fontSize"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "DataAxis2/axis.style.fontFamily"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis2/axis.style.lineColor"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis2/axis.style.tickColor"
+    },
+    {
+      "objectID": "b26hi0vfapo",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "DataAxis2/axis.categories"
+    },
+    {
+      "objectID": "lygx3n0r5ii",
+      "target": {
+        "attribute": "fill"
+      },
+      "type": "color",
+      "default": "#9ecae1",
+      "displayName": "Shape1/fill"
+    },
+    {
+      "objectID": "lygx3n0r5ii",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Shape1/visible"
+    },
+    {
+      "objectID": "lygx3n0r5ii",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/strokeWidth"
+    },
+    {
+      "objectID": "lygx3n0r5ii",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Shape1/strokeStyle"
+    },
+    {
+      "objectID": "lygx3n0r5ii",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/opacity"
+    },
+    {
+      "objectID": "n2gyvjj2pm9",
+      "target": {
+        "attribute": "fill"
+      },
+      "type": "color",
+      "default": "#fcbba1",
+      "displayName": "Shape2/fill"
+    },
+    {
+      "objectID": "n2gyvjj2pm9",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Shape2/visible"
+    },
+    {
+      "objectID": "n2gyvjj2pm9",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape2/strokeWidth"
+    },
+    {
+      "objectID": "n2gyvjj2pm9",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Shape2/strokeStyle"
+    },
+    {
+      "objectID": "n2gyvjj2pm9",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape2/opacity"
+    },
+    {
+      "objectID": "wumceigitab",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "wumceigitab",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "wumceigitab",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "World Population 2017",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "1j6nq7322pi",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 60,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "1j6nq7322pi",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 40,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "1j6nq7322pi",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "1j6nq7322pi",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

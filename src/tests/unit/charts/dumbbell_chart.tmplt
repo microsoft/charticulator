@@ -1,0 +1,1094 @@
+{
+  "specification": {
+    "_id": "otuizmrwsfd",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 84.98269134395528
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 90
+      },
+      "marginLeft": {
+        "type": "value",
+        "value": 130
+      },
+      "height": {
+        "type": "value",
+        "value": 400
+      },
+      "width": {
+        "type": "value",
+        "value": 800
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "swv2zzeap0j",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "g7_gender_gap_unemployment",
+        "marks": [
+          {
+            "_id": "deome8z6hd",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "gvefi5reaml",
+            "classID": "mark.data-axis",
+            "properties": {
+              "dataExpressions": [
+                {
+                  "name": "zfcfo95f87q",
+                  "expression": "avg(Men)"
+                },
+                {
+                  "name": "ni63ax3t4om",
+                  "expression": "avg(Women)"
+                }
+              ],
+              "axis": {
+                "type": "numerical",
+                "expression": "avg(Men)",
+                "rawExpression": "first(Men)",
+                "valueType": "number",
+                "gapRatio": 0.1,
+                "visible": true,
+                "side": "opposite",
+                "style": {
+                  "tickColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "lineColor": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  },
+                  "fontFamily": "Arial",
+                  "fontSize": 12,
+                  "tickSize": 5,
+                  "wordWrap": false,
+                  "gridlineStyle": "none",
+                  "gridlineColor": {
+                    "r": 234,
+                    "g": 234,
+                    "b": 234
+                  },
+                  "gridlineWidth": 1
+                },
+                "numericalMode": "linear",
+                "dataKind": "numerical",
+                "autoDomainMax": true,
+                "autoDomainMin": true,
+                "domainMin": 1,
+                "domainMax": 12
+              },
+              "visible": true,
+              "visibleOn": "first",
+              "name": "DataAxis1",
+              "exposed": true
+            },
+            "mappings": {
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix2"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              }
+            }
+          },
+          {
+            "_id": "6d503c075ky",
+            "classID": "mark.line",
+            "properties": {
+              "strokeStyle": "solid",
+              "visible": true,
+              "name": "Line1",
+              "exposed": true
+            },
+            "mappings": {
+              "stroke": {
+                "type": "value",
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                }
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "baizdbu4lyh",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "g7_gender_gap_unemployment",
+                "expression": "get(list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"), get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\")), 0)",
+                "valueType": "string",
+                "scale": "55mjffzg8r",
+                "attribute": "fill",
+                "valueIndex": 0
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "value",
+                "value": 60
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "0eeqrggu7ax",
+            "classID": "mark.symbol",
+            "properties": {
+              "visible": true,
+              "name": "Symbol2",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "g7_gender_gap_unemployment",
+                "expression": "get(list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"), get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\")), 1)",
+                "valueType": "string",
+                "scale": "55mjffzg8r",
+                "attribute": "fill",
+                "valueIndex": 0
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "size": {
+                "type": "value",
+                "value": 60
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "dpej9gluhhn",
+            "classID": "mark.text",
+            "properties": {
+              "alignment": {
+                "x": "right",
+                "y": "middle",
+                "xMargin": 8.711527100021453,
+                "yMargin": 5
+              },
+              "rotation": 0,
+              "visible": true,
+              "name": "Text1",
+              "exposed": true
+            },
+            "mappings": {
+              "text": {
+                "type": "text",
+                "table": "g7_gender_gap_unemployment",
+                "textExpression": "${first(Country)}"
+              },
+              "fontFamily": {
+                "type": "value",
+                "value": "Arial"
+              },
+              "fontSize": {
+                "type": "value",
+                "value": 14
+              },
+              "color": {
+                "type": "value",
+                "value": {
+                  "r": 0,
+                  "g": 0,
+                  "b": 0
+                }
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": [
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "6d503c075ky",
+              "attribute": "x2",
+              "targetElement": "gvefi5reaml",
+              "targetAttribute": "anchorXni63ax3t4om",
+              "gap": 0
+            }
+          },
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "6d503c075ky",
+              "attribute": "x1",
+              "targetElement": "gvefi5reaml",
+              "targetAttribute": "anchorXzfcfo95f87q",
+              "gap": 0
+            }
+          },
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "baizdbu4lyh",
+              "attribute": "x",
+              "targetElement": "gvefi5reaml",
+              "targetAttribute": "anchorXzfcfo95f87q",
+              "gap": 0
+            }
+          },
+          {
+            "type": "snap",
+            "attributes": {
+              "element": "0eeqrggu7ax",
+              "attribute": "x",
+              "targetElement": "gvefi5reaml",
+              "targetAttribute": "anchorXni63ax3t4om",
+              "gap": 0
+            }
+          }
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "_id": "lb8b6dhn449",
+        "classID": "plot-segment.cartesian",
+        "glyph": "swv2zzeap0j",
+        "table": "g7_gender_gap_unemployment",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "dodge-y",
+            "order": {
+              "expression": "avg(Gap)"
+            },
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "exposed": true
+        }
+      },
+      {
+        "_id": "vebet6cdeo",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 20
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Unemployment Gender Gap for G7 Countries"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      },
+      {
+        "_id": "svlqvoz6r2",
+        "classID": "legend.custom",
+        "properties": {
+          "scale": "55mjffzg8r",
+          "visible": true,
+          "alignX": "middle",
+          "alignY": "start",
+          "fontFamily": "Arial",
+          "fontSize": 10,
+          "textColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "dataSource": "columnValues",
+          "dataExpressions": [],
+          "markerShape": "circle",
+          "orientation": "horizontal",
+          "name": "Legend1",
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          },
+          "mappingOptions": {
+            "type": "scale",
+            "table": "g7_gender_gap_unemployment",
+            "expression": "list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"),get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\"))",
+            "valueType": "string",
+            "scale": "55mjffzg8r",
+            "allowSelectValue": true
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "55mjffzg8r",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "name": "Scale1",
+          "mapping": {
+            "Men": {
+              "r": 127,
+              "g": 201,
+              "b": 127
+            },
+            "Women": {
+              "r": 190,
+              "g": 174,
+              "b": 212
+            }
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "g7_gender_gap_unemployment",
+        "expression": "get(list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"),get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\")), 0)",
+        "valueType": "string",
+        "scale": "55mjffzg8r",
+        "attribute": "fill",
+        "valueIndex": 0
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "deome8z6hd": {
+      "x": 0,
+      "y": 0
+    },
+    "gvefi5reaml": {
+      "x1": -36.248723223821806,
+      "y1": -2.1296033731460926,
+      "x2": 36.248723223821806,
+      "y2": -2.1296033731460926,
+      "anchorXzfcfo95f87q": -7.626354756180693,
+      "anchorYzfcfo95f87q": -2.1296033731460926,
+      "anchorXni63ax3t4om": -8.19126992330519,
+      "anchorYni63ax3t4om": -2.1296033731460926
+    },
+    "6d503c075ky": {
+      "x1": -6.101083804944555,
+      "y1": 0,
+      "x2": -6.553015938644152,
+      "y2": 0,
+      "cx": -6.327049871794353,
+      "cy": 0,
+      "dx": -0.4519321336995967,
+      "dy": 0,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "baizdbu4lyh": {
+      "x": -12.20216760988911,
+      "y": 0,
+      "size": 12,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "0eeqrggu7ax": {
+      "x": -13.106031877288304,
+      "y": 0,
+      "size": 12,
+      "strokeWidth": 0.2,
+      "opacity": 0.2
+    },
+    "dpej9gluhhn": {
+      "x": -72.49744644764361,
+      "y": 0,
+      "fontSize": 3.5,
+      "opacity": 0.25
+    },
+    "vebet6cdeo": {
+      "x": 5,
+      "y": 50,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "g7_gender_gap_unemployment",
+      "columns": [
+        {
+          "displayName": "Country",
+          "name": "Country",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "Italy, France, Canada"
+          }
+        },
+        {
+          "displayName": "Men",
+          "name": "Men",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "6, 9.1, 8.5"
+          }
+        },
+        {
+          "displayName": "Women",
+          "name": "Women",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "11.1, 8.4, 5.2"
+          }
+        },
+        {
+          "displayName": "Gap",
+          "name": "Gap",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "-2, 0.1, 0.8"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "lb8b6dhn449",
+      "dataSource": {
+        "table": "g7_gender_gap_unemployment"
+      },
+      "expression": {
+        "expression": "avg(Gap)",
+        "property": {
+          "property": "sublayout",
+          "field": [
+            "order",
+            "expression"
+          ]
+        }
+      }
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "dataSource": {
+        "table": "g7_gender_gap_unemployment",
+        "groupBy": null
+      },
+      "axis": {
+        "expression": "avg(Men)",
+        "additionalExpressions": [
+          "avg(Men)",
+          "avg(Women)"
+        ],
+        "type": "numerical",
+        "property": "axis"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "dataSource": {
+        "table": "g7_gender_gap_unemployment",
+        "groupBy": null
+      },
+      "expression": {
+        "expression": "avg(Men)",
+        "property": {
+          "property": "dataExpressions",
+          "field": [
+            0,
+            "expression"
+          ]
+        }
+      }
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "dataSource": {
+        "table": "g7_gender_gap_unemployment",
+        "groupBy": null
+      },
+      "expression": {
+        "expression": "avg(Women)",
+        "property": {
+          "property": "dataExpressions",
+          "field": [
+            1,
+            "expression"
+          ]
+        }
+      }
+    },
+    {
+      "objectID": "55mjffzg8r",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "get(list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"), get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\")), 0)",
+          "get(list(get(get(g7_gender_gap_unemployment.columns, 1), \"displayName\"), get(get(g7_gender_gap_unemployment.columns, 2), \"displayName\")), 1)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "g7_gender_gap_unemployment"
+      }
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "lb8b6dhn449",
+      "target": {
+        "property": {
+          "property": "sublayout",
+          "field": "order"
+        }
+      },
+      "type": "object",
+      "default": {
+        "expression": "avg(Gap)"
+      },
+      "displayName": "PlotSegment1/sublayout.order"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "DataAxis1/axis.style.tickSize"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "DataAxis1/axis.style.fontSize"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "DataAxis1/axis.style.fontFamily"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis1/axis.style.lineColor"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "DataAxis1/axis.style.tickColor"
+    },
+    {
+      "objectID": "gvefi5reaml",
+      "target": {
+        "property": {
+          "property": "axis",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "ascending",
+      "displayName": "DataAxis1/axis.categories"
+    },
+    {
+      "objectID": "6d503c075ky",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Line1/visible"
+    },
+    {
+      "objectID": "6d503c075ky",
+      "target": {
+        "attribute": "stroke"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Line1/stroke"
+    },
+    {
+      "objectID": "6d503c075ky",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Line1/strokeWidth"
+    },
+    {
+      "objectID": "6d503c075ky",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Line1/strokeStyle"
+    },
+    {
+      "objectID": "6d503c075ky",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Line1/opacity"
+    },
+    {
+      "objectID": "baizdbu4lyh",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol1/visible"
+    },
+    {
+      "objectID": "baizdbu4lyh",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/strokeWidth"
+    },
+    {
+      "objectID": "baizdbu4lyh",
+      "target": {
+        "attribute": "size"
+      },
+      "type": "number",
+      "default": 60,
+      "displayName": "Symbol1/size"
+    },
+    {
+      "objectID": "baizdbu4lyh",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol1/opacity"
+    },
+    {
+      "objectID": "0eeqrggu7ax",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Symbol2/visible"
+    },
+    {
+      "objectID": "0eeqrggu7ax",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol2/strokeWidth"
+    },
+    {
+      "objectID": "0eeqrggu7ax",
+      "target": {
+        "attribute": "size"
+      },
+      "type": "number",
+      "default": 60,
+      "displayName": "Symbol2/size"
+    },
+    {
+      "objectID": "0eeqrggu7ax",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Symbol2/opacity"
+    },
+    {
+      "objectID": "dpej9gluhhn",
+      "target": {
+        "attribute": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Text1/fontFamily"
+    },
+    {
+      "objectID": "dpej9gluhhn",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 14,
+      "displayName": "Text1/fontSize"
+    },
+    {
+      "objectID": "dpej9gluhhn",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Text1/color"
+    },
+    {
+      "objectID": "dpej9gluhhn",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Text1/visible"
+    },
+    {
+      "objectID": "dpej9gluhhn",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Text1/opacity"
+    },
+    {
+      "objectID": "vebet6cdeo",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "vebet6cdeo",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "vebet6cdeo",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Unemployment Gender Gap for G7 Countries",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Legend1/fontFamily"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "fontSize"
+      },
+      "type": "number",
+      "default": 10,
+      "displayName": "Legend1/fontSize"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "textColor"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Legend1/textColor"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "markerShape"
+      },
+      "type": "enum",
+      "default": "circle",
+      "displayName": "Legend1/markerShape"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "alignY"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignY"
+    },
+    {
+      "objectID": "svlqvoz6r2",
+      "target": {
+        "property": "alignX"
+      },
+      "type": "enum",
+      "default": "middle",
+      "displayName": "Legend1/alignX"
+    },
+    {
+      "objectID": "otuizmrwsfd",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 130,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "otuizmrwsfd",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 90,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "otuizmrwsfd",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 84.98269134395528,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "otuizmrwsfd",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

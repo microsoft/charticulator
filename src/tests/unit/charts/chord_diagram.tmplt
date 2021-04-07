@@ -1,0 +1,1041 @@
+{
+  "specification": {
+    "_id": "jknhxzl0t6",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": {
+        "r": 0,
+        "g": 0,
+        "b": 0
+      },
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 70
+      },
+      "marginRight": {
+        "type": "value",
+        "value": 20
+      },
+      "width": {
+        "type": "value",
+        "value": 1200
+      },
+      "height": {
+        "type": "value",
+        "value": 1000
+      },
+      "marginBottom": {
+        "type": "value",
+        "value": 50
+      },
+      "marginLeft": {
+        "type": "value",
+        "value": 30
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "jffttwjkwu",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "global_resource_trade_nodes",
+        "marks": [
+          {
+            "_id": "o4r3bwhmyf",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "2w381xp07wj",
+            "classID": "mark.rect",
+            "properties": {
+              "visible": true,
+              "strokeStyle": "solid",
+              "shape": "rectangle",
+              "name": "Shape1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "global_resource_trade_nodes",
+                "expression": "first(Region)",
+                "valueType": "string",
+                "scale": "9gxmliwns",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix2"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              },
+              "width": {
+                "type": "scale",
+                "table": "global_resource_trade_nodes",
+                "expression": "avg(Total)",
+                "valueType": "number",
+                "scale": "abn4v4jv3m",
+                "attribute": "width"
+              }
+            }
+          },
+          {
+            "_id": "pvg485sfmu",
+            "classID": "mark.text",
+            "properties": {
+              "alignment": {
+                "x": "left",
+                "y": "middle",
+                "xMargin": 3.962228099447131,
+                "yMargin": -7.583261502620851
+              },
+              "rotation": 90,
+              "visible": true,
+              "name": "Text1",
+              "exposed": true
+            },
+            "mappings": {
+              "text": {
+                "type": "text",
+                "table": "global_resource_trade_nodes",
+                "textExpression": "${first(Name)}"
+              },
+              "fontFamily": {
+                "type": "value",
+                "value": "Arial"
+              },
+              "fontSize": {
+                "type": "value",
+                "value": 10
+              },
+              "color": {
+                "type": "scale",
+                "table": "global_resource_trade_nodes",
+                "expression": "first(Region)",
+                "valueType": "string",
+                "scale": "9gxmliwns",
+                "attribute": "color"
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "gkq3cl05xxv",
+        "classID": "links.table",
+        "mappings": {
+          "color": {
+            "type": "scale",
+            "table": "global_resource_trade_nodes",
+            "expression": "first(Region)",
+            "valueType": "string",
+            "scale": "9gxmliwns"
+          },
+          "opacity": {
+            "type": "value",
+            "value": 0.5
+          },
+          "strokeWidth": {
+            "type": "scale",
+            "table": "global_resource_trade_links",
+            "expression": "avg(Amount)",
+            "valueType": "number",
+            "scale": "jopzpa484eq"
+          }
+        },
+        "properties": {
+          "name": "Link1",
+          "linkMarkType": "",
+          "visible": true,
+          "linkType": "band",
+          "interpolationType": "circle",
+          "anchor1": [
+            {
+              "x": {
+                "element": "2w381xp07wj",
+                "attribute": "x1"
+              },
+              "y": {
+                "element": "2w381xp07wj",
+                "attribute": "y1"
+              },
+              "direction": {
+                "x": 0,
+                "y": -1
+              }
+            },
+            {
+              "x": {
+                "element": "2w381xp07wj",
+                "attribute": "x2"
+              },
+              "y": {
+                "element": "2w381xp07wj",
+                "attribute": "y1"
+              },
+              "direction": {
+                "x": 0,
+                "y": -1
+              }
+            }
+          ],
+          "anchor2": [
+            {
+              "x": {
+                "element": "2w381xp07wj",
+                "attribute": "x1"
+              },
+              "y": {
+                "element": "2w381xp07wj",
+                "attribute": "y1"
+              },
+              "direction": {
+                "x": 0,
+                "y": -1
+              }
+            },
+            {
+              "x": {
+                "element": "2w381xp07wj",
+                "attribute": "x2"
+              },
+              "y": {
+                "element": "2w381xp07wj",
+                "attribute": "y1"
+              },
+              "direction": {
+                "x": 0,
+                "y": -1
+              }
+            }
+          ],
+          "linkTable": {
+            "table": "global_resource_trade_links",
+            "plotSegments": [
+              "zqxtj2pef8q",
+              "zqxtj2pef8q"
+            ]
+          },
+          "curveness": 30,
+          "exposed": true
+        }
+      },
+      {
+        "_id": "zqxtj2pef8q",
+        "classID": "plot-segment.polar",
+        "glyph": "jffttwjkwu",
+        "table": "global_resource_trade_nodes",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "sublayout": {
+            "type": "dodge-x",
+            "order": {
+              "expression": "first(Region)"
+            },
+            "ratioX": 0.3533848286350194,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "startAngle": 0,
+          "endAngle": 360,
+          "innerRatio": 0.806089627494778,
+          "outerRatio": 0.8537821971826839,
+          "curve": [
+            [
+              {
+                "x": -1,
+                "y": 0
+              },
+              {
+                "x": -0.25,
+                "y": -0.5
+              },
+              {
+                "x": 0.25,
+                "y": 0.5
+              },
+              {
+                "x": 1,
+                "y": 0
+              }
+            ]
+          ],
+          "normalStart": -0.2,
+          "normalEnd": 0.2
+        }
+      },
+      {
+        "_id": "fkkx1effdp6",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "left",
+            "y": "bottom",
+            "xMargin": 0,
+            "yMargin": 12
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          },
+          "text": {
+            "type": "value",
+            "value": "Global Trade of Natural Resources in 2016"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 22
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 255,
+              "g": 255,
+              "b": 255
+            }
+          }
+        }
+      },
+      {
+        "_id": "pvjnisf5h0q",
+        "classID": "legend.categorical",
+        "properties": {
+          "scale": "9gxmliwns",
+          "visible": true,
+          "alignX": "start",
+          "alignY": "end",
+          "fontFamily": "Arial",
+          "fontSize": 10,
+          "textColor": {
+            "r": 255,
+            "g": 255,
+            "b": 255
+          },
+          "dataSource": "columnValues",
+          "dataExpressions": [],
+          "markerShape": "rectangle",
+          "orientation": "vertical",
+          "name": "Legend1",
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          },
+          "mappingOptions": {
+            "type": "scale",
+            "table": "global_resource_trade_nodes",
+            "expression": "first(Region)",
+            "valueType": "string",
+            "scale": "9gxmliwns",
+            "allowSelectValue": false
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "9gxmliwns",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "enableTooltips": true,
+          "enableContextMenu": true,
+          "enableSelection": true,
+          "name": "Scale1",
+          "mapping": {
+            "Sub-Saharan Africa": {
+              "r": 166,
+              "g": 206,
+              "b": 227
+            },
+            "Middle East and North Africa": {
+              "r": 31,
+              "g": 120,
+              "b": 180
+            },
+            "South America": {
+              "r": 178,
+              "g": 223,
+              "b": 138
+            },
+            "Oceania": {
+              "r": 51,
+              "g": 160,
+              "b": 44
+            },
+            "Europe": {
+              "r": 251,
+              "g": 154,
+              "b": 153
+            },
+            "Central and Northern Asia": {
+              "r": 227,
+              "g": 26,
+              "b": 28
+            },
+            "South Asia": {
+              "r": 253,
+              "g": 191,
+              "b": 111
+            },
+            "Southeast Asia": {
+              "r": 255,
+              "g": 127,
+              "b": 0
+            },
+            "North America": {
+              "r": 202,
+              "g": 178,
+              "b": 214
+            },
+            "China": {
+              "r": 106,
+              "g": 61,
+              "b": 154
+            },
+            "Caribbean and Central America": {
+              "r": 255,
+              "g": 255,
+              "b": 153
+            },
+            "East Asia excluding China": {
+              "r": 177,
+              "g": 89,
+              "b": 40
+            }
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      },
+      {
+        "_id": "abn4v4jv3m",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale2",
+          "domainMin": 0,
+          "domainMax": 600000000,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      },
+      {
+        "_id": "jopzpa484eq",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale3",
+          "domainMin": 0,
+          "domainMax": 110000000,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          },
+          "rangeMax": {
+            "type": "value",
+            "value": 5
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "global_resource_trade_nodes",
+        "expression": "first(Region)",
+        "valueType": "string",
+        "scale": "9gxmliwns",
+        "attribute": "fill"
+      },
+      {
+        "type": "scale",
+        "table": "global_resource_trade_nodes",
+        "expression": "avg(Total)",
+        "valueType": "number",
+        "scale": "abn4v4jv3m",
+        "attribute": "width"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "o4r3bwhmyf": {
+      "x": 0,
+      "y": 0
+    },
+    "2w381xp07wj": {
+      "x1": -0.11084831509113954,
+      "y1": -1.0492365331338966,
+      "x2": 0.11084831509113954,
+      "y2": 1.0492365331338966,
+      "cx": 0,
+      "cy": 0,
+      "width": 0.2216966301822791,
+      "height": 2.0984730662677933,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "pvg485sfmu": {
+      "x": 0,
+      "y": 2.6230913328347416,
+      "fontSize": 2.5,
+      "opacity": 0.25
+    },
+    "fkkx1effdp6": {
+      "x": -142.5,
+      "y": 107.5,
+      "fontSize": 5.5,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "global_resource_trade_nodes",
+      "columns": [
+        {
+          "displayName": "id",
+          "name": "id",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "AGO, ARE, ARG"
+          }
+        },
+        {
+          "displayName": "Name",
+          "name": "Name",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "Angola, United Arab Emirates, Argentina"
+          }
+        },
+        {
+          "displayName": "Region",
+          "name": "Region",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "Sub-Saharan Africa, Middle East and North Africa, South America"
+          }
+        },
+        {
+          "displayName": "Total",
+          "name": "Total",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "20744138.282, 111175748.65500002, 21657138.606000002"
+          }
+        }
+      ]
+    },
+    {
+      "name": "global_resource_trade_links",
+      "columns": [
+        {
+          "displayName": "source_id",
+          "name": "source_id",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "DZA, AGO, AZE"
+          }
+        },
+        {
+          "displayName": "target_id",
+          "name": "target_id",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "orderMode": "alphabetically",
+            "examples": "BEL, BRA, CAN"
+          }
+        },
+        {
+          "displayName": "Amount",
+          "name": "Amount",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "examples": "16084831, 1040768.161, 1559184.561"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "zqxtj2pef8q",
+      "dataSource": {
+        "table": "global_resource_trade_nodes"
+      },
+      "expression": {
+        "expression": "first(Region)",
+        "property": {
+          "property": "sublayout",
+          "field": [
+            "order",
+            "expression"
+          ]
+        }
+      }
+    },
+    {
+      "objectID": "9gxmliwns",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "first(Region)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "global_resource_trade_nodes"
+      }
+    },
+    {
+      "objectID": "abn4v4jv3m",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Total)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "global_resource_trade_nodes"
+      }
+    },
+    {
+      "objectID": "jopzpa484eq",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Amount)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "global_resource_trade_links",
+        "groupBy": null
+      }
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "gkq3cl05xxv",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 0.5,
+      "displayName": "Link1/opacity"
+    },
+    {
+      "objectID": "2w381xp07wj",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Shape1/visible"
+    },
+    {
+      "objectID": "2w381xp07wj",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/strokeWidth"
+    },
+    {
+      "objectID": "2w381xp07wj",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Shape1/strokeStyle"
+    },
+    {
+      "objectID": "2w381xp07wj",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/opacity"
+    },
+    {
+      "objectID": "pvg485sfmu",
+      "target": {
+        "attribute": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Text1/fontFamily"
+    },
+    {
+      "objectID": "pvg485sfmu",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 10,
+      "displayName": "Text1/fontSize"
+    },
+    {
+      "objectID": "pvg485sfmu",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Text1/visible"
+    },
+    {
+      "objectID": "pvg485sfmu",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Text1/opacity"
+    },
+    {
+      "objectID": "fkkx1effdp6",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 22,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "fkkx1effdp6",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#ffffff",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "fkkx1effdp6",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "Global Trade of Natural Resources in 2016",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "fontFamily"
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "Legend1/fontFamily"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "fontSize"
+      },
+      "type": "number",
+      "default": 10,
+      "displayName": "Legend1/fontSize"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "textColor"
+      },
+      "type": "color",
+      "default": "#ffffff",
+      "displayName": "Legend1/textColor"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "markerShape"
+      },
+      "type": "enum",
+      "default": "rectangle",
+      "displayName": "Legend1/markerShape"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "alignY"
+      },
+      "type": "enum",
+      "default": "end",
+      "displayName": "Legend1/alignY"
+    },
+    {
+      "objectID": "pvjnisf5h0q",
+      "target": {
+        "property": "alignX"
+      },
+      "type": "enum",
+      "default": "start",
+      "displayName": "Legend1/alignX"
+    },
+    {
+      "objectID": "abn4v4jv3m",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale2/domainMin"
+    },
+    {
+      "objectID": "abn4v4jv3m",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale2/domainMax"
+    },
+    {
+      "objectID": "abn4v4jv3m",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale2/rangeMin"
+    },
+    {
+      "objectID": "abn4v4jv3m",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale2/rangeMax"
+    },
+    {
+      "objectID": "jopzpa484eq",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale3/domainMin"
+    },
+    {
+      "objectID": "jopzpa484eq",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale3/domainMax"
+    },
+    {
+      "objectID": "jopzpa484eq",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale3/rangeMin"
+    },
+    {
+      "objectID": "jopzpa484eq",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale3/rangeMax"
+    },
+    {
+      "objectID": "jknhxzl0t6",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 30,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "jknhxzl0t6",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 20,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "jknhxzl0t6",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 70,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "jknhxzl0t6",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}
