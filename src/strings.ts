@@ -246,7 +246,8 @@ export const strings = {
     semicolon: "semicolon",
   },
   templateImport: {
-    columnName: "Column name from the template",
+    columnNameTemplate: "Column name from the template",
+    columnNameChart: "Column name from the chart design",
     dataType: "Required data type",
     examples: "Example data values",
     mapped: "Column name in the dataset",
