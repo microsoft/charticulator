@@ -309,7 +309,11 @@ export class LineGuide extends PlotSegmentClass {
       r.push(buildAxisInference(this.object, "axis"));
       p = p.concat(buildAxisProperties(this.object, "axis"));
     }
-    if (this.object.properties.axis) {
+    if (
+      this.object.properties.axis &&
+      (this.object.properties.axis.autoDomainMin ||
+        this.object.properties.axis.autoDomainMax)
+    ) {
       const values = (this.object.properties.axis as any).categories;
       const defaultValue = getSortDirection(values);
       p.push({
