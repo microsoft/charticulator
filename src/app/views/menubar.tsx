@@ -27,7 +27,7 @@ import {
 } from "../utils";
 import { ChartTemplate, MessageType, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
-import { FileViewImport } from "./file_view/import_view";
+import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
@@ -367,6 +367,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                               <ModalView context={context}>
                                 <div onClick={(e) => e.stopPropagation()}>
                                   <FileViewImport
+                                    mode={MappingMode.ImportTemplate}
                                     tables={data.tables}
                                     datasetTables={this.store.dataset.tables}
                                     tableMapping={tableMapping}
