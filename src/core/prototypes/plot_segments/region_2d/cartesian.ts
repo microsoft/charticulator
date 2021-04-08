@@ -588,7 +588,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         default: this.object.properties.sublayout.order,
       });
     }
-    if (this.object.properties.xData) {
+    if (
+      this.object.properties.xData &&
+      (this.object.properties.xData.autoDomainMin ||
+        this.object.properties.xData.autoDomainMax)
+    ) {
       const values = this.object.properties.xData.categories;
       const defaultValue = getSortDirection(values);
       p.push({
@@ -603,7 +607,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         default: defaultValue,
       });
     }
-    if (this.object.properties.yData) {
+    if (
+      this.object.properties.yData &&
+      (this.object.properties.yData.autoDomainMin ||
+        this.object.properties.yData.autoDomainMax)
+    ) {
       const values = this.object.properties.yData.categories;
       const defaultValue = getSortDirection(values);
       p.push({
