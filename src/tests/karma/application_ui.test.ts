@@ -24,10 +24,11 @@ import {
   pathPrefix,
 } from "./utils";
 import { DragData } from "../../app";
-import { Expression } from "../../core";
+import { Dataset, Expression } from "../../core";
 import { matchSnapshot } from "chai-karma-snapshot";
 import { loadJSON, waitSolver } from "../unit/utils";
 import { setSVGNumberDigits } from "../../app/utils";
+import { AppStore } from "src/app/stores";
 declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
@@ -133,32 +134,57 @@ describe("Charticulator", () => {
   }).timeout(longTimeOut);
 
   // test checks that charticulator opens saved chart correctly
-  it("open chart", async () => {
+  it("open nightingale chart", async () => {
     const chartFilePath = `base/${pathPrefix}/nightingale.chart`;
-    const chartFile = await loadJSON(chartFilePath);
-    const store = application.appStore;
-    store.dispatcher.dispatch(new Actions.Load(chartFile.state));
-    expect(getChartCanvas()).to.matchSnapshot();
+    await testOpenChart(application, await loadJSON(chartFilePath));
   });
 
-  it("import template", async () => {
+  // test checks that charticulator opens saved chart correctly
+  it("open mushrooms chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/mushrooms.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  });
+
+  // test checks that charticulator opens saved chart correctly
+  it("open bump_chart chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/bump_chart.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  });
+
+  // test checks that charticulator opens saved chart correctly
+  it("open bubble_chart chart", async () => {
+    const chartFilePath = `base/${pathPrefix}/bubble_chart.chart`;
+    await testOpenChart(application, await loadJSON(chartFilePath));
+  });
+
+  it("import default template", async () => {
     const chartFilePath = `base/${pathPrefix}/default.chart`;
-    const chartFile = await loadJSON(chartFilePath);
-    const store = application.appStore;
-    store.dispatcher.dispatch(new Actions.Load(chartFile.state));
-    await waitSolver();
+    await testOpenChart(application, await loadJSON(chartFilePath));
 
     const templateFilePath = `base/${pathPrefix}/default.tmplt`;
-    const templateFile = await loadJSON(templateFilePath);
-    store.dispatcher.dispatch(
-      new Actions.ImportChartAndDataset(
-        templateFile.specification,
-        store.dataset,
-        {}
-      )
+    await testImport(
+      application.appStore,
+      await loadJSON(templateFilePath),
+      application.appStore.dataset
     );
-    await waitSolver();
-
-    expect(getChartCanvas()).to.matchSnapshot();
   }).timeout(longTimeOut);
 }).timeout(longTimeOut);
+
+async function testOpenChart(application: Application, chartFile: any) {
+  application.appStore.dispatcher.dispatch(new Actions.Load(chartFile.state));
+  await waitSolver();
+  expect(getChartCanvas()).to.matchSnapshot();
+}
+
+async function testImport(
+  store: AppStore,
+  templateFile: any,
+  dataset: Dataset.Dataset
+) {
+  store.dispatcher.dispatch(
+    new Actions.ImportChartAndDataset(templateFile.specification, dataset, {})
+  );
+  await waitSolver();
+
+  expect(getChartCanvas()).to.matchSnapshot();
+}

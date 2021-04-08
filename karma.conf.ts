@@ -8,18 +8,22 @@ const tsconfig = require("./tsconfig.test.json");
 const webpack = require("./webpack.config.test.js");
 const testRecursivePath = "./tests/karma/**/*.ts";
 const coreTestsRecursivePath = "./tests/unit/**/*.ts";
-const karmaSnapshotsDirectory = "tests/karma/__snapshots__/**/*.md";
 
+const browser = "ChromeHeadless";
+const karmaSnapshotsDirectory = `tests/karma/${browser}/__snapshots__/**/*.md`;
 const styles = ["../dist/styles/app.css", "../dist/styles/page.css"];
 
 function resolve(basePath: string, suiteName: string) {
-  return path.join(basePath, "tests/karma/__snapshots__", suiteName + ".md");
+  return path.join(
+    basePath,
+    `tests/karma/${browser}/__snapshots__`,
+    suiteName + ".md"
+  );
 }
 
 const pathPrefix = "tests/unit/charts";
 const cases: string[] = fs
   .readdirSync("./src/" + pathPrefix)
-  // .filter((x: string) => x.endsWith(".json"))
   .map((testCase: string) => path.join(pathPrefix, testCase));
 
 process.env.CHROME_BIN = require("puppeteer").executablePath();
@@ -29,7 +33,7 @@ module.exports = (config: Config) => {
   config.set({
     mode: "development",
     browserNoActivityTimeout: 100000,
-    browsers: ["ChromeHeadless"],
+    browsers: [browser],
     colors: true,
     frameworks: ["mocha", "webpack", "snapshot", "mocha-snapshot", "viewport"],
     reporters: ["mocha"],
