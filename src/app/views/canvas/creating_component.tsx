@@ -12,6 +12,7 @@ import {
 } from "../../../core";
 import { SnappableGuide } from "./snapping/common";
 import { MappingType } from "../../../core/specification";
+import { toSVGNumber } from "../../../app/utils";
 
 export interface CreatingComponentProps {
   width: number;
@@ -404,8 +405,8 @@ export class CreatingComponent extends React.Component<
           ref="handler"
           x={0}
           y={0}
-          width={this.props.width}
-          height={this.props.height}
+          width={toSVGNumber(this.props.width)}
+          height={toSVGNumber(this.props.height)}
           onMouseEnter={(e) => {
             const move = (e: MouseEvent) => {
               const guides = [...this.props.guides];

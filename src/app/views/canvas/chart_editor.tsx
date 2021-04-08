@@ -42,6 +42,7 @@ import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
+import { toSVGNumber } from "../../../app/utils";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -1290,16 +1291,16 @@ export class ChartEditorView
             ref="canvas"
             x={0}
             y={0}
-            width={width}
-            height={height}
+            width={toSVGNumber(width)}
+            height={toSVGNumber(height)}
           >
             <rect
               className="interaction-handler"
               ref="canvasInteraction"
               x={0}
               y={0}
-              width={width}
-              height={height}
+              width={toSVGNumber(width)}
+              height={toSVGNumber(height)}
             />
             {this.renderChartCanvas()}
             {this.renderBoundsGuides()}

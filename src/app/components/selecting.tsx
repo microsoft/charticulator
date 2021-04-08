@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import * as Hammer from "hammerjs";
+import { toSVGNumber } from "../utils";
 
 export interface MarqueeSelection {
   x1: number;
@@ -100,18 +101,26 @@ export class SelectionView extends React.Component<
           ref="handler"
           className="interaction-handler"
           style={{ cursor: "crosshair" }}
-          x={this.props.x}
-          y={this.props.y}
-          width={this.props.width}
-          height={this.props.height}
+          x={toSVGNumber(this.props.x)}
+          y={toSVGNumber(this.props.y)}
+          width={toSVGNumber(this.props.width)}
+          height={toSVGNumber(this.props.height)}
         />
         {this.state.marquee ? (
           <rect
             className="marquee-selection"
-            x={Math.min(this.state.marquee.x1, this.state.marquee.x2)}
-            y={Math.min(this.state.marquee.y1, this.state.marquee.y2)}
-            width={Math.abs(this.state.marquee.x2 - this.state.marquee.x1)}
-            height={Math.abs(this.state.marquee.y2 - this.state.marquee.y1)}
+            x={toSVGNumber(
+              Math.min(this.state.marquee.x1, this.state.marquee.x2)
+            )}
+            y={toSVGNumber(
+              Math.min(this.state.marquee.y1, this.state.marquee.y2)
+            )}
+            width={toSVGNumber(
+              Math.abs(this.state.marquee.x2 - this.state.marquee.x1)
+            )}
+            height={toSVGNumber(
+              Math.abs(this.state.marquee.y2 - this.state.marquee.y1)
+            )}
           />
         ) : null}
       </g>

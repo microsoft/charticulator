@@ -1908,7 +1908,7 @@
 <svg
   class="canvas-view"
   height="847"
-  width="1363.0625"
+  width="1363.06"
   x="0"
   y="0"
 >
@@ -1916,7 +1916,7 @@
     class="interaction-handler"
     height="847"
     style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-    width="1363.0625"
+    width="1363.06"
     x="0"
     y="0"
   />

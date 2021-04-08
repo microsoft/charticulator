@@ -21,7 +21,7 @@ import { ZoomableCanvas } from "../../components";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import { renderGraphicalElementSVG } from "../../renderer";
 import { AppStore, MarkSelection, Selection } from "../../stores";
-import { classNames } from "../../utils";
+import { classNames, toSVGNumber } from "../../utils";
 import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
 import {
@@ -1530,16 +1530,16 @@ export class SingleMarkView
               ref="canvas"
               x={0}
               y={0}
-              width={this.props.width - 4}
-              height={this.props.height}
+              width={toSVGNumber(this.props.width - 4)}
+              height={toSVGNumber(this.props.height)}
             >
               <rect
                 ref="canvasInteraction"
                 className="interaction-handler"
                 x={0}
                 y={0}
-                width={this.props.width}
-                height={this.props.height}
+                width={toSVGNumber(this.props.width)}
+                height={toSVGNumber(this.props.height)}
               />
             </svg>
             <div className="mark-view-container-notice">
