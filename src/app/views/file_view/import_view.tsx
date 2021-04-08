@@ -124,7 +124,9 @@ export class FileViewImport extends ContextedComponent<
                       <thead>
                         <tr className="charticulator__file-view-mapping_rows">
                           <th className="charticulator__file-view-mapping_row_item">
-                            {strings.templateImport.columnName}
+                            {this.props.mode === MappingMode.ImportTemplate
+                              ? strings.templateImport.columnNameTemplate
+                              : strings.templateImport.columnNameChart}
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
                             {strings.templateImport.dataType}
