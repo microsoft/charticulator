@@ -1331,6 +1331,19 @@ export class AppStore extends BaseStore {
   }
 
   public updatePlotSegments() {
+    const getDataKindByType = (type: AxisDataBindingType): DataKind => {
+      switch (type) {
+        case AxisDataBindingType.Categorical:
+          return DataKind.Categorical;
+        case AxisDataBindingType.Numerical:
+          return DataKind.Numerical;
+        case AxisDataBindingType.Default:
+          return DataKind.Categorical;
+        default:
+          return DataKind.Categorical;
+      }
+    };
+
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
@@ -1353,7 +1366,9 @@ export class AppStore extends BaseStore {
               xDataProperty.type === "numerical" &&
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : xDataProperty.dataKind,
+                : xDataProperty.dataKind
+                ? xDataProperty.dataKind
+                : getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
@@ -1391,7 +1406,9 @@ export class AppStore extends BaseStore {
               yDataProperty.type === "numerical" &&
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : yDataProperty.dataKind,
+                : yDataProperty.dataKind
+                ? yDataProperty.dataKind
+                : getDataKindByType(yDataProperty.type),
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
@@ -1428,7 +1445,9 @@ export class AppStore extends BaseStore {
               axisProperty.type === "numerical" &&
               axisProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : axisProperty.dataKind,
+                : axisProperty.dataKind
+                ? axisProperty.dataKind
+                : getDataKindByType(axisProperty.type),
             orderMode: axisProperty.orderMode
               ? axisProperty.orderMode
               : axisProperty.valueType === "string"
