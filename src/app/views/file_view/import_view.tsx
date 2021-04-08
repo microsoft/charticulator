@@ -10,7 +10,13 @@ import { Button, Select } from "../panels/widgets/controls";
 import { Table } from "../../../core/dataset/dataset";
 import { strings } from "../../../strings";
 
+export enum MappingMode {
+  ImportTemplate,
+  ImportDataset,
+}
+
 export interface FileViewImportProps {
+  mode: MappingMode;
   tables: Specification.Template.Table[];
   datasetTables: Table[];
   tableMapping: Map<string, string>;
@@ -110,7 +116,9 @@ export class FileViewImport extends ContextedComponent<
                     key={table.name}
                   >
                     <h4>
-                      {strings.templateImport.title}: {table.name}
+                      {this.props.mode === MappingMode.ImportTemplate
+                        ? strings.templateImport.usbtitleImportTemplate
+                        : strings.templateImport.usbtitleImportData}
                     </h4>
                     <table className="charticulator__file-view-mapping_table">
                       <thead>

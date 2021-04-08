@@ -33,7 +33,7 @@ import { TableType } from "../../../core/dataset";
 import { DataType, DataKind } from "../../../core/specification";
 import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
-import { FileViewImport } from "../file_view/import_view";
+import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 
 export interface DatasetViewProps {
@@ -235,6 +235,7 @@ export class ColumnsView extends React.Component<
                                 <ModalView context={context}>
                                   <div onClick={(e) => e.stopPropagation()}>
                                     <FileViewImport
+                                      mode={MappingMode.ImportDataset}
                                       tables={template.tables}
                                       datasetTables={newDataset.tables}
                                       tableMapping={tableMapping}
