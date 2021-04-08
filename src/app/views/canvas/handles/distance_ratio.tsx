@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { Geometry, Graphics, Prototypes } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 import { renderSVGPath } from "../../../renderer";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
@@ -153,7 +153,7 @@ export class DistanceRatioHandleView extends React.Component<
           ["visible", handle.visible || this.props.visible]
         )}
       >
-        <g transform={`translate(${cx},${cy})`}>
+        <g transform={`translate(${toSVGNumber(cx)},${toSVGNumber(cy)})`}>
           <circle ref="centerCircle" cx={0} cy={0} r={0} />
           <path
             d={makePath(handle.value)}
@@ -165,8 +165,8 @@ export class DistanceRatioHandleView extends React.Component<
           />
           {handle.value == 0 ? (
             <circle
-              cx={px(handle.value)}
-              cy={py(handle.value)}
+              cx={toSVGNumber(px(handle.value))}
+              cy={toSVGNumber(py(handle.value))}
               r={3}
               className="element-shape handle-highlight"
             />
@@ -180,8 +180,8 @@ export class DistanceRatioHandleView extends React.Component<
             />
             {this.state.newValue == 0 ? (
               <circle
-                cx={px(this.state.newValue)}
-                cy={py(this.state.newValue)}
+                cx={toSVGNumber(px(this.state.newValue))}
+                cy={toSVGNumber(py(this.state.newValue))}
                 r={3}
                 className="element-shape handle-hint"
               />

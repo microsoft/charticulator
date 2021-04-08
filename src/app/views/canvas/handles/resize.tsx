@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { ZoomInfo } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 
 export interface ResizeHandleViewProps {
   width: number;
@@ -157,9 +157,9 @@ export class ResizeHandleView extends React.Component<
 
   public render() {
     const fX = (x: number) =>
-      x * this.props.zoom.scale + this.props.zoom.centerX;
+      toSVGNumber(x * this.props.zoom.scale + this.props.zoom.centerX);
     const fY = (y: number) =>
-      -y * this.props.zoom.scale + this.props.zoom.centerY;
+      toSVGNumber(-y * this.props.zoom.scale + this.props.zoom.centerY);
     const x1 = this.props.cx - this.props.width / 2;
     const y1 = this.props.cy - this.props.height / 2;
     const x2 = this.props.cx + this.props.width / 2;

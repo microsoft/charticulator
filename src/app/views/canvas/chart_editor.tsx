@@ -1135,24 +1135,24 @@ export class ChartEditorView
       <g>
         <rect
           className="canvas-region-outer2"
-          x={Math.min(p1t.x, p2t.x) - 3}
-          y={Math.min(p1t.y, p2t.y) - 3}
-          width={Math.abs(p2t.x - p1t.x) + 6}
-          height={Math.abs(p2t.y - p1t.y) + 6}
+          x={toSVGNumber(Math.min(p1t.x, p2t.x) - 3)}
+          y={toSVGNumber(Math.min(p1t.y, p2t.y) - 3)}
+          width={toSVGNumber(Math.abs(p2t.x - p1t.x) + 6)}
+          height={toSVGNumber(Math.abs(p2t.y - p1t.y) + 6)}
         />
         <rect
           className="canvas-region-outer"
-          x={Math.min(p1t.x, p2t.x) - 1}
-          y={Math.min(p1t.y, p2t.y) - 1}
-          width={Math.abs(p2t.x - p1t.x) + 2}
-          height={Math.abs(p2t.y - p1t.y) + 2}
+          x={toSVGNumber(Math.min(p1t.x, p2t.x) - 1)}
+          y={toSVGNumber(Math.min(p1t.y, p2t.y) - 1)}
+          width={toSVGNumber(Math.abs(p2t.x - p1t.x) + 2)}
+          height={toSVGNumber(Math.abs(p2t.y - p1t.y) + 2)}
         />
         <rect
           className="canvas-region"
-          x={Math.min(p1t.x, p2t.x)}
-          y={Math.min(p1t.y, p2t.y)}
-          width={Math.abs(p2t.x - p1t.x)}
-          height={Math.abs(p2t.y - p1t.y)}
+          x={toSVGNumber(Math.min(p1t.x, p2t.x))}
+          y={toSVGNumber(Math.min(p1t.y, p2t.y))}
+          width={toSVGNumber(Math.abs(p2t.x - p1t.x))}
+          height={toSVGNumber(Math.abs(p2t.y - p1t.y))}
         />
         <ResizeHandleView
           zoom={this.state.zoom}

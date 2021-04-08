@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { Prototypes } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
 export interface AngleHandleViewProps extends HandleViewProps {
@@ -151,43 +151,43 @@ export class AngleHandleView extends React.Component<
             x1={0}
             y1={0}
             x2={0}
-            y2={radius}
+            y2={toSVGNumber(radius)}
             className="element-line handle-ghost"
           />
           <path
             d={shapeF(9)}
-            transform={`translate(0,${radius})`}
+            transform={`translate(0,${toSVGNumber(radius)})`}
             className="element-shape handle-ghost"
           />
           <line
             x1={0}
             y1={0}
             x2={0}
-            y2={radius}
+            y2={toSVGNumber(radius)}
             className="element-line handle-highlight"
           />
           <path
             d={shapeF(5)}
-            transform={`translate(0,${radius})`}
+            transform={`translate(0,${toSVGNumber(radius)})`}
             className="element-shape handle-highlight"
           />
         </g>
         {this.state.dragging ? (
           <g
-            transform={`translate(${cx},${cy}) rotate(${
-              180 + this.state.newValue
-            })`}
+            transform={`translate(${toSVGNumber(cx)},${toSVGNumber(
+              cy
+            )}) rotate(${180 + this.state.newValue})`}
           >
             <line
               x1={0}
               y1={0}
               x2={0}
-              y2={radius}
+              y2={toSVGNumber(radius)}
               className="element-line handle-hint"
             />
             <path
               d={shapeF(5)}
-              transform={`translate(0,${radius})`}
+              transform={`translate(0,${toSVGNumber(radius)})`}
               className="element-shape handle-hint"
             />
           </g>

@@ -48,6 +48,7 @@ describe("Charticulator", () => {
     container.id = "container";
     document.querySelector("body").appendChild(container);
     application = new Application();
+    setSVGNumberDigits(2);
     application
       .initialize(config as any, "container", {
         workerScriptContent: workerScript,

@@ -123,17 +123,17 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
           >
             <rect
               className="element-shape ghost"
-              x={(-rect.width / 2) * zoom.scale - margin}
-              y={(-rect.height / 2) * zoom.scale - margin}
-              width={rect.width * zoom.scale + margin * 2}
-              height={rect.height * zoom.scale + margin * 2}
+              x={toSVGNumber((-rect.width / 2) * zoom.scale - margin)}
+              y={toSVGNumber((-rect.height / 2) * zoom.scale - margin)}
+              width={toSVGNumber(rect.width * zoom.scale + margin * 2)}
+              height={toSVGNumber(rect.height * zoom.scale + margin * 2)}
             />
             <rect
               className="element-shape indicator"
-              x={(-rect.width / 2) * zoom.scale}
-              y={(-rect.height / 2) * zoom.scale}
-              width={rect.width * zoom.scale}
-              height={rect.height * zoom.scale}
+              x={toSVGNumber((-rect.width / 2) * zoom.scale)}
+              y={toSVGNumber((-rect.height / 2) * zoom.scale)}
+              width={toSVGNumber(rect.width * zoom.scale)}
+              height={toSVGNumber(rect.height * zoom.scale)}
             />
           </g>
         );
@@ -155,15 +155,15 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
           >
             <circle
               className="element-shape ghost"
-              cx={p.x}
-              cy={p.y}
-              r={radius + margin}
+              cx={toSVGNumber(p.x)}
+              cy={toSVGNumber(p.y)}
+              r={toSVGNumber(radius + margin)}
             />
             <circle
               className="element-shape indicator"
-              cx={p.x}
-              cy={p.y}
-              r={radius}
+              cx={toSVGNumber(p.x)}
+              cy={toSVGNumber(p.y)}
+              r={toSVGNumber(radius)}
             />
           </g>
         );
@@ -217,17 +217,17 @@ export class BoundingBoxView extends React.Component<BoundingBoxViewProps, {}> {
             >
               <line
                 className="element-line ghost"
-                x1={p1.x}
-                y1={p1.y}
-                x2={p2.x}
-                y2={p2.y}
+                x1={toSVGNumber(p1.x)}
+                y1={toSVGNumber(p1.y)}
+                x2={toSVGNumber(p2.x)}
+                y2={toSVGNumber(p2.y)}
               />
               <line
                 className="element-line indicator"
-                x1={p1.x}
-                y1={p1.y}
-                x2={p2.x}
-                y2={p2.y}
+                x1={toSVGNumber(p1.x)}
+                y1={toSVGNumber(p1.y)}
+                x2={toSVGNumber(p2.x)}
+                y2={toSVGNumber(p2.y)}
               />
             </g>
           );
