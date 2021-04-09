@@ -1279,10 +1279,14 @@ export class SingleMarkView
           <line
             className="mark-guide"
             key={`k${idx}`}
-            x1={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
-            x2={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
+            x1={toSVGNumber(
+              guide.value * this.state.zoom.scale + this.state.zoom.centerX
+            )}
+            x2={toSVGNumber(
+              guide.value * this.state.zoom.scale + this.state.zoom.centerX
+            )}
             y1={0}
-            y2={this.props.height}
+            y2={toSVGNumber(this.props.height)}
           />
         );
       }
@@ -1292,10 +1296,14 @@ export class SingleMarkView
           <line
             className="mark-guide"
             key={`k${idx}`}
-            y1={-guide.value * this.state.zoom.scale + this.state.zoom.centerY}
-            y2={-guide.value * this.state.zoom.scale + this.state.zoom.centerY}
+            y1={toSVGNumber(
+              -guide.value * this.state.zoom.scale + this.state.zoom.centerY
+            )}
+            y2={toSVGNumber(
+              -guide.value * this.state.zoom.scale + this.state.zoom.centerY
+            )}
             x1={0}
-            x2={this.props.width}
+            x2={toSVGNumber(this.props.width)}
           />
         );
       }
@@ -1313,9 +1321,11 @@ export class SingleMarkView
     pt = Geometry.applyZoom(this.state.zoom, pt);
     return (
       <path
-        d={`M${pt.x - 5},${pt.y}L${pt.x},${pt.y - 5}L${pt.x + 5},${pt.y}L${
+        d={`M${toSVGNumber(pt.x - 5)},${toSVGNumber(pt.y)}L${toSVGNumber(
           pt.x
-        },${pt.y + 5}Z`}
+        )},${toSVGNumber(pt.y - 5)}L${pt.x + 5},${toSVGNumber(
+          pt.y
+        )}L${toSVGNumber(pt.x)},${toSVGNumber(pt.y + 5)}Z`}
         className="mark-anchor"
       />
     );

@@ -5,7 +5,7 @@ import * as React from "react";
 import { Geometry, Point, Prototypes, ZoomInfo } from "../../../core";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import * as globals from "../../globals";
-import { classNames } from "../../utils";
+import { classNames, toSVGNumber } from "../../utils";
 
 export interface DropZoneViewProps {
   zone: Prototypes.DropZones.Description;
@@ -130,9 +130,9 @@ export class DropZoneView
     }
     return (
       <g
-        transform={`translate(${cx},${cy}) rotate(${
+        transform={`translate(${toSVGNumber(cx)},${toSVGNumber(cy)}) rotate(${
           ((angle + Math.PI) / Math.PI) * 180
-        }) translate(${dx},${dy}) ${extra}`}
+        }) translate(${toSVGNumber(dx)},${toSVGNumber(dy)}) ${extra}`}
       >
         <text
           className="dropzone-element-text"

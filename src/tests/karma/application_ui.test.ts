@@ -32,7 +32,6 @@ import { AppStore } from "src/app/stores";
 declare const viewport: any;
 const config = require("../../../config.test.yml");
 const workerBundle = require("raw-loader?esModule=false!../../../dist/scripts/worker.bundle.js");
-setSVGNumberDigits(0);
 
 describe("Charticulator", () => {
   use(matchSnapshot);
@@ -48,7 +47,7 @@ describe("Charticulator", () => {
     container.id = "container";
     document.querySelector("body").appendChild(container);
     application = new Application();
-    setSVGNumberDigits(0);
+    setSVGNumberDigits(1);
     application
       .initialize(config as any, "container", {
         workerScriptContent: workerScript,
