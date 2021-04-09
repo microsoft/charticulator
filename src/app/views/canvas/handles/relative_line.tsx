@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { Prototypes } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
 export interface RelativeLineHandleViewProps extends HandleViewProps {
@@ -118,27 +118,39 @@ export class RelativeLineHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                x1={fX(handle.reference + handle.sign * handle.value)}
-                x2={fX(handle.reference + handle.sign * handle.value)}
-                y1={fY(handle.span[0])}
-                y2={fY(handle.span[1])}
+                x1={toSVGNumber(
+                  fX(handle.reference + handle.sign * handle.value)
+                )}
+                x2={toSVGNumber(
+                  fX(handle.reference + handle.sign * handle.value)
+                )}
+                y1={toSVGNumber(fY(handle.span[0]))}
+                y2={toSVGNumber(fY(handle.span[1]))}
               />
               <line
                 className="element-line handle-highlight"
-                x1={fX(handle.reference + handle.sign * handle.value)}
-                x2={fX(handle.reference + handle.sign * handle.value)}
-                y1={fY(handle.span[0])}
-                y2={fY(handle.span[1])}
+                x1={toSVGNumber(
+                  fX(handle.reference + handle.sign * handle.value)
+                )}
+                x2={toSVGNumber(
+                  fX(handle.reference + handle.sign * handle.value)
+                )}
+                y1={toSVGNumber(fY(handle.span[0]))}
+                y2={toSVGNumber(fY(handle.span[1]))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  x1={fX(handle.reference + handle.sign * this.state.newValue)}
-                  x2={fX(handle.reference + handle.sign * this.state.newValue)}
-                  y1={fY(handle.span[0])}
-                  y2={fY(handle.span[1])}
+                  x1={toSVGNumber(
+                    fX(handle.reference + handle.sign * this.state.newValue)
+                  )}
+                  x2={toSVGNumber(
+                    fX(handle.reference + handle.sign * this.state.newValue)
+                  )}
+                  y1={toSVGNumber(fY(handle.span[0]))}
+                  y2={toSVGNumber(fY(handle.span[1]))}
                 />
               </g>
             ) : null}
@@ -158,27 +170,39 @@ export class RelativeLineHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                y1={fY(handle.reference + handle.sign * handle.value)}
-                y2={fY(handle.reference + handle.sign * handle.value)}
-                x1={fX(handle.span[0])}
-                x2={fX(handle.span[1])}
+                y1={toSVGNumber(
+                  fY(handle.reference + handle.sign * handle.value)
+                )}
+                y2={toSVGNumber(
+                  fY(handle.reference + handle.sign * handle.value)
+                )}
+                x1={toSVGNumber(fX(handle.span[0]))}
+                x2={toSVGNumber(fX(handle.span[1]))}
               />
               <line
                 className="element-line handle-highlight"
-                y1={fY(handle.reference + handle.sign * handle.value)}
-                y2={fY(handle.reference + handle.sign * handle.value)}
-                x1={fX(handle.span[0])}
-                x2={fX(handle.span[1])}
+                y1={toSVGNumber(
+                  fY(handle.reference + handle.sign * handle.value)
+                )}
+                y2={toSVGNumber(
+                  fY(handle.reference + handle.sign * handle.value)
+                )}
+                x1={toSVGNumber(fX(handle.span[0]))}
+                x2={toSVGNumber(fX(handle.span[1]))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  y1={fY(handle.reference + handle.sign * this.state.newValue)}
-                  y2={fY(handle.reference + handle.sign * this.state.newValue)}
-                  x1={fX(handle.span[0])}
-                  x2={fX(handle.span[1])}
+                  y1={toSVGNumber(
+                    fY(handle.reference + handle.sign * this.state.newValue)
+                  )}
+                  y2={toSVGNumber(
+                    fY(handle.reference + handle.sign * this.state.newValue)
+                  )}
+                  x1={toSVGNumber(fX(handle.span[0]))}
+                  x2={toSVGNumber(fX(handle.span[1]))}
                 />
               </g>
             ) : null}
