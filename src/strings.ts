@@ -246,13 +246,18 @@ export const strings = {
     semicolon: "semicolon",
   },
   templateImport: {
-    columnName: "Column name from the template",
+    columnNameTemplate: "Column name from the template",
+    columnNameChart: "Column name from the chart design",
     dataType: "Required data type",
     examples: "Example data values",
     mapped: "Column name in the dataset",
     save: "Save mapping",
     tableName: "Table name",
-    title: "Import template",
+    title: "Map your data",
+    usbtitleImportTemplate:
+      "Map the columns from your data source to the corresponding template fields",
+    usbtitleImportData:
+      "Map the columns from new data to the corresponding fields in the current chart design",
     unmapped: "Unmapped",
   },
   toolbar: {
