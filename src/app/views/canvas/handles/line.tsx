@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { Prototypes } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
 export interface LineHandleViewProps extends HandleViewProps {
@@ -115,27 +115,27 @@ export class LineHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                x1={fX(handle.value)}
-                x2={fX(handle.value)}
-                y1={fY(handle.span[0])}
-                y2={fY(handle.span[1])}
+                x1={toSVGNumber(fX(handle.value))}
+                x2={toSVGNumber(fX(handle.value))}
+                y1={toSVGNumber(fY(handle.span[0]))}
+                y2={toSVGNumber(fY(handle.span[1]))}
               />
               <line
                 className="element-line handle-highlight"
-                x1={fX(handle.value)}
-                x2={fX(handle.value)}
-                y1={fY(handle.span[0])}
-                y2={fY(handle.span[1])}
+                x1={toSVGNumber(fX(handle.value))}
+                x2={toSVGNumber(fX(handle.value))}
+                y1={toSVGNumber(fY(handle.span[0]))}
+                y2={toSVGNumber(fY(handle.span[1]))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  x1={fX(this.state.newValue)}
-                  x2={fX(this.state.newValue)}
-                  y1={fY(handle.span[0])}
-                  y2={fY(handle.span[1])}
+                  x1={toSVGNumber(fX(this.state.newValue))}
+                  x2={toSVGNumber(fX(this.state.newValue))}
+                  y1={toSVGNumber(fY(handle.span[0]))}
+                  y2={toSVGNumber(fY(handle.span[1]))}
                 />
               </g>
             ) : null}
@@ -155,27 +155,27 @@ export class LineHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                y1={fY(handle.value)}
-                y2={fY(handle.value)}
-                x1={fX(handle.span[0])}
-                x2={fX(handle.span[1])}
+                y1={toSVGNumber(fY(handle.value))}
+                y2={toSVGNumber(fY(handle.value))}
+                x1={toSVGNumber(fX(handle.span[0]))}
+                x2={toSVGNumber(fX(handle.span[1]))}
               />
               <line
                 className="element-line handle-highlight"
-                y1={fY(handle.value)}
-                y2={fY(handle.value)}
-                x1={fX(handle.span[0])}
-                x2={fX(handle.span[1])}
+                y1={toSVGNumber(fY(handle.value))}
+                y2={toSVGNumber(fY(handle.value))}
+                x1={toSVGNumber(fX(handle.span[0]))}
+                x2={toSVGNumber(fX(handle.span[1]))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  y1={fY(this.state.newValue)}
-                  y2={fY(this.state.newValue)}
-                  x1={fX(handle.span[0])}
-                  x2={fX(handle.span[1])}
+                  y1={toSVGNumber(fY(this.state.newValue))}
+                  y2={toSVGNumber(fY(this.state.newValue))}
+                  x1={toSVGNumber(fX(handle.span[0]))}
+                  x2={toSVGNumber(fX(handle.span[1]))}
                 />
               </g>
             ) : null}

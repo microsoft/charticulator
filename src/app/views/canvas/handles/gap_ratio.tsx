@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 import { Graphics, Prototypes, Geometry } from "../../../../core";
-import { classNames } from "../../../utils";
+import { classNames, toSVGNumber } from "../../../utils";
 import { renderSVGPath } from "../../../renderer";
 import { HandlesDragContext, HandleViewProps } from "./common";
 
@@ -422,41 +422,45 @@ export class GapRatioHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                x1={fxVal}
-                x2={fxVal}
-                y1={fy1}
-                y2={fy2}
+                x1={toSVGNumber(fxVal)}
+                x2={toSVGNumber(fxVal)}
+                y1={toSVGNumber(fy1)}
+                y2={toSVGNumber(fy2)}
               />
               <rect
                 className="element-region handle-ghost"
-                x={Math.min(fxRef, fxVal)}
-                width={Math.abs(fxRef - fxVal)}
-                y={Math.min(fy1, fy2)}
-                height={Math.abs(fy2 - fy1)}
+                x={toSVGNumber(Math.min(fxRef, fxVal))}
+                width={toSVGNumber(Math.abs(fxRef - fxVal))}
+                y={toSVGNumber(Math.min(fy1, fy2))}
+                height={toSVGNumber(Math.abs(fy2 - fy1))}
               />
               <line
                 className="element-line handle-highlight"
-                x1={fxVal}
-                x2={fxVal}
-                y1={fy1}
-                y2={fy2}
+                x1={toSVGNumber(fxVal)}
+                x2={toSVGNumber(fxVal)}
+                y1={toSVGNumber(fy1)}
+                y2={toSVGNumber(fy2)}
               />
               <rect
                 className="element-region handle-highlight"
-                x={Math.min(fxRef, fxVal)}
-                width={Math.abs(fxRef - fxVal)}
-                y={Math.min(fy1, fy2)}
-                height={Math.abs(fy2 - fy1)}
+                x={toSVGNumber(Math.min(fxRef, fxVal))}
+                width={toSVGNumber(Math.abs(fxRef - fxVal))}
+                y={toSVGNumber(Math.min(fy1, fy2))}
+                height={toSVGNumber(Math.abs(fy2 - fy1))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  x1={fX(handle.reference + handle.scale * this.state.newValue)}
-                  x2={fX(handle.reference + handle.scale * this.state.newValue)}
-                  y1={fY(handle.span[0])}
-                  y2={fY(handle.span[1])}
+                  x1={toSVGNumber(
+                    fX(handle.reference + handle.scale * this.state.newValue)
+                  )}
+                  x2={toSVGNumber(
+                    fX(handle.reference + handle.scale * this.state.newValue)
+                  )}
+                  y1={toSVGNumber(fY(handle.span[0]))}
+                  y2={toSVGNumber(fY(handle.span[1]))}
                 />
               </g>
             ) : null}
@@ -480,41 +484,45 @@ export class GapRatioHandleView extends React.Component<
             <g ref="line">
               <line
                 className="element-line handle-ghost"
-                y1={fyVal}
-                y2={fyVal}
-                x1={fx1}
-                x2={fx2}
+                y1={toSVGNumber(fyVal)}
+                y2={toSVGNumber(fyVal)}
+                x1={toSVGNumber(fx1)}
+                x2={toSVGNumber(fx2)}
               />
               <rect
                 className="element-region handle-ghost"
-                y={Math.min(fyRef, fyVal)}
-                height={Math.abs(fyRef - fyVal)}
-                x={Math.min(fx1, fx2)}
-                width={Math.abs(fx2 - fx1)}
+                y={toSVGNumber(Math.min(fyRef, fyVal))}
+                height={toSVGNumber(Math.abs(fyRef - fyVal))}
+                x={toSVGNumber(Math.min(fx1, fx2))}
+                width={toSVGNumber(Math.abs(fx2 - fx1))}
               />
               <line
                 className="element-line handle-highlight"
-                y1={fyVal}
-                y2={fyVal}
-                x1={fx1}
-                x2={fx2}
+                y1={toSVGNumber(fyVal)}
+                y2={toSVGNumber(fyVal)}
+                x1={toSVGNumber(fx1)}
+                x2={toSVGNumber(fx2)}
               />
               <rect
                 className="element-region handle-highlight"
-                y={Math.min(fyRef, fyVal)}
-                height={Math.abs(fyRef - fyVal)}
-                x={Math.min(fx1, fx2)}
-                width={Math.abs(fx2 - fx1)}
+                y={toSVGNumber(Math.min(fyRef, fyVal))}
+                height={toSVGNumber(Math.abs(fyRef - fyVal))}
+                x={toSVGNumber(Math.min(fx1, fx2))}
+                width={toSVGNumber(Math.abs(fx2 - fx1))}
               />
             </g>
             {this.state.dragging ? (
               <g>
                 <line
                   className={`element-line handle-hint`}
-                  y1={fY(handle.reference + handle.scale * this.state.newValue)}
-                  y2={fY(handle.reference + handle.scale * this.state.newValue)}
-                  x1={fx1}
-                  x2={fx2}
+                  y1={toSVGNumber(
+                    fY(handle.reference + handle.scale * this.state.newValue)
+                  )}
+                  y2={toSVGNumber(
+                    fY(handle.reference + handle.scale * this.state.newValue)
+                  )}
+                  x1={toSVGNumber(fx1)}
+                  x2={toSVGNumber(fx2)}
                 />
               </g>
             ) : null}
