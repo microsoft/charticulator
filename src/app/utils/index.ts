@@ -23,7 +23,7 @@ export function toSVGNumber(x: number) {
 }
 
 export function toSVGZoom(zoom: ZoomInfo) {
-  return `translate(${prettyNumber(zoom.centerX)},${prettyNumber(
+  return `translate(${toSVGNumber(zoom.centerX)},${toSVGNumber(
     zoom.centerY
   )}) scale(${prettyNumber(zoom.scale)})`;
 }
