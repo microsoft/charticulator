@@ -23,22 +23,22 @@
       class="canvas-region-outer2"
       height="732"
       width="1095"
-      x="152"
-      y="58"
+      x="151"
+      y="57"
     />
     <rect
       class="canvas-region-outer"
       height="728"
       width="1091"
-      x="154"
-      y="6"
+      x="153"
+      y="59"
     />
     <rect
       class="canvas-region"
       height="726"
       width="1089"
-      x="155"
-      y="61"
+      x="154"
+      y="60"
     />
     <g
       class="handle handle-resize"
@@ -49,17 +49,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="1244"
-          y1="787"
-          y2="787"
+          x1="154"
+          x2="1243"
+          y1="786"
+          y2="786"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="1244"
-          y1="787"
-          y2="787"
+          x1="154"
+          x2="1243"
+          y1="786"
+          y2="786"
         />
       </g>
       <g
@@ -67,17 +67,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="1244"
-          y1="61"
-          y2="61"
+          x1="154"
+          x2="1243"
+          y1="60"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="1244"
-          y1="61"
-          y2="61"
+          x1="154"
+          x2="1243"
+          y1="60"
+          y2="60"
         />
       </g>
       <g
@@ -85,17 +85,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="155"
-          y1="787"
-          y2="61"
+          x1="154"
+          x2="154"
+          y1="786"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="155"
-          y1="787"
-          y2="61"
+          x1="154"
+          x2="154"
+          y1="786"
+          y2="60"
         />
       </g>
       <g
@@ -103,44 +103,44 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="1244"
-          x2="1244"
-          y1="787"
-          y2="61"
+          x1="1243"
+          x2="1243"
+          y1="786"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="1244"
-          x2="1244"
-          y1="787"
-          y2="61"
+          x1="1243"
+          x2="1243"
+          y1="786"
+          y2="60"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="155"
-        cy="787"
+        cx="154"
+        cy="786"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1244"
-        cy="787"
+        cx="1243"
+        cy="786"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="155"
-        cy="61"
+        cx="154"
+        cy="60"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1244"
-        cy="61"
+        cx="1243"
+        cy="60"
         r="5"
         style="cursor: nesw-resize;"
       />
@@ -185,175 +185,175 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="442"
-    y2="442"
+    y1="441"
+    y2="441"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.21)"
+    transform="translate(699,423) scale(1.21)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="80"
-        x="-40"
-        y="-22"
+        width="800"
+        x="-400"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="40"
-                y1="25"
-                y2="25"
+                x1="-400"
+                x2="400"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-37"
-                x2="-37"
-                y1="25"
+                x1="-370"
+                x2="-370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-303"
                 x2="-303"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235"
-                x2="-235"
-                y1="25"
+                x1="-236"
+                x2="-236"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168"
-                x2="-168"
-                y1="25"
+                x1="-169"
+                x2="-169"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-101"
                 x2="-101"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-34"
                 x2="-34"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="34"
-                x2="34"
-                y1="25"
+                x1="33"
+                x2="33"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="101"
-                x2="101"
-                y1="25"
+                x1="100"
+                x2="100"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="168"
                 x2="168"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="235"
                 x2="235"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="303"
-                x2="303"
-                y1="25"
+                x1="302"
+                x2="302"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="37"
-                x2="37"
-                y1="25"
+                x1="370"
+                x2="370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="-40"
-                y1="25"
+                x1="-400"
+                x2="-400"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="40"
-                x2="40"
-                y1="25"
+                x1="400"
+                x2="400"
+                y1="250"
                 y2="255"
               />
               <g
                 style="opacity: 1;"
-                transform="translate(-37,258)"
+                transform="translate(-370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jan
                 </text>
@@ -364,32 +364,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Feb
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235,258)"
+                transform="translate(-236,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Mar
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168,258)"
+                transform="translate(-169,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Apr
                 </text>
@@ -400,8 +400,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11"
-                  y="1"
+                  x="-12"
+                  y="10"
                 >
                   May
                 </text>
@@ -412,32 +412,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jun
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(34,258)"
+                transform="translate(33,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-8"
-                  y="1"
+                  y="10"
                 >
                   Jul
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(101,258)"
+                transform="translate(100,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Aug
                 </text>
@@ -449,7 +449,7 @@
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Sep
                 </text>
@@ -460,32 +460,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Oct
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(303,258)"
+                transform="translate(302,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Nov
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(37,258)"
+                transform="translate(370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Dec
                 </text>
@@ -496,15 +496,15 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,-30)"
+          transform="translate(0,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-3"
+            x="-31"
             y="51"
           >
             demo
@@ -526,14 +526,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -550,14 +550,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -624,14 +624,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -648,14 +648,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -722,14 +722,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -746,14 +746,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -820,14 +820,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -844,14 +844,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -910,40 +910,40 @@
       <g />
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.21) translate(,)"
+        transform="translate(699,423) scale(1.21) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,113)rotate(0)"
+      transform="translate(699,112)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="32"
-        width="73"
-        x="-36"
+        height="31"
+        width="72"
+        x="-37"
         y="-16"
       />
       <rect
         class="element-shape indicator"
-        height="32"
-        width="73"
-        x="-36"
+        height="31"
+        width="72"
+        x="-37"
         y="-16"
       />
     </g>
@@ -974,22 +974,22 @@
       class="canvas-region-outer2"
       height="732"
       width="1095"
-      x="152"
-      y="58"
+      x="151"
+      y="57"
     />
     <rect
       class="canvas-region-outer"
       height="728"
       width="1091"
-      x="154"
-      y="6"
+      x="153"
+      y="59"
     />
     <rect
       class="canvas-region"
       height="726"
       width="1089"
-      x="155"
-      y="61"
+      x="154"
+      y="60"
     />
     <g
       class="handle handle-resize"
@@ -1000,17 +1000,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="1244"
-          y1="787"
-          y2="787"
+          x1="154"
+          x2="1243"
+          y1="786"
+          y2="786"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="1244"
-          y1="787"
-          y2="787"
+          x1="154"
+          x2="1243"
+          y1="786"
+          y2="786"
         />
       </g>
       <g
@@ -1018,17 +1018,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="1244"
-          y1="61"
-          y2="61"
+          x1="154"
+          x2="1243"
+          y1="60"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="1244"
-          y1="61"
-          y2="61"
+          x1="154"
+          x2="1243"
+          y1="60"
+          y2="60"
         />
       </g>
       <g
@@ -1036,17 +1036,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="155"
-          x2="155"
-          y1="787"
-          y2="61"
+          x1="154"
+          x2="154"
+          y1="786"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="155"
-          x2="155"
-          y1="787"
-          y2="61"
+          x1="154"
+          x2="154"
+          y1="786"
+          y2="60"
         />
       </g>
       <g
@@ -1054,44 +1054,44 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="1244"
-          x2="1244"
-          y1="787"
-          y2="61"
+          x1="1243"
+          x2="1243"
+          y1="786"
+          y2="60"
         />
         <line
           class="element-line handle-highlight"
-          x1="1244"
-          x2="1244"
-          y1="787"
-          y2="61"
+          x1="1243"
+          x2="1243"
+          y1="786"
+          y2="60"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="155"
-        cy="787"
+        cx="154"
+        cy="786"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1244"
-        cy="787"
+        cx="1243"
+        cy="786"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="155"
-        cy="61"
+        cx="154"
+        cy="60"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="1244"
-        cy="61"
+        cx="1243"
+        cy="60"
         r="5"
         style="cursor: nesw-resize;"
       />
@@ -1136,175 +1136,175 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="442"
-    y2="442"
+    y1="441"
+    y2="441"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.21)"
+    transform="translate(699,423) scale(1.21)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="80"
-        x="-40"
-        y="-22"
+        width="800"
+        x="-400"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="40"
-                y1="25"
-                y2="25"
+                x1="-400"
+                x2="400"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-37"
-                x2="-37"
-                y1="25"
+                x1="-370"
+                x2="-370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-303"
                 x2="-303"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235"
-                x2="-235"
-                y1="25"
+                x1="-236"
+                x2="-236"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168"
-                x2="-168"
-                y1="25"
+                x1="-169"
+                x2="-169"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-101"
                 x2="-101"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-34"
                 x2="-34"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="34"
-                x2="34"
-                y1="25"
+                x1="33"
+                x2="33"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="101"
-                x2="101"
-                y1="25"
+                x1="100"
+                x2="100"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="168"
                 x2="168"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="235"
                 x2="235"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="303"
-                x2="303"
-                y1="25"
+                x1="302"
+                x2="302"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="37"
-                x2="37"
-                y1="25"
+                x1="370"
+                x2="370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="-40"
-                y1="25"
+                x1="-400"
+                x2="-400"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="40"
-                x2="40"
-                y1="25"
+                x1="400"
+                x2="400"
+                y1="250"
                 y2="255"
               />
               <g
                 style="opacity: 1;"
-                transform="translate(-37,258)"
+                transform="translate(-370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jan
                 </text>
@@ -1315,32 +1315,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Feb
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235,258)"
+                transform="translate(-236,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Mar
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168,258)"
+                transform="translate(-169,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Apr
                 </text>
@@ -1351,8 +1351,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11"
-                  y="1"
+                  x="-12"
+                  y="10"
                 >
                   May
                 </text>
@@ -1363,32 +1363,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jun
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(34,258)"
+                transform="translate(33,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-8"
-                  y="1"
+                  y="10"
                 >
                   Jul
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(101,258)"
+                transform="translate(100,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Aug
                 </text>
@@ -1400,7 +1400,7 @@
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Sep
                 </text>
@@ -1411,32 +1411,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Oct
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(303,258)"
+                transform="translate(302,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Nov
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(37,258)"
+                transform="translate(370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Dec
                 </text>
@@ -1447,15 +1447,15 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,-30)"
+          transform="translate(0,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-3"
+            x="-31"
             y="51"
           >
             demo
@@ -1477,14 +1477,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1501,14 +1501,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1575,14 +1575,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1599,14 +1599,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1673,14 +1673,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1697,14 +1697,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1771,14 +1771,14 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1795,14 +1795,14 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12524"
+              y1="12523"
               y2="-11677"
             />
           </g>
@@ -1861,40 +1861,40 @@
       <g />
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.21) translate(,)"
+        transform="translate(699,423) scale(1.21) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,113)rotate(0)"
+      transform="translate(699,112)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="32"
-        width="73"
-        x="-36"
+        height="31"
+        width="72"
+        x="-37"
         y="-16"
       />
       <rect
         class="element-shape indicator"
-        height="32"
-        width="73"
-        x="-36"
+        height="31"
+        width="72"
+        x="-37"
         y="-16"
       />
     </g>
@@ -1925,21 +1925,21 @@
       class="canvas-region-outer2"
       height="778"
       width="907"
-      x="228"
+      x="227"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
       width="903"
-      x="23"
+      x="229"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
       width="901"
-      x="231"
+      x="230"
       y="37"
     />
     <g
@@ -1951,17 +1951,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="231"
+          x1="230"
           x2="1132"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="231"
+          x1="230"
           x2="1132"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -1969,14 +1969,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="231"
+          x1="230"
           x2="1132"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="231"
+          x1="230"
           x2="1132"
           y1="37"
           y2="37"
@@ -1987,16 +1987,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="231"
-          x2="231"
-          y1="81"
+          x1="230"
+          x2="230"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="231"
-          x2="231"
-          y1="81"
+          x1="230"
+          x2="230"
+          y1="809"
           y2="37"
         />
       </g>
@@ -2007,34 +2007,34 @@
           class="element-line handle-ghost"
           x1="1132"
           x2="1132"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1132"
           x2="1132"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="231"
-        cy="81"
+        cx="230"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1132"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="231"
+        cx="230"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -2073,8 +2073,8 @@
     class="mark-guide"
     x1="0"
     x2="1363"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -2087,44 +2087,44 @@
     class="mark-guide"
     x1="0"
     x2="1363"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(682,424) scale(1.2872340425531914)"
+    transform="translate(681,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="55"
-        x="-30"
-        y="-22"
+        width="550"
+        x="-300"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
@@ -2132,333 +2132,333 @@
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L ,-68 A 68,68,,,1,34,-59 L , A ,,,,,, Z"
+                  d="M 0,0 L 0,-68 A 67,67,0,0,1,33,-59 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M ,-68 L ,-76 A 76,76,,,1,38,-66 L 34,-59 A 68,68,,,,,-68 Z"
+                  d="M 0,-68 L 0,-76 A 75,75,0,0,1,37,-66 L 33,-59 A 67,67,0,0,0,0,-68 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M ,-76 L ,-212 A 212,212,,,1,106,-183 L 38,-66 A 76,76,,,,,-76 Z"
+                  d="M 0,-76 L 0,-212 A 211,211,0,0,1,105,-184 L 37,-66 A 75,75,0,0,0,0,-76 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L 36,-62 A 71,71,,,1,62,-36 L , A ,,,,,, Z"
+                  d="M 0,0 L 35,-62 A 71,71,0,0,1,61,-36 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 36,-62 L 38,-65 A 75,75,,,1,65,-38 L 62,-36 A 71,71,,,,36,-62 Z"
+                  d="M 35,-62 L 37,-66 A 75,75,0,0,1,65,-38 L 61,-36 A 71,71,0,0,0,35,-62 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 38,-65 L 94,-163 A 189,189,,,1,163,-94 L 65,-38 A 75,75,,,,38,-65 Z"
+                  d="M 37,-66 L 94,-164 A 188,188,0,0,1,163,-95 L 65,-38 A 75,75,0,0,0,37,-66 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L 43,-25 A 49,49,,,1,49, L , A ,,,,,, Z"
+                  d="M 0,0 L 42,-25 A 49,49,0,0,1,49,0 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 43,-25 L 46,-27 A 54,54,,,1,54, L 49, A 49,49,,,,43,-25 Z"
+                  d="M 42,-25 L 46,-27 A 53,53,0,0,1,53,0 L 49,0 A 49,49,0,0,0,42,-25 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 46,-27 L 122,-71 A 141,141,,,1,141, L 54, A 54,54,,,,46,-27 Z"
+                  d="M 46,-27 L 122,-71 A 141,141,0,0,1,141,0 L 53,0 A 53,53,0,0,0,46,-27 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L 28, A 28,28,,,1,25,14 L , A ,,,,,, Z"
+                  d="M 0,0 L 28,0 A 28,28,0,0,1,24,14 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 28,- L 39, A 39,39,,,1,33,19 L 25,14 A 28,28,,,,28, Z"
+                  d="M 28,-1 L 38,0 A 38,38,0,0,1,33,19 L 24,14 A 28,28,0,0,0,28,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 39,- L 91, A 91,91,,,1,79,45 L 33,19 A 39,39,,,,39, Z"
+                  d="M 38,-1 L 90,0 A 90,90,0,0,1,78,45 L 33,19 A 38,38,0,0,0,38,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L 2,11 A 23,23,,,1,11,2 L , A ,,,,,, Z"
+                  d="M 0,0 L 19,11 A 22,22,0,0,1,11,19 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 2,11 L 3,17 A 35,35,,,1,17,3 L 11,2 A 23,23,,,,2,11 Z"
+                  d="M 19,11 L 30,17 A 34,34,0,0,1,17,30 L 11,19 A 22,22,0,0,0,19,11 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 3,17 L 79,46 A 92,92,,,1,46,79 L 17,3 A 35,35,,,,3,17 Z"
+                  d="M 30,17 L 79,45 A 91,91,0,0,1,45,79 L 17,30 A 34,34,0,0,0,30,17 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L 1,18 A 21,21,,,1,-,21 L , A ,,,,,, Z"
+                  d="M 0,0 L 10,18 A 20,20,0,0,1,-1,20 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 1,18 L 29,5 A 58,58,,,1,-,58 L -,21 A 21,21,,,,1,18 Z"
+                  d="M 10,18 L 29,50 A 58,58,0,0,1,-1,58 L -1,20 A 20,20,0,0,0,10,18 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M 29,5 L 61,105 A 121,121,,,1,-,121 L -,58 A 58,58,,,,29,5 Z"
+                  d="M 29,50 L 60,105 A 121,121,0,0,1,-1,121 L -1,58 A 58,58,0,0,0,29,50 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L ,22 A 22,22,,,1,-11,19 L , A ,,,,,, Z"
+                  d="M 0,0 L 0,21 A 21,21,0,0,1,-11,18 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M ,22 L ,49 A 49,49,,,1,-24,42 L -11,19 A 22,22,,,,,22 Z"
+                  d="M 0,21 L 0,48 A 48,48,0,0,1,-25,42 L -11,18 A 21,21,0,0,0,0,21 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M ,49 L ,88 A 88,88,,,1,-44,76 L -24,42 A 49,49,,,,,49 Z"
+                  d="M 0,48 L 0,88 A 88,88,0,0,1,-45,76 L -25,42 A 48,48,0,0,0,0,48 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L -9,16 A 19,19,,,1,-16,9 L , A ,,,,,, Z"
+                  d="M 0,0 L -10,16 A 18,18,0,0,1,-17,9 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -9,16 L -26,45 A 52,52,,,1,-45,26 L -16,9 A 19,19,,,,-9,16 Z"
+                  d="M -10,16 L -26,44 A 51,51,0,0,1,-45,25 L -17,9 A 18,18,0,0,0,-10,16 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -26,45 L -49,84 A 97,97,,,1,-84,49 L -45,26 A 52,52,,,,-26,45 Z"
+                  d="M -26,44 L -49,84 A 97,97,0,0,1,-85,48 L -45,25 A 51,51,0,0,0,-26,44 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L -15,8 A 17,17,,,1,-17,- L , A ,,,,,, Z"
+                  d="M 0,0 L -15,8 A 16,16,0,0,1,-17,-1 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -15,8 L -56,32 A 65,65,,,1,-65,- L -17,- A 17,17,,,,-15,8 Z"
+                  d="M -15,8 L -56,32 A 64,64,0,0,1,-65,-1 L -17,-1 A 16,16,0,0,0,-15,8 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -56,32 L -72,41 A 83,83,,,1,-83,- L -65,- A 65,65,,,,-56,32 Z"
+                  d="M -56,32 L -72,41 A 82,82,0,0,1,-83,-1 L -65,-1 A 64,64,0,0,0,-56,32 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L -16, A 16,16,,,1,-14,-8 L , A ,,,,,, Z"
+                  d="M 0,0 L -16,0 A 15,15,0,0,1,-14,-8 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -16, L -32, A 32,32,,,1,-27,-16 L -14,-8 A 16,16,,,,-16, Z"
+                  d="M -16,0 L -32,0 A 31,31,0,0,1,-28,-16 L -14,-8 A 15,15,0,0,0,-16,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -32, L -53, A 53,53,,,1,-46,-27 L -27,-16 A 32,32,,,,-32, Z"
+                  d="M -32,0 L -54,0 A 53,53,0,0,1,-46,-27 L -28,-16 A 31,31,0,0,0,-32,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L -18,-11 A 21,21,,,1,-11,-18 L , A ,,,,,, Z"
+                  d="M 0,0 L -19,-11 A 21,21,0,0,1,-11,-19 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -18,-11 L -26,-15 A 3,3,,,1,-15,-26 L -11,-18 A 21,21,,,,-18,-11 Z"
+                  d="M -19,-11 L -27,-16 A 30,30,0,0,1,-16,-27 L -11,-19 A 21,21,0,0,0,-19,-11 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -26,-15 L -51,-29 A 59,59,,,1,-29,-51 L -15,-26 A 3,3,,,,-26,-15 Z"
+                  d="M -27,-16 L -51,-30 A 58,58,0,0,1,-30,-51 L -16,-27 A 30,30,0,0,0,-27,-16 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M , L -1,-17 A 2,2,,,1,,-2 L , A ,,,,,, Z"
+                  d="M 0,0 L -10,-18 A 19,19,0,0,1,0,-20 L 0,0 A 0,0,0,0,0,0,0 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -1,-17 L -13,-22 A 25,25,,,1,,-25 L ,-2 A 2,2,,,,-1,-17 Z"
+                  d="M -10,-18 L -13,-23 A 25,25,0,0,1,0,-26 L 0,-20 A 19,19,0,0,0,-10,-18 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <path
-                  d="M -13,-22 L -22,-38 A 44,44,,,1,,-44 L ,-25 A 25,25,,,,-13,-22 Z"
+                  d="M -13,-23 L -22,-39 A 43,43,0,0,1,0,-44 L 0,-26 A 25,25,0,0,0,-13,-23 Z"
                   style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
@@ -2466,7 +2466,7 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
@@ -2474,38 +2474,38 @@
             >
               <g
                 style="opacity: 1;"
-                transform="translate(55,-204) rotate(15)"
+                transform="translate(54,-205) rotate(15)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="-1"
+                  x="-10"
+                  y="-10"
                 >
                   Jan
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(15,-15) rotate(45)"
+                transform="translate(149,-150) rotate(45)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="-1"
+                  x="-11"
+                  y="-10"
                 >
                   Feb
                 </text>
@@ -2516,72 +2516,72 @@
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="-1"
+                  x="-11"
+                  y="-10"
                 >
                   Mar
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(204,55) rotate(105)"
+                transform="translate(204,54) rotate(104)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="-1"
+                  x="-10"
+                  y="-10"
                 >
                   Apr
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(15,15) rotate(135)"
+                transform="translate(149,149) rotate(135)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11"
-                  y="-1"
+                  x="-12"
+                  y="-10"
                 >
                   May
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(55,204) rotate(165)"
+                transform="translate(54,204) rotate(164)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="-1"
+                  x="-10"
+                  y="-10"
                 >
                   Jun
                 </text>
@@ -2592,110 +2592,110 @@
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-8"
-                  y="-1"
+                  y="-10"
                 >
                   Jul
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-15,15) rotate(225)"
+                transform="translate(-150,149) rotate(225)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="-1"
+                  y="-10"
                 >
                   Aug
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-204,55) rotate(255)"
+                transform="translate(-205,54) rotate(254)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="-1"
+                  y="-10"
                 >
                   Sep
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-204,-55) rotate(285)"
+                transform="translate(-205,-55) rotate(285)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="-1"
+                  x="-10"
+                  y="-10"
                 >
                   Oct
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-15,-15) rotate(315)"
+                transform="translate(-150,-150) rotate(315)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="-1"
+                  y="-10"
                 >
                   Nov
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-55,-204) rotate(345)"
+                transform="translate(-55,-205) rotate(345)"
               >
                 <line
                   style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                  x1=""
-                  x2=""
-                  y1=""
+                  x1="0"
+                  x2="0"
+                  y1="0"
                   y2="-5"
                 />
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="-1"
+                  y="-10"
                 >
                   Dec
                 </text>
@@ -2706,11 +2706,11 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(-25,-30)"
+          transform="translate(-25,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
@@ -2723,15 +2723,15 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(25,-16)"
+          transform="translate(250,-160)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,-4)"
+            transform="translate(0,-40)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
@@ -2741,15 +2741,15 @@
               Disease
             </text>
             <circle
-              cx="1"
-              cy="-1"
-              r="7"
+              cx="10"
+              cy="-10"
+              r="6"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(239, 59, 44); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,-2)"
+            transform="translate(0,-20)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
@@ -2759,15 +2759,15 @@
               Other
             </text>
             <circle
-              cx="1"
-              cy="-1"
-              r="7"
+              cx="10"
+              cy="-10"
+              r="6"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(150, 150, 150); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10px;"
@@ -2777,9 +2777,9 @@
               Wounds
             </text>
             <circle
-              cx="1"
-              cy="-1"
-              r="7"
+              cx="10"
+              cy="-10"
+              r="6"
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(107, 174, 214); fill-opacity: 1; text-anchor: start; opacity: 1;"
             />
           </g>
@@ -2800,14 +2800,14 @@
               class="element-line handle-ghost"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -2824,14 +2824,14 @@
               class="element-line handle-ghost"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -2847,16 +2847,16 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -2871,14 +2871,14 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
@@ -2898,14 +2898,14 @@
               class="element-line handle-ghost"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -2922,14 +2922,14 @@
               class="element-line handle-ghost"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -2945,16 +2945,16 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -2969,14 +2969,14 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
@@ -2996,14 +2996,14 @@
               class="element-line handle-ghost"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -3020,14 +3020,14 @@
               class="element-line handle-ghost"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -3043,16 +3043,16 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -3067,14 +3067,14 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
@@ -3094,14 +3094,14 @@
               class="element-line handle-ghost"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="295"
               x2="295"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -3118,14 +3118,14 @@
               class="element-line handle-ghost"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1003"
               x2="1003"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -3141,16 +3141,16 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
-              y1="14"
-              y2="14"
+              x2="13553"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -3165,14 +3165,14 @@
             <line
               class="element-line handle-ghost"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
               x1="-12191"
-              x2="13554"
+              x2="13553"
               y1="745"
               y2="745"
             />
@@ -3184,529 +3184,529 @@
       <g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L ,-68 A 68,68,,,1,34,-59 L , A ,,,,,, Z"
+            d="M 0,0 L 0,-68 A 67,67,0,0,1,33,-59 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L ,-68 A 68,68,,,1,34,-59 L , A ,,,,,, Z"
+            d="M 0,0 L 0,-68 A 67,67,0,0,1,33,-59 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M ,-68 L ,-76 A 76,76,,,1,38,-66 L 34,-59 A 68,68,,,,,-68 Z"
+            d="M 0,-68 L 0,-76 A 75,75,0,0,1,37,-66 L 33,-59 A 67,67,0,0,0,0,-68 Z"
           />
           <path
             class="element-shape indicator"
-            d="M ,-68 L ,-76 A 76,76,,,1,38,-66 L 34,-59 A 68,68,,,,,-68 Z"
+            d="M 0,-68 L 0,-76 A 75,75,0,0,1,37,-66 L 33,-59 A 67,67,0,0,0,0,-68 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M ,-76 L ,-212 A 212,212,,,1,106,-183 L 38,-66 A 76,76,,,,,-76 Z"
+            d="M 0,-76 L 0,-212 A 211,211,0,0,1,105,-184 L 37,-66 A 75,75,0,0,0,0,-76 Z"
           />
           <path
             class="element-shape indicator"
-            d="M ,-76 L ,-212 A 212,212,,,1,106,-183 L 38,-66 A 76,76,,,,,-76 Z"
+            d="M 0,-76 L 0,-212 A 211,211,0,0,1,105,-184 L 37,-66 A 75,75,0,0,0,0,-76 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L 36,-62 A 71,71,,,1,62,-36 L , A ,,,,,, Z"
+            d="M 0,0 L 35,-62 A 71,71,0,0,1,61,-36 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L 36,-62 A 71,71,,,1,62,-36 L , A ,,,,,, Z"
+            d="M 0,0 L 35,-62 A 71,71,0,0,1,61,-36 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 36,-62 L 38,-65 A 75,75,,,1,65,-38 L 62,-36 A 71,71,,,,36,-62 Z"
+            d="M 35,-62 L 37,-66 A 75,75,0,0,1,65,-38 L 61,-36 A 71,71,0,0,0,35,-62 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 36,-62 L 38,-65 A 75,75,,,1,65,-38 L 62,-36 A 71,71,,,,36,-62 Z"
+            d="M 35,-62 L 37,-66 A 75,75,0,0,1,65,-38 L 61,-36 A 71,71,0,0,0,35,-62 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 38,-65 L 94,-163 A 189,189,,,1,163,-94 L 65,-38 A 75,75,,,,38,-65 Z"
+            d="M 37,-66 L 94,-164 A 188,188,0,0,1,163,-95 L 65,-38 A 75,75,0,0,0,37,-66 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 38,-65 L 94,-163 A 189,189,,,1,163,-94 L 65,-38 A 75,75,,,,38,-65 Z"
+            d="M 37,-66 L 94,-164 A 188,188,0,0,1,163,-95 L 65,-38 A 75,75,0,0,0,37,-66 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L 43,-25 A 49,49,,,1,49, L , A ,,,,,, Z"
+            d="M 0,0 L 42,-25 A 49,49,0,0,1,49,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L 43,-25 A 49,49,,,1,49, L , A ,,,,,, Z"
+            d="M 0,0 L 42,-25 A 49,49,0,0,1,49,0 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 43,-25 L 46,-27 A 54,54,,,1,54, L 49, A 49,49,,,,43,-25 Z"
+            d="M 42,-25 L 46,-27 A 53,53,0,0,1,53,0 L 49,0 A 49,49,0,0,0,42,-25 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 43,-25 L 46,-27 A 54,54,,,1,54, L 49, A 49,49,,,,43,-25 Z"
+            d="M 42,-25 L 46,-27 A 53,53,0,0,1,53,0 L 49,0 A 49,49,0,0,0,42,-25 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 46,-27 L 122,-71 A 141,141,,,1,141, L 54, A 54,54,,,,46,-27 Z"
+            d="M 46,-27 L 122,-71 A 141,141,0,0,1,141,0 L 53,0 A 53,53,0,0,0,46,-27 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 46,-27 L 122,-71 A 141,141,,,1,141, L 54, A 54,54,,,,46,-27 Z"
+            d="M 46,-27 L 122,-71 A 141,141,0,0,1,141,0 L 53,0 A 53,53,0,0,0,46,-27 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L 28, A 28,28,,,1,25,14 L , A ,,,,,, Z"
+            d="M 0,0 L 28,0 A 28,28,0,0,1,24,14 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L 28, A 28,28,,,1,25,14 L , A ,,,,,, Z"
+            d="M 0,0 L 28,0 A 28,28,0,0,1,24,14 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 28,- L 39, A 39,39,,,1,33,19 L 25,14 A 28,28,,,,28, Z"
+            d="M 28,-1 L 38,0 A 38,38,0,0,1,33,19 L 24,14 A 28,28,0,0,0,28,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 28,- L 39, A 39,39,,,1,33,19 L 25,14 A 28,28,,,,28, Z"
+            d="M 28,-1 L 38,0 A 38,38,0,0,1,33,19 L 24,14 A 28,28,0,0,0,28,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 39,- L 91, A 91,91,,,1,79,45 L 33,19 A 39,39,,,,39, Z"
+            d="M 38,-1 L 90,0 A 90,90,0,0,1,78,45 L 33,19 A 38,38,0,0,0,38,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 39,- L 91, A 91,91,,,1,79,45 L 33,19 A 39,39,,,,39, Z"
+            d="M 38,-1 L 90,0 A 90,90,0,0,1,78,45 L 33,19 A 38,38,0,0,0,38,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L 2,11 A 23,23,,,1,11,2 L , A ,,,,,, Z"
+            d="M 0,0 L 19,11 A 22,22,0,0,1,11,19 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L 2,11 A 23,23,,,1,11,2 L , A ,,,,,, Z"
+            d="M 0,0 L 19,11 A 22,22,0,0,1,11,19 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 2,11 L 3,17 A 35,35,,,1,17,3 L 11,2 A 23,23,,,,2,11 Z"
+            d="M 19,11 L 30,17 A 34,34,0,0,1,17,30 L 11,19 A 22,22,0,0,0,19,11 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 2,11 L 3,17 A 35,35,,,1,17,3 L 11,2 A 23,23,,,,2,11 Z"
+            d="M 19,11 L 30,17 A 34,34,0,0,1,17,30 L 11,19 A 22,22,0,0,0,19,11 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 3,17 L 79,46 A 92,92,,,1,46,79 L 17,3 A 35,35,,,,3,17 Z"
+            d="M 30,17 L 79,45 A 91,91,0,0,1,45,79 L 17,30 A 34,34,0,0,0,30,17 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 3,17 L 79,46 A 92,92,,,1,46,79 L 17,3 A 35,35,,,,3,17 Z"
+            d="M 30,17 L 79,45 A 91,91,0,0,1,45,79 L 17,30 A 34,34,0,0,0,30,17 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L 1,18 A 21,21,,,1,-,21 L , A ,,,,,, Z"
+            d="M 0,0 L 10,18 A 20,20,0,0,1,-1,20 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L 1,18 A 21,21,,,1,-,21 L , A ,,,,,, Z"
+            d="M 0,0 L 10,18 A 20,20,0,0,1,-1,20 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 1,18 L 29,5 A 58,58,,,1,-,58 L -,21 A 21,21,,,,1,18 Z"
+            d="M 10,18 L 29,50 A 58,58,0,0,1,-1,58 L -1,20 A 20,20,0,0,0,10,18 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 1,18 L 29,5 A 58,58,,,1,-,58 L -,21 A 21,21,,,,1,18 Z"
+            d="M 10,18 L 29,50 A 58,58,0,0,1,-1,58 L -1,20 A 20,20,0,0,0,10,18 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M 29,5 L 61,105 A 121,121,,,1,-,121 L -,58 A 58,58,,,,29,5 Z"
+            d="M 29,50 L 60,105 A 121,121,0,0,1,-1,121 L -1,58 A 58,58,0,0,0,29,50 Z"
           />
           <path
             class="element-shape indicator"
-            d="M 29,5 L 61,105 A 121,121,,,1,-,121 L -,58 A 58,58,,,,29,5 Z"
+            d="M 29,50 L 60,105 A 121,121,0,0,1,-1,121 L -1,58 A 58,58,0,0,0,29,50 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L ,22 A 22,22,,,1,-11,19 L , A ,,,,,, Z"
+            d="M 0,0 L 0,21 A 21,21,0,0,1,-11,18 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L ,22 A 22,22,,,1,-11,19 L , A ,,,,,, Z"
+            d="M 0,0 L 0,21 A 21,21,0,0,1,-11,18 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M ,22 L ,49 A 49,49,,,1,-24,42 L -11,19 A 22,22,,,,,22 Z"
+            d="M 0,21 L 0,48 A 48,48,0,0,1,-25,42 L -11,18 A 21,21,0,0,0,0,21 Z"
           />
           <path
             class="element-shape indicator"
-            d="M ,22 L ,49 A 49,49,,,1,-24,42 L -11,19 A 22,22,,,,,22 Z"
+            d="M 0,21 L 0,48 A 48,48,0,0,1,-25,42 L -11,18 A 21,21,0,0,0,0,21 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M ,49 L ,88 A 88,88,,,1,-44,76 L -24,42 A 49,49,,,,,49 Z"
+            d="M 0,48 L 0,88 A 88,88,0,0,1,-45,76 L -25,42 A 48,48,0,0,0,0,48 Z"
           />
           <path
             class="element-shape indicator"
-            d="M ,49 L ,88 A 88,88,,,1,-44,76 L -24,42 A 49,49,,,,,49 Z"
+            d="M 0,48 L 0,88 A 88,88,0,0,1,-45,76 L -25,42 A 48,48,0,0,0,0,48 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L -9,16 A 19,19,,,1,-16,9 L , A ,,,,,, Z"
+            d="M 0,0 L -10,16 A 18,18,0,0,1,-17,9 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L -9,16 A 19,19,,,1,-16,9 L , A ,,,,,, Z"
+            d="M 0,0 L -10,16 A 18,18,0,0,1,-17,9 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -9,16 L -26,45 A 52,52,,,1,-45,26 L -16,9 A 19,19,,,,-9,16 Z"
+            d="M -10,16 L -26,44 A 51,51,0,0,1,-45,25 L -17,9 A 18,18,0,0,0,-10,16 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -9,16 L -26,45 A 52,52,,,1,-45,26 L -16,9 A 19,19,,,,-9,16 Z"
+            d="M -10,16 L -26,44 A 51,51,0,0,1,-45,25 L -17,9 A 18,18,0,0,0,-10,16 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -26,45 L -49,84 A 97,97,,,1,-84,49 L -45,26 A 52,52,,,,-26,45 Z"
+            d="M -26,44 L -49,84 A 97,97,0,0,1,-85,48 L -45,25 A 51,51,0,0,0,-26,44 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -26,45 L -49,84 A 97,97,,,1,-84,49 L -45,26 A 52,52,,,,-26,45 Z"
+            d="M -26,44 L -49,84 A 97,97,0,0,1,-85,48 L -45,25 A 51,51,0,0,0,-26,44 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L -15,8 A 17,17,,,1,-17,- L , A ,,,,,, Z"
+            d="M 0,0 L -15,8 A 16,16,0,0,1,-17,-1 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L -15,8 A 17,17,,,1,-17,- L , A ,,,,,, Z"
+            d="M 0,0 L -15,8 A 16,16,0,0,1,-17,-1 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -15,8 L -56,32 A 65,65,,,1,-65,- L -17,- A 17,17,,,,-15,8 Z"
+            d="M -15,8 L -56,32 A 64,64,0,0,1,-65,-1 L -17,-1 A 16,16,0,0,0,-15,8 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -15,8 L -56,32 A 65,65,,,1,-65,- L -17,- A 17,17,,,,-15,8 Z"
+            d="M -15,8 L -56,32 A 64,64,0,0,1,-65,-1 L -17,-1 A 16,16,0,0,0,-15,8 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -56,32 L -72,41 A 83,83,,,1,-83,- L -65,- A 65,65,,,,-56,32 Z"
+            d="M -56,32 L -72,41 A 82,82,0,0,1,-83,-1 L -65,-1 A 64,64,0,0,0,-56,32 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -56,32 L -72,41 A 83,83,,,1,-83,- L -65,- A 65,65,,,,-56,32 Z"
+            d="M -56,32 L -72,41 A 82,82,0,0,1,-83,-1 L -65,-1 A 64,64,0,0,0,-56,32 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L -16, A 16,16,,,1,-14,-8 L , A ,,,,,, Z"
+            d="M 0,0 L -16,0 A 15,15,0,0,1,-14,-8 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L -16, A 16,16,,,1,-14,-8 L , A ,,,,,, Z"
+            d="M 0,0 L -16,0 A 15,15,0,0,1,-14,-8 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -16, L -32, A 32,32,,,1,-27,-16 L -14,-8 A 16,16,,,,-16, Z"
+            d="M -16,0 L -32,0 A 31,31,0,0,1,-28,-16 L -14,-8 A 15,15,0,0,0,-16,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -16, L -32, A 32,32,,,1,-27,-16 L -14,-8 A 16,16,,,,-16, Z"
+            d="M -16,0 L -32,0 A 31,31,0,0,1,-28,-16 L -14,-8 A 15,15,0,0,0,-16,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -32, L -53, A 53,53,,,1,-46,-27 L -27,-16 A 32,32,,,,-32, Z"
+            d="M -32,0 L -54,0 A 53,53,0,0,1,-46,-27 L -28,-16 A 31,31,0,0,0,-32,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -32, L -53, A 53,53,,,1,-46,-27 L -27,-16 A 32,32,,,,-32, Z"
+            d="M -32,0 L -54,0 A 53,53,0,0,1,-46,-27 L -28,-16 A 31,31,0,0,0,-32,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L -18,-11 A 21,21,,,1,-11,-18 L , A ,,,,,, Z"
+            d="M 0,0 L -19,-11 A 21,21,0,0,1,-11,-19 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L -18,-11 A 21,21,,,1,-11,-18 L , A ,,,,,, Z"
+            d="M 0,0 L -19,-11 A 21,21,0,0,1,-11,-19 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -18,-11 L -26,-15 A 3,3,,,1,-15,-26 L -11,-18 A 21,21,,,,-18,-11 Z"
+            d="M -19,-11 L -27,-16 A 30,30,0,0,1,-16,-27 L -11,-19 A 21,21,0,0,0,-19,-11 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -18,-11 L -26,-15 A 3,3,,,1,-15,-26 L -11,-18 A 21,21,,,,-18,-11 Z"
+            d="M -19,-11 L -27,-16 A 30,30,0,0,1,-16,-27 L -11,-19 A 21,21,0,0,0,-19,-11 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -26,-15 L -51,-29 A 59,59,,,1,-29,-51 L -15,-26 A 3,3,,,,-26,-15 Z"
+            d="M -27,-16 L -51,-30 A 58,58,0,0,1,-30,-51 L -16,-27 A 30,30,0,0,0,-27,-16 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -26,-15 L -51,-29 A 59,59,,,1,-29,-51 L -15,-26 A 3,3,,,,-26,-15 Z"
+            d="M -27,-16 L -51,-30 A 58,58,0,0,1,-30,-51 L -16,-27 A 30,30,0,0,0,-27,-16 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M , L -1,-17 A 2,2,,,1,,-2 L , A ,,,,,, Z"
+            d="M 0,0 L -10,-18 A 19,19,0,0,1,0,-20 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
           <path
             class="element-shape indicator"
-            d="M , L -1,-17 A 2,2,,,1,,-2 L , A ,,,,,, Z"
+            d="M 0,0 L -10,-18 A 19,19,0,0,1,0,-20 L 0,0 A 0,0,0,0,0,0,0 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -1,-17 L -13,-22 A 25,25,,,1,,-25 L ,-2 A 2,2,,,,-1,-17 Z"
+            d="M -10,-18 L -13,-23 A 25,25,0,0,1,0,-26 L 0,-20 A 19,19,0,0,0,-10,-18 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -1,-17 L -13,-22 A 25,25,,,1,,-25 L ,-2 A 2,2,,,,-1,-17 Z"
+            d="M -10,-18 L -13,-23 A 25,25,0,0,1,0,-26 L 0,-20 A 19,19,0,0,0,-10,-18 Z"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,424) scale(1.28723404) translate(-25,15)"
+          transform="translate(681,423) scale(1.28723404) translate(-25,15)"
         >
           <path
             class="element-shape ghost"
-            d="M -13,-22 L -22,-38 A 44,44,,,1,,-44 L ,-25 A 25,25,,,,-13,-22 Z"
+            d="M -13,-23 L -22,-39 A 43,43,0,0,1,0,-44 L 0,-26 A 25,25,0,0,0,-13,-23 Z"
           />
           <path
             class="element-shape indicator"
-            d="M -13,-22 L -22,-38 A 44,44,,,1,,-44 L ,-25 A 25,25,,,,-13,-22 Z"
+            d="M -13,-23 L -22,-39 A 43,43,0,0,1,0,-44 L 0,-26 A 25,25,0,0,0,-13,-23 Z"
           />
         </g>
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(682,424) scale(1.28723404) translate(,)"
+        transform="translate(681,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="55"
-          x="-30"
-          y="-22"
+          height="470"
+          width="550"
+          x="-300"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="55"
-          x="-30"
-          y="-22"
+          height="470"
+          width="550"
+          x="-300"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(649,93)rotate(0)"
+      transform="translate(649,92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
-        width="646"
+        height="33"
+        width="645"
         x="-323"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
-        width="646"
+        height="33"
+        width="645"
         x="-323"
         y="-17"
       />
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(682,424) scale(1.28723404) translate(,)"
+      transform="translate(681,423) scale(1.28723404) translate(0,0)"
     >
       <rect
         class="element-shape ghost"
-        height="6"
-        width="67"
-        x="25"
-        y="-22"
+        height="60"
+        width="66"
+        x="250"
+        y="-220"
       />
       <rect
         class="element-shape indicator"
-        height="6"
-        width="67"
-        x="25"
-        y="-22"
+        height="60"
+        width="66"
+        x="250"
+        y="-220"
       />
     </g>
   </g>
@@ -3735,22 +3735,22 @@
     <rect
       class="canvas-region-outer2"
       height="778"
-      width="1165"
-      x="117"
+      width="1164"
+      x="116"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
-      width="1161"
-      x="119"
+      width="1160"
+      x="118"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
-      width="1159"
-      x="12"
+      width="1158"
+      x="119"
       y="37"
     />
     <g
@@ -3762,17 +3762,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -3780,14 +3780,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
@@ -3798,16 +3798,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
       </g>
@@ -3818,34 +3818,34 @@
           class="element-line handle-ghost"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="12"
-        cy="81"
+        cx="119"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1278"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="12"
+        cx="119"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -3861,8 +3861,8 @@
   </g>
   <line
     class="mark-guide"
-    x1="226"
-    x2="226"
+    x1="225"
+    x2="225"
     y1="0"
     y2="847"
   />
@@ -3884,8 +3884,8 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -3898,60 +3898,60 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.2872340425531914)"
+    transform="translate(699,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
         width="698"
         x="-368"
-        y="-22"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-301"
@@ -3962,18 +3962,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-30"
-                  cy="-89"
+                  cx="-301"
+                  cy="-90"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-311"
@@ -3984,10 +3984,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-326"
+                  cx="-327"
                   cy="-146"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -3995,18 +3995,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-309"
-                  cy="-12"
+                  cx="-310"
+                  cy="-121"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-232"
@@ -4017,65 +4017,54 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-331"
-                  cy="-97"
+                  cy="-98"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="16"
+                  cx="-240"
+                  cy="160"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-147"
-                  cy="146"
+                  cx="-148"
+                  cy="145"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-242"
-                  cy="12"
+                  cy="120"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-61"
-                  cy="145"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="26"
+                  cx="-62"
                   cy="144"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4083,54 +4072,65 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-262"
-                  cy="153"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-293"
-                  cy="-94"
+                  cx="25"
+                  cy="144"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-262"
+                  cy="152"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-294"
+                  cy="-95"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="115"
-                  cy="143"
+                  cy="142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-68"
-                  cy="139"
+                  cy="138"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-214"
+                  cx="-215"
                   cy="142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4138,32 +4138,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-308"
-                  cy="-94"
+                  cy="-95"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="207"
-                  cy="-114"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="293"
+                  cx="206"
                   cy="-115"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4171,7 +4160,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="293"
+                  cy="-116"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-63"
@@ -4182,10 +4182,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-59"
+                  cx="-60"
                   cy="136"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4193,76 +4193,76 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-335"
-                  cy="-142"
+                  cy="-143"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="201"
-                  cy="-12"
+                  cx="200"
+                  cy="-121"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-269"
-                  cy="143"
+                  cx="-270"
+                  cy="142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-233"
-                  cy="166"
+                  cx="-234"
+                  cy="165"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-248"
-                  cy="164"
+                  cx="-249"
+                  cy="163"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-258"
-                  cy="127"
+                  cy="126"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-260"
                   cy="135"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4270,7 +4270,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-347"
@@ -4281,21 +4281,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-345"
-                  cy="-87"
+                  cy="-88"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-69"
+                  cx="-70"
                   cy="147"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4303,18 +4303,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-323"
-                  cy="-102"
+                  cx="-324"
+                  cy="-103"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-355"
@@ -4325,21 +4325,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-324"
-                  cy="-12"
+                  cx="-325"
+                  cy="-120"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-25"
+                  cx="-250"
                   cy="123"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4347,7 +4347,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="204"
@@ -4358,7 +4358,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-228"
@@ -4369,21 +4369,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-54"
-                  cy="15"
+                  cx="-55"
+                  cy="150"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-237"
+                  cx="-238"
                   cy="143"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4391,29 +4391,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-224"
-                  cy="154"
+                  cy="153"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-354"
-                  cy="-10"
+                  cy="-101"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-353"
@@ -4424,10 +4424,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-222"
+                  cx="-223"
                   cy="145"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4435,32 +4435,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="18"
-                  cy="14"
+                  cx="17"
+                  cy="140"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-315"
-                  cy="-89"
+                  cy="-90"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-325"
+                  cx="-326"
                   cy="147"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4468,117 +4468,117 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-66"
-                  cy="13"
+                  cy="130"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-71"
-                  cy="156"
+                  cx="-72"
+                  cy="155"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-355"
-                  cy="-136"
+                  cy="-137"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="26"
-                  cy="153"
+                  cy="152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="286"
-                  cy="-12"
+                  cy="-121"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-348"
-                  cy="-131"
+                  cy="-132"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-244"
-                  cy="138"
+                  cx="-245"
+                  cy="137"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-53"
-                  cy="142"
+                  cy="141"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="209"
-                  cy="-122"
+                  cy="-123"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-22"
-                  cy="128"
+                  cx="-220"
+                  cy="127"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-254"
@@ -4589,10 +4589,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-323"
+                  cx="-324"
                   cy="-85"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4600,76 +4600,76 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-239"
-                  cy="152"
+                  cy="151"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-348"
-                  cy="-141"
+                  cy="-142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-247"
-                  cy="155"
+                  cy="154"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-318"
-                  cy="-133"
+                  cy="-134"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-338"
-                  cy="-101"
+                  cx="-339"
+                  cy="-102"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="292"
-                  cy="-106"
+                  cy="-107"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-354"
+                  cx="-355"
                   cy="-109"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4677,40 +4677,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-308"
-                  cy="-103"
+                  cx="-309"
+                  cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-252"
-                  cy="141"
+                  cx="-253"
+                  cy="140"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-155"
-                  cy="143"
+                  cx="-156"
+                  cy="142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="107"
@@ -4721,10 +4721,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-207"
+                  cx="-208"
                   cy="147"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4732,29 +4732,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="33"
-                  cy="14"
+                  cy="139"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-339"
-                  cy="-11"
+                  cy="-110"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="294"
@@ -4765,10 +4765,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-236"
+                  cx="-237"
                   cy="134"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4776,7 +4776,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-317"
@@ -4787,7 +4787,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="115"
@@ -4798,7 +4798,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="285"
@@ -4809,21 +4809,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-333"
-                  cy="-132"
+                  cy="-133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-245"
+                  cx="-246"
                   cy="146"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4831,84 +4831,84 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="123"
-                  cy="138"
+                  cx="122"
+                  cy="137"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-323"
-                  cy="-93"
+                  cy="-94"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-221"
-                  cy="137"
+                  cx="-222"
+                  cy="136"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-325"
-                  cy="-128"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="30"
-                  cy="-11"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-315"
-                  cy="-98"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="288"
                   cy="-129"
                   r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="300"
+                  cy="-110"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-316"
+                  cy="-99"
+                  r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="287"
+                  cy="-130"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-324"
@@ -4919,10 +4919,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-263"
+                  cx="-264"
                   cy="161"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4930,10 +4930,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-318"
+                  cx="-319"
                   cy="-142"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -4941,29 +4941,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="198"
-                  cy="-112"
+                  cy="-113"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="284"
-                  cy="-103"
+                  cx="283"
+                  cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-332"
@@ -4974,40 +4974,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="301"
-                  cy="-118"
+                  cy="-119"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-76"
-                  cy="142"
+                  cy="141"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="278"
-                  cy="-117"
+                  cy="-118"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-231"
@@ -5018,43 +5018,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-332"
-                  cy="-123"
+                  cx="-333"
+                  cy="-124"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-34"
-                  cy="-127"
+                  cx="-341"
+                  cy="-128"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-243"
-                  cy="129"
+                  cy="128"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="213"
+                  cx="212"
                   cy="-108"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5062,43 +5062,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-338"
-                  cy="-92"
+                  cy="-93"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-241"
-                  cy="169"
+                  cx="-242"
+                  cy="168"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="18"
-                  cy="149"
+                  cy="148"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="108"
+                  cx="107"
                   cy="147"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5106,10 +5106,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-331"
+                  cx="-332"
                   cy="141"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5117,21 +5117,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-229"
-                  cy="14"
+                  cx="-230"
+                  cy="139"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-31"
+                  cx="-311"
                   cy="-138"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5139,7 +5139,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-154"
@@ -5150,10 +5150,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-339"
+                  cx="-340"
                   cy="-119"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5161,10 +5161,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-316"
+                  cx="-317"
                   cy="-107"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5172,10 +5172,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-325"
+                  cx="-326"
                   cy="-137"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5183,10 +5183,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-251"
+                  cx="-252"
                   cy="132"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5194,29 +5194,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-225"
-                  cy="163"
+                  cy="162"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-346"
-                  cy="-96"
+                  cy="-97"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-309"
@@ -5227,21 +5227,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="299"
-                  cy="-101"
+                  cx="298"
+                  cy="-102"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-347"
+                  cx="-348"
                   cy="-123"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5249,40 +5249,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-332"
-                  cy="-86"
+                  cy="-87"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-235"
-                  cy="126"
+                  cy="125"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-317"
-                  cy="-124"
+                  cx="-318"
+                  cy="-125"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-255"
@@ -5293,21 +5293,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-216"
-                  cy="151"
+                  cy="150"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="195"
+                  cx="194"
                   cy="-127"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5315,29 +5315,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-248"
-                  cy="115"
+                  cx="-249"
+                  cy="114"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-242"
-                  cy="178"
+                  cx="-243"
+                  cy="177"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -5348,87 +5348,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="123"
-                  cy="147"
+                  cx="122"
+                  cy="146"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-346"
-                  cy="-105"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-26"
-                  cy="144"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="303"
-                  cy="-127"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-301"
-                  cy="-117"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="34"
-                  cy="148"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-341"
-                  cy="-136"
-                  r="4"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="-331"
+                  cx="-347"
                   cy="-106"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5436,29 +5370,95 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="25"
-                  cy="136"
+                  cx="-261"
+                  cy="143"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-31"
-                  cy="-129"
+                  cx="302"
+                  cy="-127"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-302"
+                  cy="-117"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="33"
+                  cy="148"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-341"
+                  cy="-137"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-332"
+                  cy="-106"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="25"
+                  cy="135"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-310"
+                  cy="-130"
+                  r="4"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="277"
@@ -5469,10 +5469,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-362"
+                  cx="-363"
                   cy="-122"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5480,29 +5480,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="115"
-                  cy="134"
+                  cx="114"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-30"
-                  cy="-99"
+                  cx="-301"
+                  cy="-100"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-217"
@@ -5513,62 +5513,62 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-333"
-                  cy="-151"
+                  cx="-334"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="112"
+                  cx="-241"
+                  cy="111"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-352"
-                  cy="-82"
+                  cx="-353"
+                  cy="-83"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-294"
-                  cy="-121"
+                  cx="-295"
+                  cy="-122"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-256"
-                  cy="167"
+                  cx="-257"
+                  cy="166"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-213"
@@ -5579,7 +5579,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-269"
@@ -5590,18 +5590,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-355"
-                  cy="-126"
+                  cx="-356"
+                  cy="-127"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="308"
@@ -5612,7 +5612,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-149"
@@ -5623,21 +5623,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-56"
-                  cy="159"
+                  cx="-57"
+                  cy="158"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-315"
+                  cx="-316"
                   cy="-81"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5645,21 +5645,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-303"
-                  cy="-134"
+                  cy="-135"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="28"
+                  cx="279"
                   cy="-126"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5667,21 +5667,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="108"
-                  cy="156"
+                  cx="107"
+                  cy="155"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-226"
+                  cx="-227"
                   cy="171"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5689,43 +5689,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-225"
-                  cy="114"
+                  cx="-226"
+                  cy="113"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="-104"
+                  cx="-362"
+                  cy="-105"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-272"
-                  cy="16"
+                  cy="160"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-293"
+                  cx="-294"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5733,7 +5733,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-209"
@@ -5744,7 +5744,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-257"
@@ -5755,7 +5755,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-342"
@@ -5766,10 +5766,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="196"
+                  cx="195"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5777,10 +5777,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-249"
+                  cx="-250"
                   cy="172"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5788,21 +5788,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-212"
-                  cy="125"
+                  cy="124"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="291"
+                  cx="290"
                   cy="-98"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5810,7 +5810,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-339"
@@ -5821,21 +5821,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-302"
-                  cy="-125"
+                  cy="-126"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-362"
+                  cx="-363"
                   cy="-132"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5843,10 +5843,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-57"
+                  cx="-58"
                   cy="127"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5854,29 +5854,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="215"
-                  cy="-116"
+                  cy="-117"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-78"
-                  cy="15"
+                  cy="150"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-308"
@@ -5887,76 +5887,76 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="192"
-                  cy="-118"
+                  cy="-119"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-319"
-                  cy="-15"
+                  cx="-320"
+                  cy="-151"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-278"
-                  cy="144"
+                  cy="143"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-46"
-                  cy="148"
+                  cx="-47"
+                  cy="147"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="21"
-                  cy="-99"
+                  cx="210"
+                  cy="-100"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-218"
-                  cy="168"
+                  cx="-219"
+                  cy="167"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-36"
+                  cx="-361"
                   cy="-95"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -5964,7 +5964,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -5975,18 +5975,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-355"
-                  cy="-145"
+                  cx="-356"
+                  cy="-146"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-234"
@@ -5997,18 +5997,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-264"
-                  cy="17"
+                  cx="-265"
+                  cy="169"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="203"
@@ -6019,87 +6019,87 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-74"
-                  cy="133"
+                  cx="-75"
+                  cy="132"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-206"
-                  cy="139"
+                  cx="-207"
+                  cy="138"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-329"
-                  cy="-78"
+                  cy="-79"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-295"
-                  cy="-13"
+                  cy="-131"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-267"
-                  cy="126"
+                  cy="125"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-65"
-                  cy="162"
+                  cy="161"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="19"
-                  cy="-11"
+                  cx="189"
+                  cy="-110"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-234"
+                  cx="-235"
                   cy="174"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -6107,7 +6107,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-219"
@@ -6118,7 +6118,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-51"
@@ -6129,7 +6129,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-362"
@@ -6140,11 +6140,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-27"
-                  cy="152"
+                  cx="-271"
+                  cy="151"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
@@ -6153,121 +6153,121 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
-                x2="331"
-                y1="25"
-                y2="25"
+                x2="330"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-328"
-                x2="-328"
-                y1="25"
+                x1="-329"
+                x2="-329"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-24"
-                x2="-24"
-                y1="25"
+                x1="-240"
+                x2="-240"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-151"
-                x2="-151"
-                y1="25"
+                x1="-152"
+                x2="-152"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-63"
                 x2="-63"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="26"
-                x2="26"
-                y1="25"
+                x1="25"
+                x2="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="114"
                 x2="114"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="203"
-                x2="203"
-                y1="25"
+                x1="202"
+                x2="202"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="291"
                 x2="291"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
                 x2="-368"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="331"
-                x2="331"
-                y1="25"
+                x1="330"
+                x2="330"
+                y1="250"
                 y2="255"
               />
               <g
                 style="opacity: 1;"
-                transform="translate(-328,258)"
+                transform="translate(-329,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-14"
-                  y="1"
+                  x="-15"
+                  y="10"
                 >
                   None
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-24,258)"
+                transform="translate(-240,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-12"
-                  y="1"
+                  y="10"
                 >
                   Foul
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-151,258)"
+                transform="translate(-152,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-24"
-                  y="1"
+                  x="-25"
+                  y="10"
                 >
                   Creosote
                 </text>
@@ -6278,20 +6278,20 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-14"
-                  y="1"
+                  x="-15"
+                  y="10"
                 >
                   Fishy
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(26,258)"
+                transform="translate(25,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-22"
-                  y="1"
+                  x="-23"
+                  y="10"
                 >
                   Pungent
                 </text>
@@ -6303,19 +6303,19 @@
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-15"
-                  y="1"
+                  y="10"
                 >
                   Spicy
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(203,258)"
+                transform="translate(202,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-2"
-                  y="1"
+                  x="-21"
+                  y="10"
                 >
                   Almond
                 </text>
@@ -6326,8 +6326,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-15"
-                  y="1"
+                  x="-16"
+                  y="10"
                 >
                   Anise
                 </text>
@@ -6335,21 +6335,21 @@
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
                 x2="-368"
-                y1="25"
-                y2="-22"
+                y1="250"
+                y2="-220"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
                 x2="-373"
-                y1="-114"
-                y2="-114"
+                y1="-115"
+                y2="-115"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
@@ -6362,24 +6362,24 @@
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
                 x2="-373"
-                y1="25"
-                y2="25"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-368"
                 x2="-373"
-                y1="-22"
-                y2="-22"
+                y1="-220"
+                y2="-220"
               />
               <g
                 style="opacity: 1;"
-                transform="translate(-376,-114)"
+                transform="translate(-376,-115)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-33"
-                  y="4"
+                  x="-34"
+                  y="3"
                 >
                   Edible
                 </text>
@@ -6390,8 +6390,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-56"
-                  y="4"
+                  x="-57"
+                  y="3"
                 >
                   Poisonous
                 </text>
@@ -6402,11 +6402,11 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(-19,-30)"
+          transform="translate(-19,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
@@ -6419,20 +6419,20 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(331,-148)"
+          transform="translate(330,-148)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,-48)"
+            transform="translate(0,-48)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
               x="29"
-              y="-7"
+              y="-8"
             >
               Fibrous
             </text>
@@ -6445,12 +6445,12 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,-24)"
+            transform="translate(0,-24)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
               x="29"
-              y="-7"
+              y="-8"
             >
               Scaly
             </text>
@@ -6463,12 +6463,12 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <text
               style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
               x="29"
-              y="-7"
+              y="-8"
             >
               Smooth
             </text>
@@ -6494,114 +6494,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="226"
-              x2="226"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1124"
-              x2="1124"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1124"
-              x2="1124"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="226"
-              x2="226"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6618,14 +6520,14 @@
               class="element-line handle-ghost"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6640,17 +6542,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -6664,14 +6566,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -6690,16 +6592,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6716,14 +6618,14 @@
               class="element-line handle-ghost"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6738,17 +6640,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -6762,14 +6664,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -6788,16 +6690,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="226"
-              x2="226"
-              y1="13296"
+              x1="225"
+              x2="225"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6814,14 +6716,14 @@
               class="element-line handle-ghost"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="1124"
               x2="1124"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -6836,17 +6738,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -6860,14 +6762,112 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="225"
+              x2="225"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="225"
+              x2="225"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1124"
+              x2="1124"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1124"
+              x2="1124"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -6883,15 +6883,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="312"
-            cy="285"
-            r="8"
+            cx="311"
+            cy="284"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="312"
-            cy="285"
-            r="6"
+            cx="311"
+            cy="284"
+            r="5"
           />
         </g>
         <g
@@ -6899,15 +6899,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="312"
-            cy="308"
-            r="8"
-          />
-          <circle
-            class="element-shape indicator"
             cx="312"
             cy="308"
-            r="6"
+            r="7"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="312"
+            cy="308"
+            r="5"
           />
         </g>
         <g
@@ -6915,15 +6915,31 @@
         >
           <circle
             class="element-shape ghost"
-            cx="299"
+            cx="298"
+            cy="234"
+            r="7"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="298"
+            cy="234"
+            r="5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="278"
             cy="235"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="299"
+            cx="278"
             cy="235"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -6931,31 +6947,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="279"
-            cy="236"
-            r="8"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="279"
-            cy="236"
-            r="6"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="301"
+            cx="300"
             cy="268"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="301"
+            cx="300"
             cy="268"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -6963,15 +6963,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="401"
-            cy="626"
-            r="8"
+            cx="400"
+            cy="625"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="401"
-            cy="626"
-            r="6"
+            cx="400"
+            cy="625"
+            r="5"
           />
         </g>
         <g
@@ -6981,13 +6981,13 @@
             class="element-shape ghost"
             cx="273"
             cy="298"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="273"
             cy="298"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -6995,15 +6995,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="39"
-            cy="63"
-            r="8"
+            cx="390"
+            cy="629"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="39"
-            cy="63"
-            r="6"
+            cx="390"
+            cy="629"
+            r="5"
           />
         </g>
         <g
@@ -7011,15 +7011,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="51"
+            cx="509"
             cy="611"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="51"
+            cx="509"
             cy="611"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7027,15 +7027,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="388"
+            cx="387"
             cy="578"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="388"
+            cx="387"
             cy="578"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7043,15 +7043,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="62"
-            cy="61"
-            r="8"
+            cx="620"
+            cy="609"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="62"
-            cy="61"
-            r="6"
+            cx="620"
+            cy="609"
+            r="5"
           />
         </g>
         <g
@@ -7061,13 +7061,13 @@
             class="element-shape ghost"
             cx="732"
             cy="609"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="732"
             cy="609"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7076,14 +7076,14 @@
           <circle
             class="element-shape ghost"
             cx="362"
-            cy="62"
-            r="8"
+            cy="619"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="362"
-            cy="62"
-            r="6"
+            cy="619"
+            r="5"
           />
         </g>
         <g
@@ -7091,15 +7091,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="322"
+            cx="321"
             cy="302"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="322"
+            cx="321"
             cy="302"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7109,13 +7109,13 @@
             class="element-shape ghost"
             cx="847"
             cy="607"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="847"
             cy="607"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7125,13 +7125,13 @@
             class="element-shape ghost"
             cx="612"
             cy="602"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="612"
             cy="602"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7141,13 +7141,13 @@
             class="element-shape ghost"
             cx="423"
             cy="606"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="423"
             cy="606"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7155,15 +7155,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="303"
+            cx="302"
             cy="302"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="303"
+            cx="302"
             cy="302"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7172,14 +7172,14 @@
           <circle
             class="element-shape ghost"
             cx="965"
-            cy="277"
-            r="8"
+            cy="276"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="965"
-            cy="277"
-            r="6"
+            cy="276"
+            r="5"
           />
         </g>
         <g
@@ -7187,15 +7187,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1077"
+            cx="1076"
             cy="275"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1077"
+            cx="1076"
             cy="275"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7204,14 +7204,14 @@
           <circle
             class="element-shape ghost"
             cx="618"
-            cy="621"
-            r="8"
+            cy="620"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="618"
-            cy="621"
-            r="6"
+            cy="620"
+            r="5"
           />
         </g>
         <g
@@ -7219,15 +7219,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="623"
-            cy="599"
-            r="8"
+            cx="622"
+            cy="598"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="623"
-            cy="599"
-            r="6"
+            cx="622"
+            cy="598"
+            r="5"
           />
         </g>
         <g
@@ -7236,14 +7236,14 @@
           <circle
             class="element-shape ghost"
             cx="268"
-            cy="24"
-            r="8"
+            cy="240"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="268"
-            cy="24"
-            r="6"
+            cy="240"
+            r="5"
           />
         </g>
         <g
@@ -7251,15 +7251,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="958"
-            cy="269"
-            r="8"
+            cx="957"
+            cy="268"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="958"
-            cy="269"
-            r="6"
+            cx="957"
+            cy="268"
+            r="5"
           />
         </g>
         <g
@@ -7267,15 +7267,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="353"
+            cx="352"
             cy="607"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="353"
+            cx="352"
             cy="607"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7283,15 +7283,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="399"
-            cy="637"
-            r="8"
+            cx="398"
+            cy="636"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="399"
-            cy="637"
-            r="6"
+            cx="398"
+            cy="636"
+            r="5"
           />
         </g>
         <g
@@ -7299,15 +7299,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="38"
-            cy="634"
-            r="8"
+            cx="379"
+            cy="633"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="38"
-            cy="634"
-            r="6"
+            cx="379"
+            cy="633"
+            r="5"
           />
         </g>
         <g
@@ -7316,14 +7316,14 @@
           <circle
             class="element-shape ghost"
             cx="367"
-            cy="587"
-            r="8"
+            cy="586"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="367"
-            cy="587"
-            r="6"
+            cy="586"
+            r="5"
           />
         </g>
         <g
@@ -7332,14 +7332,14 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="598"
-            r="8"
+            cy="597"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="598"
-            r="6"
+            cy="597"
+            r="5"
           />
         </g>
         <g
@@ -7347,15 +7347,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="253"
+            cx="252"
             cy="277"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="253"
+            cx="252"
             cy="277"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7365,13 +7365,13 @@
             class="element-shape ghost"
             cx="255"
             cy="311"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="255"
             cy="311"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7379,15 +7379,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="61"
+            cx="609"
             cy="613"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="61"
+            cx="609"
             cy="613"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7395,15 +7395,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="283"
+            cx="282"
             cy="292"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="283"
+            cx="282"
             cy="292"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7411,15 +7411,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="243"
+            cx="242"
             cy="272"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="243"
+            cx="242"
             cy="272"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7428,14 +7428,14 @@
           <circle
             class="element-shape ghost"
             cx="281"
-            cy="27"
-            r="8"
+            cy="269"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="281"
-            cy="27"
-            r="6"
+            cy="269"
+            r="5"
           />
         </g>
         <g
@@ -7445,13 +7445,13 @@
             class="element-shape ghost"
             cx="377"
             cy="582"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="377"
             cy="582"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7461,13 +7461,13 @@
             class="element-shape ghost"
             cx="962"
             cy="287"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="962"
             cy="287"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7475,15 +7475,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="406"
+            cx="405"
             cy="592"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="406"
+            cx="405"
             cy="592"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7491,15 +7491,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="629"
+            cx="628"
             cy="617"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="629"
+            cx="628"
             cy="617"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7508,14 +7508,14 @@
           <circle
             class="element-shape ghost"
             cx="393"
-            cy="608"
-            r="8"
+            cy="607"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="393"
-            cy="608"
-            r="6"
+            cy="607"
+            r="5"
           />
         </g>
         <g
@@ -7524,14 +7524,14 @@
           <circle
             class="element-shape ghost"
             cx="411"
-            cy="622"
-            r="8"
+            cy="621"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="411"
-            cy="622"
-            r="6"
+            cy="621"
+            r="5"
           />
         </g>
         <g
@@ -7539,15 +7539,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="244"
+            cx="243"
             cy="294"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="244"
+            cx="243"
             cy="294"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7557,13 +7557,13 @@
             class="element-shape ghost"
             cx="245"
             cy="306"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="245"
             cy="306"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7571,15 +7571,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="413"
-            cy="61"
-            r="8"
+            cx="412"
+            cy="610"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="413"
-            cy="61"
-            r="6"
+            cx="412"
+            cy="610"
+            r="5"
           />
         </g>
         <g
@@ -7589,13 +7589,13 @@
             class="element-shape ghost"
             cx="722"
             cy="604"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="722"
             cy="604"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7603,15 +7603,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="294"
+            cx="293"
             cy="308"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="294"
+            cx="293"
             cy="308"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7619,15 +7619,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="281"
-            cy="613"
-            r="8"
+            cx="280"
+            cy="612"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="281"
-            cy="613"
-            r="6"
+            cx="280"
+            cy="612"
+            r="5"
           />
         </g>
         <g
@@ -7637,13 +7637,13 @@
             class="element-shape ghost"
             cx="614"
             cy="591"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="614"
             cy="591"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7653,13 +7653,13 @@
             class="element-shape ghost"
             cx="607"
             cy="624"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="607"
             cy="624"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7668,14 +7668,14 @@
           <circle
             class="element-shape ghost"
             cx="242"
-            cy="248"
-            r="8"
+            cy="247"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="242"
-            cy="248"
-            r="6"
+            cy="247"
+            r="5"
           />
         </g>
         <g
@@ -7683,15 +7683,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="733"
-            cy="62"
-            r="8"
+            cx="732"
+            cy="620"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="733"
-            cy="62"
-            r="6"
+            cx="732"
+            cy="620"
+            r="5"
           />
         </g>
         <g
@@ -7699,15 +7699,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1068"
+            cx="1067"
             cy="268"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1068"
+            cx="1067"
             cy="268"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7716,14 +7716,14 @@
           <circle
             class="element-shape ghost"
             cx="251"
-            cy="255"
-            r="8"
+            cy="254"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="251"
-            cy="255"
-            r="6"
+            cy="254"
+            r="5"
           />
         </g>
         <g
@@ -7731,15 +7731,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="385"
-            cy="601"
-            r="8"
+            cx="384"
+            cy="600"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="385"
-            cy="601"
-            r="6"
+            cx="384"
+            cy="600"
+            r="5"
           />
         </g>
         <g
@@ -7749,13 +7749,13 @@
             class="element-shape ghost"
             cx="631"
             cy="606"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="631"
             cy="606"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7763,15 +7763,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="969"
-            cy="266"
-            r="8"
+            cx="968"
+            cy="265"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="969"
-            cy="266"
-            r="6"
+            cx="968"
+            cy="265"
+            r="5"
           />
         </g>
         <g
@@ -7781,13 +7781,13 @@
             class="element-shape ghost"
             cx="416"
             cy="588"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="416"
             cy="588"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7795,15 +7795,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="373"
-            cy="616"
-            r="8"
+            cx="372"
+            cy="615"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="373"
-            cy="616"
-            r="6"
+            cx="372"
+            cy="615"
+            r="5"
           />
         </g>
         <g
@@ -7812,14 +7812,14 @@
           <circle
             class="element-shape ghost"
             cx="283"
-            cy="315"
-            r="8"
+            cy="314"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="283"
-            cy="315"
-            r="6"
+            cy="314"
+            r="5"
           />
         </g>
         <g
@@ -7827,15 +7827,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="392"
-            cy="619"
-            r="8"
+            cx="391"
+            cy="618"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="392"
-            cy="619"
-            r="6"
+            cx="391"
+            cy="618"
+            r="5"
           />
         </g>
         <g
@@ -7843,15 +7843,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="252"
-            cy="242"
-            r="8"
+            cx="251"
+            cy="241"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="252"
-            cy="242"
-            r="6"
+            cx="251"
+            cy="241"
+            r="5"
           />
         </g>
         <g
@@ -7860,14 +7860,14 @@
           <circle
             class="element-shape ghost"
             cx="381"
-            cy="623"
-            r="8"
+            cy="622"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="381"
-            cy="623"
-            r="6"
+            cy="622"
+            r="5"
           />
         </g>
         <g
@@ -7875,15 +7875,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="29"
+            cx="290"
             cy="252"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="29"
+            cx="290"
             cy="252"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7893,13 +7893,13 @@
             class="element-shape ghost"
             cx="263"
             cy="293"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="263"
             cy="293"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7907,15 +7907,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1075"
-            cy="287"
-            r="8"
+            cx="1074"
+            cy="286"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1075"
-            cy="287"
-            r="6"
+            cx="1074"
+            cy="286"
+            r="5"
           />
         </g>
         <g
@@ -7925,13 +7925,13 @@
             class="element-shape ghost"
             cx="243"
             cy="283"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="243"
             cy="283"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7940,14 +7940,14 @@
           <circle
             class="element-shape ghost"
             cx="302"
-            cy="291"
-            r="8"
+            cy="290"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="302"
-            cy="291"
-            r="6"
+            cy="290"
+            r="5"
           />
         </g>
         <g
@@ -7956,14 +7956,14 @@
           <circle
             class="element-shape ghost"
             cx="374"
-            cy="605"
-            r="8"
+            cy="604"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="374"
-            cy="605"
-            r="6"
+            cy="604"
+            r="5"
           />
         </g>
         <g
@@ -7971,15 +7971,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="499"
+            cx="498"
             cy="607"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="499"
+            cx="498"
             cy="607"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -7988,14 +7988,14 @@
           <circle
             class="element-shape ghost"
             cx="837"
-            cy="602"
-            r="8"
+            cy="601"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="837"
-            cy="602"
-            r="6"
+            cy="601"
+            r="5"
           />
         </g>
         <g
@@ -8005,13 +8005,13 @@
             class="element-shape ghost"
             cx="432"
             cy="613"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="432"
             cy="613"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8019,15 +8019,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="742"
+            cx="741"
             cy="603"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="742"
+            cx="741"
             cy="603"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8035,15 +8035,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="263"
+            cx="262"
             cy="282"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="263"
+            cx="262"
             cy="282"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8053,13 +8053,13 @@
             class="element-shape ghost"
             cx="1078"
             cy="264"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1078"
             cy="264"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8069,13 +8069,13 @@
             class="element-shape ghost"
             cx="395"
             cy="596"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="395"
             cy="596"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8083,15 +8083,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="292"
-            cy="275"
-            r="8"
+            cx="291"
+            cy="274"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="292"
-            cy="275"
-            r="6"
+            cx="291"
+            cy="274"
+            r="5"
           />
         </g>
         <g
@@ -8099,15 +8099,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="848"
+            cx="847"
             cy="618"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="848"
+            cx="847"
             cy="618"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8116,14 +8116,14 @@
           <circle
             class="element-shape ghost"
             cx="1066"
-            cy="28"
-            r="8"
+            cy="279"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1066"
-            cy="28"
-            r="6"
+            cy="279"
+            r="5"
           />
         </g>
         <g
@@ -8131,15 +8131,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="271"
+            cx="270"
             cy="253"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="271"
+            cx="270"
             cy="253"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8148,14 +8148,14 @@
           <circle
             class="element-shape ghost"
             cx="383"
-            cy="612"
-            r="8"
+            cy="611"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="383"
-            cy="612"
-            r="6"
+            cy="611"
+            r="5"
           />
         </g>
         <g
@@ -8163,15 +8163,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="857"
+            cx="856"
             cy="601"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="857"
+            cx="856"
             cy="601"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8179,15 +8179,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="284"
+            cx="283"
             cy="303"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="284"
+            cx="283"
             cy="303"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8197,13 +8197,13 @@
             class="element-shape ghost"
             cx="414"
             cy="599"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="414"
             cy="599"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8211,15 +8211,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="281"
+            cx="280"
             cy="258"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="281"
+            cx="280"
             cy="258"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8229,13 +8229,13 @@
             class="element-shape ghost"
             cx="1085"
             cy="282"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1085"
             cy="282"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8243,15 +8243,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="293"
+            cx="292"
             cy="297"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="293"
+            cx="292"
             cy="297"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8261,13 +8261,13 @@
             class="element-shape ghost"
             cx="1069"
             cy="257"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1069"
             cy="257"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8276,14 +8276,14 @@
           <circle
             class="element-shape ghost"
             cx="282"
-            cy="281"
-            r="8"
+            cy="280"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="282"
-            cy="281"
-            r="6"
+            cy="280"
+            r="5"
           />
         </g>
         <g
@@ -8291,15 +8291,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="36"
+            cx="360"
             cy="631"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="36"
+            cx="360"
             cy="631"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8308,14 +8308,14 @@
           <circle
             class="element-shape ghost"
             cx="289"
-            cy="241"
-            r="8"
+            cy="240"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="289"
-            cy="241"
-            r="6"
+            cy="240"
+            r="5"
           />
         </g>
         <g
@@ -8325,13 +8325,13 @@
             class="element-shape ghost"
             cx="954"
             cy="279"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="954"
             cy="279"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8340,14 +8340,14 @@
           <circle
             class="element-shape ghost"
             cx="1064"
-            cy="291"
-            r="8"
+            cy="290"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1064"
-            cy="291"
-            r="6"
+            cy="290"
+            r="5"
           />
         </g>
         <g
@@ -8356,14 +8356,14 @@
           <circle
             class="element-shape ghost"
             cx="272"
-            cy="276"
-            r="8"
+            cy="275"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="272"
-            cy="276"
-            r="6"
+            cy="275"
+            r="5"
           />
         </g>
         <g
@@ -8371,15 +8371,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1087"
+            cx="1086"
             cy="271"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1087"
+            cx="1086"
             cy="271"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8388,14 +8388,14 @@
           <circle
             class="element-shape ghost"
             cx="601"
-            cy="606"
-            r="8"
+            cy="605"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="601"
-            cy="606"
-            r="6"
+            cy="605"
+            r="5"
           />
         </g>
         <g
@@ -8404,14 +8404,14 @@
           <circle
             class="element-shape ghost"
             cx="1057"
-            cy="273"
-            r="8"
+            cy="272"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1057"
-            cy="273"
-            r="6"
+            cy="272"
+            r="5"
           />
         </g>
         <g
@@ -8420,14 +8420,14 @@
           <circle
             class="element-shape ghost"
             cx="402"
-            cy="615"
-            r="8"
+            cy="614"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="402"
-            cy="615"
-            r="6"
+            cy="614"
+            r="5"
           />
         </g>
         <g
@@ -8436,14 +8436,14 @@
           <circle
             class="element-shape ghost"
             cx="271"
-            cy="265"
-            r="8"
+            cy="264"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="271"
-            cy="265"
-            r="6"
+            cy="264"
+            r="5"
           />
         </g>
         <g
@@ -8452,14 +8452,14 @@
           <circle
             class="element-shape ghost"
             cx="261"
-            cy="26"
-            r="8"
+            cy="259"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="261"
-            cy="26"
-            r="6"
+            cy="259"
+            r="5"
           />
         </g>
         <g
@@ -8469,13 +8469,13 @@
             class="element-shape ghost"
             cx="386"
             cy="589"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="386"
             cy="589"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8484,14 +8484,14 @@
           <circle
             class="element-shape ghost"
             cx="973"
-            cy="285"
-            r="8"
+            cy="284"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="973"
-            cy="285"
-            r="6"
+            cy="284"
+            r="5"
           />
         </g>
         <g
@@ -8500,14 +8500,14 @@
           <circle
             class="element-shape ghost"
             cx="264"
-            cy="305"
-            r="8"
+            cy="304"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="264"
-            cy="305"
-            r="6"
+            cy="304"
+            r="5"
           />
         </g>
         <g
@@ -8515,15 +8515,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="389"
-            cy="641"
-            r="8"
+            cx="388"
+            cy="640"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="389"
-            cy="641"
-            r="6"
+            cx="388"
+            cy="640"
+            r="5"
           />
         </g>
         <g
@@ -8531,15 +8531,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="723"
+            cx="722"
             cy="615"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="723"
+            cx="722"
             cy="615"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8547,15 +8547,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="838"
-            cy="613"
-            r="8"
+            cx="837"
+            cy="612"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="838"
-            cy="613"
-            r="6"
+            cx="837"
+            cy="612"
+            r="5"
           />
         </g>
         <g
@@ -8565,13 +8565,13 @@
             class="element-shape ghost"
             cx="272"
             cy="605"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="272"
             cy="605"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8579,15 +8579,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="404"
+            cx="403"
             cy="603"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="404"
+            cx="403"
             cy="603"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8595,15 +8595,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="30"
-            cy="246"
-            r="8"
+            cx="299"
+            cy="245"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="30"
-            cy="246"
-            r="6"
+            cx="299"
+            cy="245"
+            r="5"
           />
         </g>
         <g
@@ -8611,15 +8611,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="501"
+            cx="500"
             cy="618"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="501"
+            cx="500"
             cy="618"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8628,14 +8628,14 @@
           <circle
             class="element-shape ghost"
             cx="262"
-            cy="271"
-            r="8"
+            cy="270"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="262"
-            cy="271"
-            r="6"
+            cy="270"
+            r="5"
           />
         </g>
         <g
@@ -8644,14 +8644,14 @@
           <circle
             class="element-shape ghost"
             cx="292"
-            cy="286"
-            r="8"
+            cy="285"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="292"
-            cy="286"
-            r="6"
+            cy="285"
+            r="5"
           />
         </g>
         <g
@@ -8659,15 +8659,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="28"
+            cx="280"
             cy="247"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="28"
+            cx="280"
             cy="247"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8675,15 +8675,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="376"
-            cy="594"
-            r="8"
+            cx="375"
+            cy="593"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="376"
-            cy="594"
-            r="6"
+            cx="375"
+            cy="593"
+            r="5"
           />
         </g>
         <g
@@ -8692,14 +8692,14 @@
           <circle
             class="element-shape ghost"
             cx="409"
-            cy="633"
-            r="8"
+            cy="632"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="409"
-            cy="633"
-            r="6"
+            cy="632"
+            r="5"
           />
         </g>
         <g
@@ -8707,15 +8707,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="254"
+            cx="253"
             cy="299"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="254"
+            cx="253"
             cy="299"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8723,15 +8723,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="302"
-            cy="28"
-            r="8"
+            cx="301"
+            cy="279"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="302"
-            cy="28"
-            r="6"
+            cx="301"
+            cy="279"
+            r="5"
           />
         </g>
         <g
@@ -8739,15 +8739,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1084"
+            cx="1083"
             cy="293"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1084"
+            cx="1083"
             cy="293"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8755,15 +8755,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="252"
-            cy="266"
-            r="8"
+            cx="251"
+            cy="265"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="252"
-            cy="266"
-            r="6"
+            cx="251"
+            cy="265"
+            r="5"
           />
         </g>
         <g
@@ -8773,13 +8773,13 @@
             class="element-shape ghost"
             cx="272"
             cy="312"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="272"
             cy="312"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8787,15 +8787,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="397"
+            cx="396"
             cy="585"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="397"
+            cx="396"
             cy="585"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8803,15 +8803,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="291"
+            cx="290"
             cy="263"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="291"
+            cx="290"
             cy="263"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8819,15 +8819,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="371"
-            cy="627"
-            r="8"
+            cx="370"
+            cy="626"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="371"
-            cy="627"
-            r="6"
+            cx="370"
+            cy="626"
+            r="5"
           />
         </g>
         <g
@@ -8835,15 +8835,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="422"
+            cx="421"
             cy="617"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="422"
+            cx="421"
             cy="617"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8851,15 +8851,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="95"
-            cy="26"
-            r="8"
+            cx="949"
+            cy="260"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="95"
-            cy="26"
-            r="6"
+            cx="949"
+            cy="260"
+            r="5"
           />
         </g>
         <g
@@ -8869,13 +8869,13 @@
             class="element-shape ghost"
             cx="379"
             cy="571"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="379"
             cy="571"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8883,15 +8883,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="387"
+            cx="386"
             cy="652"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="387"
+            cx="386"
             cy="652"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8901,13 +8901,13 @@
             class="element-shape ghost"
             cx="407"
             cy="581"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
             cy="581"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8917,13 +8917,13 @@
             class="element-shape ghost"
             cx="857"
             cy="612"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="857"
             cy="612"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8933,13 +8933,13 @@
             class="element-shape ghost"
             cx="253"
             cy="288"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="253"
             cy="288"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8947,15 +8947,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="364"
-            cy="609"
-            r="8"
+            cx="363"
+            cy="608"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="364"
-            cy="609"
-            r="6"
+            cx="363"
+            cy="608"
+            r="5"
           />
         </g>
         <g
@@ -8963,15 +8963,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1089"
-            cy="26"
-            r="8"
+            cx="1088"
+            cy="260"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1089"
-            cy="26"
-            r="6"
+            cx="1088"
+            cy="260"
+            r="5"
           />
         </g>
         <g
@@ -8979,15 +8979,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="311"
+            cx="310"
             cy="273"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="311"
+            cx="310"
             cy="273"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -8997,13 +8997,13 @@
             class="element-shape ghost"
             cx="742"
             cy="614"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="742"
             cy="614"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9011,15 +9011,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="261"
+            cx="260"
             cy="248"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="261"
+            cx="260"
             cy="248"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9027,15 +9027,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="273"
+            cx="272"
             cy="287"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="273"
+            cx="272"
             cy="287"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9043,15 +9043,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="732"
-            cy="598"
-            r="8"
+            cx="731"
+            cy="597"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="732"
-            cy="598"
-            r="6"
+            cx="731"
+            cy="597"
+            r="5"
           />
         </g>
         <g
@@ -9059,15 +9059,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="30"
+            cx="300"
             cy="257"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="30"
+            cx="300"
             cy="257"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9075,15 +9075,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1056"
-            cy="284"
-            r="8"
+            cx="1055"
+            cy="283"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1056"
-            cy="284"
-            r="6"
+            cx="1055"
+            cy="283"
+            r="5"
           />
         </g>
         <g
@@ -9092,14 +9092,14 @@
           <circle
             class="element-shape ghost"
             cx="232"
-            cy="267"
-            r="8"
+            cy="266"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="232"
-            cy="267"
-            r="6"
+            cy="266"
+            r="5"
           />
         </g>
         <g
@@ -9107,15 +9107,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="847"
-            cy="596"
-            r="8"
+            cx="846"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="847"
-            cy="596"
-            r="6"
+            cx="846"
+            cy="595"
+            r="5"
           />
         </g>
         <g
@@ -9124,14 +9124,14 @@
           <circle
             class="element-shape ghost"
             cx="312"
-            cy="296"
-            r="8"
+            cy="295"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="312"
-            cy="296"
-            r="6"
+            cy="295"
+            r="5"
           />
         </g>
         <g
@@ -9139,15 +9139,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="42"
-            cy="629"
-            r="8"
+            cx="419"
+            cy="628"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="42"
-            cy="629"
-            r="6"
+            cx="419"
+            cy="628"
+            r="5"
           />
         </g>
         <g
@@ -9155,15 +9155,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="27"
+            cx="269"
             cy="229"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="27"
+            cx="269"
             cy="229"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9171,15 +9171,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="39"
+            cx="389"
             cy="567"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="39"
+            cx="389"
             cy="567"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9187,15 +9187,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="246"
-            cy="318"
-            r="8"
+            cx="245"
+            cy="317"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="246"
-            cy="318"
-            r="6"
+            cx="245"
+            cy="317"
+            r="5"
           />
         </g>
         <g
@@ -9203,15 +9203,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="32"
+            cx="320"
             cy="267"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="32"
+            cx="320"
             cy="267"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9221,13 +9221,13 @@
             class="element-shape ghost"
             cx="369"
             cy="638"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="369"
             cy="638"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9235,15 +9235,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="425"
+            cx="424"
             cy="595"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="425"
+            cx="424"
             cy="595"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9251,15 +9251,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="353"
+            cx="352"
             cy="596"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="353"
+            cx="352"
             cy="596"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9267,15 +9267,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="242"
-            cy="261"
-            r="8"
+            cx="241"
+            cy="260"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="242"
-            cy="261"
-            r="6"
+            cx="241"
+            cy="260"
+            r="5"
           />
         </g>
         <g
@@ -9283,15 +9283,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1096"
+            cx="1095"
             cy="278"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1096"
+            cx="1095"
             cy="278"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9299,15 +9299,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="508"
-            cy="60"
-            r="8"
+            cx="507"
+            cy="600"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="508"
-            cy="60"
-            r="6"
+            cx="507"
+            cy="600"
+            r="5"
           />
         </g>
         <g
@@ -9315,15 +9315,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="627"
+            cx="626"
             cy="628"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="627"
+            cx="626"
             cy="628"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9332,14 +9332,14 @@
           <circle
             class="element-shape ghost"
             cx="293"
-            cy="32"
-            r="8"
+            cy="319"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="293"
-            cy="32"
-            r="6"
+            cy="319"
+            r="5"
           />
         </g>
         <g
@@ -9347,15 +9347,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="31"
-            cy="251"
-            r="8"
+            cx="309"
+            cy="250"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="31"
-            cy="251"
-            r="6"
+            cx="309"
+            cy="250"
+            r="5"
           />
         </g>
         <g
@@ -9363,15 +9363,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="1059"
-            cy="262"
-            r="8"
+            cx="1058"
+            cy="261"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="1059"
-            cy="262"
-            r="6"
+            cx="1058"
+            cy="261"
+            r="5"
           />
         </g>
         <g
@@ -9381,13 +9381,29 @@
             class="element-shape ghost"
             cx="838"
             cy="624"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="838"
             cy="624"
-            r="6"
+            r="5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="407"
+            cy="643"
+            r="7"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="407"
+            cy="643"
+            r="5"
           />
         </g>
         <g
@@ -9396,14 +9412,14 @@
           <circle
             class="element-shape ghost"
             cx="408"
-            cy="644"
-            r="8"
+            cy="570"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="408"
-            cy="644"
-            r="6"
+            cy="570"
+            r="5"
           />
         </g>
         <g
@@ -9411,31 +9427,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="409"
-            cy="57"
-            r="8"
+            cx="233"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="409"
-            cy="57"
-            r="6"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="234"
+            cx="233"
             cy="289"
-            r="8"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="234"
-            cy="289"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9444,14 +9444,14 @@
           <circle
             class="element-shape ghost"
             cx="349"
-            cy="63"
-            r="8"
+            cy="629"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="349"
-            cy="63"
-            r="6"
+            cy="629"
+            r="5"
           />
         </g>
         <g
@@ -9459,15 +9459,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="322"
-            cy="29"
-            r="8"
+            cx="321"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="322"
-            cy="29"
-            r="6"
+            cx="321"
+            cy="289"
+            r="5"
           />
         </g>
         <g
@@ -9475,15 +9475,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="43"
+            cx="430"
             cy="624"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="43"
+            cx="430"
             cy="624"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9491,15 +9491,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="369"
+            cx="368"
             cy="575"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="369"
+            cx="368"
             cy="575"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9509,13 +9509,13 @@
             class="element-shape ghost"
             cx="259"
             cy="233"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="259"
             cy="233"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9524,14 +9524,14 @@
           <circle
             class="element-shape ghost"
             cx="951"
-            cy="29"
-            r="8"
+            cy="290"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="951"
-            cy="29"
-            r="6"
+            cy="290"
+            r="5"
           />
         </g>
         <g
@@ -9541,13 +9541,13 @@
             class="element-shape ghost"
             cx="378"
             cy="645"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="378"
             cy="645"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9555,15 +9555,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="427"
+            cx="426"
             cy="584"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="427"
+            cx="426"
             cy="584"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9572,14 +9572,14 @@
           <circle
             class="element-shape ghost"
             cx="1073"
-            cy="298"
-            r="8"
+            cy="297"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1073"
-            cy="298"
-            r="6"
+            cy="297"
+            r="5"
           />
         </g>
         <g
@@ -9589,13 +9589,13 @@
             class="element-shape ghost"
             cx="263"
             cy="319"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="263"
             cy="319"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9603,15 +9603,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="31"
+            cx="310"
             cy="262"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="31"
+            cx="310"
             cy="262"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9619,15 +9619,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="233"
+            cx="232"
             cy="254"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="233"
+            cx="232"
             cy="254"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9636,14 +9636,14 @@
           <circle
             class="element-shape ghost"
             cx="625"
-            cy="588"
-            r="8"
+            cy="587"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="625"
-            cy="588"
-            r="6"
+            cy="587"
+            r="5"
           />
         </g>
         <g
@@ -9653,13 +9653,13 @@
             class="element-shape ghost"
             cx="976"
             cy="274"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="976"
             cy="274"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9668,14 +9668,14 @@
           <circle
             class="element-shape ghost"
             cx="599"
-            cy="617"
-            r="8"
+            cy="616"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="599"
-            cy="617"
-            r="6"
+            cy="616"
+            r="5"
           />
         </g>
         <g
@@ -9683,15 +9683,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="303"
-            cy="315"
-            r="8"
+            cx="302"
+            cy="314"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="303"
-            cy="315"
-            r="6"
+            cx="302"
+            cy="314"
+            r="5"
           />
         </g>
         <g
@@ -9699,15 +9699,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="947"
+            cx="946"
             cy="271"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="947"
+            cx="946"
             cy="271"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9716,14 +9716,14 @@
           <circle
             class="element-shape ghost"
             cx="288"
-            cy="23"
-            r="8"
+            cy="229"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="288"
-            cy="23"
-            r="6"
+            cy="229"
+            r="5"
           />
         </g>
         <g
@@ -9732,14 +9732,14 @@
           <circle
             class="element-shape ghost"
             cx="341"
-            cy="609"
-            r="8"
+            cy="608"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="341"
-            cy="609"
-            r="6"
+            cy="608"
+            r="5"
           />
         </g>
         <g
@@ -9747,15 +9747,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="64"
-            cy="614"
-            r="8"
+            cx="639"
+            cy="613"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="64"
-            cy="614"
-            r="6"
+            cx="639"
+            cy="613"
+            r="5"
           />
         </g>
         <g
@@ -9763,15 +9763,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="97"
-            cy="296"
-            r="8"
+            cx="969"
+            cy="295"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="97"
-            cy="296"
-            r="6"
+            cx="969"
+            cy="295"
+            r="5"
           />
         </g>
         <g
@@ -9780,14 +9780,14 @@
           <circle
             class="element-shape ghost"
             cx="418"
-            cy="64"
-            r="8"
+            cy="639"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="418"
-            cy="64"
-            r="6"
+            cy="639"
+            r="5"
           />
         </g>
         <g
@@ -9797,13 +9797,13 @@
             class="element-shape ghost"
             cx="235"
             cy="301"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="235"
             cy="301"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9813,13 +9813,13 @@
             class="element-shape ghost"
             cx="321"
             cy="278"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="321"
             cy="278"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9827,15 +9827,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="242"
-            cy="237"
-            r="8"
+            cx="241"
+            cy="236"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="242"
-            cy="237"
-            r="6"
+            cx="241"
+            cy="236"
+            r="5"
           />
         </g>
         <g
@@ -9845,13 +9845,13 @@
             class="element-shape ghost"
             cx="398"
             cy="574"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="398"
             cy="574"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9859,15 +9859,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="359"
+            cx="358"
             cy="642"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="359"
+            cx="358"
             cy="642"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9875,15 +9875,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="961"
-            cy="258"
-            r="8"
+            cx="960"
+            cy="257"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="961"
-            cy="258"
-            r="6"
+            cx="960"
+            cy="257"
+            r="5"
           />
         </g>
         <g
@@ -9891,15 +9891,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="604"
-            cy="595"
-            r="8"
+            cx="603"
+            cy="594"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="604"
-            cy="595"
-            r="6"
+            cx="603"
+            cy="594"
+            r="5"
           />
         </g>
         <g
@@ -9907,15 +9907,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="434"
+            cx="433"
             cy="602"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="434"
+            cx="433"
             cy="602"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9923,15 +9923,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="276"
+            cx="275"
             cy="323"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="276"
+            cx="275"
             cy="323"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9939,15 +9939,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="32"
+            cx="319"
             cy="256"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="32"
+            cx="319"
             cy="256"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9955,15 +9955,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="356"
+            cx="355"
             cy="585"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="356"
+            cx="355"
             cy="585"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -9971,15 +9971,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="616"
-            cy="632"
-            r="8"
+            cx="615"
+            cy="631"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="616"
-            cy="632"
-            r="6"
+            cx="615"
+            cy="631"
+            r="5"
           />
         </g>
         <g
@@ -9988,14 +9988,14 @@
           <circle
             class="element-shape ghost"
             cx="943"
-            cy="282"
-            r="8"
+            cy="281"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="943"
-            cy="282"
-            r="6"
+            cy="281"
+            r="5"
           />
         </g>
         <g
@@ -10004,14 +10004,14 @@
           <circle
             class="element-shape ghost"
             cx="397"
-            cy="648"
-            r="8"
+            cy="647"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="397"
-            cy="648"
-            r="6"
+            cy="647"
+            r="5"
           />
         </g>
         <g
@@ -10019,15 +10019,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="418"
+            cx="417"
             cy="577"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="418"
+            cx="417"
             cy="577"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -10037,13 +10037,13 @@
             class="element-shape ghost"
             cx="633"
             cy="595"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="633"
             cy="595"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -10053,13 +10053,13 @@
             class="element-shape ghost"
             cx="233"
             cy="278"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="233"
             cy="278"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -10067,52 +10067,52 @@
         >
           <circle
             class="element-shape ghost"
-            cx="351"
-            cy="619"
-            r="8"
+            cx="350"
+            cy="618"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="351"
-            cy="619"
-            r="6"
+            cx="350"
+            cy="618"
+            r="5"
           />
         </g>
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.28723404) translate(,)"
+        transform="translate(699,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
+          height="470"
           width="698"
           x="-368"
-          y="-22"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
+          height="470"
           width="698"
           x="-368"
-          y="-22"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(675,93)rotate(0)"
+      transform="translate(675,92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
+        height="33"
         width="161"
         x="-81"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
+        height="33"
         width="161"
         x="-81"
         y="-17"
@@ -10120,21 +10120,21 @@
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,424) scale(1.28723404) translate(,)"
+      transform="translate(699,423) scale(1.28723404) translate(0,0)"
     >
       <rect
         class="element-shape ghost"
         height="72"
         width="82"
-        x="331"
-        y="-22"
+        x="330"
+        y="-220"
       />
       <rect
         class="element-shape indicator"
         height="72"
         width="82"
-        x="331"
-        y="-22"
+        x="330"
+        y="-220"
       />
     </g>
   </g>
@@ -10163,22 +10163,22 @@
     <rect
       class="canvas-region-outer2"
       height="778"
-      width="1165"
-      x="117"
+      width="1164"
+      x="116"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
-      width="1161"
-      x="119"
+      width="1160"
+      x="118"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
-      width="1159"
-      x="12"
+      width="1158"
+      x="119"
       y="37"
     />
     <g
@@ -10190,17 +10190,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -10208,14 +10208,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
@@ -10226,16 +10226,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
       </g>
@@ -10246,34 +10246,34 @@
           class="element-line handle-ghost"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="12"
-        cy="81"
+        cx="119"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1278"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="12"
+        cx="119"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -10296,8 +10296,8 @@
   />
   <line
     class="mark-guide"
-    x1="1034"
-    x2="1034"
+    x1="1033"
+    x2="1033"
     y1="0"
     y2="847"
   />
@@ -10312,8 +10312,8 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -10326,138 +10326,138 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.2872340425531914)"
+    transform="translate(699,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="67"
-        x="-41"
-        y="-22"
+        width="670"
+        x="-410"
+        y="-220"
       />
       <rect
-        height="60"
+        height="600"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="90"
-        x="-45"
-        y="-30"
+        width="900"
+        x="-450"
+        y="-300"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,-151 C -365,-151,-391,-151,-361,-151"
+                d="M -395,-152 C -365,-152,-392,-152,-362,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,-151 C -331,-151,-358,-151,-328,-151"
+                d="M -362,-152 C -332,-152,-358,-152,-328,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,-151 C -298,-151,-324,-151,-294,-151"
+                d="M -328,-152 C -298,-152,-324,-152,-294,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,-151 C -264,-151,-29,-151,-26,-151"
+                d="M -294,-152 C -264,-152,-291,-152,-261,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,-151 C -23,-151,-257,-151,-227,-151"
+                d="M -261,-152 C -231,-152,-257,-152,-227,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,-151 C -197,-151,-223,-151,-193,-151"
+                d="M -227,-152 C -197,-152,-223,-152,-193,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,-151 C -163,-151,-189,-151,-159,-151"
+                d="M -193,-152 C -163,-152,-190,-152,-160,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,-151 C -129,-151,-156,-151,-126,-151"
+                d="M -160,-152 C -130,-152,-156,-152,-126,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,-151 C -96,-151,-122,-151,-92,-151"
+                d="M -126,-152 C -96,-152,-122,-152,-92,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,-151 C -62,-151,-88,-151,-58,-151"
+                d="M -92,-152 C -62,-152,-89,-152,-59,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,-151 C -28,-151,-54,-151,-24,-151"
+                d="M -59,-152 C -29,-152,-55,-152,-25,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,-151 C 6,-151,-21,-151,9,-151"
+                d="M -25,-152 C 5,-152,-21,-152,9,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,-151 C 39,-151,13,-151,43,-151"
+                d="M 9,-152 C 39,-152,12,-152,42,-152"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,-151 C 73,-151,47,-199,77,-199"
+                d="M 42,-152 C 72,-152,46,-199,76,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,-199 C 107,-199,8,-199,11,-199"
+                d="M 76,-199 C 106,-199,80,-199,110,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,-199 C 14,-199,114,-199,144,-199"
+                d="M 110,-199 C 140,-199,113,-199,143,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,-199 C 174,-199,148,-199,178,-199"
+                d="M 143,-199 C 173,-199,147,-199,177,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,-199 C 208,-199,181,-199,211,-199"
+                d="M 177,-199 C 207,-199,181,-199,211,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,-199 C 241,-199,215,-199,245,-199"
+                d="M 211,-199 C 241,-199,214,-199,244,-199"
                 style="stroke: rgb(166, 206, 227); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,-199 C -365,-199,-391,-199,-361,-199"
+                d="M -395,-199 C -365,-199,-392,-199,-362,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,-199 C -331,-199,-358,-199,-328,-199"
+                d="M -362,-199 C -332,-199,-358,-199,-328,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10465,11 +10465,11 @@
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,-199 C -264,-199,-29,-199,-26,-199"
+                d="M -294,-199 C -264,-199,-291,-199,-261,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,-199 C -23,-199,-257,-199,-227,-199"
+                d="M -261,-199 C -231,-199,-257,-199,-227,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10477,11 +10477,11 @@
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,-199 C -163,-199,-189,-199,-159,-199"
+                d="M -193,-199 C -163,-199,-190,-199,-160,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,-199 C -129,-199,-156,-199,-126,-199"
+                d="M -160,-199 C -130,-199,-156,-199,-126,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10489,56 +10489,56 @@
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,-199 C -62,-199,-88,-199,-58,-199"
+                d="M -92,-199 C -62,-199,-89,-199,-59,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,-199 C -28,-199,-54,-199,-24,-199"
+                d="M -59,-199 C -29,-199,-55,-199,-25,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,-199 C 6,-199,-21,-199,9,-199"
+                d="M -25,-199 C 5,-199,-21,-199,9,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,-199 C 39,-199,13,-199,43,-199"
+                d="M 9,-199 C 39,-199,12,-199,42,-199"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,-199 C 73,-199,47,-151,77,-151"
+                d="M 42,-199 C 72,-199,46,-152,76,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,-151 C 107,-151,8,-151,11,-151"
+                d="M 76,-152 C 106,-152,80,-152,110,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,-151 C 14,-151,114,-151,144,-151"
+                d="M 110,-152 C 140,-152,113,-152,143,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,-151 C 174,-151,148,-151,178,-151"
+                d="M 143,-152 C 173,-152,147,-152,177,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,-151 C 208,-151,181,-151,211,-151"
+                d="M 177,-152 C 207,-152,181,-152,211,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,-151 C 241,-151,215,-151,245,-151"
+                d="M 211,-152 C 241,-152,214,-152,244,-152"
                 style="stroke: rgb(31, 120, 180); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,-9 C -365,-9,-391,-9,-361,-9"
+                d="M -395,-9 C -365,-9,-392,-9,-362,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,-9 C -331,-9,-358,-9,-328,-9"
+                d="M -362,-9 C -332,-9,-358,-9,-328,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10546,11 +10546,11 @@
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,-9 C -264,-9,-29,-9,-26,-9"
+                d="M -294,-9 C -264,-9,-291,-9,-261,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,-9 C -23,-9,-257,-9,-227,-9"
+                d="M -261,-9 C -231,-9,-257,-9,-227,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10558,68 +10558,68 @@
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,-9 C -163,-9,-189,-9,-159,-9"
+                d="M -193,-9 C -163,-9,-190,-9,-160,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,-9 C -129,-9,-156,-9,-126,-9"
+                d="M -160,-9 C -130,-9,-156,-9,-126,-9"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,-9 C -96,-9,-122,-56,-92,-56"
+                d="M -126,-9 C -96,-9,-122,-57,-92,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,-56 C -62,-56,-88,-56,-58,-56"
+                d="M -92,-57 C -62,-57,-89,-57,-59,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,-56 C -28,-56,-54,-56,-24,-56"
+                d="M -59,-57 C -29,-57,-55,-57,-25,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,-56 C 6,-56,-21,-56,9,-56"
+                d="M -25,-57 C 5,-57,-21,-57,9,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,-56 C 39,-56,13,-56,43,-56"
+                d="M 9,-57 C 39,-57,12,-57,42,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,-56 C 73,-56,47,-56,77,-56"
+                d="M 42,-57 C 72,-57,46,-57,76,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,-56 C 107,-56,8,-56,11,-56"
+                d="M 76,-57 C 106,-57,80,-57,110,-57"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,-56 C 14,-56,114,-104,144,-104"
+                d="M 110,-57 C 140,-57,113,-104,143,-104"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,-104 C 174,-104,148,-104,178,-104"
+                d="M 143,-104 C 173,-104,147,-104,177,-104"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,-104 C 208,-104,181,-104,211,-104"
+                d="M 177,-104 C 207,-104,181,-104,211,-104"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,-104 C 241,-104,215,-104,245,-104"
+                d="M 211,-104 C 241,-104,214,-104,244,-104"
                 style="stroke: rgb(178, 223, 138); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,-104 C -365,-104,-391,-104,-361,-104"
+                d="M -395,-104 C -365,-104,-392,-104,-362,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,-104 C -331,-104,-358,-104,-328,-104"
+                d="M -362,-104 C -332,-104,-358,-104,-328,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10627,11 +10627,11 @@
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,-104 C -264,-104,-29,-104,-26,-104"
+                d="M -294,-104 C -264,-104,-291,-104,-261,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,-104 C -23,-104,-257,-104,-227,-104"
+                d="M -261,-104 C -231,-104,-257,-104,-227,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10639,11 +10639,11 @@
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,-104 C -163,-104,-189,-104,-159,-104"
+                d="M -193,-104 C -163,-104,-190,-104,-160,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,-104 C -129,-104,-156,-104,-126,-104"
+                d="M -160,-104 C -130,-104,-156,-104,-126,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10651,137 +10651,137 @@
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,-104 C -62,-104,-88,-104,-58,-104"
+                d="M -92,-104 C -62,-104,-89,-104,-59,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,-104 C -28,-104,-54,-104,-24,-104"
+                d="M -59,-104 C -29,-104,-55,-104,-25,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,-104 C 6,-104,-21,-104,9,-104"
+                d="M -25,-104 C 5,-104,-21,-104,9,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,-104 C 39,-104,13,-104,43,-104"
+                d="M 9,-104 C 39,-104,12,-104,42,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,-104 C 73,-104,47,-104,77,-104"
+                d="M 42,-104 C 72,-104,46,-104,76,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,-104 C 107,-104,8,-104,11,-104"
+                d="M 76,-104 C 106,-104,80,-104,110,-104"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,-104 C 14,-104,114,-56,144,-56"
+                d="M 110,-104 C 140,-104,113,-57,143,-57"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,-56 C 174,-56,148,-56,178,-56"
+                d="M 143,-57 C 173,-57,147,-57,177,-57"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,-56 C 208,-56,181,-56,211,-56"
+                d="M 177,-57 C 207,-57,181,-57,211,-57"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,-56 C 241,-56,215,-56,245,-56"
+                d="M 211,-57 C 241,-57,214,-57,244,-57"
                 style="stroke: rgb(51, 160, 44); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,-56 C -365,-56,-391,-56,-361,-56"
+                d="M -395,-57 C -365,-57,-392,-57,-362,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,-56 C -331,-56,-358,-56,-328,-56"
+                d="M -362,-57 C -332,-57,-358,-57,-328,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,-56 C -298,-56,-324,-56,-294,-56"
+                d="M -328,-57 C -298,-57,-324,-57,-294,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,-56 C -264,-56,-29,-56,-26,-56"
+                d="M -294,-57 C -264,-57,-291,-57,-261,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,-56 C -23,-56,-257,-56,-227,-56"
+                d="M -261,-57 C -231,-57,-257,-57,-227,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,-56 C -197,-56,-223,-56,-193,-56"
+                d="M -227,-57 C -197,-57,-223,-57,-193,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,-56 C -163,-56,-189,-56,-159,-56"
+                d="M -193,-57 C -163,-57,-190,-57,-160,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,-56 C -129,-56,-156,-56,-126,-56"
+                d="M -160,-57 C -130,-57,-156,-57,-126,-57"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,-56 C -96,-56,-122,-9,-92,-9"
+                d="M -126,-57 C -96,-57,-122,-9,-92,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,-9 C -62,-9,-88,-9,-58,-9"
+                d="M -92,-9 C -62,-9,-89,-9,-59,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,-9 C -28,-9,-54,-9,-24,-9"
+                d="M -59,-9 C -29,-9,-55,-9,-25,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,-9 C 6,-9,-21,-9,9,-9"
+                d="M -25,-9 C 5,-9,-21,-9,9,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,-9 C 39,-9,13,-9,43,-9"
+                d="M 9,-9 C 39,-9,12,-9,42,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,-9 C 73,-9,47,-9,77,-9"
+                d="M 42,-9 C 72,-9,46,-9,76,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,-9 C 107,-9,8,-9,11,-9"
+                d="M 76,-9 C 106,-9,80,-9,110,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,-9 C 14,-9,114,-9,144,-9"
+                d="M 110,-9 C 140,-9,113,-9,143,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,-9 C 174,-9,148,-9,178,-9"
+                d="M 143,-9 C 173,-9,147,-9,177,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,-9 C 208,-9,181,-9,211,-9"
+                d="M 177,-9 C 207,-9,181,-9,211,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,-9 C 241,-9,215,-9,245,-9"
+                d="M 211,-9 C 241,-9,214,-9,244,-9"
                 style="stroke: rgb(251, 154, 153); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,39 C -365,39,-391,39,-361,39"
+                d="M -395,38 C -365,38,-392,38,-362,38"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,39 C -331,39,-358,86,-328,86"
+                d="M -362,38 C -332,38,-358,86,-328,86"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10789,185 +10789,185 @@
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,86 C -264,86,-29,86,-26,86"
+                d="M -294,86 C -264,86,-291,86,-261,86"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,86 C -23,86,-257,86,-227,86"
+                d="M -261,86 C -231,86,-257,86,-227,86"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,86 C -197,86,-223,39,-193,39"
+                d="M -227,86 C -197,86,-223,38,-193,38"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,39 C -163,39,-189,134,-159,134"
+                d="M -193,38 C -163,38,-190,133,-160,133"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,134 C -129,134,-156,134,-126,134"
+                d="M -160,133 C -130,133,-156,133,-126,133"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,134 C -96,134,-122,134,-92,134"
+                d="M -126,133 C -96,133,-122,133,-92,133"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,134 C -62,134,-88,134,-58,134"
+                d="M -92,133 C -62,133,-89,133,-59,133"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,134 C -28,134,-54,134,-24,134"
+                d="M -59,133 C -29,133,-55,133,-25,133"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,134 C 6,134,-21,181,9,181"
+                d="M -25,133 C 5,133,-21,181,9,181"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,181 C 39,181,13,181,43,181"
+                d="M 9,181 C 39,181,12,181,42,181"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,181 C 73,181,47,181,77,181"
+                d="M 42,181 C 72,181,46,181,76,181"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,181 C 107,181,8,229,11,229"
+                d="M 76,181 C 106,181,80,228,110,228"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,229 C 14,229,114,229,144,229"
+                d="M 110,228 C 140,228,113,228,143,228"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,229 C 174,229,148,229,178,229"
+                d="M 143,228 C 173,228,147,228,177,228"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,229 C 208,229,181,229,211,229"
+                d="M 177,228 C 207,228,181,228,211,228"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,229 C 241,229,215,229,245,229"
+                d="M 211,228 C 241,228,214,228,244,228"
                 style="stroke: rgb(227, 26, 28); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,134 C -365,134,-391,86,-361,86"
+                d="M -395,133 C -365,133,-392,86,-362,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,86 C -331,86,-358,39,-328,39"
+                d="M -362,86 C -332,86,-358,38,-328,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,39 C -298,39,-324,39,-294,39"
+                d="M -328,38 C -298,38,-324,38,-294,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,39 C -264,39,-29,39,-26,39"
+                d="M -294,38 C -264,38,-291,38,-261,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,39 C -23,39,-257,39,-227,39"
+                d="M -261,38 C -231,38,-257,38,-227,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,39 C -197,39,-223,86,-193,86"
+                d="M -227,38 C -197,38,-223,86,-193,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,86 C -163,86,-189,39,-159,39"
+                d="M -193,86 C -163,86,-190,38,-160,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,39 C -129,39,-156,39,-126,39"
+                d="M -160,38 C -130,38,-156,38,-126,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,39 C -96,39,-122,39,-92,39"
+                d="M -126,38 C -96,38,-122,38,-92,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,39 C -62,39,-88,39,-58,39"
+                d="M -92,38 C -62,38,-89,38,-59,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,39 C -28,39,-54,39,-24,39"
+                d="M -59,38 C -29,38,-55,38,-25,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,39 C 6,39,-21,39,9,39"
+                d="M -25,38 C 5,38,-21,38,9,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,39 C 39,39,13,86,43,86"
+                d="M 9,38 C 39,38,12,86,42,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,86 C 73,86,47,86,77,86"
+                d="M 42,86 C 72,86,46,86,76,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,86 C 107,86,8,86,11,86"
+                d="M 76,86 C 106,86,80,86,110,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,86 C 14,86,114,86,144,86"
+                d="M 110,86 C 140,86,113,86,143,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,86 C 174,86,148,86,178,86"
+                d="M 143,86 C 173,86,147,86,177,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,86 C 208,86,181,86,211,86"
+                d="M 177,86 C 207,86,181,86,211,86"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,86 C 241,86,215,39,245,39"
+                d="M 211,86 C 241,86,214,38,244,38"
                 style="stroke: rgb(253, 191, 111); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,181 C -365,181,-391,181,-361,181"
+                d="M -395,181 C -365,181,-392,181,-362,181"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,181 C -331,181,-358,181,-328,181"
+                d="M -362,181 C -332,181,-358,181,-328,181"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,181 C -298,181,-324,134,-294,134"
+                d="M -328,181 C -298,181,-324,133,-294,133"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,134 C -264,134,-29,134,-26,134"
+                d="M -294,133 C -264,133,-291,133,-261,133"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,134 C -23,134,-257,181,-227,181"
+                d="M -261,133 C -231,133,-257,181,-227,181"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,181 C -197,181,-223,134,-193,134"
+                d="M -227,181 C -197,181,-223,133,-193,133"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,134 C -163,134,-189,86,-159,86"
+                d="M -193,133 C -163,133,-190,86,-160,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,86 C -129,86,-156,86,-126,86"
+                d="M -160,86 C -130,86,-156,86,-126,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -10975,161 +10975,161 @@
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,86 C -62,86,-88,86,-58,86"
+                d="M -92,86 C -62,86,-89,86,-59,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,86 C -28,86,-54,86,-24,86"
+                d="M -59,86 C -29,86,-55,86,-25,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,86 C 6,86,-21,86,9,86"
+                d="M -25,86 C 5,86,-21,86,9,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,86 C 39,86,13,39,43,39"
+                d="M 9,86 C 39,86,12,38,42,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,39 C 73,39,47,39,77,39"
+                d="M 42,38 C 72,38,46,38,76,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,39 C 107,39,8,39,11,39"
+                d="M 76,38 C 106,38,80,38,110,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,39 C 14,39,114,39,144,39"
+                d="M 110,38 C 140,38,113,38,143,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,39 C 174,39,148,39,178,39"
+                d="M 143,38 C 173,38,147,38,177,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,39 C 208,39,181,39,211,39"
+                d="M 177,38 C 207,38,181,38,211,38"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,39 C 241,39,215,86,245,86"
+                d="M 211,38 C 241,38,214,86,244,86"
                 style="stroke: rgb(255, 127, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,229 C -365,229,-391,229,-361,229"
+                d="M -395,228 C -365,228,-392,228,-362,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,229 C -331,229,-358,229,-328,229"
+                d="M -362,228 C -332,228,-358,228,-328,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,229 C -298,229,-324,229,-294,229"
+                d="M -328,228 C -298,228,-324,228,-294,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,229 C -264,229,-29,229,-26,229"
+                d="M -294,228 C -264,228,-291,228,-261,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,229 C -23,229,-257,134,-227,134"
+                d="M -261,228 C -231,228,-257,133,-227,133"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,134 C -197,134,-223,181,-193,181"
+                d="M -227,133 C -197,133,-223,181,-193,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,181 C -163,181,-189,181,-159,181"
+                d="M -193,181 C -163,181,-190,181,-160,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,181 C -129,181,-156,229,-126,229"
+                d="M -160,181 C -130,181,-156,228,-126,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -126,229 C -96,229,-122,229,-92,229"
+                d="M -126,228 C -96,228,-122,228,-92,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,229 C -62,229,-88,229,-58,229"
+                d="M -92,228 C -62,228,-89,228,-59,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,229 C -28,229,-54,229,-24,229"
+                d="M -59,228 C -29,228,-55,228,-25,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,229 C 6,229,-21,229,9,229"
+                d="M -25,228 C 5,228,-21,228,9,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,229 C 39,229,13,229,43,229"
+                d="M 9,228 C 39,228,12,228,42,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,229 C 73,229,47,229,77,229"
+                d="M 42,228 C 72,228,46,228,76,228"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,229 C 107,229,8,181,11,181"
+                d="M 76,228 C 106,228,80,181,110,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,181 C 14,181,114,181,144,181"
+                d="M 110,181 C 140,181,113,181,143,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,181 C 174,181,148,181,178,181"
+                d="M 143,181 C 173,181,147,181,177,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,181 C 208,181,181,181,211,181"
+                d="M 177,181 C 207,181,181,181,211,181"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,181 C 241,181,215,134,245,134"
+                d="M 211,181 C 241,181,214,133,244,133"
                 style="stroke: rgb(202, 178, 214); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <path
-                d="M -395,86 C -365,86,-391,134,-361,134"
+                d="M -395,86 C -365,86,-392,133,-362,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -361,134 C -331,134,-358,134,-328,134"
+                d="M -362,133 C -332,133,-358,133,-328,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -328,134 C -298,134,-324,181,-294,181"
+                d="M -328,133 C -298,133,-324,181,-294,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -294,181 C -264,181,-29,181,-26,181"
+                d="M -294,181 C -264,181,-291,181,-261,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -26,181 C -23,181,-257,229,-227,229"
+                d="M -261,181 C -231,181,-257,228,-227,228"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -227,229 C -197,229,-223,229,-193,229"
+                d="M -227,228 C -197,228,-223,228,-193,228"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -193,229 C -163,229,-189,229,-159,229"
+                d="M -193,228 C -163,228,-190,228,-160,228"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -159,229 C -129,229,-156,181,-126,181"
+                d="M -160,228 C -130,228,-156,181,-126,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
@@ -11137,43 +11137,43 @@
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -92,181 C -62,181,-88,181,-58,181"
+                d="M -92,181 C -62,181,-89,181,-59,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -58,181 C -28,181,-54,181,-24,181"
+                d="M -59,181 C -29,181,-55,181,-25,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M -24,181 C 6,181,-21,134,9,134"
+                d="M -25,181 C 5,181,-21,133,9,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 9,134 C 39,134,13,134,43,134"
+                d="M 9,133 C 39,133,12,133,42,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 43,134 C 73,134,47,134,77,134"
+                d="M 42,133 C 72,133,46,133,76,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 77,134 C 107,134,8,134,11,134"
+                d="M 76,133 C 106,133,80,133,110,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 11,134 C 14,134,114,134,144,134"
+                d="M 110,133 C 140,133,113,133,143,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 144,134 C 174,134,148,134,178,134"
+                d="M 143,133 C 173,133,147,133,177,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 178,134 C 208,134,181,134,211,134"
+                d="M 177,133 C 207,133,181,133,211,133"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
               <path
-                d="M 211,134 C 241,134,215,181,245,181"
+                d="M 211,133 C 241,133,214,181,244,181"
                 style="stroke: rgb(106, 61, 154); stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
               />
             </g>
@@ -11182,47 +11182,47 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
@@ -11233,7 +11233,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
@@ -11244,7 +11244,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
@@ -11255,40 +11255,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
@@ -11299,18 +11299,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-395"
@@ -11321,21 +11321,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="-151"
+                  cx="-362"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
+                  cx="-362"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11343,10 +11343,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
+                  cx="-362"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11354,10 +11354,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
+                  cx="-362"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11365,32 +11365,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="-56"
+                  cx="-362"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="39"
+                  cx="-362"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
+                  cx="-362"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11398,10 +11398,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
+                  cx="-362"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11409,40 +11409,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="229"
+                  cx="-362"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-361"
-                  cy="134"
+                  cx="-362"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
@@ -11453,7 +11453,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
@@ -11464,7 +11464,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
@@ -11475,18 +11475,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
@@ -11497,18 +11497,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
@@ -11519,40 +11519,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-328"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -11563,7 +11563,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -11574,7 +11574,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -11585,18 +11585,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -11607,40 +11607,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-294"
@@ -11651,21 +11651,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
-                  cy="-151"
+                  cx="-261"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-261"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11673,10 +11673,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-261"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11684,10 +11684,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-261"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11695,21 +11695,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
-                  cy="-56"
+                  cx="-261"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-261"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11717,43 +11717,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
-                  cy="39"
+                  cx="-261"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
-                  cy="134"
+                  cx="-261"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
-                  cy="229"
+                  cx="-261"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-26"
+                  cx="-261"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -11761,18 +11761,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -11783,7 +11783,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -11794,7 +11794,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -11805,18 +11805,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -11827,18 +11827,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
@@ -11849,40 +11849,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-227"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
@@ -11893,7 +11893,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
@@ -11904,7 +11904,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
@@ -11915,29 +11915,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
@@ -11948,18 +11948,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
@@ -11970,32 +11970,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-193"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
-                  cy="-151"
+                  cx="-160"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
+                  cx="-160"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12003,10 +12003,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
+                  cx="-160"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12014,10 +12014,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
+                  cx="-160"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12025,43 +12025,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
-                  cy="-56"
+                  cx="-160"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
-                  cy="134"
+                  cx="-160"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
-                  cy="39"
+                  cx="-160"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
+                  cx="-160"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12069,10 +12069,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
+                  cx="-160"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12080,29 +12080,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-159"
-                  cy="229"
+                  cx="-160"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
@@ -12113,7 +12113,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
@@ -12124,7 +12124,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
@@ -12135,40 +12135,40 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
@@ -12179,18 +12179,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-126"
@@ -12201,18 +12201,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
@@ -12223,18 +12223,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
@@ -12245,7 +12245,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
@@ -12256,29 +12256,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
@@ -12289,18 +12289,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-92"
@@ -12311,21 +12311,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
-                  cy="-151"
+                  cx="-59"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
+                  cx="-59"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12333,21 +12333,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
-                  cy="-56"
+                  cx="-59"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
+                  cx="-59"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12355,10 +12355,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
+                  cx="-59"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12366,32 +12366,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
-                  cy="134"
+                  cx="-59"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
-                  cy="39"
+                  cx="-59"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
+                  cx="-59"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12399,21 +12399,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
-                  cy="229"
+                  cx="-59"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-58"
+                  cx="-59"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12421,21 +12421,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="-151"
+                  cx="-25"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
+                  cx="-25"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12443,21 +12443,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="-56"
+                  cx="-25"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
+                  cx="-25"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12465,10 +12465,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
+                  cx="-25"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12476,32 +12476,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="134"
+                  cx="-25"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="39"
+                  cx="-25"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
+                  cx="-25"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12509,21 +12509,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
-                  cy="229"
+                  cx="-25"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-24"
+                  cx="-25"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12531,18 +12531,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
@@ -12553,18 +12553,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
@@ -12575,7 +12575,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
@@ -12586,7 +12586,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
@@ -12597,18 +12597,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
@@ -12619,43 +12619,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="9"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
-                  cy="-151"
+                  cx="42"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
+                  cx="42"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12663,21 +12663,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
-                  cy="-56"
+                  cx="42"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
+                  cx="42"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12685,10 +12685,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
+                  cx="42"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12696,10 +12696,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
+                  cx="42"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12707,10 +12707,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
+                  cx="42"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12718,43 +12718,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
-                  cy="39"
+                  cx="42"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
-                  cy="229"
+                  cx="42"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="43"
-                  cy="134"
+                  cx="42"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
+                  cx="76"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12762,32 +12762,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
-                  cy="-151"
+                  cx="76"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
-                  cy="-56"
+                  cx="76"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
+                  cx="76"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12795,10 +12795,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
+                  cx="76"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12806,10 +12806,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
+                  cx="76"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12817,10 +12817,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
+                  cx="76"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12828,43 +12828,43 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
-                  cy="39"
+                  cx="76"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
-                  cy="229"
+                  cx="76"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="77"
-                  cy="134"
+                  cx="76"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
+                  cx="110"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12872,32 +12872,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
-                  cy="-151"
+                  cx="110"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
-                  cy="-56"
+                  cx="110"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
+                  cx="110"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12905,10 +12905,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
+                  cx="110"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12916,21 +12916,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
-                  cy="229"
+                  cx="110"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
+                  cx="110"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12938,21 +12938,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
-                  cy="39"
+                  cx="110"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
+                  cx="110"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12960,21 +12960,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="11"
-                  cy="134"
+                  cx="110"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
+                  cx="143"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -12982,21 +12982,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
-                  cy="-151"
+                  cx="143"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
+                  cx="143"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13004,21 +13004,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
-                  cy="-56"
+                  cx="143"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
+                  cx="143"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13026,21 +13026,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
-                  cy="229"
+                  cx="143"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
+                  cx="143"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13048,21 +13048,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
-                  cy="39"
+                  cx="143"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
+                  cx="143"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13070,21 +13070,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="144"
-                  cy="134"
+                  cx="143"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
+                  cx="177"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13092,21 +13092,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
-                  cy="-151"
+                  cx="177"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
+                  cx="177"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13114,21 +13114,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
-                  cy="-56"
+                  cx="177"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
+                  cx="177"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13136,21 +13136,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
-                  cy="229"
+                  cx="177"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
+                  cx="177"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13158,21 +13158,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
-                  cy="39"
+                  cx="177"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
+                  cx="177"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13180,18 +13180,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="178"
-                  cy="134"
+                  cx="177"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
@@ -13202,18 +13202,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
-                  cy="-151"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
@@ -13224,18 +13224,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
-                  cy="-56"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
@@ -13246,18 +13246,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
-                  cy="229"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
@@ -13268,18 +13268,18 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
-                  cy="39"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
@@ -13290,21 +13290,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="211"
-                  cy="134"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
+                  cx="244"
                   cy="-199"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13312,21 +13312,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
-                  cy="-151"
+                  cx="244"
+                  cy="-152"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
+                  cx="244"
                   cy="-104"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13334,21 +13334,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
-                  cy="-56"
+                  cx="244"
+                  cy="-57"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
+                  cx="244"
                   cy="-9"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13356,32 +13356,32 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
-                  cy="229"
+                  cx="244"
+                  cy="228"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
-                  cy="39"
+                  cx="244"
+                  cy="38"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
+                  cx="244"
                   cy="86"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13389,21 +13389,21 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
-                  cy="134"
+                  cx="244"
+                  cy="133"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="245"
+                  cx="244"
                   cy="181"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -13412,20 +13412,20 @@
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,-199)"
+                  transform="translate(260,-199)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     China
                   </text>
@@ -13433,16 +13433,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,-151)"
+                  transform="translate(260,-152)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     United States
                   </text>
@@ -13450,16 +13450,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,-104)"
+                  transform="translate(260,-104)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     India
                   </text>
@@ -13467,16 +13467,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,-56)"
+                  transform="translate(260,-57)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Russian Federation
                   </text>
@@ -13484,16 +13484,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,-9)"
+                  transform="translate(260,-9)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Japan
                   </text>
@@ -13501,16 +13501,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,229)"
+                  transform="translate(260,228)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(227, 26, 28); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     France
                   </text>
@@ -13518,16 +13518,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,39)"
+                  transform="translate(260,38)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(253, 191, 111); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Korea, Republic of
                   </text>
@@ -13535,16 +13535,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,86)"
+                  transform="translate(260,86)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 127, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Iran (Islamic Republic of)
                   </text>
@@ -13552,16 +13552,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,134)"
+                  transform="translate(260,133)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(202, 178, 214); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Indonesia
                   </text>
@@ -13569,16 +13569,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(26,181)"
+                  transform="translate(260,181)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(106, 61, 154); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 14px;"
-                    x="3"
-                    y="4"
+                    x="2"
+                    y="3"
                   >
                     Saudi Arabia
                   </text>
@@ -13588,171 +13588,171 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-41"
-                x2="26"
-                y1="25"
-                y2="25"
+                x1="-410"
+                x2="260"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-395"
                 x2="-395"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-361"
-                x2="-361"
-                y1="25"
+                x1="-362"
+                x2="-362"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-328"
                 x2="-328"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-294"
                 x2="-294"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-26"
-                x2="-26"
-                y1="25"
+                x1="-261"
+                x2="-261"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-227"
                 x2="-227"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-193"
                 x2="-193"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-159"
-                x2="-159"
-                y1="25"
+                x1="-160"
+                x2="-160"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-126"
                 x2="-126"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-92"
                 x2="-92"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-58"
-                x2="-58"
-                y1="25"
+                x1="-59"
+                x2="-59"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-24"
-                x2="-24"
-                y1="25"
+                x1="-25"
+                x2="-25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="9"
                 x2="9"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="43"
-                x2="43"
-                y1="25"
+                x1="42"
+                x2="42"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="77"
-                x2="77"
-                y1="25"
+                x1="76"
+                x2="76"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="11"
-                x2="11"
-                y1="25"
+                x1="110"
+                x2="110"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="144"
-                x2="144"
-                y1="25"
+                x1="143"
+                x2="143"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="178"
-                x2="178"
-                y1="25"
+                x1="177"
+                x2="177"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="211"
                 x2="211"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="245"
-                x2="245"
-                y1="25"
+                x1="244"
+                x2="244"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-41"
-                x2="-41"
-                y1="25"
+                x1="-410"
+                x2="-410"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(115, 115, 115); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="26"
-                x2="26"
-                y1="25"
+                x1="260"
+                x2="260"
+                y1="250"
                 y2="255"
               />
               <g
@@ -13761,20 +13761,20 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1992
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-361,258)"
+                transform="translate(-362,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1993
                 </text>
@@ -13785,8 +13785,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1994
                 </text>
@@ -13797,20 +13797,20 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1995
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-26,258)"
+                transform="translate(-261,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1996
                 </text>
@@ -13821,8 +13821,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1997
                 </text>
@@ -13833,20 +13833,20 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1998
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-159,258)"
+                transform="translate(-160,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   1999
                 </text>
@@ -13857,8 +13857,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2000
                 </text>
@@ -13869,32 +13869,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2001
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-58,258)"
+                transform="translate(-59,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2002
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-24,258)"
+                transform="translate(-25,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2003
                 </text>
@@ -13905,68 +13905,68 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2004
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(43,258)"
+                transform="translate(42,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2005
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(77,258)"
+                transform="translate(76,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2006
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(11,258)"
+                transform="translate(110,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2007
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(144,258)"
+                transform="translate(143,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2008
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(178,258)"
+                transform="translate(177,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2009
                 </text>
@@ -13977,20 +13977,20 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-13"
-                  y="1"
+                  x="-14"
+                  y="10"
                 >
                   2010
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(245,258)"
+                transform="translate(244,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(217, 217, 217); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-13"
-                  y="1"
+                  y="10"
                 >
                   2011
                 </text>
@@ -14001,16 +14001,16 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(-41,-22)"
+          transform="translate(-410,-220)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(255, 255, 255); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="9"
-            y="-25"
+            x="8"
+            y="-26"
           >
             Ranking of Carbon Dioxide Emissions
           </text>
@@ -14031,14 +14031,14 @@
               class="element-line handle-ghost"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14053,16 +14053,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14077,17 +14077,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -14101,112 +14101,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="171"
-              x2="171"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="171"
-              x2="171"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1034"
-              x2="1034"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1034"
-              x2="1034"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -14227,14 +14129,14 @@
               class="element-line handle-ghost"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14249,16 +14151,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14273,17 +14175,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -14297,14 +14199,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -14325,14 +14227,14 @@
               class="element-line handle-ghost"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="171"
               x2="171"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14347,16 +14249,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1034"
-              x2="1034"
-              y1="13296"
+              x1="1033"
+              x2="1033"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -14371,17 +14273,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -14395,14 +14297,112 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="171"
+              x2="171"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="171"
+              x2="171"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1033"
+              x2="1033"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1033"
+              x2="1033"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -14421,15 +14421,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="229"
-            r="8"
+            cx="190"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="229"
-            r="6"
+            cx="190"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -14438,17 +14438,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -14456,34 +14456,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="168"
-            r="8"
+            cx="190"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="168"
-            r="6"
+            cx="190"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(268,166)rotate(0)"
+          transform="translate(267,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -14491,15 +14491,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
+            cx="190"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
+            cx="190"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -14508,17 +14508,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -14526,34 +14526,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="29"
-            r="8"
+            cx="190"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="29"
-            r="6"
+            cx="190"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(292,289)rotate(0)"
+          transform="translate(291,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -14561,34 +14561,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
+            cx="190"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
+            cx="190"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(238,35)rotate(0)"
+          transform="translate(238,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -14596,34 +14596,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
+            cx="190"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
+            cx="190"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(242,472)rotate(0)"
+          transform="translate(241,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -14631,34 +14631,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="596"
-            r="8"
+            cx="190"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="596"
-            r="6"
+            cx="190"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(288,595)rotate(0)"
+          transform="translate(287,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -14666,34 +14666,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="657"
-            r="8"
+            cx="190"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="657"
-            r="6"
+            cx="190"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(313,656)rotate(0)"
+          transform="translate(313,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -14701,34 +14701,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
+            cx="190"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
+            cx="190"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(253,717)rotate(0)"
+          transform="translate(252,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -14736,15 +14736,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="191"
-            cy="535"
-            r="8"
+            cx="190"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="191"
-            cy="535"
-            r="6"
+            cx="190"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -14753,17 +14753,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -14771,34 +14771,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="229"
-            r="8"
+            cx="233"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="229"
-            r="6"
+            cx="233"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(28,227)rotate(0)"
+          transform="translate(280,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -14806,34 +14806,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="168"
-            r="8"
+            cx="233"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="168"
-            r="6"
+            cx="233"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(311,166)rotate(0)"
+          transform="translate(310,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -14841,15 +14841,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
+            cx="233"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
+            cx="233"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -14858,17 +14858,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -14876,34 +14876,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="29"
-            r="8"
+            cx="233"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="29"
-            r="6"
+            cx="233"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(335,289)rotate(0)"
+          transform="translate(334,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -14911,34 +14911,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
+            cx="233"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
+            cx="233"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(281,35)rotate(0)"
+          transform="translate(281,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -14946,34 +14946,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
+            cx="233"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
+            cx="233"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(285,472)rotate(0)"
+          transform="translate(284,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -14981,34 +14981,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="535"
-            r="8"
+            cx="233"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="535"
-            r="6"
+            cx="233"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(331,533)rotate(0)"
+          transform="translate(330,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -15016,34 +15016,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="657"
-            r="8"
+            cx="233"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="657"
-            r="6"
+            cx="233"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(356,656)rotate(0)"
+          transform="translate(356,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -15051,34 +15051,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
+            cx="233"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
+            cx="233"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(296,717)rotate(0)"
+          transform="translate(295,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -15086,34 +15086,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="234"
-            cy="596"
-            r="8"
+            cx="233"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="234"
-            cy="596"
-            r="6"
+            cx="233"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(308,595)rotate(0)"
+          transform="translate(308,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15122,33 +15122,33 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(324,227)rotate(0)"
+          transform="translate(323,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15157,14 +15157,14 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -15173,17 +15173,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -15193,32 +15193,32 @@
             class="element-shape ghost"
             cx="277"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(32,411)rotate(0)"
+          transform="translate(319,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -15227,33 +15227,33 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(378,289)rotate(0)"
+          transform="translate(378,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -15263,32 +15263,32 @@
             class="element-shape ghost"
             cx="277"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(325,35)rotate(0)"
+          transform="translate(324,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15297,14 +15297,14 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -15313,17 +15313,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -15333,13 +15333,13 @@
             class="element-shape ghost"
             cx="277"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -15348,17 +15348,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -15367,33 +15367,33 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(40,656)rotate(0)"
+          transform="translate(399,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -15403,32 +15403,32 @@
             class="element-shape ghost"
             cx="277"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(339,717)rotate(0)"
+          transform="translate(339,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -15437,33 +15437,33 @@
           <circle
             class="element-shape ghost"
             cx="277"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="277"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(352,595)rotate(0)"
+          transform="translate(351,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15471,15 +15471,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="229"
-            r="8"
+            cx="320"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="229"
-            r="6"
+            cx="320"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -15488,17 +15488,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15506,34 +15506,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="168"
-            r="8"
+            cx="320"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="168"
-            r="6"
+            cx="320"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(398,166)rotate(0)"
+          transform="translate(397,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -15541,15 +15541,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
+            cx="320"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
+            cx="320"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -15558,17 +15558,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -15576,34 +15576,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="29"
-            r="8"
+            cx="320"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="29"
-            r="6"
+            cx="320"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(422,289)rotate(0)"
+          transform="translate(421,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -15611,34 +15611,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
+            cx="320"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
+            cx="320"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(368,35)rotate(0)"
+          transform="translate(368,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15646,34 +15646,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="535"
-            r="8"
+            cx="320"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="535"
-            r="6"
+            cx="320"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(372,533)rotate(0)"
+          transform="translate(371,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -15681,34 +15681,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
+            cx="320"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
+            cx="320"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(418,472)rotate(0)"
+          transform="translate(417,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -15716,34 +15716,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="596"
-            r="8"
+            cx="320"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="596"
-            r="6"
+            cx="320"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(443,595)rotate(0)"
+          transform="translate(443,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -15751,34 +15751,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
+            cx="320"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
+            cx="320"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(383,717)rotate(0)"
+          transform="translate(382,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -15786,34 +15786,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="321"
-            cy="657"
-            r="8"
+            cx="320"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="321"
-            cy="657"
-            r="6"
+            cx="320"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(395,656)rotate(0)"
+          transform="translate(395,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15822,33 +15822,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(41,227)rotate(0)"
+          transform="translate(410,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15857,33 +15857,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(441,166)rotate(0)"
+          transform="translate(440,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -15893,13 +15893,13 @@
             class="element-shape ghost"
             cx="364"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -15908,17 +15908,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -15927,33 +15927,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(465,289)rotate(0)"
+          transform="translate(465,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -15963,32 +15963,32 @@
             class="element-shape ghost"
             cx="364"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(411,35)rotate(0)"
+          transform="translate(411,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -15997,33 +15997,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(415,533)rotate(0)"
+          transform="translate(414,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -16033,13 +16033,13 @@
             class="element-shape ghost"
             cx="364"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -16048,17 +16048,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -16067,33 +16067,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(487,595)rotate(0)"
+          transform="translate(486,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -16103,32 +16103,32 @@
             class="element-shape ghost"
             cx="364"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(426,717)rotate(0)"
+          transform="translate(425,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -16137,33 +16137,33 @@
           <circle
             class="element-shape ghost"
             cx="364"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="364"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(438,656)rotate(0)"
+          transform="translate(438,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16172,33 +16172,33 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(454,227)rotate(0)"
+          transform="translate(453,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16207,14 +16207,14 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -16223,17 +16223,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -16243,32 +16243,32 @@
             class="element-shape ghost"
             cx="407"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(45,411)rotate(0)"
+          transform="translate(449,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -16277,33 +16277,33 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(508,289)rotate(0)"
+          transform="translate(508,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -16313,32 +16313,32 @@
             class="element-shape ghost"
             cx="407"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(455,35)rotate(0)"
+          transform="translate(454,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16347,14 +16347,14 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -16363,17 +16363,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -16383,13 +16383,13 @@
             class="element-shape ghost"
             cx="407"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -16398,17 +16398,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -16417,33 +16417,33 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(53,656)rotate(0)"
+          transform="translate(529,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -16452,33 +16452,33 @@
           <circle
             class="element-shape ghost"
             cx="407"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(469,595)rotate(0)"
+          transform="translate(469,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -16488,32 +16488,32 @@
             class="element-shape ghost"
             cx="407"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="407"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(482,717)rotate(0)"
+          transform="translate(481,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16521,15 +16521,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="229"
-            r="8"
+            cx="450"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="229"
-            r="6"
+            cx="450"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -16538,17 +16538,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16556,34 +16556,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="168"
-            r="8"
+            cx="450"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="168"
-            r="6"
+            cx="450"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(528,166)rotate(0)"
+          transform="translate(527,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -16591,15 +16591,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
+            cx="450"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
+            cx="450"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -16608,17 +16608,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -16626,34 +16626,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="29"
-            r="8"
+            cx="450"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="29"
-            r="6"
+            cx="450"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(552,289)rotate(0)"
+          transform="translate(551,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -16661,34 +16661,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
+            cx="450"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
+            cx="450"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(498,35)rotate(0)"
+          transform="translate(498,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16696,34 +16696,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
+            cx="450"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
+            cx="450"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(502,472)rotate(0)"
+          transform="translate(501,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -16731,34 +16731,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="535"
-            r="8"
+            cx="450"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="535"
-            r="6"
+            cx="450"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(548,533)rotate(0)"
+          transform="translate(547,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -16766,34 +16766,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="596"
-            r="8"
+            cx="450"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="596"
-            r="6"
+            cx="450"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(573,595)rotate(0)"
+          transform="translate(573,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -16801,34 +16801,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
-            cy="657"
-            r="8"
+            cx="450"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
-            cy="657"
-            r="6"
+            cx="450"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(513,656)rotate(0)"
+          transform="translate(512,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -16836,34 +16836,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="451"
+            cx="450"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="451"
+            cx="450"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(525,717)rotate(0)"
+          transform="translate(525,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16872,33 +16872,33 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(54,227)rotate(0)"
+          transform="translate(540,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -16907,14 +16907,14 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -16923,17 +16923,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -16943,13 +16943,13 @@
             class="element-shape ghost"
             cx="494"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -16958,17 +16958,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -16977,33 +16977,33 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(595,289)rotate(0)"
+          transform="translate(595,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -17013,32 +17013,32 @@
             class="element-shape ghost"
             cx="494"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(541,35)rotate(0)"
+          transform="translate(541,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17047,33 +17047,33 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(545,595)rotate(0)"
+          transform="translate(544,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -17083,13 +17083,13 @@
             class="element-shape ghost"
             cx="494"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -17098,17 +17098,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -17117,33 +17117,33 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(617,533)rotate(0)"
+          transform="translate(616,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -17152,33 +17152,33 @@
           <circle
             class="element-shape ghost"
             cx="494"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(556,656)rotate(0)"
+          transform="translate(556,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -17188,32 +17188,32 @@
             class="element-shape ghost"
             cx="494"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="494"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(569,717)rotate(0)"
+          transform="translate(568,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17222,33 +17222,33 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(584,227)rotate(0)"
+          transform="translate(583,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17257,14 +17257,14 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -17273,17 +17273,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -17293,32 +17293,32 @@
             class="element-shape ghost"
             cx="537"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(58,411)rotate(0)"
+          transform="translate(579,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -17327,33 +17327,33 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(638,289)rotate(0)"
+          transform="translate(638,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -17363,32 +17363,32 @@
             class="element-shape ghost"
             cx="537"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(585,35)rotate(0)"
+          transform="translate(584,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17397,33 +17397,33 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(588,595)rotate(0)"
+          transform="translate(588,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -17433,13 +17433,13 @@
             class="element-shape ghost"
             cx="537"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -17448,17 +17448,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -17467,33 +17467,33 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(66,533)rotate(0)"
+          transform="translate(659,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -17503,32 +17503,32 @@
             class="element-shape ghost"
             cx="537"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(599,717)rotate(0)"
+          transform="translate(599,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -17537,33 +17537,33 @@
           <circle
             class="element-shape ghost"
             cx="537"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="537"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(612,656)rotate(0)"
+          transform="translate(611,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17571,15 +17571,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="229"
-            r="8"
+            cx="580"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="229"
-            r="6"
+            cx="580"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -17588,17 +17588,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17606,34 +17606,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="168"
-            r="8"
+            cx="580"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="168"
-            r="6"
+            cx="580"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(658,166)rotate(0)"
+          transform="translate(657,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -17641,34 +17641,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
+            cx="580"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
+            cx="580"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(623,35)rotate(0)"
+          transform="translate(623,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -17676,34 +17676,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="29"
-            r="8"
+            cx="580"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="29"
-            r="6"
+            cx="580"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(682,289)rotate(0)"
+          transform="translate(681,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -17711,15 +17711,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
+            cx="580"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
+            cx="580"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -17728,17 +17728,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17746,34 +17746,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="596"
-            r="8"
+            cx="580"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="596"
-            r="6"
+            cx="580"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(632,595)rotate(0)"
+          transform="translate(631,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -17781,34 +17781,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
+            cx="580"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
+            cx="580"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(678,472)rotate(0)"
+          transform="translate(677,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -17816,15 +17816,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="535"
-            r="8"
+            cx="580"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="535"
-            r="6"
+            cx="580"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -17833,17 +17833,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -17851,34 +17851,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
+            cx="580"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
+            cx="580"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(643,717)rotate(0)"
+          transform="translate(642,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -17886,34 +17886,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="581"
-            cy="657"
-            r="8"
+            cx="580"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="581"
-            cy="657"
-            r="6"
+            cx="580"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(655,656)rotate(0)"
+          transform="translate(655,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17922,33 +17922,33 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(671,227)rotate(0)"
+          transform="translate(670,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -17957,14 +17957,14 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -17973,17 +17973,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -17993,32 +17993,32 @@
             class="element-shape ghost"
             cx="624"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(667,35)rotate(0)"
+          transform="translate(666,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -18027,33 +18027,33 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(725,289)rotate(0)"
+          transform="translate(725,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -18063,32 +18063,32 @@
             class="element-shape ghost"
             cx="624"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(672,411)rotate(0)"
+          transform="translate(671,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18097,33 +18097,33 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(675,595)rotate(0)"
+          transform="translate(675,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -18133,13 +18133,13 @@
             class="element-shape ghost"
             cx="624"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -18148,17 +18148,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -18167,33 +18167,33 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(747,533)rotate(0)"
+          transform="translate(746,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -18203,32 +18203,32 @@
             class="element-shape ghost"
             cx="624"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(686,717)rotate(0)"
+          transform="translate(686,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -18237,33 +18237,33 @@
           <circle
             class="element-shape ghost"
             cx="624"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="624"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,656)rotate(0)"
+          transform="translate(698,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18272,33 +18272,33 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(714,227)rotate(0)"
+          transform="translate(713,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18307,14 +18307,14 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -18323,17 +18323,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -18343,32 +18343,32 @@
             class="element-shape ghost"
             cx="667"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(71,35)rotate(0)"
+          transform="translate(709,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -18377,33 +18377,33 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(768,289)rotate(0)"
+          transform="translate(768,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -18413,32 +18413,32 @@
             class="element-shape ghost"
             cx="667"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(715,411)rotate(0)"
+          transform="translate(714,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18447,33 +18447,33 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(718,595)rotate(0)"
+          transform="translate(718,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -18483,13 +18483,13 @@
             class="element-shape ghost"
             cx="667"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -18498,17 +18498,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -18517,33 +18517,33 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(79,533)rotate(0)"
+          transform="translate(789,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -18553,32 +18553,32 @@
             class="element-shape ghost"
             cx="667"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(729,717)rotate(0)"
+          transform="translate(729,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -18587,33 +18587,33 @@
           <circle
             class="element-shape ghost"
             cx="667"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="667"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(742,656)rotate(0)"
+          transform="translate(741,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18621,15 +18621,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="229"
-            r="8"
+            cx="710"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="229"
-            r="6"
+            cx="710"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -18638,17 +18638,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18656,34 +18656,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="168"
-            r="8"
+            cx="710"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="168"
-            r="6"
+            cx="710"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(788,166)rotate(0)"
+          transform="translate(787,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -18691,34 +18691,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
+            cx="710"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
+            cx="710"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(753,35)rotate(0)"
+          transform="translate(753,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -18726,34 +18726,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="29"
-            r="8"
+            cx="710"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="29"
-            r="6"
+            cx="710"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(812,289)rotate(0)"
+          transform="translate(811,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -18761,15 +18761,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
+            cx="710"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
+            cx="710"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -18778,17 +18778,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18796,34 +18796,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="657"
-            r="8"
+            cx="710"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="657"
-            r="6"
+            cx="710"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(762,656)rotate(0)"
+          transform="translate(761,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -18831,34 +18831,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
+            cx="710"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
+            cx="710"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(808,472)rotate(0)"
+          transform="translate(807,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -18866,15 +18866,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="535"
-            r="8"
+            cx="710"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="535"
-            r="6"
+            cx="710"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -18883,17 +18883,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -18901,34 +18901,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
+            cx="710"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
+            cx="710"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(773,717)rotate(0)"
+          transform="translate(772,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -18936,34 +18936,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="711"
-            cy="596"
-            r="8"
+            cx="710"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="711"
-            cy="596"
-            r="6"
+            cx="710"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(785,595)rotate(0)"
+          transform="translate(785,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -18972,33 +18972,33 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(801,227)rotate(0)"
+          transform="translate(800,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19007,14 +19007,14 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -19023,17 +19023,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -19043,32 +19043,32 @@
             class="element-shape ghost"
             cx="754"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(797,35)rotate(0)"
+          transform="translate(796,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -19077,33 +19077,33 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(855,289)rotate(0)"
+          transform="translate(855,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -19113,32 +19113,32 @@
             class="element-shape ghost"
             cx="754"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(802,411)rotate(0)"
+          transform="translate(801,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19147,33 +19147,33 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(805,656)rotate(0)"
+          transform="translate(805,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -19182,14 +19182,14 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -19198,17 +19198,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -19218,32 +19218,32 @@
             class="element-shape ghost"
             cx="754"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(877,472)rotate(0)"
+          transform="translate(876,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -19253,32 +19253,32 @@
             class="element-shape ghost"
             cx="754"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(816,717)rotate(0)"
+          transform="translate(816,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -19287,33 +19287,33 @@
           <circle
             class="element-shape ghost"
             cx="754"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="754"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(829,595)rotate(0)"
+          transform="translate(828,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19321,34 +19321,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="168"
-            r="8"
+            cx="797"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="168"
-            r="6"
+            cx="797"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(844,166)rotate(0)"
+          transform="translate(843,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19356,15 +19356,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="229"
-            r="8"
+            cx="797"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="229"
-            r="6"
+            cx="797"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -19373,17 +19373,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -19391,34 +19391,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
+            cx="797"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
+            cx="797"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(84,35)rotate(0)"
+          transform="translate(839,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -19426,34 +19426,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="29"
-            r="8"
+            cx="797"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="29"
-            r="6"
+            cx="797"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(899,289)rotate(0)"
+          transform="translate(898,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -19461,34 +19461,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
+            cx="797"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
+            cx="797"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(845,411)rotate(0)"
+          transform="translate(844,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19496,34 +19496,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="657"
-            r="8"
+            cx="797"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="657"
-            r="6"
+            cx="797"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(848,656)rotate(0)"
+          transform="translate(848,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -19531,34 +19531,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="535"
-            r="8"
+            cx="797"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="535"
-            r="6"
+            cx="797"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(895,533)rotate(0)"
+          transform="translate(894,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -19566,34 +19566,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
+            cx="797"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
+            cx="797"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(92,472)rotate(0)"
+          transform="translate(920,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -19601,34 +19601,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
+            cx="797"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
+            cx="797"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(859,717)rotate(0)"
+          transform="translate(859,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -19636,34 +19636,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="798"
-            cy="596"
-            r="8"
+            cx="797"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="798"
-            cy="596"
-            r="6"
+            cx="797"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(872,595)rotate(0)"
+          transform="translate(871,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19671,15 +19671,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="168"
-            r="8"
+            cx="840"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="168"
-            r="6"
+            cx="840"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -19688,17 +19688,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19706,34 +19706,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="229"
-            r="8"
+            cx="840"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="229"
-            r="6"
+            cx="840"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(918,227)rotate(0)"
+          transform="translate(917,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -19741,34 +19741,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
+            cx="840"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
+            cx="840"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(883,35)rotate(0)"
+          transform="translate(883,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -19776,34 +19776,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="29"
-            r="8"
+            cx="840"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="29"
-            r="6"
+            cx="840"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(942,289)rotate(0)"
+          transform="translate(941,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -19811,15 +19811,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
+            cx="840"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
+            cx="840"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -19828,17 +19828,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -19846,34 +19846,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
+            cx="840"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
+            cx="840"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(892,717)rotate(0)"
+          transform="translate(891,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -19881,34 +19881,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="535"
-            r="8"
+            cx="840"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="535"
-            r="6"
+            cx="840"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(938,533)rotate(0)"
+          transform="translate(937,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -19916,15 +19916,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
+            cx="840"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
+            cx="840"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -19933,17 +19933,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -19951,34 +19951,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="657"
-            r="8"
+            cx="840"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="657"
-            r="6"
+            cx="840"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(903,656)rotate(0)"
+          transform="translate(902,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -19986,34 +19986,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="841"
-            cy="596"
-            r="8"
+            cx="840"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="841"
-            cy="596"
-            r="6"
+            cx="840"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(915,595)rotate(0)"
+          transform="translate(915,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20022,33 +20022,33 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(931,166)rotate(0)"
+          transform="translate(930,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20057,14 +20057,14 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -20073,17 +20073,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -20092,33 +20092,33 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(927,289)rotate(0)"
+          transform="translate(926,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -20128,32 +20128,32 @@
             class="element-shape ghost"
             cx="884"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(985,35)rotate(0)"
+          transform="translate(985,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -20163,32 +20163,32 @@
             class="element-shape ghost"
             cx="884"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(932,411)rotate(0)"
+          transform="translate(931,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20198,32 +20198,32 @@
             class="element-shape ghost"
             cx="884"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(935,717)rotate(0)"
+          transform="translate(935,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -20232,14 +20232,14 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
@@ -20248,17 +20248,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -20268,32 +20268,32 @@
             class="element-shape ghost"
             cx="884"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1007,472)rotate(0)"
+          transform="translate(1006,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -20302,33 +20302,33 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(946,656)rotate(0)"
+          transform="translate(946,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -20337,33 +20337,33 @@
           <circle
             class="element-shape ghost"
             cx="884"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="884"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(959,595)rotate(0)"
+          transform="translate(958,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20371,34 +20371,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="168"
-            r="8"
+            cx="927"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="168"
-            r="6"
+            cx="927"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(974,166)rotate(0)"
+          transform="translate(973,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20406,34 +20406,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="229"
-            r="8"
+            cx="927"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="229"
-            r="6"
+            cx="927"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1005,227)rotate(0)"
+          transform="translate(1004,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -20441,34 +20441,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="29"
-            r="8"
+            cx="927"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="29"
-            r="6"
+            cx="927"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(97,289)rotate(0)"
+          transform="translate(969,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -20476,34 +20476,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
+            cx="927"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
+            cx="927"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1029,35)rotate(0)"
+          transform="translate(1028,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -20511,34 +20511,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
+            cx="927"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
+            cx="927"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(975,411)rotate(0)"
+          transform="translate(974,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20546,34 +20546,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
+            cx="927"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
+            cx="927"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(978,717)rotate(0)"
+          transform="translate(978,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -20581,34 +20581,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="535"
-            r="8"
+            cx="927"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="535"
-            r="6"
+            cx="927"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1025,533)rotate(0)"
+          transform="translate(1024,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -20616,34 +20616,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
+            cx="927"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
+            cx="927"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(105,472)rotate(0)"
+          transform="translate(1050,472)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -20651,34 +20651,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="657"
-            r="8"
+            cx="927"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="657"
-            r="6"
+            cx="927"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(99,656)rotate(0)"
+          transform="translate(989,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -20686,34 +20686,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="928"
-            cy="596"
-            r="8"
+            cx="927"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="928"
-            cy="596"
-            r="6"
+            cx="927"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1002,595)rotate(0)"
+          transform="translate(1002,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20721,15 +20721,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="168"
-            r="8"
+            cx="970"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="168"
-            r="6"
+            cx="970"
+            cy="167"
+            r="5"
           />
         </g>
         <g
@@ -20738,17 +20738,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20756,34 +20756,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="229"
-            r="8"
+            cx="970"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="229"
-            r="6"
+            cx="970"
+            cy="228"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1048,227)rotate(0)"
+          transform="translate(1047,227)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -20791,34 +20791,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="29"
-            r="8"
+            cx="970"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="29"
-            r="6"
+            cx="970"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1013,289)rotate(0)"
+          transform="translate(1013,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -20826,34 +20826,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
+            cx="970"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
+            cx="970"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1072,35)rotate(0)"
+          transform="translate(1071,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -20861,15 +20861,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
+            cx="970"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
+            cx="970"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -20878,17 +20878,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -20896,34 +20896,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
+            cx="970"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
+            cx="970"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1022,717)rotate(0)"
+          transform="translate(1021,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -20931,34 +20931,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="535"
-            r="8"
+            cx="970"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="535"
-            r="6"
+            cx="970"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1068,533)rotate(0)"
+          transform="translate(1067,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -20966,15 +20966,15 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
+            cx="970"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
+            cx="970"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -20983,17 +20983,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -21001,34 +21001,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="657"
-            r="8"
+            cx="970"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="657"
-            r="6"
+            cx="970"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1033,656)rotate(0)"
+          transform="translate(1032,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -21036,34 +21036,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="971"
-            cy="596"
-            r="8"
+            cx="970"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="971"
-            cy="596"
-            r="6"
+            cx="970"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1045,595)rotate(0)"
+          transform="translate(1045,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -21072,33 +21072,33 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="168"
-            r="8"
+            cy="167"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="168"
-            r="6"
+            cy="167"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1061,166)rotate(0)"
+          transform="translate(1060,166)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="47"
             x="-24"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -21107,14 +21107,14 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="229"
-            r="8"
+            cy="228"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="229"
-            r="6"
+            cy="228"
+            r="5"
           />
         </g>
         <g
@@ -21123,17 +21123,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="108"
-            x="-54"
-            y="-1"
+            x="-55"
+            y="-10"
           />
         </g>
         <g
@@ -21142,33 +21142,33 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="29"
-            r="8"
+            cy="289"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="29"
-            r="6"
+            cy="289"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1057,289)rotate(0)"
+          transform="translate(1056,288)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="39"
-            x="-2"
-            y="-1"
+            x="-20"
+            y="-10"
           />
         </g>
         <g
@@ -21178,32 +21178,32 @@
             class="element-shape ghost"
             cx="1014"
             cy="351"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
             cy="351"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1115,35)rotate(0)"
+          transform="translate(1115,349)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="156"
-            x="-78"
-            y="-1"
+            x="-79"
+            y="-10"
           />
         </g>
         <g
@@ -21213,32 +21213,32 @@
             class="element-shape ghost"
             cx="1014"
             cy="412"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
             cy="412"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1062,411)rotate(0)"
+          transform="translate(1061,411)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="49"
             x="-25"
-            y="-1"
+            y="-10"
           />
         </g>
         <g
@@ -21248,32 +21248,32 @@
             class="element-shape ghost"
             cx="1014"
             cy="718"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
             cy="718"
-            r="6"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1065,717)rotate(0)"
+          transform="translate(1065,716)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="56"
-            x="-28"
-            y="-1"
+            x="-29"
+            y="-10"
           />
         </g>
         <g
@@ -21283,13 +21283,13 @@
             class="element-shape ghost"
             cx="1014"
             cy="473"
-            r="8"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
             cy="473"
-            r="6"
+            r="5"
           />
         </g>
         <g
@@ -21298,17 +21298,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="148"
-            x="-74"
-            y="-1"
+            x="-75"
+            y="-10"
           />
         </g>
         <g
@@ -21317,33 +21317,33 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="535"
-            r="8"
+            cy="534"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="535"
-            r="6"
+            cy="534"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1137,533)rotate(0)"
+          transform="translate(1136,533)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="199"
-            x="-10"
-            y="-1"
+            x="-100"
+            y="-10"
           />
         </g>
         <g
@@ -21352,33 +21352,33 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="596"
-            r="8"
+            cy="595"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="596"
-            r="6"
+            cy="595"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1076,595)rotate(0)"
+          transform="translate(1076,594)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="78"
-            x="-39"
-            y="-1"
+            x="-40"
+            y="-10"
           />
         </g>
         <g
@@ -21387,72 +21387,72 @@
           <circle
             class="element-shape ghost"
             cx="1014"
-            cy="657"
-            r="8"
+            cy="656"
+            r="7"
           />
           <circle
             class="element-shape indicator"
             cx="1014"
-            cy="657"
-            r="6"
+            cy="656"
+            r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(1089,656)rotate(0)"
+          transform="translate(1088,655)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
-            height="2"
+            height="19"
             width="103"
             x="-52"
-            y="-1"
+            y="-10"
           />
         </g>
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.28723404) translate(,)"
+        transform="translate(699,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="67"
-          x="-41"
-          y="-22"
+          height="470"
+          width="670"
+          x="-410"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="67"
-          x="-41"
-          y="-22"
+          height="470"
+          width="670"
+          x="-410"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(442,98)rotate(0)"
+      transform="translate(441,97)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
-        width="519"
-        x="-259"
+        height="33"
+        width="518"
+        x="-260"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
-        width="519"
-        x="-259"
+        height="33"
+        width="518"
+        x="-260"
         y="-17"
       />
     </g>
@@ -21483,21 +21483,21 @@
       class="canvas-region-outer2"
       height="778"
       width="778"
-      x="31"
+      x="309"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
       width="774"
-      x="312"
+      x="311"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
       width="772"
-      x="313"
+      x="312"
       y="37"
     />
     <g
@@ -21509,17 +21509,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="313"
+          x1="312"
           x2="1085"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="313"
+          x1="312"
           x2="1085"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -21527,14 +21527,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="313"
+          x1="312"
           x2="1085"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="313"
+          x1="312"
           x2="1085"
           y1="37"
           y2="37"
@@ -21545,16 +21545,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="313"
-          x2="313"
-          y1="81"
+          x1="312"
+          x2="312"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="313"
-          x2="313"
-          y1="81"
+          x1="312"
+          x2="312"
+          y1="809"
           y2="37"
         />
       </g>
@@ -21565,34 +21565,34 @@
           class="element-line handle-ghost"
           x1="1085"
           x2="1085"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1085"
           x2="1085"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="313"
-        cy="81"
+        cx="312"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1085"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="313"
+        cx="312"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -21615,8 +21615,8 @@
   />
   <line
     class="mark-guide"
-    x1="1021"
-    x2="1021"
+    x1="1020"
+    x2="1020"
     y1="0"
     y2="847"
   />
@@ -21631,8 +21631,8 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -21645,74 +21645,74 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.2872340425531914)"
+    transform="translate(699,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="50"
-        x="-25"
-        y="-22"
+        width="500"
+        x="-250"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="44"
-                  cy="-36"
+                  cx="43"
+                  cy="-37"
                   r="3"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="63"
+                  cx="62"
                   cy="23"
                   r="4"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -21720,10 +21720,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="38"
+                  cx="37"
                   cy="1"
                   r="6"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -21731,87 +21731,87 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="49"
-                  cy="111"
-                  r="8"
+                  cx="48"
+                  cy="110"
+                  r="7"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-5"
-                  cy="-72"
-                  r="12"
+                  cy="-73"
+                  r="11"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-33"
-                  cy="-107"
-                  r="12"
+                  cx="-34"
+                  cy="-108"
+                  r="11"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="128"
-                  cy="-18"
+                  cy="-19"
                   r="12"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="19"
-                  cy="-72"
+                  cx="18"
+                  cy="-73"
                   r="12"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-13"
-                  cy="-94"
+                  cx="-14"
+                  cy="-95"
                   r="12"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-15"
                   cy="17"
-                  r="13"
+                  r="12"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="44"
+                  cx="43"
                   cy="-61"
                   r="15"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
@@ -21819,29 +21819,29 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="9"
-                  cy="33"
-                  r="16"
+                  cx="8"
+                  cy="32"
+                  r="15"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="117"
-                  cy="-135"
-                  r="16"
+                  cx="116"
+                  cy="-136"
+                  r="15"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-38"
@@ -21852,194 +21852,194 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="71"
+                  cx="70"
                   cy="42"
+                  r="16"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="-46"
+                  cy="-14"
+                  r="16"
+                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
+                />
+              </g>
+              <g
+                style="opacity: 1;"
+                transform="translate(0,0)"
+              >
+                <circle
+                  cx="108"
+                  cy="30"
                   r="17"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-45"
-                  cy="-13"
+                  cx="74"
+                  cy="-71"
                   r="17"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="109"
-                  cy="3"
-                  r="17"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="75"
-                  cy="-7"
-                  r="17"
-                  style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
-                />
-              </g>
-              <g
-                style="opacity: 1;"
-                transform="translate(,)"
-              >
-                <circle
-                  cx="41"
+                  cx="40"
                   cy="25"
-                  r="18"
+                  r="17"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-84"
-                  cy="-27"
-                  r="22"
+                  cy="-28"
+                  r="21"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="16"
+                  cx="15"
                   cy="127"
-                  r="23"
+                  r="22"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(51, 160, 44); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="52"
-                  cy="16"
+                  cy="159"
                   r="26"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(31, 120, 180); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-48"
                   cy="-67"
-                  r="32"
+                  r="31"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="32"
-                  cy="75"
+                  cx="31"
+                  cy="74"
                   r="32"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="6"
-                  cy="-26"
-                  r="36"
+                  cy="-27"
+                  r="35"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="79"
-                  cy="-15"
-                  r="38"
+                  cx="78"
+                  cy="-16"
+                  r="37"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="166"
-                  cy="19"
-                  r="41"
+                  cx="165"
+                  cy="18"
+                  r="40"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-146"
-                  cy="-43"
-                  r="43"
+                  cx="-147"
+                  cy="-44"
+                  r="42"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
-                  cx="-7"
+                  cx="-8"
                   cy="194"
-                  r="43"
+                  r="42"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="138"
-                  cy="-76"
+                  cy="-77"
                   r="47"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-103"
                   cy="-124"
-                  r="48"
+                  r="47"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(166, 206, 227); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="117"
@@ -22050,22 +22050,22 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="42"
-                  cy="-139"
-                  r="59"
+                  cy="-140"
+                  r="58"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(178, 223, 138); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <circle
                   cx="-95"
-                  cy="89"
+                  cy="88"
                   r="94"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(251, 154, 153); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                 />
@@ -22073,20 +22073,20 @@
             </g>
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(44,-36)"
+                  transform="translate(43,-37)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.02016px;"
-                    x="-1"
-                    y="2"
+                    x="-10"
+                    y="1"
                   >
                     Iceland
                   </text>
@@ -22094,16 +22094,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(63,23)"
+                  transform="translate(62,23)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.03474px;"
                     x="-17"
-                    y="2"
+                    y="1"
                   >
                     Luxembourg
                   </text>
@@ -22111,16 +22111,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(38,1)"
+                  transform="translate(37,1)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.07554px;"
-                    x="-1"
-                    y="2"
+                    x="-11"
+                    y="1"
                   >
                     Estonia
                   </text>
@@ -22128,16 +22128,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(49,111)"
+                  transform="translate(48,110)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.11829px;"
                     x="-12"
-                    y="2"
+                    y="1"
                   >
                     Slovenia
                   </text>
@@ -22145,16 +22145,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-5,-72)"
+                  transform="translate(-5,-73)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.27754px;"
-                    x="-1"
-                    y="2"
+                    x="-10"
+                    y="1"
                   >
                     Ireland
                   </text>
@@ -22162,16 +22162,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-33,-107)"
+                  transform="translate(-34,-108)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.27917px;"
-                    x="-18"
-                    y="2"
+                    x="-19"
+                    y="1"
                   >
                     New Zealand
                   </text>
@@ -22179,16 +22179,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(128,-18)"
+                  transform="translate(128,-19)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.30354px;"
                     x="-11"
-                    y="2"
+                    y="1"
                   >
                     Norway
                   </text>
@@ -22196,16 +22196,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(19,-72)"
+                  transform="translate(18,-73)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.31124px;"
                     x="-23"
-                    y="2"
+                    y="1"
                   >
                     Slovak Republic
                   </text>
@@ -22213,16 +22213,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-13,-94)"
+                  transform="translate(-14,-95)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.31517px;"
-                    x="-1"
-                    y="2"
+                    x="-11"
+                    y="1"
                   >
                     Finland
                   </text>
@@ -22230,7 +22230,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
@@ -22239,7 +22239,7 @@
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.33085px;"
                     x="-13"
-                    y="2"
+                    y="1"
                   >
                     Denmark
                   </text>
@@ -22247,11 +22247,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(44,-61)"
+                  transform="translate(43,-61)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.48647px;"
@@ -22264,15 +22264,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(9,33)"
+                  transform="translate(8,32)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.50501px;"
-                    x="-1"
+                    x="-11"
                     y="2"
                   >
                     Austria
@@ -22281,11 +22281,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(117,-135)"
+                  transform="translate(116,-136)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.50703px;"
@@ -22298,7 +22298,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
@@ -22306,7 +22306,7 @@
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.55815px;"
-                    x="-12"
+                    x="-13"
                     y="2"
                   >
                     Hungary
@@ -22315,11 +22315,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(71,42)"
+                  transform="translate(70,42)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.58144px;"
@@ -22332,15 +22332,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-45,-13)"
+                  transform="translate(-46,-14)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.58765px;"
-                    x="-12"
+                    x="-13"
                     y="2"
                   >
                     Portugal
@@ -22349,15 +22349,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(109,3)"
+                  transform="translate(108,30)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.60722px;"
-                    x="-23"
+                    x="-24"
                     y="2"
                   >
                     Czech Republic
@@ -22366,11 +22366,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(75,-7)"
+                  transform="translate(74,-71)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.61291px;"
@@ -22383,15 +22383,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(41,25)"
+                  transform="translate(40,25)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.65164px;"
-                    x="-12"
+                    x="-13"
                     y="2"
                   >
                     Belgium
@@ -22400,11 +22400,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-84,-27)"
+                  transform="translate(-84,-28)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 6.98466px;"
@@ -22417,15 +22417,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(16,127)"
+                  transform="translate(15,127)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 7.07151px;"
-                    x="-8"
+                    x="-9"
                     y="2"
                   >
                     Chile
@@ -22434,15 +22434,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(52,16)"
+                  transform="translate(52,159)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 7.42816px;"
-                    x="-14"
+                    x="-15"
                     y="2"
                   >
                     Australia
@@ -22451,7 +22451,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
@@ -22459,8 +22459,8 @@
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 8.11765px;"
-                    x="-14"
-                    y="3"
+                    x="-15"
+                    y="2"
                   >
                     Canada
                   </text>
@@ -22468,16 +22468,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(32,75)"
+                  transform="translate(31,74)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 8.19504px;"
                     x="-13"
-                    y="3"
+                    y="2"
                   >
                     Poland
                   </text>
@@ -22485,16 +22485,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(6,-26)"
+                  transform="translate(6,-27)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 8.67046px;"
-                    x="-11"
-                    y="3"
+                    x="-12"
+                    y="2"
                   >
                     Spain
                   </text>
@@ -22502,16 +22502,16 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(79,-15)"
+                  transform="translate(78,-16)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 8.95059px;"
                     x="-12"
-                    y="3"
+                    y="2"
                   >
                     Korea
                   </text>
@@ -22519,11 +22519,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(166,19)"
+                  transform="translate(165,18)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 9.45267px;"
@@ -22536,11 +22536,11 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-146,-43)"
+                  transform="translate(-147,-44)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 9.79632px;"
@@ -22553,15 +22553,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-7,194)"
+                  transform="translate(-8,194)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 9.82524px;"
-                    x="-15"
+                    x="-16"
                     y="3"
                   >
                     France
@@ -22570,15 +22570,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(138,-76)"
+                  transform="translate(138,-77)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10.6518px;"
-                    x="-16"
+                    x="-17"
                     y="3"
                   >
                     Turkey
@@ -22587,7 +22587,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
@@ -22595,7 +22595,7 @@
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 10.738px;"
-                    x="-22"
+                    x="-23"
                     y="3"
                   >
                     Germany
@@ -22604,7 +22604,7 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
@@ -22621,15 +22621,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(42,-139)"
+                  transform="translate(42,-140)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 13.2253px;"
-                    x="-18"
+                    x="-19"
                     y="4"
                   >
                     Japan
@@ -22638,15 +22638,15 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <g
                   style="opacity: 1;"
-                  transform="translate(-95,89)"
+                  transform="translate(-95,88)"
                 >
                   <text
                     style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24.6953px;"
-                    x="-74"
+                    x="-75"
                     y="8"
                   >
                     United States
@@ -22657,21 +22657,21 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,-30)"
+          transform="translate(0,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-205"
+            x="-206"
             y="51"
           >
             Population of OECD Countries in 2018
@@ -22693,14 +22693,14 @@
               class="element-line handle-ghost"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -22715,16 +22715,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -22739,17 +22739,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -22763,112 +22763,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="377"
-              x2="377"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="377"
-              x2="377"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1021"
-              x2="1021"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1021"
-              x2="1021"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -22889,14 +22791,14 @@
               class="element-line handle-ghost"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -22911,16 +22813,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -22935,17 +22837,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -22959,14 +22861,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -22987,14 +22889,14 @@
               class="element-line handle-ghost"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="377"
               x2="377"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -23009,16 +22911,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1021"
-              x2="1021"
-              y1="13296"
+              x1="1020"
+              x2="1020"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -23033,17 +22935,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -23057,14 +22959,112 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="377"
+              x2="377"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="377"
+              x2="377"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1020"
+              x2="1020"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1020"
+              x2="1020"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -23082,13 +23082,13 @@
             class="element-shape ghost"
             cx="755"
             cy="377"
-            r="6"
+            r="5"
           />
           <circle
             class="element-shape indicator"
             cx="755"
             cy="377"
-            r="4"
+            r="3"
           />
         </g>
         <g
@@ -23098,16 +23098,16 @@
           <rect
             class="element-shape ghost"
             height="8"
-            width="25"
-            x="-12"
-            y="-4"
+            width="24"
+            x="-13"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
-            width="25"
-            x="-12"
-            y="-4"
+            width="24"
+            x="-13"
+            y="-5"
           />
         </g>
         <g
@@ -23115,34 +23115,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="78"
+            cx="779"
             cy="453"
             r="7"
           />
           <circle
             class="element-shape indicator"
-            cx="78"
+            cx="779"
             cy="453"
             r="5"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(78,453)rotate(0)"
+          transform="translate(779,453)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="8"
             width="43"
             x="-22"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
             width="43"
             x="-22"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23150,104 +23150,104 @@
         >
           <circle
             class="element-shape ghost"
-            cx="748"
-            cy="425"
-            r="1"
+            cx="747"
+            cy="424"
+            r="9"
           />
           <circle
             class="element-shape indicator"
-            cx="748"
-            cy="425"
-            r="8"
+            cx="747"
+            cy="424"
+            r="7"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(748,425)rotate(0)"
+          transform="translate(747,424)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="8"
             width="26"
-            x="-13"
-            y="-4"
+            x="-14"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
             width="26"
+            x="-14"
+            y="-5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="761"
+            cy="565"
+            r="11"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="761"
+            cy="565"
+            r="9"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(761,565)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="8"
+            width="30"
+            x="-16"
+            y="-5"
+          />
+          <rect
+            class="element-shape indicator"
+            height="8"
+            width="30"
+            x="-16"
+            y="-5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="692"
+            cy="330"
+            r="16"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="692"
+            cy="330"
+            r="14"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(692,330)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="8"
+            width="24"
             x="-13"
-            y="-4"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="762"
-            cy="566"
-            r="12"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="762"
-            cy="566"
-            r="1"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(762,566)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="8"
-            width="3"
-            x="-15"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
-            width="3"
-            x="-15"
-            y="-4"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="693"
-            cy="331"
-            r="17"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="693"
-            cy="331"
-            r="15"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(693,331)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="8"
-            width="25"
-            x="-12"
-            y="-4"
-          />
-          <rect
-            class="element-shape indicator"
-            height="8"
-            width="25"
-            x="-12"
-            y="-4"
+            width="24"
+            x="-13"
+            y="-5"
           />
         </g>
         <g
@@ -23257,13 +23257,13 @@
             class="element-shape ghost"
             cx="656"
             cy="285"
-            r="17"
+            r="16"
           />
           <circle
             class="element-shape indicator"
             cx="656"
             cy="285"
-            r="15"
+            r="14"
           />
         </g>
         <g
@@ -23273,16 +23273,16 @@
           <rect
             class="element-shape ghost"
             height="8"
-            width="48"
+            width="47"
             x="-24"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
-            width="48"
+            width="47"
             x="-24"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23290,34 +23290,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="864"
-            cy="40"
+            cx="863"
+            cy="400"
             r="17"
           />
           <circle
             class="element-shape indicator"
-            cx="864"
-            cy="40"
+            cx="863"
+            cy="400"
             r="15"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(864,40)rotate(0)"
+          transform="translate(863,400)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="8"
             width="27"
             x="-14"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
             width="27"
             x="-14"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23326,33 +23326,33 @@
           <circle
             class="element-shape ghost"
             cx="723"
-            cy="33"
-            r="18"
+            cy="330"
+            r="17"
           />
           <circle
             class="element-shape indicator"
             cx="723"
-            cy="33"
-            r="16"
+            cy="330"
+            r="15"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(723,33)rotate(0)"
+          transform="translate(723,330)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="8"
             width="58"
-            x="-29"
-            y="-4"
+            x="-30"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
             width="58"
-            x="-29"
-            y="-4"
+            x="-30"
+            y="-5"
           />
         </g>
         <g
@@ -23362,13 +23362,13 @@
             class="element-shape ghost"
             cx="682"
             cy="302"
-            r="18"
+            r="17"
           />
           <circle
             class="element-shape indicator"
             cx="682"
             cy="302"
-            r="16"
+            r="15"
           />
         </g>
         <g
@@ -23378,16 +23378,16 @@
           <rect
             class="element-shape ghost"
             height="8"
-            width="27"
-            x="-13"
-            y="-4"
+            width="26"
+            x="-14"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
-            width="27"
-            x="-13"
-            y="-4"
+            width="26"
+            x="-14"
+            y="-5"
           />
         </g>
         <g
@@ -23395,34 +23395,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="68"
-            cy="446"
+            cx="679"
+            cy="445"
             r="18"
           />
           <circle
             class="element-shape indicator"
-            cx="68"
-            cy="446"
+            cx="679"
+            cy="445"
             r="16"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(68,446)rotate(0)"
+          transform="translate(679,445)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="8"
             width="33"
             x="-17"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
             height="8"
             width="33"
             x="-17"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23432,13 +23432,13 @@
             class="element-shape ghost"
             cx="755"
             cy="345"
-            r="22"
+            r="21"
           />
           <circle
             class="element-shape indicator"
             cx="755"
             cy="345"
-            r="2"
+            r="19"
           />
         </g>
         <g
@@ -23447,17 +23447,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="9"
+            height="8"
             width="43"
             x="-22"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
+            height="8"
             width="43"
             x="-22"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23465,34 +23465,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="71"
+            cx="710"
             cy="465"
-            r="22"
+            r="21"
           />
           <circle
             class="element-shape indicator"
-            cx="71"
+            cx="710"
             cy="465"
-            r="2"
+            r="19"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(71,465)rotate(0)"
+          transform="translate(710,465)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="9"
+            height="8"
             width="26"
-            x="-13"
-            y="-4"
+            x="-14"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
+            height="8"
             width="26"
-            x="-13"
-            y="-4"
+            x="-14"
+            y="-5"
           />
         </g>
         <g
@@ -23501,33 +23501,33 @@
           <circle
             class="element-shape ghost"
             cx="849"
-            cy="25"
+            cy="249"
             r="22"
           />
           <circle
             class="element-shape indicator"
             cx="849"
-            cy="25"
-            r="2"
+            cy="249"
+            r="20"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(849,25)rotate(0)"
+          transform="translate(849,249)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="9"
-            width="2"
-            x="-1"
-            y="-4"
+            height="8"
+            width="20"
+            x="-11"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
-            width="2"
-            x="-1"
-            y="-4"
+            height="8"
+            width="20"
+            x="-11"
+            y="-5"
           />
         </g>
         <g
@@ -23535,34 +23535,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="651"
-            cy="25"
+            cx="650"
+            cy="249"
             r="23"
           />
           <circle
             class="element-shape indicator"
-            cx="651"
-            cy="25"
+            cx="650"
+            cy="249"
             r="21"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(651,25)rotate(0)"
+          transform="translate(650,249)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="9"
-            width="32"
+            height="8"
+            width="31"
             x="-16"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
-            width="32"
+            height="8"
+            width="31"
             x="-16"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23570,69 +23570,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="79"
+            cx="789"
             cy="478"
             r="23"
           />
           <circle
             class="element-shape indicator"
-            cx="79"
+            cx="789"
             cy="478"
             r="21"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(79,478)rotate(0)"
+          transform="translate(789,478)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="9"
-            width="31"
-            x="-15"
-            y="-4"
-          />
-          <rect
-            class="element-shape indicator"
-            height="9"
-            width="31"
-            x="-15"
-            y="-4"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="641"
-            cy="406"
-            r="24"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="641"
-            cy="406"
-            r="22"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(641,406)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="9"
-            width="32"
+            height="8"
+            width="30"
             x="-16"
-            y="-4"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
-            width="32"
+            height="8"
+            width="30"
             x="-16"
-            y="-4"
+            y="-5"
           />
         </g>
         <g
@@ -23640,104 +23605,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="839"
-            cy="462"
-            r="24"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="839"
-            cy="462"
-            r="22"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(839,462)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="9"
-            width="59"
-            x="-3"
-            y="-4"
-          />
-          <rect
-            class="element-shape indicator"
-            height="9"
-            width="59"
-            x="-3"
-            y="-4"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="795"
-            cy="333"
-            r="24"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="795"
-            cy="333"
-            r="22"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(795,333)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="9"
-            width="28"
-            x="-14"
-            y="-4"
-          />
-          <rect
-            class="element-shape indicator"
-            height="9"
-            width="28"
-            x="-14"
-            y="-4"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="752"
-            cy="456"
-            r="25"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="752"
-            cy="456"
+            cx="640"
+            cy="406"
             r="23"
           />
+          <circle
+            class="element-shape indicator"
+            cx="640"
+            cy="406"
+            r="21"
+          />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(752,456)rotate(0)"
+          transform="translate(640,406)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="9"
+            height="8"
             width="31"
-            x="-15"
-            y="-4"
+            x="-16"
+            y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="9"
+            height="8"
             width="31"
-            x="-15"
-            y="-4"
+            x="-16"
+            y="-5"
           />
         </g>
         <g
@@ -23745,33 +23640,138 @@
         >
           <circle
             class="element-shape ghost"
-            cx="591"
-            cy="389"
-            r="3"
+            cx="838"
+            cy="462"
+            r="23"
           />
           <circle
             class="element-shape indicator"
-            cx="591"
-            cy="389"
-            r="28"
+            cx="838"
+            cy="462"
+            r="21"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(591,389)rotate(0)"
+          transform="translate(838,462)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="8"
+            width="59"
+            x="-30"
+            y="-5"
+          />
+          <rect
+            class="element-shape indicator"
+            height="8"
+            width="59"
+            x="-30"
+            y="-5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="794"
+            cy="332"
+            r="24"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="794"
+            cy="332"
+            r="22"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(794,332)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="8"
+            width="27"
+            x="-14"
+            y="-5"
+          />
+          <rect
+            class="element-shape indicator"
+            height="8"
+            width="27"
+            x="-14"
+            y="-5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="751"
+            cy="455"
+            r="24"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="751"
+            cy="455"
+            r="22"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(751,455)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="8"
+            width="30"
+            x="-16"
+            y="-5"
+          />
+          <rect
+            class="element-shape indicator"
+            height="8"
+            width="30"
+            x="-16"
+            y="-5"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="590"
+            cy="388"
+            r="29"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="590"
+            cy="388"
+            r="27"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(590,388)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="9"
             width="48"
-            x="-24"
+            x="-25"
             y="-5"
           />
           <rect
             class="element-shape indicator"
             height="9"
             width="48"
-            x="-24"
+            x="-25"
             y="-5"
           />
         </g>
@@ -23797,16 +23797,16 @@
         >
           <rect
             class="element-shape ghost"
-            height="1"
-            width="21"
-            x="-1"
+            height="9"
+            width="20"
+            x="-11"
             y="-5"
           />
           <rect
             class="element-shape indicator"
-            height="1"
-            width="21"
-            x="-1"
+            height="9"
+            width="20"
+            x="-11"
             y="-5"
           />
         </g>
@@ -23816,33 +23816,33 @@
           <circle
             class="element-shape ghost"
             cx="766"
-            cy="629"
-            r="36"
+            cy="628"
+            r="35"
           />
           <circle
             class="element-shape indicator"
             cx="766"
-            cy="629"
-            r="34"
+            cy="628"
+            r="33"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(766,629)rotate(0)"
+          transform="translate(766,628)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="1"
+            height="10"
             width="37"
             x="-19"
-            y="-5"
+            y="-6"
           />
           <rect
             class="element-shape indicator"
-            height="1"
+            height="10"
             width="37"
             x="-19"
-            y="-5"
+            y="-6"
           />
         </g>
         <g
@@ -23851,67 +23851,67 @@
           <circle
             class="element-shape ghost"
             cx="637"
-            cy="338"
+            cy="337"
+            r="42"
+          />
+          <circle
+            class="element-shape indicator"
+            cx="637"
+            cy="337"
+            r="40"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(637,337)rotate(0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="11"
+            width="36"
+            x="-19"
+            y="-6"
+          />
+          <rect
+            class="element-shape indicator"
+            height="11"
+            width="36"
+            x="-19"
+            y="-6"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+        >
+          <circle
+            class="element-shape ghost"
+            cx="739"
+            cy="519"
             r="43"
           />
           <circle
             class="element-shape indicator"
-            cx="637"
-            cy="338"
+            cx="739"
+            cy="519"
             r="41"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(637,338)rotate(0)"
+          transform="translate(739,519)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="11"
-            width="37"
-            x="-18"
+            width="32"
+            x="-17"
             y="-6"
           />
           <rect
             class="element-shape indicator"
             height="11"
-            width="37"
-            x="-18"
-            y="-6"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-        >
-          <circle
-            class="element-shape ghost"
-            cx="74"
-            cy="52"
-            r="44"
-          />
-          <circle
-            class="element-shape indicator"
-            cx="74"
-            cy="52"
-            r="42"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(74,52)rotate(0)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="11"
-            width="33"
-            x="-16"
-            y="-6"
-          />
-          <rect
-            class="element-shape indicator"
-            height="11"
-            width="33"
-            x="-16"
+            width="32"
+            x="-17"
             y="-6"
           />
         </g>
@@ -23921,32 +23921,32 @@
           <circle
             class="element-shape ghost"
             cx="707"
-            cy="39"
-            r="48"
+            cy="389"
+            r="47"
           />
           <circle
             class="element-shape indicator"
             cx="707"
-            cy="39"
-            r="46"
+            cy="389"
+            r="45"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(707,39)rotate(0)"
+          transform="translate(707,389)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="12"
-            width="29"
-            x="-14"
+            height="11"
+            width="28"
+            x="-15"
             y="-6"
           />
           <rect
             class="element-shape indicator"
-            height="12"
-            width="29"
-            x="-14"
+            height="11"
+            width="28"
+            x="-15"
             y="-6"
           />
         </g>
@@ -23955,34 +23955,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="80"
-            cy="404"
-            r="5"
+            cx="800"
+            cy="403"
+            r="50"
           />
           <circle
             class="element-shape indicator"
-            cx="80"
-            cy="404"
+            cx="800"
+            cy="403"
             r="48"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(80,404)rotate(0)"
+          transform="translate(800,403)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="12"
-            width="31"
-            x="-15"
-            y="-6"
+            width="30"
+            x="-16"
+            y="-7"
           />
           <rect
             class="element-shape indicator"
             height="12"
-            width="31"
-            x="-15"
-            y="-6"
+            width="30"
+            x="-16"
+            y="-7"
           />
         </g>
         <g
@@ -23991,33 +23991,33 @@
           <circle
             class="element-shape ghost"
             cx="912"
-            cy="448"
+            cy="447"
             r="54"
           />
           <circle
             class="element-shape indicator"
             cx="912"
-            cy="448"
+            cy="447"
             r="52"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(912,448)rotate(0)"
+          transform="translate(912,447)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="13"
+            height="12"
             width="22"
-            x="-11"
-            y="-6"
+            x="-12"
+            y="-7"
           />
           <rect
             class="element-shape indicator"
-            height="13"
+            height="12"
             width="22"
-            x="-11"
-            y="-6"
+            x="-12"
+            y="-7"
           />
         </g>
         <g
@@ -24025,32 +24025,32 @@
         >
           <circle
             class="element-shape ghost"
-            cx="511"
-            cy="368"
-            r="57"
+            cx="510"
+            cy="367"
+            r="56"
           />
           <circle
             class="element-shape indicator"
-            cx="511"
-            cy="368"
-            r="55"
+            cx="510"
+            cy="367"
+            r="54"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(511,368)rotate(0)"
+          transform="translate(510,367)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="13"
-            width="9"
+            width="89"
             x="-45"
             y="-7"
           />
           <rect
             class="element-shape indicator"
             height="13"
-            width="9"
+            width="89"
             x="-45"
             y="-7"
           />
@@ -24060,33 +24060,33 @@
         >
           <circle
             class="element-shape ghost"
-            cx="69"
+            cx="689"
             cy="673"
             r="57"
           />
           <circle
             class="element-shape indicator"
-            cx="69"
+            cx="689"
             cy="673"
             r="55"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(69,673)rotate(0)"
+          transform="translate(689,673)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="14"
+            height="13"
             width="39"
-            x="-2"
+            x="-20"
             y="-7"
           />
           <rect
             class="element-shape indicator"
-            height="14"
+            height="13"
             width="39"
-            x="-2"
+            x="-20"
             y="-7"
           />
         </g>
@@ -24097,13 +24097,13 @@
             class="element-shape ghost"
             cx="877"
             cy="325"
-            r="63"
+            r="62"
           />
           <circle
             class="element-shape indicator"
             cx="877"
             cy="325"
-            r="61"
+            r="60"
           />
         </g>
         <g
@@ -24112,17 +24112,17 @@
         >
           <rect
             class="element-shape ghost"
-            height="15"
+            height="14"
             width="41"
             x="-21"
-            y="-7"
+            y="-8"
           />
           <rect
             class="element-shape indicator"
-            height="15"
+            height="14"
             width="41"
             x="-21"
-            y="-7"
+            y="-8"
           />
         </g>
         <g
@@ -24130,34 +24130,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="567"
-            cy="264"
+            cx="566"
+            cy="263"
             r="63"
           />
           <circle
             class="element-shape indicator"
-            cx="567"
-            cy="264"
+            cx="566"
+            cy="263"
             r="61"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(567,264)rotate(0)"
+          transform="translate(566,263)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="15"
-            width="57"
-            x="-28"
-            y="-7"
+            height="14"
+            width="56"
+            x="-29"
+            y="-8"
           />
           <rect
             class="element-shape indicator"
-            height="15"
-            width="57"
-            x="-28"
-            y="-7"
+            height="14"
+            width="56"
+            x="-29"
+            y="-8"
           />
         </g>
         <g
@@ -24165,34 +24165,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="85"
-            cy="559"
+            cx="849"
+            cy="558"
             r="77"
           />
           <circle
             class="element-shape indicator"
-            cx="85"
-            cy="559"
+            cx="849"
+            cy="558"
             r="75"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(85,559)rotate(0)"
+          transform="translate(849,558)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="18"
-            width="54"
+            width="53"
             x="-27"
-            y="-9"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
             height="18"
-            width="54"
+            width="53"
             x="-27"
-            y="-9"
+            y="-10"
           />
         </g>
         <g
@@ -24200,34 +24200,34 @@
         >
           <circle
             class="element-shape ghost"
-            cx="754"
+            cx="753"
             cy="244"
-            r="78"
+            r="77"
           />
           <circle
             class="element-shape indicator"
-            cx="754"
+            cx="753"
             cy="244"
-            r="76"
+            r="75"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(754,244)rotate(0)"
+          transform="translate(753,244)rotate(0)"
         >
           <rect
             class="element-shape ghost"
             height="18"
             width="46"
-            x="-23"
-            y="-9"
+            x="-24"
+            y="-10"
           />
           <rect
             class="element-shape indicator"
             height="18"
             width="46"
-            x="-23"
-            y="-9"
+            x="-24"
+            y="-10"
           />
         </g>
         <g
@@ -24235,73 +24235,73 @@
         >
           <circle
             class="element-shape ghost"
-            cx="577"
+            cx="576"
             cy="537"
-            r="124"
+            r="123"
           />
           <circle
             class="element-shape indicator"
-            cx="577"
+            cx="576"
             cy="537"
-            r="122"
+            r="121"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(577,537)rotate(0)"
+          transform="translate(576,537)rotate(0)"
         >
           <rect
             class="element-shape ghost"
-            height="35"
-            width="191"
-            x="-95"
-            y="-17"
+            height="34"
+            width="190"
+            x="-96"
+            y="-18"
           />
           <rect
             class="element-shape indicator"
-            height="35"
-            width="191"
-            x="-95"
-            y="-17"
+            height="34"
+            width="190"
+            x="-96"
+            y="-18"
           />
         </g>
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.28723404) translate(,)"
+        transform="translate(699,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="50"
-          x="-25"
-          y="-22"
+          height="470"
+          width="500"
+          x="-250"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="50"
-          x="-25"
-          y="-22"
+          height="470"
+          width="500"
+          x="-250"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,93)rotate(0)"
+      transform="translate(699,92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
-        width="529"
-        x="-264"
+        height="33"
+        width="528"
+        x="-265"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
-        width="529"
-        x="-264"
+        height="33"
+        width="528"
+        x="-265"
         y="-17"
       />
     </g>
@@ -24331,22 +24331,22 @@
     <rect
       class="canvas-region-outer2"
       height="778"
-      width="1165"
-      x="117"
+      width="1164"
+      x="116"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
-      width="1161"
-      x="119"
+      width="1160"
+      x="118"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
-      width="1159"
-      x="12"
+      width="1158"
+      x="119"
       y="37"
     />
     <g
@@ -24358,17 +24358,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -24376,14 +24376,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
@@ -24394,16 +24394,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
       </g>
@@ -24414,34 +24414,34 @@
           class="element-line handle-ghost"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="12"
-        cy="81"
+        cx="119"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1278"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="12"
+        cx="119"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -24464,8 +24464,8 @@
   />
   <line
     class="mark-guide"
-    x1="1214"
-    x2="1214"
+    x1="1213"
+    x2="1213"
     y1="0"
     y2="847"
   />
@@ -24480,8 +24480,8 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -24494,71 +24494,71 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.2872340425531914)"
+    transform="translate(699,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="80"
-        x="-40"
-        y="-22"
+        width="800"
+        x="-400"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,-30)"
+          transform="translate(0,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-3"
+            x="-31"
             y="51"
           >
             demo
@@ -24580,14 +24580,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24602,16 +24602,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24626,17 +24626,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -24650,112 +24650,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="184"
-              x2="184"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="184"
-              x2="184"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -24776,14 +24678,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24798,16 +24700,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24822,17 +24724,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -24846,14 +24748,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -24874,14 +24776,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24896,16 +24798,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -24920,17 +24822,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -24944,14 +24846,112 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="184"
+              x2="184"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="184"
+              x2="184"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1213"
+              x2="1213"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1213"
+              x2="1213"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -24964,38 +24964,38 @@
       <g />
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.28723404) translate(,)"
+        transform="translate(699,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,93)rotate(0)"
+      transform="translate(699,92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
+        height="33"
         width="77"
         x="-39"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
+        height="33"
         width="77"
         x="-39"
         y="-17"
@@ -25025,22 +25025,22 @@
     <rect
       class="canvas-region-outer2"
       height="778"
-      width="1165"
-      x="117"
+      width="1164"
+      x="116"
       y="34"
     />
     <rect
       class="canvas-region-outer"
       height="774"
-      width="1161"
-      x="119"
+      width="1160"
+      x="118"
       y="36"
     />
     <rect
       class="canvas-region"
       height="772"
-      width="1159"
-      x="12"
+      width="1158"
+      x="119"
       y="37"
     />
     <g
@@ -25052,17 +25052,17 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
-          y1="81"
-          y2="81"
+          y1="809"
+          y2="809"
         />
       </g>
       <g
@@ -25070,14 +25070,14 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
+          x1="119"
           x2="1278"
           y1="37"
           y2="37"
@@ -25088,16 +25088,16 @@
       >
         <line
           class="element-line handle-ghost"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
-          x1="12"
-          x2="12"
-          y1="81"
+          x1="119"
+          x2="119"
+          y1="809"
           y2="37"
         />
       </g>
@@ -25108,34 +25108,34 @@
           class="element-line handle-ghost"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
         <line
           class="element-line handle-highlight"
           x1="1278"
           x2="1278"
-          y1="81"
+          y1="809"
           y2="37"
         />
       </g>
       <circle
         class="element-shape handle-ghost"
-        cx="12"
-        cy="81"
+        cx="119"
+        cy="809"
         r="5"
         style="cursor: nesw-resize;"
       />
       <circle
         class="element-shape handle-ghost"
         cx="1278"
-        cy="81"
+        cy="809"
         r="5"
         style="cursor: nwse-resize;"
       />
       <circle
         class="element-shape handle-ghost"
-        cx="12"
+        cx="119"
         cy="37"
         r="5"
         style="cursor: nwse-resize;"
@@ -25158,8 +25158,8 @@
   />
   <line
     class="mark-guide"
-    x1="1214"
-    x2="1214"
+    x1="1213"
+    x2="1213"
     y1="0"
     y2="847"
   />
@@ -25174,8 +25174,8 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="14"
-    y2="14"
+    y1="140"
+    y2="140"
   />
   <line
     class="mark-guide"
@@ -25188,87 +25188,87 @@
     class="mark-guide"
     x1="0"
     x2="1398"
-    y1="443"
-    y2="443"
+    y1="442"
+    y2="442"
   />
   <g
     class="graphics"
-    transform="translate(699,424) scale(1.2872340425531914)"
+    transform="translate(699,423) scale(1.2872340425531914)"
   >
     <g
       style="opacity: 1;"
-      transform="translate(,)"
+      transform="translate(0,0)"
     >
       <rect
-        height="47"
+        height="470"
         style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-        width="80"
-        x="-40"
-        y="-22"
+        width="800"
+        x="-400"
+        y="-220"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       />
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           />
         </g>
         <g
           style="opacity: 1;"
-          transform="translate(,)"
+          transform="translate(0,0)"
         >
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             />
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="318"
+                  height="317"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-40"
+                  x="-400"
                   y="-68"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="47"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-379"
-                  y="-22"
+                  y="-221"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="272"
+                  height="271"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-358"
@@ -25277,10 +25277,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="363"
+                  height="362"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-333"
@@ -25289,130 +25289,130 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="458"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-312"
-                  y="-208"
+                  y="-209"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="227"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-291"
-                  y="23"
+                  y="22"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="403"
+                  height="402"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-265"
+                  x="-266"
                   y="-153"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="435"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-244"
-                  y="-185"
+                  x="-245"
+                  y="-186"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="187"
+                  height="186"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-223"
+                  x="-224"
                   y="63"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="435"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-198"
-                  y="-185"
+                  x="-199"
+                  y="-186"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="403"
+                  height="402"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-177"
+                  x="-178"
                   y="-153"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="155"
+                  height="154"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-156"
+                  x="-157"
                   y="95"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="458"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-131"
-                  y="-208"
+                  y="-209"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="363"
+                  height="362"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="-11"
+                  x="-110"
                   y="-113"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="132"
+                  height="131"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-89"
@@ -25421,22 +25421,22 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="47"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-64"
-                  y="-22"
+                  y="-221"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="318"
+                  height="317"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-43"
@@ -25445,106 +25445,106 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="12"
+                  height="119"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="-22"
-                  y="13"
+                  y="130"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="47"
+                  height="470"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="4"
-                  y="-22"
+                  x="3"
+                  y="-221"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="272"
+                  height="271"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="25"
+                  x="24"
                   y="-22"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="12"
+                  height="119"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="46"
-                  y="13"
+                  x="45"
+                  y="130"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="458"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="71"
-                  y="-208"
+                  x="70"
+                  y="-209"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="227"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="92"
-                  y="23"
+                  x="91"
+                  y="22"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="132"
+                  height="131"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="113"
+                  x="112"
                   y="118"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="435"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="138"
-                  y="-185"
+                  y="-186"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="187"
+                  height="186"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="159"
@@ -25553,22 +25553,22 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="155"
+                  height="154"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="18"
+                  x="180"
                   y="95"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="403"
+                  height="402"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="205"
@@ -25577,10 +25577,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="155"
+                  height="154"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="226"
@@ -25589,10 +25589,10 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="187"
+                  height="186"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="247"
@@ -25601,70 +25601,70 @@
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="363"
+                  height="362"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="273"
+                  x="272"
                   y="-113"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="132"
+                  height="131"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="294"
+                  x="293"
                   y="118"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
                   height="227"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="315"
-                  y="23"
+                  x="314"
+                  y="22"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="318"
+                  height="317"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(127, 201, 127); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
-                  x="34"
+                  x="340"
                   y="-68"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="12"
+                  height="119"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(190, 174, 212); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="361"
-                  y="13"
+                  y="130"
                 />
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(,)"
+                transform="translate(0,0)"
               >
                 <rect
-                  height="272"
+                  height="271"
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: miter; fill: rgb(253, 192, 134); fill-opacity: 1; text-anchor: start; opacity: 1; cursor: pointer; pointer-events: all;"
                   width="18"
                   x="382"
@@ -25675,125 +25675,125 @@
           </g>
           <g
             style="opacity: 1;"
-            transform="translate(,)"
+            transform="translate(0,0)"
           >
             <g
               style="opacity: 1;"
-              transform="translate(,)"
+              transform="translate(0,0)"
             >
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="40"
-                y1="25"
-                y2="25"
+                x1="-400"
+                x2="400"
+                y1="250"
+                y2="250"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-37"
-                x2="-37"
-                y1="25"
+                x1="-370"
+                x2="-370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-303"
                 x2="-303"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-235"
-                x2="-235"
-                y1="25"
+                x1="-236"
+                x2="-236"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-168"
-                x2="-168"
-                y1="25"
+                x1="-169"
+                x2="-169"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-101"
                 x2="-101"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="-34"
                 x2="-34"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="34"
-                x2="34"
-                y1="25"
+                x1="33"
+                x2="33"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="101"
-                x2="101"
-                y1="25"
+                x1="100"
+                x2="100"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="168"
                 x2="168"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
                 x1="235"
                 x2="235"
-                y1="25"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="303"
-                x2="303"
-                y1="25"
+                x1="302"
+                x2="302"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="37"
-                x2="37"
-                y1="25"
+                x1="370"
+                x2="370"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="-40"
-                x2="-40"
-                y1="25"
+                x1="-400"
+                x2="-400"
+                y1="250"
                 y2="255"
               />
               <line
                 style="stroke: rgb(0, 0, 0); stroke-opacity: 1; stroke-width: 1; stroke-linecap: square; stroke-linejoin: round; fill: none; fill-opacity: 1; text-anchor: start; opacity: 1;"
-                x1="40"
-                x2="40"
-                y1="25"
+                x1="400"
+                x2="400"
+                y1="250"
                 y2="255"
               />
               <g
                 style="opacity: 1;"
-                transform="translate(-37,258)"
+                transform="translate(-370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jan
                 </text>
@@ -25804,32 +25804,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Feb
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-235,258)"
+                transform="translate(-236,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-11"
+                  y="10"
                 >
                   Mar
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(-168,258)"
+                transform="translate(-169,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Apr
                 </text>
@@ -25840,8 +25840,8 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-11"
-                  y="1"
+                  x="-12"
+                  y="10"
                 >
                   May
                 </text>
@@ -25852,32 +25852,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-1"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Jun
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(34,258)"
+                transform="translate(33,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-8"
-                  y="1"
+                  y="10"
                 >
                   Jul
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(101,258)"
+                transform="translate(100,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Aug
                 </text>
@@ -25889,7 +25889,7 @@
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Sep
                 </text>
@@ -25900,32 +25900,32 @@
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
-                  x="-9"
-                  y="1"
+                  x="-10"
+                  y="10"
                 >
                   Oct
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(303,258)"
+                transform="translate(302,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Nov
                 </text>
               </g>
               <g
                 style="opacity: 1;"
-                transform="translate(37,258)"
+                transform="translate(370,258)"
               >
                 <text
                   style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 12px;"
                   x="-11"
-                  y="1"
+                  y="10"
                 >
                   Dec
                 </text>
@@ -25936,15 +25936,15 @@
       </g>
       <g
         style="opacity: 1;"
-        transform="translate(,)"
+        transform="translate(0,0)"
       >
         <g
           style="opacity: 1;"
-          transform="translate(,-30)"
+          transform="translate(0,-300)"
         >
           <text
             style="stroke: none; stroke-opacity: 1; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; fill: rgb(0, 0, 0); fill-opacity: 1; text-anchor: start; opacity: 1; font-family: Arial; font-size: 24px;"
-            x="-3"
+            x="-31"
             y="51"
           >
             demo
@@ -25966,14 +25966,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -25988,16 +25988,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -26012,17 +26012,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -26036,112 +26036,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="184"
-              x2="184"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="184"
-              x2="184"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
-              y2="-12449"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
-              y2="-12449"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
-              x2="13571"
-              y1="14"
-              y2="14"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-12173"
-              x2="13571"
-              y1="745"
-              y2="745"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -26162,14 +26064,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -26184,16 +26086,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -26208,17 +26110,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -26232,14 +26134,14 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -26260,14 +26162,14 @@
               class="element-line handle-ghost"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
               x1="184"
               x2="184"
-              y1="13296"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -26282,16 +26184,16 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1214"
-              x2="1214"
-              y1="13296"
+              x1="1213"
+              x2="1213"
+              y1="13295"
               y2="-12449"
             />
           </g>
@@ -26306,17 +26208,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
-              y1="14"
-              y2="14"
+              y1="140"
+              y2="140"
             />
           </g>
         </g>
@@ -26330,14 +26232,112 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="184"
+              x2="184"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="184"
+              x2="184"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1213"
+              x2="1213"
+              y1="13295"
+              y2="-12449"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1213"
+              x2="1213"
+              y1="13295"
+              y2="-12449"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
+              x2="13571"
+              y1="140"
+              y2="140"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-12174"
+              x2="13571"
+              y1="745"
+              y2="745"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-12174"
               x2="13571"
               y1="745"
               y2="745"
@@ -26350,56 +26350,56 @@
       <g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="318"
+            height="317"
             width="18"
-            x="-40"
+            x="-400"
             y="-68"
           />
           <rect
             class="element-shape indicator"
-            height="318"
+            height="317"
             width="18"
-            x="-40"
+            x="-400"
             y="-68"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="47"
+            height="470"
             width="18"
             x="-379"
-            y="-22"
+            y="-221"
           />
           <rect
             class="element-shape indicator"
-            height="47"
+            height="470"
             width="18"
             x="-379"
-            y="-22"
+            y="-221"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="272"
+            height="271"
             width="18"
             x="-358"
             y="-22"
           />
           <rect
             class="element-shape indicator"
-            height="272"
+            height="271"
             width="18"
             x="-358"
             y="-22"
@@ -26407,18 +26407,18 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="363"
+            height="362"
             width="18"
             x="-333"
             y="-113"
           />
           <rect
             class="element-shape indicator"
-            height="363"
+            height="362"
             width="18"
             x="-333"
             y="-113"
@@ -26426,208 +26426,208 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="458"
             width="18"
             x="-312"
-            y="-208"
+            y="-209"
           />
           <rect
             class="element-shape indicator"
             height="458"
             width="18"
             x="-312"
-            y="-208"
+            y="-209"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="227"
             width="18"
             x="-291"
-            y="23"
+            y="22"
           />
           <rect
             class="element-shape indicator"
             height="227"
             width="18"
             x="-291"
-            y="23"
+            y="22"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="403"
+            height="402"
             width="18"
-            x="-265"
+            x="-266"
             y="-153"
           />
           <rect
             class="element-shape indicator"
-            height="403"
+            height="402"
             width="18"
-            x="-265"
+            x="-266"
             y="-153"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="435"
             width="18"
-            x="-244"
-            y="-185"
+            x="-245"
+            y="-186"
           />
           <rect
             class="element-shape indicator"
             height="435"
             width="18"
-            x="-244"
-            y="-185"
+            x="-245"
+            y="-186"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="187"
+            height="186"
             width="18"
-            x="-223"
+            x="-224"
             y="63"
           />
           <rect
             class="element-shape indicator"
-            height="187"
+            height="186"
             width="18"
-            x="-223"
+            x="-224"
             y="63"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="435"
             width="18"
-            x="-198"
-            y="-185"
+            x="-199"
+            y="-186"
           />
           <rect
             class="element-shape indicator"
             height="435"
             width="18"
-            x="-198"
-            y="-185"
+            x="-199"
+            y="-186"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="403"
+            height="402"
             width="18"
-            x="-177"
+            x="-178"
             y="-153"
           />
           <rect
             class="element-shape indicator"
-            height="403"
+            height="402"
             width="18"
-            x="-177"
+            x="-178"
             y="-153"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="155"
+            height="154"
             width="18"
-            x="-156"
+            x="-157"
             y="95"
           />
           <rect
             class="element-shape indicator"
-            height="155"
+            height="154"
             width="18"
-            x="-156"
+            x="-157"
             y="95"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="458"
             width="18"
             x="-131"
-            y="-208"
+            y="-209"
           />
           <rect
             class="element-shape indicator"
             height="458"
             width="18"
             x="-131"
-            y="-208"
+            y="-209"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="363"
+            height="362"
             width="18"
-            x="-11"
+            x="-110"
             y="-113"
           />
           <rect
             class="element-shape indicator"
-            height="363"
+            height="362"
             width="18"
-            x="-11"
+            x="-110"
             y="-113"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="132"
+            height="131"
             width="18"
             x="-89"
             y="118"
           />
           <rect
             class="element-shape indicator"
-            height="132"
+            height="131"
             width="18"
             x="-89"
             y="118"
@@ -26635,37 +26635,37 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="47"
+            height="470"
             width="18"
             x="-64"
-            y="-22"
+            y="-221"
           />
           <rect
             class="element-shape indicator"
-            height="47"
+            height="470"
             width="18"
             x="-64"
-            y="-22"
+            y="-221"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="318"
+            height="317"
             width="18"
             x="-43"
             y="-68"
           />
           <rect
             class="element-shape indicator"
-            height="318"
+            height="317"
             width="18"
             x="-43"
             y="-68"
@@ -26673,170 +26673,170 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="12"
+            height="119"
             width="18"
             x="-22"
-            y="13"
+            y="130"
           />
           <rect
             class="element-shape indicator"
-            height="12"
+            height="119"
             width="18"
             x="-22"
-            y="13"
+            y="130"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="47"
+            height="470"
             width="18"
-            x="4"
+            x="3"
+            y="-221"
+          />
+          <rect
+            class="element-shape indicator"
+            height="470"
+            width="18"
+            x="3"
+            y="-221"
+          />
+        </g>
+        <g
+          class="bounding-box interactable"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
+        >
+          <rect
+            class="element-shape ghost"
+            height="271"
+            width="18"
+            x="24"
             y="-22"
           />
           <rect
             class="element-shape indicator"
-            height="47"
+            height="271"
             width="18"
-            x="4"
+            x="24"
             y="-22"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="272"
+            height="119"
             width="18"
-            x="25"
-            y="-22"
+            x="45"
+            y="130"
           />
           <rect
             class="element-shape indicator"
-            height="272"
+            height="119"
             width="18"
-            x="25"
-            y="-22"
+            x="45"
+            y="130"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
-        >
-          <rect
-            class="element-shape ghost"
-            height="12"
-            width="18"
-            x="46"
-            y="13"
-          />
-          <rect
-            class="element-shape indicator"
-            height="12"
-            width="18"
-            x="46"
-            y="13"
-          />
-        </g>
-        <g
-          class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="458"
             width="18"
-            x="71"
-            y="-208"
+            x="70"
+            y="-209"
           />
           <rect
             class="element-shape indicator"
             height="458"
             width="18"
-            x="71"
-            y="-208"
+            x="70"
+            y="-209"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="227"
             width="18"
-            x="92"
-            y="23"
+            x="91"
+            y="22"
           />
           <rect
             class="element-shape indicator"
             height="227"
             width="18"
-            x="92"
-            y="23"
+            x="91"
+            y="22"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="132"
+            height="131"
             width="18"
-            x="113"
+            x="112"
             y="118"
           />
           <rect
             class="element-shape indicator"
-            height="132"
+            height="131"
             width="18"
-            x="113"
+            x="112"
             y="118"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="435"
             width="18"
             x="138"
-            y="-185"
+            y="-186"
           />
           <rect
             class="element-shape indicator"
             height="435"
             width="18"
             x="138"
-            y="-185"
+            y="-186"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="187"
+            height="186"
             width="18"
             x="159"
             y="63"
           />
           <rect
             class="element-shape indicator"
-            height="187"
+            height="186"
             width="18"
             x="159"
             y="63"
@@ -26844,37 +26844,37 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="155"
+            height="154"
             width="18"
-            x="18"
+            x="180"
             y="95"
           />
           <rect
             class="element-shape indicator"
-            height="155"
+            height="154"
             width="18"
-            x="18"
+            x="180"
             y="95"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="403"
+            height="402"
             width="18"
             x="205"
             y="-153"
           />
           <rect
             class="element-shape indicator"
-            height="403"
+            height="402"
             width="18"
             x="205"
             y="-153"
@@ -26882,18 +26882,18 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="155"
+            height="154"
             width="18"
             x="226"
             y="95"
           />
           <rect
             class="element-shape indicator"
-            height="155"
+            height="154"
             width="18"
             x="226"
             y="95"
@@ -26901,18 +26901,18 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="187"
+            height="186"
             width="18"
             x="247"
             y="63"
           />
           <rect
             class="element-shape indicator"
-            height="187"
+            height="186"
             width="18"
             x="247"
             y="63"
@@ -26920,113 +26920,113 @@
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="363"
+            height="362"
             width="18"
-            x="273"
+            x="272"
             y="-113"
           />
           <rect
             class="element-shape indicator"
-            height="363"
+            height="362"
             width="18"
-            x="273"
+            x="272"
             y="-113"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="132"
+            height="131"
             width="18"
-            x="294"
+            x="293"
             y="118"
           />
           <rect
             class="element-shape indicator"
-            height="132"
+            height="131"
             width="18"
-            x="294"
+            x="293"
             y="118"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
             height="227"
             width="18"
-            x="315"
-            y="23"
+            x="314"
+            y="22"
           />
           <rect
             class="element-shape indicator"
             height="227"
             width="18"
-            x="315"
-            y="23"
+            x="314"
+            y="22"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="318"
+            height="317"
             width="18"
-            x="34"
+            x="340"
             y="-68"
           />
           <rect
             class="element-shape indicator"
-            height="318"
+            height="317"
             width="18"
-            x="34"
+            x="340"
             y="-68"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="12"
+            height="119"
             width="18"
             x="361"
-            y="13"
+            y="130"
           />
           <rect
             class="element-shape indicator"
-            height="12"
+            height="119"
             width="18"
             x="361"
-            y="13"
+            y="130"
           />
         </g>
         <g
           class="bounding-box interactable"
-          transform="translate(699,424) scale(1.28723404) translate(,)"
+          transform="translate(699,423) scale(1.28723404) translate(0,0)"
         >
           <rect
             class="element-shape ghost"
-            height="272"
+            height="271"
             width="18"
             x="382"
             y="-22"
           />
           <rect
             class="element-shape indicator"
-            height="272"
+            height="271"
             width="18"
             x="382"
             y="-22"
@@ -27035,38 +27035,38 @@
       </g>
       <g
         class="bounding-box interactable"
-        transform="translate(699,424) scale(1.28723404) translate(,)"
+        transform="translate(699,423) scale(1.28723404) translate(0,0)"
       >
         <rect
           class="element-shape ghost"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
         <rect
           class="element-shape indicator"
-          height="47"
-          width="80"
-          x="-40"
-          y="-22"
+          height="470"
+          width="800"
+          x="-400"
+          y="-220"
         />
       </g>
     </g>
     <g
       class="bounding-box interactable"
-      transform="translate(699,93)rotate(0)"
+      transform="translate(699,92)rotate(0)"
     >
       <rect
         class="element-shape ghost"
-        height="34"
+        height="33"
         width="77"
         x="-39"
         y="-17"
       />
       <rect
         class="element-shape indicator"
-        height="34"
+        height="33"
         width="77"
         x="-39"
         y="-17"

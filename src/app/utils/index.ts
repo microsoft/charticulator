@@ -19,6 +19,9 @@ export function setSVGNumberDigits(digits: number) {
 }
 
 export function toSVGNumber(x: number) {
+  if (SVGNumberDigits === 0) {
+    return Math.floor(x);
+  }
   return prettyNumber(x, SVGNumberDigits);
 }
 
