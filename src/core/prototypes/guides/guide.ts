@@ -402,7 +402,7 @@ export class GuideClass extends ChartElementClass<
     );
 
     widgets.push(
-      manager.mappingEditor("Value", GuideAttributeNames.value, {
+      manager.mappingEditor("Offset", GuideAttributeNames.value, {
         defaultValue: this.state.attributes.value,
       })
     );
