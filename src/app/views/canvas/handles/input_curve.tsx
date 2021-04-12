@@ -179,8 +179,8 @@ export class InputCurveHandleView extends React.Component<
         <rect x={cx - 16} y={cy - 16} width={32} height={32} />
         <image
           xlinkHref={R.getSVGIcon("general/edit")}
-          x={cx - 12}
-          y={cy - 12}
+          x={toSVGNumber(cx - 12)}
+          y={toSVGNumber(cy - 12)}
           width={24}
           height={24}
         />
@@ -309,16 +309,16 @@ export class InputCurveHandleView extends React.Component<
         }}
       >
         <rect
-          x={cx - 16}
-          y={cy - 16}
+          x={toSVGNumber(cx - 16)}
+          y={toSVGNumber(cy - 16)}
           width={32}
           height={32}
           ref={(e) => (anchorElement = e)}
         />
         <image
           xlinkHref={R.getSVGIcon("scaffold/spiral")}
-          x={cx - 12}
-          y={cy - 12}
+          x={toSVGNumber(cx - 12)}
+          y={toSVGNumber(cy - 12)}
           width={24}
           height={24}
         />
@@ -341,10 +341,10 @@ export class InputCurveHandleView extends React.Component<
             cursor: "crosshair",
           }}
           className="handle-ghost element-region"
-          x={Math.min(fX(handle.x1), fX(handle.x2))}
-          y={Math.min(fY(handle.y1), fY(handle.y2))}
-          width={Math.abs(fX(handle.x1) - fX(handle.x2))}
-          height={Math.abs(fY(handle.y1) - fY(handle.y2))}
+          x={toSVGNumber(Math.min(fX(handle.x1), fX(handle.x2)))}
+          y={toSVGNumber(Math.min(fY(handle.y1), fY(handle.y2)))}
+          width={toSVGNumber(Math.abs(fX(handle.x1) - fX(handle.x2)))}
+          height={toSVGNumber(Math.abs(fY(handle.y1) - fY(handle.y2)))}
         />
         {this.state.drawing ? this.renderDrawing() : null}
         {!this.state.enabled ? (

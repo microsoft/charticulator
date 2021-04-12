@@ -526,15 +526,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -550,15 +550,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -574,113 +574,15 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-11401"
-              x2="12799"
-              y1="726"
-              y2="726"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-11401"
-              x2="12799"
-              y1="726"
-              y2="726"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="215"
-              x2="215"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="215"
-              x2="215"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1183"
-              x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1183"
-              x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-11401"
-              x2="12799"
-              y1="157.3"
-              y2="157.3"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-11401"
-              x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -722,15 +624,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -746,15 +648,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -770,15 +672,15 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -820,15 +722,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -844,15 +746,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -868,15 +770,113 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="215"
+              x2="215"
+              y1="12524"
+              y2="-11677"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="215"
+              x2="215"
+              y1="12524"
+              y2="-11677"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1183"
+              x2="1183"
+              y1="12524"
+              y2="-11677"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1183"
+              x2="1183"
+              y1="12524"
+              y2="-11677"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11401"
+              x2="12799"
+              y1="157"
+              y2="157"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11401"
+              x2="12799"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -1477,15 +1477,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1501,15 +1501,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1525,113 +1525,15 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-11401"
-              x2="12799"
-              y1="726"
-              y2="726"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-11401"
-              x2="12799"
-              y1="726"
-              y2="726"
-            />
-          </g>
-        </g>
-      </g>
-    </g>
-    <g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="215"
-              x2="215"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="215"
-              x2="215"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-x"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="1183"
-              x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="1183"
-              x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
-            />
-          </g>
-        </g>
-      </g>
-      <g>
-        <g
-          class="handle handle-line-y"
-        >
-          <g
-            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
-          >
-            <line
-              class="element-line handle-ghost"
-              x1="-11401"
-              x2="12799"
-              y1="157.3"
-              y2="157.3"
-            />
-            <line
-              class="element-line handle-highlight"
-              x1="-11401"
-              x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -1673,15 +1575,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1697,15 +1599,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1721,15 +1623,15 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -1771,15 +1673,15 @@
               class="element-line handle-ghost"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="215"
               x2="215"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1795,15 +1697,15 @@
               class="element-line handle-ghost"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
             <line
               class="element-line handle-highlight"
               x1="1183"
               x2="1183"
-              y1="12523.5"
-              y2="-11676.5"
+              y1="12524"
+              y2="-11677"
             />
           </g>
         </g>
@@ -1819,15 +1721,113 @@
               class="element-line handle-ghost"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
             />
             <line
               class="element-line handle-highlight"
               x1="-11401"
               x2="12799"
-              y1="157.3"
-              y2="157.3"
+              y1="157"
+              y2="157"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11401"
+              x2="12799"
+              y1="726"
+              y2="726"
+            />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="215"
+              x2="215"
+              y1="12524"
+              y2="-11677"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="215"
+              x2="215"
+              y1="12524"
+              y2="-11677"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-x"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="1183"
+              x2="1183"
+              y1="12524"
+              y2="-11677"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="1183"
+              x2="1183"
+              y1="12524"
+              y2="-11677"
+            />
+          </g>
+        </g>
+      </g>
+      <g>
+        <g
+          class="handle handle-line-y"
+        >
+          <g
+            style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"
+          >
+            <line
+              class="element-line handle-ghost"
+              x1="-11401"
+              x2="12799"
+              y1="157"
+              y2="157"
+            />
+            <line
+              class="element-line handle-highlight"
+              x1="-11401"
+              x2="12799"
+              y1="157"
+              y2="157"
             />
           </g>
         </g>
@@ -2798,17 +2798,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -2822,17 +2822,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -2846,17 +2846,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -2870,17 +2870,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -2896,17 +2896,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -2920,17 +2920,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -2944,17 +2944,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -2968,17 +2968,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -2994,17 +2994,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -3018,17 +3018,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -3042,17 +3042,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -3066,17 +3066,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -3092,17 +3092,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="295.36103723404256"
-              x2="295.36103723404256"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="295"
+              x2="295"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -3116,17 +3116,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1003.3397606382978"
-              x2="1003.3397606382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1003"
+              x2="1003"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -3140,17 +3140,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12191"
+              x2="13554"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -3164,17 +3164,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12190.809175531915"
-              x2="13553.871675531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12191"
+              x2="13554"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -6494,17 +6494,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6518,17 +6518,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6542,17 +6542,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -6566,17 +6566,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -6592,17 +6592,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6616,17 +6616,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6640,17 +6640,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -6664,17 +6664,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -6690,17 +6690,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6714,17 +6714,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6738,17 +6738,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -6762,17 +6762,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -6788,17 +6788,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="225.93354347255058"
-              x2="225.93354347255058"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="226"
+              x2="226"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6812,17 +6812,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1124.4356185973206"
-              x2="1124.4356185973206"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1124"
+              x2="1124"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -6836,17 +6836,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -6860,17 +6860,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -14029,17 +14029,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14053,17 +14053,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14077,17 +14077,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -14101,17 +14101,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -14127,17 +14127,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14151,17 +14151,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14175,17 +14175,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -14199,17 +14199,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -14225,17 +14225,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14249,17 +14249,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14273,17 +14273,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -14297,17 +14297,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -14323,17 +14323,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="171.23404255319156"
-              x2="171.23404255319156"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="171"
+              x2="171"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14347,17 +14347,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1033.6808510638298"
-              x2="1033.6808510638298"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1034"
+              x2="1034"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -14371,17 +14371,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -14395,17 +14395,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -22691,17 +22691,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22715,17 +22715,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22739,17 +22739,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -22763,17 +22763,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -22789,17 +22789,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22813,17 +22813,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22837,17 +22837,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -22861,17 +22861,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -22887,17 +22887,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22911,17 +22911,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -22935,17 +22935,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -22959,17 +22959,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -22985,17 +22985,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="377.19148936170217"
-              x2="377.19148936170217"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="377"
+              x2="377"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -23009,17 +23009,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1020.8085106382978"
-              x2="1020.8085106382978"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1021"
+              x2="1021"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -23033,17 +23033,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -23057,17 +23057,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -24578,17 +24578,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24602,17 +24602,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24626,17 +24626,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -24650,17 +24650,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -24676,17 +24676,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24700,17 +24700,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24724,17 +24724,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -24748,17 +24748,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -24774,17 +24774,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24798,17 +24798,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24822,17 +24822,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -24846,17 +24846,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -24872,17 +24872,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24896,17 +24896,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -24920,17 +24920,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -24944,17 +24944,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -25964,17 +25964,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -25988,17 +25988,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26012,17 +26012,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -26036,17 +26036,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -26062,17 +26062,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26086,17 +26086,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26110,17 +26110,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -26134,17 +26134,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -26160,17 +26160,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26184,17 +26184,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26208,17 +26208,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -26232,17 +26232,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
@@ -26258,17 +26258,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="184.10638297872345"
-              x2="184.10638297872345"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="184"
+              x2="184"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26282,17 +26282,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
             <line
               class="element-line handle-highlight"
-              x1="1213.8936170212764"
-              x2="1213.8936170212764"
-              y1="13295.840425531915"
-              y2="-12448.840425531915"
+              x1="1214"
+              x2="1214"
+              y1="13296"
+              y2="-12449"
             />
           </g>
         </g>
@@ -26306,17 +26306,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="140.3085106382979"
-              y2="140.3085106382979"
+              x1="-12173"
+              x2="13571"
+              y1="14"
+              y2="14"
             />
           </g>
         </g>
@@ -26330,17 +26330,17 @@
           >
             <line
               class="element-line handle-ghost"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
             <line
               class="element-line handle-highlight"
-              x1="-12173.340425531915"
-              x2="13571.340425531915"
-              y1="745.3085106382978"
-              y2="745.3085106382978"
+              x1="-12173"
+              x2="13571"
+              y1="745"
+              y2="745"
             />
           </g>
         </g>
