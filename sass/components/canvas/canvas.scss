@@ -357,8 +357,14 @@
   }
 
   line.mark-guide.coordinator {
-    stroke: $color-coodinator;
+    stroke: $gray-070;
     stroke-dasharray: 1 1;
+    fill: none;
+  }
+
+  line.mark-guide.single {
+    stroke: $gray-070;
+    stroke-dasharray: 3 2;
     fill: none;
   }
 

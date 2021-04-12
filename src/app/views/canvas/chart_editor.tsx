@@ -572,10 +572,18 @@ export class ChartEditorView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className={classNames("mark-guide", [
-                "coordinator",
-                info.guide.visualType === SnappingGuidesVisualTypes.Coordinator,
-              ])}
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
               x2={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
@@ -588,10 +596,18 @@ export class ChartEditorView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className={classNames("mark-guide", [
-                "coordinator",
-                info.guide.visualType === SnappingGuidesVisualTypes.Coordinator,
-              ])}
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={0}
               x2={this.state.viewWidth}
