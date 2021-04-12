@@ -115,10 +115,6 @@ export namespace Handles {
 
   export interface HandleOptions {
     snapToClosestPoint: boolean;
-    styles: {
-      color: string;
-      lineStyle: string;
-    };
   }
 
   export interface HandleAction {
