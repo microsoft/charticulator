@@ -39,6 +39,7 @@ module.exports = (config: Config) => {
     reporters: ["mocha"],
     singleRun: true,
     autoWatch: true,
+    port: 5001,
     plugins: [
       require.resolve("karma-coverage"),
       require.resolve("karma-typescript"),
