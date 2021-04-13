@@ -1503,7 +1503,9 @@ export class AppStore extends BaseStore {
             axisProperty.type === "numerical" &&
             axisProperty.numericalMode === "temporal"
               ? DataKind.Temporal
-              : axisProperty.dataKind,
+              : axisProperty.dataKind
+              ? axisProperty.dataKind
+              : getDataKindByType(axisProperty.type),
           orderMode: axisProperty.orderMode
             ? axisProperty.orderMode
             : axisProperty.valueType === "string"
@@ -1835,4 +1837,9 @@ export class AppStore extends BaseStore {
     }
     return unmappedColumns;
   }
+}
+function getDataKindByType(
+  type: Specification.Types.AxisDataBindingType
+): Dataset.DataKind {
+  throw new Error("Function not implemented.");
 }
