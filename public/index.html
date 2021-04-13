@@ -31,7 +31,7 @@
             const blob = new Blob([script], { type: "application/javascript" });
 
             const workerScript = URL.createObjectURL(blob);
-            var application = new Charticulator.Application();
+            var application =  window.application = new Charticulator.Application();
             application.initialize(
               CHARTICULATOR_CONFIG,
               "container",
