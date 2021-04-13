@@ -1488,6 +1488,46 @@ export class AppStore extends BaseStore {
       };
     };
 
+    const bindAxis = (
+      dataAxisElement: { table: string; element: any },
+      expression: string,
+      axisProperty: Specification.Types.AxisDataBinding,
+      dataAxis: Specification.ChartElement<DataAxisProperties>
+    ) => {
+      const axisData = new DragData.DataExpression(
+        this.dataset.tables.find((t) => t.name == dataAxisElement.table),
+        expression,
+        axisProperty.valueType,
+        {
+          kind:
+            axisProperty.type === "numerical" &&
+            axisProperty.numericalMode === "temporal"
+              ? DataKind.Temporal
+              : axisProperty.dataKind,
+          orderMode: axisProperty.orderMode
+            ? axisProperty.orderMode
+            : axisProperty.valueType === "string"
+            ? OrderMode.order
+            : null,
+          order: axisProperty.order,
+        },
+        axisProperty.rawColumnExpr as string
+      );
+
+      this.bindDataToAxis({
+        property: PlotSegmentAxisPropertyNames.axis,
+        dataExpression: axisData,
+        object: dataAxis as any,
+        appendToProperty: null,
+        type: axisProperty.type,
+        numericalMode: axisProperty.numericalMode,
+        autoDomainMax: axisProperty.autoDomainMax,
+        autoDomainMin: axisProperty.autoDomainMin,
+        domainMin: axisProperty.domainMin,
+        domainMax: axisProperty.domainMax,
+      });
+    };
+
     const table = this.dataset.tables.find((t) => t.type === TableType.Main);
     this.chart.elements
       .map(mapElementWithTable(table.name))
@@ -1503,6 +1543,14 @@ export class AppStore extends BaseStore {
         const dataAxis = dataAxisElement.element as Specification.ChartElement<
           DataAxisProperties
         >;
+        const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+          .axis;
+        if (axisProperty) {
+          const expression = axisProperty.expression;
+
+          bindAxis(dataAxisElement, expression, axisProperty, dataAxis);
+        }
+
         const dataExpressions = dataAxis.properties.dataExpressions;
         // remove all and added again
         dataAxis.properties.dataExpressions = [];
@@ -1510,77 +1558,11 @@ export class AppStore extends BaseStore {
           const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
             .axis;
           if (axisProperty) {
-            const axisData = new DragData.DataExpression(
-              this.dataset.tables.find((t) => t.name == dataAxisElement.table),
-              dataExpression.expression,
-              axisProperty.valueType,
-              {
-                kind:
-                  axisProperty.type === "numerical" &&
-                  axisProperty.numericalMode === "temporal"
-                    ? DataKind.Temporal
-                    : axisProperty.dataKind,
-                orderMode: axisProperty.orderMode
-                  ? axisProperty.orderMode
-                  : axisProperty.valueType === "string"
-                  ? OrderMode.order
-                  : null,
-                order: axisProperty.order,
-              },
-              axisProperty.rawColumnExpr as string
-            );
+            const expression = dataExpression.expression;
 
-            this.bindDataToAxis({
-              property: PlotSegmentAxisPropertyNames.axis,
-              dataExpression: axisData,
-              object: dataAxis as any,
-              appendToProperty: "dataExpressions",
-              type: axisProperty.type, // TODO get type for column, from current dataset
-              numericalMode: axisProperty.numericalMode,
-              autoDomainMax: axisProperty.autoDomainMax,
-              autoDomainMin: axisProperty.autoDomainMin,
-              domainMin: axisProperty.domainMin,
-              domainMax: axisProperty.domainMax,
-            });
+            bindAxis(dataAxisElement, expression, axisProperty, dataAxis);
           }
         });
-
-        const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
-          .axis;
-        if (axisProperty) {
-          const axisData = new DragData.DataExpression(
-            this.dataset.tables.find((t) => t.name == dataAxisElement.table),
-            axisProperty.expression,
-            axisProperty.valueType,
-            {
-              kind:
-                axisProperty.type === "numerical" &&
-                axisProperty.numericalMode === "temporal"
-                  ? DataKind.Temporal
-                  : axisProperty.dataKind,
-              orderMode: axisProperty.orderMode
-                ? axisProperty.orderMode
-                : axisProperty.valueType === "string"
-                ? OrderMode.order
-                : null,
-              order: axisProperty.order,
-            },
-            axisProperty.rawColumnExpr as string
-          );
-
-          this.bindDataToAxis({
-            property: PlotSegmentAxisPropertyNames.axis,
-            dataExpression: axisData,
-            object: dataAxis as any,
-            appendToProperty: null,
-            type: axisProperty.type, // TODO get type for column, from current dataset
-            numericalMode: axisProperty.numericalMode,
-            autoDomainMax: axisProperty.autoDomainMax,
-            autoDomainMin: axisProperty.autoDomainMin,
-            domainMin: axisProperty.domainMin,
-            domainMax: axisProperty.domainMax,
-          });
-        }
       });
   }
 
