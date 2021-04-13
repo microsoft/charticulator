@@ -639,7 +639,11 @@ export class CurvePlotSegment extends PlotSegmentClass<
         },
       });
     }
-    if (this.object.properties.xData) {
+    if (
+      this.object.properties.xData &&
+      (this.object.properties.xData.autoDomainMin ||
+        this.object.properties.xData.autoDomainMax)
+    ) {
       p.push({
         objectID: this.object._id,
         target: {
@@ -652,7 +656,11 @@ export class CurvePlotSegment extends PlotSegmentClass<
         default: "ascending",
       });
     }
-    if (this.object.properties.yData) {
+    if (
+      this.object.properties.yData &&
+      (this.object.properties.yData.autoDomainMin ||
+        this.object.properties.yData.autoDomainMax)
+    ) {
       p.push({
         objectID: this.object._id,
         target: {
