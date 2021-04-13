@@ -12,6 +12,7 @@ import {
   TemplateParameters,
   LinkAnchor,
   isType,
+  SnappingGuidesVisualTypes,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { RectangleGlyph } from "../glyphs";
@@ -354,6 +355,7 @@ export class GuideClass extends ChartElementClass<
         value,
         attribute,
         visible: true,
+        visualType: SnappingGuidesVisualTypes.Guide,
       } as SnappingGuides.Axis;
     };
     const r = [
@@ -402,7 +404,7 @@ export class GuideClass extends ChartElementClass<
     );
 
     widgets.push(
-      manager.mappingEditor("Value", GuideAttributeNames.value, {
+      manager.mappingEditor("Offset", GuideAttributeNames.value, {
         defaultValue: this.state.attributes.value,
       })
     );

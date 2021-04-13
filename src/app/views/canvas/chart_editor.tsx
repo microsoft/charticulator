@@ -42,6 +42,8 @@ import { MoveSnappingSession } from "./snapping/move";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
+import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
+import { classNames } from "../../utils";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -570,7 +572,18 @@ export class ChartEditorView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className="mark-guide"
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
               x2={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
@@ -583,7 +596,18 @@ export class ChartEditorView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className="mark-guide"
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={0}
               x2={this.state.viewWidth}

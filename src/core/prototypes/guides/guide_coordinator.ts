@@ -10,6 +10,7 @@ import {
   SnappingGuides,
   BoundingBox,
   Controls,
+  SnappingGuidesVisualTypes,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 
@@ -36,6 +37,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
+  private static BaseGuidesCount = 2;
+
   public static metadata: ObjectClassMetadata = {
     displayName: "GuideCoordinator",
     iconPath: "guide/coordinator-x",
@@ -56,7 +59,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
       t1 = solver.attr(attrs, "y1");
       t2 = solver.attr(attrs, "y2");
     }
-    const length = this.object.properties.count as number;
+    const length = (this.object.properties.count as number) - 2;
     this.getValueNames().map((name, index) => {
       const t = (1 + index) / (length + 1);
       solver.addLinear(
@@ -73,7 +76,13 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   public getValueNames(): string[] {
     const attrs = [];
-    for (let i = 0; i < this.object.properties.count; i++) {
+    for (
+      let i = 0;
+      i <
+      (this.object.properties.count as number) -
+        GuideCoordinatorClass.BaseGuidesCount;
+      i++
+    ) {
       const name = `value${i}`;
       attrs.push(name);
       if (this.state) {
@@ -108,7 +117,13 @@ export class GuideCoordinatorClass extends ChartElementClass<
         type: Specification.AttributeType.Number,
       },
     };
-    for (let i = 0; i < this.object.properties.count; i++) {
+    for (
+      let i = 0;
+      i <
+      (this.object.properties.count as number) -
+        GuideCoordinatorClass.BaseGuidesCount;
+      i++
+    ) {
       const name = `value${i}`;
       r[name] = {
         name,
@@ -190,15 +205,27 @@ export class GuideCoordinatorClass extends ChartElementClass<
     } as BoundingBox.Line;
   }
 
+  private getBasicValues() {
+    if (this.getAxis() === "x") {
+      return ["x1", "x2"];
+    }
+    if (this.getAxis() === "y") {
+      return ["y1", "y2"];
+    }
+  }
+
   public getSnappingGuides(): SnappingGuides.Description[] {
-    return this.getValueNames().map((name) => {
-      return {
-        type: this.getAxis(),
-        value: this.state.attributes[name],
-        attribute: name,
-        visible: true,
-      } as SnappingGuides.Axis;
-    });
+    return this.getValueNames()
+      .concat(this.getBasicValues())
+      .map((name) => {
+        return {
+          type: this.getAxis(),
+          value: this.state.attributes[name],
+          attribute: name,
+          visible: true,
+          visualType: SnappingGuidesVisualTypes.Coordinator,
+        } as SnappingGuides.Axis;
+      });
   }
 
   /** Get controls given current state */
@@ -214,8 +241,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
           {
             showUpdown: true,
             updownTick: 1,
-            updownRange: [1, 100],
-            minimum: 1,
+            updownRange: [3, 100],
+            minimum: 3,
             maximum: 100,
           }
         )

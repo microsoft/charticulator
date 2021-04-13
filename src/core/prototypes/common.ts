@@ -261,10 +261,17 @@ export namespace BoundingBox {
   }
 }
 
+export enum SnappingGuidesVisualTypes {
+  Guide,
+  Coordinator,
+  Point,
+}
+
 export namespace SnappingGuides {
   export interface Description {
     type: string;
     visible: boolean;
+    visualType?: SnappingGuidesVisualTypes;
   }
 
   export interface Axis extends Description {
