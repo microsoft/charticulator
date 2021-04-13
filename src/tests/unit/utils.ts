@@ -8,6 +8,78 @@ import { AppStoreState } from "../../app/stores";
 import { deepClone } from "../../core";
 import { DefaultAttributes } from "../../core/prototypes";
 
+const PNG = require("pngjs").PNG;
+const pixelmatch = require("pixelmatch");
+
+export const imagesDirectory = "src/tests/unit/images";
+
+export enum ImageType {
+  Base = "base",
+  Current = "current",
+  Diff = "diff",
+}
+
+export function getAllImageNames(testCaseName: string) {
+  return [
+    getImageName(testCaseName, ImageType.Current),
+    getImageName(testCaseName, ImageType.Base),
+    getImageName(testCaseName, ImageType.Diff),
+  ];
+}
+
+export function getImageName(
+  testCaseName: string,
+  imageType: ImageType,
+  additionalPostfix?: string
+) {
+  if (!fs.existsSync(imagesDirectory)) {
+    fs.mkdirSync(imagesDirectory);
+  }
+  const base = path.join(imagesDirectory, testCaseName.replace(/\W/g, "_"));
+
+  if (!fs.existsSync(base)) {
+    fs.mkdirSync(base);
+  }
+  return (
+    path.join(
+      base,
+      `${imageType}${additionalPostfix ? "-" + additionalPostfix : ""}`
+    ) + ".png"
+  );
+}
+
+export function checkDifference(
+  baseImagePath: string,
+  currentImagePath: string,
+  diffOutput: string
+) {
+  if (!fs.existsSync(baseImagePath)) {
+    fs.copyFileSync(currentImagePath, baseImagePath);
+  }
+  const baseImage = PNG.sync.read(fs.readFileSync(baseImagePath));
+  const currentImage = PNG.sync.read(fs.readFileSync(currentImagePath));
+  const { width, height } = baseImage;
+  const diff = new PNG({ width, height });
+
+  const res = pixelmatch(
+    baseImage.data,
+    currentImage.data,
+    diff.data,
+    width,
+    height,
+    {
+      threshold: 0.1,
+    }
+  );
+  console.log(res);
+  if (res > 100) {
+    fs.writeFileSync(diffOutput, PNG.sync.write(diff));
+    return true;
+  }
+
+  return false;
+}
+
 export function makeDefaultAttributes(state: AppStoreState) {
   const defaultAttributes: DefaultAttributes = {};
   const { elements } = state.chart;

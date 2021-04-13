@@ -9,3 +9,5 @@ docs/
 cert.pem
 key.pem
 .tmp
+src/tests/unit/images/**/diff.png
+src/tests/unit/images/**/current.png

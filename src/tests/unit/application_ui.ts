@@ -19,7 +19,15 @@ import { strings } from "../../strings";
 import { DragData } from "../../app";
 import { Dataset, Expression } from "../../core";
 import { AppStore } from "../../app/stores";
-import { loadJSON, shortTimeOut, longTimeOut } from "./utils";
+import {
+  loadJSON,
+  shortTimeOut,
+  longTimeOut,
+  getImageName,
+  ImageType,
+  checkDifference,
+  getAllImageNames,
+} from "./utils";
 import { expect } from "chai";
 
 declare var window: any;
@@ -42,16 +50,26 @@ describe("Charticulator application", () => {
   after(async () => {
     await browser.close();
   });
-  it("application ui loaded", async () => {
+  it("application ui loaded", async function () {
     await page.goto("http://localhost:4000");
-    await page.screenshot({ path: "example.png" });
+
+    const [currentImage, baseImage, diffImage] = getAllImageNames(
+      this.test.title
+    );
+    await page.screenshot({
+      path: currentImage,
+    });
+
+    const isNoDiffrenece = expect(
+      checkDifference(baseImage, currentImage, diffImage)
+    ).to.false;
 
     const isAppDefined = await page.evaluate(() => {
       return (window as any).application !== undefined;
     });
     const isDone = expect(isAppDefined).to.true;
-  }).timeout(shortTimeOut);
-  it("application loads bar chart", async () => {
+  }).timeout(longTimeOut);
+  it("application loads bar chart", async function () {
     const chartFilePath = "bar-chart.json";
     const chartFile = await loadJSON(chartFilePath);
     await page.evaluateHandle((chartFile) => {
@@ -64,6 +82,16 @@ describe("Charticulator application", () => {
 
     await page.click(".popup-container-modal .el-button-back");
 
-    await page.screenshot({ path: "example.png" });
+    const [currentImage, baseImage, diffImage] = getAllImageNames(
+      this.test.title
+    );
+
+    await page.screenshot({
+      path: currentImage,
+    });
+
+    const isNoDiffrenece = expect(
+      checkDifference(baseImage, currentImage, diffImage)
+    ).to.false;
   }).timeout(longTimeOut);
 });
