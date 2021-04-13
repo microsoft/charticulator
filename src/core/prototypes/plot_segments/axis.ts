@@ -1151,12 +1151,14 @@ export function buildAxisWidgets(
           widgets.push(
             m.row(
               "Tick Format",
-              m.inputText(
+              m.inputFormat(
                 {
                   property: axisProperty,
                   field: "tickFormat",
                 },
-                "(auto)"
+                {
+                  blank: "(auto)",
+                }
               )
             )
           );
@@ -1201,12 +1203,14 @@ export function buildAxisWidgets(
             widgets.push(
               m.row(
                 "Tick Format",
-                m.inputText(
+                m.inputFormat(
                   {
                     property: axisProperty,
                     field: "tickFormat",
                   },
-                  "(auto)"
+                  {
+                    blank: "(auto)",
+                  }
                 )
               )
             );
