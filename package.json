@@ -24,7 +24,7 @@
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
     "unit_test": "yarn wait-on http://localhost:4000 && mocha --sort dist/scripts/tests/unit",
     "pretest": "yarn run lint",
-    "test": "concurrently --success first -k \"yarn run server\" \"yarn run unit_test\"",
+    "test": "concurrently --success first -k \"yarn run start\" \"yarn run unit_test\"",
     "test_docker": "concurrently --success first -k \"yarn run server\" \"yarn run unit_test\"",
     "add_licenses": "license-check-and-add",
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
