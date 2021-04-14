@@ -27,6 +27,11 @@ import {
   ImageType,
   checkDifference,
   getAllImageNames,
+  checkTestCase,
+  closeStartMenuPanel,
+  loadChart,
+  ScreenshotArea,
+  waitSolver,
 } from "./utils";
 import { expect } from "chai";
 
@@ -38,6 +43,7 @@ const puppeteer = require("puppeteer");
 describe("Charticulator application", () => {
   let browser: Browser;
   let page: Page;
+
   before(async () => {
     browser = await puppeteer.launch({ headless: false });
     page = await browser.newPage();
@@ -50,48 +56,56 @@ describe("Charticulator application", () => {
   after(async () => {
     await browser.close();
   });
+
   it("application ui loaded", async function () {
     await page.goto("http://localhost:4000");
 
-    const [currentImage, baseImage, diffImage] = getAllImageNames(
-      this.test.title
-    );
-    await page.screenshot({
-      path: currentImage,
-    });
-
-    const isNoDiffrenece = expect(
-      checkDifference(baseImage, currentImage, diffImage)
-    ).to.false;
+    await checkTestCase(page, this.test.title);
 
     const isAppDefined = await page.evaluate(() => {
       return (window as any).application !== undefined;
     });
     const isDone = expect(isAppDefined).to.true;
+    await closeStartMenuPanel(page);
   }).timeout(longTimeOut);
+
   it("application loads bar chart", async function () {
     const chartFilePath = "bar-chart.json";
-    const chartFile = await loadJSON(chartFilePath);
-    await page.evaluateHandle((chartFile) => {
-      const action: Actions.Load = new window.Charticulator.Actions.Load(
-        chartFile.state
-      );
-      const application: Application = window.application;
-      application.appStore.dispatcher.dispatch(action);
-    }, chartFile);
 
-    await page.click(".popup-container-modal .el-button-back");
+    await loadChart(page, chartFilePath);
+    await waitSolver();
+    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+  }).timeout(longTimeOut);
 
-    const [currentImage, baseImage, diffImage] = getAllImageNames(
-      this.test.title
-    );
+  it("application loads nightingale chart", async function () {
+    const chartFilePath = "nightingale.chart";
 
-    await page.screenshot({
-      path: currentImage,
-    });
+    await loadChart(page, chartFilePath);
+    await waitSolver();
+    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+  }).timeout(longTimeOut);
 
-    const isNoDiffrenece = expect(
-      checkDifference(baseImage, currentImage, diffImage)
-    ).to.false;
+  it("application loads bump_chart chart", async function () {
+    const chartFilePath = "bump_chart.chart";
+
+    await loadChart(page, chartFilePath);
+    await waitSolver();
+    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+  }).timeout(longTimeOut);
+
+  it("application loads bubble_chart chart", async function () {
+    const chartFilePath = "bubble_chart.chart";
+
+    await loadChart(page, chartFilePath);
+    await waitSolver();
+    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+  }).timeout(longTimeOut);
+
+  it("application loads mushrooms chart", async function () {
+    const chartFilePath = "mushrooms.chart";
+
+    await loadChart(page, chartFilePath);
+    await waitSolver();
+    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
   }).timeout(longTimeOut);
 });

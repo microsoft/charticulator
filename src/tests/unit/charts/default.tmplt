@@ -1,0 +1,713 @@
+{
+  "specification": {
+    "_id": "z10t8po7e48",
+    "classID": "chart.rectangle",
+    "properties": {
+      "name": "Chart",
+      "backgroundColor": null,
+      "backgroundOpacity": 1,
+      "exposed": true
+    },
+    "mappings": {
+      "marginTop": {
+        "type": "value",
+        "value": 80
+      }
+    },
+    "glyphs": [
+      {
+        "_id": "nefisadcu0n",
+        "classID": "glyph.rectangle",
+        "properties": {
+          "name": "Glyph"
+        },
+        "table": "Temperature",
+        "marks": [
+          {
+            "_id": "iwoja3su1hc",
+            "classID": "mark.anchor",
+            "properties": {
+              "name": "Anchor"
+            },
+            "mappings": {
+              "x": {
+                "type": "parent",
+                "parentAttribute": "icx"
+              },
+              "y": {
+                "type": "parent",
+                "parentAttribute": "icy"
+              }
+            }
+          },
+          {
+            "_id": "d2rhr0ebfst",
+            "classID": "mark.rect",
+            "properties": {
+              "visible": true,
+              "strokeStyle": "solid",
+              "shape": "rectangle",
+              "allowFlipping": true,
+              "name": "Shape1",
+              "exposed": true
+            },
+            "mappings": {
+              "fill": {
+                "type": "scale",
+                "table": "Temperature",
+                "expression": "first(City)",
+                "valueType": "string",
+                "scale": "qbm5pig39q",
+                "attribute": "fill"
+              },
+              "strokeWidth": {
+                "type": "value",
+                "value": 1
+              },
+              "opacity": {
+                "type": "value",
+                "value": 1
+              },
+              "visible": {
+                "type": "value",
+                "value": true
+              },
+              "x1": {
+                "type": "parent",
+                "parentAttribute": "ix1"
+              },
+              "y1": {
+                "type": "parent",
+                "parentAttribute": "iy1"
+              },
+              "x2": {
+                "type": "parent",
+                "parentAttribute": "ix2"
+              },
+              "y2": {
+                "type": "parent",
+                "parentAttribute": "iy2"
+              },
+              "height": {
+                "type": "scale",
+                "table": "Temperature",
+                "expression": "avg(Value)",
+                "valueType": "number",
+                "scale": "57pi8urprc",
+                "attribute": "height"
+              }
+            }
+          }
+        ],
+        "mappings": {},
+        "constraints": []
+      }
+    ],
+    "elements": [
+      {
+        "_id": "dy4hzq8q5tp",
+        "classID": "plot-segment.cartesian",
+        "glyph": "nefisadcu0n",
+        "table": "Temperature",
+        "filter": null,
+        "mappings": {
+          "x1": {
+            "type": "parent",
+            "parentAttribute": "x1"
+          },
+          "y1": {
+            "type": "parent",
+            "parentAttribute": "y1"
+          },
+          "x2": {
+            "type": "parent",
+            "parentAttribute": "x2"
+          },
+          "y2": {
+            "type": "parent",
+            "parentAttribute": "y2"
+          }
+        },
+        "properties": {
+          "name": "PlotSegment1",
+          "visible": true,
+          "marginX1": 0,
+          "marginY1": 0,
+          "marginX2": 0,
+          "marginY2": 0,
+          "sublayout": {
+            "type": "dodge-x",
+            "order": null,
+            "ratioX": 0.1,
+            "ratioY": 0.1,
+            "align": {
+              "x": "start",
+              "y": "start"
+            },
+            "grid": {
+              "direction": "x",
+              "xCount": null,
+              "yCount": null
+            },
+            "packing": {
+              "gravityX": 0.1,
+              "gravityY": 0.1
+            }
+          },
+          "xData": {
+            "type": "categorical",
+            "expression": "first(Month)",
+            "rawExpression": "first(Month)",
+            "valueType": "string",
+            "gapRatio": 0.1,
+            "visible": true,
+            "side": "default",
+            "style": {
+              "tickColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "lineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0
+              },
+              "fontFamily": "Arial",
+              "fontSize": 12,
+              "tickSize": 5,
+              "wordWrap": false,
+              "gridlineStyle": "none",
+              "gridlineColor": {
+                "r": 234,
+                "g": 234,
+                "b": 234
+              },
+              "gridlineWidth": 1
+            },
+            "dataKind": "categorical",
+            "order": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ],
+            "autoDomainMax": true,
+            "autoDomainMin": true,
+            "categories": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ]
+          },
+          "exposed": true
+        }
+      },
+      {
+        "_id": "q8exwjdxh2e",
+        "classID": "mark.text",
+        "properties": {
+          "name": "Title",
+          "visible": true,
+          "alignment": {
+            "x": "middle",
+            "y": "top",
+            "xMargin": 0,
+            "yMargin": 30
+          },
+          "rotation": 0,
+          "exposed": true
+        },
+        "mappings": {
+          "x": {
+            "type": "parent",
+            "parentAttribute": "cx"
+          },
+          "y": {
+            "type": "parent",
+            "parentAttribute": "oy2"
+          },
+          "text": {
+            "type": "value",
+            "value": "demo"
+          },
+          "fontSize": {
+            "type": "value",
+            "value": 24
+          },
+          "color": {
+            "type": "value",
+            "value": {
+              "r": 0,
+              "g": 0,
+              "b": 0
+            }
+          }
+        }
+      }
+    ],
+    "scales": [
+      {
+        "_id": "57pi8urprc",
+        "classID": "scale.linear<number,number>",
+        "properties": {
+          "autoDomainMin": true,
+          "autoDomainMax": true,
+          "name": "Scale1",
+          "domainMin": 0,
+          "domainMax": 80,
+          "exposed": true
+        },
+        "mappings": {
+          "rangeMin": {
+            "type": "value",
+            "value": 0
+          }
+        },
+        "inputType": "number",
+        "outputType": "number"
+      },
+      {
+        "_id": "qbm5pig39q",
+        "classID": "scale.categorical<string,color>",
+        "properties": {
+          "enableTooltips": true,
+          "enableContextMenu": true,
+          "enableSelection": true,
+          "name": "Scale2",
+          "mapping": {
+            "City1": {
+              "r": 127,
+              "g": 201,
+              "b": 127
+            },
+            "City2": {
+              "r": 190,
+              "g": 174,
+              "b": 212
+            },
+            "City3": {
+              "r": 253,
+              "g": 192,
+              "b": 134
+            }
+          },
+          "autoDomainMax": true,
+          "autoDomainMin": true
+        },
+        "mappings": {},
+        "inputType": "string",
+        "outputType": "color"
+      }
+    ],
+    "scaleMappings": [
+      {
+        "type": "scale",
+        "table": "Temperature",
+        "expression": "avg(Value)",
+        "valueType": "number",
+        "scale": "57pi8urprc",
+        "attribute": "height"
+      },
+      {
+        "type": "scale",
+        "table": "Temperature",
+        "expression": "first(City)",
+        "valueType": "string",
+        "scale": "qbm5pig39q",
+        "attribute": "fill"
+      }
+    ],
+    "constraints": [],
+    "resources": []
+  },
+  "defaultAttributes": {
+    "iwoja3su1hc": {
+      "x": 0,
+      "y": 0
+    },
+    "d2rhr0ebfst": {
+      "x1": -0.8999999999999998,
+      "y1": -14.742785445628897,
+      "x2": 0.8999999999999998,
+      "y2": 14.742785445628897,
+      "cx": 0,
+      "cy": 0,
+      "width": 1.7999999999999996,
+      "height": 29.485570891257794,
+      "strokeWidth": 0.1,
+      "opacity": 0.1
+    },
+    "q8exwjdxh2e": {
+      "x": 0,
+      "y": 75,
+      "fontSize": 6,
+      "opacity": 0.25
+    }
+  },
+  "tables": [
+    {
+      "name": "Temperature",
+      "columns": [
+        {
+          "displayName": "Month",
+          "name": "Month",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "order": [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ],
+            "examples": "Jan, Feb, Mar"
+          }
+        },
+        {
+          "displayName": "City",
+          "name": "City",
+          "type": "string",
+          "metadata": {
+            "kind": "categorical",
+            "examples": "City1, City2, City3"
+          }
+        },
+        {
+          "displayName": "Value",
+          "name": "Value",
+          "type": "number",
+          "metadata": {
+            "kind": "numerical",
+            "format": ".1f",
+            "examples": "53.9, 79.7, 46.1"
+          }
+        }
+      ]
+    }
+  ],
+  "inference": [
+    {
+      "objectID": "dy4hzq8q5tp",
+      "dataSource": {
+        "table": "Temperature"
+      },
+      "axis": {
+        "expression": "first(Month)",
+        "type": "categorical",
+        "style": {
+          "tickColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "lineColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0
+          },
+          "fontFamily": "Arial",
+          "fontSize": 12,
+          "tickSize": 5,
+          "wordWrap": false,
+          "gridlineStyle": "none",
+          "gridlineColor": {
+            "r": 234,
+            "g": 234,
+            "b": 234
+          },
+          "gridlineWidth": 1
+        },
+        "order": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "rawExpression": "first(Month)",
+        "property": "xData"
+      },
+      "autoDomainMin": true,
+      "autoDomainMax": true
+    },
+    {
+      "objectID": "57pi8urprc",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.linear<number,number>",
+        "expressions": [
+          "avg(Value)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "Temperature"
+      }
+    },
+    {
+      "objectID": "qbm5pig39q",
+      "autoDomainMax": true,
+      "autoDomainMin": true,
+      "scale": {
+        "classID": "scale.categorical<string,color>",
+        "expressions": [
+          "first(City)"
+        ],
+        "properties": {
+          "mapping": "mapping"
+        }
+      },
+      "dataSource": {
+        "table": "Temperature"
+      }
+    }
+  ],
+  "properties": [
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickSize"
+        }
+      },
+      "type": "number",
+      "default": 5,
+      "displayName": "PlotSegment1/xData.style.tickSize"
+    },
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontSize"
+        }
+      },
+      "type": "number",
+      "default": 12,
+      "displayName": "PlotSegment1/xData.style.fontSize"
+    },
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "fontFamily"
+        }
+      },
+      "type": "font-family",
+      "default": "Arial",
+      "displayName": "PlotSegment1/xData.style.fontFamily"
+    },
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "lineColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.lineColor"
+    },
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "style",
+          "subfield": "tickColor"
+        }
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "PlotSegment1/xData.style.tickColor"
+    },
+    {
+      "objectID": "dy4hzq8q5tp",
+      "target": {
+        "property": {
+          "property": "xData",
+          "field": "categories"
+        }
+      },
+      "type": "enum",
+      "default": "descending",
+      "displayName": "PlotSegment1/xData.categories"
+    },
+    {
+      "objectID": "d2rhr0ebfst",
+      "target": {
+        "attribute": "visible"
+      },
+      "type": "boolean",
+      "default": true,
+      "displayName": "Shape1/visible"
+    },
+    {
+      "objectID": "d2rhr0ebfst",
+      "target": {
+        "attribute": "strokeWidth"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/strokeWidth"
+    },
+    {
+      "objectID": "d2rhr0ebfst",
+      "target": {
+        "property": "strokeStyle"
+      },
+      "type": "enum",
+      "default": "solid",
+      "displayName": "Shape1/strokeStyle"
+    },
+    {
+      "objectID": "d2rhr0ebfst",
+      "target": {
+        "attribute": "opacity"
+      },
+      "type": "number",
+      "default": 1,
+      "displayName": "Shape1/opacity"
+    },
+    {
+      "objectID": "q8exwjdxh2e",
+      "target": {
+        "attribute": "fontSize"
+      },
+      "type": "number",
+      "default": 24,
+      "displayName": "Title/fontSize"
+    },
+    {
+      "objectID": "q8exwjdxh2e",
+      "target": {
+        "attribute": "color"
+      },
+      "type": "color",
+      "default": "#000000",
+      "displayName": "Title/color"
+    },
+    {
+      "objectID": "q8exwjdxh2e",
+      "target": {
+        "attribute": "text"
+      },
+      "type": "text",
+      "default": "demo",
+      "displayName": "Title/text"
+    },
+    {
+      "objectID": "57pi8urprc",
+      "target": {
+        "property": "domainMin"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMin"
+    },
+    {
+      "objectID": "57pi8urprc",
+      "target": {
+        "property": "domainMax"
+      },
+      "type": "number",
+      "displayName": "Scale1/domainMax"
+    },
+    {
+      "objectID": "57pi8urprc",
+      "target": {
+        "attribute": "rangeMin"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMin"
+    },
+    {
+      "objectID": "57pi8urprc",
+      "target": {
+        "attribute": "rangeMax"
+      },
+      "type": "number",
+      "default": null,
+      "displayName": "Scale1/rangeMax"
+    },
+    {
+      "objectID": "z10t8po7e48",
+      "target": {
+        "attribute": "marginLeft"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginLeft"
+    },
+    {
+      "objectID": "z10t8po7e48",
+      "target": {
+        "attribute": "marginRight"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginRight"
+    },
+    {
+      "objectID": "z10t8po7e48",
+      "target": {
+        "attribute": "marginTop"
+      },
+      "type": "number",
+      "default": 80,
+      "displayName": "Chart/marginTop"
+    },
+    {
+      "objectID": "z10t8po7e48",
+      "target": {
+        "attribute": "marginBottom"
+      },
+      "type": "number",
+      "default": 50,
+      "displayName": "Chart/marginBottom"
+    }
+  ]
+}

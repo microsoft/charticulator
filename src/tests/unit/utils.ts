@@ -7,6 +7,8 @@ import { expect } from "chai";
 import { AppStoreState } from "../../app/stores";
 import { deepClone } from "../../core";
 import { DefaultAttributes } from "../../core/prototypes";
+import { Actions, Application } from "../../app";
+import { Page } from "puppeteer";
 
 const PNG = require("pngjs").PNG;
 const pixelmatch = require("pixelmatch");
@@ -17,6 +19,12 @@ export enum ImageType {
   Base = "base",
   Current = "current",
   Diff = "diff",
+}
+
+export enum ScreenshotArea {
+  Page = "page",
+  Canvas = "canvas",
+  Glyph = "glyph",
 }
 
 export function getAllImageNames(testCaseName: string) {
@@ -71,7 +79,6 @@ export function checkDifference(
       threshold: 0.1,
     }
   );
-  console.log(res);
   if (res > 100) {
     fs.writeFileSync(diffOutput, PNG.sync.write(diff));
     return true;
@@ -141,3 +148,44 @@ export async function waitSolver(): Promise<void> {
 export const longTimeOut = 1000000;
 export const mediumTimeOut = 100000;
 export const shortTimeOut = 3000;
+
+declare var window: any;
+
+export async function checkTestCase(
+  page: Page,
+  title: string,
+  area: ScreenshotArea = ScreenshotArea.Page
+) {
+  const [currentImage, baseImage, diffImage] = getAllImageNames(title);
+
+  if (area === ScreenshotArea.Page) {
+    await page.screenshot({
+      path: currentImage,
+    });
+  }
+  if (area === ScreenshotArea.Canvas) {
+    const canvasElement = await page.$(".chart-editor-view .canvas-view > g");
+    await canvasElement.screenshot({
+      path: currentImage,
+    });
+  }
+
+  const isNoDiffrenece = expect(
+    checkDifference(baseImage, currentImage, diffImage)
+  ).to.false;
+}
+
+export async function loadChart(page: Page, chartFilePath: string) {
+  const chartFile = await loadJSON(chartFilePath);
+  await page.evaluateHandle((chartFile) => {
+    const action: Actions.Load = new window.Charticulator.Actions.Load(
+      chartFile.state
+    );
+    const application: Application = window.application;
+    application.appStore.dispatcher.dispatch(action);
+  }, chartFile);
+}
+
+export async function closeStartMenuPanel(page: Page) {
+  await page.click(".popup-container-modal .el-button-back");
+}

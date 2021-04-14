@@ -22,7 +22,7 @@
     "ssl_start": "node build.js dev ssl_watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
-    "unit_test": "mocha dist/scripts/tests/unit",
+    "unit_test": "mocha --sort dist/scripts/tests/unit",
     "test": "yarn run lint && yarn run dev && yarn run unit_test",
     "add_licenses": "license-check-and-add",
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
