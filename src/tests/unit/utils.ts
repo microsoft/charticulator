@@ -192,13 +192,15 @@ export async function loadChart(page: Page, chartFilePath: string) {
 }
 
 export async function closeStartMenuPanel(page: Page) {
-  const element = await page.waitForSelector(
-    ".popup-container-modal .el-button-back",
-    {
-      timeout: 1000,
+  try {
+    const element = await page.waitForSelector(
+      ".popup-container-modal .el-button-back",
+      {
+        timeout: 1000,
+      }
+    );
+    if (element) {
+      await element.click();
     }
-  );
-  if (element) {
-    await element.click();
-  }
+  } catch (ex) {}
 }
