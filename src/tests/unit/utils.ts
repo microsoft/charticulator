@@ -146,7 +146,7 @@ export async function waitSolver(): Promise<void> {
 }
 
 export async function waitServer(): Promise<void> {
-  return new Promise<void>((resolve) => setTimeout(resolve, 10000));
+  return new Promise<void>((resolve) => setTimeout(resolve, 30000));
 }
 
 export const longTimeOut = 1000000;
@@ -193,6 +193,9 @@ export async function loadChart(page: Page, chartFilePath: string) {
 
 export async function closeStartMenuPanel(page: Page) {
   await page.evaluate(() => {
-    $(".popup-container-modal .el-button-back").click();
+    const menuPanel = window.$(".popup-container-modal .el-button-back");
+    if (menuPanel) {
+      menuPanel.click();
+    }
   });
 }
