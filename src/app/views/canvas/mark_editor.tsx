@@ -36,6 +36,7 @@ import { ContextedComponent } from "../../context_component";
 import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { PlotSegment } from "../../../core/specification";
+import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 
 export interface MarkEditorViewProps {
   height?: number;
@@ -733,7 +734,18 @@ export class SingleMarkView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className="mark-guide"
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
               x2={guide.value * this.state.zoom.scale + this.state.zoom.centerX}
@@ -746,7 +758,18 @@ export class SingleMarkView
           const guide = theGuide as Prototypes.SnappingGuides.Axis;
           return (
             <line
-              className="mark-guide"
+              className={classNames(
+                "mark-guide",
+                [
+                  "coordinator",
+                  info.guide.visualType ===
+                    SnappingGuidesVisualTypes.Coordinator,
+                ],
+                [
+                  "single",
+                  info.guide.visualType === SnappingGuidesVisualTypes.Guide,
+                ]
+              )}
               key={`k${idx}`}
               x1={0}
               x2={this.props.width}

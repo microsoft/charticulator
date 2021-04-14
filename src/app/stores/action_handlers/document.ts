@@ -273,6 +273,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
     this.chartState = this.chartManager.chartState;
     this.updatePlotSegments();
+    this.updateDataAxes();
     this.updateScales();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
@@ -314,6 +315,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
 
     this.updatePlotSegments();
+    this.updateDataAxes();
     this.updateScales();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
