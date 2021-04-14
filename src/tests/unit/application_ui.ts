@@ -63,6 +63,14 @@ describe("Charticulator application", function () {
 
   it("application ui loaded", async function () {
     await page.goto("http://localhost:4000");
+
+    await waitSolver();
+    const [currentImage, baseImage, diffImage] = getAllImageNames(
+      this.test.title + 2
+    );
+    page.screenshot({
+      path: currentImage,
+    });
     await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title);
 

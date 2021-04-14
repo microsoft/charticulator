@@ -154,6 +154,7 @@ export const mediumTimeOut = 100000;
 export const shortTimeOut = 3000;
 
 declare var window: any;
+declare var $: any;
 
 export async function checkTestCase(
   page: Page,
@@ -191,5 +192,7 @@ export async function loadChart(page: Page, chartFilePath: string) {
 }
 
 export async function closeStartMenuPanel(page: Page) {
-  await page.click(".popup-container-modal .el-button-back");
+  await page.evaluate(() => {
+    $(".popup-container-modal .el-button-back").click();
+  });
 }
