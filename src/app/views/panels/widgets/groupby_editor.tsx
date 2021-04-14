@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
+import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { Button, InputExpression, Select } from "./controls";
@@ -68,7 +69,7 @@ export class GroupByEditor extends React.Component<
               : null
           }
           table={options.table}
-          nullDescription="(none)"
+          nullDescription={strings.core.none}
           datasetStore={this.props.manager.store}
           kinds={[Specification.DataKind.Categorical]}
           onChange={(field) => {

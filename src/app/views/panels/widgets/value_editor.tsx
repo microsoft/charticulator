@@ -66,7 +66,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
   public render() {
     const value = this.props.value;
 
-    let placeholderText = this.props.placeholder || "(none)";
+    let placeholderText = this.props.placeholder || strings.core.none;
     if (this.props.defaultValue != null) {
       placeholderText = this.props.defaultValue.toString();
     }

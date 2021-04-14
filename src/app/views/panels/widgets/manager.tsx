@@ -397,7 +397,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             pass: true,
           };
         }}
-        placeholder="(none)"
+        placeholder={strings.core.none}
         onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
@@ -435,7 +435,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             pass: true,
           };
         }}
-        placeholder={options.blank || "(none)"}
+        placeholder={options.blank || strings.core.none}
         onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
@@ -890,7 +890,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             : null
                         }
                         useAggregation={true}
-                        nullDescription={"(none)"}
+                        nullDescription={strings.core.none}
                         nullNotHighlightable={true}
                         onChange={(value) => {
                           if (!value) {

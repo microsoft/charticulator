@@ -35,6 +35,8 @@ import {
   TemplateParameters,
 } from "../common";
 import { AttributeMap } from "../../specification";
+import { strings } from "../../../strings";
+import { string } from "../../expression";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -1158,7 +1160,7 @@ export function buildAxisWidgets(
                   field: "tickFormat",
                 },
                 {
-                  blank: "(auto)",
+                  blank: strings.core.auto,
                 }
               )
             )
@@ -1210,7 +1212,7 @@ export function buildAxisWidgets(
                     field: "tickFormat",
                   },
                   {
-                    blank: "(auto)",
+                    blank: strings.core.auto,
                   }
                 )
               )
