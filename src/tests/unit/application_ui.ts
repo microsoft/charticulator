@@ -65,12 +65,6 @@ describe("Charticulator application", function () {
     await page.goto("http://localhost:4000");
 
     await waitSolver();
-    const [currentImage, baseImage, diffImage] = getAllImageNames(
-      this.test.title + 2
-    );
-    page.screenshot({
-      path: currentImage,
-    });
     await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title);
 
@@ -85,6 +79,7 @@ describe("Charticulator application", function () {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(mediumTimeOut);
 
@@ -93,6 +88,7 @@ describe("Charticulator application", function () {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(mediumTimeOut);
 
@@ -101,6 +97,7 @@ describe("Charticulator application", function () {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(mediumTimeOut);
 
@@ -109,6 +106,7 @@ describe("Charticulator application", function () {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(mediumTimeOut);
 
@@ -117,6 +115,7 @@ describe("Charticulator application", function () {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(mediumTimeOut);
 }).timeout(longTimeOut * 3);
