@@ -146,7 +146,7 @@ export async function waitSolver(): Promise<void> {
 }
 
 export async function waitServer(): Promise<void> {
-  return new Promise<void>((resolve) => setTimeout(resolve, 1000));
+  return new Promise<void>((resolve) => setTimeout(resolve, 10000));
 }
 
 export const longTimeOut = 1000000;
