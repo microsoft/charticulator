@@ -33,6 +33,7 @@ import {
   ScreenshotArea,
   waitSolver,
   waitServer,
+  mediumTimeOut,
 } from "./utils";
 import { expect } from "chai";
 
@@ -41,7 +42,8 @@ declare var window: any;
 // Licensed under the MIT license.
 const puppeteer = require("puppeteer");
 
-describe("Charticulator application", () => {
+describe("Charticulator application", function () {
+  this.timeout(longTimeOut);
   let browser: Browser;
   let page: Page;
 
@@ -68,7 +70,7 @@ describe("Charticulator application", () => {
       return (window as any).application !== undefined;
     });
     const isDone = expect(isAppDefined).to.true;
-  }).timeout(longTimeOut);
+  }).timeout(mediumTimeOut);
 
   it("application loads bar chart", async function () {
     const chartFilePath = "bar-chart.json";
@@ -76,7 +78,7 @@ describe("Charticulator application", () => {
     await loadChart(page, chartFilePath);
     await waitSolver();
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
-  }).timeout(longTimeOut);
+  }).timeout(mediumTimeOut);
 
   it("application loads nightingale chart", async function () {
     const chartFilePath = "nightingale.chart";
@@ -84,7 +86,7 @@ describe("Charticulator application", () => {
     await loadChart(page, chartFilePath);
     await waitSolver();
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
-  }).timeout(longTimeOut);
+  }).timeout(mediumTimeOut);
 
   it("application loads bump_chart chart", async function () {
     const chartFilePath = "bump_chart.chart";
@@ -92,7 +94,7 @@ describe("Charticulator application", () => {
     await loadChart(page, chartFilePath);
     await waitSolver();
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
-  }).timeout(longTimeOut);
+  }).timeout(mediumTimeOut);
 
   it("application loads bubble_chart chart", async function () {
     const chartFilePath = "bubble_chart.chart";
@@ -100,7 +102,7 @@ describe("Charticulator application", () => {
     await loadChart(page, chartFilePath);
     await waitSolver();
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
-  }).timeout(longTimeOut);
+  }).timeout(mediumTimeOut);
 
   it("application loads mushrooms chart", async function () {
     const chartFilePath = "mushrooms.chart";
@@ -108,5 +110,5 @@ describe("Charticulator application", () => {
     await loadChart(page, chartFilePath);
     await waitSolver();
     await checkTestCase(page, this.test.title, ScreenshotArea.Page);
-  }).timeout(longTimeOut);
-});
+  }).timeout(mediumTimeOut);
+}).timeout(longTimeOut * 3);
