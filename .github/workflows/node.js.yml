@@ -31,7 +31,6 @@ jobs:
           source: config.template.yml
           target: config.yml
       - run: yarn test
-        continue-on-error: true
 
       - name: Images made by test
         if: ${{ failure() }}
