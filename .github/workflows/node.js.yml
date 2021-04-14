@@ -32,7 +32,7 @@ jobs:
           target: config.yml
       - run: yarn test
 
-        if: failed()
+        if: ${{ true }}
       - name: Images made by test
         uses: actions/download-artifact@v2
         with:
