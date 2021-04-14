@@ -34,6 +34,7 @@ jobs:
         continue-on-error: true
 
       - name: Images made by test
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: Images
