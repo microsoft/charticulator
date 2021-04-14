@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -168,32 +169,42 @@ export abstract class LegendClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widget = [
-      manager.sectionHeader("Labels"),
-      manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),
+      manager.sectionHeader(strings.objects.legend.labels),
       manager.row(
-        "Size",
+        strings.objects.font,
+        manager.inputFontFamily({ property: "fontFamily" })
+      ),
+      manager.row(
+        strings.objects.size,
         manager.inputNumber(
           { property: "fontSize" },
           { showUpdown: true, updownStyle: "font", updownTick: 2 }
         )
       ),
-      manager.row("Color", manager.inputColor({ property: "textColor" })),
       manager.row(
-        "Shape",
+        strings.objects.color,
+        manager.inputColor({ property: "textColor" })
+      ),
+      manager.row(
+        strings.objects.legend.markerShape,
         manager.inputSelect(
           { property: "markerShape" },
           {
             type: "dropdown",
             showLabel: true,
             icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: ["Rectangle", "Triangle", "Circle"],
+            labels: [
+              strings.toolbar.rectangle,
+              strings.toolbar.triangle,
+              strings.toolbar.ellipse,
+            ],
             options: ["rectangle", "triangle", "circle"],
           }
         )
       ),
-      manager.sectionHeader("Layout"),
+      manager.sectionHeader(strings.objects.legend.layout),
       manager.row(
-        "Alignment",
+        strings.alignment.alignment,
         manager.horizontal(
           [0, 0],
           null,
@@ -202,7 +213,11 @@ export abstract class LegendClass extends ChartElementClass {
             {
               type: "radio",
               icons: ["align/left", "align/x-middle", "align/right"],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               options: ["start", "middle", "end"],
             }
           ),
@@ -212,7 +227,11 @@ export abstract class LegendClass extends ChartElementClass {
               type: "radio",
               options: ["start", "middle", "end"],
               icons: ["align/bottom", "align/y-middle", "align/top"],
-              labels: ["Bottom", "Middle", "Top"],
+              labels: [
+                strings.alignment.bottom,
+                strings.alignment.middle,
+                strings.alignment.top,
+              ],
             }
           ),
           null

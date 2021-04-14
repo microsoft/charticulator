@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 // Special element: Anchor
 
+import { strings } from "../../../strings";
 import * as Specification from "../../specification";
 import { MappingType } from "../../specification";
 import {
@@ -98,6 +99,6 @@ export class AnchorElement extends MarkClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const props = this.object.properties;
-    return [manager.label("(drag the anchor in the glyph editor)")];
+    return [manager.label(strings.objects.anchor.label)];
   }
 }

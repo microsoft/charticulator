@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Geometry, Point, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../solver";
@@ -93,27 +94,30 @@ export class ImageElementClass extends EmphasizableMarkClass<
   ): Controls.Widget[] {
     const parentWidgets = super.getAttributePanelWidgets(manager);
     let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size"),
-      manager.mappingEditor("Width", "width", {
+      manager.sectionHeader(strings.objects.size),
+      manager.mappingEditor(strings.objects.width, "width", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true,
       }),
-      manager.mappingEditor("Height", "height", {
+      manager.mappingEditor(strings.objects.height, "height", {
         hints: { autoRange: true, startWithZero: "always" },
         acceptKinds: [Specification.DataKind.Numerical],
         defaultAuto: true,
       }),
-      manager.sectionHeader("Image"),
-      manager.mappingEditor("Image", "image", {}),
+      manager.sectionHeader(strings.toolbar.image),
+      manager.mappingEditor(strings.objects.icon.image, "image", {}),
       manager.row(
-        "Resize Mode",
+        strings.objects.image.imageMode,
         manager.inputSelect(
           { property: "imageMode" },
           {
             type: "dropdown",
             showLabel: true,
-            labels: ["Letterbox", "Stretch"],
+            labels: [
+              strings.objects.image.letterbox,
+              strings.objects.image.stretch,
+            ],
             options: ["letterbox", "stretch"],
           }
         )
@@ -121,7 +125,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       ...(this.object.properties.imageMode == "letterbox"
         ? [
             manager.row(
-              "Align",
+              strings.alignment.align,
               manager.horizontal(
                 [0, 1],
                 manager.inputSelect(
@@ -130,7 +134,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: ["Left", "Middle", "Right"],
+                    labels: [
+                      strings.alignment.left,
+                      strings.alignment.middle,
+                      strings.alignment.right,
+                    ],
                   }
                 ),
                 manager.inputSelect(
@@ -139,7 +147,11 @@ export class ImageElementClass extends EmphasizableMarkClass<
                     type: "radio",
                     options: ["start", "middle", "end"],
                     icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: ["Bottom", "Middle", "Top"],
+                    labels: [
+                      strings.alignment.bottom,
+                      strings.alignment.middle,
+                      strings.alignment.top,
+                    ],
                   }
                 )
               )
@@ -147,7 +159,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           ]
         : []),
       manager.row(
-        "Padding",
+        strings.alignment.padding,
         manager.horizontal(
           [0, 2, 0, 2],
           manager.label("x:"),
@@ -168,13 +180,13 @@ export class ImageElementClass extends EmphasizableMarkClass<
           )
         )
       ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+      manager.sectionHeader(strings.objects.style),
+      manager.mappingEditor(strings.objects.fill, "fill", {}),
+      manager.mappingEditor(strings.objects.stroke, "stroke", {}),
     ];
     if (this.object.mappings.stroke != null) {
       widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", {
+        manager.mappingEditor(strings.objects.strokeWidth, "strokeWidth", {
           hints: { rangeNumber: [0, 5] },
           defaultValue: 1,
           numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
@@ -182,12 +194,12 @@ export class ImageElementClass extends EmphasizableMarkClass<
       );
     }
     widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
-      manager.mappingEditor("Visibility", "visible", {
+      manager.mappingEditor(strings.objects.visibleOn.visibility, "visible", {
         defaultValue: true,
       }),
     ]);

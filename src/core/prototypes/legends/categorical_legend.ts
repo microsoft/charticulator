@@ -6,6 +6,7 @@ import * as Graphics from "../../graphics";
 
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
+import { strings } from "../../../strings";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -268,7 +269,7 @@ export class CategoricalLegendClass extends LegendClass {
     return [
       ...widgets,
       manager.row(
-        "Orientation",
+        strings.objects.legend.orientation,
         manager.horizontal(
           [0, 0],
           null,
@@ -278,7 +279,10 @@ export class CategoricalLegendClass extends LegendClass {
               type: "radio",
               showLabel: false,
               icons: ["sublayout/dodge-y", "sublayout/dodge-x"],
-              labels: ["Vertical", "Horizontal"],
+              labels: [
+                strings.objects.legend.vertical,
+                strings.objects.legend.horizontal,
+              ],
               options: ["vertical", "horizontal"],
             }
           )

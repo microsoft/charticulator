@@ -20,6 +20,7 @@ import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
 import { MappingType } from "../../specification";
+import { strings } from "../../../strings";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -650,28 +651,36 @@ export abstract class LinksClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widgets = [
-      manager.sectionHeader("Line Type"),
+      manager.sectionHeader(strings.objects.links.lineType),
       manager.row(
-        "Type",
+        strings.objects.links.type,
         manager.inputSelect(
           { property: "interpolationType" },
           {
             type: "dropdown",
             showLabel: true,
             options: ["line", "bezier", "circle"],
-            labels: ["Line", "Bezier", "Arc"],
+            labels: [
+              strings.objects.links.line,
+              strings.objects.links.bezier,
+              strings.objects.links.arc,
+            ],
           }
         )
       ),
       manager.row(
-        "Line mark type",
+        strings.objects.links.linkMarkType,
         manager.inputSelect(
           { property: "linkMarkType" },
           {
             type: "dropdown",
             showLabel: true,
             options: ["", "8", "1 10"],
-            labels: ["Solid", "Dashed", "Dotted"],
+            labels: [
+              strings.objects.links.solid,
+              strings.objects.links.dashed,
+              strings.objects.links.dotted,
+            ],
           }
         )
       ),
@@ -679,7 +688,7 @@ export abstract class LinksClass extends ChartElementClass {
     if (props.interpolationType == "bezier") {
       widgets.push(
         manager.row(
-          "Curveness",
+          strings.objects.links.curveness,
           manager.inputNumber(
             { property: "curveness" },
             {
@@ -691,15 +700,15 @@ export abstract class LinksClass extends ChartElementClass {
         )
       );
     }
-    widgets.push(manager.sectionHeader("Style"));
+    widgets.push(manager.sectionHeader(strings.objects.style));
     widgets.push(
-      manager.mappingEditor("Color", "color", {
+      manager.mappingEditor(strings.objects.color, "color", {
         table: props.linkTable && props.linkTable.table,
       })
     );
     // if (props.linkType == "line") {
     widgets.push(
-      manager.mappingEditor("Width", "strokeWidth", {
+      manager.mappingEditor(strings.objects.width, "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
@@ -708,7 +717,7 @@ export abstract class LinksClass extends ChartElementClass {
     );
     // }
     widgets.push(
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
