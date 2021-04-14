@@ -177,7 +177,7 @@ export async function checkTestCase(
 
 export async function loadChart(page: Page, chartFilePath: string) {
   const chartFile = await loadJSON(chartFilePath);
-  await page.evaluateHandle((chartFile) => {
+  await page.evaluateHandle((chartFile: any) => {
     const action: Actions.Load = new window.Charticulator.Actions.Load(
       chartFile.state
     );

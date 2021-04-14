@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,15 +19,26 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: yarn install --ignore-engines
-    - name: Copy config.yml
-      uses: canastro/copy-action@0.0.2
-      with:
-        source: config.template.yml
-        target: config.yml
-    - run: yarn test
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install --ignore-engines
+      - name: Copy config.yml
+        uses: canastro/copy-action@0.0.2
+        with:
+          source: config.template.yml
+          target: config.yml
+      - run: yarn test
+
+        if: failed()
+      - name: Images made by test
+        uses: actions/download-artifact@v2
+        with:
+          name: Images
+          path: src/tests/unit/images
+
+      - name: Images made by test
+        run: ls -R
+        working-directory: src/tests/unit/images
