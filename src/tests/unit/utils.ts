@@ -145,6 +145,10 @@ export async function waitSolver(): Promise<void> {
   return new Promise<void>((resolve) => setTimeout(resolve, 1000));
 }
 
+export async function waitServer(): Promise<void> {
+  return new Promise<void>((resolve) => setTimeout(resolve, 1000));
+}
+
 export const longTimeOut = 1000000;
 export const mediumTimeOut = 100000;
 export const shortTimeOut = 3000;

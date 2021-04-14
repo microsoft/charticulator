@@ -32,6 +32,7 @@ import {
   loadChart,
   ScreenshotArea,
   waitSolver,
+  waitServer,
 } from "./utils";
 import { expect } from "chai";
 
@@ -51,6 +52,7 @@ describe("Charticulator application", () => {
       height: 1080,
       width: 1920,
     });
+    await waitServer();
   });
 
   after(async () => {
@@ -73,7 +75,7 @@ describe("Charticulator application", () => {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
-    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+    await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(longTimeOut);
 
   it("application loads nightingale chart", async function () {
@@ -81,7 +83,7 @@ describe("Charticulator application", () => {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
-    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+    await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(longTimeOut);
 
   it("application loads bump_chart chart", async function () {
@@ -89,7 +91,7 @@ describe("Charticulator application", () => {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
-    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+    await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(longTimeOut);
 
   it("application loads bubble_chart chart", async function () {
@@ -97,7 +99,7 @@ describe("Charticulator application", () => {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
-    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+    await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(longTimeOut);
 
   it("application loads mushrooms chart", async function () {
@@ -105,6 +107,6 @@ describe("Charticulator application", () => {
 
     await loadChart(page, chartFilePath);
     await waitSolver();
-    await checkTestCase(page, this.test.title, ScreenshotArea.Canvas);
+    await checkTestCase(page, this.test.title, ScreenshotArea.Page);
   }).timeout(longTimeOut);
 });
