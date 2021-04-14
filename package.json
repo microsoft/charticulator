@@ -22,8 +22,9 @@
     "ssl_start": "node build.js dev ssl_watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prettify": "prettier \"./src/**/*.{ts,tsx}\" \"./sass/**/*.{scss,sass}\"",
-    "unit_test": "mocha --sort dist/scripts/tests/unit",
-    "test": "yarn run lint && yarn run dev && yarn run unit_test",
+    "unit_test": "yarn wait-on http://localhost:4000 && mocha --sort dist/scripts/tests/unit",
+    "pretest": "yarn run lint",
+    "test": "concurrently --success first -k \"yarn run start\" \"yarn run unit_test\"",
     "add_licenses": "license-check-and-add",
     "create_cert": "openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes",
     "typedoc": "typedoc --options ./typedoc.json"
@@ -91,6 +92,7 @@
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "chai": "^4.2.0",
+    "concurrently": "^6.0.2",
     "dts-bundle": "^0.7.3",
     "file-loader": "^2.0.0",
     "fs-extra": "^7.0.1",
@@ -115,6 +117,7 @@
     "typescript": "3.9.7",
     "uglify-es": "^3.3.9",
     "url-loader": "^1.0.1",
+    "wait-on": "^5.3.0",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
   },
