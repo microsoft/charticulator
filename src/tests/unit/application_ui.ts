@@ -45,7 +45,7 @@ describe("Charticulator application", () => {
   let page: Page;
 
   before(async () => {
-    browser = await puppeteer.launch({ headless: false });
+    browser = await puppeteer.launch({ headless: true });
     page = await browser.newPage();
     page.setViewport({
       height: 1080,
