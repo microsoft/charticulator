@@ -61,6 +61,7 @@ import {
   ChartTemplate,
   getFormat,
   getSortFunctionByData,
+  tickFormatParserExpression,
 } from "../../../../container";
 import { InputDate } from "./controls/input_date";
 import {
@@ -418,7 +419,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         validate={(value) => {
           if (value && value.trim() !== "") {
             try {
-              getFormat()(value?.replace(/\{([^}]+)\}/g, "$1"));
+              getFormat()(value?.replace(tickFormatParserExpression, "$1"));
               return {
                 pass: true,
                 formatted: value,

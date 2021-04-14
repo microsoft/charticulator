@@ -12,6 +12,7 @@ import {
   Color,
   Geometry,
   getFormat,
+  tickFormatParserExpression,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -173,7 +174,7 @@ export class AxisRenderer {
     } else {
       // {.0%}
       return (value: number) => {
-        return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
+        return tickFormat.replace(tickFormatParserExpression, (_, spec) => {
           return getFormat()(spec)(value);
         });
       };
