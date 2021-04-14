@@ -79,7 +79,8 @@ export function checkDifference(
       threshold: 0.1,
     }
   );
-  if (res > 100) {
+  if (res > ((width * height) / 100) * 5) {
+    // if more that 5% of pixels are different
     fs.writeFileSync(diffOutput, PNG.sync.write(diff));
     return true;
   }
