@@ -59,14 +59,13 @@ describe("Charticulator application", () => {
 
   it("application ui loaded", async function () {
     await page.goto("http://localhost:4000");
-
+    await closeStartMenuPanel(page);
     await checkTestCase(page, this.test.title);
 
     const isAppDefined = await page.evaluate(() => {
       return (window as any).application !== undefined;
     });
     const isDone = expect(isAppDefined).to.true;
-    await closeStartMenuPanel(page);
   }).timeout(longTimeOut);
 
   it("application loads bar chart", async function () {

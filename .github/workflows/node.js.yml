@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 15.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,11 +34,7 @@ jobs:
         continue-on-error: true
 
       - name: Images made by test
-        uses: actions/download-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: Images
           path: src/tests/unit/images
-
-      - name: Images made by test
-        run: ls -R
-        working-directory: src/tests/unit/images
