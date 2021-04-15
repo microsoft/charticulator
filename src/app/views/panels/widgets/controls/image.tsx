@@ -9,6 +9,7 @@ import { PopupView } from "../../../../controllers/popup_controller";
 
 import { classNames } from "../../../../utils";
 import { Button } from "./button";
+import { strings } from "../../../../../strings";
 
 export interface ImageDescription {
   src: string;
@@ -133,7 +134,7 @@ export class InputImage extends ContextedComponent<
             />,
             <span key="text" className="el-text-wrapper">
               <span className="el-text">
-                {isNone ? "(none)" : imageDisplayURL}
+                {isNone ? strings.core.none : imageDisplayURL}
               </span>
             </span>,
           ]
@@ -397,7 +398,7 @@ export class InputImageProperty extends InputImage {
             />,
             <ImageUploader
               key={0}
-              placeholder={isNone ? "(none)" : imageDisplayURL}
+              placeholder={isNone ? strings.core.none : imageDisplayURL}
               focusOnMount={true}
               onUpload={(images) => {
                 if (images.length == 1) {

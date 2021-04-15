@@ -25,10 +25,11 @@ import { DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall, Variable } from "../../../../core/expression";
+import { FunctionCall, string, Variable } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";
+import { strings } from "../../../../strings";
 
 export interface MappingEditorProps {
   parent: WidgetManager;
@@ -212,7 +213,9 @@ export class MappingEditor extends React.Component<
   }
 
   private renderValueEditor(value: Specification.AttributeValue) {
-    let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
+    let placeholderText = this.props.options.defaultAuto
+      ? strings.core.auto
+      : strings.core.none;
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
@@ -632,7 +635,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
               ? { table: options.table, expression: currentExpression }
               : null
           }
-          nullDescription={"(none)"}
+          nullDescription={strings.core.none}
           nullNotHighlightable={true}
           onChange={(value) => {
             if (value != null) {

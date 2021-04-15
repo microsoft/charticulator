@@ -286,7 +286,11 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
-    this.emit(AppStore.EVENT_GRAPHICS);
+    try {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 
   public renderSVG() {

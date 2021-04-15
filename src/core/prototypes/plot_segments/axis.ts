@@ -12,6 +12,7 @@ import {
   Color,
   Geometry,
   getFormat,
+  tickFormatParserExpression,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -34,6 +35,8 @@ import {
   TemplateParameters,
 } from "../common";
 import { AttributeMap } from "../../specification";
+import { strings } from "../../../strings";
+import { string } from "../../expression";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -173,7 +176,7 @@ export class AxisRenderer {
     } else {
       // {.0%}
       return (value: number) => {
-        return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
+        return tickFormat.replace(tickFormatParserExpression(), (_, spec) => {
           return getFormat()(spec)(value);
         });
       };
@@ -1151,12 +1154,14 @@ export function buildAxisWidgets(
           widgets.push(
             m.row(
               "Tick Format",
-              m.inputText(
+              m.inputFormat(
                 {
                   property: axisProperty,
                   field: "tickFormat",
                 },
-                "(auto)"
+                {
+                  blank: strings.core.auto,
+                }
               )
             )
           );
@@ -1201,12 +1206,14 @@ export function buildAxisWidgets(
             widgets.push(
               m.row(
                 "Tick Format",
-                m.inputText(
+                m.inputFormat(
                   {
                     property: axisProperty,
                     field: "tickFormat",
                   },
-                  "(auto)"
+                  {
+                    blank: strings.core.auto,
+                  }
                 )
               )
             );

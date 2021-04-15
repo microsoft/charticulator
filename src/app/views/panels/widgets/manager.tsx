@@ -57,7 +57,12 @@ import {
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
-import { ChartTemplate, getSortFunctionByData } from "../../../../container";
+import {
+  ChartTemplate,
+  getFormat,
+  getSortFunctionByData,
+  tickFormatParserExpression,
+} from "../../../../container";
 import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
@@ -74,6 +79,7 @@ import {
 import { ScaleValueSelector } from "../scale_value_selector";
 import { DataExpression } from "../../../actions/drag_data";
 import { strings } from "../../../../strings";
+import { InputFormat } from "./controls/input_format";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -391,7 +397,45 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             pass: true,
           };
         }}
-        placeholder="(none)"
+        placeholder={strings.core.none}
+        onEnter={(value) => {
+          if (!value || value.trim() == "") {
+            this.emitSetProperty(property, null);
+          } else {
+            this.emitSetProperty(property, value);
+          }
+          return true;
+        }}
+      />
+    );
+  }
+  public inputFormat(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputFormatOptions = {}
+  ) {
+    return (
+      <InputFormat
+        defaultValue={this.getPropertyValue(property) as string}
+        validate={(value) => {
+          if (value && value.trim() !== "") {
+            try {
+              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              return {
+                pass: true,
+                formatted: value,
+              };
+            } catch (ex) {
+              return {
+                pass: false,
+                error: "Invalid format",
+              };
+            }
+          }
+          return {
+            pass: true,
+          };
+        }}
+        placeholder={options.blank || strings.core.none}
         onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
@@ -846,7 +890,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             : null
                         }
                         useAggregation={true}
-                        nullDescription={"(none)"}
+                        nullDescription={strings.core.none}
                         nullNotHighlightable={true}
                         onChange={(value) => {
                           if (!value) {
