@@ -176,7 +176,7 @@ export class AxisRenderer {
     } else {
       // {.0%}
       return (value: number) => {
-        return tickFormat.replace(tickFormatParserExpression, (_, spec) => {
+        return tickFormat.replace(tickFormatParserExpression(), (_, spec) => {
           return getFormat()(spec)(value);
         });
       };
