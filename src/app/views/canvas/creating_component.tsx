@@ -469,6 +469,7 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
     const mappings: { [name: string]: [number, Specification.Mapping] } = {};
     const attributes: { [name: string]: Specification.AttributeValue } = {};
     for (const attr in desc.mapping) {
+      // eslint-disable-next-line
       if (inMappings.hasOwnProperty(attr)) {
         const name = desc.mapping[attr];
         mappings[name] = inMappings[attr];
@@ -492,9 +493,8 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
   public render() {
     const desc = this.props.description;
     let mode = "point";
-    let onCreate: (
-      ...args: [number, Specification.Mapping][]
-    ) => void = this.props.onCancel;
+    let onCreate: (...args: [number, Specification.Mapping][]) => void = this
+      .props.onCancel;
 
     function autoSwap(
       a: [number, Specification.Mapping],

@@ -77,7 +77,7 @@ export interface PolarObject extends Specification.PlotSegment {
   properties: PolarProperties;
 }
 
-export let icons: Region2DConfigurationIcons = {
+export const icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
   xMiddleIcon: "align/x-middle",
   xMaxIcon: "align/right",
@@ -422,22 +422,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const {
-      x1,
-      y1,
-      x2,
-      y2,
-      cx,
-      cy,
-      a1r1x,
-      a1r1y,
-      a1r2x,
-      a1r2y,
-      a2r1x,
-      a2r1y,
-      a2r2x,
-      a2r2y,
-    } = attrs;
+    const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
       <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
       <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
@@ -445,7 +430,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
       <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
       <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
-    ]
+    ];
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Group {
@@ -455,7 +440,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     const { cx } = attrs;
     const { cy } = attrs;
-    const [angularMode, radialMode] = this.getAxisModes();
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
@@ -638,10 +622,10 @@ export class PolarPlotSegment extends PlotSegmentClass<
     ];
   }
 
+  // eslint-disable-next-line
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2, cx, cy } = attrs;
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
@@ -783,7 +767,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       return null;
     }
     const attrs = this.state.attributes;
-    const props = this.object.properties;
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,

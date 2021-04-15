@@ -14,7 +14,7 @@ export function initialize() {
   return LSCGSolver.initialize();
 }
 
-export let Matrix = LSCGSolver.Matrix;
+export const Matrix = LSCGSolver.Matrix;
 
 const strengthMap: { [name in ConstraintStrength]: number } = {
   [ConstraintStrength.HARD]: LSCGSolver.ConstraintSolver.STRENGTH_HARD,
@@ -97,8 +97,8 @@ export class WASMSolver extends ConstraintSolver {
   public addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: ([number, WASMSolverVariable])[],
-    rhs?: ([number, WASMSolverVariable])[]
+    lhs: [number, WASMSolverVariable][],
+    rhs?: [number, WASMSolverVariable][]
   ): void {
     const st = strengthMap[strength];
     const weights = [];
@@ -120,8 +120,8 @@ export class WASMSolver extends ConstraintSolver {
   public addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: ([number, WASMSolverVariable])[],
-    rhs?: ([number, WASMSolverVariable])[]
+    lhs: [number, WASMSolverVariable][],
+    rhs?: [number, WASMSolverVariable][]
   ): void {
     const st = strengthMap[strength];
     const weights = [];

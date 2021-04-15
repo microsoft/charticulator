@@ -9,6 +9,7 @@ import {
 import { snapToAttribute } from "../../prototypes/update_attribute";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
+// eslint-disable-next-line
 export interface PolarCoordinatorPluginOptions {}
 
 // Converts Polar coordinates to cartesian coordinates
@@ -16,10 +17,10 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public an: (Variable)[];
+  public an: Variable[];
   attrs: PolarGuideCoordinatorAttributesExtend;
-  radialVarable: (Variable)[];
-  angleVarable: (Variable)[];
+  radialVarable: Variable[];
+  angleVarable: Variable[];
   chartConstraints: Specification.Constraint[];
   coordinatoObjectID: string;
   chartMananger: ChartStateManager;
@@ -28,8 +29,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: (Variable)[],
-    angleVarable: (Variable)[],
+    radialVarable: Variable[],
+    angleVarable: Variable[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatoObjectID: string,

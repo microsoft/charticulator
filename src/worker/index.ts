@@ -18,12 +18,17 @@ export interface CharticulatorWorkerInterface {
     chart: Specification.Chart,
     chartState: Specification.ChartState,
     dataset: Dataset.Dataset,
-    preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][],
+    preSolveValues: [
+      Solver.ConstraintStrength,
+      Specification.AttributeMap,
+      string,
+      number
+    ][],
     mappingOnly: boolean
   ) => Promise<any> | any;
 }
 
-/** 
+/**
  * The representation of the background worker. This is used from the main process.
  */
 export class CharticulatorWorker
@@ -37,11 +42,17 @@ export class CharticulatorWorker
     await this.rpc("initialize", config);
   }
 
+  // eslint-disable-next-line
   public async solveChartConstraints(
     chart: Specification.Chart,
     chartState: Specification.ChartState,
     dataset: Dataset.Dataset,
-    preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][],
+    preSolveValues: [
+      Solver.ConstraintStrength,
+      Specification.AttributeMap,
+      string,
+      number
+    ][],
     mappingOnly: boolean = false
   ) {
     const result: Specification.ChartState = await this.rpc(
@@ -91,8 +102,9 @@ export class CharticulatorWorker
       src: Specification.AttributeMap
     ) => {
       for (const key in src) {
+        // eslint-disable-next-line
         if (src.hasOwnProperty(key)) {
-          dest[key] = src[key];
+          dest[key] = src[key] as any;
         }
       }
     };
@@ -107,7 +119,9 @@ export class CharticulatorWorker
       // Is this a plot segment
       if (Prototypes.isType(chart.elements[i].classID, "plot-segment")) {
         const plotSegmentState = <Specification.PlotSegmentState>elementState;
-        const resultPlotSegmentState = <Specification.PlotSegmentState>resultElementState;
+        const resultPlotSegmentState = <Specification.PlotSegmentState>(
+          resultElementState
+        );
         for (const [glyphState, resultGlyphState] of zipArray(
           plotSegmentState.glyphs,
           resultPlotSegmentState.glyphs

@@ -139,6 +139,7 @@ export abstract class ObjectClass<
     };
     obj.properties = deepClone(this.defaultProperties);
     for (const attr in this.defaultMappingValues) {
+      // eslint-disable-next-line
       if (this.defaultMappingValues.hasOwnProperty(attr)) {
         const value = deepClone(this.defaultMappingValues[attr]);
         obj.mappings[attr] = <Specification.ValueMapping>{
@@ -238,4 +239,4 @@ export class ObjectClasses {
   }
 }
 
-export let isType = ObjectClasses.isType;
+export const isType = ObjectClasses.isType;

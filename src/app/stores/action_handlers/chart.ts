@@ -101,6 +101,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
 
     for (const key in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(key)) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
@@ -180,6 +181,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     const layoutState = this.chartState.elements[idx];
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -301,6 +303,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }

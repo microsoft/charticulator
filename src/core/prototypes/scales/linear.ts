@@ -9,7 +9,6 @@ import { Colorspace } from "../../specification/types";
 import {
   AttributeDescription,
   Controls,
-  DataMappingHints,
   TemplateParameters,
   ObjectClassMetadata,
 } from "../common";
@@ -66,7 +65,7 @@ export class LinearScale extends ScaleClass<
     const x2 = props.domainMax;
     const y1 = attrs.rangeMin;
     const y2 = attrs.rangeMax;
-    return (((<number>data) - x1) / (x2 - x1)) * (y2 - y1) + y1;
+    return ((<number>data - x1) / (x2 - x1)) * (y2 - y1) + y1;
   }
 
   public buildConstraint(
@@ -78,7 +77,7 @@ export class LinearScale extends ScaleClass<
     const props = this.object.properties;
     const x1 = props.domainMin;
     const x2 = props.domainMax;
-    const k = ((<number>data) - x1) / (x2 - x1);
+    const k = (<number>data - x1) / (x2 - x1);
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -239,7 +238,7 @@ function getDefaultGradient(): Specification.Types.ColorGradient {
 
 export class LinearColorScale extends ScaleClass<
   LinearColorScaleProperties,
-  {}
+  any
 > {
   public static classID = "scale.linear<number,color>";
   public static type = "scale";
@@ -266,17 +265,23 @@ export class LinearColorScale extends ScaleClass<
     const props = this.object.properties;
     const x1 = props.domainMin;
     const x2 = props.domainMax;
-    const t = ((<number>data) - x1) / (x2 - x1);
+    const t = (<number>data - x1) / (x2 - x1);
     const c = interpolateColors(props.range.colors, props.range.colorspace);
     return c(t);
   }
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: Specification.DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ) {}
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -344,7 +349,7 @@ export interface LinearBooleanScaleProperties extends LinearScaleProperties {
 
 export class LinearBooleanScale extends ScaleClass<
   LinearBooleanScaleProperties,
-  {}
+  any
 > {
   public static classID = "scale.linear<number,boolean>";
   public static type = "scale";
@@ -385,16 +390,23 @@ export class LinearBooleanScale extends ScaleClass<
     }
   }
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: Specification.DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ) {}
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
     column: Specification.DataValue[],
+    // eslint-disable-next-line
     options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;

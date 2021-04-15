@@ -166,7 +166,7 @@ export interface Region2DConfiguration {
 export class CrossFitter {
   private solver: ConstraintSolver;
   private mode: "min" | "max";
-  private candidates: ([Variable, [number, Variable][], number])[];
+  private candidates: [Variable, [number, Variable][], number][];
 
   constructor(solver: ConstraintSolver, mode: "min" | "max") {
     this.solver = solver;
@@ -180,7 +180,7 @@ export class CrossFitter {
 
   public addComplex(
     src: Variable,
-    dst: ([number, Variable])[],
+    dst: [number, Variable][],
     dstBias: number = 0
   ) {
     this.candidates.push([src, dst, dstBias]);
@@ -277,7 +277,7 @@ export class Region2DConstraintBuilder {
   }
 
   public groupMarksByCategories(
-    categories: ({ expression: string; categories: string[] })[]
+    categories: { expression: string; categories: string[] }[]
   ): number[][] {
     // Prepare categories
     const categoriesParsed = categories.map((c) => {
@@ -406,7 +406,9 @@ export class Region2DConstraintBuilder {
     );
   }
 
-  /** Map elements according to numerical/categorical mapping */
+  /**
+   * Map elements according to numerical/categorical mapping
+   */
   public numericalMapping(axis: "x" | "y"): void {
     const solver = this.solver;
     const state = this.plotSegment.state;
@@ -587,12 +589,12 @@ export class Region2DConstraintBuilder {
             const [t1, t2] = axis.ranges[cindex];
 
             // t1 * x2 = (1 - t1) * x2
-            const vx1Expr = <([number, Variable])[]>[
+            const vx1Expr = <[number, Variable][]>[
               [t1, x2],
               [1 - t1, x1],
             ];
             // t2 * x2 = (1 - t2) * x2
-            const vx2Expr = <([number, Variable])[]>[
+            const vx2Expr = <[number, Variable][]>[
               [t2, x2],
               [1 - t2, x1],
             ];
@@ -645,11 +647,11 @@ export class Region2DConstraintBuilder {
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
             const [t1, t2] = axis.ranges[cindex];
 
-            const vy1Expr = <([number, Variable])[]>[
+            const vy1Expr = <[number, Variable][]>[
               [t1, y2],
               [1 - t1, y1],
             ];
-            const vy2Expr = <([number, Variable])[]>[
+            const vy2Expr = <[number, Variable][]>[
               [t2, y2],
               [1 - t2, y1],
             ];
@@ -707,20 +709,20 @@ export class Region2DConstraintBuilder {
             for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
               const [tx1, tx2] = xAxis.ranges[xIndex];
 
-              const vx1Expr = <([number, Variable])[]>[
+              const vx1Expr = <[number, Variable][]>[
                 [tx1, x2],
                 [1 - tx1, x1],
               ];
-              const vx2Expr = <([number, Variable])[]>[
+              const vx2Expr = <[number, Variable][]>[
                 [tx2, x2],
                 [1 - tx2, x1],
               ];
 
-              const vy1Expr = <([number, Variable])[]>[
+              const vy1Expr = <[number, Variable][]>[
                 [ty1, y2],
                 [1 - ty1, y1],
               ];
-              const vy2Expr = <([number, Variable])[]>[
+              const vy2Expr = <[number, Variable][]>[
                 [ty2, y2],
                 [1 - ty2, y1],
               ];
@@ -1318,12 +1320,12 @@ export class Region2DConstraintBuilder {
       switch (direction) {
         case "x":
           {
-            const x1WithGap: ([number, Variable])[] = [
+            const x1WithGap: [number, Variable][] = [
               [1, x1],
               [dodgeGapOffset, x2],
               [-dodgeGapOffset, x1],
             ];
-            const x2WithGap: ([number, Variable])[] = [
+            const x2WithGap: [number, Variable][] = [
               [1, x2],
               [dodgeGapOffset, x1],
               [-dodgeGapOffset, x2],
@@ -1372,12 +1374,12 @@ export class Region2DConstraintBuilder {
           break;
         case "y":
           {
-            const y1WithGap: ([number, Variable])[] = [
+            const y1WithGap: [number, Variable][] = [
               [1, y1],
               [dodgeGapOffset, y2],
               [-dodgeGapOffset, y1],
             ];
-            const y2WithGap: ([number, Variable])[] = [
+            const y2WithGap: [number, Variable][] = [
               [1, y2],
               [dodgeGapOffset, y1],
               [-dodgeGapOffset, y2],
@@ -1551,19 +1553,19 @@ export class Region2DConstraintBuilder {
         if (alignY == "middle") {
           yi = yi + (yCount - yMax) / 2;
         }
-        const cellX1: ([number, Variable])[] = [
+        const cellX1: [number, Variable][] = [
           [(xi / xCount) * (1 + gapRatioX), x2],
           [1 - (xi / xCount) * (1 + gapRatioX), x1],
         ];
-        const cellX2: ([number, Variable])[] = [
+        const cellX2: [number, Variable][] = [
           [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
           [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1],
         ];
-        const cellY1: ([number, Variable])[] = [
+        const cellY1: [number, Variable][] = [
           [(yi / yCount) * (1 + gapRatioY), y2],
           [1 - (yi / yCount) * (1 + gapRatioY), y1],
         ];
-        const cellY2: ([number, Variable])[] = [
+        const cellY2: [number, Variable][] = [
           [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
           [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1],
         ];
@@ -1668,13 +1670,13 @@ export class Region2DConstraintBuilder {
             <number>state1.attributes.y1,
             <number>state1.attributes.y2,
             <number>state2.attributes.y1,
-            <number>state2.attributes.y2 
+            <number>state2.attributes.y2
           );
           const maxY = Math.max(
             <number>state1.attributes.y1,
             <number>state1.attributes.y2,
             <number>state2.attributes.y1,
-            <number>state2.attributes.y2 
+            <number>state2.attributes.y2
           );
           handles.push({
             type: "gap",
@@ -1774,7 +1776,7 @@ export class Region2DConstraintBuilder {
           if (e.attributes.size != null) {
             radius = Math.max(
               radius,
-              Math.sqrt((<number>e.attributes.size) / Math.PI)
+              Math.sqrt(<number>e.attributes.size / Math.PI)
             );
           } else {
             const w = <number>e.attributes.width;
@@ -1825,7 +1827,7 @@ export class Region2DConstraintBuilder {
           if (e.attributes.size != null) {
             radius = Math.max(
               radius,
-              Math.sqrt((<number>e.attributes.size) / Math.PI)
+              Math.sqrt(<number>e.attributes.size / Math.PI)
             );
           } else {
             const w = <number>e.attributes.width;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-/** 
+/**
  * The page side of the work instance, handles RPC and Tasks
  */
 export class WorkerRPC {
@@ -15,7 +15,6 @@ export class WorkerRPC {
       const msg = event.data;
       if (this.idCallbacks.has(msg.instanceID)) {
         this.idCallbacks.get(msg.instanceID)(msg);
-      } else {
       }
     };
   }
@@ -49,20 +48,23 @@ export class WorkerRPC {
 }
 
 export class WorkerHostProcess {
-  private rpcMethods = new Map<string, Function>();
+  private rpcMethods = new Map<string, (...args: any) => void | Promise<any>>();
 
   constructor() {
     onmessage = (event) => {
       const message = event.data;
-      this.handleMessage(message, event);
+      this.handleMessage(message);
     };
   }
 
-  public registerRPC(path: string, method: Function) {
+  public registerRPC(
+    path: string,
+    method: (...args: any) => void | Promise<any>
+  ) {
     this.rpcMethods.set(path, method);
   }
 
-  private handleMessage(message: any, event: MessageEvent) {
+  private handleMessage(message: any) {
     switch (message.type) {
       case "rpc-call":
         {

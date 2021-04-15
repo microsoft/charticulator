@@ -570,6 +570,7 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
+    // eslint-disable-next-line
     if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
@@ -612,7 +613,12 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][] = [];
+  public preSolveValues: [
+    Solver.ConstraintStrength,
+    Specification.AttributeMap,
+    string,
+    number
+  ][] = [];
   public addPresolveValue(
     strength: Solver.ConstraintStrength,
     state: Specification.AttributeMap,
@@ -746,6 +752,7 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
+          // eslint-disable-next-line
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }

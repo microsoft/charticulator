@@ -503,6 +503,7 @@ export class SingleMarkView
           const opt = JSON.parse(data.options);
           this.scheduleAutoFit();
           for (const key in opt) {
+            // eslint-disable-next-line
             if (opt.hasOwnProperty(key)) {
               attributes[key] = opt[key];
             }
@@ -1379,9 +1380,7 @@ export class SingleMarkView
         />
       );
     } else {
-      let onCreate: (
-        ...args: [number, Specification.Mapping][]
-      ) => void = null;
+      let onCreate: (...args: [number, Specification.Mapping][]) => void = null;
       let mode: string = "point";
       const addGuide = (
         arg: [number, Specification.Mapping],

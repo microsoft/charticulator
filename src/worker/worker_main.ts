@@ -24,14 +24,12 @@ export class CharticulatorWorkerProcess
     chart: Core.Specification.Chart,
     chartState: Core.Specification.ChartState,
     dataset: Core.Dataset.Dataset,
-    preSolveValues: 
-    [
+    preSolveValues: [
       Core.Solver.ConstraintStrength,
       Core.Specification.AttributeMap,
       string,
       number
-    ][]
-    = null,
+    ][] = null,
     mappingOnly: boolean = false
   ) {
     if (preSolveValues != null && preSolveValues.length > 0) {
@@ -75,5 +73,3 @@ export class CharticulatorWorkerProcess
     return chartState;
   }
 }
-
-const worker = new CharticulatorWorkerProcess();

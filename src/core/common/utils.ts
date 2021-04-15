@@ -58,6 +58,7 @@ export function deepClone<T>(obj: T): T {
 export function shallowClone<T>(obj: T): T {
   const r = <T>{};
   for (const key in obj) {
+    // eslint-disable-next-line
     if (obj.hasOwnProperty(key)) {
       r[key] = obj[key];
     }
@@ -204,7 +205,9 @@ export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
     obj = <T>{};
   }
   for (const key in defaults) {
+    // eslint-disable-next-line
     if (defaults.hasOwnProperty(key)) {
+      // eslint-disable-next-line
       if (!obj.hasOwnProperty(key)) {
         obj[key] = defaults[key];
       }
@@ -422,6 +425,7 @@ export class KeyNameMap<KeyType, ValueType> {
   ) {
     this.mapping.forEach((v, key) => {
       for (const p in v) {
+        // eslint-disable-next-line
         if (v.hasOwnProperty(p)) {
           callback(v[p], key, p);
         }

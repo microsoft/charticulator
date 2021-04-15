@@ -196,7 +196,7 @@ export class Value<T> extends Expression {
 
 export class StringValue extends Value<string> {}
 export class NumberValue extends Value<number> {}
-export class BooleanValue extends Value<Boolean> {}
+export class BooleanValue extends Value<boolean> {}
 export class DateValue extends Value<Date> {}
 
 export class FieldAccess extends Expression {
@@ -413,10 +413,9 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression.args[0] instanceof Variable
     ) {
       const columnName = (<Variable>expression.args[0]).name;
-      const column = (<DataflowTable>(<ShadowContext>context)
-        .upstream).columns.find(
-        (col) => col.name == columnName
-      );
+      const column = (<DataflowTable>(
+        (<ShadowContext>context).upstream
+      )).columns.find((col) => col.name == columnName);
       if (
         column.metadata.rawColumnName &&
         (column.metadata.kind === Specification.DataKind.Temporal ||

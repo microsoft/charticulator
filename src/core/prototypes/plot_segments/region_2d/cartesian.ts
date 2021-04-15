@@ -38,7 +38,7 @@ export type CartesianAxisMode =
   | "numerical"
   | "categorical";
 
-export interface CartesianProperties extends Region2DProperties {}
+export type CartesianProperties = Region2DProperties;
 
 export interface CartesianAttributes extends Region2DAttributes {
   /** Cartesian plot segment region */
@@ -67,7 +67,7 @@ const icons: Region2DConfigurationIcons = {
   overlapIcon: "sublayout/overlap",
 };
 
-export let config: Region2DConfiguration = {
+export const config: Region2DConfiguration = {
   terminology: strings.cartesianTerminology,
   icons,
   xAxisPrePostGap: false,
@@ -538,6 +538,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return h;
   }
 
+  // eslint-disable-next-line
   public getTemplateParameters(): TemplateParameters {
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];

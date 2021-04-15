@@ -39,10 +39,15 @@ export abstract class ScaleClass<
 
   public abstract mapDataToAttribute(data: DataValue): AttributeValue;
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ): void {}
 
   public abstract inferParameters(

@@ -47,6 +47,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -54,6 +55,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     this.forAllGlyph(action.glyph, (glyphState) => {
       for (const key in action.updates) {
+        // eslint-disable-next-line
         if (!action.updates.hasOwnProperty(key)) {
           continue;
         }
@@ -94,6 +96,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     let attributesSet = false;
     for (const attr in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(attr)) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {

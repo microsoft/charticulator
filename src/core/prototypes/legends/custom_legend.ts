@@ -32,7 +32,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export type CustomLegendState = LegendState;
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";

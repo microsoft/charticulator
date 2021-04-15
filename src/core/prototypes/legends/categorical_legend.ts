@@ -30,12 +30,15 @@ export class CategoricalLegendClass extends LegendClass {
     const scale = this.getScale();
     if (scale) {
       const [scaleObject, scaleState] = scale;
-      const mapping = <{
-        [name: string]: Color;
-      }>scaleObject.properties.mapping;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
+          // eslint-disable-next-line
           mapping.hasOwnProperty(key) &&
           !key.startsWith(ReservedMappingKeyNamePrefix)
         ) {

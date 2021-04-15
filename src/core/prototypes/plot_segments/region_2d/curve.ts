@@ -55,7 +55,7 @@ export interface CurveState extends Specification.PlotSegmentState {
 
 export interface CurveProperties extends Region2DProperties {
   /** The bezier curve specification in relative proportions (-1, +1) => (x1, x2) */
-  curve: ([Point, Point, Point, Point])[];
+  curve: [Point, Point, Point, Point][];
   normalStart: number;
   normalEnd: number;
 }
@@ -64,7 +64,7 @@ export interface CurveObject extends Specification.PlotSegment {
   properties: CurveProperties;
 }
 
-export let icons: Region2DConfigurationIcons = {
+export const icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
   xMiddleIcon: "align/x-middle",
   xMaxIcon: "align/right",
@@ -218,7 +218,6 @@ export class CurvePlotSegment extends PlotSegmentClass<
     solver?: ConstraintSolver,
     context?: BuildConstraintsContext
   ) {
-    const props = this.object.properties;
     const config: Region2DConfiguration = {
       terminology: strings.curveTerminology,
       icons,
@@ -248,6 +247,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
   public buildConstraints(
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     context: BuildConstraintsContext
   ): void {
     const attrs = this.state.attributes;
@@ -255,9 +255,12 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
     const [
       x1,
+      // eslint-disable-next-line
       y1,
       x2,
+      // eslint-disable-next-line
       y2,
+      // eslint-disable-next-line
       tangent1,
       tangent2,
       normal1,
@@ -470,12 +473,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const props = this.object.properties;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2 } = attrs;
-    const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
-    const cx = (x1 + x2) / 2,
-      cy = (y1 + y2) / 2;
     const h: Handles.Description[] = [
       <Handles.Line>{
         type: "line",

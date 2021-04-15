@@ -33,7 +33,7 @@ export interface DataTypeDescription {
   convert: (v: string, localeNumberFormat?: LocaleNumberFormat) => DataValue;
 }
 
-export let dataTypes: { [name in DataType]: DataTypeDescription } = {
+export const dataTypes: { [name in DataType]: DataTypeDescription } = {
   boolean: {
     test: (x: string) => {
       const lx = x.toLowerCase();

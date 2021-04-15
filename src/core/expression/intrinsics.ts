@@ -5,13 +5,13 @@ import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
 import { getFormat } from "../common";
 
-export let constants: { [name: string]: ValueType } = {};
-export let functions: {
+export const constants: { [name: string]: ValueType } = {};
+export const functions: {
   [name: string]: Function | { [name: string]: Function };
 } = {};
-export let operators: { [name: string]: Function } = {};
+export const operators: { [name: string]: Function } = {};
 
-export let precedences = {
+export const precedences = {
   LAMBDA_EXPRESSION: 1,
   FUNCTION_ARGUMENT: 0,
   OPERATORS: <{ [name: string]: number[] }>{

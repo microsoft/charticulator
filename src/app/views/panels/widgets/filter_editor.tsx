@@ -89,6 +89,7 @@ export class FilterEditor extends React.Component<
           const keysSorted: string[] = [];
           if (value && value.categories) {
             for (const k in value.categories.values) {
+              // eslint-disable-next-line
               if (value.categories.values.hasOwnProperty(k)) {
                 keysSorted.push(k);
               }
@@ -139,6 +140,7 @@ export class FilterEditor extends React.Component<
                         text="Select All"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = true;
                             }
@@ -155,6 +157,7 @@ export class FilterEditor extends React.Component<
                         text="Clear"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = false;
                             }

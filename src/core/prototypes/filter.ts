@@ -10,6 +10,7 @@ export class CompiledFilter {
       const map = filter.categories.values;
       this.filter = (context) => {
         const val = expr.getStringValue(context);
+        // eslint-disable-next-line
         return map.hasOwnProperty(val) && map[val] == true;
       };
     } else if (filter.expression) {
