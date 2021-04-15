@@ -5,15 +5,15 @@ import { HandlesDragEvent } from "../handles/common";
 import { SnappableGuide, SnappingAction } from "./common";
 
 export class SnappingSession<ElementType> {
-  public candidates: Array<SnappableGuide<ElementType>>;
+  public candidates: (SnappableGuide<ElementType>)[];
   public handle: Prototypes.Handles.Description;
   public threshold: number;
   public findClosestSnappingGuide: boolean;
 
-  public currentCandidates: Array<SnappableGuide<ElementType>>;
+  public currentCandidates: (SnappableGuide<ElementType>)[];
 
   constructor(
-    guides: Array<SnappableGuide<ElementType>>,
+    guides: (SnappableGuide<ElementType>)[],
     handle: Prototypes.Handles.Description,
     threshold: number,
     findClosest: boolean
@@ -181,8 +181,8 @@ export class SnappingSession<ElementType> {
     }
   }
 
-  public handleEnd(e: HandlesDragEvent): Array<SnappingAction<ElementType>> {
-    const result: Array<SnappingAction<ElementType>> = [];
+  public handleEnd(e: HandlesDragEvent): (SnappingAction<ElementType>)[] {
+    const result: (SnappingAction<ElementType>)[] = [];
 
     for (const action of this.handle.actions) {
       const source = action.source || "value";
@@ -361,7 +361,7 @@ export class SnappingSession<ElementType> {
     return result;
   }
 
-  public getCurrentCandidates(): Array<SnappableGuide<ElementType>> {
+  public getCurrentCandidates(): (SnappableGuide<ElementType>)[] {
     return this.currentCandidates;
   }
 }

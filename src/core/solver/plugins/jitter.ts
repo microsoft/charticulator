@@ -20,7 +20,7 @@ export class JitterPlugin extends ConstraintPlugin {
   public y1: Variable;
   public x2: Variable;
   public y2: Variable;
-  public points: Array<[Variable, Variable, number]>;
+  public points: ([Variable, Variable, number])[];
   public xEnable: boolean;
   public yEnable: boolean;
   public getXYScale: () => { x: number; y: number };
@@ -32,7 +32,7 @@ export class JitterPlugin extends ConstraintPlugin {
     y1: Variable,
     x2: Variable,
     y2: Variable,
-    points: Array<[Variable, Variable, number]>,
+    points: ([Variable, Variable, number])[],
     axisOnly?: "x" | "y",
     options?: JitterPluginOptions
   ) {

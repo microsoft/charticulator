@@ -71,7 +71,7 @@ export class GradientPicker extends React.Component<
     const items = predefinedPalettes.filter(
       (x) => x.type == "sequential" || x.type == "diverging"
     );
-    const groups: Array<[string, ColorPalette[]]> = [];
+    const groups: [string, ColorPalette[]][] = [];
     const group2Index = new Map<string, number>();
     for (const p of items) {
       const groupName = p.name.split("/")[0];

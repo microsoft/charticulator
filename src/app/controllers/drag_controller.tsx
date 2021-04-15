@@ -53,7 +53,7 @@ export class DragSession {
   public startPoint: Point;
   public point: Point;
   public data: any;
-  public candidates: Array<[Droppable, () => void]> = [];
+  public candidates: ([Droppable, () => void])[] = [];
 
   public states = new Map<Droppable, DragContext>();
 

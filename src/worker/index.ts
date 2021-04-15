@@ -18,14 +18,14 @@ export interface CharticulatorWorkerInterface {
     chart: Specification.Chart,
     chartState: Specification.ChartState,
     dataset: Dataset.Dataset,
-    preSolveValues: Array<
-      [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-    >,
+    preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][],
     mappingOnly: boolean
   ) => Promise<any> | any;
 }
 
-/** The representation of the background worker. This is used from the main process. */
+/** 
+ * The representation of the background worker. This is used from the main process.
+ */
 export class CharticulatorWorker
   extends WorkerRPC
   implements CharticulatorWorkerInterface {
@@ -41,9 +41,7 @@ export class CharticulatorWorker
     chart: Specification.Chart,
     chartState: Specification.ChartState,
     dataset: Dataset.Dataset,
-    preSolveValues: Array<
-      [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-    >,
+    preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][],
     mappingOnly: boolean = false
   ) {
     const result: Specification.ChartState = await this.rpc(
@@ -108,8 +106,8 @@ export class CharticulatorWorker
       );
       // Is this a plot segment
       if (Prototypes.isType(chart.elements[i].classID, "plot-segment")) {
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
-        const resultPlotSegmentState = resultElementState as Specification.PlotSegmentState;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const resultPlotSegmentState = <Specification.PlotSegmentState>resultElementState;
         for (const [glyphState, resultGlyphState] of zipArray(
           plotSegmentState.glyphs,
           resultPlotSegmentState.glyphs

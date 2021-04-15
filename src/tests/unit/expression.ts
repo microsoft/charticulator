@@ -4,7 +4,7 @@ import { expect } from "chai";
 import * as Expression from "../../core/expression";
 
 describe("Basic Expression", () => {
-  const test_cases: Array<[string, any]> = [
+  const test_cases: ([string, any])[] = [
     // Arithmetics
     [`1 - 2 - 3 - 4`, -8],
     [`12 * (3 + 6 - 5 + 4 * (3 + 7)) * 13 / 12`, 572],
@@ -75,7 +75,7 @@ describe("Basic Expression", () => {
 });
 
 describe("Text Expression", () => {
-  const test_cases: Array<[string, any]> = [
+  const test_cases: ([string, any])[] = [
     [
       "Hello World, Temperature is ${Temperature}{.1f} degree",
       "Hello World, Temperature is 70.0 degree",

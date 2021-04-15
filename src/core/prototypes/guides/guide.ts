@@ -240,7 +240,7 @@ export class GuideClass extends ChartElementClass<
     rhsFn: (
       parentAttributeVariables: Variable[],
       value: Variable
-    ) => Array<[number, Variable]>
+    ) => ([number, Variable])[]
   ) {
     const parentAttrs = this.parent.state.attributes;
     const parentAttributeVariables = solver.attrs(

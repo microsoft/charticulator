@@ -5,7 +5,7 @@ import { DataType, DataKind } from "../../core/specification";
 import { convertColumn } from "../../core/dataset/data_types";
 import { expect } from "chai";
 
-export function classNames(...args: Array<string | [string, boolean]>) {
+export function classNames(...args: (string | [string, boolean])[]) {
   return args
     .filter((x) => x != null && (typeof x == "string" || x[1] == true))
     .map((x) => (typeof x == "string" ? x : x[0]))
@@ -167,7 +167,7 @@ export function stringToDataURL(mimeType: string, content: string) {
 
 function checkConvertion(
   type: DataType,
-  dataSample: Array<string | boolean | Date | number>
+  dataSample: (string | boolean | Date | number)[]
 ) {
   let convertable = true;
   if (type === DataType.String) {
@@ -220,7 +220,7 @@ function checkConvertion(
 
 export function getConvertableDataKind(
   type: DataType,
-  dataSample?: Array<string | boolean | Date | number>
+  dataSample?: (string | boolean | Date | number)[]
 ): DataKind[] {
   let types;
   switch (type) {
@@ -243,7 +243,7 @@ export function getConvertableDataKind(
 
 export function getConvertableTypes(
   type: DataType,
-  dataSample?: Array<string | boolean | Date | number>
+  dataSample?: (string | boolean | Date | number)[]
 ): DataType[] {
   let types;
   switch (type) {
@@ -294,7 +294,7 @@ export function convertColumns(
   const applyConvertedValues = (
     table: Dataset.Table,
     columnName: string,
-    convertedValues: Array<string | number | boolean>
+    convertedValues: (string | number | boolean)[]
   ) => {
     table.rows.forEach((value: any, index: number) => {
       value[columnName] = convertedValues[index];

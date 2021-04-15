@@ -303,7 +303,7 @@ export namespace SnappingGuides {
 export namespace LinkAnchor {
   export interface Description {
     element: string;
-    points: Array<{
+    points: {
       x: number;
       y: number;
       xAttribute: string;
@@ -312,7 +312,7 @@ export namespace LinkAnchor {
         x: number;
         y: number;
       };
-    }>;
+    }[];
   }
 }
 
@@ -363,8 +363,8 @@ export namespace CreatingInteraction {
 export namespace TemplateMetadata {
   export interface ChartMetadata {
     dataSlots: DataSlot[];
-    inference: Array<{ id: string; infer: Inference }>;
-    mappings: Array<{ id: string; attribute: string; slot: string }>;
+    inference: ({ id: string; infer: Inference })[];
+    mappings: ({ id: string; attribute: string; slot: string })[];
   }
 
   export interface DataSlot {

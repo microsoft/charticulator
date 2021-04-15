@@ -55,7 +55,7 @@ export interface CurveState extends Specification.PlotSegmentState {
 
 export interface CurveProperties extends Region2DProperties {
   /** The bezier curve specification in relative proportions (-1, +1) => (x1, x2) */
-  curve: Array<[Point, Point, Point, Point]>;
+  curve: ([Point, Point, Point, Point])[];
   normalStart: number;
   normalEnd: number;
 }

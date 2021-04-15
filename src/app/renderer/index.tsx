@@ -139,7 +139,7 @@ const path_commands: { [name: string]: (args: number[]) => string } = {
   Z: () => `Z`,
 };
 
-export function renderSVGPath(cmds: Array<{ cmd: string; args: number[] }>) {
+export function renderSVGPath(cmds: ({ cmd: string; args: number[] })[]) {
   return cmds.map((x) => path_commands[x.cmd](x.args)).join(" ");
 }
 

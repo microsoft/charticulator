@@ -225,7 +225,7 @@ export class ImageUploader extends React.Component<
   }
 
   public static ParseFiles(files: FileList): Promise<ImageUploaderItem[]> {
-    const result: Array<Promise<ImageUploaderItem>> = [];
+    const result: (Promise<ImageUploaderItem>)[] = [];
     const readFile = (file: File) => {
       result.push(this.ReadFileAsImage(file.name, file));
     };

@@ -18,28 +18,28 @@ export interface CreatingComponentProps {
   height: number;
   zoom: ZoomInfo;
 
-  guides: Array<SnappableGuide<any>>;
+  guides: SnappableGuide<any>[];
 
   mode: string;
 
-  onCreate: (...args: Array<[number, Specification.Mapping]>) => void;
+  onCreate: (...args: [number, Specification.Mapping][]) => void;
   onCancel: () => void;
 }
 
 export interface CreatingComponentState {
   points?: Point[];
   draggingPoint?: Point;
-  activeGuides: Array<SnappableGuide<any>>;
+  activeGuides: SnappableGuide<any>[];
   hoverCandidateX: [number, Specification.Mapping];
   hoverCandidateY: [number, Specification.Mapping];
 }
 
 export class PointSnapping {
   public threshold: number;
-  public guides: Array<SnappableGuide<any>>;
+  public guides: SnappableGuide<any>[];
   public snappedGuides: Set<SnappableGuide<any>>;
 
-  constructor(guides: Array<SnappableGuide<any>>, threshold: number = 10) {
+  constructor(guides: SnappableGuide<any>[], threshold: number = 10) {
     this.guides = guides;
     this.snappedGuides = new Set<SnappableGuide<any>>();
     this.threshold = threshold;
@@ -448,7 +448,7 @@ export interface CreatingComponentFromCreatingInteractionProps {
   height: number;
   zoom: ZoomInfo;
 
-  guides: Array<SnappableGuide<any>>;
+  guides: SnappableGuide<any>[];
 
   description: Prototypes.CreatingInteraction.Description;
   onCreate: (
@@ -493,7 +493,7 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
     const desc = this.props.description;
     let mode = "point";
     let onCreate: (
-      ...args: Array<[number, Specification.Mapping]>
+      ...args: [number, Specification.Mapping][]
     ) => void = this.props.onCancel;
 
     function autoSwap(

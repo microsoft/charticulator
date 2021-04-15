@@ -24,14 +24,14 @@ export class CharticulatorWorkerProcess
     chart: Core.Specification.Chart,
     chartState: Core.Specification.ChartState,
     dataset: Core.Dataset.Dataset,
-    preSolveValues: Array<
-      [
-        Core.Solver.ConstraintStrength,
-        Core.Specification.AttributeMap,
-        string,
-        number
-      ]
-    > = null,
+    preSolveValues: 
+    [
+      Core.Solver.ConstraintStrength,
+      Core.Specification.AttributeMap,
+      string,
+      number
+    ][]
+    = null,
     mappingOnly: boolean = false
   ) {
     if (preSolveValues != null && preSolveValues.length > 0) {

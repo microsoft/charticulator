@@ -66,7 +66,7 @@ export function renderChartToLocalString(
   const renderer = new Graphics.ChartRenderer(manager);
   const graphics = renderer.render();
   const urls = new Map<string, string>();
-  const allTasks: Array<Promise<void>> = [];
+  const allTasks: (Promise<void>)[] = [];
   renderGraphicalElementSVG(graphics, {
     chartComponentSync: true,
     externalResourceResolver: (url: string) => {

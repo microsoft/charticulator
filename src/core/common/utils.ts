@@ -13,7 +13,7 @@ export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
 }
 
 /** zip two arrays, return a new array */
-export function zipArray<T1, T2>(a: T1[], b: T2[]): Array<[T1, T2]> {
+export function zipArray<T1, T2>(a: T1[], b: T2[]): [T1, T2][] {
   if (a.length < b.length) {
     return a.map((elem, idx) => [elem, b[idx]] as [T1, T2]);
   } else {
@@ -157,7 +157,7 @@ export function argMin<T>(
   return argmin;
 }
 
-export type FieldType = string | number | Array<string | number>;
+export type FieldType = string | number | (string | number)[];
 
 export function setField<ObjectType, ValueType>(
   obj: ObjectType,

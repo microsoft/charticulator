@@ -24,13 +24,13 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   /** Should we disable the file view */
   DisableFileView?: boolean;
   /** Load extensions */
-  Extensions?: Array<AppExtension>;
+  Extensions?: AppExtension[];
   /** Sample datasets to show */
-  SampleDatasets?: Array<{
+  SampleDatasets?: {
     name: string;
     description: string;
-    tables: Array<{ name: string; url: string; type: string }>;
-  }>;
+    tables: { name: string; url: string; type: string }[];
+  }[];
   WorkerURL: string;
   ContainerURL: string;
   CorsPolicy: {

@@ -166,7 +166,7 @@ export interface Region2DConfiguration {
 export class CrossFitter {
   private solver: ConstraintSolver;
   private mode: "min" | "max";
-  private candidates: Array<[Variable, Array<[number, Variable]>, number]>;
+  private candidates: ([Variable, [number, Variable][], number])[];
 
   constructor(solver: ConstraintSolver, mode: "min" | "max") {
     this.solver = solver;
@@ -180,7 +180,7 @@ export class CrossFitter {
 
   public addComplex(
     src: Variable,
-    dst: Array<[number, Variable]>,
+    dst: ([number, Variable])[],
     dstBias: number = 0
   ) {
     this.candidates.push([src, dst, dstBias]);
@@ -277,7 +277,7 @@ export class Region2DConstraintBuilder {
   }
 
   public groupMarksByCategories(
-    categories: Array<{ expression: string; categories: string[] }>
+    categories: ({ expression: string; categories: string[] })[]
   ): number[][] {
     // Prepare categories
     const categoriesParsed = categories.map((c) => {
@@ -590,12 +590,12 @@ export class Region2DConstraintBuilder {
             const vx1Expr = [
               [t1, x2],
               [1 - t1, x1],
-            ] as Array<[number, Variable]>;
+            ] as ([number, Variable])[];
             // t2 * x2 = (1 - t2) * x2
             const vx2Expr = [
               [t2, x2],
               [1 - t2, x1],
-            ] as Array<[number, Variable]>;
+            ] as ([number, Variable])[];
 
             const vx1 = solver.attr(
               { value: solver.getLinear(...vx1Expr) },
@@ -648,11 +648,11 @@ export class Region2DConstraintBuilder {
             const vy1Expr = [
               [t1, y2],
               [1 - t1, y1],
-            ] as Array<[number, Variable]>;
+            ] as ([number, Variable])[];
             const vy2Expr = [
               [t2, y2],
               [1 - t2, y1],
-            ] as Array<[number, Variable]>;
+            ] as ([number, Variable])[];
 
             const vy1 = solver.attr(
               { value: solver.getLinear(...vy1Expr) },
@@ -710,20 +710,20 @@ export class Region2DConstraintBuilder {
               const vx1Expr = [
                 [tx1, x2],
                 [1 - tx1, x1],
-              ] as Array<[number, Variable]>;
+              ] as ([number, Variable])[];
               const vx2Expr = [
                 [tx2, x2],
                 [1 - tx2, x1],
-              ] as Array<[number, Variable]>;
+              ] as ([number, Variable])[];
 
               const vy1Expr = [
                 [ty1, y2],
                 [1 - ty1, y1],
-              ] as Array<[number, Variable]>;
+              ] as ([number, Variable])[];
               const vy2Expr = [
                 [ty2, y2],
                 [1 - ty2, y1],
-              ] as Array<[number, Variable]>;
+              ] as ([number, Variable])[];
 
               const vx1 = solver.attr(
                 { value: solver.getLinear(...vx1Expr) },
@@ -1318,12 +1318,12 @@ export class Region2DConstraintBuilder {
       switch (direction) {
         case "x":
           {
-            const x1WithGap: Array<[number, Variable]> = [
+            const x1WithGap: ([number, Variable])[] = [
               [1, x1],
               [dodgeGapOffset, x2],
               [-dodgeGapOffset, x1],
             ];
-            const x2WithGap: Array<[number, Variable]> = [
+            const x2WithGap: ([number, Variable])[] = [
               [1, x2],
               [dodgeGapOffset, x1],
               [-dodgeGapOffset, x2],
@@ -1372,12 +1372,12 @@ export class Region2DConstraintBuilder {
           break;
         case "y":
           {
-            const y1WithGap: Array<[number, Variable]> = [
+            const y1WithGap: ([number, Variable])[] = [
               [1, y1],
               [dodgeGapOffset, y2],
               [-dodgeGapOffset, y1],
             ];
-            const y2WithGap: Array<[number, Variable]> = [
+            const y2WithGap: ([number, Variable])[] = [
               [1, y2],
               [dodgeGapOffset, y1],
               [-dodgeGapOffset, y2],
@@ -1551,19 +1551,19 @@ export class Region2DConstraintBuilder {
         if (alignY == "middle") {
           yi = yi + (yCount - yMax) / 2;
         }
-        const cellX1: Array<[number, Variable]> = [
+        const cellX1: ([number, Variable])[] = [
           [(xi / xCount) * (1 + gapRatioX), x2],
           [1 - (xi / xCount) * (1 + gapRatioX), x1],
         ];
-        const cellX2: Array<[number, Variable]> = [
+        const cellX2: ([number, Variable])[] = [
           [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
           [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1],
         ];
-        const cellY1: Array<[number, Variable]> = [
+        const cellY1: ([number, Variable])[] = [
           [(yi / yCount) * (1 + gapRatioY), y2],
           [1 - (yi / yCount) * (1 + gapRatioY), y1],
         ];
-        const cellY2: Array<[number, Variable]> = [
+        const cellY2: ([number, Variable])[] = [
           [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
           [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1],
         ];
@@ -1639,13 +1639,13 @@ export class Region2DConstraintBuilder {
   }
 
   public sublayoutHandles(
-    groups: Array<{
+    groups: {
       group: number[];
       x1: number;
       y1: number;
       x2: number;
       y2: number;
-    }>,
+    }[],
     enablePrePostGapX: boolean,
     enablePrePostGapY: boolean
   ) {

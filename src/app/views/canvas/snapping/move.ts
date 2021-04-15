@@ -9,7 +9,7 @@ export class MoveSnappingSession extends SnappingSession<void> {
     super([], handle, 10, handle.options && handle.options.snapToClosestPoint);
   }
 
-  public getUpdates(actions: Array<SnappingAction<void>>) {
+  public getUpdates(actions: (SnappingAction<void>)[]) {
     const updates: { [name: string]: Specification.AttributeValue } = {};
     for (const action of actions) {
       updates[action.attribute] = action.value;

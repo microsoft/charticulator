@@ -111,7 +111,7 @@ functions.filter = (list: any[], func: Function) =>
   list.filter((item) => func(item));
 
 // Statistics
-function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
+function stat_foreach(f: (x: number) => void, list: (number | number[])[]) {
   for (let i = 0; i < list.length; i++) {
     const l = list[i];
     if (l instanceof Array) {
@@ -127,7 +127,7 @@ function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
     }
   }
 }
-functions.min = (...list: Array<number | number[]>) => {
+functions.min = (...list: (number | number[])[]) => {
   let r: number = null;
   stat_foreach((x) => {
     if (r == null || x < r) {
@@ -136,7 +136,7 @@ functions.min = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-functions.max = (...list: Array<number | number[]>) => {
+functions.max = (...list: (number | number[])[]) => {
   let r: number = null;
   stat_foreach((x) => {
     if (r == null || x > r) {
@@ -145,17 +145,17 @@ functions.max = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-functions.sum = (...list: Array<number | number[]>) => {
+functions.sum = (...list: (number | number[])[]) => {
   let r = 0;
   stat_foreach((x) => (r += x), list);
   return r;
 };
-functions.count = (...list: Array<number | number[]>) => {
+functions.count = (...list: (number | number[])[]) => {
   let r = 0;
   stat_foreach((x) => (r += 1), list);
   return r;
 };
-functions.stdev = (...list: Array<number | number[]>) => {
+functions.stdev = (...list: (number | number[])[]) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
@@ -168,7 +168,7 @@ functions.stdev = (...list: Array<number | number[]>) => {
   sumX /= count;
   return Math.sqrt(sumX2 - sumX * sumX);
 };
-functions.variance = (...list: Array<number | number[]>) => {
+functions.variance = (...list: (number | number[])[]) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
@@ -181,7 +181,7 @@ functions.variance = (...list: Array<number | number[]>) => {
   sumX /= count;
   return sumX2 - sumX * sumX;
 };
-functions.median = (...list: Array<number | number[]>) => {
+functions.median = (...list: (number | number[])[]) => {
   const values: number[] = [];
   stat_foreach((x) => {
     values.push(x);
@@ -193,7 +193,7 @@ functions.median = (...list: Array<number | number[]>) => {
     return values[(values.length - 1) / 2];
   }
 };
-functions.avg = (...list: Array<number | number[]>) => {
+functions.avg = (...list: (number | number[])[]) => {
   let r = 0,
     c = 0;
   stat_foreach((x) => {

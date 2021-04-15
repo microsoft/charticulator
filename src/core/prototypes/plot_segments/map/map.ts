@@ -179,8 +179,8 @@ export class MapPlotSegment extends PlotSegmentClass {
 
   // Get (x, y) coordinates based on longitude and latitude
   public getProjectedPoints(
-    points: Array<[number, number]>
-  ): Array<[number, number]> {
+    points: ([number, number])[]
+  ): ([number, number])[] {
     const attrs = this.state.attributes;
     const [cLatitude, cLongitude, zoom] = this.getCenterZoom();
     const [cX, cY] = this.mercatorProjection(cLatitude, cLongitude);

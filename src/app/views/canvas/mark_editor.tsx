@@ -316,7 +316,7 @@ export class SingleMarkView
     }
     const manager = this.store.chartManager;
     // First we compute the maximum bounding box for marks in the glyph
-    const boundingRects: Array<[number, number, number, number]> = [];
+    const boundingRects: [number, number, number, number][] = [];
     // Get bounding box for each element
     for (const markState of glyphState.marks) {
       const cls = manager.getMarkClass(markState);
@@ -1380,7 +1380,7 @@ export class SingleMarkView
       );
     } else {
       let onCreate: (
-        ...args: Array<[number, Specification.Mapping]>
+        ...args: [number, Specification.Mapping][]
       ) => void = null;
       let mode: string = "point";
       const addGuide = (
@@ -1527,7 +1527,7 @@ export class SingleMarkView
           mode={mode}
           key={mode}
           guides={this.getSnappingGuides()}
-          onCreate={(...args: Array<[number, Specification.Mapping]>) => {
+          onCreate={(...args: [number, Specification.Mapping][]) => {
             this.dispatch(new Actions.SetCurrentTool(null));
             if (onCreate) {
               onCreate(...args);

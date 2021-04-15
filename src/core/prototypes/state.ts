@@ -874,7 +874,7 @@ export class ChartStateManager {
       solver.destroy();
     } else {
       const iterations = additional != null ? 2 : 1;
-      const phases: Array<"chart" | "glyphs"> = ["chart", "glyphs"];
+      const phases: ("chart" | "glyphs")[] = ["chart", "glyphs"];
       for (let i = 0; i < iterations; i++) {
         for (const phase of phases) {
           const solver = new ChartConstraintSolver(phase);

@@ -34,12 +34,12 @@ export class WASMSolver extends ConstraintSolver {
   public solver: LSCGSolver.ConstraintSolver;
   public variables: KeyNameMap<AttributeMap, WASMSolverVariable>;
   public currentIndex: number = 0;
-  public softInequalities: Array<{
+  public softInequalities: {
     id: number;
     bias: number;
     variable_names: number[];
     weights: number[];
-  }> = [];
+  }[] = [];
 
   constructor() {
     super();
@@ -97,8 +97,8 @@ export class WASMSolver extends ConstraintSolver {
   public addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, WASMSolverVariable]>,
-    rhs?: Array<[number, WASMSolverVariable]>
+    lhs: ([number, WASMSolverVariable])[],
+    rhs?: ([number, WASMSolverVariable])[]
   ): void {
     const st = strengthMap[strength];
     const weights = [];
@@ -120,8 +120,8 @@ export class WASMSolver extends ConstraintSolver {
   public addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, WASMSolverVariable]>,
-    rhs?: Array<[number, WASMSolverVariable]>
+    lhs: ([number, WASMSolverVariable])[],
+    rhs?: ([number, WASMSolverVariable])[]
   ): void {
     const st = strengthMap[strength];
     const weights = [];

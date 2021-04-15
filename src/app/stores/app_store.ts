@@ -612,9 +612,7 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public preSolveValues: Array<
-    [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-  > = [];
+  public preSolveValues: [Solver.ConstraintStrength, Specification.AttributeMap, string, number][] = [];
   public addPresolveValue(
     strength: Solver.ConstraintStrength,
     state: Specification.AttributeMap,

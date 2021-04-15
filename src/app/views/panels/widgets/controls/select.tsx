@@ -12,7 +12,7 @@ import * as R from "../../../../resources";
 import { classNames } from "../../../../utils";
 
 export function DropdownListView(props: {
-  list: Array<{ name: string; url?: string; text?: string; font?: string }>;
+  list: ({ name: string; url?: string; text?: string; font?: string })[];
   onClick?: (name: string) => void;
   selected?: string;
   context: PopupContext;

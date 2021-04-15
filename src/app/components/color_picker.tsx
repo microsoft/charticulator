@@ -257,7 +257,7 @@ export class PaletteList extends React.PureComponent<PaletteListProps, {}> {
   public render() {
     const palettes = this.props.palettes;
 
-    const groups: Array<[string, ColorPalette[]]> = [];
+    const groups: ([string, ColorPalette[]])[] = [];
     const group2Index = new Map<string, number>();
     for (const p of palettes) {
       const groupName = p.name.split("/")[0];

@@ -532,7 +532,7 @@ export abstract class LinksClass extends ChartElementClass {
         if (splitAnchors) {
           const map = new Map<
             string,
-            Array<[AnchorAttributes, AnchorAttributes]>
+            ([AnchorAttributes, AnchorAttributes])[]
           >();
           const hashAnchor = (points: PointDirection[]) => {
             const dx = points[0].x - points[1].x;

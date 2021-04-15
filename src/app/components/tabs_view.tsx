@@ -5,7 +5,7 @@ import { SVGImageIcon } from "./icons";
 import { classNames } from "../utils";
 
 export interface TabsViewProps {
-  tabs: Array<{ name: string; label: string; icon?: string }>;
+  tabs: ({ name: string; label: string; icon?: string })[];
   currentTab: string;
   onSelect: (tabName: string) => void;
 }

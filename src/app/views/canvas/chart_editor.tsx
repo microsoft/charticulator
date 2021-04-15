@@ -387,6 +387,7 @@ export class ChartEditorView
       );
     } else {
       let onCreate: (
+        // tslint:disable-next-line
         ...args: Array<[number, Specification.Mapping]>
       ) => void = null;
       let mode: string = "point";
@@ -541,6 +542,7 @@ export class ChartEditorView
           mode={mode}
           key={mode}
           guides={this.getSnappingGuides()}
+          // tslint:disable-next-line
           onCreate={(...args: Array<[number, Specification.Mapping]>) => {
             new Actions.SetCurrentTool(null).dispatch(
               this.props.store.dispatcher

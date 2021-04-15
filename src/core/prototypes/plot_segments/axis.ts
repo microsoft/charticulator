@@ -148,8 +148,8 @@ export class AxisRenderer {
     return this;
   }
 
-  public ticksData: Array<{ tick: any; value: any }>;
-  public setTicksByData(ticks: Array<{ tick: any; value: any }>) {
+  public ticksData: ({ tick: any; value: any })[];
+  public setTicksByData(ticks: ({ tick: any; value: any })[]) {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
       const pos = this.valueToPosition(tick.value);
@@ -299,7 +299,7 @@ export class AxisRenderer {
 
   public setCategoricalScale(
     domain: string[],
-    range: Array<[number, number]>,
+    range: ([number, number])[],
     rangeMin: number,
     rangeMax: number,
     tickFormat?: (value: any) => string

@@ -268,7 +268,7 @@ export class ScalesPanel extends ContextedComponent<
             .flatMap(
               (
                 glyph: Glyph
-              ): Array<{ glyph: Glyph; mark: Element<ObjectProperties> }> =>
+              ): { glyph: Glyph; mark: Element<ObjectProperties> }[] =>
                 glyph.marks.map((mark) => {
                   return {
                     glyph,

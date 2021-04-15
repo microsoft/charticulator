@@ -41,8 +41,8 @@ export abstract class ConstraintSolver {
   public abstract addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, Variable]>,
-    rhs?: Array<[number, Variable]>
+    lhs: ([number, Variable])[],
+    rhs?: ([number, Variable])[]
   ): void;
 
   /**
@@ -51,8 +51,8 @@ export abstract class ConstraintSolver {
   public abstract addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, Variable]>,
-    rhs?: Array<[number, Variable]>
+    lhs: ([number, Variable])[],
+    rhs?: ([number, Variable])[]
   ): void;
 
   /** Solve the constraints */
@@ -72,7 +72,7 @@ export abstract class ConstraintSolver {
   }
 
   /** Get a linear value */
-  public getLinear(...items: Array<[number, Variable]>) {
+  public getLinear(...items: ([number, Variable])[]) {
     let s = 0;
     for (const v of items) {
       s += v[0] * this.getValue(v[1]);

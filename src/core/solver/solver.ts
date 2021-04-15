@@ -502,9 +502,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     GlyphConstraintAnalyzerAttribute
   >();
   private currentVariableIndex = 0;
-  private linears: Array<
-    [number, Array<{ weight: number; index?: number; biasIndex?: number }>]
-  > = [];
+  private linears: 
+    [number, ({ weight: number; index?: number; biasIndex?: number })[]][] = [];
   private inputBiases = new Map<string, GlyphConstraintAnalyzerAttribute>();
   private indexToBias = new Map<number, GlyphConstraintAnalyzerAttribute>();
   private inputBiasesCount = 0;
@@ -554,8 +553,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
   public addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, { index: number }]>,
-    rhs: Array<[number, { index: number }]> = []
+    lhs: ([number, { index: number }])[],
+    rhs: ([number, { index: number }])[] = []
   ) {
     this.linears.push([
       bias,
@@ -570,8 +569,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
   public addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, { index: number }]>,
-    rhs: Array<[number, { index: number }]> = []
+    lhs: ([number, { index: number }])[],
+    rhs: ([number, { index: number }])[] = []
   ) {
     this.linears.push([
       bias,

@@ -62,10 +62,10 @@ export interface PolarGuideCoordinatorProperties
   extends PolarGuideCoordinatorPropertiesExtend,
     Specification.AttributeMap {}
 
-export const PolarGuidePropertyNames: Array<Extract<
+export const PolarGuidePropertyNames: Extract<
   keyof PolarGuideCoordinatorPropertiesExtend,
   string
->> = [
+>[] = [
   "angularGuidesCount",
   "endAngle",
   "innerRatio",
@@ -84,10 +84,10 @@ export interface PolarGuideObject
   properties: PolarGuideCoordinatorProperties;
 }
 
-export const PolarGuideBaseAttributeNames: Array<Extract<
+export const PolarGuideBaseAttributeNames: Extract<
   keyof PolarGuideCoordinatorAttributes,
   string
->> = ["x", "y", "x1", "y1", "x2", "y2", "angle1", "angle2", "radial1"];
+>[] = ["x", "y", "x1", "y1", "x2", "y2", "angle1", "angle2", "radial1"];
 
 export const getAngularValueName = (index: number) => `angularValue${index}`;
 export const getRadialValueName = (index: number) => `radialValue${index}`;
@@ -247,11 +247,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
     // xy
     {
-      const angleVarable: Array<Variable> = [];
+      const angleVarable: (Variable)[] = [];
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         angleVarable.push(solver.attr(attrs, angularX[xindex]));
       }
-      const radialVarable: Array<Variable> = [];
+      const radialVarable: (Variable)[] = [];
       for (let yindex = 0; yindex < radialY.length; yindex++) {
         radialVarable.push(solver.attr(attrs, radialY[yindex]));
       }
@@ -262,11 +262,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         const vx1Expr = [
           [t1, angle2],
           [1 - t1, angle1],
-        ] as Array<[number, Variable]>;
+        ] as ([number, Variable])[];
         const vx2Expr = [
           [t2, angle2],
           [1 - t2, angle1],
-        ] as Array<[number, Variable]>;
+        ] as ([number, Variable])[];
 
         const vx1 = solver.attr(
           { value: solver.getLinear(...vx1Expr) },
@@ -297,11 +297,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
         const vy1Expr = [
           [t1, outerRadius],
           [1 - t1, innerRadius],
-        ] as Array<[number, Variable]>;
+        ] as ([number, Variable])[];
         const vy2Expr = [
           [t2, outerRadius],
           [1 - t2, innerRadius],
-        ] as Array<[number, Variable]>;
+        ] as ([number, Variable])[];
         const vy1 = solver.attr(
           { value: solver.getLinear(...vy1Expr) },
           "valueY",

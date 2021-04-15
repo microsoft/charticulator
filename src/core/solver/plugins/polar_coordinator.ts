@@ -16,10 +16,10 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public an: Array<Variable>;
+  public an: (Variable)[];
   attrs: PolarGuideCoordinatorAttributesExtend;
-  radialVarable: Array<Variable>;
-  angleVarable: Array<Variable>;
+  radialVarable: (Variable)[];
+  angleVarable: (Variable)[];
   chartConstraints: Specification.Constraint[];
   coordinatoObjectID: string;
   chartMananger: ChartStateManager;
@@ -28,8 +28,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: Array<Variable>,
-    angleVarable: Array<Variable>,
+    radialVarable: (Variable)[],
+    angleVarable: (Variable)[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatoObjectID: string,

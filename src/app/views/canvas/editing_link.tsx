@@ -192,11 +192,11 @@ export class EditingLink extends React.Component<
     const props = this.props.link
       .properties as Prototypes.Links.LinksProperties;
     const lineMode: string = props.linkType;
-    let glyphs: Array<{
+    let glyphs: {
       glyph: Specification.Glyph;
       glyphState: Specification.GlyphState;
-      coordinateSystem: Graphics.CoordinateSystem;
-    }> = [];
+     coordinateSystem: Graphics.CoordinateSystem;
+    }[] = [];
     switch (this.props.link.classID) {
       case "links.through":
         {

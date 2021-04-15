@@ -12,13 +12,13 @@ fetch("data/THIRD_PARTY.json")
   .then((res) => res.json())
   .then(
     (
-      data: Array<{
+      data: {
         name: string;
         version: string;
         authors: string;
         url: string;
         license: string;
-      }>
+      }[]
     ) => {
       const creditsEle = document.getElementById("credits");
       const creditsFrag = document.createDocumentFragment();
