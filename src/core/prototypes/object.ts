@@ -141,10 +141,10 @@ export abstract class ObjectClass<
     for (const attr in this.defaultMappingValues) {
       if (this.defaultMappingValues.hasOwnProperty(attr)) {
         const value = deepClone(this.defaultMappingValues[attr]);
-        obj.mappings[attr] = {
+        obj.mappings[attr] = <Specification.ValueMapping>{
           type: MappingType.value,
           value,
-        } as Specification.ValueMapping;
+        };
       }
     }
     return obj;

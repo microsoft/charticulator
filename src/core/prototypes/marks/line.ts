@@ -156,12 +156,12 @@ export class LineElementClass extends EmphasizableMarkClass<
 
   /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
-    const attrs = this.state.attributes as LineElementAttributes;
+    const attrs = <LineElementAttributes>this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const cx = x1;
     const cy = y1;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x2, y: cy },
         p2: { x: x1, y: cy },
@@ -174,8 +174,8 @@ export class LineElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
-      {
+      },
+      <DropZones.Line>{
         type: "line",
         p1: { x: cx, y: y1 },
         p2: { x: cx, y: y2 },
@@ -188,16 +188,16 @@ export class LineElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
 
   /** Get bounding rectangle given current state */
   public getHandles(): Handles.Description[] {
-    const attrs = this.state.attributes as LineElementAttributes;
+    const attrs = <LineElementAttributes>this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -205,8 +205,8 @@ export class LineElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -214,8 +214,8 @@ export class LineElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: cx,
         y: cy,
@@ -223,33 +223,33 @@ export class LineElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "cx" },
           { type: "attribute", source: "y", attribute: "cy" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes as LineElementAttributes;
+    const attrs = <LineElementAttributes>this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
-    return {
+    return <BoundingBox.Line>{
       type: "line",
       morphing: true,
       x1,
       y1,
       x2,
       y2,
-    } as BoundingBox.Line;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
-    const attrs = this.state.attributes as LineElementAttributes;
+    const attrs = <LineElementAttributes>this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 
@@ -327,7 +327,7 @@ export class LineElementClass extends EmphasizableMarkClass<
         type: Specification.AttributeType.Color,
         default:
           this.state.attributes.stroke &&
-          rgbToHex(this.state.attributes.stroke as Color),
+          rgbToHex(<Color>this.state.attributes.stroke),
       });
     }
     if (

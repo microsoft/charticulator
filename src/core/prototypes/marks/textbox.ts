@@ -334,38 +334,38 @@ export class TextboxElementClass extends EmphasizableMarkClass<
       if (attrs.outline) {
         if (attrs.color) {
           const g = Graphics.makeGroup([
-            {
+            <Graphics.TextOnPath>{
               ...textElement,
               style: {
                 strokeColor: attrs.outline,
               },
-            } as Graphics.TextOnPath,
-            {
+            },
+            <Graphics.TextOnPath>{
               ...textElement,
               style: {
                 fillColor: attrs.color,
               },
-            } as Graphics.TextOnPath,
+            },
           ]);
           g.style = { opacity: attrs.opacity };
           return g;
         } else {
-          return {
+          return <Graphics.TextOnPath>{
             ...textElement,
             style: {
               strokeColor: attrs.outline,
               opacity: attrs.opacity,
             },
-          } as Graphics.TextOnPath;
+          };
         }
       } else {
-        return {
+        return <Graphics.TextOnPath>{
           ...textElement,
           style: {
             fillColor: attrs.color,
             opacity: attrs.opacity,
           },
-        } as Graphics.TextOnPath;
+        };
       }
     };
     const textContent = replaceNewLineBySymbol(attrs.text);
@@ -461,7 +461,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         const cmds = pathMaker.path.cmds;
 
         const textElement = applyStyles(
-          {
+          <Graphics.TextOnPath>{
             key: index,
             type: "text-on-path",
             pathCmds: cmds,
@@ -469,7 +469,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             fontFamily: attrs.fontFamily,
             fontSize: attrs.fontSize,
             align: props.alignX,
-          } as Graphics.TextOnPath,
+          },
           attrs
         );
         lines.push(textElement);
@@ -487,15 +487,15 @@ export class TextboxElementClass extends EmphasizableMarkClass<
         true
       );
       const cmds = pathMaker.path.cmds;
-      textElement = {
+      textElement = <Graphics.TextOnPath>{
         type: "text-on-path",
         pathCmds: cmds,
         text: attrs.text,
         fontFamily: attrs.fontFamily,
         fontSize: attrs.fontSize,
         align: props.alignX,
-      } as Graphics.TextOnPath;
-      return applyStyles(textElement as Graphics.TextOnPath, attrs);
+      };
+      return applyStyles(<Graphics.TextOnPath>textElement, attrs);
     }
   }
 
@@ -636,7 +636,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
@@ -649,8 +649,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
-      {
+      },
+      <DropZones.Line>{
         type: "line",
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
@@ -663,7 +663,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
   // Get bounding rectangle given current state
@@ -671,35 +671,35 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -707,8 +707,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -716,8 +716,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -725,8 +725,8 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -734,33 +734,33 @@ export class TextboxElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 

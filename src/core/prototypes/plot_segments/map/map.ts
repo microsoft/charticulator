@@ -135,24 +135,24 @@ export class MapPlotSegment extends PlotSegmentClass {
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
     ];
   }
 
@@ -191,7 +191,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       return [
         (x - cX) * scale + (x1 + x2) / 2,
         -(y - cY) * scale + (y1 + y2) / 2,
-      ] as [number, number];
+      ];
     });
   }
 
@@ -237,7 +237,7 @@ export class MapPlotSegment extends PlotSegmentClass {
     const [latitude, longitude, zoom] = this.getCenterZoom();
     const width = x2 - x1;
     const height = y2 - y1;
-    const img = {
+    const img = <Graphics.Image>{
       type: "image",
       src: this.mapService.getImageryURLAtPoint({
         center: {
@@ -254,7 +254,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       y: y1,
       width,
       height,
-    } as Graphics.Image;
+    };
     return Graphics.makeGroup([img, glyphGraphics]);
   }
 
@@ -262,7 +262,7 @@ export class MapPlotSegment extends PlotSegmentClass {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2, x, y } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x2, y: y1 },
       p2: { x: x1, y: y1 },
@@ -270,8 +270,8 @@ export class MapPlotSegment extends PlotSegmentClass {
       dropAction: {
         axisInference: { property: "longitudeData" },
       },
-    } as DropZones.Line);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x1, y: y1 },
       p2: { x: x1, y: y2 },
@@ -279,7 +279,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       dropAction: {
         axisInference: { property: "latitudeData" },
       },
-    } as DropZones.Line);
+    });
     return zones;
   }
 
@@ -288,35 +288,35 @@ export class MapPlotSegment extends PlotSegmentClass {
     const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2 } = attrs;
     const h: Handles.Description[] = [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -324,8 +324,8 @@ export class MapPlotSegment extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -333,8 +333,8 @@ export class MapPlotSegment extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -342,8 +342,8 @@ export class MapPlotSegment extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -351,7 +351,7 @@ export class MapPlotSegment extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
     return h;
   }

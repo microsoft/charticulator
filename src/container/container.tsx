@@ -271,7 +271,9 @@ export class ChartContainer extends EventEmitter {
     return this.component.setProperty(objectID, property, value);
   }
 
-  /** Get a attribute mapping */
+  /** 
+   * Get a attribute mapping
+  */
   public getAttributeMapping(
     objectID: string,
     attribute: string

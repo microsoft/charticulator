@@ -113,7 +113,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter((x) => typeof x == "string") as string[];
+    const values = <string[]>column.filter((x) => typeof x == "string");
     s.inferParameters(values, OrderMode.order);
 
     props.mapping = {};
@@ -128,7 +128,7 @@ export class CategoricalScaleNumber extends ScaleClass<
         (v / (s.domain.size - 1)) * (range[1] - range[0]) + range[0];
     });
 
-    attrs.rangeScale = range[1] as number;
+    attrs.rangeScale = <number>range[1];
   }
 
   public getAttributePanelWidgets(
@@ -218,7 +218,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column
       .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+      .map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -359,7 +359,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column
       .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+      .map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -439,7 +439,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column
       .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+      .map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -522,7 +522,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const s = new Scale.CategoricalScale();
     const values = column
       .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+      .map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping

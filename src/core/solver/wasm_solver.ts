@@ -82,7 +82,7 @@ export class WASMSolver extends ConstraintSolver {
   }
   /** Get the value of a variable */
   public getValue(attr: WASMSolverVariable): number {
-    return attr.map[attr.name] as number;
+    return <number>attr.map[attr.name];
   }
   /** Set the value of a variable */
   public setValue(attr: WASMSolverVariable, value: number): void {
@@ -148,7 +148,7 @@ export class WASMSolver extends ConstraintSolver {
   /** Solve the constraints */
   public solve(): [number, number] {
     this.variables.forEach((value, map, key) => {
-      this.solver.setValue(value.index, map[key] as number);
+      this.solver.setValue(value.index, <number>map[key]);
     });
 
     this.solver.regularizerWeight = 0.001;

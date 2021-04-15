@@ -24,6 +24,7 @@ import {
 import { PlotSegmentClass } from "./plot_segment";
 import { ChartStateManager } from "..";
 import { getSortDirection } from "../..";
+import { AxisDataBinding } from "../../specification/types";
 
 /**
  * Line plot segment distributes the elements on the line
@@ -102,7 +103,7 @@ export class LineGuide extends PlotSegmentClass {
   };
 
   public initializeState(): void {
-    const attrs = this.state.attributes as LineGuideAttributes;
+    const attrs = <LineGuideAttributes>this.state.attributes;
     attrs.x1 = -100;
     attrs.x2 = 100;
     attrs.y1 = -100;
@@ -200,7 +201,7 @@ export class LineGuide extends PlotSegmentClass {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
@@ -208,7 +209,7 @@ export class LineGuide extends PlotSegmentClass {
       dropAction: {
         axisInference: { property: "axis" },
       },
-    } as DropZones.Line);
+    });
     return zones;
   }
 
@@ -216,7 +217,7 @@ export class LineGuide extends PlotSegmentClass {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -224,8 +225,8 @@ export class LineGuide extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -233,20 +234,20 @@ export class LineGuide extends PlotSegmentClass {
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
-    return {
+    return <BoundingBox.Line>{
       type: "line",
       x1,
       y1,
       x2,
       y2,
-    } as BoundingBox.Line;
+    };
   }
 
   public getGraphics(manager: ChartStateManager): Graphics.Element {
@@ -314,7 +315,7 @@ export class LineGuide extends PlotSegmentClass {
       (this.object.properties.axis.autoDomainMin ||
         this.object.properties.axis.autoDomainMax)
     ) {
-      const values = (this.object.properties.axis as any).categories;
+      const values = (<AxisDataBinding>this.object.properties.axis).categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,

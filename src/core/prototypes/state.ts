@@ -120,17 +120,17 @@ export class ChartStateManager {
       // Special case for plot segment
       if (Prototypes.isType(element.classID, "plot-segment")) {
         this.mapPlotSegmentState(
-          element as Specification.PlotSegment,
-          elementState as Specification.PlotSegmentState
+          <Specification.PlotSegment>element,
+          <Specification.PlotSegmentState>elementState
         );
       }
       return elementState;
     });
 
     const scaleStates = chart.scales.map((scale) => {
-      const state = {
+      const state = <Specification.ScaleState>{
         attributes: {},
-      } as Specification.ScaleState;
+      };
       return state;
     });
 
@@ -202,11 +202,11 @@ export class ChartStateManager {
       callback(elementClass, elementState);
       // For plot segment, handle data mapping
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
-        const glyph = this.getObjectById(
+        const plotSegment = <Specification.PlotSegment>element;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const glyph = <Specification.Glyph>this.getObjectById(
           plotSegment.glyph
-        ) as Specification.Glyph;
+        );
         for (const glyphState of plotSegmentState.glyphs) {
           const glyphClass = this.classCache.getClass(glyphState);
           callback(glyphClass, glyphState);
@@ -240,7 +240,7 @@ export class ChartStateManager {
     )) {
       const elementClass = this.classCache.getClass(elementState);
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        callback(elementClass as PlotSegments.PlotSegmentClass);
+        callback(<PlotSegments.PlotSegmentClass>elementClass);
       }
     }
   }
@@ -349,14 +349,14 @@ export class ChartStateManager {
           classID: "mark.anchor",
           properties: { name: "Anchor" },
           mappings: {
-            x: {
+            x: <Specification.ParentMapping>{
               type: MappingType.parent,
               parentAttribute: "icx",
-            } as Specification.ParentMapping,
-            y: {
+            },
+            y: <Specification.ParentMapping>{
               type: MappingType.parent,
               parentAttribute: "icy",
-            } as Specification.ParentMapping,
+            },
           },
         },
       ],
@@ -384,7 +384,7 @@ export class ChartStateManager {
     const elementsToDelete: Specification.PlotSegment[] = [];
     for (const element of this.chart.elements) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
+        const plotSegment = <Specification.PlotSegment>element;
         if (plotSegment.glyph == glyph._id) {
           elementsToDelete.push(plotSegment);
         }
@@ -462,8 +462,8 @@ export class ChartStateManager {
     };
     if (Prototypes.isType(element.classID, "plot-segment")) {
       this.mapPlotSegmentState(
-        element as Specification.PlotSegment,
-        elementState as Specification.PlotSegmentState
+        <Specification.PlotSegment>element,
+        <Specification.PlotSegmentState>elementState
       );
     }
 
@@ -489,7 +489,7 @@ export class ChartStateManager {
 
     if (Prototypes.isType(element.classID, "plot-segment")) {
       this.initializePlotSegmentState(
-        elementClass as PlotSegments.PlotSegmentClass
+        <PlotSegments.PlotSegmentClass>elementClass
       );
     }
 
@@ -526,8 +526,8 @@ export class ChartStateManager {
       this.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
-        const plotSegment = element as Specification.PlotSegment;
-        const plotSegmentState = elementState as Specification.PlotSegmentState;
+        const plotSegment = <Specification.PlotSegment>element;
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
         if (plotSegment.glyph == glyph._id) {
           for (const glyphState of plotSegmentState.glyphs) {
             this.reorderArray(glyphState.marks, fromIndex, toIndex);
@@ -547,10 +547,10 @@ export class ChartStateManager {
     plotSegment: Specification.PlotSegment,
     plotSegmentState: Specification.PlotSegmentState
   ) {
-    const glyphObject = getById(
+    const glyphObject = <Specification.Glyph>getById(
       this.chart.glyphs,
       plotSegment.glyph
-    ) as Specification.Glyph;
+    );
     const table = this.getTable(glyphObject.table);
     const index2ExistingGlyphState = new Map<
       string,
@@ -601,15 +601,15 @@ export class ChartStateManager {
         if (index2ExistingGlyphState.has(rowIndex.join(","))) {
           return index2ExistingGlyphState.get(rowIndex.join(","));
         } else {
-          const glyphState = {
+          const glyphState = <Specification.GlyphState>{
             marks: glyphObject.marks.map(() => {
-              const elementState = {
+              const elementState = <Specification.MarkState>{
                 attributes: {},
-              } as Specification.MarkState;
+              };
               return elementState;
             }),
             attributes: {},
-          } as Specification.GlyphState;
+          };
           return glyphState;
         }
       }
@@ -620,12 +620,12 @@ export class ChartStateManager {
     element: Specification.ChartElement,
     elementState: Specification.ChartElementState
   ) {
-    const plotSegment = element as Specification.PlotSegment;
-    const plotSegmentState = elementState as Specification.PlotSegmentState;
+    const plotSegment = <Specification.PlotSegment>element;
+    const plotSegmentState = <Specification.PlotSegmentState>elementState;
     const plotSegmentClass = this.classCache.getPlotSegmentClass(
       plotSegmentState
     );
-    const glyph = this.getObjectById(plotSegment.glyph) as Specification.Glyph;
+    const glyph = <Specification.Glyph>this.getObjectById(plotSegment.glyph);
     for (const glyphState of plotSegmentState.glyphs) {
       if (this.classCache.hasClass(glyphState)) {
         continue;
@@ -648,9 +648,9 @@ export class ChartStateManager {
   private initializePlotSegmentState(
     plotSegmentClass: PlotSegments.PlotSegmentClass
   ) {
-    const glyph = this.getObjectById(
+    const glyph = <Specification.Glyph>this.getObjectById(
       plotSegmentClass.object.glyph
-    ) as Specification.Glyph;
+    );
     for (const glyphState of plotSegmentClass.state.glyphs) {
       const glyphClass = this.classCache.getGlyphClass(glyphState);
       glyphClass.initializeState();
@@ -681,9 +681,9 @@ export class ChartStateManager {
     if (idx < 0) {
       return;
     }
-    const plotSegmentState = this.chartState.elements[
+    const plotSegmentState = <Specification.PlotSegmentState>this.chartState.elements[
       idx
-    ] as Specification.PlotSegmentState;
+    ];
     this.mapPlotSegmentState(plotSegment, plotSegmentState);
     this.initializePlotSegmentCache(plotSegment, plotSegmentState);
   }
@@ -750,9 +750,9 @@ export class ChartStateManager {
     if (glyphIndex == null) {
       glyphIndex = 0;
     }
-    const plotSegmentClass = this.getClassById(
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>this.getClassById(
       plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    );
     return plotSegmentClass.state.glyphs[glyphIndex];
   }
 
@@ -779,8 +779,8 @@ export class ChartStateManager {
       switch (constraint.type) {
         case "snap": {
           return (
-            elementIDs.has(constraint.attributes.element as string) &&
-            elementIDs.has(constraint.attributes.targetElement as string)
+            elementIDs.has(<string>constraint.attributes.element) &&
+            elementIDs.has(<string>constraint.attributes.targetElement)
           );
         }
         default:
@@ -818,9 +818,9 @@ export class ChartStateManager {
     glyphIndex: number
   ): Expression.Context {
     const table = this.dataflow.getTable(plotSegment.table);
-    const plotSegmentClass = this.getClassById(
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>this.getClassById(
       plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    );
     const indices = plotSegmentClass.state.dataRowIndices[glyphIndex];
     return table.getGroupedContext(indices);
   }
@@ -831,9 +831,9 @@ export class ChartStateManager {
     glyphIndex: number
   ): Expression.Context[] {
     const table = this.dataflow.getTable(plotSegment.table);
-    const plotSegmentClass = this.getClassById(
+    const plotSegmentClass = <PlotSegments.PlotSegmentClass>this.getClassById(
       plotSegment._id
-    ) as PlotSegments.PlotSegmentClass;
+    );
     return plotSegmentClass.state.dataRowIndices.map((indices) =>
       table.getGroupedContext(indices)
     );

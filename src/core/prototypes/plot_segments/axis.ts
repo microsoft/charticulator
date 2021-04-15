@@ -43,11 +43,11 @@ export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickSize: 5,
   wordWrap: false,
   gridlineStyle: "none",
-  gridlineColor: {
+  gridlineColor: <Color>{
     r: 234,
     g: 234,
     b: 234,
-  } as Color,
+  },
   gridlineWidth: 1,
 };
 
@@ -153,7 +153,7 @@ export class AxisRenderer {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
       const pos = this.valueToPosition(tick.value);
-      position2Tick.set(pos, tick.tick as string);
+      position2Tick.set(pos, <string>tick.tick);
     }
     this.ticks = [];
     for (const [pos, tick] of position2Tick.entries()) {
@@ -934,10 +934,10 @@ export function getCategoricalAxis(
     postGap = 0;
   }
   const chunkRanges = data.categories.map((c, i) => {
-    return [
+    return <[number, number]>[
       preGap + (gap + chunkSize) * i,
       preGap + (gap + chunkSize) * i + chunkSize,
-    ] as [number, number];
+    ];
   });
   if (reverse) {
     chunkRanges.reverse();
@@ -1290,9 +1290,9 @@ export function buildAxisInference(
   plotSegment: Specification.PlotSegment,
   property: string
 ): Specification.Template.Inference {
-  const axis = plotSegment.properties[
+  const axis = <Specification.Types.AxisDataBinding>plotSegment.properties[
     property
-  ] as Specification.Types.AxisDataBinding;
+  ];
   return {
     objectID: plotSegment._id,
     dataSource: {
@@ -1315,14 +1315,14 @@ export function buildAxisProperties(
   plotSegment: Specification.PlotSegment,
   property: string
 ): Specification.Template.Property[] {
-  const axisObject = plotSegment.properties[property] as AttributeMap;
+  const axisObject = <AttributeMap>plotSegment.properties[property];
   const style: any = axisObject.style;
   if (!style) {
     return [];
   }
   return [
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1334,7 +1334,7 @@ export function buildAxisProperties(
       default: style.tickSize,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1346,7 +1346,7 @@ export function buildAxisProperties(
       default: style.fontSize,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1358,7 +1358,7 @@ export function buildAxisProperties(
       default: style.fontFamily,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1370,7 +1370,7 @@ export function buildAxisProperties(
       default: rgbToHex(style.lineColor),
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,

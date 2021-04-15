@@ -297,7 +297,7 @@ export class MapDataToMarkAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }
@@ -514,7 +514,7 @@ export class MapDataToChartElementAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }

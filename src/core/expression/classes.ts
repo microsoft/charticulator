@@ -63,7 +63,7 @@ export abstract class Expression {
 
   public getNumberValue(c: Context) {
     const v = this.getValue(c);
-    return v as number;
+    return <number>v;
   }
 
   public getStringValue(c: Context) {
@@ -72,7 +72,7 @@ export abstract class Expression {
   }
 
   public static Parse(expr: string): Expression {
-    return parse(expr) as Expression;
+    return <Expression>parse(expr);
   }
 
   public replace(replacer: PatternReplacer): Expression {
@@ -149,7 +149,7 @@ export class TextExpression {
   }
 
   public static Parse(expr: string): TextExpression {
-    return parse(expr, { startRule: "start_text" }) as TextExpression;
+    return <TextExpression>parse(expr, { startRule: "start_text" });
   }
 
   public replace(r: PatternReplacer): TextExpression {
@@ -205,7 +205,7 @@ export class FieldAccess extends Expression {
   }
 
   public getValue(c: Context) {
-    let v = this.expr.getValue(c) as any;
+    let v = <any>this.expr.getValue(c);
     for (const f of this.fields) {
       v = v[f];
     }
@@ -236,7 +236,7 @@ export class FunctionCall extends Expression {
     super();
     this.name = parts.join(".");
     this.args = args;
-    let v = functions as any;
+    let v = <any>functions;
     for (const part of parts) {
       if (v.hasOwnProperty(part)) {
         v = v[part];
@@ -412,9 +412,9 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression instanceof FunctionCall &&
       expression.args[0] instanceof Variable
     ) {
-      const columnName = (expression.args[0] as Variable).name;
-      const column = ((context as ShadowContext)
-        .upstream as DataflowTable).columns.find(
+      const columnName = (<Variable>expression.args[0]).name;
+      const column = (<DataflowTable>(<ShadowContext>context)
+        .upstream).columns.find(
         (col) => col.name == columnName
       );
       if (
@@ -422,7 +422,7 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
         (column.metadata.kind === Specification.DataKind.Temporal ||
           column.type === Specification.DataType.Boolean)
       ) {
-        return (context as ShadowContext).getVariable(
+        return (<ShadowContext>context).getVariable(
           column.metadata.rawColumnName
         );
       }
@@ -433,12 +433,12 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression instanceof FunctionCall &&
       expression.args[0] instanceof Variable
     ) {
-      const columnName = (expression.args[0] as Variable).name;
-      const rawColumnName = (context as DataflowTableGroupedContext)
+      const columnName = (<Variable>expression.args[0]).name;
+      const rawColumnName = (<DataflowTableGroupedContext>context)
         .getTable()
         .columns.find((col) => col.name == columnName).metadata.rawColumnName;
       if (rawColumnName) {
-        return (context as DataflowTableGroupedContext).getVariable(
+        return (<DataflowTableGroupedContext>context).getVariable(
           rawColumnName
         );
       }

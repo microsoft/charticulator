@@ -35,13 +35,13 @@ export function onUpdateAttribute(
       manager.chartState.elements
     )) {
       if (isType(element.classID, CartesianPlotSegment.type)) {
-        const plotSegment = element as PlotSegment;
-        const plotSegmentState = elementState as PlotSegmentState;
+        const plotSegment = <PlotSegment>element;
+        const plotSegmentState = <PlotSegmentState>elementState;
         for (const glyphState of plotSegmentState.glyphs) {
-          const glyph = findObjectById(
+          const glyph = <Glyph>findObjectById(
             manager.chart,
             plotSegment.glyph
-          ) as Glyph;
+          );
           const found = zipArray(glyph.marks, glyphState.marks).find(
             ([element, elementState]) => {
               return element._id === elementID;

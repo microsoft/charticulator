@@ -55,7 +55,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     for (let i = 0; i < this.angleVarable.length; i++) {
       const angleAttr = this.solver.attr(
         attrs,
-        (this.angleVarable[i] as any).name,
+        (<any>this.angleVarable[i]).name,
         {
           edit: false,
         }
@@ -67,7 +67,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
 
         const radialAttr = this.solver.attr(
           attrs,
-          (this.radialVarable[j] as any).name,
+          (<any>this.radialVarable[j]).name,
           {
             edit: false,
           }

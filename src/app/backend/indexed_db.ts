@@ -81,16 +81,16 @@ export class IndexedDBBackend {
             const request = store.index("TypeIndex").openCursor(type);
             const result: ItemDescription[] = [];
             request.onsuccess = () => {
-              const cursor = request.result as IDBCursorWithValue;
+              const cursor = <IDBCursorWithValue>request.result;
               if (cursor) {
-                const value = cursor.value as ItemDescription;
+                const value = <ItemDescription>cursor.value;
                 result.push(value);
                 cursor.continue();
               } else {
                 let resultFiltered = result.sort(
                   (a, b) =>
-                    (b.metadata[orderBy] as number) -
-                    (a.metadata[orderBy] as number)
+                    (<number>b.metadata[orderBy]) -
+                    (<number>a.metadata[orderBy])
                 );
                 resultFiltered = resultFiltered.slice(start, start + count);
                 resolve({

@@ -1,6 +1,8 @@
+
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["tslint-microsoft-contrib/recommended", "tslint-react", "tslint-config-prettier"],
   "rules": {
+    "no-relative-imports": false,
     // Interfaces do not start with "I" in this project
     "interface-name": [true, "never-prefix"],
 
@@ -10,27 +12,30 @@
     "ordered-imports": false,
 
     // TODO: Enable these rules when we have time to fix them
-    "ban-types": false,
-    "no-console": false,
-    "no-empty-interface": false,
-    "variable-name": false,
-    "one-variable-per-declaration": false,
-    "max-classes-per-file": false,
-    "triple-equals": false,
-    "member-ordering": false,
-    "no-empty": false,
-    "no-shadowed-variable": false,
-    "no-conditional-assignment": false,
-    "prefer-for-of": false,
-    "forin": false,
-    "no-namespace": false,
-    "no-bitwise": false,
-    "radix": false,
-    "no-var-requires": false,
-    "jsx-no-lambda": false,
-    "jsx-no-string-ref": false,
-    "jsx-key": false,
-    "jsdoc-format": [true, "check-multiline-start"],
-    "array-type": false
+    "export-name": false,
+    "no-for-in": false,
+    "no-single-line-block-comment": false
+    // "ban-types": false,
+    // "no-console": false,
+    // "no-empty-interface": false,
+    // "variable-name": false,
+    // "one-variable-per-declaration": false,
+    // "max-classes-per-file": false,
+    // "triple-equals": false,
+    // "member-ordering": false,
+    // "no-empty": false,
+    // "no-shadowed-variable": false,
+    // "no-conditional-assignment": false,
+    // "prefer-for-of": false,
+    // "forin": false,
+    // "no-namespace": false,
+    // "no-bitwise": false,
+    // "radix": false,
+    // "no-var-requires": false,
+    // "jsx-no-lambda": false,
+    // "jsx-no-string-ref": false,
+    // "jsx-key": false,
+    // "jsdoc-format": [true, "check-multiline-start"],
+    // "array-type": false
   }
 }

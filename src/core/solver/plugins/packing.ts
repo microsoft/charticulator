@@ -60,11 +60,11 @@ export class PackingPlugin extends ConstraintPlugin {
       const x = (this.solver.getValue(pt[0]) - cx) / xScale;
       const y = (this.solver.getValue(pt[1]) - cy) / yScale;
       // Use forceSimulation's default initialization
-      return {
+      return <NodeType>{
         fx: !this.xEnable ? x : undefined, // keep x unchanged if x is disabled
         fy: !this.yEnable ? y : undefined, // keep y unchanged if y is disabled
         r: pt[2],
-      } as NodeType;
+      };
     });
 
     const force = forceSimulation(nodes);

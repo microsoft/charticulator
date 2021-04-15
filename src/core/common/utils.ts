@@ -15,9 +15,9 @@ export function* zip<T1, T2>(a: T1[], b: T2[]): IterableIterator<[T1, T2]> {
 /** zip two arrays, return a new array */
 export function zipArray<T1, T2>(a: T1[], b: T2[]): [T1, T2][] {
   if (a.length < b.length) {
-    return a.map((elem, idx) => [elem, b[idx]] as [T1, T2]);
+    return a.map((elem, idx) => <[T1, T2]>[elem, b[idx]]);
   } else {
-    return b.map((elem, idx) => [a[idx], elem] as [T1, T2]);
+    return b.map((elem, idx) => <[T1, T2]>[a[idx], elem]);
   }
 }
 
@@ -56,7 +56,7 @@ export function deepClone<T>(obj: T): T {
 }
 
 export function shallowClone<T>(obj: T): T {
-  const r = {} as T;
+  const r = <T>{};
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       r[key] = obj[key];
@@ -164,7 +164,7 @@ export function setField<ObjectType, ValueType>(
   field: FieldType,
   value: ValueType
 ): ObjectType {
-  let p = obj as any;
+  let p = <any>obj;
   if (typeof field == "string" || typeof field == "number") {
     p[field] = value;
   } else {
@@ -183,7 +183,7 @@ export function getField<ObjectType, ValueType>(
   obj: ObjectType,
   field: FieldType
 ): ObjectType {
-  let p = obj as any;
+  let p = <any>obj;
   if (typeof field == "string" || typeof field == "number") {
     return p[field];
   } else {
@@ -201,7 +201,7 @@ export function getField<ObjectType, ValueType>(
 /** Fill default values into an object */
 export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
   if (obj == null) {
-    obj = {} as T;
+    obj = <T>{};
   }
   for (const key in defaults) {
     if (defaults.hasOwnProperty(key)) {
@@ -210,7 +210,7 @@ export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
       }
     }
   }
-  return obj as T;
+  return <T>obj;
 }
 
 /** Find the index of the first element that satisfies the predicate, return -1 if not found */
@@ -306,7 +306,7 @@ export function stableSort<T>(
   return (
     array
       // Convert to [ item, index ]
-      .map((x, index) => [x, index] as [T, number])
+      .map((x, index) => <[T, number]>[x, index])
       // Sort by compare then by index to stabilize
       .sort((a, b) => {
         const c = compare(a[0], b[0]);
@@ -583,9 +583,9 @@ export function getSortFunctionByData(values: string[]) {
  */
 export function getSortDirection(values: string[]): string {
   let direction = "ascending";
-  if (values && values[0] && values[(values as any[]).length - 1]) {
+  if (values && values[0] && values[(<any[]>values).length - 1]) {
     const a = values[0].toString();
-    const b = values[(values as any[]).length - 1].toString();
+    const b = values[(<any[]>values).length - 1].toString();
     if (b && a && b.localeCompare(a) > -1) {
       direction = "ascending";
     } else {

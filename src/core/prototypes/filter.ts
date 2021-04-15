@@ -15,7 +15,7 @@ export class CompiledFilter {
     } else if (filter.expression) {
       const expr = cache.parse(filter.expression);
       this.filter = (context) => {
-        return expr.getValue(context) as boolean;
+        return <boolean>expr.getValue(context);
       };
     }
   }

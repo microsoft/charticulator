@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, indexOf } from "../../common";
+import { Color } from "../../common";
 import * as Graphics from "../../graphics";
 
 import { LegendClass, LegendProperties } from "./legend";
@@ -30,9 +30,9 @@ export class CategoricalLegendClass extends LegendClass {
     const scale = this.getScale();
     if (scale) {
       const [scaleObject, scaleState] = scale;
-      const mapping = scaleObject.properties.mapping as {
+      const mapping = <{
         [name: string]: Color;
-      };
+      }>scaleObject.properties.mapping;
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
@@ -153,7 +153,7 @@ export class CategoricalLegendClass extends LegendClass {
               case "rectangle":
                 gItem.elements.push(
                   Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                    fillColor: item.value as Color,
+                    fillColor: <Color>item.value,
                   })
                 );
                 break;
@@ -175,7 +175,7 @@ export class CategoricalLegendClass extends LegendClass {
                       },
                     ],
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );
@@ -189,7 +189,7 @@ export class CategoricalLegendClass extends LegendClass {
                     lineHeight / 2,
                     lineHeight / 3,
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );

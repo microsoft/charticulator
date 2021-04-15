@@ -274,7 +274,7 @@ export class GuideClass extends ChartElementClass<
     const { axis, baseline } = this.object.properties;
     const { rectChart, rectGlyph } = this.getParentType();
     const handleLine = () => {
-      return [
+      return <Handles.Line[]>[
         {
           type: "line",
           axis,
@@ -284,10 +284,10 @@ export class GuideClass extends ChartElementClass<
           value,
           span: inf,
         },
-      ] as Handles.Line[];
+      ];
     };
     const handleRelativeLine = (reference: number) => {
-      return [
+      return <Handles.RelativeLine[]>[
         {
           type: "relative-line",
           axis,
@@ -299,7 +299,7 @@ export class GuideClass extends ChartElementClass<
           value,
           span: inf,
         },
-      ] as Handles.RelativeLine[];
+      ];
     };
     const parentAttrs = this.parent.state.attributes;
     if (rectGlyph) {
@@ -350,13 +350,13 @@ export class GuideClass extends ChartElementClass<
       attribute: string,
       value: Specification.AttributeValue
     ) => {
-      return {
+      return <SnappingGuides.Axis>{
         type: this.getAxis(),
         value,
         attribute,
         visible: true,
         visualType: SnappingGuidesVisualTypes.Guide,
-      } as SnappingGuides.Axis;
+      };
     };
     const r = [
       snappingGuideAxis(
@@ -429,7 +429,7 @@ export class GuideClass extends ChartElementClass<
             attribute: GuideAttributeNames.value,
           },
           type: Specification.AttributeType.Number,
-          default: this.state.attributes.value as number,
+          default: <number>this.state.attributes.value,
         },
         {
           objectID: this.object._id,

@@ -14,7 +14,7 @@ export let operators: { [name: string]: Function } = {};
 export let precedences = {
   LAMBDA_EXPRESSION: 1,
   FUNCTION_ARGUMENT: 0,
-  OPERATORS: {
+  OPERATORS: <{ [name: string]: number[] }>{
     "unary:not": [11, 11],
     and: [12, 12, 12],
     or: [13, 13, 13],
@@ -31,7 +31,7 @@ export let precedences = {
     "^": [20, 20, 21],
     "unary:+": [22, 22],
     "unary:-": [23, 23],
-  } as { [name: string]: number[] },
+  },
   FUNCTION_CALL: 100,
   LAMBDA_FUNCTION: 100,
   VARIABLE: 100,
@@ -60,9 +60,9 @@ function makeArrayCapable2<TA, TB, TRet>(f: (a: TA, b: TB) => TRet) {
     if (a instanceof Array && b instanceof Array) {
       return a.map((ai, i) => f(ai, b[i]));
     } else if (a instanceof Array) {
-      return a.map((ai) => f(ai, b as TB));
+      return a.map((ai) => f(ai, <TB>b));
     } else if (b instanceof Array) {
-      return b.map((bi) => f(a as TA, bi as TB));
+      return b.map((bi) => f(<TA>a, <TB>bi));
     } else {
       return f(a, b);
     }

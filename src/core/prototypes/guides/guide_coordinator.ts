@@ -59,7 +59,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
       t1 = solver.attr(attrs, "y1");
       t2 = solver.attr(attrs, "y2");
     }
-    const length = (this.object.properties.count as number) - 2;
+    const length = (<number>this.object.properties.count) - 2;
     this.getValueNames().map((name, index) => {
       const t = (1 + index) / (length + 1);
       solver.addLinear(
@@ -79,7 +79,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (this.object.properties.count as number) -
+      (<number>this.object.properties.count) -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -120,7 +120,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (this.object.properties.count as number) -
+      (<number>this.object.properties.count) -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -152,11 +152,11 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
-    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const attrs = <GuideCoordinatorAttributes>this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const axis = this.getAxis();
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -164,8 +164,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: axis == "y" ? x1 : x2,
         y: axis == "x" ? y1 : y2,
@@ -181,12 +181,12 @@ export class GuideCoordinatorClass extends ChartElementClass<
             attribute: axis == "x" ? "y1" : "y2",
           },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const attrs = <GuideCoordinatorAttributes>this.state.attributes;
     const { x1, y1 } = attrs;
     let { x2, y2 } = attrs;
     if (this.getAxis() == "x") {
@@ -194,7 +194,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     } else {
       x2 = x1;
     }
-    return {
+    return <BoundingBox.Line>{
       type: "line",
       visible: true,
       morphing: true,
@@ -202,7 +202,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
       y1,
       x2,
       y2,
-    } as BoundingBox.Line;
+    };
   }
 
   private getBasicValues() {
@@ -218,13 +218,13 @@ export class GuideCoordinatorClass extends ChartElementClass<
     return this.getValueNames()
       .concat(this.getBasicValues())
       .map((name) => {
-        return {
+        return <SnappingGuides.Axis>{
           type: this.getAxis(),
           value: this.state.attributes[name],
           attribute: name,
           visible: true,
           visualType: SnappingGuidesVisualTypes.Coordinator,
-        } as SnappingGuides.Axis;
+        };
       });
   }
 

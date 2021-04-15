@@ -42,9 +42,9 @@ export abstract class EmphasizableMarkClass<
    */
   protected generateEmphasisStyle(emphasize?: boolean): Style {
     // If emphasize is undefined (or true), we use full saturation
-    const style = {
+    const style = <Style>{
       saturation: 1,
-    } as Style;
+    };
 
     // only if emphasize is explicitly false to we use saturation of .7
     const method = this.object.properties.emphasisMethod || this.defaultMethod;

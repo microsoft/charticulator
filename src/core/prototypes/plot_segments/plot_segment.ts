@@ -164,7 +164,7 @@ export abstract class PlotSegmentClass<
   public static createDefault(
     glyph: Specification.Glyph
   ): Specification.PlotSegment {
-    const plotSegment = super.createDefault() as Specification.PlotSegment;
+    const plotSegment = <Specification.PlotSegment>super.createDefault();
     plotSegment.glyph = glyph._id;
     plotSegment.table = glyph.table;
     return plotSegment;
@@ -182,17 +182,17 @@ export abstract class PlotSegmentClass<
       const expression = TextExpression.Parse(`\$\{${rawExpression}\}`);
       const parsedExpression = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
-          return part.expression.args.find(
+          return <any>part.expression.args.find(
             (arg) => arg instanceof Variable
-          ) as any;
+          );
         }
       });
       const functionCallpart =
-        parsedExpression && (parsedExpression.expression as FunctionCall);
+        parsedExpression && (<FunctionCall>parsedExpression.expression);
       if (functionCallpart) {
-        const variable = functionCallpart.args.find(
+        const variable = <Variable>functionCallpart.args.find(
           (arg) => arg instanceof Variable
-        ) as Variable;
+        );
         const columnName = variable.name;
         const column = table.columns.find(
           (column) => column.name === columnName
@@ -268,7 +268,7 @@ export abstract class PlotSegmentClass<
     if (!this.object.properties.sublayout) {
       return groups;
     }
-    const order = (this.object.properties.sublayout as any).order;
+    const order = (<any>this.object.properties.sublayout).order;
     const dateRowIndices = this.state.dataRowIndices;
     const table = this.parent.dataflow.getTable(this.object.table);
 
@@ -288,7 +288,7 @@ export abstract class PlotSegmentClass<
       };
       groups.sort(compare);
     }
-    if ((this.object.properties.sublayout as any).orderReversed) {
+    if ((<any>this.object.properties.sublayout).orderReversed) {
       groups.reverse();
     }
 

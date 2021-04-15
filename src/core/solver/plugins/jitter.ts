@@ -57,10 +57,10 @@ export class JitterPlugin extends ConstraintPlugin {
       const x = getRandom(x1, x2);
       const y = getRandom(y1, y2);
       // Use forceSimulation's default initialization
-      return {
+      return <NodeType>{
         x,
         y,
-      } as NodeType;
+      };
     });
 
     for (let i = 0; i < nodes.length; i++) {

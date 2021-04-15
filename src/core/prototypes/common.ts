@@ -491,7 +491,7 @@ export function setProperty(
     object.properties[property] = value;
   } else if (property.subfield) {
     setField(
-      (object.properties[property.property] as any)[property.field as string],
+      (<any>object.properties[property.property])[<string>property.field],
       property.subfield,
       value
     );
@@ -509,7 +509,7 @@ export function getProperty(
   } else {
     if (property.subfield) {
       return getField(
-        (object.properties[property.property] as any)[property.field as string],
+        (<any>object.properties[property.property])[<string>property.field],
         property.subfield
       );
     } else {

@@ -587,15 +587,15 @@ export class Region2DConstraintBuilder {
             const [t1, t2] = axis.ranges[cindex];
 
             // t1 * x2 = (1 - t1) * x2
-            const vx1Expr = [
+            const vx1Expr = <([number, Variable])[]>[
               [t1, x2],
               [1 - t1, x1],
-            ] as ([number, Variable])[];
+            ];
             // t2 * x2 = (1 - t2) * x2
-            const vx2Expr = [
+            const vx2Expr = <([number, Variable])[]>[
               [t2, x2],
               [1 - t2, x1],
-            ] as ([number, Variable])[];
+            ];
 
             const vx1 = solver.attr(
               { value: solver.getLinear(...vx1Expr) },
@@ -645,14 +645,14 @@ export class Region2DConstraintBuilder {
           for (let cindex = 0; cindex < data.categories.length; cindex++) {
             const [t1, t2] = axis.ranges[cindex];
 
-            const vy1Expr = [
+            const vy1Expr = <([number, Variable])[]>[
               [t1, y2],
               [1 - t1, y1],
-            ] as ([number, Variable])[];
-            const vy2Expr = [
+            ];
+            const vy2Expr = <([number, Variable])[]>[
               [t2, y2],
               [1 - t2, y1],
-            ] as ([number, Variable])[];
+            ];
 
             const vy1 = solver.attr(
               { value: solver.getLinear(...vy1Expr) },
@@ -707,23 +707,23 @@ export class Region2DConstraintBuilder {
             for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
               const [tx1, tx2] = xAxis.ranges[xIndex];
 
-              const vx1Expr = [
+              const vx1Expr = <([number, Variable])[]>[
                 [tx1, x2],
                 [1 - tx1, x1],
-              ] as ([number, Variable])[];
-              const vx2Expr = [
+              ];
+              const vx2Expr = <([number, Variable])[]>[
                 [tx2, x2],
                 [1 - tx2, x1],
-              ] as ([number, Variable])[];
+              ];
 
-              const vy1Expr = [
+              const vy1Expr = <([number, Variable])[]>[
                 [ty1, y2],
                 [1 - ty1, y1],
-              ] as ([number, Variable])[];
-              const vy2Expr = [
+              ];
+              const vy2Expr = <([number, Variable])[]>[
                 [ty2, y2],
                 [1 - ty2, y1],
-              ] as ([number, Variable])[];
+              ];
 
               const vx1 = solver.attr(
                 { value: solver.getLinear(...vx1Expr) },
@@ -772,10 +772,10 @@ export class Region2DConstraintBuilder {
   ): Region2DHandleDescription[] {
     let handles: Region2DHandleDescription[] = [];
     const props = this.plotSegment.object.properties;
-    const x1 = this.plotSegment.state.attributes[this.x1Name] as number;
-    const y1 = this.plotSegment.state.attributes[this.y1Name] as number;
-    const x2 = this.plotSegment.state.attributes[this.x2Name] as number;
-    const y2 = this.plotSegment.state.attributes[this.y2Name] as number;
+    const x1 = <number>this.plotSegment.state.attributes[this.x1Name];
+    const y1 = <number>this.plotSegment.state.attributes[this.y1Name];
+    const x2 = <number>this.plotSegment.state.attributes[this.x2Name];
+    const y2 = <number>this.plotSegment.state.attributes[this.y2Name];
 
     // We are using sublayouts here
     if (sublayout) {
@@ -1663,18 +1663,18 @@ export class Region2DConstraintBuilder {
         for (let i = 0; i < group.group.length - 1; i++) {
           const state1 = state.glyphs[group.group[i]];
           const state2 = state.glyphs[group.group[i + 1]];
-          const p1 = state1.attributes.x2 as number;
+          const p1 = <number>state1.attributes.x2;
           const minY = Math.min(
-            state1.attributes.y1 as number,
-            state1.attributes.y2 as number,
-            state2.attributes.y1 as number,
-            state2.attributes.y2 as number
+            <number>state1.attributes.y1,
+            <number>state1.attributes.y2,
+            <number>state2.attributes.y1,
+            <number>state2.attributes.y2 
           );
           const maxY = Math.max(
-            state1.attributes.y1 as number,
-            state1.attributes.y2 as number,
-            state2.attributes.y1 as number,
-            state2.attributes.y2 as number
+            <number>state1.attributes.y1,
+            <number>state1.attributes.y2,
+            <number>state2.attributes.y1,
+            <number>state2.attributes.y2 
           );
           handles.push({
             type: "gap",
@@ -1697,18 +1697,18 @@ export class Region2DConstraintBuilder {
         for (let i = 0; i < group.group.length - 1; i++) {
           const state1 = state.glyphs[group.group[i]];
           const state2 = state.glyphs[group.group[i + 1]];
-          const p1 = state1.attributes.y2 as number;
+          const p1 = <number>state1.attributes.y2;
           const minX = Math.min(
-            state1.attributes.x1 as number,
-            state1.attributes.x2 as number,
-            state2.attributes.x1 as number,
-            state2.attributes.x2 as number
+            <number>state1.attributes.x1,
+            <number>state1.attributes.x2,
+            <number>state2.attributes.x1,
+            <number>state2.attributes.x2
           );
           const maxX = Math.max(
-            state1.attributes.x1 as number,
-            state1.attributes.x2 as number,
-            state2.attributes.x1 as number,
-            state2.attributes.x2 as number
+            <number>state1.attributes.x1,
+            <number>state1.attributes.x2,
+            <number>state2.attributes.x1,
+            <number>state2.attributes.x2
           );
           handles.push({
             type: "gap",
@@ -1774,11 +1774,11 @@ export class Region2DConstraintBuilder {
           if (e.attributes.size != null) {
             radius = Math.max(
               radius,
-              Math.sqrt((e.attributes.size as number) / Math.PI)
+              Math.sqrt((<number>e.attributes.size) / Math.PI)
             );
           } else {
-            const w = e.attributes.width as number;
-            const h = e.attributes.height as number;
+            const w = <number>e.attributes.width;
+            const h = <number>e.attributes.height;
             if (w != null && h != null) {
               radius = Math.max(radius, Math.sqrt(w * w + h * h) / 2);
             }
@@ -1787,11 +1787,11 @@ export class Region2DConstraintBuilder {
         if (radius == 0) {
           radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
         }
-        return [
+        return <[Variable, Variable, number]>[
           solver.attr(state.attributes, "x"),
           solver.attr(state.attributes, "y"),
           radius,
-        ] as [Variable, Variable, number];
+        ];
       });
       solver.addPlugin(
         new ConstraintPlugins.PackingPlugin(
@@ -1825,11 +1825,11 @@ export class Region2DConstraintBuilder {
           if (e.attributes.size != null) {
             radius = Math.max(
               radius,
-              Math.sqrt((e.attributes.size as number) / Math.PI)
+              Math.sqrt((<number>e.attributes.size) / Math.PI)
             );
           } else {
-            const w = e.attributes.width as number;
-            const h = e.attributes.height as number;
+            const w = <number>e.attributes.width;
+            const h = <number>e.attributes.height;
             if (w != null && h != null) {
               radius = Math.max(radius, Math.sqrt(w * w + h * h) / 2);
             }
@@ -1838,11 +1838,11 @@ export class Region2DConstraintBuilder {
         if (radius == 0) {
           radius = Region2DConstraintBuilder.defaultJitterPackingRadius;
         }
-        return [
+        return <[Variable, Variable, number]>[
           solver.attr(state.attributes, "x"),
           solver.attr(state.attributes, "y"),
           radius,
-        ] as [Variable, Variable, number];
+        ];
       });
       solver.addPlugin(
         new ConstraintPlugins.JitterPlugin(
@@ -1881,10 +1881,10 @@ export class Region2DConstraintBuilder {
                   this.sublayoutHandles(
                     [
                       {
-                        x1: state.attributes[this.x1Name] as number,
-                        y1: state.attributes[this.y1Name] as number,
-                        x2: state.attributes[this.x2Name] as number,
-                        y2: state.attributes[this.y2Name] as number,
+                        x1: <number>state.attributes[this.x1Name],
+                        y1: <number>state.attributes[this.y1Name],
+                        x2: <number>state.attributes[this.x2Name],
+                        y2: <number>state.attributes[this.y2Name],
                         group: state.dataRowIndices.map((x, i) => i),
                       },
                     ],

@@ -41,5 +41,5 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
 }
 
 export function getConfig(): CharticulatorAppConfig {
-  return coreGetConfig() as CharticulatorAppConfig;
+  return <CharticulatorAppConfig>coreGetConfig();
 }

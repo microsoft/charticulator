@@ -187,26 +187,26 @@ export abstract class LinksClass extends ChartElementClass {
     glyphState: Specification.GlyphState,
     row: Expression.Context
   ): AnchorAttributes {
-    let dx = glyphState.attributes.x as number;
-    let dy = glyphState.attributes.y as number;
+    let dx = <number>glyphState.attributes.x;
+    let dy = <number>glyphState.attributes.y;
     const anchorIndex = anchorPoints[0].anchorIndex;
-    dx -= glyphState.marks[anchorIndex].attributes.x as number;
-    dy -= glyphState.marks[anchorIndex].attributes.y as number;
+    dx -= <number>glyphState.marks[anchorIndex].attributes.x;
+    dy -= <number>glyphState.marks[anchorIndex].attributes.y;
 
     const cs = plotSegmentClass.getCoordinateSystem();
 
     return {
       points: anchorPoints.map((pt) => {
-        const x = (pt.x.element < 0
+        const x = <number>(pt.x.element < 0
           ? glyphState.attributes[pt.x.attribute]
           : glyphState.marks[pt.x.element].attributes[
               pt.x.attribute
-            ]) as number;
-        const y = (pt.y.element < 0
+            ]);
+        const y = <number>(pt.y.element < 0
           ? glyphState.attributes[pt.y.attribute]
           : glyphState.marks[pt.y.element].attributes[
               pt.y.attribute
-            ]) as number;
+            ]);
         const px = dx + x;
         const py = dy + y;
         return {
@@ -220,9 +220,9 @@ export abstract class LinksClass extends ChartElementClass {
           ? this.object.properties.curveness
           : 30,
       coordinateSystem: cs,
-      color: renderState.colorFunction(row) as Color,
-      opacity: renderState.opacityFunction(row) as number,
-      strokeWidth: renderState.strokeWidthFunction(row) as number,
+      color: <Color>renderState.colorFunction(row),
+      opacity: <number>renderState.opacityFunction(row),
+      strokeWidth: <number>renderState.strokeWidthFunction(row),
     };
   }
 
@@ -734,8 +734,8 @@ export abstract class LinksClass extends ChartElementClass {
         default:
           this.object.mappings.color &&
           rgbToHex(
-            (this.object.mappings.color as Specification.ValueMapping)
-              .value as Color
+            <Color>(<Specification.ValueMapping>this.object.mappings.color)
+              .value
           ), // TODO fix it
       });
     }
@@ -752,8 +752,8 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.strokeWidth &&
-          ((this.object.mappings.strokeWidth as Specification.ValueMapping)
-            .value as number), // TODO fix it
+          <number>((<Specification.ValueMapping>this.object.mappings.strokeWidth)
+            .value), // TODO fix it
       });
     }
 
@@ -769,8 +769,8 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.opacity &&
-          ((this.object.mappings.opacity as Specification.ValueMapping)
-            .value as number), // TODO fix it
+          <number>((<Specification.ValueMapping>this.object.mappings.opacity)
+            .value), // TODO fix it
       });
     }
 
@@ -795,11 +795,11 @@ export class SeriesLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -818,11 +818,11 @@ export class SeriesLinksClass extends LinksClass {
       chart.elements,
       (l) => l._id == props.linkThrough.plotSegment
     );
-    const layout = chart.elements[layoutIndex] as Specification.PlotSegment;
+    const layout = <Specification.PlotSegment>chart.elements[layoutIndex];
     const mark = getById(chart.glyphs, layout.glyph);
-    const layoutState = chartState.elements[
+    const layoutState = <Specification.PlotSegmentState>chartState.elements[
       layoutIndex
-    ] as Specification.PlotSegmentState;
+    ];
     const layoutClass = manager.getPlotSegmentClass(layoutState);
     const table = this.parent.dataflow.getTable(layout.table);
     const facets = facetRows(
@@ -896,11 +896,11 @@ export class LayoutsLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -919,12 +919,12 @@ export class LayoutsLinksClass extends LinksClass {
     const layoutIndices = props.linkBetween.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = layoutIndices.map(
+    const layouts = <Specification.PlotSegment[]>layoutIndices.map(
       (i) => chart.elements[i]
-    ) as Specification.PlotSegment[];
-    const layoutStates = layoutIndices.map(
+    );
+    const layoutStates = <Specification.PlotSegmentState[]>layoutIndices.map(
       (i) => chartState.elements[i]
-    ) as Specification.PlotSegmentState[];
+    );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
     );
@@ -1002,11 +1002,11 @@ export class TableLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, {
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
         r: 0,
         g: 0,
         b: 0,
-      } as Color),
+      }),
       opacityFunction: this.parent.resolveMapping(
         this.object.mappings.opacity,
         1
@@ -1025,12 +1025,12 @@ export class TableLinksClass extends LinksClass {
     const layoutIndices = props.linkTable.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = layoutIndices.map(
+    const layouts = <Specification.PlotSegment[]>layoutIndices.map(
       (i) => chart.elements[i]
-    ) as Specification.PlotSegment[];
-    const layoutStates = layoutIndices.map(
+    );
+    const layoutStates = <Specification.PlotSegmentState[]>layoutIndices.map(
       (i) => chartState.elements[i]
-    ) as Specification.PlotSegmentState[];
+    );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
     );

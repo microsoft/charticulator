@@ -78,7 +78,7 @@ describe("Data Type Inference Intl", () => {
       }
       if (expectedResult.metadata) {
         for (const k of Object.keys(expectedResult.metadata)) {
-          expect((r.metadata as any)[k]).to.deep.equals(
+          expect((<any>r.metadata)[k]).to.deep.equals(
             expectedResult.metadata[k]
           );
         }

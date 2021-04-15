@@ -77,14 +77,14 @@ export abstract class MarkClass<
   }
 
   public getGlyphClass() {
-    return this.parent as GlyphClass;
+    return <GlyphClass>this.parent;
   }
 
   public getPlotSegmentClass() {
-    return this.parent.parent as PlotSegmentClass;
+    return <PlotSegmentClass>this.parent.parent;
   }
 
   public getChartClass() {
-    return this.parent.parent.parent as ChartClass;
+    return <ChartClass>this.parent.parent.parent;
   }
 }

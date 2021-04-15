@@ -30,6 +30,7 @@ import {
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { strings } from "../../../../strings";
+import { AxisDataBinding } from "../../../specification/types";
 
 export type CartesianAxisMode =
   | "null"
@@ -212,24 +213,24 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
     ];
   }
 
@@ -372,47 +373,47 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-y"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Add Y Scaffold",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-x"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Add X Scaffold",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["polar"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Polar Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["curve"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Curve Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["map"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Map",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x2, y: y1 },
       p2: { x: x1, y: y1 },
@@ -420,8 +421,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
-    } as DropZones.Line);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: x1, y: y1 },
       p2: { x: x1, y: y2 },
@@ -429,7 +430,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
-    } as DropZones.Line);
+    });
     return zones;
   }
 
@@ -445,35 +446,35 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2 } = attrs;
     const h: Handles.Description[] = [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -481,8 +482,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -490,8 +491,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -499,8 +500,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -508,14 +509,14 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
 
     const builder = this.createBuilder();
 
     const handles = builder.getHandles();
     for (const handle of handles) {
-      h.push({
+      h.push(<Handles.GapRatio>{
         type: "gap-ratio",
         axis: handle.gap.axis,
         reference: handle.gap.reference,
@@ -531,7 +532,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             field: handle.gap.property.field,
           },
         ],
-      } as Handles.GapRatio);
+      });
     }
 
     return h;
@@ -627,7 +628,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       });
     }
     if (this.object.properties.axis) {
-      const values = (this.object.properties.axis as any).categories;
+      const values = (<AxisDataBinding>this.object.properties.axis).categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
