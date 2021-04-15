@@ -37,7 +37,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
-  private static BaseGuidesCount = 2;
+  private static BaseGuidesCount = 0;
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuideCoordinator",
@@ -59,7 +59,9 @@ export class GuideCoordinatorClass extends ChartElementClass<
       t1 = solver.attr(attrs, "y1");
       t2 = solver.attr(attrs, "y2");
     }
-    const length = (this.object.properties.count as number) - 2;
+    const length =
+      (this.object.properties.count as number) -
+      GuideCoordinatorClass.BaseGuidesCount;
     this.getValueNames().map((name, index) => {
       const t = (1 + index) / (length + 1);
       solver.addLinear(
@@ -205,13 +207,15 @@ export class GuideCoordinatorClass extends ChartElementClass<
     } as BoundingBox.Line;
   }
 
-  private getBasicValues() {
-    if (this.getAxis() === "x") {
-      return ["x1", "x2"];
-    }
-    if (this.getAxis() === "y") {
-      return ["y1", "y2"];
-    }
+  private getBasicValues(): string[] {
+    return [];
+    // uncomment to render main mark guides
+    // if (this.getAxis() === "x") {
+    //   return ["x1", "x2"];
+    // }
+    // if (this.getAxis() === "y") {
+    //   return ["y1", "y2"];
+    // }
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
@@ -241,8 +245,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
           {
             showUpdown: true,
             updownTick: 1,
-            updownRange: [3, 100],
-            minimum: 3,
+            updownRange: [1, 100],
+            minimum: 1,
             maximum: 100,
           }
         )
