@@ -144,8 +144,11 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
+    // eslint-disable-next-line
     emphasize?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;

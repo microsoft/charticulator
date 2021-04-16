@@ -124,6 +124,7 @@ export function readFileAsDataUrl(file: File): Promise<string> {
 }
 
 export function getExtensionFromFileName(filename: string) {
+  // eslint-disable-next-line
   const m = filename.match(/\.([^\.]+)$/);
   if (m) {
     return m[1].toLowerCase();
@@ -133,6 +134,7 @@ export function getExtensionFromFileName(filename: string) {
 }
 
 export function getFileNameWithoutExtension(filename: string) {
+  // eslint-disable-next-line
   return filename.replace(/\.([^\.]+)$/, "");
 }
 
@@ -143,7 +145,7 @@ export function showOpenFileDialog(accept?: string[]): Promise<File> {
     if (accept != null) {
       inputElement.accept = accept.map((x) => "." + x).join(",");
     }
-    inputElement.onchange = (e) => {
+    inputElement.onchange = () => {
       if (inputElement.files.length == 1) {
         resolve(inputElement.files[0]);
       } else {
@@ -218,10 +220,7 @@ function checkConvertion(
   }
 }
 
-export function getConvertableDataKind(
-  type: DataType,
-  dataSample?: (string | boolean | Date | number)[]
-): DataKind[] {
+export function getConvertableDataKind(type: DataType): DataKind[] {
   let types;
   switch (type) {
     case DataType.Boolean:

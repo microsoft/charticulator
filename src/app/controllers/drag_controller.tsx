@@ -53,7 +53,7 @@ export class DragSession {
   public startPoint: Point;
   public point: Point;
   public data: any;
-  public candidates: ([Droppable, () => void])[] = [];
+  public candidates: [Droppable, () => void][] = [];
 
   public states = new Map<Droppable, DragContext>();
 
@@ -130,7 +130,7 @@ export class DragSession {
   }
 
   public handleEnd(point: Point, modifiers: DragModifiers) {
-    this.states.forEach((context, droppable) => {
+    this.states.forEach((context) => {
       if (context._state == 1) {
         if (context._ondrop) {
           try {
@@ -141,7 +141,7 @@ export class DragSession {
         }
       }
     });
-    this.states.forEach((context, droppable) => {
+    this.states.forEach((context) => {
       if (context._state == 1) {
         if (context._onleave) {
           try {
@@ -305,7 +305,7 @@ export class DragController extends EventEmitter {
 
 export class DragStateView extends React.Component<
   { controller: DragController },
-  {}
+  Record<string, never>
 > {
   private token: EventSubscription;
 

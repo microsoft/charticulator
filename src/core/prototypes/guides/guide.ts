@@ -93,6 +93,7 @@ export class GuideClass extends ChartElementClass<
     return { rectChart, rectGlyph };
   }
 
+  // eslint-disable-next-line
   public buildConstraints(solver: ConstraintSolver) {
     const { rectGlyph, rectChart } = this.getParentType();
     if (rectGlyph) {
@@ -240,7 +241,7 @@ export class GuideClass extends ChartElementClass<
     rhsFn: (
       parentAttributeVariables: Variable[],
       value: Variable
-    ) => ([number, Variable])[]
+    ) => [number, Variable][]
   ) {
     const parentAttrs = this.parent.state.attributes;
     const parentAttributeVariables = solver.attrs(

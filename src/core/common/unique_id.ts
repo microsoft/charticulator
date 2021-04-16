@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 function s4() {
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   return Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
     .substring(1);
@@ -27,9 +27,9 @@ export function uuid() {
 const usedIDs = new Set<string>();
 /** Generate a unique ID in uuid format */
 export function uniqueID(): string {
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   while (true) {
-    // tslint:disable-next-line
+    // eslint-disable-next-line
     const id = Math.random().toString(36).substr(2);
     if (!usedIDs.has(id)) {
       usedIDs.add(id);
@@ -39,9 +39,9 @@ export function uniqueID(): string {
 }
 
 let hashIndex = 1;
-const objectHashs = new WeakMap<Object, string>();
+const objectHashs = new WeakMap<Record<string, never>, string>();
 
-export function objectHash(o: Object): string {
+export function objectHash(o: Record<string, never>): string {
   if (objectHashs.has(o)) {
     return objectHashs.get(o);
   }

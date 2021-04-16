@@ -11,8 +11,7 @@ import {
 } from "../../core";
 import { PopupView } from "../controllers";
 import * as globals from "../globals";
-import { ColorPalette, getSVGIcon, predefinedPalettes } from "../resources";
-import { ButtonFlatPanel } from "./buttons";
+import { ColorPalette, predefinedPalettes } from "../resources";
 import { ColorPicker, colorToCSS } from "./color_picker";
 import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
@@ -118,6 +117,7 @@ export class GradientPicker extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     return (
       <div className="gradient-picker">
@@ -245,7 +245,7 @@ export class GradientView extends React.PureComponent<
   {
     gradient: ColorGradient;
   },
-  {}
+  Record<string, never>
 > {
   protected refCanvas: HTMLCanvasElement;
 

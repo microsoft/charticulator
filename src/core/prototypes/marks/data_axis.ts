@@ -103,9 +103,8 @@ export class DataAxisClass extends MarkClass<
       if (props.axis.type == "numerical") {
         for (const item of props.dataExpressions) {
           const [attrX, attrY] = this.getAttributeNames(item);
-          const expr = <number>context.getExpressionValue(
-            item.expression,
-            context.rowContext
+          const expr = <number>(
+            context.getExpressionValue(item.expression, context.rowContext)
           );
           const interp = getNumericalInterpolate(props.axis);
           const t = interp(expr);
@@ -381,7 +380,6 @@ export class DataAxisClass extends MarkClass<
     };
     let properties: Specification.Template.Property[] = [];
     if (this.object.properties.axis) {
-      const axis = this.object.properties.axis;
       properties = properties.concat(
         buildAxisProperties(<any>this.object, "axis")
       );

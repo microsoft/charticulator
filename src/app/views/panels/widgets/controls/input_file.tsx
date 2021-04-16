@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import * as React from "react";
 import { Button } from "./button";
 
@@ -10,7 +11,10 @@ export interface InputFileProps {
   onOpenFile: (fileName: string, data: any) => void;
 }
 
-export class InputFile extends React.Component<InputFileProps, {}> {
+export class InputFile extends React.Component<
+  InputFileProps,
+  Record<string, unknown>
+> {
   public inputElement: HTMLInputElement;
 
   constructor(props: InputFileProps) {
@@ -27,7 +31,7 @@ export class InputFile extends React.Component<InputFileProps, {}> {
     if (this.inputElement.files.length == 1) {
       const file = this.inputElement.files[0];
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = () => {
         this.props.onOpenFile(file.name, reader.result);
       };
       switch (this.props.outputType) {

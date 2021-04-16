@@ -3,12 +3,8 @@
 import { Style, ColorFilter } from "../../graphics";
 import { MarkClass } from "./mark";
 import { ObjectClass } from "../object";
-import {
-  Object,
-  ObjectState,
-  EmphasisMethod,
-  AttributeMap,
-} from "../../specification";
+import { ObjectState, EmphasisMethod, AttributeMap } from "../../specification";
+import { Specification } from "../../../container";
 
 const DEFAULT_EMPHASIS_DESATURATION: ColorFilter = {
   saturation: { multiply: 0.2 },
@@ -27,7 +23,7 @@ export abstract class EmphasizableMarkClass<
   private defaultMethod: EmphasisMethod;
   constructor(
     parent: ObjectClass,
-    object: Object<PropertiesType>,
+    object: Specification.Object<PropertiesType>,
     state: ObjectState<AttributesType>,
     defaultMethod = EmphasisMethod.Saturation
   ) {

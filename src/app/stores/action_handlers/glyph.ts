@@ -11,6 +11,7 @@ import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.AddGlyph, function (action) {
     this.saveHistory();
@@ -25,7 +26,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.RemoveGlyph, function (action) {
     this.saveHistory();
-    const glyph = this.chartManager.removeGlyph(action.glyph);
+    this.chartManager.removeGlyph(action.glyph);
     this.currentSelection = null;
     this.currentGlyph = null;
     this.solveConstraintsAndUpdateGraphics();
@@ -72,6 +73,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
+  // eslint-disable-next-line
   REG.add(Actions.AddMarkToGlyph, function (action) {
     this.saveHistory();
 
@@ -89,8 +91,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         mark.properties.name
       );
     }
-
-    const isFirstMark = action.glyph.marks.length == 1;
 
     this.chartManager.addMarkToGlyph(mark, action.glyph);
 

@@ -54,6 +54,7 @@ export class FilterEditor extends React.Component<
     this.setState(this.getDefaultState(newValue));
   }
 
+  // eslint-disable-next-line
   public render() {
     const { manager, options } = this.props;
     const value = this.state.currentValue;

@@ -195,9 +195,6 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       this.object.properties.columnNameMap = columnNameMap;
     }
     const dataRowIndices = plotSegmentClass.state.dataRowIndices[glyphIndex];
-    const allDataRowIndices = plotSegmentClass.state.dataRowIndices.flatMap(
-      (index) => index
-    );
 
     const mapToRows = (dataRowIndices: number[]) =>
       dataRowIndices.map((i) => {
@@ -250,7 +247,9 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     cs: Graphics.CoordinateSystem,
     offset: Point,
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
+    // eslint-disable-next-line
     empasized?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -415,8 +414,11 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
     ];
   }
 
+  // eslint-disable-next-line
   public static createDefault(...args: any[]): Specification.Object {
-    const obj = <Specification.Element<NestedChartElementProperties>>super.createDefault(...args);
+    const obj = <Specification.Element<NestedChartElementProperties>>(
+      super.createDefault(...args)
+    );
     const myGlyphID = uniqueID();
     const tableName = "MainTable";
     obj.properties.specification = {

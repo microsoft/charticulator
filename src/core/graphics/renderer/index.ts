@@ -107,7 +107,9 @@ export class ChartRenderer {
    * @param chart Chart object
    * @param chartState State of chart and chart elements
    */
+  // eslint-disable-next-line
   private renderChart(
+    // eslint-disable-next-line
     dataset: Dataset.Dataset,
     chart: Specification.Chart,
     chartState: Specification.ChartState
@@ -148,8 +150,8 @@ export class ChartRenderer {
         ] of plotSegmentState.glyphs.entries()) {
           const anchorX = <number>glyphState.marks[0].attributes.x;
           const anchorY = <number>glyphState.marks[0].attributes.y;
-          const offsetX = (<number>glyphState.attributes.x) - anchorX;
-          const offsetY = (<number>glyphState.attributes.y) - anchorY;
+          const offsetX = <number>glyphState.attributes.x - anchorX;
+          const offsetY = <number>glyphState.attributes.y - anchorY;
           const g = this.renderGlyphMarks(
             plotSegment,
             plotSegmentState,
@@ -223,7 +225,7 @@ export class ChartRenderer {
         enableTooltips: false,
         enableContextMenu:
           chart.properties.enableContextMenu !== undefined
-            ? (<boolean>chart.properties.enableContextMenu)
+            ? <boolean>chart.properties.enableContextMenu
             : true,
         enableSelection: false,
       };

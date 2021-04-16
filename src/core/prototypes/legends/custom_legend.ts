@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, deepClone } from "../../common";
+import { Color } from "../../common";
 import * as Specification from "../../specification";
-import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
+import { Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
-import { LegendProperties, LegendState, LegendClass } from "./legend";
-import { defaultAxisStyle } from "../plot_segments/axis";
+import { LegendProperties, LegendState } from "./legend";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 

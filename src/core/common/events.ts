@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+
 export class EventSubscription {
   public emitter: EventEmitter;
   public event: string;

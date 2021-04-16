@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+
 import { Color } from "./color";
 import { utcFormat } from "d3-time-format";
 
@@ -180,7 +183,7 @@ export function setField<ObjectType, ValueType>(
   return obj;
 }
 
-export function getField<ObjectType, ValueType>(
+export function getField<ObjectType>(
   obj: ObjectType,
   field: FieldType
 ): ObjectType {
@@ -200,7 +203,10 @@ export function getField<ObjectType, ValueType>(
 }
 
 /** Fill default values into an object */
-export function fillDefaults<T extends {}>(obj: Partial<T>, defaults: T): T {
+export function fillDefaults<T extends Record<string, unknown>>(
+  obj: Partial<T>,
+  defaults: T
+): T {
   if (obj == null) {
     obj = <T>{};
   }
@@ -403,6 +409,7 @@ export class KeyNameMap<KeyType, ValueType> {
   /** Determine if the map has an entry */
   public has(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
+      // eslint-disable-next-line
       return this.mapping.get(key).hasOwnProperty(name);
     }
     return false;
@@ -412,6 +419,7 @@ export class KeyNameMap<KeyType, ValueType> {
   public get(key: KeyType, name: string) {
     if (this.mapping.has(key)) {
       const m = this.mapping.get(key);
+      // eslint-disable-next-line
       if (m.hasOwnProperty(name)) {
         return m[name];
       }
@@ -469,6 +477,7 @@ export class MultistringHashMap<ValueType> extends HashMap<
   string[],
   ValueType
 > {
+  // eslint-disable-next-line
   protected separator: string = Math.random().toString(36).substr(2);
   protected hash(key: string[]): string {
     return key.join(this.separator);
@@ -556,7 +565,7 @@ export function hexToRgb(hex: string): Color {
  */
 export function getSortFunctionByData(values: string[]) {
   const testToRange = (value: string) => {
-    const reg = /(\d\-)|(\d+\-\d+)|(\d+\+)/;
+    const reg = /(\d-)|(\d+-\d+)|(\d+\+)/;
     const match = value.match(reg);
     if (match && match.length) {
       return true;
@@ -625,7 +634,7 @@ export function compareMarkAttributeNames(a: string, b: string) {
 }
 
 export function refineColumnName(name: string) {
-  return name.replace(/[^0-9a-zA-Z\_]/g, "_");
+  return name.replace(/[^0-9a-zA-Z_]/g, "_");
 }
 
 export function getTimeZoneOffset(date: number) {
@@ -684,5 +693,6 @@ export function parseSafe(value: string, defaultValue: any = null) {
 }
 
 export function getRandom(startRange: number, endRange: number) {
+  // eslint-disable-next-line
   return startRange + Math.random() * (endRange - startRange);
 }

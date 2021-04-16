@@ -48,6 +48,7 @@ export abstract class ChartClass extends ObjectClass {
     return null;
   }
 
+  // eslint-disable-next-line
   public resolveMapping<ValueType>(
     mapping: Specification.Mapping,
     defaultValue: Specification.AttributeValue
@@ -63,10 +64,12 @@ export abstract class ChartClass extends ObjectClass {
           this.object.scales,
           (x) => x._id == scaleMapping.scale
         );
-        const scaleClass = <Scales.ScaleClass>ObjectClasses.Create(
-          this.parent,
-          this.object.scales[idx],
-          this.state.scales[idx]
+        const scaleClass = <Scales.ScaleClass>(
+          ObjectClasses.Create(
+            this.parent,
+            this.object.scales[idx],
+            this.state.scales[idx]
+          )
         );
         const expr = this.dataflow.cache.parse(scaleMapping.expression);
         return (row: Expression.Context) =>
@@ -265,6 +268,7 @@ export class RectangleChart extends ChartClass {
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildIntrinsicConstraints(solver: ConstraintSolver): void {
     const attrs = this.state.attributes;
     const [

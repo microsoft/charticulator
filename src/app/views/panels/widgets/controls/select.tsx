@@ -12,7 +12,7 @@ import * as R from "../../../../resources";
 import { classNames } from "../../../../utils";
 
 export function DropdownListView(props: {
-  list: ({ name: string; url?: string; text?: string; font?: string })[];
+  list: { name: string; url?: string; text?: string; font?: string }[];
   onClick?: (name: string) => void;
   selected?: string;
   context: PopupContext;
@@ -105,7 +105,10 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
     const props = this.props;
     if (props.labelPosition === LabelPosition.Bottom) {
       return (
-        <div className="charticulator__widget-control-select-container" title={props.tooltip}>
+        <div
+          className="charticulator__widget-control-select-container"
+          title={props.tooltip}
+        >
           <span
             className={classNames(
               "charticulator__widget-control-select",
@@ -123,7 +126,7 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
           </span>
           <span className="el-text">{props.labels[currentIndex]}</span>
         </div>
-      )
+      );
     } else {
       return (
         <span
@@ -149,9 +152,11 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
   }
 }
 
-export class Radio extends React.Component<SelectProps, {}> {
+export class Radio extends React.Component<
+  SelectProps,
+  Record<string, unknown>
+> {
   public render() {
-    const currentIndex = this.props.options.indexOf(this.props.value);
     return (
       <span className="charticulator__widget-control-radio">
         {this.props.options.map((value, index) => {

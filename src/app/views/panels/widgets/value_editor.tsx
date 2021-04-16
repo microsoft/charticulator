@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -63,6 +64,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
     this.props.onEmitMapping(mapping);
   }
 
+  // eslint-disable-next-line
   public render() {
     const value = this.props.value;
 

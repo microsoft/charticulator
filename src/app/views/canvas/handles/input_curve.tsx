@@ -118,7 +118,7 @@ export class InputCurveHandleView extends React.Component<
         points: this.state.points,
       });
     });
-    this.hammer.on("panend", (e) => {
+    this.hammer.on("panend", () => {
       const curve = this.getBezierCurvesFromMousePoints(this.state.points);
       const context = new HandlesDragContext();
       this.props.onDragStart(this.props.handle, context);
@@ -188,6 +188,7 @@ export class InputCurveHandleView extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public renderSpiralButton(x: number, y: number) {
     const margin = 2;
     const cx = x - 16 - margin;
@@ -196,8 +197,10 @@ export class InputCurveHandleView extends React.Component<
     return (
       <g
         className="handle-button"
+        // eslint-disable-next-line
         onClick={() => {
           globals.popupController.popupAt(
+            // eslint-disable-next-line
             (context) => {
               let windings = 4;
               let startAngle = 180;

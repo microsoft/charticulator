@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { Expression, Prototypes, Specification } from "../../../../core";
+import { Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { Button, InputExpression, Select } from "./controls";
 import { WidgetManager } from "./manager";
 
 export interface GroupByEditorProps {
@@ -54,8 +53,7 @@ export class GroupByEditor extends React.Component<
   }
 
   public render() {
-    const { manager, options } = this.props;
-    const value = this.state.currentValue;
+    const { options } = this.props;
     return (
       <div className="charticulator__groupby-editor">
         <DataFieldSelector

@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import { EventEmitter, EventSubscription } from "../../core";
 import { classNames } from "../utils";
@@ -251,7 +255,7 @@ export class PopupContainer extends React.Component<PopupViewProps, {}> {
             bottom: 0,
             pointerEvents: "all",
           }}
-          onMouseDown={(e) => {
+          onMouseDown={() => {
             this.props.controller.resetPopups();
           }}
         >
@@ -283,6 +287,7 @@ export class PopupView extends React.Component<
   },
   {}
 > {
+  // eslint-disable-next-line
   public render() {
     const popup = this.props.context;
     const position = popup.options.anchor.getBoundingClientRect();
@@ -394,7 +399,7 @@ export class PopupView extends React.Component<
             : "popup-view-container"
         }
         style={style}
-        onMouseDownCapture={(e) => {
+        onMouseDownCapture={() => {
           newlyCreatedContexts = new WeakSet<PopupContext>();
         }}
         onMouseDown={(e) => {

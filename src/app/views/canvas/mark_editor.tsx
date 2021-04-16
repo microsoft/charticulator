@@ -20,7 +20,7 @@ import { Actions, DragData } from "../../actions";
 import { ZoomableCanvas } from "../../components";
 import { DragContext, DragModifiers, Droppable } from "../../controllers";
 import { renderGraphicalElementSVG } from "../../renderer";
-import { AppStore, MarkSelection, Selection } from "../../stores";
+import { AppStore, MarkSelection } from "../../stores";
 import { classNames } from "../../utils";
 import { Button } from "../panels/widgets/controls";
 import { BoundingBoxView } from "./bounding_box";
@@ -309,6 +309,7 @@ export class SingleMarkView
     });
   }
 
+  // eslint-disable-next-line
   public getFitViewZoom(width: number, height: number) {
     const glyphState = this.props.glyphState;
     if (!glyphState) {
@@ -538,6 +539,7 @@ export class SingleMarkView
   private tokens: EventSubscription[] = [];
   private hammer: HammerManager;
 
+  // eslint-disable-next-line
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.canvasInteraction);
     this.hammer.add(new Hammer.Tap());
@@ -725,9 +727,9 @@ export class SingleMarkView
     );
   }
 
+  // eslint-disable-next-line
   public renderBoundsGuides() {
-    // let chartClass = this.props.store.chartManager.getChartClass(this.props.store.chartState);
-    // let boundsGuides = chartClass.getSnappingGuides();
+    // eslint-disable-next-line
     return this.getSnappingGuides().map((info, idx) => {
       const theGuide = info.guide;
       if (theGuide.visible) {
@@ -873,7 +875,7 @@ export class SingleMarkView
   public renderAnchorHandles() {
     return zipArray(this.props.glyph.marks, this.props.glyphState.marks)
       .filter((x) => x[0].classID == "mark.anchor")
-      .map(([element, elementState], idx) => {
+      .map(([element, elementState]) => {
         const elementClass = this.store.chartManager.getMarkClass(elementState);
         const bounds = elementClass.getHandles();
         return (
@@ -913,176 +915,182 @@ export class SingleMarkView
       });
   }
 
+  // eslint-disable-next-line
   public renderElementHandles() {
-    return zipArray(this.props.glyph.marks, this.props.glyphState.marks)
-      .filter((x) => x[0].classID != "mark.anchor")
-      .sort((a, b) => {
-        const aSelected =
-          this.store.currentSelection instanceof MarkSelection &&
-          this.store.currentSelection.mark == a[0];
-        const bSelected =
-          this.store.currentSelection instanceof MarkSelection &&
-          this.store.currentSelection.mark == b[0];
-        if (aSelected) {
-          return +1;
-        }
-        if (bSelected) {
-          return -1;
-        }
-        return (
-          this.props.glyph.marks.indexOf(a[0]) -
-          this.props.glyph.marks.indexOf(b[0])
-        );
-      })
-      .map(([element, elementState]) => {
-        const elementClass = this.store.chartManager.getMarkClass(elementState);
-        const shouldRenderHandles =
-          this.store.currentSelection instanceof MarkSelection &&
-          this.store.currentSelection.mark == element;
-        if (!shouldRenderHandles) {
+    return (
+      zipArray(this.props.glyph.marks, this.props.glyphState.marks)
+        .filter((x) => x[0].classID != "mark.anchor")
+        .sort((a, b) => {
+          const aSelected =
+            this.store.currentSelection instanceof MarkSelection &&
+            this.store.currentSelection.mark == a[0];
+          const bSelected =
+            this.store.currentSelection instanceof MarkSelection &&
+            this.store.currentSelection.mark == b[0];
+          if (aSelected) {
+            return +1;
+          }
+          if (bSelected) {
+            return -1;
+          }
+          return (
+            this.props.glyph.marks.indexOf(a[0]) -
+            this.props.glyph.marks.indexOf(b[0])
+          );
+        })
+        // eslint-disable-next-line
+        .map(([element, elementState]) => {
+          const elementClass = this.store.chartManager.getMarkClass(
+            elementState
+          );
+          const shouldRenderHandles =
+            this.store.currentSelection instanceof MarkSelection &&
+            this.store.currentSelection.mark == element;
+          if (!shouldRenderHandles) {
+            const bbox = elementClass.getBoundingBox();
+            if (bbox) {
+              return (
+                <BoundingBoxView
+                  key={`m${element._id}`}
+                  zoom={this.state.zoom}
+                  boundingBox={bbox}
+                  onClick={() => {
+                    this.dispatch(
+                      new Actions.SelectMark(null, this.props.glyph, element)
+                    );
+                  }}
+                />
+              );
+            }
+          }
+          const handles = elementClass.getHandles();
           const bbox = elementClass.getBoundingBox();
-          if (bbox) {
-            return (
-              <BoundingBoxView
-                key={`m${element._id}`}
+          return (
+            <g key={`m${element._id}`}>
+              {bbox ? (
+                <BoundingBoxView
+                  zoom={this.state.zoom}
+                  boundingBox={bbox}
+                  active={true}
+                />
+              ) : null}
+              <HandlesView
+                handles={handles}
                 zoom={this.state.zoom}
-                boundingBox={bbox}
-                onClick={() => {
-                  this.dispatch(
-                    new Actions.SelectMark(null, this.props.glyph, element)
+                active={false}
+                visible={shouldRenderHandles}
+                isAttributeSnapped={(attribute) => {
+                  if (element.mappings[attribute] != null) {
+                    return true;
+                  }
+                  for (const constraint of this.props.glyph.constraints) {
+                    if (constraint.type == "snap") {
+                      if (
+                        constraint.attributes.element == element._id &&
+                        constraint.attributes.attribute == attribute
+                      ) {
+                        return true;
+                      }
+                      if (
+                        constraint.attributes.targetElement == element._id &&
+                        constraint.attributes.targetAttribute == attribute
+                      ) {
+                        return true;
+                      }
+                    }
+                  }
+                  return false;
+                }}
+                onDragStart={(handle, ctx) => {
+                  const guides = this.getSnappingGuides();
+                  const session = new MarkSnappingSession(
+                    guides,
+                    this.props.glyph,
+                    element,
+                    elementState,
+                    handle,
+                    10 / this.state.zoom.scale
                   );
+                  ctx.onDrag((e) => {
+                    session.handleDrag(e);
+                    this.setState({
+                      snappingCandidates: session.getCurrentCandidates(),
+                    });
+                  });
+                  ctx.onEnd((e) => {
+                    this.setState({
+                      snappingCandidates: null,
+                    });
+                    // if (handle.type == "text-input") {
+                    //     let textInput = handle as Prototypes.Handles.TextInput;
+                    //     ctx.onEnd(e => {
+                    //         let updates: { [name: string]: Specification.Mapping }
+                    //         new Actions.SetMarkAttribute(this.props.store.mark, element, textInput.attribute, { type: "value", value: e.newValue } as Specification.ValueMapping).dispatch(this.props.store.dispatcher);
+                    //     })
+                    // } else if (handle.type == "text-alignment") {
+                    //     let textAlignment = handle as Prototypes.Handles.TextAlignment;
+                    //     ctx.onEnd(e => {
+                    //         new Actions.SetObjectProperty(element, textAlignment.propertyAlignment, null, e.newAlignment).dispatch(this.props.store.dispatcher);
+                    //         new Actions.SetObjectProperty(element, textAlignment.propertyRotation, null, e.newRotation).dispatch(this.props.store.dispatcher);
+                    //     })
+                    // } else {
+                    const action = session.getActions(session.handleEnd(e));
+                    if (action) {
+                      this.dispatch(action);
+                    }
+                    // }
+                  });
                 }}
               />
-            );
-          }
-        }
-        const handles = elementClass.getHandles();
-        const bbox = elementClass.getBoundingBox();
-        return (
-          <g key={`m${element._id}`}>
-            {bbox ? (
-              <BoundingBoxView
-                zoom={this.state.zoom}
-                boundingBox={bbox}
-                active={true}
-              />
-            ) : null}
-            <HandlesView
-              handles={handles}
-              zoom={this.state.zoom}
-              active={false}
-              visible={shouldRenderHandles}
-              isAttributeSnapped={(attribute) => {
-                if (element.mappings[attribute] != null) {
-                  return true;
-                }
-                for (const constraint of this.props.glyph.constraints) {
-                  if (constraint.type == "snap") {
-                    if (
-                      constraint.attributes.element == element._id &&
-                      constraint.attributes.attribute == attribute
-                    ) {
-                      return true;
-                    }
-                    if (
-                      constraint.attributes.targetElement == element._id &&
-                      constraint.attributes.targetAttribute == attribute
-                    ) {
-                      return true;
-                    }
-                  }
-                }
-                return false;
-              }}
-              onDragStart={(handle, ctx) => {
-                const guides = this.getSnappingGuides();
-                const session = new MarkSnappingSession(
-                  guides,
-                  this.props.glyph,
-                  element,
-                  elementState,
-                  handle,
-                  10 / this.state.zoom.scale
-                );
-                ctx.onDrag((e) => {
-                  session.handleDrag(e);
-                  this.setState({
-                    snappingCandidates: session.getCurrentCandidates(),
-                  });
-                });
-                ctx.onEnd((e) => {
-                  this.setState({
-                    snappingCandidates: null,
-                  });
-                  // if (handle.type == "text-input") {
-                  //     let textInput = handle as Prototypes.Handles.TextInput;
-                  //     ctx.onEnd(e => {
-                  //         let updates: { [name: string]: Specification.Mapping }
-                  //         new Actions.SetMarkAttribute(this.props.store.mark, element, textInput.attribute, { type: "value", value: e.newValue } as Specification.ValueMapping).dispatch(this.props.store.dispatcher);
-                  //     })
-                  // } else if (handle.type == "text-alignment") {
-                  //     let textAlignment = handle as Prototypes.Handles.TextAlignment;
-                  //     ctx.onEnd(e => {
-                  //         new Actions.SetObjectProperty(element, textAlignment.propertyAlignment, null, e.newAlignment).dispatch(this.props.store.dispatcher);
-                  //         new Actions.SetObjectProperty(element, textAlignment.propertyRotation, null, e.newRotation).dispatch(this.props.store.dispatcher);
-                  //     })
-                  // } else {
-                  const action = session.getActions(session.handleEnd(e));
-                  if (action) {
-                    this.dispatch(action);
-                  }
-                  // }
-                });
-              }}
-            />
-          </g>
-        );
-        // } else {
-        //     let bbox = elementClass.getBoundingBox();
-        //     if (bbox) {
-        //         return (
-        //             <BoundingBoxView
-        //                 key={`m${element._id}`}
-        //                 zoom={this.state.zoom}
-        //                 boundingBox={bbox}
-        //                 onClick={() => {
-        //                     new Actions.SelectElement(this.props.store.mark, element).dispatch(this.props.store.dispatcher);
-        //                 }}
-        //             />
-        //         );
-        //     } else {
-        //         let handles = elementClass.getHandles();
-        //         return (
-        //             <HandlesView
-        //                 key={`m${element._id}`}
-        //                 handles={handles}
-        //                 zoom={this.state.zoom}
-        //                 active={true}
-        //                 visible={false}
-        //                 onDragStart={(handle, ctx) => {
-        //                     let guides = this.getSnappingGuides();
-        //                     let session = new MarkSnappingSession(guides, this.props.store.mark, element, elementState, handle, 10 / this.state.zoom.scale);
-        //                     ctx.onDrag((e) => {
-        //                         session.handleDrag(e);
-        //                         this.setState({
-        //                             snappingCandidates: session.getCurrentCandidates()
-        //                         });
-        //                     });
-        //                     ctx.onEnd((e) => {
-        //                         this.setState({
-        //                             snappingCandidates: null
-        //                         });
-        //                         let action = session.getActions(session.handleEnd(e));
-        //                         if (action) {
-        //                             action.dispatch(this.props.store.dispatcher);
-        //                         }
-        //                     });
-        //                 }}
-        //             />
-        //         );
-        //     }
-        // }
-      });
+            </g>
+          );
+          // } else {
+          //     let bbox = elementClass.getBoundingBox();
+          //     if (bbox) {
+          //         return (
+          //             <BoundingBoxView
+          //                 key={`m${element._id}`}
+          //                 zoom={this.state.zoom}
+          //                 boundingBox={bbox}
+          //                 onClick={() => {
+          //                     new Actions.SelectElement(this.props.store.mark, element).dispatch(this.props.store.dispatcher);
+          //                 }}
+          //             />
+          //         );
+          //     } else {
+          //         let handles = elementClass.getHandles();
+          //         return (
+          //             <HandlesView
+          //                 key={`m${element._id}`}
+          //                 handles={handles}
+          //                 zoom={this.state.zoom}
+          //                 active={true}
+          //                 visible={false}
+          //                 onDragStart={(handle, ctx) => {
+          //                     let guides = this.getSnappingGuides();
+          //                     let session = new MarkSnappingSession(guides, this.props.store.mark, element, elementState, handle, 10 / this.state.zoom.scale);
+          //                     ctx.onDrag((e) => {
+          //                         session.handleDrag(e);
+          //                         this.setState({
+          //                             snappingCandidates: session.getCurrentCandidates()
+          //                         });
+          //                     });
+          //                     ctx.onEnd((e) => {
+          //                         this.setState({
+          //                             snappingCandidates: null
+          //                         });
+          //                         let action = session.getActions(session.handleEnd(e));
+          //                         if (action) {
+          //                             action.dispatch(this.props.store.dispatcher);
+          //                         }
+          //                     });
+          //                 }}
+          //             />
+          //         );
+          //     }
+          // }
+        })
+    );
   }
 
   public renderDropZoneForElement(
@@ -1146,7 +1154,7 @@ export class SingleMarkView
                   };
                 }
                 if (zone.dropAction.axisInference) {
-                  return (point: Point, modifiers: DragModifiers) => {
+                  return () => {
                     this.dispatch(
                       new Actions.BindDataToAxis(
                         element as PlotSegment,
@@ -1169,6 +1177,7 @@ export class SingleMarkView
 
   public renderSnappingGuidesLabels() {
     const allLabels: Prototypes.SnappingGuides.Description[] = [];
+    // eslint-disable-next-line
     for (const [element, elementState] of zip(
       this.props.glyph.marks,
       this.props.glyphState.marks
@@ -1339,6 +1348,7 @@ export class SingleMarkView
     );
   }
 
+  // eslint-disable-next-line
   public renderCreatingComponent() {
     const currentCreation = this.props.parent.getCurrentCreation();
     const currentCreationOptions = this.props.parent.getCurrentCreationOptions();
@@ -1360,6 +1370,7 @@ export class SingleMarkView
             this.dispatch(new Actions.SetCurrentTool(null));
             const opt = JSON.parse(currentCreationOptions);
             for (const key in opt) {
+              // eslint-disable-next-line
               if (opt.hasOwnProperty(key)) {
                 attributes[key] = opt[key];
               }

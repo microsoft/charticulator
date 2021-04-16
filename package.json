@@ -30,7 +30,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint --fix",
+      "npx eslint --fix ./src --ext .js,.jsx,.ts,.tsx",
       "prettier --write",
       "license-check-and-add"
     ],

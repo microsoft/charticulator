@@ -333,7 +333,9 @@ export class RectElementClass extends EmphasizableMarkClass<
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     empasized?: boolean
   ): Graphics.Element {
@@ -419,6 +421,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   }
 
   /** Get link anchors for this mark */
+  // eslint-disable-next-line
   public getLinkAnchors(): LinkAnchor.Description[] {
     const attrs = this.state.attributes;
     const element = this.object._id;

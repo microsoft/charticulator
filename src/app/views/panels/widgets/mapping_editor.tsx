@@ -25,7 +25,7 @@ import { DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall, Variable } from "../../../../core/expression";
+import { FunctionCall } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";
@@ -93,7 +93,6 @@ export class MappingEditor extends React.Component<
   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
-    const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
 
     const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
@@ -235,6 +234,7 @@ export class MappingEditor extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   private renderCurrentAttributeMapping() {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
@@ -430,6 +430,7 @@ export class MappingEditor extends React.Component<
     }
   }
 
+  // eslint-disable-next-line
   public render() {
     const parent = this.props.parent;
     const attribute = this.props.attribute;

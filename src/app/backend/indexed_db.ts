@@ -3,6 +3,7 @@
 import { ItemData, ItemDescription, ItemMetadata } from "./abstract";
 
 function s4() {
+  // eslint-disable-next-line
   return Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
     .substring(1);
@@ -51,14 +52,14 @@ export class IndexedDBBackend {
           itemsStore.createIndex("NameIndex", "metadata.name");
           itemsStore.createIndex("TimeCreatedIndex", "metadata.timeCreated");
           itemsStore.createIndex("TimeModifiedIndex", "metadata.timeModified");
-          const dataStore = this.database.createObjectStore("data", {
+          this.database.createObjectStore("data", {
             keyPath: "id",
           });
         };
         request.onerror = () => {
           reject(new Error("could not open database"));
         };
-        request.onsuccess = (e) => {
+        request.onsuccess = () => {
           this.database = request.result;
           resolve();
         };
@@ -89,8 +90,7 @@ export class IndexedDBBackend {
               } else {
                 let resultFiltered = result.sort(
                   (a, b) =>
-                    (<number>b.metadata[orderBy]) -
-                    (<number>a.metadata[orderBy])
+                    <number>b.metadata[orderBy] - <number>a.metadata[orderBy]
                 );
                 resultFiltered = resultFiltered.slice(start, start + count);
                 resolve({

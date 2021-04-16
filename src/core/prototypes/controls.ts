@@ -19,7 +19,7 @@ export const enum LabelPosition {
   Right,
   Bottom,
   Left,
-  Top
+  Top,
 }
 
 export interface InputSelectOptions {
@@ -105,6 +105,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
 }
 
+// eslint-disable-next-line
 export interface TableOptions {}
 
 export interface FilterEditorOptions {

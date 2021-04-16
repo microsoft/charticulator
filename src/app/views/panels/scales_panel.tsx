@@ -3,12 +3,7 @@
 import * as React from "react";
 import * as R from "../../resources";
 
-import {
-  EventSubscription,
-  Prototypes,
-  Action,
-  Expression,
-} from "../../../core";
+import { EventSubscription, Prototypes, Expression } from "../../../core";
 import { SVGImageIcon, DraggableElement } from "../../components";
 
 import { AppStore } from "../../stores";
@@ -21,14 +16,13 @@ import {
   ObjectProperties,
   Element,
   Scale,
-  Chart,
-  DataType,
 } from "../../../core/specification";
 import { Actions, DragData } from "../..";
 import { classNames } from "../../utils";
 import { FunctionCall, Variable } from "../../../core/expression";
 import { ColumnMetadata } from "../../../core/dataset";
 
+// eslint-disable-next-line
 function getObjectIcon(classID: string) {
   return R.getSVGIcon(
     Prototypes.ObjectClasses.GetMetadata(classID).iconPath || "object"
@@ -82,6 +76,7 @@ export class ScalesPanel extends ContextedComponent<
     return name[0].toUpperCase() + name.slice(1);
   }
 
+  // eslint-disable-next-line
   public render(): any {
     const store = this.props.store;
     let scales = store.chart.scales;
@@ -110,6 +105,7 @@ export class ScalesPanel extends ContextedComponent<
       });
     };
 
+    // eslint-disable-next-line
     const mapToUI = (scale: Scale<ObjectProperties>) => (
       glyph: Glyph,
       element: ChartElement<ObjectProperties>
@@ -158,7 +154,7 @@ export class ScalesPanel extends ContextedComponent<
                   type
                 );
 
-                const applyAggregation = (expr: string, type: string) => {
+                const applyAggregation = (expr: string) => {
                   return Expression.functionCall(
                     aggregation,
                     Expression.parse(expr)
@@ -184,7 +180,7 @@ export class ScalesPanel extends ContextedComponent<
 
                   rawColumnExpr =
                     metadata.rawColumnName &&
-                    applyAggregation(metadata.rawColumnName, DataType.String);
+                    applyAggregation(metadata.rawColumnName);
                 }
 
                 this.setState({ isSelected: expr });
@@ -265,16 +261,16 @@ export class ScalesPanel extends ContextedComponent<
         .concat(
           store.chart.glyphs
             // map all glyphs into {glyph & marks} group
-            .flatMap(
-              (
-                glyph: Glyph
-              ): { glyph: Glyph; mark: Element<ObjectProperties> }[] =>
-                glyph.marks.map((mark) => {
-                  return {
-                    glyph,
-                    mark,
-                  };
-                })
+            .flatMap((glyph: Glyph): {
+              glyph: Glyph;
+              mark: Element<ObjectProperties>;
+            }[] =>
+              glyph.marks.map((mark) => {
+                return {
+                  glyph,
+                  mark,
+                };
+              })
             )
             // filter elements by scale
             .filter(

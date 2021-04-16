@@ -21,6 +21,7 @@ import { RectElementProperties } from "../../core/prototypes/marks/rect.attrs";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
+  // eslint-disable-next-line
   public migrate(state: AppStoreState, targetVersion: string): AppStoreState {
     // First, fix version if missing
     if (!state.version) {
@@ -203,10 +204,7 @@ export class Migrator {
     }
   }
 
-  public fixAxisDataMapping(
-    mapping: Specification.Types.AxisDataBinding,
-    table: string
-  ) {
+  public fixAxisDataMapping(mapping: Specification.Types.AxisDataBinding) {
     if (!mapping) {
       return;
     }
@@ -217,20 +215,14 @@ export class Migrator {
   }
 
   public fixDataMappingExpressions(state: AppStoreState) {
-    for (const [element, elementState] of zip(
+    for (const [element] of zip(
       state.chart.elements,
       state.chartState.elements
     )) {
       if (Prototypes.isType(element.classID, "plot-segment")) {
         const plotSegment = element as Specification.PlotSegment;
-        this.fixAxisDataMapping(
-          plotSegment.properties.xData as any,
-          plotSegment.table
-        );
-        this.fixAxisDataMapping(
-          plotSegment.properties.yData as any,
-          plotSegment.table
-        );
+        this.fixAxisDataMapping(plotSegment.properties.xData as any);
+        this.fixAxisDataMapping(plotSegment.properties.yData as any);
         if (plotSegment.properties.sublayout) {
           const sublayout = plotSegment.properties.sublayout as any;
           if (sublayout.order) {

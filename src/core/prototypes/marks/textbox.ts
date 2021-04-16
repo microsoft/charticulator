@@ -99,6 +99,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     attrs.fontSize = 14;
   }
 
+  // eslint-disable-next-line
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -285,10 +286,13 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   }
 
   // Get the graphical element from the element
+  // eslint-disable-next-line
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex: number,
+    // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -500,6 +504,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   }
 
   /** Get link anchors for this mark */
+  // eslint-disable-next-line
   public getLinkAnchors(): LinkAnchor.Description[] {
     const attrs = this.state.attributes;
     const element = this.object._id;

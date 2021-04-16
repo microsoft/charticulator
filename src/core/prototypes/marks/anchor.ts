@@ -97,7 +97,6 @@ export class AnchorElement extends MarkClass {
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const props = this.object.properties;
     return [manager.label("(drag the anchor in the glyph editor)")];
   }
 }

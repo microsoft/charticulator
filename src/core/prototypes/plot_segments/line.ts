@@ -9,7 +9,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   TemplateParameters,
 } from "../common";
@@ -122,7 +121,6 @@ export class LineGuide extends PlotSegmentClass {
    * t - position of the element on line
    */
   public buildGlyphConstraints(solver: ConstraintSolver): void {
-    const chart = this.parent.object;
     const props = this.object.properties;
     const rows = this.parent.dataflow.getTable(this.object.table);
     // take variables for attributes
@@ -132,7 +130,6 @@ export class LineGuide extends PlotSegmentClass {
       "x2",
       "y2",
     ]);
-    const attrs = this.state.attributes;
 
     const count = this.state.dataRowIndices.length;
     const dataIndices = this.state.dataRowIndices;
@@ -306,7 +303,6 @@ export class LineGuide extends PlotSegmentClass {
     const r: Specification.Template.Inference[] = [];
     let p: Specification.Template.Property[] = [];
     if (this.object.properties.axis) {
-      const axis = this.object.properties.axis;
       r.push(buildAxisInference(this.object, "axis"));
       p = p.concat(buildAxisProperties(this.object, "axis"));
     }

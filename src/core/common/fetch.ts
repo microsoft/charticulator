@@ -9,7 +9,7 @@ export function loadDataFromURL(
   url: string,
   contentType: "json",
   timeout?: number
-): Promise<Object>;
+): Promise<Record<string, unknown>>;
 export function loadDataFromURL(
   url: string,
   contentType: "arraybuffer",
@@ -23,6 +23,7 @@ export function loadDataFromURL(
 export function loadDataFromURL(
   url: string,
   contentType: string = "text",
+  // eslint-disable-next-line
   timeout: number = 10
 ): Promise<any> {
   return fetch(url).then((response) => {

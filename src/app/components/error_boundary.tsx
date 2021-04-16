@@ -10,7 +10,7 @@ export enum TelemetryActionType {
 }
 
 export interface TelemetryRecorder {
-  record(type: TelemetryActionType, payload: object): void;
+  record(type: TelemetryActionType, payload: Record<string, any>): void;
 }
 
 export interface ErrorBoundaryProps {

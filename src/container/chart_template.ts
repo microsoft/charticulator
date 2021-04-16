@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable no-prototype-builtins */
 
 import {
   Dataset,
@@ -22,13 +23,7 @@ import {
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
-import {
-  AttributeList,
-  AttributeMap,
-  MappingType,
-  ScaleMapping,
-  ValueMapping,
-} from "../core/specification";
+import { MappingType, ScaleMapping, ValueMapping } from "../core/specification";
 import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 import { GuideAttributeNames } from "../core/prototypes/guides";
 
@@ -130,6 +125,8 @@ export class ChartTemplate {
    * On editing this method ensure that you made correspond changes in template builder ({@link ChartTemplateBuilder}).
    * Any exposed into template objects should be initialized here
    */
+
+  // eslint-disable-next-line
   public instantiate(
     dataset: Dataset.Dataset,
     inference: boolean = true
@@ -301,6 +298,7 @@ export class ChartTemplate {
 
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
+      // eslint-disable-next-line
       for (const [attr, mapping] of forEachMapping(mappings)) {
         if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;

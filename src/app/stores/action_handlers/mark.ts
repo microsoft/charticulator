@@ -5,7 +5,6 @@ import {
   setField,
   Solver,
   zipArray,
-  Prototypes,
   Specification,
   Expression,
 } from "../../../core";
@@ -15,6 +14,7 @@ import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // Internal registry of mark-level action handlers
   const MR = new ActionHandlerRegistry<AppStore, Actions.MarkAction>();
@@ -179,9 +179,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToMarkAttribute, function (action) {
     this.saveHistory();
 
-    const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
-      .attributes[action.attribute];
-    const table = this.getTable(action.glyph.table);
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(

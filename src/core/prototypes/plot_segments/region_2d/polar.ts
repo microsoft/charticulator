@@ -535,14 +535,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
       g.elements.push(
-        axisRenderer.renderPolarRadialGridLine(
-          cx,
-          cy,
-          innerRadius,
-          outerRadius,
-          angleStart,
-          angleEnd
-        )
+        axisRenderer.renderPolarRadialGridLine(cx, cy, innerRadius, outerRadius)
       );
     }
 

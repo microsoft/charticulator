@@ -197,16 +197,16 @@ export abstract class LinksClass extends ChartElementClass {
 
     return {
       points: anchorPoints.map((pt) => {
-        const x = <number>(pt.x.element < 0
-          ? glyphState.attributes[pt.x.attribute]
-          : glyphState.marks[pt.x.element].attributes[
-              pt.x.attribute
-            ]);
-        const y = <number>(pt.y.element < 0
-          ? glyphState.attributes[pt.y.attribute]
-          : glyphState.marks[pt.y.element].attributes[
-              pt.y.attribute
-            ]);
+        const x = <number>(
+          (pt.x.element < 0
+            ? glyphState.attributes[pt.x.attribute]
+            : glyphState.marks[pt.x.element].attributes[pt.x.attribute])
+        );
+        const y = <number>(
+          (pt.y.element < 0
+            ? glyphState.attributes[pt.y.attribute]
+            : glyphState.marks[pt.y.element].attributes[pt.y.attribute])
+        );
         const px = dx + x;
         const py = dy + y;
         return {
@@ -335,6 +335,7 @@ export abstract class LinksClass extends ChartElementClass {
     }
   }
 
+  // eslint-disable-next-line
   public static LinkPath(
     path: Graphics.PathMaker,
     linkType: LinkType,
@@ -496,6 +497,7 @@ export abstract class LinksClass extends ChartElementClass {
     }
   }
 
+  // eslint-disable-next-line
   protected renderLinks(
     linkGraphics: LinkType,
     lineType: InterpolationType,
@@ -530,10 +532,7 @@ export abstract class LinksClass extends ChartElementClass {
       case "band": {
         const splitAnchors = true;
         if (splitAnchors) {
-          const map = new Map<
-            string,
-            ([AnchorAttributes, AnchorAttributes])[]
-          >();
+          const map = new Map<string, [AnchorAttributes, AnchorAttributes][]>();
           const hashAnchor = (points: PointDirection[]) => {
             const dx = points[0].x - points[1].x;
             const dy = points[0].y - points[1].y;
@@ -565,7 +564,7 @@ export abstract class LinksClass extends ChartElementClass {
               }
             }
           }
-          map.forEach((anchors, points) => {
+          map.forEach((anchors) => {
             const x1 = anchors[0][0].points[0].x;
             const y1 = anchors[0][0].points[0].y;
             const x2 = anchors[0][0].points[1].x;
@@ -641,6 +640,7 @@ export abstract class LinksClass extends ChartElementClass {
   }
 
   /** Get the graphics that represent this layout */
+  // eslint-disable-next-line
   public getGraphics(manager: ChartStateManager): Graphics.Element {
     return null;
   }
@@ -734,8 +734,9 @@ export abstract class LinksClass extends ChartElementClass {
         default:
           this.object.mappings.color &&
           rgbToHex(
-            <Color>(<Specification.ValueMapping>this.object.mappings.color)
-              .value
+            <Color>(
+              (<Specification.ValueMapping>this.object.mappings.color).value
+            )
           ), // TODO fix it
       });
     }
@@ -752,8 +753,9 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.strokeWidth &&
-          <number>((<Specification.ValueMapping>this.object.mappings.strokeWidth)
-            .value), // TODO fix it
+          <number>(
+            (<Specification.ValueMapping>this.object.mappings.strokeWidth).value
+          ), // TODO fix it
       });
     }
 
@@ -769,8 +771,9 @@ export abstract class LinksClass extends ChartElementClass {
         type: Specification.AttributeType.Number,
         default:
           this.object.mappings.opacity &&
-          <number>((<Specification.ValueMapping>this.object.mappings.opacity)
-            .value), // TODO fix it
+          <number>(
+            (<Specification.ValueMapping>this.object.mappings.opacity).value
+          ), // TODO fix it
       });
     }
 
@@ -795,7 +798,9 @@ export class SeriesLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
@@ -810,7 +815,6 @@ export class SeriesLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
     // Resolve the anchors
@@ -820,9 +824,9 @@ export class SeriesLinksClass extends LinksClass {
     );
     const layout = <Specification.PlotSegment>chart.elements[layoutIndex];
     const mark = getById(chart.glyphs, layout.glyph);
-    const layoutState = <Specification.PlotSegmentState>chartState.elements[
-      layoutIndex
-    ];
+    const layoutState = <Specification.PlotSegmentState>(
+      chartState.elements[layoutIndex]
+    );
     const layoutClass = manager.getPlotSegmentClass(layoutState);
     const table = this.parent.dataflow.getTable(layout.table);
     const facets = facetRows(
@@ -896,7 +900,9 @@ export class LayoutsLinksClass extends LinksClass {
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
@@ -911,19 +917,17 @@ export class LayoutsLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
-    const dataset = this.parent.dataflow;
 
     const layoutIndices = props.linkBetween.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = <Specification.PlotSegment[]>layoutIndices.map(
-      (i) => chart.elements[i]
+    const layouts = <Specification.PlotSegment[]>(
+      layoutIndices.map((i) => chart.elements[i])
     );
-    const layoutStates = <Specification.PlotSegmentState[]>layoutIndices.map(
-      (i) => chartState.elements[i]
+    const layoutStates = <Specification.PlotSegmentState[]>(
+      layoutIndices.map((i) => chartState.elements[i])
     );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
@@ -996,13 +1000,16 @@ export class TableLinksClass extends LinksClass {
   };
 
   /** Get the graphics that represent this layout */
+  // eslint-disable-next-line
   public getGraphics(manager: ChartStateManager): Graphics.Element {
     const props = this.object.properties;
 
     const linkGroup = Graphics.makeGroup([]);
 
     const renderState: RenderState = {
-      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <Color>{
+      colorFunction: this.parent.resolveMapping(this.object.mappings.color, <
+        Color
+      >{
         r: 0,
         g: 0,
         b: 0,
@@ -1017,19 +1024,17 @@ export class TableLinksClass extends LinksClass {
       ),
     };
 
-    const links = this.object;
     const chart = this.parent.object;
     const chartState = this.parent.state;
-    const dataset = this.parent.dataflow;
 
     const layoutIndices = props.linkTable.plotSegments.map((lid) =>
       indexOf(chart.elements, (l) => l._id == lid)
     );
-    const layouts = <Specification.PlotSegment[]>layoutIndices.map(
-      (i) => chart.elements[i]
+    const layouts = <Specification.PlotSegment[]>(
+      layoutIndices.map((i) => chart.elements[i])
     );
-    const layoutStates = <Specification.PlotSegmentState[]>layoutIndices.map(
-      (i) => chartState.elements[i]
+    const layoutStates = <Specification.PlotSegmentState[]>(
+      layoutIndices.map((i) => chartState.elements[i])
     );
     const layoutClasses = layoutStates.map((layoutState) =>
       manager.getPlotSegmentClass(layoutState)
@@ -1080,7 +1085,9 @@ export class TableLinksClass extends LinksClass {
         continue;
       }
 
+      // eslint-disable-next-line
       const [iRow0, i0] = r1;
+      // eslint-disable-next-line
       const [iRow1, i1] = r2;
 
       anchors.push([

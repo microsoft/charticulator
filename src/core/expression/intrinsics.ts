@@ -7,8 +7,10 @@ import { getFormat } from "../common";
 
 export const constants: { [name: string]: ValueType } = {};
 export const functions: {
+  // eslint-disable-next-line
   [name: string]: Function | { [name: string]: Function };
 } = {};
+// eslint-disable-next-line
 export const operators: { [name: string]: Function } = {};
 
 export const precedences = {
@@ -106,8 +108,9 @@ functions.get = (obj: any, field: string | number) => obj[field];
 // Array functions
 functions.first = (list: any[]) => list[0];
 functions.last = (list: any[]) => list[list.length - 1];
-functions.map = (list: any[], func: Function) => list.map((item) => func(item));
-functions.filter = (list: any[], func: Function) =>
+functions.map = (list: any[], func: (item: any) => void) =>
+  list.map((item) => func(item));
+functions.filter = (list: any[], func: (item: any) => void) =>
   list.filter((item) => func(item));
 
 // Statistics
@@ -152,6 +155,7 @@ functions.sum = (...list: (number | number[])[]) => {
 };
 functions.count = (...list: (number | number[])[]) => {
   let r = 0;
+  // eslint-disable-next-line
   stat_foreach((x) => (r += 1), list);
   return r;
 };
@@ -259,7 +263,7 @@ functions.json = {
 
 // Comparison
 functions.sortBy = (
-  fieldName: string | Function,
+  fieldName: string | ((item: any) => string),
   reversed: boolean = false
 ) => {
   const SM = reversed ? 1 : -1;

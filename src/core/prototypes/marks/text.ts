@@ -93,13 +93,16 @@ export class TextElementClass extends EmphasizableMarkClass<
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildConstraints(solver: ConstraintSolver): void {}
 
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     empasized?: boolean
   ): Graphics.Element {
@@ -188,7 +191,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { x, y, x1, y1, x2, y2 } = attrs;
+    const { x, y } = attrs;
     const bbox = this.getBoundingRectangle();
     return [
       <Handles.Point>{
@@ -271,7 +274,7 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x, y, x1, y1, x2, y2 } = attrs;
+    const { x, y } = attrs;
     return [
       <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
       <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" },

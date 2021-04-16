@@ -25,12 +25,14 @@ export interface HandlesViewProps {
   ) => void;
 }
 
+// eslint-disable-next-line
 export interface HandlesViewState {}
 
 export class HandlesView extends React.Component<
   HandlesViewProps,
   HandlesViewState
 > {
+  // eslint-disable-next-line
   public renderHandle(handle: Prototypes.Handles.Description) {
     let isHandleSnapped = false;
     if (this.props.isAttributeSnapped) {

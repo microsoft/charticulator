@@ -59,7 +59,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
       t1 = solver.attr(attrs, "y1");
       t2 = solver.attr(attrs, "y2");
     }
-    const length = (<number>this.object.properties.count) - 2;
+    const length = <number>this.object.properties.count - 2;
     this.getValueNames().map((name, index) => {
       const t = (1 + index) / (length + 1);
       solver.addLinear(
@@ -79,7 +79,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (<number>this.object.properties.count) -
+      <number>this.object.properties.count -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -120,7 +120,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (<number>this.object.properties.count) -
+      <number>this.object.properties.count -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -134,7 +134,6 @@ export class GuideCoordinatorClass extends ChartElementClass<
   }
 
   public initializeState() {
-    const v = this.attributeNames;
     this.state.attributes.x1 = -100;
     this.state.attributes.y1 = -100;
     this.state.attributes.x2 = 100;

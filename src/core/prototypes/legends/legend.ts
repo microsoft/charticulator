@@ -112,7 +112,6 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = this.getLayoutBox();
     return <BoundingBox.Rectangle>{
       type: "rectangle",
@@ -166,7 +165,6 @@ export abstract class LegendClass extends ChartElementClass {
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const props = this.object.properties;
     const widget = [
       manager.sectionHeader("Labels"),
       manager.row("Font", manager.inputFontFamily({ property: "fontFamily" })),

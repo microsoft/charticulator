@@ -14,7 +14,6 @@ import {
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
   strokeStyleToDashArray,
@@ -128,7 +127,9 @@ export class LineElementClass extends EmphasizableMarkClass<
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     emphasize?: boolean
   ): Graphics.Element {

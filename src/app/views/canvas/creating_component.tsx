@@ -210,7 +210,7 @@ export class CreatingComponent extends React.Component<
       case "rectangle": {
         this.hammer.add(new Hammer.Pan());
         this.hammer.add(new Hammer.Tap());
-        this.hammer.on("tap", (e) => {
+        this.hammer.on("tap", () => {
           this.props.onCancel();
         });
         let p0X: [number, Specification.Mapping] = null;
@@ -253,7 +253,7 @@ export class CreatingComponent extends React.Component<
             activeGuides: Array.from(guides),
           });
         });
-        this.hammer.on("panend", (e) => {
+        this.hammer.on("panend", () => {
           this.isHammering = false;
           this.setState({
             points: null,
@@ -406,7 +406,7 @@ export class CreatingComponent extends React.Component<
           y={0}
           width={this.props.width}
           height={this.props.height}
-          onMouseEnter={(e) => {
+          onMouseEnter={() => {
             const move = (e: MouseEvent) => {
               const guides = [...this.props.guides];
               switch (this.props.mode) {
@@ -460,7 +460,7 @@ export interface CreatingComponentFromCreatingInteractionProps {
 
 export class CreatingComponentFromCreatingInteraction extends React.Component<
   CreatingComponentFromCreatingInteractionProps,
-  {}
+  Record<string, unknown>
 > {
   public doCreate(inMappings: {
     [name: string]: [number, Specification.Mapping];

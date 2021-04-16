@@ -94,10 +94,13 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   }
 
   // Get the graphical element from the element
+  // eslint-disable-next-line
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     emphasize?: boolean
   ): Graphics.Element {
@@ -162,7 +165,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       }
       case "star": {
         const ka = 0.8908130915292852281;
-        const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
+        // const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
         const kx = 0.22451398828979266; // Math.sin(2 * Math.PI / 10) * kr;
         const ky = -0.3090169943749474; // -Math.cos(2 * Math.PI / 10) * kr;
         const r = Math.sqrt(attrs.size * ka),

@@ -19,7 +19,6 @@ import {
   getById,
   getByName,
   isReservedColumnName,
-  LinkSourceKeyColumn,
   Prototypes,
   Specification,
 } from "../../core";
@@ -162,6 +161,7 @@ export class ChartTemplateBuilder {
     return pn;
   }
 
+  // eslint-disable-next-line
   public addObject(table: string, objectClass: Prototypes.ObjectClass) {
     // Visit a object only once
     if (this.objectVisited[objectClass.object._id]) {
@@ -357,6 +357,7 @@ export class ChartTemplateBuilder {
    * All exposed objects should be initialized in {@link ChartTemplate} class
    * @returns JSON structure of template
    */
+  // eslint-disable-next-line
   public build(): Specification.Template.ChartTemplate {
     this.reset();
 
@@ -536,6 +537,7 @@ export class ChartTemplateBuilder {
         }
 
         const mappings = item.object.mappings;
+        // eslint-disable-next-line
         for (const [attr, mapping] of forEachMapping(mappings)) {
           if (mapping.type == MappingType.scale) {
             const scaleMapping = mapping as Specification.ScaleMapping;

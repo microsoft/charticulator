@@ -177,6 +177,7 @@ export class RectangleGlyph extends GlyphClass {
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildIntrinsicConstraints(solver: ConstraintSolver): void {
     const [
       x1,

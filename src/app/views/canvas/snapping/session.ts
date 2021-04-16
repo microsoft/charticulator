@@ -5,15 +5,15 @@ import { HandlesDragEvent } from "../handles/common";
 import { SnappableGuide, SnappingAction } from "./common";
 
 export class SnappingSession<ElementType> {
-  public candidates: (SnappableGuide<ElementType>)[];
+  public candidates: SnappableGuide<ElementType>[];
   public handle: Prototypes.Handles.Description;
   public threshold: number;
   public findClosestSnappingGuide: boolean;
 
-  public currentCandidates: (SnappableGuide<ElementType>)[];
+  public currentCandidates: SnappableGuide<ElementType>[];
 
   constructor(
-    guides: (SnappableGuide<ElementType>)[],
+    guides: SnappableGuide<ElementType>[],
     handle: Prototypes.Handles.Description,
     threshold: number,
     findClosest: boolean
@@ -69,6 +69,7 @@ export class SnappingSession<ElementType> {
     }
   }
 
+  // eslint-disable-next-line
   public handleDrag(e: HandlesDragEvent) {
     const EPSILON = 1e-5;
     switch (this.handle.type) {
@@ -181,8 +182,9 @@ export class SnappingSession<ElementType> {
     }
   }
 
-  public handleEnd(e: HandlesDragEvent): (SnappingAction<ElementType>)[] {
-    const result: (SnappingAction<ElementType>)[] = [];
+  // eslint-disable-next-line
+  public handleEnd(e: HandlesDragEvent): SnappingAction<ElementType>[] {
+    const result: SnappingAction<ElementType>[] = [];
 
     for (const action of this.handle.actions) {
       const source = action.source || "value";
@@ -361,7 +363,7 @@ export class SnappingSession<ElementType> {
     return result;
   }
 
-  public getCurrentCandidates(): (SnappableGuide<ElementType>)[] {
+  public getCurrentCandidates(): SnappableGuide<ElementType>[] {
     return this.currentCandidates;
   }
 }

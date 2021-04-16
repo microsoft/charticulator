@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Prototypes, zipArray } from "../../../container";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -20,7 +19,6 @@ import {
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { Region2DAttributes } from "../plot_segments";
-// import { PolarState } from "../plot_segments/region_2d/polar";
 import { ChartStateManager } from "../state";
 
 export interface PolarGuideCoordinatorAttributesExtend
@@ -121,8 +119,10 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     radialGuidesCount: 4,
   };
 
+  // eslint-disable-next-line
   public buildConstraints(
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     constr: any,
     manager: ChartStateManager
   ) {
@@ -247,11 +247,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
 
     // xy
     {
-      const angleVarable: (Variable)[] = [];
+      const angleVarable: Variable[] = [];
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         angleVarable.push(solver.attr(attrs, angularX[xindex]));
       }
-      const radialVarable: (Variable)[] = [];
+      const radialVarable: Variable[] = [];
       for (let yindex = 0; yindex < radialY.length; yindex++) {
         radialVarable.push(solver.attr(attrs, radialY[yindex]));
       }
@@ -259,11 +259,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       for (let xindex = 0; xindex < angularX.length; xindex++) {
         const [t1, t2] = chunkRangesX[xindex];
 
-        const vx1Expr = <([number, Variable])[]>[
+        const vx1Expr = <[number, Variable][]>[
           [t1, angle2],
           [1 - t1, angle1],
         ];
-        const vx2Expr = <([number, Variable])[]>[
+        const vx2Expr = <[number, Variable][]>[
           [t2, angle2],
           [1 - t2, angle1],
         ];
@@ -294,11 +294,11 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       for (let yindex = 0; yindex < radialY.length; yindex++) {
         const [t1, t2] = chunkRangesY[yindex];
 
-        const vy1Expr = <([number, Variable])[]>[
+        const vy1Expr = <[number, Variable][]>[
           [t1, outerRadius],
           [1 - t1, innerRadius],
         ];
-        const vy2Expr = <([number, Variable])[]>[
+        const vy2Expr = <[number, Variable][]>[
           [t2, outerRadius],
           [1 - t2, innerRadius],
         ];
@@ -416,7 +416,6 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
   }
 
   public initializeState() {
-    const v = this.attributeNames;
     const attrs = this.state.attributes;
     attrs.angle1 = 0;
     attrs.angle2 = 360;

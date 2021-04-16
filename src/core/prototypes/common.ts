@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import { Point, getById, setField, getField } from "../common";
 import * as Graphics from "../graphics";
 import * as Specification from "../specification";
 import * as Controls from "./controls";
-import { isType } from "./object";
-import { ObjectProperties } from "../specification";
 export * from "./chart_element";
 export * from "./object";
 
@@ -68,7 +68,7 @@ export namespace DropZones {
       appendToProperty?: string;
     };
     /** Extend a plot segment */
-    extendPlotSegment?: {};
+    extendPlotSegment?: Record<string, unknown>;
   }
 
   export interface Line extends Description {
@@ -363,8 +363,8 @@ export namespace CreatingInteraction {
 export namespace TemplateMetadata {
   export interface ChartMetadata {
     dataSlots: DataSlot[];
-    inference: ({ id: string; infer: Inference })[];
-    mappings: ({ id: string; attribute: string; slot: string })[];
+    inference: { id: string; infer: Inference }[];
+    mappings: { id: string; attribute: string; slot: string }[];
   }
 
   export interface DataSlot {

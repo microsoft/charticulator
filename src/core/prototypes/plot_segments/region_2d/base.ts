@@ -421,110 +421,134 @@ export class Region2DConstraintBuilder {
     switch (axis) {
       case "x":
         {
-          const data = props.xData;
-          if (data.type == "numerical") {
-            const [x1, x2] = solver.attrs(attrs, [this.x1Name, this.x2Name]);
-            const expr = this.getExpression(data.expression);
-            const interp = getNumericalInterpolate(data);
-            for (const [index, markState] of state.glyphs.entries()) {
-              const rowContext = table.getGroupedContext(dataIndices[index]);
-              const value = expr.getNumberValue(rowContext);
-              const t = interp(value);
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                (1 - t) * props.marginX1 - t * props.marginX2,
-                [
-                  [1 - t, x1],
-                  [t, x2],
-                ],
-                [[1, solver.attr(markState.attributes, "x")]]
-              );
-            }
-          }
-          if (data.type == "categorical") {
-            const [x1, x2, gapX] = solver.attrs(attrs, [
-              this.x1Name,
-              this.x2Name,
-              "gapX",
-            ]);
-            const expr = this.getExpression(data.expression);
-            for (const [index, markState] of state.glyphs.entries()) {
-              const rowContext = table.getGroupedContext(dataIndices[index]);
-              const value = expr.getStringValue(rowContext);
-
-              this.gapX(data.categories.length, data.gapRatio);
-
-              const i = data.categories.indexOf(value);
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                (data.categories.length - i - 0.5) * props.marginX1 -
-                  (i + 0.5) * props.marginX2,
-                [
-                  [i + 0.5, x2],
-                  [data.categories.length - i - 0.5, x1],
-                  [-data.categories.length / 2 + i + 0.5, gapX],
-                ],
-                [
-                  [
-                    data.categories.length,
-                    solver.attr(markState.attributes, "x"),
-                  ],
-                ]
-              );
-            }
-          }
+          this.numericalMappingX(
+            props,
+            solver,
+            attrs,
+            state,
+            table,
+            dataIndices
+          );
           // solver.addEquals(ConstraintWeight.HARD, x, x1);
         }
         break;
       case "y": {
-        const data = props.yData;
-        if (data.type == "numerical") {
-          const [y1, y2] = solver.attrs(attrs, [this.y1Name, this.y2Name]);
-          const expr = this.getExpression(data.expression);
-          const interp = getNumericalInterpolate(data);
-          for (const [index, markState] of state.glyphs.entries()) {
-            const rowContext = table.getGroupedContext(dataIndices[index]);
-            const value = expr.getNumberValue(rowContext);
-            const t = interp(value);
-            solver.addLinear(
-              ConstraintStrength.HARD,
-              (t - 1) * props.marginY2 + t * props.marginY1,
-              [
-                [1 - t, y1],
-                [t, y2],
-              ],
-              [[1, solver.attr(markState.attributes, "y")]]
-            );
-          }
-        }
-        if (data.type == "categorical") {
-          const [y1, y2, gapY] = solver.attrs(attrs, [
-            this.y1Name,
-            this.y2Name,
-            "gapY",
-          ]);
-          const expr = this.getExpression(data.expression);
-          for (const [index, markState] of state.glyphs.entries()) {
-            const rowContext = table.getGroupedContext(dataIndices[index]);
-            const value = expr.getStringValue(rowContext);
-
-            this.gapY(data.categories.length, data.gapRatio);
-
-            const i = data.categories.indexOf(value);
-            solver.addLinear(
-              ConstraintStrength.HARD,
-              (data.categories.length - i - 0.5) * props.marginY1 -
-                (i + 0.5) * props.marginY2,
-              [
-                [i + 0.5, y2],
-                [data.categories.length - i - 0.5, y1],
-                [-data.categories.length / 2 + i + 0.5, gapY],
-              ],
-              [[data.categories.length, solver.attr(markState.attributes, "y")]]
-            );
-          }
-        }
+        this.numericalMappingY(props, solver, attrs, state, table, dataIndices);
         // solver.addEquals(ConstraintWeight.HARD, y, y2);
+      }
+    }
+  }
+
+  private numericalMappingY(
+    props: Region2DProperties,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    state: Specification.PlotSegmentState<Region2DAttributes>,
+    table: DataflowTable,
+    dataIndices: number[][]
+  ) {
+    const data = props.yData;
+    if (data.type == "numerical") {
+      const [y1, y2] = solver.attrs(attrs, [this.y1Name, this.y2Name]);
+      const expr = this.getExpression(data.expression);
+      const interp = getNumericalInterpolate(data);
+      for (const [index, markState] of state.glyphs.entries()) {
+        const rowContext = table.getGroupedContext(dataIndices[index]);
+        const value = expr.getNumberValue(rowContext);
+        const t = interp(value);
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          (t - 1) * props.marginY2 + t * props.marginY1,
+          [
+            [1 - t, y1],
+            [t, y2],
+          ],
+          [[1, solver.attr(markState.attributes, "y")]]
+        );
+      }
+    }
+    if (data.type == "categorical") {
+      const [y1, y2, gapY] = solver.attrs(attrs, [
+        this.y1Name,
+        this.y2Name,
+        "gapY",
+      ]);
+      const expr = this.getExpression(data.expression);
+      for (const [index, markState] of state.glyphs.entries()) {
+        const rowContext = table.getGroupedContext(dataIndices[index]);
+        const value = expr.getStringValue(rowContext);
+
+        this.gapY(data.categories.length, data.gapRatio);
+
+        const i = data.categories.indexOf(value);
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          (data.categories.length - i - 0.5) * props.marginY1 -
+            (i + 0.5) * props.marginY2,
+          [
+            [i + 0.5, y2],
+            [data.categories.length - i - 0.5, y1],
+            [-data.categories.length / 2 + i + 0.5, gapY],
+          ],
+          [[data.categories.length, solver.attr(markState.attributes, "y")]]
+        );
+      }
+    }
+  }
+
+  private numericalMappingX(
+    props: Region2DProperties,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    state: Specification.PlotSegmentState<Region2DAttributes>,
+    table: DataflowTable,
+    dataIndices: number[][]
+  ) {
+    const data = props.xData;
+    if (data.type == "numerical") {
+      const [x1, x2] = solver.attrs(attrs, [this.x1Name, this.x2Name]);
+      const expr = this.getExpression(data.expression);
+      const interp = getNumericalInterpolate(data);
+      for (const [index, markState] of state.glyphs.entries()) {
+        const rowContext = table.getGroupedContext(dataIndices[index]);
+        const value = expr.getNumberValue(rowContext);
+        const t = interp(value);
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          (1 - t) * props.marginX1 - t * props.marginX2,
+          [
+            [1 - t, x1],
+            [t, x2],
+          ],
+          [[1, solver.attr(markState.attributes, "x")]]
+        );
+      }
+    }
+    if (data.type == "categorical") {
+      const [x1, x2, gapX] = solver.attrs(attrs, [
+        this.x1Name,
+        this.x2Name,
+        "gapX",
+      ]);
+      const expr = this.getExpression(data.expression);
+      for (const [index, markState] of state.glyphs.entries()) {
+        const rowContext = table.getGroupedContext(dataIndices[index]);
+        const value = expr.getStringValue(rowContext);
+
+        this.gapX(data.categories.length, data.gapRatio);
+
+        const i = data.categories.indexOf(value);
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          (data.categories.length - i - 0.5) * props.marginX1 -
+            (i + 0.5) * props.marginX2,
+          [
+            [i + 0.5, x2],
+            [data.categories.length - i - 0.5, x1],
+            [-data.categories.length / 2 + i + 0.5, gapX],
+          ],
+          [[data.categories.length, solver.attr(markState.attributes, "x")]]
+        );
       }
     }
   }
@@ -570,202 +594,234 @@ export class Region2DConstraintBuilder {
       case "x":
         {
           // take x axis data to determine count of groups
-          const data = props.xData;
-          const [x1, x2, y1, y2] = solver.attrs(attrs, [
-            this.x1Name,
-            this.x2Name,
-            this.y1Name,
-            this.y2Name,
-          ]);
-
-          const axis = getCategoricalAxis(
-            data,
-            this.config.xAxisPrePostGap,
-            false
+          this.categoricalMappingX(
+            props,
+            solver,
+            attrs,
+            categoryMarks,
+            sublayoutContext
           );
-
-          const sublayoutGroups: SublayoutGroup[] = [];
-          for (let cindex = 0; cindex < data.categories.length; cindex++) {
-            const [t1, t2] = axis.ranges[cindex];
-
-            // t1 * x2 = (1 - t1) * x2
-            const vx1Expr = <[number, Variable][]>[
-              [t1, x2],
-              [1 - t1, x1],
-            ];
-            // t2 * x2 = (1 - t2) * x2
-            const vx2Expr = <[number, Variable][]>[
-              [t2, x2],
-              [1 - t2, x1],
-            ];
-
-            const vx1 = solver.attr(
-              { value: solver.getLinear(...vx1Expr) },
-              "value",
-              { edit: true }
-            );
-            const vx2 = solver.attr(
-              { value: solver.getLinear(...vx2Expr) },
-              "value",
-              { edit: true }
-            );
-
-            // t1 * x2 = (1 - t1) * x2 = 1 * vx1
-            solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
-            // t2 * x2 = (1 - t2) * x2 = 1 * vx2
-            solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
-
-            // save group of constraints
-            sublayoutGroups.push({
-              group: categoryMarks[cindex],
-              x1: vx1,
-              y1,
-              x2: vx2,
-              y2,
-            });
-          }
-          this.applySublayout(sublayoutGroups, "x", sublayoutContext);
         }
         break;
       case "y":
         {
-          const data = props.yData;
-          const [x1, x2, y1, y2] = solver.attrs(attrs, [
-            this.x1Name,
-            this.x2Name,
-            this.y1Name,
-            this.y2Name,
-          ]);
-
-          const axis = getCategoricalAxis(
-            data,
-            this.config.yAxisPrePostGap,
-            true
+          this.categoricalMappingY(
+            props,
+            solver,
+            attrs,
+            categoryMarks,
+            sublayoutContext
           );
-
-          const sublayoutGroups: SublayoutGroup[] = [];
-          for (let cindex = 0; cindex < data.categories.length; cindex++) {
-            const [t1, t2] = axis.ranges[cindex];
-
-            const vy1Expr = <[number, Variable][]>[
-              [t1, y2],
-              [1 - t1, y1],
-            ];
-            const vy2Expr = <[number, Variable][]>[
-              [t2, y2],
-              [1 - t2, y1],
-            ];
-
-            const vy1 = solver.attr(
-              { value: solver.getLinear(...vy1Expr) },
-              "value",
-              { edit: true }
-            );
-            const vy2 = solver.attr(
-              { value: solver.getLinear(...vy2Expr) },
-              "value",
-              { edit: true }
-            );
-
-            solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
-            solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
-
-            sublayoutGroups.push({
-              group: categoryMarks[cindex],
-              x1,
-              y1: vy1,
-              x2,
-              y2: vy2,
-            });
-          }
-          this.applySublayout(sublayoutGroups, "y", sublayoutContext);
         }
         break;
       case "xy":
         {
-          const xData = props.xData;
-          const yData = props.yData;
-          const [x1, x2, y1, y2] = solver.attrs(attrs, [
-            this.x1Name,
-            this.x2Name,
-            this.y1Name,
-            this.y2Name,
-          ]);
-
-          const xAxis = getCategoricalAxis(
-            xData,
-            this.config.xAxisPrePostGap,
-            false
+          this.categoricalMappingXY(
+            props,
+            solver,
+            attrs,
+            categoryMarks,
+            sublayoutContext
           );
-          const yAxis = getCategoricalAxis(
-            yData,
-            this.config.yAxisPrePostGap,
-            true
-          );
-
-          const sublayoutGroups: SublayoutGroup[] = [];
-          for (let yIndex = 0; yIndex < yData.categories.length; yIndex++) {
-            const [ty1, ty2] = yAxis.ranges[yIndex];
-            for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
-              const [tx1, tx2] = xAxis.ranges[xIndex];
-
-              const vx1Expr = <[number, Variable][]>[
-                [tx1, x2],
-                [1 - tx1, x1],
-              ];
-              const vx2Expr = <[number, Variable][]>[
-                [tx2, x2],
-                [1 - tx2, x1],
-              ];
-
-              const vy1Expr = <[number, Variable][]>[
-                [ty1, y2],
-                [1 - ty1, y1],
-              ];
-              const vy2Expr = <[number, Variable][]>[
-                [ty2, y2],
-                [1 - ty2, y1],
-              ];
-
-              const vx1 = solver.attr(
-                { value: solver.getLinear(...vx1Expr) },
-                "value",
-                { edit: true }
-              );
-              const vx2 = solver.attr(
-                { value: solver.getLinear(...vx2Expr) },
-                "value",
-                { edit: true }
-              );
-              const vy1 = solver.attr(
-                { value: solver.getLinear(...vy1Expr) },
-                "value",
-                { edit: true }
-              );
-              const vy2 = solver.attr(
-                { value: solver.getLinear(...vy2Expr) },
-                "value",
-                { edit: true }
-              );
-
-              solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
-              solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
-              solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
-              solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
-
-              sublayoutGroups.push({
-                group: categoryMarks[xIndex * yData.categories.length + yIndex],
-                x1: vx1,
-                y1: vy1,
-                x2: vx2,
-                y2: vy2,
-              });
-            }
-          }
-          this.applySublayout(sublayoutGroups, "xy", sublayoutContext);
         }
         break;
     }
+  }
+
+  private categoricalMappingXY(
+    props: Region2DProperties,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    categoryMarks: number[][],
+    sublayoutContext: SublayoutContext
+  ) {
+    const xData = props.xData;
+    const yData = props.yData;
+    const [x1, x2, y1, y2] = solver.attrs(attrs, [
+      this.x1Name,
+      this.x2Name,
+      this.y1Name,
+      this.y2Name,
+    ]);
+
+    const xAxis = getCategoricalAxis(xData, this.config.xAxisPrePostGap, false);
+    const yAxis = getCategoricalAxis(yData, this.config.yAxisPrePostGap, true);
+
+    const sublayoutGroups: SublayoutGroup[] = [];
+    for (let yIndex = 0; yIndex < yData.categories.length; yIndex++) {
+      const [ty1, ty2] = yAxis.ranges[yIndex];
+      for (let xIndex = 0; xIndex < xData.categories.length; xIndex++) {
+        const [tx1, tx2] = xAxis.ranges[xIndex];
+
+        const vx1Expr = <[number, Variable][]>[
+          [tx1, x2],
+          [1 - tx1, x1],
+        ];
+        const vx2Expr = <[number, Variable][]>[
+          [tx2, x2],
+          [1 - tx2, x1],
+        ];
+
+        const vy1Expr = <[number, Variable][]>[
+          [ty1, y2],
+          [1 - ty1, y1],
+        ];
+        const vy2Expr = <[number, Variable][]>[
+          [ty2, y2],
+          [1 - ty2, y1],
+        ];
+
+        const vx1 = solver.attr(
+          { value: solver.getLinear(...vx1Expr) },
+          "value",
+          { edit: true }
+        );
+        const vx2 = solver.attr(
+          { value: solver.getLinear(...vx2Expr) },
+          "value",
+          { edit: true }
+        );
+        const vy1 = solver.attr(
+          { value: solver.getLinear(...vy1Expr) },
+          "value",
+          { edit: true }
+        );
+        const vy2 = solver.attr(
+          { value: solver.getLinear(...vy2Expr) },
+          "value",
+          { edit: true }
+        );
+
+        solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
+        solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
+        solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
+        solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
+
+        sublayoutGroups.push({
+          group: categoryMarks[xIndex * yData.categories.length + yIndex],
+          x1: vx1,
+          y1: vy1,
+          x2: vx2,
+          y2: vy2,
+        });
+      }
+    }
+    this.applySublayout(sublayoutGroups, "xy", sublayoutContext);
+  }
+
+  private categoricalMappingY(
+    props: Region2DProperties,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    categoryMarks: number[][],
+    sublayoutContext: SublayoutContext
+  ) {
+    const data = props.yData;
+    const [x1, x2, y1, y2] = solver.attrs(attrs, [
+      this.x1Name,
+      this.x2Name,
+      this.y1Name,
+      this.y2Name,
+    ]);
+
+    const axis = getCategoricalAxis(data, this.config.yAxisPrePostGap, true);
+
+    const sublayoutGroups: SublayoutGroup[] = [];
+    for (let cindex = 0; cindex < data.categories.length; cindex++) {
+      const [t1, t2] = axis.ranges[cindex];
+
+      const vy1Expr = <[number, Variable][]>[
+        [t1, y2],
+        [1 - t1, y1],
+      ];
+      const vy2Expr = <[number, Variable][]>[
+        [t2, y2],
+        [1 - t2, y1],
+      ];
+
+      const vy1 = solver.attr(
+        { value: solver.getLinear(...vy1Expr) },
+        "value",
+        { edit: true }
+      );
+      const vy2 = solver.attr(
+        { value: solver.getLinear(...vy2Expr) },
+        "value",
+        { edit: true }
+      );
+
+      solver.addLinear(ConstraintStrength.HARD, 0, vy1Expr, [[1, vy1]]);
+      solver.addLinear(ConstraintStrength.HARD, 0, vy2Expr, [[1, vy2]]);
+
+      sublayoutGroups.push({
+        group: categoryMarks[cindex],
+        x1,
+        y1: vy1,
+        x2,
+        y2: vy2,
+      });
+    }
+    this.applySublayout(sublayoutGroups, "y", sublayoutContext);
+  }
+
+  private categoricalMappingX(
+    props: Region2DProperties,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    categoryMarks: number[][],
+    sublayoutContext: SublayoutContext
+  ) {
+    const data = props.xData;
+    const [x1, x2, y1, y2] = solver.attrs(attrs, [
+      this.x1Name,
+      this.x2Name,
+      this.y1Name,
+      this.y2Name,
+    ]);
+
+    const axis = getCategoricalAxis(data, this.config.xAxisPrePostGap, false);
+
+    const sublayoutGroups: SublayoutGroup[] = [];
+    for (let cindex = 0; cindex < data.categories.length; cindex++) {
+      const [t1, t2] = axis.ranges[cindex];
+
+      // t1 * x2 = (1 - t1) * x2
+      const vx1Expr = <[number, Variable][]>[
+        [t1, x2],
+        [1 - t1, x1],
+      ];
+      // t2 * x2 = (1 - t2) * x2
+      const vx2Expr = <[number, Variable][]>[
+        [t2, x2],
+        [1 - t2, x1],
+      ];
+
+      const vx1 = solver.attr(
+        { value: solver.getLinear(...vx1Expr) },
+        "value",
+        { edit: true }
+      );
+      const vx2 = solver.attr(
+        { value: solver.getLinear(...vx2Expr) },
+        "value",
+        { edit: true }
+      );
+
+      // t1 * x2 = (1 - t1) * x2 = 1 * vx1
+      solver.addLinear(ConstraintStrength.HARD, 0, vx1Expr, [[1, vx1]]);
+      // t2 * x2 = (1 - t2) * x2 = 1 * vx2
+      solver.addLinear(ConstraintStrength.HARD, 0, vx2Expr, [[1, vx2]]);
+
+      // save group of constraints
+      sublayoutGroups.push({
+        group: categoryMarks[cindex],
+        x1: vx1,
+        y1,
+        x2: vx2,
+        y2,
+      });
+    }
+    this.applySublayout(sublayoutGroups, "x", sublayoutContext);
   }
 
   public categoricalHandles(
@@ -861,7 +917,6 @@ export class Region2DConstraintBuilder {
   public stacking(axis: "x" | "y"): void {
     const solver = this.solver;
     const state = this.plotSegment.state;
-    const props = this.plotSegment.object.properties;
     const attrs = state.attributes;
     const dataIndices = state.dataRowIndices;
 
@@ -880,141 +935,32 @@ export class Region2DConstraintBuilder {
       switch (axis) {
         case "x":
           {
-            const [gapX] = solver.attrs(attrs, ["gapX"]);
-            if (doStack) {
-              if (index > 0) {
-                const x2Prev = solver.attr(
-                  state.glyphs[index - 1].attributes,
-                  "x2"
-                );
-                const x1This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "x1"
-                );
-                solver.addLinear(ConstraintStrength.HARD, 0, [
-                  [1, x2Prev],
-                  [-1, x1This],
-                  [1, gapX],
-                ]);
-              }
-              if (index == 0) {
-                const x1This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "x1"
-                );
-                // solver.addEquals(ConstraintWeight.HARD, x1, x1This);
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [[1, x1]],
-                  [[1, x1This]]
-                );
-              }
-              if (index == state.glyphs.length - 1) {
-                const x2This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "x2"
-                );
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [[1, x2]],
-                  [[1, x2This]]
-                );
-              }
-            } else {
-              const t = (index + 0.5) / count;
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [
-                  [1 - t, x1],
-                  [t, x2],
-                ],
-                [[1, solver.attr(markState.attributes, "x")]]
-              );
-              solver.addLinear(
-                ConstraintStrength.WEAK,
-                0,
-                [
-                  [1, x2],
-                  [-1, x1],
-                ],
-                [
-                  [count, solver.attr(markState.attributes, "width")],
-                  [count - 1, gapX],
-                ]
-              );
-            }
+            this.stackingX(
+              solver,
+              attrs,
+              doStack,
+              index,
+              state,
+              x1,
+              x2,
+              count,
+              markState
+            );
           }
           break;
         case "y":
           {
-            const [gapY] = solver.attrs(attrs, ["gapY"]);
-            if (doStack) {
-              if (index > 0) {
-                const y2Prev = solver.attr(
-                  state.glyphs[index - 1].attributes,
-                  "y2"
-                );
-                const y1This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "y1"
-                );
-                solver.addLinear(ConstraintStrength.HARD, 0, [
-                  [1, y2Prev],
-                  [-1, y1This],
-                  [1, gapY],
-                ]);
-              }
-              if (index == 0) {
-                const y1This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "y1"
-                );
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [[1, y1]],
-                  [[1, y1This]]
-                );
-              }
-              if (index == state.glyphs.length - 1) {
-                const y2This = solver.attr(
-                  state.glyphs[index].attributes,
-                  "y2"
-                );
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [[1, y2]],
-                  [[1, y2This]]
-                );
-              }
-            } else {
-              const t = (index + 0.5) / count;
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [
-                  [1 - t, y2],
-                  [t, y1],
-                ],
-                [[1, solver.attr(markState.attributes, "y")]]
-              );
-              solver.addLinear(
-                ConstraintStrength.WEAK,
-                0,
-                [
-                  [1, y2],
-                  [-1, y1],
-                ],
-                [
-                  [count, solver.attr(markState.attributes, "height")],
-                  [count - 1, gapY],
-                ]
-              );
-            }
+            this.stackingY(
+              solver,
+              attrs,
+              doStack,
+              index,
+              state,
+              y1,
+              y2,
+              count,
+              markState
+            );
           }
           break;
       }
@@ -1031,6 +977,119 @@ export class Region2DConstraintBuilder {
           this.gapY(count, this.plotSegment.object.properties.yData.gapRatio);
         }
         break;
+    }
+  }
+
+  private stackingY(
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    doStack: boolean,
+    index: number,
+    state: Specification.PlotSegmentState<Region2DAttributes>,
+    y1: Variable,
+    y2: Variable,
+    count: number,
+    markState: Specification.GlyphState<Specification.AttributeMap>
+  ) {
+    const [gapY] = solver.attrs(attrs, ["gapY"]);
+    if (doStack) {
+      if (index > 0) {
+        const y2Prev = solver.attr(state.glyphs[index - 1].attributes, "y2");
+        const y1This = solver.attr(state.glyphs[index].attributes, "y1");
+        solver.addLinear(ConstraintStrength.HARD, 0, [
+          [1, y2Prev],
+          [-1, y1This],
+          [1, gapY],
+        ]);
+      }
+      if (index == 0) {
+        const y1This = solver.attr(state.glyphs[index].attributes, "y1");
+        solver.addLinear(ConstraintStrength.HARD, 0, [[1, y1]], [[1, y1This]]);
+      }
+      if (index == state.glyphs.length - 1) {
+        const y2This = solver.attr(state.glyphs[index].attributes, "y2");
+        solver.addLinear(ConstraintStrength.HARD, 0, [[1, y2]], [[1, y2This]]);
+      }
+    } else {
+      const t = (index + 0.5) / count;
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [
+          [1 - t, y2],
+          [t, y1],
+        ],
+        [[1, solver.attr(markState.attributes, "y")]]
+      );
+      solver.addLinear(
+        ConstraintStrength.WEAK,
+        0,
+        [
+          [1, y2],
+          [-1, y1],
+        ],
+        [
+          [count, solver.attr(markState.attributes, "height")],
+          [count - 1, gapY],
+        ]
+      );
+    }
+  }
+
+  private stackingX(
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    doStack: boolean,
+    index: number,
+    state: Specification.PlotSegmentState<Region2DAttributes>,
+    x1: Variable,
+    x2: Variable,
+    count: number,
+    markState: Specification.GlyphState<Specification.AttributeMap>
+  ) {
+    const [gapX] = solver.attrs(attrs, ["gapX"]);
+    if (doStack) {
+      if (index > 0) {
+        const x2Prev = solver.attr(state.glyphs[index - 1].attributes, "x2");
+        const x1This = solver.attr(state.glyphs[index].attributes, "x1");
+        solver.addLinear(ConstraintStrength.HARD, 0, [
+          [1, x2Prev],
+          [-1, x1This],
+          [1, gapX],
+        ]);
+      }
+      if (index == 0) {
+        const x1This = solver.attr(state.glyphs[index].attributes, "x1");
+        // solver.addEquals(ConstraintWeight.HARD, x1, x1This);
+        solver.addLinear(ConstraintStrength.HARD, 0, [[1, x1]], [[1, x1This]]);
+      }
+      if (index == state.glyphs.length - 1) {
+        const x2This = solver.attr(state.glyphs[index].attributes, "x2");
+        solver.addLinear(ConstraintStrength.HARD, 0, [[1, x2]], [[1, x2This]]);
+      }
+    } else {
+      const t = (index + 0.5) / count;
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [
+          [1 - t, x1],
+          [t, x2],
+        ],
+        [[1, solver.attr(markState.attributes, "x")]]
+      );
+      solver.addLinear(
+        ConstraintStrength.WEAK,
+        0,
+        [
+          [1, x2],
+          [-1, x1],
+        ],
+        [
+          [count, solver.attr(markState.attributes, "width")],
+          [count - 1, gapX],
+        ]
+      );
     }
   }
 
@@ -1168,6 +1227,7 @@ export class Region2DConstraintBuilder {
     }
   }
 
+  // eslint-disable-next-line
   public sublayoutDodging(
     groups: SublayoutGroup[],
     direction: "x" | "y",
@@ -1176,7 +1236,6 @@ export class Region2DConstraintBuilder {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const props = this.plotSegment.object.properties;
-    const dataIndices = state.dataRowIndices;
 
     const fitters = new DodgingFitters(solver);
 
@@ -1240,196 +1299,252 @@ export class Region2DConstraintBuilder {
           }
         }
 
-        switch (direction) {
-          case "x":
-            {
-              if (alignment.y == "start") {
-                solver.addEquals(
-                  ConstraintStrength.HARD,
-                  solver.attr(m1.attributes, "y1"),
-                  y1
-                );
-              } else {
-                fitters.yMin.add(solver.attr(m1.attributes, "y1"), y1);
-              }
-              if (alignment.y == "end") {
-                solver.addEquals(
-                  ConstraintStrength.HARD,
-                  solver.attr(m1.attributes, "y2"),
-                  y2
-                );
-              } else {
-                fitters.yMax.add(solver.attr(m1.attributes, "y2"), y2);
-              }
-              if (alignment.y == "middle") {
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [
-                    [1, solver.attr(m1.attributes, "y1")],
-                    [1, solver.attr(m1.attributes, "y2")],
-                  ],
-                  [
-                    [1, y1],
-                    [1, y2],
-                  ]
-                );
-              }
-            }
-            break;
-          case "y":
-            {
-              if (alignment.x == "start") {
-                solver.addEquals(
-                  ConstraintStrength.HARD,
-                  solver.attr(m1.attributes, "x1"),
-                  x1
-                );
-              } else {
-                fitters.xMin.add(solver.attr(m1.attributes, "x1"), x1);
-              }
-              if (alignment.x == "end") {
-                solver.addEquals(
-                  ConstraintStrength.HARD,
-                  solver.attr(m1.attributes, "x2"),
-                  x2
-                );
-              } else {
-                fitters.xMax.add(solver.attr(m1.attributes, "x2"), x2);
-              }
-              if (alignment.x == "middle") {
-                solver.addLinear(
-                  ConstraintStrength.HARD,
-                  0,
-                  [
-                    [1, solver.attr(m1.attributes, "x1")],
-                    [1, solver.attr(m1.attributes, "x2")],
-                  ],
-                  [
-                    [1, x1],
-                    [1, x2],
-                  ]
-                );
-              }
-            }
-            break;
-        }
+        this.setFirstSublayoutDodgingDirection(
+          direction,
+          alignment,
+          solver,
+          m1,
+          y1,
+          fitters,
+          y2,
+          x1,
+          x2
+        );
       }
       const m1 = markStates[0];
       const mN = markStates[markStates.length - 1];
       switch (direction) {
         case "x":
           {
-            const x1WithGap: [number, Variable][] = [
-              [1, x1],
-              [dodgeGapOffset, x2],
-              [-dodgeGapOffset, x1],
-            ];
-            const x2WithGap: [number, Variable][] = [
-              [1, x2],
-              [dodgeGapOffset, x1],
-              [-dodgeGapOffset, x2],
-            ];
-            if (alignment.x == "start") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [[1, solver.attr(m1.attributes, "x1")]],
-                x1WithGap
-              );
-            } else {
-              fitters.xMin.addComplex(
-                solver.attr(m1.attributes, "x1"),
-                x1WithGap
-              );
-            }
-            if (alignment.x == "end") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [[1, solver.attr(mN.attributes, "x2")]],
-                x2WithGap
-              );
-            } else {
-              fitters.xMax.addComplex(
-                solver.attr(mN.attributes, "x2"),
-                x2WithGap
-              );
-            }
-            if (alignment.x == "middle") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [
-                  [1, solver.attr(m1.attributes, "x1")],
-                  [1, solver.attr(mN.attributes, "x2")],
-                ],
-                [
-                  [1, x1],
-                  [1, x2],
-                ]
-              );
-            }
+            this.setSublayoutDodgingDirectionX(
+              x1,
+              dodgeGapOffset,
+              x2,
+              alignment,
+              solver,
+              m1,
+              fitters,
+              mN
+            );
           }
           break;
         case "y":
           {
-            const y1WithGap: [number, Variable][] = [
-              [1, y1],
-              [dodgeGapOffset, y2],
-              [-dodgeGapOffset, y1],
-            ];
-            const y2WithGap: [number, Variable][] = [
-              [1, y2],
-              [dodgeGapOffset, y1],
-              [-dodgeGapOffset, y2],
-            ];
-            if (alignment.y == "start") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [[1, solver.attr(m1.attributes, "y1")]],
-                y1WithGap
-              );
-            } else {
-              fitters.yMin.addComplex(
-                solver.attr(m1.attributes, "y1"),
-                y1WithGap
-              );
-            }
-            if (alignment.y == "end") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [[1, solver.attr(mN.attributes, "y2")]],
-                y2WithGap
-              );
-            } else {
-              fitters.yMax.addComplex(
-                solver.attr(mN.attributes, "y2"),
-                y2WithGap
-              );
-            }
-            if (alignment.y == "middle") {
-              solver.addLinear(
-                ConstraintStrength.HARD,
-                0,
-                [
-                  [1, solver.attr(m1.attributes, "y1")],
-                  [1, solver.attr(mN.attributes, "y2")],
-                ],
-                [
-                  [1, y1],
-                  [1, y2],
-                ]
-              );
-            }
+            this.setSublayoutDodgingDirectionY(
+              y1,
+              dodgeGapOffset,
+              y2,
+              alignment,
+              solver,
+              m1,
+              fitters,
+              mN
+            );
           }
           break;
       }
     });
 
     fitters.addConstraint(ConstraintStrength.MEDIUM);
+  }
+
+  private setSublayoutDodgingDirectionY(
+    y1: Variable,
+    dodgeGapOffset: number,
+    y2: Variable,
+    alignment: { x: SublayoutAlignment; y: SublayoutAlignment },
+    solver: ConstraintSolver,
+    m1: Specification.GlyphState<Specification.AttributeMap>,
+    fitters: DodgingFitters,
+    mN: Specification.GlyphState<Specification.AttributeMap>
+  ) {
+    const y1WithGap: [number, Variable][] = [
+      [1, y1],
+      [dodgeGapOffset, y2],
+      [-dodgeGapOffset, y1],
+    ];
+    const y2WithGap: [number, Variable][] = [
+      [1, y2],
+      [dodgeGapOffset, y1],
+      [-dodgeGapOffset, y2],
+    ];
+    if (alignment.y == "start") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [[1, solver.attr(m1.attributes, "y1")]],
+        y1WithGap
+      );
+    } else {
+      fitters.yMin.addComplex(solver.attr(m1.attributes, "y1"), y1WithGap);
+    }
+    if (alignment.y == "end") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [[1, solver.attr(mN.attributes, "y2")]],
+        y2WithGap
+      );
+    } else {
+      fitters.yMax.addComplex(solver.attr(mN.attributes, "y2"), y2WithGap);
+    }
+    if (alignment.y == "middle") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [
+          [1, solver.attr(m1.attributes, "y1")],
+          [1, solver.attr(mN.attributes, "y2")],
+        ],
+        [
+          [1, y1],
+          [1, y2],
+        ]
+      );
+    }
+  }
+
+  private setSublayoutDodgingDirectionX(
+    x1: Variable,
+    dodgeGapOffset: number,
+    x2: Variable,
+    alignment: { x: SublayoutAlignment; y: SublayoutAlignment },
+    solver: ConstraintSolver,
+    m1: Specification.GlyphState<Specification.AttributeMap>,
+    fitters: DodgingFitters,
+    mN: Specification.GlyphState<Specification.AttributeMap>
+  ) {
+    const x1WithGap: [number, Variable][] = [
+      [1, x1],
+      [dodgeGapOffset, x2],
+      [-dodgeGapOffset, x1],
+    ];
+    const x2WithGap: [number, Variable][] = [
+      [1, x2],
+      [dodgeGapOffset, x1],
+      [-dodgeGapOffset, x2],
+    ];
+    if (alignment.x == "start") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [[1, solver.attr(m1.attributes, "x1")]],
+        x1WithGap
+      );
+    } else {
+      fitters.xMin.addComplex(solver.attr(m1.attributes, "x1"), x1WithGap);
+    }
+    if (alignment.x == "end") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [[1, solver.attr(mN.attributes, "x2")]],
+        x2WithGap
+      );
+    } else {
+      fitters.xMax.addComplex(solver.attr(mN.attributes, "x2"), x2WithGap);
+    }
+    if (alignment.x == "middle") {
+      solver.addLinear(
+        ConstraintStrength.HARD,
+        0,
+        [
+          [1, solver.attr(m1.attributes, "x1")],
+          [1, solver.attr(mN.attributes, "x2")],
+        ],
+        [
+          [1, x1],
+          [1, x2],
+        ]
+      );
+    }
+  }
+
+  private setFirstSublayoutDodgingDirection(
+    direction: string,
+    alignment: { x: SublayoutAlignment; y: SublayoutAlignment },
+    solver: ConstraintSolver,
+    m1: Specification.GlyphState<Specification.AttributeMap>,
+    y1: Variable,
+    fitters: DodgingFitters,
+    y2: Variable,
+    x1: Variable,
+    x2: Variable
+  ) {
+    switch (direction) {
+      case "x":
+        {
+          if (alignment.y == "start") {
+            solver.addEquals(
+              ConstraintStrength.HARD,
+              solver.attr(m1.attributes, "y1"),
+              y1
+            );
+          } else {
+            fitters.yMin.add(solver.attr(m1.attributes, "y1"), y1);
+          }
+          if (alignment.y == "end") {
+            solver.addEquals(
+              ConstraintStrength.HARD,
+              solver.attr(m1.attributes, "y2"),
+              y2
+            );
+          } else {
+            fitters.yMax.add(solver.attr(m1.attributes, "y2"), y2);
+          }
+          if (alignment.y == "middle") {
+            solver.addLinear(
+              ConstraintStrength.HARD,
+              0,
+              [
+                [1, solver.attr(m1.attributes, "y1")],
+                [1, solver.attr(m1.attributes, "y2")],
+              ],
+              [
+                [1, y1],
+                [1, y2],
+              ]
+            );
+          }
+        }
+        break;
+      case "y":
+        {
+          if (alignment.x == "start") {
+            solver.addEquals(
+              ConstraintStrength.HARD,
+              solver.attr(m1.attributes, "x1"),
+              x1
+            );
+          } else {
+            fitters.xMin.add(solver.attr(m1.attributes, "x1"), x1);
+          }
+          if (alignment.x == "end") {
+            solver.addEquals(
+              ConstraintStrength.HARD,
+              solver.attr(m1.attributes, "x2"),
+              x2
+            );
+          } else {
+            fitters.xMax.add(solver.attr(m1.attributes, "x2"), x2);
+          }
+          if (alignment.x == "middle") {
+            solver.addLinear(
+              ConstraintStrength.HARD,
+              0,
+              [
+                [1, solver.attr(m1.attributes, "x1")],
+                [1, solver.attr(m1.attributes, "x2")],
+              ],
+              [
+                [1, x1],
+                [1, x2],
+              ]
+            );
+          }
+        }
+        break;
+    }
   }
 
   public getGlyphPreSolveAttributes(rowIndices: number[]) {
@@ -1522,122 +1637,167 @@ export class Region2DConstraintBuilder {
       }
 
       // Constraint glyphs
-      for (let i = 0; i < markStates.length; i++) {
-        let xi: number, yi: number;
-        if (direction == "x" || direction == "x1") {
-          xi = i % xCount;
-          if (alignY == "start") {
-            xi = xMax - 1 - ((markStates.length - 1 - i) % xCount);
-            yi = Math.floor((markStates.length - 1 - i) / xCount);
-          } else {
-            yi = yMax - 1 - Math.floor(i / xCount);
-          }
-        } else {
-          yi = yMax - 1 - (i % yCount);
-          xi = Math.floor(i / yCount);
-          if (alignX == "end") {
-            yi = (markStates.length - 1 - i) % yCount;
-            xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
-          }
-        }
-        // Adjust xi, yi based on alignment settings
-        if (alignX == "end") {
-          xi = xi + xCount - xMax;
-        }
-        if (alignX == "middle") {
-          xi = xi + (xCount - xMax) / 2;
-        }
-        if (alignY == "end") {
-          yi = yi + yCount - yMax;
-        }
-        if (alignY == "middle") {
-          yi = yi + (yCount - yMax) / 2;
-        }
-        const cellX1: [number, Variable][] = [
-          [(xi / xCount) * (1 + gapRatioX), x2],
-          [1 - (xi / xCount) * (1 + gapRatioX), x1],
-        ];
-        const cellX2: [number, Variable][] = [
-          [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
-          [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1],
-        ];
-        const cellY1: [number, Variable][] = [
-          [(yi / yCount) * (1 + gapRatioY), y2],
-          [1 - (yi / yCount) * (1 + gapRatioY), y1],
-        ];
-        const cellY2: [number, Variable][] = [
-          [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
-          [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1],
-        ];
-        const state = markStates[i];
-        if (alignX == "start") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [[1, solver.attr(state.attributes, "x1")]],
-            cellX1
-          );
-        } else {
-          xMinFitter.addComplex(solver.attr(state.attributes, "x1"), cellX1);
-        }
-        if (alignX == "end") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [[1, solver.attr(state.attributes, "x2")]],
-            cellX2
-          );
-        } else {
-          xMaxFitter.addComplex(solver.attr(state.attributes, "x2"), cellX2);
-        }
-        if (alignX == "middle") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [
-              [1, solver.attr(state.attributes, "x1")],
-              [1, solver.attr(state.attributes, "x2")],
-            ],
-            cellX1.concat(cellX2)
-          );
-        }
-        if (alignY == "start") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [[1, solver.attr(state.attributes, "y1")]],
-            cellY1
-          );
-        } else {
-          yMinFitter.addComplex(solver.attr(state.attributes, "y1"), cellY1);
-        }
-        if (alignY == "end") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [[1, solver.attr(state.attributes, "y2")]],
-            cellY2
-          );
-        } else {
-          yMaxFitter.addComplex(solver.attr(state.attributes, "y2"), cellY2);
-        }
-        if (alignY == "middle") {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [
-              [1, solver.attr(state.attributes, "y1")],
-              [1, solver.attr(state.attributes, "y2")],
-            ],
-            cellY1.concat(cellY2)
-          );
-        }
-      }
+      this.addGlyphConstraints(
+        markStates,
+        direction,
+        xCount,
+        alignY,
+        xMax,
+        yMax,
+        yCount,
+        alignX,
+        gapRatioX,
+        x2,
+        x1,
+        gapRatioY,
+        y2,
+        y1,
+        solver,
+        xMinFitter,
+        xMaxFitter,
+        yMinFitter,
+        yMaxFitter
+      );
     });
     xMinFitter.addConstraint(ConstraintStrength.MEDIUM);
     xMaxFitter.addConstraint(ConstraintStrength.MEDIUM);
     yMinFitter.addConstraint(ConstraintStrength.MEDIUM);
     yMaxFitter.addConstraint(ConstraintStrength.MEDIUM);
+  }
+
+  // eslint-disable-next-line
+  private addGlyphConstraints(
+    markStates: Specification.GlyphState<Specification.AttributeMap>[],
+    direction: string,
+    xCount: number,
+    alignY: SublayoutAlignment,
+    xMax: number,
+    yMax: number,
+    yCount: number,
+    alignX: SublayoutAlignment,
+    gapRatioX: number,
+    x2: Variable,
+    x1: Variable,
+    gapRatioY: number,
+    y2: Variable,
+    y1: Variable,
+    solver: ConstraintSolver,
+    xMinFitter: CrossFitter,
+    xMaxFitter: CrossFitter,
+    yMinFitter: CrossFitter,
+    yMaxFitter: CrossFitter
+  ) {
+    for (let i = 0; i < markStates.length; i++) {
+      let xi: number, yi: number;
+      if (direction == "x" || direction == "x1") {
+        xi = i % xCount;
+        if (alignY == "start") {
+          xi = xMax - 1 - ((markStates.length - 1 - i) % xCount);
+          yi = Math.floor((markStates.length - 1 - i) / xCount);
+        } else {
+          yi = yMax - 1 - Math.floor(i / xCount);
+        }
+      } else {
+        yi = yMax - 1 - (i % yCount);
+        xi = Math.floor(i / yCount);
+        if (alignX == "end") {
+          yi = (markStates.length - 1 - i) % yCount;
+          xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
+        }
+      }
+      // Adjust xi, yi based on alignment settings
+      if (alignX == "end") {
+        xi = xi + xCount - xMax;
+      }
+      if (alignX == "middle") {
+        xi = xi + (xCount - xMax) / 2;
+      }
+      if (alignY == "end") {
+        yi = yi + yCount - yMax;
+      }
+      if (alignY == "middle") {
+        yi = yi + (yCount - yMax) / 2;
+      }
+      const cellX1: [number, Variable][] = [
+        [(xi / xCount) * (1 + gapRatioX), x2],
+        [1 - (xi / xCount) * (1 + gapRatioX), x1],
+      ];
+      const cellX2: [number, Variable][] = [
+        [((xi + 1) / xCount) * (1 + gapRatioX) - gapRatioX, x2],
+        [1 - ((xi + 1) / xCount) * (1 + gapRatioX) + gapRatioX, x1],
+      ];
+      const cellY1: [number, Variable][] = [
+        [(yi / yCount) * (1 + gapRatioY), y2],
+        [1 - (yi / yCount) * (1 + gapRatioY), y1],
+      ];
+      const cellY2: [number, Variable][] = [
+        [((yi + 1) / yCount) * (1 + gapRatioY) - gapRatioY, y2],
+        [1 - ((yi + 1) / yCount) * (1 + gapRatioY) + gapRatioY, y1],
+      ];
+      const state = markStates[i];
+      if (alignX == "start") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, solver.attr(state.attributes, "x1")]],
+          cellX1
+        );
+      } else {
+        xMinFitter.addComplex(solver.attr(state.attributes, "x1"), cellX1);
+      }
+      if (alignX == "end") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, solver.attr(state.attributes, "x2")]],
+          cellX2
+        );
+      } else {
+        xMaxFitter.addComplex(solver.attr(state.attributes, "x2"), cellX2);
+      }
+      if (alignX == "middle") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [
+            [1, solver.attr(state.attributes, "x1")],
+            [1, solver.attr(state.attributes, "x2")],
+          ],
+          cellX1.concat(cellX2)
+        );
+      }
+      if (alignY == "start") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, solver.attr(state.attributes, "y1")]],
+          cellY1
+        );
+      } else {
+        yMinFitter.addComplex(solver.attr(state.attributes, "y1"), cellY1);
+      }
+      if (alignY == "end") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [[1, solver.attr(state.attributes, "y2")]],
+          cellY2
+        );
+      } else {
+        yMaxFitter.addComplex(solver.attr(state.attributes, "y2"), cellY2);
+      }
+      if (alignY == "middle") {
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [
+            [1, solver.attr(state.attributes, "y1")],
+            [1, solver.attr(state.attributes, "y2")],
+          ],
+          cellY1.concat(cellY2)
+        );
+      }
+    }
   }
 
   public sublayoutHandles(
@@ -1896,10 +2056,10 @@ export class Region2DConstraintBuilder {
                 );
               }
               break;
-            case "numerical":
-              {
-              }
-              break;
+            // case "numerical":
+            //   {
+            //   }
+            //   break;
             case "categorical":
               {
                 handles = handles.concat(this.categoricalHandles("y", true));
@@ -1911,14 +2071,14 @@ export class Region2DConstraintBuilder {
       case "numerical":
         {
           switch (yMode) {
-            case "null":
-              {
-              }
-              break;
-            case "numerical":
-              {
-              }
-              break;
+            // case "null":
+            //   {
+            //   }
+            //   break;
+            // case "numerical":
+            //   {
+            //   }
+            //   break;
             case "categorical":
               {
                 handles = handles.concat(this.categoricalHandles("y", false));
@@ -1964,196 +2124,22 @@ export class Region2DConstraintBuilder {
     switch (xMode) {
       case "null":
         {
-          switch (yMode) {
-            case "null":
-              {
-                // null, null
-                this.applySublayout(
-                  [
-                    {
-                      x1: solver.attr(attrs, this.x1Name),
-                      y1: solver.attr(attrs, this.y1Name),
-                      x2: solver.attr(attrs, this.x2Name),
-                      y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i),
-                    },
-                  ],
-                  "xy",
-                  {
-                    mode: "default",
-                    xAxisPrePostGap: this.config.xAxisPrePostGap,
-                    yAxisPrePostGap: this.config.yAxisPrePostGap,
-                  }
-                );
-              }
-              break;
-            case "default":
-              {
-                this.stacking("y");
-                this.applySublayout(
-                  [
-                    {
-                      x1: solver.attr(attrs, this.x1Name),
-                      y1: solver.attr(attrs, this.y1Name),
-                      x2: solver.attr(attrs, this.x2Name),
-                      y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i),
-                    },
-                  ],
-                  "x",
-                  {
-                    mode: "x-only",
-                  }
-                );
-              }
-              break;
-            case "numerical":
-              {
-                // null, numerical
-                this.numericalMapping("y");
-                this.applySublayout(
-                  [
-                    {
-                      x1: solver.attr(attrs, this.x1Name),
-                      y1: solver.attr(attrs, this.y1Name),
-                      x2: solver.attr(attrs, this.x2Name),
-                      y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i),
-                    },
-                  ],
-                  "x",
-                  {
-                    mode: "x-only",
-                  }
-                );
-              }
-              break;
-            case "categorical":
-              {
-                // null, categorical
-                this.categoricalMapping("y", { mode: "default" });
-              }
-              break;
-          }
+          this.buildXNullMode(yMode, solver, attrs, state);
         }
         break;
       case "default":
         {
-          switch (yMode) {
-            case "null":
-              {
-                this.stacking("x");
-                this.applySublayout(
-                  [
-                    {
-                      x1: solver.attr(attrs, this.x1Name),
-                      y1: solver.attr(attrs, this.y1Name),
-                      x2: solver.attr(attrs, this.x2Name),
-                      y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i),
-                    },
-                  ],
-                  "y",
-                  {
-                    mode: "y-only",
-                  }
-                );
-              }
-              break;
-            case "default":
-              {
-                this.stacking("x");
-                this.stacking("y");
-              }
-              break;
-            case "numerical":
-              {
-                this.stacking("x");
-                this.numericalMapping("y");
-              }
-              break;
-            case "categorical":
-              {
-                this.stacking("x");
-                this.categoricalMapping("y", { mode: "disabled" });
-              }
-              break;
-          }
+          this.buildXDefaultMode(yMode, solver, attrs, state);
         }
         break;
       case "numerical":
         {
-          switch (yMode) {
-            case "null":
-              {
-                // numerical, null
-                this.numericalMapping("x");
-                this.applySublayout(
-                  [
-                    {
-                      x1: solver.attr(attrs, this.x1Name),
-                      y1: solver.attr(attrs, this.y1Name),
-                      x2: solver.attr(attrs, this.x2Name),
-                      y2: solver.attr(attrs, this.y2Name),
-                      group: state.dataRowIndices.map((x, i) => i),
-                    },
-                  ],
-                  "y",
-                  {
-                    mode: "y-only",
-                  }
-                );
-              }
-              break;
-            case "default":
-              {
-                this.stacking("y");
-                this.numericalMapping("x");
-              }
-              break;
-            case "numerical":
-              {
-                // numerical, numerical
-                this.numericalMapping("x");
-                this.numericalMapping("y");
-              }
-              break;
-            case "categorical":
-              {
-                // numerical, categorical
-                this.numericalMapping("x");
-                this.categoricalMapping("y", { mode: "y-only" });
-              }
-              break;
-          }
+          this.buildXNumericalMode(yMode, solver, attrs, state);
         }
         break;
       case "categorical":
         {
-          switch (yMode) {
-            case "null":
-              {
-                this.categoricalMapping("x", { mode: "default" });
-              }
-              break;
-            case "default":
-              {
-                this.stacking("y");
-                this.categoricalMapping("x", { mode: "disabled" });
-              }
-              break;
-            case "numerical":
-              {
-                this.numericalMapping("y");
-                this.categoricalMapping("x", { mode: "x-only" });
-              }
-              break;
-            case "categorical":
-              {
-                this.categoricalMapping("xy", { mode: "default" });
-              }
-              break;
-          }
+          this.buildXCategoricalMode(yMode);
         }
         break;
     }
@@ -2167,6 +2153,211 @@ export class Region2DConstraintBuilder {
       solver.attr(attrs, "y"),
       solver.attr(attrs, this.y1Name)
     );
+  }
+
+  private buildXCategoricalMode(yMode: string) {
+    switch (yMode) {
+      case "null":
+        {
+          this.categoricalMapping("x", { mode: "default" });
+        }
+        break;
+      case "default":
+        {
+          this.stacking("y");
+          this.categoricalMapping("x", { mode: "disabled" });
+        }
+        break;
+      case "numerical":
+        {
+          this.numericalMapping("y");
+          this.categoricalMapping("x", { mode: "x-only" });
+        }
+        break;
+      case "categorical":
+        {
+          this.categoricalMapping("xy", { mode: "default" });
+        }
+        break;
+    }
+  }
+
+  private buildXNumericalMode(
+    yMode: string,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    state: Specification.PlotSegmentState<Region2DAttributes>
+  ) {
+    switch (yMode) {
+      case "null":
+        {
+          // numerical, null
+          this.numericalMapping("x");
+          this.applySublayout(
+            [
+              {
+                x1: solver.attr(attrs, this.x1Name),
+                y1: solver.attr(attrs, this.y1Name),
+                x2: solver.attr(attrs, this.x2Name),
+                y2: solver.attr(attrs, this.y2Name),
+                group: state.dataRowIndices.map((x, i) => i),
+              },
+            ],
+            "y",
+            {
+              mode: "y-only",
+            }
+          );
+        }
+        break;
+      case "default":
+        {
+          this.stacking("y");
+          this.numericalMapping("x");
+        }
+        break;
+      case "numerical":
+        {
+          // numerical, numerical
+          this.numericalMapping("x");
+          this.numericalMapping("y");
+        }
+        break;
+      case "categorical":
+        {
+          // numerical, categorical
+          this.numericalMapping("x");
+          this.categoricalMapping("y", { mode: "y-only" });
+        }
+        break;
+    }
+  }
+
+  private buildXDefaultMode(
+    yMode: string,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    state: Specification.PlotSegmentState<Region2DAttributes>
+  ) {
+    switch (yMode) {
+      case "null":
+        {
+          this.stacking("x");
+          this.applySublayout(
+            [
+              {
+                x1: solver.attr(attrs, this.x1Name),
+                y1: solver.attr(attrs, this.y1Name),
+                x2: solver.attr(attrs, this.x2Name),
+                y2: solver.attr(attrs, this.y2Name),
+                group: state.dataRowIndices.map((x, i) => i),
+              },
+            ],
+            "y",
+            {
+              mode: "y-only",
+            }
+          );
+        }
+        break;
+      case "default":
+        {
+          this.stacking("x");
+          this.stacking("y");
+        }
+        break;
+      case "numerical":
+        {
+          this.stacking("x");
+          this.numericalMapping("y");
+        }
+        break;
+      case "categorical":
+        {
+          this.stacking("x");
+          this.categoricalMapping("y", { mode: "disabled" });
+        }
+        break;
+    }
+  }
+
+  private buildXNullMode(
+    yMode: string,
+    solver: ConstraintSolver,
+    attrs: Region2DAttributes,
+    state: Specification.PlotSegmentState<Region2DAttributes>
+  ) {
+    switch (yMode) {
+      case "null":
+        {
+          // null, null
+          this.applySublayout(
+            [
+              {
+                x1: solver.attr(attrs, this.x1Name),
+                y1: solver.attr(attrs, this.y1Name),
+                x2: solver.attr(attrs, this.x2Name),
+                y2: solver.attr(attrs, this.y2Name),
+                group: state.dataRowIndices.map((x, i) => i),
+              },
+            ],
+            "xy",
+            {
+              mode: "default",
+              xAxisPrePostGap: this.config.xAxisPrePostGap,
+              yAxisPrePostGap: this.config.yAxisPrePostGap,
+            }
+          );
+        }
+        break;
+      case "default":
+        {
+          this.stacking("y");
+          this.applySublayout(
+            [
+              {
+                x1: solver.attr(attrs, this.x1Name),
+                y1: solver.attr(attrs, this.y1Name),
+                x2: solver.attr(attrs, this.x2Name),
+                y2: solver.attr(attrs, this.y2Name),
+                group: state.dataRowIndices.map((x, i) => i),
+              },
+            ],
+            "x",
+            {
+              mode: "x-only",
+            }
+          );
+        }
+        break;
+      case "numerical":
+        {
+          // null, numerical
+          this.numericalMapping("y");
+          this.applySublayout(
+            [
+              {
+                x1: solver.attr(attrs, this.x1Name),
+                y1: solver.attr(attrs, this.y1Name),
+                x2: solver.attr(attrs, this.x2Name),
+                y2: solver.attr(attrs, this.y2Name),
+                group: state.dataRowIndices.map((x, i) => i),
+              },
+            ],
+            "x",
+            {
+              mode: "x-only",
+            }
+          );
+        }
+        break;
+      case "categorical":
+        {
+          // null, categorical
+          this.categoricalMapping("y", { mode: "default" });
+        }
+        break;
+    }
   }
 
   public applicableSublayoutOptions() {
@@ -2232,6 +2423,7 @@ export class Region2DConstraintBuilder {
     );
   }
 
+  // eslint-disable-next-line
   public buildSublayoutWidgets(m: Controls.WidgetManager) {
     const extra: Controls.Widget[] = [];
     const props = this.plotSegment.object.properties;
@@ -2458,6 +2650,7 @@ export class Region2DConstraintBuilder {
     }
   }
 
+  // eslint-disable-next-line
   public buildPopupWidgets(m: Controls.WidgetManager): Controls.Widget[] {
     const props = this.plotSegment.object.properties;
     const { icons, terminology } = this.config;

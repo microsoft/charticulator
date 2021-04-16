@@ -29,7 +29,7 @@ export class CategoricalLegendClass extends LegendClass {
   public getLegendItems(): CategoricalLegendItem[] {
     const scale = this.getScale();
     if (scale) {
-      const [scaleObject, scaleState] = scale;
+      const [scaleObject] = scale;
       const mapping = <
         {
           [name: string]: Color;
@@ -117,6 +117,7 @@ export class CategoricalLegendClass extends LegendClass {
     }
   }
 
+  // eslint-disable-next-line
   public getGraphics(): Graphics.Element {
     const fontFamily = this.object.properties.fontFamily;
     const fontSize = this.object.properties.fontSize;

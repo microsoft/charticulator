@@ -352,7 +352,7 @@ export class DataFieldSelector extends React.Component<
           )}
           onClick={
             item.selectable
-              ? (event) => {
+              ? () => {
                   this.selectItem(
                     item,
                     this.isValueEqual(this.state.currentSelection, item)

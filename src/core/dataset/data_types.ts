@@ -68,6 +68,7 @@ export const dataTypes: { [name in DataType]: DataTypeDescription } = {
     convert: (x: string) => parseDate(x),
   },
   string: {
+    // eslint-disable-next-line
     test: (x: string) => true,
     convert: (x: string) => x.toString(),
   },
@@ -130,6 +131,7 @@ export function getDistinctValues(values: DataValue[]): DataValue[] {
 }
 
 /** Infer column metadata and update type if necessary */
+// eslint-disable-next-line
 export function inferAndConvertColumn(
   values: string[],
   localeNumberFormat: LocaleNumberFormat,

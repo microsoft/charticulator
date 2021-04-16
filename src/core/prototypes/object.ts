@@ -83,6 +83,7 @@ export abstract class ObjectClass<
   }
 
   /** Initialize the state of the object */
+  // eslint-disable-next-line
   public initializeState() {}
 
   /** Get the UI spec for property panel */
@@ -129,6 +130,7 @@ export abstract class ObjectClass<
   }
 
   /** Create a default object */
+  // eslint-disable-next-line
   public static createDefault(...args: any[]): Specification.Object {
     const id = uniqueID();
     const obj: Specification.Object = {

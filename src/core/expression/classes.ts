@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+// eslint-disable-next-line
 export type ValueType = number | boolean | string | Date | Object;
 
 export interface Context {
@@ -12,6 +14,7 @@ export class ShadowContext implements Context {
     public shadows: { [name: string]: ValueType } = {}
   ) {}
   public getVariable(name: string): ValueType {
+    // eslint-disable-next-line
     if (this.shadows.hasOwnProperty(name)) {
       return this.shadows[name];
     }
@@ -40,6 +43,7 @@ export type PatternReplacer = (expr: Expression) => Expression | void;
 export function variableReplacer(map: { [name: string]: string }) {
   return (expr: Expression) => {
     if (expr instanceof Variable) {
+      // eslint-disable-next-line
       if (map.hasOwnProperty(expr.name)) {
         return new Variable(map[expr.name]);
       }
@@ -113,7 +117,7 @@ export class TextExpression {
               return getFormat()(part.format)(+val);
             } catch (ex) {
               // try to handle specific format
-              if (part.format.match(/^\%raw$/).length > 0) {
+              if (part.format.match(/^%raw$/).length > 0) {
                 return getFormattedValue(context, val, part.expression);
               } else {
                 throw ex;
@@ -135,7 +139,7 @@ export class TextExpression {
     return this.parts
       .map((part) => {
         if (part.string) {
-          return part.string.replace(/([\$\\])/g, "\\$1");
+          return part.string.replace(/([$\\])/g, "\\$1");
         } else if (part.expression) {
           const str = part.expression.toString();
           if (part.format) {
@@ -189,6 +193,7 @@ export class Value<T> extends Expression {
     return precedences.VALUE;
   }
 
+  // eslint-disable-next-line
   protected replaceChildren(r: PatternReplacer): Expression {
     return new Value<T>(this.value);
   }
@@ -229,6 +234,7 @@ export class FieldAccess extends Expression {
 
 export class FunctionCall extends Expression {
   public name: string;
+  // eslint-disable-next-line
   public function: Function;
   public args: Expression[];
 
@@ -238,6 +244,7 @@ export class FunctionCall extends Expression {
     this.args = args;
     let v = <any>functions;
     for (const part of parts) {
+      // eslint-disable-next-line
       if (v.hasOwnProperty(part)) {
         v = v[part];
       } else {
@@ -274,6 +281,7 @@ export class FunctionCall extends Expression {
 }
 
 export class Operator extends Expression {
+  // eslint-disable-next-line
   private op: Function;
   constructor(
     public name: string,
@@ -394,10 +402,11 @@ export class Variable extends Expression {
     if (name.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
       return name;
     } else {
-      return JSON.stringify(name).replace(/^\"|\"$/g, "`");
+      return JSON.stringify(name).replace(/^"|"$/g, "`");
     }
   }
 
+  // eslint-disable-next-line
   protected replaceChildren(r: PatternReplacer): Expression {
     return new Variable(this.name);
   }

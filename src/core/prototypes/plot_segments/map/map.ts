@@ -4,14 +4,13 @@ import * as Graphics from "../../../graphics";
 import { ConstraintSolver, ConstraintStrength } from "../../../solver";
 import * as Specification from "../../../specification";
 
-import { Geometry, getById, max, Point, uniqueID, zipArray } from "../../../common";
+import { Geometry, zipArray } from "../../../common";
 import {
   AttributeDescription,
   BoundingBox,
   Controls,
   DropZones,
   Handles,
-  ObjectClasses,
   ObjectClassMetadata,
   SnappingGuides,
 } from "../../common";
@@ -97,7 +96,7 @@ export class MapPlotSegment extends PlotSegmentClass {
   }
 
   public buildGlyphConstraints(solver: ConstraintSolver): void {
-    const [latitude, longitude, zoom] = this.getCenterZoom();
+    // const [latitude, longitude, zoom] = this.getCenterZoom();
     const longitudeData = this.object.properties.longitudeData;
     const latitudeData = this.object.properties.latitudeData;
     if (latitudeData && longitudeData) {
@@ -106,7 +105,6 @@ export class MapPlotSegment extends PlotSegmentClass {
         longitudeData.expression
       );
       const table = this.parent.dataflow.getTable(this.object.table);
-      const [cx, cy] = this.mercatorProjection(latitude, longitude);
 
       for (const [glyphState, index] of zipArray(
         this.state.glyphs,
@@ -164,7 +162,7 @@ export class MapPlotSegment extends PlotSegmentClass {
       (128 / 180) *
       (180 -
         (180 / Math.PI) *
-          Math.log(Math.tan(Math.PI / 4 + (Geometry.degreesToRadians(lat)) / 2)));
+          Math.log(Math.tan(Math.PI / 4 + Geometry.degreesToRadians(lat) / 2)));
 
     return [x, y];
 
@@ -178,9 +176,7 @@ export class MapPlotSegment extends PlotSegmentClass {
   }
 
   // Get (x, y) coordinates based on longitude and latitude
-  public getProjectedPoints(
-    points: ([number, number])[]
-  ): ([number, number])[] {
+  public getProjectedPoints(points: [number, number][]): [number, number][] {
     const attrs = this.state.attributes;
     const [cLatitude, cLongitude, zoom] = this.getCenterZoom();
     const [cX, cY] = this.mercatorProjection(cLatitude, cLongitude);
@@ -260,7 +256,7 @@ export class MapPlotSegment extends PlotSegmentClass {
 
   public getDropZones(): DropZones.Description[] {
     const attrs = this.state.attributes;
-    const { x1, y1, x2, y2, x, y } = attrs;
+    const { x1, y1, x2, y2 } = attrs;
     const zones: DropZones.Description[] = [];
     zones.push(<DropZones.Line>{
       type: "line",
@@ -285,7 +281,6 @@ export class MapPlotSegment extends PlotSegmentClass {
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2 } = attrs;
     const h: Handles.Description[] = [
       <Handles.Line>{

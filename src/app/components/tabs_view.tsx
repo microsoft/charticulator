@@ -1,11 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import { SVGImageIcon } from "./icons";
 import { classNames } from "../utils";
 
 export interface TabsViewProps {
-  tabs: ({ name: string; label: string; icon?: string })[];
+  tabs: { name: string; label: string; icon?: string }[];
   currentTab: string;
   onSelect: (tabName: string) => void;
 }
