@@ -73,3 +73,5 @@ export class CharticulatorWorkerProcess
     return chartState;
   }
 }
+
+new CharticulatorWorkerProcess();
