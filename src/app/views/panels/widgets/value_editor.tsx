@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { strings } from "../../../../strings";
 import {
   Color,
   colorFromHTMLColor,
@@ -68,7 +69,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
   public render() {
     const value = this.props.value;
 
-    let placeholderText = this.props.placeholder || "(none)";
+    let placeholderText = this.props.placeholder || strings.core.none;
     if (this.props.defaultValue != null) {
       placeholderText = this.props.defaultValue.toString();
     }

@@ -297,6 +297,8 @@ export const strings = {
   },
   core: {
     default: "(default)",
+    auto: "(auto)",
+    none: "(none)",
   },
   cartesianTerminology,
   curveTerminology,

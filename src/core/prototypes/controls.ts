@@ -153,6 +153,10 @@ export interface InputExpressionOptions {
   table?: string;
 }
 
+export interface InputFormatOptions {
+  blank?: string;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -174,6 +178,7 @@ export interface WidgetManager {
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
+  inputFormat(property: Property, options?: InputFormatOptions): Widget;
   inputImage(property: Property): Widget;
   inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;

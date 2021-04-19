@@ -10,7 +10,7 @@ import {
 } from "../../../../../core";
 import { classNames } from "../../../../utils";
 
-export interface InputExpressionProps {
+export interface InputFormatProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
   defaultValue?: string;
   placeholder?: string;
@@ -20,24 +20,24 @@ export interface InputExpressionProps {
   allowNull?: boolean;
 }
 
-export interface InputExpressionState {
+export interface InputFormatState {
   errorMessage?: string;
   errorIndicator: boolean;
   value?: string;
 }
 
-export class InputExpression extends React.Component<
-  InputExpressionProps,
-  InputExpressionState
+export class InputFormat extends React.Component<
+  InputFormatProps,
+  InputFormatState
 > {
   protected refInput: HTMLInputElement;
-  public state: InputExpressionState = {
+  public state: InputFormatState = {
     errorMessage: null,
     errorIndicator: false,
     value: this.props.defaultValue || "",
   };
 
-  public componentWillReceiveProps(newProps: InputExpressionProps) {
+  public componentWillReceiveProps(newProps: InputFormatProps) {
     this.setState({
       errorMessage: null,
       errorIndicator: false,
@@ -103,7 +103,7 @@ export class InputExpression extends React.Component<
               this.doCancel();
             }
           }}
-          onFocus={() => {
+          onFocus={(e) => {
             this.refInput.select();
           }}
           onBlur={() => {
@@ -118,8 +118,11 @@ export class InputExpression extends React.Component<
                 errorIndicator: false,
               });
             } else {
-              const result = this.props.validate(
-                replaceTabBySymbol(replaceNewLineBySymbol(this.refInput.value))
+              const result = Expression.verifyUserExpression(
+                replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
+                {
+                  textExpression: this.props.textExpression,
+                }
               );
               this.setState({
                 value: this.refInput.value,

@@ -680,6 +680,8 @@ export function setFormatOptions(options: FormatLocaleDefinition) {
   };
 }
 
+export const tickFormatParserExpression = () => /\{([^}]+)\}/g;
+
 export function getFormat() {
   return formatLocale(formatOptions).format;
 }
