@@ -201,11 +201,9 @@ export class LegendCreationPanel extends ContextedComponent<
                 switch (kind) {
                   case DataKind.Numerical:
                   case DataKind.Temporal:
-                    legendType = "numerical";
                     attributeType = AttributeType.Number;
                     break;
                   case DataKind.Ordinal:
-                    legendType = "color";
                     attributeType = AttributeType.Text;
                     break;
                 }
