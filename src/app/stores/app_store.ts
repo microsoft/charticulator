@@ -734,7 +734,7 @@ export class AppStore extends BaseStore {
     };
 
     // If there is an existing scale on the same column in the table, return that one
-    if (!options.hints.newScale) {
+    if (!options.hints?.newScale) {
       const getExpressionUnit = (expr: string) => {
         const parsed = Expression.parse(expr);
         // In the case of an aggregation function
