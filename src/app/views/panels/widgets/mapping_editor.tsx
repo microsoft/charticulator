@@ -601,14 +601,18 @@ export class DataMappAndScaleEditor extends ContextedComponent<
           this.store.chart.scales,
           scaleMapping.scale
         );
-        return (
-          <ScaleEditor
-            plotSegment={this.props.plotSegment}
-            scale={scaleObject}
-            scaleMapping={scaleMapping}
-            store={this.store}
-          />
-        );
+        if (scaleObject) {
+          return (
+            <ScaleEditor
+              plotSegment={this.props.plotSegment}
+              scale={scaleObject}
+              scaleMapping={scaleMapping}
+              store={this.store}
+            />
+          );
+        } else {
+          return null;
+        }
       }
     }
     return null;
