@@ -31,7 +31,6 @@ import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap } from "../../specification";
 import { strings } from "../../../strings";
-import { string } from "../../expression";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },

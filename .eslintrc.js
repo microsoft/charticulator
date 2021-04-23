@@ -14,7 +14,8 @@ module.exports = {
         "powerbi-visuals"
     ],
     extends: [
-        "plugin:powerbi-visuals/recommended"
+        "plugin:powerbi-visuals/recommended",
+        "plugin:react-hooks/recommended"
     ],
     rules: {}
 };

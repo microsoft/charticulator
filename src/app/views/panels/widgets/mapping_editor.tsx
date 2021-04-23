@@ -25,7 +25,7 @@ import { DropZoneView, WidgetManager } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall, string, Variable } from "../../../../core/expression";
+import { FunctionCall } from "../../../../core/expression";
 import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";

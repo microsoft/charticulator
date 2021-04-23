@@ -72,11 +72,6 @@ function createElement(name: string, attrs: any, text?: string) {
 /**
  * @ignore
  */
-const WebFontConfig = {
-  google: {
-    families: ["Lato:300,300i,400,400i,700,700i", "Inconsolata:400,700"],
-  },
-};
 ((d) => {
   const wf = d.createElement("script"),
     s = d.scripts[0];
