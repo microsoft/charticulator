@@ -484,14 +484,14 @@ export class AxisRenderer {
               }
             );
             lines.push(text);
-            const gText = makeGroup(lines);
-            gText.transform = {
-              x: tx + dx,
-              y: ty + dy,
-              angle: 0,
-            };
-            g.elements.push(gText);
           }
+          const gText = makeGroup(lines);
+          gText.transform = {
+            x: tx + dx,
+            y: ty + dy,
+            angle: 0,
+          };
+          g.elements.push(gText);
         } else {
           // 60 ~ 120 degree
           const [px, py] = TextMeasurer.ComputeTextPosition(

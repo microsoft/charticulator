@@ -56,7 +56,7 @@ export function parseDataset(
   localeFileFormat: LocaleFileFormat
 ): Table {
   let rows: string[][];
-  const tableName = fileName.replace(/\w/g, "_");
+  const tableName = fileName.replace(/\W/g, "_");
   rows = dsvFormat(localeFileFormat.delimiter).parseRows(content);
 
   // Remove empty rows if any
