@@ -73,7 +73,8 @@ export class FileViewImport extends ContextedComponent<
         filteredByTableColumns.forEach((pbiColumn) => {
           if (
             pbiColumn.displayName === column.name &&
-            column.type === pbiColumn.type &&
+            (column.type === pbiColumn.type ||
+              column.type === DataType.String) &&
             !newMapping.get(column.name)
           ) {
             newMapping.set(column.name, pbiColumn.name);
