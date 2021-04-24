@@ -94,10 +94,13 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   }
 
   // Get the graphical element from the element
+  // eslint-disable-next-line
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     emphasize?: boolean
   ): Graphics.Element {
@@ -120,14 +123,14 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     switch (attrs.symbol) {
       case "square": {
         const w = Math.sqrt(attrs.size);
-        return {
+        return <Graphics.Rect>{
           type: "rect",
           style,
           x1: pc.x - w / 2,
           y1: pc.y - w / 2,
           x2: pc.x + w / 2,
           y2: pc.y + w / 2,
-        } as Graphics.Rect;
+        };
       }
       case "cross": {
         const r = Math.sqrt(attrs.size / 5) / 2;
@@ -162,7 +165,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       }
       case "star": {
         const ka = 0.8908130915292852281;
-        const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
+        // const kr = 0.3819660112501051; // Math.sin(Math.PI / 10) / Math.sin(7 * Math.PI / 10),
         const kx = 0.22451398828979266; // Math.sin(2 * Math.PI / 10) * kr;
         const ky = -0.3090169943749474; // -Math.cos(2 * Math.PI / 10) * kr;
         const r = Math.sqrt(attrs.size * ka),
@@ -217,13 +220,13 @@ export class SymbolElementClass extends EmphasizableMarkClass<
         return path.path;
       }
       default: {
-        return {
+        return <Graphics.Circle>{
           type: "circle",
           style,
           cx: pc.x,
           cy: pc.y,
           r: Math.sqrt(attrs.size / Math.PI),
-        } as Graphics.Circle;
+        };
       }
     }
   }
@@ -234,7 +237,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     const { x, y, size } = attrs;
     const r = Math.sqrt(size);
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x + r, y },
         p2: { x: x - r, y },
@@ -246,7 +249,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
             hints: { rangeNumber: [0, 200 * Math.PI] },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
 
@@ -255,7 +258,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -263,27 +266,27 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x" },
           { type: "attribute", source: "y", attribute: "y" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x, y, size } = attrs;
-    return {
+    return <BoundingBox.Circle>{
       type: "circle",
       cx: x,
       cy: y,
       radius: Math.sqrt(size / Math.PI),
-    } as BoundingBox.Circle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
+      <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" },
     ];
   }
 
@@ -361,7 +364,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
           attribute: "fill",
         },
         type: Specification.AttributeType.Color,
-        default: rgbToHex(this.state.attributes.fill as Color),
+        default: rgbToHex(<Color>this.state.attributes.fill),
       });
     }
     if (

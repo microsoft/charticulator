@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { ConstraintPlugin, ConstraintSolver } from "../abstract";
+import { ConstraintPlugin } from "../abstract";
 import { PolarAttributes } from "../../prototypes/plot_segments/region_2d/polar";
 import { Geometry } from "../../common";
 import { Constraint } from "../../specification";

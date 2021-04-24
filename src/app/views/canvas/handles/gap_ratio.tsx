@@ -34,6 +34,7 @@ export class GapRatioHandleView extends React.Component<
     };
   }
 
+  // eslint-disable-next-line
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.line);
     this.hammer.add(new Hammer.Pan({ threshold: 1 }));
@@ -174,6 +175,7 @@ export class GapRatioHandleView extends React.Component<
     return null;
   }
 
+  // eslint-disable-next-line
   public renderPolar() {
     const { handle } = this.props;
     const polar = handle.coordinateSystem as Graphics.PolarCoordinates;
@@ -397,6 +399,7 @@ export class GapRatioHandleView extends React.Component<
     }
   }
 
+  // eslint-disable-next-line
   public renderCartesian() {
     const { handle } = this.props;
     const fX = (x: number) =>

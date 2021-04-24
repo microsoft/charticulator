@@ -40,6 +40,7 @@ function reuseMapping<T>(
   }
   // Assign remaining keys from the domain
   domain.forEach((v, d) => {
+    // eslint-disable-next-line
     if (!result.hasOwnProperty(d)) {
       if (available.length > 0) {
         result[d] = available[0];
@@ -113,7 +114,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column.filter((x) => typeof x == "string") as string[];
+    const values = <string[]>column.filter((x) => typeof x == "string");
     s.inferParameters(values, OrderMode.order);
 
     props.mapping = {};
@@ -128,7 +129,7 @@ export class CategoricalScaleNumber extends ScaleClass<
         (v / (s.domain.size - 1)) * (range[1] - range[0]) + range[0];
     });
 
-    attrs.rangeScale = range[1] as number;
+    attrs.rangeScale = <number>range[1];
   }
 
   public getAttributePanelWidgets(
@@ -137,6 +138,7 @@ export class CategoricalScaleNumber extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
@@ -190,7 +192,7 @@ export class CategoricalScaleNumber extends ScaleClass<
 
 export class CategoricalScaleColor extends ScaleClass<
   CategoricalScaleProperties<Color>,
-  {}
+  any
 > {
   public static metadata: ObjectClassMetadata = {
     displayName: "Scale",
@@ -208,6 +210,7 @@ export class CategoricalScaleColor extends ScaleClass<
     return props.mapping[data.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -216,9 +219,7 @@ export class CategoricalScaleColor extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -288,6 +289,7 @@ export class CategoricalScaleColor extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
@@ -336,7 +338,7 @@ function literalColorValues(values: string[]) {
 
 export class CategoricalScaleEnum extends ScaleClass<
   CategoricalScaleProperties<string>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,enum>";
   public static type = "scale";
@@ -349,6 +351,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     return props.mapping[data.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -357,9 +360,7 @@ export class CategoricalScaleEnum extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -391,6 +392,7 @@ export class CategoricalScaleEnum extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }
@@ -416,7 +418,7 @@ export class CategoricalScaleEnum extends ScaleClass<
 
 export class CategoricalScaleBoolean extends ScaleClass<
   CategoricalScaleProperties<boolean>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,boolean>";
   public static type = "scale";
@@ -429,6 +431,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     return props.mapping[data.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -437,9 +440,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -466,6 +467,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
     const mappingALL: { [name: string]: boolean } = {};
     const mappingNONE: { [name: string]: boolean } = {};
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         items.push(
           manager.inputBoolean(
@@ -499,7 +501,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
 
 export class CategoricalScaleImage extends ScaleClass<
   CategoricalScaleProperties<string>,
-  {}
+  any
 > {
   public static classID = "scale.categorical<string,image>";
   public static type = "scale";
@@ -512,6 +514,7 @@ export class CategoricalScaleImage extends ScaleClass<
     return props.mapping[data.toString()];
   }
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -520,9 +523,7 @@ export class CategoricalScaleImage extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.CategoricalScale();
-    const values = column
-      .filter((x) => x != null)
-      .map((x) => x.toString()) as string[];
+    const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
     // If we shouldn't reuse the range, then reset the mapping
@@ -551,6 +552,7 @@ export class CategoricalScaleImage extends ScaleClass<
     const props = this.object.properties;
     const keys: string[] = [];
     for (const key in props.mapping) {
+      // eslint-disable-next-line
       if (props.mapping.hasOwnProperty(key)) {
         keys.push(key);
       }

@@ -3,6 +3,7 @@
 import { ItemData, ItemDescription, ItemMetadata } from "./abstract";
 
 function s4() {
+  // eslint-disable-next-line
   return Math.floor((1 + Math.random()) * 0x10000)
     .toString(16)
     .substring(1);
@@ -51,14 +52,14 @@ export class IndexedDBBackend {
           itemsStore.createIndex("NameIndex", "metadata.name");
           itemsStore.createIndex("TimeCreatedIndex", "metadata.timeCreated");
           itemsStore.createIndex("TimeModifiedIndex", "metadata.timeModified");
-          const dataStore = this.database.createObjectStore("data", {
+          this.database.createObjectStore("data", {
             keyPath: "id",
           });
         };
         request.onerror = () => {
           reject(new Error("could not open database"));
         };
-        request.onsuccess = (e) => {
+        request.onsuccess = () => {
           this.database = request.result;
           resolve();
         };
@@ -81,16 +82,15 @@ export class IndexedDBBackend {
             const request = store.index("TypeIndex").openCursor(type);
             const result: ItemDescription[] = [];
             request.onsuccess = () => {
-              const cursor = request.result as IDBCursorWithValue;
+              const cursor = <IDBCursorWithValue>request.result;
               if (cursor) {
-                const value = cursor.value as ItemDescription;
+                const value = <ItemDescription>cursor.value;
                 result.push(value);
                 cursor.continue();
               } else {
                 let resultFiltered = result.sort(
                   (a, b) =>
-                    (b.metadata[orderBy] as number) -
-                    (a.metadata[orderBy] as number)
+                    <number>b.metadata[orderBy] - <number>a.metadata[orderBy]
                 );
                 resultFiltered = resultFiltered.slice(start, start + count);
                 resolve({

@@ -1,30 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import * as R from "../../resources";
 
-import {
-  argMax,
-  argMin,
-  Geometry,
-  getById,
-  Graphics,
-  Point,
-  Prototypes,
-  Specification,
-  uniqueID,
-  Expression,
-} from "../../../core";
-import { Actions } from "../../actions";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { getById, Prototypes, Specification, Expression } from "../../../core";
+import { ButtonRaised } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import {
   DataFieldSelector,
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
-import { ReorderListView } from "./object_list_editor";
-import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
 import { AttributeType, MappingType } from "../../../core/specification";
@@ -55,6 +40,7 @@ export class LegendCreationPanel extends ContextedComponent<
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     return (
       <div className="charticulator__link-type-table">
@@ -110,6 +96,7 @@ export class LegendCreationPanel extends ContextedComponent<
         <div className="el-row">
           <ButtonRaised
             text="Create Legend"
+            // eslint-disable-next-line
             onClick={() => {
               const columns = this.groupBySelector
                 ? this.groupBySelector.value
@@ -119,8 +106,6 @@ export class LegendCreationPanel extends ContextedComponent<
                   : []
                 : [];
 
-              const keyOptions = "dataExpressionColumns";
-              let legendType: "color" | "numerical" | "categorical" = "color";
               let attributeType: AttributeType = AttributeType.Color;
 
               if (this.state.legendDataSource === "columnNames") {
@@ -216,11 +201,9 @@ export class LegendCreationPanel extends ContextedComponent<
                 switch (kind) {
                   case DataKind.Numerical:
                   case DataKind.Temporal:
-                    legendType = "numerical";
                     attributeType = AttributeType.Number;
                     break;
                   case DataKind.Ordinal:
-                    legendType = "color";
                     attributeType = AttributeType.Text;
                     break;
                 }

@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import { Button, UpdownButton } from "./button";
@@ -57,7 +59,7 @@ export class InputNumber extends React.Component<InputNumberProps, {}> {
       return null;
     }
     if (this.props.percentage) {
-      str = str.replace(/\%$/, "");
+      str = str.replace(/%$/, "");
       return +str / 100;
     } else {
       return +str;

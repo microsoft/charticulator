@@ -90,14 +90,15 @@ export class EditingLink extends React.Component<
 
       const markInfo = this.getMarkAtPoint(pageX, pageY);
       if (markInfo) {
-        let anchor: Specification.Types.LinkAnchorPoint[];
-        anchor = markInfo.anchor.points.map((pt) => {
-          return {
-            x: { element: markInfo.anchor.element, attribute: pt.xAttribute },
-            y: { element: markInfo.anchor.element, attribute: pt.yAttribute },
-            direction: pt.direction,
-          } as Specification.Types.LinkAnchorPoint;
-        });
+        const anchor: Specification.Types.LinkAnchorPoint[] = markInfo.anchor.points.map(
+          (pt) => {
+            return {
+              x: { element: markInfo.anchor.element, attribute: pt.xAttribute },
+              y: { element: markInfo.anchor.element, attribute: pt.yAttribute },
+              direction: pt.direction,
+            } as Specification.Types.LinkAnchorPoint;
+          }
+        );
         if (markInfo.mode == "begin") {
           new Actions.SetObjectProperty(
             this.props.link,
@@ -185,6 +186,7 @@ export class EditingLink extends React.Component<
     }
   }
 
+  // eslint-disable-next-line
   private renderMarkPlaceholders() {
     const manager = this.props.store.chartManager;
 
@@ -192,11 +194,11 @@ export class EditingLink extends React.Component<
     const props = this.props.link
       .properties as Prototypes.Links.LinksProperties;
     const lineMode: string = props.linkType;
-    let glyphs: Array<{
+    let glyphs: {
       glyph: Specification.Glyph;
       glyphState: Specification.GlyphState;
       coordinateSystem: Graphics.CoordinateSystem;
-    }> = [];
+    }[] = [];
     switch (this.props.link.classID) {
       case "links.through":
         {
@@ -321,9 +323,11 @@ export class EditingLink extends React.Component<
                 undefined
           );
           if (rowItem) {
+            // eslint-disable-next-line
             const [iRow0, i0] = tables[0].id2RowGlyphIndex.get(
               rowItem.source_id?.toString()
             );
+            // eslint-disable-next-line
             const [iRow1, i1] = tables[1].id2RowGlyphIndex.get(
               rowItem.target_id?.toString()
             );

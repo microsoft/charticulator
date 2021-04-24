@@ -45,7 +45,7 @@ export class RelativeLineHandleView extends React.Component<
 
     const sign = this.props.handle.sign;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", () => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       dXLast = 0;

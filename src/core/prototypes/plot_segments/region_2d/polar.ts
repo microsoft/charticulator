@@ -32,6 +32,7 @@ import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { ChartStateManager } from "../..";
 import { strings } from "../../../../strings";
+import { AxisDataBinding } from "../../../specification/types";
 
 export type PolarAxisMode = "null" | "default" | "numerical" | "categorical";
 
@@ -76,7 +77,7 @@ export interface PolarObject extends Specification.PlotSegment {
   properties: PolarProperties;
 }
 
-export let icons: Region2DConfigurationIcons = {
+export const icons: Region2DConfigurationIcons = {
   xMinIcon: "align/left",
   xMiddleIcon: "align/x-middle",
   xMaxIcon: "align/right",
@@ -409,41 +410,26 @@ export class PolarPlotSegment extends PlotSegmentClass<
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, x2, y1, y2, cx, cy } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx,
       cy,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const {
-      x1,
-      y1,
-      x2,
-      y2,
-      cx,
-      cy,
-      a1r1x,
-      a1r1y,
-      a1r2x,
-      a1r2y,
-      a2r1x,
-      a2r1y,
-      a2r2x,
-      a2r2y,
-    } = attrs;
+    const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 
@@ -454,7 +440,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     const { cx } = attrs;
     const { cy } = attrs;
-    const [angularMode, radialMode] = this.getAxisModes();
     const radialData = props.yData;
     const angularData = props.xData;
     const angleStart = props.startAngle;
@@ -550,14 +535,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
       g.elements.push(
-        axisRenderer.renderPolarRadialGridLine(
-          cx,
-          cy,
-          innerRadius,
-          outerRadius,
-          angleStart,
-          angleEnd
-        )
+        axisRenderer.renderPolarRadialGridLine(cx, cy, innerRadius, outerRadius)
       );
     }
 
@@ -579,34 +557,34 @@ export class PolarPlotSegment extends PlotSegmentClass<
   }
 
   public getDropZones(): DropZones.Description[] {
-    const attrs = this.state.attributes as PolarAttributes;
+    const attrs = <PolarAttributes>this.state.attributes;
     const { x1, y1, x2, y2, radial1, radial2, cx, cy } = attrs;
     const zones: DropZones.Description[] = [];
-    zones.push({
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["polar"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Add Angular Scaffold",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["curve"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Curve Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Region>{
       type: "region",
       accept: { scaffolds: ["cartesian-x", "cartesian-y"] },
       dropAction: { extendPlotSegment: {} },
       p1: { x: x1, y: y1 },
       p2: { x: x2, y: y2 },
       title: "Convert to Cartesian Coordinates",
-    } as DropZones.Region);
-    zones.push({
+    });
+    zones.push(<DropZones.Line>{
       type: "line",
       p1: { x: cx + radial1, y: cy },
       p2: { x: cx + radial2, y: cy },
@@ -614,8 +592,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.yData },
       },
-    } as DropZones.Line);
-    zones.push({
+    });
+    zones.push(<DropZones.Arc>{
       type: "arc",
       center: { x: cx, y: cy },
       radius: radial2,
@@ -625,7 +603,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       dropAction: {
         axisInference: { property: PlotSegmentAxisPropertyNames.xData },
       },
-    } as DropZones.Arc);
+    });
     return zones;
   }
 
@@ -637,43 +615,43 @@ export class PolarPlotSegment extends PlotSegmentClass<
     ];
   }
 
+  // eslint-disable-next-line
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const rows = this.parent.dataflow.getTable(this.object.table).rows;
     const { x1, x2, y1, y2, cx, cy } = attrs;
     const radius = Math.min(Math.abs(x2 - x1), Math.abs(y2 - y1)) / 2;
     const builder = this.createBuilder();
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y1,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         value: y2,
         span: [x1, x2],
         actions: [{ type: "attribute", attribute: "y2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x1,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x1" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         value: x2,
         span: [y1, y2],
         actions: [{ type: "attribute", attribute: "x2" }],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -681,8 +659,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -690,8 +668,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -699,8 +677,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -708,9 +686,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
       ...builder.getHandles().map((handle) => {
-        return {
+        return <Handles.GapRatio>{
           type: "gap-ratio",
           axis: handle.gap.axis,
           reference: handle.gap.reference,
@@ -726,9 +704,9 @@ export class PolarPlotSegment extends PlotSegmentClass<
               field: handle.gap.property.field,
             },
           ],
-        } as Handles.GapRatio;
+        };
       }),
-      {
+      <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "endAngle" }],
         cx,
@@ -737,8 +715,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         value: props.endAngle,
         clipAngles: [props.startAngle, null],
         icon: "<",
-      } as Handles.Angle,
-      {
+      },
+      <Handles.Angle>{
         type: "angle",
         actions: [{ type: "property", property: "startAngle" }],
         cx,
@@ -747,8 +725,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         value: props.startAngle,
         clipAngles: [null, props.endAngle],
         icon: ">",
-      } as Handles.Angle,
-      {
+      },
+      <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "outerRatio" }],
         cx,
@@ -759,8 +737,8 @@ export class PolarPlotSegment extends PlotSegmentClass<
         startAngle: props.startAngle,
         endAngle: props.endAngle,
         clipRange: [props.innerRatio + 0.01, 1],
-      } as Handles.DistanceRatio,
-      {
+      },
+      <Handles.DistanceRatio>{
         type: "distance-ratio",
         actions: [{ type: "property", property: "innerRatio" }],
         cx,
@@ -771,7 +749,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         startAngle: props.startAngle,
         endAngle: props.endAngle,
         clipRange: [0, props.outerRatio - 0.01],
-      } as Handles.DistanceRatio,
+      },
     ];
   }
 
@@ -782,7 +760,6 @@ export class PolarPlotSegment extends PlotSegmentClass<
       return null;
     }
     const attrs = this.state.attributes;
-    const props = this.object.properties;
     const anchor = { x: attrs.x1, y: attrs.y2 };
     return {
       anchor,
@@ -867,7 +844,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       (this.object.properties.xData.autoDomainMin ||
         this.object.properties.xData.autoDomainMax)
     ) {
-      const values = (this.object.properties.xData as any).categories;
+      const values = (<AxisDataBinding>this.object.properties.xData).categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,
@@ -886,7 +863,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
       (this.object.properties.yData.autoDomainMin ||
         this.object.properties.yData.autoDomainMax)
     ) {
-      const values = (this.object.properties.yData as any).categories;
+      const values = (<AxisDataBinding>this.object.properties.yData).categories;
       const defaultValue = getSortDirection(values);
       p.push({
         objectID: this.object._id,

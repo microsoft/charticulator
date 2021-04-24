@@ -83,6 +83,7 @@ export abstract class ObjectClass<
   }
 
   /** Initialize the state of the object */
+  // eslint-disable-next-line
   public initializeState() {}
 
   /** Get the UI spec for property panel */
@@ -129,6 +130,7 @@ export abstract class ObjectClass<
   }
 
   /** Create a default object */
+  // eslint-disable-next-line
   public static createDefault(...args: any[]): Specification.Object {
     const id = uniqueID();
     const obj: Specification.Object = {
@@ -139,12 +141,13 @@ export abstract class ObjectClass<
     };
     obj.properties = deepClone(this.defaultProperties);
     for (const attr in this.defaultMappingValues) {
+      // eslint-disable-next-line
       if (this.defaultMappingValues.hasOwnProperty(attr)) {
         const value = deepClone(this.defaultMappingValues[attr]);
-        obj.mappings[attr] = {
+        obj.mappings[attr] = <Specification.ValueMapping>{
           type: MappingType.value,
           value,
-        } as Specification.ValueMapping;
+        };
       }
     }
     return obj;
@@ -238,4 +241,4 @@ export class ObjectClasses {
   }
 }
 
-export let isType = ObjectClasses.isType;
+export const isType = ObjectClasses.isType;

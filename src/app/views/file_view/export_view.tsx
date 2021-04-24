@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
 import { CurrentChartView } from ".";
@@ -38,7 +41,7 @@ export class InputGroup extends React.Component<
           type="text"
           required={true}
           value={this.props.value || ""}
-          onChange={(e) => {
+          onChange={() => {
             this.props.onChange(this.ref.value);
           }}
         />
@@ -267,7 +270,7 @@ export class ExportTemplateView extends ContextedComponent<
               type="text"
               required={true}
               value={value || ""}
-              onChange={(e) => {
+              onChange={() => {
                 onChange(ref.value);
               }}
             />
@@ -277,6 +280,7 @@ export class ExportTemplateView extends ContextedComponent<
         );
 
       case "boolean":
+        // eslint-disable-next-line
         const currentValue = value ? true : false;
         return (
           <div
@@ -414,6 +418,7 @@ export class ExportTemplateView extends ContextedComponent<
     return dataColumn;
   }
 
+  // eslint-disable-next-line
   public renderInferences() {
     const template = this.state.template;
     if (template.inference.length == 0) {
@@ -423,6 +428,7 @@ export class ExportTemplateView extends ContextedComponent<
       template.inference
         // Only show axis and scale inferences
         .filter((inference) => inference.axis || inference.scale)
+        // eslint-disable-next-line
         .map((inference, index) => {
           let descriptionMin: string;
           let descriptionMax: string;

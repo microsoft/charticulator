@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import { getSVGIcon } from "../resources";
 import { SVGImageIcon } from "./icons";
-import { ButtonFlatPanel, ButtonFlat } from "./buttons";
+import { ButtonFlat } from "./buttons";
 import * as Hammer from "hammerjs";
 import { classNames } from "../utils";
 
@@ -48,7 +52,9 @@ export class MinimizablePane extends React.Component<
       >
         <SVGImageIcon
           url={getSVGIcon(
-            this.state.minimized ? "general/chevron-right" : "general/chevron-down"
+            this.state.minimized
+              ? "general/chevron-right"
+              : "general/chevron-down"
           )}
         />
         <span className="title">{this.props.title}</span>
@@ -153,6 +159,7 @@ export class FloatingPanel extends React.Component<
       initialX = window.innerWidth / 2 - width / 2;
       initialY = window.innerHeight / 2 - height / 2;
     } else {
+      // eslint-disable-next-line
       while (true) {
         let found = false;
         if (FloatingPanel.peerGroups.has(this.props.peerGroup)) {
@@ -267,10 +274,10 @@ export class FloatingPanel extends React.Component<
           width: this.state.width + "px",
           height: this.state.minimized ? undefined : this.state.height + "px",
         }}
-        onMouseDown={(e) => {
+        onMouseDown={() => {
           this.focus();
         }}
-        onTouchStart={(e) => {
+        onTouchStart={() => {
           this.focus();
         }}
       >

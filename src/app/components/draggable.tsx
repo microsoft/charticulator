@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 
 import * as globals from "../globals";
@@ -71,9 +75,6 @@ export class DraggableElement extends React.Component<
   }
 
   public render() {
-    const additional_classes = this.state.dragging
-      ? "draggable dragging"
-      : "draggable";
     return (
       <span
         ref="draggableContainer"

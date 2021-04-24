@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { forceSimulation, forceCollide, forceX, forceY } from "d3-force";
 import { getRandom } from "../..";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
@@ -20,7 +19,7 @@ export class JitterPlugin extends ConstraintPlugin {
   public y1: Variable;
   public x2: Variable;
   public y2: Variable;
-  public points: Array<[Variable, Variable, number]>;
+  public points: [Variable, Variable, number][];
   public xEnable: boolean;
   public yEnable: boolean;
   public getXYScale: () => { x: number; y: number };
@@ -32,7 +31,7 @@ export class JitterPlugin extends ConstraintPlugin {
     y1: Variable,
     x2: Variable,
     y2: Variable,
-    points: Array<[Variable, Variable, number]>,
+    points: [Variable, Variable, number][],
     axisOnly?: "x" | "y",
     options?: JitterPluginOptions
   ) {
@@ -53,14 +52,14 @@ export class JitterPlugin extends ConstraintPlugin {
     const x2 = this.solver.getValue(this.x2);
     const y1 = this.solver.getValue(this.y1);
     const y2 = this.solver.getValue(this.y2);
-    const nodes = this.points.map((pt) => {
+    const nodes = this.points.map(() => {
       const x = getRandom(x1, x2);
       const y = getRandom(y1, y2);
       // Use forceSimulation's default initialization
-      return {
+      return <NodeType>{
         x,
         y,
-      } as NodeType;
+      };
     });
 
     for (let i = 0; i < nodes.length; i++) {

@@ -9,6 +9,7 @@ import {
 import { snapToAttribute } from "../../prototypes/update_attribute";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
+// eslint-disable-next-line
 export interface PolarCoordinatorPluginOptions {}
 
 // Converts Polar coordinates to cartesian coordinates
@@ -16,10 +17,10 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public an: Array<Variable>;
+  public an: Variable[];
   attrs: PolarGuideCoordinatorAttributesExtend;
-  radialVarable: Array<Variable>;
-  angleVarable: Array<Variable>;
+  radialVarable: Variable[];
+  angleVarable: Variable[];
   chartConstraints: Specification.Constraint[];
   coordinatoObjectID: string;
   chartMananger: ChartStateManager;
@@ -28,8 +29,8 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    radialVarable: Array<Variable>,
-    angleVarable: Array<Variable>,
+    radialVarable: Variable[],
+    angleVarable: Variable[],
     attrs: PolarGuideCoordinatorAttributesExtend,
     chartConstraints: Specification.Constraint[],
     coordinatoObjectID: string,
@@ -55,7 +56,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
     for (let i = 0; i < this.angleVarable.length; i++) {
       const angleAttr = this.solver.attr(
         attrs,
-        (this.angleVarable[i] as any).name,
+        (<any>this.angleVarable[i]).name,
         {
           edit: false,
         }
@@ -67,7 +68,7 @@ export class PolarCoordinatorPlugin extends ConstraintPlugin {
 
         const radialAttr = this.solver.attr(
           attrs,
-          (this.radialVarable[j] as any).name,
+          (<any>this.radialVarable[j]).name,
           {
             edit: false,
           }
