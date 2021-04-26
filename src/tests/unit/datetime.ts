@@ -6,7 +6,7 @@ import * as Expression from "../../core/expression";
 
 describe("Datetime Parser", () => {
   it("parseDate", () => {
-    const cases: Array<[string, string, string]> = [
+    const cases: ([string, string, string])[] = [
       // Date only
       ["2016-01", "2016-01-01T00:00:00.000Z", "Jan 2016 01 00 00"],
       ["01/2016", "2016-01-01T00:00:00.000Z", "Jan 2016 01 00 00"],

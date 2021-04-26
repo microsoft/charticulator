@@ -270,10 +270,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
       return null;
     }
 
-    const rangeMin = scale[1].attributes.rangeMin as number;
-    const rangeMax = scale[1].attributes.rangeMax as number;
-    const domainMin = scale[0].properties.domainMin as number;
-    const domainMax = scale[0].properties.domainMax as number;
+    const rangeMin = <number>scale[1].attributes.rangeMin;
+    const rangeMax = <number>scale[1].attributes.rangeMax;
+    const domainMin = <number>scale[0].properties.domainMin;
+    const domainMax = <number>scale[0].properties.domainMax;
 
     if (this.object.properties.polarAngularMode) {
       return this.getPolarAxisGraphics(
@@ -324,11 +324,11 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     domainMax: number
   ): Graphics.Element {
     const dx =
-      (this.state.attributes.x2 as number) -
-      (this.state.attributes.x1 as number);
+      (<number>this.state.attributes.x2) -
+      (<number>this.state.attributes.x1);
     const dy =
-      (this.state.attributes.y2 as number) -
-      (this.state.attributes.y1 as number);
+      (<number>this.state.attributes.y2) -
+      (<number>this.state.attributes.y1);
     const length = Math.sqrt(dx * dx + dy * dy);
 
     const renderer = new AxisRenderer();
@@ -346,8 +346,8 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     renderer.setStyle(this.object.properties.axis.style);
 
     return renderer.renderLine(
-      this.state.attributes.x1 as number,
-      this.state.attributes.y1 as number,
+      <number>this.state.attributes.x1,
+      <number>this.state.attributes.y1,
       (Math.atan2(dy, dx) / Math.PI) * 180,
       -1
     );

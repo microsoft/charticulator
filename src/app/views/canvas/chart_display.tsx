@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { Dataset, Graphics, Prototypes, Specification } from "../../../core";
@@ -30,8 +34,8 @@ export class ChartDisplayView extends React.Component<
         width={width}
         height={height}
         viewBox={`0 0 ${width.toFixed(6)} ${height.toFixed(6)}`}
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
+        xmlns="https://www.w3.org/2000/svg"
+        xmlnsXlink="https://www.w3.org/1999/xlink"
         xmlSpace="preserve"
       >
         <g
@@ -66,7 +70,7 @@ export function renderChartToLocalString(
   const renderer = new Graphics.ChartRenderer(manager);
   const graphics = renderer.render();
   const urls = new Map<string, string>();
-  const allTasks: Array<Promise<void>> = [];
+  const allTasks: Promise<void>[] = [];
   renderGraphicalElementSVG(graphics, {
     chartComponentSync: true,
     externalResourceResolver: (url: string) => {
@@ -99,8 +103,8 @@ export function renderChartToLocalString(
         width={width}
         height={height}
         viewBox={`0 0 ${width.toFixed(6)} ${height.toFixed(6)}`}
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
+        xmlns="https://www.w3.org/2000/svg"
+        xmlnsXlink="https://www.w3.org/1999/xlink"
         xmlSpace="preserve"
       >
         <g

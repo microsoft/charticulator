@@ -8,7 +8,6 @@ import {
   getById,
   getByName,
   Prototypes,
-  setField,
   Solver,
   Specification,
   zipArray,
@@ -18,10 +17,7 @@ import {
   compareMarkAttributeNames,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
-import {
-  CharticulatorWorker,
-  CharticulatorWorkerInterface,
-} from "../../worker";
+import { CharticulatorWorkerInterface } from "../../worker";
 import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
@@ -70,30 +66,19 @@ import {
   NumericalNumberLegendAttributeNames,
   NumericalNumberLegendProperties,
 } from "../../core/prototypes/legends/numerical_legend";
-import { domain } from "process";
 
 import {
-  CartesianPlotSegment,
   defaultAxisStyle,
-  PlotSegmentClass,
   Region2DProperties,
 } from "../../core/prototypes/plot_segments";
-import { findObjectById, isType, ObjectClass } from "../../core/prototypes";
-import { ScaleLinear } from "d3-scale";
-import {
-  LinearScale,
-  LinearScaleProperties,
-} from "../../core/prototypes/scales/linear";
+import { isType, ObjectClass } from "../../core/prototypes";
+import { LinearScaleProperties } from "../../core/prototypes/scales/linear";
 import {
   PlotSegmentAxisPropertyNames,
   Region2DSublayoutType,
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
-import {
-  DataAxisAttributes,
-  DataAxisProperties,
-} from "../../core/prototypes/marks/data_axis.attrs";
-import { MarkClass } from "../../core/prototypes/marks";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -232,7 +217,7 @@ export class AppStore extends BaseStore {
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
           generate: () => {
-            return new Promise<string>((resolve, reject) => {
+            return new Promise<string>((resolve) => {
               const r = b64EncodeUnicode(JSON.stringify(template, null, 2));
               resolve(r);
             });
@@ -574,6 +559,7 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
+    // eslint-disable-next-line
     if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
@@ -616,9 +602,12 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public preSolveValues: Array<
-    [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-  > = [];
+  public preSolveValues: [
+    Solver.ConstraintStrength,
+    Specification.AttributeMap,
+    string,
+    number
+  ][] = [];
   public addPresolveValue(
     strength: Solver.ConstraintStrength,
     state: Specification.AttributeMap,
@@ -662,6 +651,7 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     options: ScaleInferenceOptions
@@ -752,6 +742,7 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
+          // eslint-disable-next-line
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }
@@ -892,6 +883,7 @@ export class AppStore extends BaseStore {
     return false;
   }
 
+  // eslint-disable-next-line
   public toggleLegendForScale(
     scale: string,
     mapping: Specification.ScaleMapping,
@@ -1141,13 +1133,10 @@ export class AppStore extends BaseStore {
     const elements = this.chartManager.chart.elements;
     const elementStates = this.chartManager.chartState.elements;
     zipArray(elements, elementStates).forEach(
-      (
-        [layout, layoutState]: [
-          Specification.ChartElement,
-          Specification.ChartElementState
-        ],
-        index
-      ) => {
+      ([layout, layoutState]: [
+        Specification.ChartElement,
+        Specification.ChartElementState
+      ]) => {
         const layoutClass = this.chartManager.getChartElementClass(layoutState);
         chartGuides = chartGuides.concat(
           layoutClass.getSnappingGuides().map((bounds) => {
@@ -1218,9 +1207,11 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public updateScales() {
     try {
       const updatedScales: string[] = [];
+      // eslint-disable-next-line
       const updateScalesInternal = (
         scaleId: string,
         mappings: Specification.Guide<Specification.ObjectProperties>[],
@@ -1340,24 +1331,26 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public updatePlotSegments() {
-    const getDataKindByType = (type: AxisDataBindingType): DataKind => {
-      switch (type) {
-        case AxisDataBindingType.Categorical:
-          return DataKind.Categorical;
-        case AxisDataBindingType.Numerical:
-          return DataKind.Numerical;
-        case AxisDataBindingType.Default:
-          return DataKind.Categorical;
-        default:
-          return DataKind.Categorical;
-      }
-    };
+  public getDataKindByType = (type: AxisDataBindingType): DataKind => {
+    switch (type) {
+      case AxisDataBindingType.Categorical:
+        return DataKind.Categorical;
+      case AxisDataBindingType.Numerical:
+        return DataKind.Numerical;
+      case AxisDataBindingType.Default:
+        return DataKind.Categorical;
+      default:
+        return DataKind.Categorical;
+    }
+  };
 
+  // eslint-disable-next-line
+  public updatePlotSegments() {
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
+    // eslint-disable-next-line
     plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
         (table) => table.name === plot.table
@@ -1378,7 +1371,7 @@ export class AppStore extends BaseStore {
                 ? DataKind.Temporal
                 : xDataProperty.dataKind
                 ? xDataProperty.dataKind
-                : getDataKindByType(xDataProperty.type),
+                : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
@@ -1418,7 +1411,7 @@ export class AppStore extends BaseStore {
                 ? DataKind.Temporal
                 : yDataProperty.dataKind
                 ? yDataProperty.dataKind
-                : getDataKindByType(yDataProperty.type),
+                : this.getDataKindByType(yDataProperty.type),
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
@@ -1457,7 +1450,7 @@ export class AppStore extends BaseStore {
                 ? DataKind.Temporal
                 : axisProperty.dataKind
                 ? axisProperty.dataKind
-                : getDataKindByType(axisProperty.type),
+                : this.getDataKindByType(axisProperty.type),
             orderMode: axisProperty.orderMode
               ? axisProperty.orderMode
               : axisProperty.valueType === "string"
@@ -1509,7 +1502,7 @@ export class AppStore extends BaseStore {
               ? DataKind.Temporal
               : axisProperty.dataKind
               ? axisProperty.dataKind
-              : getDataKindByType(axisProperty.type),
+              : this.getDataKindByType(axisProperty.type),
           orderMode: axisProperty.orderMode
             ? axisProperty.orderMode
             : axisProperty.valueType === "string"
@@ -1583,6 +1576,7 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public bindDataToAxis(options: {
     object: Specification.PlotSegment;
     property?: string;
@@ -1841,9 +1835,4 @@ export class AppStore extends BaseStore {
     }
     return unmappedColumns;
   }
-}
-function getDataKindByType(
-  type: Specification.Types.AxisDataBindingType
-): Dataset.DataKind {
-  throw new Error("Function not implemented.");
 }

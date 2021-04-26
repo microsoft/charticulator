@@ -23,26 +23,26 @@ export class ObjectClassCache {
   }
 
   public getMarkClass(state: Specification.MarkState): Marks.MarkClass {
-    return this.getClass(state) as Marks.MarkClass;
+    return <Marks.MarkClass>this.getClass(state);
   }
   public getGlyphClass(state: Specification.GlyphState): Glyphs.GlyphClass {
-    return this.getClass(state) as Glyphs.GlyphClass;
+    return <Glyphs.GlyphClass>this.getClass(state);
   }
   public getPlotSegmentClass(
     state: Specification.PlotSegmentState
   ): PlotSegments.PlotSegmentClass {
-    return this.getClass(state) as PlotSegments.PlotSegmentClass;
+    return <PlotSegments.PlotSegmentClass>this.getClass(state);
   }
   public getChartElementClass(
     state: Specification.ChartElementState
   ): ChartElementClass {
-    return this.getClass(state) as ChartElementClass;
+    return <ChartElementClass>this.getClass(state);
   }
   public getScaleClass(state: Specification.ScaleState): Scales.ScaleClass {
-    return this.getClass(state) as Scales.ScaleClass;
+    return <Scales.ScaleClass>this.getClass(state);
   }
   public getChartClass(state: Specification.ChartState): Charts.ChartClass {
-    return this.getClass(state) as Charts.ChartClass;
+    return <Charts.ChartClass>this.getClass(state);
   }
   public getClass(state: Specification.ObjectState): ObjectClass {
     if (this.cache.has(state)) {
@@ -57,46 +57,46 @@ export class ObjectClassCache {
     object: Specification.Element,
     state: Specification.MarkState
   ): Marks.MarkClass {
-    return this.createClass(parent, object, state) as Marks.MarkClass;
+    return <Marks.MarkClass>this.createClass(parent, object, state);
   }
   public createGlyphClass(
     parent: PlotSegments.PlotSegmentClass,
     object: Specification.Glyph,
     state: Specification.GlyphState
   ): Glyphs.GlyphClass {
-    return this.createClass(parent, object, state) as Glyphs.GlyphClass;
+    return <Glyphs.GlyphClass>this.createClass(parent, object, state);
   }
   public createPlotSegmentClass(
     parent: Charts.ChartClass,
     object: Specification.PlotSegment,
     state: Specification.PlotSegmentState
   ): PlotSegments.PlotSegmentClass {
-    return this.createClass(
+    return <PlotSegments.PlotSegmentClass>this.createClass(
       parent,
       object,
       state
-    ) as PlotSegments.PlotSegmentClass;
+    );
   }
   public createChartElementClass(
     parent: Charts.ChartClass,
     object: Specification.ChartElement,
     state: Specification.ChartElementState
   ): ChartElementClass {
-    return this.createClass(parent, object, state) as ChartElementClass;
+    return <ChartElementClass>this.createClass(parent, object, state);
   }
   public createScaleClass(
     parent: Charts.ChartClass,
     object: Specification.Scale,
     state: Specification.ScaleState
   ): Scales.ScaleClass {
-    return this.createClass(parent, object, state) as Scales.ScaleClass;
+    return <Scales.ScaleClass>this.createClass(parent, object, state);
   }
   public createChartClass(
     parent: ObjectClass,
     object: Specification.Chart,
     state: Specification.ChartState
   ): Charts.ChartClass {
-    return this.createClass(parent, object, state) as Charts.ChartClass;
+    return <Charts.ChartClass>this.createClass(parent, object, state);
   }
   public createClass(
     parent: ObjectClass,

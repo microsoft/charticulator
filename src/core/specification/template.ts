@@ -51,7 +51,7 @@ export interface Property {
   };
 
   type: AttributeType;
-  default?: string | number | boolean | object;
+  default?: string | number | boolean | Record<string, unknown>;
 }
 
 /** Infer values from data */

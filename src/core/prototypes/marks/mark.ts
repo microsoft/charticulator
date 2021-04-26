@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable */
 
 import { Point } from "../../common";
 import * as Graphics from "../../graphics";
@@ -31,6 +32,7 @@ export abstract class MarkClass<
   public readonly state: Specification.MarkState<AttributesType>;
 
   /** Fill the default state */
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
@@ -77,14 +79,14 @@ export abstract class MarkClass<
   }
 
   public getGlyphClass() {
-    return this.parent as GlyphClass;
+    return <GlyphClass>this.parent;
   }
 
   public getPlotSegmentClass() {
-    return this.parent.parent as PlotSegmentClass;
+    return <PlotSegmentClass>this.parent.parent;
   }
 
   public getChartClass() {
-    return this.parent.parent.parent as ChartClass;
+    return <ChartClass>this.parent.parent.parent;
   }
 }

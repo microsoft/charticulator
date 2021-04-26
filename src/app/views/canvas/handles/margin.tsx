@@ -45,7 +45,7 @@ export class MarginHandleView extends React.Component<
     let dYIntegrate: number = 0;
     let dYLast: number = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", () => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       sign = this.props.handle.sign;

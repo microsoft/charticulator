@@ -47,6 +47,7 @@ export class FileViewOpen extends ContextedComponent<
     });
   }
 
+  // eslint-disable-next-line
   public renderChartList() {
     const store = this.store;
     const backend = store.backend;
@@ -148,6 +149,7 @@ export class FileViewOpen extends ContextedComponent<
                               FileSaver.saveAs(
                                 blob,
                                 chart.metadata.name.replace(
+                                  // eslint-disable-next-line
                                   /[^0-9a-zA-Z\ \.\-\_]+/g,
                                   "_"
                                 ) + ".chart"

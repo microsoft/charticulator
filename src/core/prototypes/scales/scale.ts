@@ -39,10 +39,15 @@ export abstract class ScaleClass<
 
   public abstract mapDataToAttribute(data: DataValue): AttributeValue;
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ): void {}
 
   public abstract inferParameters(
@@ -55,8 +60,8 @@ export abstract class ScaleClass<
       inferences: [
         {
           objectID: this.object._id,
-          autoDomainMax: this.object.properties.autoDomainMax as boolean,
-          autoDomainMin: this.object.properties.autoDomainMin as boolean,
+          autoDomainMax: <boolean>this.object.properties.autoDomainMax,
+          autoDomainMin: <boolean>this.object.properties.autoDomainMin,
           scale: {
             classID: this.object.classID,
             expressions: [],

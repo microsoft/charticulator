@@ -126,7 +126,7 @@ export interface Polygon extends Element {
 
 export interface Path extends Element {
   type: "path";
-  cmds: Array<{ cmd: string; args: number[] }>;
+  cmds: ({ cmd: string; args: number[] })[];
 }
 
 export interface Circle extends Element {
