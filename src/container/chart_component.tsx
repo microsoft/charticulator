@@ -7,7 +7,6 @@ import {
   Dataset,
   Prototypes,
   Graphics,
-  Solver,
   zip,
   deepClone,
 } from "../core";

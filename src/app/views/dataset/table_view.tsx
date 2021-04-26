@@ -10,7 +10,6 @@
 import * as React from "react";
 import { Dataset } from "../../../core";
 import { Select } from "../panels/widgets/controls";
-import { DataType } from "../../../core/specification";
 import { getConvertableTypes } from "../../utils";
 
 export interface TableViewProps {
@@ -26,7 +25,7 @@ export interface TableViewProps {
  *
  * ![Table view](media://table_view_leftside.png)
  */
-export class TableView extends React.Component<TableViewProps, {}> {
+export class TableView extends React.Component<TableViewProps, any> {
   public render() {
     const table = this.props.table;
     const onTypeChange = this.props.onTypeChange;

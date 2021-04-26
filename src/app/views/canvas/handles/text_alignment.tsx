@@ -50,6 +50,7 @@ export class TextAlignmentHandleView extends React.Component<
     return { x: x / this.props.zoom.scale, y: -y / this.props.zoom.scale };
   }
 
+  // eslint-disable-next-line
   public componentDidMount() {
     this.hammer = new Hammer(this.container);
     this.hammer.add(new Hammer.Pan({ threshold: 1 }));
@@ -167,7 +168,7 @@ export class TextAlignmentHandleView extends React.Component<
     };
 
     const handleAlignment = (p1: Point, commit: boolean = false) => {
-      const [newAlignment, newRotation] = newStateFromMoveAndRotate(
+      const [newAlignment] = newStateFromMoveAndRotate(
         p1.x - p0.x,
         p1.y - p0.y,
         previousRotation,
@@ -330,7 +331,6 @@ export class TextAlignmentHandleView extends React.Component<
         this.state.newRotation
       );
       const p = Geometry.applyZoom(zoom, { x: rect.cx, y: -rect.cy });
-      const fp = Geometry.applyZoom(zoom, { x: rect.fx, y: -rect.fy });
       const margin = 0;
       return (
         <g>

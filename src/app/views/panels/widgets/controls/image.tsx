@@ -1,5 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import * as React from "react";
 import * as R from "../../../../resources";
 import * as globals from "../../../../globals";
@@ -66,10 +69,10 @@ export class InputImage extends ContextedComponent<
     );
   };
 
-  protected handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  protected handleDragEnter = () => {
     this.setState({ dragOver: true });
   };
-  protected handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  protected handleDragLeave = () => {
     this.setState({ dragOver: false });
   };
 
@@ -91,7 +94,7 @@ export class InputImage extends ContextedComponent<
         .then((r) => {
           this.emitOnChange(r);
         })
-        .catch((e) => {});
+        .catch(() => {});
     }
     if (e.dataTransfer.files.length > 0) {
       ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
@@ -207,7 +210,7 @@ export class ImageUploader extends React.Component<
     name: string,
     file: File | Blob
   ): Promise<ImageUploaderItem> {
-    return new Promise<ImageUploaderItem>((resolve, reject) => {
+    return new Promise<ImageUploaderItem>((resolve) => {
       const reader = new FileReader();
       reader.onload = () => {
         const img = new Image();
@@ -226,7 +229,7 @@ export class ImageUploader extends React.Component<
   }
 
   public static ParseFiles(files: FileList): Promise<ImageUploaderItem[]> {
-    const result: Array<Promise<ImageUploaderItem>> = [];
+    const result: Promise<ImageUploaderItem>[] = [];
     const readFile = (file: File) => {
       result.push(this.ReadFileAsImage(file.name, file));
     };
@@ -247,7 +250,8 @@ export class ImageUploader extends React.Component<
               if (!blob.type.startsWith("image/")) {
                 reject(new Error("not an image"));
               } else {
-                return this.ReadFileAsImage("blob", blob);
+                // TODO check changes
+                resolve(this.ReadFileAsImage("blob", blob));
               }
             });
           })
@@ -255,10 +259,10 @@ export class ImageUploader extends React.Component<
     );
   }
 
-  protected handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  protected handleDragEnter = () => {
     this.setState({ dragOver: true });
   };
-  protected handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  protected handleDragLeave = () => {
     this.setState({ dragOver: false });
   };
 
@@ -294,7 +298,7 @@ export class ImageUploader extends React.Component<
   protected handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     if (e.clipboardData.files.length > 0) {
       e.preventDefault();
-      const result = ImageUploader.ParseFiles(e.clipboardData.files)
+      ImageUploader.ParseFiles(e.clipboardData.files)
         .then((r) => {
           this.emitOnUpload(r);
         })
@@ -323,6 +327,7 @@ export class ImageUploader extends React.Component<
     }
   };
 
+  // eslint-disable-next-line
   protected showError(error: any) {
     // FIXME: ignore error for now
   }

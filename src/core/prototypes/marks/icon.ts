@@ -144,8 +144,11 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
+    // eslint-disable-next-line
     emphasize?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -159,7 +162,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     // Compute w, h to resize the image to the desired size
     const layout = this.getLayoutProps();
     const gImage = Graphics.makeGroup([
-      {
+      <Graphics.Image>{
         type: "image",
         src: image.src,
         x: -layout.dx,
@@ -167,7 +170,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         width: layout.width,
         height: layout.height,
         mode: "stretch",
-      } as Graphics.Image,
+      },
     ]);
     gImage.transform = cs.getLocalTransform(
       attrs.x + offset.x,
@@ -180,7 +183,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
     return [
-      {
+      <DropZones.Rectangle>{
         type: "rectangle",
         ...this.getBoundingRectangle(),
         title: "size",
@@ -190,7 +193,7 @@ export class IconElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Number,
           },
         },
-      } as DropZones.Rectangle,
+      },
     ];
   }
 
@@ -201,7 +204,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     const bbox = this.getBoundingRectangle();
     const props = this.object.properties;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -209,8 +212,8 @@ export class IconElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x" },
           { type: "attribute", source: "y", attribute: "y" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.TextAlignment>{
         type: "text-alignment",
         actions: [
           { type: "property", source: "alignment", property: "alignment" },
@@ -228,7 +231,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         text: null,
         alignment: props.alignment,
         rotation: props.rotation,
-      } as Handles.TextAlignment,
+      },
     ];
   }
 
@@ -252,7 +255,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getBoundingBox(): BoundingBox.Description {
     const rect = this.getBoundingRectangle();
     const attrs = this.state.attributes;
-    return {
+    return <BoundingBox.AnchoredRectangle>{
       type: "anchored-rectangle",
       anchorX: attrs.x,
       anchorY: attrs.y,
@@ -261,15 +264,15 @@ export class IconElementClass extends EmphasizableMarkClass<
       width: rect.width,
       height: rect.height,
       rotation: rect.rotation,
-    } as BoundingBox.AnchoredRectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
+      <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" },
     ];
   }
 

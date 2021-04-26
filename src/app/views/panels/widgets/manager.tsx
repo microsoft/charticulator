@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -17,7 +18,6 @@ import {
   Specification,
   uniqueID,
   refineColumnName,
-  EventEmitter,
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
@@ -55,7 +55,7 @@ import {
   InputImageProperty,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
-import { MappingEditor, DataMappAndScaleEditor } from "./mapping_editor";
+import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -69,15 +69,9 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { Func } from "mocha";
 import { getDateFormat } from "../../../../core/dataset/datetime";
-import {
-  AttributeMap,
-  AttributeValue,
-  ScaleMapping,
-} from "../../../../core/specification";
+import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { DataExpression } from "../../../actions/drag_data";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
 
@@ -158,6 +152,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     try {
       const prop = this.objectClass.object.properties[property.property] as any;
       const expressionString: string = prop.expression;
+      // eslint-disable-next-line
       const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
       // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
       const functionCallpart = expression.parts.find((part) => {
@@ -549,33 +544,15 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
-    const scale = mapping.scale;
-
-    const parent = {
-      updateEvents: new EventEmitter(),
-    };
-
     return (
       <Button
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
-        // icon={icon}
         onClick={() => {
-          const options = {
-            allowSelectValue: true,
-          };
-          // const mapping = this.getAttributeMapping(attribute);
           globals.popupController.popupAt(
             (context) => {
               return (
                 <PopupView context={context}>
-                  {/* <DataMappAndScaleEditor
-                    attribute={attribute}
-                    parent={parent as any}
-                    defaultMapping={mapping}
-                    options={options}
-                    onClose={() => context.close()}
-                  /> */}
                   <ScaleValueSelector
                     scale={scaleObject}
                     scaleMapping={mapping}
@@ -610,7 +587,6 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         onClick={() => {
           globals.popupController.popupAt(
             (context) => {
-              let fieldSelector: DataFieldSelector;
               let currentExpression: string = null;
               const currentSortBy = this.getPropertyValue(
                 property
@@ -623,7 +599,6 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   <div className="charticulator__widget-popup-order-widget">
                     <div className="el-row">
                       <DataFieldSelector
-                        ref={(e) => (fieldSelector = e)}
                         nullDescription="(default order)"
                         datasetStore={this.store}
                         useAggregation={true}
@@ -960,10 +935,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
+    let button: Button;
+    let text = "Filter by...";
     switch (options.mode) {
       case "button":
-        let button: Button;
-        let text = "Filter by...";
         if (options.value) {
           if (options.value.categories) {
             text = "Filter by " + options.value.categories.expression;
@@ -1008,10 +983,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   public groupByEditor(
     options: Prototypes.Controls.GroupByEditorOptions
   ): JSX.Element {
+    let button: Button;
+    let text = "Group by...";
     switch (options.mode) {
       case "button":
-        let button: Button;
-        let text = "Group by...";
         if (options.value) {
           if (options.value.expression) {
             text = "Group by " + options.value.expression;
@@ -1152,6 +1127,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public table(
     rows: JSX.Element[][],
+    // eslint-disable-next-line
     options: Prototypes.Controls.TableOptions
   ): JSX.Element {
     return (

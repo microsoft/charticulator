@@ -9,7 +9,7 @@ import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { WidgetManager } from "./widgets/manager";
-import { FunctionCall, NumberValue, Variable } from "../../../core/expression";
+import { FunctionCall, NumberValue } from "../../../core/expression";
 
 export interface ScaleValueSelectorProps {
   scale: Specification.Scale;

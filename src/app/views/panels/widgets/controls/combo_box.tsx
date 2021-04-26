@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as R from "../../../../resources";
 import * as globals from "../../../../globals";
@@ -61,10 +65,10 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
       value: e.target.value,
     });
   };
-  protected handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  protected handleFocus = () => {
     this.refInput.select();
   };
-  protected handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  protected handleBlur = () => {
     this.tryEmitValue(this.refInput.value);
   };
   protected handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -11,7 +11,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_GRAPHICS);
   });
 
-  REG.add(Actions.ClearMessages, function (action) {
+  REG.add(Actions.ClearMessages, function () {
     this.messageState.clear();
     this.emit(AppStore.EVENT_GRAPHICS);
   });

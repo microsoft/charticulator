@@ -6,12 +6,10 @@ import { ConstraintSolver } from "../../solver";
 import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
-import { DataflowTable } from "../dataflow";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
 import { getSortFunctionByData, refineColumnName } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
-import { getDateFormat } from "../../dataset/datetime";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -21,19 +19,29 @@ export abstract class PlotSegmentClass<
   public readonly state: Specification.PlotSegmentState<AttributesType>;
 
   /** Fill the layout's default state */
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   /** Build intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
+  // eslint-disable-next-line
   public buildConstraints(
+    // eslint-disable-next-line
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     context: BuildConstraintsContext,
+    // eslint-disable-next-line
     manager: ChartStateManager
+    // eslint-disable-next-line
   ): void {}
 
   /** Build constraints for glyphs within */
+  // eslint-disable-next-line
   public buildGlyphConstraints(
+    // eslint-disable-next-line
     solver: ConstraintSolver,
+    // eslint-disable-next-line
     context: BuildConstraintsContext
+    // eslint-disable-next-line
   ): void {}
 
   /** Get the graphics that represent this layout */
@@ -46,6 +54,7 @@ export abstract class PlotSegmentClass<
 
   /** Get the graphics that represent this layout */
   public getPlotSegmentBackgroundGraphics(
+    // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
     return null;
@@ -164,7 +173,7 @@ export abstract class PlotSegmentClass<
   public static createDefault(
     glyph: Specification.Glyph
   ): Specification.PlotSegment {
-    const plotSegment = super.createDefault() as Specification.PlotSegment;
+    const plotSegment = <Specification.PlotSegment>super.createDefault();
     plotSegment.glyph = glyph._id;
     plotSegment.table = glyph.table;
     return plotSegment;
@@ -179,20 +188,21 @@ export abstract class PlotSegmentClass<
       (table) => table.name === tableName
     );
     const getColumnName = (rawExpression: string) => {
+      // eslint-disable-next-line
       const expression = TextExpression.Parse(`\$\{${rawExpression}\}`);
       const parsedExpression = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
-          return part.expression.args.find(
-            (arg) => arg instanceof Variable
-          ) as any;
+          return <any>(
+            part.expression.args.find((arg) => arg instanceof Variable)
+          );
         }
       });
       const functionCallpart =
-        parsedExpression && (parsedExpression.expression as FunctionCall);
+        parsedExpression && <FunctionCall>parsedExpression.expression;
       if (functionCallpart) {
-        const variable = functionCallpart.args.find(
-          (arg) => arg instanceof Variable
-        ) as Variable;
+        const variable = <Variable>(
+          functionCallpart.args.find((arg) => arg instanceof Variable)
+        );
         const columnName = variable.name;
         const column = table.columns.find(
           (column) => column.name === columnName
@@ -268,7 +278,7 @@ export abstract class PlotSegmentClass<
     if (!this.object.properties.sublayout) {
       return groups;
     }
-    const order = (this.object.properties.sublayout as any).order;
+    const order = (<any>this.object.properties.sublayout).order;
     const dateRowIndices = this.state.dataRowIndices;
     const table = this.parent.dataflow.getTable(this.object.table);
 
@@ -288,7 +298,7 @@ export abstract class PlotSegmentClass<
       };
       groups.sort(compare);
     }
-    if ((this.object.properties.sublayout as any).orderReversed) {
+    if ((<any>this.object.properties.sublayout).orderReversed) {
       groups.reverse();
     }
 

@@ -10,7 +10,7 @@ export type Widget = any;
 
 export interface Property {
   property: string;
-  field?: string | number | Array<string | number>;
+  field?: string | number | (string | number)[];
   noUpdateState?: boolean;
   noComputeLayout?: boolean;
 }
@@ -105,6 +105,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
 }
 
+// eslint-disable-next-line
 export interface TableOptions {}
 
 export interface FilterEditorOptions {

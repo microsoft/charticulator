@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable */
+
 import * as Expression from "../expression";
 import * as Graphics from "../graphics";
 import { ConstraintSolver } from "../solver";
@@ -71,7 +73,7 @@ export abstract class ChartElementClass<
   }
 
   public static createDefault(...args: any[]): Specification.ChartElement {
-    const element = super.createDefault(...args) as Specification.ChartElement;
+    const element = <Specification.ChartElement>super.createDefault(...args);
     return element;
   }
 }

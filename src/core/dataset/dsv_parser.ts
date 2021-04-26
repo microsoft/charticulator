@@ -64,13 +64,16 @@ export function parseDataset(
 
   if (rows.length > 0) {
     const header = rows[0];
-    let columnHints: Array<{ [name: string]: string }>;
+    // eslint-disable-next-line
+    // TODO fix it
+    let columnHints: { [name: string]: string }[];
     let data = rows.slice(1);
     if (data.length > 0 && data[0].every((x) => /^ *\*/.test(x))) {
       columnHints = data[0].map(parseHints);
       data = data.slice(1);
     } else {
-      columnHints = header.map((x) => ({}));
+      // eslint-disable-next-line
+      columnHints = header.map(() => ({}));
     }
 
     let columnValues = header.map((name, index) => {
@@ -78,12 +81,12 @@ export function parseDataset(
       return inferAndConvertColumn(values, localeFileFormat.numberFormat);
     });
 
-    const additionalColumns: Array<{
+    const additionalColumns: {
       values: DataValue[];
       rawValues?: string[] | DataValue[];
       type: DataType;
       metadata: ColumnMetadata;
-    }> = [];
+    }[] = [];
     columnValues.forEach((column, index) => {
       if (column.rawValues) {
         const rawColumn = deepClone(column);

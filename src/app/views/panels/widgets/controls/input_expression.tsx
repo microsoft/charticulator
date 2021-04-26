@@ -103,7 +103,7 @@ export class InputExpression extends React.Component<
               this.doCancel();
             }
           }}
-          onFocus={(e) => {
+          onFocus={() => {
             this.refInput.select();
           }}
           onBlur={() => {
