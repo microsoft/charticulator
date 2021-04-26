@@ -1131,28 +1131,62 @@ export class ChartEditorView
     };
     const p1t = Geometry.applyZoom(this.state.zoom, p1);
     const p2t = Geometry.applyZoom(this.state.zoom, p2);
+    const corderInnerRadius = 8;
+    const corderOuterRadius = corderInnerRadius + 1;
+    const shadowSize = corderOuterRadius - corderInnerRadius;
     return (
       <g>
-        <rect
+        {/* <rect
           className="canvas-region-outer2"
           x={Math.min(p1t.x, p2t.x) - 3}
           y={Math.min(p1t.y, p2t.y) - 3}
           width={Math.abs(p2t.x - p1t.x) + 6}
           height={Math.abs(p2t.y - p1t.y) + 6}
-        />
-        <rect
+        /> */}
+        {/* <rect
           className="canvas-region-outer"
           x={Math.min(p1t.x, p2t.x) - 1}
           y={Math.min(p1t.y, p2t.y) - 1}
           width={Math.abs(p2t.x - p1t.x) + 2}
           height={Math.abs(p2t.y - p1t.y) + 2}
+        /> */}
+        <path
+          className="canvas-region-outer"
+          d={`m${Math.min(p1t.x, p2t.x) - shadowSize + corderOuterRadius},${
+            Math.min(p1t.y, p2t.y) - shadowSize
+          } 
+          h${Math.abs(p2t.x - p1t.x) - corderOuterRadius * 2 + shadowSize * 2} 
+          a${corderOuterRadius},${corderOuterRadius} 0 0 1 ${corderOuterRadius},${corderOuterRadius} 
+          v${Math.abs(p2t.y - p1t.y) - corderOuterRadius * 2 + shadowSize * 2} 
+          a${corderOuterRadius},${corderOuterRadius} 0 0 1 -${corderOuterRadius},${corderOuterRadius} 
+          h-${Math.abs(p2t.x - p1t.x) - corderOuterRadius * 2 + shadowSize * 2} 
+          a${corderOuterRadius},${corderOuterRadius} 0 0 1 -${corderOuterRadius},-${corderOuterRadius} 
+          v-${Math.abs(p2t.y - p1t.y) - corderOuterRadius * 2 + shadowSize * 2} 
+          a${corderOuterRadius},${corderOuterRadius} 0 0 1 ${corderOuterRadius},-${corderOuterRadius} 
+          z`}
         />
-        <rect
+        {/* <rect
           className="canvas-region"
           x={Math.min(p1t.x, p2t.x)}
           y={Math.min(p1t.y, p2t.y)}
           width={Math.abs(p2t.x - p1t.x)}
           height={Math.abs(p2t.y - p1t.y)}
+        /> */}
+        <path
+          className="canvas-region"
+          d={`m${Math.min(p1t.x, p2t.x) + corderInnerRadius},${Math.min(
+            p1t.y,
+            p2t.y
+          )} 
+          h${Math.abs(p2t.x - p1t.x) - corderInnerRadius * 2} 
+          a${corderInnerRadius},${corderInnerRadius} 0 0 1 ${corderInnerRadius},${corderInnerRadius} 
+          v${Math.abs(p2t.y - p1t.y) - corderInnerRadius * 2} 
+          a${corderInnerRadius},${corderInnerRadius} 0 0 1 -${corderInnerRadius},${corderInnerRadius} 
+          h-${Math.abs(p2t.x - p1t.x) - corderInnerRadius * 2} 
+          a${corderInnerRadius},${corderInnerRadius} 0 0 1 -${corderInnerRadius},-${corderInnerRadius} 
+          v-${Math.abs(p2t.y - p1t.y) - corderInnerRadius * 2} 
+          a${corderInnerRadius},${corderInnerRadius} 0 0 1 ${corderInnerRadius},-${corderInnerRadius} 
+          z`}
         />
         <ResizeHandleView
           zoom={this.state.zoom}
