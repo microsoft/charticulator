@@ -154,7 +154,10 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     if (props.text) {
       return (
         <span
-          className="charticulator__button-menu-text"
+          className={classNames("charticulator__button-menu-text", [
+            "is-disabled",
+            this.props.disabled,
+          ])}
           title={props.title}
           onClick={this._doClick}
         >

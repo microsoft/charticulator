@@ -462,16 +462,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
 
     return (
       <MenuButton
-        url={
-          hasUnsavedChanges
-            ? R.getSVGIcon("toolbar/save-changes")
-            : R.getSVGIcon("toolbar/save")
-        }
-        text={
-          hasUnsavedChanges
-            ? strings.menuBar.saveButton
-            : strings.menuBar.savedButton
-        }
+        url={R.getSVGIcon("toolbar/save")}
+        text={strings.menuBar.saveButton}
+        disabled={!hasUnsavedChanges}
         title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
