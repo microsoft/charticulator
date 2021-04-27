@@ -5,3 +5,4 @@ src/tests/*
 !src/tests
 .eslintrc.js
 karma.conf.ts
+webpack.config.js
