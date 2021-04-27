@@ -130,6 +130,21 @@ function stat_foreach(f: (x: number) => void, list: (number | number[])[]) {
     }
   }
 }
+function quantile(q: number, list: (number | number[])[]) {
+  const values: number[] = [];
+  stat_foreach((x) => {
+    values.push(x);
+  }, list);
+  values.sort((a, b) => a - b);
+  const pos = (values.length - 1) * q,
+    base = Math.floor(pos),
+    rest = pos - base;
+  return (
+    (values[base + 1] &&
+      values[base] + rest * (values[base + 1] - values[base])) ||
+    values[base]
+  );
+}
 functions.min = (...list: (number | number[])[]) => {
   let r: number = null;
   stat_foreach((x) => {
@@ -211,6 +226,12 @@ functions.avg = (...list: (number | number[])[]) => {
 };
 functions.mean = functions.avg;
 functions.average = functions.avg;
+functions.quantile = (q: number, list: (number | number[])[]) =>
+  quantile(q, list);
+functions.quartile1 = (...list: (number | number[])[]) => quantile(0.25, list);
+functions.quartile3 = (...list: (number | number[])[]) => quantile(0.75, list);
+functions.iqr = (...list: (number | number[])[]) =>
+  quantile(0.75, list) - quantile(0.25, list);
 
 // General operators
 operators["+"] = makeArrayCapable2((a: any, b: any) => a + b);

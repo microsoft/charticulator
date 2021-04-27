@@ -79,6 +79,13 @@ export const aggregationFunctions: AggregationFunctionDescription[] = [
   { name: "first", displayName: "First" },
   { name: "last", displayName: "Last" },
   { name: "count", displayName: "Count" },
+  { name: "quartile1", displayName: "1st Quartile", inputTypes: ["number"] },
+  { name: "quartile3", displayName: "3rd Quartile", inputTypes: ["number"] },
+  {
+    name: "iqr",
+    displayName: "Inter Quartile Range (IQR)",
+    inputTypes: ["number"],
+  },
 ];
 
 export function getCompatibleAggregationFunctions(inputType: string) {
