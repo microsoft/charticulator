@@ -392,6 +392,17 @@
         filter: invert(100%);
       }
     }
+    &.is-disabled {
+      color: $gray-180;
+      cursor: not-allowed;
+      .el-svg-icon {
+        filter: invert(80%);
+      }
+      &:hover,
+      &:active {
+        @include no-shadow;
+      }
+    }
   }
 
   &-menu-app {
