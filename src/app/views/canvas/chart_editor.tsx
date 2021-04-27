@@ -1138,28 +1138,44 @@ export class ChartEditorView
     };
     const p1t = Geometry.applyZoom(this.state.zoom, p1);
     const p2t = Geometry.applyZoom(this.state.zoom, p2);
+    const cornerInnerRadius = 8;
+    const cornerOuterRadius = cornerInnerRadius + 1;
+    const shadowSize = cornerOuterRadius - cornerInnerRadius;
+
+    const getRoundedRectPath = (
+      x1: number,
+      y1: number,
+      x2: number,
+      y2: number,
+      radius: number
+    ) => {
+      return `m${Math.min(x1, x2) + cornerInnerRadius},${Math.min(y1, y2)} 
+      h${Math.abs(x2 - x1) - radius * 2} 
+      a${radius},${radius} 0 0 1 ${radius},${radius} 
+      v${Math.abs(y2 - y1) - radius * 2} 
+      a${radius},${radius} 0 0 1 -${radius},${radius} 
+      h-${Math.abs(x2 - x1) - radius * 2} 
+      a${radius},${radius} 0 0 1 -${radius},-${radius} 
+      v-${Math.abs(y2 - y1) - radius * 2} 
+      a${radius},${radius} 0 0 1 ${radius},-${radius} 
+      z`;
+    };
+
     return (
       <g>
-        <rect
-          className="canvas-region-outer2"
-          x={Math.min(p1t.x, p2t.x) - 3}
-          y={Math.min(p1t.y, p2t.y) - 3}
-          width={Math.abs(p2t.x - p1t.x) + 6}
-          height={Math.abs(p2t.y - p1t.y) + 6}
-        />
-        <rect
+        <path
           className="canvas-region-outer"
-          x={Math.min(p1t.x, p2t.x) - 1}
-          y={Math.min(p1t.y, p2t.y) - 1}
-          width={Math.abs(p2t.x - p1t.x) + 2}
-          height={Math.abs(p2t.y - p1t.y) + 2}
+          d={getRoundedRectPath(
+            p1t.x - shadowSize,
+            p1t.y - shadowSize,
+            p2t.x + shadowSize,
+            p2t.y + shadowSize,
+            cornerInnerRadius
+          )}
         />
-        <rect
+        <path
           className="canvas-region"
-          x={Math.min(p1t.x, p2t.x)}
-          y={Math.min(p1t.y, p2t.y)}
-          width={Math.abs(p2t.x - p1t.x)}
-          height={Math.abs(p2t.y - p1t.y)}
+          d={getRoundedRectPath(p1t.x, p1t.y, p2t.x, p2t.y, cornerInnerRadius)}
         />
         <ResizeHandleView
           zoom={this.state.zoom}
