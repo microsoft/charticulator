@@ -39,7 +39,11 @@ import { HandlesView } from "./handles";
 import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
-import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
+import {
+  GuideAxis,
+  GuideCoordinatorClass,
+  GuideProperties,
+} from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
@@ -744,6 +748,9 @@ export class ChartEditorView
       glyphState.marks.forEach((markState, markIndex) => {
         const mark = glyph.marks[markIndex];
         const markClass = this.props.store.chartManager.getMarkClass(markState);
+        if (Prototypes.isType(mark.classID, GuideCoordinatorClass.classID)) {
+          return;
+        }
         const bbox = markClass.getBoundingBox();
         let isMarkSelected = false;
         if (this.props.store.currentSelection instanceof MarkSelection) {
