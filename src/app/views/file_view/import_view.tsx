@@ -7,7 +7,7 @@ import { ButtonRaised, FloatingPanel } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Specification } from "../../../core";
 import { Select } from "../panels/widgets/controls";
-import { Table } from "../../../core/dataset/dataset";
+import { DataType, Table } from "../../../core/dataset/dataset";
 import { strings } from "../../../strings";
 
 export enum MappingMode {
@@ -153,7 +153,9 @@ export class FileViewImport extends ContextedComponent<
                           const optionValues =
                             datasetTable?.columns
                               .filter(
-                                (pbiColumn) => pbiColumn.type === column.type
+                                (pbiColumn) =>
+                                  pbiColumn.type === column.type ||
+                                  column.type === DataType.String
                               )
                               .map((pbiColumn) => {
                                 return pbiColumn.displayName;
