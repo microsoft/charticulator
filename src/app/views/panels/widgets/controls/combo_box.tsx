@@ -175,6 +175,7 @@ const fontList = [
   "Lucida Console",
   "Lucida Grande",
   "Palatino",
+  "Segoe UI",
   "Tahoma",
   "Times",
   "Trebuchet MS",
