@@ -671,7 +671,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               : null}
             <HelpButton
               handlers={this.props.handlers}
-              hideReportIssues={this.context.store.editorType === "embedded"}
+              hideReportIssues={false}
             />
           </div>
         </section>
