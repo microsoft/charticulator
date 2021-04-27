@@ -34,8 +34,10 @@ export class ChartDisplayView extends React.Component<
         width={width}
         height={height}
         viewBox={`0 0 ${width.toFixed(6)} ${height.toFixed(6)}`}
-        xmlns="https://www.w3.org/2000/svg"
-        xmlnsXlink="https://www.w3.org/1999/xlink"
+        /* eslint-disable-next-line */
+        xmlns="http://www.w3.org/2000/svg"
+        /* eslint-disable-next-line */
+        xmlnsXlink="http://www.w3.org/1999/xlink"
         xmlSpace="preserve"
       >
         <g
@@ -103,8 +105,10 @@ export function renderChartToLocalString(
         width={width}
         height={height}
         viewBox={`0 0 ${width.toFixed(6)} ${height.toFixed(6)}`}
-        xmlns="https://www.w3.org/2000/svg"
-        xmlnsXlink="https://www.w3.org/1999/xlink"
+        /* eslint-disable-next-line */
+        xmlns="http://www.w3.org/2000/svg"
+        /* eslint-disable-next-line */
+        xmlnsXlink="http://www.w3.org/1999/xlink"
         xmlSpace="preserve"
       >
         <g
