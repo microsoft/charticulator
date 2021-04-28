@@ -131,6 +131,7 @@ export class RectangleChart extends ChartClass {
     ...ObjectClass.defaultProperties,
     backgroundColor: null,
     backgroundOpacity: 1,
+    enableContextMenu: true,
   };
 
   public readonly object: Specification.Chart & {

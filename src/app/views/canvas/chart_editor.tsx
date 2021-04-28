@@ -489,7 +489,10 @@ export class ChartEditorView
               new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "x", count: 4 }
+                {
+                  axis: "x",
+                  count: GuideCoordinatorClass.defaultAttributes.count,
+                }
               ).dispatch(this.props.store.dispatcher);
             };
           }
@@ -501,7 +504,10 @@ export class ChartEditorView
               new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "y", count: 4 }
+                {
+                  axis: "y",
+                  count: GuideCoordinatorClass.defaultAttributes.count,
+                }
               ).dispatch(this.props.store.dispatcher);
             };
           }
