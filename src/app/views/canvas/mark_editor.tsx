@@ -33,7 +33,11 @@ import { HandlesView } from "./handles";
 import { MarkSnappableGuide, MarkSnappingSession } from "./snapping/mark";
 import { MoveSnappingSession } from "./snapping/move";
 import { ContextedComponent } from "../../context_component";
-import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
+import {
+  GuideAxis,
+  GuideCoordinatorClass,
+  GuideProperties,
+} from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { PlotSegment } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
@@ -1481,7 +1485,10 @@ export class SingleMarkView
                   "guide.guide-coordinator",
                   { x: 0, y: 0 },
                   { x1, y1, x2, y2 },
-                  { axis: "x", count: 4 }
+                  {
+                    axis: "x",
+                    count: GuideCoordinatorClass.defaultAttributes.count,
+                  }
                 )
               );
             };
@@ -1497,7 +1504,10 @@ export class SingleMarkView
                   "guide.guide-coordinator",
                   { x: 0, y: 0 },
                   { x1, y1, x2, y2 },
-                  { axis: "y", count: 4 }
+                  {
+                    axis: "y",
+                    count: GuideCoordinatorClass.defaultAttributes.count,
+                  }
                 )
               );
             };

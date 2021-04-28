@@ -24,6 +24,8 @@ export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
   angle2: number;
   radial1: number;
   radial2: number;
+
+  count: number;
 }
 
 export interface GuideCoordinatorProperties extends Specification.AttributeMap {
@@ -46,7 +48,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   public static defaultAttributes: Partial<GuideCoordinatorAttributes> = {
     axis: "x",
-    count: 4,
+    count: 2,
   };
 
   public buildConstraints(solver: ConstraintSolver) {

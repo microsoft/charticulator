@@ -21,6 +21,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -61,6 +62,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<TextElementProperties> = {
+    ...ObjectClass.defaultProperties,
     alignment: {
       x: TextAlignmentHorizontal.Middle,
       y: TextAlignmentVertical.Top,

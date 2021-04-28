@@ -15,6 +15,7 @@ import {
   SnappingGuides,
   TemplateParameters,
   AttributeDescriptions,
+  ObjectClass,
 } from "../common";
 import { ChartStateManager } from "../state";
 import { EmphasizableMarkClass } from "./emphasis";
@@ -46,6 +47,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultProperties: Partial<SymbolElementProperties> = {
+    ...ObjectClass.defaultProperties,
     visible: true,
   };
 
