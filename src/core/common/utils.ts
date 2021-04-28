@@ -688,7 +688,7 @@ export function getFormat() {
 
 export function parseSafe(value: string, defaultValue: any = null) {
   try {
-    return JSON.parse(value);
+    return JSON.parse(value) || defaultValue;
   } catch (ex) {
     return defaultValue;
   }
