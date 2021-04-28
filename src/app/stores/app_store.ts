@@ -1489,7 +1489,8 @@ export class AppStore extends BaseStore {
       dataAxisElement: { table: string; element: any },
       expression: string,
       axisProperty: Specification.Types.AxisDataBinding,
-      dataAxis: Specification.ChartElement<DataAxisProperties>
+      dataAxis: Specification.ChartElement<DataAxisProperties>,
+      appendToProperty: string = null
     ) => {
       const axisData = new DragData.DataExpression(
         this.dataset.tables.find((t) => t.name == dataAxisElement.table),
@@ -1517,7 +1518,7 @@ export class AppStore extends BaseStore {
         property: PlotSegmentAxisPropertyNames.axis,
         dataExpression: axisData,
         object: dataAxis as any,
-        appendToProperty: null,
+        appendToProperty,
         type: axisProperty.type,
         numericalMode: axisProperty.numericalMode,
         autoDomainMax: axisProperty.autoDomainMax,
@@ -1553,13 +1554,23 @@ export class AppStore extends BaseStore {
         const dataExpressions = dataAxis.properties.dataExpressions;
         // remove all and added again
         dataAxis.properties.dataExpressions = [];
-        dataExpressions.forEach((dataExpression) => {
+        dataExpressions.forEach((dataExpression, index) => {
           const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
             .axis;
           if (axisProperty) {
             const expression = dataExpression.expression;
 
-            bindAxis(dataAxisElement, expression, axisProperty, dataAxis);
+            bindAxis(
+              dataAxisElement,
+              expression,
+              axisProperty,
+              dataAxis,
+              "dataExpressions"
+            );
+
+            // save old name/id of expression to hold binding marks to those axis points
+            dataAxis.properties.dataExpressions[index].name =
+              dataExpression.name;
           }
         });
       });
