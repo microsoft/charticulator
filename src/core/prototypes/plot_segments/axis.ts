@@ -1371,5 +1371,27 @@ export function buildAxisProperties(
       type: Specification.AttributeType.Color,
       default: rgbToHex(style.tickColor),
     },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "tickFormat",
+        },
+      },
+      type: Specification.AttributeType.Text,
+      default: null,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "tickDataExpression",
+        },
+      },
+      type: Specification.AttributeType.Text,
+      default: null,
+    },
   ];
 }

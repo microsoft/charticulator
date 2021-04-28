@@ -1647,6 +1647,8 @@ export class AppStore extends BaseStore {
       orderMode: dataExpression.metadata.orderMode,
       autoDomainMax: options.autoDomainMax,
       autoDomainMin: options.autoDomainMin,
+      tickFormat: <string>objectProperties.tickFormat,
+      tickDataExpression: <string>objectProperties.tickDataExpression,
     };
 
     let expressions = [groupExpression];
