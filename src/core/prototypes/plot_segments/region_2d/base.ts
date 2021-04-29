@@ -2400,15 +2400,15 @@ export class Region2DConstraintBuilder {
       (yMode == "null" || yMode == "categorical")
     ) {
       return [
-        overlapOption,
         dodgeXOption,
         dodgeYOption,
         gridOption,
         packingOption,
         jitterOption,
+        overlapOption,
       ];
     }
-    return [overlapOption, packingOption, jitterOption];
+    return [packingOption, jitterOption, overlapOption];
   }
 
   public isSublayoutApplicable() {
