@@ -14,6 +14,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  LinkAnchor,
   ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
@@ -79,6 +80,49 @@ export class LineElementClass extends EmphasizableMarkClass<
     attrs.strokeWidth = 1;
     attrs.opacity = 1;
     attrs.visible = true;
+  }
+
+  /** Get link anchors for this mark */
+  public getLinkAnchors(mode: "begin" | "end"): LinkAnchor.Description[] {
+    const attrs = this.state.attributes;
+    return [
+      {
+        element: this.object._id,
+        points: [
+          {
+            x: attrs.cx,
+            y: attrs.cy,
+            xAttribute: "cx",
+            yAttribute: "cy",
+            direction: { x: mode == "begin" ? 1 : -1, y: 0 },
+          },
+        ],
+      },
+      {
+        element: this.object._id,
+        points: [
+          {
+            x: attrs.x1,
+            y: attrs.y1,
+            xAttribute: "x1",
+            yAttribute: "y1",
+            direction: { x: mode == "begin" ? 1 : -1, y: 0 },
+          },
+        ],
+      },
+      {
+        element: this.object._id,
+        points: [
+          {
+            x: attrs.x2,
+            y: attrs.y2,
+            xAttribute: "x2",
+            yAttribute: "y2",
+            direction: { x: mode == "begin" ? 1 : -1, y: 0 },
+          },
+        ],
+      },
+    ];
   }
 
   /** Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles) */
