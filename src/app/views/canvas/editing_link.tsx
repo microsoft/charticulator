@@ -407,14 +407,17 @@ export class EditingLink extends React.Component<
         return <g key={glyphIndex}>{marks}</g>;
       }
     );
-    const currentAnchors = glyphs.map(
-      ({ glyph, glyphState, coordinateSystem }, glyphIndex) => {
+    const currentAnchors = glyphs
+      .map(({ glyph, glyphState, coordinateSystem }, glyphIndex) => {
         const anchorX = glyphState.marks[0].attributes.x as number;
         const anchorY = glyphState.marks[0].attributes.y as number;
         const offsetX = (glyphState.attributes.x as number) - anchorX;
         const offsetY = (glyphState.attributes.y as number) - anchorY;
         const anchor = glyphIndex == 0 ? props.anchor1 : props.anchor2;
         const element = anchor[0].x.element;
+        if (!element) {
+          return null;
+        }
         const elementState =
           glyphState.marks[getIndexById(glyph.marks, element)];
         const anchorDescription: Prototypes.LinkAnchor.Description = {
@@ -435,8 +438,8 @@ export class EditingLink extends React.Component<
           offsetY,
           anchor: anchorDescription,
         };
-      }
-    );
+      })
+      .filter((anchor) => anchor != null);
     let currentLinkElement: JSX.Element = null;
     if (currentAnchors.length == 2) {
       const path = Graphics.makePath();
