@@ -672,8 +672,32 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   <PopupView context={context}>
                     <ReorderStringsValue
                       items={items}
-                      onConfirm={(items) => {
+                      onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
+                        if (customOrder) {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            "order"
+                          );
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "order",
+                            },
+                            items
+                          );
+                        } else {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            "alphabetically"
+                          );
+                        }
                         context.close();
                       }}
                       onReset={() => {
@@ -1274,14 +1298,18 @@ export class DropZoneView
 export class ReorderStringsValue extends React.Component<
   {
     items: string[];
-    onConfirm: (items: string[]) => void;
+    onConfirm: (items: string[], customOrder: boolean) => void;
     allowReset?: boolean;
     onReset?: () => string[];
   },
-  { items: string[] }
+  {
+    items: string[];
+    customOrder: boolean;
+  }
 > {
-  public state: { items: string[] } = {
+  public state: { items: string[]; customOrder: boolean } = {
     items: this.props.items.slice(),
+    customOrder: false,
   };
 
   public render() {
@@ -1293,7 +1321,7 @@ export class ReorderStringsValue extends React.Component<
             enabled={true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
-              this.setState({ items });
+              this.setState({ items, customOrder: true });
             }}
           >
             {items.map((x) => (
@@ -1319,6 +1347,7 @@ export class ReorderStringsValue extends React.Component<
                 items: this.state.items.sort(
                   getSortFunctionByData(this.state.items)
                 ),
+                customOrder: false,
               });
             }}
           />
@@ -1342,7 +1371,7 @@ export class ReorderStringsValue extends React.Component<
           <ButtonRaised
             text="OK"
             onClick={() => {
-              this.props.onConfirm(this.state.items);
+              this.props.onConfirm(this.state.items, this.state.customOrder);
             }}
           />
         </div>

@@ -405,9 +405,29 @@ export class ChartTemplate {
               inference.axis.orderMode || OrderMode.order
             );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
-            scale.domain.forEach((index, key) => {
-              axisDataBinding.categories[index] = key;
-            });
+            // try to save given order from template
+            if (
+              axisDataBinding.order &&
+              axisDataBinding.orderMode === OrderMode.order
+            ) {
+              axisDataBinding.order = axisDataBinding.order.filter((value) =>
+                scale.domain.has(value)
+              );
+              const newItems = axisDataBinding.categories.filter(
+                (category) =>
+                  !axisDataBinding.order.find((order) => order === category)
+              );
+              axisDataBinding.order.forEach((value, index) => {
+                axisDataBinding.categories[index] = value;
+              });
+              axisDataBinding.categories = axisDataBinding.categories.concat(
+                newItems
+              );
+            } else {
+              scale.domain.forEach((index, key) => {
+                axisDataBinding.categories[index] = key;
+              });
+            }
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
