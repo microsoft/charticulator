@@ -130,6 +130,8 @@ export function parseDate(str: string) {
   }
 }
 
+export const defaultDateTimeFormat = "%m/%d/%Y %H:%M:%S";
+
 /** Returns format for given string of date */
 export function getDateFormat(str: string) {
   let format = null;

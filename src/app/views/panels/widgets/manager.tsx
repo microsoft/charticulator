@@ -69,7 +69,10 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { getDateFormat } from "../../../../core/dataset/datetime";
+import {
+  defaultDateTimeFormat,
+  getDateFormat,
+} from "../../../../core/dataset/datetime";
 import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { strings } from "../../../../strings";
@@ -245,7 +248,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       <InputDate
         {...options}
         defaultValue={value}
-        dateDisplayFormat={format}
+        dateDisplayFormat={format || defaultDateTimeFormat}
         onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
