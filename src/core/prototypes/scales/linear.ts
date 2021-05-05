@@ -428,7 +428,9 @@ export class LinearBooleanScale extends ScaleClass<
       minMax.push(
         manager.row(
           props.inclusive ? ">=" : ">",
-          manager.inputNumber({ property: "min" })
+          this.object.inputType === Specification.DataType.Date
+            ? manager.inputDate({ property: "min" })
+            : manager.inputNumber({ property: "min" })
         )
       );
     }
@@ -436,7 +438,9 @@ export class LinearBooleanScale extends ScaleClass<
       minMax.push(
         manager.row(
           props.inclusive ? "<=" : "<",
-          manager.inputNumber({ property: "max" })
+          this.object.inputType === Specification.DataType.Date
+            ? manager.inputDate({ property: "max" })
+            : manager.inputNumber({ property: "max" })
         )
       );
     }
