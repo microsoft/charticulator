@@ -405,6 +405,11 @@ export class ChartTemplate {
               inference.axis.orderMode || OrderMode.order
             );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
+            const newData = new Array<string>(scale.domain.size);
+
+            scale.domain.forEach((index, key) => {
+              newData[index] = key;
+            });
             // try to save given order from template
             if (
               axisDataBinding.order &&
@@ -413,9 +418,12 @@ export class ChartTemplate {
               axisDataBinding.order = axisDataBinding.order.filter((value) =>
                 scale.domain.has(value)
               );
-              const newItems = axisDataBinding.categories.filter(
+              const newItems = newData.filter(
                 (category) =>
                   !axisDataBinding.order.find((order) => order === category)
+              );
+              axisDataBinding.categories = new Array<string>(
+                axisDataBinding.order.length
               );
               axisDataBinding.order.forEach((value, index) => {
                 axisDataBinding.categories[index] = value;
@@ -423,7 +431,9 @@ export class ChartTemplate {
               axisDataBinding.categories = axisDataBinding.categories.concat(
                 newItems
               );
+              axisDataBinding.order = axisDataBinding.order.concat(newItems);
             } else {
+              axisDataBinding.categories = new Array<string>(scale.domain.size);
               scale.domain.forEach((index, key) => {
                 axisDataBinding.categories[index] = key;
               });
