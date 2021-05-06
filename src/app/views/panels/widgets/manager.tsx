@@ -724,11 +724,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                           axisDataBinding.expression
                         );
 
-                        return this.store.getCategoriesForDataBinding(
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
                           axisDataBinding.metadata,
                           axisDataBinding.type,
                           values
                         );
+                        return categories;
                       }}
                       allowReset={allowReset}
                     />
