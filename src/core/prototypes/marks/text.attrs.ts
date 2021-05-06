@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { defaultFont } from "../../../app/stores/defaults";
+import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import { Color } from "../../common";
 import { AttributeMap, AttributeType, Types } from "../../specification";
 import { AttrBuilder } from "../attrs";
@@ -26,7 +26,7 @@ export const textAttributes: AttributeDescriptions = {
     type: AttributeType.Number,
     solverExclude: true,
     defaultRange: [0, 24],
-    defaultValue: 14,
+    defaultValue: defaultFontSize,
   },
   color: {
     name: "color",

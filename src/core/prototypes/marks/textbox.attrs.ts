@@ -9,7 +9,7 @@ import {
 } from "../../specification";
 import { Color } from "../../common";
 import { AttrBuilder } from "../attrs";
-import { defaultFont } from "../../../app/stores/defaults";
+import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 
 export const textboxAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -32,7 +32,7 @@ export const textboxAttributes: AttributeDescriptions = {
     type: AttributeType.Number,
     solverExclude: true,
     defaultRange: [0, 24],
-    defaultValue: 14,
+    defaultValue: defaultFontSize,
   },
   color: {
     name: "color",
