@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { defaultFont } from "../../../app/stores/defaults";
 import { Color } from "../../common";
 import { AttributeMap, AttributeType, Types } from "../../specification";
 import { AttrBuilder } from "../attrs";
@@ -18,7 +19,7 @@ export const textAttributes: AttributeDescriptions = {
     name: "fontFamily",
     type: AttributeType.FontFamily,
     solverExclude: true,
-    defaultValue: "Arial",
+    defaultValue: defaultFont,
   },
   fontSize: {
     name: "fontSize",

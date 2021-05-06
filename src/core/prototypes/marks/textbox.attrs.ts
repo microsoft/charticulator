@@ -9,6 +9,7 @@ import {
 } from "../../specification";
 import { Color } from "../../common";
 import { AttrBuilder } from "../attrs";
+import { defaultFont } from "../../../app/stores/defaults";
 
 export const textboxAttributes: AttributeDescriptions = {
   ...AttrBuilder.line(),
@@ -24,7 +25,7 @@ export const textboxAttributes: AttributeDescriptions = {
     name: "fontFamily",
     type: AttributeType.FontFamily,
     solverExclude: true,
-    defaultValue: "Arial",
+    defaultValue: defaultFont,
   },
   fontSize: {
     name: "fontSize",

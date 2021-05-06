@@ -31,11 +31,12 @@ import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap } from "../../specification";
 import { strings } from "../../../strings";
+import { defaultFont } from "../../../app/stores/defaults";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   lineColor: { r: 0, g: 0, b: 0 },
-  fontFamily: "Arial",
+  fontFamily: defaultFont,
   fontSize: 12,
   tickSize: 5,
   wordWrap: false,

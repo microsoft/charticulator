@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { defaultFont } from "../../../app/stores/defaults";
 import {
   Point,
   replaceNewLineBySymbol,
@@ -54,7 +55,7 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   public static defaultMappingValues: Partial<TextElementAttributes> = {
     text: "Text",
-    fontFamily: "Arial",
+    fontFamily: defaultFont,
     fontSize: 14,
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
@@ -82,7 +83,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     attrs.x = 0;
     attrs.y = 0;
     attrs.text = "Text";
-    attrs.fontFamily = "Arial";
+    attrs.fontFamily = "Segoe UI";
     attrs.fontSize = 14;
     attrs.color = {
       r: 0,
@@ -292,7 +293,7 @@ export class TextElementClass extends EmphasizableMarkClass<
       manager.sectionHeader("Text"),
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: "Arial",
+        defaultValue: defaultFont,
       }),
       manager.mappingEditor("Size", "fontSize", {
         hints: { rangeNumber: [0, 36] },
