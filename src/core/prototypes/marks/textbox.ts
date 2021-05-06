@@ -67,7 +67,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
   public static defaultMappingValues: Partial<TextboxElementAttributes> = {
     text: "Text",
     fontFamily: defaultFont,
-    fontSize: 14,
+    fontSize: 12,
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
@@ -99,7 +99,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     attrs.opacity = 1;
     attrs.text = null;
     attrs.fontFamily = defaultFont;
-    attrs.fontSize = 14;
+    attrs.fontSize = 12;
   }
 
   // eslint-disable-next-line

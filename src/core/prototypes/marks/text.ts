@@ -84,7 +84,7 @@ export class TextElementClass extends EmphasizableMarkClass<
     attrs.y = 0;
     attrs.text = "Text";
     attrs.fontFamily = "Segoe UI";
-    attrs.fontSize = 14;
+    attrs.fontSize = 12;
     attrs.color = {
       r: 0,
       g: 0,
