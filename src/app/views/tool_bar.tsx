@@ -204,6 +204,7 @@ export class Toolbar extends ContextedComponent<
         classID="mark.data-axis"
         title={strings.toolbar.dataAxis}
         icon="mark/data-axis"
+        options={"{axis:{autoDomainMin: true,autoDomainMax: true}}"}
       />
     );
   }
