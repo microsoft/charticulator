@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import {
+  defaultFont,
+  defaultFontSizeLegend,
+} from "../../../app/stores/defaults";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -50,8 +54,8 @@ export abstract class LegendClass extends ChartElementClass {
     visible: true,
     alignX: "start",
     alignY: "end",
-    fontFamily: "Arial",
-    fontSize: 10,
+    fontFamily: defaultFont,
+    fontSize: defaultFontSizeLegend,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],
