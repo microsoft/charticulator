@@ -163,3 +163,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
     resources: [],
   } as Specification.Chart;
 }
+
+export const defaultFont = "Segoe UI";
+export const defaultFontSize = 12;
+export const defaultFontSizeLegend = 10;

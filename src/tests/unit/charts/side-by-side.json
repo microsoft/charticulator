@@ -434,7 +434,7 @@
                         "g": 0,
                         "b": 0
                       },
-                      "fontFamily": "Arial",
+                      "fontFamily": "Segoe UI",
                       "fontSize": 12,
                       "tickSize": 5
                     },
@@ -758,7 +758,7 @@
                     "g": 0,
                     "b": 0
                   },
-                  "fontFamily": "Arial",
+                  "fontFamily": "Segoe UI",
                   "fontSize": 12,
                   "tickSize": 5
                 },
@@ -854,7 +854,7 @@
                     "g": 0,
                     "b": 0
                   },
-                  "fontFamily": "Arial",
+                  "fontFamily": "Segoe UI",
                   "fontSize": 12,
                   "tickSize": 5
                 }
@@ -925,7 +925,7 @@
                     "g": 0,
                     "b": 0
                   },
-                  "fontFamily": "Arial",
+                  "fontFamily": "Segoe UI",
                   "fontSize": 12,
                   "tickSize": 5
                 },
@@ -2929,7 +2929,7 @@
               "x": 0,
               "y": 300,
               "text": "Two Charts",
-              "fontFamily": "Arial",
+              "fontFamily": "Segoe UI",
               "fontSize": 24,
               "color": {
                 "r": 0,
