@@ -421,6 +421,7 @@ export class ChartTemplate {
         }
       }
       if (inference.scale) {
+        // uses disableAutoMin disableAutoMax for handle old templates
         // copy old parameters to new
         if (
           inference.autoDomainMin == null &&
@@ -435,7 +436,6 @@ export class ChartTemplate {
         ) {
           inference.autoDomainMax = !inference.disableAutoMax;
         }
-        // uses disableAutoMin disableAutoMax for handle old templates
         if (inference.autoDomainMin || inference.autoDomainMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
