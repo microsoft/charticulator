@@ -71,10 +71,8 @@ export class ObjectClassCache {
     object: Specification.PlotSegment,
     state: Specification.PlotSegmentState
   ): PlotSegments.PlotSegmentClass {
-    return <PlotSegments.PlotSegmentClass>this.createClass(
-      parent,
-      object,
-      state
+    return <PlotSegments.PlotSegmentClass>(
+      this.createClass(parent, object, state)
     );
   }
   public createChartElementClass(

@@ -14,7 +14,7 @@ export class ChartSnappingSession extends SnappingSession<
   public markLayout: Specification.ChartElement;
 
   constructor(
-    guides: (SnappableGuide<Specification.ChartElement>)[],
+    guides: SnappableGuide<Specification.ChartElement>[],
     markLayout: Specification.ChartElement,
     bound: Prototypes.Handles.Description,
     threshold: number,
@@ -30,7 +30,7 @@ export class ChartSnappingSession extends SnappingSession<
   }
 
   public getActions(
-    actions: (SnappingAction<Specification.ChartElement>)[]
+    actions: SnappingAction<Specification.ChartElement>[]
   ): Actions.Action[] {
     const result: Actions.Action[] = [];
     for (const action of actions) {

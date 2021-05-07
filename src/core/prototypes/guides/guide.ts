@@ -17,6 +17,7 @@ import {
 import { ObjectClassMetadata } from "../index";
 import { RectangleGlyph } from "../glyphs";
 import { RectangleChart } from "../charts";
+import { strings } from "../../../strings";
 
 export type GuideAxis = "x" | "y";
 
@@ -371,7 +372,9 @@ export class GuideClass extends ChartElementClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const widgets: Controls.Widget[] = [manager.sectionHeader("Guide")];
+    const widgets: Controls.Widget[] = [
+      manager.sectionHeader(strings.objects.guides.guide),
+    ];
 
     let labels: string[];
     let options: string[];
@@ -379,18 +382,25 @@ export class GuideClass extends ChartElementClass<
     if (this.object.properties.axis === "x") {
       const hOptions: Specification.baselineH[] = ["left", "center", "right"];
       options = hOptions;
-      labels = ["Left", "Center", "Right"];
-
+      labels = [
+        strings.alignment.left,
+        strings.alignment.center,
+        strings.alignment.right,
+      ];
       icons = ["align/left", "align/x-middle", "align/right"];
     } else {
       const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
       options = vOptions;
-      labels = ["Top", "Middle", "Bottom"];
+      labels = [
+        strings.alignment.top,
+        strings.alignment.middle,
+        strings.alignment.bottom,
+      ];
       icons = ["align/top", "align/y-middle", "align/bottom"];
     }
     widgets.push(
       manager.row(
-        "Baseline",
+        strings.objects.guides.baseline,
         manager.inputSelect(
           { property: GuidePropertyNames.baseline },
           {
@@ -405,9 +415,13 @@ export class GuideClass extends ChartElementClass<
     );
 
     widgets.push(
-      manager.mappingEditor("Offset", GuideAttributeNames.value, {
-        defaultValue: this.state.attributes.value,
-      })
+      manager.mappingEditor(
+        strings.objects.guides.offset,
+        GuideAttributeNames.value,
+        {
+          defaultValue: this.state.attributes.value,
+        }
+      )
     );
 
     return widgets;
