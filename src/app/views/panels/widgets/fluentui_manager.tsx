@@ -17,7 +17,6 @@ import {
   Specification,
   uniqueID,
   refineColumnName,
-  EventEmitter,
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
@@ -47,7 +46,11 @@ import {
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
 import { GroupByEditor } from "./groupby_editor";
-import { ChartTemplate } from "../../../../container";
+import {
+  ChartTemplate,
+  getFormat,
+  tickFormatParserExpression,
+} from "../../../../container";
 import {
   TextExpression,
   FunctionCall,
@@ -76,9 +79,8 @@ import { CharticulatorPropertyAccessors } from "./manager";
 import { FluentInputColor } from "./controls/fluentui_input_color";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import { Icon, IIconStyleProps, IIconStyles } from "@fluentui/react/lib/Icon";
+import { Icon } from "@fluentui/react/lib/Icon";
 import {
-  defaultFontWeight,
   defaultLabelStyle,
   FluentButton,
   FluentCheckbox,
@@ -93,6 +95,8 @@ import {
 
 import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
+import { strings } from "../../../../strings";
+import { InputFormat } from "./controls/input_format";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -177,7 +181,7 @@ export class FluentUIWidgetManager
     try {
       const prop = this.objectClass.object.properties[property.property] as any;
       const expressionString: string = prop.expression;
-      const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
+      const expression = TextExpression.Parse(`\${${expressionString}}`);
       // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
       const functionCallpart = expression.parts.find((part) => {
         if (part.expression instanceof FunctionCall) {
@@ -233,6 +237,46 @@ export class FluentUIWidgetManager
       property.noUpdateState,
       property.noComputeLayout
     ).dispatch(this.store.dispatcher);
+  }
+
+  // NEED TO UPDATE
+  public inputFormat(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputFormatOptions = {}
+  ) {
+    return (
+      <InputFormat
+        defaultValue={this.getPropertyValue(property) as string}
+        validate={(value: string) => {
+          if (value && value.trim() !== "") {
+            try {
+              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              return {
+                pass: true,
+                formatted: value,
+              };
+            } catch (ex) {
+              return {
+                pass: false,
+                error: "Invalid format",
+              };
+            }
+          }
+          return {
+            pass: true,
+          };
+        }}
+        placeholder={options.blank || strings.core.none}
+        onEnter={(value: string) => {
+          if (!value || value.trim() == "") {
+            this.emitSetProperty(property, null);
+          } else {
+            this.emitSetProperty(property, value);
+          }
+          return true;
+        }}
+      />
+    );
   }
 
   public inputNumber(
@@ -659,21 +703,12 @@ export class FluentUIWidgetManager
 
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
-    const scale = mapping.scale;
-
-    const parent = {
-      updateEvents: new EventEmitter(),
-    };
-
     return (
       <Button
         key={attribute}
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
         onClick={() => {
-          const options = {
-            allowSelectValue: true,
-          };
           globals.popupController.popupAt(
             (context) => {
               return (
@@ -717,7 +752,6 @@ export class FluentUIWidgetManager
             onClick={() => {
               globals.popupController.popupAt(
                 (context) => {
-                  let fieldSelector: DataFieldSelector;
                   let currentExpression: string = null;
                   const currentSortBy = this.getPropertyValue(
                     property
@@ -730,7 +764,6 @@ export class FluentUIWidgetManager
                       <div className="charticulator__widget-popup-order-widget">
                         <div className="el-row">
                           <DataFieldSelector
-                            ref={(e) => (fieldSelector = e)}
                             nullDescription="(default order)"
                             datasetStore={this.store}
                             useAggregation={true}
@@ -818,11 +851,14 @@ export class FluentUIWidgetManager
                             axisDataBinding.expression
                           );
 
-                          return this.store.getCategoriesForDataBinding(
+                          const {
+                            categories,
+                          } = this.store.getCategoriesForDataBinding(
                             axisDataBinding.metadata,
                             axisDataBinding.type,
                             values
                           );
+                          return categories;
                         }}
                         allowReset={allowReset}
                       />
@@ -969,6 +1005,7 @@ export class FluentUIWidgetManager
   }
 
   // Layout elements
+  // eslint-disable-next-line max-lines-per-function
   public sectionHeader(
     title: string,
     widget?: JSX.Element,
@@ -1102,10 +1139,10 @@ export class FluentUIWidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
+    let button: HTMLElement;
+    let text = "Filter by...";
     switch (options.mode) {
       case "button":
-        let button: HTMLElement;
-        let text = "Filter by...";
         if (options.value) {
           if (options.value.categories) {
             text = "Filter by " + options.value.categories.expression;
@@ -1167,10 +1204,10 @@ export class FluentUIWidgetManager
   public groupByEditor(
     options: Prototypes.Controls.GroupByEditorOptions
   ): JSX.Element {
+    let button: HTMLElement;
+    let text = "Group by...";
     switch (options.mode) {
       case "button":
-        let button: HTMLElement;
-        let text = "Group by...";
         if (options.value) {
           if (options.value.expression) {
             text = "Group by " + options.value.expression;
@@ -1337,6 +1374,7 @@ export class FluentUIWidgetManager
 
   public table(
     rows: JSX.Element[][],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: Prototypes.Controls.TableOptions
   ): JSX.Element {
     return (
@@ -1559,7 +1597,7 @@ export class FluentDetailsButton extends React.Component<
     manager: Prototypes.Controls.WidgetManager;
     label?: string;
   },
-  {}
+  Record<string, unknown>
 > {
   public inner: DetailsButtonInner;
   public componentDidUpdate() {
@@ -1608,7 +1646,7 @@ export class FluentDetailsButton extends React.Component<
 
 export class DetailsButtonInner extends React.Component<
   { parent: FluentDetailsButton },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     const parent = this.props.parent;

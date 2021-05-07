@@ -18,28 +18,28 @@ export interface CreatingComponentProps {
   height: number;
   zoom: ZoomInfo;
 
-  guides: Array<SnappableGuide<any>>;
+  guides: SnappableGuide<any>[];
 
   mode: string;
 
-  onCreate: (...args: Array<[number, Specification.Mapping]>) => void;
+  onCreate: (...args: [number, Specification.Mapping][]) => void;
   onCancel: () => void;
 }
 
 export interface CreatingComponentState {
   points?: Point[];
   draggingPoint?: Point;
-  activeGuides: Array<SnappableGuide<any>>;
+  activeGuides: SnappableGuide<any>[];
   hoverCandidateX: [number, Specification.Mapping];
   hoverCandidateY: [number, Specification.Mapping];
 }
 
 export class PointSnapping {
   public threshold: number;
-  public guides: Array<SnappableGuide<any>>;
+  public guides: SnappableGuide<any>[];
   public snappedGuides: Set<SnappableGuide<any>>;
 
-  constructor(guides: Array<SnappableGuide<any>>, threshold: number = 10) {
+  constructor(guides: SnappableGuide<any>[], threshold: number = 10) {
     this.guides = guides;
     this.snappedGuides = new Set<SnappableGuide<any>>();
     this.threshold = threshold;
@@ -213,7 +213,7 @@ export class CreatingComponent extends React.Component<
       case "rectangle": {
         this.hammer.add(new Hammer.Pan());
         this.hammer.add(new Hammer.Tap());
-        this.hammer.on("tap", (e) => {
+        this.hammer.on("tap", () => {
           this.props.onCancel();
         });
         let p0X: [number, Specification.Mapping] = null;
@@ -256,7 +256,7 @@ export class CreatingComponent extends React.Component<
             activeGuides: Array.from(guides),
           });
         });
-        this.hammer.on("panend", (e) => {
+        this.hammer.on("panend", () => {
           this.isHammering = false;
           this.setState({
             points: null,
@@ -423,7 +423,7 @@ export class CreatingComponent extends React.Component<
           y={0}
           width={this.props.width}
           height={this.props.height}
-          onMouseEnter={(e) => {
+          onMouseEnter={() => {
             const move = (e: MouseEvent) => {
               const guides = [...this.props.guides];
               switch (this.props.mode) {
@@ -465,7 +465,7 @@ export interface CreatingComponentFromCreatingInteractionProps {
   height: number;
   zoom: ZoomInfo;
 
-  guides: Array<SnappableGuide<any>>;
+  guides: SnappableGuide<any>[];
 
   description: Prototypes.CreatingInteraction.Description;
   onCreate: (
@@ -477,7 +477,7 @@ export interface CreatingComponentFromCreatingInteractionProps {
 
 export class CreatingComponentFromCreatingInteraction extends React.Component<
   CreatingComponentFromCreatingInteractionProps,
-  {}
+  Record<string, unknown>
 > {
   public doCreate(inMappings: {
     [name: string]: [number, Specification.Mapping];
@@ -486,6 +486,7 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
     const mappings: { [name: string]: [number, Specification.Mapping] } = {};
     const attributes: { [name: string]: Specification.AttributeValue } = {};
     for (const attr in desc.mapping) {
+      // eslint-disable-next-line
       if (inMappings.hasOwnProperty(attr)) {
         const name = desc.mapping[attr];
         mappings[name] = inMappings[attr];
@@ -509,9 +510,8 @@ export class CreatingComponentFromCreatingInteraction extends React.Component<
   public render() {
     const desc = this.props.description;
     let mode = "point";
-    let onCreate: (
-      ...args: Array<[number, Specification.Mapping]>
-    ) => void = this.props.onCancel;
+    let onCreate: (...args: [number, Specification.Mapping][]) => void = this
+      .props.onCancel;
 
     function autoSwap(
       a: [number, Specification.Mapping],

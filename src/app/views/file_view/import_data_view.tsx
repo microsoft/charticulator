@@ -10,8 +10,6 @@ import {
   LinkSourceKeyColumn,
   LinkTargetKeyColumn,
   KeyColumn,
-  defaultCurrency,
-  defaultDigitsGroup,
 } from "../../../core";
 import {
   classNames,
@@ -120,12 +118,12 @@ export class FileUploader extends React.Component<
             });
           }
         }}
-        onDragLeave={(e) => {
+        onDragLeave={() => {
           this.setState({
             draggingOver: false,
           });
         }}
-        onDragExit={(e) => {
+        onDragExit={() => {
           this.setState({
             draggingOver: false,
           });
@@ -248,6 +246,7 @@ export class ImportDataView extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     let sampleDatasetDiv: HTMLDivElement;
     const sampleDatasets = getConfig().SampleDatasets;

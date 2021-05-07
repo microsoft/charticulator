@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
+// eslint-disable-next-line
 export type ValueType = number | boolean | string | Date | Object;
 
 export interface Context {
@@ -12,6 +14,7 @@ export class ShadowContext implements Context {
     public shadows: { [name: string]: ValueType } = {}
   ) {}
   public getVariable(name: string): ValueType {
+    // eslint-disable-next-line
     if (this.shadows.hasOwnProperty(name)) {
       return this.shadows[name];
     }
@@ -40,6 +43,7 @@ export type PatternReplacer = (expr: Expression) => Expression | void;
 export function variableReplacer(map: { [name: string]: string }) {
   return (expr: Expression) => {
     if (expr instanceof Variable) {
+      // eslint-disable-next-line
       if (map.hasOwnProperty(expr.name)) {
         return new Variable(map[expr.name]);
       }
@@ -63,7 +67,7 @@ export abstract class Expression {
 
   public getNumberValue(c: Context) {
     const v = this.getValue(c);
-    return v as number;
+    return <number>v;
   }
 
   public getStringValue(c: Context) {
@@ -72,7 +76,7 @@ export abstract class Expression {
   }
 
   public static Parse(expr: string): Expression {
-    return parse(expr) as Expression;
+    return <Expression>parse(expr);
   }
 
   public replace(replacer: PatternReplacer): Expression {
@@ -113,7 +117,7 @@ export class TextExpression {
               return getFormat()(part.format)(+val);
             } catch (ex) {
               // try to handle specific format
-              if (part.format.match(/^\%raw$/).length > 0) {
+              if (part.format.match(/^%raw$/).length > 0) {
                 return getFormattedValue(context, val, part.expression);
               } else {
                 throw ex;
@@ -135,7 +139,7 @@ export class TextExpression {
     return this.parts
       .map((part) => {
         if (part.string) {
-          return part.string.replace(/([\$\\])/g, "\\$1");
+          return part.string.replace(/([$\\])/g, "\\$1");
         } else if (part.expression) {
           const str = part.expression.toString();
           if (part.format) {
@@ -149,7 +153,7 @@ export class TextExpression {
   }
 
   public static Parse(expr: string): TextExpression {
-    return parse(expr, { startRule: "start_text" }) as TextExpression;
+    return <TextExpression>parse(expr, { startRule: "start_text" });
   }
 
   public replace(r: PatternReplacer): TextExpression {
@@ -189,6 +193,7 @@ export class Value<T> extends Expression {
     return precedences.VALUE;
   }
 
+  // eslint-disable-next-line
   protected replaceChildren(r: PatternReplacer): Expression {
     return new Value<T>(this.value);
   }
@@ -196,7 +201,7 @@ export class Value<T> extends Expression {
 
 export class StringValue extends Value<string> {}
 export class NumberValue extends Value<number> {}
-export class BooleanValue extends Value<Boolean> {}
+export class BooleanValue extends Value<boolean> {}
 export class DateValue extends Value<Date> {}
 
 export class FieldAccess extends Expression {
@@ -205,7 +210,7 @@ export class FieldAccess extends Expression {
   }
 
   public getValue(c: Context) {
-    let v = this.expr.getValue(c) as any;
+    let v = <any>this.expr.getValue(c);
     for (const f of this.fields) {
       v = v[f];
     }
@@ -229,6 +234,7 @@ export class FieldAccess extends Expression {
 
 export class FunctionCall extends Expression {
   public name: string;
+  // eslint-disable-next-line
   public function: Function;
   public args: Expression[];
 
@@ -236,8 +242,9 @@ export class FunctionCall extends Expression {
     super();
     this.name = parts.join(".");
     this.args = args;
-    let v = functions as any;
+    let v = <any>functions;
     for (const part of parts) {
+      // eslint-disable-next-line
       if (v.hasOwnProperty(part)) {
         v = v[part];
       } else {
@@ -274,6 +281,7 @@ export class FunctionCall extends Expression {
 }
 
 export class Operator extends Expression {
+  // eslint-disable-next-line
   private op: Function;
   constructor(
     public name: string,
@@ -394,10 +402,11 @@ export class Variable extends Expression {
     if (name.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
       return name;
     } else {
-      return JSON.stringify(name).replace(/^\"|\"$/g, "`");
+      return JSON.stringify(name).replace(/^"|"$/g, "`");
     }
   }
 
+  // eslint-disable-next-line
   protected replaceChildren(r: PatternReplacer): Expression {
     return new Variable(this.name);
   }
@@ -412,17 +421,16 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression instanceof FunctionCall &&
       expression.args[0] instanceof Variable
     ) {
-      const columnName = (expression.args[0] as Variable).name;
-      const column = ((context as ShadowContext)
-        .upstream as DataflowTable).columns.find(
-        (col) => col.name == columnName
-      );
+      const columnName = (<Variable>expression.args[0]).name;
+      const column = (<DataflowTable>(
+        (<ShadowContext>context).upstream
+      )).columns.find((col) => col.name == columnName);
       if (
         column.metadata.rawColumnName &&
         (column.metadata.kind === Specification.DataKind.Temporal ||
           column.type === Specification.DataType.Boolean)
       ) {
-        return (context as ShadowContext).getVariable(
+        return (<ShadowContext>context).getVariable(
           column.metadata.rawColumnName
         );
       }
@@ -433,12 +441,12 @@ function getFormattedValue(context: Context, val: any, expression: Expression) {
       expression instanceof FunctionCall &&
       expression.args[0] instanceof Variable
     ) {
-      const columnName = (expression.args[0] as Variable).name;
-      const rawColumnName = (context as DataflowTableGroupedContext)
+      const columnName = (<Variable>expression.args[0]).name;
+      const rawColumnName = (<DataflowTableGroupedContext>context)
         .getTable()
         .columns.find((col) => col.name == columnName).metadata.rawColumnName;
       if (rawColumnName) {
-        return (context as DataflowTableGroupedContext).getVariable(
+        return (<DataflowTableGroupedContext>context).getVariable(
           rawColumnName
         );
       }

@@ -34,7 +34,7 @@ class ElementInfo {
     ) {
       this.previousWidth = rect.width;
       this.previousHeight = rect.height;
-      this.callbacks.forEach((cb, e) => {
+      this.callbacks.forEach((cb) => {
         cb();
       });
     }
@@ -70,6 +70,7 @@ export class ResizeListeners {
   }
 
   private timerCallback() {
+    // eslint-disable-next-line
     for (const [element, info] of this.entries) {
       info.timerCallback();
     }

@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as R from "../../resources";
 
@@ -13,7 +17,6 @@ import {
   GlyphSelection,
   MarkSelection,
 } from "../../stores";
-import { WidgetManager } from "./widgets/manager";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 
 function getObjectIcon(classID: string) {
@@ -56,6 +59,7 @@ export class AttributePanel extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     const selection = this.props.store.currentSelection;
     let object: Specification.Object;

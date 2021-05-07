@@ -80,7 +80,7 @@ export class EditableTextView extends React.Component<
             type="text"
             ref="input"
             value={this.state.currentText}
-            onChange={(e) =>
+            onChange={() =>
               this.setState({ currentText: this.refs.input.value })
             }
             onKeyDown={(e) => {

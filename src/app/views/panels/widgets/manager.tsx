@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -17,7 +18,6 @@ import {
   Specification,
   uniqueID,
   refineColumnName,
-  EventEmitter,
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
@@ -56,27 +56,31 @@ import {
 import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
-import { ChartTemplate, getSortFunctionByData } from "../../../../container";
+import {
+  ChartTemplate,
+  getFormat,
+  getSortFunctionByData,
+  tickFormatParserExpression,
+} from "../../../../container";
 import { InputDate } from "./controls/input_date";
 import {
   TextExpression,
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import { getDateFormat } from "../../../../core/dataset/datetime";
 import {
-  AttributeMap,
-  AttributeValue,
-  ScaleMapping,
-} from "../../../../core/specification";
+  defaultDateTimeFormat,
+  getDateFormat,
+} from "../../../../core/dataset/datetime";
+import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { DataExpression } from "../../../actions/drag_data";
 import { strings } from "../../../../strings";
 import {
   InputComboboxOptions,
   InputFontComboboxOptions,
   InputTextOptions,
 } from "../../../../core/prototypes/controls";
+import { InputFormat } from "./controls/input_format";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -168,6 +172,7 @@ export class WidgetManager
     try {
       const prop = this.objectClass.object.properties[property.property] as any;
       const expressionString: string = prop.expression;
+      // eslint-disable-next-line
       const expression = TextExpression.Parse(`\$\{${expressionString}\}`);
       // const table = this.store.chartManager.dataflow.getTable((this.objectClass.object as any).table);
       const functionCallpart = expression.parts.find((part) => {
@@ -260,7 +265,7 @@ export class WidgetManager
       <InputDate
         {...options}
         defaultValue={value}
-        dateDisplayFormat={format}
+        dateDisplayFormat={format || defaultDateTimeFormat}
         onEnter={(value) => {
           if (value == null) {
             this.emitSetProperty(property, null);
@@ -410,8 +415,46 @@ export class WidgetManager
             pass: true,
           };
         }}
-        placeholder="(none)"
+        placeholder={strings.core.none}
         onEnter={(value) => {
+          if (!value || value.trim() == "") {
+            this.emitSetProperty(property, null);
+          } else {
+            this.emitSetProperty(property, value);
+          }
+          return true;
+        }}
+      />
+    );
+  }
+  public inputFormat(
+    property: Prototypes.Controls.Property,
+    options: Prototypes.Controls.InputFormatOptions = {}
+  ) {
+    return (
+      <InputFormat
+        defaultValue={this.getPropertyValue(property) as string}
+        validate={(value: string) => {
+          if (value && value.trim() !== "") {
+            try {
+              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              return {
+                pass: true,
+                formatted: value,
+              };
+            } catch (ex) {
+              return {
+                pass: false,
+                error: "Invalid format",
+              };
+            }
+          }
+          return {
+            pass: true,
+          };
+        }}
+        placeholder={options.blank || strings.core.none}
+        onEnter={(value: string) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
           } else {
@@ -524,20 +567,11 @@ export class WidgetManager
 
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
-    const scale = mapping.scale;
-
-    const parent = {
-      updateEvents: new EventEmitter(),
-    };
-
     return (
       <Button
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
         onClick={() => {
-          const options = {
-            allowSelectValue: true,
-          };
           globals.popupController.popupAt(
             (context) => {
               return (
@@ -576,7 +610,6 @@ export class WidgetManager
         onClick={() => {
           globals.popupController.popupAt(
             (context) => {
-              let fieldSelector: DataFieldSelector;
               let currentExpression: string = null;
               const currentSortBy = this.getPropertyValue(
                 property
@@ -589,7 +622,6 @@ export class WidgetManager
                   <div className="charticulator__widget-popup-order-widget">
                     <div className="el-row">
                       <DataFieldSelector
-                        ref={(e) => (fieldSelector = e)}
                         nullDescription="(default order)"
                         datasetStore={this.store}
                         useAggregation={true}
@@ -660,8 +692,32 @@ export class WidgetManager
                   <PopupView context={context}>
                     <ReorderStringsValue
                       items={items}
-                      onConfirm={(items) => {
+                      onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
+                        if (customOrder) {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            "order"
+                          );
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "order",
+                            },
+                            items
+                          );
+                        } else {
+                          this.emitSetProperty(
+                            {
+                              property: property.property,
+                              field: "orderMode",
+                            },
+                            "alphabetically"
+                          );
+                        }
                         context.close();
                       }}
                       onReset={() => {
@@ -688,11 +744,14 @@ export class WidgetManager
                           axisDataBinding.expression
                         );
 
-                        return this.store.getCategoriesForDataBinding(
+                        const {
+                          categories,
+                        } = this.store.getCategoriesForDataBinding(
                           axisDataBinding.metadata,
                           axisDataBinding.type,
                           values
                         );
+                        return categories;
                       }}
                       allowReset={allowReset}
                     />
@@ -795,7 +854,7 @@ export class WidgetManager
       </span>
     );
   }
-  public label(title: string, options?: { addMargins: boolean }) {
+  public label(title: string) {
     return <span className="charticulator__widget-label">{title}</span>;
   }
   public text(title: string, align: "left" | "center" | "right" = "left") {
@@ -856,7 +915,7 @@ export class WidgetManager
                             : null
                         }
                         useAggregation={true}
-                        nullDescription={"(none)"}
+                        nullDescription={strings.core.none}
                         nullNotHighlightable={true}
                         onChange={(value) => {
                           if (!value) {
@@ -926,10 +985,10 @@ export class WidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
+    let button: Button;
+    let text = "Filter by...";
     switch (options.mode) {
       case "button":
-        let button: Button;
-        let text = "Filter by...";
         if (options.value) {
           if (options.value.categories) {
             text = "Filter by " + options.value.categories.expression;
@@ -974,10 +1033,10 @@ export class WidgetManager
   public groupByEditor(
     options: Prototypes.Controls.GroupByEditorOptions
   ): JSX.Element {
+    let button: Button;
+    let text = "Group by...";
     switch (options.mode) {
       case "button":
-        let button: Button;
-        let text = "Group by...";
         if (options.value) {
           if (options.value.expression) {
             text = "Group by " + options.value.expression;
@@ -1118,6 +1177,7 @@ export class WidgetManager
 
   public table(
     rows: JSX.Element[][],
+    // eslint-disable-next-line
     options: Prototypes.Controls.TableOptions
   ): JSX.Element {
     return (
@@ -1261,14 +1321,18 @@ export class DropZoneView
 export class ReorderStringsValue extends React.Component<
   {
     items: string[];
-    onConfirm: (items: string[]) => void;
+    onConfirm: (items: string[], customOrder: boolean) => void;
     allowReset?: boolean;
     onReset?: () => string[];
   },
-  { items: string[] }
+  {
+    items: string[];
+    customOrder: boolean;
+  }
 > {
-  public state: { items: string[] } = {
+  public state: { items: string[]; customOrder: boolean } = {
     items: this.props.items.slice(),
+    customOrder: false,
   };
 
   public render() {
@@ -1280,7 +1344,7 @@ export class ReorderStringsValue extends React.Component<
             enabled={true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
-              this.setState({ items });
+              this.setState({ items, customOrder: true });
             }}
           >
             {items.map((x) => (
@@ -1306,6 +1370,7 @@ export class ReorderStringsValue extends React.Component<
                 items: this.state.items.sort(
                   getSortFunctionByData(this.state.items)
                 ),
+                customOrder: false,
               });
             }}
           />
@@ -1329,7 +1394,7 @@ export class ReorderStringsValue extends React.Component<
           <ButtonRaised
             text="OK"
             onClick={() => {
-              this.props.onConfirm(this.state.items);
+              this.props.onConfirm(this.state.items, this.state.customOrder);
             }}
           />
         </div>

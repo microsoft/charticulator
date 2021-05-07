@@ -27,20 +27,21 @@ import {
   getFileNameWithoutExtension,
   getConvertableDataKind,
 } from "../../utils";
-import { Button, Select, DropdownListView } from "../panels/widgets/controls";
+import { Button, DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
 import { TableType } from "../../../core/dataset";
 import { DataType, DataKind } from "../../../core/specification";
 import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
-import { FileViewImport } from "../file_view/import_view";
+import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 
 export interface DatasetViewProps {
   store: AppStore;
 }
 
+// eslint-disable-next-line
 export interface DatasetViewState {}
 
 /**
@@ -102,6 +103,7 @@ export class ColumnsView extends React.Component<
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     const table = this.props.table;
     let anchor: HTMLDivElement;
@@ -123,10 +125,13 @@ export class ColumnsView extends React.Component<
                 icon="general/replace"
                 title={strings.dataset.replaceWithCSV}
                 active={false}
+                // eslint-disable-next-line
                 onClick={() => {
+                  // eslint-disable-next-line
                   showOpenFileDialog(["csv"]).then((file) => {
                     const loader = new Dataset.DatasetLoader();
                     const reader = new FileReader();
+                    // eslint-disable-next-line
                     reader.onload = () => {
                       const newTable = loader.loadDSVFromContents(
                         table.name,
@@ -191,6 +196,7 @@ export class ColumnsView extends React.Component<
                           );
                         }
 
+                        // eslint-disable-next-line
                         const loadTemplateIntoState = (
                           store: AppStore,
                           tableMapping: Map<string, string>,
@@ -236,6 +242,7 @@ export class ColumnsView extends React.Component<
                                 <ModalView context={context}>
                                   <div onClick={(e) => e.stopPropagation()}>
                                     <FileViewImport
+                                      mode={MappingMode.ImportDataset}
                                       tables={template.tables}
                                       datasetTables={newDataset.tables}
                                       tableMapping={tableMapping}
@@ -489,6 +496,7 @@ export class ColumnView extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   public render() {
     const c = this.props.column;
     const derivedColumnsControl = this.renderDerivedColumns();

@@ -5,7 +5,7 @@ import { Expression, Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { Button, InputExpression, Select, CheckBox } from "./controls";
-import { CharticulatorPropertyAccessors, WidgetManager } from "./manager";
+import { CharticulatorPropertyAccessors } from "./manager";
 
 export interface FilterEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -54,6 +54,7 @@ export class FilterEditor extends React.Component<
     this.setState(this.getDefaultState(newValue));
   }
 
+  // eslint-disable-next-line
   public render() {
     const { manager, options } = this.props;
     const value = this.state.currentValue;
@@ -89,6 +90,7 @@ export class FilterEditor extends React.Component<
           const keysSorted: string[] = [];
           if (value && value.categories) {
             for (const k in value.categories.values) {
+              // eslint-disable-next-line
               if (value.categories.values.hasOwnProperty(k)) {
                 keysSorted.push(k);
               }
@@ -139,6 +141,7 @@ export class FilterEditor extends React.Component<
                         text="Select All"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = true;
                             }
@@ -155,6 +158,7 @@ export class FilterEditor extends React.Component<
                         text="Clear"
                         onClick={() => {
                           for (const key in value.categories.values) {
+                            // eslint-disable-next-line
                             if (value.categories.values.hasOwnProperty(key)) {
                               value.categories.values[key] = false;
                             }

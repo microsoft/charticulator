@@ -25,7 +25,9 @@ export class BaseStore extends EventEmitter {
   }
 
   // Override this in the child store
-  public handleAction(action: Actions.Action) {}
+  public handleAction(action: Actions.Action) {
+    action.digest();
+  }
 
   public destroy() {
     if (this.dispatcherID != null) {

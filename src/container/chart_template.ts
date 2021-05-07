@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable no-prototype-builtins */
 
 import {
   Dataset,
@@ -22,13 +23,7 @@ import {
 import { CompiledGroupBy } from "../core/prototypes/group_by";
 import { OrderMode } from "../core/specification/types";
 import { DataAxisExpression } from "../core/prototypes/marks/data_axis.attrs";
-import {
-  AttributeList,
-  AttributeMap,
-  MappingType,
-  ScaleMapping,
-  ValueMapping,
-} from "../core/specification";
+import { MappingType, ScaleMapping, ValueMapping } from "../core/specification";
 import { Region2DSublayoutOptions } from "../core/prototypes/plot_segments/region_2d/base";
 import { GuideAttributeNames } from "../core/prototypes/guides";
 
@@ -130,6 +125,8 @@ export class ChartTemplate {
    * On editing this method ensure that you made correspond changes in template builder ({@link ChartTemplateBuilder}).
    * Any exposed into template objects should be initialized here
    */
+
+  // eslint-disable-next-line
   public instantiate(
     dataset: Dataset.Dataset,
     inference: boolean = true
@@ -301,6 +298,7 @@ export class ChartTemplate {
 
       // Replace data-mapping expressions with assigned columns
       const mappings = item.object.mappings;
+      // eslint-disable-next-line
       for (const [attr, mapping] of forEachMapping(mappings)) {
         if (mapping.type == MappingType.scale) {
           const scaleMapping = mapping as Specification.ScaleMapping;
@@ -407,9 +405,39 @@ export class ChartTemplate {
               inference.axis.orderMode || OrderMode.order
             );
             axisDataBinding.categories = new Array<string>(scale.domain.size);
+            const newData = new Array<string>(scale.domain.size);
+
             scale.domain.forEach((index, key) => {
-              axisDataBinding.categories[index] = key;
+              newData[index] = key;
             });
+            // try to save given order from template
+            if (
+              axisDataBinding.order &&
+              axisDataBinding.orderMode === OrderMode.order
+            ) {
+              axisDataBinding.order = axisDataBinding.order.filter((value) =>
+                scale.domain.has(value)
+              );
+              const newItems = newData.filter(
+                (category) =>
+                  !axisDataBinding.order.find((order) => order === category)
+              );
+              axisDataBinding.categories = new Array<string>(
+                axisDataBinding.order.length
+              );
+              axisDataBinding.order.forEach((value, index) => {
+                axisDataBinding.categories[index] = value;
+              });
+              axisDataBinding.categories = axisDataBinding.categories.concat(
+                newItems
+              );
+              axisDataBinding.order = axisDataBinding.order.concat(newItems);
+            } else {
+              axisDataBinding.categories = new Array<string>(scale.domain.size);
+              scale.domain.forEach((index, key) => {
+                axisDataBinding.categories[index] = key;
+              });
+            }
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);

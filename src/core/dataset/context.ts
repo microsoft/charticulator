@@ -8,9 +8,8 @@
  * @preferred
  */
 
-import { getByName } from "../common";
 import { Context } from "../expression";
-import { Column, Dataset, Row, Table } from "./dataset";
+import { Dataset, Row, Table } from "./dataset";
 
 export class DatasetContext implements Context {
   public fields: { [name: string]: Row[] } = {};

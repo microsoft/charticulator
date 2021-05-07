@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 const iconRegistry = new Map<string, string>();
 
-import { IIconOptions, IIconSubset, registerIcons } from "@uifabric/styling";
-
 export function addSVGIcon(path: string | string[], svgDataURL: string) {
   if (path instanceof Array) {
     for (const p of path) {

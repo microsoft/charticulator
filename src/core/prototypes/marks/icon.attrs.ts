@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 import { AttributeDescriptions } from "../object";
-import { Color } from "../../common";
 import { AttributeMap, Types } from "../../specification/index";
 import { AttrBuilder } from "../attrs";
 

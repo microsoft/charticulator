@@ -63,7 +63,7 @@ export class AngleHandleView extends React.Component<
     let context: HandlesDragContext = null;
     let oldValue = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", () => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       this.setState({
@@ -119,6 +119,7 @@ export class AngleHandleView extends React.Component<
   public static shapeLeft = (r: number) =>
     `M 0 ${-r} L ${1.5 * r} 0 L 0 ${r} Z`;
 
+  // eslint-disable-next-line
   public render() {
     const { handle } = this.props;
     const fX = (x: number) =>

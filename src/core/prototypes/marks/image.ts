@@ -90,6 +90,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     attrs.image = null;
   }
 
+  // eslint-disable-next-line
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -252,10 +253,13 @@ export class ImageElementClass extends EmphasizableMarkClass<
   }
 
   // Get the graphical element from the element
+  // eslint-disable-next-line
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex: number,
+    // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -356,7 +360,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
     // Create the image element
     const gImage = Graphics.makeGroup([
-      {
+      <Graphics.Image>{
         type: "image",
         src: image.src,
         x: imgX,
@@ -364,7 +368,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
         width: imageWidth,
         height: imageHeight,
         mode: "stretch",
-      } as Graphics.Image,
+      },
     ]);
     gImage.transform = cs.getLocalTransform(px + offset.x, py + offset.y);
     g.elements.push(gImage);
@@ -395,6 +399,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
   }
 
   /** Get link anchors for this mark */
+  // eslint-disable-next-line
   public getLinkAnchors(): LinkAnchor.Description[] {
     const attrs = this.state.attributes;
     const element = this.object._id;
@@ -531,7 +536,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <DropZones.Line>{
         type: "line",
         p1: { x: x2, y: y1 },
         p2: { x: x1, y: y1 },
@@ -544,8 +549,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
-      {
+      },
+      <DropZones.Line>{
         type: "line",
         p1: { x: x1, y: y1 },
         p2: { x: x1, y: y2 },
@@ -558,7 +563,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
             hints: { autoRange: true, startWithZero: "always" },
           },
         },
-      } as DropZones.Line,
+      },
     ];
   }
   // Get bounding rectangle given current state
@@ -566,35 +571,35 @@ export class ImageElementClass extends EmphasizableMarkClass<
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x1" }],
         value: x1,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "x2" }],
         value: x2,
         span: [y1, y2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y1" }],
         value: y1,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "y2" }],
         value: y2,
         span: [x1, x2],
-      } as Handles.Line,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -602,8 +607,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y2,
@@ -611,8 +616,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y1,
@@ -620,8 +625,8 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: x2,
         y: y2,
@@ -629,33 +634,33 @@ export class ImageElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x2" },
           { type: "attribute", source: "y", attribute: "y2" },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x1, y1, x2, y2, cx, cy } = attrs;
     return [
-      { type: "x", value: x1, attribute: "x1" } as SnappingGuides.Axis,
-      { type: "x", value: x2, attribute: "x2" } as SnappingGuides.Axis,
-      { type: "x", value: cx, attribute: "cx" } as SnappingGuides.Axis,
-      { type: "y", value: y1, attribute: "y1" } as SnappingGuides.Axis,
-      { type: "y", value: y2, attribute: "y2" } as SnappingGuides.Axis,
-      { type: "y", value: cy, attribute: "cy" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x1, attribute: "x1" },
+      <SnappingGuides.Axis>{ type: "x", value: x2, attribute: "x2" },
+      <SnappingGuides.Axis>{ type: "x", value: cx, attribute: "cx" },
+      <SnappingGuides.Axis>{ type: "y", value: y1, attribute: "y1" },
+      <SnappingGuides.Axis>{ type: "y", value: y2, attribute: "y2" },
+      <SnappingGuides.Axis>{ type: "y", value: cy, attribute: "cy" },
     ];
   }
 

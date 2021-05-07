@@ -2,14 +2,11 @@
 // Licensed under the MIT license.
 
 import {
-  deepClone,
   Expression,
   Prototypes,
-  Scale,
   setField,
   Solver,
   Specification,
-  uniqueID,
 } from "../../../core";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
@@ -21,6 +18,7 @@ import {
   SnappingElementMapping,
 } from "../../../core/specification";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToChartElementAttribute, function (action) {
     const inferred =
@@ -101,6 +99,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
 
     for (const key in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(key)) {
         const [value, mapping] = action.mappings[key];
         if (mapping != null) {
@@ -180,6 +179,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     const layoutState = this.chartState.elements[idx];
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -301,6 +301,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -415,6 +416,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     switch (action.extension) {
       case "cartesian-x": {
         newClassID = "plot-segment.cartesian";
+        break;
       }
       case "cartesian-y":
         {
@@ -472,7 +474,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         plotSegment.properties.outerRatio =
           Prototypes.PlotSegments.PolarPlotSegment.defaultProperties.outerRatio;
       }
-      if ((newClassID = "plot-segment.curve")) {
+      if (newClassID == "plot-segment.curve") {
         plotSegment.properties.curve =
           Prototypes.PlotSegments.CurvePlotSegment.defaultProperties.curve;
         plotSegment.properties.normalStart =
@@ -493,14 +495,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         action.extension == "polar" ||
         action.extension == "curve"
       ) {
-        // if (plotSegment.properties.xData == null) {
         plotSegment.properties.xData = { type: "default", gapRatio: 0.1 };
-        // }
       }
       if (action.extension == "cartesian-y") {
-        // if (plotSegment.properties.yData == null) {
         plotSegment.properties.yData = { type: "default", gapRatio: 0.1 };
-        // }
       }
     }
     this.solveConstraintsAndUpdateGraphics();

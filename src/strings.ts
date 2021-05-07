@@ -201,14 +201,14 @@ export const strings = {
     issues: "Report an Issue",
     version: (version: string) => `Version: ${version}`,
   },
-  mainTabs: {
+  mainTabs: <{ [key in MainTabs]: string }>{
     about: "About",
     export: "Export",
     new: "New",
     open: "Open",
     options: "Options",
     save: "Save As",
-  } as { [key in MainTabs]: string },
+  },
   mainView: {
     attributesPaneltitle: "Attributes",
     datasetPanelTitle: "Dataset",
@@ -246,13 +246,18 @@ export const strings = {
     semicolon: "semicolon",
   },
   templateImport: {
-    columnName: "Column name from the template",
+    columnNameTemplate: "Column name from the template",
+    columnNameChart: "Column name from the chart design",
     dataType: "Required data type",
     examples: "Example data values",
     mapped: "Column name in the dataset",
     save: "Save mapping",
     tableName: "Table name",
-    title: "Import template",
+    title: "Map your data",
+    usbtitleImportTemplate:
+      "Map the columns from your data source to the corresponding template fields",
+    usbtitleImportData:
+      "Map the columns from new data to the corresponding fields in the current chart design",
     unmapped: "Unmapped",
   },
   toolbar: {
@@ -284,17 +289,19 @@ export const strings = {
     textbox: "Textbox",
     triangle: "Triangle",
   },
-  typeDisplayNames: {
+  typeDisplayNames: <{ [key in DataType]: string }>{
     boolean: "Boolean",
     date: "Date",
     number: "Number",
     string: "String",
-  } as { [key in DataType]: string },
+  },
   attributesPanel: {
     conditionedBy: "Conditioned by...",
   },
   core: {
     default: "(default)",
+    auto: "(auto)",
+    none: "(none)",
   },
   cartesianTerminology,
   curveTerminology,

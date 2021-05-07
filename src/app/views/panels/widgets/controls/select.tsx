@@ -12,7 +12,7 @@ import * as R from "../../../../resources";
 import { classNames } from "../../../../utils";
 
 export function DropdownListView(props: {
-  list: Array<{ name: string; url?: string; text?: string; font?: string }>;
+  list: { name: string; url?: string; text?: string; font?: string }[];
   onClick?: (name: string) => void;
   selected?: string;
   context: PopupContext;
@@ -152,9 +152,11 @@ export class Select extends React.Component<SelectProps, { active: boolean }> {
   }
 }
 
-export class Radio extends React.Component<SelectProps, {}> {
+export class Radio extends React.Component<
+  SelectProps,
+  Record<string, unknown>
+> {
   public render() {
-    const currentIndex = this.props.options.indexOf(this.props.value);
     return (
       <span className="charticulator__widget-control-radio">
         {this.props.options.map((value, index) => {

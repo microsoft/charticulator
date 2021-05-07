@@ -1,12 +1,13 @@
+/* eslint-disable powerbi-visuals/no-http-string */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 // Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fabric-assets-license
 
-// tslint:disable:max-line-length
 import * as React from "react";
 
 import { IIconOptions, IIconSubset, registerIcons } from "@uifabric/styling";
 
+// eslint-disable-next-line max-lines-per-function
 export function initializeIcons(
   baseUrl: string = "",
   options?: IIconOptions

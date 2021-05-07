@@ -11,6 +11,7 @@ import { AppStore } from "../app_store";
 import { GlyphSelection, MarkSelection } from "../selection";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.AddGlyph, function (action) {
     this.saveHistory();
@@ -25,7 +26,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
   REG.add(Actions.RemoveGlyph, function (action) {
     this.saveHistory();
-    const glyph = this.chartManager.removeGlyph(action.glyph);
+    this.chartManager.removeGlyph(action.glyph);
     this.currentSelection = null;
     this.currentGlyph = null;
     this.solveConstraintsAndUpdateGraphics();
@@ -47,6 +48,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.saveHistory();
 
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -54,6 +56,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
     this.forAllGlyph(action.glyph, (glyphState) => {
       for (const key in action.updates) {
+        // eslint-disable-next-line
         if (!action.updates.hasOwnProperty(key)) {
           continue;
         }
@@ -70,6 +73,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.solveConstraintsAndUpdateGraphics();
   });
 
+  // eslint-disable-next-line
   REG.add(Actions.AddMarkToGlyph, function (action) {
     this.saveHistory();
 
@@ -88,12 +92,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       );
     }
 
-    const isFirstMark = action.glyph.marks.length == 1;
-
     this.chartManager.addMarkToGlyph(mark, action.glyph);
 
     let attributesSet = false;
     for (const attr in action.mappings) {
+      // eslint-disable-next-line
       if (action.mappings.hasOwnProperty(attr)) {
         const [value, mapping] = action.mappings[attr];
         if (mapping != null) {

@@ -21,17 +21,14 @@ import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
 import { Button, InputExpression } from "./controls";
-import {
-  CharticulatorPropertyAccessors,
-  DropZoneView,
-  WidgetManager,
-} from "./manager";
+import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall, Variable } from "../../../../core/expression";
+import { FunctionCall } from "../../../../core/expression";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";
+import { strings } from "../../../../strings";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -96,7 +93,6 @@ export class MappingEditor extends React.Component<
   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
-    const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
 
     const {
@@ -215,7 +211,9 @@ export class MappingEditor extends React.Component<
   }
 
   private renderValueEditor(value: Specification.AttributeValue) {
-    let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
+    let placeholderText = this.props.options.defaultAuto
+      ? strings.core.auto
+      : strings.core.none;
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
@@ -238,6 +236,7 @@ export class MappingEditor extends React.Component<
     );
   }
 
+  // eslint-disable-next-line
   private renderCurrentAttributeMapping() {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
@@ -434,6 +433,7 @@ export class MappingEditor extends React.Component<
     }
   }
 
+  // eslint-disable-next-line
   public render() {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
@@ -602,14 +602,18 @@ export class DataMappAndScaleEditor extends ContextedComponent<
           this.store.chart.scales,
           scaleMapping.scale
         );
-        return (
-          <ScaleEditor
-            plotSegment={this.props.plotSegment}
-            scale={scaleObject}
-            scaleMapping={scaleMapping}
-            store={this.store}
-          />
-        );
+        if (scaleObject) {
+          return (
+            <ScaleEditor
+              plotSegment={this.props.plotSegment}
+              scale={scaleObject}
+              scaleMapping={scaleMapping}
+              store={this.store}
+            />
+          );
+        } else {
+          return null;
+        }
       }
     }
     return null;
@@ -636,7 +640,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
               ? { table: options.table, expression: currentExpression }
               : null
           }
-          nullDescription={"(none)"}
+          nullDescription={strings.core.none}
           nullNotHighlightable={true}
           onChange={(value) => {
             if (value != null) {

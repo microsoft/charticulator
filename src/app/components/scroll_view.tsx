@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as Hammer from "hammerjs";
 
+// eslint-disable-next-line
 export interface ScrollViewProps {}
 
 export interface ScrollViewState {
@@ -22,7 +23,8 @@ export class ScrollView extends React.Component<
 
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.container);
-    this.hammer.on("panstart", (e) => {});
+    // eslint-disable-next-line
+    this.hammer.on("panstart", () => {});
   }
 
   public componentWillUnmount() {

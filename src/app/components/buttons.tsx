@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { classNames } from "../utils";
-import { DraggableElement, ClickableSVGElement } from "./draggable";
+import { DraggableElement } from "./draggable";
 import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
@@ -176,7 +176,7 @@ export interface ButtonProps {
 
 export abstract class BaseButton<
   Props extends ButtonProps
-> extends React.PureComponent<Props, {}> {
+> extends React.PureComponent<Props, Record<string, never>> {
   private doClick(e: React.MouseEvent<HTMLSpanElement>) {
     if (this.props.onClick) {
       this.props.onClick();
@@ -220,7 +220,10 @@ export class MenuButton extends BaseButton<IconButtonProps> {
     if (props.text) {
       return (
         <span
-          className="charticulator__button-menu-text"
+          className={classNames("charticulator__button-menu-text", [
+            "is-disabled",
+            this.props.disabled,
+          ])}
           title={props.title}
           onClick={this._doClick}
         >

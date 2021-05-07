@@ -12,7 +12,6 @@ import {
   Specification,
   Dataset,
   deepClone,
-  getFormatOptions,
   setFormatOptions,
   defaultCurrency,
   defaultDelimiter,
@@ -174,6 +173,7 @@ export class Application {
     await this.processHashString();
   }
 
+  // eslint-disable-next-line
   public setupNestedEditor(
     id: string,
     onInitialized?: (id: string, load: (data: any) => void) => void,

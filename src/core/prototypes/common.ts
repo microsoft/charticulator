@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import { Point, getById, setField, getField } from "../common";
 import * as Graphics from "../graphics";
 import * as Specification from "../specification";
 import * as Controls from "./controls";
-import { isType } from "./object";
-import { ObjectProperties } from "../specification";
 export * from "./chart_element";
 export * from "./object";
 
@@ -68,7 +68,7 @@ export namespace DropZones {
       appendToProperty?: string;
     };
     /** Extend a plot segment */
-    extendPlotSegment?: {};
+    extendPlotSegment?: Record<string, unknown>;
   }
 
   export interface Line extends Description {
@@ -261,10 +261,17 @@ export namespace BoundingBox {
   }
 }
 
+export enum SnappingGuidesVisualTypes {
+  Guide,
+  Coordinator,
+  Point,
+}
+
 export namespace SnappingGuides {
   export interface Description {
     type: string;
     visible: boolean;
+    visualType?: SnappingGuidesVisualTypes;
   }
 
   export interface Axis extends Description {
@@ -296,7 +303,7 @@ export namespace SnappingGuides {
 export namespace LinkAnchor {
   export interface Description {
     element: string;
-    points: Array<{
+    points: {
       x: number;
       y: number;
       xAttribute: string;
@@ -305,7 +312,7 @@ export namespace LinkAnchor {
         x: number;
         y: number;
       };
-    }>;
+    }[];
   }
 }
 
@@ -356,8 +363,8 @@ export namespace CreatingInteraction {
 export namespace TemplateMetadata {
   export interface ChartMetadata {
     dataSlots: DataSlot[];
-    inference: Array<{ id: string; infer: Inference }>;
-    mappings: Array<{ id: string; attribute: string; slot: string }>;
+    inference: { id: string; infer: Inference }[];
+    mappings: { id: string; attribute: string; slot: string }[];
   }
 
   export interface DataSlot {
@@ -484,7 +491,7 @@ export function setProperty(
     object.properties[property] = value;
   } else if (property.subfield) {
     setField(
-      (object.properties[property.property] as any)[property.field as string],
+      (<any>object.properties[property.property])[<string>property.field],
       property.subfield,
       value
     );
@@ -502,7 +509,7 @@ export function getProperty(
   } else {
     if (property.subfield) {
       return getField(
-        (object.properties[property.property] as any)[property.field as string],
+        (<any>object.properties[property.property])[<string>property.field],
         property.subfield
       );
     } else {

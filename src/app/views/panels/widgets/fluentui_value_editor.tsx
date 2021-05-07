@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -17,14 +18,12 @@ import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
-import { FluentComboBoxFontFamily, InputImage, InputText } from "./controls";
+import { FluentComboBoxFontFamily, InputImage } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
 import {
-  defaultFontWeight,
   defaultLabelStyle,
-  FluentButton,
   FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
@@ -54,7 +53,7 @@ export interface ValueEditorProps {
 
 export class FluentValueEditor extends ContextedComponent<
   ValueEditorProps,
-  {}
+  Record<string, unknown>
 > {
   public emitClearValue() {
     this.props.onClear();
@@ -78,7 +77,6 @@ export class FluentValueEditor extends ContextedComponent<
 
     switch (this.props.type) {
       case Specification.AttributeType.Number: {
-        const number = value as number;
         let numberOptions = this.props.numberOptions;
         if (!numberOptions) {
           numberOptions = {};
@@ -250,7 +248,7 @@ export class FluentValueEditor extends ContextedComponent<
             label={this.props.label}
             onRenderLabel={labelRender}
             selectedKey={str}
-            options={strings.map((str, index) => {
+            options={strings.map((str) => {
               return {
                 key: str,
                 text: str,

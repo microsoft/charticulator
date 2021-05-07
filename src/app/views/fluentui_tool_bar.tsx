@@ -1,8 +1,8 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as globals from "../globals";
 import * as R from "../resources";
 
 import { EventSubscription } from "../../core";
@@ -10,21 +10,17 @@ import { Actions, DragData } from "../actions";
 import {
   DraggableElement,
   FluentToolButton,
-  MenuButton,
   SVGImageIcon,
-  ToolButton,
 } from "../components";
 import { ContextedComponent, MainReactContext } from "../context_component";
-import { PopupView } from "../controllers";
 
-import { classNames } from "../utils";
 import { LinkCreationPanel } from "./panels/link_creator";
 import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
-import { Dialog, getTheme, IconButton, IIconProps } from "@fluentui/react";
+import { Dialog, getTheme, IconButton } from "@fluentui/react";
 import { getSVGIcon } from "../resources";
 const theme = getTheme();
 
@@ -34,14 +30,6 @@ export const FluentUIToolbar: React.FC<{
   toolbarLabels: boolean;
 }> = (props) => {
   const { store } = useContext(MainReactContext);
-  let token: EventSubscription = null;
-
-  React.useCallback(() => {
-    token = store.addListener(AppStore.EVENT_CURRENT_TOOL, () => {});
-
-    return () => {};
-    token?.remove();
-  }, [store.currentTool]);
 
   const getGlyphToolItems = (labels: boolean = true) => {
     return [
@@ -155,6 +143,7 @@ export const FluentUIToolbar: React.FC<{
     ];
   };
 
+  // eslint-disable-next-line max-lines-per-function
   const getChartToolItems = (labels: boolean = true) => {
     return [
       <>
@@ -291,6 +280,7 @@ export const FluentUIToolbar: React.FC<{
     ];
   };
 
+  // eslint-disable-next-line max-lines-per-function
   const getToolItems = (labels: boolean = true) => {
     return (
       <>
@@ -558,7 +548,10 @@ export interface ObjectButtonProps {
   compact?: boolean;
 }
 
-export class ObjectButton extends ContextedComponent<ObjectButtonProps, {}> {
+export class ObjectButton extends ContextedComponent<
+  ObjectButtonProps,
+  Record<string, unknown>
+> {
   public token: EventSubscription;
 
   public getIsActive() {
@@ -801,13 +794,11 @@ export const ScaffoldButton: React.FC<{
 export const LinkButton: React.FC<{
   label: boolean;
 }> = (props) => {
-  let container: HTMLSpanElement;
-
   const { store } = React.useContext(MainReactContext);
   const [isOpen, openDialog] = React.useState(false);
 
   return (
-    <span ref={(e) => (container = e)}>
+    <span>
       <IconButton
         title={strings.toolbar.link}
         text={props.label ? strings.toolbar.link : ""}
@@ -835,13 +826,11 @@ export const LinkButton: React.FC<{
 };
 
 export const LegendButton: React.FC = () => {
-  let container: HTMLSpanElement;
-
   const { store } = React.useContext(MainReactContext);
   const [isOpen, openDialog] = React.useState(false);
 
   return (
-    <span ref={(e) => (container = e)}>
+    <span>
       <IconButton
         iconProps={{
           iconName: "CharticulatorLegend",
@@ -873,7 +862,7 @@ export class CheckboxButton extends React.Component<
     text?: string;
     onChange?: (v: boolean) => void;
   },
-  {}
+  Record<string, unknown>
 > {
   public render() {
     return (
