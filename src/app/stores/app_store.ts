@@ -1707,11 +1707,13 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+            dataBinding.categories = categories;
+            dataBinding.order = order;
           }
 
           break;
@@ -1749,11 +1751,12 @@ export class AppStore extends BaseStore {
             }
             dataBinding.type = AxisDataBindingType.Numerical;
             dataBinding.numericalMode = NumericalMode.Temporal;
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            const { categories } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+            dataBinding.categories = categories;
           }
           break;
       }
@@ -1783,8 +1786,29 @@ export class AppStore extends BaseStore {
     values: ValueType[]
   ) {
     let categories: string[];
-    if (metadata.order) {
+    let order: string[];
+    if (metadata.order && metadata.orderMode === OrderMode.order) {
       categories = metadata.order.slice();
+      const scale = new Scale.CategoricalScale();
+      scale.inferParameters(values as string[], metadata.orderMode);
+      const newData = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (newData[index] = x.toString())
+      );
+
+      metadata.order = metadata.order.filter((value) =>
+        scale.domain.has(value)
+      );
+      const newItems = newData.filter(
+        (category) => !metadata.order.find((order) => order === category)
+      );
+
+      categories = new Array<string>(metadata.order.length);
+      metadata.order.forEach((value, index) => {
+        categories[index] = value;
+      });
+      categories = categories.concat(newItems);
+      order = metadata.order.concat(newItems);
     } else {
       let orderMode: OrderMode = OrderMode.alphabetically;
       const scale = new Scale.CategoricalScale();
@@ -1801,7 +1825,7 @@ export class AppStore extends BaseStore {
         (index: any, x: any) => (categories[index] = x.toString())
       );
     }
-    return categories;
+    return { categories, order };
   }
 
   public getGroupingExpression(
