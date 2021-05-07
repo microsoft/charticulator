@@ -140,13 +140,11 @@ export const strings = {
     asHTML: "Export as HTML",
     asImage: "Export as Image",
     inferAxisMin: (objectName: string, inferenceAxisProperty: string) =>
-      `Auto axis min range for ${objectName}/${inferenceAxisProperty}`,
+      `Auto min values for ${objectName}/${inferenceAxisProperty}`,
     inferAxisMax: (objectName: string, inferenceAxisProperty: string) =>
-      `Auto axis max range for ${objectName}/${inferenceAxisProperty}`,
-    inferScaleMin: (objectName: string) =>
-      `Auto min domain and range for ${objectName}`,
-    inferScaleMax: (objectName: string) =>
-      `Auto max domain and range for ${objectName}`,
+      `Auto max values for ${objectName}/${inferenceAxisProperty}`,
+    inferScaleMin: (objectName: string) => `Auto min domain for ${objectName}`,
+    inferScaleMax: (objectName: string) => `Auto max domain for ${objectName}`,
     imageDPI: "DPI (for PNG/JPEG)",
     labelAxesAndScales: "Axes and Scales",
     labelExposedObjects: "Exposed Objects",

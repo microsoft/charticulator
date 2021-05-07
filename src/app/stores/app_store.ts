@@ -1296,7 +1296,8 @@ export class AppStore extends BaseStore {
           scaleClass.inferParameters(values as any, {
             newScale,
             reuseRange,
-            extendScale,
+            extendScaleMax: extendScale,
+            extendScaleMin: extendScale,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,

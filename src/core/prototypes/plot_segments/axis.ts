@@ -1242,7 +1242,7 @@ export function buildAxisWidgets(
         m.vertical(
           m.horizontal(
             [0, 1],
-            m.label("Auto range min value"),
+            m.label("Auto min value"),
             null,
             m.inputBoolean(
               {
@@ -1256,7 +1256,7 @@ export function buildAxisWidgets(
           ),
           m.horizontal(
             [0, 1],
-            m.label("Auto range max value"),
+            m.label("Auto max value"),
             null,
             m.inputBoolean(
               {

@@ -106,8 +106,12 @@ export class LinearScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       if (options.rangeNumber) {
@@ -145,41 +149,39 @@ export class LinearScale extends ScaleClass<
       manager.sectionHeader("Domain"),
       manager.row("Start", manager.inputNumber({ property: "domainMin" })),
       manager.row("End", manager.inputNumber({ property: "domainMax" })),
-      manager.sectionHeader("Range"),
-      manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
-      manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
-      manager.sectionHeader("Scale export properties"),
+      // manager.sectionHeader(""),
+      manager.row("", manager.label("Auto update values")),
       manager.row(
         "",
-        manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
-          ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto range max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+        manager.row(
+          "Start",
+          manager.inputBoolean(
+            {
+              property: "autoDomainMin",
+            },
+            {
+              type: "checkbox",
+            }
           )
         )
       ),
+      manager.row(
+        "",
+        manager.row(
+          "End",
+          manager.inputBoolean(
+            {
+              property: "autoDomainMax",
+            },
+            {
+              type: "checkbox",
+            }
+          )
+        )
+      ),
+      manager.sectionHeader("Range"),
+      manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
+      manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
     ];
   }
 
@@ -294,8 +296,12 @@ export class LinearColorScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       props.range = getDefaultGradient();
@@ -413,8 +419,12 @@ export class LinearBooleanScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    props.min = s.domainMin;
-    props.max = s.domainMax;
+    if (options.extendScaleMin) {
+      props.min = s.domainMin;
+    }
+    if (options.extendScaleMax) {
+      props.max = s.domainMax;
+    }
     props.mode = "interval";
     props.inclusive = true;
   }
