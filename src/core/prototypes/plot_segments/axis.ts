@@ -1235,14 +1235,16 @@ export function buildAxisWidgets(
         }
         break;
     }
-    widgets.push(m.sectionHeader(axisName + " export properties"));
+    widgets.push(
+      m.sectionHeader(axisName + strings.objects.dataAxis.exportProperties)
+    );
     widgets.push(
       m.row(
         "",
         m.vertical(
           m.horizontal(
             [0, 1],
-            m.label("Auto min value"),
+            m.label(strings.objects.dataAxis.autoMin),
             null,
             m.inputBoolean(
               {
@@ -1256,7 +1258,7 @@ export function buildAxisWidgets(
           ),
           m.horizontal(
             [0, 1],
-            m.label("Auto max value"),
+            m.label(strings.objects.dataAxis.autoMax),
             null,
             m.inputBoolean(
               {
@@ -1272,7 +1274,13 @@ export function buildAxisWidgets(
       )
     );
   } else {
-    widgets.push(m.sectionHeader(axisName + ": (none)", null, dropzoneOptions));
+    widgets.push(
+      m.sectionHeader(
+        axisName + ": " + strings.core.none,
+        null,
+        dropzoneOptions
+      )
+    );
   }
   return widgets;
 }

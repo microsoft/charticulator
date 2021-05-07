@@ -18,7 +18,7 @@ export class PackingPlugin extends ConstraintPlugin {
   public solver: ConstraintSolver;
   public cx: Variable;
   public cy: Variable;
-  public points: ([Variable, Variable, number])[];
+  public points: [Variable, Variable, number][];
   public xEnable: boolean;
   public yEnable: boolean;
   public getXYScale: () => { x: number; y: number };
@@ -29,7 +29,7 @@ export class PackingPlugin extends ConstraintPlugin {
     solver: ConstraintSolver,
     cx: Variable,
     cy: Variable,
-    points: ([Variable, Variable, number])[],
+    points: [Variable, Variable, number][],
     axisOnly?: "x" | "y",
     getXYScale?: () => { x: number; y: number },
     options?: PackingPluginOptions

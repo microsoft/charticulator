@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { deepClone, indexOf } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -324,11 +325,9 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     domainMax: number
   ): Graphics.Element {
     const dx =
-      (<number>this.state.attributes.x2) -
-      (<number>this.state.attributes.x1);
+      <number>this.state.attributes.x2 - <number>this.state.attributes.x1;
     const dy =
-      (<number>this.state.attributes.y2) -
-      (<number>this.state.attributes.y1);
+      <number>this.state.attributes.y2 - <number>this.state.attributes.y1;
     const length = Math.sqrt(dx * dx + dy * dy);
 
     const renderer = new AxisRenderer();
@@ -359,7 +358,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     const props = this.object.properties;
 
     return [
-      manager.sectionHeader("Axis"),
+      manager.sectionHeader(strings.objects.axis),
       buildAxisAppearanceWidgets(props.axis.visible, "axis", manager),
     ];
   }

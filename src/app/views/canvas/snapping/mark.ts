@@ -17,7 +17,7 @@ export class MarkSnappingSession extends SnappingSession<
   public element: Specification.Element;
 
   constructor(
-    guides: (SnappableGuide<Specification.Element>)[],
+    guides: SnappableGuide<Specification.Element>[],
     mark: Specification.Glyph,
     element: Specification.Element,
     elementState: Specification.MarkState,
@@ -49,7 +49,7 @@ export class MarkSnappingSession extends SnappingSession<
   }
 
   public getActions(
-    actions: (SnappingAction<Specification.Element>)[]
+    actions: SnappingAction<Specification.Element>[]
   ): Actions.Action {
     const g = new Actions.MarkActionGroup();
     const updates: { [name: string]: Specification.AttributeValue } = {};

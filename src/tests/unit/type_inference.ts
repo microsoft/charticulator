@@ -26,7 +26,7 @@ describe("Data Type Inference", () => {
     }
   });
   it("inferAndConvertColumn", () => {
-  const cases: [string[], any][] = [
+    const cases: [string[], any][] = [
       [
         ["1", "3", "4.5", "23", null],
         {

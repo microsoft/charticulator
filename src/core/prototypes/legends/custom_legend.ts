@@ -14,6 +14,7 @@ export type LegendType = "color" | "numerical" | "categorical";
 export type LegendOrientation = "horizontal" | "vertical";
 
 import { CategoricalLegendClass } from "./categorical_legend";
+import { strings } from "../../../strings";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -47,7 +48,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
   public readonly state: CustomLegendState;
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Legend",
+    displayName: strings.objects.legend.legend,
     iconPath: "legend/legend",
     creatingInteraction: {
       type: "point",
@@ -62,11 +63,14 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
     const scale = this.getScale();
     if (scale) {
-      widget.push(manager.sectionHeader("Colors"));
+      widget.push(manager.sectionHeader(strings.objects.colors));
       widget.push(
         manager.row(
-          "Scale",
-          manager.scaleEditor("mappingOptions", "Edit scale colors")
+          strings.objects.scale,
+          manager.scaleEditor(
+            "mappingOptions",
+            strings.objects.legend.editColors
+          )
         )
       );
     }

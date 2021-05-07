@@ -26,8 +26,7 @@ export class NumericalColorLegendClass extends LegendClass {
       return null;
     }
 
-    const range = <Specification.Types.ColorGradient>scale[0].properties
-      .range;
+    const range = <Specification.Types.ColorGradient>scale[0].properties.range;
     const domainMin = <number>scale[0].properties.domainMin;
     const domainMax = <number>scale[0].properties.domainMax;
 
