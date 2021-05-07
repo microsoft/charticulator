@@ -39,7 +39,11 @@ import { HandlesView } from "./handles";
 import { ResizeHandleView } from "./handles/resize";
 import { ChartSnappableGuide, ChartSnappingSession } from "./snapping/chart";
 import { MoveSnappingSession } from "./snapping/move";
-import { GuideAxis, GuideProperties } from "../../../core/prototypes/guides";
+import {
+  GuideAxis,
+  GuideCoordinatorClass,
+  GuideProperties,
+} from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
@@ -119,8 +123,6 @@ export class ChartEditorView
     const y1 = chartState.attributes.y1 as number;
     const x2 = chartState.attributes.x2 as number;
     const y2 = chartState.attributes.y2 as number;
-    const cx = (x1 + x2) / 2;
-    const cy = (y1 + y2) / 2;
     const overshoot = 0.4;
     const scale1 = width / (Math.abs(x2 - x1) * (1 + overshoot));
     const scale2 = height / (Math.abs(y2 - y1) * (1 + overshoot));
@@ -132,6 +134,7 @@ export class ChartEditorView
     return zoom;
   }
 
+  // eslint-disable-next-line
   public componentDidMount() {
     this.hammer = new Hammer(this.refs.canvasInteraction);
     this.hammer.add(new Hammer.Tap());
@@ -346,6 +349,7 @@ export class ChartEditorView
     return null;
   }
 
+  // eslint-disable-next-line
   public renderCreatingComponent() {
     if (this.state.currentCreation == null) {
       return null;
@@ -370,6 +374,7 @@ export class ChartEditorView
             );
             const opt = JSON.parse(options);
             for (const key in opt) {
+              // eslint-disable-next-line
               if (opt.hasOwnProperty(key)) {
                 attributes[key] = opt[key];
               }
@@ -387,21 +392,10 @@ export class ChartEditorView
       );
     } else {
       let onCreate: (
+        // tslint:disable-next-line
         ...args: Array<[number, Specification.Mapping]>
       ) => void = null;
       let mode: string = "point";
-
-      // Make sure a < b:
-      function autoSwap(
-        a: [number, Specification.Mapping],
-        b: [number, Specification.Mapping]
-      ) {
-        if (a[0] < b[0]) {
-          return [a, b];
-        } else {
-          return [b, a];
-        }
-      }
 
       const addGuide = (
         arg: [number, Specification.Mapping],
@@ -495,7 +489,10 @@ export class ChartEditorView
               new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "x", count: 4 }
+                {
+                  axis: "x",
+                  count: GuideCoordinatorClass.defaultAttributes.count,
+                }
               ).dispatch(this.props.store.dispatcher);
             };
           }
@@ -507,7 +504,10 @@ export class ChartEditorView
               new Actions.AddChartElement(
                 "guide.guide-coordinator",
                 { x1, y1, x2, y2 },
-                { axis: "y", count: 4 }
+                {
+                  axis: "y",
+                  count: GuideCoordinatorClass.defaultAttributes.count,
+                }
               ).dispatch(this.props.store.dispatcher);
             };
           }
@@ -541,6 +541,7 @@ export class ChartEditorView
           mode={mode}
           key={mode}
           guides={this.getSnappingGuides()}
+          // tslint:disable-next-line
           onCreate={(...args: Array<[number, Specification.Mapping]>) => {
             new Actions.SetCurrentTool(null).dispatch(
               this.props.store.dispatcher
@@ -678,13 +679,10 @@ export class ChartEditorView
     const elements = this.props.store.chart.elements;
     const elementStates = this.props.store.chartState.elements;
     zipArray(elements, elementStates).forEach(
-      (
-        [layout, layoutState]: [
-          Specification.ChartElement,
-          Specification.ChartElementState
-        ],
-        index
-      ) => {
+      ([layout, layoutState]: [
+        Specification.ChartElement,
+        Specification.ChartElementState
+      ]) => {
         const layoutClass = this.props.store.chartManager.getChartElementClass(
           layoutState
         );
@@ -722,6 +720,7 @@ export class ChartEditorView
               const updates = session.getUpdates(session.handleEnd(e));
               if (updates) {
                 for (const name in updates) {
+                  // eslint-disable-next-line
                   if (!updates.hasOwnProperty(name)) {
                     continue;
                   }
@@ -755,6 +754,9 @@ export class ChartEditorView
       glyphState.marks.forEach((markState, markIndex) => {
         const mark = glyph.marks[markIndex];
         const markClass = this.props.store.chartManager.getMarkClass(markState);
+        if (Prototypes.isType(mark.classID, GuideCoordinatorClass.classID)) {
+          return;
+        }
         const bbox = markClass.getBoundingBox();
         let isMarkSelected = false;
         if (this.props.store.currentSelection instanceof MarkSelection) {
@@ -796,36 +798,22 @@ export class ChartEditorView
     return <g>{bboxViews}</g>;
   }
 
+  // eslint-disable-next-line
   public renderLayoutHandles() {
     const elements = this.props.store.chart.elements;
     const elementStates = this.props.store.chartState.elements;
-    // if (this.props.store.currentSelection instanceof MarkSelection) {
-    //     return (
-    //         <g>
-    //             {zipArray(elements, elementStates).map(([element, elementState]) => {
-    //                 if (Prototypes.isType(element.classID, "plot-segment")) {
-    //                     return <g key={element._id}>{this.renderMarkHandlesInPlotSegment(element as Specification.PlotSegment, elementState as Specification.PlotSegmentState)}</g>;
-    //                 } else {
-    //                     return null;
-    //                 }
-    //             })}
-    //         </g>
-    //     );
-    // }
     return stableSortBy(zipArray(elements, elementStates), (x) => {
-      const [layout, layoutState] = x;
+      const [layout] = x;
       const shouldRenderHandles =
         this.state.currentSelection instanceof ChartElementSelection &&
         this.state.currentSelection.chartElement == layout;
       return shouldRenderHandles ? 1 : 0;
     }).map(
-      (
-        [layout, layoutState]: [
-          Specification.ChartElement,
-          Specification.ChartElementState
-        ],
-        index
-      ) => {
+      // eslint-disable-next-line
+      ([layout, layoutState]: [
+        Specification.ChartElement,
+        Specification.ChartElementState
+      ]) => {
         const layoutClass = this.props.store.chartManager.getChartElementClass(
           layoutState
         );
@@ -955,7 +943,7 @@ export class ChartEditorView
     return (
       <div className="canvas-popups">
         {zipArray(elements, elementStates)
-          .filter(([element, elementState]) =>
+          .filter(([element]) =>
             Prototypes.isType(element.classID, "plot-segment")
           )
           .map(
@@ -996,7 +984,7 @@ export class ChartEditorView
                     }}
                   >
                     {manager.horizontal(
-                      controls.widgets.map((x) => 0),
+                      controls.widgets.map(() => 0),
                       ...controls.widgets
                     )}
                   </div>
@@ -1008,11 +996,13 @@ export class ChartEditorView
     );
   }
 
+  // eslint-disable-next-line
   public renderSnappingGuides() {
     const guides = this.state.snappingCandidates;
     if (!guides || guides.length == 0) {
       return null;
     }
+    // eslint-disable-next-line
     return guides.map((guide, idx) => {
       const key = `m${idx}`;
       switch (guide.guide.type) {
@@ -1154,28 +1144,44 @@ export class ChartEditorView
     };
     const p1t = Geometry.applyZoom(this.state.zoom, p1);
     const p2t = Geometry.applyZoom(this.state.zoom, p2);
+    const cornerInnerRadius = 8;
+    const cornerOuterRadius = cornerInnerRadius + 1;
+    const shadowSize = cornerOuterRadius - cornerInnerRadius;
+
+    const getRoundedRectPath = (
+      x1: number,
+      y1: number,
+      x2: number,
+      y2: number,
+      radius: number
+    ) => {
+      return `m${Math.min(x1, x2) + cornerInnerRadius},${Math.min(y1, y2)} 
+      h${Math.abs(x2 - x1) - radius * 2} 
+      a${radius},${radius} 0 0 1 ${radius},${radius} 
+      v${Math.abs(y2 - y1) - radius * 2} 
+      a${radius},${radius} 0 0 1 -${radius},${radius} 
+      h-${Math.abs(x2 - x1) - radius * 2} 
+      a${radius},${radius} 0 0 1 -${radius},-${radius} 
+      v-${Math.abs(y2 - y1) - radius * 2} 
+      a${radius},${radius} 0 0 1 ${radius},-${radius} 
+      z`;
+    };
+
     return (
       <g>
-        <rect
-          className="canvas-region-outer2"
-          x={Math.min(p1t.x, p2t.x) - 3}
-          y={Math.min(p1t.y, p2t.y) - 3}
-          width={Math.abs(p2t.x - p1t.x) + 6}
-          height={Math.abs(p2t.y - p1t.y) + 6}
-        />
-        <rect
+        <path
           className="canvas-region-outer"
-          x={Math.min(p1t.x, p2t.x) - 1}
-          y={Math.min(p1t.y, p2t.y) - 1}
-          width={Math.abs(p2t.x - p1t.x) + 2}
-          height={Math.abs(p2t.y - p1t.y) + 2}
+          d={getRoundedRectPath(
+            p1t.x - shadowSize,
+            p1t.y - shadowSize,
+            p2t.x + shadowSize,
+            p2t.y + shadowSize,
+            cornerInnerRadius
+          )}
         />
-        <rect
+        <path
           className="canvas-region"
-          x={Math.min(p1t.x, p2t.x)}
-          y={Math.min(p1t.y, p2t.y)}
-          width={Math.abs(p2t.x - p1t.x)}
-          height={Math.abs(p2t.y - p1t.y)}
+          d={getRoundedRectPath(p1t.x, p1t.y, p2t.x, p2t.y, cornerInnerRadius)}
         />
         <ResizeHandleView
           zoom={this.state.zoom}
@@ -1222,8 +1228,6 @@ export class ChartEditorView
                 return false;
               }
             }
-            if (zone.accept.kind != null) {
-            }
             if (zone.accept.scaffolds) {
               if (this.state.dropZoneData.layout) {
                 return (
@@ -1251,7 +1255,7 @@ export class ChartEditorView
           onDragEnter={(data: any) => {
             const dropAction = zone.dropAction;
             if (dropAction.axisInference) {
-              return (point: Point) => {
+              return () => {
                 new Actions.BindDataToAxis(
                   layout,
                   dropAction.axisInference.property,
@@ -1262,7 +1266,7 @@ export class ChartEditorView
               };
             }
             if (dropAction.extendPlotSegment) {
-              return (point: Point) => {
+              return () => {
                 new Actions.ExtendPlotSegment(layout, data.type).dispatch(
                   this.props.store.dispatcher
                 );
@@ -1284,7 +1288,7 @@ export class ChartEditorView
     return (
       <g>
         {zipArray(chart.elements, chartState.elements)
-          .filter(([e, eS]) => Prototypes.isType(e.classID, "plot-segment"))
+          .filter(([e]) => Prototypes.isType(e.classID, "plot-segment"))
           .map(
             ([layout, layoutState]: [
               Specification.PlotSegment,
@@ -1301,8 +1305,8 @@ export class ChartEditorView
     );
   }
 
+  // eslint-disable-next-line
   public render() {
-    const { store } = this.props;
     const width = this.state.viewWidth;
     const height = this.state.viewHeight;
     const transform = `translate(${this.state.zoom.centerX},${this.state.zoom.centerY}) scale(${this.state.zoom.scale})`;

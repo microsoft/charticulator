@@ -78,21 +78,21 @@ export class ChartConstraintSolver {
       (mapping.type == MappingType.scale || mapping.type == MappingType.text)
     ) {
       const xMapping =
-        (mapping as Specification.ScaleMapping) ||
-        (mapping as Specification.TextMapping);
+        <Specification.ScaleMapping>mapping ||
+        <Specification.TextMapping>mapping;
       rowContext = this.manager.getChartDataContext(xMapping.table);
     }
     switch (mapping.type) {
       case MappingType.scale:
         {
-          const scaleMapping = mapping as Specification.ScaleMapping;
+          const scaleMapping = <Specification.ScaleMapping>mapping;
           if (scaleMapping.scale != null) {
             // Apply the scale
             const expr = this.expressionCache.parse(scaleMapping.expression);
-            const dataValue = expr.getValue(rowContext) as Dataset.DataValue;
-            const scaleClass = this.manager.getClassById(
-              scaleMapping.scale
-            ) as Prototypes.Scales.ScaleClass;
+            const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+            const scaleClass = <Prototypes.Scales.ScaleClass>(
+              this.manager.getClassById(scaleMapping.scale)
+            );
             if (!info.solverExclude) {
               scaleClass.buildConstraint(
                 dataValue,
@@ -107,8 +107,8 @@ export class ChartConstraintSolver {
           } else {
             // No scale, map the column value directly
             const expr = this.expressionCache.parse(scaleMapping.expression);
-            const dataValue = expr.getValue(rowContext) as Dataset.DataValue;
-            attrs[attr] = dataValue as Specification.AttributeValue;
+            const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+            attrs[attr] = <Specification.AttributeValue>dataValue;
             if (!info.solverExclude) {
               this.solver.makeConstant(attrs, attr);
             }
@@ -118,7 +118,7 @@ export class ChartConstraintSolver {
         break;
       case MappingType.text:
         {
-          const textMapping = mapping as Specification.TextMapping;
+          const textMapping = <Specification.TextMapping>mapping;
           const expr = this.expressionCache.parseTextExpression(
             textMapping.textExpression
           );
@@ -130,7 +130,7 @@ export class ChartConstraintSolver {
             )
           ) {
             attrs[attr] = expr.getValue(
-              (rowContext as DataflowTableGroupedContext).getTable()
+              (<DataflowTableGroupedContext>rowContext).getTable()
             );
           } else {
             attrs[attr] = expr.getValue(rowContext);
@@ -139,7 +139,7 @@ export class ChartConstraintSolver {
         break;
       case MappingType.value:
         {
-          const valueMapping = mapping as Specification.ValueMapping;
+          const valueMapping = <Specification.ValueMapping>mapping;
           attrs[attr] = valueMapping.value;
           if (!info.solverExclude) {
             this.solver.makeConstant(attrs, attr);
@@ -149,7 +149,7 @@ export class ChartConstraintSolver {
         break;
       case MappingType.parent:
         {
-          const parentMapping = mapping as Specification.ParentMapping;
+          const parentMapping = <Specification.ParentMapping>mapping;
           this.solver.addEquals(
             ConstraintStrength.HARD,
             this.solver.attr(attrs, attr),
@@ -181,6 +181,7 @@ export class ChartConstraintSolver {
         );
       }
       if (!info.stateExclude) {
+        // eslint-disable-next-line
         if (object.mappings.hasOwnProperty(attr)) {
           // If the attribute is mapped, apply the mapping, and do not compute gradient
           const mapping = object.mappings[attr];
@@ -209,11 +210,11 @@ export class ChartConstraintSolver {
   }
 
   private supportVariables = new KeyNameMap<
-    Object,
+    Record<string, unknown>,
     Specification.AttributeMap
   >();
   public getSupportVariable(
-    key: Object,
+    key: Record<string, unknown>,
     name: string,
     defaultValue: number
   ): Variable {
@@ -264,9 +265,7 @@ export class ChartConstraintSolver {
       for (const name in element.mappings) {
         const mapping = element.mappings[name];
         if (mapping.type == MappingType.parent) {
-          attached.add(
-            (mapping as Specification.ParentMapping).parentAttribute
-          );
+          attached.add((<Specification.ParentMapping>mapping).parentAttribute);
         }
       }
     }
@@ -310,9 +309,9 @@ export class ChartConstraintSolver {
       // If width/height are not constrained, make them constant
       if (attr == "width" && glyphAnalyzed.widthFree) {
         const variable = this.getSupportVariable(
-          layout,
+          <Record<string, unknown>>(<unknown>layout),
           glyph._id + "/" + attr,
-          glyphState.attributes[attr] as number
+          <number>glyphState.attributes[attr]
         );
         this.solver.addEquals(
           ConstraintStrength.HARD,
@@ -322,9 +321,9 @@ export class ChartConstraintSolver {
       }
       if (attr == "height" && glyphAnalyzed.heightFree) {
         const variable = this.getSupportVariable(
-          layout,
+          <Record<string, unknown>>(<unknown>layout),
           glyph._id + "/" + attr,
-          glyphState.attributes[attr] as number
+          <number>glyphState.attributes[attr]
         );
         this.solver.addEquals(
           ConstraintStrength.HARD,
@@ -413,8 +412,8 @@ export class ChartConstraintSolver {
 
       if (this.stage == "glyphs") {
         if (Prototypes.isType(element.classID, "plot-segment")) {
-          const layout = element as Specification.PlotSegment;
-          const layoutState = elementState as Specification.PlotSegmentState;
+          const layout = <Specification.PlotSegment>element;
+          const layoutState = <Specification.PlotSegmentState>elementState;
           const mark = getById(chart.glyphs, layout.glyph);
           const tableContext = this.manager.dataflow.getTable(layout.table);
 
@@ -429,33 +428,27 @@ export class ChartConstraintSolver {
               markState
             );
           }
-          (elementClass as PlotSegmentClass).buildGlyphConstraints(
-            this.solver,
-            {
-              getExpressionValue: (
-                expr: string,
-                context: Expression.Context
-              ) => {
-                return this.manager.dataflow.cache
-                  .parse(expr)
-                  .getNumberValue(context);
-              },
-              getGlyphAttributes: (
-                glyphID: string,
-                table: string,
-                rowIndex: number[]
-              ) => {
-                const analyzed = this.getGlyphAnalyzeResult(
-                  getById(this.chart.glyphs, glyphID)
-                );
-                return analyzed.computeAttributes(
-                  this.manager.dataflow
-                    .getTable(table)
-                    .getGroupedContext(rowIndex)
-                );
-              },
-            }
-          );
+          (<PlotSegmentClass>elementClass).buildGlyphConstraints(this.solver, {
+            getExpressionValue: (expr: string, context: Expression.Context) => {
+              return this.manager.dataflow.cache
+                .parse(expr)
+                .getNumberValue(context);
+            },
+            getGlyphAttributes: (
+              glyphID: string,
+              table: string,
+              rowIndex: number[]
+            ) => {
+              const analyzed = this.getGlyphAnalyzeResult(
+                getById(this.chart.glyphs, glyphID)
+              );
+              return analyzed.computeAttributes(
+                this.manager.dataflow
+                  .getTable(table)
+                  .getGroupedContext(rowIndex)
+              );
+            },
+          });
         }
       }
     }
@@ -502,9 +495,10 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     GlyphConstraintAnalyzerAttribute
   >();
   private currentVariableIndex = 0;
-  private linears: Array<
-    [number, Array<{ weight: number; index?: number; biasIndex?: number }>]
-  > = [];
+  private linears: [
+    number,
+    { weight: number; index?: number; biasIndex?: number }[]
+  ][] = [];
   private inputBiases = new Map<string, GlyphConstraintAnalyzerAttribute>();
   private indexToBias = new Map<number, GlyphConstraintAnalyzerAttribute>();
   private inputBiasesCount = 0;
@@ -518,7 +512,6 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     attr: string,
     id: string
   ) {
-    const value = this.currentVariableIndex;
     const attrInfo: GlyphConstraintAnalyzerAttribute = {
       index: this.currentVariableIndex,
       type: "object",
@@ -536,7 +529,6 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     if (this.variableRegistry.has(attrs, attr)) {
       return this.variableRegistry.get(attrs, attr);
     } else {
-      const value = this.currentVariableIndex;
       const attrInfo: GlyphConstraintAnalyzerAttribute = {
         index: this.currentVariableIndex,
         id: uniqueID(),
@@ -554,8 +546,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
   public addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, { index: number }]>,
-    rhs: Array<[number, { index: number }]> = []
+    lhs: [number, { index: number }][],
+    rhs: [number, { index: number }][] = []
   ) {
     this.linears.push([
       bias,
@@ -570,8 +562,8 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
   public addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, { index: number }]>,
-    rhs: Array<[number, { index: number }]> = []
+    lhs: [number, { index: number }][],
+    rhs: [number, { index: number }][] = []
   ) {
     this.linears.push([
       bias,
@@ -628,7 +620,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     switch (mapping.type) {
       case MappingType.scale:
         {
-          const scaleMapping = mapping as Specification.ScaleMapping;
+          const scaleMapping = <Specification.ScaleMapping>mapping;
           this.addInputAttribute(
             `scale/${scaleMapping.scale}/${scaleMapping.expression}`,
             this.attr(attrs, attr)
@@ -641,18 +633,16 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         break;
       case MappingType.value:
         {
-          const valueMapping = mapping as Specification.ValueMapping;
+          const valueMapping = <Specification.ValueMapping>mapping;
           attrs[attr] = valueMapping.value;
-          this.addLinear(
-            ConstraintStrength.HARD,
-            valueMapping.value as number,
-            [[-1, this.attr(attrs, attr)]]
-          );
+          this.addLinear(ConstraintStrength.HARD, <number>valueMapping.value, [
+            [-1, this.attr(attrs, attr)],
+          ]);
         }
         break;
       case MappingType.parent:
         {
-          const parentMapping = mapping as Specification.ParentMapping;
+          const parentMapping = <Specification.ParentMapping>mapping;
           this.addEquals(
             ConstraintStrength.HARD,
             this.attr(attrs, attr),
@@ -671,11 +661,9 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
       attributes: {},
       marks: [],
     };
-    const glyphClass = Prototypes.ObjectClasses.Create(
-      null,
-      glyph,
-      glyphState
-    ) as Prototypes.Glyphs.GlyphClass;
+    const glyphClass = <Prototypes.Glyphs.GlyphClass>(
+      Prototypes.ObjectClasses.Create(null, glyph, glyphState)
+    );
     glyphClass.initializeState();
     for (const mark of glyph.marks) {
       const markState: Specification.MarkState = {
@@ -696,6 +684,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
         continue;
       }
       this.addAttribute(glyphState.attributes, attr, glyph._id);
+      // eslint-disable-next-line
       if (glyph.mappings.hasOwnProperty(attr)) {
         this.addMapping(
           glyphState.attributes,
@@ -707,17 +696,16 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     }
 
     for (const [mark, markState] of zip(glyph.marks, glyphState.marks)) {
-      const markClass = Prototypes.ObjectClasses.Create(
-        glyphClass,
-        mark,
-        markState
-      ) as Prototypes.Marks.MarkClass;
+      const markClass = <Prototypes.Marks.MarkClass>(
+        Prototypes.ObjectClasses.Create(glyphClass, mark, markState)
+      );
       for (const attr of markClass.attributeNames) {
         const info = markClass.attributes[attr];
         if (info.solverExclude) {
           continue;
         }
         this.addAttribute(markState.attributes, attr, mark._id);
+        // eslint-disable-next-line
         if (mark.mappings.hasOwnProperty(attr)) {
           this.addMapping(
             markState.attributes,
@@ -751,6 +739,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     this.glyphState = glyphState;
   }
 
+  // eslint-disable-next-line
   public setValue() {}
   public getValue() {
     return 0;
@@ -760,6 +749,7 @@ export class GlyphConstraintAnalyzer extends ConstraintSolver {
     console.warn("(unimplemented) Make Constant: ", attr);
   }
 
+  // eslint-disable-next-line
   public destroy() {}
 
   private ker: Float64Array[];

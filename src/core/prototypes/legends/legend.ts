@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import {
+  defaultFont,
+  defaultFontSizeLegend,
+} from "../../../app/stores/defaults";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
@@ -51,8 +55,8 @@ export abstract class LegendClass extends ChartElementClass {
     visible: true,
     alignX: "start",
     alignY: "end",
-    fontFamily: "Arial",
-    fontSize: 10,
+    fontFamily: defaultFont,
+    fontSize: defaultFontSizeLegend,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],
@@ -113,23 +117,22 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = this.getLayoutBox();
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -140,7 +143,7 @@ export abstract class LegendClass extends ChartElementClass {
         options: {
           snapToClosestPoint: true,
         },
-      } as Handles.Point,
+      },
     ];
   }
 
@@ -167,7 +170,6 @@ export abstract class LegendClass extends ChartElementClass {
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const props = this.object.properties;
     const widget = [
       manager.sectionHeader(strings.objects.legend.labels),
       manager.row(

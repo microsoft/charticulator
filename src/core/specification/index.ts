@@ -84,6 +84,7 @@ export type AttributeValue =
   | Specification.Chart;
 
 /** Attribute value list */
+// eslint-disable-next-line
 export interface AttributeList extends ArrayLike<AttributeValue> {}
 
 /** Attribute value map */
@@ -213,6 +214,7 @@ export interface ExposableObject extends Object {
 }
 
 /** Element: a single graphical mark, such as rect, circle, wedge; an element is driven by a group of data rows */
+// eslint-disable-next-line
 export interface Element<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
@@ -254,21 +256,25 @@ export interface PlotSegment<
 }
 
 /** Guide */
+// eslint-disable-next-line
 export interface Guide<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** Guide Coordinator */
+// eslint-disable-next-line
 export interface GuideCoordinator<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** Links */
+// eslint-disable-next-line
 export interface Links<
   PropertiesType extends ObjectProperties = ObjectProperties
 > extends Object<PropertiesType> {}
 
 /** ChartElement is a PlotSegment or a Guide */
+// eslint-disable-next-line
 export type ChartElement<
   PropertiesType extends ObjectProperties = ObjectProperties
 > =
@@ -319,10 +325,12 @@ export interface ObjectState<
 }
 
 /** Element state */
+// eslint-disable-next-line
 export interface MarkState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 
 /** Scale state */
+// eslint-disable-next-line
 export interface ScaleState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 
@@ -347,6 +355,7 @@ export interface PlotSegmentState<
 }
 
 /** Guide state */
+// eslint-disable-next-line
 export interface GuideState<AttributesType extends AttributeMap = AttributeMap>
   extends ObjectState<AttributesType> {}
 

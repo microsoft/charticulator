@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/no-namespace */
 
 import { scaleUtc, scaleLinear, scaleLog } from "d3-scale";
 import { getSortFunctionByData } from ".";
@@ -164,10 +165,10 @@ export namespace Scale {
             });
           }
           break;
-        case "order":
-          {
-          }
-          break;
+        // case "order":
+        //   {
+        //   }
+        //   break;
       }
       this.domain = new Map<string, number>();
       for (let i = 0; i < domain.length; i++) {

@@ -1,14 +1,12 @@
-import { Actions } from "../../actions";
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 /** A registry of action handlers */
 export class ActionHandlerRegistry<ThisType, BaseAction> {
-  private handlers: Array<{
+  private handlers: {
     constructor: any;
     handler: (this: ThisType, action: BaseAction) => void;
-  }> = [];
+  }[] = [];
 
   /**
    * Register an action handler function

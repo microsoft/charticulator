@@ -201,14 +201,14 @@ export const strings = {
     issues: "Report an Issue",
     version: (version: string) => `Version: ${version}`,
   },
-  mainTabs: {
+  mainTabs: <{ [key in MainTabs]: string }>{
     about: "About",
     export: "Export",
     new: "New",
     open: "Open",
     options: "Options",
     save: "Save As",
-  } as { [key in MainTabs]: string },
+  },
   mainView: {
     attributesPaneltitle: "Attributes",
     datasetPanelTitle: "Dataset",
@@ -289,14 +289,16 @@ export const strings = {
     textbox: "Textbox",
     triangle: "Triangle",
   },
-  typeDisplayNames: {
+  typeDisplayNames: <{ [key in DataType]: string }>{
     boolean: "Boolean",
     date: "Date",
     number: "Number",
     string: "String",
-  } as { [key in DataType]: string },
+  },
   core: {
     default: "(default)",
+    auto: "(auto)",
+    none: "(none)",
   },
   cartesianTerminology,
   curveTerminology,

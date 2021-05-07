@@ -142,7 +142,7 @@ export class DataFieldSelector extends React.Component<
         (table) => table.name == this.props.table || this.props.table == null
       )[0];
     const columns = table.columns;
-    const columnFilters: Array<(x: DataFieldSelectorValue) => boolean> = [];
+    const columnFilters: ((x: DataFieldSelectorValue) => boolean)[] = [];
     columnFilters.push((x) => !x.metadata.isRaw);
     if (this.props.table) {
       columnFilters.push((x) => x.table == this.props.table);
@@ -352,7 +352,7 @@ export class DataFieldSelector extends React.Component<
           )}
           onClick={
             item.selectable
-              ? (event) => {
+              ? () => {
                   this.selectItem(
                     item,
                     this.isValueEqual(this.state.currentSelection, item)

@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import {
   defaultCurrency,
@@ -11,17 +15,15 @@ import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
 import { ContextedComponent, MainContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
-import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
-import { InputText } from "../panels/widgets/controls";
 
 export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
+// eslint-disable-next-line
 const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
   store,
-  onClose,
 }) => {
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
@@ -34,15 +36,15 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
     LocalStorageKeys.DelimiterSymbol
   );
 
-  const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
-    localeFileFormat.currency,
-    LocalStorageKeys.CurrencySymbol
-  );
+  // const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
+  //   localeFileFormat.currency,
+  //   LocalStorageKeys.CurrencySymbol
+  // );
 
-  const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
-    localeFileFormat.group,
-    LocalStorageKeys.GroupSymbol
-  );
+  // const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
+  //   localeFileFormat.group,
+  //   LocalStorageKeys.GroupSymbol
+  // );
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
     store.setLocaleFileFormat(localeFileFormat);

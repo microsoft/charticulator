@@ -10,7 +10,7 @@ export type Widget = any;
 
 export interface Property {
   property: string;
-  field?: string | number | Array<string | number>;
+  field?: string | number | (string | number)[];
   noUpdateState?: boolean;
   noComputeLayout?: boolean;
 }
@@ -19,7 +19,7 @@ export const enum LabelPosition {
   Right,
   Bottom,
   Left,
-  Top
+  Top,
 }
 
 export interface InputSelectOptions {
@@ -105,6 +105,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
 }
 
+// eslint-disable-next-line
 export interface TableOptions {}
 
 export interface FilterEditorOptions {
@@ -152,6 +153,10 @@ export interface InputExpressionOptions {
   table?: string;
 }
 
+export interface InputFormatOptions {
+  blank?: string;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -173,6 +178,7 @@ export interface WidgetManager {
   inputSelect(property: Property, options: InputSelectOptions): Widget;
   inputBoolean(property: Property, options: InputBooleanOptions): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
+  inputFormat(property: Property, options?: InputFormatOptions): Widget;
   inputImage(property: Property): Widget;
   inputImageProperty(property: Property): Widget;
   inputColor(property: Property, options?: InputColorOptions): Widget;

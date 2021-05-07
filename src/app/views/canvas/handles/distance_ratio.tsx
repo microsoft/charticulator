@@ -56,7 +56,7 @@ export class DistanceRatioHandleView extends React.Component<
     let context: HandlesDragContext = null;
     let oldValue = 0;
 
-    this.hammer.on("panstart", (e) => {
+    this.hammer.on("panstart", () => {
       context = new HandlesDragContext();
       oldValue = this.props.handle.value;
       this.setState({

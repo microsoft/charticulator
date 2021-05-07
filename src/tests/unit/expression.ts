@@ -4,7 +4,7 @@ import { expect } from "chai";
 import * as Expression from "../../core/expression";
 
 describe("Basic Expression", () => {
-  const test_cases: Array<[string, any]> = [
+  const test_cases: [string, any][] = [
     // Arithmetics
     [`1 - 2 - 3 - 4`, -8],
     [`12 * (3 + 6 - 5 + 4 * (3 + 7)) * 13 / 12`, 572],
@@ -67,7 +67,8 @@ describe("Basic Expression", () => {
       const expected = ci[1];
       const e = Expression.parse(expr);
       const es = e.toString();
-      const ep = Expression.parse(es);
+      // const ep = Expression.parse(es);
+      Expression.parse(es);
       const epreturned = e.getValue(context);
       expect(epreturned).deep.equals(expected, expr);
     });
@@ -75,7 +76,7 @@ describe("Basic Expression", () => {
 });
 
 describe("Text Expression", () => {
-  const test_cases: Array<[string, any]> = [
+  const test_cases: [string, any][] = [
     [
       "Hello World, Temperature is ${Temperature}{.1f} degree",
       "Hello World, Temperature is 70.0 degree",
@@ -103,7 +104,8 @@ describe("Text Expression", () => {
       const expected = ci[1];
       const e = Expression.parseTextExpression(expr);
       const es = e.toString();
-      const ep = Expression.parseTextExpression(es);
+      // const ep = Expression.parseTextExpression(es);
+      Expression.parseTextExpression(es);
       const epreturned = e.getValue(context);
       expect(epreturned).deep.equals(expected, expr);
     });

@@ -26,10 +26,9 @@ export class NumericalColorLegendClass extends LegendClass {
       return null;
     }
 
-    const range = scale[0].properties
-      .range as Specification.Types.ColorGradient;
-    const domainMin = scale[0].properties.domainMin as number;
-    const domainMax = scale[0].properties.domainMax as number;
+    const range = <Specification.Types.ColorGradient>scale[0].properties.range;
+    const domainMin = <number>scale[0].properties.domainMin;
+    const domainMax = <number>scale[0].properties.domainMax;
 
     const axisRenderer = new AxisRenderer();
     axisRenderer.setLinearScale(domainMin, domainMax, 0, height, null);

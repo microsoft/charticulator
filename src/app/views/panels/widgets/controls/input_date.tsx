@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+
 import * as React from "react";
 import { InputText } from "./input_text";
 import { applyDateFormat } from "../../../../../core";
@@ -18,7 +20,7 @@ export interface InputDateProps {
 export class InputDate extends React.Component<InputDateProps, {}> {
   private textInput: InputText;
 
-  private formatDate(value: number | Date, interval: string) {
+  private formatDate(value: number | Date) {
     if (value == null) {
       return "";
     }
@@ -46,10 +48,7 @@ export class InputDate extends React.Component<InputDateProps, {}> {
             <InputText
               ref={(e) => (this.textInput = e)}
               placeholder={this.props.placeholder}
-              defaultValue={this.formatDate(
-                this.props.defaultValue,
-                this.props.interval
-              )}
+              defaultValue={this.formatDate(this.props.defaultValue)}
               onEnter={(str) => {
                 const date = parseDate(str);
                 this.props.onEnter(date);

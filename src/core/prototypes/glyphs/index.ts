@@ -46,7 +46,7 @@ export abstract class GlyphClass extends ObjectClass {
   public abstract getHandles(): Handles.Description[];
 
   public static createDefault(table: string): Specification.Glyph {
-    const glyph = super.createDefault() as Specification.Glyph;
+    const glyph = <Specification.Glyph>super.createDefault();
     glyph.table = table;
     glyph.constraints = [];
     glyph.marks = [];
@@ -179,6 +179,7 @@ export class RectangleGlyph extends GlyphClass {
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildIntrinsicConstraints(solver: ConstraintSolver): void {
     const [
       x1,
@@ -283,42 +284,42 @@ export class RectangleGlyph extends GlyphClass {
   public getAlignmentGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     return [
-      {
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.ix1,
         attribute: "ix1",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.ix2,
         attribute: "ix2",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.icx,
         attribute: "icx",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.iy1,
         attribute: "iy1",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.iy2,
         attribute: "iy2",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.icy,
         attribute: "icy",
         visible: true,
-      } as SnappingGuides.Axis,
+      },
     ];
   }
 
@@ -327,34 +328,34 @@ export class RectangleGlyph extends GlyphClass {
     const { ix1, iy1, ix2, iy2 } = attrs;
     const inf = [-10000, 10000];
     return [
-      {
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "ix1" }],
         value: ix1,
         span: inf,
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "x",
         actions: [{ type: "attribute", attribute: "ix2" }],
         value: ix2,
         span: inf,
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "iy1" }],
         value: iy1,
         span: inf,
-      } as Handles.Line,
-      {
+      },
+      <Handles.Line>{
         type: "line",
         axis: "y",
         actions: [{ type: "attribute", attribute: "iy2" }],
         value: iy2,
         span: inf,
-      } as Handles.Line,
+      },
     ];
   }
 

@@ -115,6 +115,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
     };
   }
 
+  // eslint-disable-next-line
   public render() {
     const toolBarCreator = (config: {
       undoRedoLocation: UndoRedoLocation;

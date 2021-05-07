@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, indexOf } from "../../common";
+import { Color } from "../../common";
 import * as Graphics from "../../graphics";
 
 import { LegendClass, LegendProperties } from "./legend";
@@ -30,13 +30,16 @@ export class CategoricalLegendClass extends LegendClass {
   public getLegendItems(): CategoricalLegendItem[] {
     const scale = this.getScale();
     if (scale) {
-      const [scaleObject, scaleState] = scale;
-      const mapping = scaleObject.properties.mapping as {
-        [name: string]: Color;
-      };
+      const [scaleObject] = scale;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
       const items: CategoricalLegendItem[] = [];
       for (const key in mapping) {
         if (
+          // eslint-disable-next-line
           mapping.hasOwnProperty(key) &&
           !key.startsWith(ReservedMappingKeyNamePrefix)
         ) {
@@ -115,6 +118,7 @@ export class CategoricalLegendClass extends LegendClass {
     }
   }
 
+  // eslint-disable-next-line
   public getGraphics(): Graphics.Element {
     const fontFamily = this.object.properties.fontFamily;
     const fontSize = this.object.properties.fontSize;
@@ -154,7 +158,7 @@ export class CategoricalLegendClass extends LegendClass {
               case "rectangle":
                 gItem.elements.push(
                   Graphics.makeRect(8, 4, lineHeight, lineHeight - 4, {
-                    fillColor: item.value as Color,
+                    fillColor: <Color>item.value,
                   })
                 );
                 break;
@@ -176,7 +180,7 @@ export class CategoricalLegendClass extends LegendClass {
                       },
                     ],
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );
@@ -190,7 +194,7 @@ export class CategoricalLegendClass extends LegendClass {
                     lineHeight / 2,
                     lineHeight / 3,
                     {
-                      fillColor: item.value as Color,
+                      fillColor: <Color>item.value,
                     }
                   )
                 );

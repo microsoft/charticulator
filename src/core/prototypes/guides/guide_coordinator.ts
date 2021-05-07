@@ -25,6 +25,8 @@ export interface GuideCoordinatorAttributes extends Specification.AttributeMap {
   angle2: number;
   radial1: number;
   radial2: number;
+
+  count: number;
 }
 
 export interface GuideCoordinatorProperties extends Specification.AttributeMap {
@@ -38,7 +40,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
   public static classID = "guide.guide-coordinator";
   public static type = "guide";
 
-  private static BaseGuidesCount = 2;
+  private static BaseGuidesCount = 0;
 
   public static metadata: ObjectClassMetadata = {
     displayName: "GuideCoordinator",
@@ -47,7 +49,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   public static defaultAttributes: Partial<GuideCoordinatorAttributes> = {
     axis: "x",
-    count: 4,
+    count: 2,
   };
 
   public buildConstraints(solver: ConstraintSolver) {
@@ -60,7 +62,9 @@ export class GuideCoordinatorClass extends ChartElementClass<
       t1 = solver.attr(attrs, "y1");
       t2 = solver.attr(attrs, "y2");
     }
-    const length = (this.object.properties.count as number) - 2;
+    const length =
+      <number>this.object.properties.count -
+      GuideCoordinatorClass.BaseGuidesCount;
     this.getValueNames().map((name, index) => {
       const t = (1 + index) / (length + 1);
       solver.addLinear(
@@ -80,7 +84,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (this.object.properties.count as number) -
+      <number>this.object.properties.count -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -121,7 +125,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     for (
       let i = 0;
       i <
-      (this.object.properties.count as number) -
+      <number>this.object.properties.count -
         GuideCoordinatorClass.BaseGuidesCount;
       i++
     ) {
@@ -135,7 +139,6 @@ export class GuideCoordinatorClass extends ChartElementClass<
   }
 
   public initializeState() {
-    const v = this.attributeNames;
     this.state.attributes.x1 = -100;
     this.state.attributes.y1 = -100;
     this.state.attributes.x2 = 100;
@@ -153,11 +156,11 @@ export class GuideCoordinatorClass extends ChartElementClass<
 
   /** Get handles given current state */
   public getHandles(): Handles.Description[] {
-    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const attrs = <GuideCoordinatorAttributes>this.state.attributes;
     const { x1, y1, x2, y2 } = attrs;
     const axis = this.getAxis();
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x: x1,
         y: y1,
@@ -165,8 +168,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
           { type: "attribute", source: "x", attribute: "x1" },
           { type: "attribute", source: "y", attribute: "y1" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.Point>{
         type: "point",
         x: axis == "y" ? x1 : x2,
         y: axis == "x" ? y1 : y2,
@@ -182,12 +185,12 @@ export class GuideCoordinatorClass extends ChartElementClass<
             attribute: axis == "x" ? "y1" : "y2",
           },
         ],
-      } as Handles.Point,
+      },
     ];
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes as GuideCoordinatorAttributes;
+    const attrs = <GuideCoordinatorAttributes>this.state.attributes;
     const { x1, y1 } = attrs;
     let { x2, y2 } = attrs;
     if (this.getAxis() == "x") {
@@ -195,7 +198,7 @@ export class GuideCoordinatorClass extends ChartElementClass<
     } else {
       x2 = x1;
     }
-    return {
+    return <BoundingBox.Line>{
       type: "line",
       visible: true,
       morphing: true,
@@ -203,29 +206,31 @@ export class GuideCoordinatorClass extends ChartElementClass<
       y1,
       x2,
       y2,
-    } as BoundingBox.Line;
+    };
   }
 
-  private getBasicValues() {
-    if (this.getAxis() === "x") {
-      return ["x1", "x2"];
-    }
-    if (this.getAxis() === "y") {
-      return ["y1", "y2"];
-    }
+  private getBasicValues(): string[] {
+    return [];
+    // uncomment to render main mark guides
+    // if (this.getAxis() === "x") {
+    //   return ["x1", "x2"];
+    // }
+    // if (this.getAxis() === "y") {
+    //   return ["y1", "y2"];
+    // }
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     return this.getValueNames()
       .concat(this.getBasicValues())
       .map((name) => {
-        return {
+        return <SnappingGuides.Axis>{
           type: this.getAxis(),
           value: this.state.attributes[name],
           attribute: name,
           visible: true,
           visualType: SnappingGuidesVisualTypes.Coordinator,
-        } as SnappingGuides.Axis;
+        };
       });
   }
 
@@ -242,8 +247,8 @@ export class GuideCoordinatorClass extends ChartElementClass<
           {
             showUpdown: true,
             updownTick: 1,
-            updownRange: [3, 100],
-            minimum: 3,
+            updownRange: [1, 100],
+            minimum: 1,
             maximum: 100,
           }
         )

@@ -12,6 +12,7 @@ import {
   Color,
   Geometry,
   getFormat,
+  tickFormatParserExpression,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -19,7 +20,6 @@ import {
   makeGroup,
   makeLine,
   makeText,
-  PathMaker,
   makePath,
   Style,
 } from "../../graphics";
@@ -28,26 +28,24 @@ import {
   TextMeasurer,
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
-import {
-  Controls,
-  strokeStyleToDashArray,
-  TemplateParameters,
-} from "../common";
+import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap } from "../../specification";
+import { strings } from "../../../strings";
+import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   lineColor: { r: 0, g: 0, b: 0 },
-  fontFamily: "Arial",
-  fontSize: 12,
+  fontFamily: defaultFont,
+  fontSize: defaultFontSize,
   tickSize: 5,
   wordWrap: false,
   gridlineStyle: "none",
-  gridlineColor: {
+  gridlineColor: <Color>{
     r: 234,
     g: 234,
     b: 234,
-  } as Color,
+  },
   gridlineWidth: 1,
 };
 
@@ -140,20 +138,20 @@ export class AxisRenderer {
           );
         }
         break;
-      case "default":
-        {
-        }
-        break;
+      // case "default":
+      //   {
+      //   }
+      //   break;
     }
     return this;
   }
 
-  public ticksData: Array<{ tick: any; value: any }>;
-  public setTicksByData(ticks: Array<{ tick: any; value: any }>) {
+  public ticksData: { tick: any; value: any }[];
+  public setTicksByData(ticks: { tick: any; value: any }[]) {
     const position2Tick = new Map<number, string>();
     for (const tick of ticks) {
       const pos = this.valueToPosition(tick.value);
-      position2Tick.set(pos, tick.tick as string);
+      position2Tick.set(pos, <string>tick.tick);
     }
     this.ticks = [];
     for (const [pos, tick] of position2Tick.entries()) {
@@ -173,7 +171,7 @@ export class AxisRenderer {
     } else {
       // {.0%}
       return (value: number) => {
-        return tickFormat.replace(/\{([^}]+)\}/g, (_, spec) => {
+        return tickFormat.replace(tickFormatParserExpression(), (_, spec) => {
           return getFormat()(spec)(value);
         });
       };
@@ -299,7 +297,7 @@ export class AxisRenderer {
 
   public setCategoricalScale(
     domain: string[],
-    range: Array<[number, number]>,
+    range: [number, number][],
     rangeMin: number,
     rangeMax: number,
     tickFormat?: (value: any) => string
@@ -388,6 +386,7 @@ export class AxisRenderer {
     }
   }
 
+  // eslint-disable-next-line
   public renderLine(x: number, y: number, angle: number, side: number): Group {
     const g = makeGroup([]);
     const style = this.style;
@@ -485,14 +484,14 @@ export class AxisRenderer {
               }
             );
             lines.push(text);
-            const gText = makeGroup(lines);
-            gText.transform = {
-              x: tx + dx,
-              y: ty + dy,
-              angle: 0,
-            };
-            g.elements.push(gText);
           }
+          const gText = makeGroup(lines);
+          gText.transform = {
+            x: tx + dx,
+            y: ty + dy,
+            angle: 0,
+          };
+          g.elements.push(gText);
         } else {
           // 60 ~ 120 degree
           const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -654,9 +653,7 @@ export class AxisRenderer {
     x: number,
     y: number,
     innerRadius: number,
-    outerRadius: number,
-    startAngle: number,
-    endAngle: number
+    outerRadius: number
   ) {
     const style = this.style;
     if (style.gridlineStyle === "none") {
@@ -739,6 +736,7 @@ export class AxisRenderer {
     return g;
   }
 
+  // eslint-disable-next-line
   public renderPolar(
     cx: number,
     cy: number,
@@ -748,7 +746,6 @@ export class AxisRenderer {
     const style = this.style;
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
-    const tickSize = style.tickSize;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.lineColor,
@@ -757,10 +754,6 @@ export class AxisRenderer {
     g.transform.x = cx;
     g.transform.y = cy;
 
-    const hintStyle = {
-      strokeColor: { r: 0, g: 0, b: 0 },
-      strokeOpacity: 0.1,
-    };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
@@ -863,9 +856,6 @@ export class AxisRenderer {
     side: number
   ): Group {
     const style = this.style;
-    const rangeMin = this.rangeMin;
-    const rangeMax = this.rangeMax;
-    const tickSize = style.tickSize;
     const lineStyle: Style = {
       strokeLinecap: "round",
       strokeColor: style.lineColor,
@@ -873,10 +863,6 @@ export class AxisRenderer {
     const g = makeGroup([]);
     g.transform = coordinateSystem.getBaseTransform();
 
-    const hintStyle = {
-      strokeColor: { r: 0, g: 0, b: 0 },
-      strokeOpacity: 0.1,
-    };
     AxisRenderer.textMeasurer.setFontFamily(style.fontFamily);
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
 
@@ -934,10 +920,10 @@ export function getCategoricalAxis(
     postGap = 0;
   }
   const chunkRanges = data.categories.map((c, i) => {
-    return [
+    return <[number, number]>[
       preGap + (gap + chunkSize) * i,
       preGap + (gap + chunkSize) * i + chunkSize,
-    ] as [number, number];
+    ];
   });
   if (reverse) {
     chunkRanges.reverse();
@@ -1053,6 +1039,7 @@ export function buildAxisAppearanceWidgets(
   }
 }
 
+// eslint-disable-next-line
 export function buildAxisWidgets(
   data: Specification.Types.AxisDataBinding,
   axisProperty: string,
@@ -1151,12 +1138,14 @@ export function buildAxisWidgets(
           widgets.push(
             m.row(
               "Tick Format",
-              m.inputText(
+              m.inputFormat(
                 {
                   property: axisProperty,
                   field: "tickFormat",
                 },
-                "(auto)"
+                {
+                  blank: strings.core.auto,
+                }
               )
             )
           );
@@ -1201,12 +1190,14 @@ export function buildAxisWidgets(
             widgets.push(
               m.row(
                 "Tick Format",
-                m.inputText(
+                m.inputFormat(
                   {
                     property: axisProperty,
                     field: "tickFormat",
                   },
-                  "(auto)"
+                  {
+                    blank: strings.core.auto,
+                  }
                 )
               )
             );
@@ -1290,9 +1281,9 @@ export function buildAxisInference(
   plotSegment: Specification.PlotSegment,
   property: string
 ): Specification.Template.Inference {
-  const axis = plotSegment.properties[
-    property
-  ] as Specification.Types.AxisDataBinding;
+  const axis = <Specification.Types.AxisDataBinding>(
+    plotSegment.properties[property]
+  );
   return {
     objectID: plotSegment._id,
     dataSource: {
@@ -1315,14 +1306,14 @@ export function buildAxisProperties(
   plotSegment: Specification.PlotSegment,
   property: string
 ): Specification.Template.Property[] {
-  const axisObject = plotSegment.properties[property] as AttributeMap;
+  const axisObject = <AttributeMap>plotSegment.properties[property];
   const style: any = axisObject.style;
   if (!style) {
     return [];
   }
   return [
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1334,7 +1325,7 @@ export function buildAxisProperties(
       default: style.tickSize,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1346,7 +1337,7 @@ export function buildAxisProperties(
       default: style.fontSize,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1358,7 +1349,7 @@ export function buildAxisProperties(
       default: style.fontFamily,
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1370,7 +1361,7 @@ export function buildAxisProperties(
       default: rgbToHex(style.lineColor),
     },
     {
-      objectID: plotSegment._id as string,
+      objectID: plotSegment._id,
       target: {
         property: {
           property,
@@ -1380,6 +1371,28 @@ export function buildAxisProperties(
       },
       type: Specification.AttributeType.Color,
       default: rgbToHex(style.tickColor),
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "tickFormat",
+        },
+      },
+      type: Specification.AttributeType.Text,
+      default: null,
+    },
+    {
+      objectID: plotSegment._id,
+      target: {
+        property: {
+          property,
+          field: "tickDataExpression",
+        },
+      },
+      type: Specification.AttributeType.Text,
+      default: null,
     },
   ];
 }

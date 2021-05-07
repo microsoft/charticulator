@@ -24,7 +24,6 @@ import {
   DataFieldSelectorValue,
 } from "../dataset/data_field_selector";
 import { ReorderListView } from "./object_list_editor";
-import { LinkMarkType } from "../../../core/prototypes/links";
 import { PanelRadioControl } from "./radio_control";
 import { MappingType } from "../../../core/specification";
 
@@ -165,12 +164,14 @@ export class LinkCreationPanel extends ContextedComponent<
     );
   }
 
+  // eslint-disable-next-line
   private getDefaultAnchor(
     manager: Prototypes.ChartStateManager,
     linkMode: string,
     cs: Graphics.CoordinateSystem,
     glyph1: Specification.Glyph,
     glyphState1: Specification.GlyphState,
+    // eslint-disable-next-line
     glyph2: Specification.Glyph,
     glyphState2: Specification.GlyphState
   ): {
@@ -472,30 +473,9 @@ export class LinkCreationPanel extends ContextedComponent<
     };
   }
 
+  // eslint-disable-next-line
   public getLinkObject() {
     const manager = this.store.chartManager;
-    let defaultColor: Specification.ValueMapping;
-    let defaultOpacity: Specification.ValueMapping;
-    switch (this.state.linkType) {
-      case "line":
-        {
-          defaultColor = {
-            type: MappingType.value,
-            value: { r: 0, g: 0, b: 0 },
-          };
-          defaultOpacity = { type: MappingType.value, value: 0.5 };
-        }
-        break;
-      case "band":
-        {
-          defaultColor = {
-            type: MappingType.value,
-            value: { r: 0, g: 0, b: 0 },
-          };
-          defaultOpacity = { type: MappingType.value, value: 0.5 };
-        }
-        break;
-    }
     const plotSegmentIDs = this.state.selectedPlotSegments;
     const plotSegmentClasses = plotSegmentIDs.map(
       (x) => manager.getClassById(x) as Prototypes.PlotSegments.PlotSegmentClass

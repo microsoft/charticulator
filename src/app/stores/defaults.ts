@@ -144,6 +144,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
       name: "Chart",
       backgroundColor: null,
       backgroundOpacity: 1,
+      enableContextMenu: true,
     },
     mappings: {
       marginTop: {
@@ -162,3 +163,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
     resources: [],
   } as Specification.Chart;
 }
+
+export const defaultFont = "Segoe UI";
+export const defaultFontSize = 12;
+export const defaultFontSizeLegend = 10;

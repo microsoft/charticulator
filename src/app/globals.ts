@@ -6,13 +6,13 @@ import {
   ResizeListeners,
 } from "./controllers";
 
-export let dragController = new DragController();
-export let popupController = new PopupController();
-export let resizeListeners = new ResizeListeners();
+export const dragController = new DragController();
+export const popupController = new PopupController();
+export const resizeListeners = new ResizeListeners();
 
 export enum LocalStorageKeys {
   NumberFormatRemove = "numberFormatRemove",
   DelimiterSymbol = "delimiterSymbol",
   CurrencySymbol = "currencySymbol",
-  GroupSymbol = "groupSymbol"
+  GroupSymbol = "groupSymbol",
 }

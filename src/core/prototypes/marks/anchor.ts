@@ -84,14 +84,14 @@ export class AnchorElement extends MarkClass {
     glyph: Specification.Glyph
   ): Specification.Element {
     const element = super.createDefault(glyph);
-    element.mappings.x = {
+    element.mappings.x = <Specification.ParentMapping>{
       type: MappingType.parent,
       parentAttribute: "icx",
-    } as Specification.ParentMapping;
-    element.mappings.y = {
+    };
+    element.mappings.y = <Specification.ParentMapping>{
       type: MappingType.parent,
       parentAttribute: "icy",
-    } as Specification.ParentMapping;
+    };
     return element;
   }
 

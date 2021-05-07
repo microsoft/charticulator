@@ -155,6 +155,7 @@ export class ResizeHandleView extends React.Component<
     this.hammer.destroy();
   }
 
+  // eslint-disable-next-line
   public render() {
     const fX = (x: number) =>
       x * this.props.zoom.scale + this.props.zoom.centerX;
