@@ -382,6 +382,15 @@ export const strings = {
     },
     dataAxis: {
       dataExpression: "Data Expressions",
+      autoUpdateValues: "Auto update values",
+      autoMin: "Auto min value",
+      autoMax: "Auto max value",
+      end: "End",
+      start: "Start",
+      exportProperties: " export properties",
+      domain: "Domain",
+      range: "Range",
+      gradient: "Gradient",
     },
     icon: {
       label: "Icon",
@@ -394,6 +403,13 @@ export const strings = {
       imageMode: "Resize Mode",
       letterbox: "Letterbox",
       stretch: "Stretch",
+    },
+    scales: {
+      mode: "Mode",
+      greater: "Greater",
+      less: "Less",
+      interval: "Interval",
+      inclusive: "Inclusive",
     },
   },
 };
