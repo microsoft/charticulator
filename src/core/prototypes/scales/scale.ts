@@ -17,8 +17,10 @@ import {
 } from "../common";
 
 export interface InferParametersOptions extends DataMappingHints {
-  /** Whether to extend the scale domain/range with new data */
-  extendScale?: boolean;
+  /** Whether to extend the scale min domain with new data */
+  extendScaleMin?: boolean;
+  /** Whether to extend the scale max domain with new data */
+  extendScaleMax?: boolean;
   /** Whether to reuse the existing range of the scale, applies to color and image */
   reuseRange?: boolean;
   /** Whether to ensure the domainMin == 0 (for numeric scales) */

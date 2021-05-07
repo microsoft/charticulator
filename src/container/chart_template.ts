@@ -452,12 +452,21 @@ export class ChartTemplate {
       }
       if (inference.scale) {
         // uses disableAutoMin disableAutoMax for handle old templates
+        // copy old parameters to new
         if (
-          inference.autoDomainMin ||
-          inference.autoDomainMax ||
-          !inference.disableAutoMin ||
-          !inference.disableAutoMax
+          inference.autoDomainMin == null &&
+          inference.disableAutoMin != null
         ) {
+          inference.autoDomainMin = !inference.disableAutoMin;
+        }
+        // copy old parameters to new
+        if (
+          inference.autoDomainMax == null &&
+          inference.disableAutoMax != null
+        ) {
+          inference.autoDomainMax = !inference.disableAutoMax;
+        }
+        if (inference.autoDomainMin || inference.autoDomainMax) {
           const scale = inference.scale;
           const expressions = scale.expressions.map((x) =>
             this.transformExpression(x, inference.dataSource.table)
@@ -474,13 +483,13 @@ export class ChartTemplate {
           );
 
           if (
-            (inference.autoDomainMin || !inference.disableAutoMin) &&
+            inference.autoDomainMin &&
             object.properties.domainMin !== undefined
           ) {
             vectors.push([object.properties.domainMin]);
           }
           if (
-            (inference.autoDomainMax || !inference.disableAutoMax) &&
+            inference.autoDomainMax &&
             object.properties.domainMax != undefined
           ) {
             vectors.push([object.properties.domainMax]);
@@ -493,11 +502,13 @@ export class ChartTemplate {
           if (object.classID === "scale.categorical<string,color>") {
             scaleClass.inferParameters(vector, {
               reuseRange: true,
-              extendScale: true,
+              extendScaleMin: true,
+              extendScaleMax: true,
             });
           } else {
             scaleClass.inferParameters(vector, {
-              extendScale: true,
+              extendScaleMax: inference.autoDomainMax,
+              extendScaleMin: inference.autoDomainMin,
               reuseRange: true,
               rangeNumber: [
                 (object.mappings.rangeMin as ValueMapping)?.value as number,
