@@ -160,7 +160,7 @@ export class CategoricalScaleNumber extends ScaleClass<
         manager.vertical(
           manager.horizontal(
             [0, 1],
-            manager.label("Auto range min value"),
+            manager.label("Auto min value"),
             null,
             manager.inputBoolean(
               {
@@ -173,7 +173,7 @@ export class CategoricalScaleNumber extends ScaleClass<
           ),
           manager.horizontal(
             [0, 1],
-            manager.label("Auto range max value"),
+            manager.label("Auto max value"),
             null,
             manager.inputBoolean(
               {
@@ -228,7 +228,7 @@ export class CategoricalScaleColor extends ScaleClass<
 
       // Otherwise, if we already have a mapping, try to reuse it
     } else if (props.mapping != null) {
-      if (options.extendScale) {
+      if (options.extendScaleMin || options.extendScaleMax) {
         const mapping = reuseMapping(s.domain, props.mapping);
 
         let colorList = literalColorValues(values);
