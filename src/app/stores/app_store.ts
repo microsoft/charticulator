@@ -862,7 +862,11 @@ export class AppStore extends BaseStore {
           groupBy,
           options.expression
         ) as Specification.DataValue[],
-        options.hints
+        {
+          ...options.hints,
+          extendScaleMax: true,
+          extendScaleMin: true,
+        }
       );
 
       return newScale._id;

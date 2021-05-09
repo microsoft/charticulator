@@ -107,10 +107,10 @@ export class LinearScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    if (options.extendScaleMin) {
+    if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;
     }
-    if (options.extendScaleMax) {
+    if (options.extendScaleMax || props.domainMax === undefined) {
       props.domainMax = s.domainMax;
     }
 
