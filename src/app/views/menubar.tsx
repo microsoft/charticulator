@@ -443,22 +443,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
-    let hasUnsavedChanges = false;
-
-    try {
-      expect_deep_approximately_equals(
-        editorTemplate.specification,
-        this.context.store.originTemplate.specification,
-        1e-2
-      );
-    } catch (ex) {
-      if (!(ex.message as string).includes("expected")) {
-        console.error(ex.message);
-      } else {
-        hasUnsavedChanges = true;
-      }
-    }
+    const hasUnsavedChanges = this.store.chartManager.hasUnsavedChanges();
 
     return (
       <MenuButton

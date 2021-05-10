@@ -244,7 +244,8 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       this.dataset
     );
     this.chartState = this.chartManager.chartState;
-    this.originTemplate = this.buildChartTemplate();
+    // this.originTemplate = this.buildChartTemplate();
+    this.chartManager?.resetDifference();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);

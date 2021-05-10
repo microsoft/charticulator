@@ -140,7 +140,7 @@ export class AppStore extends BaseStore {
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
   /** The origin template on import */
-  public originTemplate: Specification.Template.ChartTemplate;
+  // public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -307,7 +307,8 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
-    this.originTemplate = this.buildChartTemplate();
+    // this.originTemplate = this.buildChartTemplate();
+    this.chartManager?.resetDifference();
   }
 
   // removes unused scale objecs
@@ -371,7 +372,8 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
-      this.originTemplate = this.buildChartTemplate();
+      // this.originTemplate = this.buildChartTemplate();
+      this.chartManager?.resetDifference();
 
       this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
@@ -1382,7 +1384,8 @@ export class AppStore extends BaseStore {
               : xDataProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: xDataProperty.order,
+            order:
+              xDataProperty.order !== undefined ? xDataProperty.order : null,
           },
           xDataProperty.rawColumnExpr as string
         );
@@ -1422,7 +1425,8 @@ export class AppStore extends BaseStore {
               : yDataProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: yDataProperty.order,
+            order:
+              yDataProperty.order !== undefined ? yDataProperty.order : null,
           },
           yDataProperty.rawColumnExpr as string
         );
@@ -1446,8 +1450,10 @@ export class AppStore extends BaseStore {
       if (axisProperty) {
         const axisData = new DragData.DataExpression(
           table,
-          axisProperty.expression,
-          axisProperty.valueType,
+          axisProperty.expression !== undefined
+            ? axisProperty.expression
+            : null,
+          axisProperty.valueType !== undefined ? axisProperty.valueType : null,
           {
             kind:
               axisProperty.type === "numerical" &&
@@ -1461,7 +1467,7 @@ export class AppStore extends BaseStore {
               : axisProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: axisProperty.order,
+            order: axisProperty.order !== undefined ? axisProperty.order : null,
           },
           axisProperty.rawColumnExpr as string
         );
@@ -1472,7 +1478,9 @@ export class AppStore extends BaseStore {
           object: plot,
           appendToProperty: null,
           type: axisProperty.type, // TODO get type for column, from current dataset
-          numericalMode: axisProperty.numericalMode,
+          numericalMode: axisProperty.numericalMode
+            ? axisProperty.numericalMode
+            : null,
           autoDomainMax: axisProperty.autoDomainMax,
           autoDomainMin: axisProperty.autoDomainMin,
           domainMin: axisProperty.domainMin,
@@ -1607,6 +1615,9 @@ export class AppStore extends BaseStore {
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
+
+    this.normalizeDataExpression(dataExpression);
+
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
     const propertyValue = object.properties[options.property] as any;
@@ -1634,8 +1645,11 @@ export class AppStore extends BaseStore {
         appendToProperty === "dataExpressions" && propertyValue
           ? ((propertyValue as any).expression as string)
           : groupExpression,
-      rawExpression: dataExpression.rawColumnExpression,
-      valueType,
+      rawExpression:
+        dataExpression.rawColumnExpression !== undefined
+          ? dataExpression.rawColumnExpression
+          : null,
+      valueType: valueType !== undefined ? valueType : null,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible:
@@ -1646,14 +1660,30 @@ export class AppStore extends BaseStore {
       style:
         (objectProperties?.style as AxisRenderingStyle) ||
         deepClone(defaultAxisStyle),
-      numericalMode: options.numericalMode,
-      dataKind: dataExpression.metadata.kind,
-      order: dataExpression.metadata.order,
-      orderMode: dataExpression.metadata.orderMode,
+      numericalMode:
+        options.numericalMode != undefined ? options.numericalMode : null,
+      dataKind:
+        dataExpression.metadata.kind != undefined
+          ? dataExpression.metadata.kind
+          : null,
+      order:
+        dataExpression.metadata.order !== undefined
+          ? dataExpression.metadata.order
+          : null,
+      orderMode:
+        dataExpression.metadata.orderMode !== undefined
+          ? dataExpression.metadata.orderMode
+          : null,
       autoDomainMax: options.autoDomainMax,
       autoDomainMin: options.autoDomainMin,
-      tickFormat: <string>objectProperties?.tickFormat,
-      tickDataExpression: <string>objectProperties?.tickDataExpression,
+      tickFormat:
+        <string>objectProperties?.tickFormat !== undefined
+          ? <string>objectProperties?.tickFormat
+          : null,
+      tickDataExpression:
+        <string>objectProperties?.tickDataExpression !== undefined
+          ? <string>objectProperties?.tickDataExpression
+          : null,
     };
 
     let expressions = [groupExpression];
@@ -1717,7 +1747,7 @@ export class AppStore extends BaseStore {
               values
             );
             dataBinding.categories = categories;
-            dataBinding.order = order;
+            dataBinding.order = order != undefined ? order : null;
           }
 
           break;
@@ -1780,6 +1810,47 @@ export class AppStore extends BaseStore {
         if (props.yData && props.yData.type == "numerical") {
           props.sublayout.type = Region2DSublayoutType.Overlap;
         }
+      }
+    }
+  }
+
+  private normalizeDataExpression(dataExpression: DragData.DataExpression) {
+    if (dataExpression.metadata) {
+      if (dataExpression.metadata.order === undefined) {
+        dataExpression.metadata.order = null;
+      }
+      if (dataExpression.metadata.orderMode === undefined) {
+        dataExpression.metadata.orderMode = null;
+      }
+      if (dataExpression.metadata.rawColumnName === undefined) {
+        dataExpression.metadata.rawColumnName = null;
+      }
+      if (dataExpression.metadata.unit === undefined) {
+        dataExpression.metadata.unit = null;
+      }
+      if (dataExpression.metadata.kind === undefined) {
+        dataExpression.metadata.kind = null;
+      }
+      if (dataExpression.metadata.isRaw === undefined) {
+        dataExpression.metadata.isRaw = null;
+      }
+      if (dataExpression.metadata.format === undefined) {
+        dataExpression.metadata.format = null;
+      }
+      if (dataExpression.metadata.examples === undefined) {
+        dataExpression.metadata.examples = null;
+      }
+      if (dataExpression.scaleID === undefined) {
+        dataExpression.scaleID = null;
+      }
+      if (dataExpression.type === undefined) {
+        dataExpression.type = null;
+      }
+      if (dataExpression.rawColumnExpression === undefined) {
+        dataExpression.rawColumnExpression = null;
+      }
+      if (dataExpression.valueType === undefined) {
+        dataExpression.valueType = null;
       }
     }
   }
