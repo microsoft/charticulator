@@ -19,6 +19,7 @@ import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
+import { defaultAxisProperties } from "../../core/prototypes/plot_segments/axis";
 
 const minWidthToColapseButtons = Object.freeze({
   guides: 1090,
@@ -204,7 +205,7 @@ export class Toolbar extends ContextedComponent<
         classID="mark.data-axis"
         title={strings.toolbar.dataAxis}
         icon="mark/data-axis"
-        options={'{"axis":{"autoDomainMin": true,"autoDomainMax": true}}'}
+        options={`{"axis":${JSON.stringify(defaultAxisProperties)}}`}
       />
     );
   }

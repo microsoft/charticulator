@@ -32,6 +32,11 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+  OrderMode,
+} from "../../specification/types";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -47,6 +52,16 @@ export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
     b: 234,
   },
   gridlineWidth: 1,
+};
+
+export const defaultAxisProperties: AxisDataBinding = {
+  side: "default",
+  type: AxisDataBindingType.Default,
+  visible: true,
+  autoDomainMax: true,
+  autoDomainMin: true,
+  style: deepClone(defaultAxisStyle),
+  orderMode: OrderMode.alphabetically,
 };
 
 function fillDefaultAxisStyle(
