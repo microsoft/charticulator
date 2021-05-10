@@ -307,10 +307,10 @@ export class LinearColorScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    if (options.extendScaleMin) {
+    if (options.extendScaleMin || props.domainMin === undefined) {
       props.domainMin = s.domainMin;
     }
-    if (options.extendScaleMax) {
+    if (options.extendScaleMax || props.domainMax === undefined) {
       props.domainMax = s.domainMax;
     }
 
@@ -436,10 +436,10 @@ export class LinearBooleanScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    if (options.extendScaleMin) {
+    if (options.extendScaleMin || props.min === undefined) {
       props.min = s.domainMin;
     }
-    if (options.extendScaleMax) {
+    if (options.extendScaleMax || props.max === undefined) {
       props.max = s.domainMax;
     }
     props.mode = "interval";
