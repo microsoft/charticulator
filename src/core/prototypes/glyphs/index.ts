@@ -25,7 +25,6 @@ import {
   ObjectClassMetadata,
   SnappingGuides,
 } from "../common";
-import { string } from "../../expression";
 import { strings } from "../../../strings";
 
 export abstract class GlyphClass extends ObjectClass {
