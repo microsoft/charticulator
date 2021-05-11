@@ -139,8 +139,6 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
-  /** The origin template on import */
-  // public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -307,7 +305,6 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
-    // this.originTemplate = this.buildChartTemplate();
     this.chartManager?.resetDifference();
   }
 
@@ -372,7 +369,6 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
-      // this.originTemplate = this.buildChartTemplate();
       this.chartManager?.resetDifference();
 
       this.emit(AppStore.EVENT_GRAPHICS);
