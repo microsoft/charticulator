@@ -45,6 +45,8 @@ export type ClassEnumerationCallback = (
   state: Specification.ObjectState
 ) => void;
 
+export const defaultDifferenceApproximation = 0.01;
+
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
   private chartOrigin: Specification.Chart;
@@ -98,7 +100,11 @@ export class ChartStateManager {
     const originProperties = origin.properties;
 
     try {
-      expect_deep_approximately_equals(currentProperties, originProperties, 0);
+      expect_deep_approximately_equals(
+        currentProperties,
+        originProperties,
+        defaultDifferenceApproximation
+      );
     } catch {
       return true;
     }
@@ -109,34 +115,11 @@ export class ChartStateManager {
       for (let index = 0; index < origin.constraints.length; index++) {
         const originConstringts = origin.constraints[index];
         const current = chart.constraints[index];
-        if (originConstringts.type != current.type) {
-          return true;
-        }
-        if (
-          originConstringts.attributes.element != current.attributes.element
-        ) {
-          return true;
-        }
-        if (originConstringts.attributes.gap != current.attributes.gap) {
-          return true;
-        }
-        if (
-          originConstringts.attributes.attribute != current.attributes.attribute
-        ) {
-          return true;
-        }
-        if (
-          originConstringts.attributes.targetAttribute !=
-          current.attributes.targetAttribute
-        ) {
-          return true;
-        }
-        if (
-          originConstringts.attributes.targetElement !=
-          current.attributes.targetElement
-        ) {
-          return true;
-        }
+        expect_deep_approximately_equals(
+          originConstringts,
+          current,
+          defaultDifferenceApproximation
+        );
       }
     }
 
@@ -204,27 +187,27 @@ export class ChartStateManager {
               expect_deep_approximately_equals(
                 currentPlotSegment.filter,
                 originPlotSegment.filter,
-                0
+                defaultDifferenceApproximation
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.groupBy,
                 originPlotSegment.groupBy,
-                0
+                defaultDifferenceApproximation
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.order,
                 originPlotSegment.order,
-                0
+                defaultDifferenceApproximation
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.mappings,
                 originPlotSegment.mappings,
-                0
+                defaultDifferenceApproximation
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.properties,
                 originPlotSegment.properties,
-                0
+                defaultDifferenceApproximation
               );
             } catch (ex) {
               return true;
@@ -238,7 +221,7 @@ export class ChartStateManager {
             expect_deep_approximately_equals(
               currentProperties,
               originProperties,
-              0
+              defaultDifferenceApproximation
             );
           } catch {
             return true;
@@ -268,7 +251,7 @@ export class ChartStateManager {
             expect_deep_approximately_equals(
               currentProperties,
               originProperties,
-              0
+              defaultDifferenceApproximation
             );
           } catch {
             return true;
@@ -278,7 +261,11 @@ export class ChartStateManager {
         try {
           const currentMappings = currentElement.object.mappings;
           const originMappings = originElement.object.mappings;
-          expect_deep_approximately_equals(currentMappings, originMappings, 0);
+          expect_deep_approximately_equals(
+            currentMappings,
+            originMappings,
+            defaultDifferenceApproximation
+          );
         } catch {
           return true;
         }
