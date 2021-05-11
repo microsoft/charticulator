@@ -23,11 +23,7 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import {
-  expect_deep_approximately_equals,
-  isInIFrame,
-  readFileAsString,
-} from "../utils";
+import { isInIFrame, readFileAsString } from "../utils";
 import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport, MappingMode } from "./file_view/import_view";
