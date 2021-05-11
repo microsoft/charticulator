@@ -126,6 +126,9 @@ export class ChartStateManager {
     const chartElements = [...forEachObject(chart)];
     const originElements = [...forEachObject(origin)];
 
+    // forEachObject retuns all objects in the chart
+    // if any object was added or removed to the chart it means chart has changes
+    // don't need to compare in details
     if (chartElements.length != originElements.length) {
       return true;
     } else {
