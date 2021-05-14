@@ -109,6 +109,7 @@ export class ScalesPanel extends ContextedComponent<
     const mapToUI = (scale: Scale<ObjectProperties>) => (
       glyph: Glyph,
       element: ChartElement<ObjectProperties>
+      // eslint-disable-next-line
     ) => (key: string) => {
       if (!element) {
         return (
@@ -151,20 +152,18 @@ export class ScalesPanel extends ContextedComponent<
                 const allowSelectValue = (element.mappings[key] as any)
                   .allowSelectValue;
                 const aggregation = Expression.getDefaultAggregationFunction(
-                  type
+                  type,
+                  null
                 );
-
                 const applyAggregation = (expr: string) => {
                   return Expression.functionCall(
                     aggregation,
                     Expression.parse(expr)
                   ).toString();
                 };
-
                 const table = this.store.dataset.tables.find(
                   (table) => table.name === (element.mappings[key] as any).table
                 );
-
                 const parsedExpression = Expression.parse(expr);
                 let metadata: ColumnMetadata = {};
                 if (
@@ -172,17 +171,14 @@ export class ScalesPanel extends ContextedComponent<
                   parsedExpression.args[0] instanceof Variable
                 ) {
                   const firstArgument = parsedExpression.args[0] as Variable;
-
                   const column = table.columns.find(
                     (col) => col.name === firstArgument.name
                   );
                   metadata = column.metadata;
-
                   rawColumnExpr =
                     metadata.rawColumnName &&
                     applyAggregation(metadata.rawColumnName);
                 }
-
                 this.setState({ isSelected: expr });
                 const r = new DragData.DataExpression(
                   table,
@@ -215,7 +211,6 @@ export class ScalesPanel extends ContextedComponent<
         );
       }
     };
-
     scales = scales.sort(
       (a: Scale<ObjectProperties>, b: Scale<ObjectProperties>) => {
         if (a.properties.name < b.properties.name) {
@@ -227,7 +222,6 @@ export class ScalesPanel extends ContextedComponent<
         return 0;
       }
     );
-
     // Collect all used scales and object with properties into one list
     const propertyList = scales.flatMap((scale) => {
       return [0]
