@@ -1383,7 +1383,7 @@ export class AppStore extends BaseStore {
             order:
               xDataProperty.order !== undefined ? xDataProperty.order : null,
           },
-          xDataProperty.rawColumnExpr as string
+          xDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1424,7 +1424,7 @@ export class AppStore extends BaseStore {
             order:
               yDataProperty.order !== undefined ? yDataProperty.order : null,
           },
-          yDataProperty.rawColumnExpr as string
+          yDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1465,7 +1465,7 @@ export class AppStore extends BaseStore {
               : null,
             order: axisProperty.order !== undefined ? axisProperty.order : null,
           },
-          axisProperty.rawColumnExpr as string
+          axisProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1634,17 +1634,20 @@ export class AppStore extends BaseStore {
     const objectProperties = object.properties[
       options.property
     ] as ObjectProperties;
+
+    const expression =
+      appendToProperty === "dataExpressions" && propertyValue
+        ? ((propertyValue as any).expression as string)
+        : groupExpression;
+
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
-      expression:
-        appendToProperty === "dataExpressions" && propertyValue
-          ? ((propertyValue as any).expression as string)
-          : groupExpression,
+      expression: expression,
       rawExpression:
-        dataExpression.rawColumnExpression !== undefined
+        dataExpression.rawColumnExpression != undefined
           ? dataExpression.rawColumnExpression
-          : null,
+          : expression,
       valueType: valueType !== undefined ? valueType : null,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
