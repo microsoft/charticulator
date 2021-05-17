@@ -264,11 +264,7 @@ export class MappingEditor extends React.Component<
                 className="el-clickable-label"
                 ref={(e) => (this.noneLabel = e)}
                 onClick={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -282,11 +278,7 @@ export class MappingEditor extends React.Component<
                 className="el-clickable-label"
                 ref={(e) => (this.noneLabel = e)}
                 onClick={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -359,11 +351,7 @@ export class MappingEditor extends React.Component<
                 className="el-mapping-scale"
                 ref={(e) => (this.scaleMappingDisplay = e)}
                 onClick={() => {
-                  if (
-                    !scaleMapping ||
-                    scaleMapping.valueIndex === undefined ||
-                    scaleMapping.valueIndex === null
-                  ) {
+                  if (!scaleMapping || scaleMapping.valueIndex == undefined) {
                     const {
                       alignLeft,
                       alignX,
@@ -454,7 +442,7 @@ export class MappingEditor extends React.Component<
 
     if (this.props.options.openMapping) {
       setTimeout(() => {
-        if (valueIndex === undefined || valueIndex === null) {
+        if (valueIndex == undefined) {
           this.beginDataFieldSelection();
         } else {
           this.beginDataFieldValueSelection();
@@ -518,8 +506,7 @@ export class MappingEditor extends React.Component<
                 }}
               />
             ) : null}
-            {(valueIndex === undefined || valueIndex === null) &&
-            shouldShowBindData ? (
+            {valueIndex == undefined && shouldShowBindData ? (
               <Button
                 icon={"general/bind-data"}
                 title="Bind data"
@@ -532,7 +519,7 @@ export class MappingEditor extends React.Component<
                 active={isDataMapping}
               />
             ) : null}
-            {valueIndex !== undefined && valueIndex !== null ? (
+            {valueIndex != undefined ? (
               <Button
                 icon={"general/bind-data"}
                 title="Bind data value"
