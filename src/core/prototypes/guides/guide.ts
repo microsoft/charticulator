@@ -428,33 +428,40 @@ export class GuideClass extends ChartElementClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuidePropertyNames.baseline,
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.baseline,
+      },
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.computedBaselineValue,
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.computedBaselineValue,
+      },
+    ];
+    if (
+      this.object.mappings.value &&
+      this.object.mappings.value.type === Specification.MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.value,
+        },
+        type: Specification.AttributeType.Number,
+        default: <number>this.state.attributes.value,
+      });
+    }
+
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuidePropertyNames.baseline,
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.object.properties.baseline,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.value,
-          },
-          type: Specification.AttributeType.Number,
-          default: <number>this.state.attributes.value,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.computedBaselineValue,
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.computedBaselineValue,
-        },
-      ],
+      properties,
     };
   }
 }
