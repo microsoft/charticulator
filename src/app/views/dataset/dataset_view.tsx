@@ -469,8 +469,9 @@ export class ColumnView extends React.Component<
               this.applyAggregation(expr, type),
               type,
               metadata,
-              rawColumnExpr &&
-                this.applyAggregation(rawColumnExpr, DataType.String)
+              rawColumnExpr
+                ? this.applyAggregation(rawColumnExpr, DataType.String)
+                : this.applyAggregation(expr, type)
             );
             return r;
           }}

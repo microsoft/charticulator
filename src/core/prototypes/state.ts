@@ -1,6 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { gather, getById, uniqueID, zip, zipArray, makeRange } from "../common";
+import {
+  gather,
+  getById,
+  uniqueID,
+  zip,
+  zipArray,
+  makeRange,
+  deepClone,
+} from "../common";
 import * as Dataset from "../dataset";
 import * as Expression from "../expression";
 import * as Specification from "../specification";
@@ -19,6 +27,8 @@ import { ObjectClass, ObjectClasses } from "./object";
 import { ChartConstraintSolver } from "../solver";
 import { ValueType } from "../expression/classes";
 import { MappingType } from "../specification";
+import { forEachObject, ObjectItemKind } from "./index";
+import { expect_deep_approximately_equals } from "../../app/utils";
 
 /**
  * Represents a set of default attributes
@@ -35,8 +45,12 @@ export type ClassEnumerationCallback = (
   state: Specification.ObjectState
 ) => void;
 
+export const defaultDifferenceApproximation = 0.01;
+
 /** Handles the life cycle of states and the dataflow */
 export class ChartStateManager {
+  private chartOrigin: Specification.Chart;
+
   public readonly chart: Specification.Chart;
   public chartState: Specification.ChartState;
   public dataset: Dataset.Dataset;
@@ -61,6 +75,7 @@ export class ChartStateManager {
     } = {}
   ) {
     this.chart = chart;
+    this.chartOrigin = deepClone(chart);
     this.dataset = dataset;
     this.dataflow = new DataflowManager(dataset);
     this.options = options;
@@ -70,6 +85,197 @@ export class ChartStateManager {
     } else {
       this.setState(state);
     }
+  }
+
+  public resetDifference() {
+    this.chartOrigin = deepClone(this.chart);
+  }
+
+  // eslint-disable-next-line max-lines-per-function
+  public hasUnsavedChanges() {
+    const origin = this.chartOrigin;
+    const chart = this.chart;
+
+    const currentProperties = chart.properties;
+    const originProperties = origin.properties;
+
+    try {
+      expect_deep_approximately_equals(
+        currentProperties,
+        originProperties,
+        defaultDifferenceApproximation
+      );
+    } catch {
+      return true;
+    }
+
+    if (origin.constraints.length !== chart.constraints.length) {
+      return true;
+    } else {
+      for (let index = 0; index < origin.constraints.length; index++) {
+        const originConstringts = origin.constraints[index];
+        const current = chart.constraints[index];
+        expect_deep_approximately_equals(
+          originConstringts,
+          current,
+          defaultDifferenceApproximation
+        );
+      }
+    }
+
+    const chartElements = [...forEachObject(chart)];
+    const originElements = [...forEachObject(origin)];
+
+    // forEachObject retuns all objects in the chart
+    // if any object was added or removed to the chart it means chart has changes
+    // don't need to compare in details
+    if (chartElements.length != originElements.length) {
+      return true;
+    } else {
+      for (let index = 0; index < chartElements.length; index++) {
+        const currentElement = chartElements[index];
+        const originElement = originElements[index];
+
+        if (currentElement.kind != originElement.kind) {
+          return true;
+        }
+        if (currentElement.glyph?.classID != originElement.glyph?.classID) {
+          return true;
+        }
+        if (currentElement.object?._id != originElement.object?._id) {
+          return true;
+        }
+        if (currentElement.scale?._id != originElement.scale?._id) {
+          return true;
+        }
+        if (
+          currentElement.kind == ObjectItemKind.ChartElement &&
+          currentElement.kind == ObjectItemKind.ChartElement
+        ) {
+          if (currentElement.chartElement && originElement.chartElement) {
+            if (
+              currentElement.chartElement._id != originElement.chartElement._id
+            ) {
+              return true;
+            }
+            if (
+              currentElement.chartElement.classID !=
+              originElement.chartElement.classID
+            ) {
+              return true;
+            }
+          }
+          if (
+            Prototypes.isType(
+              currentElement.chartElement.classID,
+              "plot-segment"
+            ) &&
+            Prototypes.isType(
+              originElement.chartElement.classID,
+              "plot-segment"
+            )
+          ) {
+            const currentPlotSegment = currentElement.chartElement as Specification.PlotSegment;
+            const originPlotSegment = originElement.chartElement as Specification.PlotSegment;
+
+            if (currentPlotSegment.glyph != originPlotSegment.glyph) {
+              return true;
+            }
+
+            if (currentPlotSegment.table != originPlotSegment.table) {
+              return true;
+            }
+
+            try {
+              expect_deep_approximately_equals(
+                currentPlotSegment.filter,
+                originPlotSegment.filter,
+                defaultDifferenceApproximation
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.groupBy,
+                originPlotSegment.groupBy,
+                defaultDifferenceApproximation
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.order,
+                originPlotSegment.order,
+                defaultDifferenceApproximation
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.mappings,
+                originPlotSegment.mappings,
+                defaultDifferenceApproximation
+              );
+              expect_deep_approximately_equals(
+                currentPlotSegment.properties,
+                originPlotSegment.properties,
+                defaultDifferenceApproximation
+              );
+            } catch (ex) {
+              return true;
+            }
+          }
+
+          try {
+            const currentProperties = currentElement.chartElement.properties;
+            const originProperties = originElement.chartElement.properties;
+
+            expect_deep_approximately_equals(
+              currentProperties,
+              originProperties,
+              defaultDifferenceApproximation
+            );
+          } catch {
+            return true;
+          }
+        }
+
+        if (
+          currentElement.kind == ObjectItemKind.Glyph &&
+          originElement.kind == ObjectItemKind.Glyph
+        ) {
+          if (currentElement.glyph.table != originElement.glyph.table) {
+            return true;
+          }
+        }
+
+        if (
+          currentElement.kind == ObjectItemKind.Mark &&
+          originElement.kind == ObjectItemKind.Mark
+        ) {
+          if (currentElement.mark?.classID != originElement.mark?.classID) {
+            return true;
+          }
+          try {
+            const currentProperties = currentElement.mark.properties;
+            const originProperties = originElement.mark.properties;
+
+            expect_deep_approximately_equals(
+              currentProperties,
+              originProperties,
+              defaultDifferenceApproximation
+            );
+          } catch {
+            return true;
+          }
+        }
+
+        try {
+          const currentMappings = currentElement.object.mappings;
+          const originMappings = originElement.object.mappings;
+          expect_deep_approximately_equals(
+            currentMappings,
+            originMappings,
+            defaultDifferenceApproximation
+          );
+        } catch {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /** Set an existing state */
