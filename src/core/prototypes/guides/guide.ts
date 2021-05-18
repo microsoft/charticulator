@@ -281,7 +281,11 @@ export class GuideClass extends ChartElementClass<
           type: "line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           value,
           span: inf,
@@ -294,7 +298,11 @@ export class GuideClass extends ChartElementClass<
           type: "relative-line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           reference,
           sign: 1,
