@@ -41,7 +41,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         valueType: action.valueType,
         scale: inferred,
         valueIndex:
-          action.hints && action.hints.allowSelectValue ? 0 : undefined,
+          action.hints && action.hints.allowSelectValue != undefined ? 0 : null,
       } as Specification.ScaleMapping;
     } else {
       if (
