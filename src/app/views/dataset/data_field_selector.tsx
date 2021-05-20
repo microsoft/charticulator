@@ -251,7 +251,10 @@ export class DataFieldSelector extends React.Component<
     } else {
       if (this.props.useAggregation) {
         if (aggregation == null) {
-          aggregation = Expression.getDefaultAggregationFunction(item.type);
+          aggregation = Expression.getDefaultAggregationFunction(
+            item.type,
+            item.metadata?.kind
+          );
         }
       }
       if (this.props.multiSelect) {

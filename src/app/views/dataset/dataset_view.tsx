@@ -405,8 +405,8 @@ export class ColumnView extends React.Component<
     );
   }
 
-  public applyAggregation(expr: string, type: string) {
-    const aggregation = Expression.getDefaultAggregationFunction(type);
+  public applyAggregation(expr: string, type: DataType, kind: DataKind) {
+    const aggregation = Expression.getDefaultAggregationFunction(type, kind);
     return Expression.functionCall(
       aggregation,
       Expression.parse(expr)
@@ -475,11 +475,16 @@ export class ColumnView extends React.Component<
             this.setState({ isSelected: expr });
             const r = new DragData.DataExpression(
               this.props.table,
-              this.applyAggregation(expr, type),
+              this.applyAggregation(expr, type, metadata.kind),
               type,
               metadata,
-              rawColumnExpr &&
-                this.applyAggregation(rawColumnExpr, DataType.String)
+              rawColumnExpr
+                ? this.applyAggregation(
+                    rawColumnExpr,
+                    DataType.String,
+                    metadata.kind
+                  )
+                : this.applyAggregation(expr, type, metadata.kind)
             );
             return r;
           }}

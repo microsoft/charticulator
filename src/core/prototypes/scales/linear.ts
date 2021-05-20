@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { interpolateColors, Scale } from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
@@ -106,8 +107,12 @@ export class LinearScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin || props.domainMin === undefined) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax || props.domainMax === undefined) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       if (options.rangeNumber) {
@@ -142,20 +147,23 @@ export class LinearScale extends ScaleClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Domain"),
-      manager.inputNumber({ property: "domainMin" }, { label: "Start" }),
-      manager.inputNumber({ property: "domainMax" }, { label: "End" }),
-      manager.sectionHeader("Range"),
-      manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
-      manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
-      manager.sectionHeader("Scale export properties"),
+      manager.sectionHeader(strings.objects.dataAxis.domain),
+      manager.inputNumber(
+        { property: "domainMin" },
+        { label: strings.objects.dataAxis.start }
+      ),
+      manager.inputNumber(
+        { property: "domainMax" },
+        { label: strings.objects.dataAxis.end }
+      ),
+      manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
         {
           property: "autoDomainMin",
         },
         {
           type: "checkbox",
-          label: "Auto range min value",
+          label: strings.objects.dataAxis.start,
         }
       ),
       manager.inputBoolean(
@@ -164,9 +172,16 @@ export class LinearScale extends ScaleClass<
         },
         {
           type: "checkbox",
-          label: "Auto range max value",
+          label: strings.objects.dataAxis.end,
         }
       ),
+      manager.sectionHeader(strings.objects.dataAxis.range),
+      manager.mappingEditor(strings.objects.dataAxis.start, "rangeMin", {
+        defaultValue: 0,
+      }),
+      manager.mappingEditor(strings.objects.dataAxis.end, "rangeMax", {
+        defaultAuto: true,
+      }),
     ];
   }
 
@@ -231,7 +246,7 @@ export class LinearColorScale extends ScaleClass<
   public static type = "scale";
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Scale",
+    displayName: strings.objects.scale,
     iconPath: "scale/color",
   };
 
@@ -281,8 +296,12 @@ export class LinearColorScale extends ScaleClass<
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin || props.domainMin === undefined) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax || props.domainMax === undefined) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       props.range = getDefaultGradient();
@@ -293,10 +312,16 @@ export class LinearColorScale extends ScaleClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Domain"),
-      manager.row("Start", manager.inputNumber({ property: "domainMin" })),
-      manager.row("End", manager.inputNumber({ property: "domainMax" })),
-      manager.sectionHeader("Gradient"),
+      manager.sectionHeader(strings.objects.dataAxis.domain),
+      manager.row(
+        strings.objects.dataAxis.start,
+        manager.inputNumber({ property: "domainMin" })
+      ),
+      manager.row(
+        strings.objects.dataAxis.end,
+        manager.inputNumber({ property: "domainMax" })
+      ),
+      manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(
         { property: "range", noComputeLayout: true },
         true
@@ -400,8 +425,12 @@ export class LinearBooleanScale extends ScaleClass<
     const s = new Scale.LinearScale();
     const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    props.min = s.domainMin;
-    props.max = s.domainMax;
+    if (options.extendScaleMin || props.min === undefined) {
+      props.min = s.domainMin;
+    }
+    if (options.extendScaleMax || props.max === undefined) {
+      props.max = s.domainMax;
+    }
     props.mode = "interval";
     props.inclusive = true;
   }
@@ -432,21 +461,25 @@ export class LinearBooleanScale extends ScaleClass<
       );
     }
     return [
-      manager.sectionHeader("Boolean"),
+      manager.sectionHeader(strings.typeDisplayNames.boolean),
       manager.row(
-        "Mode",
+        strings.objects.scales.mode,
         manager.inputSelect(
           { property: "mode" },
           {
             type: "dropdown",
             options: ["greater", "less", "interval"],
             showLabel: true,
-            labels: ["Greater", "Less", "Interval"],
+            labels: [
+              strings.objects.scales.greater,
+              strings.objects.scales.less,
+              strings.objects.scales.interval,
+            ],
           }
         )
       ),
       manager.row(
-        "Inclusive",
+        strings.objects.scales.inclusive,
         manager.inputBoolean({ property: "inclusive" }, { type: "checkbox" })
       ),
       ...minMax,

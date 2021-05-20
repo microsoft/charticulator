@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import {
   ConstraintPlugins,
   ConstraintSolver,
@@ -595,12 +596,12 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
           updownRange: [1, 100],
           minimum: 2,
           maximum: 100,
-          label: "Angular",
+          label: strings.objects.guides.angular,
         }
       ),
       // uncomment to allow configure count of guides in different radiuses
       // manager.row(
-      //   "Radial",
+      //   strings.objects.guides.radial,
       //   manager.inputNumber(
       //     { property: "radialGuidesCount" },
       //     {
@@ -613,7 +614,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       //   )
       // ),
       manager.vertical(
-        manager.label("Angle"),
+        manager.label(strings.objects.guides.angle),
         manager.horizontal(
           [1, 0, 1],
           manager.inputNumber({ property: "startAngle" }),
@@ -623,7 +624,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
       ),
       // uncomment to allow configure raito
       // manager.row(
-      //   "Radius",
+      //   strings.objects.guides.radius,
       //   manager.horizontal(
       //     [0, 1, 0, 1],
       //     manager.label("Inner:"),

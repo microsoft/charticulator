@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Geometry, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -284,9 +285,9 @@ export class IconElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     let widgets = [
-      manager.sectionHeader("Icon"),
-      manager.mappingEditor("Image", "image", {}),
-      manager.mappingEditor("Size", "size", {
+      manager.sectionHeader(strings.toolbar.icon),
+      manager.mappingEditor(strings.objects.icon.image, "image", {}),
+      manager.mappingEditor(strings.objects.size, "size", {
         acceptKinds: [Specification.DataKind.Numerical],
         hints: { rangeNumber: [0, 100] },
         defaultValue: 400,
@@ -300,9 +301,9 @@ export class IconElementClass extends EmphasizableMarkClass<
     ];
 
     widgets = widgets.concat([
-      manager.sectionHeader("Anchor & Rotation"),
+      manager.sectionHeader(strings.objects.icon.anchorAndRotation),
       manager.row(
-        "Anchor X",
+        strings.objects.icon.anchorX,
         manager.horizontal(
           [0, 1],
           manager.inputSelect(
@@ -314,21 +315,25 @@ export class IconElementClass extends EmphasizableMarkClass<
                 "AlignHorizontalCenter",
                 "AlignHorizontalRight",
               ],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               options: ["left", "middle", "right"],
             }
           ),
           props.alignment.x != "middle"
             ? manager.horizontal(
                 [0, 1],
-                manager.label("Margin:"),
+                manager.label(strings.margins.margin),
                 manager.inputNumber({ property: "alignment", field: "xMargin" })
               )
             : null
         )
       ),
       manager.row(
-        "Anchor Y",
+        strings.objects.icon.anchorY,
         manager.horizontal(
           [0, 1],
           manager.inputSelect(
@@ -340,7 +345,11 @@ export class IconElementClass extends EmphasizableMarkClass<
                 "AlignVerticalCenter",
                 "AlignVerticalBottom",
               ],
-              labels: ["Top", "Middle", "Bottom"],
+              labels: [
+                strings.alignment.top,
+                strings.alignment.middle,
+                strings.alignment.bottom,
+              ],
               options: ["top", "middle", "bottom"],
             }
           ),
@@ -353,13 +362,13 @@ export class IconElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.sectionHeader(strings.objects.style),
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
-      manager.mappingEditor("Visibility", "visible", {
+      manager.mappingEditor(strings.objects.visibleOn.visibility, "visible", {
         defaultValue: true,
       }),
     ]);

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -238,9 +239,9 @@ export class GuideCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Guide Coordinator"),
+      manager.sectionHeader(strings.objects.guides.guideCoordinator),
       manager.row(
-        "Count",
+        strings.objects.guides.count,
         manager.inputNumber(
           { property: "count" },
           {

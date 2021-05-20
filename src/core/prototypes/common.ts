@@ -117,6 +117,12 @@ export namespace Handles {
     snapToClosestPoint: boolean;
   }
 
+  export enum HandleActionType {
+    Property = "property",
+    Attribute = "attribute",
+    AttributeValueMapping = "attribute-value-mapping",
+  }
+
   export interface HandleAction {
     type: "property" | "attribute" | "attribute-value-mapping";
     source?: string;

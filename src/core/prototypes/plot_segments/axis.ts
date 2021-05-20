@@ -1243,7 +1243,9 @@ export function buildAxisWidgets(
         }
         break;
     }
-    widgets.push(m.sectionHeader(axisName + " export properties"));
+    widgets.push(
+      m.sectionHeader(axisName + strings.objects.dataAxis.exportProperties)
+    );
     widgets.push(
       m.inputBoolean(
         {
@@ -1252,7 +1254,7 @@ export function buildAxisWidgets(
         },
         {
           type: "checkbox",
-          label: "Auto range min value",
+          label: strings.objects.dataAxis.autoMin,
         }
       )
     );
@@ -1264,12 +1266,18 @@ export function buildAxisWidgets(
         },
         {
           type: "checkbox",
-          label: "Auto range max value",
+          label: strings.objects.dataAxis.autoMax,
         }
       )
     );
   } else {
-    widgets.push(m.sectionHeader(axisName + ": (none)", null, dropzoneOptions));
+    widgets.push(
+      m.sectionHeader(
+        axisName + ": " + strings.core.none,
+        null,
+        dropzoneOptions
+      )
+    );
   }
   return widgets;
 }

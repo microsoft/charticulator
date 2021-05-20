@@ -509,18 +509,18 @@ export class RectangleChart extends ChartClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const result = [
-      manager.sectionHeader(strings.objects.chart.dimensions),
-      manager.mappingEditor(strings.objects.chart.width, "width", {}),
-      manager.mappingEditor(strings.objects.chart.height, "height", {}),
-      manager.sectionHeader(strings.objects.chart.margins),
-      manager.mappingEditor(strings.objects.chart.left, "marginLeft", {}),
-      manager.mappingEditor(strings.objects.chart.right, "marginRight", {}),
-      manager.mappingEditor(strings.objects.chart.top, "marginTop", {}),
-      manager.mappingEditor(strings.objects.chart.bottom, "marginBottom", {}),
-      manager.sectionHeader(strings.objects.chart.background),
+      manager.sectionHeader(strings.objects.dimensions),
+      manager.mappingEditor(strings.objects.width, "width", {}),
+      manager.mappingEditor(strings.objects.height, "height", {}),
+      manager.sectionHeader(strings.margins.margins),
+      manager.mappingEditor(strings.margins.left, "marginLeft", {}),
+      manager.mappingEditor(strings.margins.right, "marginRight", {}),
+      manager.mappingEditor(strings.margins.top, "marginTop", {}),
+      manager.mappingEditor(strings.margins.bottom, "marginBottom", {}),
+      manager.sectionHeader(strings.objects.background),
       manager.inputColor(
         { property: "backgroundColor" },
-        { allowNull: true, label: strings.objects.chart.color }
+        { allowNull: true, label: strings.objects.color }
       ),
       manager.sectionHeader(strings.objects.interactivity),
       manager.inputBoolean(
@@ -538,7 +538,7 @@ export class RectangleChart extends ChartClass {
           {
             showSlider: true,
             sliderRange: [0, 1],
-            label: strings.objects.chart.opacity,
+            label: strings.objects.opacity,
           }
         )
       );

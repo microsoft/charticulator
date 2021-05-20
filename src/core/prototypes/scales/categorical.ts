@@ -164,7 +164,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             },
             {
               type: "checkbox",
-              label: "Auto range min value",
+              label: "Auto min value",
             }
           ),
           manager.inputBoolean(
@@ -173,7 +173,7 @@ export class CategoricalScaleNumber extends ScaleClass<
             },
             {
               type: "checkbox",
-              label: "Auto range max value",
+              label: "Auto max value",
             }
           )
         )
@@ -220,7 +220,7 @@ export class CategoricalScaleColor extends ScaleClass<
 
       // Otherwise, if we already have a mapping, try to reuse it
     } else if (props.mapping != null) {
-      if (options.extendScale) {
+      if (options.extendScaleMin || options.extendScaleMax) {
         const mapping = reuseMapping(s.domain, props.mapping);
 
         let colorList = literalColorValues(values);

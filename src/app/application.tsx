@@ -205,7 +205,7 @@ export class Application {
           filterCondition: info.filterCondition,
         })
       );
-      appStore.originTemplate = info.template;
+      appStore.chartManager?.resetDifference();
       appStore.setupNestedEditor(
         (newSpecification) => {
           const template = deepClone(appStore.buildChartTemplate());

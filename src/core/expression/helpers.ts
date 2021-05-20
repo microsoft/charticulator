@@ -15,6 +15,7 @@ import {
   Context,
 } from "./classes";
 import { DataflowTable } from "../prototypes/dataflow";
+import { DataKind, DataType } from "../specification";
 
 export function variable(name: string): Variable {
   return new Variable(name);
@@ -94,9 +95,16 @@ export function getCompatibleAggregationFunctions(inputType: string) {
   );
 }
 
-export function getDefaultAggregationFunction(inputType: string) {
-  if (inputType == "number" || inputType == "date") {
-    return "avg";
+export function getDefaultAggregationFunction(
+  inputType: DataType,
+  kind: DataKind
+) {
+  if (inputType == DataType.Number || inputType == DataType.Date) {
+    if (kind === DataKind.Categorical || kind === DataKind.Ordinal) {
+      return "first";
+    } else {
+      return "avg";
+    }
   } else {
     return "first";
   }

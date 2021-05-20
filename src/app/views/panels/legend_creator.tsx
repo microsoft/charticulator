@@ -214,7 +214,8 @@ export class LegendCreationPanel extends ContextedComponent<
 
               if (this.state.legendDataSource === "columnValues") {
                 const aggregation = Expression.getDefaultAggregationFunction(
-                  columns[0].type
+                  columns[0].type,
+                  columns[0].metadata?.kind
                 );
                 const aggregatedExpression = Expression.functionCall(
                   aggregation,

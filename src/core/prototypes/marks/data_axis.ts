@@ -33,6 +33,7 @@ import {
   DataAxisExpression,
 } from "./data_axis.attrs";
 import React = require("react");
+import { strings } from "../../../strings";
 
 export { DataAxisAttributes, DataAxisProperties };
 
@@ -331,18 +332,22 @@ export class DataAxisClass extends MarkClass<
       props.axis,
       "axis",
       manager,
-      "Data Axis"
+      strings.toolbar.dataAxis
     );
     const r = [...axisWidgets];
     r.push(
       manager.inputSelect(
         { property: "visibleOn" },
         {
-          labels: ["All", "First", "Last"],
+          labels: [
+            strings.objects.visibleOn.all,
+            strings.objects.visibleOn.first,
+            strings.objects.visibleOn.last,
+          ],
           showLabel: true,
           options: ["all", "first", "last"],
           type: "dropdown",
-          label: "Visible On",
+          label: strings.objects.visibleOn.label,
         }
       )
     );

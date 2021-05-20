@@ -149,7 +149,7 @@ export class MappingEditor extends React.Component<
         break;
       case "color":
         {
-          if (this.noneLabel == null) {
+          if (this.mappingButton == null) {
             return;
           }
           globals.popupController.popupAt(
@@ -170,7 +170,7 @@ export class MappingEditor extends React.Component<
                 />
               </PopupView>
             ),
-            { anchor: this.noneLabel }
+            { anchor: this.mappingButton }
           );
         }
         break;
@@ -263,11 +263,7 @@ export class MappingEditor extends React.Component<
                 className="el-clickable-label"
                 ref={(e) => (this.noneLabel = e)}
                 onClick={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -281,11 +277,7 @@ export class MappingEditor extends React.Component<
                 className="el-clickable-label"
                 ref={(e) => (this.noneLabel = e)}
                 onClick={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -358,11 +350,7 @@ export class MappingEditor extends React.Component<
                 className="el-mapping-scale"
                 ref={(e) => (this.scaleMappingDisplay = e)}
                 onClick={() => {
-                  if (
-                    !scaleMapping ||
-                    scaleMapping.valueIndex === undefined ||
-                    scaleMapping.valueIndex === null
-                  ) {
+                  if (!scaleMapping || scaleMapping.valueIndex == undefined) {
                     const {
                       alignLeft,
                       alignX,
@@ -454,7 +442,7 @@ export class MappingEditor extends React.Component<
 
     if (this.props.options.openMapping) {
       setTimeout(() => {
-        if (valueIndex === undefined || valueIndex === null) {
+        if (valueIndex == undefined) {
           this.beginDataFieldSelection();
         } else {
           this.beginDataFieldValueSelection();
@@ -463,91 +451,95 @@ export class MappingEditor extends React.Component<
     }
 
     return (
-      <DropZoneView
-        filter={(data) => {
-          if (!shouldShowBindData) {
-            return false;
-          }
-          if (data instanceof DragData.DataExpression) {
-            return isKindAcceptable(data.metadata.kind, options.acceptKinds);
-          } else {
-            return false;
-          }
-        }}
-        onDrop={(data: DragData.DataExpression, point, modifiers) => {
-          if (!options.hints) {
-            options.hints = {};
-          }
-          options.hints.newScale = modifiers.shiftKey;
-          options.hints.scaleID = data.scaleID;
-
-          const parsedExpression = Expression.parse(
-            data.expression
-          ) as FunctionCall;
-
-          if (data.allowSelectValue && parsedExpression.name !== "get") {
-            data.expression = `get(${data.expression}, 0)`;
-          }
-          // because original mapping allowed it
-          if (parsedExpression.name === "get") {
-            data.allowSelectValue = true;
-          }
-          this.mapData(data, {
-            ...options.hints,
-            allowSelectValue: data.allowSelectValue,
-          });
-        }}
+      <div
+        ref={(e) => (this.mappingButton = ReactDOM.findDOMNode(e) as Element)}
         className="charticulator__widget-control-mapping-editor"
       >
-        {parent.horizontal(
-          [1, 0],
-          this.renderCurrentAttributeMapping(),
-          <span>
-            {shouldShowEraser ? (
-              <Button
-                icon="general/eraser"
-                active={false}
-                title="Remove"
-                onClick={() => {
-                  if (parent.getAttributeMapping(attribute)) {
-                    this.clearMapping();
-                  }
-                  this.setState({
-                    showNoneAsValue: false,
-                  });
-                }}
-              />
-            ) : null}
-            {(valueIndex === undefined || valueIndex === null) &&
-            shouldShowBindData ? (
-              <Button
-                icon={"general/bind-data"}
-                title="Bind data"
-                ref={(e) =>
-                  (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                }
-                onClick={() => {
-                  this.beginDataFieldSelection();
-                }}
-                active={isDataMapping}
-              />
-            ) : null}
-            {valueIndex !== undefined && valueIndex !== null ? (
-              <Button
-                icon={"general/bind-data"}
-                title="Bind data value"
-                ref={(e) =>
-                  (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                }
-                onClick={() => {
-                  this.beginDataFieldValueSelection();
-                }}
-                active={isDataMapping}
-              />
-            ) : null}
-          </span>
-        )}
-      </DropZoneView>
+        <DropZoneView
+          filter={(data) => {
+            if (!shouldShowBindData) {
+              return false;
+            }
+            if (data instanceof DragData.DataExpression) {
+              return isKindAcceptable(data.metadata.kind, options.acceptKinds);
+            } else {
+              return false;
+            }
+          }}
+          onDrop={(data: DragData.DataExpression, point, modifiers) => {
+            if (!options.hints) {
+              options.hints = {};
+            }
+            options.hints.newScale = modifiers.shiftKey;
+            options.hints.scaleID = data.scaleID;
+
+            const parsedExpression = Expression.parse(
+              data.expression
+            ) as FunctionCall;
+
+            if (data.allowSelectValue && parsedExpression.name !== "get") {
+              data.expression = `get(${data.expression}, 0)`;
+            }
+            // because original mapping allowed it
+            if (parsedExpression.name === "get") {
+              data.allowSelectValue = true;
+            }
+            this.mapData(data, {
+              ...options.hints,
+              allowSelectValue: data.allowSelectValue,
+            });
+          }}
+          className="charticulator__widget-control-mapping-editor"
+        >
+          {parent.horizontal(
+            [1, 0],
+            this.renderCurrentAttributeMapping(),
+            <span>
+              {shouldShowEraser ? (
+                <Button
+                  icon="general/eraser"
+                  active={false}
+                  title="Remove"
+                  onClick={() => {
+                    if (parent.getAttributeMapping(attribute)) {
+                      this.clearMapping();
+                    }
+                    this.setState({
+                      showNoneAsValue: false,
+                    });
+                  }}
+                />
+              ) : null}
+              {valueIndex == undefined && shouldShowBindData ? (
+                <Button
+                  icon={"general/bind-data"}
+                  title="Bind data"
+                  // ref={(e) =>
+                  //   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+                  // }
+                  onClick={() => {
+                    this.beginDataFieldSelection();
+                  }}
+                  active={isDataMapping}
+                />
+              ) : null}
+              {valueIndex != undefined ? (
+                <Button
+                  icon={"general/bind-data"}
+                  title="Bind data value"
+                  // ref={(e) =>
+                  //   (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
+                  // }
+                  onClick={() => {
+                    this.beginDataFieldValueSelection();
+                  }}
+                  active={isDataMapping}
+                />
+              ) : null}
+            </span>
+          )}
+        </DropZoneView>
+      </div>
     );
   }
 }

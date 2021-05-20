@@ -6,6 +6,7 @@ import * as Graphics from "../../graphics";
 
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
+import { strings } from "../../../strings";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -277,7 +278,10 @@ export class CategoricalLegendClass extends LegendClass {
           type: "radio",
           showLabel: false,
           icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
-          labels: ["Vertical", "Horizontal"],
+          labels: [
+            strings.objects.legend.vertical,
+            strings.objects.legend.horizontal,
+          ],
           options: ["vertical", "horizontal"],
           label: "Orientation",
         }

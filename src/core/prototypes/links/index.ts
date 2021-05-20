@@ -20,6 +20,7 @@ import { AttributeDescription, ObjectClasses } from "../object";
 import { PlotSegmentClass } from "../plot_segments";
 import { PointDirection } from "../../graphics";
 import { MappingType } from "../../specification";
+import { strings } from "../../../strings";
 
 export type LinkType = "line" | "band";
 export type InterpolationType = "line" | "bezier" | "circle";
@@ -656,8 +657,12 @@ export abstract class LinksClass extends ChartElementClass {
           type: "dropdown",
           showLabel: true,
           options: ["line", "bezier", "circle"],
-          labels: ["Line", "Bezier", "Arc"],
-          label: "Line Type",
+          labels: [
+            strings.objects.links.line,
+            strings.objects.links.bezier,
+            strings.objects.links.arc,
+          ],
+          label: strings.objects.links.type,
         }
       ),
       manager.inputSelect(
@@ -667,7 +672,7 @@ export abstract class LinksClass extends ChartElementClass {
           showLabel: true,
           options: ["", "8", "1 10"],
           labels: ["Solid", "Dashed", "Dotted"],
-          label: "Line mark type",
+          label: strings.objects.links.linkMarkType,
         }
       ),
     ];
@@ -679,20 +684,20 @@ export abstract class LinksClass extends ChartElementClass {
             showSlider: true,
             minimum: 0,
             sliderRange: [0, 500],
-            label: "Curveness",
+            label: strings.objects.links.curveness,
           }
         )
       );
     }
-    widgets.push(manager.sectionHeader("Style"));
+    widgets.push(manager.sectionHeader(strings.objects.style));
     widgets.push(
-      manager.mappingEditor("Color", "color", {
+      manager.mappingEditor(strings.objects.color, "color", {
         table: props.linkTable && props.linkTable.table,
       })
     );
     // if (props.linkType == "line") {
     widgets.push(
-      manager.mappingEditor("Width", "strokeWidth", {
+      manager.mappingEditor(strings.objects.width, "strokeWidth", {
         hints: { rangeNumber: [0, 5] },
         defaultValue: 1,
         numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
@@ -701,7 +706,7 @@ export abstract class LinksClass extends ChartElementClass {
     );
     // }
     widgets.push(
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 },

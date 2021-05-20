@@ -25,6 +25,7 @@ import {
   ObjectClassMetadata,
   SnappingGuides,
 } from "../common";
+import { strings } from "../../../strings";
 
 export abstract class GlyphClass extends ObjectClass {
   public readonly object: Specification.Glyph;
@@ -361,9 +362,9 @@ export class RectangleGlyph extends GlyphClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Dimensions"),
-      manager.mappingEditor("Width", "width", {}),
-      manager.mappingEditor("Height", "height", {}),
+      manager.sectionHeader(strings.objects.dimensions),
+      manager.mappingEditor(strings.objects.width, "width", {}),
+      manager.mappingEditor(strings.objects.height, "height", {}),
     ];
   }
 }

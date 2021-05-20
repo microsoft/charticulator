@@ -24,11 +24,7 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import {
-  expect_deep_approximately_equals,
-  isInIFrame,
-  readFileAsString,
-} from "../utils";
+import { isInIFrame, readFileAsString } from "../utils";
 import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport, MappingMode } from "./file_view/import_view";
@@ -444,22 +440,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
-    let hasUnsavedChanges = false;
-
-    try {
-      expect_deep_approximately_equals(
-        editorTemplate.specification,
-        this.context.store.originTemplate.specification,
-        1e-2
-      );
-    } catch (ex) {
-      if (!(ex.message as string).includes("expected")) {
-        console.error(ex.message);
-      } else {
-        hasUnsavedChanges = true;
-      }
-    }
+    const hasUnsavedChanges = this.store.chartManager.hasUnsavedChanges();
 
     return (
       <MenuButton

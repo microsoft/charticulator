@@ -503,6 +503,20 @@ export class ChartTemplateBuilder {
         }
 
         if (item.kind === ObjectItemKind.Mark) {
+          if (Prototypes.isType(item.mark.classID, "mark.nested-chart")) {
+            const nestedChart = item.mark;
+            const columnNameMap = Object.keys(
+              nestedChart.properties.columnNameMap
+            );
+            const mainTable = this.usedColumns[
+              this.manager.dataset.tables.find((t) => t.type === TableType.Main)
+                .name
+            ];
+            columnNameMap.forEach(
+              (columnNames) => (mainTable[columnNames] = columnNames)
+            );
+          }
+
           if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
             try {
               const glyphId = item.glyph._id;
