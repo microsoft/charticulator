@@ -14,7 +14,7 @@ export function initialize() {
   return LSCGSolver.initialize();
 }
 
-export let Matrix = LSCGSolver.Matrix;
+export const Matrix = LSCGSolver.Matrix;
 
 const strengthMap: { [name in ConstraintStrength]: number } = {
   [ConstraintStrength.HARD]: LSCGSolver.ConstraintSolver.STRENGTH_HARD,
@@ -34,12 +34,12 @@ export class WASMSolver extends ConstraintSolver {
   public solver: LSCGSolver.ConstraintSolver;
   public variables: KeyNameMap<AttributeMap, WASMSolverVariable>;
   public currentIndex: number = 0;
-  public softInequalities: Array<{
+  public softInequalities: {
     id: number;
     bias: number;
     variable_names: number[];
     weights: number[];
-  }> = [];
+  }[] = [];
 
   constructor() {
     super();
@@ -82,7 +82,7 @@ export class WASMSolver extends ConstraintSolver {
   }
   /** Get the value of a variable */
   public getValue(attr: WASMSolverVariable): number {
-    return attr.map[attr.name] as number;
+    return <number>attr.map[attr.name];
   }
   /** Set the value of a variable */
   public setValue(attr: WASMSolverVariable, value: number): void {
@@ -97,8 +97,8 @@ export class WASMSolver extends ConstraintSolver {
   public addLinear(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, WASMSolverVariable]>,
-    rhs?: Array<[number, WASMSolverVariable]>
+    lhs: [number, WASMSolverVariable][],
+    rhs?: [number, WASMSolverVariable][]
   ): void {
     const st = strengthMap[strength];
     const weights = [];
@@ -120,8 +120,8 @@ export class WASMSolver extends ConstraintSolver {
   public addSoftInequality(
     strength: ConstraintStrength,
     bias: number,
-    lhs: Array<[number, WASMSolverVariable]>,
-    rhs?: Array<[number, WASMSolverVariable]>
+    lhs: [number, WASMSolverVariable][],
+    rhs?: [number, WASMSolverVariable][]
   ): void {
     const st = strengthMap[strength];
     const weights = [];
@@ -148,7 +148,7 @@ export class WASMSolver extends ConstraintSolver {
   /** Solve the constraints */
   public solve(): [number, number] {
     this.variables.forEach((value, map, key) => {
-      this.solver.setValue(value.index, map[key] as number);
+      this.solver.setValue(value.index, <number>map[key]);
     });
 
     this.solver.regularizerWeight = 0.001;

@@ -48,29 +48,32 @@ export abstract class ChartClass extends ObjectClass {
     return null;
   }
 
+  // eslint-disable-next-line
   public resolveMapping<ValueType>(
     mapping: Specification.Mapping,
     defaultValue: Specification.AttributeValue
   ): (row: Expression.Context) => Specification.AttributeValue {
     if (mapping) {
       if (mapping.type == MappingType.value) {
-        const value = (mapping as Specification.ValueMapping).value;
+        const value = (<Specification.ValueMapping>mapping).value;
         return () => value;
       }
       if (mapping.type == MappingType.scale) {
-        const scaleMapping = mapping as Specification.ScaleMapping;
+        const scaleMapping = <Specification.ScaleMapping>mapping;
         const idx = indexOf(
           this.object.scales,
           (x) => x._id == scaleMapping.scale
         );
-        const scaleClass = ObjectClasses.Create(
-          this.parent,
-          this.object.scales[idx],
-          this.state.scales[idx]
-        ) as Scales.ScaleClass;
+        const scaleClass = <Scales.ScaleClass>(
+          ObjectClasses.Create(
+            this.parent,
+            this.object.scales[idx],
+            this.state.scales[idx]
+          )
+        );
         const expr = this.dataflow.cache.parse(scaleMapping.expression);
         return (row: Expression.Context) =>
-          scaleClass.mapDataToAttribute(expr.getValue(row) as any);
+          scaleClass.mapDataToAttribute(<any>expr.getValue(row));
       }
     }
     return () => defaultValue;
@@ -128,6 +131,7 @@ export class RectangleChart extends ChartClass {
     ...ObjectClass.defaultProperties,
     backgroundColor: null,
     backgroundOpacity: 1,
+    enableContextMenu: true,
   };
 
   public readonly object: Specification.Chart & {
@@ -265,6 +269,7 @@ export class RectangleChart extends ChartClass {
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildIntrinsicConstraints(solver: ConstraintSolver): void {
     const attrs = this.state.attributes;
     const [
@@ -372,46 +377,46 @@ export class RectangleChart extends ChartClass {
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     return [
-      {
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.x1,
         attribute: "x1",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.x2,
         attribute: "x2",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.y1,
         attribute: "y1",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.y2,
         attribute: "y2",
         visible: true,
-      } as SnappingGuides.Axis,
+      },
       // <SnappingGuides.Axis>{ type: "x", value: attrs.ox1, attribute: "ox1", visible: true },
       // <SnappingGuides.Axis>{ type: "x", value: attrs.ox2, attribute: "ox2", visible: true },
       // <SnappingGuides.Axis>{ type: "y", value: attrs.oy1, attribute: "oy1", visible: true },
       // <SnappingGuides.Axis>{ type: "y", value: attrs.oy2, attribute: "oy2", visible: true },
-      {
+      <SnappingGuides.Axis>{
         type: "x",
         value: attrs.cx,
         attribute: "cx",
         visible: true,
-      } as SnappingGuides.Axis,
-      {
+      },
+      <SnappingGuides.Axis>{
         type: "y",
         value: attrs.cy,
         attribute: "cy",
         visible: true,
-      } as SnappingGuides.Axis,
+      },
     ];
   }
 
@@ -420,7 +425,7 @@ export class RectangleChart extends ChartClass {
     const { x1, y1, x2, y2 } = attrs;
     const inf = [-10000, 10000];
     return [
-      {
+      <Handles.RelativeLine>{
         type: "relative-line",
         axis: "x",
         actions: [{ type: "attribute-value-mapping", attribute: "marginLeft" }],
@@ -428,8 +433,8 @@ export class RectangleChart extends ChartClass {
         sign: 1,
         value: attrs.marginLeft,
         span: inf,
-      } as Handles.RelativeLine,
-      {
+      },
+      <Handles.RelativeLine>{
         type: "relative-line",
         axis: "x",
         actions: [
@@ -439,8 +444,8 @@ export class RectangleChart extends ChartClass {
         sign: -1,
         value: attrs.marginRight,
         span: inf,
-      } as Handles.RelativeLine,
-      {
+      },
+      <Handles.RelativeLine>{
         type: "relative-line",
         axis: "y",
         actions: [{ type: "attribute-value-mapping", attribute: "marginTop" }],
@@ -448,8 +453,8 @@ export class RectangleChart extends ChartClass {
         sign: -1,
         value: attrs.marginTop,
         span: inf,
-      } as Handles.RelativeLine,
-      {
+      },
+      <Handles.RelativeLine>{
         type: "relative-line",
         axis: "y",
         actions: [
@@ -459,7 +464,7 @@ export class RectangleChart extends ChartClass {
         sign: 1,
         value: attrs.marginBottom,
         span: inf,
-      } as Handles.RelativeLine,
+      },
       // <Handles.RelativeLine>{
       //     type: "relative-line", axis: "x",
       //     value: attrs.width, sign: 1,
@@ -504,18 +509,18 @@ export class RectangleChart extends ChartClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const result = [
-      manager.sectionHeader(strings.objects.chart.dimensions),
-      manager.mappingEditor(strings.objects.chart.width, "width", {}),
-      manager.mappingEditor(strings.objects.chart.height, "height", {}),
-      manager.sectionHeader(strings.objects.chart.margins),
-      manager.mappingEditor(strings.objects.chart.left, "marginLeft", {}),
-      manager.mappingEditor(strings.objects.chart.right, "marginRight", {}),
-      manager.mappingEditor(strings.objects.chart.top, "marginTop", {}),
-      manager.mappingEditor(strings.objects.chart.bottom, "marginBottom", {}),
-      manager.sectionHeader(strings.objects.chart.background),
+      manager.sectionHeader(strings.objects.dimensions),
+      manager.mappingEditor(strings.objects.width, "width", {}),
+      manager.mappingEditor(strings.objects.height, "height", {}),
+      manager.sectionHeader(strings.margins.margins),
+      manager.mappingEditor(strings.margins.left, "marginLeft", {}),
+      manager.mappingEditor(strings.margins.right, "marginRight", {}),
+      manager.mappingEditor(strings.margins.top, "marginTop", {}),
+      manager.mappingEditor(strings.margins.bottom, "marginBottom", {}),
+      manager.sectionHeader(strings.objects.background),
       manager.inputColor(
         { property: "backgroundColor" },
-        { allowNull: true, label: strings.objects.chart.color }
+        { allowNull: true, label: strings.objects.color }
       ),
       manager.sectionHeader(strings.objects.interactivity),
       manager.inputBoolean(
@@ -533,7 +538,7 @@ export class RectangleChart extends ChartClass {
           {
             showSlider: true,
             sliderRange: [0, 1],
-            label: strings.objects.chart.opacity,
+            label: strings.objects.opacity,
           }
         )
       );

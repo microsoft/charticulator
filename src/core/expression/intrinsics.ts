@@ -5,16 +5,18 @@ import { ValueType } from "./classes";
 import { parseDate } from "../dataset/datetime";
 import { getFormat } from "../common";
 
-export let constants: { [name: string]: ValueType } = {};
-export let functions: {
+export const constants: { [name: string]: ValueType } = {};
+export const functions: {
+  // eslint-disable-next-line
   [name: string]: Function | { [name: string]: Function };
 } = {};
-export let operators: { [name: string]: Function } = {};
+// eslint-disable-next-line
+export const operators: { [name: string]: Function } = {};
 
-export let precedences = {
+export const precedences = {
   LAMBDA_EXPRESSION: 1,
   FUNCTION_ARGUMENT: 0,
-  OPERATORS: {
+  OPERATORS: <{ [name: string]: number[] }>{
     "unary:not": [11, 11],
     and: [12, 12, 12],
     or: [13, 13, 13],
@@ -31,7 +33,7 @@ export let precedences = {
     "^": [20, 20, 21],
     "unary:+": [22, 22],
     "unary:-": [23, 23],
-  } as { [name: string]: number[] },
+  },
   FUNCTION_CALL: 100,
   LAMBDA_FUNCTION: 100,
   VARIABLE: 100,
@@ -60,9 +62,9 @@ function makeArrayCapable2<TA, TB, TRet>(f: (a: TA, b: TB) => TRet) {
     if (a instanceof Array && b instanceof Array) {
       return a.map((ai, i) => f(ai, b[i]));
     } else if (a instanceof Array) {
-      return a.map((ai) => f(ai, b as TB));
+      return a.map((ai) => f(ai, <TB>b));
     } else if (b instanceof Array) {
-      return b.map((bi) => f(a as TA, bi as TB));
+      return b.map((bi) => f(<TA>a, <TB>bi));
     } else {
       return f(a, b);
     }
@@ -106,12 +108,13 @@ functions.get = (obj: any, field: string | number) => obj[field];
 // Array functions
 functions.first = (list: any[]) => list[0];
 functions.last = (list: any[]) => list[list.length - 1];
-functions.map = (list: any[], func: Function) => list.map((item) => func(item));
-functions.filter = (list: any[], func: Function) =>
+functions.map = (list: any[], func: (item: any) => void) =>
+  list.map((item) => func(item));
+functions.filter = (list: any[], func: (item: any) => void) =>
   list.filter((item) => func(item));
 
 // Statistics
-function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
+function stat_foreach(f: (x: number) => void, list: (number | number[])[]) {
   for (let i = 0; i < list.length; i++) {
     const l = list[i];
     if (l instanceof Array) {
@@ -127,7 +130,22 @@ function stat_foreach(f: (x: number) => void, list: Array<number | number[]>) {
     }
   }
 }
-functions.min = (...list: Array<number | number[]>) => {
+function quantile(q: number, list: (number | number[])[]) {
+  const values: number[] = [];
+  stat_foreach((x) => {
+    values.push(x);
+  }, list);
+  values.sort((a, b) => a - b);
+  const pos = (values.length - 1) * q,
+    base = Math.floor(pos),
+    rest = pos - base;
+  return (
+    (values[base + 1] &&
+      values[base] + rest * (values[base + 1] - values[base])) ||
+    values[base]
+  );
+}
+functions.min = (...list: (number | number[])[]) => {
   let r: number = null;
   stat_foreach((x) => {
     if (r == null || x < r) {
@@ -136,7 +154,7 @@ functions.min = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-functions.max = (...list: Array<number | number[]>) => {
+functions.max = (...list: (number | number[])[]) => {
   let r: number = null;
   stat_foreach((x) => {
     if (r == null || x > r) {
@@ -145,17 +163,18 @@ functions.max = (...list: Array<number | number[]>) => {
   }, list);
   return r;
 };
-functions.sum = (...list: Array<number | number[]>) => {
+functions.sum = (...list: (number | number[])[]) => {
   let r = 0;
   stat_foreach((x) => (r += x), list);
   return r;
 };
-functions.count = (...list: Array<number | number[]>) => {
+functions.count = (...list: (number | number[])[]) => {
   let r = 0;
+  // eslint-disable-next-line
   stat_foreach((x) => (r += 1), list);
   return r;
 };
-functions.stdev = (...list: Array<number | number[]>) => {
+functions.stdev = (...list: (number | number[])[]) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
@@ -168,7 +187,7 @@ functions.stdev = (...list: Array<number | number[]>) => {
   sumX /= count;
   return Math.sqrt(sumX2 - sumX * sumX);
 };
-functions.variance = (...list: Array<number | number[]>) => {
+functions.variance = (...list: (number | number[])[]) => {
   let count = 0;
   let sumX = 0;
   let sumX2 = 0;
@@ -181,7 +200,7 @@ functions.variance = (...list: Array<number | number[]>) => {
   sumX /= count;
   return sumX2 - sumX * sumX;
 };
-functions.median = (...list: Array<number | number[]>) => {
+functions.median = (...list: (number | number[])[]) => {
   const values: number[] = [];
   stat_foreach((x) => {
     values.push(x);
@@ -193,7 +212,7 @@ functions.median = (...list: Array<number | number[]>) => {
     return values[(values.length - 1) / 2];
   }
 };
-functions.avg = (...list: Array<number | number[]>) => {
+functions.avg = (...list: (number | number[])[]) => {
   let r = 0,
     c = 0;
   stat_foreach((x) => {
@@ -207,6 +226,12 @@ functions.avg = (...list: Array<number | number[]>) => {
 };
 functions.mean = functions.avg;
 functions.average = functions.avg;
+functions.quantile = (q: number, list: (number | number[])[]) =>
+  quantile(q, list);
+functions.quartile1 = (...list: (number | number[])[]) => quantile(0.25, list);
+functions.quartile3 = (...list: (number | number[])[]) => quantile(0.75, list);
+functions.iqr = (...list: (number | number[])[]) =>
+  quantile(0.75, list) - quantile(0.25, list);
 
 // General operators
 operators["+"] = makeArrayCapable2((a: any, b: any) => a + b);
@@ -259,7 +284,7 @@ functions.json = {
 
 // Comparison
 functions.sortBy = (
-  fieldName: string | Function,
+  fieldName: string | ((item: any) => string),
   reversed: boolean = false
 ) => {
   const SM = reversed ? 1 : -1;

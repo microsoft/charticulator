@@ -16,19 +16,13 @@ import {
 } from "../../../../components";
 import {
   getAlignment,
-  PopupAlignment,
   PopupView,
 } from "../../../../controllers/popup_controller";
 
 import { AppStore } from "../../../../stores";
 
-import { Label, TextField } from "@fluentui/react";
-import {
-  defaultFontWeight,
-  defaultLabelStyle,
-  FluentTextField,
-  labelRender,
-} from "./fluentui_customized_components";
+import { TextField } from "@fluentui/react";
+import { FluentTextField, labelRender } from "./fluentui_customized_components";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -38,7 +32,10 @@ export interface InputColorProps {
   store?: AppStore;
 }
 
-export class FluentInputColor extends React.Component<InputColorProps, {}> {
+export class FluentInputColor extends React.Component<
+  InputColorProps,
+  Record<string, unknown>
+> {
   public render() {
     let hex: string = "";
     if (this.props.defaultValue) {
@@ -110,7 +107,7 @@ export interface InputColorGradientProps {
 
 export class InputColorGradient extends React.Component<
   InputColorGradientProps,
-  {}
+  Record<string, unknown>
 > {
   public render() {
     let colorButton: HTMLSpanElement;

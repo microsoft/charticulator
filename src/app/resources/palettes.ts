@@ -9,7 +9,7 @@ export interface ColorPalette {
   type: "sequential" | "diverging" | "qualitative" | "palette";
 }
 
-export let predefinedPalettes: ColorPalette[] = [];
+export const predefinedPalettes: ColorPalette[] = [];
 const converter = getColorConverter("sRGB", "sRGB");
 
 export function addPalette(

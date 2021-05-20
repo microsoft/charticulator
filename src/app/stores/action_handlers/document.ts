@@ -14,12 +14,11 @@ import { AppStore } from "../app_store";
 import { Migrator } from "../migrator";
 import { ActionHandlerRegistry } from "./registry";
 import { getConfig } from "../../config";
-import { convertColumn } from "../../../core/dataset/data_types";
-import { DataType, Table, Column } from "../../../core/dataset";
-import { AddMessage } from "../../actions/actions";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
+  // eslint-disable-next-line
   REG.add(Actions.Export, function (action) {
     (async () => {
       // Export as vector graphics
@@ -245,14 +244,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       this.dataset
     );
     this.chartState = this.chartManager.chartState;
-    this.originTemplate = this.buildChartTemplate();
+    this.chartManager?.resetDifference();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
     this.solveConstraintsAndUpdateGraphics();
   });
 
-  REG.add(Actions.UpdatePlotSegments, function (action) {
+  REG.add(Actions.UpdatePlotSegments, function () {
     this.updatePlotSegments();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
@@ -273,6 +272,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
     this.chartState = this.chartManager.chartState;
     this.updatePlotSegments();
+    this.updateDataAxes();
     this.updateScales();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
@@ -314,13 +314,14 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
 
     this.updatePlotSegments();
+    this.updateDataAxes();
     this.updateScales();
     this.solveConstraintsAndUpdateGraphics();
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.Undo, function (action) {
+  REG.add(Actions.Undo, function () {
     const state = this.historyManager.undo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -329,7 +330,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Redo, function (action) {
+  REG.add(Actions.Redo, function () {
     const state = this.historyManager.redo(this.saveDecoupledState());
     if (state) {
       const ss = this.saveSelectionState();
@@ -338,7 +339,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     }
   });
 
-  REG.add(Actions.Reset, function (action) {
+  REG.add(Actions.Reset, function () {
     this.saveHistory();
 
     this.currentSelection = null;

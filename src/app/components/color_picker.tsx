@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
-import { Color, getColorConverter, Prototypes } from "../../core";
+import { Color, getColorConverter } from "../../core";
 import { ColorPalette, predefinedPalettes } from "../resources";
 import { classNames } from "../utils";
 import { Button } from "../views/panels/widgets/controls";
@@ -26,12 +29,12 @@ function HSVtoRGB(
   h /= 360;
   s /= 100;
   v /= 100;
-  let r, g, b, i, f, p, q, t;
-  i = Math.floor(h * 6);
-  f = h * 6 - i;
-  p = v * (1 - s);
-  q = v * (1 - f * s);
-  t = v * (1 - (1 - f) * s);
+  let r, g, b;
+  const i = Math.floor(h * 6);
+  const f = h * 6 - i;
+  const p = v * (1 - s);
+  const q = v * (1 - f * s);
+  const t = v * (1 - (1 - f) * s);
   switch (i % 6) {
     case 0:
       (r = v), (g = t), (b = p);
@@ -257,7 +260,7 @@ export class PaletteList extends React.PureComponent<PaletteListProps, {}> {
   public render() {
     const palettes = this.props.palettes;
 
-    const groups: Array<[string, ColorPalette[]]> = [];
+    const groups: [string, ColorPalette[]][] = [];
     const group2Index = new Map<string, number>();
     for (const p of palettes) {
       const groupName = p.name.split("/")[0];

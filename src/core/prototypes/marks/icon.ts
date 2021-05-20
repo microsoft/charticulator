@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Geometry, Point } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -146,8 +147,11 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
+    // eslint-disable-next-line
     emphasize?: boolean
   ): Graphics.Element {
     const attrs = this.state.attributes;
@@ -161,7 +165,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     // Compute w, h to resize the image to the desired size
     const layout = this.getLayoutProps();
     const gImage = Graphics.makeGroup([
-      {
+      <Graphics.Image>{
         type: "image",
         src: image.src,
         x: -layout.dx,
@@ -169,7 +173,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         width: layout.width,
         height: layout.height,
         mode: "stretch",
-      } as Graphics.Image,
+      },
     ]);
     gImage.transform = cs.getLocalTransform(
       attrs.x + offset.x,
@@ -182,7 +186,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   /** Get DropZones given current state */
   public getDropZones(): DropZones.Description[] {
     return [
-      {
+      <DropZones.Rectangle>{
         type: "rectangle",
         ...this.getBoundingRectangle(),
         title: "size",
@@ -192,7 +196,7 @@ export class IconElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Number,
           },
         },
-      } as DropZones.Rectangle,
+      },
     ];
   }
 
@@ -203,7 +207,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     const bbox = this.getBoundingRectangle();
     const props = this.object.properties;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -211,8 +215,8 @@ export class IconElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x" },
           { type: "attribute", source: "y", attribute: "y" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.TextAlignment>{
         type: "text-alignment",
         actions: [
           { type: "property", source: "alignment", property: "alignment" },
@@ -230,7 +234,7 @@ export class IconElementClass extends EmphasizableMarkClass<
         text: null,
         alignment: props.alignment,
         rotation: props.rotation,
-      } as Handles.TextAlignment,
+      },
     ];
   }
 
@@ -254,7 +258,7 @@ export class IconElementClass extends EmphasizableMarkClass<
   public getBoundingBox(): BoundingBox.Description {
     const rect = this.getBoundingRectangle();
     const attrs = this.state.attributes;
-    return {
+    return <BoundingBox.AnchoredRectangle>{
       type: "anchored-rectangle",
       anchorX: attrs.x,
       anchorY: attrs.y,
@@ -263,15 +267,15 @@ export class IconElementClass extends EmphasizableMarkClass<
       width: rect.width,
       height: rect.height,
       rotation: rect.rotation,
-    } as BoundingBox.AnchoredRectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
+      <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" },
     ];
   }
 
@@ -281,9 +285,9 @@ export class IconElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     let widgets = [
-      manager.sectionHeader("Icon"),
-      manager.mappingEditor("Image", "image", {}),
-      manager.mappingEditor("Size", "size", {
+      manager.sectionHeader(strings.toolbar.icon),
+      manager.mappingEditor(strings.objects.icon.image, "image", {}),
+      manager.mappingEditor(strings.objects.size, "size", {
         acceptKinds: [Specification.DataKind.Numerical],
         hints: { rangeNumber: [0, 100] },
         defaultValue: 400,
@@ -297,9 +301,9 @@ export class IconElementClass extends EmphasizableMarkClass<
     ];
 
     widgets = widgets.concat([
-      manager.sectionHeader("Anchor & Rotation"),
+      manager.sectionHeader(strings.objects.icon.anchorAndRotation),
       manager.row(
-        "Anchor X",
+        strings.objects.icon.anchorX,
         manager.horizontal(
           [0, 1],
           manager.inputSelect(
@@ -311,21 +315,25 @@ export class IconElementClass extends EmphasizableMarkClass<
                 "AlignHorizontalCenter",
                 "AlignHorizontalRight",
               ],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               options: ["left", "middle", "right"],
             }
           ),
           props.alignment.x != "middle"
             ? manager.horizontal(
                 [0, 1],
-                manager.label("Margin:"),
+                manager.label(strings.margins.margin),
                 manager.inputNumber({ property: "alignment", field: "xMargin" })
               )
             : null
         )
       ),
       manager.row(
-        "Anchor Y",
+        strings.objects.icon.anchorY,
         manager.horizontal(
           [0, 1],
           manager.inputSelect(
@@ -337,7 +345,11 @@ export class IconElementClass extends EmphasizableMarkClass<
                 "AlignVerticalCenter",
                 "AlignVerticalBottom",
               ],
-              labels: ["Top", "Middle", "Bottom"],
+              labels: [
+                strings.alignment.top,
+                strings.alignment.middle,
+                strings.alignment.bottom,
+              ],
               options: ["top", "middle", "bottom"],
             }
           ),
@@ -350,13 +362,13 @@ export class IconElementClass extends EmphasizableMarkClass<
             : null
         )
       ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Opacity", "opacity", {
+      manager.sectionHeader(strings.objects.style),
+      manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
         numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
       }),
-      manager.mappingEditor("Visibility", "visible", {
+      manager.mappingEditor(strings.objects.visibleOn.visibility, "visible", {
         defaultValue: true,
       }),
     ]);

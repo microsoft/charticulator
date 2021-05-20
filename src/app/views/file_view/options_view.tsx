@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import { useContext } from "react";
 
@@ -19,9 +23,8 @@ export interface FileViewOptionsProps {
   onClose: () => void;
 }
 
-export const FileViewOptionsView: React.FC<FileViewOptionsProps> = ({
-  onClose,
-}) => {
+// eslint-disable-next-line
+export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
   const { store } = useContext(MainReactContext);
 
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
@@ -35,15 +38,15 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = ({
     LocalStorageKeys.DelimiterSymbol
   );
 
-  const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
-    localeFileFormat.currency,
-    LocalStorageKeys.CurrencySymbol
-  );
+  // const [currencySymbol, setCurrencySymbol] = useLocalStorage<string>(
+  //   localeFileFormat.currency,
+  //   LocalStorageKeys.CurrencySymbol
+  // );
 
-  const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
-    localeFileFormat.group,
-    LocalStorageKeys.GroupSymbol
-  );
+  // const [groupSymbol, setGroupSymbol] = useLocalStorage<string>(
+  //   localeFileFormat.group,
+  //   LocalStorageKeys.GroupSymbol
+  // );
 
   const changeLocaleFileFormat = (localeFileFormat: LocaleFileFormat) => {
     store.setLocaleFileFormat(localeFileFormat);

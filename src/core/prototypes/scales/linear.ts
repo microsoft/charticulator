@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { interpolateColors, Scale } from "../../common";
 import { ConstraintSolver, ConstraintStrength, Variable } from "../../solver";
 import * as Specification from "../../specification";
@@ -9,7 +10,6 @@ import { Colorspace } from "../../specification/types";
 import {
   AttributeDescription,
   Controls,
-  DataMappingHints,
   TemplateParameters,
   ObjectClassMetadata,
 } from "../common";
@@ -66,7 +66,7 @@ export class LinearScale extends ScaleClass<
     const x2 = props.domainMax;
     const y1 = attrs.rangeMin;
     const y2 = attrs.rangeMax;
-    return (((data as number) - x1) / (x2 - x1)) * (y2 - y1) + y1;
+    return ((<number>data - x1) / (x2 - x1)) * (y2 - y1) + y1;
   }
 
   public buildConstraint(
@@ -78,7 +78,7 @@ export class LinearScale extends ScaleClass<
     const props = this.object.properties;
     const x1 = props.domainMin;
     const x2 = props.domainMax;
-    const k = ((data as number) - x1) / (x2 - x1);
+    const k = (<number>data - x1) / (x2 - x1);
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -103,12 +103,16 @@ export class LinearScale extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter((x) => typeof x == "number") as number[];
+    const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin || props.domainMin === undefined) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax || props.domainMax === undefined) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       if (options.rangeNumber) {
@@ -120,21 +124,21 @@ export class LinearScale extends ScaleClass<
       }
 
       if (!options.autoRange) {
-        this.object.mappings.rangeMin = {
+        this.object.mappings.rangeMin = <Specification.ValueMapping>{
           type: MappingType.value,
           value: attrs.rangeMin,
-        } as Specification.ValueMapping;
-        this.object.mappings.rangeMax = {
+        };
+        this.object.mappings.rangeMax = <Specification.ValueMapping>{
           type: MappingType.value,
           value: attrs.rangeMax,
-        } as Specification.ValueMapping;
+        };
       }
 
       if (options.startWithZero === "always") {
-        this.object.mappings.rangeMin = {
+        this.object.mappings.rangeMin = <Specification.ValueMapping>{
           type: MappingType.value,
           value: 0,
-        } as Specification.ValueMapping;
+        };
       }
     }
   }
@@ -143,20 +147,23 @@ export class LinearScale extends ScaleClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Domain"),
-      manager.inputNumber({ property: "domainMin" }, { label: "Start" }),
-      manager.inputNumber({ property: "domainMax" }, { label: "End" }),
-      manager.sectionHeader("Range"),
-      manager.mappingEditor("Start", "rangeMin", { defaultValue: 0 }),
-      manager.mappingEditor("End", "rangeMax", { defaultAuto: true }),
-      manager.sectionHeader("Scale export properties"),
+      manager.sectionHeader(strings.objects.dataAxis.domain),
+      manager.inputNumber(
+        { property: "domainMin" },
+        { label: strings.objects.dataAxis.start }
+      ),
+      manager.inputNumber(
+        { property: "domainMax" },
+        { label: strings.objects.dataAxis.end }
+      ),
+      manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
         {
           property: "autoDomainMin",
         },
         {
           type: "checkbox",
-          label: "Auto range min value",
+          label: strings.objects.dataAxis.start,
         }
       ),
       manager.inputBoolean(
@@ -165,9 +172,16 @@ export class LinearScale extends ScaleClass<
         },
         {
           type: "checkbox",
-          label: "Auto range max value",
+          label: strings.objects.dataAxis.end,
         }
       ),
+      manager.sectionHeader(strings.objects.dataAxis.range),
+      manager.mappingEditor(strings.objects.dataAxis.start, "rangeMin", {
+        defaultValue: 0,
+      }),
+      manager.mappingEditor(strings.objects.dataAxis.end, "rangeMax", {
+        defaultAuto: true,
+      }),
     ];
   }
 
@@ -226,13 +240,13 @@ function getDefaultGradient(): Specification.Types.ColorGradient {
 
 export class LinearColorScale extends ScaleClass<
   LinearColorScaleProperties,
-  {}
+  any
 > {
   public static classID = "scale.linear<number,color>";
   public static type = "scale";
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Scale",
+    displayName: strings.objects.scale,
     iconPath: "scale/color",
   };
 
@@ -253,17 +267,23 @@ export class LinearColorScale extends ScaleClass<
     const props = this.object.properties;
     const x1 = props.domainMin;
     const x2 = props.domainMax;
-    const t = ((data as number) - x1) / (x2 - x1);
+    const t = (<number>data - x1) / (x2 - x1);
     const c = interpolateColors(props.range.colors, props.range.colorspace);
     return c(t);
   }
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: Specification.DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ) {}
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
@@ -272,12 +292,16 @@ export class LinearColorScale extends ScaleClass<
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter((x) => typeof x == "number") as number[];
+    const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
     s.adjustDomain(options);
 
-    props.domainMin = s.domainMin;
-    props.domainMax = s.domainMax;
+    if (options.extendScaleMin || props.domainMin === undefined) {
+      props.domainMin = s.domainMin;
+    }
+    if (options.extendScaleMax || props.domainMax === undefined) {
+      props.domainMax = s.domainMax;
+    }
 
     if (!options.reuseRange) {
       props.range = getDefaultGradient();
@@ -288,10 +312,16 @@ export class LinearColorScale extends ScaleClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Domain"),
-      manager.row("Start", manager.inputNumber({ property: "domainMin" })),
-      manager.row("End", manager.inputNumber({ property: "domainMax" })),
-      manager.sectionHeader("Gradient"),
+      manager.sectionHeader(strings.objects.dataAxis.domain),
+      manager.row(
+        strings.objects.dataAxis.start,
+        manager.inputNumber({ property: "domainMin" })
+      ),
+      manager.row(
+        strings.objects.dataAxis.end,
+        manager.inputNumber({ property: "domainMax" })
+      ),
+      manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(
         { property: "range", noComputeLayout: true },
         true
@@ -331,7 +361,7 @@ export interface LinearBooleanScaleProperties extends LinearScaleProperties {
 
 export class LinearBooleanScale extends ScaleClass<
   LinearBooleanScaleProperties,
-  {}
+  any
 > {
   public static classID = "scale.linear<number,boolean>";
   public static type = "scale";
@@ -350,7 +380,7 @@ export class LinearBooleanScale extends ScaleClass<
     data: Specification.DataValue
   ): Specification.AttributeValue {
     const props = this.object.properties;
-    const value = data as number;
+    const value = <number>data;
     if (props.inclusive) {
       switch (props.mode) {
         case "greater":
@@ -372,24 +402,35 @@ export class LinearBooleanScale extends ScaleClass<
     }
   }
 
+  // eslint-disable-next-line
   public buildConstraint(
+    // eslint-disable-next-line
     data: Specification.DataValue,
+    // eslint-disable-next-line
     target: Variable,
+    // eslint-disable-next-line
     solver: ConstraintSolver
+    // eslint-disable-next-line
   ) {}
 
+  // eslint-disable-next-line
   public initializeState(): void {}
 
   public inferParameters(
     column: Specification.DataValue[],
+    // eslint-disable-next-line
     options: InferParametersOptions = {}
   ): void {
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = column.filter((x) => typeof x == "number") as number[];
+    const values = <number[]>column.filter((x) => typeof x == "number");
     s.inferParameters(values);
-    props.min = s.domainMin;
-    props.max = s.domainMax;
+    if (options.extendScaleMin || props.min === undefined) {
+      props.min = s.domainMin;
+    }
+    if (options.extendScaleMax || props.max === undefined) {
+      props.max = s.domainMax;
+    }
     props.mode = "interval";
     props.inclusive = true;
   }
@@ -403,7 +444,9 @@ export class LinearBooleanScale extends ScaleClass<
       minMax.push(
         manager.row(
           props.inclusive ? ">=" : ">",
-          manager.inputNumber({ property: "min" })
+          this.object.inputType === Specification.DataType.Date
+            ? manager.inputDate({ property: "min" })
+            : manager.inputNumber({ property: "min" })
         )
       );
     }
@@ -411,26 +454,32 @@ export class LinearBooleanScale extends ScaleClass<
       minMax.push(
         manager.row(
           props.inclusive ? "<=" : "<",
-          manager.inputNumber({ property: "max" })
+          this.object.inputType === Specification.DataType.Date
+            ? manager.inputDate({ property: "max" })
+            : manager.inputNumber({ property: "max" })
         )
       );
     }
     return [
-      manager.sectionHeader("Boolean"),
+      manager.sectionHeader(strings.typeDisplayNames.boolean),
       manager.row(
-        "Mode",
+        strings.objects.scales.mode,
         manager.inputSelect(
           { property: "mode" },
           {
             type: "dropdown",
             options: ["greater", "less", "interval"],
             showLabel: true,
-            labels: ["Greater", "Less", "Interval"],
+            labels: [
+              strings.objects.scales.greater,
+              strings.objects.scales.less,
+              strings.objects.scales.interval,
+            ],
           }
         )
       ),
       manager.row(
-        "Inclusive",
+        strings.objects.scales.inclusive,
         manager.inputBoolean({ property: "inclusive" }, { type: "checkbox" })
       ),
       ...minMax,

@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { Color, deepClone } from "../../common";
+import { Color } from "../../common";
 import * as Specification from "../../specification";
-import { AttributeDescription, Controls, ObjectClassMetadata } from "../common";
+import { Controls, ObjectClassMetadata } from "../common";
 import { DataAxisExpression } from "../marks/data_axis.attrs";
-import { LegendProperties, LegendState, LegendClass } from "./legend";
-import { defaultAxisStyle } from "../plot_segments/axis";
+import { LegendProperties, LegendState } from "./legend";
 
 export type LegendSourceType = "columnNames" | "columnValues";
 
@@ -15,6 +14,7 @@ export type LegendType = "color" | "numerical" | "categorical";
 export type LegendOrientation = "horizontal" | "vertical";
 
 import { CategoricalLegendClass } from "./categorical_legend";
+import { strings } from "../../../strings";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -32,7 +32,7 @@ export interface CustomLegendObject extends Specification.Object {
   properties: CustomLegendProperties;
 }
 
-export interface CustomLegendState extends LegendState {}
+export type CustomLegendState = LegendState;
 
 export interface CustomLegendItem {
   type: "number" | "color" | "boolean";
@@ -48,7 +48,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
   public readonly state: CustomLegendState;
 
   public static metadata: ObjectClassMetadata = {
-    displayName: "Legend",
+    displayName: strings.objects.legend.legend,
     iconPath: "CharticulatorLegend",
     creatingInteraction: {
       type: "point",
@@ -63,11 +63,28 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
     const scale = this.getScale();
     if (scale) {
-      widget.push(manager.sectionHeader("Colors"));
+      // widget.push(manager.sectionHeader(strings.objects.colors));
+      // widget.push(
+      //   manager.row(
+      //     strings.objects.scale,
+      //     manager.scaleEditor(
+      //       "mappingOptions",
+      //       strings.objects.legend.editColors
+      //     )
+      //   )
+      // );
       widget.push(
-        manager.row(
-          "Scale",
-          manager.scaleEditor("mappingOptions", "Edit scale colors")
+        manager.vertical(
+          manager.label(strings.objects.colors, {
+            addMargins: true,
+          }),
+          manager.horizontal(
+            [1],
+            manager.scaleEditor(
+              "mappingOptions",
+              strings.objects.legend.editColors
+            )
+          )
         )
       );
     }

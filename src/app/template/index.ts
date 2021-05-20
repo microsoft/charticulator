@@ -19,7 +19,6 @@ import {
   getById,
   getByName,
   isReservedColumnName,
-  LinkSourceKeyColumn,
   Prototypes,
   Specification,
 } from "../../core";
@@ -77,6 +76,7 @@ export class ChartTemplateBuilder {
   }
 
   public addTable(table: string) {
+    // eslint-disable-next-line
     if (!this.tableColumns.hasOwnProperty(table)) {
       this.tableColumns[table] = new Set();
     }
@@ -94,12 +94,14 @@ export class ChartTemplateBuilder {
           const notRawColumn = tableObject.columns.find(
             (col) => col.metadata.rawColumnName === column.name
           );
+          // eslint-disable-next-line
           if (this.tableColumns.hasOwnProperty(table)) {
             this.tableColumns[table].add(notRawColumn.name);
           } else {
             this.tableColumns[table] = new Set([notRawColumn.name]);
           }
         }
+        // eslint-disable-next-line
         if (this.tableColumns.hasOwnProperty(table)) {
           this.tableColumns[table].add(columnName);
         } else {
@@ -159,6 +161,7 @@ export class ChartTemplateBuilder {
     return pn;
   }
 
+  // eslint-disable-next-line
   public addObject(table: string, objectClass: Prototypes.ObjectClass) {
     // Visit a object only once
     if (this.objectVisited[objectClass.object._id]) {
@@ -354,6 +357,7 @@ export class ChartTemplateBuilder {
    * All exposed objects should be initialized in {@link ChartTemplate} class
    * @returns JSON structure of template
    */
+  // eslint-disable-next-line
   public build(): Specification.Template.ChartTemplate {
     this.reset();
 
@@ -499,6 +503,20 @@ export class ChartTemplateBuilder {
         }
 
         if (item.kind === ObjectItemKind.Mark) {
+          if (Prototypes.isType(item.mark.classID, "mark.nested-chart")) {
+            const nestedChart = item.mark;
+            const columnNameMap = Object.keys(
+              nestedChart.properties.columnNameMap
+            );
+            const mainTable = this.usedColumns[
+              this.manager.dataset.tables.find((t) => t.type === TableType.Main)
+                .name
+            ];
+            columnNameMap.forEach(
+              (columnNames) => (mainTable[columnNames] = columnNames)
+            );
+          }
+
           if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
             try {
               const glyphId = item.glyph._id;
@@ -533,6 +551,7 @@ export class ChartTemplateBuilder {
         }
 
         const mappings = item.object.mappings;
+        // eslint-disable-next-line
         for (const [attr, mapping] of forEachMapping(mappings)) {
           if (mapping.type == MappingType.scale) {
             const scaleMapping = mapping as Specification.ScaleMapping;
@@ -567,6 +586,7 @@ export class ChartTemplateBuilder {
     template.tables = this.dataset.tables
       .map((table) => {
         if (
+          // eslint-disable-next-line
           this.tableColumns.hasOwnProperty(table.name) &&
           (this.usedColumns[table.name] || noUsedColumns)
         ) {

@@ -8,7 +8,6 @@ import {
   getById,
   getByName,
   Prototypes,
-  setField,
   Solver,
   Specification,
   zipArray,
@@ -18,10 +17,7 @@ import {
   compareMarkAttributeNames,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
-import {
-  CharticulatorWorker,
-  CharticulatorWorkerInterface,
-} from "../../worker";
+import { CharticulatorWorkerInterface } from "../../worker";
 import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
@@ -70,25 +66,19 @@ import {
   NumericalNumberLegendAttributeNames,
   NumericalNumberLegendProperties,
 } from "../../core/prototypes/legends/numerical_legend";
-import { domain } from "process";
 
 import {
-  CartesianPlotSegment,
   defaultAxisStyle,
-  PlotSegmentClass,
   Region2DProperties,
 } from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
-import { ScaleLinear } from "d3-scale";
-import {
-  LinearScale,
-  LinearScaleProperties,
-} from "../../core/prototypes/scales/linear";
+import { LinearScaleProperties } from "../../core/prototypes/scales/linear";
 import {
   PlotSegmentAxisPropertyNames,
   Region2DSublayoutType,
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
 
 export interface ChartStoreStateSolverStatus {
   solving: boolean;
@@ -149,8 +139,6 @@ export class AppStore extends BaseStore {
 
   /** The dataset created on import */
   public originDataset: Dataset.Dataset;
-  /** The origin template on import */
-  public originTemplate: Specification.Template.ChartTemplate;
   /** The current dataset */
   public dataset: Dataset.Dataset;
   /** The current chart */
@@ -227,7 +215,7 @@ export class AppStore extends BaseStore {
           ],
           getFileName: (props: { name: string }) => `${props.name}.tmplt`,
           generate: () => {
-            return new Promise<string>((resolve, reject) => {
+            return new Promise<string>((resolve) => {
               const r = b64EncodeUnicode(JSON.stringify(template, null, 2));
               resolve(r);
             });
@@ -281,7 +269,11 @@ export class AppStore extends BaseStore {
 
   public saveHistory() {
     this.historyManager.addState(this.saveDecoupledState());
-    this.emit(AppStore.EVENT_GRAPHICS);
+    try {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } catch (ex) {
+      console.error(ex);
+    }
   }
 
   public renderSVG() {
@@ -313,7 +305,7 @@ export class AppStore extends BaseStore {
       CHARTICULATOR_PACKAGE.version
     );
     this.loadState(state);
-    this.originTemplate = this.buildChartTemplate();
+    this.chartManager?.resetDifference();
   }
 
   // removes unused scale objecs
@@ -377,7 +369,7 @@ export class AppStore extends BaseStore {
       });
       chart.metadata.thumbnail = png.toDataURL();
       await this.backend.put(chart.id, chart.data, chart.metadata);
-      this.originTemplate = this.buildChartTemplate();
+      this.chartManager?.resetDifference();
 
       this.emit(AppStore.EVENT_GRAPHICS);
       this.emit(AppStore.EVENT_SAVECHART);
@@ -565,6 +557,7 @@ export class AppStore extends BaseStore {
     if (!plotSegment) {
       return 0;
     }
+    // eslint-disable-next-line
     if (this.selectedGlyphIndex.hasOwnProperty(plotSegmentID)) {
       const idx = this.selectedGlyphIndex[plotSegmentID];
       if (idx >= plotSegment.state.dataRowIndices.length) {
@@ -607,9 +600,12 @@ export class AppStore extends BaseStore {
     }
   }
 
-  public preSolveValues: Array<
-    [Solver.ConstraintStrength, Specification.AttributeMap, string, number]
-  > = [];
+  public preSolveValues: [
+    Solver.ConstraintStrength,
+    Specification.AttributeMap,
+    string,
+    number
+  ][] = [];
   public addPresolveValue(
     strength: Solver.ConstraintStrength,
     state: Specification.AttributeMap,
@@ -653,6 +649,7 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public scaleInference(
     context: { glyph?: Specification.Glyph; chart?: { table: string } },
     options: ScaleInferenceOptions
@@ -743,6 +740,7 @@ export class AppStore extends BaseStore {
 
       const findScale = (mappings: Specification.Mappings) => {
         for (const name in mappings) {
+          // eslint-disable-next-line
           if (!mappings.hasOwnProperty(name)) {
             continue;
           }
@@ -862,7 +860,11 @@ export class AppStore extends BaseStore {
           groupBy,
           options.expression
         ) as Specification.DataValue[],
-        options.hints
+        {
+          ...options.hints,
+          extendScaleMax: true,
+          extendScaleMin: true,
+        }
       );
 
       return newScale._id;
@@ -883,6 +885,7 @@ export class AppStore extends BaseStore {
     return false;
   }
 
+  // eslint-disable-next-line
   public toggleLegendForScale(
     scale: string,
     mapping: Specification.ScaleMapping,
@@ -901,11 +904,7 @@ export class AppStore extends BaseStore {
     let newLegend: Specification.ChartElement;
     // Categorical-color scale
     if (scaleObject.classID == "scale.categorical<string,color>") {
-      if (
-        mapping &&
-        mapping.valueIndex !== undefined &&
-        mapping.valueIndex !== null
-      ) {
+      if (mapping && mapping.valueIndex != undefined) {
         newLegend = this.chartManager.createObject(`legend.custom`);
       } else {
         newLegend = this.chartManager.createObject(`legend.categorical`);
@@ -1021,10 +1020,7 @@ export class AppStore extends BaseStore {
       expression: mapping.expression,
       valueType: mapping.valueType,
       scale: scaleObject._id,
-      allowSelectValue:
-        mapping &&
-        mapping.valueIndex !== undefined &&
-        mapping.valueIndex !== null,
+      allowSelectValue: mapping && mapping.valueIndex != undefined,
     } as Specification.ScaleMapping;
 
     newLegend.mappings.mappingOptions = mappingOptions;
@@ -1132,13 +1128,10 @@ export class AppStore extends BaseStore {
     const elements = this.chartManager.chart.elements;
     const elementStates = this.chartManager.chartState.elements;
     zipArray(elements, elementStates).forEach(
-      (
-        [layout, layoutState]: [
-          Specification.ChartElement,
-          Specification.ChartElementState
-        ],
-        index
-      ) => {
+      ([layout, layoutState]: [
+        Specification.ChartElement,
+        Specification.ChartElementState
+      ]) => {
         const layoutClass = this.chartManager.getChartElementClass(layoutState);
         chartGuides = chartGuides.concat(
           layoutClass.getSnappingGuides().map((bounds) => {
@@ -1182,6 +1175,7 @@ export class AppStore extends BaseStore {
       this.dataset,
       this.chartManager
     );
+
     const template = builder.build();
     return template;
   }
@@ -1209,9 +1203,11 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public updateScales() {
     try {
       const updatedScales: string[] = [];
+      // eslint-disable-next-line
       const updateScalesInternal = (
         scaleId: string,
         mappings: Specification.Guide<Specification.ObjectProperties>[],
@@ -1296,7 +1292,8 @@ export class AppStore extends BaseStore {
           scaleClass.inferParameters(values as any, {
             newScale,
             reuseRange,
-            extendScale,
+            extendScaleMax: extendScale,
+            extendScaleMin: extendScale,
             rangeNumber: [
               (scale.mappings.rangeMin as ValueMapping)?.value as number,
               (scale.mappings.rangeMax as ValueMapping)?.value as number,
@@ -1331,11 +1328,26 @@ export class AppStore extends BaseStore {
     }
   }
 
+  public getDataKindByType = (type: AxisDataBindingType): DataKind => {
+    switch (type) {
+      case AxisDataBindingType.Categorical:
+        return DataKind.Categorical;
+      case AxisDataBindingType.Numerical:
+        return DataKind.Numerical;
+      case AxisDataBindingType.Default:
+        return DataKind.Categorical;
+      default:
+        return DataKind.Categorical;
+    }
+  };
+
+  // eslint-disable-next-line
   public updatePlotSegments() {
     // Get plot segments to update with new data
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
+    // eslint-disable-next-line
     plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
         (table) => table.name === plot.table
@@ -1354,15 +1366,18 @@ export class AppStore extends BaseStore {
               xDataProperty.type === "numerical" &&
               xDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : xDataProperty.dataKind,
+                : xDataProperty.dataKind
+                ? xDataProperty.dataKind
+                : this.getDataKindByType(xDataProperty.type),
             orderMode: xDataProperty.orderMode
               ? xDataProperty.orderMode
               : xDataProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: xDataProperty.order,
+            order:
+              xDataProperty.order !== undefined ? xDataProperty.order : null,
           },
-          xDataProperty.rawColumnExpr as string
+          xDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1392,15 +1407,18 @@ export class AppStore extends BaseStore {
               yDataProperty.type === "numerical" &&
               yDataProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : yDataProperty.dataKind,
+                : yDataProperty.dataKind
+                ? yDataProperty.dataKind
+                : this.getDataKindByType(yDataProperty.type),
             orderMode: yDataProperty.orderMode
               ? yDataProperty.orderMode
               : yDataProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: yDataProperty.order,
+            order:
+              yDataProperty.order !== undefined ? yDataProperty.order : null,
           },
-          yDataProperty.rawColumnExpr as string
+          yDataProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1422,22 +1440,26 @@ export class AppStore extends BaseStore {
       if (axisProperty) {
         const axisData = new DragData.DataExpression(
           table,
-          axisProperty.expression,
-          axisProperty.valueType,
+          axisProperty.expression !== undefined
+            ? axisProperty.expression
+            : null,
+          axisProperty.valueType !== undefined ? axisProperty.valueType : null,
           {
             kind:
               axisProperty.type === "numerical" &&
               axisProperty.numericalMode === "temporal"
                 ? DataKind.Temporal
-                : axisProperty.dataKind,
+                : axisProperty.dataKind
+                ? axisProperty.dataKind
+                : this.getDataKindByType(axisProperty.type),
             orderMode: axisProperty.orderMode
               ? axisProperty.orderMode
               : axisProperty.valueType === "string"
               ? OrderMode.order
               : null,
-            order: axisProperty.order,
+            order: axisProperty.order !== undefined ? axisProperty.order : null,
           },
-          axisProperty.rawColumnExpr as string
+          axisProperty.rawExpression as string
         );
 
         this.bindDataToAxis({
@@ -1446,7 +1468,9 @@ export class AppStore extends BaseStore {
           object: plot,
           appendToProperty: null,
           type: axisProperty.type, // TODO get type for column, from current dataset
-          numericalMode: axisProperty.numericalMode,
+          numericalMode: axisProperty.numericalMode
+            ? axisProperty.numericalMode
+            : null,
           autoDomainMax: axisProperty.autoDomainMax,
           autoDomainMin: axisProperty.autoDomainMin,
           domainMin: axisProperty.domainMin,
@@ -1454,6 +1478,105 @@ export class AppStore extends BaseStore {
         });
       }
     });
+  }
+
+  public updateDataAxes() {
+    const mapElementWithTable = (table: string) => (el: any) => {
+      return {
+        table,
+        element: el,
+      };
+    };
+
+    const bindAxis = (
+      dataAxisElement: { table: string; element: any },
+      expression: string,
+      axisProperty: Specification.Types.AxisDataBinding,
+      dataAxis: Specification.ChartElement<DataAxisProperties>,
+      appendToProperty: string = null
+    ) => {
+      const axisData = new DragData.DataExpression(
+        this.dataset.tables.find((t) => t.name == dataAxisElement.table),
+        expression,
+        axisProperty.valueType,
+        {
+          kind:
+            axisProperty.type === "numerical" &&
+            axisProperty.numericalMode === "temporal"
+              ? DataKind.Temporal
+              : axisProperty.dataKind
+              ? axisProperty.dataKind
+              : this.getDataKindByType(axisProperty.type),
+          orderMode: axisProperty.orderMode
+            ? axisProperty.orderMode
+            : axisProperty.valueType === "string"
+            ? OrderMode.order
+            : null,
+          order: axisProperty.order,
+        },
+        axisProperty.rawColumnExpr as string
+      );
+
+      this.bindDataToAxis({
+        property: PlotSegmentAxisPropertyNames.axis,
+        dataExpression: axisData,
+        object: dataAxis as any,
+        appendToProperty,
+        type: axisProperty.type,
+        numericalMode: axisProperty.numericalMode,
+        autoDomainMax: axisProperty.autoDomainMax,
+        autoDomainMin: axisProperty.autoDomainMin,
+        domainMin: axisProperty.domainMin,
+        domainMax: axisProperty.domainMax,
+      });
+    };
+
+    const table = this.dataset.tables.find((t) => t.type === TableType.Main);
+    this.chart.elements
+      .map(mapElementWithTable(table.name))
+      .concat(
+        this.chart.glyphs.flatMap((gl) =>
+          gl.marks.map(mapElementWithTable(gl.table))
+        )
+      )
+      .filter((element) =>
+        Prototypes.isType(element.element.classID, "mark.data-axis")
+      )
+      .forEach((dataAxisElement) => {
+        const dataAxis = dataAxisElement.element as Specification.ChartElement<
+          DataAxisProperties
+        >;
+        const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+          .axis;
+        if (axisProperty) {
+          const expression = axisProperty.expression;
+
+          bindAxis(dataAxisElement, expression, axisProperty, dataAxis);
+        }
+
+        const dataExpressions = dataAxis.properties.dataExpressions;
+        // remove all and added again
+        dataAxis.properties.dataExpressions = [];
+        dataExpressions.forEach((dataExpression, index) => {
+          const axisProperty: Specification.Types.AxisDataBinding = (dataAxis.properties as LineGuideProperties)
+            .axis;
+          if (axisProperty) {
+            const expression = dataExpression.expression;
+
+            bindAxis(
+              dataAxisElement,
+              expression,
+              axisProperty,
+              dataAxis,
+              "dataExpressions"
+            );
+
+            // save old name/id of expression to hold binding marks to those axis points
+            dataAxis.properties.dataExpressions[index].name =
+              dataExpression.name;
+          }
+        });
+      });
   }
 
   private getBindingByDataKind(kind: DataKind) {
@@ -1467,6 +1590,7 @@ export class AppStore extends BaseStore {
     }
   }
 
+  // eslint-disable-next-line
   public bindDataToAxis(options: {
     object: Specification.PlotSegment;
     property?: string;
@@ -1481,6 +1605,9 @@ export class AppStore extends BaseStore {
   }) {
     this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
+
+    this.normalizeDataExpression(dataExpression);
+
     let groupExpression = dataExpression.expression;
     let valueType = dataExpression.valueType;
     const propertyValue = object.properties[options.property] as any;
@@ -1501,15 +1628,21 @@ export class AppStore extends BaseStore {
     const objectProperties = object.properties[
       options.property
     ] as ObjectProperties;
+
+    const expression =
+      appendToProperty === "dataExpressions" && propertyValue
+        ? ((propertyValue as any).expression as string)
+        : groupExpression;
+
     let dataBinding: Specification.Types.AxisDataBinding = {
       type: options.type || type,
       // Don't change current expression (use current expression), if user appends data expression ()
-      expression:
-        appendToProperty === "dataExpressions" && propertyValue
-          ? ((propertyValue as any).expression as string)
-          : groupExpression,
-      rawExpression: dataExpression.rawColumnExpression,
-      valueType,
+      expression: expression,
+      rawExpression:
+        dataExpression.rawColumnExpression != undefined
+          ? dataExpression.rawColumnExpression
+          : expression,
+      valueType: valueType !== undefined ? valueType : null,
       gapRatio:
         propertyValue?.gapRatio === undefined ? 0.1 : propertyValue.gapRatio,
       visible:
@@ -1520,12 +1653,30 @@ export class AppStore extends BaseStore {
       style:
         (objectProperties?.style as AxisRenderingStyle) ||
         deepClone(defaultAxisStyle),
-      numericalMode: options.numericalMode,
-      dataKind: dataExpression.metadata.kind,
-      order: dataExpression.metadata.order,
-      orderMode: dataExpression.metadata.orderMode,
+      numericalMode:
+        options.numericalMode != undefined ? options.numericalMode : null,
+      dataKind:
+        dataExpression.metadata.kind != undefined
+          ? dataExpression.metadata.kind
+          : null,
+      order:
+        dataExpression.metadata.order !== undefined
+          ? dataExpression.metadata.order
+          : null,
+      orderMode:
+        dataExpression.metadata.orderMode !== undefined
+          ? dataExpression.metadata.orderMode
+          : null,
       autoDomainMax: options.autoDomainMax,
       autoDomainMin: options.autoDomainMin,
+      tickFormat:
+        <string>objectProperties?.tickFormat !== undefined
+          ? <string>objectProperties?.tickFormat
+          : null,
+      tickDataExpression:
+        <string>objectProperties?.tickDataExpression !== undefined
+          ? <string>objectProperties?.tickDataExpression
+          : null,
     };
 
     let expressions = [groupExpression];
@@ -1583,11 +1734,13 @@ export class AppStore extends BaseStore {
           {
             dataBinding.type = AxisDataBindingType.Categorical;
             dataBinding.valueType = dataExpression.valueType;
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            const { categories, order } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+            dataBinding.categories = categories;
+            dataBinding.order = order != undefined ? order : null;
           }
 
           break;
@@ -1625,11 +1778,12 @@ export class AppStore extends BaseStore {
             }
             dataBinding.type = AxisDataBindingType.Numerical;
             dataBinding.numericalMode = NumericalMode.Temporal;
-            dataBinding.categories = this.getCategoriesForDataBinding(
+            const { categories } = this.getCategoriesForDataBinding(
               dataExpression.metadata,
               dataExpression.valueType,
               values
             );
+            dataBinding.categories = categories;
           }
           break;
       }
@@ -1653,14 +1807,83 @@ export class AppStore extends BaseStore {
     }
   }
 
+  /**
+   * Due to undefined "value" will not saved after JSON.stringfy, need to update all undefined "values" to null
+   * deepClone uses JSON.stringfy to create copy of object. If object losses some property after copy
+   * the function expect_deep_approximately_equals gives difference for identical tempalte/chart state
+   * See {@link ChartStateManager.hasUnsavedChanges} for details
+   * @param dataExpression Data expression for axis
+   */
+  private normalizeDataExpression(dataExpression: DragData.DataExpression) {
+    if (dataExpression.metadata) {
+      if (dataExpression.metadata.order === undefined) {
+        dataExpression.metadata.order = null;
+      }
+      if (dataExpression.metadata.orderMode === undefined) {
+        dataExpression.metadata.orderMode = null;
+      }
+      if (dataExpression.metadata.rawColumnName === undefined) {
+        dataExpression.metadata.rawColumnName = null;
+      }
+      if (dataExpression.metadata.unit === undefined) {
+        dataExpression.metadata.unit = null;
+      }
+      if (dataExpression.metadata.kind === undefined) {
+        dataExpression.metadata.kind = null;
+      }
+      if (dataExpression.metadata.isRaw === undefined) {
+        dataExpression.metadata.isRaw = null;
+      }
+      if (dataExpression.metadata.format === undefined) {
+        dataExpression.metadata.format = null;
+      }
+      if (dataExpression.metadata.examples === undefined) {
+        dataExpression.metadata.examples = null;
+      }
+      if (dataExpression.scaleID === undefined) {
+        dataExpression.scaleID = null;
+      }
+      if (dataExpression.type === undefined) {
+        dataExpression.type = null;
+      }
+      if (dataExpression.rawColumnExpression === undefined) {
+        dataExpression.rawColumnExpression = null;
+      }
+      if (dataExpression.valueType === undefined) {
+        dataExpression.valueType = null;
+      }
+    }
+  }
+
   public getCategoriesForDataBinding(
     metadata: Dataset.ColumnMetadata,
     type: DataType,
     values: ValueType[]
   ) {
     let categories: string[];
-    if (metadata.order) {
+    let order: string[];
+    if (metadata.order && metadata.orderMode === OrderMode.order) {
       categories = metadata.order.slice();
+      const scale = new Scale.CategoricalScale();
+      scale.inferParameters(values as string[], metadata.orderMode);
+      const newData = new Array<string>(scale.length);
+      scale.domain.forEach(
+        (index: any, x: any) => (newData[index] = x.toString())
+      );
+
+      metadata.order = metadata.order.filter((value) =>
+        scale.domain.has(value)
+      );
+      const newItems = newData.filter(
+        (category) => !metadata.order.find((order) => order === category)
+      );
+
+      categories = new Array<string>(metadata.order.length);
+      metadata.order.forEach((value, index) => {
+        categories[index] = value;
+      });
+      categories = categories.concat(newItems);
+      order = metadata.order.concat(newItems);
     } else {
       let orderMode: OrderMode = OrderMode.alphabetically;
       const scale = new Scale.CategoricalScale();
@@ -1677,7 +1900,7 @@ export class AppStore extends BaseStore {
         (index: any, x: any) => (categories[index] = x.toString())
       );
     }
-    return categories;
+    return { categories, order };
   }
 
   public getGroupingExpression(

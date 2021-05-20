@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import {
   Point,
   replaceNewLineBySymbol,
@@ -55,14 +56,15 @@ export class TextElementClass extends EmphasizableMarkClass<
   public static defaultMappingValues: Partial<TextElementAttributes> = {
     ...ObjectClass.defaultProperties,
     text: "Text",
-    fontFamily: "Arial",
-    fontSize: 14,
+    fontFamily: defaultFont,
+    fontSize: defaultFontSize,
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
   };
 
   public static defaultProperties: Partial<TextElementProperties> = {
+    ...ObjectClass.defaultProperties,
     alignment: {
       x: TextAlignmentHorizontal.Middle,
       y: TextAlignmentVertical.Top,
@@ -78,12 +80,12 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   // Initialize the state of an element so that everything has a valid value
   public initializeState(): void {
-    const attrs = this.state.attributes as TextElementAttributes;
+    const attrs = <TextElementAttributes>this.state.attributes;
     attrs.x = 0;
     attrs.y = 0;
     attrs.text = "Text";
-    attrs.fontFamily = "Arial";
-    attrs.fontSize = 14;
+    attrs.fontFamily = defaultFont;
+    attrs.fontSize = defaultFontSize;
     attrs.color = {
       r: 0,
       g: 0,
@@ -95,13 +97,16 @@ export class TextElementClass extends EmphasizableMarkClass<
   }
 
   // Get intrinsic constraints between attributes (e.g., x2 - x1 = width for rectangles)
+  // eslint-disable-next-line
   public buildConstraints(solver: ConstraintSolver): void {}
 
   // Get the graphical element from the element
   public getGraphics(
     cs: Graphics.CoordinateSystem,
     offset: Point,
+    // eslint-disable-next-line
     glyphIndex = 0,
+    // eslint-disable-next-line
     manager: ChartStateManager,
     empasized?: boolean
   ): Graphics.Element {
@@ -173,7 +178,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   // Get DropZones given current state
   public getDropZones(): DropZones.Description[] {
     return [
-      {
+      <DropZones.Rectangle>{
         type: "rectangle",
         ...this.getBoundingRectangle(),
         title: "text",
@@ -183,17 +188,17 @@ export class TextElementClass extends EmphasizableMarkClass<
             attributeType: Specification.AttributeType.Text,
           },
         },
-      } as DropZones.Rectangle,
+      },
     ];
   }
   // Get bounding rectangle given current state
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const { x, y, x1, y1, x2, y2 } = attrs;
+    const { x, y } = attrs;
     const bbox = this.getBoundingRectangle();
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -201,8 +206,8 @@ export class TextElementClass extends EmphasizableMarkClass<
           { type: "attribute", source: "x", attribute: "x" },
           { type: "attribute", source: "y", attribute: "y" },
         ],
-      } as Handles.Point,
-      {
+      },
+      <Handles.TextAlignment>{
         type: "text-alignment",
         actions: [
           { type: "property", source: "alignment", property: "alignment" },
@@ -220,7 +225,7 @@ export class TextElementClass extends EmphasizableMarkClass<
         text: attrs.text,
         alignment: props.alignment,
         rotation: props.rotation,
-      } as Handles.TextAlignment,
+      },
     ];
   }
 
@@ -259,7 +264,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   public getBoundingBox(): BoundingBox.Description {
     const rect = this.getBoundingRectangle();
     const attrs = this.state.attributes;
-    return {
+    return <BoundingBox.AnchoredRectangle>{
       type: "anchored-rectangle",
       anchorX: attrs.x,
       anchorY: attrs.y,
@@ -268,15 +273,15 @@ export class TextElementClass extends EmphasizableMarkClass<
       width: rect.width,
       height: rect.height,
       rotation: rect.rotation,
-    } as BoundingBox.AnchoredRectangle;
+    };
   }
 
   public getSnappingGuides(): SnappingGuides.Description[] {
     const attrs = this.state.attributes;
-    const { x, y, x1, y1, x2, y2 } = attrs;
+    const { x, y } = attrs;
     return [
-      { type: "x", value: x, attribute: "x" } as SnappingGuides.Axis,
-      { type: "y", value: y, attribute: "y" } as SnappingGuides.Axis,
+      <SnappingGuides.Axis>{ type: "x", value: x, attribute: "x" },
+      <SnappingGuides.Axis>{ type: "y", value: y, attribute: "y" },
     ];
   }
 
@@ -288,11 +293,11 @@ export class TextElementClass extends EmphasizableMarkClass<
     return [
       manager.mappingEditor("Text", "text", {}),
       manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: "Arial",
+        defaultValue: defaultFont,
       }),
       manager.mappingEditor("Size", "fontSize", {
         hints: { rangeNumber: [0, 36] },
-        defaultValue: 14,
+        defaultValue: defaultFontSize,
         numberOptions: {
           showUpdown: true,
           updownStyle: "font",

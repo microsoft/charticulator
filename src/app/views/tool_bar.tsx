@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
@@ -7,7 +9,7 @@ import * as R from "../resources";
 
 import { EventSubscription } from "../../core";
 import { Actions, DragData } from "../actions";
-import { MenuButton, SVGImageIcon, ToolButton } from "../components";
+import { SVGImageIcon, ToolButton } from "../components";
 import { ContextedComponent } from "../context_component";
 import { PopupAlignment, PopupView } from "../controllers";
 
@@ -386,6 +388,7 @@ export class Toolbar extends ContextedComponent<
     ];
   }
 
+  // eslint-disable-next-line
   private getToolItems(
     labels: boolean = true,
     innerWidth: number = window.innerWidth

@@ -297,7 +297,7 @@ export class MapDataToMarkAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }
@@ -514,7 +514,7 @@ export class MapDataToChartElementAttribute extends Action {
       attributeType: this.attributeType,
       expression: this.expression,
       valueType: this.valueType,
-      hints: this.hints as any,
+      hints: <any>this.hints,
     };
   }
 }
@@ -718,7 +718,7 @@ export class SetObjectProperty extends Action {
   constructor(
     public object: Specification.Object,
     public property: string,
-    public field: number | string | Array<number | string>,
+    public field: number | string | (number | string)[],
     public value: Specification.AttributeValue,
     public noUpdateState: boolean = false,
     public noComputeLayout: boolean = false
@@ -743,7 +743,7 @@ export class DeleteObjectProperty extends Action {
   constructor(
     public object: Specification.Object,
     public property: string,
-    public field: number | string | Array<number | string>,
+    public field: number | string | (number | string)[],
     public noUpdateState: boolean = false,
     public noComputeLayout: boolean = false
   ) {

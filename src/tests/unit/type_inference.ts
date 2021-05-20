@@ -12,7 +12,7 @@ const localeNumberFormat: LocaleNumberFormat = { remove: ",", decimal: "." };
 
 describe("Data Type Inference", () => {
   it("inferColumnType", () => {
-    const cases: Array<[string[], DataType]> = [
+    const cases: [string[], DataType][] = [
       [["1", "3", "4.5", "23"], DataType.Number],
       [["1990-01-13", "2012-12-30", "12:34:56", "11:05am"], DataType.Date],
       [["true", "true", "false", "yes", "no"], DataType.Boolean],
@@ -26,7 +26,7 @@ describe("Data Type Inference", () => {
     }
   });
   it("inferAndConvertColumn", () => {
-    const cases: Array<[string[], any]> = [
+    const cases: [string[], any][] = [
       [
         ["1", "3", "4.5", "23", null],
         {
@@ -78,7 +78,7 @@ describe("Data Type Inference", () => {
       }
       if (expectedResult.metadata) {
         for (const k of Object.keys(expectedResult.metadata)) {
-          expect((r.metadata as any)[k]).to.deep.equals(
+          expect((<any>r.metadata)[k]).to.deep.equals(
             expectedResult.metadata[k]
           );
         }

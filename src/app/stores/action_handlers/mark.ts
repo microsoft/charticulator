@@ -5,7 +5,6 @@ import {
   setField,
   Solver,
   zipArray,
-  Prototypes,
   Specification,
   Expression,
 } from "../../../core";
@@ -15,12 +14,14 @@ import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ActionHandlerRegistry } from "./registry";
 
+// eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   // Internal registry of mark-level action handlers
   const MR = new ActionHandlerRegistry<AppStore, Actions.MarkAction>();
 
   MR.add(Actions.UpdateMarkAttribute, function (action) {
     for (const key in action.updates) {
+      // eslint-disable-next-line
       if (!action.updates.hasOwnProperty(key)) {
         continue;
       }
@@ -46,6 +47,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       )) {
         if (mark == action.mark) {
           for (const key in action.updates) {
+            // eslint-disable-next-line
             if (!action.updates.hasOwnProperty(key)) {
               continue;
             }
@@ -177,9 +179,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   REG.add(Actions.MapDataToMarkAttribute, function (action) {
     this.saveHistory();
 
-    const attr = Prototypes.ObjectClasses.Create(null, action.mark, null)
-      .attributes[action.attribute];
-    const table = this.getTable(action.glyph.table);
     const inferred =
       (action.hints && action.hints.scaleID) ||
       this.scaleInference(
@@ -202,7 +201,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         scale: inferred,
         attribute: action.attribute,
         valueIndex:
-          action.hints && action.hints.allowSelectValue ? 0 : undefined,
+          action.hints && action.hints.allowSelectValue != undefined ? 0 : null,
       } as Specification.ScaleMapping;
       if (
         !this.chart.scaleMappings.find(

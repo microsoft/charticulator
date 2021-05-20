@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
@@ -20,19 +24,13 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import {
-  expect_deep_approximately_equals,
-  isInIFrame,
-  readFileAsString,
-  showOpenFileDialog,
-} from "../utils";
-import { ChartTemplate, MessageType, Specification } from "../../container";
+import { isInIFrame, readFileAsString } from "../utils";
+import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
-import { FileViewImport } from "./file_view/import_view";
+import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
-import { ChartTemplateBuilder } from "../template";
 
 export class HelpButton extends React.Component<
   {
@@ -267,6 +265,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
+  // eslint-disable-next-line
   public renderImportButton(props: MenuBarProps) {
     return (
       <>
@@ -276,16 +275,19 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           title={strings.menuBar.importTemplate}
           onClick={
             props.handlers?.onImportTemplateClick ||
+            // eslint-disable-next-line
             (() => {
               const inputElement = document.createElement("input");
               inputElement.type = "file";
               let file = null;
               inputElement.accept = ["tmplt"].map((x) => "." + x).join(",");
-              inputElement.onchange = (e) => {
+              // eslint-disable-next-line
+              inputElement.onchange = () => {
                 if (inputElement.files.length == 1) {
                   file = inputElement.files[0];
                   if (file) {
-                    const str = readFileAsString(file).then((str) => {
+                    // eslint-disable-next-line
+                    readFileAsString(file).then((str) => {
                       const data = JSON.parse(
                         str
                       ) as Specification.Template.ChartTemplate;
@@ -368,6 +370,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                               <ModalView context={context}>
                                 <div onClick={(e) => e.stopPropagation()}>
                                   <FileViewImport
+                                    mode={MappingMode.ImportTemplate}
                                     tables={data.tables}
                                     datasetTables={this.store.dataset.tables}
                                     tableMapping={tableMapping}
@@ -437,35 +440,13 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   }
 
   public renderSaveEmbedded() {
-    const editorTemplate = deepClone(this.context.store.buildChartTemplate());
-    let hasUnsavedChanges = false;
-
-    try {
-      expect_deep_approximately_equals(
-        editorTemplate.specification,
-        this.context.store.originTemplate.specification,
-        1e-2
-      );
-    } catch (ex) {
-      if (!(ex.message as string).includes("expected")) {
-        console.error(ex.message);
-      } else {
-        hasUnsavedChanges = true;
-      }
-    }
+    const hasUnsavedChanges = this.store.chartManager.hasUnsavedChanges();
 
     return (
       <MenuButton
-        url={
-          hasUnsavedChanges
-            ? R.getSVGIcon("toolbar/save-changes")
-            : R.getSVGIcon("toolbar/save")
-        }
-        text={
-          hasUnsavedChanges
-            ? strings.menuBar.saveButton
-            : strings.menuBar.savedButton
-        }
+        url={R.getSVGIcon("toolbar/save")}
+        text={strings.menuBar.saveButton}
+        disabled={!hasUnsavedChanges}
         title={strings.menuBar.save}
         onClick={() => {
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
@@ -474,7 +455,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public renderDelete(showLabel: boolean) {
+  public renderDelete() {
     return (
       <MenuButton
         url={R.getSVGIcon("toolbar/trash")}
@@ -573,10 +554,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
-  public toolbarButtons(
-    props: MenuBarProps,
-    toolbarButtons: PositionsLeftRight
-  ) {
+  public toolbarButtons(props: MenuBarProps) {
     return (
       <>
         {this.context.store.editorType === "nested"
@@ -622,9 +600,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
-        {this.context.store.editorType === "embedded"
-          ? this.renderDelete(true)
-          : this.renderDelete(false)}
+        {this.renderDelete()}
       </>
     );
   }
@@ -645,7 +621,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             {this.props.alignButtons === PositionsLeftRight.Left ? (
               <>
                 <span className="charticulator__menu-bar-separator" />
-                {this.toolbarButtons(this.props, PositionsLeftRight.Left)}
+                {this.toolbarButtons(this.props)}
               </>
             ) : null}
             {this.context.store.editorType === "embedded" &&
@@ -666,7 +642,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           <div className="charticulator__menu-bar-right">
             {this.props.alignButtons === PositionsLeftRight.Right ? (
               <>
-                {this.toolbarButtons(this.props, PositionsLeftRight.Right)}
+                {this.toolbarButtons(this.props)}
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
@@ -677,7 +653,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
               : null}
             <HelpButton
               handlers={this.props.handlers}
-              hideReportIssues={this.context.store.editorType === "embedded"}
+              hideReportIssues={false}
             />
           </div>
         </section>

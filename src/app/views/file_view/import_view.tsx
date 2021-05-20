@@ -6,11 +6,17 @@ import * as React from "react";
 import { ButtonRaised, FloatingPanel } from "../../components";
 import { ContextedComponent } from "../../context_component";
 import { Specification } from "../../../core";
-import { Button, Select } from "../panels/widgets/controls";
-import { Table } from "../../../core/dataset/dataset";
+import { Select } from "../panels/widgets/controls";
+import { DataType, Table } from "../../../core/dataset/dataset";
 import { strings } from "../../../strings";
 
+export enum MappingMode {
+  ImportTemplate,
+  ImportDataset,
+}
+
 export interface FileViewImportProps {
+  mode: MappingMode;
   tables: Specification.Template.Table[];
   datasetTables: Table[];
   tableMapping: Map<string, string>;
@@ -32,6 +38,7 @@ export class FileViewImport extends ContextedComponent<
     columnMappings: new Map(),
   };
 
+  // eslint-disable-next-line
   public render() {
     const tables = this.props.tables;
     const newMapping = new Map(this.state.columnMappings);
@@ -67,7 +74,8 @@ export class FileViewImport extends ContextedComponent<
         filteredByTableColumns.forEach((pbiColumn) => {
           if (
             pbiColumn.displayName === column.name &&
-            column.type === pbiColumn.type &&
+            (column.type === pbiColumn.type ||
+              column.type === DataType.String) &&
             !newMapping.get(column.name)
           ) {
             newMapping.set(column.name, pbiColumn.name);
@@ -110,13 +118,17 @@ export class FileViewImport extends ContextedComponent<
                     key={table.name}
                   >
                     <h4>
-                      {strings.templateImport.title}: {table.name}
+                      {this.props.mode === MappingMode.ImportTemplate
+                        ? strings.templateImport.usbtitleImportTemplate
+                        : strings.templateImport.usbtitleImportData}
                     </h4>
                     <table className="charticulator__file-view-mapping_table">
                       <thead>
                         <tr className="charticulator__file-view-mapping_rows">
                           <th className="charticulator__file-view-mapping_row_item">
-                            {strings.templateImport.columnName}
+                            {this.props.mode === MappingMode.ImportTemplate
+                              ? strings.templateImport.columnNameTemplate
+                              : strings.templateImport.columnNameChart}
                           </th>
                           <th className="charticulator__file-view-mapping_row_item">
                             {strings.templateImport.dataType}
@@ -141,13 +153,11 @@ export class FileViewImport extends ContextedComponent<
                           const optionValues =
                             datasetTable?.columns
                               .filter(
-                                (pbiColumn) => pbiColumn.type === column.type
+                                (pbiColumn) =>
+                                  pbiColumn.type === column.type ||
+                                  column.type === DataType.String
                               )
                               .map((pbiColumn) => {
-                                let selected = false;
-                                if (pbiColumn.displayName === column.name) {
-                                  selected = true;
-                                }
                                 return pbiColumn.displayName;
                               }) || [];
 

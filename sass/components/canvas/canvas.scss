@@ -98,7 +98,6 @@
 }
 
 .canvas-controls {
-  padding-top: 10px;
   background: $gray-230;
   line-height: 24px;
   height: 24px;
@@ -352,6 +351,18 @@
 
   line.mark-guide {
     stroke: $gray-200;
+    stroke-dasharray: 3 2;
+    fill: none;
+  }
+
+  line.mark-guide.coordinator {
+    stroke: $gray-070;
+    stroke-dasharray: 1 1;
+    fill: none;
+  }
+
+  line.mark-guide.single {
+    stroke: $gray-070;
     stroke-dasharray: 3 2;
     fill: none;
   }

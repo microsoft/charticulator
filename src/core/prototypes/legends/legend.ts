@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import {
+  defaultFont,
+  defaultFontSizeLegend,
+} from "../../../app/stores/defaults";
+import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
@@ -50,8 +55,8 @@ export abstract class LegendClass extends ChartElementClass {
     visible: true,
     alignX: "start",
     alignY: "end",
-    fontFamily: "Arial",
-    fontSize: 10,
+    fontFamily: defaultFont,
+    fontSize: defaultFontSizeLegend,
     textColor: { r: 0, g: 0, b: 0 },
     dataSource: "columnValues",
     dataExpressions: [],
@@ -112,23 +117,22 @@ export abstract class LegendClass extends ChartElementClass {
   }
 
   public getBoundingBox(): BoundingBox.Description {
-    const attrs = this.state.attributes;
     const { x1, y1, x2, y2 } = this.getLayoutBox();
-    return {
+    return <BoundingBox.Rectangle>{
       type: "rectangle",
       cx: (x1 + x2) / 2,
       cy: (y1 + y2) / 2,
       width: Math.abs(x2 - x1),
       height: Math.abs(y2 - y1),
       rotation: 0,
-    } as BoundingBox.Rectangle;
+    };
   }
 
   public getHandles(): Handles.Description[] {
     const attrs = this.state.attributes;
     const { x, y } = attrs;
     return [
-      {
+      <Handles.Point>{
         type: "point",
         x,
         y,
@@ -139,7 +143,7 @@ export abstract class LegendClass extends ChartElementClass {
         options: {
           snapToClosestPoint: true,
         },
-      } as Handles.Point,
+      },
     ];
   }
 
@@ -166,29 +170,43 @@ export abstract class LegendClass extends ChartElementClass {
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const props = this.object.properties;
     const widget = [
-      manager.sectionHeader("Labels"),
-      manager.inputFontFamily({ property: "fontFamily" }, { label: "Font" }),
+      manager.sectionHeader(strings.objects.legend.labels),
+      manager.inputFontFamily(
+        { property: "fontFamily" },
+        { label: strings.objects.font }
+      ),
       manager.inputNumber(
         { property: "fontSize" },
-        { showUpdown: true, updownStyle: "font", updownTick: 2, label: "Size" }
+        {
+          showUpdown: true,
+          updownStyle: "font",
+          updownTick: 2,
+          label: strings.objects.size,
+        }
       ),
-      manager.inputColor({ property: "textColor" }, { label: "Color" }),
+      manager.inputColor(
+        { property: "textColor" },
+        { label: strings.objects.color }
+      ),
       manager.inputSelect(
         { property: "markerShape" },
         {
           type: "dropdown",
           showLabel: true,
           icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-          labels: ["Rectangle", "Triangle", "Circle"],
+          labels: [
+            strings.toolbar.rectangle,
+            strings.toolbar.triangle,
+            strings.toolbar.ellipse,
+          ],
           options: ["rectangle", "triangle", "circle"],
-          label: "Shape",
+          label: strings.objects.legend.markerShape,
         }
       ),
-      manager.sectionHeader("Layout"),
+      manager.sectionHeader(strings.objects.legend.layout),
       manager.vertical(
-        manager.label("Alignment"),
+        manager.label(strings.alignment.alignment),
         manager.horizontal(
           [0, 0],
           null,
@@ -201,7 +219,11 @@ export abstract class LegendClass extends ChartElementClass {
                 "AlignHorizontalCenter",
                 "AlignHorizontalRight",
               ],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               options: ["start", "middle", "end"],
             }
           ),
@@ -215,7 +237,11 @@ export abstract class LegendClass extends ChartElementClass {
                 "AlignVerticalCenter",
                 "AlignVerticalTop",
               ],
-              labels: ["Bottom", "Middle", "Top"],
+              labels: [
+                strings.alignment.bottom,
+                strings.alignment.middle,
+                strings.alignment.top,
+              ],
             }
           ),
           null

@@ -55,7 +55,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.emit(AppStore.EVENT_SELECTION);
   });
 
-  REG.add(Actions.ClearSelection, function (action) {
+  REG.add(Actions.ClearSelection, function () {
     this.currentSelection = null;
     this.emit(AppStore.EVENT_SELECTION);
   });

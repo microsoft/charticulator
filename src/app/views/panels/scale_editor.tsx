@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable @typescript-eslint/ban-types  */
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-empty-interface */
+
 import * as React from "react";
 import * as R from "../../resources";
 
@@ -8,7 +12,6 @@ import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
-import { WidgetManager } from "./widgets/manager";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/categorical_legend";
 import { strings } from "../../../strings";
@@ -40,6 +43,7 @@ export class ScaleEditor extends React.Component<
     this.token.remove();
   }
 
+  // eslint-disable-next-line
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);

@@ -9,7 +9,7 @@ export interface MainContextInterface {
   store: AppStore;
 }
 
-export let MainContextTypes = {
+export const MainContextTypes = {
   store: (props: any, propName: string, componentName: string) => {
     if (props[propName] instanceof AppStore) {
       return null;

@@ -12,10 +12,12 @@ import {
   TemplateParameters,
   LinkAnchor,
   isType,
+  SnappingGuidesVisualTypes,
 } from "../common";
 import { ObjectClassMetadata } from "../index";
 import { RectangleGlyph } from "../glyphs";
 import { RectangleChart } from "../charts";
+import { strings } from "../../../strings";
 
 export type GuideAxis = "x" | "y";
 
@@ -92,6 +94,7 @@ export class GuideClass extends ChartElementClass<
     return { rectChart, rectGlyph };
   }
 
+  // eslint-disable-next-line
   public buildConstraints(solver: ConstraintSolver) {
     const { rectGlyph, rectChart } = this.getParentType();
     if (rectGlyph) {
@@ -239,7 +242,7 @@ export class GuideClass extends ChartElementClass<
     rhsFn: (
       parentAttributeVariables: Variable[],
       value: Variable
-    ) => Array<[number, Variable]>
+    ) => [number, Variable][]
   ) {
     const parentAttrs = this.parent.state.attributes;
     const parentAttributeVariables = solver.attrs(
@@ -267,45 +270,56 @@ export class GuideClass extends ChartElementClass<
   }
 
   /** Get handles given current state */
+  // eslint-disable-next-line max-lines-per-function
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
     const { value } = this.state.attributes;
     const { axis, baseline } = this.object.properties;
     const { rectChart, rectGlyph } = this.getParentType();
-    const handleLine = () => {
-      return [
+
+    const handleLineGlyph = () => {
+      return <Handles.Line[]>[
         {
           type: "line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           value,
           span: inf,
         },
-      ] as Handles.Line[];
+      ];
     };
     const handleRelativeLine = (reference: number) => {
-      return [
+      return <Handles.RelativeLine[]>[
         {
           type: "relative-line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           reference,
           sign: 1,
           value,
           span: inf,
         },
-      ] as Handles.RelativeLine[];
+      ];
     };
+
     const parentAttrs = this.parent.state.attributes;
     if (rectGlyph) {
       switch (baseline) {
         case "center":
         case "middle": {
-          return handleLine();
+          return handleLineGlyph();
         }
         case "left": {
           return handleRelativeLine(+parentAttrs.ix1);
@@ -349,12 +363,13 @@ export class GuideClass extends ChartElementClass<
       attribute: string,
       value: Specification.AttributeValue
     ) => {
-      return {
+      return <SnappingGuides.Axis>{
         type: this.getAxis(),
         value,
         attribute,
         visible: true,
-      } as SnappingGuides.Axis;
+        visualType: SnappingGuidesVisualTypes.Guide,
+      };
     };
     const r = [
       snappingGuideAxis(
@@ -368,7 +383,9 @@ export class GuideClass extends ChartElementClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const widgets: Controls.Widget[] = [manager.sectionHeader("Guide")];
+    const widgets: Controls.Widget[] = [
+      manager.sectionHeader(strings.objects.guides.guide),
+    ];
 
     let labels: string[];
     let options: string[];
@@ -376,7 +393,11 @@ export class GuideClass extends ChartElementClass<
     if (this.object.properties.axis === "x") {
       const hOptions: Specification.baselineH[] = ["left", "center", "right"];
       options = hOptions;
-      labels = ["Left", "Center", "Right"];
+      labels = [
+        strings.alignment.left,
+        strings.alignment.center,
+        strings.alignment.right,
+      ];
 
       icons = [
         "AlignHorizontalLeft",
@@ -386,62 +407,75 @@ export class GuideClass extends ChartElementClass<
     } else {
       const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
       options = vOptions;
-      labels = ["Top", "Middle", "Bottom"];
+      labels = [
+        strings.alignment.top,
+        strings.alignment.middle,
+        strings.alignment.bottom,
+      ];
       icons = ["align/top", "align/y-middle", "align/bottom"];
     }
     widgets.push(
-      manager.row(
-        "Baseline",
-        manager.inputSelect(
-          { property: GuidePropertyNames.baseline },
-          {
-            type: "dropdown",
-            showLabel: true,
-            labels,
-            options,
-            icons,
-          }
-        )
+      manager.inputSelect(
+        { property: GuidePropertyNames.baseline },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels,
+          options,
+          icons,
+          label: strings.objects.guides.baseline,
+        }
       )
     );
 
     widgets.push(
-      manager.mappingEditor("Value", GuideAttributeNames.value, {
-        defaultValue: this.state.attributes.value,
-      })
+      manager.mappingEditor(
+        strings.objects.guides.offset,
+        GuideAttributeNames.value,
+        {
+          defaultValue: this.state.attributes.value,
+        }
+      )
     );
 
     return widgets;
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuidePropertyNames.baseline,
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.baseline,
+      },
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.computedBaselineValue,
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.computedBaselineValue,
+      },
+    ];
+    if (
+      this.object.mappings.value &&
+      this.object.mappings.value.type === Specification.MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.value,
+        },
+        type: Specification.AttributeType.Number,
+        default: <number>this.state.attributes.value,
+      });
+    }
+
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuidePropertyNames.baseline,
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.object.properties.baseline,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.value,
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.value as number,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.computedBaselineValue,
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.computedBaselineValue,
-        },
-      ],
+      properties,
     };
   }
 }

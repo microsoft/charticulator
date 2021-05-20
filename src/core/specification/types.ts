@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { Color } from "../common";
-import { ColumnMetadata, DataKind } from "../dataset";
+import { DataKind } from "../dataset";
 import { StrokeStyle } from "../prototypes";
 import { AttributeMap, Expression, DataType } from "./index";
 

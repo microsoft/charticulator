@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
@@ -8,14 +9,9 @@ import {
   replaceSymbolByNewLine,
   replaceTabBySymbol,
 } from "../../../../../core";
-import { classNames } from "../../../../utils";
 
-import { ITextField, Label, TextField } from "@fluentui/react";
-import {
-  defaultFontWeight,
-  defaultLabelStyle,
-  labelRender,
-} from "./fluentui_customized_components";
+import { TextField } from "@fluentui/react";
+import { labelRender } from "./fluentui_customized_components";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
@@ -69,15 +65,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
     setErrorIndicator(false);
     setErrorMessage(null);
     props.onCancel?.();
-  }, [
-    props.onCancel,
-    props.defaultValue,
-    setValue,
-    setErrorIndicator,
-    setErrorMessage,
-    ,
-    props.value,
-  ]);
+  }, [props, setValue, setErrorIndicator, setErrorMessage]);
 
   return (
     <span className="charticulator__widget-control-input-expression">

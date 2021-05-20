@@ -146,6 +146,7 @@ export class DropZoneView
     );
   }
 
+  // eslint-disable-next-line
   public renderElement(z: Prototypes.DropZones.Description) {
     switch (z.type) {
       case "line": {
@@ -156,8 +157,6 @@ export class DropZoneView
 
         const vD = Geometry.vectorNormalize(Geometry.vectorSub(zp2, zp1));
         const vN = Geometry.vectorRotate90(vD);
-        const p1 = Geometry.vectorAdd(zp1, Geometry.vectorScale(vN, 5));
-        const p2 = Geometry.vectorAdd(zp2, Geometry.vectorScale(vN, 5));
         return (
           <g>
             <path
@@ -193,12 +192,20 @@ export class DropZoneView
         ) => {
           const angleOffset = -90;
           const start = [
-            x + radius * Math.cos(Geometry.degreesToRadians(angleOffset + startAngle)),
-            y + radius * Math.sin(Geometry.degreesToRadians(angleOffset + startAngle)),
+            x +
+              radius *
+                Math.cos(Geometry.degreesToRadians(angleOffset + startAngle)),
+            y +
+              radius *
+                Math.sin(Geometry.degreesToRadians(angleOffset + startAngle)),
           ];
           const end = [
-            x + radius * Math.cos(Geometry.degreesToRadians(angleOffset + endAngle)),
-            y + radius * Math.sin(Geometry.degreesToRadians(angleOffset + endAngle)),
+            x +
+              radius *
+                Math.cos(Geometry.degreesToRadians(angleOffset + endAngle)),
+            y +
+              radius *
+                Math.sin(Geometry.degreesToRadians(angleOffset + endAngle)),
           ];
           const largeArcFlag = endAngle - startAngle < 180 ? 0 : 1;
           return [

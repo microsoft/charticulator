@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
@@ -10,7 +11,6 @@ import {
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
-  defaultFontWeight,
   defaultLabelStyle,
   FluentLabelFontWeight,
   FluentLayoutItem,
@@ -65,7 +65,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       return null;
     }
     if (props.percentage) {
-      str = str.replace(/\%$/, "");
+      str = str.replace(/%$/, "");
       return +str / 100;
     } else {
       return +str;
@@ -110,7 +110,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         value={value}
         showValue={true}
         step={props.percentage ? 0.01 : 1}
-        // eslint-disable-next-line react/jsx-no-bind
         onChange={(newValue: number) => {
           setValue(+newValue.toFixed(4));
           reportValue(newValue);
