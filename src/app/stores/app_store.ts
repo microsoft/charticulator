@@ -1175,6 +1175,7 @@ export class AppStore extends BaseStore {
       this.dataset,
       this.chartManager
     );
+
     const template = builder.build();
     return template;
   }

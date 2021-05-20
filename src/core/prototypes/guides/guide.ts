@@ -270,18 +270,24 @@ export class GuideClass extends ChartElementClass<
   }
 
   /** Get handles given current state */
+  // eslint-disable-next-line max-lines-per-function
   public getHandles(): Handles.Description[] {
     const inf = [-1000, 1000];
     const { value } = this.state.attributes;
     const { axis, baseline } = this.object.properties;
     const { rectChart, rectGlyph } = this.getParentType();
-    const handleLine = () => {
+
+    const handleLineGlyph = () => {
       return <Handles.Line[]>[
         {
           type: "line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           value,
           span: inf,
@@ -294,7 +300,11 @@ export class GuideClass extends ChartElementClass<
           type: "relative-line",
           axis,
           actions: [
-            { type: "attribute", attribute: GuideAttributeNames.value },
+            {
+              type: "attribute-value-mapping",
+              attribute: GuideAttributeNames.value,
+              source: GuideAttributeNames.value,
+            },
           ],
           reference,
           sign: 1,
@@ -303,12 +313,13 @@ export class GuideClass extends ChartElementClass<
         },
       ];
     };
+
     const parentAttrs = this.parent.state.attributes;
     if (rectGlyph) {
       switch (baseline) {
         case "center":
         case "middle": {
-          return handleLine();
+          return handleLineGlyph();
         }
         case "left": {
           return handleRelativeLine(+parentAttrs.ix1);
@@ -428,33 +439,40 @@ export class GuideClass extends ChartElementClass<
   }
 
   public getTemplateParameters(): TemplateParameters {
+    const properties = [
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuidePropertyNames.baseline,
+        },
+        type: Specification.AttributeType.Enum,
+        default: this.object.properties.baseline,
+      },
+      {
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.computedBaselineValue,
+        },
+        type: Specification.AttributeType.Number,
+        default: this.state.attributes.computedBaselineValue,
+      },
+    ];
+    if (
+      this.object.mappings.value &&
+      this.object.mappings.value.type === Specification.MappingType.value
+    ) {
+      properties.push({
+        objectID: this.object._id,
+        target: {
+          attribute: GuideAttributeNames.value,
+        },
+        type: Specification.AttributeType.Number,
+        default: <number>this.state.attributes.value,
+      });
+    }
+
     return {
-      properties: [
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuidePropertyNames.baseline,
-          },
-          type: Specification.AttributeType.Enum,
-          default: this.object.properties.baseline,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.value,
-          },
-          type: Specification.AttributeType.Number,
-          default: <number>this.state.attributes.value,
-        },
-        {
-          objectID: this.object._id,
-          target: {
-            attribute: GuideAttributeNames.computedBaselineValue,
-          },
-          type: Specification.AttributeType.Number,
-          default: this.state.attributes.computedBaselineValue,
-        },
-      ],
+      properties,
     };
   }
 }
