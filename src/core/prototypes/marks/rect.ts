@@ -53,7 +53,7 @@ export class RectElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<RectElementAttributes> = {
-    fill: { r: 217, g: 217, b: 217 },
+    fill: { r: 33, g: 113, b: 181 },
     strokeWidth: 1,
     opacity: 1,
     visible: true,

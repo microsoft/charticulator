@@ -52,7 +52,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<SymbolElementAttributes> = {
-    fill: { r: 217, g: 217, b: 217 },
+    fill: { r: 33, g: 113, b: 181 },
     strokeWidth: 1,
     opacity: 1,
     size: 60,
