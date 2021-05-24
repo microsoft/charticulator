@@ -1603,7 +1603,6 @@ export class AppStore extends BaseStore {
     domainMin: number;
     domainMax: number;
   }) {
-    this.saveHistory();
     const { object, property, appendToProperty, dataExpression } = options;
 
     this.normalizeDataExpression(dataExpression);

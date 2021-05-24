@@ -318,6 +318,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.BindDataToAxis, function (action: BindDataToAxis) {
+    this.saveHistory();
     this.bindDataToAxis({
       ...action,
       autoDomainMax: true,
