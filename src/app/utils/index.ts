@@ -221,23 +221,43 @@ function checkConvertion(
 }
 
 export function getConvertableDataKind(type: DataType): DataKind[] {
-  let types;
+  let kinds;
   switch (type) {
     case DataType.Boolean:
-      types = [DataKind.Ordinal, DataKind.Categorical];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Date:
-      types = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
       break;
     case DataType.String:
-      types = [DataKind.Categorical, DataKind.Ordinal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Number:
-      types = [DataKind.Categorical, DataKind.Numerical];
+      kinds = [DataKind.Categorical, DataKind.Numerical];
       break;
   }
 
-  return types;
+  return kinds;
+}
+
+export function getPreferredDataKind(type: DataType): DataKind {
+  let kind;
+  switch (type) {
+    case DataType.Boolean:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Date:
+      kind = DataKind.Temporal;
+      break;
+    case DataType.String:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Number:
+      kind = DataKind.Numerical;
+      break;
+  }
+
+  return kind;
 }
 
 export function getConvertableTypes(
