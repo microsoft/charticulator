@@ -55,6 +55,7 @@ export abstract class ObjectClass<
     enableTooltips: true,
     enableContextMenu: true,
     enableSelection: true,
+    exposed: true,
   };
 
   /** Default mapping values */

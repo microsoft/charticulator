@@ -259,7 +259,10 @@ export class AppStore extends BaseStore {
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset,
-      this.chartState
+      this.chartState,
+      {},
+      {},
+      this.chartManager.getOriginChart()
     );
 
     this.emit(AppStore.EVENT_DATASET);
@@ -1666,8 +1669,10 @@ export class AppStore extends BaseStore {
         dataExpression.metadata.orderMode !== undefined
           ? dataExpression.metadata.orderMode
           : null,
-      autoDomainMax: options.autoDomainMax,
-      autoDomainMin: options.autoDomainMin,
+      autoDomainMax:
+        options.autoDomainMax != undefined ? options.autoDomainMax : true,
+      autoDomainMin:
+        options.autoDomainMin != undefined ? options.autoDomainMin : true,
       tickFormat:
         <string>objectProperties?.tickFormat !== undefined
           ? <string>objectProperties?.tickFormat

@@ -230,8 +230,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.ImportChartAndDataset, function (action) {
-    this.historyManager.clear();
-
     this.currentChartID = null;
     this.currentSelection = null;
     this.dataset = action.dataset;
@@ -241,10 +239,13 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
-      this.dataset
+      this.dataset,
+      null,
+      {},
+      {},
+      this.chartManager.getOriginChart()
     );
     this.chartState = this.chartManager.chartState;
-    this.chartManager?.resetDifference();
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_SELECTION);
