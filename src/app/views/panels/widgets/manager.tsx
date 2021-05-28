@@ -113,26 +113,32 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
       options.defaultValue = info.defaultValue;
     }
 
+    let focusDiv: HTMLDivElement = null;
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
       setTimeout(() => {
+        if (focusDiv) {
+          focusDiv.scrollIntoView();
+        }
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
 
     return this.row(
       name,
-      <MappingEditor
-        store={this.store}
-        parent={this}
-        attribute={attribute}
-        type={info.type}
-        options={{
-          ...options,
-          openMapping,
-        }}
-      />
+      <div ref={(r) => (focusDiv = r)}>
+        <MappingEditor
+          store={this.store}
+          parent={this}
+          attribute={attribute}
+          type={info.type}
+          options={{
+            ...options,
+            openMapping,
+          }}
+        />
+      </div>
     );
   }
 
