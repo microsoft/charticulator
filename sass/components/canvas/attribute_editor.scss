@@ -1634,6 +1634,7 @@
         &.is-dragging-over {
           outline: 1px solid $color-active;
           background: $color-active;
+          height: 100%;
 
           & > * {
             display: none;
