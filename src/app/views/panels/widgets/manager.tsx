@@ -127,10 +127,8 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
     return this.row(
       name,
-      <div
-        ref={(r) => (focusDiv = r)}
-        className="charticulator__widget-control-mapping-editor"
-      >
+      <>
+        <div ref={(r) => (focusDiv = r)}></div>
         <MappingEditor
           store={this.store}
           parent={this}
@@ -141,7 +139,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             openMapping,
           }}
         />
-      </div>
+      </>
     );
   }
 
