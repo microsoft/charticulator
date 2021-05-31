@@ -127,7 +127,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
     return this.row(
       name,
-      <div ref={(r) => (focusDiv = r)}>
+      <div
+        ref={(r) => (focusDiv = r)}
+        className="charticulator__widget-control-mapping-editor"
+      >
         <MappingEditor
           store={this.store}
           parent={this}

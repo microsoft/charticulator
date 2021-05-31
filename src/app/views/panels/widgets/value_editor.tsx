@@ -28,6 +28,7 @@ import {
   InputNumber,
   InputText,
 } from "./controls";
+import { getAligntment } from "../../../utils";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -112,6 +113,11 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
               ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
               onClick={() => {
+                const {
+                  alignX,
+                }: { alignLeft: boolean; alignX: any } = getAligntment(
+                  colorItem
+                );
                 globals.popupController.popupAt(
                   (context) => (
                     <PopupView context={context}>
@@ -130,7 +136,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                       />
                     </PopupView>
                   ),
-                  { anchor: colorItem }
+                  { anchor: colorItem, alignX: alignX }
                 );
               }}
             />
