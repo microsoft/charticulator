@@ -662,6 +662,7 @@ export class MultiObjectButton extends ContextedComponent<
     }
     return false;
   }
+
   public getSelectedTool() {
     for (const item of this.props.tools) {
       if (
@@ -706,8 +707,8 @@ export class MultiObjectButton extends ContextedComponent<
       <DraggableElement
         dragData={() => {
           return new DragData.ObjectType(
-            this.store.currentTool,
-            this.store.currentToolOptions
+            currentTool.classID,
+            currentTool.options
           );
         }}
         onDragStart={() => this.setState({ dragging: true })}
