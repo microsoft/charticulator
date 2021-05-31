@@ -22,7 +22,6 @@ import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
-import { Button } from "./controls";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
@@ -32,7 +31,6 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { DefaultButton, TextField, ActionButton, Label } from "@fluentui/react";
 import {
-  defaultFontWeight,
   defaultLabelStyle,
   FluentActionButton,
   FluentButton,

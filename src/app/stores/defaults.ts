@@ -145,6 +145,7 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
       backgroundColor: null,
       backgroundOpacity: 1,
       enableContextMenu: true,
+      exposed: true,
     },
     mappings: {
       marginTop: {

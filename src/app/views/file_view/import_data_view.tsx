@@ -17,6 +17,7 @@ import {
   readFileAsString,
   getFileNameWithoutExtension,
   convertColumns,
+  getPreferredDataKind,
 } from "../../utils";
 import { ButtonRaised } from "../../components/index";
 import { SVGImageIcon } from "../../components/icons";
@@ -237,7 +238,7 @@ export class ImportDataView extends React.Component<
 
   public renderTable(
     table: Dataset.Table,
-    onTypeChange: (column: string, type: string) => void
+    onTypeChange: (column: string, type: Dataset.DataType) => void
   ) {
     return (
       <div className="wide-content">
@@ -321,7 +322,7 @@ export class ImportDataView extends React.Component<
           <div className="charticulator__import-data-view-table">
             {this.renderTable(
               this.state.dataTable,
-              (column: string, type: string) => {
+              (column: string, type: Dataset.DataType) => {
                 const dataColumn = this.state.dataTable.columns.find(
                   (col) => col.name === column
                 );
@@ -337,10 +338,13 @@ export class ImportDataView extends React.Component<
                       text: dataTableError as string,
                     })
                   );
+                } else {
+                  this.setState({
+                    dataTable: this.state.dataTable,
+                  });
+                  dataColumn.type = type;
+                  dataColumn.metadata.kind = getPreferredDataKind(type);
                 }
-                this.setState({
-                  dataTable: this.state.dataTable,
-                });
               }
             )}
             <ButtonRaised

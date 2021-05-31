@@ -74,12 +74,12 @@ import {
 } from "../../../../core/dataset/datetime";
 import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { strings } from "../../../../strings";
 import {
   InputComboboxOptions,
   InputFontComboboxOptions,
   InputTextOptions,
 } from "../../../../core/prototypes/controls";
+import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
 
 export type OnEditMappingHandler = (
@@ -130,26 +130,33 @@ export class WidgetManager
       options.defaultValue = info.defaultValue;
     }
 
+    let focusDiv: HTMLDivElement = null;
     const openMapping =
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
       setTimeout(() => {
+        if (focusDiv) {
+          focusDiv.scrollIntoView();
+        }
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
 
     return this.row(
       name,
-      <MappingEditor
-        store={this.store}
-        parent={this}
-        attribute={attribute}
-        type={info.type}
-        options={{
-          ...options,
-          openMapping,
-        }}
-      />
+      <>
+        <div ref={(r) => (focusDiv = r)}></div>
+        <MappingEditor
+          store={this.store}
+          parent={this}
+          attribute={attribute}
+          type={info.type}
+          options={{
+            ...options,
+            openMapping,
+          }}
+        />
+      </>
     );
   }
 

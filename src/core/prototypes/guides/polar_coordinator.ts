@@ -587,7 +587,7 @@ export class GuidePolarCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Guide Coordinator"),
+      manager.sectionHeader(strings.objects.guides.guideCoordinator),
       manager.inputNumber(
         { property: "angularGuidesCount" },
         {

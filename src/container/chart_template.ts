@@ -200,6 +200,13 @@ export class ChartTemplate {
                 originalTable
               );
             }
+            if ((plotSegment.properties.xData as any).rawExpression) {
+              (plotSegment.properties
+                .xData as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.xData as any).rawExpression,
+                originalTable
+              );
+            }
           }
           if (plotSegment.properties.yData) {
             if ((plotSegment.properties.yData as any).expression) {
@@ -209,12 +216,26 @@ export class ChartTemplate {
                 originalTable
               );
             }
+            if ((plotSegment.properties.yData as any).rawExpression) {
+              (plotSegment.properties
+                .yData as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.yData as any).rawExpression,
+                originalTable
+              );
+            }
           }
           if (plotSegment.properties.axis) {
             if ((plotSegment.properties.axis as any).expression) {
               (plotSegment.properties
                 .axis as any).expression = this.transformExpression(
                 (plotSegment.properties.axis as any).expression,
+                originalTable
+              );
+            }
+            if ((plotSegment.properties.axis as any).rawExpression) {
+              (plotSegment.properties
+                .axis as any).rawExpression = this.transformExpression(
+                (plotSegment.properties.axis as any).rawExpression,
                 originalTable
               );
             }

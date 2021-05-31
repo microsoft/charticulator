@@ -63,16 +63,6 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
     const scale = this.getScale();
     if (scale) {
-      // widget.push(manager.sectionHeader(strings.objects.colors));
-      // widget.push(
-      //   manager.row(
-      //     strings.objects.scale,
-      //     manager.scaleEditor(
-      //       "mappingOptions",
-      //       strings.objects.legend.editColors
-      //     )
-      //   )
-      // );
       widget.push(
         manager.vertical(
           manager.label(strings.objects.colors, {
