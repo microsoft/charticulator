@@ -240,6 +240,26 @@ export function getConvertableDataKind(type: DataType): DataKind[] {
   return types;
 }
 
+export function getPreferredDataKind(type: DataType): DataKind {
+  let kind;
+  switch (type) {
+    case DataType.Boolean:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Date:
+      kind = DataKind.Temporal;
+      break;
+    case DataType.String:
+      kind = DataKind.Categorical;
+      break;
+    case DataType.Number:
+      kind = DataKind.Numerical;
+      break;
+  }
+
+  return kind;
+}
+
 export function getConvertableTypes(
   type: DataType,
   dataSample?: (string | boolean | Date | number)[]

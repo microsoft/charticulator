@@ -152,6 +152,10 @@ export class MappingEditor extends React.Component<
           if (this.mappingButton == null) {
             return;
           }
+
+          const { alignX }: { alignLeft: boolean; alignX: any } = getAlignment(
+            this.mappingButton
+          );
           globals.popupController.popupAt(
             (context) => (
               <PopupView context={context}>
@@ -170,7 +174,7 @@ export class MappingEditor extends React.Component<
                 />
               </PopupView>
             ),
-            { anchor: this.mappingButton }
+            { anchor: this.mappingButton, alignX }
           );
         }
         break;

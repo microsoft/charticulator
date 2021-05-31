@@ -283,7 +283,7 @@ export class CategoricalLegendClass extends LegendClass {
             strings.objects.legend.horizontal,
           ],
           options: ["vertical", "horizontal"],
-          label: "Orientation",
+          label: strings.objects.legend.orientation,
         }
       ),
     ];

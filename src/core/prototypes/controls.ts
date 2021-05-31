@@ -182,6 +182,10 @@ export interface InputFormatOptions {
   blank?: string;
 }
 
+export interface InputFormatOptions {
+  blank?: string;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(

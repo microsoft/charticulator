@@ -51,7 +51,7 @@ export const defaultDifferenceApproximation = 0.01;
 export class ChartStateManager {
   private chartOrigin: Specification.Chart;
 
-  public readonly chart: Specification.Chart;
+  public chart: Specification.Chart;
   public chartState: Specification.ChartState;
   public dataset: Dataset.Dataset;
   public dataflow: DataflowManager;
@@ -72,10 +72,11 @@ export class ChartStateManager {
     defaultAttributes: DefaultAttributes = {},
     options: {
       [key: string]: any;
-    } = {}
+    } = {},
+    chartOrigin?: Specification.Chart
   ) {
     this.chart = chart;
-    this.chartOrigin = deepClone(chart);
+    this.chartOrigin = chartOrigin ? chartOrigin : deepClone(chart);
     this.dataset = dataset;
     this.dataflow = new DataflowManager(dataset);
     this.options = options;
@@ -85,6 +86,21 @@ export class ChartStateManager {
     } else {
       this.setState(state);
     }
+  }
+
+  public getOriginChart() {
+    return this.chartOrigin;
+  }
+
+  public updateState(
+    chart: Specification.Chart,
+    dataset: Dataset.Dataset,
+    state: Specification.ChartState
+  ) {
+    this.chart = chart;
+    this.dataset = dataset;
+    this.chartState = state;
+    this.initialize({});
   }
 
   public resetDifference() {

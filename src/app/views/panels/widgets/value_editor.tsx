@@ -17,7 +17,7 @@ import { InputNumberOptions } from "../../../../core/prototypes/controls";
 import { MappingType } from "../../../../core/specification";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import {
   Button,
@@ -112,6 +112,11 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
               ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
               onClick={() => {
+                const {
+                  alignX,
+                }: { alignLeft: boolean; alignX: any } = getAlignment(
+                  colorItem
+                );
                 globals.popupController.popupAt(
                   (context) => (
                     <PopupView context={context}>
@@ -130,7 +135,7 @@ export class ValueEditor extends ContextedComponent<ValueEditorProps, {}> {
                       />
                     </PopupView>
                   ),
-                  { anchor: colorItem }
+                  { anchor: colorItem, alignX: alignX }
                 );
               }}
             />
