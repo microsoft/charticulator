@@ -1,10 +1,11 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { MainView } from "./main_view";
-import { AppStore } from "./stores";
+import { AppStore, Migrator } from "./stores";
 
 import {
   initialize,
@@ -18,6 +19,7 @@ import {
   defaultDigitsGroup,
   defaultNumberFormat,
   parseSafe,
+  Prototypes,
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -180,6 +182,7 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
+        originSpecification?: Specification.Chart;
         template: Specification.Template.ChartTemplate;
         width: number;
         height: number;
@@ -196,11 +199,44 @@ export class Application {
         type: MappingType.value,
         value: info.height,
       } as Specification.ValueMapping;
-      appStore.dispatcher.dispatch(
-        new Actions.ImportChartAndDataset(info.specification, info.dataset, {
-          filterCondition: info.filterCondition,
-        })
+
+      const chartManager = new Prototypes.ChartStateManager(
+        info.specification,
+        info.dataset,
+        null,
+        {},
+        {},
+        deepClone(appStore.chart)
       );
+
+      // if version wasn't saved in tempalte we asume it is 2.0.2
+      if (info.template.version == undefined) {
+        info.template.version = "2.0.2";
+      }
+      const newState = new Migrator().migrate(
+        {
+          chart: chartManager.chart,
+          chartState: chartManager.chartState,
+          dataset: chartManager.dataset,
+          version: info.template.version,
+          originDataset: appStore.originDataset,
+        },
+        CHARTICULATOR_PACKAGE.version
+      );
+      // appStore.loadState(newState);
+      appStore.dispatcher.dispatch(
+        new Actions.ImportChartAndDataset(
+          info.specification,
+          info.dataset,
+          {
+            filterCondition: info.filterCondition,
+          },
+          info.originSpecification
+        )
+      );
+
+      info.template.version = newState.version;
+      // appStore.chartManager?.resetDifference();
       appStore.setupNestedEditor(
         (newSpecification) => {
           const template = deepClone(appStore.buildChartTemplate());

@@ -143,7 +143,8 @@ export class ImportChartAndDataset extends Action {
     public dataset: Dataset.Dataset,
     public options: {
       [key: string]: any;
-    }
+    },
+    public originSpecification?: Specification.Chart
   ) {
     super();
   }

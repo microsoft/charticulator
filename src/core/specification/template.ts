@@ -27,6 +27,9 @@ export interface ChartTemplate {
 
   /** Expose property editor */
   properties: Property[];
+
+  /**Template version */
+  version: string;
 }
 
 export interface Column {

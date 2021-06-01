@@ -146,6 +146,7 @@ export class ChartStateManager {
     // if any object was added or removed to the chart it means chart has changes
     // don't need to compare in details
     if (chartElements.length != originElements.length) {
+      console.log("chartElements.length != originElements.length");
       return true;
     } else {
       for (let index = 0; index < chartElements.length; index++) {
@@ -229,6 +230,7 @@ export class ChartStateManager {
                 defaultDifferenceApproximation
               );
             } catch (ex) {
+              console.log(ex);
               return true;
             }
           }
@@ -242,7 +244,8 @@ export class ChartStateManager {
               originProperties,
               defaultDifferenceApproximation
             );
-          } catch {
+          } catch (ex) {
+            console.log(ex);
             return true;
           }
         }
@@ -272,7 +275,8 @@ export class ChartStateManager {
               originProperties,
               defaultDifferenceApproximation
             );
-          } catch {
+          } catch (ex) {
+            console.log(ex);
             return true;
           }
         }
@@ -285,7 +289,8 @@ export class ChartStateManager {
             originMappings,
             defaultDifferenceApproximation
           );
-        } catch {
+        } catch (ex) {
+          console.log(ex);
           return true;
         }
       }

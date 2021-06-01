@@ -14,10 +14,26 @@ import {
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
 import { LegendProperties } from "../../core/prototypes/legends/legend";
-import { ChartElement, MappingType } from "../../core/specification";
+import {
+  ChartElement,
+  MappingType,
+  PlotSegment,
+  Object,
+} from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
-import { forEachObject } from "../../core/prototypes";
+import { forEachObject, ObjectItemKind } from "../../core/prototypes";
 import { RectElementProperties } from "../../core/prototypes/marks/rect.attrs";
+import { CartesianProperties } from "../../core/prototypes/plot_segments/region_2d/cartesian";
+import { PolarProperties } from "../../core/prototypes/plot_segments/region_2d/polar";
+import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
+import { AxisDataBindingType } from "../../core/specification/types";
+import {
+  DataAxisAttributes,
+  DataAxisClass,
+  DataAxisProperties,
+} from "../../core/prototypes/marks/data_axis";
+import { MarkClass } from "../../core/prototypes/marks";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -131,6 +147,13 @@ export class Migrator {
       compareVersion(targetVersion, "2.0.2") >= 0
     ) {
       state = this.setAllowFlipToMarks(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.4") < 0 &&
+      compareVersion(targetVersion, "2.0.4") >= 0
+    ) {
+      state = this.setMissedProperties(state);
     }
 
     // After migration, set version to targetVersion
@@ -369,6 +392,122 @@ export class Migrator {
         attrs.endAngle = 0;
       }
     }
+    return state;
+  }
+
+  private replaceUndefinedByNull(value: any): any {
+    return value === undefined ? null : value;
+  }
+
+  private updateAxis(
+    axis: Specification.Types.AxisDataBinding
+  ): Specification.Types.AxisDataBinding {
+    return {
+      side: this.replaceUndefinedByNull(axis.side),
+      type: this.replaceUndefinedByNull(axis.type),
+      visible: this.replaceUndefinedByNull(axis.visible),
+      autoDomainMax: this.replaceUndefinedByNull(axis.autoDomainMax),
+      autoDomainMin: this.replaceUndefinedByNull(axis.autoDomainMin),
+      orderMode: this.replaceUndefinedByNull(axis.orderMode),
+      style: this.replaceUndefinedByNull(axis.style),
+      categories: this.replaceUndefinedByNull(axis.categories),
+      dataKind: this.replaceUndefinedByNull(axis.dataKind),
+      domainMax: this.replaceUndefinedByNull(axis.domainMax),
+      domainMin: this.replaceUndefinedByNull(axis.domainMin),
+      enablePrePostGap: this.replaceUndefinedByNull(axis.enablePrePostGap),
+      expression: this.replaceUndefinedByNull(axis.expression),
+      gapRatio: this.replaceUndefinedByNull(axis.gapRatio),
+      numericalMode: this.replaceUndefinedByNull(axis.numericalMode),
+      order: this.replaceUndefinedByNull(axis.order),
+      rawExpression: this.replaceUndefinedByNull(axis.rawExpression),
+      tickDataExpression: this.replaceUndefinedByNull(axis.tickDataExpression),
+      tickFormat: this.replaceUndefinedByNull(axis.tickFormat),
+      valueType: this.replaceUndefinedByNull(axis.valueType),
+    };
+  }
+
+  public setMissedProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Chart) {
+        item.object.properties.exposed = true;
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+      }
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+      }
+
+      // if (item.kind == ObjectItemKind.Scale) {
+      //   const scale = item.scale.properties as ScalePro
+      // }
+    }
+
     return state;
   }
 
