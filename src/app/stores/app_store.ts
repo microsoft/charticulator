@@ -1696,6 +1696,10 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.enablePrePostGap !== undefined
           ? <boolean>objectProperties?.enablePrePostGap
           : null,
+      categories:
+        <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
     };
 
     let expressions = [groupExpression];
