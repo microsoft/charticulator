@@ -27,13 +27,7 @@ import { CartesianProperties } from "../../core/prototypes/plot_segments/region_
 import { PolarProperties } from "../../core/prototypes/plot_segments/region_2d/polar";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
-import { AxisDataBindingType } from "../../core/specification/types";
-import {
-  DataAxisAttributes,
-  DataAxisClass,
-  DataAxisProperties,
-} from "../../core/prototypes/marks/data_axis";
-import { MarkClass } from "../../core/prototypes/marks";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -502,10 +496,6 @@ export class Migrator {
           }
         }
       }
-
-      // if (item.kind == ObjectItemKind.Scale) {
-      //   const scale = item.scale.properties as ScalePro
-      // }
     }
 
     return state;

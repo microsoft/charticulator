@@ -39,6 +39,7 @@ import { LocalStorageKeys } from "./globals";
 import { MenuBarHandlers } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
+import { defaultVersionOfTemplate } from "./stores/defaults";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -209,9 +210,9 @@ export class Application {
         deepClone(appStore.chart)
       );
 
-      // if version wasn't saved in tempalte we asume it is 2.0.2
-      if (info.template.version == undefined) {
-        info.template.version = "2.0.2";
+      // if version wasn't saved in tempalte we asume it is 2.0.3
+      if (info.template && info.template.version == undefined) {
+        info.template.version = defaultVersionOfTemplate;
       }
       const newState = new Migrator().migrate(
         {
