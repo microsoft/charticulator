@@ -539,6 +539,9 @@ export class RectangleChart extends ChartClass {
             showSlider: true,
             sliderRange: [0, 1],
             label: strings.objects.opacity,
+            updownTick: 0.1,
+            percentage: true,
+            step: 0.1,
           }
         )
       );

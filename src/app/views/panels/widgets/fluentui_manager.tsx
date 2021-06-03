@@ -810,7 +810,7 @@ export class FluentUIWidgetManager
         ref={(e) => (container = e)}
         key={this.getKeyFromProperty(property)}
       >
-        <FluentButton marginTop={"10px"}>
+        <FluentButton marginTop={"0px"}>
           <DefaultButton
             iconProps={{
               iconName: "SortLines",
