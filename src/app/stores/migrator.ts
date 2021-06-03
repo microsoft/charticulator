@@ -14,10 +14,20 @@ import {
 import { TableType } from "../../core/dataset";
 import { upgradeGuidesToBaseline } from "./migrator_baseline";
 import { LegendProperties } from "../../core/prototypes/legends/legend";
-import { ChartElement, MappingType } from "../../core/specification";
+import {
+  ChartElement,
+  MappingType,
+  PlotSegment,
+  Object,
+} from "../../core/specification";
 import { NumericalNumberLegendAttributes } from "../../core/prototypes/legends/numerical_legend";
-import { forEachObject } from "../../core/prototypes";
+import { forEachObject, ObjectItemKind } from "../../core/prototypes";
 import { RectElementProperties } from "../../core/prototypes/marks/rect.attrs";
+import { CartesianProperties } from "../../core/prototypes/plot_segments/region_2d/cartesian";
+import { PolarProperties } from "../../core/prototypes/plot_segments/region_2d/polar";
+import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
+import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
+import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -131,6 +141,13 @@ export class Migrator {
       compareVersion(targetVersion, "2.0.2") >= 0
     ) {
       state = this.setAllowFlipToMarks(state);
+    }
+
+    if (
+      compareVersion(state.version, "2.0.4") < 0 &&
+      compareVersion(targetVersion, "2.0.4") >= 0
+    ) {
+      state = this.setMissedProperties(state);
     }
 
     // After migration, set version to targetVersion
@@ -369,6 +386,115 @@ export class Migrator {
         attrs.endAngle = 0;
       }
     }
+    return state;
+  }
+
+  private updateAxis(
+    axis: Specification.Types.AxisDataBinding
+  ): Specification.Types.AxisDataBinding {
+    return {
+      side: null,
+      type: null,
+      visible: null,
+      autoDomainMax: null,
+      autoDomainMin: null,
+      orderMode: null,
+      style: null,
+      categories: null,
+      dataKind: null,
+      domainMax: null,
+      domainMin: null,
+      enablePrePostGap: null,
+      expression: null,
+      gapRatio: null,
+      numericalMode: null,
+      order: null,
+      rawExpression: null,
+      tickDataExpression: null,
+      tickFormat: null,
+      valueType: null,
+      ...axis,
+    };
+  }
+
+  public setMissedProperties(state: AppStoreState) {
+    for (const item of forEachObject(state.chart)) {
+      if (item.kind == ObjectItemKind.Chart) {
+        item.object.properties.exposed = true;
+      }
+      if (item.kind == ObjectItemKind.ChartElement) {
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.cartesian")
+        ) {
+          const element = item.chartElement as PlotSegment<CartesianProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.polar")
+        ) {
+          const element = item.chartElement as PlotSegment<PolarProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
+          const element = item.chartElement as PlotSegment<LineGuideProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+        if (
+          Prototypes.isType(item.chartElement.classID, "plot-segment.curve")
+        ) {
+          const element = item.chartElement as PlotSegment<CurveProperties>;
+          if (element.properties.xData) {
+            element.properties.xData = this.updateAxis(
+              element.properties.xData
+            );
+          }
+          if (element.properties.yData) {
+            element.properties.yData = this.updateAxis(
+              element.properties.yData
+            );
+          }
+        }
+        if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.chartElement as unknown) as Object<
+            DataAxisProperties
+          >;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+      }
+      if (item.kind == ObjectItemKind.Mark) {
+        if (Prototypes.isType(item.mark.classID, "mark.data-axis")) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const element = (item.mark as unknown) as Object<DataAxisProperties>;
+          if (element.properties.axis) {
+            element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+        }
+      }
+    }
+
     return state;
   }
 

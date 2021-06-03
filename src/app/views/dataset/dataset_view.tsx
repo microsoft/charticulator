@@ -157,7 +157,8 @@ export class ColumnsView extends React.Component<
                         const builder = new ChartTemplateBuilder(
                           store.chart,
                           store.dataset,
-                          store.chartManager
+                          store.chartManager,
+                          CHARTICULATOR_PACKAGE.version
                         );
                         const template = builder.build();
 
@@ -469,16 +470,13 @@ export class ColumnView extends React.Component<
               this.applyAggregation(expr, type, metadata.kind),
               type,
               metadata,
-              rawColumnExpr ?
-                this.applyAggregation(
-                  rawColumnExpr,
-                  DataType.String,
-                  metadata.kind
-                ) : this.applyAggregation(
-                  expr,
-                  type,
-                  metadata.kind
-                )
+              rawColumnExpr
+                ? this.applyAggregation(
+                    rawColumnExpr,
+                    DataType.String,
+                    metadata.kind
+                  )
+                : this.applyAggregation(expr, type, metadata.kind)
             );
             return r;
           }}

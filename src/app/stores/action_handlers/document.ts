@@ -243,7 +243,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       null,
       {},
       {},
-      this.chartManager.getOriginChart()
+      action.originSpecification
+        ? deepClone(action.originSpecification)
+        : this.chartManager.getOriginChart()
     );
     this.chartState = this.chartManager.chartState;
 
@@ -260,8 +262,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.ReplaceDataset, function (action) {
-    this.saveHistory();
-
+    // this.saveHistory();
     this.currentChartID = null;
     this.currentSelection = null;
     this.dataset = action.dataset;

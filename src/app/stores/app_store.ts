@@ -145,6 +145,7 @@ export class AppStore extends BaseStore {
   public chart: Specification.Chart;
   /** The current chart state */
   public chartState: Specification.ChartState;
+  public version: string;
   /** Rendering Events */
   public renderEvents?: RenderEvents;
 
@@ -255,6 +256,7 @@ export class AppStore extends BaseStore {
     this.originDataset = state.dataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
+    this.version = state.version;
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
@@ -1176,7 +1178,8 @@ export class AppStore extends BaseStore {
     const builder = new ChartTemplateBuilder(
       this.chart,
       this.dataset,
-      this.chartManager
+      this.chartManager,
+      CHARTICULATOR_PACKAGE.version
     );
 
     const template = builder.build();
@@ -1680,6 +1683,22 @@ export class AppStore extends BaseStore {
       tickDataExpression:
         <string>objectProperties?.tickDataExpression !== undefined
           ? <string>objectProperties?.tickDataExpression
+          : null,
+      domainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      domainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
+      enablePrePostGap:
+        <boolean>objectProperties?.enablePrePostGap !== undefined
+          ? <boolean>objectProperties?.enablePrePostGap
+          : null,
+      categories:
+        <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
           : null,
     };
 
