@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -28,6 +29,7 @@ import { PolarProperties } from "../../core/prototypes/plot_segments/region_2d/p
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { CurveProperties } from "../../core/prototypes/plot_segments/region_2d/curve";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis";
+import { replaceUndefinedByNull } from "../utils";
 
 /** Upgrade old versions of chart spec and state to newer version */
 export class Migrator {
@@ -389,34 +391,30 @@ export class Migrator {
     return state;
   }
 
-  private replaceUndefinedByNull(value: any): any {
-    return value === undefined ? null : value;
-  }
-
   private updateAxis(
     axis: Specification.Types.AxisDataBinding
   ): Specification.Types.AxisDataBinding {
     return {
-      side: this.replaceUndefinedByNull(axis.side),
-      type: this.replaceUndefinedByNull(axis.type),
-      visible: this.replaceUndefinedByNull(axis.visible),
-      autoDomainMax: this.replaceUndefinedByNull(axis.autoDomainMax),
-      autoDomainMin: this.replaceUndefinedByNull(axis.autoDomainMin),
-      orderMode: this.replaceUndefinedByNull(axis.orderMode),
-      style: this.replaceUndefinedByNull(axis.style),
-      categories: this.replaceUndefinedByNull(axis.categories),
-      dataKind: this.replaceUndefinedByNull(axis.dataKind),
-      domainMax: this.replaceUndefinedByNull(axis.domainMax),
-      domainMin: this.replaceUndefinedByNull(axis.domainMin),
-      enablePrePostGap: this.replaceUndefinedByNull(axis.enablePrePostGap),
-      expression: this.replaceUndefinedByNull(axis.expression),
-      gapRatio: this.replaceUndefinedByNull(axis.gapRatio),
-      numericalMode: this.replaceUndefinedByNull(axis.numericalMode),
-      order: this.replaceUndefinedByNull(axis.order),
-      rawExpression: this.replaceUndefinedByNull(axis.rawExpression),
-      tickDataExpression: this.replaceUndefinedByNull(axis.tickDataExpression),
-      tickFormat: this.replaceUndefinedByNull(axis.tickFormat),
-      valueType: this.replaceUndefinedByNull(axis.valueType),
+      side: replaceUndefinedByNull(axis.side),
+      type: replaceUndefinedByNull(axis.type),
+      visible: replaceUndefinedByNull(axis.visible),
+      autoDomainMax: replaceUndefinedByNull(axis.autoDomainMax),
+      autoDomainMin: replaceUndefinedByNull(axis.autoDomainMin),
+      orderMode: replaceUndefinedByNull(axis.orderMode),
+      style: replaceUndefinedByNull(axis.style),
+      categories: replaceUndefinedByNull(axis.categories),
+      dataKind: replaceUndefinedByNull(axis.dataKind),
+      domainMax: replaceUndefinedByNull(axis.domainMax),
+      domainMin: replaceUndefinedByNull(axis.domainMin),
+      enablePrePostGap: replaceUndefinedByNull(axis.enablePrePostGap),
+      expression: replaceUndefinedByNull(axis.expression),
+      gapRatio: replaceUndefinedByNull(axis.gapRatio),
+      numericalMode: replaceUndefinedByNull(axis.numericalMode),
+      order: replaceUndefinedByNull(axis.order),
+      rawExpression: replaceUndefinedByNull(axis.rawExpression),
+      tickDataExpression: replaceUndefinedByNull(axis.tickDataExpression),
+      tickFormat: replaceUndefinedByNull(axis.tickFormat),
+      valueType: replaceUndefinedByNull(axis.valueType),
     };
   }
 
@@ -434,11 +432,17 @@ export class Migrator {
             element.properties.xData = this.updateAxis(
               element.properties.xData
             );
+            if (element.properties.xData === undefined) {
+              element.properties.xData = null;
+            }
           }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
+            if (element.properties.yData === undefined) {
+              element.properties.yData = null;
+            }
           }
         }
         if (
@@ -450,10 +454,16 @@ export class Migrator {
               element.properties.xData
             );
           }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
           }
         }
         if (Prototypes.isType(item.chartElement.classID, "plot-segment.line")) {
@@ -471,10 +481,16 @@ export class Migrator {
               element.properties.xData
             );
           }
+          if (element.properties.xData === undefined) {
+            element.properties.xData = null;
+          }
           if (element.properties.yData) {
             element.properties.yData = this.updateAxis(
               element.properties.yData
             );
+          }
+          if (element.properties.yData === undefined) {
+            element.properties.yData = null;
           }
         }
         if (Prototypes.isType(item.chartElement.classID, "mark.data-axis")) {
@@ -485,6 +501,9 @@ export class Migrator {
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
           }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
+          }
         }
       }
       if (item.kind == ObjectItemKind.Mark) {
@@ -493,6 +512,9 @@ export class Migrator {
           const element = (item.mark as unknown) as Object<DataAxisProperties>;
           if (element.properties.axis) {
             element.properties.axis = this.updateAxis(element.properties.axis);
+          }
+          if (element.properties.axis === undefined) {
+            element.properties.axis = null;
           }
         }
       }
