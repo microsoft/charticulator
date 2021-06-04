@@ -389,31 +389,34 @@ export class Migrator {
     return state;
   }
 
+  private replaceUndefinedByNull(value: any): any {
+    return value === undefined ? null : value;
+  }
+
   private updateAxis(
     axis: Specification.Types.AxisDataBinding
   ): Specification.Types.AxisDataBinding {
     return {
-      side: null,
-      type: null,
-      visible: null,
-      autoDomainMax: null,
-      autoDomainMin: null,
-      orderMode: null,
-      style: null,
-      categories: null,
-      dataKind: null,
-      domainMax: null,
-      domainMin: null,
-      enablePrePostGap: null,
-      expression: null,
-      gapRatio: null,
-      numericalMode: null,
-      order: null,
-      rawExpression: null,
-      tickDataExpression: null,
-      tickFormat: null,
-      valueType: null,
-      ...axis,
+      side: this.replaceUndefinedByNull(axis.side),
+      type: this.replaceUndefinedByNull(axis.type),
+      visible: this.replaceUndefinedByNull(axis.visible),
+      autoDomainMax: this.replaceUndefinedByNull(axis.autoDomainMax),
+      autoDomainMin: this.replaceUndefinedByNull(axis.autoDomainMin),
+      orderMode: this.replaceUndefinedByNull(axis.orderMode),
+      style: this.replaceUndefinedByNull(axis.style),
+      categories: this.replaceUndefinedByNull(axis.categories),
+      dataKind: this.replaceUndefinedByNull(axis.dataKind),
+      domainMax: this.replaceUndefinedByNull(axis.domainMax),
+      domainMin: this.replaceUndefinedByNull(axis.domainMin),
+      enablePrePostGap: this.replaceUndefinedByNull(axis.enablePrePostGap),
+      expression: this.replaceUndefinedByNull(axis.expression),
+      gapRatio: this.replaceUndefinedByNull(axis.gapRatio),
+      numericalMode: this.replaceUndefinedByNull(axis.numericalMode),
+      order: this.replaceUndefinedByNull(axis.order),
+      rawExpression: this.replaceUndefinedByNull(axis.rawExpression),
+      tickDataExpression: this.replaceUndefinedByNull(axis.tickDataExpression),
+      tickFormat: this.replaceUndefinedByNull(axis.tickFormat),
+      valueType: this.replaceUndefinedByNull(axis.valueType),
     };
   }
 
