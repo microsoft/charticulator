@@ -429,3 +429,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
     }
   }
 }
+
+export function replaceUndefinedByNull(value: any): any {
+  return value === undefined ? null : value;
+}
