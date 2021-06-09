@@ -58,6 +58,7 @@ import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
+  applyDateFormat,
   ChartTemplate,
   getFormat,
   getSortFunctionByData,
@@ -424,7 +425,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         validate={(value) => {
           if (value && value.trim() !== "") {
             try {
-              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              if (options.isDateField) {
+                applyDateFormat(
+                  new Date(),
+                  value?.replace(tickFormatParserExpression(), "$1")
+                );
+              } else {
+                getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
+              }
               return {
                 pass: true,
                 formatted: value,

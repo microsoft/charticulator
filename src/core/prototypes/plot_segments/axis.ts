@@ -274,7 +274,10 @@ export class AxisRenderer {
     const rangeLength = Math.abs(rangeMax - rangeMin);
     const ticksCount = Math.round(Math.min(10, rangeLength / 40));
     const ticks = scale.ticks(ticksCount);
-    const tickFormat = scale.tickFormat(ticksCount, tickFormatString);
+    const tickFormat = scale.tickFormat(
+      ticksCount,
+      tickFormatString?.replace(tickFormatParserExpression(), "$1")
+    );
     const r: TickDescription[] = [];
     for (let i = 0; i < ticks.length; i++) {
       const tx =
@@ -1145,6 +1148,7 @@ export function buildAxisWidgets(
                 },
                 {
                   blank: strings.core.auto,
+                  isDateField: data.numericalMode === "temporal",
                 }
               )
             )
