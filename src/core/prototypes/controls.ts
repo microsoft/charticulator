@@ -155,6 +155,7 @@ export interface InputExpressionOptions {
 
 export interface InputFormatOptions {
   blank?: string;
+  isDateField?: boolean;
 }
 
 export interface WidgetManager {
