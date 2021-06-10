@@ -29,9 +29,10 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
-import { AttributeMap } from "../../specification";
+import { AttributeMap, DataKind, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
+import { NumericalMode } from "../../specification/types";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -1148,7 +1149,9 @@ export function buildAxisWidgets(
                 },
                 {
                   blank: strings.core.auto,
-                  isDateField: data.numericalMode === "temporal",
+                  isDateField:
+                    data.numericalMode === NumericalMode.Temporal ||
+                    data.valueType === DataType.Date,
                 }
               )
             )
@@ -1201,6 +1204,9 @@ export function buildAxisWidgets(
                   },
                   {
                     blank: strings.core.auto,
+                    isDateField:
+                      data.numericalMode === NumericalMode.Temporal ||
+                      data.valueType === DataType.Date,
                   }
                 )
               )

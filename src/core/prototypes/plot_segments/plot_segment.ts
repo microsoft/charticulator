@@ -7,9 +7,14 @@ import * as Specification from "../../specification";
 import { BuildConstraintsContext, ChartElementClass } from "../chart_element";
 import { BoundingBox, Controls, DropZones, Handles } from "../common";
 import { FunctionCall, TextExpression, Variable } from "../../expression";
-import { getSortFunctionByData, refineColumnName } from "../..";
+import {
+  getSortFunctionByData,
+  refineColumnName,
+  tickFormatParserExpression,
+} from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
+import { NumericalMode } from "../../specification/types";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -243,10 +248,15 @@ export abstract class PlotSegmentClass<
     tickFormat?: string,
     manager?: ChartStateManager
   ) => {
-    if (binding.numericalMode === "temporal" || binding.valueType === "date") {
+    if (
+      binding.numericalMode === NumericalMode.Temporal ||
+      binding.valueType === Specification.DataType.Date
+    ) {
       if (tickFormat) {
         return (value: any) => {
-          return utcFormat(tickFormat)(value);
+          return utcFormat(
+            tickFormat.replace(tickFormatParserExpression(), "$1")
+          )(value);
         };
       } else {
         return (value: any) => {
