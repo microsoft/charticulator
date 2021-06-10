@@ -29,7 +29,7 @@ import {
 } from "../../graphics/renderer/text_measurer";
 import { Graphics, Specification } from "../../index";
 import { Controls, strokeStyleToDashArray } from "../common";
-import { AttributeMap, DataKind, DataType } from "../../specification";
+import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import { NumericalMode } from "../../specification/types";
