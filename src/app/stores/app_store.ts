@@ -1520,7 +1520,7 @@ export class AppStore extends BaseStore {
             : null,
           order: axisProperty.order,
         },
-        axisProperty.rawColumnExpr as string
+        axisProperty.rawExpression as string
       );
 
       this.bindDataToAxis({
