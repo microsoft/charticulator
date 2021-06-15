@@ -396,7 +396,15 @@ export function getAligntment(anchor: Element) {
 }
 
 /** Test if a deep equals b with tolerance on numeric values */
-export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
+export function expect_deep_approximately_equals(
+  a: any,
+  b: any,
+  tol: number,
+  weak: boolean = false
+) {
+  if (weak && a == null && b == null) {
+    return;
+  }
   if (a == null || b == null) {
     // If either of a, b is null/undefined
     expect(a).equals(b);
@@ -405,7 +413,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       // Both are arrays, recursively test for each item in the arrays
       expect(a.length).to.equals(b.length);
       for (let i = 0; i < a.length; i++) {
-        expect_deep_approximately_equals(a[i], b[i], tol);
+        expect_deep_approximately_equals(a[i], b[i], tol, weak);
       }
     } else if (a instanceof Array || b instanceof Array) {
       // One of them is an array, the other one isn't, error
@@ -416,7 +424,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       const keysB = Object.keys(b).sort();
       expect(keysA).to.deep.equals(keysB);
       for (const key of keysA) {
-        expect_deep_approximately_equals(a[key], b[key], tol);
+        expect_deep_approximately_equals(a[key], b[key], tol, weak);
       }
     }
   } else {
