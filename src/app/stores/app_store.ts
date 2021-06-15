@@ -1769,20 +1769,37 @@ export class AppStore extends BaseStore {
           break;
         case Specification.DataKind.Numerical:
           {
-            const scale = new Scale.LinearScale();
-            scale.inferParameters(values as number[]);
-            if (dataBinding.autoDomainMin) {
-              dataBinding.domainMin = scale.domainMin;
+            if (options.numericalMode === NumericalMode.Logarithmic) {
+              const scale = new Scale.LogarithmicScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Logarithmic;
             } else {
-              dataBinding.domainMin = options.domainMin;
+              const scale = new Scale.LinearScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Linear;
             }
-            if (dataBinding.autoDomainMax) {
-              dataBinding.domainMax = scale.domainMax;
-            } else {
-              dataBinding.domainMax = options.domainMax;
-            }
-            dataBinding.type = AxisDataBindingType.Numerical;
-            dataBinding.numericalMode = NumericalMode.Linear;
           }
           break;
         case Specification.DataKind.Temporal:

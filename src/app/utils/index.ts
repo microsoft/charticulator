@@ -404,8 +404,7 @@ export function expect_deep_approximately_equals(
 ) {
   if (weak && a == null && b == null) {
     return;
-  }
-  if (a == null || b == null) {
+  } else if (a == null || b == null) {
     // If either of a, b is null/undefined
     expect(a).equals(b);
   } else if (typeof a == "object" && typeof b == "object") {
