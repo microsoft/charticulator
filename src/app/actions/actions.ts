@@ -155,12 +155,19 @@ export class ImportChartAndDataset extends Action {
 }
 
 export class ReplaceDataset extends Action {
-  constructor(public dataset: Dataset.Dataset) {
+  constructor(
+    public dataset: Dataset.Dataset,
+    public keepState: boolean = false
+  ) {
     super();
   }
 
   public digest() {
-    return { name: "ReplaceDataset", datasetName: this.dataset.name };
+    return {
+      name: "ReplaceDataset",
+      datasetName: this.dataset.name,
+      keepState: this.keepState,
+    };
   }
 }
 
