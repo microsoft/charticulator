@@ -1362,7 +1362,7 @@ export class AppStore extends BaseStore {
       // xData
       const xDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
         .xData;
-      if (xDataProperty) {
+      if (xDataProperty && xDataProperty.expression) {
         const xData = new DragData.DataExpression(
           table,
           xDataProperty.expression,
@@ -1403,7 +1403,7 @@ export class AppStore extends BaseStore {
       // yData
       const yDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
         .yData;
-      if (yDataProperty) {
+      if (yDataProperty && yDataProperty.expression) {
         const yData = new DragData.DataExpression(
           table,
           yDataProperty.expression,
@@ -1443,7 +1443,7 @@ export class AppStore extends BaseStore {
 
       const axisProperty: Specification.Types.AxisDataBinding = (plot.properties as LineGuideProperties)
         .axis;
-      if (axisProperty) {
+      if (axisProperty && axisProperty.expression) {
         const axisData = new DragData.DataExpression(
           table,
           axisProperty.expression !== undefined
@@ -1742,12 +1742,14 @@ export class AppStore extends BaseStore {
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
     }
     for (const expr of expressions) {
-      const r = this.chartManager.getGroupedExpressionVector(
-        dataExpression.table.name,
-        groupBy,
-        expr
-      );
-      values = values.concat(r);
+      if (expr) {
+        const r = this.chartManager.getGroupedExpressionVector(
+          dataExpression.table.name,
+          groupBy,
+          expr
+        );
+        values = values.concat(r);
+      }
     }
 
     if (dataExpression.metadata) {
