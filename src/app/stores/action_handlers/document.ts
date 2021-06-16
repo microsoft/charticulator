@@ -272,8 +272,8 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       this.chart,
       this.dataset,
       null,
-      null,
-      null,
+      {},
+      {},
       action.keepState ? this.chartManager.getOriginChart() : null
     );
     this.chartState = this.chartManager.chartState;
