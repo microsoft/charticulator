@@ -207,7 +207,7 @@ export class Application {
         null,
         {},
         {},
-        deepClone(appStore.chart)
+        deepClone(info.specification)
       );
 
       // if version wasn't saved in tempalte we asume it is 2.0.3

@@ -66,8 +66,9 @@ export namespace Scale {
     public domainMax: number;
 
     public inferParameters(values: number[]) {
+      const min = Math.min(...values);
       const scale = scaleLog()
-        .domain([Math.min(...values), Math.max(...values)])
+        .domain([min <= 0 ? 1 : min, Math.max(...values)])
         .nice();
       this.domainMin = scale.domain()[0];
       this.domainMax = scale.domain()[1];

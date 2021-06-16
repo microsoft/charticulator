@@ -270,7 +270,11 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
-      this.dataset
+      this.dataset,
+      null,
+      {},
+      {},
+      action.keepState ? this.chartManager.getOriginChart() : null
     );
     this.chartState = this.chartManager.chartState;
     this.updatePlotSegments();
