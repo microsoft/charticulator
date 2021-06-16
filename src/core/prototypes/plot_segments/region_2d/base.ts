@@ -8,6 +8,10 @@ import {
   Variable,
 } from "../../../solver";
 import * as Specification from "../../../specification";
+import {
+  AxisDataBindingType,
+  NumericalMode,
+} from "../../../specification/types";
 import { BuildConstraintsContext, Controls } from "../../common";
 import { LabelPosition } from "../../controls";
 import { DataflowTable } from "../../dataflow";
@@ -448,7 +452,7 @@ export class Region2DConstraintBuilder {
     dataIndices: number[][]
   ) {
     const data = props.yData;
-    if (data.type == "numerical") {
+    if (data.type == AxisDataBindingType.Numerical) {
       const [y1, y2] = solver.attrs(attrs, [this.y1Name, this.y2Name]);
       const expr = this.getExpression(data.expression);
       const interp = getNumericalInterpolate(data);
@@ -465,9 +469,19 @@ export class Region2DConstraintBuilder {
           ],
           [[1, solver.attr(markState.attributes, "y")]]
         );
+
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [
+            [1, y2],
+            [-1, y1],
+          ],
+          [[data.categories.length, solver.attr(markState.attributes, "width")]]
+        );
       }
     }
-    if (data.type == "categorical") {
+    if (data.type == AxisDataBindingType.Categorical) {
       const [y1, y2, gapY] = solver.attrs(attrs, [
         this.y1Name,
         this.y2Name,
@@ -505,10 +519,11 @@ export class Region2DConstraintBuilder {
     dataIndices: number[][]
   ) {
     const data = props.xData;
-    if (data.type == "numerical") {
+    if (data.type == AxisDataBindingType.Numerical) {
       const [x1, x2] = solver.attrs(attrs, [this.x1Name, this.x2Name]);
       const expr = this.getExpression(data.expression);
       const interp = getNumericalInterpolate(data);
+
       for (const [index, markState] of state.glyphs.entries()) {
         const rowContext = table.getGroupedContext(dataIndices[index]);
         const value = expr.getNumberValue(rowContext);
@@ -522,9 +537,19 @@ export class Region2DConstraintBuilder {
           ],
           [[1, solver.attr(markState.attributes, "x")]]
         );
+
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          0,
+          [
+            [1, x2],
+            [-1, x1],
+          ],
+          [[data.categories.length, solver.attr(markState.attributes, "width")]]
+        );
       }
     }
-    if (data.type == "categorical") {
+    if (data.type == AxisDataBindingType.Categorical) {
       const [x1, x2, gapX] = solver.attrs(attrs, [
         this.x1Name,
         this.x2Name,
