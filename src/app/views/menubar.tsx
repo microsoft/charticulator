@@ -454,6 +454,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         disabled={!hasUnsavedChanges}
         title={strings.menuBar.save}
         onClick={() => {
+          this.context.store.dispatcher.dispatch(
+            new Actions.UpdatePlotSegments()
+          );
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
       />
