@@ -700,6 +700,7 @@ addPalette(
   ["#796408", "#b6960b", "#f5d33f", "#f7de6f", "#fae99f", "#f2c80f"].reverse(),
   ["#303637", "#475052", "#7f898a", "#9fa6a7", "#bfc4c5", "#5f6b6d"].reverse(),
   ["#456a76", "#689fb0", "#a1ddef", "#b9e5f3", "#d0eef7", "#8ad4eb"].reverse(),
+  ["#118dff", "#a0d1ff", "#70bbff", "#41a4ff", "#0d6abf", "#094780"].reverse(),
   ["#7f4b33", "#bf714d", "#feab85", "#fec0a3", "#ffd5c2", "#fe9666"].reverse(),
   ["#53354d", "#7d4f73", "#b887ad", "#caa5c2", "#dbc3d6", "#a66999"].reverse()
 );
