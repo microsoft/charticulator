@@ -567,6 +567,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
         onClick={() => {
+          const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
+            mappingButton
+          );
           globals.popupController.popupAt(
             (context) => {
               return (
@@ -579,7 +582,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                 </PopupView>
               );
             },
-            { anchor: mappingButton }
+            { anchor: mappingButton, alignX }
           );
         }}
       />
