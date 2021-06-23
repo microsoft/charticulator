@@ -78,6 +78,7 @@ import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
+import { ChartTemplateBuilder } from "../../../template";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1095,6 +1096,14 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   switch (data.type) {
                     case "initialized":
                       {
+                        const builder = new ChartTemplateBuilder(
+                          options.specification,
+                          options.dataset,
+                          this.store.chartManager,
+                          CHARTICULATOR_PACKAGE.version
+                        );
+
+                        const template = builder.build();
                         newWindow.postMessage(
                           {
                             id: editorID,
@@ -1102,6 +1111,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                             specification: options.specification,
                             dataset: options.dataset,
                             width: options.width,
+                            template,
                             height: options.height,
                             filterCondition: options.filterCondition,
                           },

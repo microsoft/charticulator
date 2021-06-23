@@ -219,7 +219,7 @@ export class Application {
           chart: chartManager.chart,
           chartState: chartManager.chartState,
           dataset: chartManager.dataset,
-          version: info.template.version,
+          version: info.template?.version,
           originDataset: appStore.originDataset,
         },
         CHARTICULATOR_PACKAGE.version
