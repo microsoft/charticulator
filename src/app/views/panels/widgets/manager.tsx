@@ -60,6 +60,7 @@ import { GroupByEditor } from "./groupby_editor";
 import {
   applyDateFormat,
   ChartTemplate,
+  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
@@ -1096,10 +1097,19 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                   switch (data.type) {
                     case "initialized":
                       {
+                        const chartManager = new Prototypes.ChartStateManager(
+                          options.specification,
+                          options.dataset,
+                          null,
+                          {},
+                          {},
+                          deepClone(options.specification)
+                        );
+
                         const builder = new ChartTemplateBuilder(
                           options.specification,
                           options.dataset,
-                          this.store.chartManager,
+                          chartManager,
                           CHARTICULATOR_PACKAGE.version
                         );
 
