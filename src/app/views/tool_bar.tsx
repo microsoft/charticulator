@@ -273,12 +273,11 @@ export class Toolbar extends ContextedComponent<
           {this.renderIconButton()}
           <span className={"charticulator__toolbar-horizontal-separator"} />
           {this.renderDataAxisButton()}
-          {/* Nested chart doesn't supported */}
-          {/* <ObjectButton
+          <ObjectButton
             classID="mark.nested-chart"
-            title="Nested Chart"
+            title={strings.toolbar.nestedChart}
             icon="mark/nested-chart"
-          /> */}
+          />
         </>
       </>,
     ];

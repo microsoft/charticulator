@@ -30,6 +30,7 @@ import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
+import { Url } from "url";
 
 export class HelpButton extends React.Component<
   {
@@ -121,12 +122,21 @@ export interface MenuBarHandlers {
   onExportTemplateClick?: () => void;
 }
 
+export interface MenubarTabButton {
+  icon: string;
+  tooltip: string;
+  text: string;
+  active: boolean;
+  onClick: () => void;
+}
+
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
   alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
+  tabButtons?: MenubarTabButton[];
 }
 
 export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
@@ -613,6 +623,27 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
+  public toolbarTabButtons(props: MenuBarProps) {
+    return (
+      <>
+        {props.tabButtons?.map((button) => {
+          return (
+            <>
+              <span className="charticulator__menu-bar-separator" />
+              <MenuButton
+                url={R.getSVGIcon(button.icon)}
+                title={button.tooltip}
+                onClick={button.onClick}
+                text={button.text}
+                disabled={!button.active}
+              />
+            </>
+          );
+        })}
+      </>
+    );
+  }
+
   public render() {
     return (
       <>
@@ -636,6 +667,10 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
             this.props.alignSaveButton == PositionsLeftRight.Left &&
             this.props.alignSaveButton !== this.props.alignButtons
               ? this.renderSaveEmbedded()
+              : null}
+            {this.context.store.editorType === "embedded" &&
+            this.props.tabButtons
+              ? this.toolbarTabButtons(this.props)
               : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">

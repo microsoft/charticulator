@@ -15,6 +15,7 @@ import {
   Scale,
   MessageType,
   compareMarkAttributeNames,
+  setField,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorkerInterface } from "../../worker";
@@ -1989,5 +1990,39 @@ export class AppStore extends BaseStore {
       unmappedColumns.push(column);
     }
     return unmappedColumns;
+  }
+
+  public setProperty(config: {
+    object: Specification.Object;
+    property: string;
+    field: number | string | (number | string)[];
+    value: Specification.AttributeValue;
+    noUpdateState?: boolean;
+    noComputeLayout?: boolean;
+  }) {
+    if (
+      config.property === "name" &&
+      this.chartManager.isNameUsed(config.value as string)
+    ) {
+      return;
+    }
+    this.saveHistory();
+
+    if (config.field == null) {
+      config.object.properties[config.property] = config.value;
+    } else {
+      const obj = config.object.properties[config.property];
+      config.object.properties[config.property] = setField(
+        obj,
+        config.field,
+        config.value
+      );
+    }
+
+    if (config.noUpdateState) {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } else {
+      this.solveConstraintsAndUpdateGraphics(config.noComputeLayout);
+    }
   }
 }

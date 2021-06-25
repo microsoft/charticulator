@@ -36,7 +36,7 @@ import { MainTabs } from "./views/file_view";
 import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
-import { MenuBarHandlers } from "./views/menubar";
+import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
 import { defaultVersionOfTemplate } from "./stores/defaults";
@@ -67,6 +67,12 @@ export class Application {
   private config: CharticulatorAppConfig;
   private containerID: string;
 
+  private nestedEditor: {
+    options: Prototypes.Controls.NestedChartEditorOptions;
+    onOpenEditor: () => void;
+    onSave: () => void;
+  };
+
   public destroy() {
     ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
   }
@@ -81,10 +87,17 @@ export class Application {
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
+    },
+    tabButtons?: MenubarTabButton[],
+    nestedEditor?: {
+      options: Prototypes.Controls.NestedChartEditorOptions;
+      onOpenEditor: () => void;
+      onSave: () => void;
     }
   ) {
     this.config = config;
     this.containerID = containerID;
+    this.nestedEditor = nestedEditor;
     await initialize(config);
 
     if (workerConfig.worker) {
@@ -143,6 +156,7 @@ export class Application {
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
+        tabButtons={tabButtons}
         telemetry={handlers?.telemetry}
       />,
       document.getElementById(containerID)
