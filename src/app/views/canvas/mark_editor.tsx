@@ -39,7 +39,11 @@ import {
   GuideProperties,
 } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
-import { PlotSegment } from "../../../core/specification";
+import {
+  MappingType,
+  PlotSegment,
+  ValueMapping,
+} from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 
 export interface MarkEditorViewProps {
@@ -1437,7 +1441,15 @@ export class SingleMarkView
             this.props.glyph,
             "guide.guide",
             { x: 0, y: 0 },
-            { value },
+            {
+              value: [
+                value[0],
+                {
+                  type: MappingType.value,
+                  value: value[0],
+                } as ValueMapping,
+              ],
+            },
             guideProperties
           )
         );
