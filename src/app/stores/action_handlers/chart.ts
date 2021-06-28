@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -17,6 +18,7 @@ import {
   MappingType,
   SnappingElementMapping,
 } from "../../../core/specification";
+import { replaceUndefinedByNull } from "../../utils";
 
 // eslint-disable-next-line
 export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
@@ -454,15 +456,15 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       }
 
       plotSegment.properties = {
-        name: plotSegment.properties.name,
-        visible: plotSegment.properties.visible,
-        sublayout: plotSegment.properties.sublayout,
-        xData: plotSegment.properties.xData,
-        yData: plotSegment.properties.yData,
-        marginX1: plotSegment.properties.marginX1,
-        marginY1: plotSegment.properties.marginY1,
-        marginX2: plotSegment.properties.marginX2,
-        marginY2: plotSegment.properties.marginY2,
+        name: replaceUndefinedByNull(plotSegment.properties.name),
+        visible: replaceUndefinedByNull(plotSegment.properties.visible),
+        sublayout: replaceUndefinedByNull(plotSegment.properties.sublayout),
+        xData: replaceUndefinedByNull(plotSegment.properties.xData),
+        yData: replaceUndefinedByNull(plotSegment.properties.yData),
+        marginX1: replaceUndefinedByNull(plotSegment.properties.marginX1),
+        marginY1: replaceUndefinedByNull(plotSegment.properties.marginY1),
+        marginX2: replaceUndefinedByNull(plotSegment.properties.marginX2),
+        marginY2: replaceUndefinedByNull(plotSegment.properties.marginY2),
       };
 
       if (newClassID == "plot-segment.polar") {

@@ -131,19 +131,25 @@ export interface MenuBarProps {
 }
 
 export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
-  protected subs: EventSubscription;
+  protected editor: EventSubscription;
+  protected graphics: EventSubscription;
   private popupController: PopupController = new PopupController();
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
-    this.subs = this.context.store.addListener(
+    this.editor = this.context.store.addListener(
       AppStore.EVENT_IS_NESTED_EDITOR,
+      () => this.forceUpdate()
+    );
+    this.graphics = this.context.store.addListener(
+      AppStore.EVENT_GRAPHICS,
       () => this.forceUpdate()
     );
   }
 
   public componentWillUnmount() {
     window.removeEventListener("keydown", this.onKeyDown);
-    this.subs.remove();
+    this.editor.remove();
+    this.graphics.remove();
   }
 
   public keyboardMap: { [name: string]: string } = {
@@ -449,6 +455,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         disabled={!hasUnsavedChanges}
         title={strings.menuBar.save}
         onClick={() => {
+          this.context.store.dispatcher.dispatch(
+            new Actions.UpdatePlotSegments()
+          );
           this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
         }}
       />

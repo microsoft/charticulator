@@ -221,23 +221,23 @@ function checkConvertion(
 }
 
 export function getConvertableDataKind(type: DataType): DataKind[] {
-  let types;
+  let kinds;
   switch (type) {
     case DataType.Boolean:
-      types = [DataKind.Ordinal, DataKind.Categorical];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Date:
-      types = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal, DataKind.Temporal];
       break;
     case DataType.String:
-      types = [DataKind.Categorical, DataKind.Ordinal];
+      kinds = [DataKind.Categorical, DataKind.Ordinal];
       break;
     case DataType.Number:
-      types = [DataKind.Categorical, DataKind.Numerical];
+      kinds = [DataKind.Categorical, DataKind.Numerical];
       break;
   }
 
-  return types;
+  return kinds;
 }
 
 export function getPreferredDataKind(type: DataType): DataKind {
@@ -373,9 +373,38 @@ export function isInIFrame() {
   }
 }
 
+export function getAligntment(anchor: Element) {
+  let alignX:
+    | "start-outer"
+    | "inner"
+    | "outer"
+    | "start-inner"
+    | "end-inner"
+    | "end-outer";
+  const avgPopupWindowWidth = 500;
+  const anchorCloseToWindowBorder =
+    window.innerWidth - anchor.getBoundingClientRect().x < avgPopupWindowWidth;
+  let alignLeft: boolean = false;
+  if (anchorCloseToWindowBorder) {
+    alignX = "end-inner";
+    alignLeft = true;
+  } else {
+    alignX = "end-outer";
+    alignLeft = false;
+  }
+  return { alignLeft, alignX };
+}
+
 /** Test if a deep equals b with tolerance on numeric values */
-export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
-  if (a == null || b == null) {
+export function expect_deep_approximately_equals(
+  a: any,
+  b: any,
+  tol: number,
+  weak: boolean = false
+) {
+  if (weak && a == null && b == null) {
+    return;
+  } else if (a == null || b == null) {
     // If either of a, b is null/undefined
     expect(a).equals(b);
   } else if (typeof a == "object" && typeof b == "object") {
@@ -383,7 +412,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       // Both are arrays, recursively test for each item in the arrays
       expect(a.length).to.equals(b.length);
       for (let i = 0; i < a.length; i++) {
-        expect_deep_approximately_equals(a[i], b[i], tol);
+        expect_deep_approximately_equals(a[i], b[i], tol, weak);
       }
     } else if (a instanceof Array || b instanceof Array) {
       // One of them is an array, the other one isn't, error
@@ -394,7 +423,7 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       const keysB = Object.keys(b).sort();
       expect(keysA).to.deep.equals(keysB);
       for (const key of keysA) {
-        expect_deep_approximately_equals(a[key], b[key], tol);
+        expect_deep_approximately_equals(a[key], b[key], tol, weak);
       }
     }
   } else {
@@ -406,4 +435,8 @@ export function expect_deep_approximately_equals(a: any, b: any, tol: number) {
       expect(a).equals(b);
     }
   }
+}
+
+export function replaceUndefinedByNull(value: any): any {
+  return value === undefined ? null : value;
 }

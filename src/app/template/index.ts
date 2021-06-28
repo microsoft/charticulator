@@ -60,7 +60,8 @@ export class ChartTemplateBuilder {
   constructor(
     public readonly chart: Specification.Chart,
     public readonly dataset: Dataset.Dataset,
-    public readonly manager: Prototypes.ChartStateManager
+    public readonly manager: Prototypes.ChartStateManager,
+    public readonly version: string
   ) {}
 
   public reset() {
@@ -70,6 +71,7 @@ export class ChartTemplateBuilder {
       tables: [],
       inference: [],
       properties: [],
+      version: this.version,
     };
     this.tableColumns = {};
     this.objectVisited = {};

@@ -119,7 +119,8 @@ export class ChartStateManager {
       expect_deep_approximately_equals(
         currentProperties,
         originProperties,
-        defaultDifferenceApproximation
+        defaultDifferenceApproximation,
+        true
       );
     } catch {
       return true;
@@ -134,7 +135,8 @@ export class ChartStateManager {
         expect_deep_approximately_equals(
           originConstringts,
           current,
-          defaultDifferenceApproximation
+          defaultDifferenceApproximation,
+          true
         );
       }
     }
@@ -206,29 +208,35 @@ export class ChartStateManager {
               expect_deep_approximately_equals(
                 currentPlotSegment.filter,
                 originPlotSegment.filter,
-                defaultDifferenceApproximation
+                defaultDifferenceApproximation,
+                true
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.groupBy,
                 originPlotSegment.groupBy,
-                defaultDifferenceApproximation
+                defaultDifferenceApproximation,
+                true
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.order,
                 originPlotSegment.order,
-                defaultDifferenceApproximation
+                defaultDifferenceApproximation,
+                true
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.mappings,
                 originPlotSegment.mappings,
-                defaultDifferenceApproximation
+                defaultDifferenceApproximation,
+                true
               );
               expect_deep_approximately_equals(
                 currentPlotSegment.properties,
                 originPlotSegment.properties,
-                defaultDifferenceApproximation
+                defaultDifferenceApproximation,
+                true
               );
             } catch (ex) {
+              console.log(ex);
               return true;
             }
           }
@@ -240,9 +248,11 @@ export class ChartStateManager {
             expect_deep_approximately_equals(
               currentProperties,
               originProperties,
-              defaultDifferenceApproximation
+              defaultDifferenceApproximation,
+              true
             );
-          } catch {
+          } catch (ex) {
+            console.log(ex);
             return true;
           }
         }
@@ -270,9 +280,11 @@ export class ChartStateManager {
             expect_deep_approximately_equals(
               currentProperties,
               originProperties,
-              defaultDifferenceApproximation
+              defaultDifferenceApproximation,
+              true
             );
-          } catch {
+          } catch (ex) {
+            console.log(ex);
             return true;
           }
         }
@@ -283,9 +295,11 @@ export class ChartStateManager {
           expect_deep_approximately_equals(
             currentMappings,
             originMappings,
-            defaultDifferenceApproximation
+            defaultDifferenceApproximation,
+            true
           );
-        } catch {
+        } catch (ex) {
+          console.log(ex);
           return true;
         }
       }
