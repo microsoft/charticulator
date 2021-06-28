@@ -1,10 +1,11 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { MainView } from "./main_view";
-import { AppStore } from "./stores";
+import { AppStore, Migrator } from "./stores";
 
 import {
   initialize,
@@ -18,6 +19,7 @@ import {
   defaultDigitsGroup,
   defaultNumberFormat,
   parseSafe,
+  Prototypes,
 } from "../core";
 import { ExtensionContext, Extension } from "./extension";
 import { Action } from "./actions/actions";
@@ -41,6 +43,7 @@ import { MappingType } from "../core/specification";
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
 import { initializeIcons } from "../fabric-icons/src/index";
 initializeIcons();
+import { defaultVersionOfTemplate } from "./stores/defaults";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -184,6 +187,7 @@ export class Application {
       const info: {
         dataset: Dataset.Dataset;
         specification: Specification.Chart;
+        originSpecification?: Specification.Chart;
         template: Specification.Template.ChartTemplate;
         width: number;
         height: number;
@@ -200,12 +204,44 @@ export class Application {
         type: MappingType.value,
         value: info.height,
       } as Specification.ValueMapping;
-      appStore.dispatcher.dispatch(
-        new Actions.ImportChartAndDataset(info.specification, info.dataset, {
-          filterCondition: info.filterCondition,
-        })
+
+      const chartManager = new Prototypes.ChartStateManager(
+        info.specification,
+        info.dataset,
+        null,
+        {},
+        {},
+        deepClone(info.specification)
       );
-      appStore.chartManager?.resetDifference();
+
+      // if version wasn't saved in tempalte we asume it is 2.0.3
+      if (info.template && info.template.version == undefined) {
+        info.template.version = defaultVersionOfTemplate;
+      }
+      const newState = new Migrator().migrate(
+        {
+          chart: chartManager.chart,
+          chartState: chartManager.chartState,
+          dataset: chartManager.dataset,
+          version: info.template?.version,
+          originDataset: appStore.originDataset,
+        },
+        CHARTICULATOR_PACKAGE.version
+      );
+      // appStore.loadState(newState);
+      appStore.dispatcher.dispatch(
+        new Actions.ImportChartAndDataset(
+          info.specification,
+          info.dataset,
+          {
+            filterCondition: info.filterCondition,
+          },
+          info.originSpecification
+        )
+      );
+
+      info.template.version = newState.version;
+      // appStore.chartManager?.resetDifference();
       appStore.setupNestedEditor(
         (newSpecification) => {
           const template = deepClone(appStore.buildChartTemplate());

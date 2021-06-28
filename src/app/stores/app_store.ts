@@ -145,6 +145,7 @@ export class AppStore extends BaseStore {
   public chart: Specification.Chart;
   /** The current chart state */
   public chartState: Specification.ChartState;
+  public version: string;
   /** Rendering Events */
   public renderEvents?: RenderEvents;
 
@@ -255,6 +256,7 @@ export class AppStore extends BaseStore {
     this.originDataset = state.dataset;
     this.chart = state.chart;
     this.chartState = state.chartState;
+    this.version = state.version;
 
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
@@ -1176,7 +1178,8 @@ export class AppStore extends BaseStore {
     const builder = new ChartTemplateBuilder(
       this.chart,
       this.dataset,
-      this.chartManager
+      this.chartManager,
+      CHARTICULATOR_PACKAGE.version
     );
 
     const template = builder.build();
@@ -1359,7 +1362,7 @@ export class AppStore extends BaseStore {
       // xData
       const xDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
         .xData;
-      if (xDataProperty) {
+      if (xDataProperty && xDataProperty.expression) {
         const xData = new DragData.DataExpression(
           table,
           xDataProperty.expression,
@@ -1400,7 +1403,7 @@ export class AppStore extends BaseStore {
       // yData
       const yDataProperty: Specification.Types.AxisDataBinding = (plot.properties as Region2DProperties)
         .yData;
-      if (yDataProperty) {
+      if (yDataProperty && yDataProperty.expression) {
         const yData = new DragData.DataExpression(
           table,
           yDataProperty.expression,
@@ -1440,7 +1443,7 @@ export class AppStore extends BaseStore {
 
       const axisProperty: Specification.Types.AxisDataBinding = (plot.properties as LineGuideProperties)
         .axis;
-      if (axisProperty) {
+      if (axisProperty && axisProperty.expression) {
         const axisData = new DragData.DataExpression(
           table,
           axisProperty.expression !== undefined
@@ -1517,7 +1520,7 @@ export class AppStore extends BaseStore {
             : null,
           order: axisProperty.order,
         },
-        axisProperty.rawColumnExpr as string
+        axisProperty.rawExpression as string
       );
 
       this.bindDataToAxis({
@@ -1681,6 +1684,22 @@ export class AppStore extends BaseStore {
         <string>objectProperties?.tickDataExpression !== undefined
           ? <string>objectProperties?.tickDataExpression
           : null,
+      domainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      domainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
+      enablePrePostGap:
+        <boolean>objectProperties?.enablePrePostGap !== undefined
+          ? <boolean>objectProperties?.enablePrePostGap
+          : null,
+      categories:
+        <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
     };
 
     let expressions = [groupExpression];
@@ -1723,12 +1742,14 @@ export class AppStore extends BaseStore {
       values = values.concat(dataBinding.domainMax, dataBinding.domainMin);
     }
     for (const expr of expressions) {
-      const r = this.chartManager.getGroupedExpressionVector(
-        dataExpression.table.name,
-        groupBy,
-        expr
-      );
-      values = values.concat(r);
+      if (expr) {
+        const r = this.chartManager.getGroupedExpressionVector(
+          dataExpression.table.name,
+          groupBy,
+          expr
+        );
+        values = values.concat(r);
+      }
     }
 
     if (dataExpression.metadata) {
@@ -1750,20 +1771,37 @@ export class AppStore extends BaseStore {
           break;
         case Specification.DataKind.Numerical:
           {
-            const scale = new Scale.LinearScale();
-            scale.inferParameters(values as number[]);
-            if (dataBinding.autoDomainMin) {
-              dataBinding.domainMin = scale.domainMin;
+            if (options.numericalMode === NumericalMode.Logarithmic) {
+              const scale = new Scale.LogarithmicScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Logarithmic;
             } else {
-              dataBinding.domainMin = options.domainMin;
+              const scale = new Scale.LinearScale();
+              scale.inferParameters(values as number[]);
+              if (dataBinding.autoDomainMin) {
+                dataBinding.domainMin = scale.domainMin;
+              } else {
+                dataBinding.domainMin = options.domainMin;
+              }
+              if (dataBinding.autoDomainMax) {
+                dataBinding.domainMax = scale.domainMax;
+              } else {
+                dataBinding.domainMax = options.domainMax;
+              }
+              dataBinding.type = AxisDataBindingType.Numerical;
+              dataBinding.numericalMode = NumericalMode.Linear;
             }
-            if (dataBinding.autoDomainMax) {
-              dataBinding.domainMax = scale.domainMax;
-            } else {
-              dataBinding.domainMax = options.domainMax;
-            }
-            dataBinding.type = AxisDataBindingType.Numerical;
-            dataBinding.numericalMode = NumericalMode.Linear;
           }
           break;
         case Specification.DataKind.Temporal:

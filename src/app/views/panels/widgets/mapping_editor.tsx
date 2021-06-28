@@ -26,6 +26,7 @@ import { ValueEditor } from "./value_editor";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { FunctionCall } from "../../../../core/expression";
+import { getAligntment } from "../../../utils";
 import { MappingType } from "../../../../core/specification";
 import { ObjectClass } from "../../../../core/prototypes";
 import { strings } from "../../../../strings";
@@ -153,7 +154,7 @@ export class MappingEditor extends React.Component<
             return;
           }
 
-          const { alignX }: { alignLeft: boolean; alignX: any } = getAlignment(
+          const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
             this.mappingButton
           );
           globals.popupController.popupAt(

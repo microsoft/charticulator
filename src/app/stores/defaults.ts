@@ -168,3 +168,5 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
 export const defaultFont = "Segoe UI";
 export const defaultFontSize = 12;
 export const defaultFontSizeLegend = 10;
+
+export const defaultVersionOfTemplate = "2.0.3";

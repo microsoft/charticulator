@@ -35,6 +35,7 @@ import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
+  getAligntment,
 } from "../../../utils/index";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
@@ -58,6 +59,7 @@ import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
+  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
@@ -81,6 +83,7 @@ import {
 } from "../../../../core/prototypes/controls";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
+import { ChartTemplateBuilder } from "../../../template";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -579,6 +582,9 @@ export class WidgetManager
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
         onClick={() => {
+          const { alignX }: { alignLeft: boolean; alignX: any } = getAligntment(
+            mappingButton
+          );
           globals.popupController.popupAt(
             (context) => {
               return (
@@ -591,7 +597,7 @@ export class WidgetManager
                 </PopupView>
               );
             },
-            { anchor: mappingButton }
+            { anchor: mappingButton, alignX }
           );
         }}
       />
@@ -1104,6 +1110,23 @@ export class WidgetManager
                   switch (data.type) {
                     case "initialized":
                       {
+                        const chartManager = new Prototypes.ChartStateManager(
+                          options.specification,
+                          options.dataset,
+                          null,
+                          {},
+                          {},
+                          deepClone(options.specification)
+                        );
+
+                        const builder = new ChartTemplateBuilder(
+                          options.specification,
+                          options.dataset,
+                          chartManager,
+                          CHARTICULATOR_PACKAGE.version
+                        );
+
+                        const template = builder.build();
                         newWindow.postMessage(
                           {
                             id: editorID,
@@ -1111,6 +1134,7 @@ export class WidgetManager
                             specification: options.specification,
                             dataset: options.dataset,
                             width: options.width,
+                            template,
                             height: options.height,
                             filterCondition: options.filterCondition,
                           },

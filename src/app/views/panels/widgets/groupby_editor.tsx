@@ -6,6 +6,7 @@ import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { CharticulatorPropertyAccessors } from "./manager";
+import { WidgetManager } from "./manager";
 
 export interface GroupByEditorProps {
   manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
