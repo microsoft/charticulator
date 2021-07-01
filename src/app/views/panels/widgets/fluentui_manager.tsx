@@ -73,6 +73,7 @@ import {
   IDropdownOption,
   FontIcon,
   getTheme,
+  TooltipHost,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
@@ -1413,6 +1414,13 @@ export class FluentUIWidgetManager
         ))}
       </div>
     );
+  }
+
+  public tooltip(
+    widget: JSX.Element,
+    tooltipContent: JSX.Element
+  ): JSX.Element {
+    return <TooltipHost content={tooltipContent}>{widget}</TooltipHost>;
   }
 }
 

@@ -260,6 +260,9 @@ export interface WidgetManager {
   table(rows: Widget[][], options?: TableOptions): Widget;
   scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;
 
+  // Tooltip
+  tooltip(widget: Widget, tooltipContent: Widget): Widget;
+
   filterEditor(options: FilterEditorOptions): Widget;
   groupByEditor(options: GroupByEditorOptions): Widget;
 
