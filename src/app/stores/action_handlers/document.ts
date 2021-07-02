@@ -360,6 +360,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.OpenNestedEditor, function ({ options, object, property }) {
+    this.emit(AppStore.EVENT_OPEN_NESTED_EDITOR, options);
     const editorID = uniqueID();
     const newWindow = window.open(
       "index.html#!nestedEditor=" + editorID,

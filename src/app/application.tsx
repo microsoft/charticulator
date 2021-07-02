@@ -40,6 +40,7 @@ import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { MappingType } from "../core/specification";
 import { defaultVersionOfTemplate } from "./stores/defaults";
+import { NestedChartEditorOptions } from "../core/prototypes/controls";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -68,8 +69,9 @@ export class Application {
   private containerID: string;
 
   private nestedEditor: {
-    options: Prototypes.Controls.NestedChartEditorOptions;
-    onOpenEditor: () => void;
+    onOpenEditor: (
+      options: Prototypes.Controls.NestedChartEditorOptions
+    ) => void;
     onSave: () => void;
   };
 
@@ -87,17 +89,17 @@ export class Application {
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
-    },
-    tabButtons?: MenubarTabButton[],
-    nestedEditor?: {
-      options: Prototypes.Controls.NestedChartEditorOptions;
-      onOpenEditor: () => void;
-      onSave: () => void;
+      tabButtons?: MenubarTabButton[];
+      nestedEditor?: {
+        onOpenEditor: (
+          options: Prototypes.Controls.NestedChartEditorOptions
+        ) => void;
+        onSave: () => void;
+      };
     }
   ) {
     this.config = config;
     this.containerID = containerID;
-    this.nestedEditor = nestedEditor;
     await initialize(config);
 
     if (workerConfig.worker) {
@@ -108,6 +110,16 @@ export class Application {
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
+
+    if (handlers?.nestedEditor) {
+      this.nestedEditor = handlers?.nestedEditor;
+      this.appStore.addListener(
+        AppStore.EVENT_OPEN_NESTED_EDITOR,
+        (options: NestedChartEditorOptions) => {
+          this.nestedEditor.onOpenEditor(options);
+        }
+      );
+    }
 
     try {
       const CurrencySymbol = parseSafe(
@@ -156,7 +168,7 @@ export class Application {
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
-        tabButtons={tabButtons}
+        tabButtons={handlers?.tabButtons}
         telemetry={handlers?.telemetry}
       />,
       document.getElementById(containerID)

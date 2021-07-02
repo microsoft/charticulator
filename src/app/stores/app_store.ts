@@ -129,6 +129,8 @@ export class AppStore extends BaseStore {
   public static EVENT_SOLVER_STATUS = "solver-status";
   /** Fires when the chart was saved */
   public static EVENT_SAVECHART = "savechart";
+  /** Fires when user clicks Edit nested chart for embedded editor */
+  public static EVENT_OPEN_NESTED_EDITOR = "savechart";
 
   /** The WebWorker for solving constraints */
   public readonly worker: CharticulatorWorkerInterface;
