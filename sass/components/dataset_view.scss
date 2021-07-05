@@ -71,10 +71,8 @@
       flex-direction: row;
       height: $item-height;
       line-height: $item-height;
-      @include shadow-ambient;
       margin-bottom: 6px;
       border-radius: 2px;
-      border: 1px $gray-160 solid;
       background: $color-well;
 
       transition: box-shadow $transition-default,
@@ -115,10 +113,6 @@
         flex-grow: 0;
       }
 
-      &:hover {
-        background: $gray-230;
-        @include shadow-focused;
-      }
       &.is-active {
         background: $color-primary;
         @include shadow-focused;
