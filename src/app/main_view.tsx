@@ -101,6 +101,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       layersViewMaximized: false,
       attributeViewMaximized: false,
       scaleViewMaximized: false,
+      fieldViewMaximized: false,
     };
 
     props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
