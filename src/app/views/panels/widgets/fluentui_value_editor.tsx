@@ -79,16 +79,22 @@ export class FluentValueEditor extends ContextedComponent<
       case Specification.AttributeType.Number: {
         let numberOptions = this.props.numberOptions;
         if (!numberOptions) {
-          numberOptions = {};
+          numberOptions = {
+            digits: 2,
+          };
         }
         return (
           <TextField
             label={this.props.label}
             placeholder={this.props.placeholder}
             onRenderLabel={labelRender}
-            defaultValue={
-              this.props.defaultValue != null
-                ? (this.props.defaultValue as string)
+            value={
+              this.props.value != null
+                ? (this.props.value as number).toFixed(numberOptions.digits)
+                : this.props.defaultValue
+                ? (this.props.defaultValue as number).toFixed(
+                    numberOptions.digits
+                  )
                 : ""
             }
             type="text"
