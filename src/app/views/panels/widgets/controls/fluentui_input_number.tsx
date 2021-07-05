@@ -43,6 +43,11 @@ export interface InputNumberProps {
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
   const [value, setValue] = React.useState(props.defaultValue);
 
+  // force update state value
+  if (value !== props.defaultValue) {
+    setValue(props.defaultValue);
+  }
+
   const formatNumber = (value: number) => {
     if (value == null) {
       return "";

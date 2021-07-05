@@ -27,6 +27,7 @@ import {
   FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
+import { FluentInputNumber } from "./controls/fluentui_input_number";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -84,21 +85,12 @@ export class FluentValueEditor extends ContextedComponent<
           };
         }
         return (
-          <TextField
+          <FluentInputNumber
             label={this.props.label}
             placeholder={this.props.placeholder}
-            onRenderLabel={labelRender}
-            value={
-              this.props.value != null
-                ? (this.props.value as number).toFixed(numberOptions.digits)
-                : this.props.defaultValue
-                ? (this.props.defaultValue as number).toFixed(
-                    numberOptions.digits
-                  )
-                : ""
-            }
-            type="text"
-            onChange={(event, newValue) => {
+            // onRenderLabel={labelRender}
+            defaultValue={this.props.value as number}
+            onEnter={(newValue: number) => {
               if (newValue == null) {
                 this.emitClearValue();
                 return true;
