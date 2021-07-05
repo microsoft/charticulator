@@ -71,6 +71,7 @@ export interface MainViewState {
   layersViewMaximized: boolean;
   attributeViewMaximized: boolean;
   scaleViewMaximized: boolean;
+  fieldViewMaximized: boolean;
 }
 
 export class MainView extends React.Component<MainViewProps, MainViewState> {
@@ -136,17 +137,38 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
     const datasetPanel = () => {
       return (
-        <div className="charticulator__panel charticulator__panel-dataset">
+        <div
+          className="charticulator__panel charticulator__panel-dataset"
+          style={{
+            display:
+              this.state.scaleViewMaximized && this.state.fieldViewMaximized
+                ? "none"
+                : undefined,
+          }}
+        >
           <MinimizablePanelView>
-            <MinimizablePane
-              title={strings.mainView.datasetPanelTitle}
+            {/* <MinimizablePane
+              title={strings.dataset.tableTitleColumns}
               scroll={true}
-              hideHeader={true}
+              hideHeader={false}
+              onMaximize={() => this.setState({ fieldViewMaximized: true })}
             >
               <ErrorBoundary telemetryRecorder={this.props.telemetry}>
                 <DatasetView store={this.props.store} />
               </ErrorBoundary>
-            </MinimizablePane>
+            </MinimizablePane> */}
+            {this.state.fieldViewMaximized ? null : (
+              <MinimizablePane
+                title={strings.dataset.tableTitleColumns}
+                scroll={true}
+                hideHeader={false}
+                onMaximize={() => this.setState({ fieldViewMaximized: true })}
+              >
+                <ErrorBoundary telemetryRecorder={this.props.telemetry}>
+                  <DatasetView store={this.props.store} />
+                </ErrorBoundary>
+              </MinimizablePane>
+            )}
             {this.state.scaleViewMaximized ? null : (
               <MinimizablePane
                 title={strings.mainView.scalesPanelTitle}
@@ -331,6 +353,18 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                 >
                   <ErrorBoundary telemetryRecorder={this.props.telemetry}>
                     <ScalesPanel store={this.props.store} />
+                  </ErrorBoundary>
+                </FloatingPanel>
+              ) : null}
+              {this.state.fieldViewMaximized ? (
+                <FloatingPanel
+                  scroll={true}
+                  peerGroup="panels"
+                  title={strings.dataset.tableTitleColumns}
+                  onClose={() => this.setState({ fieldViewMaximized: false })}
+                >
+                  <ErrorBoundary telemetryRecorder={this.props.telemetry}>
+                    <DatasetView store={this.props.store} />
                   </ErrorBoundary>
                 </FloatingPanel>
               ) : null}

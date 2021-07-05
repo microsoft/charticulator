@@ -118,7 +118,7 @@ export class ColumnsView extends React.Component<
             <span className="el-text">
               {this.props.table.type === TableType.Links
                 ? strings.dataset.tableTitleLinks
-                : strings.dataset.tableTitleColumns}
+                : strings.dataset.tableTitleMain}
             </span>
             {this.props.store.editorType === "chart" ? (
               <Button

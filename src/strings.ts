@@ -113,6 +113,7 @@ export const strings = {
     showDerivedFields: "Show derived fields",
     tableTitleColumns: "Fields",
     tableTitleLinks: "Links",
+    tableTitleMain: "Main",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
   defaultDataset: {
