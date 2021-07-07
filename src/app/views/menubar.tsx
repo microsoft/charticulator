@@ -31,6 +31,7 @@ import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
 import { Url } from "url";
+import { EditorType } from "../stores/app_store";
 
 export class HelpButton extends React.Component<
   {
@@ -199,8 +200,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           case "save":
             {
               if (
-                this.context.store.editorType == "nested" ||
-                this.context.store.editorType == "embedded"
+                this.context.store.editorType == EditorType.Nested ||
+                this.context.store.editorType == EditorType.Embedded ||
+                this.context.store.editorType == EditorType.NestedEmbedded
               ) {
                 this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
@@ -269,14 +271,24 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
 
   public renderSaveNested() {
     return (
-      <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
-        text={strings.menuBar.saveNested}
-        title={strings.menuBar.save}
-        onClick={() => {
-          this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
-        }}
-      />
+      <>
+        <MenuButton
+          url={R.getSVGIcon("toolbar/save")}
+          text={strings.menuBar.saveNested}
+          title={strings.menuBar.save}
+          onClick={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+          }}
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/cross")}
+          text={strings.menuBar.closeNested}
+          title={strings.menuBar.closeNested}
+          onClick={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+          }}
+        />
+      </>
     );
   }
 
@@ -575,17 +587,18 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   public toolbarButtons(props: MenuBarProps) {
     return (
       <>
-        {this.context.store.editorType === "nested"
+        {/* {this.context.store.editorType === EditorType.Nested || this.context.store.editorType === EditorType.NestedEmbedded
           ? this.renderSaveNested()
-          : null}
-        {this.context.store.editorType === "chart"
+          : null} */}
+        {this.context.store.editorType === EditorType.Chart
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded" &&
+        {this.context.store.editorType === EditorType.Embedded &&
         props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
-        {this.context.store.editorType === "embedded" ? (
+        {this.context.store.editorType === EditorType.Embedded ||
+        this.context.store.editorType === EditorType.NestedEmbedded ? (
           <>
             <span className="charticulator__menu-bar-separator" />
             {this.renderImportButton(props)}
@@ -593,7 +606,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
-        {this.props.undoRedoLocation === "menubar" ? (
+        {this.props.undoRedoLocation === UndoRedoLocation.MenuBar ? (
           <>
             <MenuButton
               url={R.getSVGIcon("toolbar/undo")}
@@ -650,7 +663,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            {this.context.store.editorType === "embedded" ? null : (
+            {this.context.store.editorType === EditorType.Embedded ||
+            this.context.store.editorType ===
+              EditorType.NestedEmbedded ? null : (
               <AppButton
                 name={this.props.name}
                 title={strings.menuBar.home}
@@ -663,20 +678,25 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 {this.toolbarButtons(this.props)}
               </>
             ) : null}
-            {this.context.store.editorType === "embedded" &&
+            {this.context.store.editorType === EditorType.Embedded &&
             this.props.alignSaveButton == PositionsLeftRight.Left &&
             this.props.alignSaveButton !== this.props.alignButtons
               ? this.renderSaveEmbedded()
               : null}
-            {this.context.store.editorType === "embedded" &&
+            {this.context.store.editorType === EditorType.Embedded &&
             this.props.tabButtons
               ? this.toolbarTabButtons(this.props)
+              : null}
+            {this.context.store.editorType === EditorType.Nested ||
+            this.context.store.editorType === EditorType.NestedEmbedded
+              ? this.renderSaveNested()
               : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
             <p>
               {`${this.context.store.chart?.properties.name}${
-                this.context.store.editorType === "embedded"
+                this.context.store.editorType === EditorType.Embedded ||
+                this.context.store.editorType === EditorType.NestedEmbedded
                   ? " - " + this.props.name || strings.app.name
                   : ""
               }`}
@@ -689,7 +709,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
-            {this.context.store.editorType === "embedded" &&
+            {(this.context.store.editorType === EditorType.Embedded ||
+              this.context.store.editorType === EditorType.NestedEmbedded) &&
             this.props.alignSaveButton == PositionsLeftRight.Right &&
             this.props.alignSaveButton !== this.props.alignButtons
               ? this.renderSaveEmbedded()

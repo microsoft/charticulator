@@ -19,6 +19,7 @@ import { LegendCreationPanel } from "./panels/legend_creator";
 import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
+import { EditorType } from "../stores/app_store";
 
 const minWidthToColapseButtons = Object.freeze({
   guides: 1090,
@@ -545,7 +546,10 @@ export class Toolbar extends ContextedComponent<
 
   public render() {
     let tooltipsItems = [];
-    if (this.context.store.editorType === "embedded") {
+    if (
+      this.context.store.editorType === EditorType.Embedded ||
+      this.context.store.editorType === EditorType.NestedEmbedded
+    ) {
       const chartToolItems = this.getChartToolItems(this.props.toolbarLabels);
       const glyphToolItems = this.getGlyphToolItems(this.props.toolbarLabels);
       tooltipsItems = [...chartToolItems, ...glyphToolItems];

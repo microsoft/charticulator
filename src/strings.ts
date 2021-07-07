@@ -230,6 +230,7 @@ export const strings = {
     saveButton: "Save",
     savedButton: "Saved",
     saveNested: "Save Nested Chart",
+    closeNested: "Close",
     undo: "Undo (Ctrl-Z)",
   },
   options: {

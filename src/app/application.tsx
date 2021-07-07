@@ -38,9 +38,10 @@ import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
-import { MappingType } from "../core/specification";
+import { AttributeMap, MappingType } from "../core/specification";
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
+import { EditorType } from "./stores/app_store";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -70,9 +71,10 @@ export class Application {
 
   private nestedEditor: {
     onOpenEditor: (
-      options: Prototypes.Controls.NestedChartEditorOptions
+      options: Prototypes.Controls.NestedChartEditorOptions,
+      object: Specification.Object<AttributeMap>,
+      property: Prototypes.Controls.Property
     ) => void;
-    onSave: () => void;
   };
 
   public destroy() {
@@ -92,9 +94,10 @@ export class Application {
       tabButtons?: MenubarTabButton[];
       nestedEditor?: {
         onOpenEditor: (
-          options: Prototypes.Controls.NestedChartEditorOptions
+          options: Prototypes.Controls.NestedChartEditorOptions,
+          object: Specification.Object<AttributeMap>,
+          property: Prototypes.Controls.Property
         ) => void;
-        onSave: () => void;
       };
     }
   ) {
@@ -113,12 +116,18 @@ export class Application {
 
     if (handlers?.nestedEditor) {
       this.nestedEditor = handlers?.nestedEditor;
-      this.appStore.addListener(
-        AppStore.EVENT_OPEN_NESTED_EDITOR,
-        (options: NestedChartEditorOptions) => {
-          this.nestedEditor.onOpenEditor(options);
-        }
-      );
+      if (handlers?.nestedEditor.onOpenEditor) {
+        this.appStore.addListener(
+          AppStore.EVENT_OPEN_NESTED_EDITOR,
+          (
+            options: NestedChartEditorOptions,
+            object: Specification.Object<AttributeMap>,
+            property: Prototypes.Controls.Property
+          ) => {
+            this.nestedEditor.onOpenEditor(options, object, property);
+          }
+        );
+      }
     }
 
     try {
@@ -202,7 +211,9 @@ export class Application {
   public setupNestedEditor(
     id: string,
     onInitialized?: (id: string, load: (data: any) => void) => void,
-    onSave?: (data: any) => void
+    onSave?: (data: any) => void,
+    onClose?: () => void,
+    editorMode?: EditorType
   ) {
     const appStore = this.appStore;
     const setupCallback = ((data: any) => {
@@ -263,51 +274,57 @@ export class Application {
       );
 
       info.template.version = newState.version;
-      // appStore.chartManager?.resetDifference();
-      appStore.setupNestedEditor(
-        (newSpecification) => {
-          const template = deepClone(appStore.buildChartTemplate());
-          if (window.opener) {
-            window.opener.postMessage(
+      if (onClose) {
+        appStore.addListener(AppStore.EVENT_NESTED_EDITOR_CLOSE, () => {
+          onClose();
+        });
+      }
+
+      let type =
+        this.config.CorsPolicy && this.config.CorsPolicy.Embedded
+          ? EditorType.Embedded
+          : EditorType.Nested;
+
+      // settings from outside overrides the configuration
+      if (editorMode) {
+        type = editorMode;
+      }
+
+      appStore.setupNestedEditor((newSpecification) => {
+        const template = deepClone(appStore.buildChartTemplate());
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              id,
+              type: "save",
+              specification: newSpecification,
+              template,
+            },
+            document.location.origin
+          );
+        } else {
+          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+            window.parent.postMessage(
               {
                 id,
                 type: "save",
                 specification: newSpecification,
                 template,
               },
-              document.location.origin
-            );
-          } else {
-            if (
-              this.config.CorsPolicy &&
               this.config.CorsPolicy.TargetOrigins
-            ) {
-              window.parent.postMessage(
-                {
-                  id,
-                  type: "save",
-                  specification: newSpecification,
-                  template,
-                },
-                this.config.CorsPolicy.TargetOrigins
-              );
-            }
-            if (
-              this.config.CorsPolicy &&
-              this.config.CorsPolicy.Embedded &&
-              onSave
-            ) {
-              onSave({
-                specification: newSpecification,
-                template,
-              });
-            }
+            );
           }
-        },
-        this.config.CorsPolicy && this.config.CorsPolicy.Embedded
-          ? "embedded"
-          : "nested"
-      );
+          if (
+            (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) ||
+            onSave
+          ) {
+            onSave({
+              specification: newSpecification,
+              template,
+            });
+          }
+        }
+      }, type);
     }).bind(this);
     window.addEventListener("message", (e: MessageEvent) => {
       if (e.data.id != id) {
@@ -333,8 +350,9 @@ export class Application {
           this.config.CorsPolicy.TargetOrigins
         );
       } else if (
-        this.config.CorsPolicy &&
-        this.config.CorsPolicy.Embedded &&
+        (this.config.CorsPolicy &&
+          this.config.CorsPolicy.Embedded &&
+          onInitialized) ||
         onInitialized
       ) {
         onInitialized(id, (data: any) => {

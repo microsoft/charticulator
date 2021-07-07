@@ -113,9 +113,17 @@ export interface ScaleInferenceOptions {
   markAttribute?: string;
 }
 
+export const enum EditorType {
+  Nested = "nested",
+  Embedded = "embedded",
+  NestedEmbedded = "nestedembedded",
+  Chart = "chart",
+}
+
 export class AppStore extends BaseStore {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
+  public static EVENT_NESTED_EDITOR_CLOSE = "nested-editor-close";
 
   /** Fires when the dataset changes */
   public static EVENT_DATASET = "dataset";
@@ -130,13 +138,13 @@ export class AppStore extends BaseStore {
   /** Fires when the chart was saved */
   public static EVENT_SAVECHART = "savechart";
   /** Fires when user clicks Edit nested chart for embedded editor */
-  public static EVENT_OPEN_NESTED_EDITOR = "savechart";
+  public static EVENT_OPEN_NESTED_EDITOR = "openeditor";
 
   /** The WebWorker for solving constraints */
   public readonly worker: CharticulatorWorkerInterface;
 
   /** Is this app a nested chart editor? */
-  public editorType: "chart" | "nested" | "embedded" = "chart";
+  public editorType: EditorType = EditorType.Chart;
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
@@ -412,7 +420,7 @@ export class AppStore extends BaseStore {
 
   public setupNestedEditor(
     callback: (newSpecification: Specification.Chart) => void,
-    type: "nested" | "embedded"
+    type: EditorType
   ) {
     this.editorType = type;
     this.disableFileView = true;
