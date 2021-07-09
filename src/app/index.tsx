@@ -48,7 +48,11 @@ export { Core };
 
 export { Actions, DragData } from "./actions";
 export { ExtensionContext, Extension } from "./extension";
-export { Application, ApplicationExtensionContext } from "./application";
+export {
+  Application,
+  ApplicationExtensionContext,
+  NestedEditorData,
+} from "./application";
 export { CharticulatorAppConfig, MainViewConfig } from "./config";
 export { addSVGIcon, getSVGIcon } from "./resources";
 export { ExportTemplateTarget } from "./template";

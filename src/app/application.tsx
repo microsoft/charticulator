@@ -60,6 +60,21 @@ export class ApplicationExtensionContext implements ExtensionContext {
   }
 }
 
+export interface NestedEditorData {
+  id: string;
+  type: "load" | "save";
+  dataset: Dataset.Dataset;
+  specification: Specification.Chart;
+  originSpecification?: Specification.Chart;
+  template: Specification.Template.ChartTemplate;
+  width: number;
+  height: number;
+  filterCondition: {
+    column: string;
+    value: any;
+  };
+}
+
 export class Application {
   public worker: CharticulatorWorkerInterface;
   public appStore: AppStore;
@@ -210,25 +225,17 @@ export class Application {
   // eslint-disable-next-line
   public setupNestedEditor(
     id: string,
-    onInitialized?: (id: string, load: (data: any) => void) => void,
+    onInitialized?: (
+      id: string,
+      load: (data: NestedEditorData) => void
+    ) => void,
     onSave?: (data: any) => void,
     onClose?: () => void,
     editorMode?: EditorType
   ) {
     const appStore = this.appStore;
     const setupCallback = ((data: any) => {
-      const info: {
-        dataset: Dataset.Dataset;
-        specification: Specification.Chart;
-        originSpecification?: Specification.Chart;
-        template: Specification.Template.ChartTemplate;
-        width: number;
-        height: number;
-        filterCondition: {
-          column: string;
-          value: any;
-        };
-      } = data;
+      const info: NestedEditorData = data;
       info.specification.mappings.width = {
         type: MappingType.value,
         value: info.width,
