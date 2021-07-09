@@ -263,12 +263,11 @@ export class Application {
           chart: chartManager.chart,
           chartState: chartManager.chartState,
           dataset: chartManager.dataset,
-          version: info.template?.version,
+          version: info.template?.version || defaultVersionOfTemplate,
           originDataset: appStore.originDataset,
         },
         CHARTICULATOR_PACKAGE.version
       );
-      // appStore.loadState(newState);
       appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(
           info.specification,
@@ -280,7 +279,9 @@ export class Application {
         )
       );
 
-      info.template.version = newState.version;
+      if (info.template) {
+        info.template.version = newState.version;
+      }
       if (onClose) {
         appStore.addListener(AppStore.EVENT_NESTED_EDITOR_CLOSE, () => {
           onClose();

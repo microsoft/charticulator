@@ -113,7 +113,7 @@ export interface ScaleInferenceOptions {
   markAttribute?: string;
 }
 
-export const enum EditorType {
+export enum EditorType {
   Nested = "nested",
   Embedded = "embedded",
   NestedEmbedded = "nestedembedded",

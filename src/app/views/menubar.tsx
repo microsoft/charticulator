@@ -8,11 +8,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
+import {
+  DefaultButton,
+  Dialog,
+  DialogFooter,
+  PrimaryButton,
+} from "@fluentui/react";
 
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
-import { ContextedComponent } from "../context_component";
+import { ContextedComponent, MainContext } from "../context_component";
 import {
   ModalView,
   PopupContainer,
@@ -140,10 +146,23 @@ export interface MenuBarProps {
   tabButtons?: MenubarTabButton[];
 }
 
-export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
+export class MenuBar extends ContextedComponent<
+  MenuBarProps,
+  {
+    showSaveDialog: boolean;
+  }
+> {
   protected editor: EventSubscription;
   protected graphics: EventSubscription;
   private popupController: PopupController = new PopupController();
+
+  constructor(props: MenuBarProps, context: MainContext) {
+    super(props, context);
+    this.state = {
+      showSaveDialog: false,
+    };
+  }
+
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
     this.editor = this.context.store.addListener(
@@ -272,12 +291,47 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   public renderSaveNested() {
     return (
       <>
+        <Dialog
+          dialogContentProps={{
+            title: strings.dialogs.saveChanges.saveChangesTitle,
+            subText: strings.dialogs.saveChanges.saveChanges("chart"),
+          }}
+          hidden={!this.state.showSaveDialog}
+          minWidth="80%"
+          onDismiss={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+          }}
+        >
+          <DialogFooter>
+            <PrimaryButton
+              onClick={() => {
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+                this.setState({
+                  showSaveDialog: false,
+                });
+              }}
+              text={strings.menuBar.saveButton}
+            />
+            <DefaultButton
+              onClick={() => {
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+                this.setState({
+                  showSaveDialog: false,
+                });
+              }}
+              text={strings.menuBar.dontSaveButton}
+            />
+          </DialogFooter>
+        </Dialog>
         <MenuButton
           url={R.getSVGIcon("toolbar/save")}
           text={strings.menuBar.saveNested}
           title={strings.menuBar.save}
           onClick={() => {
             this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+            this.setState({
+              showSaveDialog: false,
+            });
           }}
         />
         <MenuButton
@@ -285,7 +339,16 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           text={strings.menuBar.closeNested}
           title={strings.menuBar.closeNested}
           onClick={() => {
-            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+            if (this.store.chartManager.hasUnsavedChanges()) {
+              this.setState({
+                showSaveDialog: true,
+              });
+            } else {
+              this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+              this.setState({
+                showSaveDialog: false,
+              });
+            }
           }}
         />
       </>
