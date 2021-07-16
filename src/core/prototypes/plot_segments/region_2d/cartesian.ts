@@ -15,7 +15,12 @@ import {
   SnappingGuides,
   TemplateParameters,
 } from "../../common";
-import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
+import {
+  AxisMode,
+  AxisRenderer,
+  buildAxisInference,
+  buildAxisProperties,
+} from "../axis";
 import {
   GridDirection,
   GridStartPosition,
@@ -296,7 +301,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x"
+          AxisMode.X
         )
       );
     }
@@ -316,7 +321,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y"
+          AxisMode.Y
         )
       );
     }
@@ -343,7 +348,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x",
+          AxisMode.X,
           attrs.y2 - attrs.y1
         )
       );
@@ -362,8 +367,51 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y",
+          AxisMode.Y,
           attrs.x2 - attrs.x1
+        )
+      );
+    }
+
+    return g;
+  }
+
+  public renderControls(manager: ChartStateManager): Graphics.Element {
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    const g = Graphics.makeGroup([]);
+    // TODO optimize axis render;
+    if (props.xData && props.xData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderVirtualScrollBar(
+          attrs.x1,
+          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          AxisMode.X
+        )
+      );
+    }
+    if (props.yData && props.yData.visible) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.elements.push(
+        axisRenderer.renderVirtualScrollBar(
+          props.yData.side != "default" ? attrs.x2 : attrs.x1,
+          attrs.y1,
+          AxisMode.Y
         )
       );
     }

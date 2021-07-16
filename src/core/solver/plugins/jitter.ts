@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { getRandom } from "../..";
+import { AxisMode } from "../../prototypes/plot_segments/axis";
 import { ConstraintPlugin, ConstraintSolver, Variable } from "../abstract";
 
 interface NodeType {
@@ -32,7 +33,7 @@ export class JitterPlugin extends ConstraintPlugin {
     x2: Variable,
     y2: Variable,
     points: [Variable, Variable, number][],
-    axisOnly?: "x" | "y",
+    axisOnly?: AxisMode,
     options?: JitterPluginOptions
   ) {
     super();

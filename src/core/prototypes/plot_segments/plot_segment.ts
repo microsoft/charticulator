@@ -56,14 +56,23 @@ export abstract class PlotSegmentClass<
     glyphGraphics: Graphics.Element,
     manager: ChartStateManager
   ): Graphics.Element {
-    return Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
+    return Graphics.makeGroup([
+      glyphGraphics,
+      this.getGraphics(manager),
+      this.renderControls(manager),
+    ]);
   }
 
-  /** Get the graphics that represent this layout */
+  /** Get the graphics that represent this layout of elements in background*/
   public getPlotSegmentBackgroundGraphics(
     // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
+    return null;
+  }
+
+  // Renders interactable elements of plotsegment;
+  public renderControls(manager: ChartStateManager): Graphics.Element {
     return null;
   }
 

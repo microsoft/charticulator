@@ -23,6 +23,7 @@ import {
   makeText,
   makePath,
   Style,
+  makeRect,
 } from "../../graphics";
 import {
   splitByWidth,
@@ -63,6 +64,11 @@ export interface TickDescription {
   label: string;
 }
 
+export enum AxisMode {
+  X = "x",
+  Y = "y",
+}
+
 export class AxisRenderer {
   public ticks: TickDescription[] = [];
   public style: Specification.Types.AxisRenderingStyle = defaultAxisStyle;
@@ -72,7 +78,11 @@ export class AxisRenderer {
   public oppositeSide: boolean = false;
   private axisDataBindingType: AxisDataBindingType = null;
 
+  public static SCROLL_BAR_SIZE = 10;
+
   private static textMeasurer = new TextMeasurer();
+
+  private scrollRequired: boolean = false;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -328,6 +338,12 @@ export class AxisRenderer {
         return 0;
       }
     };
+
+    // TODO get 30 from glyph width
+    if (Math.abs(rangeMax - rangeMin) < 600) {
+      this.scrollRequired = true;
+    }
+
     this.ticks = r;
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
@@ -386,14 +402,14 @@ export class AxisRenderer {
   public renderGridlinesForAxes(
     x: number,
     y: number,
-    axis: "x" | "y",
+    axis: AxisMode,
     size: number
   ): Group {
     switch (axis) {
-      case "x": {
+      case AxisMode.X: {
         return this.renderGridLine(x, y, 0, 1, size);
       }
-      case "y": {
+      case AxisMode.Y: {
         return this.renderGridLine(x, y, 90, -1, size);
       }
     }
@@ -414,6 +430,15 @@ export class AxisRenderer {
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
     if (this.oppositeSide) {
       side = -side;
+    }
+    //shift axis for scrollbar space
+    if (this.scrollRequired) {
+      if (angle === 90) {
+        x -= AxisRenderer.SCROLL_BAR_SIZE;
+      }
+      if (angle === 0) {
+        y -= AxisRenderer.SCROLL_BAR_SIZE;
+      }
     }
 
     const cos = Math.cos(Geometry.degreesToRadians(angle));
@@ -686,12 +711,12 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderCartesian(x: number, y: number, axis: "x" | "y"): Group {
+  public renderCartesian(x: number, y: number, axis: AxisMode): Group {
     switch (axis) {
-      case "x": {
+      case AxisMode.X: {
         return this.renderLine(x, y, 0, 1);
       }
-      case "y": {
+      case AxisMode.Y: {
         return this.renderLine(x, y, 90, -1);
       }
     }
@@ -938,6 +963,85 @@ export class AxisRenderer {
       g.elements.push(gt);
     }
     return g;
+  }
+
+  public renderVirtualScrollBar(x: number, y: number, axis: AxisMode) {
+    switch (axis) {
+      case AxisMode.X: {
+        return this.renderScrollBar(x, y, 0, 1);
+      }
+      case AxisMode.Y: {
+        return this.renderScrollBar(x, y, 90, -1);
+      }
+    }
+  }
+
+  private renderScrollBar(
+    x: number,
+    y: number,
+    angle: number,
+    side: number
+  ): Graphics.Element {
+    const group = makeGroup([]);
+
+    if (!this.scrollRequired) {
+      return group;
+    }
+
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+
+    //shift axis for scrollbar space
+    if (angle === 90) {
+      x -= AxisRenderer.SCROLL_BAR_SIZE / 2;
+    }
+    if (angle === 0) {
+      y -= AxisRenderer.SCROLL_BAR_SIZE / 2;
+    }
+
+    let x1 = x + rangeMin * cos;
+    let y1 = y + rangeMin * sin;
+    let x2 = x + rangeMax * cos;
+    let y2 = y + rangeMax * sin;
+
+    if (angle === 90) {
+      y1 += AxisRenderer.SCROLL_BAR_SIZE / 2;
+      y2 -= AxisRenderer.SCROLL_BAR_SIZE / 2;
+    }
+    if (angle === 0) {
+      x1 += AxisRenderer.SCROLL_BAR_SIZE / 2;
+      x2 -= AxisRenderer.SCROLL_BAR_SIZE / 2;
+    }
+
+    if (this.oppositeSide) {
+      side = -side;
+    }
+
+    const handleWidth = (rangeMax - rangeMin) / 10;
+
+    console.log(x1, y1, x2, y2);
+
+    const track = makeLine(x1, y1, x2, y2, {
+      opacity: 0.1,
+      strokeWidth: AxisRenderer.SCROLL_BAR_SIZE,
+      strokeLinecap: "square",
+      strokeColor: {
+        b: 0,
+        r: 0,
+        g: 0,
+      },
+      fillColor: {
+        b: 0,
+        r: 0,
+        g: 0,
+      },
+    });
+
+    group.elements.push(track);
+
+    return group;
   }
 }
 

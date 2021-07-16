@@ -8,6 +8,7 @@
  * @preferred
  */
 
+import { renderGraphicalElementSVG } from "../../../app/renderer";
 import {
   getById,
   MultistringHashMap,
@@ -232,6 +233,36 @@ export class ChartRenderer {
     }
 
     return makeGroup([chartEventHandlerRect, ...graphics]);
+  }
+
+  public renderControls(
+    chart: Specification.Chart,
+    chartState: Specification.ChartState
+  ) {
+    const elementsAndStates = zipArray(chart.elements, chartState.elements);
+
+    const controls: Group = makeGroup([]);
+
+    // Render control graphics
+    for (const [element, elementState] of elementsAndStates) {
+      if (!element.properties.visible) {
+        continue;
+      }
+      // Render plotsegment controls
+      if (Prototypes.isType(element.classID, "plot-segment")) {
+        const plotSegmentState = <Specification.PlotSegmentState>elementState;
+        const plotSegmentClass = this.manager.getPlotSegmentClass(
+          plotSegmentState
+        );
+        const plotSegmentBackgroundControlElements: Element = plotSegmentClass.renderControls(
+          this.manager
+        );
+
+        controls.elements.push(plotSegmentBackgroundControlElements);
+      }
+    }
+
+    return renderGraphicalElementSVG(controls);
   }
 
   public render(): Group {
