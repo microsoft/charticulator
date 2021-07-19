@@ -434,10 +434,10 @@ export class AxisRenderer {
     //shift axis for scrollbar space
     if (this.scrollRequired) {
       if (angle === 90) {
-        x -= AxisRenderer.SCROLL_BAR_SIZE;
+        x += side * AxisRenderer.SCROLL_BAR_SIZE;
       }
       if (angle === 0) {
-        y -= AxisRenderer.SCROLL_BAR_SIZE;
+        y += -side * AxisRenderer.SCROLL_BAR_SIZE;
       }
     }
 
@@ -993,39 +993,44 @@ export class AxisRenderer {
     const rangeMin = this.rangeMin;
     const rangeMax = this.rangeMax;
 
-    //shift axis for scrollbar space
-    if (angle === 90) {
-      x -= AxisRenderer.SCROLL_BAR_SIZE / 2;
-    }
-    if (angle === 0) {
-      y -= AxisRenderer.SCROLL_BAR_SIZE / 2;
-    }
-
     let x1 = x + rangeMin * cos;
     let y1 = y + rangeMin * sin;
     let x2 = x + rangeMax * cos;
     let y2 = y + rangeMax * sin;
 
-    if (angle === 90) {
-      y1 += AxisRenderer.SCROLL_BAR_SIZE / 2;
-      y2 -= AxisRenderer.SCROLL_BAR_SIZE / 2;
-    }
-    if (angle === 0) {
-      x1 += AxisRenderer.SCROLL_BAR_SIZE / 2;
-      x2 -= AxisRenderer.SCROLL_BAR_SIZE / 2;
-    }
-
     if (this.oppositeSide) {
       side = -side;
     }
 
+    if (!this.oppositeSide) {
+      if (angle === 90) {
+        x1 += side * AxisRenderer.SCROLL_BAR_SIZE;
+        x2 += side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
+      if (angle === 0) {
+        y1 += -side * AxisRenderer.SCROLL_BAR_SIZE;
+        y2 += -side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
+    }
+
     const handleWidth = (rangeMax - rangeMin) / 10;
+
+    let width = 0;
+    let height = 0;
+
+    if (angle === 90) {
+      height += Math.abs(y2 - y1);
+      width = AxisRenderer.SCROLL_BAR_SIZE;
+    }
+    if (angle === 0) {
+      width += Math.abs(x2 - x1);
+      height = AxisRenderer.SCROLL_BAR_SIZE;
+    }
 
     console.log(x1, y1, x2, y2);
 
-    const track = makeLine(x1, y1, x2, y2, {
+    const track = makeRect(x1, y1, x1 + width, y1 + height, {
       opacity: 0.1,
-      strokeWidth: AxisRenderer.SCROLL_BAR_SIZE,
       strokeLinecap: "square",
       strokeColor: {
         b: 0,
@@ -1040,6 +1045,47 @@ export class AxisRenderer {
     });
 
     group.elements.push(track);
+
+    width = 0;
+    height = 0;
+
+    if (angle === 90) {
+      height += handleWidth;
+      width = AxisRenderer.SCROLL_BAR_SIZE;
+    }
+    if (angle === 0) {
+      width += handleWidth;
+      height = AxisRenderer.SCROLL_BAR_SIZE;
+    }
+
+    const handle = makeRect(x1, y1, x1 + width, y1 + height, {
+      opacity: 0.7,
+      strokeLinecap: "square",
+      strokeColor: {
+        b: 0,
+        r: 0,
+        g: 0,
+      },
+      fillColor: {
+        b: 0,
+        r: 0,
+        g: 0,
+      },
+    });
+
+    (handle as Graphics.Element).interactable = {
+      onMousedown: () => {
+        // debugger;
+      },
+      onMouseup: () => {
+        // debugger;
+      },
+      onMousemove: () => {
+        // debugger;
+      },
+    };
+
+    group.elements.push(handle);
 
     return group;
   }
