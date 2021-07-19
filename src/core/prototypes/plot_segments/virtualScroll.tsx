@@ -33,41 +33,40 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     trackSize = height;
   }
 
-  const mapPositionToCoordinates = (
-    handlePosition: number
-  ): [number, number] => {
-    let handlePositionX = 0;
-    let handlePositionY = 0;
-    if (handlePosition > 100) {
-      handlePosition = 100;
-    }
+  const handleSize = vertical ? height / 10 : width / 10;
 
-    if (handlePosition < 0) {
-      handlePosition = 0;
-    }
+  const mapPositionToCoordinates = React.useCallback(
+    (handlePosition: number): [number, number] => {
+      let handlePositionX = 0;
+      let handlePositionY = 0;
+      if (handlePosition > 100) {
+        handlePosition = 100;
+      }
 
-    handlePosition = (trackSize / 100) * handlePosition; // map % to axis position
+      if (handlePosition < 0) {
+        handlePosition = 0;
+      }
 
-    if (vertical) {
-      handlePositionY = handlePosition;
-    } else {
-      handlePositionX = handlePosition;
-    }
+      handlePosition = ((trackSize - handleSize) / 100) * handlePosition; // map % to axis position
 
-    return [handlePositionX, handlePositionY];
-  };
+      if (vertical) {
+        handlePositionY = handlePosition;
+      } else {
+        handlePositionX = handlePosition;
+      }
 
-  const [handlePositionX, handlePositionY] = mapPositionToCoordinates(
-    initialPosition
+      return [handlePositionX, handlePositionY];
+    },
+    [handleSize, trackSize, vertical]
   );
 
-  // const scrolling = {
-  //     mouseStartCoordinateX: 0,
-  //     mouseStartCoordinateY: 0,
-  //     isActive: false
-  // };
+  const [position, setPosition] = React.useState(initialPosition);
+  const [isActive, setActive] = React.useState(false);
 
-  const handleSize = vertical ? height / 10 : width / 10;
+  const [handlePositionX, handlePositionY] = React.useMemo(
+    () => mapPositionToCoordinates(position),
+    [position, mapPositionToCoordinates]
+  );
 
   let handlerWidth = 0;
   let handlerHeight = 0;
@@ -80,17 +79,45 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     handlerHeight = handlerBarWidth;
   }
 
-  const ref = React.useRef<SVGRectElement>();
+  const track = React.useRef<SVGRectElement>();
 
-  React.useEffect(() => {
-    console.log(ref);
-  });
+  const onMouseMove = React.useCallback(
+    (e: any) => {
+      if (!isActive) {
+        return;
+      }
+
+      const trackElement = track.current.getBoundingClientRect();
+      const deltaX = e.clientX - trackElement.left;
+      const deltaY = e.clientY - trackElement.top;
+
+      console.log(deltaX, deltaY);
+
+      let newPosition = position;
+      if (vertical) {
+        newPosition = (deltaY / height) * 100;
+      } else {
+        newPosition = (deltaX / width) * 100;
+      }
+
+      if (newPosition > 100) {
+        newPosition = 100;
+      }
+      if (newPosition < 0) {
+        newPosition = 0;
+      }
+
+      setPosition(newPosition);
+    },
+    [height, isActive, position, vertical, width]
+  );
 
   return (
     <>
       <g className={"controls"}>
         {/* track */}
         <rect
+          ref={track}
           x={Math.min(x, x + width)}
           y={-Math.max(y, y + height)}
           width={Math.abs(width)}
@@ -99,8 +126,12 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             fill: "black",
             opacity: 0.3,
           }}
+          onMouseUp={(e) => {
+            setActive(false);
+          }}
+          onMouseMove={onMouseMove}
         />
-        {/*handle  */}
+        {/*handler  */}
         <rect
           x={Math.min(x + handlePositionX, x + handlePositionX + handlerWidth)}
           y={
@@ -112,7 +143,30 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             fill: "black",
             opacity: 0.7,
           }}
+          onMouseDown={(e) => {
+            setActive(true);
+          }}
         />
+        {/* pseudo interaction for mouse move */}
+        {vertical ? (
+          <rect
+            className={"interaction-handler"}
+            x={Math.min(x, x + width) - height}
+            y={-Math.max(y, y + height) - height}
+            width={Math.abs(width) + width * 2}
+            height={Math.abs(height) + width * 2}
+            onMouseMove={onMouseMove}
+          />
+        ) : (
+          <rect
+            className={"interaction-handler"}
+            x={Math.min(x, x + width) - width}
+            y={-Math.max(y, y + height) - width}
+            width={Math.abs(width) + height * 2}
+            height={Math.abs(height) + height * 2}
+            onMouseMove={onMouseMove}
+          />
+        )}
       </g>
     </>
   );
