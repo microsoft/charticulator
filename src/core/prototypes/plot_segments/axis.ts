@@ -36,6 +36,9 @@ import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 
+import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import React = require("react");
+
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
   lineColor: { r: 0, g: 0, b: 0 },
@@ -965,13 +968,19 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderVirtualScrollBar(x: number, y: number, axis: AxisMode) {
+  public renderVirtualScrollBar(
+    x: number,
+    y: number,
+    axis: AxisMode,
+    scrollPosition: number,
+    onScroll: (position: number) => void
+  ) {
     switch (axis) {
       case AxisMode.X: {
-        return this.renderScrollBar(x, y, 0, 1, 0);
+        return this.renderScrollBar(x, y, 0, 1, scrollPosition, onScroll);
       }
       case AxisMode.Y: {
-        return this.renderScrollBar(x, y, 90, -1, 100);
+        return this.renderScrollBar(x, y, 90, -1, scrollPosition, onScroll);
       }
     }
   }
@@ -981,12 +990,11 @@ export class AxisRenderer {
     y: number,
     angle: number,
     side: number,
-    handlePosition: number
-  ): Graphics.Element {
-    const group = makeGroup([]);
-
+    handlePosition: number,
+    onScroll: (position: number) => void
+  ): React.ReactElement {
     if (!this.scrollRequired) {
-      return group;
+      return null;
     }
 
     const cos = Math.cos(Geometry.degreesToRadians(angle));
@@ -1014,20 +1022,6 @@ export class AxisRenderer {
       }
     }
 
-    const handleWidth = (rangeMax - rangeMin) / 10;
-
-    if (handlePosition > 100) {
-      handlePosition = 100;
-    }
-
-    if (handlePosition < 0) {
-      handlePosition = 0;
-    }
-
-    const trackSize = Math.abs(rangeMax - rangeMin) - handleWidth;
-
-    handlePosition = (trackSize / 100) * handlePosition; // map % to axis position
-
     let width = 0;
     let height = 0;
 
@@ -1040,78 +1034,16 @@ export class AxisRenderer {
       height = AxisRenderer.SCROLL_BAR_SIZE;
     }
 
-    console.log(x1, y1, x2, y2);
-
-    const track = makeRect(x1, y1, x1 + width, y1 + height, {
-      opacity: 0.1,
-      strokeLinecap: "square",
-      strokeColor: {
-        b: 0,
-        r: 0,
-        g: 0,
-      },
-      fillColor: {
-        b: 0,
-        r: 0,
-        g: 0,
-      },
+    return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
+      onScroll,
+      handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
+      height,
+      width,
+      x: x1,
+      y: y1,
+      initialPosition: handlePosition,
+      vertical: angle === 90,
     });
-
-    group.elements.push(track);
-
-    width = 0;
-    height = 0;
-
-    let handlePositionX = 0;
-    let handlePositionY = 0;
-
-    if (angle === 90) {
-      height += handleWidth;
-      width = AxisRenderer.SCROLL_BAR_SIZE;
-      handlePositionY = handlePosition;
-    }
-    if (angle === 0) {
-      width += handleWidth;
-      height = AxisRenderer.SCROLL_BAR_SIZE;
-      handlePositionX = handlePosition;
-    }
-
-    const handle = makeRect(
-      x1 + handlePositionX,
-      y1 + handlePositionY,
-      handlePositionX + x1 + width,
-      handlePositionY + y1 + height,
-      {
-        opacity: 0.7,
-        strokeLinecap: "square",
-        strokeColor: {
-          b: 0,
-          r: 0,
-          g: 0,
-        },
-        fillColor: {
-          b: 0,
-          r: 0,
-          g: 0,
-        },
-      }
-    );
-
-    (handle as Graphics.Element).interactable = {
-      onMousedown: () => {
-        // debugger;
-      },
-      onMouseup: () => {
-        // debugger;
-      },
-      onMousemove: () => {
-        // debugger;
-      },
-    };
-
-    group.elements.push(handle);
-
-    return group;
   }
 }
 

@@ -313,6 +313,10 @@ export class ChartComponent extends React.Component<
           />
         ) : null}
         {gfx}
+        {this.renderer.renderControls(
+          this.manager.chart,
+          this.manager.chartState
+        )}
         {this.state.working ? (
           <rect
             x={-this.props.width / 2}

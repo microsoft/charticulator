@@ -376,10 +376,10 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return g;
   }
 
-  public renderControls(manager: ChartStateManager): Graphics.Element {
+  public renderControls(manager: ChartStateManager): React.ReactElement[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const g = Graphics.makeGroup([]);
+    const g = [];
     // TODO optimize axis render;
     if (props.xData && props.xData.visible) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
@@ -390,11 +390,17 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         false,
         this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
       );
-      g.elements.push(
+      g.push(
         axisRenderer.renderVirtualScrollBar(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          AxisMode.X
+          AxisMode.X,
+          props.xData.scrollPosition ? props.xData.scrollPosition : 0,
+          (position) => {
+            console.log(position);
+            props.xData.scrollPosition = position;
+            update();
+          }
         )
       );
     }
@@ -407,11 +413,17 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         true,
         this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
       );
-      g.elements.push(
+      g.push(
         axisRenderer.renderVirtualScrollBar(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          AxisMode.Y
+          AxisMode.Y,
+          props.yData.scrollPosition ? props.yData.scrollPosition : 0,
+          (position) => {
+            console.log(position);
+            props.yData.scrollPosition = position;
+            update();
+          }
         )
       );
     }

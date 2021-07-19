@@ -8,6 +8,7 @@
  * @preferred
  */
 
+import { ReactElement } from "react";
 import { renderGraphicalElementSVG } from "../../../app/renderer";
 import {
   getById,
@@ -241,7 +242,7 @@ export class ChartRenderer {
   ) {
     const elementsAndStates = zipArray(chart.elements, chartState.elements);
 
-    const controls: Group = makeGroup([]);
+    let controls: ReactElement[] = [];
 
     // Render control graphics
     for (const [element, elementState] of elementsAndStates) {
@@ -254,15 +255,15 @@ export class ChartRenderer {
         const plotSegmentClass = this.manager.getPlotSegmentClass(
           plotSegmentState
         );
-        const plotSegmentBackgroundControlElements: Element = plotSegmentClass.renderControls(
+        const plotSegmentBackgroundControlElements = plotSegmentClass.renderControls(
           this.manager
         );
 
-        controls.elements.push(plotSegmentBackgroundControlElements);
+        controls = controls.concat(plotSegmentBackgroundControlElements);
       }
     }
 
-    return renderGraphicalElementSVG(controls);
+    return controls;
   }
 
   public render(): Group {

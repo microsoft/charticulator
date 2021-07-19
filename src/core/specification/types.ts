@@ -58,6 +58,8 @@ export interface AxisDataBinding extends AttributeMap {
   dataKind?: DataKind;
   order?: string[];
   orderMode?: OrderMode;
+
+  scrollPosition?: number;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {
