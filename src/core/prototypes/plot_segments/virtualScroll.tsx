@@ -3,8 +3,6 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import { renderGraphicalElementSVG } from "../../../app/renderer";
-import { Graphics } from "../../../container";
 
 export interface VirtualScrollBarPropertes {
   initialPosition: number;
@@ -108,8 +106,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       }
 
       setPosition(newPosition);
+      onScroll(newPosition);
     },
-    [height, isActive, position, vertical, width]
+    [height, isActive, onScroll, position, vertical, width]
   );
 
   return (
@@ -126,7 +125,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             fill: "black",
             opacity: 0.3,
           }}
-          onMouseUp={(e) => {
+          onMouseUp={() => {
             setActive(false);
           }}
           onMouseMove={onMouseMove}
@@ -143,7 +142,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             fill: "black",
             opacity: 0.7,
           }}
-          onMouseDown={(e) => {
+          onMouseDown={() => {
             setActive(true);
           }}
         />
