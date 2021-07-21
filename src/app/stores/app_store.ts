@@ -1741,6 +1741,16 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.categories !== undefined
           ? <string[]>objectProperties?.categories
           : null,
+      allCategories:
+        <string[]>objectProperties?.allCategories !== undefined
+          ? <string[]>objectProperties?.allCategories
+          : <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
+      scrollPosition:
+        <number>objectProperties?.scrollPosition !== undefined
+          ? <number>objectProperties?.scrollPosition
+          : 0,
     };
 
     let expressions = [groupExpression];
@@ -1805,8 +1815,11 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.categories = categories;
             dataBinding.order = order != undefined ? order : null;
+            const start = Math.floor(
+              ((categories.length - 10) / 100) * dataBinding.scrollPosition
+            );
+            dataBinding.categories = categories.slice(start, start + 10);
           }
 
           break;
@@ -1869,7 +1882,11 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.categories = categories;
+            dataBinding.allCategories = deepClone(categories);
+            const start = Math.floor(
+              ((categories.length - 10) / 100) * dataBinding.scrollPosition
+            );
+            dataBinding.categories = categories.slice(start, start + 10);
           }
           break;
       }

@@ -29,6 +29,7 @@ import { ValueType } from "../expression/classes";
 import { MappingType } from "../specification";
 import { forEachObject, ObjectItemKind } from "./index";
 import { expect_deep_approximately_equals } from "../../app/utils";
+import { AxisDataBinding } from "../specification/types";
 
 /**
  * Represents a set of default attributes
@@ -778,6 +779,33 @@ export class ChartStateManager {
     this.reorderArray(glyph.marks, fromIndex, toIndex);
   }
 
+  private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
+    const filteredIndices: number[] = [];
+    if (!data.allowScrolling) {
+      return filteredIndices;
+    }
+
+    // TODO fix expression (get column name from expression properly)
+    const parsed = (Expression.parse(
+      data.expression
+    ) as Expression.FunctionCall).args[0];
+
+    const table = this.getTable(tableName);
+    for (let i = 0; i < table.rows.length; i++) {
+      const rowContext = table.getRowContext(i);
+
+      if (
+        data.categories.find(
+          (category) => category === parsed.getStringValue(rowContext)
+        ) !== undefined
+      ) {
+        filteredIndices.push(i);
+      }
+    }
+
+    return filteredIndices;
+  }
+
   /**
    * Map/remap plot segment glyphs
    * @param plotSegment
@@ -804,6 +832,18 @@ export class ChartStateManager {
       }
     }
     let filteredIndices = table.rows.map((r, i) => i);
+    if (plotSegment.properties.xData) {
+      const data = plotSegment.properties.xData as AxisDataBinding;
+      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+    }
+    if (plotSegment.properties.yData) {
+      const data = plotSegment.properties.yData as AxisDataBinding;
+      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+    }
+    if (plotSegment.properties.axis) {
+      const data = plotSegment.properties.axis as AxisDataBinding;
+      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+    }
     if (plotSegment.filter) {
       const filter = new CompiledFilter(
         plotSegment.filter,
@@ -922,6 +962,7 @@ export class ChartStateManager {
     );
     this.mapPlotSegmentState(plotSegment, plotSegmentState);
     this.initializePlotSegmentCache(plotSegment, plotSegmentState);
+    this.solveConstraints();
   }
 
   /** Add a new scale */

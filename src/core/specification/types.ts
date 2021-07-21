@@ -59,6 +59,10 @@ export interface AxisDataBinding extends AttributeMap {
   order?: string[];
   orderMode?: OrderMode;
 
+  /** scrolling options */
+  // allCategories contsins all data set and categories property uses to display current content
+  allowScrolling?: boolean;
+  allCategories?: string[];
   scrollPosition?: number;
 }
 

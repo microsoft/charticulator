@@ -395,11 +395,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
           AxisMode.X,
-          // props.xData.scrollPosition ? props.xData.scrollPosition : 0,
-          0,
+          props.xData.scrollPosition ? props.xData.scrollPosition : 0,
           (position) => {
             console.log(position);
             props.xData.scrollPosition = position;
+
+            const start = Math.floor(
+              ((props.xData.allCategories.length - 10) / 100) * position
+            );
+            props.xData.categories = props.xData.allCategories.slice(
+              start,
+              start + 10
+            );
+
+            manager.remapPlotSegmentGlyphs(this.object);
           }
         )
       );
@@ -418,11 +427,19 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
           AxisMode.Y,
-          // props.yData.scrollPosition ? props.yData.scrollPosition : 0,
-          0,
+          props.yData.scrollPosition ? props.yData.scrollPosition : 0,
           (position) => {
             console.log(position);
             props.yData.scrollPosition = position;
+            const start = Math.floor(
+              ((props.yData.allCategories.length - 10) / 100) * position
+            );
+            props.yData.categories = props.yData.allCategories
+              .reverse()
+              .slice(start, start + 10)
+              .reverse();
+
+            manager.remapPlotSegmentGlyphs(this.object);
           }
         )
       );
