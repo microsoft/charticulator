@@ -93,7 +93,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
       let newPosition = position;
       if (vertical) {
-        newPosition = (deltaY / height) * 100;
+        newPosition = 100 - (deltaY / height) * 100;
       } else {
         newPosition = (deltaX / width) * 100;
       }
