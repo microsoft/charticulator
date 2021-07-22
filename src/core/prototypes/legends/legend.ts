@@ -7,10 +7,14 @@ import {
   defaultFontSizeLegend,
 } from "../../../app/stores/defaults";
 import { FluentUIWidgetManager } from "../../../app/views/panels/widgets/fluentui_manager";
-import { WidgetManager } from "../../../app/views/panels/widgets/manager";
+import {
+  CharticulatorPropertyAccessors,
+  WidgetManager,
+} from "../../../app/views/panels/widgets/manager";
 import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
+import { ValueType } from "../../expression/classes";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
@@ -21,7 +25,6 @@ import {
   ObjectClassMetadata,
   TemplateParameters,
 } from "../common";
-import { CategoricalLegendItem } from "./categorical_legend";
 
 export interface LegendAttributes extends Specification.AttributeMap {
   x: number;
@@ -174,7 +177,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   private getOrderingObjects(): string[] {
     const scale = this.getScale();
-    if(scale){
+    if (scale) {
       const [scaleObject] = scale;
       const mapping = <
         {
@@ -183,11 +186,11 @@ export abstract class LegendClass extends ChartElementClass {
       >scaleObject.properties.mapping;
       return Object.keys(mapping);
     }
-    return []
+    return [];
   }
 
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = [
       manager.sectionHeader(strings.objects.legend.labels),
@@ -224,18 +227,31 @@ export abstract class LegendClass extends ChartElementClass {
         }
       ),
       manager.label("Ordering"),
-      manager.reorderWidget({
-        property: "order",
-      }, {
-        items: this.getOrderingObjects(),
-        onConfirm: (items: string[]) => {
-          const scale = this.getScale()[0];
-          const newMap: Specification.Mappings = {};
-          items.forEach(item => {newMap[item] = (scale.properties.mapping as Specification.AttributeMap)[item] as any})
-          Prototypes.setProperty(scale, "mapping", newMap);
-          (manager as FluentUIWidgetManager | WidgetManager).store.solveConstraintsAndUpdateGraphics();
+      manager.reorderWidget(
+        {
+          property: "order",
+        },
+        {
+          items: this.getOrderingObjects(),
+          onConfirm: (items: string[]) => {
+            const scale = this.getScale()[0];
+            const newMap: { [name: string]: ValueType } = {};
+            items.forEach((item) => {
+              newMap[item] = (<Specification.AttributeMap>(
+                scale.properties.mapping
+              ))[item];
+            });
+            Prototypes.setProperty(scale, "mapping", newMap);
+            manager.emitSetProperty(
+              {
+                property: "mapping",
+                field: null,
+              },
+              <Specification.AttributeValue>newMap
+            );
+          },
         }
-      }),
+      ),
       manager.sectionHeader(strings.objects.legend.layout),
       manager.vertical(
         manager.label(strings.alignment.alignment),
