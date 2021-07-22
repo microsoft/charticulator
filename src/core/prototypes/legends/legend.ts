@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { keys } from "d3";
 import {
   defaultFont,
   defaultFontSizeLegend,
 } from "../../../app/stores/defaults";
+import { FluentUIWidgetManager } from "../../../app/views/panels/widgets/fluentui_manager";
+import { WidgetManager } from "../../../app/views/panels/widgets/manager";
+import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
 import * as Specification from "../../specification";
@@ -17,6 +21,7 @@ import {
   ObjectClassMetadata,
   TemplateParameters,
 } from "../common";
+import { CategoricalLegendItem } from "./categorical_legend";
 
 export interface LegendAttributes extends Specification.AttributeMap {
   x: number;
@@ -167,6 +172,20 @@ export abstract class LegendClass extends ChartElementClass {
     return [10, 10];
   }
 
+  private getOrderingObjects(): string[] {
+    const scale = this.getScale();
+    if(scale){
+      const [scaleObject] = scale;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
+      return Object.keys(mapping);
+    }
+    return []
+  }
+
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -204,6 +223,19 @@ export abstract class LegendClass extends ChartElementClass {
           label: strings.objects.legend.markerShape,
         }
       ),
+      manager.label("Ordering"),
+      manager.reorderWidget({
+        property: "order",
+      }, {
+        items: this.getOrderingObjects(),
+        onConfirm: (items: string[]) => {
+          const scale = this.getScale()[0];
+          const newMap: Specification.Mappings = {};
+          items.forEach(item => {newMap[item] = (scale.properties.mapping as Specification.AttributeMap)[item] as any})
+          Prototypes.setProperty(scale, "mapping", newMap);
+          (manager as FluentUIWidgetManager | WidgetManager).store.solveConstraintsAndUpdateGraphics();
+        }
+      }),
       manager.sectionHeader(strings.objects.legend.layout),
       manager.vertical(
         manager.label(strings.alignment.alignment),

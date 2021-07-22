@@ -191,6 +191,13 @@ export interface InputFormatOptions {
   isDateField?: boolean;
 }
 
+export interface ReOrderWidgetOptions {
+  allowReset?: boolean;
+  onConfirm?: (items: string[]) => void;
+  onReset?: () => string[];
+  items?: string[];
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -232,7 +239,7 @@ export interface WidgetManager {
   orderByWidget(property: Property, options: OrderWidgetOptions): Widget;
 
   // Reorder widget: allow user to reorder the items in a property
-  reorderWidget(property: Property, allowReset: boolean): Widget;
+  reorderWidget(property: Property, options: ReOrderWidgetOptions): Widget;
 
   arrayWidget(
     property: Property,

@@ -689,7 +689,7 @@ export class WidgetManager
 
   public reorderWidget(
     property: Prototypes.Controls.Property,
-    allowReset: boolean
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
@@ -703,7 +703,7 @@ export class WidgetManager
                 const items = this.getPropertyValue(property) as string[];
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue
+                    <ReorderStringsValue                     
                       items={items}
                       onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
@@ -766,7 +766,7 @@ export class WidgetManager
                         );
                         return categories;
                       }}
-                      allowReset={allowReset}
+                      {...options}
                     />
                   </PopupView>
                 );
