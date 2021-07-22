@@ -1751,6 +1751,10 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.scrollPosition !== undefined
           ? <number>objectProperties?.scrollPosition
           : 0,
+      allowScrolling:
+        <boolean>objectProperties?.allowScrolling !== undefined
+          ? <boolean>objectProperties?.allowScrolling
+          : false,
     };
 
     let expressions = [groupExpression];

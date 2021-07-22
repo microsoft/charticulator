@@ -486,6 +486,9 @@ export const strings = {
       domain: "Domain",
       range: "Range",
       gradient: "Gradient",
+      scrolling: "Scrolling",
+      allowScrolling: "Allow scrolling",
+      windowSize: "Window size",
     },
     icon: {
       label: "Icon",

@@ -781,7 +781,7 @@ export class ChartStateManager {
 
   private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
     const filteredIndices: number[] = [];
-    if (!data.allowScrolling) {
+    if (!data.allowScrolling || !data.allCategories) {
       return filteredIndices;
     }
 

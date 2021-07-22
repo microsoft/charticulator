@@ -397,7 +397,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.X,
           props.xData.scrollPosition ? props.xData.scrollPosition : 0,
           (position) => {
-            console.log(position);
+            if (!props.xData.allCategories) {
+              return;
+            }
             props.xData.scrollPosition = position;
 
             const start = Math.floor(
@@ -409,6 +411,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             );
 
             manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
           }
         )
       );
@@ -429,7 +432,9 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.Y,
           props.yData.scrollPosition ? props.yData.scrollPosition : 0,
           (position) => {
-            console.log(position);
+            if (!props.yData.allCategories) {
+              return;
+            }
             props.yData.scrollPosition = position;
             const start = Math.floor(
               ((props.yData.allCategories.length - 10) / 100) * position
@@ -440,6 +445,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
               .reverse();
 
             manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
           }
         )
       );
