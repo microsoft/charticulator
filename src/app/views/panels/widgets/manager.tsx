@@ -119,6 +119,13 @@ export class WidgetManager
     public objectClass: Prototypes.ObjectClass
   ) {}
 
+  public tooltip(
+    widget: JSX.Element,
+    tooltipContent: JSX.Element
+  ): JSX.Element {
+    throw new Error("Method not implemented.");
+  }
+
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
 
