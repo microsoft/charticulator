@@ -460,6 +460,9 @@ export class ChartTemplate {
                 axisDataBinding.categories[index] = key;
               });
             }
+            axisDataBinding.allCategories = deepClone(
+              axisDataBinding.categories
+            );
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);

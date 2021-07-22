@@ -182,6 +182,13 @@ export class ChartComponent extends React.Component<
       this.manager,
       props.renderEvents
     );
+    this.manager.onUpdate(() => {
+      this.manager.solveConstraints();
+      this.setState({
+        graphics: this.renderer.render(),
+      });
+      this.scheduleUpdate();
+    });
   }
 
   protected timer: any;

@@ -381,7 +381,13 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     const g = [];
     // TODO optimize axis render;
-    if (props.xData && props.xData.visible) {
+    if (
+      props.xData &&
+      props.xData.visible &&
+      props.xData.allowScrolling &&
+      props.xData.allCategories &&
+      props.xData.allCategories.length > props.xData.windowSize
+    ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
@@ -403,12 +409,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             props.xData.scrollPosition = position;
 
             const start = Math.floor(
-              ((props.xData.allCategories.length - 10) / 100) * position
+              ((props.xData.allCategories.length - props.xData.windowSize) /
+                100) *
+                position
             );
             props.xData.categories = props.xData.allCategories.slice(
               start,
-              start + 10
+              start + props.xData.windowSize
             );
+
+            if (props.xData.categories.length === 0) {
+              props.xData.allCategories
+                .reverse()
+                .slice(start - 1, start + props.xData.windowSize);
+            }
 
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
@@ -416,7 +430,13 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         )
       );
     }
-    if (props.yData && props.yData.visible) {
+    if (
+      props.yData &&
+      props.yData.visible &&
+      props.yData.allowScrolling &&
+      props.yData.allCategories &&
+      props.yData.allCategories.length > props.yData.windowSize
+    ) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.yData,
         0,
@@ -437,12 +457,20 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             }
             props.yData.scrollPosition = position;
             const start = Math.floor(
-              ((props.yData.allCategories.length - 10) / 100) * position
+              ((props.yData.allCategories.length - props.yData.windowSize) /
+                100) *
+                position
             );
             props.yData.categories = props.yData.allCategories
               .reverse()
-              .slice(start, start + 10)
+              .slice(start, start + props.yData.windowSize)
               .reverse();
+
+            if (props.yData.categories.length === 0) {
+              props.yData.allCategories
+                .reverse()
+                .slice(start - 1, start + props.yData.windowSize);
+            }
 
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();

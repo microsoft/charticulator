@@ -78,6 +78,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
   }
 
   const track = React.useRef<SVGRectElement>();
+  const handler = React.useRef<SVGRectElement>();
+
+  const state = React.createRef<boolean>();
 
   const onMouseMove = React.useCallback(
     (e: any) => {
@@ -88,8 +91,6 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       const trackElement = track.current.getBoundingClientRect();
       const deltaX = e.clientX - trackElement.left;
       const deltaY = e.clientY - trackElement.top;
-
-      console.log(deltaX, deltaY);
 
       let newPosition = position;
       if (vertical) {
@@ -132,6 +133,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         />
         {/*handler  */}
         <rect
+          ref={handler}
           x={Math.min(x + handlePositionX, x + handlePositionX + handlerWidth)}
           y={
             -Math.max(y + handlePositionY, y + handlePositionY + handlerHeight)
@@ -145,6 +147,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
           onMouseDown={() => {
             setActive(true);
           }}
+          onMouseUp={() => {
+            setActive(false);
+          }}
         />
         {/* pseudo interaction for mouse move */}
         {vertical ? (
@@ -155,6 +160,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             width={Math.abs(width) + width * 2}
             height={Math.abs(height) + width * 2}
             onMouseMove={onMouseMove}
+            onMouseOut={() => {
+              setActive(false);
+            }}
           />
         ) : (
           <rect
@@ -164,6 +172,9 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
             width={Math.abs(width) + height * 2}
             height={Math.abs(height) + height * 2}
             onMouseMove={onMouseMove}
+            onMouseOut={() => {
+              setActive(false);
+            }}
           />
         )}
       </g>

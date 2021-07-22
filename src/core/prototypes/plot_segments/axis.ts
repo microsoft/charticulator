@@ -23,7 +23,6 @@ import {
   makeText,
   makePath,
   Style,
-  makeRect,
 } from "../../graphics";
 import {
   splitByWidth,
@@ -113,6 +112,10 @@ export class AxisRenderer {
     this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
+    this.scrollRequired =
+      data.allowScrolling &&
+      data.allCategories &&
+      data.allCategories.length > data.windowSize;
     switch (data.type) {
       case "numerical":
         {
@@ -343,9 +346,9 @@ export class AxisRenderer {
     };
 
     // TODO get 30 from glyph width
-    if (Math.abs(rangeMax - rangeMin) < 600) {
-      this.scrollRequired = true;
-    }
+    // if (Math.abs(rangeMax - rangeMin) < 600) {
+    //   this.scrollRequired = true;
+    // }
 
     this.ticks = r;
     this.rangeMin = rangeMin;
@@ -1361,6 +1364,36 @@ export function buildAxisWidgets(
               ]
             )
           );
+          widgets.push(m.sectionHeader(strings.objects.dataAxis.scrolling));
+          widgets.push(
+            m.inputBoolean(
+              {
+                property: axisProperty,
+                field: "allowScrolling",
+              },
+              {
+                type: "checkbox",
+                label: strings.objects.dataAxis.allowScrolling,
+              }
+            )
+          );
+          if (data.allowScrolling) {
+            widgets.push(
+              m.row(
+                strings.objects.dataAxis.windowSize,
+                m.inputNumber(
+                  {
+                    property: axisProperty,
+                    field: "windowSize",
+                  },
+                  {
+                    maximum: 1000,
+                    minimum: 1,
+                  }
+                )
+              )
+            );
+          }
           widgets.push(makeAppearance());
         }
         break;

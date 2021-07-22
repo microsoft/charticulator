@@ -279,6 +279,9 @@ export class AppStore extends BaseStore {
       {},
       this.chartManager.getOriginChart()
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_GRAPHICS);
@@ -1115,6 +1118,9 @@ export class AppStore extends BaseStore {
       this.chart,
       this.dataset
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
     this.chartState = this.chartManager.chartState;
   }
 
@@ -1755,6 +1761,10 @@ export class AppStore extends BaseStore {
         <boolean>objectProperties?.allowScrolling !== undefined
           ? <boolean>objectProperties?.allowScrolling
           : false,
+      windowSize:
+        <number>objectProperties?.windowSize !== undefined
+          ? <number>objectProperties?.windowSize
+          : 10,
     };
 
     let expressions = [groupExpression];
@@ -1820,10 +1830,14 @@ export class AppStore extends BaseStore {
               values
             );
             dataBinding.order = order != undefined ? order : null;
-            const start = Math.floor(
-              ((categories.length - 10) / 100) * dataBinding.scrollPosition
-            );
-            dataBinding.categories = categories.slice(start, start + 10);
+            dataBinding.allCategories = deepClone(categories);
+            dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - 10) / 100) * dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(start, start + 10);
+            }
           }
 
           break;
@@ -1887,10 +1901,17 @@ export class AppStore extends BaseStore {
               values
             );
             dataBinding.allCategories = deepClone(categories);
-            const start = Math.floor(
-              ((categories.length - 10) / 100) * dataBinding.scrollPosition
-            );
-            dataBinding.categories = categories.slice(start, start + 10);
+            dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
+            }
           }
           break;
       }
