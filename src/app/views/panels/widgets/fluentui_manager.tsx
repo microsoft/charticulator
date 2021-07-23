@@ -803,7 +803,7 @@ export class FluentUIWidgetManager
 
   public reorderWidget(
     property: Prototypes.Controls.Property,
-    allowReset: boolean
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
@@ -819,7 +819,9 @@ export class FluentUIWidgetManager
             onClick={() => {
               globals.popupController.popupAt(
                 (context) => {
-                  const items = this.getPropertyValue(property) as string[];
+                  const items = options.items
+                  ? options.items
+                  : (this.getPropertyValue(property) as string[]);
                   return (
                     <PopupView context={context}>
                       <ReorderStringsValue
@@ -861,7 +863,7 @@ export class FluentUIWidgetManager
                           );
                           return categories;
                         }}
-                        allowReset={allowReset}
+                        {...options}
                       />
                     </PopupView>
                   );
