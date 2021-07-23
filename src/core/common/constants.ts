@@ -31,6 +31,7 @@ export const defaultNumberFormat = Object.freeze({
   decimal: ".",
 });
 export const defaultCurrency: [string, string] = ["$", ""];
+export const defaultCurrencySymbol: string = "$";
 export const defaultDigitsGroup: number[] = [3];
 
 export const primaryButtonStyles = {
