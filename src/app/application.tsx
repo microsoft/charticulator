@@ -44,6 +44,7 @@ import { MappingType } from "../core/specification";
 import { initializeIcons } from "../fabric-icons/src/index";
 initializeIcons();
 import { defaultVersionOfTemplate } from "./stores/defaults";
+import { LocalizationConfig } from "../container/container";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -82,10 +83,11 @@ export class Application {
       workerScriptContent?: string;
       worker?: CharticulatorWorkerInterface;
     },
+    localizaiton: LocalizationConfig,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
-    }
+    },
   ) {
     this.config = config;
     this.containerID = containerID;
@@ -99,7 +101,6 @@ export class Application {
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
-
     try {
       const CurrencySymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.CurrencySymbol),
@@ -128,8 +129,7 @@ export class Application {
           decimal: NumberFormatRemove === "," ? "." : ",",
           remove: NumberFormatRemove === "," ? "," : ".",
         },
-      });
-
+      });   
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
@@ -137,6 +137,12 @@ export class Application {
         thousands: NumberFormatRemove === "," ? "," : ".",
       });
     } catch (ex) {
+      setFormatOptions({
+        currency: [localizaiton?.currency, ''] ?? defaultCurrency,
+        grouping: defaultDigitsGroup,
+        decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+        thousands: localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+      });
       console.warn("Loadin localization settings failed");
     }
 
