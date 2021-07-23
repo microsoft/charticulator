@@ -1,16 +1,12 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { keys } from "d3";
 import {
   defaultFont,
   defaultFontSizeLegend,
 } from "../../../app/stores/defaults";
-import { FluentUIWidgetManager } from "../../../app/views/panels/widgets/fluentui_manager";
-import {
-  CharticulatorPropertyAccessors,
-  WidgetManager,
-} from "../../../app/views/panels/widgets/manager";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";

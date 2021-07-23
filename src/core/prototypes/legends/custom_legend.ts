@@ -15,6 +15,7 @@ export type LegendOrientation = "horizontal" | "vertical";
 
 import { CategoricalLegendClass } from "./categorical_legend";
 import { strings } from "../../../strings";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -57,7 +58,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
   };
 
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = super.getAttributePanelWidgets(manager);
 

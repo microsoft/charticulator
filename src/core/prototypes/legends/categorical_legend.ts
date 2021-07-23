@@ -7,6 +7,7 @@ import * as Graphics from "../../graphics";
 import { LegendClass, LegendProperties } from "./legend";
 import { Controls } from "..";
 import { strings } from "../../../strings";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export interface CategoricalLegendItem {
   type: "number" | "color" | "boolean";
@@ -265,7 +266,7 @@ export class CategoricalLegendClass extends LegendClass {
   }
 
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widgets = super.getAttributePanelWidgets(manager);
 
