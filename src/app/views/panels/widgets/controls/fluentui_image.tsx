@@ -135,10 +135,10 @@ export class InputImage extends ContextedComponent<
           [
             <div style={{ width: '100%' }}>
               {this.props.label ? (
-                  <Label styles={defaultLabelStyle} style={{padding: 0}}>
-                    {this.props.label}
-                  </Label>
-                ) : null}
+                <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
+                  {this.props.label}
+                </Label>
+              ) : null}
               <FluentActionButton style={{ width: '100%' }}>
                 <ActionButton
                   text={isNone ? strings.core.none : imageDisplayURL}
@@ -153,8 +153,6 @@ export class InputImage extends ContextedComponent<
                   }} />
               </FluentActionButton>
             </div>,
-
-
           ]
         )}
       </span>
