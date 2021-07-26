@@ -706,7 +706,7 @@ export class FluentUIWidgetManager
     const scaleObject = getById(this.store.chart.scales, mapping.scale);
 
     return (
-      <Button
+      <ButtonRaised
         key={attribute}
         ref={(e) => (mappingButton = ReactDOM.findDOMNode(e) as Element)}
         text={text}
