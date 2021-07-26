@@ -86,6 +86,7 @@ import {
   FluentCheckbox,
   FluentLabelHeader,
   labelRender,
+  NestedChartButtonsWrapper,
 } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
@@ -771,9 +772,9 @@ export class FluentUIWidgetManager
                             defaultValue={
                               currentExpression
                                 ? {
-                                    table: options.table,
-                                    expression: currentExpression,
-                                  }
+                                  table: options.table,
+                                  expression: currentExpression,
+                                }
                                 : null
                             }
                             onChange={(value) => {
@@ -1272,9 +1273,8 @@ export class FluentUIWidgetManager
   ) {
     return (
       <React.Fragment key={this.getKeyFromProperty(property)}>
-        {this.row(
-          "",
-          this.vertical(
+        {this.vertical(
+          <NestedChartButtonsWrapper>
             <ButtonRaised
               text="Edit Nested Chart..."
               onClick={() => {
@@ -1315,36 +1315,38 @@ export class FluentUIWidgetManager
                 };
                 window.addEventListener("message", listener);
               }}
-            />,
-            <div style={{ marginTop: "5px" }}>
-              <ButtonRaised
-                text="Import Template..."
-                onClick={async () => {
-                  const file = await showOpenFileDialog(["tmplt"]);
-                  const str = await readFileAsString(file);
-                  const data = JSON.parse(str);
-                  const template = new ChartTemplate(data);
-                  for (const table of options.dataset.tables) {
-                    const tTable = template.getDatasetSchema()[0];
-                    template.assignTable(tTable.name, table.name);
-                    for (const column of tTable.columns) {
-                      template.assignColumn(
-                        tTable.name,
-                        column.name,
-                        column.name
-                      );
-                    }
+            />
+          </NestedChartButtonsWrapper>
+          ,
+          <NestedChartButtonsWrapper>
+            <ButtonRaised
+              text="Import Template..."
+              onClick={async () => {
+                const file = await showOpenFileDialog(["tmplt"]);
+                const str = await readFileAsString(file);
+                const data = JSON.parse(str);
+                const template = new ChartTemplate(data);
+                for (const table of options.dataset.tables) {
+                  const tTable = template.getDatasetSchema()[0];
+                  template.assignTable(tTable.name, table.name);
+                  for (const column of tTable.columns) {
+                    template.assignColumn(
+                      tTable.name,
+                      column.name,
+                      column.name
+                    );
                   }
-                  const instance = template.instantiate(
-                    options.dataset,
-                    false // no scale inference
-                  );
-                  this.emitSetProperty(property, instance.chart as any);
-                }}
-              />
-            </div>
-          )
-        )}
+                }
+                const instance = template.instantiate(
+                  options.dataset,
+                  false // no scale inference
+                );
+                this.emitSetProperty(property, instance.chart as any);
+              }}
+            />
+          </NestedChartButtonsWrapper>
+        )
+        }
       </React.Fragment>
     );
   }
@@ -1357,7 +1359,7 @@ export class FluentUIWidgetManager
             {title}
           </span>
         ) : // <Label>{title}</Label>
-        null}
+          null}
         {widget}
       </div>
     );
@@ -1518,8 +1520,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-          ? this.props.draggingHint()
-          : this.props.children}
+            ? this.props.draggingHint()
+            : this.props.children}
       </div>
     );
   }
