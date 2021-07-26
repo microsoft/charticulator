@@ -2459,6 +2459,25 @@ export function initializeIcons(
           />
         </svg>
       ),
+      "sublayout/jitter": (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          width="16"
+          height="16"
+          style={{
+            fill: "#0078d4",
+          }}
+        >
+          <circle cx="10" cy="4" r="2.33333" />
+          <circle cx="20" cy="11" r="2.33333" />
+          <circle cx="8" cy="22" r="2.33333" />
+          <circle cx="23" cy="22" r="2.33333" />
+          <circle cx="4" cy="12" r="2.33333" />
+          <circle cx="14" cy="16" r="2.33333" />
+          <circle cx="21" cy="3" r="2.33333" />
+        </svg>
+      ),
     },
   };
 
