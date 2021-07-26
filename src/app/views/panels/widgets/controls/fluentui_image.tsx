@@ -13,6 +13,8 @@ import { PopupView } from "../../../../controllers/popup_controller";
 import { classNames } from "../../../../utils";
 import { Button } from "./button";
 import { strings } from "../../../../../strings";
+import { ActionButton, Label } from "@fluentui/react"
+import { defaultLabelStyle, FluentActionButton } from "./fluentui_customized_components";
 
 export interface ImageDescription {
   src: string;
@@ -24,6 +26,7 @@ export interface ImageDescription {
 export interface InputImageProps {
   value?: ImageDescription;
   onChange?: (value: ImageDescription) => boolean;
+  label?: string;
 }
 
 export class InputImage extends ContextedComponent<
@@ -94,7 +97,7 @@ export class InputImage extends ContextedComponent<
         .then((r) => {
           this.emitOnChange(r);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
     if (e.dataTransfer.files.length > 0) {
       ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
@@ -102,7 +105,6 @@ export class InputImage extends ContextedComponent<
       });
     }
   };
-  
   public render() {
     const isNone = this.props.value == null;
     const image = isNone ? null : this.resolveImage(this.props.value);
@@ -112,6 +114,7 @@ export class InputImage extends ContextedComponent<
         imageDisplayURL = "(data url)";
       }
     }
+    //debugger
     return (
       <span
         className={classNames(
@@ -130,16 +133,28 @@ export class InputImage extends ContextedComponent<
           <span className="el-drag-over">Drop Image Here</span>
         ) : (
           [
-            <img
-              key="image"
-              className="el-image"
-              src={isNone ? R.getSVGIcon("FileImage") : image.src}
-            />,
-            <span key="text" className="el-text-wrapper">
-              <span className="el-text">
-                {isNone ? strings.core.none : imageDisplayURL}
-              </span>
-            </span>,
+            <div style={{ width: '100%' }}>
+              {this.props.label ? (
+                  <Label styles={defaultLabelStyle} style={{padding: 0}}>
+                    {this.props.label}
+                  </Label>
+                ) : null}
+              <FluentActionButton style={{ width: '100%' }}>
+                <ActionButton
+                  text={isNone ? strings.core.none : imageDisplayURL}
+                  iconProps={{
+                    imageProps: {
+                      src: isNone ? R.getSVGIcon("FileImage") : image.src,
+                      style: {
+                        height: '16px',
+                        width: '16px'
+                      }
+                    }
+                  }} />
+              </FluentActionButton>
+            </div>,
+
+
           ]
         )}
       </span>
@@ -204,7 +219,7 @@ export class ImageUploader extends React.Component<
       this.refInput.focus();
     }
   }
-  public componentWillUnmount() {}
+  public componentWillUnmount() { }
 
   public static ReadFileAsImage(
     name: string,
@@ -357,7 +372,7 @@ export class ImageUploader extends React.Component<
               className="el-input"
               onPaste={this.handlePaste}
               value=""
-              onChange={() => {}}
+              onChange={() => { }}
               type="text"
               placeholder={this.props.placeholder || "Drop/Paste Image"}
             />

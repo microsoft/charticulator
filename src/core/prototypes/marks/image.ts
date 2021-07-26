@@ -44,7 +44,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Image",
-    iconPath: "mark/image",
+    iconPath: "FileImage",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -110,86 +110,78 @@ export class ImageElementClass extends EmphasizableMarkClass<
       }),
       manager.sectionHeader(strings.toolbar.image),
       manager.mappingEditor(strings.objects.icon.image, "image", {}),
-      manager.row(
-        strings.objects.image.imageMode,
-        manager.inputSelect(
-          { property: "imageMode" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            labels: [
-              strings.objects.image.letterbox,
-              strings.objects.image.stretch,
-            ],
-            options: ["letterbox", "stretch"],
-          }
-        )
+      manager.inputSelect(
+        { property: "imageMode" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels: [
+            strings.objects.image.letterbox,
+            strings.objects.image.stretch,
+          ],
+          options: ["letterbox", "stretch"],
+          label: strings.objects.image.imageMode
+        }
       ),
       ...(this.object.properties.imageMode == "letterbox"
         ? [
-            manager.row(
-              strings.alignment.align,
-              manager.horizontal(
-                [0, 1],
-                manager.inputSelect(
-                  { property: "alignX" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: [
-                      "AlignHorizontalLeft",
-                      "AlignHorizontalCenter",
-                      "AlignHorizontalRight",
-                    ],
-                    labels: [
-                      strings.alignment.left,
-                      strings.alignment.middle,
-                      strings.alignment.right,
-                    ],
-                  }
-                ),
-                manager.inputSelect(
-                  { property: "alignY" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: [
-                      "AlignVerticalBottom",
-                      "AlignVerticalCenter",
-                      "AlignVerticalTop",
-                    ],
-                    labels: [
-                      strings.alignment.bottom,
-                      strings.alignment.middle,
-                      strings.alignment.top,
-                    ],
-                  }
-                )
-              )
+          manager.label("Align"),
+          manager.horizontal(
+            [0, 1],
+            manager.inputSelect(
+              { property: "alignX" },
+              {
+                type: "radio",
+                options: ["start", "middle", "end"],
+                icons: [
+                  "AlignHorizontalLeft",
+                  "AlignHorizontalCenter",
+                  "AlignHorizontalRight",
+                ],
+                labels: [
+                  strings.alignment.left,
+                  strings.alignment.middle,
+                  strings.alignment.right,
+                ],
+              }
             ),
-          ]
-        : []),
-      manager.row(
-        strings.alignment.padding,
-        manager.horizontal(
-          [0, 2, 0, 2],
-          manager.label("x:"),
-          manager.inputNumber(
-            { property: "paddingX" },
-            {
-              updownTick: 1,
-              showUpdown: true,
-            }
+            manager.inputSelect(
+              { property: "alignY" },
+              {
+                type: "radio",
+                options: ["start", "middle", "end"],
+                icons: [
+                  "AlignVerticalBottom",
+                  "AlignVerticalCenter",
+                  "AlignVerticalTop",
+                ],
+                labels: [
+                  strings.alignment.bottom,
+                  strings.alignment.middle,
+                  strings.alignment.top,
+                ],
+              }
+            )
+
           ),
-          manager.label("y:"),
-          manager.inputNumber(
-            { property: "paddingY" },
-            {
-              updownTick: 1,
-              showUpdown: true,
-            }
-          )
-        )
+        ]
+        : []),
+      manager.sectionHeader(strings.alignment.padding),
+      manager.label("x:"),
+      manager.inputNumber(
+        { property: "paddingX" },
+        {
+          updownTick: 1,
+          showUpdown: true,
+        }
+      ),
+      manager.label("y:"),
+      manager.inputNumber(
+        { property: "paddingY" },
+        {
+          updownTick: 1,
+          showUpdown: true,
+        }
       ),
       manager.sectionHeader(strings.objects.style),
       manager.mappingEditor(strings.objects.fill, "fill", {}),

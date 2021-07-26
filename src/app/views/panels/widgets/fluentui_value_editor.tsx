@@ -18,7 +18,7 @@ import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
-import { FluentComboBoxFontFamily, InputImage } from "./controls";
+import { FluentComboBoxFontFamily } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
 import { strings } from "../../../../strings";
@@ -27,6 +27,7 @@ import {
   FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
+import { InputImage } from "./controls/fluentui_image";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -303,7 +304,7 @@ export class FluentValueEditor extends ContextedComponent<
         const str = value as Specification.Types.Image;
         return (
           <InputImage
-            // label={this.props.label}
+            label={this.props.label}
             value={str}
             onChange={(newValue) => {
               if (newValue == null) {
