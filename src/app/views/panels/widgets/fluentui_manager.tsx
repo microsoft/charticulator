@@ -86,7 +86,7 @@ import {
   FluentCheckbox,
   FluentLabelHeader,
   labelRender,
-  NestedChartButtonsWrapepr,
+  NestedChartButtonsWrapper,
 } from "./controls/fluentui_customized_components";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
@@ -1271,7 +1271,7 @@ export class FluentUIWidgetManager
     return (
       <React.Fragment key={this.getKeyFromProperty(property)}>
         {this.vertical(
-          <NestedChartButtonsWrapepr>
+          <NestedChartButtonsWrapper>
             <ButtonRaised
               text="Edit Nested Chart..."
               onClick={() => {
@@ -1313,9 +1313,9 @@ export class FluentUIWidgetManager
                 window.addEventListener("message", listener);
               }}
             />
-          </NestedChartButtonsWrapepr>
+          </NestedChartButtonsWrapper>
           ,
-          <NestedChartButtonsWrapepr>
+          <NestedChartButtonsWrapper>
             <ButtonRaised
               text="Import Template..."
               onClick={async () => {
@@ -1341,7 +1341,7 @@ export class FluentUIWidgetManager
                 this.emitSetProperty(property, instance.chart as any);
               }}
             />
-          </NestedChartButtonsWrapepr>
+          </NestedChartButtonsWrapper>
         )
         }
       </React.Fragment>

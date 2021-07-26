@@ -84,6 +84,6 @@ export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
   label,
 }) => (label ? <Label styles={defaultLabelStyle}>{label}</Label> : null);
 
-export const NestedChartButtonsWrapepr = styled.div`
+export const NestedChartButtonsWrapper = styled.div`
   margin-top: 5px;
 `;
