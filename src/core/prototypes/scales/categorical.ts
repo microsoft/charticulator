@@ -561,7 +561,10 @@ export class CategoricalScaleImage extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.text(key, "right"),
+            manager.tooltip(
+              manager.text(key, "right"),
+              manager.text(key, "right")
+            ),
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "")
           )

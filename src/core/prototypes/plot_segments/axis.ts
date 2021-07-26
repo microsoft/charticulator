@@ -1179,7 +1179,7 @@ export function buildAxisWidgets(
                 }),
                 m.reorderWidget(
                   { property: axisProperty, field: "categories" },
-                  true
+                  { allowReset: true }
                 )
               )
             )

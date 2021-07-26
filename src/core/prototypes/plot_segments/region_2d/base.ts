@@ -2588,19 +2588,17 @@ export class Region2DConstraintBuilder {
       );
     }
     if (type == Region2DSublayoutType.Jitter) {
+      extra.push(m.label("Distribution"));
       extra.push(
-        m.row(
-          "Distribution",
-          m.horizontal(
-            [0, 1, 1],
-            m.inputBoolean(
-              { property: "sublayout", field: ["jitter", "horizontal"] },
-              { type: "highlight", icon: "sublayout/dodge-x" }
-            ),
-            m.inputBoolean(
-              { property: "sublayout", field: ["jitter", "vertical"] },
-              { type: "highlight", icon: "sublayout/dodge-y" }
-            )
+        m.horizontal(
+          [0, 1, 1],
+          m.inputBoolean(
+            { property: "sublayout", field: ["jitter", "horizontal"] },
+            { type: "highlight", icon: "HorizontalDistributeCenter" }
+          ),
+          m.inputBoolean(
+            { property: "sublayout", field: ["jitter", "vertical"] },
+            { type: "highlight", icon: "VerticalDistributeCenter" }
           )
         )
       );

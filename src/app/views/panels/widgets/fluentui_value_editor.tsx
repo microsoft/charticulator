@@ -28,6 +28,7 @@ import {
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
+import { FluentInputNumber } from "./controls/fluentui_input_number";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -80,20 +81,17 @@ export class FluentValueEditor extends ContextedComponent<
       case Specification.AttributeType.Number: {
         let numberOptions = this.props.numberOptions;
         if (!numberOptions) {
-          numberOptions = {};
+          numberOptions = {
+            digits: 2,
+          };
         }
         return (
-          <TextField
+          <FluentInputNumber
             label={this.props.label}
             placeholder={this.props.placeholder}
-            onRenderLabel={labelRender}
-            defaultValue={
-              this.props.defaultValue != null
-                ? (this.props.defaultValue as string)
-                : ""
-            }
-            type="text"
-            onChange={(event, newValue) => {
+            // onRenderLabel={labelRender}
+            defaultValue={this.props.value as number}
+            onEnter={(newValue: number) => {
               if (newValue == null) {
                 this.emitClearValue();
                 return true;
