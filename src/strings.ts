@@ -243,6 +243,10 @@ export const strings = {
     numberFormatDot: "Decimal: dot / Separator: comma",
     semicolon: "semicolon",
   },
+  coordinateSystem: {
+    x: "x:",
+    y: "y:",
+  },
   templateImport: {
     columnNameTemplate: "Column name from the template",
     columnNameChart: "Column name from the chart design",

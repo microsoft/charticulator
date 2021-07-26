@@ -125,7 +125,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       ),
       ...(this.object.properties.imageMode == "letterbox"
         ? [
-          manager.label("Align"),
+          manager.label(strings.alignment.align),
           manager.horizontal(
             [0, 1],
             manager.inputSelect(
@@ -167,7 +167,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
         ]
         : []),
       manager.sectionHeader(strings.alignment.padding),
-      manager.label("x:"),
+      manager.label(strings.coordinateSystem.x),
       manager.inputNumber(
         { property: "paddingX" },
         {
@@ -175,7 +175,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
           showUpdown: true,
         }
       ),
-      manager.label("y:"),
+      manager.label(strings.coordinateSystem.y),
       manager.inputNumber(
         { property: "paddingY" },
         {
