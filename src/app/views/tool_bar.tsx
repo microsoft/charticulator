@@ -191,7 +191,7 @@ export class Toolbar extends ContextedComponent<
           {
             classID: "mark.image",
             title: strings.toolbar.image,
-            icon: "mark/image",
+            icon: "FileImage",
           },
         ]}
       />

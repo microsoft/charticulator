@@ -40,7 +40,6 @@ import { ReorderListView } from "../object_list_editor";
 import {
   Button,
   InputColorGradient,
-  InputImage,
   InputImageProperty,
   FluentComboBoxFontFamily,
 } from "./controls";
@@ -98,6 +97,7 @@ import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
+import { InputImage } from "./controls/fluentui_image";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -146,7 +146,7 @@ export class FluentUIWidgetManager
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
-
+    
     return (
       <FluentMappingEditor
         key={name + attribute}

@@ -445,17 +445,16 @@ export class FluentMappingEditor extends React.Component<
     const attribute = this.props.attribute;
     const options = this.props.options;
     const currentMapping = parent.getAttributeMapping(attribute);
+
     // If there is a mapping, also not having default or using auto
-    let shouldShowEraser =
+    const shouldShowEraser =
       currentMapping != null &&
       (currentMapping.type != "value" ||
         !options.defaultValue ||
         options.defaultAuto);
-    shouldShowEraser = shouldShowEraser || this.state.showNoneAsValue;
     const shouldShowBindData = parent.onMapDataHandler != null;
     const isDataMapping =
-      currentMapping != null && currentMapping.type == "scale";
-    shouldShowEraser = isDataMapping;
+      currentMapping != null && (currentMapping.type == "scale" || currentMapping.type == "value");
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
@@ -509,7 +508,7 @@ export class FluentMappingEditor extends React.Component<
           [1, 0],
           this.renderCurrentAttributeMapping(),
           <span>
-            {shouldShowEraser ? (
+            {isDataMapping ? (
               <FluentButton>
                 <DefaultButton
                   iconProps={{
