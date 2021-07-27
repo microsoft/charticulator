@@ -345,11 +345,6 @@ export class AxisRenderer {
       }
     };
 
-    // TODO get 30 from glyph width
-    // if (Math.abs(rangeMax - rangeMin) < 600) {
-    //   this.scrollRequired = true;
-    // }
-
     this.ticks = r;
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
