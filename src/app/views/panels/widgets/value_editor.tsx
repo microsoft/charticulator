@@ -17,7 +17,7 @@ import { InputNumberOptions } from "../../../../core/prototypes/controls";
 import { MappingType } from "../../../../core/specification";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { getAlignment, PopupView } from "../../../controllers";
+import { PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import {
   Button,

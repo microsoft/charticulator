@@ -6,11 +6,9 @@ import * as R from "../../resources";
 import { EventSubscription, Specification, Expression } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
-
 import { AppStore } from "../../stores";
 import { FunctionCall, NumberValue } from "../../../core/expression";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
-import { WidgetManager } from "./widgets/manager";
 
 export interface ScaleValueSelectorProps {
   scale: Specification.Scale;
