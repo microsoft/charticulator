@@ -9,7 +9,6 @@
  */
 
 import { ReactElement } from "react";
-import { renderGraphicalElementSVG } from "../../../app/renderer";
 import {
   getById,
   MultistringHashMap,
@@ -242,7 +241,7 @@ export class ChartRenderer {
   ) {
     const elementsAndStates = zipArray(chart.elements, chartState.elements);
 
-    let controls: ReactElement[] = [];
+    let controls: ReactElement<any>[] = [];
 
     // Render control graphics
     for (const [element, elementState] of elementsAndStates) {

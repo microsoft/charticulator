@@ -990,7 +990,7 @@ export class AxisRenderer {
     side: number,
     handlePosition: number,
     onScroll: (position: number) => void
-  ): React.ReactElement {
+  ): React.ReactElement<any> {
     if (!this.scrollRequired) {
       return null;
     }

@@ -381,7 +381,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return g;
   }
 
-  public renderControls(manager: ChartStateManager): React.ReactElement[] {
+  public renderControls(manager: ChartStateManager): React.ReactElement<any>[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];

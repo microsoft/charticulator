@@ -70,7 +70,7 @@ export abstract class PlotSegmentClass<
   }
 
   // Renders interactable elements of plotsegment;
-  public renderControls(manager: ChartStateManager): ReactElement[] {
+  public renderControls(manager: ChartStateManager): ReactElement<any>[] {
     return null;
   }
 

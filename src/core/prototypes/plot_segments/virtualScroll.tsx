@@ -77,10 +77,8 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     handlerHeight = handlerBarWidth;
   }
 
-  const track = React.useRef<SVGRectElement>();
-  const handler = React.useRef<SVGRectElement>();
-
-  const state = React.createRef<boolean>();
+  const track = React.useRef<SVGRectElement>(null);
+  const handler = React.useRef<SVGRectElement>(null);
 
   const onMouseMove = React.useCallback(
     (e: any) => {
