@@ -410,6 +410,8 @@ export const strings = {
       imageMode: "Resize Mode",
       letterbox: "Letterbox",
       stretch: "Stretch",
+      dropImage: "Drop Image Here",
+      defaultPlaceholder: "Drop/Paste Image"
     },
     scales: {
       mode: "Mode",

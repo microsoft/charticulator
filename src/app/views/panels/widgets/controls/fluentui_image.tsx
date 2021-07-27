@@ -135,7 +135,7 @@ export class InputImage extends ContextedComponent<
                 {this.props.label}
               </Label>
             ) : null}
-            <span className="el-drag-over-attrubutes">Drop Image Here</span>
+            <span className="el-drag-over-attrubutes">{strings.objects.image.dropImage}</span>
           </div>
 
         ) : (
@@ -369,7 +369,7 @@ export class ImageUploader extends React.Component<
         onDrop={this.handleDrop}
       >
         {this.state.dragOver ? (
-          <span className="el-dropzone">Drop Image Here</span>
+          <span className="el-dropzone">{strings.objects.image.dropImage}</span>
         ) : (
           <span className="el-input-wrapper">
             <input
@@ -379,7 +379,7 @@ export class ImageUploader extends React.Component<
               value=""
               onChange={() => { }}
               type="text"
-              placeholder={this.props.placeholder || "Drop/Paste Image"}
+              placeholder={this.props.placeholder || strings.objects.image.defaultPlaceholder}
               disabled={true}
             />
             <FluentButton marginTop="0px">
@@ -422,7 +422,7 @@ export class InputImageProperty extends InputImage {
         onDrop={this.handleDrop}
       >
         {this.state.dragOver ? (
-          <span className="el-drag-over">Drop Image Here</span>
+          <span className="el-drag-over">{strings.objects.image.dropImage}</span>
         ) : (
           [
             <FluentUIImage
