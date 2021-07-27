@@ -41,7 +41,7 @@ import {
   AxisDataBinding,
   AxisDataBindingType,
 } from "../../../specification/types";
-import d3 = require("d3");
+import { scaleLinear } from "d3-scale";
 
 export type CartesianAxisMode =
   | "null"
@@ -424,8 +424,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                   .slice(start - 1, start + props.xData.windowSize);
               }
             } else if (props.xData.type === AxisDataBindingType.Numerical) {
-              const scale = d3
-                .scaleLinear()
+              const scale = scaleLinear()
                 .domain([0, 100])
                 .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
               props.xData.scrollPosition = position;
@@ -482,8 +481,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
                   .slice(start - 1, start + props.yData.windowSize);
               }
             } else if (props.yData.type === AxisDataBindingType.Numerical) {
-              const scale = d3
-                .scaleLinear()
+              const scale = scaleLinear()
                 .domain([0, 100])
                 .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
               props.yData.scrollPosition = position;
