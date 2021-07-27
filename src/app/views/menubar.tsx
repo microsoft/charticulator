@@ -29,14 +29,13 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString } from "../utils";
+import { classNames, isInIFrame, readFileAsString } from "../utils";
 import { ChartTemplate, Specification } from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
-import { Url } from "url";
 import { EditorType } from "../stores/app_store";
 
 export class HelpButton extends React.Component<
@@ -355,6 +354,7 @@ export class MenuBar extends ContextedComponent<
             }
           }}
         />
+        <span className="charticulator__menu-bar-separator" />
       </>
     );
   }
@@ -760,7 +760,12 @@ export class MenuBar extends ContextedComponent<
               : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>
+            <p
+              className={classNames("charticulator__menu-bar-center", [
+                "nested-chart",
+                this.context.store.editorType === EditorType.NestedEmbedded,
+              ])}
+            >
               {`${this.context.store.chart?.properties.name}${
                 this.context.store.editorType === EditorType.Embedded ||
                 this.context.store.editorType === EditorType.NestedEmbedded
