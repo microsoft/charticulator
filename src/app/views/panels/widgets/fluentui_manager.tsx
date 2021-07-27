@@ -40,7 +40,6 @@ import { ReorderListView } from "../object_list_editor";
 import {
   Button,
   InputColorGradient,
-  InputImageProperty,
   FluentComboBoxFontFamily,
 } from "./controls";
 import { FilterEditor } from "./filter_editor";
@@ -98,7 +97,7 @@ import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
-import { InputImage } from "./controls/fluentui_image";
+import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 
 export type OnEditMappingHandler = (
   attribute: string,

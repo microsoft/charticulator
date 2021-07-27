@@ -9,12 +9,10 @@ import * as globals from "../../../../globals";
 
 import { ContextedComponent } from "../../../../context_component";
 import { PopupView } from "../../../../controllers/popup_controller";
-
 import { classNames } from "../../../../utils";
-import { Button } from "./button";
 import { strings } from "../../../../../strings";
-import { ActionButton, Label } from "@fluentui/react"
-import { defaultLabelStyle, FluentActionButton } from "./fluentui_customized_components";
+import { ActionButton, Label, Image as FluentUIImage, DefaultButton } from "@fluentui/react"
+import { defaultLabelStyle, FluentActionButton, FluentButton } from "./fluentui_customized_components";
 
 export interface ImageDescription {
   src: string;
@@ -114,7 +112,6 @@ export class InputImage extends ContextedComponent<
         imageDisplayURL = "(data url)";
       }
     }
-    //debugger
     return (
       <span
         className={classNames(
@@ -128,32 +125,42 @@ export class InputImage extends ContextedComponent<
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
         onClick={this.startChooseImage}
+        style={{ marginBottom: '5px' }}
       >
         {this.state.dragOver ? (
-          <span className="el-drag-over">Drop Image Here</span>
+
+          <div style={{ width: '100%' }}>
+            {this.props.label ? (
+              <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
+                {this.props.label}
+              </Label>
+            ) : null}
+            <span className="el-drag-over-attrubutes">Drop Image Here</span>
+          </div>
+
         ) : (
-          [
-            <div style={{ width: '100%' }}>
-              {this.props.label ? (
-                <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
-                  {this.props.label}
-                </Label>
-              ) : null}
-              <FluentActionButton style={{ width: '100%' }}>
-                <ActionButton
-                  text={isNone ? strings.core.none : imageDisplayURL}
-                  iconProps={{
-                    imageProps: {
-                      src: isNone ? R.getSVGIcon("FileImage") : image.src,
-                      style: {
-                        height: '16px',
-                        width: '16px'
-                      }
+
+          <div style={{ width: '100%' }}>
+            {this.props.label ? (
+              <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
+                {this.props.label}
+              </Label>
+            ) : null}
+            <FluentActionButton style={{ width: '100%' }}>
+              <ActionButton
+                text={isNone ? strings.core.none : imageDisplayURL}
+                iconProps={{
+                  imageProps: {
+                    src: isNone ? R.getSVGIcon("FileImage") : image.src,
+                    style: {
+                      height: '16px',
+                      width: '16px'
                     }
-                  }} />
-              </FluentActionButton>
-            </div>,
-          ]
+                  }
+                }} />
+
+            </FluentActionButton>
+          </div>
         )}
       </span>
     );
@@ -373,8 +380,17 @@ export class ImageUploader extends React.Component<
               onChange={() => { }}
               type="text"
               placeholder={this.props.placeholder || "Drop/Paste Image"}
+              disabled={true}
             />
-            <Button icon={"toolbar/open"} onClick={this.handleOpenFile} />
+            <FluentButton marginTop="0px">
+              <DefaultButton
+                iconProps={{
+                  iconName: "OpenFolderHorizontal"
+                }}
+                onClick={this.handleOpenFile}
+              />
+            </FluentButton>
+
           </span>
         )}
       </div>
@@ -409,10 +425,11 @@ export class InputImageProperty extends InputImage {
           <span className="el-drag-over">Drop Image Here</span>
         ) : (
           [
-            <img
+            <FluentUIImage
               key="image"
-              className="el-image2"
               src={isNone ? R.getSVGIcon("FileImage") : image.src}
+              width={30}
+              height={30}
             />,
             <ImageUploader
               key={0}

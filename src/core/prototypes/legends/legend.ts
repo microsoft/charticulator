@@ -253,7 +253,6 @@ export abstract class LegendClass extends ChartElementClass {
         manager.label(strings.alignment.alignment),
         manager.horizontal(
           [0, 0],
-          null,
           manager.inputSelect(
             { property: "alignX" },
             {
