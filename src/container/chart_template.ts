@@ -468,9 +468,11 @@ export class ChartTemplate {
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
               axisDataBinding.domainMin = scale.domainMin;
+              axisDataBinding.dataDomainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
+              axisDataBinding.dataDomainMax = scale.domainMax;
             }
             if (axis.defineCategories) {
               axisDataBinding.categories = defineCategories(vector);

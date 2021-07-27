@@ -38,8 +38,13 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** Domain for linear/logarithm types */
   numericalMode?: NumericalMode;
+  // current domain for scrolling
   domainMin?: number;
   domainMax?: number;
+
+  // origin domain from dataset
+  dataDomainMin?: number;
+  dataDomainMax?: number;
 
   /** Export properties of axis for auto scale ranges */
   autoDomainMin?: boolean;

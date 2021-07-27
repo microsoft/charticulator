@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ChartStateManager } from "../..";
@@ -36,7 +37,11 @@ import {
 import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { strings } from "../../../../strings";
-import { AxisDataBinding } from "../../../specification/types";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+} from "../../../specification/types";
+import d3 = require("d3");
 
 export type CartesianAxisMode =
   | "null"
@@ -381,13 +386,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     const props = this.object.properties;
     const g = [];
     // TODO optimize axis render;
-    if (
-      props.xData &&
-      props.xData.visible &&
-      props.xData.allowScrolling &&
-      props.xData.allCategories &&
-      props.xData.allCategories.length > props.xData.windowSize
-    ) {
+    if (props.xData && props.xData.visible && props.xData.allowScrolling) {
       const axisRenderer = new AxisRenderer().setAxisDataBinding(
         props.xData,
         0,
@@ -403,27 +402,37 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.X,
           props.xData.scrollPosition ? props.xData.scrollPosition : 0,
           (position) => {
-            if (!props.xData.allCategories) {
-              return;
+            if (props.xData.type === AxisDataBindingType.Categorical) {
+              if (!props.xData.allCategories) {
+                return;
+              }
+              props.xData.scrollPosition = position;
+
+              const start = Math.floor(
+                ((props.xData.allCategories.length - props.xData.windowSize) /
+                  100) *
+                  position
+              );
+              props.xData.categories = props.xData.allCategories.slice(
+                start,
+                start + props.xData.windowSize
+              );
+
+              if (props.xData.categories.length === 0) {
+                props.xData.allCategories
+                  .reverse()
+                  .slice(start - 1, start + props.xData.windowSize);
+              }
+            } else if (props.xData.type === AxisDataBindingType.Numerical) {
+              const scale = d3
+                .scaleLinear()
+                .domain([0, 100])
+                .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
+              props.xData.scrollPosition = position;
+              const start = scale(position);
+              props.xData.domainMin = start;
+              props.xData.domainMax = start + props.xData.windowSize;
             }
-            props.xData.scrollPosition = position;
-
-            const start = Math.floor(
-              ((props.xData.allCategories.length - props.xData.windowSize) /
-                100) *
-                position
-            );
-            props.xData.categories = props.xData.allCategories.slice(
-              start,
-              start + props.xData.windowSize
-            );
-
-            if (props.xData.categories.length === 0) {
-              props.xData.allCategories
-                .reverse()
-                .slice(start - 1, start + props.xData.windowSize);
-            }
-
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
           }
@@ -452,26 +461,36 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.Y,
           props.yData.scrollPosition ? props.yData.scrollPosition : 0,
           (position) => {
-            if (!props.yData.allCategories) {
-              return;
-            }
-            props.yData.scrollPosition = position;
-            const start = Math.floor(
-              ((props.yData.allCategories.length - props.yData.windowSize) /
-                100) *
-                position
-            );
-            props.yData.categories = props.yData.allCategories
-              .reverse()
-              .slice(start, start + props.yData.windowSize)
-              .reverse();
-
-            if (props.yData.categories.length === 0) {
-              props.yData.allCategories
+            if (props.xData.type === AxisDataBindingType.Categorical) {
+              if (!props.yData.allCategories) {
+                return;
+              }
+              props.yData.scrollPosition = position;
+              const start = Math.floor(
+                ((props.yData.allCategories.length - props.yData.windowSize) /
+                  100) *
+                  position
+              );
+              props.yData.categories = props.yData.allCategories
                 .reverse()
-                .slice(start - 1, start + props.yData.windowSize);
-            }
+                .slice(start, start + props.yData.windowSize)
+                .reverse();
 
+              if (props.yData.categories.length === 0) {
+                props.yData.allCategories
+                  .reverse()
+                  .slice(start - 1, start + props.yData.windowSize);
+              }
+            } else if (props.yData.type === AxisDataBindingType.Numerical) {
+              const scale = d3
+                .scaleLinear()
+                .domain([0, 100])
+                .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
+              props.yData.scrollPosition = position;
+              const start = scale(position);
+              props.yData.domainMin = start;
+              props.yData.domainMax = start + props.yData.windowSize;
+            }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
           }

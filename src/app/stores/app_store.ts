@@ -1739,6 +1739,14 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.domainMax !== undefined
           ? <number>objectProperties?.domainMax
           : null,
+      dataDomainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      dataDomainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
       enablePrePostGap:
         <boolean>objectProperties?.enablePrePostGap !== undefined
           ? <boolean>objectProperties?.enablePrePostGap
@@ -1831,13 +1839,17 @@ export class AppStore extends BaseStore {
             );
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
+            dataBinding.windowSize = Math.ceil(categories.length / 10);
             dataBinding.categories = categories;
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
                 ((categories.length - dataBinding.windowSize) / 100) *
                   dataBinding.scrollPosition
               );
-              dataBinding.categories = categories.slice(start, start + 10);
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
             }
           }
 
@@ -1878,6 +1890,11 @@ export class AppStore extends BaseStore {
             if (options.defineCategories) {
               dataBinding.categories = defineCategories(values);
             }
+
+            dataBinding.windowSize =
+              (dataBinding.domainMax - dataBinding.domainMin) / 10;
+            dataBinding.dataDomainMin = dataBinding.domainMin;
+            dataBinding.dataDomainMax = dataBinding.domainMax;
           }
           break;
         case Specification.DataKind.Temporal:

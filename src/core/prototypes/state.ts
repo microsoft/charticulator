@@ -29,7 +29,7 @@ import { ValueType } from "../expression/classes";
 import { MappingType } from "../specification";
 import { forEachObject, ObjectItemKind } from "./index";
 import { expect_deep_approximately_equals } from "../../app/utils";
-import { AxisDataBinding } from "../specification/types";
+import { AxisDataBinding, AxisDataBindingType } from "../specification/types";
 
 /**
  * Represents a set of default attributes
@@ -800,24 +800,33 @@ export class ChartStateManager {
 
   private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
     const filteredIndices: number[] = [];
-    if (!data.allowScrolling || !data.allCategories) {
-      return filteredIndices;
-    }
     // TODO fix expression (get column name from expression properly)
     const parsed = (Expression.parse(
       data.expression
     ) as Expression.FunctionCall).args[0];
 
     const table = this.getTable(tableName);
-    for (let i = 0; i < table.rows.length; i++) {
-      const rowContext = table.getRowContext(i);
 
-      if (
-        data.categories.find(
-          (category) => category === parsed.getStringValue(rowContext)
-        ) !== undefined
-      ) {
-        filteredIndices.push(i);
+    if (data.type === AxisDataBindingType.Categorical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+
+        if (
+          data.categories.find(
+            (category) => category === parsed.getStringValue(rowContext)
+          ) !== undefined ||
+          !data.allCategories
+        ) {
+          filteredIndices.push(i);
+        }
+      }
+    } else if (data.type === AxisDataBindingType.Numerical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+        const value = parsed.getValue(rowContext);
+        if (value >= data.domainMin && value <= data.domainMax) {
+          filteredIndices.push(i);
+        }
       }
     }
 
@@ -880,14 +889,31 @@ export class ChartStateManager {
     } else {
       plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
     }
+    if (plotSegment.properties.xData && plotSegment.properties.yData) {
+      const dataX = plotSegment.properties.xData as AxisDataBinding;
+      const filteredIndicesX = this.applyScrollingFilter(
+        dataX,
+        plotSegment.table
+      );
 
-    if (plotSegment.properties.xData) {
-      const data = plotSegment.properties.xData as AxisDataBinding;
-      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
-    }
-    if (plotSegment.properties.yData) {
-      const data = plotSegment.properties.yData as AxisDataBinding;
-      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      const dataY = plotSegment.properties.yData as AxisDataBinding;
+      const filteredIndicesY = this.applyScrollingFilter(
+        dataY,
+        plotSegment.table
+      );
+
+      filteredIndices = filteredIndicesX.filter((value) =>
+        filteredIndicesY.includes(value)
+      );
+    } else {
+      if (plotSegment.properties.xData) {
+        const data = plotSegment.properties.xData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
+      if (plotSegment.properties.yData) {
+        const data = plotSegment.properties.yData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
     }
     if (plotSegment.properties.axis) {
       const data = plotSegment.properties.axis as AxisDataBinding;

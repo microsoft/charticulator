@@ -112,10 +112,10 @@ export class AxisRenderer {
     this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
-    this.scrollRequired =
-      data.allowScrolling &&
-      data.allCategories &&
-      data.allCategories.length > data.windowSize;
+    this.scrollRequired = data.allowScrolling;
+    //&&
+    // data.allCategories &&
+    // data.allCategories.length > data.windowSize;
     switch (data.type) {
       case "numerical":
         {
@@ -1361,6 +1361,31 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
+                m.inputBoolean(
+                  {
+                    property: axisProperty,
+                    field: "allowScrolling",
+                  },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.dataAxis.allowScrolling,
+                  }
+                ),
+                data.allowScrolling ? (
+                  m.row(
+                    strings.objects.dataAxis.windowSize,
+                    m.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: 1,
+                      }
+                    )
+                  )
+                ) : null
               ]
             )
           );
