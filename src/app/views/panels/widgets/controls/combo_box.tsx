@@ -204,10 +204,14 @@ export class ComboBoxFontFamily extends React.Component<
 export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
   props
 ) => {
+  const [currentValue, setCurrentValue] = React.useState<string>(props.defaultValue);
+
   const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
     IComboBoxOption[]
   >(() => {
-    return fontList.map((fontName: string) => ({
+    const cuurentFontList = [...new Set([...fontList, currentValue])];
+    
+    return cuurentFontList.map((fontName: string) => ({
       key: fontName,
       text: fontName,
       styles: {
@@ -216,19 +220,23 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
         },
       },
     }));
-  }, []);
+  }, [currentValue]);
+
 
   const onCancel = React.useCallback(() => props.onCancel?.(), [props]);
   const onEnter = React.useCallback(
     (event, value) => {
-      props.onEnter?.(value.key.toString());
+      const currentInputValue: string = event.target.value;
+      const currentFontValue: string = value?.key?.toString() ?? (currentInputValue.length > 0 ? currentInputValue : props.defaultValue);
+      setCurrentValue(currentFontValue);
+      props.onEnter?.(currentFontValue);
     },
     [props]
   );
 
   return (
     <FluentCombobox
-      defaultSelectedKey={props.defaultValue}
+      selectedKey={currentValue}
       label={props.label}
       onRenderLabel={({ props }) => (
         <Label styles={defaultLabelStyle}>{props.label}</Label>
@@ -237,6 +245,7 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
       options={optionsWithCustomStyling}
       onChange={onEnter}
       onAbort={onCancel}
+      allowFreeform
     />
   );
 };
