@@ -305,19 +305,23 @@ export class MenuBar extends ContextedComponent<
           <DialogFooter>
             <PrimaryButton
               onClick={() => {
-                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
                 this.setState({
                   showSaveDialog: false,
                 });
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+                setTimeout(() =>
+                  this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE)
+                );
               }}
               text={strings.menuBar.saveButton}
             />
             <DefaultButton
               onClick={() => {
-                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
                 this.setState({
                   showSaveDialog: false,
                 });
+                () =>
+                  this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
               }}
               text={strings.menuBar.dontSaveButton}
             />
