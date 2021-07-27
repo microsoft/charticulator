@@ -1834,7 +1834,8 @@ export class AppStore extends BaseStore {
             dataBinding.categories = categories;
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
-                ((categories.length - 10) / 100) * dataBinding.scrollPosition
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
               );
               dataBinding.categories = categories.slice(start, start + 10);
             }
