@@ -60,6 +60,7 @@ import { GroupByEditor } from "./groupby_editor";
 import {
   applyDateFormat,
   ChartTemplate,
+  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
