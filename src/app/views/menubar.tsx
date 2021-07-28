@@ -319,8 +319,7 @@ export class MenuBar extends ContextedComponent<
                 this.setState({
                   showSaveDialog: false,
                 });
-                () =>
-                  this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
               }}
               text={strings.menuBar.dontSaveButton}
             />
@@ -332,6 +331,7 @@ export class MenuBar extends ContextedComponent<
           title={strings.menuBar.save}
           onClick={() => {
             this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+
             this.setState({
               showSaveDialog: false,
             });
