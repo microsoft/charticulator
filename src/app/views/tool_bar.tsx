@@ -274,11 +274,13 @@ export class Toolbar extends ContextedComponent<
           {this.renderIconButton()}
           <span className={"charticulator__toolbar-horizontal-separator"} />
           {this.renderDataAxisButton()}
-          <ObjectButton
-            classID="mark.nested-chart"
-            title={strings.toolbar.nestedChart}
-            icon="mark/nested-chart"
-          />
+          {this.context.store.editorType === EditorType.Embedded ? (
+            <ObjectButton
+              classID="mark.nested-chart"
+              title={strings.toolbar.nestedChart}
+              icon="mark/nested-chart"
+            />
+          ) : null}
         </>
       </>,
     ];
