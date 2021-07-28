@@ -30,7 +30,11 @@ import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
 import { classNames, isInIFrame, readFileAsString } from "../utils";
-import { ChartTemplate, Specification } from "../../container";
+import {
+  ChartTemplate,
+  primaryButtonStyles,
+  Specification,
+} from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
@@ -303,6 +307,7 @@ export class MenuBar extends ContextedComponent<
         >
           <DialogFooter>
             <PrimaryButton
+              styles={primaryButtonStyles}
               onClick={() => {
                 this.setState({
                   showSaveDialog: false,
