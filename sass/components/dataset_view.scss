@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
 @import "../theme.scss";
 
 .charticulator {
@@ -200,7 +201,7 @@
       display: block;
       margin: 5px;
       line-height: 20px;
-      margin-top: $height / 2 - 10;
+      margin-top: math.div($height, 2) - 10;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -208,7 +209,7 @@
     &-prompt {
       display: block;
       line-height: 20px;
-      margin-top: $height / 2 - 10;
+      margin-top: math.div($height, 2) - 10;
       .el-svg-icon {
         height: 20px;
         width: 20px;
