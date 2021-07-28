@@ -2,13 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import {
-  Expression,
-  Prototypes,
-  setField,
-  Solver,
-  Specification,
-} from "../../../core";
+import { Expression, Prototypes, Solver, Specification } from "../../../core";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";

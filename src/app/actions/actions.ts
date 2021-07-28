@@ -21,7 +21,6 @@ import {
   NumericalMode,
 } from "../../core/specification/types";
 import { NestedChartEditorOptions } from "../../core/prototypes/controls";
-import { NestedChartElementProperties } from "../../core/prototypes/marks/nested_chart.attrs";
 import { AttributeMap } from "../../core/specification";
 
 // Reexport these actions so consumers don't need to pull from both core/actions and app/actions

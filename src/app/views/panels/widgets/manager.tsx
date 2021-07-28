@@ -16,7 +16,6 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
   refineColumnName,
   getById,
 } from "../../../../core";
@@ -60,7 +59,6 @@ import { GroupByEditor } from "./groupby_editor";
 import {
   applyDateFormat,
   ChartTemplate,
-  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
@@ -79,7 +77,6 @@ import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
-import { ChartTemplateBuilder } from "../../../template";
 import { OpenNestedEditor } from "../../../actions/actions";
 
 export type OnEditMappingHandler = (
