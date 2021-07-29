@@ -43,6 +43,7 @@ import { AttributeMap, MappingType } from "../core/specification";
 import { defaultVersionOfTemplate } from "./stores/defaults";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
 import { EditorType } from "./stores/app_store";
+import { LocalizationConfig } from "../container/container";
 
 export class ApplicationExtensionContext implements ExtensionContext {
   constructor(public app: Application) {}
@@ -119,6 +120,7 @@ export class Application {
       workerScriptContent?: string;
       worker?: CharticulatorWorkerInterface;
     },
+    localizaiton: LocalizationConfig,
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
@@ -190,7 +192,6 @@ export class Application {
           remove: NumberFormatRemove === "," ? "," : ".",
         },
       });
-
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
@@ -198,6 +199,13 @@ export class Application {
         thousands: NumberFormatRemove === "," ? "," : ".",
       });
     } catch (ex) {
+      setFormatOptions({
+        currency: [localizaiton?.currency, ""] ?? defaultCurrency,
+        grouping: defaultDigitsGroup,
+        decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
+        thousands:
+          localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+      });
       console.warn("Loadin localization settings failed");
     }
 
