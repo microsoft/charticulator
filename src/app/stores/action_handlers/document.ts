@@ -15,6 +15,11 @@ import { Migrator } from "../migrator";
 import { ActionHandlerRegistry } from "./registry";
 import { getConfig } from "../../config";
 import { ChartTemplateBuilder } from "../../template";
+import {
+  NestedEditorEventType,
+  NestedEditorMessage,
+  NestedEditorMessageType,
+} from "../../application";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
 // eslint-disable-next-line
@@ -263,7 +268,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.ReplaceDataset, function (action) {
-    // this.saveHistory();
     this.currentChartID = null;
     this.currentSelection = null;
     this.dataset = action.dataset;
@@ -368,10 +372,10 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     );
     const listener = (e: MessageEvent) => {
       if (e.origin == document.location.origin) {
-        const data = e.data;
+        const data = <NestedEditorMessage>e.data;
         if (data.id == editorID) {
           switch (data.type) {
-            case "initialized":
+            case NestedEditorMessageType.Initialized:
               {
                 const builder = new ChartTemplateBuilder(
                   options.specification,
@@ -384,7 +388,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                 newWindow.postMessage(
                   {
                     id: editorID,
-                    type: "load",
+                    type: NestedEditorEventType.Load,
                     specification: options.specification,
                     dataset: options.dataset,
                     width: options.width,
@@ -396,7 +400,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
                 );
               }
               break;
-            case "save":
+            case NestedEditorMessageType.Save:
               {
                 this.setProperty({
                   object,
