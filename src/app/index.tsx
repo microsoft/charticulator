@@ -52,6 +52,7 @@ export {
   Application,
   ApplicationExtensionContext,
   NestedEditorData,
+  NestedEditorEventType,
 } from "./application";
 export { CharticulatorAppConfig, MainViewConfig } from "./config";
 export { addSVGIcon, getSVGIcon } from "./resources";

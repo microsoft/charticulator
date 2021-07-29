@@ -1,6 +1,7 @@
-/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable max-lines-per-function */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -59,10 +60,25 @@ export class ApplicationExtensionContext implements ExtensionContext {
     return this.app;
   }
 }
+export const enum NestedEditorMessageType {
+  Save = "save",
+  Initialized = "initialized",
+}
+export interface NestedEditorMessage {
+  id: string;
+  type: NestedEditorMessageType;
+  specification?: Specification.Chart;
+  template?: Specification.Template.ChartTemplate;
+}
+
+export enum NestedEditorEventType {
+  Load = "load",
+  Save = "save",
+}
 
 export interface NestedEditorData {
   id: string;
-  type: "load" | "save";
+  type: NestedEditorEventType;
   dataset: Dataset.Dataset;
   specification: Specification.Chart;
   originSpecification?: Specification.Chart;
@@ -304,10 +320,10 @@ export class Application {
           window.opener.postMessage(
             {
               id,
-              type: "save",
+              type: NestedEditorMessageType.Save,
               specification: newSpecification,
               template,
-            },
+            } as NestedEditorMessage,
             document.location.origin
           );
         } else {
@@ -315,10 +331,10 @@ export class Application {
             window.parent.postMessage(
               {
                 id,
-                type: "save",
+                type: NestedEditorMessageType.Save,
                 specification: newSpecification,
                 template,
-              },
+              } as NestedEditorMessage,
               this.config.CorsPolicy.TargetOrigins
             );
           }
@@ -329,7 +345,7 @@ export class Application {
             onSave({
               specification: newSpecification,
               template,
-            });
+            } as NestedEditorMessage);
           }
         }
       }, type);
@@ -344,8 +360,8 @@ export class Application {
       window.opener.postMessage(
         {
           id,
-          type: "initialized",
-        },
+          type: NestedEditorMessageType.Initialized,
+        } as NestedEditorMessage,
         document.location.origin
       );
     } else {
@@ -353,8 +369,8 @@ export class Application {
         window.parent.postMessage(
           {
             id,
-            type: "initialized",
-          },
+            type: NestedEditorMessageType.Initialized,
+          } as NestedEditorMessage,
           this.config.CorsPolicy.TargetOrigins
         );
       } else if (
