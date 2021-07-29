@@ -425,7 +425,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       _id: uniqueID(),
       classID: "chart.rectangle",
       properties: {
-        name: "Chart",
+        name: "Nested Chart",
         backgroundColor: null,
         backgroundOpacity: 1,
       },

@@ -55,6 +55,8 @@ $color-canvas-tool: #f1f1f1;
 
 $primary-button-color: #f2c811;
 
+$nested-chart-header-color: rgb(165, 185, 209);
+
 // Shadows
 @mixin shadow-ambient {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);

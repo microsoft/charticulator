@@ -15,6 +15,7 @@ import {
   Scale,
   MessageType,
   compareMarkAttributeNames,
+  setField,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorkerInterface } from "../../worker";
@@ -112,9 +113,17 @@ export interface ScaleInferenceOptions {
   markAttribute?: string;
 }
 
+export enum EditorType {
+  Nested = "nested",
+  Embedded = "embedded",
+  NestedEmbedded = "nestedembedded",
+  Chart = "chart",
+}
+
 export class AppStore extends BaseStore {
   public static EVENT_IS_NESTED_EDITOR = "is-nested-editor";
   public static EVENT_NESTED_EDITOR_EDIT = "nested-editor-edit";
+  public static EVENT_NESTED_EDITOR_CLOSE = "nested-editor-close";
 
   /** Fires when the dataset changes */
   public static EVENT_DATASET = "dataset";
@@ -128,12 +137,14 @@ export class AppStore extends BaseStore {
   public static EVENT_SOLVER_STATUS = "solver-status";
   /** Fires when the chart was saved */
   public static EVENT_SAVECHART = "savechart";
+  /** Fires when user clicks Edit nested chart for embedded editor */
+  public static EVENT_OPEN_NESTED_EDITOR = "openeditor";
 
   /** The WebWorker for solving constraints */
   public readonly worker: CharticulatorWorkerInterface;
 
   /** Is this app a nested chart editor? */
-  public editorType: "chart" | "nested" | "embedded" = "chart";
+  public editorType: EditorType = EditorType.Chart;
   /** Should we disable the FileView */
   public disableFileView: boolean = false;
 
@@ -409,7 +420,7 @@ export class AppStore extends BaseStore {
 
   public setupNestedEditor(
     callback: (newSpecification: Specification.Chart) => void,
-    type: "nested" | "embedded"
+    type: EditorType
   ) {
     this.editorType = type;
     this.disableFileView = true;
@@ -1989,5 +2000,39 @@ export class AppStore extends BaseStore {
       unmappedColumns.push(column);
     }
     return unmappedColumns;
+  }
+
+  public setProperty(config: {
+    object: Specification.Object;
+    property: string;
+    field: number | string | (number | string)[];
+    value: Specification.AttributeValue;
+    noUpdateState?: boolean;
+    noComputeLayout?: boolean;
+  }) {
+    if (
+      config.property === "name" &&
+      this.chartManager.isNameUsed(config.value as string)
+    ) {
+      return;
+    }
+    this.saveHistory();
+
+    if (config.field == null) {
+      config.object.properties[config.property] = config.value;
+    } else {
+      const obj = config.object.properties[config.property];
+      config.object.properties[config.property] = setField(
+        obj,
+        config.field,
+        config.value
+      );
+    }
+
+    if (config.noUpdateState) {
+      this.emit(AppStore.EVENT_GRAPHICS);
+    } else {
+      this.solveConstraintsAndUpdateGraphics(config.noComputeLayout);
+    }
   }
 }

@@ -32,3 +32,25 @@ export const defaultNumberFormat = Object.freeze({
 });
 export const defaultCurrency: [string, string] = ["$", ""];
 export const defaultDigitsGroup: number[] = [3];
+
+export const primaryButtonStyles = {
+  root: {
+    backgroundColor: "#F2C811",
+    color: "black",
+    borderRadius: 2,
+    borderColor: "#676666",
+    height: 35,
+  },
+  rootHovered: {
+    backgroundColor: "#F2C811",
+    color: "black",
+  },
+  rootChecked: {
+    backgroundColor: "#F2C811",
+    color: "black",
+  },
+  rootPressed: {
+    backgroundColor: "#F2C811",
+    color: "black",
+  },
+};

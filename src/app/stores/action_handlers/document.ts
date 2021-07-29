@@ -3,7 +3,7 @@
 
 import * as FileSaver from "file-saver";
 import { saveAs } from "file-saver";
-import { Prototypes, deepClone } from "../../../core";
+import { Prototypes, deepClone, uniqueID } from "../../../core";
 import { Actions } from "../../actions";
 import {
   renderDataURLToPNG,
@@ -14,6 +14,12 @@ import { AppStore } from "../app_store";
 import { Migrator } from "../migrator";
 import { ActionHandlerRegistry } from "./registry";
 import { getConfig } from "../../config";
+import { ChartTemplateBuilder } from "../../template";
+import {
+  NestedEditorEventType,
+  NestedEditorMessage,
+  NestedEditorMessageType,
+} from "../../application";
 
 /** Handlers for document-level actions such as Load, Save, Import, Export, Undo/Redo, Reset */
 // eslint-disable-next-line
@@ -262,7 +268,6 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.ReplaceDataset, function (action) {
-    // this.saveHistory();
     this.currentChartID = null;
     this.currentSelection = null;
     this.dataset = action.dataset;
@@ -356,5 +361,61 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.newChartEmpty();
 
     this.solveConstraintsAndUpdateGraphics();
+  });
+
+  REG.add(Actions.OpenNestedEditor, function ({ options, object, property }) {
+    this.emit(AppStore.EVENT_OPEN_NESTED_EDITOR, options, object, property);
+    const editorID = uniqueID();
+    const newWindow = window.open(
+      "index.html#!nestedEditor=" + editorID,
+      "nested_chart_" + options.specification._id
+    );
+    const listener = (e: MessageEvent) => {
+      if (e.origin == document.location.origin) {
+        const data = <NestedEditorMessage>e.data;
+        if (data.id == editorID) {
+          switch (data.type) {
+            case NestedEditorMessageType.Initialized:
+              {
+                const builder = new ChartTemplateBuilder(
+                  options.specification,
+                  options.dataset,
+                  this.chartManager,
+                  CHARTICULATOR_PACKAGE.version
+                );
+
+                const template = builder.build();
+                newWindow.postMessage(
+                  {
+                    id: editorID,
+                    type: NestedEditorEventType.Load,
+                    specification: options.specification,
+                    dataset: options.dataset,
+                    width: options.width,
+                    template,
+                    height: options.height,
+                    filterCondition: options.filterCondition,
+                  },
+                  document.location.origin
+                );
+              }
+              break;
+            case NestedEditorMessageType.Save:
+              {
+                this.setProperty({
+                  object,
+                  property: property.property,
+                  field: property.field,
+                  value: data.specification,
+                  noUpdateState: property.noUpdateState,
+                  noComputeLayout: property.noComputeLayout,
+                });
+              }
+              break;
+          }
+        }
+      }
+    };
+    window.addEventListener("message", listener);
   });
 }

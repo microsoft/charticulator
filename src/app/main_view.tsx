@@ -20,7 +20,7 @@ import {
   DatasetView,
   MarkEditorView,
 } from "./views";
-import { MenuBar, MenuBarHandlers } from "./views/menubar";
+import { MenuBar, MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { Toolbar } from "./views/tool_bar";
 import { ScalesPanel } from "./views/panels/scales_panel";
@@ -64,6 +64,7 @@ export interface MainViewProps {
   viewConfiguration: MainViewConfig;
   menuBarHandlers?: MenuBarHandlers;
   telemetry?: TelemetryRecorder;
+  tabButtons?: MenubarTabButton[];
 }
 
 export interface MainViewState {
@@ -246,6 +247,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               name={this.viewConfiguration.Name}
               ref={(e) => (this.refMenuBar = e)}
               handlers={this.props.menuBarHandlers}
+              tabButtons={this.props.tabButtons}
             />
             {this.viewConfiguration.ToolbarPosition ==
               PositionsLeftRightTop.Top &&

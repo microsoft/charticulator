@@ -69,6 +69,13 @@ export const strings = {
     nestedChartTitle: "Nested Chart | Charticulator",
     working: "Working...",
   },
+  dialogs: {
+    saveChanges: {
+      saveChangesTitle: "Save the changes",
+      saveChanges: (chartName: string) =>
+        `Do you want to save the changes you made to ${chartName}?`,
+    },
+  },
   about: {
     version: (version: string, url: string) =>
       `Version: ${version}, URL: ${url}`,
@@ -228,8 +235,11 @@ export const strings = {
     reset: "Delete",
     save: "Save (Ctrl-S)",
     saveButton: "Save",
+    dontSaveButton: "Don't save",
+    cancel: "Cancel",
     savedButton: "Saved",
     saveNested: "Save Nested Chart",
+    closeNested: "Close",
     undo: "Undo (Ctrl-Z)",
   },
   options: {

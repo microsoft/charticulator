@@ -2,13 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import {
-  Expression,
-  Prototypes,
-  setField,
-  Solver,
-  Specification,
-} from "../../../core";
+import { Expression, Prototypes, Solver, Specification } from "../../../core";
 import { Actions } from "../../actions";
 import { AppStore } from "../app_store";
 import { ChartElementSelection } from "../selection";
@@ -361,30 +355,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.SetObjectProperty, function (action) {
-    if (
-      action.property === "name" &&
-      this.chartManager.isNameUsed(action.value as string)
-    ) {
-      return;
-    }
-    this.saveHistory();
-
-    if (action.field == null) {
-      action.object.properties[action.property] = action.value;
-    } else {
-      const obj = action.object.properties[action.property];
-      action.object.properties[action.property] = setField(
-        obj,
-        action.field,
-        action.value
-      );
-    }
-
-    if (action.noUpdateState) {
-      this.emit(AppStore.EVENT_GRAPHICS);
-    } else {
-      this.solveConstraintsAndUpdateGraphics(action.noComputeLayout);
-    }
+    this.setProperty(action);
   });
 
   REG.add(Actions.DeleteObjectProperty, function (action) {

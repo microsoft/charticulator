@@ -34,6 +34,7 @@ export interface CharticulatorAppConfig extends CharticulatorCoreConfig {
   }[];
   WorkerURL: string;
   ContainerURL: string;
+  /** Deprecated. don't use */
   CorsPolicy: {
     TargetOrigins: string;
     Embedded: boolean;

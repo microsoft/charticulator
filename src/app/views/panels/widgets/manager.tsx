@@ -16,7 +16,6 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
   refineColumnName,
   getById,
 } from "../../../../core";
@@ -60,7 +59,6 @@ import { GroupByEditor } from "./groupby_editor";
 import {
   applyDateFormat,
   ChartTemplate,
-  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
@@ -79,7 +77,7 @@ import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
-import { ChartTemplateBuilder } from "../../../template";
+import { OpenNestedEditor } from "../../../actions/actions";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1085,60 +1083,9 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         <ButtonRaised
           text="Edit Nested Chart..."
           onClick={() => {
-            const editorID = uniqueID();
-            const newWindow = window.open(
-              "index.html#!nestedEditor=" + editorID,
-              "nested_chart_" + options.specification._id
+            this.store.dispatcher.dispatch(
+              new OpenNestedEditor(this.objectClass.object, property, options)
             );
-            const listener = (e: MessageEvent) => {
-              if (e.origin == document.location.origin) {
-                const data = e.data;
-                if (data.id == editorID) {
-                  switch (data.type) {
-                    case "initialized":
-                      {
-                        const chartManager = new Prototypes.ChartStateManager(
-                          options.specification,
-                          options.dataset,
-                          null,
-                          {},
-                          {},
-                          deepClone(options.specification)
-                        );
-
-                        const builder = new ChartTemplateBuilder(
-                          options.specification,
-                          options.dataset,
-                          chartManager,
-                          CHARTICULATOR_PACKAGE.version
-                        );
-
-                        const template = builder.build();
-                        newWindow.postMessage(
-                          {
-                            id: editorID,
-                            type: "load",
-                            specification: options.specification,
-                            dataset: options.dataset,
-                            width: options.width,
-                            template,
-                            height: options.height,
-                            filterCondition: options.filterCondition,
-                          },
-                          document.location.origin
-                        );
-                      }
-                      break;
-                    case "save":
-                      {
-                        this.emitSetProperty(property, data.specification);
-                      }
-                      break;
-                  }
-                }
-              }
-            };
-            window.addEventListener("message", listener);
           }}
         />,
         <div style={{ marginTop: "5px" }}>
