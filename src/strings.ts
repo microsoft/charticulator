@@ -342,6 +342,8 @@ export const strings = {
     size: "Size",
     axis: "Axis",
     style: "Style",
+    rotation: "Rotation",
+    anchorAndRotation: "Anchor & Rotation",
     fill: "Fill",
     strokeWidth: "Line Width",
     stroke: "Stroke",
@@ -402,7 +404,6 @@ export const strings = {
     icon: {
       label: "Icon",
       image: "Image",
-      anchorAndRotation: "Anchor & Rotation",
       anchorX: "Anchor X",
       anchorY: "Anchor Y",
     },
@@ -411,7 +412,7 @@ export const strings = {
       letterbox: "Letterbox",
       stretch: "Stretch",
       dropImage: "Drop Image Here",
-      defaultPlaceholder: "Drop/Paste Image"
+      defaultPlaceholder: "Drop/Paste Image",
     },
     scales: {
       mode: "Mode",

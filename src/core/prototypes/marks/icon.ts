@@ -301,7 +301,7 @@ export class IconElementClass extends EmphasizableMarkClass<
     ];
 
     widgets = widgets.concat([
-      manager.sectionHeader(strings.objects.icon.anchorAndRotation),
+      manager.sectionHeader(strings.objects.anchorAndRotation),
       manager.row(
         strings.objects.icon.anchorX,
         manager.horizontal(

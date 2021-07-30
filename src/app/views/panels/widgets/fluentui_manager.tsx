@@ -72,6 +72,8 @@ import {
   FontIcon,
   getTheme,
   TooltipHost,
+  GroupHeader,
+  IGroupHeaderProps,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
@@ -99,6 +101,8 @@ import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
+
+import { CollapsiblePanel } from "./controls/collapsiblePanel";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -151,7 +155,7 @@ export class FluentUIWidgetManager
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
-    
+
     return (
       <FluentMappingEditor
         key={name + attribute}
@@ -776,9 +780,9 @@ export class FluentUIWidgetManager
                             defaultValue={
                               currentExpression
                                 ? {
-                                  table: options.table,
-                                  expression: currentExpression,
-                                }
+                                    table: options.table,
+                                    expression: currentExpression,
+                                  }
                                 : null
                             }
                             onChange={(value) => {
@@ -825,8 +829,8 @@ export class FluentUIWidgetManager
               globals.popupController.popupAt(
                 (context) => {
                   const items = options.items
-                  ? options.items
-                  : (this.getPropertyValue(property) as string[]);
+                    ? options.items
+                    : (this.getPropertyValue(property) as string[]);
                   return (
                     <PopupView context={context}>
                       <ReorderStringsValue
@@ -1312,8 +1316,7 @@ export class FluentUIWidgetManager
                 window.addEventListener("message", listener);
               }}
             />
-          </NestedChartButtonsWrapper>
-          ,
+          </NestedChartButtonsWrapper>,
           <NestedChartButtonsWrapper>
             <ButtonRaised
               text="Import Template..."
@@ -1341,8 +1344,7 @@ export class FluentUIWidgetManager
               }}
             />
           </NestedChartButtonsWrapper>
-        )
-        }
+        )}
       </React.Fragment>
     );
   }
@@ -1355,7 +1357,7 @@ export class FluentUIWidgetManager
             {title}
           </span>
         ) : // <Label>{title}</Label>
-          null}
+        null}
         {widget}
       </div>
     );
@@ -1370,6 +1372,19 @@ export class FluentUIWidgetManager
           </span>
         ))}
       </div>
+    );
+  }
+
+  public verticalGroup(
+    options: Prototypes.Controls.VerticalGroupOptions,
+    widgets: JSX.Element[]
+  ) {
+    return (
+      <CollapsiblePanel
+        header={options.header}
+        widgets={widgets}
+        isCollapsed={options.isCollapsed}
+      />
     );
   }
 
@@ -1516,8 +1531,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-            ? this.props.draggingHint()
-            : this.props.children}
+          ? this.props.draggingHint()
+          : this.props.children}
       </div>
     );
   }

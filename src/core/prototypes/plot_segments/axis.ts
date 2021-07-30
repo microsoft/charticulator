@@ -1162,68 +1162,67 @@ export function buildAxisWidgets(
       case "categorical":
         {
           widgets.push(
-            m.sectionHeader(
-              axisName + ": Categorical",
-              m.clearButton({ property: axisProperty }, null, true),
-              dropzoneOptions
-            )
-          );
-          widgets.push(
-            m.vertical(
-              m.label("Data"),
-              m.horizontal(
-                [1, 0],
-                m.inputExpression({
-                  property: axisProperty,
-                  field: "expression",
-                }),
-                m.reorderWidget(
-                  { property: axisProperty, field: "categories" },
-                  { allowReset: true }
-                )
-              )
-            )
-          );
-          if (data.valueType === "date") {
-            widgets.push(
-              m.inputExpression(
-                {
-                  property: axisProperty,
-                  field: "tickDataExpression",
-                },
-                {
-                  label: "Tick Data",
-                }
-              )
-            );
-            widgets.push(
-              m.row(
-                "Tick Format",
-                m.inputFormat(
-                  {
-                    property: axisProperty,
-                    field: "tickFormat",
-                  },
-                  {
-                    blank: strings.core.auto,
-                    isDateField:
-                      data.numericalMode === NumericalMode.Temporal ||
-                      data.valueType === DataType.Date,
-                  }
-                )
-              )
-            );
-          }
-          widgets.push(
-            m.inputNumber(
-              { property: axisProperty, field: "gapRatio" },
+            m.verticalGroup(
               {
-                minimum: 0,
-                maximum: 1,
-                percentage: true,
-                showSlider: true,
-                label: "Gap",
-              }
+                header: axisName + ": Categorical",
+              },
+              [
+                m.sectionHeader(
+                  "Data",
+                  m.clearButton({ property: axisProperty }, null, true),
+                  dropzoneOptions
+                ),
+                m.vertical(
+                  m.label("Data"),
+                  m.horizontal(
+                    [1, 0],
+                    m.inputExpression({
+                      property: axisProperty,
+                      field: "expression",
+                    }),
+                    m.reorderWidget(
+                      { property: axisProperty, field: "categories" },
+                      { allowReset: true }
+                    )
+                  ),
+                  m.inputNumber(
+                    { property: axisProperty, field: "gapRatio" },
+                    {
+                      minimum: 0,
+                      maximum: 1,
+                      percentage: true,
+                      showSlider: true,
+                      label: "Gap",
+                    }
+                  ),
+                  data.valueType === "date"
+                    ? (m.inputExpression(
+                        {
+                          property: axisProperty,
+                          field: "tickDataExpression",
+                        },
+                        {
+                          label: "Tick Data",
+                        }
+                      ),
+                      m.row(
+                        "Tick Format",
+                        m.inputFormat(
+                          {
+                            property: axisProperty,
+                            field: "tickFormat",
+                          },
+                          {
+                            blank: strings.core.auto,
+                            isDateField:
+                              data.numericalMode === NumericalMode.Temporal ||
+                              data.valueType === DataType.Date,
+                          }
+                        )
+                      ))
+                    : null
+                ),
+              ]
             )
           );
           widgets.push(makeAppearance());

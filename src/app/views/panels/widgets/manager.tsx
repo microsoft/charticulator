@@ -710,7 +710,7 @@ export class WidgetManager
                 const items = this.getPropertyValue(property) as string[];
                 return (
                   <PopupView context={context}>
-                    <ReorderStringsValue                     
+                    <ReorderStringsValue
                       items={items}
                       onConfirm={(items, customOrder) => {
                         this.emitSetProperty(property, items);
@@ -1202,6 +1202,21 @@ export class WidgetManager
   }
 
   public vertical(...widgets: JSX.Element[]) {
+    return (
+      <div className="charticulator__widget-vertical">
+        {widgets.map((x, id) => (
+          <span className="el-layout-item" key={id}>
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  public verticalGroup(
+    options: Prototypes.Controls.VerticalGroupOptions,
+    widgets: JSX.Element[]
+  ) {
     return (
       <div className="charticulator__widget-vertical">
         {widgets.map((x, id) => (
