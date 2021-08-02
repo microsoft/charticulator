@@ -489,6 +489,7 @@ export class FluentMappingEditor extends React.Component<
     );
 
     return (
+    <div ref={(e) => (this.noneLabel = e)}>
       <DropZoneView
         filter={(data) => {
           if (!shouldShowBindData) {
@@ -592,7 +593,8 @@ export class FluentMappingEditor extends React.Component<
             ) : null}
           </span>
         )}
-      </DropZoneView>
+        </DropZoneView>
+      </div>
     );
   }
 }
