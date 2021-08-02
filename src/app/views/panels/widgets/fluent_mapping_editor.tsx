@@ -78,7 +78,6 @@ export class FluentMappingEditor extends React.Component<
   };
 
   public director: Director = null;
-  private directorCurrentMapping: Director = null;
 
   //update
   private beginDataFieldSelection(anchor: Element = this.mappingButton) {
@@ -240,8 +239,6 @@ export class FluentMappingEditor extends React.Component<
     super(props);
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
-    this.directorCurrentMapping = new Director();
-    this.directorCurrentMapping.setBuilder(new MenuItemBuilder());
   }
 
   private renderValueEditor(value: Specification.AttributeValue) {
@@ -383,7 +380,6 @@ export class FluentMappingEditor extends React.Component<
           const table = scaleMapping
             ? (scaleMapping as any).table
             : options.table;
-            console.log(table)
 
           const onClick = (value: DataFieldSelectorValue) => {
             if (value != null) {
@@ -411,7 +407,7 @@ export class FluentMappingEditor extends React.Component<
             ? { table: options?.table, expression: currentExpression1 }
             : null;
                     
-          const mainMenuItems: IContextualMenuItem[] = this.directorCurrentMapping.buildFieldsMenu(
+          const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
             onClick,
             defaultValue,
             parent.store,
@@ -533,7 +529,6 @@ export class FluentMappingEditor extends React.Component<
     const defaultValue: IDefaultValue = currentExpression1
       ? { table: options?.table ?? table, expression: currentExpression1 }
       : null;
-    console.log(mapping, currentExpression1, defaultValue);
     
     const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
       onClick,
