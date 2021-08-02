@@ -4,8 +4,11 @@
 import * as React from "react";
 import {
   IDropdownProps,
+  IGroupHeaderStyleProps,
+  IGroupHeaderStyles,
   ILabelStyles,
   IRenderFunction,
+  IStyleFunctionOrObject,
   ITextFieldProps,
   Label,
 } from "@fluentui/react";
@@ -87,3 +90,22 @@ export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
 export const NestedChartButtonsWrapper = styled.div`
   margin-top: 5px;
 `;
+
+export const FluentGroupedList = styled.div`
+  .charticulator__widget-collapsible-panel-item {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+`;
+
+export const groupHeaderStyles: IStyleFunctionOrObject<
+  IGroupHeaderStyleProps,
+  IGroupHeaderStyles
+> = {
+  title: {
+    fontWeight: 600,
+  },
+  headerCount: {
+    display: "none",
+  },
+};

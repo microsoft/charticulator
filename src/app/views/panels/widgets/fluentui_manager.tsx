@@ -72,8 +72,6 @@ import {
   FontIcon,
   getTheme,
   TooltipHost,
-  GroupHeader,
-  IGroupHeaderProps,
 } from "@fluentui/react";
 import { FluentMappingEditor } from "./fluent_mapping_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
