@@ -419,6 +419,9 @@ export const strings = {
       linkMarkType: "Line mark type",
       curveness: "Curveness",
     },
+    line: {
+      lineStyle: "Line Style",
+    },
     anchor: {
       label: "(drag the anchor in the glyph editor)",
     },

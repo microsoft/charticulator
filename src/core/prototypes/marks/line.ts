@@ -26,6 +26,7 @@ import * as Graphics from "../../graphics";
 import { EmphasizableMarkClass } from "./emphasis";
 import { ChartStateManager } from "../state";
 import { MappingType } from "../../specification";
+import { strings } from "../../../strings";
 
 export { LineElementAttributes, LineElementProperties };
 
@@ -305,45 +306,59 @@ export class LineElementClass extends EmphasizableMarkClass<
   ): Controls.Widget[] {
     const parentWidgets = super.getAttributePanelWidgets(manager);
     return [
-      manager.sectionHeader("Line"),
-      manager.mappingEditor("X Span", "dx", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Y Span", "dy", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Stroke", "stroke", {}),
-      manager.mappingEditor("Line Width", "strokeWidth", {
-        hints: { rangeNumber: [0, 5] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-      }),
-      manager.row(
-        "Line Style",
-        manager.inputSelect(
-          { property: "strokeStyle" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
-            labels: ["Solid", "Dashed", "Dotted"],
-            options: ["solid", "dashed", "dotted"],
-          }
-        )
+      manager.verticalGroup(
+        {
+          header: strings.toolbar.line,
+        },
+        [
+          manager.mappingEditor("X Span", "dx", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor("Y Span", "dy", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor("Visibility", "visible", {
+            defaultValue: true,
+          }),
+        ]
       ),
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          manager.mappingEditor(strings.objects.strokeWidth, "strokeWidth", {
+            hints: { rangeNumber: [0, 5] },
+            defaultValue: 1,
+            numberOptions: {
+              showSlider: true,
+              sliderRange: [0, 5],
+              minimum: 0,
+            },
+          }),
+          manager.inputSelect(
+            { property: "strokeStyle" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+              labels: ["Solid", "Dashed", "Dotted"],
+              options: ["solid", "dashed", "dotted"],
+              label: strings.objects.line.lineStyle,
+            }
+          ),
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
+      ),
     ].concat(parentWidgets);
   }
 
