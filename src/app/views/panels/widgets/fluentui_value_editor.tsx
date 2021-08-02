@@ -89,7 +89,6 @@ export class FluentValueEditor extends ContextedComponent<
           <FluentInputNumber
             label={this.props.label}
             placeholder={this.props.placeholder}
-            // onRenderLabel={labelRender}
             defaultValue={this.props.value as number}
             onEnter={(newValue: number) => {
               if (newValue == null) {
@@ -103,6 +102,7 @@ export class FluentValueEditor extends ContextedComponent<
                 return false;
               }
             }}
+            {...numberOptions}
           />
         );
       }
