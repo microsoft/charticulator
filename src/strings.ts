@@ -351,6 +351,9 @@ export const strings = {
     stroke: "Stroke",
     anchorX: "Anchor X",
     anchorY: "Anchor Y",
+    alignX: "Align X",
+    alignY: "Align Y",
+    layout: "Layout",
     visibleOn: {
       visibility: "Visibility",
       label: "Visible On",

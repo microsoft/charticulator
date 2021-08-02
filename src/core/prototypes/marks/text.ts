@@ -312,6 +312,13 @@ export class TextElementClass extends EmphasizableMarkClass<
               updownTick: 2,
             },
           }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
         ]
       ),
       manager.verticalGroup(
@@ -387,13 +394,6 @@ export class TextElementClass extends EmphasizableMarkClass<
             defaultValue: 1,
             numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
           }),
-          manager.mappingEditor(
-            strings.objects.visibleOn.visibility,
-            "visible",
-            {
-              defaultValue: true,
-            }
-          ),
         ]
       ),
     ].concat(parentWidgets);
