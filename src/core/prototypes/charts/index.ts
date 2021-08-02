@@ -509,43 +509,65 @@ export class RectangleChart extends ChartClass {
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const result = [
-      manager.sectionHeader(strings.objects.dimensions),
-      manager.mappingEditor(strings.objects.width, "width", {}),
-      manager.mappingEditor(strings.objects.height, "height", {}),
-      manager.sectionHeader(strings.margins.margins),
-      manager.mappingEditor(strings.margins.left, "marginLeft", {}),
-      manager.mappingEditor(strings.margins.right, "marginRight", {}),
-      manager.mappingEditor(strings.margins.top, "marginTop", {}),
-      manager.mappingEditor(strings.margins.bottom, "marginBottom", {}),
-      manager.sectionHeader(strings.objects.background),
-      manager.inputColor(
-        { property: "backgroundColor" },
-        { allowNull: true, label: strings.objects.color }
-      ),
-      manager.sectionHeader(strings.objects.interactivity),
-      manager.inputBoolean(
-        { property: "enableContextMenu" },
+      manager.verticalGroup(
         {
-          type: "checkbox",
-          label: strings.objects.contextMenu,
-        }
+          header: strings.objects.dimensions,
+        },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {}),
+          manager.mappingEditor(strings.objects.height, "height", {}),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.margins.margins,
+        },
+        [
+          manager.mappingEditor(strings.margins.left, "marginLeft", {}),
+          manager.mappingEditor(strings.margins.right, "marginRight", {}),
+          manager.mappingEditor(strings.margins.top, "marginTop", {}),
+          manager.mappingEditor(strings.margins.bottom, "marginBottom", {}),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.background,
+        },
+        [
+          manager.inputColor(
+            { property: "backgroundColor" },
+            { allowNull: true, label: strings.objects.color }
+          ),
+          this.object.properties.backgroundColor != null
+            ? manager.inputNumber(
+                { property: "backgroundOpacity" },
+                {
+                  showSlider: true,
+                  sliderRange: [0, 1],
+                  label: strings.objects.opacity,
+                  updownTick: 0.1,
+                  percentage: true,
+                  step: 0.1,
+                }
+              )
+            : null,
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.interactivity,
+        },
+        [
+          manager.inputBoolean(
+            { property: "enableContextMenu" },
+            {
+              type: "checkbox",
+              label: strings.objects.contextMenu,
+            }
+          ),
+        ]
       ),
     ];
-    if (this.object.properties.backgroundColor != null) {
-      result.push(
-        manager.inputNumber(
-          { property: "backgroundOpacity" },
-          {
-            showSlider: true,
-            sliderRange: [0, 1],
-            label: strings.objects.opacity,
-            updownTick: 0.1,
-            percentage: true,
-            step: 0.1,
-          }
-        )
-      );
-    }
     return result;
   }
 
