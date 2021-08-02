@@ -120,7 +120,9 @@ export class WidgetManager
   ) {}
 
   public tooltip(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     widget: JSX.Element,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     tooltipContent: JSX.Element
   ): JSX.Element {
     throw new Error("Method not implemented.");

@@ -3,7 +3,6 @@
 import {
   GroupedList,
   GroupHeader,
-  IGroup,
   IGroupHeaderProps,
   SelectionMode,
 } from "@fluentui/react";

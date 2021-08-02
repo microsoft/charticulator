@@ -378,6 +378,8 @@ export const strings = {
       outer: "Outer:",
       radius: "Radius",
       angle: "Angle",
+      curveCoordinates: "Curve Coordinates",
+      normal: "Normal",
     },
     visibleOn: {
       visibility: "Visibility",
