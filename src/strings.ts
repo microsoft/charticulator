@@ -328,10 +328,12 @@ export const strings = {
     bottom: "Bottom",
   },
   objects: {
+    general: "General",
     contextMenu: "Context menu",
     interactivity: "Interactivity",
     colors: "Colors",
     color: "Color",
+    outline: "Outline",
     dimensions: "Dimensions",
     scale: "Scale",
     width: "Width",
@@ -347,6 +349,8 @@ export const strings = {
     fill: "Fill",
     strokeWidth: "Line Width",
     stroke: "Stroke",
+    anchorX: "Anchor X",
+    anchorY: "Anchor Y",
     visibleOn: {
       visibility: "Visibility",
       label: "Visible On",
@@ -404,8 +408,6 @@ export const strings = {
     icon: {
       label: "Icon",
       image: "Image",
-      anchorX: "Anchor X",
-      anchorY: "Anchor Y",
     },
     image: {
       imageMode: "Resize Mode",
@@ -420,6 +422,9 @@ export const strings = {
       less: "Less",
       interval: "Interval",
       inclusive: "Inclusive",
+    },
+    text: {
+      margin: "Margin",
     },
   },
 };

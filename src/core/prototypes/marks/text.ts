@@ -293,20 +293,27 @@ export class TextElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     return [
-      manager.mappingEditor("Text", "text", {}),
-      manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: defaultFont,
-      }),
-      manager.mappingEditor("Size", "fontSize", {
-        hints: { rangeNumber: [0, 36] },
-        defaultValue: defaultFontSize,
-        numberOptions: {
-          showUpdown: true,
-          updownStyle: "font",
-          minimum: 0,
-          updownTick: 2,
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
         },
-      }),
+        [
+          manager.mappingEditor(strings.toolbar.text, "text", {}),
+          manager.mappingEditor(strings.objects.font, "fontFamily", {
+            defaultValue: defaultFont,
+          }),
+          manager.mappingEditor(strings.objects.size, "fontSize", {
+            hints: { rangeNumber: [0, 36] },
+            defaultValue: defaultFontSize,
+            numberOptions: {
+              showUpdown: true,
+              updownStyle: "font",
+              minimum: 0,
+              updownTick: 2,
+            },
+          }),
+        ]
+      ),
       manager.verticalGroup(
         {
           header: strings.objects.anchorAndRotation,
@@ -323,7 +330,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               ],
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
-              label: "Anchor X",
+              label: strings.objects.anchorX,
             }
           ),
           props.alignment.x != "middle"
@@ -347,7 +354,7 @@ export class TextElementClass extends EmphasizableMarkClass<
               ],
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],
-              label: "Anchor Y",
+              label: strings.objects.anchorY,
             }
           ),
           props.alignment.y != "middle"
@@ -356,7 +363,7 @@ export class TextElementClass extends EmphasizableMarkClass<
                 {
                   updownTick: 1,
                   showUpdown: true,
-                  label: "Margin",
+                  label: strings.objects.text.margin,
                 }
               )
             : null,
@@ -368,24 +375,25 @@ export class TextElementClass extends EmphasizableMarkClass<
           ),
         ]
       ),
-      // manager.sectionHeader("Anchor & Rotation"),
-
-      // manager.sectionHeader("Style"),
       manager.verticalGroup(
         {
           header: "Style",
         },
         [
-          manager.mappingEditor("Color", "color", {}),
-          manager.mappingEditor("Outline", "outline", {}),
-          manager.mappingEditor("Opacity", "opacity", {
+          manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(strings.objects.outline, "outline", {}),
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
             defaultValue: 1,
             numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
           }),
-          manager.mappingEditor("Visibility", "visible", {
-            defaultValue: true,
-          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
         ]
       ),
     ].concat(parentWidgets);
