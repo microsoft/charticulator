@@ -405,6 +405,7 @@ export const strings = {
       markerShape: "Shape",
       labels: "Labels",
       layout: "Layout",
+      categoricalLegend: "Categorical legend",
     },
     links: {
       lineType: "Line Type",

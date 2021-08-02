@@ -189,106 +189,118 @@ export abstract class LegendClass extends ChartElementClass {
     manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = [
-      manager.sectionHeader(strings.objects.legend.labels),
-      manager.inputFontFamily(
-        { property: "fontFamily" },
-        { label: strings.objects.font }
-      ),
-      manager.inputNumber(
-        { property: "fontSize" },
+      manager.verticalGroup(
         {
-          showUpdown: true,
-          updownStyle: "font",
-          updownTick: 2,
-          label: strings.objects.size,
-        }
-      ),
-      manager.inputColor(
-        { property: "textColor" },
-        { label: strings.objects.color }
-      ),
-      manager.inputSelect(
-        { property: "markerShape" },
-        {
-          type: "dropdown",
-          showLabel: true,
-          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-          labels: [
-            strings.toolbar.rectangle,
-            strings.toolbar.triangle,
-            strings.toolbar.ellipse,
-          ],
-          options: ["rectangle", "triangle", "circle"],
-          label: strings.objects.legend.markerShape,
-        }
-      ),
-      manager.label("Ordering"),
-      manager.reorderWidget(
-        {
-          property: "order",
+          header: strings.objects.legend.labels,
         },
-        {
-          items: this.getOrderingObjects(),
-          onConfirm: (items: string[]) => {
-            const scale = this.getScale()[0];
-            const newMap: { [name: string]: ValueType } = {};
-            items.forEach((item) => {
-              newMap[item] = (<Specification.AttributeMap>(
-                scale.properties.mapping
-              ))[item];
-            });
-            Prototypes.setProperty(scale, "mapping", newMap);
-            manager.emitSetProperty(
-              {
-                property: "mapping",
-                field: null,
+        [
+          manager.inputFontFamily(
+            { property: "fontFamily" },
+            { label: strings.objects.font }
+          ),
+          manager.inputNumber(
+            { property: "fontSize" },
+            {
+              showUpdown: true,
+              updownStyle: "font",
+              updownTick: 2,
+              label: strings.objects.size,
+            }
+          ),
+          manager.inputColor(
+            { property: "textColor" },
+            { label: strings.objects.color }
+          ),
+          manager.inputSelect(
+            { property: "markerShape" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              labels: [
+                strings.toolbar.rectangle,
+                strings.toolbar.triangle,
+                strings.toolbar.ellipse,
+              ],
+              options: ["rectangle", "triangle", "circle"],
+              label: strings.objects.legend.markerShape,
+            }
+          ),
+          manager.label("Ordering"),
+          manager.reorderWidget(
+            {
+              property: "order",
+            },
+            {
+              items: this.getOrderingObjects(),
+              onConfirm: (items: string[]) => {
+                const scale = this.getScale()[0];
+                const newMap: { [name: string]: ValueType } = {};
+                items.forEach((item) => {
+                  newMap[item] = (<Specification.AttributeMap>(
+                    scale.properties.mapping
+                  ))[item];
+                });
+                Prototypes.setProperty(scale, "mapping", newMap);
+                manager.emitSetProperty(
+                  {
+                    property: "mapping",
+                    field: null,
+                  },
+                  <Specification.AttributeValue>newMap
+                );
               },
-              <Specification.AttributeValue>newMap
-            );
-          },
-        }
+            }
+          ),
+        ]
       ),
-      manager.sectionHeader(strings.objects.legend.layout),
-      manager.vertical(
-        manager.label(strings.alignment.alignment),
-        manager.horizontal(
-          [0, 0],
-          manager.inputSelect(
-            { property: "alignX" },
-            {
-              type: "radio",
-              icons: [
-                "AlignHorizontalLeft",
-                "AlignHorizontalCenter",
-                "AlignHorizontalRight",
-              ],
-              labels: [
-                strings.alignment.left,
-                strings.alignment.middle,
-                strings.alignment.right,
-              ],
-              options: ["start", "middle", "end"],
-            }
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.layout,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.alignment.alignment),
+            manager.horizontal(
+              [0, 0],
+              manager.inputSelect(
+                { property: "alignX" },
+                {
+                  type: "radio",
+                  icons: [
+                    "AlignHorizontalLeft",
+                    "AlignHorizontalCenter",
+                    "AlignHorizontalRight",
+                  ],
+                  labels: [
+                    strings.alignment.left,
+                    strings.alignment.middle,
+                    strings.alignment.right,
+                  ],
+                  options: ["start", "middle", "end"],
+                }
+              ),
+              manager.inputSelect(
+                { property: "alignY" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: [
+                    strings.alignment.bottom,
+                    strings.alignment.middle,
+                    strings.alignment.top,
+                  ],
+                }
+              ),
+              null
+            )
           ),
-          manager.inputSelect(
-            { property: "alignY" },
-            {
-              type: "radio",
-              options: ["start", "middle", "end"],
-              icons: [
-                "AlignVerticalBottom",
-                "AlignVerticalCenter",
-                "AlignVerticalTop",
-              ],
-              labels: [
-                strings.alignment.bottom,
-                strings.alignment.middle,
-                strings.alignment.top,
-              ],
-            }
-          ),
-          null
-        )
+        ]
       ),
     ];
 
