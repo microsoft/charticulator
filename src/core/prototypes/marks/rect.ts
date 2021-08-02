@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -25,6 +26,7 @@ import {
   RectElementAttributes,
   RectElementProperties,
 } from "./rect.attrs";
+import { strings } from "../../../strings";
 
 export { RectElementAttributes, RectElementProperties };
 
@@ -172,70 +174,99 @@ export class RectElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
 
     let widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size & Shape"),
-      manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.inputSelect(
-        { property: "shape" },
+      manager.verticalGroup(
         {
-          type: "dropdown",
-          showLabel: true,
-          label: "Shape",
-          icons: ["RectangleShape", "TriangleShape", "Ellipse"],
-          labels: ["Rectangle", "Triangle", "Ellipse"],
-          options: ["rectangle", "triangle", "ellipse"],
-        }
+          header: strings.objects.general,
+        },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(strings.objects.height, "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.inputSelect(
+            { property: "shape" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              label: strings.objects.rect.shape,
+              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
+              labels: [
+                strings.objects.rect.shapes.rectangle,
+                strings.objects.rect.shapes.triangle,
+                strings.objects.rect.shapes.ellipse,
+              ],
+              options: ["rectangle", "triangle", "ellipse"],
+            }
+          ),
+          manager.inputBoolean(
+            { property: "allowFlipping" },
+            {
+              type: "checkbox",
+              label: strings.objects.rect.flipping,
+            }
+          ),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
       ),
-      manager.inputBoolean(
-        { property: "allowFlipping" },
+      manager.verticalGroup(
         {
-          type: "checkbox",
-          label: "Flipping",
-        }
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.fill, "fill", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          this.object.mappings.stroke != null
+            ? manager.mappingEditor(
+                strings.objects.strokeWidth,
+                "strokeWidth",
+                {
+                  hints: { rangeNumber: [0, 5] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    sliderRange: [0, 5],
+                    minimum: 0,
+                  },
+                }
+              )
+            : null,
+          this.object.mappings.stroke != null
+            ? manager.inputSelect(
+                { property: "strokeStyle" },
+                {
+                  type: "dropdown",
+                  showLabel: true,
+                  label: "Line Style",
+                  icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
+                  labels: [
+                    strings.objects.links.solid,
+                    strings.objects.links.dashed,
+                    strings.objects.links.dotted,
+                  ],
+                  options: ["solid", "dashed", "dotted"],
+                }
+              )
+            : null,
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
       ),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
     ];
-    if (this.object.mappings.stroke != null) {
-      widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", {
-          hints: { rangeNumber: [0, 5] },
-          defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        })
-      );
-      manager.inputSelect(
-        { property: "strokeStyle" },
-        {
-          type: "dropdown",
-          showLabel: true,
-          label: "Line Style",
-          icons: ["stroke/solid", "stroke/dashed", "stroke/dotted"],
-          labels: ["Solid", "Dashed", "Dotted"],
-          options: ["solid", "dashed", "dotted"],
-        }
-      );
-    }
-
-    widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
-    ]);
 
     widgets = widgets.concat(parentWidgets);
     return widgets;

@@ -429,5 +429,14 @@ export const strings = {
     text: {
       margin: "Margin",
     },
+    rect: {
+      shape: "Shape",
+      flipping: "Flipping",
+      shapes: {
+        rectangle: "Rectangle",
+        triangle: "Triangle",
+        ellipse: "Ellipse",
+      },
+    },
   },
 };
