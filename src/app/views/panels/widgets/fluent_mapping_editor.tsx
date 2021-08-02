@@ -376,11 +376,7 @@ export class FluentMappingEditor extends React.Component<
         }
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
-
-          const table = scaleMapping
-            ? (scaleMapping as any).table
-            : options.table;
-
+          const table = mapping ? (mapping as any).table : options.table;
           const onClick = (value: DataFieldSelectorValue) => {
             if (value != null) {
               this.mapData(
@@ -399,14 +395,14 @@ export class FluentMappingEditor extends React.Component<
           };
           const mapping1 = parent.getAttributeMapping(attribute);
           const currentExpression1: string =
-          mapping1 != null && mapping1.type == "scale"
+            mapping1 != null && mapping1.type == "scale"
               ? (mapping1 as Specification.ScaleMapping).expression
               : null;
 
           const defaultValue: IDefaultValue = currentExpression1
             ? { table: options?.table, expression: currentExpression1 }
             : null;
-                    
+
           const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
             onClick,
             defaultValue,
@@ -529,7 +525,7 @@ export class FluentMappingEditor extends React.Component<
     const defaultValue: IDefaultValue = currentExpression1
       ? { table: options?.table ?? table, expression: currentExpression1 }
       : null;
-    
+
     const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
       onClick,
       defaultValue,
@@ -539,7 +535,7 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
-    
+
     return (
       <DropZoneView
         filter={(data) => {
