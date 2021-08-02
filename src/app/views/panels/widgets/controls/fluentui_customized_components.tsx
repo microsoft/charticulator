@@ -4,6 +4,8 @@
 import * as React from "react";
 import {
   IDropdownProps,
+  IGroupedListStyleProps,
+  IGroupedListStyles,
   IGroupHeaderStyleProps,
   IGroupHeaderStyles,
   ILabelStyles,
@@ -96,6 +98,10 @@ export const FluentGroupedList = styled.div`
     margin-left: 15px;
     margin-right: 15px;
   }
+
+  .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
+    margin-bottom: 10px;
+  }
 `;
 
 export const groupHeaderStyles: IStyleFunctionOrObject<
@@ -107,5 +113,14 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   headerCount: {
     display: "none",
+  },
+};
+
+export const groupStyles: IStyleFunctionOrObject<
+  IGroupedListStyleProps,
+  IGroupedListStyles
+> = {
+  group: {
+    borderTop: "1px gray solid",
   },
 };

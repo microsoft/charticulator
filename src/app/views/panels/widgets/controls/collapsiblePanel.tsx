@@ -10,6 +10,7 @@ import * as React from "react";
 import {
   FluentGroupedList,
   groupHeaderStyles,
+  groupStyles,
 } from "./fluentui_customized_components";
 
 export const CollapsiblePanel: React.FunctionComponent<{
@@ -69,6 +70,7 @@ export const CollapsiblePanel: React.FunctionComponent<{
           },
         ]}
         compact={true}
+        styles={groupStyles}
       />
     </FluentGroupedList>
   );
