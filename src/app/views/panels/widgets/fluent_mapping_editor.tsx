@@ -377,35 +377,14 @@ export class FluentMappingEditor extends React.Component<
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
           const table = mapping ? (mapping as any).table : options.table;
-          const onClick = (value: DataFieldSelectorValue) => {
-            if (value != null) {
-              this.mapData(
-                new DragData.DataExpression(
-                  this.props.store.getTable(value.table),
-                  value.expression,
-                  value.type,
-                  value.metadata,
-                  value.rawExpression
-                ),
-                options.hints
-              );
-            } else {
-              this.clearMapping();
-            }
-          };
-          const mapping1 = parent.getAttributeMapping(attribute);
-          const currentExpression1: string =
-            mapping1 != null && mapping1.type == "scale"
-              ? (mapping1 as Specification.ScaleMapping).expression
-              : null;
-
-          const defaultValue: IDefaultValue = currentExpression1
-            ? { table: options?.table, expression: currentExpression1 }
-            : null;
-
+          const builderProps = getMenuProps.bind(this)(
+            parent,
+            attribute,
+            options
+          );
           const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
-            onClick,
-            defaultValue,
+            builderProps.onClick,
+            builderProps.defaultValue,
             parent.store,
             this,
             attribute,
@@ -499,36 +478,11 @@ export class FluentMappingEditor extends React.Component<
       ? (currentMapping as any).table
       : options.table;
 
-    const onClick = (value: DataFieldSelectorValue) => {
-      if (value != null) {
-        this.mapData(
-          new DragData.DataExpression(
-            this.props.store.getTable(value.table),
-            value.expression,
-            value.type,
-            value.metadata,
-            value.rawExpression
-          ),
-          options.hints
-        );
-      } else {
-        this.clearMapping();
-      }
-    };
-
-    const mapping = parent.getAttributeMapping(attribute);
-    const currentExpression1: string =
-      mapping != null && mapping.type == "scale"
-        ? (mapping as Specification.ScaleMapping).expression
-        : null;
-
-    const defaultValue: IDefaultValue = currentExpression1
-      ? { table: options?.table ?? table, expression: currentExpression1 }
-      : null;
+    const builderProps = getMenuProps.bind(this)(parent, attribute, options);
 
     const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
-      onClick,
-      defaultValue,
+      builderProps.onClick,
+      builderProps.defaultValue,
       parent.store,
       this,
       attribute,
@@ -785,4 +739,46 @@ export function parentOfType(p: ObjectClass, typeSought: string) {
     }
     p = p.parent;
   }
+}
+
+function getMenuProps(
+  parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors,
+  attribute: string,
+  options: Prototypes.Controls.MappingEditorOptions
+) {
+  const currentMapping = parent.getAttributeMapping(attribute);
+
+  const table = currentMapping ? (currentMapping as any).table : options.table;
+
+  const onClick = (value: DataFieldSelectorValue) => {
+    if (value != null) {
+      this.mapData(
+        new DragData.DataExpression(
+          this.props.store.getTable(value.table),
+          value.expression,
+          value.type,
+          value.metadata,
+          value.rawExpression
+        ),
+        options.hints
+      );
+    } else {
+      this.clearMapping();
+    }
+  };
+
+  const mapping = parent.getAttributeMapping(attribute);
+  const currentExpression1: string =
+    mapping != null && mapping.type == "scale"
+      ? (mapping as Specification.ScaleMapping).expression
+      : null;
+
+  const defaultValue: IDefaultValue = currentExpression1
+    ? { table: options?.table ?? table, expression: currentExpression1 }
+    : null;
+
+  return {
+    onClick,
+    defaultValue,
+  };
 }
