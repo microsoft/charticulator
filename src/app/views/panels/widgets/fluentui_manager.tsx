@@ -151,7 +151,7 @@ export class FluentUIWidgetManager
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
-    
+
     return (
       <FluentMappingEditor
         key={name + attribute}
@@ -573,7 +573,7 @@ export class FluentUIWidgetManager
             pass: true,
           };
         }}
-        placeholder="(none)"
+        placeholder={strings.core.none}
         onEnter={(value) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
@@ -776,9 +776,9 @@ export class FluentUIWidgetManager
                             defaultValue={
                               currentExpression
                                 ? {
-                                  table: options.table,
-                                  expression: currentExpression,
-                                }
+                                    table: options.table,
+                                    expression: currentExpression,
+                                  }
                                 : null
                             }
                             onChange={(value) => {
@@ -825,8 +825,8 @@ export class FluentUIWidgetManager
               globals.popupController.popupAt(
                 (context) => {
                   const items = options.items
-                  ? options.items
-                  : (this.getPropertyValue(property) as string[]);
+                    ? options.items
+                    : (this.getPropertyValue(property) as string[]);
                   return (
                     <PopupView context={context}>
                       <ReorderStringsValue
@@ -1312,8 +1312,7 @@ export class FluentUIWidgetManager
                 window.addEventListener("message", listener);
               }}
             />
-          </NestedChartButtonsWrapper>
-          ,
+          </NestedChartButtonsWrapper>,
           <NestedChartButtonsWrapper>
             <ButtonRaised
               text="Import Template..."
@@ -1341,8 +1340,7 @@ export class FluentUIWidgetManager
               }}
             />
           </NestedChartButtonsWrapper>
-        )
-        }
+        )}
       </React.Fragment>
     );
   }
@@ -1355,7 +1353,7 @@ export class FluentUIWidgetManager
             {title}
           </span>
         ) : // <Label>{title}</Label>
-          null}
+        null}
         {widget}
       </div>
     );
@@ -1516,8 +1514,8 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-            ? this.props.draggingHint()
-            : this.props.children}
+          ? this.props.draggingHint()
+          : this.props.children}
       </div>
     );
   }

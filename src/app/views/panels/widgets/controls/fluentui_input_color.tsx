@@ -22,6 +22,7 @@ import { AppStore } from "../../../../stores";
 
 import { Callout, TextField } from "@fluentui/react";
 import { FluentTextField, labelRender } from "./fluentui_customized_components";
+import { strings } from "../../../../../strings";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -51,7 +52,7 @@ export class FluentInputColor extends React.Component<
           <TextField
             label={this.props.label}
             onRenderLabel={labelRender}
-            placeholder={this.props.allowNull ? "(none)" : ""}
+            placeholder={this.props.allowNull ? strings.core.none : ""}
             value={hex}
             onChange={(event, newValue) => {
               newValue = newValue.trim();

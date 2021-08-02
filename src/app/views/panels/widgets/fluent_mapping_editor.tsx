@@ -51,6 +51,7 @@ import {
   IDefaultValue,
   MenuItemBuilder,
 } from "../../dataset/data_field_binding_builder";
+import { strings } from "../../../../strings";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -209,7 +210,9 @@ export class FluentMappingEditor extends React.Component<
   }
 
   private renderValueEditor(value: Specification.AttributeValue) {
-    let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
+    let placeholderText = this.props.options.defaultAuto
+      ? strings.core.auto
+      : strings.core.none;
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
@@ -275,7 +278,7 @@ export class FluentMappingEditor extends React.Component<
               <TextField
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
-                placeholder={"(none)"}
+                placeholder={strings.core.none}
                 onBlur={() => {
                   if (
                     !mapping ||
@@ -678,7 +681,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
               ? { table: options.table, expression: currentExpression }
               : null
           }
-          nullDescription={"(none)"}
+          nullDescription={strings.core.none}
           nullNotHighlightable={true}
           onChange={(value) => {
             if (value != null) {
