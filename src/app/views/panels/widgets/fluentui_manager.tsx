@@ -96,9 +96,9 @@ import {
 import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
-import { InputFormat } from "./controls/input_format";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
+import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -245,13 +245,13 @@ export class FluentUIWidgetManager
     ).dispatch(this.store.dispatcher);
   }
 
-  // NEED TO UPDATE
   public inputFormat(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
   ) {
     return (
-      <InputFormat
+      <FluentInputFormat
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         validate={(value: string) => {
           if (value && value.trim() !== "") {
