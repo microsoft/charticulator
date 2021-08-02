@@ -189,6 +189,7 @@ export interface InputFormatOptions {
 
 export interface InputFormatOptions {
   blank?: string;
+  label?: string;
 }
 
 export interface InputFormatOptions {

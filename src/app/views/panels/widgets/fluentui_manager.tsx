@@ -266,7 +266,7 @@ export class FluentUIWidgetManager
             } catch (ex) {
               return {
                 pass: false,
-                error: "Invalid format",
+                error: strings.objects.invalidFormat,
               };
             }
           }
