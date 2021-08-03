@@ -286,12 +286,15 @@ addSVGIcon(
   "AlignHorizontalRight",
   require("resources/icons/icons_align-right.svg")
 );
-addSVGIcon("align/top", require("resources/icons/icons_align-top.svg"));
+addSVGIcon("AlignVerticalTop", require("resources/icons/icons_align-top.svg"));
 addSVGIcon(
   "AlignVerticalCenter",
   require("resources/icons/icons_align-y-middle.svg")
 );
-addSVGIcon("align/bottom", require("resources/icons/icons_align-bottom.svg"));
+addSVGIcon(
+  "AlignVerticalBottom",
+  require("resources/icons/icons_align-bottom.svg")
+);
 addSVGIcon(
   "text-align/left",
   require("resources/icons/icons_text-align-left.svg")
