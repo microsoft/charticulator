@@ -378,6 +378,8 @@ export class TextElementClass extends EmphasizableMarkClass<
             { property: "rotation" },
             {
               label: strings.objects.rotation,
+              showUpdown: true,
+              updownTick: 1,
             }
           ),
         ]
