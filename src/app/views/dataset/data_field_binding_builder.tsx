@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 import {
   DataFieldSelectorValue,
   DataFieldSelectorValueCandidate,
@@ -288,7 +290,7 @@ class MenuItemsCreator {
         (subMenuProps && subMenuCheckedItem && mapping
           ? ` (${subMenuCheckedItem})`
           : "");
-          
+
       return {
         key: field.columnName,
         text: itemText,
@@ -296,7 +298,7 @@ class MenuItemsCreator {
         canCheck: subMenuProps ? null : true,
         isChecked: this.checkSelection(selectionKey),
         onClick: subMenuProps ? null : onClickFn,
-        data: subMenuCheckedItem
+        data: subMenuCheckedItem,
       };
     });
   }
