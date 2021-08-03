@@ -380,6 +380,8 @@ export const strings = {
       angle: "Angle",
       curveCoordinates: "Curve Coordinates",
       normal: "Normal",
+      groupBy: "Group by...",
+      groupByCategory: "Group by ",
     },
     visibleOn: {
       visibility: "Visibility",
