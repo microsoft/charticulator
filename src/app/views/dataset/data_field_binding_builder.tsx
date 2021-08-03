@@ -219,12 +219,10 @@ class MenuItemsCreator {
 
   public buildMenuFieldsItems(): void {
     // if useAggregation == true -> create sub menu
-    const mapping = this.parent.props.parent.getAttributeMapping(
+    const mapping = this.parent?.props?.parent?.getAttributeMapping(
       this.attribute
     );
-    if (!mapping) {
-      this.selectedKey = null;
-    }
+
     this.menuItems = this.fields.map((field) => {
       const onClickFn = (
         ev?: React.MouseEvent<HTMLButtonElement>,
@@ -246,7 +244,7 @@ class MenuItemsCreator {
                 if (isSelected) {
                   subMenuCheckedItem = subMenuItem.displayName;
                 }
-                const mapping = this.parent.props.parent.getAttributeMapping(
+                const mapping = this.parent?.props?.parent?.getAttributeMapping(
                   this.attribute
                 );
                 const isMappingEditor: boolean =
@@ -290,14 +288,15 @@ class MenuItemsCreator {
         (subMenuProps && subMenuCheckedItem && mapping
           ? ` (${subMenuCheckedItem})`
           : "");
-
+          
       return {
         key: field.columnName,
         text: itemText,
         subMenuProps,
         canCheck: subMenuProps ? null : true,
-        isChecked: subMenuProps ? null : this.checkSelection(selectionKey),
+        isChecked: this.checkSelection(selectionKey),
         onClick: subMenuProps ? null : onClickFn,
+        data: subMenuCheckedItem
       };
     });
   }
@@ -310,7 +309,7 @@ class MenuItemsCreator {
     parent: FluentMappingEditor,
     store: AppStore
   ): JSX.Element {
-    const mapping = this.parent.props.parent.getAttributeMapping(
+    const mapping = this.parent?.props?.parent.getAttributeMapping(
       this.attribute
     );
 
@@ -468,6 +467,22 @@ export class Director {
     this.builder.produceUsingAggregation(true);
     this.builder.produceDefaultValue(defaultValue);
     this.builder.produceScaleEditor(datasetStore, attribute, parent);
+    this.builder.buildMenu();
+    return this.builder.getMenuItems();
+  }
+
+  public buildSectionHeaderFieldsMenu(
+    onClick: (value: DataFieldSelectorValue) => void,
+    defaultValue: IDefaultValue,
+    datasetStore: AppStore,
+    table?: string,
+    kinds?: Dataset.DataKind[],
+    types?: Dataset.DataType[]
+  ): IContextualMenuItem[] {
+    this.builder.produceFields(datasetStore, table, kinds, types);
+    this.builder.produceOnChange(onClick);
+    this.builder.produceUsingAggregation(true);
+    this.builder.produceDefaultValue(defaultValue);
     this.builder.buildMenu();
     return this.builder.getMenuItems();
   }

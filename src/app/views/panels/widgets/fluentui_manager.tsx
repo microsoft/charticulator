@@ -35,7 +35,7 @@ import {
   showOpenFileDialog,
   readFileAsString,
 } from "../../../utils/index";
-import { DataFieldSelector } from "../../dataset/data_field_selector";
+import { DataFieldSelector, DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
   Button,
@@ -98,6 +98,7 @@ import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
+import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -119,11 +120,15 @@ export class FluentUIWidgetManager
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
-  ) {}
+  ) {
+    
+    this.director = new Director();
+    this.director.setBuilder(new MenuItemBuilder());
+  }
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
-
+  private director: Director;
   private getKeyFromProperty(property: Prototypes.Controls.Property) {
     return `${property?.property}-${property?.field?.toString()}`;
   }
@@ -1014,11 +1019,41 @@ export class FluentUIWidgetManager
     widget?: JSX.Element,
     options: Prototypes.Controls.RowOptions = {}
   ) {
+    this.director.setBuilder(new MenuItemBuilder());
     if (options.dropzone && options.dropzone.type == "axis-data-binding") {
-      let refButton: Element;
       const current = this.getPropertyValue({
         property: options.dropzone.property,
       }) as Specification.Types.AxisDataBinding;
+
+      const onClick = (value: DataFieldSelectorValue) => {
+        if (!value) {
+          this.emitSetProperty(
+            { property: options.dropzone.property },
+            null
+          );
+        } else {
+          const data = new DragData.DataExpression(
+            this.store.getTable(value.table),
+            value.expression,
+            value.type,
+            value.metadata,
+            value.rawExpression
+          );
+          new Actions.BindDataToAxis(
+            this.objectClass
+              .object as Specification.PlotSegment,
+            options.dropzone.property,
+            null,
+            data
+          ).dispatch(this.store.dispatcher);
+        }
+      }
+      const defaultValue: IDefaultValue = current && current.expression
+      ? { table: null, expression: current.expression }
+      : null
+
+      const menu = this.director.buildSectionHeaderFieldsMenu(onClick, defaultValue, this.store)
+      
       return (
         <DropZoneView
           key={title}
@@ -1046,56 +1081,18 @@ export class FluentUIWidgetManager
           {widget}
           <FluentButton marginTop={"0px"}>
             <DefaultButton
+              key={title}
               iconProps={{
                 iconName: "Link",
               }}
-              elementRef={(e) =>
-                (refButton = ReactDOM.findDOMNode(e) as Element)
-              }
-              onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => {
-                    return (
-                      <PopupView context={context}>
-                        <DataFieldSelector
-                          datasetStore={this.store}
-                          defaultValue={
-                            current && current.expression
-                              ? { table: null, expression: current.expression }
-                              : null
-                          }
-                          useAggregation={true}
-                          nullDescription={"(none)"}
-                          nullNotHighlightable={true}
-                          onChange={(value) => {
-                            if (!value) {
-                              this.emitSetProperty(
-                                { property: options.dropzone.property },
-                                null
-                              );
-                            } else {
-                              const data = new DragData.DataExpression(
-                                this.store.getTable(value.table),
-                                value.expression,
-                                value.type,
-                                value.metadata,
-                                value.rawExpression
-                              );
-                              new Actions.BindDataToAxis(
-                                this.objectClass
-                                  .object as Specification.PlotSegment,
-                                options.dropzone.property,
-                                null,
-                                data
-                              ).dispatch(this.store.dispatcher);
-                            }
-                          }}
-                        />
-                      </PopupView>
-                    );
-                  },
-                  { anchor: refButton }
-                );
+              
+              menuProps={{
+                items: menu
+              }}
+              styles={{
+                menuIcon: {
+                  display: "none !important",
+                },
               }}
             />
           </FluentButton>

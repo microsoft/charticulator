@@ -24,7 +24,7 @@ import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall } from "../../../../core/expression";
+import { aggregationFunctions, FunctionCall } from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
@@ -33,6 +33,7 @@ import {
   ActionButton,
   Label,
   IContextualMenuItem,
+  IContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -70,6 +71,7 @@ export class FluentMappingEditor extends React.Component<
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
+  private scaleMappingRef: IContextualMenu = null;
 
   public updateEvents = new EventEmitter();
 
@@ -79,42 +81,7 @@ export class FluentMappingEditor extends React.Component<
 
   public director: Director = null;
 
-  //update
-  private beginDataFieldSelection(anchor: Element = this.mappingButton) {
-    const parent = this.props.parent;
-    const attribute = this.props.attribute;
-    const options = this.props.options;
-    const mapping = parent.getAttributeMapping(attribute);
-
-    const {
-      alignLeft,
-      alignX,
-    }: { alignLeft: boolean; alignX: PopupAlignment } = getAlignment(anchor);
-
-    globals.popupController.popupAt(
-      (context) => {
-        return (
-          <PopupView context={context}>
-            <DataMappAndScaleEditor
-              plotSegment={parentOfType(
-                (this.props.parent as any).objectClass.parent,
-                "plot-segment"
-              )}
-              attribute={attribute}
-              parent={this}
-              defaultMapping={mapping}
-              options={options}
-              alignLeft={alignLeft}
-              onClose={() => context.close()}
-            />
-          </PopupView>
-        );
-      },
-      { anchor, alignX }
-    );
-  }
-
-  private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
+   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
     const options = this.props.options;
@@ -246,6 +213,7 @@ export class FluentMappingEditor extends React.Component<
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
+    //fix
     return (
       <FluentValueEditor
         label={this.props.options.label}
@@ -257,7 +225,7 @@ export class FluentMappingEditor extends React.Component<
         onEmitMapping={(mapping) =>
           this.props.parent.onEditMappingHandler(this.props.attribute, mapping)
         }
-        onBeginDataFieldSelection={(ref) => this.beginDataFieldSelection(ref)}
+        onBeginDataFieldSelection={(ref) => this.scaleMappingDisplay.click()}
         getTable={() => this.getTableOrDefault()}
         hints={this.props.options.hints}
         numberOptions={this.props.options.numberOptions}
@@ -415,7 +383,12 @@ export class FluentMappingEditor extends React.Component<
                     title="Bind data"
                     menuProps={{
                       items: mainMenuItems,
-                    }}
+                      componentRef: (ref) => {
+                        (this.scaleMappingRef = ref)
+                        console.log(ref);
+                        
+                      }
+                  }}
                     text={scaleMapping.expression}
                     iconProps={{
                       iconName: "ColumnFunction",
@@ -466,12 +439,34 @@ export class FluentMappingEditor extends React.Component<
 
     if (this.props.options.openMapping) {
       setTimeout(() => {
-        if (valueIndex === undefined || valueIndex === null) {
-          this.beginDataFieldSelection();
-        } else {
-          this.beginDataFieldValueSelection();
-        }
-      });
+        this.scaleMappingDisplay?.click();
+        let expression = null;
+        let expressionAggregation: string = null;
+        if (currentMapping != null) {
+          if ((currentMapping as Specification.ScaleMapping).expression != null) {
+          const parsed = Expression.parse((currentMapping as Specification.ScaleMapping).expression);
+
+          if (parsed instanceof Expression.FunctionCall) {
+            expression = parsed.args[0].toString();
+            expressionAggregation = parsed.name;
+          }
+
+          const aggName = aggregationFunctions.find((agg) => agg.name.localeCompare(expressionAggregation) === 0);
+
+          const xpath = `//span[contains(text(), "${expression} (${aggName.displayName})")]`;
+          const menuItem = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLSpanElement;
+          menuItem?.click();
+          
+          setTimeout(() => {
+            const container = document.querySelector("body :last-child.ms-Layer");
+            const button: HTMLButtonElement = container.querySelector("button.ms-ContextualMenu-splitMenu") ;
+            button?.click();
+
+          }, 100)
+
+      }}
+        
+      }, 100);
     }
 
     const table = currentMapping
