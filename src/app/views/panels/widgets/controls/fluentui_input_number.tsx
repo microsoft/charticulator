@@ -11,8 +11,8 @@ import {
 import * as React from "react";
 import { prettyNumber } from "../../../../../core";
 import {
+  defaultFontWeight,
   defaultLabelStyle,
-  FluentLabelFontWeight,
   FluentLayoutItem,
   FluentRowLayout,
   labelRender,
@@ -126,38 +126,42 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     const tick = props.updownTick || 0.1;
     return (
       <>
-        <FluentLabelFontWeight>
-          <SpinButton
-            label={!props.showSlider ? props.label : null}
-            labelPosition={Position.top}
-            value={formatNumber(+value)}
-            iconProps={
-              props.updownStyle == "font"
-                ? {
-                    iconName: "Font",
-                  }
-                : null
+        <SpinButton
+          label={!props.showSlider ? props.label : null}
+          labelPosition={Position.top}
+          value={formatNumber(+value)}
+          iconProps={
+            props.updownStyle == "font"
+              ? {
+                  iconName: "Font",
+                }
+              : null
+          }
+          step={tick}
+          onIncrement={(value) => {
+            if (reportValue(parseNumber(value) + tick)) {
+              setValue(parseNumber(value) + tick);
             }
-            step={tick}
-            onIncrement={(value) => {
-              if (reportValue(parseNumber(value) + tick)) {
-                setValue(parseNumber(value) + tick);
-              }
-            }}
-            onDecrement={(value) => {
-              if (reportValue(parseNumber(value) - tick)) {
-                setValue(parseNumber(value) - tick);
-              }
-            }}
-            onValidate={(value) => {
-              const num = parseNumber(value);
-              if (reportValue(num)) {
-                setValue(num);
-                return formatNumber(parseNumber(value));
-              }
-            }}
-          />
-        </FluentLabelFontWeight>
+          }}
+          onDecrement={(value) => {
+            if (reportValue(parseNumber(value) - tick)) {
+              setValue(parseNumber(value) - tick);
+            }
+          }}
+          onValidate={(value) => {
+            const num = parseNumber(value);
+            if (reportValue(num)) {
+              setValue(num);
+              return formatNumber(parseNumber(value));
+            }
+          }}
+          styles={{
+            label: {
+              fontWeight: defaultFontWeight,
+              height: 25,
+            },
+          }}
+        />
       </>
     );
   };

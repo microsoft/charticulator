@@ -91,6 +91,7 @@ export const FluentGroupedList = styled.div`
   .charticulator__widget-collapsible-panel-item {
     margin-left: 15px;
     margin-right: 15px;
+    min-width: 270px;
   }
 
   .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
