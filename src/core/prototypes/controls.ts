@@ -189,6 +189,7 @@ export interface InputFormatOptions {
 export interface InputFormatOptions {
   blank?: string;
   isDateField?: boolean;
+  label?: string;
 }
 
 export interface ReOrderWidgetOptions {

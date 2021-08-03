@@ -1140,20 +1140,18 @@ export function buildAxisWidgets(
             )
           );
           widgets.push(
-            m.row(
-              "Tick Format",
-              m.inputFormat(
-                {
-                  property: axisProperty,
-                  field: "tickFormat",
-                },
-                {
-                  blank: strings.core.auto,
-                  isDateField:
-                    data.numericalMode === NumericalMode.Temporal ||
-                    data.valueType === DataType.Date,
-                }
-              )
+            m.inputFormat(
+              {
+                property: axisProperty,
+                field: "tickFormat",
+              },
+              {
+                blank: strings.core.auto,
+                isDateField:
+                  data.numericalMode === NumericalMode.Temporal ||
+                  data.valueType === DataType.Date,
+                label: "Tick Format",
+              }
             )
           );
           widgets.push(makeAppearance());
@@ -1197,20 +1195,18 @@ export function buildAxisWidgets(
               )
             );
             widgets.push(
-              m.row(
-                "Tick Format",
-                m.inputFormat(
-                  {
-                    property: axisProperty,
-                    field: "tickFormat",
-                  },
-                  {
-                    blank: strings.core.auto,
-                    isDateField:
-                      data.numericalMode === NumericalMode.Temporal ||
-                      data.valueType === DataType.Date,
-                  }
-                )
+              m.inputFormat(
+                {
+                  property: axisProperty,
+                  field: "tickFormat",
+                },
+                {
+                  blank: strings.core.auto,
+                  isDateField:
+                    data.numericalMode === NumericalMode.Temporal ||
+                    data.valueType === DataType.Date,
+                  label: "Tick Format",
+                }
               )
             );
           }

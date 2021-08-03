@@ -120,51 +120,50 @@ export class ImageElementClass extends EmphasizableMarkClass<
             strings.objects.image.stretch,
           ],
           options: ["letterbox", "stretch"],
-          label: strings.objects.image.imageMode
+          label: strings.objects.image.imageMode,
         }
       ),
       ...(this.object.properties.imageMode == "letterbox"
         ? [
-          manager.label(strings.alignment.align),
-          manager.horizontal(
-            [0, 1],
-            manager.inputSelect(
-              { property: "alignX" },
-              {
-                type: "radio",
-                options: ["start", "middle", "end"],
-                icons: [
-                  "AlignHorizontalLeft",
-                  "AlignHorizontalCenter",
-                  "AlignHorizontalRight",
-                ],
-                labels: [
-                  strings.alignment.left,
-                  strings.alignment.middle,
-                  strings.alignment.right,
-                ],
-              }
+            manager.label(strings.alignment.align),
+            manager.horizontal(
+              [0, 1],
+              manager.inputSelect(
+                { property: "alignX" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: [
+                    "AlignHorizontalLeft",
+                    "AlignHorizontalCenter",
+                    "AlignHorizontalRight",
+                  ],
+                  labels: [
+                    strings.alignment.left,
+                    strings.alignment.middle,
+                    strings.alignment.right,
+                  ],
+                }
+              ),
+              manager.inputSelect(
+                { property: "alignY" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: [
+                    strings.alignment.bottom,
+                    strings.alignment.middle,
+                    strings.alignment.top,
+                  ],
+                }
+              )
             ),
-            manager.inputSelect(
-              { property: "alignY" },
-              {
-                type: "radio",
-                options: ["start", "middle", "end"],
-                icons: [
-                  "AlignVerticalBottom",
-                  "AlignVerticalCenter",
-                  "AlignVerticalTop",
-                ],
-                labels: [
-                  strings.alignment.bottom,
-                  strings.alignment.middle,
-                  strings.alignment.top,
-                ],
-              }
-            )
-
-          ),
-        ]
+          ]
         : []),
       manager.sectionHeader(strings.alignment.padding),
       manager.label(strings.coordinateSystem.x),
@@ -200,7 +199,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
       manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
       }),
       manager.mappingEditor(strings.objects.visibleOn.visibility, "visible", {
         defaultValue: true,

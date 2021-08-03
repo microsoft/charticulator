@@ -287,7 +287,7 @@ export class MappingEditor extends React.Component<
                   }
                 }}
               >
-                (none)
+                {strings.core.none}
               </span>
             );
           }
