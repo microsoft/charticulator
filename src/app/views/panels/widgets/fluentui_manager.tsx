@@ -35,7 +35,10 @@ import {
   showOpenFileDialog,
   readFileAsString,
 } from "../../../utils/index";
-import { DataFieldSelector, DataFieldSelectorValue } from "../../dataset/data_field_selector";
+import {
+  DataFieldSelector,
+  DataFieldSelectorValue,
+} from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
   Button,
@@ -97,7 +100,11 @@ import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
-import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
+import {
+  Director,
+  IDefaultValue,
+  MenuItemBuilder,
+} from "../../dataset/data_field_binding_builder";
 import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
@@ -123,7 +130,6 @@ export class FluentUIWidgetManager
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
   ) {
-    
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
   }
@@ -1029,10 +1035,7 @@ export class FluentUIWidgetManager
 
       const onClick = (value: DataFieldSelectorValue) => {
         if (!value) {
-          this.emitSetProperty(
-            { property: options.dropzone.property },
-            null
-          );
+          this.emitSetProperty({ property: options.dropzone.property }, null);
         } else {
           const data = new DragData.DataExpression(
             this.store.getTable(value.table),
@@ -1042,20 +1045,24 @@ export class FluentUIWidgetManager
             value.rawExpression
           );
           new Actions.BindDataToAxis(
-            this.objectClass
-              .object as Specification.PlotSegment,
+            this.objectClass.object as Specification.PlotSegment,
             options.dropzone.property,
             null,
             data
           ).dispatch(this.store.dispatcher);
         }
-      }
-      const defaultValue: IDefaultValue = current && current.expression
-      ? { table: null, expression: current.expression }
-      : null
+      };
+      const defaultValue: IDefaultValue =
+        current && current.expression
+          ? { table: null, expression: current.expression }
+          : null;
 
-      const menu = this.director.buildSectionHeaderFieldsMenu(onClick, defaultValue, this.store)
-      
+      const menu = this.director.buildSectionHeaderFieldsMenu(
+        onClick,
+        defaultValue,
+        this.store
+      );
+
       return (
         <DropZoneView
           key={title}
@@ -1087,9 +1094,8 @@ export class FluentUIWidgetManager
               iconProps={{
                 iconName: "Link",
               }}
-              
               menuProps={{
-                items: menu
+                items: menu,
               }}
               styles={{
                 menuIcon: {
@@ -1124,17 +1130,6 @@ export class FluentUIWidgetManager
           </span>
         ))}
       </div>
-    );
-  }
-
-  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
-    return (
-      <FluentDetailsButton
-        label={label}
-        widgets={widgets}
-        manager={this}
-        key={label}
-      />
     );
   }
 

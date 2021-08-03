@@ -266,7 +266,6 @@ export interface WidgetManager {
   // Layout elements
   sectionHeader(title: string, widget?: Widget, options?: RowOptions): Widget;
   row(title?: string, widget?: Widget, options?: RowOptions): Widget;
-  detailsButton(label: string, ...widgets: Widget[]): Widget;
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
