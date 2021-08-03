@@ -121,7 +121,7 @@ export const groupStyles: IStyleFunctionOrObject<
   IGroupedListStyles
 > = {
   group: {
-    borderTop: "1px gray solid",
+    borderTop: "1px #aaaaaa solid",
   },
 };
 
@@ -145,4 +145,3 @@ export const PlaceholderStyle = styled.div<{ color?: string }>`
     }
   }
 `;
-
