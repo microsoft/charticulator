@@ -55,3 +55,27 @@ export const primaryButtonStyles = {
     color: "black",
   },
 };
+
+export const fontList = [
+  "Arial Black",
+  "Arial",
+  "Comic Sans MS",
+  "Consolas",
+  "Courier New",
+  "Geneva",
+  "Georgia",
+  "Helvetica",
+  "Impact",
+  "Inconsolata",
+  "Lato",
+  "Lucida Console",
+  "Lucida Grande",
+  "Palatino",
+  "Segoe UI",
+  "Segoe UI Light",
+  "Segoe UI Semibold",
+  "Tahoma",
+  "Times",
+  "Trebuchet MS",
+  "Verdana",
+];
