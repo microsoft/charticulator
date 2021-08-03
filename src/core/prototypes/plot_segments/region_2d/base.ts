@@ -2704,6 +2704,7 @@ export class Region2DConstraintBuilder {
                   terminology.xMax,
                 ],
                 tooltip: strings.canvas.alignItemsOnX,
+                hideBorder: true,
               }
             )
           );
@@ -2724,6 +2725,7 @@ export class Region2DConstraintBuilder {
                   terminology.yMax,
                 ],
                 tooltip: strings.canvas.alignItemsOnY,
+                hideBorder: true,
               }
             )
           );
@@ -2743,6 +2745,7 @@ export class Region2DConstraintBuilder {
                   terminology.gridDirectionY,
                 ],
                 tooltip: strings.canvas.gridDirection,
+                hideBorder: true,
               }
             )
           );
@@ -2777,6 +2780,7 @@ export class Region2DConstraintBuilder {
             icons: options.map((x) => x.icon),
             labels: options.map((x) => x.label),
             tooltip: strings.canvas.sublayoutType,
+            hideBorder: true,
           }
         ),
         ...extra,
@@ -2799,6 +2803,7 @@ export class Region2DConstraintBuilder {
             options: ["start", "middle", "end"],
             icons: [icons.yMinIcon, icons.yMiddleIcon, icons.yMaxIcon],
             labels: [terminology.yMin, terminology.yMiddle, terminology.yMax],
+            hideBorder: true,
           }
         )
       );
@@ -2817,6 +2822,7 @@ export class Region2DConstraintBuilder {
             options: ["start", "middle", "end"],
             icons: [icons.xMinIcon, icons.xMiddleIcon, icons.xMaxIcon],
             labels: [terminology.xMin, terminology.xMiddle, terminology.xMax],
+            hideBorder: true,
           }
         )
       );

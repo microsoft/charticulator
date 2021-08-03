@@ -37,6 +37,7 @@ export interface InputSelectOptions {
   labels?: string[];
   tooltip?: string;
   label?: string;
+  hideBorder?: boolean;
 }
 
 export interface InputFontComboboxOptions {

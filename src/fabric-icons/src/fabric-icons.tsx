@@ -2334,9 +2334,9 @@ export function initializeIcons(
           viewBox="0 0 32 32"
           width="16"
           height="16"
-          style={{
-            fill: "#0078d4",
-          }}
+          // style={{
+          //   stroke: "#0078d4",
+          // }}
         >
           <circle
             cx="9.87143"

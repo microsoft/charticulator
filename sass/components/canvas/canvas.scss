@@ -793,83 +793,84 @@
   pointer-events: auto;
   position: absolute;
   white-space: nowrap;
-  background: $gray-220;
-  border: 1px solid $color-canvas-tool;
+  // background: $gray-220;
 
-  @include shadow-focused;
+  // border: 1px solid $color-canvas-tool;
 
-  $line-height: 24px;
-  @mixin icon-size {
-    height: $line-height;
-    width: $line-height;
-  }
+  // @include shadow-focused;
 
-  border-radius: 2px;
+  // $line-height: 24px;
+  // @mixin icon-size {
+  //   height: $line-height;
+  //   width: $line-height;
+  // }
 
-  padding: 3px;
+  // border-radius: 2px;
 
-  .charticulator__widget-control-select,
-  .charticulator__widget-control-order-widget,
-  .charticulator__widget-control-button {
-    height: 32px;
-    @include font-main;
-    .svg-image-icon {
-      @include icon-size;
-    }
+  // padding: 3px;
 
-    .el-text {
-      @include font-main;
-      margin-top: 7px;
-    }
+  // .charticulator__widget-control-select,
+  // .charticulator__widget-control-order-widget,
+  // .charticulator__widget-control-button {
+  //   height: 32px;
+  //   @include font-main;
+  //   .svg-image-icon {
+  //     @include icon-size;
+  //   }
 
-    &:hover {
-      .el-text {
-        color: $gray-000;
-      }
-      .svg-image-icon {
-        filter: invert(30%);
-      }
-    }
-  }
+  //   .el-text {
+  //     @include font-main;
+  //     margin-top: 7px;
+  //   }
 
-  .charticulator__widget-control-select-container {
-    .el-text {
-      @include font-main;
-      white-space: break-spaces;
-      max-width: 55px;
-    }
-  }
+  //   &:hover {
+  //     .el-text {
+  //       color: $gray-000;
+  //     }
+  //     .svg-image-icon {
+  //       filter: invert(30%);
+  //     }
+  //   }
+  // }
 
-  .charticulator__widget-control-order-widget {
-    display: flex;
-    flex-direction: column;
-    :last-child {
-      float: right;
-    }
-    .el-text:hover {
-      color: $gray-000;
-    }
+  // .charticulator__widget-control-select-container {
+  //   .el-text {
+  //     @include font-main;
+  //     white-space: break-spaces;
+  //     max-width: 55px;
+  //   }
+  // }
 
-    &:active {
-      background-color: $color-primary;
+  // .charticulator__widget-control-order-widget {
+  //   display: flex;
+  //   flex-direction: column;
+  //   :last-child {
+  //     float: right;
+  //   }
+  //   .el-text:hover {
+  //     color: $gray-000;
+  //   }
 
-      .el-text {
-        color: $gray-000;
-      }
-    }
-  }
+  //   &:active {
+  //     background-color: $color-primary;
 
-  .charticulator__widget-control-select.has-text {
-    background: $gray-220;
-  }
+  //     .el-text {
+  //       color: $gray-000;
+  //     }
+  //   }
+  // }
 
-  .has-text {
-    background: $gray-220;
-  }
+  // .charticulator__widget-control-select.has-text {
+  //   background: $gray-220;
+  // }
 
-  .el-layout-item {
-    margin: 13px;
-  }
+  // .has-text {
+  //   background: $gray-220;
+  // }
+
+  // .el-layout-item {
+  //   margin: 13px;
+  // }
 }
 
 .handle-text-view-popup {

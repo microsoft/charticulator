@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -470,6 +471,11 @@ export class FluentUIWidgetManager
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
             return true;
+          }}
+          styles={{
+            title: {
+              borderWidth: options.hideBorder ? "0px" : null,
+            },
           }}
         />
       );
