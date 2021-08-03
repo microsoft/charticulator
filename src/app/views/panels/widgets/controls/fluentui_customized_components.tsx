@@ -73,12 +73,6 @@ export const FluentLayoutItem = styled.div<{ flex: number }>`
 
 export const defaultFontWeight = 400;
 
-export const FluentLabelFontWeight = styled.div`
-  label {
-    font-weight: ${defaultFontWeight};
-  }
-`;
-
 export const defaultLabelStyle: ILabelStyles = {
   root: {
     fontWeight: defaultFontWeight,
@@ -121,7 +115,7 @@ export const groupStyles: IStyleFunctionOrObject<
   IGroupedListStyles
 > = {
   group: {
-    borderTop: "1px #aaaaaa solid",
+    borderTop: "1px #C8C6C4 solid",
   },
 };
 
