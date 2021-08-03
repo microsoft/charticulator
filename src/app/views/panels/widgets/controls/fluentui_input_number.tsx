@@ -16,6 +16,7 @@ import {
   FluentLayoutItem,
   FluentRowLayout,
   labelRender,
+  PlaceholderStyle,
 } from "./fluentui_customized_components";
 
 export interface InputNumberProps {
@@ -27,6 +28,7 @@ export interface InputNumberProps {
   minimum?: number;
   maximum?: number;
   percentage?: boolean;
+  step?: number;
 
   showSlider?: boolean;
   sliderRange?: [number, number];
@@ -41,12 +43,7 @@ export interface InputNumberProps {
 }
 
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
-  const [value, setValue] = React.useState(props.defaultValue);
-
-  // force update state value
-  if (value !== props.defaultValue) {
-    setValue(props.defaultValue);
-  }
+  const [value, setValue] = React.useState<string | number>(props.defaultValue);
 
   const formatNumber = (value: number) => {
     if (value == null) {
@@ -112,9 +109,11 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
       <Slider
         min={sliderMin}
         max={sliderMax}
-        value={value}
+        value={+value}
         showValue={true}
-        step={props.percentage ? 0.01 : 1}
+        step={
+          props.percentage ? 0.01 : props.step != undefined ? props.step : 1
+        }
         onChange={(newValue: number) => {
           setValue(+newValue.toFixed(4));
           reportValue(newValue);
@@ -131,7 +130,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           <SpinButton
             label={!props.showSlider ? props.label : null}
             labelPosition={Position.top}
-            value={formatNumber(value)}
+            value={formatNumber(+value)}
             iconProps={
               props.updownStyle == "font"
                 ? {
@@ -176,18 +175,29 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           {props.showUpdown ? (
             renderUpdown()
           ) : (
-            <TextField
-              onRenderLabel={labelRender}
-              label={!props.showSlider ? props.label : null}
-              placeholder={props.placeholder}
-              value={formatNumber(value)}
-              onChange={(event, str) => {
-                const num = parseNumber(str);
-                if (reportValue(num)) {
-                  setValue(num);
+            <PlaceholderStyle>
+              <TextField
+                onRenderLabel={labelRender}
+                label={!props.showSlider ? props.label : null}
+                placeholder={props.placeholder}
+                value={
+                  typeof value === "string" &&
+                  (value as string).indexOf(".") === value.length - 1
+                    ? value
+                    : formatNumber(+value)
                 }
-              }}
-            />
+                onChange={(event, str) => {
+                  if (str.indexOf(".") === str.length - 1) {
+                    setValue(str);
+                  } else {
+                    const num = parseNumber(str);
+                    if (reportValue(num)) {
+                      setValue(num);
+                    }
+                  }
+                }}
+              />
+            </PlaceholderStyle>
           )}
         </FluentLayoutItem>
       </FluentRowLayout>

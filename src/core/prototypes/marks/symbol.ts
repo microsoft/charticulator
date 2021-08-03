@@ -359,6 +359,7 @@ export class SymbolElementClass extends EmphasizableMarkClass<
       ),
     ];
     widgets = widgets.concat([]);
+
     return widgets.concat(parentWidgets);
   }
 

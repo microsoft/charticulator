@@ -124,3 +124,25 @@ export const groupStyles: IStyleFunctionOrObject<
     borderTop: "1px gray solid",
   },
 };
+
+export const PlaceholderStyle = styled.div<{ color?: string }>`
+  input {
+    ::-webkit-input-placeholder {
+      /* Chrome/Opera/Safari */
+      color: ${({ color }) => color || "lightgray"};
+    }
+    ::-moz-placeholder {
+      /* Firefox 19+ */
+      color: ${({ color }) => color || "lightgray"};
+    }
+    :-ms-input-placeholder {
+      /* IE 10+ */
+      color: ${({ color }) => color || "lightgray"};
+    }
+    :-moz-placeholder {
+      /* Firefox 18- */
+      color: ${({ color }) => color || "lightgray"};
+    }
+  }
+`;
+
