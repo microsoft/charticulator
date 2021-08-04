@@ -513,15 +513,27 @@ export class Region2DConstraintBuilder {
         const rowContext = table.getGroupedContext(dataIndices[index]);
         const value = expr.getNumberValue(rowContext);
         const t = interp(value);
-        solver.addLinear(
-          ConstraintStrength.HARD,
-          (1 - t) * props.marginX1 - t * props.marginX2,
-          [
-            [1 - t, x1],
-            [t, x2],
-          ],
-          [[1, solver.attr(markState.attributes, "x")]]
-        );
+
+        if (data.categories) {
+          solver.addLinear(
+            ConstraintStrength.HARD,
+            0,
+            [
+              [-1, x1],
+              [1 , x2],
+            ],
+            [[data.categories?.length, solver.attr(markState.attributes, "width")]]
+          );
+        }
+         solver.addLinear(
+            ConstraintStrength.HARD,
+            (1 - t) * props.marginX1 - t * props.marginX2,
+            [
+              [1 - t, x1],
+              [t, x2],
+            ],
+            [[1, solver.attr(markState.attributes, "x")]]
+          );
       }
     }
     if (data.type == "categorical") {
@@ -785,12 +797,12 @@ export class Region2DConstraintBuilder {
     for (let cindex = 0; cindex < data.categories.length; cindex++) {
       const [t1, t2] = axis.ranges[cindex];
 
-      // t1 * x2 = (1 - t1) * x2
+      // t1 * x2 = (1 - t1) * x1
       const vx1Expr = <[number, Variable][]>[
         [t1, x2],
         [1 - t1, x1],
       ];
-      // t2 * x2 = (1 - t2) * x2
+      // t2 * x2 = (1 - t2) * x1
       const vx2Expr = <[number, Variable][]>[
         [t2, x2],
         [1 - t2, x1],
