@@ -352,9 +352,11 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     }
   }
   public inputBoolean(
-    property: Prototypes.Controls.Property,
+    properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    const property: Prototypes.Controls.Property =
+      properties instanceof Array ? properties[0] : properties;
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -365,7 +367,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
             title={options.label}
             fillWidth={options.type == "checkbox-fill-width"}
             onChange={(v) => {
-              this.emitSetProperty(property, v);
+              if (properties instanceof Array) {
+                properties.forEach((property) =>
+                  this.emitSetProperty(property, v)
+                );
+              } else {
+                this.emitSetProperty(property, v);
+              }
             }}
           />
         );

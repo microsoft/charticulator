@@ -177,7 +177,10 @@ export interface WidgetManager {
   ): Widget;
   inputFontFamily(property: Property): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
-  inputBoolean(property: Property, options: InputBooleanOptions): Widget;
+  inputBoolean(
+    property: Property | Property[],
+    options: InputBooleanOptions
+  ): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputFormat(property: Property, options?: InputFormatOptions): Widget;
   inputImage(property: Property): Widget;
