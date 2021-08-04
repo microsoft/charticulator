@@ -1699,7 +1699,7 @@ export class AppStore extends BaseStore {
       categories:
         <string[]>objectProperties?.categories !== undefined
           ? <string[]>objectProperties?.categories
-          : null,
+          : null,               
     };
 
     let expressions = [groupExpression];
@@ -1802,6 +1802,12 @@ export class AppStore extends BaseStore {
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Linear;
             }
+            const { categories } = this.getCategoriesForDataBinding(
+              dataExpression.metadata,
+              dataExpression.valueType,
+              values
+            );
+            dataBinding.categories = categories;
           }
           break;
         case Specification.DataKind.Temporal:
