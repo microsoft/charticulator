@@ -15,14 +15,14 @@ import {
   GradientView,
 } from "../../../../components";
 import {
-  getAlignment,
   PopupView,
 } from "../../../../controllers/popup_controller";
 
 import { AppStore } from "../../../../stores";
 
-import { TextField } from "@fluentui/react";
+import { Callout, TextField } from "@fluentui/react";
 import { FluentTextField, labelRender } from "./fluentui_customized_components";
+import { strings } from "../../../../../strings";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -36,19 +36,23 @@ export class FluentInputColor extends React.Component<
   InputColorProps,
   Record<string, unknown>
 > {
+  constructor(props: InputColorProps) {
+    super(props);
+    this.state = { open: false };
+  }
+
   public render() {
     let hex: string = "";
     if (this.props.defaultValue) {
       hex = colorToHTMLColorHEX(this.props.defaultValue);
     }
-    let colorButton: HTMLSpanElement;
     return (
       <span className="charticulator__widget-control-input-color">
         <FluentTextField>
           <TextField
             label={this.props.label}
             onRenderLabel={labelRender}
-            placeholder={this.props.allowNull ? "(none)" : ""}
+            placeholder={this.props.allowNull ? strings.core.none : ""}
             value={hex}
             onChange={(event, newValue) => {
               newValue = newValue.trim();
@@ -70,31 +74,29 @@ export class FluentInputColor extends React.Component<
         <span
           className="el-color-display"
           style={{ backgroundColor: hex == "" ? "transparent" : hex }}
-          ref={(e) => (colorButton = e)}
+          id={this.props.label}
           onClick={() => {
-            globals.popupController.popupAt(
-              (context) => {
-                return (
-                  <PopupView context={context}>
-                    <ColorPicker
-                      store={this.props.store}
-                      allowNull={true}
-                      onPick={(color) => {
-                        if (color == null) {
-                          this.props.onEnter(null);
-                          context.close();
-                        } else {
-                          this.props.onEnter(color);
-                        }
-                      }}
-                    />
-                  </PopupView>
-                );
-              },
-              { anchor: colorButton, alignX: getAlignment(colorButton).alignX }
-            );
+             this.setState({ open: !this.state.open });
           }}
         />
+        {this.state.open && (
+          <Callout
+            target={`#${this.props.label}`}
+            >
+            <ColorPicker
+              store={this.props.store}
+              allowNull={true}
+              onPick={(color) => {
+                if (color == null) {
+                  this.props.onEnter(null);
+                } else {
+                  this.props.onEnter(color);
+                }
+                this.setState({ open: !this.state.open });
+              }}
+            />
+          </Callout>
+        )}
       </span>
     );
   }

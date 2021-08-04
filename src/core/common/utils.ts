@@ -661,7 +661,8 @@ export function replaceSymbolByTab(str: string) {
   return str?.replace(/\t/g, "\\t");
 }
 
-let formatOptions: FormatLocaleDefinition = {
+// eslint-disable-next-line no-var
+var formatOptions: FormatLocaleDefinition = {
   decimal: ".",
   thousands: ",",
   grouping: [3],

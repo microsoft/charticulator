@@ -20,16 +20,24 @@ import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
-import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import { FunctionCall } from "../../../../core/expression";
+import {
+  aggregationFunctions,
+  FunctionCall,
+} from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
-
-import { DefaultButton, TextField, ActionButton, Label } from "@fluentui/react";
+import {
+  DefaultButton,
+  TextField,
+  ActionButton,
+  Label,
+  IContextualMenuItem,
+  IContextualMenu,
+} from "@fluentui/react";
 import {
   defaultLabelStyle,
   FluentActionButton,
@@ -37,6 +45,16 @@ import {
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
+import {
+  DataFieldSelector,
+  DataFieldSelectorValue,
+} from "../../dataset/fluent_ui_data_field_selector";
+import {
+  Director,
+  IDefaultValue,
+  MenuItemBuilder,
+} from "../../dataset/data_field_binding_builder";
+import { strings } from "../../../../strings";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -57,6 +75,7 @@ export class FluentMappingEditor extends React.Component<
   public mappingButton: Element;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
+  private scaleMappingRef: IContextualMenu = null;
 
   public updateEvents = new EventEmitter();
 
@@ -64,39 +83,7 @@ export class FluentMappingEditor extends React.Component<
     showNoneAsValue: false,
   };
 
-  private beginDataFieldSelection(anchor: Element = this.mappingButton) {
-    const parent = this.props.parent;
-    const attribute = this.props.attribute;
-    const options = this.props.options;
-    const mapping = parent.getAttributeMapping(attribute);
-
-    const {
-      alignLeft,
-      alignX,
-    }: { alignLeft: boolean; alignX: PopupAlignment } = getAlignment(anchor);
-
-    globals.popupController.popupAt(
-      (context) => {
-        return (
-          <PopupView context={context}>
-            <DataMappAndScaleEditor
-              plotSegment={parentOfType(
-                (this.props.parent as any).objectClass.parent,
-                "plot-segment"
-              )}
-              attribute={attribute}
-              parent={this}
-              defaultMapping={mapping}
-              options={options}
-              alignLeft={alignLeft}
-              onClose={() => context.close()}
-            />
-          </PopupView>
-        );
-      },
-      { anchor, alignX }
-    );
-  }
+  public director: Director = null;
 
   private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
     const parent = this.props.parent;
@@ -219,11 +206,20 @@ export class FluentMappingEditor extends React.Component<
     }
   }
 
+  constructor(props: MappingEditorProps) {
+    super(props);
+    this.director = new Director();
+    this.director.setBuilder(new MenuItemBuilder());
+  }
+
   private renderValueEditor(value: Specification.AttributeValue) {
-    let placeholderText = this.props.options.defaultAuto ? "(auto)" : "(none)";
+    let placeholderText = this.props.options.defaultAuto
+      ? strings.core.auto
+      : strings.core.none;
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
+    //fix
     return (
       <FluentValueEditor
         label={this.props.options.label}
@@ -235,7 +231,7 @@ export class FluentMappingEditor extends React.Component<
         onEmitMapping={(mapping) =>
           this.props.parent.onEditMappingHandler(this.props.attribute, mapping)
         }
-        onBeginDataFieldSelection={(ref) => this.beginDataFieldSelection(ref)}
+        onBeginDataFieldSelection={(ref) => this.scaleMappingDisplay.click()}
         getTable={() => this.getTableOrDefault()}
         hints={this.props.options.hints}
         numberOptions={this.props.options.numberOptions}
@@ -268,13 +264,9 @@ export class FluentMappingEditor extends React.Component<
               <TextField
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
-                placeholder={"(auto)"}
-                onBlur={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                placeholder={strings.core.auto}
+                onClick={() => {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -285,13 +277,9 @@ export class FluentMappingEditor extends React.Component<
               <TextField
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
-                placeholder={"(none)"}
-                onBlur={() => {
-                  if (
-                    !mapping ||
-                    (mapping as any).valueIndex === undefined ||
-                    (mapping as any).valueIndex === null
-                  ) {
+                placeholder={strings.core.none}
+                onClick={() => {
+                  if (!mapping || (mapping as any).valueIndex == undefined) {
                     this.initiateValueEditor();
                   }
                 }}
@@ -354,6 +342,22 @@ export class FluentMappingEditor extends React.Component<
         }
         case "scale": {
           const scaleMapping = mapping as Specification.ScaleMapping;
+          const table = mapping ? (mapping as any).table : options.table;
+          const builderProps = getMenuProps.bind(this)(
+            parent,
+            attribute,
+            options
+          );
+          const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
+            builderProps.onClick,
+            builderProps.defaultValue,
+            parent.store,
+            this,
+            attribute,
+            table,
+            options.acceptKinds
+          );
+
           if (scaleMapping.scale) {
             let scaleIcon = <span>f</span>;
             if (this.props.type == "color") {
@@ -369,41 +373,18 @@ export class FluentMappingEditor extends React.Component<
                 <FluentActionButton>
                   <ActionButton
                     elementRef={(e) => (this.scaleMappingDisplay = e)}
-                    onClick={() => {
-                      if (
-                        !scaleMapping ||
-                        scaleMapping.valueIndex === undefined ||
-                        scaleMapping.valueIndex === null
-                      ) {
-                        const {
-                          alignLeft,
-                          alignX,
-                        }: { alignLeft: boolean; alignX: any } = getAlignment(
-                          this.scaleMappingDisplay
-                        );
-
-                        globals.popupController.popupAt(
-                          (context) => (
-                            <PopupView context={context}>
-                              <DataMappAndScaleEditor
-                                attribute={this.props.attribute}
-                                parent={this}
-                                defaultMapping={mapping}
-                                options={options}
-                                alignLeft={alignLeft}
-                                onClose={() => context.close()}
-                                plotSegment={parentOfType(
-                                  (this.props.parent as any).objectClass.parent,
-                                  "plot-segment"
-                                )}
-                              />
-                            </PopupView>
-                          ),
-                          { anchor: this.scaleMappingDisplay, alignX }
-                        );
-                      } else {
-                        this.beginDataFieldValueSelection();
-                      }
+                    styles={{
+                      menuIcon: {
+                        display: "none !important",
+                      },
+                    }}
+                    title="Bind data"
+                    menuProps={{
+                      items: mainMenuItems,
+                      componentRef: (ref) => {
+                        this.scaleMappingRef = ref;
+                        console.log(ref);
+                      },
                     }}
                     text={scaleMapping.expression}
                     iconProps={{
@@ -447,124 +428,183 @@ export class FluentMappingEditor extends React.Component<
     const currentMapping = parent.getAttributeMapping(attribute);
 
     // If there is a mapping, also not having default or using auto
-    const shouldShowEraser =
-      currentMapping != null &&
-      (currentMapping.type != "value" ||
-        !options.defaultValue ||
-        options.defaultAuto);
     const shouldShowBindData = parent.onMapDataHandler != null;
     const isDataMapping =
-      currentMapping != null && (currentMapping.type == "scale" || currentMapping.type == "value");
+      currentMapping != null &&
+      (currentMapping.type == "scale" || currentMapping.type == "value");
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
       setTimeout(() => {
-        if (valueIndex === undefined || valueIndex === null) {
-          this.beginDataFieldSelection();
-        } else {
-          this.beginDataFieldValueSelection();
+        this.scaleMappingDisplay?.click();
+        let expression = null;
+        let expressionAggregation: string = null;
+        if (currentMapping != null) {
+          if (
+            (currentMapping as Specification.ScaleMapping).expression != null
+          ) {
+            const parsed = Expression.parse(
+              (currentMapping as Specification.ScaleMapping).expression
+            );
+
+            if (parsed instanceof Expression.FunctionCall) {
+              expression = parsed.args[0].toString();
+              expressionAggregation = parsed.name;
+            }
+
+            const aggName = aggregationFunctions.find(
+              (agg) => agg.name.localeCompare(expressionAggregation) === 0
+            );
+
+            const xpath = `//span[contains(text(), "${expression} (${aggName.displayName})")]`;
+            const menuItem = document.evaluate(
+              xpath,
+              document,
+              null,
+              XPathResult.FIRST_ORDERED_NODE_TYPE,
+              null
+            ).singleNodeValue as HTMLSpanElement;
+            menuItem?.click();
+
+            setTimeout(() => {
+              const container = document.querySelector(
+                "body :last-child.ms-Layer"
+              );
+              const button: HTMLButtonElement = container.querySelector(
+                "button.ms-ContextualMenu-splitMenu"
+              );
+              button?.click();
+            }, 100);
+          }
         }
-      });
+      }, 100);
     }
 
+    const table = currentMapping
+      ? (currentMapping as any).table
+      : options.table;
+
+    const builderProps = getMenuProps.bind(this)(parent, attribute, options);
+
+    const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
+      builderProps.onClick,
+      builderProps.defaultValue,
+      parent.store,
+      this,
+      attribute,
+      table,
+      options.acceptKinds
+    );
+
     return (
-      <DropZoneView
-        filter={(data) => {
-          if (!shouldShowBindData) {
-            return false;
-          }
-          if (data instanceof DragData.DataExpression) {
-            return isKindAcceptable(data.metadata.kind, options.acceptKinds);
-          } else {
-            return false;
-          }
-        }}
-        onDrop={(data: DragData.DataExpression, point, modifiers) => {
-          if (!options.hints) {
-            options.hints = {};
-          }
-          options.hints.newScale = modifiers.shiftKey;
-          options.hints.scaleID = data.scaleID;
+      <div ref={(e) => (this.noneLabel = e)}>
+        <DropZoneView
+          filter={(data) => {
+            if (!shouldShowBindData) {
+              return false;
+            }
+            if (data instanceof DragData.DataExpression) {
+              return isKindAcceptable(data.metadata.kind, options.acceptKinds);
+            } else {
+              return false;
+            }
+          }}
+          onDrop={(data: DragData.DataExpression, point, modifiers) => {
+            if (!options.hints) {
+              options.hints = {};
+            }
+            options.hints.newScale = modifiers.shiftKey;
+            options.hints.scaleID = data.scaleID;
 
-          const parsedExpression = Expression.parse(
-            data.expression
-          ) as FunctionCall;
+            const parsedExpression = Expression.parse(
+              data.expression
+            ) as FunctionCall;
 
-          if (data.allowSelectValue && parsedExpression.name !== "get") {
-            data.expression = `get(${data.expression}, 0)`;
-          }
-          // because original mapping allowed it
-          if (parsedExpression.name === "get") {
-            data.allowSelectValue = true;
-          }
-          this.mapData(data, {
-            ...options.hints,
-            allowSelectValue: data.allowSelectValue,
-          });
-        }}
-        className="charticulator__widget-control-mapping-editor"
-      >
-        {parent.horizontal(
-          [1, 0],
-          this.renderCurrentAttributeMapping(),
-          <span>
-            {isDataMapping ? (
-              <FluentButton>
-                <DefaultButton
-                  iconProps={{
-                    iconName: "EraseTool",
-                  }}
-                  checked={false}
-                  title="Remove"
-                  onClick={() => {
-                    if (parent.getAttributeMapping(attribute)) {
-                      this.clearMapping();
+            if (data.allowSelectValue && parsedExpression.name !== "get") {
+              data.expression = `get(${data.expression}, 0)`;
+            }
+            // because original mapping allowed it
+            if (parsedExpression.name === "get") {
+              data.allowSelectValue = true;
+            }
+            this.mapData(data, {
+              ...options.hints,
+              allowSelectValue: data.allowSelectValue,
+            });
+          }}
+          className="charticulator__widget-control-mapping-editor"
+        >
+          {parent.horizontal(
+            [1, 0],
+            this.renderCurrentAttributeMapping(),
+            <span>
+              {isDataMapping ? (
+                <FluentButton>
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "EraseTool",
+                    }}
+                    checked={false}
+                    title="Remove"
+                    onClick={() => {
+                      if (parent.getAttributeMapping(attribute)) {
+                        this.clearMapping();
+                      }
+                      this.setState({
+                        showNoneAsValue: false,
+                      });
+                    }}
+                  />
+                </FluentButton>
+              ) : null}
+              {(valueIndex === undefined || valueIndex === null) &&
+              shouldShowBindData ? (
+                <>
+                  <FluentButton>
+                    <DefaultButton
+                      elementRef={(e) =>
+                        (this.mappingButton = ReactDOM.findDOMNode(
+                          e
+                        ) as Element)
+                      }
+                      iconProps={{
+                        iconName: "Link",
+                      }}
+                      styles={{
+                        menuIcon: {
+                          display: "none !important",
+                        },
+                      }}
+                      title="Bind data"
+                      checked={isDataMapping}
+                      menuProps={{
+                        items: mainMenuItems,
+                      }}
+                    />
+                  </FluentButton>
+                </>
+              ) : null}
+              {valueIndex !== undefined && valueIndex !== null ? (
+                <FluentButton>
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "Link",
+                    }}
+                    title="Bind data value"
+                    ref={(e) =>
+                      (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
                     }
-                    this.setState({
-                      showNoneAsValue: false,
-                    });
-                  }}
-                />
-              </FluentButton>
-            ) : null}
-            {(valueIndex === undefined || valueIndex === null) &&
-            shouldShowBindData ? (
-              <FluentButton>
-                <DefaultButton
-                  elementRef={(e) =>
-                    (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                  }
-                  iconProps={{
-                    iconName: "Link",
-                  }}
-                  title="Bind data"
-                  onClick={() => {
-                    this.beginDataFieldSelection();
-                  }}
-                  checked={isDataMapping}
-                />
-              </FluentButton>
-            ) : null}
-            {valueIndex !== undefined && valueIndex !== null ? (
-              <FluentButton>
-                <DefaultButton
-                  iconProps={{
-                    iconName: "Link",
-                  }}
-                  title="Bind data value"
-                  ref={(e) =>
-                    (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                  }
-                  onClick={() => {
-                    this.beginDataFieldValueSelection();
-                  }}
-                  checked={isDataMapping}
-                />
-              </FluentButton>
-            ) : null}
-          </span>
-        )}
-      </DropZoneView>
+                    onClick={() => {
+                      this.beginDataFieldValueSelection();
+                    }}
+                    checked={isDataMapping}
+                  />
+                </FluentButton>
+              ) : null}
+            </span>
+          )}
+        </DropZoneView>
+      </div>
     );
   }
 }
@@ -653,7 +693,7 @@ export class DataMappAndScaleEditor extends ContextedComponent<
               ? { table: options.table, expression: currentExpression }
               : null
           }
-          nullDescription={"(none)"}
+          nullDescription={strings.core.none}
           nullNotHighlightable={true}
           onChange={(value) => {
             if (value != null) {
@@ -702,11 +742,53 @@ export class DataMappAndScaleEditor extends ContextedComponent<
   }
 }
 
-function parentOfType(p: ObjectClass, typeSought: string) {
+export function parentOfType(p: ObjectClass, typeSought: string) {
   while (p) {
     if (Prototypes.isType(p.object.classID, typeSought)) {
       return p;
     }
     p = p.parent;
   }
+}
+
+function getMenuProps(
+  parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors,
+  attribute: string,
+  options: Prototypes.Controls.MappingEditorOptions
+) {
+  const currentMapping = parent.getAttributeMapping(attribute);
+
+  const table = currentMapping ? (currentMapping as any).table : options.table;
+
+  const onClick = (value: DataFieldSelectorValue) => {
+    if (value != null) {
+      this.mapData(
+        new DragData.DataExpression(
+          this.props.store.getTable(value.table),
+          value.expression,
+          value.type,
+          value.metadata,
+          value.rawExpression
+        ),
+        options.hints
+      );
+    } else {
+      this.clearMapping();
+    }
+  };
+
+  const mapping = parent.getAttributeMapping(attribute);
+  const currentExpression1: string =
+    mapping != null && mapping.type == "scale"
+      ? (mapping as Specification.ScaleMapping).expression
+      : null;
+
+  const defaultValue: IDefaultValue = currentExpression1
+    ? { table: options?.table ?? table, expression: currentExpression1 }
+    : null;
+
+  return {
+    onClick,
+    defaultValue,
+  };
 }

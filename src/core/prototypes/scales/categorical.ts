@@ -566,7 +566,7 @@ export class CategoricalScaleImage extends ScaleClass<
               manager.text(key, "right")
             ),
             manager.inputImageProperty({ property: "mapping", field: key }),
-            manager.clearButton({ property: "mapping", field: key }, "")
+            manager.clearButton({ property: "mapping", field: key }, "", true)
           )
         )
       ),

@@ -360,7 +360,7 @@ export class ExportTemplateView extends ContextedComponent<
   /** Renders column names for export view */
   public renderSlots() {
     if (this.state.template.tables.length == 0) {
-      return <p>(none)</p>;
+      return <p>{strings.core.none}</p>;
     }
     return this.state.template.tables.map((table) => (
       <div key={table.name}>
@@ -422,7 +422,7 @@ export class ExportTemplateView extends ContextedComponent<
   public renderInferences() {
     const template = this.state.template;
     if (template.inference.length == 0) {
-      return <p>(none)</p>;
+      return <p>{strings.core.none}</p>;
     }
     return (
       template.inference

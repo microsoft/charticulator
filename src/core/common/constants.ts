@@ -52,5 +52,6 @@ export const fontList = [
   "Tahoma",
   "Times",
   "Trebuchet MS",
+  "Segoe UI",
   "Verdana",
 ];
