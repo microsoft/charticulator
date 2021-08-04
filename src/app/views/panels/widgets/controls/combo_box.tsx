@@ -10,6 +10,7 @@ import * as globals from "../../../../globals";
 import { SVGImageIcon } from "../../../../components";
 import { PopupView } from "../../../../controllers";
 import { classNames } from "../../../../utils";
+import { fontList } from "../../../../../core";
 
 export interface ComboBoxOptionProps {
   onClick: () => void;
@@ -159,28 +160,6 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
     );
   }
 }
-
-const fontList = [
-  "Arial Black",
-  "Arial",
-  "Comic Sans MS",
-  "Consolas",
-  "Courier New",
-  "Geneva",
-  "Georgia",
-  "Helvetica",
-  "Impact",
-  "Inconsolata",
-  "Lato",
-  "Lucida Console",
-  "Lucida Grande",
-  "Palatino",
-  "Segoe UI",
-  "Tahoma",
-  "Times",
-  "Trebuchet MS",
-  "Verdana",
-];
 
 export interface ComboBoxFontFamilyProps {
   defaultValue: string;
