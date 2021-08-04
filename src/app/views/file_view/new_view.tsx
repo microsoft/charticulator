@@ -7,11 +7,12 @@
 import * as React from "react";
 import { strings } from "../../../strings";
 import { Actions } from "../../actions";
-import { ContextedComponent } from "../../context_component";
+import { AppStore } from "../../stores";
 import { ImportDataView } from "./import_data_view";
 
-export class FileViewNew extends ContextedComponent<
+export class FileViewNew extends React.Component<
   {
+    store: AppStore;
     onClose: () => void;
   },
   {}
@@ -21,9 +22,11 @@ export class FileViewNew extends ContextedComponent<
       <section className="charticulator__file-view-content">
         <h1>{strings.mainTabs.new}</h1>
         <ImportDataView
-          store={this.context.store}
+          store={this.props.store}
           onConfirmImport={(dataset) => {
-            this.dispatch(new Actions.ImportDataset(dataset));
+            this.props.store.dispatcher.dispatch(
+              new Actions.ImportDataset(dataset)
+            );
             this.props.onClose();
           }}
         />

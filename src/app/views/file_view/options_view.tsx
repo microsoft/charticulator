@@ -13,8 +13,9 @@ import {
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
-import { ContextedComponent, MainContext } from "../../context_component";
+import { MainContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
+import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
 
 export interface FileViewOptionsProps {
@@ -163,9 +164,10 @@ const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
 };
 
 // TODO create HOC
-export class FileViewOptions extends ContextedComponent<
+export class FileViewOptions extends React.Component<
   {
     onClose: () => void;
+    store: AppStore;
   },
   {}
 > {
@@ -173,7 +175,7 @@ export class FileViewOptions extends ContextedComponent<
     return (
       <FileViewOptionsView
         onClose={this.props.onClose}
-        store={this.context.store}
+        store={this.props.store}
       />
     );
   }

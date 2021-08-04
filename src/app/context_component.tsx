@@ -39,5 +39,3 @@ export class ContextedComponent<TProps, TState> extends React.Component<
     return this.context.store;
   }
 }
-
-export const MainReactContext = React.createContext<MainContext>(null);
