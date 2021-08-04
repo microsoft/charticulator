@@ -239,19 +239,16 @@ export class GuideCoordinatorClass extends ChartElementClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader(strings.objects.guides.guideCoordinator),
-      manager.row(
-        strings.objects.guides.count,
-        manager.inputNumber(
-          { property: "count" },
-          {
-            showUpdown: true,
-            updownTick: 1,
-            updownRange: [1, 100],
-            minimum: 1,
-            maximum: 100,
-          }
-        )
+      manager.inputNumber(
+        { property: "count" },
+        {
+          showUpdown: true,
+          updownTick: 1,
+          updownRange: [1, 100],
+          minimum: 1,
+          maximum: 100,
+          label: strings.objects.guides.count,
+        }
       ),
     ];
   }

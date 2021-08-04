@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+import { strings } from "../../../strings";
 import { Point, Color, rgbToHex } from "../../common";
 import * as Graphics from "../../graphics";
 import * as Specification from "../../specification";
@@ -297,46 +298,68 @@ export class SymbolElementClass extends EmphasizableMarkClass<
   ): Controls.Widget[] {
     const parentWidgets = super.getAttributePanelWidgets(manager);
     let widgets = [
-      manager.sectionHeader("Symbol"),
-      manager.mappingEditor("Shape", "symbol", {
-        acceptKinds: [Specification.DataKind.Categorical],
-        hints: { rangeEnum: symbolTypes },
-        defaultValue: "circle",
-      }),
-      manager.mappingEditor("Size", "size", {
-        acceptKinds: [Specification.DataKind.Numerical],
-        hints: { rangeNumber: [0, 200 * Math.PI] },
-        defaultValue: 60,
-        numberOptions: {
-          showSlider: true,
-          minimum: 0,
-          sliderRange: [0, 3600],
-          sliderFunction: "sqrt",
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
         },
-      }),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Fill", "fill", {}),
-      manager.mappingEditor("Stroke", "stroke", {}),
+        [
+          manager.mappingEditor(strings.objects.rect.shape, "symbol", {
+            acceptKinds: [Specification.DataKind.Categorical],
+            hints: { rangeEnum: symbolTypes },
+            defaultValue: "circle",
+          }),
+          manager.mappingEditor(strings.objects.size, "size", {
+            acceptKinds: [Specification.DataKind.Numerical],
+            hints: { rangeNumber: [0, 200 * Math.PI] },
+            defaultValue: 60,
+            numberOptions: {
+              showSlider: true,
+              minimum: 0,
+              sliderRange: [0, 3600],
+              sliderFunction: "sqrt",
+            },
+          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.fill, "fill", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          this.object.mappings.stroke != null
+            ? manager.mappingEditor(
+                strings.objects.strokeWidth,
+                "strokeWidth",
+                {
+                  hints: { rangeNumber: [0, 5] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    sliderRange: [0, 5],
+                    minimum: 0,
+                  },
+                }
+              )
+            : null,
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
+      ),
     ];
-    if (this.object.mappings.stroke != null) {
-      widgets.push(
-        manager.mappingEditor("Line Width", "strokeWidth", {
-          hints: { rangeNumber: [0, 5] },
-          defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        })
-      );
-    }
-    widgets = widgets.concat([
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
-    ]);
+    widgets = widgets.concat([]);
+
     return widgets.concat(parentWidgets);
   }
 

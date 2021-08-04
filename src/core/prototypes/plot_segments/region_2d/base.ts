@@ -2605,18 +2605,24 @@ export class Region2DConstraintBuilder {
     }
     const options = this.applicableSublayoutOptions();
     return [
-      m.sectionHeader("Sub-layout"),
-      m.inputSelect(
-        { property: "sublayout", field: "type" },
+      m.verticalGroup(
         {
-          type: "radio",
-          options: options.map((x) => x.value),
-          icons: options.map((x) => x.icon),
-          labels: options.map((x) => x.label),
-          label: "Type",
-        }
+          header: strings.objects.plotSegment.subLayout,
+        },
+        [
+          m.inputSelect(
+            { property: "sublayout", field: "type" },
+            {
+              type: "radio",
+              options: options.map((x) => x.value),
+              icons: options.map((x) => x.icon),
+              labels: options.map((x) => x.label),
+              label: strings.objects.plotSegment.type,
+            }
+          ),
+          ...extra,
+        ]
       ),
-      ...extra,
     ];
   }
 

@@ -100,6 +100,8 @@ import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
 import { FluentInputFormat } from "./controls/fluentui_input_format";
 
+import { CollapsiblePanel } from "./controls/collapsiblePanel";
+
 export type OnEditMappingHandler = (
   attribute: string,
   mapping: Specification.Mapping
@@ -264,7 +266,7 @@ export class FluentUIWidgetManager
             } catch (ex) {
               return {
                 pass: false,
-                error: "Invalid format",
+                error: strings.objects.invalidFormat,
               };
             }
           }
@@ -1205,62 +1207,72 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.GroupByEditorOptions
   ): JSX.Element {
     let button: HTMLElement;
-    let text = "Group by...";
-    switch (options.mode) {
-      case "button":
-        if (options.value) {
-          if (options.value.expression) {
-            text = "Group by " + options.value.expression;
+    let text = strings.objects.plotSegment.groupBy;
+    const getControl = () => {
+      switch (options.mode) {
+        case "button":
+          if (options.value) {
+            if (options.value.expression) {
+              text =
+                strings.objects.plotSegment.groupByCategory +
+                options.value.expression;
+            }
           }
-        }
-        return (
-          <FluentButton
-            marginTop={"0px"}
-            key={
-              this.getKeyFromProperty(options.target?.property) +
-              options?.table +
-              options?.value
-            }
-          >
-            <DefaultButton
-              text={text}
-              elementRef={(e) => (button = e)}
-              iconProps={{
-                iconName: "RowsGroup",
-              }}
-              onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => {
-                    return (
-                      <PopupView context={context}>
-                        <GroupByEditor
-                          manager={this}
-                          value={options.value}
-                          options={options}
-                        />
-                      </PopupView>
-                    );
-                  },
-                  { anchor: ReactDOM.findDOMNode(button) as Element }
-                );
-              }}
+          return (
+            <FluentButton
+              marginTop={"0px"}
+              key={
+                this.getKeyFromProperty(options.target?.property) +
+                options?.table +
+                options?.value
+              }
+            >
+              <DefaultButton
+                text={text}
+                elementRef={(e) => (button = e)}
+                iconProps={{
+                  iconName: "RowsGroup",
+                }}
+                onClick={() => {
+                  globals.popupController.popupAt(
+                    (context) => {
+                      return (
+                        <PopupView context={context}>
+                          <GroupByEditor
+                            manager={this}
+                            value={options.value}
+                            options={options}
+                          />
+                        </PopupView>
+                      );
+                    },
+                    { anchor: button as Element }
+                  );
+                }}
+              />
+            </FluentButton>
+          );
+        case "panel":
+          return (
+            <GroupByEditor
+              key={
+                this.getKeyFromProperty(options?.target?.property) +
+                options.table +
+                options?.value
+              }
+              manager={this}
+              value={options.value}
+              options={options}
             />
-          </FluentButton>
-        );
-      case "panel":
-        return (
-          <GroupByEditor
-            key={
-              this.getKeyFromProperty(options?.target?.property) +
-              options.table +
-              options?.value
-            }
-            manager={this}
-            value={options.value}
-            options={options}
-          />
-        );
-    }
+          );
+      }
+    };
+
+    return (
+      <div style={{ display: "inline" }} ref={(e) => (button = e)}>
+        {getControl()}
+      </div>
+    );
   }
 
   public nestedChartEditor(
@@ -1368,6 +1380,19 @@ export class FluentUIWidgetManager
           </span>
         ))}
       </div>
+    );
+  }
+
+  public verticalGroup(
+    options: Prototypes.Controls.VerticalGroupOptions,
+    widgets: JSX.Element[]
+  ) {
+    return (
+      <CollapsiblePanel
+        header={options.header}
+        widgets={widgets}
+        isCollapsed={options.isCollapsed}
+      />
     );
   }
 

@@ -18,12 +18,12 @@
     font-size: 14px;
     line-height: 24px;
     padding-bottom: 4px;
+    margin-top: 1px;
     margin-bottom: 0px;
-    border-bottom: 1px solid $gray-180;
+    border-bottom: 0px solid $gray-180;
     color: $black;
 
     .svg-image-icon {
-      padding: 2px;
       width: 20px;
       height: 20px;
       vertical-align: top;
@@ -1104,7 +1104,7 @@
           padding-top: 4px;
           background: lighten($color-active, 30%);
           height: 26px;
-          
+
           &-attrubutes {
             @extend .el-drag-over;
             width: auto;

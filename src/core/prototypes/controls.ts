@@ -132,6 +132,11 @@ export interface InputColorOptions {
 // eslint-disable-next-line
 export interface TableOptions {}
 
+export interface VerticalGroupOptions {
+  isCollapsed?: boolean;
+  header: string;
+}
+
 export interface FilterEditorOptions {
   table: string;
   target: {
@@ -184,6 +189,7 @@ export interface InputFormatOptions {
 
 export interface InputFormatOptions {
   blank?: string;
+  label?: string;
 }
 
 export interface InputFormatOptions {
@@ -264,6 +270,7 @@ export interface WidgetManager {
 
   // Basic layout elements
   horizontal(cols: number[], ...widgets: Widget[]): Widget;
+  verticalGroup(options: VerticalGroupOptions, ...widgets: Widget[]): Widget;
   vertical(...widgets: Widget[]): Widget;
   table(rows: Widget[][], options?: TableOptions): Widget;
   scrollList(widgets: Widget[], options?: ScrollListOptions): Widget;

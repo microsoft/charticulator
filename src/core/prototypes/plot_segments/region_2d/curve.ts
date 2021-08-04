@@ -582,22 +582,22 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      manager.sectionHeader("Curve Coordinates"),
-      manager.vertical(
-        manager.label("Normal"),
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "normalStart" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "normalEnd" })
-        )
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.curveCoordinates,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.normal),
+            manager.horizontal(
+              [1, 0, 1],
+              manager.inputNumber({ property: "normalStart" }),
+              manager.label("-"),
+              manager.inputNumber({ property: "normalEnd" })
+            )
+          ),
+        ]
       ),
-      // manager.row("Radius", manager.horizontal([0, 1, 0, 1],
-      //     manager.label("Inner:"),
-      //     manager.inputNumber({ property: "innerRatio" }),
-      //     manager.label("Outer:"),
-      //     manager.inputNumber({ property: "outerRatio" })
-      // )),
       ...builder.buildPanelWidgets(manager),
     ];
   }

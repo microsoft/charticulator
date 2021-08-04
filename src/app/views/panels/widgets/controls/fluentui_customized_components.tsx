@@ -4,8 +4,13 @@
 import * as React from "react";
 import {
   IDropdownProps,
+  IGroupedListStyleProps,
+  IGroupedListStyles,
+  IGroupHeaderStyleProps,
+  IGroupHeaderStyles,
   ILabelStyles,
   IRenderFunction,
+  IStyleFunctionOrObject,
   ITextFieldProps,
   Label,
 } from "@fluentui/react";
@@ -68,12 +73,6 @@ export const FluentLayoutItem = styled.div<{ flex: number }>`
 
 export const defaultFontWeight = 400;
 
-export const FluentLabelFontWeight = styled.div`
-  label {
-    font-weight: ${defaultFontWeight};
-  }
-`;
-
 export const defaultLabelStyle: ILabelStyles = {
   root: {
     fontWeight: defaultFontWeight,
@@ -87,6 +86,39 @@ export const labelRender: IRenderFunction<ITextFieldProps & IDropdownProps> = ({
 export const NestedChartButtonsWrapper = styled.div`
   margin-top: 5px;
 `;
+
+export const FluentGroupedList = styled.div`
+  .charticulator__widget-collapsible-panel-item {
+    margin-left: 15px;
+    margin-right: 15px;
+    min-width: 270px;
+  }
+
+  .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
+    margin-bottom: 10px;
+  }
+`;
+
+export const groupHeaderStyles: IStyleFunctionOrObject<
+  IGroupHeaderStyleProps,
+  IGroupHeaderStyles
+> = {
+  title: {
+    fontWeight: 600,
+  },
+  headerCount: {
+    display: "none",
+  },
+};
+
+export const groupStyles: IStyleFunctionOrObject<
+  IGroupedListStyleProps,
+  IGroupedListStyles
+> = {
+  group: {
+    borderTop: "1px #C8C6C4 solid",
+  },
+};
 
 export const PlaceholderStyle = styled.div<{ color?: string }>`
   input {

@@ -174,7 +174,11 @@ export class AttributePanel extends React.Component<
         <div className="attribute-editor charticulator__widget-container">
           <section className="attribute-editor-element" key={object._id}>
             <div className="header">
-              <SVGImageIcon url={getObjectIcon(object.classID)} />
+              <SVGImageIcon
+                url={getObjectIcon(object.classID)}
+                height={32}
+                width={32}
+              />
               <EditableTextView
                 text={object.properties.name}
                 onEdit={(newValue) => {
