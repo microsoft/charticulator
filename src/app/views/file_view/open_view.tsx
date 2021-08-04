@@ -12,19 +12,20 @@ import {
   SVGImageIcon,
   ButtonRaised,
 } from "../../components";
-import { ContextedComponent } from "../../context_component";
 import { Actions } from "../../actions";
 import { showOpenFileDialog, readFileAsString } from "../../utils";
 import { strings } from "../../../strings";
+import { AppStore } from "../../stores";
 
 export interface FileViewOpenState {
   chartList: ItemDescription[];
   chartCount: number;
 }
 
-export class FileViewOpen extends ContextedComponent<
+export class FileViewOpen extends React.Component<
   {
     onClose: () => void;
+    store: AppStore;
   },
   FileViewOpenState
 > {
@@ -38,7 +39,7 @@ export class FileViewOpen extends ContextedComponent<
   }
 
   public updateChartList() {
-    const store = this.store;
+    const store = this.props.store;
     store.backend.list("chart", "timeCreated", 0, 1000).then((result) => {
       this.setState({
         chartList: result.items,
@@ -49,7 +50,7 @@ export class FileViewOpen extends ContextedComponent<
 
   // eslint-disable-next-line
   public renderChartList() {
-    const store = this.store;
+    const store = this.props.store;
     const backend = store.backend;
 
     if (this.state.chartList == null) {
@@ -69,7 +70,7 @@ export class FileViewOpen extends ContextedComponent<
                 <li
                   key={chart.id}
                   onClick={() => {
-                    this.dispatch(
+                    this.props.store.dispatcher.dispatch(
                       new Actions.Open(chart.id, (error) => {
                         if (error) {
                           // TODO: add error reporting
@@ -181,7 +182,9 @@ export class FileViewOpen extends ContextedComponent<
               const file = await showOpenFileDialog(["chart"]);
               const str = await readFileAsString(file);
               const data = JSON.parse(str);
-              this.dispatch(new Actions.Load(data.state));
+              this.props.store.dispatcher.dispatch(
+                new Actions.Load(data.state)
+              );
               this.props.onClose();
             }}
           />
