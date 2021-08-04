@@ -1283,7 +1283,7 @@ export class Region2DConstraintBuilder {
         return;
       }
 
-            for (let index = 0; index < markStates.length; index++) {
+      for (let index = 0; index < markStates.length; index++) {
         const m1 = markStates[index];
         if (index > 0) {
           const m0 = markStates[index - 1];
@@ -2193,7 +2193,7 @@ export class Region2DConstraintBuilder {
         break;
     }
   }
- 
+
   private buildXNumericalMode(
     yMode: string,
     solver: ConstraintSolver,

@@ -1699,7 +1699,7 @@ export class AppStore extends BaseStore {
       categories:
         <string[]>objectProperties?.categories !== undefined
           ? <string[]>objectProperties?.categories
-          : null,               
+          : null,
     };
 
     let expressions = [groupExpression];
