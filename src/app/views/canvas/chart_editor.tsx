@@ -50,7 +50,6 @@ import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
 import { Callout, DirectionalHint } from "@fluentui/react";
-import { FluentCanvasToolbarDropdown } from "../panels/widgets/controls/fluentui_customized_components";
 
 export interface ChartEditorViewProps {
   store: AppStore;
