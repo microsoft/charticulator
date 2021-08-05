@@ -272,19 +272,26 @@ export class CategoricalLegendClass extends LegendClass {
 
     return [
       ...widgets,
-      manager.inputSelect(
-        { property: "orientation" },
+      manager.verticalGroup(
         {
-          type: "radio",
-          showLabel: false,
-          icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
-          labels: [
-            strings.objects.legend.vertical,
-            strings.objects.legend.horizontal,
-          ],
-          options: ["vertical", "horizontal"],
-          label: strings.objects.legend.orientation,
-        }
+          header: strings.objects.legend.categoricalLegend,
+        },
+        [
+          manager.inputSelect(
+            { property: "orientation" },
+            {
+              type: "radio",
+              showLabel: false,
+              icons: ["AlignHorizontalCenter", "AlignVerticalCenter"],
+              labels: [
+                strings.objects.legend.vertical,
+                strings.objects.legend.horizontal,
+              ],
+              options: ["vertical", "horizontal"],
+              label: strings.objects.legend.orientation,
+            }
+          ),
+        ]
       ),
     ];
   }

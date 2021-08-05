@@ -773,33 +773,39 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      manager.sectionHeader("Polar Coordinates"),
-      manager.vertical(
-        manager.label("Angle"),
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "startAngle" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "endAngle" })
-        )
-      ),
-      manager.vertical(
-        manager.label("Radius"),
-        manager.horizontal(
-          [0, 1, 0, 1],
-          manager.label("Inner:"),
-          manager.inputNumber({ property: "innerRatio" }),
-          manager.label("Outer:"),
-          manager.inputNumber({ property: "outerRatio" })
-        )
-      ),
-      manager.inputBoolean(
-        { property: "equalizeArea" },
+      manager.verticalGroup(
         {
-          type: "checkbox",
-          label: "Height to Area",
-          headerLabel: "Equalize area",
-        }
+          header: strings.objects.plotSegment.polarCoordinates,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.angle),
+            manager.horizontal(
+              [1, 0, 1],
+              manager.inputNumber({ property: "startAngle" }),
+              manager.label("-"),
+              manager.inputNumber({ property: "endAngle" })
+            )
+          ),
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.radius),
+            manager.horizontal(
+              [0, 1, 0, 1],
+              manager.label(strings.objects.plotSegment.inner),
+              manager.inputNumber({ property: "innerRatio" }),
+              manager.label(strings.objects.plotSegment.outer),
+              manager.inputNumber({ property: "outerRatio" })
+            )
+          ),
+          manager.inputBoolean(
+            { property: "equalizeArea" },
+            {
+              type: "checkbox",
+              label: strings.objects.plotSegment.heightToArea,
+              headerLabel: strings.objects.plotSegment.equalizeArea,
+            }
+          ),
+        ]
       ),
       ...builder.buildPanelWidgets(manager),
     ];

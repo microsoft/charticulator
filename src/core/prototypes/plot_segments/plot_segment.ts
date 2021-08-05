@@ -15,6 +15,7 @@ import {
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
 import { NumericalMode } from "../../specification/types";
+import { strings } from "../../../strings";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -98,49 +99,49 @@ export abstract class PlotSegmentClass<
       return [];
     }
     return [
-      manager.sectionHeader("Gridline"),
-      manager.horizontal(
-        [1, 1],
-        manager.inputSelect(
-          { property: axisProperty, field: ["style", "gridlineStyle"] },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: [
-              "ChromeClose",
-              "stroke/solid",
-              "stroke/dashed",
-              "stroke/dotted",
-            ],
-            options: ["none", "solid", "dashed", "dotted"],
-            labels: ["None", "Solid", "Dashed", "Dotted"],
-            label: "Style",
-          }
-        )
-      ),
-      manager.horizontal(
-        [1, 1],
-        manager.inputColor(
-          {
-            property: axisProperty,
-            field: ["style", "gridlineColor"],
-          },
-          {
-            label: "Color",
-          }
-        )
-      ),
-      manager.inputNumber(
+      manager.verticalGroup(
         {
-          property: axisProperty,
-          field: ["style", "gridlineWidth"],
+          header: strings.objects.plotSegment.gridline,
         },
-        {
-          minimum: 0,
-          maximum: 100,
-          showUpdown: true,
-          label: "Width",
-        }
+        [
+          manager.inputSelect(
+            { property: axisProperty, field: ["style", "gridlineStyle"] },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: [
+                "ChromeClose",
+                "stroke/solid",
+                "stroke/dashed",
+                "stroke/dotted",
+              ],
+              options: ["none", "solid", "dashed", "dotted"],
+              labels: ["None", "Solid", "Dashed", "Dotted"],
+              label: strings.objects.style,
+            }
+          ),
+          manager.inputColor(
+            {
+              property: axisProperty,
+              field: ["style", "gridlineColor"],
+            },
+            {
+              label: strings.objects.color,
+            }
+          ),
+          manager.inputNumber(
+            {
+              property: axisProperty,
+              field: ["style", "gridlineWidth"],
+            },
+            {
+              minimum: 0,
+              maximum: 100,
+              showUpdown: true,
+              label: strings.objects.width,
+            }
+          ),
+        ]
       ),
     ];
   }

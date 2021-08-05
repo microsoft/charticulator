@@ -31,7 +31,7 @@ export const defaultNumberFormat = Object.freeze({
   decimal: ".",
 });
 export const defaultCurrency: [string, string] = ["$", ""];
-export const defaultCurrencySymbol: string = "$"
+export const defaultCurrencySymbol: string = "$";
 export const defaultDigitsGroup: number[] = [3];
 
 export const fontList = [
@@ -53,5 +53,7 @@ export const fontList = [
   "Times",
   "Trebuchet MS",
   "Segoe UI",
+  "Segoe UI Light",
+  "Segoe UI Semibold",
   "Verdana",
 ];

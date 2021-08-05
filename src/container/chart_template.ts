@@ -468,6 +468,7 @@ export class ChartTemplate {
             if (inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
             }
+            axisDataBinding.categories = vector;
           }
         }
       }
