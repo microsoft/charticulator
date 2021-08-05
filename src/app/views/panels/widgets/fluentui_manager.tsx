@@ -485,6 +485,9 @@ export class FluentUIWidgetManager
             title: {
               borderWidth: options.hideBorder ? "0px" : null,
             },
+            dropdownItemsWrapper: {
+              minWidth: 90,
+            },
           }}
         />
       );
