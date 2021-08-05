@@ -520,20 +520,25 @@ export class Region2DConstraintBuilder {
             0,
             [
               [-1, x1],
-              [1 , x2],
+              [1, x2],
             ],
-            [[data.categories?.length, solver.attr(markState.attributes, "width")]]
+            [
+              [
+                data.categories?.length,
+                solver.attr(markState.attributes, "width"),
+              ],
+            ]
           );
         }
-         solver.addLinear(
-            ConstraintStrength.HARD,
-            (1 - t) * props.marginX1 - t * props.marginX2,
-            [
-              [1 - t, x1],
-              [t, x2],
-            ],
-            [[1, solver.attr(markState.attributes, "x")]]
-          );
+        solver.addLinear(
+          ConstraintStrength.HARD,
+          (1 - t) * props.marginX1 - t * props.marginX2,
+          [
+            [1 - t, x1],
+            [t, x2],
+          ],
+          [[1, solver.attr(markState.attributes, "x")]]
+        );
       }
     }
     if (data.type == "categorical") {
@@ -2573,7 +2578,7 @@ export class Region2DConstraintBuilder {
               [0, 0],
               m.orderByWidget(
                 { property: "sublayout", field: "order" },
-                { table: this.plotSegment.object.table }
+                { table: this.plotSegment.object.table, shiftCallout: 15 }
               ),
               m.inputBoolean(
                 { property: "sublayout", field: "orderReversed" },
@@ -2705,6 +2710,7 @@ export class Region2DConstraintBuilder {
                 ],
                 tooltip: strings.canvas.alignItemsOnX,
                 hideBorder: true,
+                shiftCallout: 15,
               }
             )
           );
@@ -2726,6 +2732,7 @@ export class Region2DConstraintBuilder {
                 ],
                 tooltip: strings.canvas.alignItemsOnY,
                 hideBorder: true,
+                shiftCallout: 15,
               }
             )
           );
@@ -2746,6 +2753,7 @@ export class Region2DConstraintBuilder {
                 ],
                 tooltip: strings.canvas.gridDirection,
                 hideBorder: true,
+                shiftCallout: 15,
               }
             )
           );
@@ -2759,6 +2767,7 @@ export class Region2DConstraintBuilder {
                 table: this.plotSegment.object.table,
                 displayLabel: true,
                 tooltip: strings.canvas.elementOrders,
+                shiftCallout: 15,
               }
             ),
             m.inputBoolean(
@@ -2781,6 +2790,7 @@ export class Region2DConstraintBuilder {
             labels: options.map((x) => x.label),
             tooltip: strings.canvas.sublayoutType,
             hideBorder: true,
+            shiftCallout: 15,
           }
         ),
         ...extra,
@@ -2804,6 +2814,7 @@ export class Region2DConstraintBuilder {
             icons: [icons.yMinIcon, icons.yMiddleIcon, icons.yMaxIcon],
             labels: [terminology.yMin, terminology.yMiddle, terminology.yMax],
             hideBorder: true,
+            shiftCallout: 15,
           }
         )
       );
@@ -2823,6 +2834,7 @@ export class Region2DConstraintBuilder {
             icons: [icons.xMinIcon, icons.xMiddleIcon, icons.xMaxIcon],
             labels: [terminology.xMin, terminology.xMiddle, terminology.xMax],
             hideBorder: true,
+            shiftCallout: 15,
           }
         )
       );

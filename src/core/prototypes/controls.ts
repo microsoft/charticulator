@@ -38,6 +38,7 @@ export interface InputSelectOptions {
   tooltip?: string;
   label?: string;
   hideBorder?: boolean;
+  shiftCallout?: number;
 }
 
 export interface InputFontComboboxOptions {
@@ -76,6 +77,7 @@ export interface OrderWidgetOptions {
   displayLabel?: boolean;
   labelPosition?: LabelPosition;
   tooltip?: string;
+  shiftCallout?: number;
 }
 
 export interface MappingEditorOptions {

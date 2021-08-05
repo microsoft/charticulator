@@ -487,6 +487,9 @@ export class FluentUIWidgetManager
             dropdownItemsWrapper: {
               minWidth: 90,
             },
+            callout: {
+              marginTop: options.shiftCallout ? options.shiftCallout : null,
+            },
           }}
         />
       );
@@ -804,12 +807,14 @@ export class FluentUIWidgetManager
       >
         <FluentButton marginTop={"0px"}>
           <IconButton
+            key={property.property}
             checked={this.getPropertyValue(property) != null}
             iconProps={{
               iconName: "SortLines",
             }}
             menuProps={{
               items: menu,
+              gapSpace: options.shiftCallout ? options.shiftCallout : 0,
             }}
           />
         </FluentButton>
