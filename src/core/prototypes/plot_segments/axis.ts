@@ -554,7 +554,7 @@ export class AxisRenderer {
             0,
             0,
             tick.measure,
-            style.verticalText 
+            style.verticalText
               ? side * cos > 0
                 ? "right"
                 : "left"
@@ -563,11 +563,13 @@ export class AxisRenderer {
               : side * cos > 0
               ? "right"
               : "left",
-            style.verticalText ? "middle" : style.wordWrap
-            ? "middle"
-            : side * cos > 0
-            ? "top"
-            : "bottom",
+            style.verticalText
+              ? "middle"
+              : style.wordWrap
+              ? "middle"
+              : side * cos > 0
+              ? "top"
+              : "bottom",
             0
           );
           const gText = makeGroup([
@@ -579,7 +581,9 @@ export class AxisRenderer {
             x: tx + dx,
             y: ty + dy,
             angle: style.verticalText
-              ? cos > 0 ? 90 + angle : 90 + angle - 180
+              ? cos > 0
+                ? 90 + angle
+                : 90 + angle - 180
               : cos > 0
               ? 36 + angle
               : 36 + angle - 180,
@@ -633,10 +637,10 @@ export class AxisRenderer {
               y: ty + dy,
               angle: style.verticalText
                 ? style.wordWrap
-                ? 0
-                : cos > 0
-                ? 90 + angle
-                : 90 + angle - 180
+                  ? 0
+                  : cos > 0
+                  ? 90 + angle
+                  : 90 + angle - 180
                 : style.wordWrap
                 ? 0
                 : cos > 0
@@ -990,12 +994,28 @@ export function getNumericalInterpolate(
   }
 }
 
+interface AxisAppearanceWidgets {
+  isVisible: boolean;
+  wordWrap: boolean;
+}
+
 export function buildAxisAppearanceWidgets(
-  isVisible: boolean,
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  options: AxisAppearanceWidgets
 ) {
-  if (isVisible) {
+  if (options.isVisible) {
+    let vertical = null;
+    if (!options.wordWrap) {
+      vertical = manager.inputBoolean(
+        { property: axisProperty, field: ["style", "verticalText"] },
+        {
+          type: "checkbox",
+          label: "Vertical text",
+        }
+      );
+    }
+
     return [
       manager.vertical(
         manager.verticalGroup(
@@ -1077,13 +1097,7 @@ export function buildAxisAppearanceWidgets(
                 label: "Wrap text",
               }
             ),
-            manager.inputBoolean(
-              { property: axisProperty, field: ["style", "verticalText"] },
-              {
-                type: "checkbox",
-                label: "Vertical text",
-              }
-            )
+            vertical,
           ]
         )
       ),
@@ -1119,7 +1133,10 @@ export function buildAxisWidgets(
     },
   };
   const makeAppearance = () => {
-    return buildAxisAppearanceWidgets(data.visible, axisProperty, manager);
+    return buildAxisAppearanceWidgets(axisProperty, manager, {
+      isVisible: data.visible,
+      wordWrap: data.style.wordWrap,
+    });
   };
   if (data != null) {
     switch (data.type) {
