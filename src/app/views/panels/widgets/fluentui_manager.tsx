@@ -87,6 +87,7 @@ import {
   defaultLabelStyle,
   FluentButton,
   FluentCheckbox,
+  FluentDropdown,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
@@ -411,6 +412,7 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.InputSelectOptions
   ) {
     const theme = getTheme();
+    console.log("theme.palette.themePrimary", theme.palette.themePrimary);
     if (options.type == "dropdown") {
       const iconStyles: CSSProperties = { marginRight: "8px" };
 
@@ -418,12 +420,14 @@ export class FluentUIWidgetManager
         return (
           <>
             {option.data && option.data.icon && (
-              <Icon
-                style={iconStyles}
-                iconName={option.data.icon}
-                aria-hidden="true"
-                title={option.data.icon}
-              />
+              <FluentDropdown>
+                <Icon
+                  style={iconStyles}
+                  iconName={option.data.icon}
+                  aria-hidden="true"
+                  title={option.data.icon}
+                />
+              </FluentDropdown>
             )}
             <span>{option.text}</span>
           </>
@@ -436,12 +440,14 @@ export class FluentUIWidgetManager
         return (
           <div>
             {option.data && option.data.icon && (
-              <Icon
-                style={iconStyles}
-                iconName={option.data.icon}
-                aria-hidden="true"
-                title={option.data.icon}
-              />
+              <FluentDropdown>
+                <Icon
+                  style={iconStyles}
+                  iconName={option.data.icon}
+                  aria-hidden="true"
+                  title={option.data.icon}
+                />
+              </FluentDropdown>
             )}
             <span>{option.text}</span>
           </div>
@@ -465,6 +471,9 @@ export class FluentUIWidgetManager
               text: options.labels[index],
               data: {
                 icon: options.icons?.[index],
+                iconStyles: {
+                  stroke: "gray",
+                },
               },
             };
           })}
@@ -499,7 +508,7 @@ export class FluentUIWidgetManager
                   iconName: options.icons[index],
                 }}
                 style={{
-                  stroke: theme.palette.themePrimary,
+                  stroke: `${theme.palette.themePrimary} !important`,
                 }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
