@@ -1237,6 +1237,13 @@ export class AppStore extends BaseStore {
           this.chart,
           scaleId
         ) as Specification.Scale;
+        // prevent updating if auto scale is disabled
+        if (
+          !scale.properties.autoDomainMin &&
+          !scale.properties.autoDomainMin
+        ) {
+          return;
+        }
         const filteredMappings = mappings
           .flatMap((el) => {
             return Object.keys(el.mappings).map((key) => {
