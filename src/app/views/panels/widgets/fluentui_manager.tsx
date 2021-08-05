@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -35,7 +36,10 @@ import {
   showOpenFileDialog,
   readFileAsString,
 } from "../../../utils/index";
-import { DataFieldSelector, DataFieldSelectorValue } from "../../dataset/data_field_selector";
+import {
+  DataFieldSelector,
+  DataFieldSelectorValue,
+} from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
   Button,
@@ -83,6 +87,7 @@ import {
   defaultLabelStyle,
   FluentButton,
   FluentCheckbox,
+  FluentDropdown,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
@@ -97,7 +102,11 @@ import { mergeStyles } from "@fluentui/merge-styles";
 import { CSSProperties } from "react";
 import { strings } from "../../../../strings";
 import { InputImage, InputImageProperty } from "./controls/fluentui_image";
-import { Director, IDefaultValue, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
+import {
+  Director,
+  IDefaultValue,
+  MenuItemBuilder,
+} from "../../dataset/data_field_binding_builder";
 import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
@@ -123,7 +132,6 @@ export class FluentUIWidgetManager
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
   ) {
-    
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
   }
@@ -411,12 +419,14 @@ export class FluentUIWidgetManager
         return (
           <>
             {option.data && option.data.icon && (
-              <Icon
-                style={iconStyles}
-                iconName={option.data.icon}
-                aria-hidden="true"
-                title={option.data.icon}
-              />
+              <FluentDropdown>
+                <Icon
+                  style={iconStyles}
+                  iconName={option.data.icon}
+                  aria-hidden="true"
+                  title={option.data.icon}
+                />
+              </FluentDropdown>
             )}
             <span>{option.text}</span>
           </>
@@ -429,12 +439,14 @@ export class FluentUIWidgetManager
         return (
           <div>
             {option.data && option.data.icon && (
-              <Icon
-                style={iconStyles}
-                iconName={option.data.icon}
-                aria-hidden="true"
-                title={option.data.icon}
-              />
+              <FluentDropdown>
+                <Icon
+                  style={iconStyles}
+                  iconName={option.data.icon}
+                  aria-hidden="true"
+                  title={option.data.icon}
+                />
+              </FluentDropdown>
             )}
             <span>{option.text}</span>
           </div>
@@ -458,12 +470,26 @@ export class FluentUIWidgetManager
               text: options.labels[index],
               data: {
                 icon: options.icons?.[index],
+                iconStyles: {
+                  stroke: "gray",
+                },
               },
             };
           })}
           onChange={(event, value) => {
             this.emitSetProperty(property, value.key);
             return true;
+          }}
+          styles={{
+            title: {
+              borderWidth: options.hideBorder ? "0px" : null,
+            },
+            dropdownItemsWrapper: {
+              minWidth: 90,
+            },
+            callout: {
+              marginTop: options.shiftCallout ? options.shiftCallout : null,
+            },
           }}
         />
       );
@@ -487,7 +513,7 @@ export class FluentUIWidgetManager
                   iconName: options.icons[index],
                 }}
                 style={{
-                  stroke: theme.palette.themePrimary,
+                  stroke: `${theme.palette.themePrimary} !important`,
                 }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
@@ -741,6 +767,35 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.OrderWidgetOptions
   ) {
     let ref: DropZoneView;
+
+    const onClick = (value: DataFieldSelectorValue) => {
+      if (value != null) {
+        this.emitSetProperty(property, {
+          expression: value.expression,
+        });
+      } else {
+        this.emitSetProperty(property, null);
+      }
+    };
+
+    let currentExpression: string = null;
+    const currentSortBy = this.getPropertyValue(
+      property
+    ) as Specification.Types.SortBy;
+    if (currentSortBy != null) {
+      currentExpression = currentSortBy.expression;
+    }
+
+    const defaultValue: IDefaultValue = currentExpression
+      ? { table: options.table, expression: currentExpression }
+      : null;
+
+    const menu = this.director.buildSectionHeaderFieldsMenu(
+      onClick,
+      defaultValue,
+      this.store
+    );
+
     return (
       <DropZoneView
         key={this.getKeyFromProperty(property)}
@@ -748,59 +803,18 @@ export class FluentUIWidgetManager
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(property, { expression: data.expression });
         }}
-        ref={(e) => (ref = e)}
         className={""}
       >
         <FluentButton marginTop={"0px"}>
           <IconButton
+            key={property.property}
             checked={this.getPropertyValue(property) != null}
             iconProps={{
               iconName: "SortLines",
             }}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  let currentExpression: string = null;
-                  const currentSortBy = this.getPropertyValue(
-                    property
-                  ) as Specification.Types.SortBy;
-                  if (currentSortBy != null) {
-                    currentExpression = currentSortBy.expression;
-                  }
-                  return (
-                    <PopupView context={context}>
-                      <div className="charticulator__widget-popup-order-widget">
-                        <div className="el-row">
-                          <DataFieldSelector
-                            nullDescription="(default order)"
-                            datasetStore={this.store}
-                            useAggregation={true}
-                            defaultValue={
-                              currentExpression
-                                ? {
-                                    table: options.table,
-                                    expression: currentExpression,
-                                  }
-                                : null
-                            }
-                            onChange={(value) => {
-                              if (value != null) {
-                                this.emitSetProperty(property, {
-                                  expression: value.expression,
-                                });
-                              } else {
-                                this.emitSetProperty(property, null);
-                              }
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </PopupView>
-                  );
-                },
-                { anchor: ref.dropContainer }
-              );
+            menuProps={{
+              items: menu,
+              gapSpace: options.shiftCallout ? options.shiftCallout : 0,
             }}
           />
         </FluentButton>
@@ -1029,10 +1043,7 @@ export class FluentUIWidgetManager
 
       const onClick = (value: DataFieldSelectorValue) => {
         if (!value) {
-          this.emitSetProperty(
-            { property: options.dropzone.property },
-            null
-          );
+          this.emitSetProperty({ property: options.dropzone.property }, null);
         } else {
           const data = new DragData.DataExpression(
             this.store.getTable(value.table),
@@ -1042,20 +1053,24 @@ export class FluentUIWidgetManager
             value.rawExpression
           );
           new Actions.BindDataToAxis(
-            this.objectClass
-              .object as Specification.PlotSegment,
+            this.objectClass.object as Specification.PlotSegment,
             options.dropzone.property,
             null,
             data
           ).dispatch(this.store.dispatcher);
         }
-      }
-      const defaultValue: IDefaultValue = current && current.expression
-      ? { table: null, expression: current.expression }
-      : null
+      };
+      const defaultValue: IDefaultValue =
+        current && current.expression
+          ? { table: null, expression: current.expression }
+          : null;
 
-      const menu = this.director.buildSectionHeaderFieldsMenu(onClick, defaultValue, this.store)
-      
+      const menu = this.director.buildSectionHeaderFieldsMenu(
+        onClick,
+        defaultValue,
+        this.store
+      );
+
       return (
         <DropZoneView
           key={title}
@@ -1087,9 +1102,8 @@ export class FluentUIWidgetManager
               iconProps={{
                 iconName: "Link",
               }}
-              
               menuProps={{
-                items: menu
+                items: menu,
               }}
               styles={{
                 menuIcon: {
@@ -1124,17 +1138,6 @@ export class FluentUIWidgetManager
           </span>
         ))}
       </div>
-    );
-  }
-
-  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
-    return (
-      <FluentDetailsButton
-        label={label}
-        widgets={widgets}
-        manager={this}
-        key={label}
-      />
     );
   }
 

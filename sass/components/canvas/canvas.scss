@@ -699,24 +699,6 @@
 .creating-link {
   $anchor-color: $color-secondary;
 
-  // .mark-placeholder {
-  //     cursor: crosshair;
-  //     pointer-events: all;
-  // }
-  // .element-fill {
-  //     fill: none; stroke: none;
-  //     pointer-events: fill;
-  // }
-  // .element-stroke {
-  //     fill: none; stroke: none;
-  //     stroke-width: 5px;
-  //     pointer-events: stroke;
-  // }
-  // .element-visible {
-  //     fill: $color-primary;
-  //     stroke: $color-primary;
-  //     fill-opacity: 0.1;
-  // }
   .anchor {
     cursor: pointer;
 
@@ -767,7 +749,6 @@
   }
 
   .link-hint-band {
-    // stroke: $anchor-color;
     fill: $anchor-color;
     fill-opacity: 0.3;
     pointer-events: none;
@@ -793,83 +774,6 @@
   pointer-events: auto;
   position: absolute;
   white-space: nowrap;
-  background: $gray-220;
-  border: 1px solid $color-canvas-tool;
-
-  @include shadow-focused;
-
-  $line-height: 24px;
-  @mixin icon-size {
-    height: $line-height;
-    width: $line-height;
-  }
-
-  border-radius: 2px;
-
-  padding: 3px;
-
-  .charticulator__widget-control-select,
-  .charticulator__widget-control-order-widget,
-  .charticulator__widget-control-button {
-    height: 32px;
-    @include font-main;
-    .svg-image-icon {
-      @include icon-size;
-    }
-
-    .el-text {
-      @include font-main;
-      margin-top: 7px;
-    }
-
-    &:hover {
-      .el-text {
-        color: $gray-000;
-      }
-      .svg-image-icon {
-        filter: invert(30%);
-      }
-    }
-  }
-
-  .charticulator__widget-control-select-container {
-    .el-text {
-      @include font-main;
-      white-space: break-spaces;
-      max-width: 55px;
-    }
-  }
-
-  .charticulator__widget-control-order-widget {
-    display: flex;
-    flex-direction: column;
-    :last-child {
-      float: right;
-    }
-    .el-text:hover {
-      color: $gray-000;
-    }
-
-    &:active {
-      background-color: $color-primary;
-
-      .el-text {
-        color: $gray-000;
-      }
-    }
-  }
-
-  .charticulator__widget-control-select.has-text {
-    background: $gray-220;
-  }
-
-  .has-text {
-    background: $gray-220;
-  }
-
-  .el-layout-item {
-    margin: 13px;
-  }
 }
 
 .handle-text-view-popup {

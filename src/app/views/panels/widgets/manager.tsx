@@ -1000,10 +1000,6 @@ export class WidgetManager
     );
   }
 
-  public detailsButton(label: string, ...widgets: JSX.Element[]): JSX.Element {
-    return <DetailsButton widgets={widgets} manager={this} />;
-  }
-
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
@@ -1453,60 +1449,6 @@ export class ReorderStringsValue extends React.Component<
             }}
           />
         </div>
-      </div>
-    );
-  }
-}
-
-export class DetailsButton extends React.Component<
-  {
-    widgets: JSX.Element[];
-    manager: WidgetManager;
-  },
-  {}
-> {
-  public inner: DetailsButtonInner;
-  public componentDidUpdate() {
-    if (this.inner) {
-      this.inner.forceUpdate();
-    }
-  }
-
-  public render() {
-    let btn: Element;
-    return (
-      <Button
-        icon={"general/more-horizontal"}
-        ref={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              return (
-                <PopupView context={context}>
-                  <DetailsButtonInner
-                    parent={this}
-                    ref={(e) => (this.inner = e)}
-                  />
-                </PopupView>
-              );
-            },
-            { anchor: btn, alignX: getAlignment(btn).alignX }
-          );
-        }}
-      />
-    );
-  }
-}
-
-export class DetailsButtonInner extends React.Component<
-  { parent: DetailsButton },
-  {}
-> {
-  public render() {
-    const parent = this.props.parent;
-    return (
-      <div className="charticulator__widget-popup-details">
-        {parent.props.manager.vertical(...parent.props.widgets)}
       </div>
     );
   }

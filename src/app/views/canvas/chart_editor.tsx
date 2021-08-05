@@ -48,6 +48,8 @@ import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
+import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
+import { Callout, DirectionalHint } from "@fluentui/react";
 
 export interface ChartEditorViewProps {
   store: AppStore;
@@ -964,7 +966,7 @@ export class ChartEditorView
                 const layoutClass = this.props.store.chartManager.getPlotSegmentClass(
                   layoutState
                 );
-                const manager = new WidgetManager(
+                const manager = new FluentUIWidgetManager(
                   this.props.store,
                   layoutClass
                 );
@@ -977,20 +979,35 @@ export class ChartEditorView
                   y: -controls.anchor.y,
                 });
                 return (
-                  <div
-                    className="charticulator__canvas-popup"
-                    key={`m${index}`}
-                    style={{
-                      left: pt.x.toFixed(0) + "px",
-                      bottom:
-                        (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
-                    }}
-                  >
-                    {manager.horizontal(
-                      controls.widgets.map(() => 0),
-                      ...controls.widgets
-                    )}
-                  </div>
+                  <>
+                    <div
+                      className="charticulator__canvas-popup"
+                      key={`m${index}`}
+                      id={`anchor${index}`}
+                      style={{
+                        left: pt.x.toFixed(0) + "px",
+                        bottom:
+                          (this.state.viewHeight - pt.y + 5).toFixed(0) + "px",
+                      }}
+                    ></div>
+                    <Callout
+                      target={`#anchor${index}`}
+                      directionalHint={DirectionalHint.topLeftEdge}
+                      styles={{
+                        root: {
+                          padding: 10,
+                        },
+                        calloutMain: {
+                          overflow: "hidden",
+                        },
+                      }}
+                    >
+                      {manager.horizontal(
+                        controls.widgets.map(() => 0),
+                        ...controls.widgets
+                      )}
+                    </Callout>
+                  </>
                 );
               }
             }
