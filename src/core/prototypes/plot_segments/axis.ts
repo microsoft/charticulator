@@ -499,7 +499,7 @@ export class AxisRenderer {
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: style.verticalText ? angle : 90 - angle,
+            angle: style.verticalText ? angle : 0,
           };
           g.elements.push(gText);
         } else {
@@ -508,8 +508,8 @@ export class AxisRenderer {
             0,
             0,
             tick.measure,
-            style.verticalText ? "middle" : side * sin < 0 ? "right" : "left",
-            style.verticalText ? (side * sin < 0 ? "bottom" : "top") : "middle",
+            side * sin < 0 ? "right" : "left",
+            "middle",
             0
           );
           const gText = makeGroup([
@@ -520,7 +520,7 @@ export class AxisRenderer {
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: style.verticalText ? angle : 90 - angle,
+            angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
           };
           g.elements.push(gText);
         }
@@ -529,8 +529,8 @@ export class AxisRenderer {
           0,
           0,
           tick.measure,
-          style.verticalText ? "middle" : side * sin < 0 ? "right" : "left",
-          style.verticalText ? (side * sin < 0 ? "top" : "bottom") : "middle",
+          side * sin < 0 ? "right" : "left",
+          "middle",
           0
         );
         const gText = makeGroup([
@@ -541,7 +541,7 @@ export class AxisRenderer {
         gText.transform = {
           x: tx + dx,
           y: ty + dy,
-          angle: style.verticalText ? 90 + angle : 0 + angle,
+          angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
         };
         g.elements.push(gText);
       } else {
@@ -579,9 +579,7 @@ export class AxisRenderer {
             x: tx + dx,
             y: ty + dy,
             angle: style.verticalText
-              ? cos > 0
-                ? 90 - angle
-                : angle
+              ? cos > 0 ? 90 + angle : 90 + angle - 180
               : cos > 0
               ? 36 + angle
               : 36 + angle - 180,
@@ -610,20 +608,8 @@ export class AxisRenderer {
                 0,
                 0,
                 AxisRenderer.textMeasurer.measure(textContent[index]),
-                style.verticalText
-                  ? side * cos > 0
-                    ? "right"
-                    : "left"
-                  : style.wordWrap
-                  ? "middle"
-                  : side * cos > 0
-                  ? "right"
-                  : "left",
-                style.verticalText
-                  ? "middle"
-                  : side * cos > 0
-                  ? "top"
-                  : "bottom",
+                style.wordWrap ? "middle" : side * cos > 0 ? "right" : "left",
+                side * cos > 0 ? "top" : "bottom",
                 0
               );
               const text = makeText(
@@ -641,15 +627,16 @@ export class AxisRenderer {
               lines.push(text);
             }
             const gText = makeGroup(lines);
-            console.log(angle);
 
             gText.transform = {
               x: tx + dx,
               y: ty + dy,
               angle: style.verticalText
-                ? cos > 0
-                  ? 90 + angle
-                  : angle
+                ? style.wordWrap
+                ? 0
+                : cos > 0
+                ? 90 + angle
+                : 90 + angle - 180
                 : style.wordWrap
                 ? 0
                 : cos > 0
@@ -678,7 +665,7 @@ export class AxisRenderer {
             gText.transform = {
               x: tx + dx,
               y: ty + dy,
-              angle: style.verticalText ? 90 + angle : angle,
+              angle: style.verticalText ? 90 + angle : 0,
             };
             g.elements.push(gText);
           }
