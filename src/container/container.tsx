@@ -216,17 +216,18 @@ export class ChartContainer extends EventEmitter {
     public readonly instance: TemplateInstance,
     public readonly dataset: Dataset.Dataset,
     public renderEvents?: RenderEvents,
-    public localizaiton?: LocalizationConfig,
+    public localizaiton?: LocalizationConfig
   ) {
     super();
     this.chart = instance.chart;
     this.defaultAttributes = instance.defaultAttributes;
-    
+
     setFormatOptions({
-      currency: [localizaiton?.currency, ''] ?? defaultCurrency,
+      currency: [localizaiton?.currency, ""] ?? defaultCurrency,
       grouping: defaultDigitsGroup,
       decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
-      thousands: localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+      thousands:
+        localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
     });
   }
 

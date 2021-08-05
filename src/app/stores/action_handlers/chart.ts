@@ -361,30 +361,7 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
   });
 
   REG.add(Actions.SetObjectProperty, function (action) {
-    if (
-      action.property === "name" &&
-      this.chartManager.isNameUsed(action.value as string)
-    ) {
-      return;
-    }
-    this.saveHistory();
-
-    if (action.field == null) {
-      action.object.properties[action.property] = action.value;
-    } else {
-      const obj = action.object.properties[action.property];
-      action.object.properties[action.property] = setField(
-        obj,
-        action.field,
-        action.value
-      );
-    }
-
-    if (action.noUpdateState) {
-      this.emit(AppStore.EVENT_GRAPHICS);
-    } else {
-      this.solveConstraintsAndUpdateGraphics(action.noComputeLayout);
-    }
+    this.setProperty(action);
   });
 
   REG.add(Actions.DeleteObjectProperty, function (action) {

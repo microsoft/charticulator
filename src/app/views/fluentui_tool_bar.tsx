@@ -22,6 +22,7 @@ import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
 import { Dialog, getTheme, IconButton } from "@fluentui/react";
 import { getSVGIcon } from "../resources";
+import { EditorType } from "../stores/app_store";
 const theme = getTheme();
 
 export const FluentUIToolbar: React.FC<{
@@ -115,12 +116,13 @@ export const FluentUIToolbar: React.FC<{
             title={strings.toolbar.dataAxis}
             icon="mark/data-axis"
           />
-          {/* Nested chart doesn't supported */}
-          {/* <ObjectButton
-            classID="mark.nested-chart"
-            title="Nested Chart"
-            icon="BarChartVerticalFilter"
-          /> */}
+          {store.editorType === EditorType.Embedded ? (
+            <ObjectButton
+              classID="mark.nested-chart"
+              title={strings.toolbar.nestedChart}
+              icon="BarChartVerticalFilter"
+            />
+          ) : null}
           {props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
             <>
               <span className={"charticulator__toolbar-horizontal-separator"} />

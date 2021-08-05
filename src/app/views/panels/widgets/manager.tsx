@@ -16,14 +16,13 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
   refineColumnName,
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
 import { ButtonRaised, GradientPicker } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
-import { getAlignment, PopupView } from "../../../controllers";
+import { PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
@@ -59,7 +58,6 @@ import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
-  deepClone,
   getFormat,
   getSortFunctionByData,
   tickFormatParserExpression,
@@ -83,7 +81,7 @@ import {
 } from "../../../../core/prototypes/controls";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
-import { ChartTemplateBuilder } from "../../../template";
+import { OpenNestedEditor } from "../../../actions/actions";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -383,9 +381,11 @@ export class WidgetManager
     }
   }
   public inputBoolean(
-    property: Prototypes.Controls.Property,
+    properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    const property: Prototypes.Controls.Property =
+      properties instanceof Array ? properties[0] : properties;
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -396,7 +396,13 @@ export class WidgetManager
             title={options.label}
             fillWidth={options.type == "checkbox-fill-width"}
             onChange={(v) => {
-              this.emitSetProperty(property, v);
+              if (properties instanceof Array) {
+                properties.forEach((property) =>
+                  this.emitSetProperty(property, v)
+                );
+              } else {
+                this.emitSetProperty(property, v);
+              }
             }}
           />
         );
@@ -1103,60 +1109,9 @@ export class WidgetManager
         <ButtonRaised
           text="Edit Nested Chart..."
           onClick={() => {
-            const editorID = uniqueID();
-            const newWindow = window.open(
-              "index.html#!nestedEditor=" + editorID,
-              "nested_chart_" + options.specification._id
+            this.store.dispatcher.dispatch(
+              new OpenNestedEditor(this.objectClass.object, property, options)
             );
-            const listener = (e: MessageEvent) => {
-              if (e.origin == document.location.origin) {
-                const data = e.data;
-                if (data.id == editorID) {
-                  switch (data.type) {
-                    case "initialized":
-                      {
-                        const chartManager = new Prototypes.ChartStateManager(
-                          options.specification,
-                          options.dataset,
-                          null,
-                          {},
-                          {},
-                          deepClone(options.specification)
-                        );
-
-                        const builder = new ChartTemplateBuilder(
-                          options.specification,
-                          options.dataset,
-                          chartManager,
-                          CHARTICULATOR_PACKAGE.version
-                        );
-
-                        const template = builder.build();
-                        newWindow.postMessage(
-                          {
-                            id: editorID,
-                            type: "load",
-                            specification: options.specification,
-                            dataset: options.dataset,
-                            width: options.width,
-                            template,
-                            height: options.height,
-                            filterCondition: options.filterCondition,
-                          },
-                          document.location.origin
-                        );
-                      }
-                      break;
-                    case "save":
-                      {
-                        this.emitSetProperty(property, data.specification);
-                      }
-                      break;
-                  }
-                }
-              }
-            };
-            window.addEventListener("message", listener);
           }}
         />,
         <div style={{ marginTop: "5px" }}>

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 @import "common/common.scss";
+@import "common/colors.scss";
 @import "editor/index.scss";
 
 @import "components/components.scss";
@@ -56,17 +57,31 @@ body {
     display: flex;
     flex-direction: row;
     color: $theme-header-foreground;
+    justify-content: space-between;
 
     &-left {
       display: flex;
       align-items: center;
-      flex: 1;
+      // flex: 1;
     }
     &-center {
       display: flex;
       align-self: center;
       justify-self: center;
-      flex: 1;
+      // flex: 1;
+
+      .nested-chart {
+        background-color: $nested-chart-header-color;
+        color: black;
+        height: 20px;
+        display: block;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        padding-top: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        text-align: center;
+      }
     }
     &-right {
       display: flex;

@@ -7,8 +7,8 @@ import { EventSubscription, Specification, Expression } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
 import { AppStore } from "../../stores";
-import { FunctionCall, NumberValue } from "../../../core/expression";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
+import { FunctionCall, NumberValue } from "../../../core/expression";
 
 export interface ScaleValueSelectorProps {
   scale: Specification.Scale;

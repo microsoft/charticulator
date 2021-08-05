@@ -52,8 +52,8 @@ export class ChartStateManager {
   private chartOrigin: Specification.Chart;
 
   public chart: Specification.Chart;
-  public chartState: Specification.ChartState;
   public dataset: Dataset.Dataset;
+  public chartState: Specification.ChartState;
   public dataflow: DataflowManager;
 
   public classCache = new ObjectClassCache();

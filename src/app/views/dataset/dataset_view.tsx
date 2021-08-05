@@ -36,6 +36,7 @@ import { ChartTemplateBuilder } from "../../template";
 import { ChartTemplate } from "../../../container";
 import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
+import { EditorType } from "../../stores/app_store";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -120,7 +121,7 @@ export class ColumnsView extends React.Component<
                 ? strings.dataset.tableTitleLinks
                 : strings.dataset.tableTitleColumns}
             </span>
-            {this.props.store.editorType === "chart" ? (
+            {this.props.store.editorType === EditorType.Chart ? (
               <Button
                 icon="general/replace"
                 title={strings.dataset.replaceWithCSV}
@@ -299,7 +300,7 @@ export class ColumnsView extends React.Component<
                         <TableView
                           table={table}
                           onTypeChange={
-                            this.props.store.editorType === "chart"
+                            this.props.store.editorType === EditorType.Chart
                               ? (column, type) => {
                                   const store = this.props.store;
 

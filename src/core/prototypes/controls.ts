@@ -208,6 +208,11 @@ export interface ReOrderWidgetOptions {
   items?: string[];
 }
 
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+}
+
 export interface WidgetManager {
   // A row for value/data mapping.
   mappingEditor(
@@ -226,7 +231,10 @@ export interface WidgetManager {
     options: InputFontComboboxOptions
   ): Widget;
   inputSelect(property: Property, options: InputSelectOptions): Widget;
-  inputBoolean(property: Property, options: InputBooleanOptions): Widget;
+  inputBoolean(
+    property: Property | Property[],
+    options: InputBooleanOptions
+  ): Widget;
   inputExpression(property: Property, options?: InputExpressionOptions): Widget;
   inputFormat(property: Property, options?: InputFormatOptions): Widget;
   inputImage(property: Property): Widget;
