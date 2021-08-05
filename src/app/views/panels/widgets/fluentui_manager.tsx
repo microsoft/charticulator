@@ -412,7 +412,6 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.InputSelectOptions
   ) {
     const theme = getTheme();
-    console.log("theme.palette.themePrimary", theme.palette.themePrimary);
     if (options.type == "dropdown") {
       const iconStyles: CSSProperties = { marginRight: "8px" };
 
@@ -765,6 +764,35 @@ export class FluentUIWidgetManager
     options: Prototypes.Controls.OrderWidgetOptions
   ) {
     let ref: DropZoneView;
+
+    const onClick = (value: DataFieldSelectorValue) => {
+      if (value != null) {
+        this.emitSetProperty(property, {
+          expression: value.expression,
+        });
+      } else {
+        this.emitSetProperty(property, null);
+      }
+    };
+
+    let currentExpression: string = null;
+    const currentSortBy = this.getPropertyValue(
+      property
+    ) as Specification.Types.SortBy;
+    if (currentSortBy != null) {
+      currentExpression = currentSortBy.expression;
+    }
+
+    const defaultValue: IDefaultValue = currentExpression
+      ? { table: options.table, expression: currentExpression }
+      : null;
+
+    const menu = this.director.buildSectionHeaderFieldsMenu(
+      onClick,
+      defaultValue,
+      this.store
+    );
+
     return (
       <DropZoneView
         key={this.getKeyFromProperty(property)}
@@ -772,7 +800,6 @@ export class FluentUIWidgetManager
         onDrop={(data: DragData.DataExpression) => {
           this.emitSetProperty(property, { expression: data.expression });
         }}
-        ref={(e) => (ref = e)}
         className={""}
       >
         <FluentButton marginTop={"0px"}>
@@ -781,50 +808,8 @@ export class FluentUIWidgetManager
             iconProps={{
               iconName: "SortLines",
             }}
-            onClick={() => {
-              globals.popupController.popupAt(
-                (context) => {
-                  let currentExpression: string = null;
-                  const currentSortBy = this.getPropertyValue(
-                    property
-                  ) as Specification.Types.SortBy;
-                  if (currentSortBy != null) {
-                    currentExpression = currentSortBy.expression;
-                  }
-                  return (
-                    <PopupView context={context}>
-                      <div className="charticulator__widget-popup-order-widget">
-                        <div className="el-row">
-                          <DataFieldSelector
-                            nullDescription="(default order)"
-                            datasetStore={this.store}
-                            useAggregation={true}
-                            defaultValue={
-                              currentExpression
-                                ? {
-                                    table: options.table,
-                                    expression: currentExpression,
-                                  }
-                                : null
-                            }
-                            onChange={(value) => {
-                              if (value != null) {
-                                this.emitSetProperty(property, {
-                                  expression: value.expression,
-                                });
-                              } else {
-                                this.emitSetProperty(property, null);
-                              }
-                              context.close();
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </PopupView>
-                  );
-                },
-                { anchor: ref.dropContainer }
-              );
+            menuProps={{
+              items: menu,
             }}
           />
         </FluentButton>
