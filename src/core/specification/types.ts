@@ -70,6 +70,7 @@ export interface AxisRenderingStyle extends AttributeMap {
   gridlineStyle: StrokeStyle;
   gridlineColor: Color;
   gridlineWidth: number;
+  verticalText: boolean;
 }
 
 export enum TextAlignmentHorizontal {
