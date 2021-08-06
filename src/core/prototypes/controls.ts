@@ -130,6 +130,7 @@ export interface InputDateOptions {
 export interface InputColorOptions {
   allowNull?: boolean;
   label?: string;
+  noDefaultMargin?: boolean;
 }
 
 // eslint-disable-next-line

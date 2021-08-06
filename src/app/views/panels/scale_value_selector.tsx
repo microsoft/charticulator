@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
@@ -110,6 +111,7 @@ export class ScaleValueSelector extends React.Component<
                       >
                         {manager.horizontal(
                           [2, 3],
+                          manager.label(key),
                           manager.inputColor(
                             {
                               property: "mapping",
@@ -117,7 +119,8 @@ export class ScaleValueSelector extends React.Component<
                               noComputeLayout: true,
                             },
                             {
-                              label: key,
+                              // label: key,
+                              noDefaultMargin: true,
                             }
                           )
                         )}
