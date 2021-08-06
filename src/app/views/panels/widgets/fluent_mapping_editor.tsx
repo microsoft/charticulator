@@ -383,7 +383,12 @@ export class FluentMappingEditor extends React.Component<
                       items: mainMenuItems,
                       componentRef: (ref) => {
                         this.scaleMappingRef = ref;
-                        console.log(ref);
+                      },
+                      onMenuOpened: () => {
+                        const currentMapping = parent.getAttributeMapping(
+                          attribute
+                        );
+                        this.openEditor(currentMapping, false);
                       },
                     }}
                     text={scaleMapping.expression}
@@ -435,49 +440,7 @@ export class FluentMappingEditor extends React.Component<
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
-      setTimeout(() => {
-        this.scaleMappingDisplay?.click();
-        let expression = null;
-        let expressionAggregation: string = null;
-        if (currentMapping != null) {
-          if (
-            (currentMapping as Specification.ScaleMapping).expression != null
-          ) {
-            const parsed = Expression.parse(
-              (currentMapping as Specification.ScaleMapping).expression
-            );
-
-            if (parsed instanceof Expression.FunctionCall) {
-              expression = parsed.args[0].toString();
-              expressionAggregation = parsed.name;
-            }
-
-            const aggName = aggregationFunctions.find(
-              (agg) => agg.name.localeCompare(expressionAggregation) === 0
-            );
-
-            const xpath = `//span[contains(text(), "${expression} (${aggName.displayName})")]`;
-            const menuItem = document.evaluate(
-              xpath,
-              document,
-              null,
-              XPathResult.FIRST_ORDERED_NODE_TYPE,
-              null
-            ).singleNodeValue as HTMLSpanElement;
-            menuItem?.click();
-
-            setTimeout(() => {
-              const container = document.querySelector(
-                "body :last-child.ms-Layer"
-              );
-              const button: HTMLButtonElement = container.querySelector(
-                "button.ms-ContextualMenu-splitMenu"
-              );
-              button?.click();
-            }, 100);
-          }
-        }
-      }, 100);
+      this.openEditor(currentMapping, true);
     }
 
     const table = currentMapping
@@ -606,6 +569,55 @@ export class FluentMappingEditor extends React.Component<
         </DropZoneView>
       </div>
     );
+  }
+
+  private openEditor(
+    currentMapping: Specification.Mapping,
+    clickOnButton: boolean
+  ) {
+    setTimeout(() => {
+      if (clickOnButton) {
+        this.scaleMappingDisplay?.click();
+      }
+      let expression = null;
+      let expressionAggregation: string = null;
+      if (currentMapping != null) {
+        if ((currentMapping as Specification.ScaleMapping).expression != null) {
+          const parsed = Expression.parse(
+            (currentMapping as Specification.ScaleMapping).expression
+          );
+
+          if (parsed instanceof Expression.FunctionCall) {
+            expression = parsed.args[0].toString();
+            expressionAggregation = parsed.name;
+          }
+
+          const aggName = aggregationFunctions.find(
+            (agg) => agg.name.localeCompare(expressionAggregation) === 0
+          );
+
+          const xpath = `//span[contains(text(), "${expression} (${aggName.displayName})")]`;
+          const menuItem = document.evaluate(
+            xpath,
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue as HTMLSpanElement;
+          menuItem?.click();
+
+          setTimeout(() => {
+            const container = document.querySelector(
+              "body :last-child.ms-Layer"
+            );
+            const button: HTMLButtonElement = container.querySelector(
+              "button.ms-ContextualMenu-splitMenu"
+            );
+            button?.click();
+          }, 100);
+        }
+      }
+    }, 100);
   }
 }
 
