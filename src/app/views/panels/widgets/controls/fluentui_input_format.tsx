@@ -77,7 +77,7 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
           if (props.allowNull && newValue.trim() == "") {
             setValue(newValue);
           } else {
-            const result = Expression.verifyUserExpression(
+            Expression.verifyUserExpression(
               replaceTabBySymbol(replaceNewLineBySymbol(newValue)),
               {
                 textExpression: props.textExpression,

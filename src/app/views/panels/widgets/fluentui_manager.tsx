@@ -159,6 +159,11 @@ export class FluentUIWidgetManager
       options.openMapping || attribute === this.store.currentAttributeFocus;
     if (openMapping) {
       setTimeout(() => {
+        document
+          .querySelectorAll(".ms-GroupHeader-expand")
+          .forEach((expand: HTMLButtonElement) => {
+            expand.click();
+          });
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
     }
@@ -626,6 +631,7 @@ export class FluentUIWidgetManager
         store={this.store}
         defaultValue={color}
         allowNull={options.allowNull}
+        noDefaultMargin={options.noDefaultMargin}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;

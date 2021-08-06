@@ -27,7 +27,6 @@ import {
   Selection,
 } from "../../stores";
 import { Button } from "../panels/widgets/controls";
-import { WidgetManager } from "../panels/widgets/manager";
 import { BoundingBoxView } from "./bounding_box";
 import {
   CreatingComponent,

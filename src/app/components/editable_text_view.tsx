@@ -74,6 +74,10 @@ export class EditableTextView extends React.Component<
             onBlur={() => {
               if (this.state.currentText == this.props.text) {
                 this.cancelEdit();
+              } else {
+                this.setState({
+                  currentText: this.props.text,
+                });
               }
             }}
             onKeyDown={(e) => {

@@ -292,6 +292,7 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
+            manager.label(key),
             manager.inputColor(
               {
                 property: "mapping",
@@ -299,7 +300,8 @@ export class CategoricalScaleColor extends ScaleClass<
                 noComputeLayout: true,
               },
               {
-                label: key,
+                // label: key,
+                noDefaultMargin: true,
               }
             )
           )
