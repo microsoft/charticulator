@@ -113,7 +113,7 @@
     "preact": "^8.3.1",
     "preact-compat": "^3.18.3",
     "prettier": "2.1.2",
-    "sass": "^1.32.4",
+    "sass": "^1.37.5",
     "typedoc": "^0.20.29",
     "typedoc-plugin-external-module-name": "^4.0.6",
     "typescript": "3.9.7",
