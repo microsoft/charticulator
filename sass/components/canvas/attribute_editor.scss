@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
+
 .attribute-editor {
   font-size: 14px;
   box-sizing: border-box;
@@ -1149,13 +1151,13 @@
 
         .el-part {
           display: block;
-          width: $line-height / 2;
-          height: $line-height / 2;
+          width: math.div($line-height, 2);
+          height: math.div($line-height, 2);
           padding: 0 2px;
 
           .el-svg-icon {
-            width: $line-height / 2;
-            height: $line-height / 2;
+            width: math.div($line-height, 2);
+            height: math.div($line-height, 2);
             filter: invert(40%);
           }
 

@@ -110,6 +110,7 @@ import {
 import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
+import { OpenNestedEditor } from "../../../actions/actions";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1289,42 +1290,13 @@ export class FluentUIWidgetManager
             <ButtonRaised
               text="Edit Nested Chart..."
               onClick={() => {
-                const editorID = uniqueID();
-                const newWindow = window.open(
-                  "index.html#!nestedEditor=" + editorID,
-                  "nested_chart_" + options.specification._id
+                this.store.dispatcher.dispatch(
+                  new OpenNestedEditor(
+                    this.objectClass.object,
+                    property,
+                    options
+                  )
                 );
-                const listener = (e: MessageEvent) => {
-                  if (e.origin == document.location.origin) {
-                    const data = e.data;
-                    if (data.id == editorID) {
-                      switch (data.type) {
-                        case "initialized":
-                          {
-                            newWindow.postMessage(
-                              {
-                                id: editorID,
-                                type: "load",
-                                specification: options.specification,
-                                dataset: options.dataset,
-                                width: options.width,
-                                height: options.height,
-                                filterCondition: options.filterCondition,
-                              },
-                              document.location.origin
-                            );
-                          }
-                          break;
-                        case "save":
-                          {
-                            this.emitSetProperty(property, data.specification);
-                          }
-                          break;
-                      }
-                    }
-                  }
-                };
-                window.addEventListener("message", listener);
               }}
             />
           </NestedChartButtonsWrapper>,

@@ -20,7 +20,7 @@ import {
   DatasetView,
   MarkEditorView,
 } from "./views";
-import { MenuBar, MenuBarHandlers } from "./views/menubar";
+import { MenuBar, MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { ObjectListEditor } from "./views/panels/object_list_editor";
 import { ScalesPanel } from "./views/panels/scales_panel";
 import { strings } from "../strings";
@@ -64,6 +64,7 @@ export interface MainViewProps {
   viewConfiguration: MainViewConfig;
   menuBarHandlers?: MenuBarHandlers;
   telemetry?: TelemetryRecorder;
+  tabButtons?: MenubarTabButton[];
 }
 
 export interface MainViewState {
@@ -247,6 +248,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
               name={this.viewConfiguration.Name}
               ref={(e) => (this.refMenuBar = e)}
               handlers={this.props.menuBarHandlers}
+              tabButtons={this.props.tabButtons}
             />
             {this.viewConfiguration.ToolbarPosition ==
               PositionsLeftRightTop.Top &&
@@ -320,7 +322,25 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   <ErrorBoundary telemetryRecorder={this.props.telemetry}>
                     <AttributePanel store={this.props.store} />
                   </ErrorBoundary>
+                  <PopupContainer controller={globals.popupController} />
                 </FloatingPanel>
+              ) : null}
+              {this.props.store.messageState.size ? (
+                <div className="charticulator__floating-panels_errors">
+                  <FloatingPanel
+                    floatInCenter={true}
+                    scroll={true}
+                    peerGroup="messages"
+                    title={strings.mainView.errorsPanelTitle}
+                    closeButtonIcon={"ChromeClose"}
+                    height={200}
+                    width={350}
+                  >
+                    <ErrorBoundary telemetryRecorder={this.props.telemetry}>
+                      <MessagePanel store={this.props.store} />
+                    </ErrorBoundary>
+                  </FloatingPanel>
+                </div>
               ) : null}
               {this.state.scaleViewMaximized ? (
                 <FloatingPanel
@@ -343,7 +363,7 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
                   scroll={true}
                   peerGroup="messages"
                   title={strings.mainView.errorsPanelTitle}
-                  closeButtonIcon={"ChromeClose"}
+                  closeButtonIcon={"general/cross"}
                   height={200}
                   width={350}
                 >

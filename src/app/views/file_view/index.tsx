@@ -119,13 +119,25 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
   public renderContent() {
     switch (this.state.currentTab) {
       case MainTabs.new: {
-        return <FileViewNew onClose={this.props.onClose} />;
+        return (
+          <FileViewNew store={this.props.store} onClose={this.props.onClose} />
+        );
       }
       case MainTabs.save: {
-        return <FileViewSaveAs onClose={this.props.onClose} />;
+        return (
+          <FileViewSaveAs
+            store={this.props.store}
+            onClose={this.props.onClose}
+          />
+        );
       }
       case MainTabs.export: {
-        return <FileViewExport onClose={this.props.onClose} />;
+        return (
+          <FileViewExport
+            store={this.props.store}
+            onClose={this.props.onClose}
+          />
+        );
       }
       case MainTabs.options: {
         return <FileViewOptionsView onClose={this.props.onClose} />;
@@ -141,7 +153,9 @@ export class FileView extends React.Component<FileViewProps, FileViewState> {
       }
       case MainTabs.open:
       default: {
-        return <FileViewOpen onClose={this.props.onClose} />;
+        return (
+          <FileViewOpen store={this.props.store} onClose={this.props.onClose} />
+        );
       }
     }
   }

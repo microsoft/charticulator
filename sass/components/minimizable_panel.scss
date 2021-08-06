@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
 .minimizable-panel-view {
   display: flex;
   flex-direction: column;
@@ -47,7 +48,7 @@
       .svg-image-icon {
         display: inline-block;
         vertical-align: top;
-        margin: (($header-height - 14px) / 2) 4px;
+        margin: math.div(($header-height - 14px), 2) 4px;
         width: 14px;
         height: 14px;
         filter: invert(30%);

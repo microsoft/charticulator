@@ -17,6 +17,7 @@ import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
 import { MainReactContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
+import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
 
 export interface FileViewOptionsProps {
@@ -163,3 +164,21 @@ export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
     </section>
   );
 };
+
+// TODO create HOC
+export class FileViewOptions extends React.Component<
+  {
+    onClose: () => void;
+    store: AppStore;
+  },
+  {}
+> {
+  public render() {
+    return (
+      <FileViewOptionsView
+        onClose={this.props.onClose}
+        // store={this.props.store}
+      />
+    );
+  }
+}

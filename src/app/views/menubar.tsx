@@ -8,11 +8,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as globals from "../globals";
 import * as R from "../resources";
+import {
+  DefaultButton,
+  Dialog,
+  DialogFooter,
+  PrimaryButton,
+} from "@fluentui/react";
 
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
-import { ContextedComponent } from "../context_component";
+import { ContextedComponent, MainContextInterface } from "../context_component";
 import {
   ModalView,
   PopupAlignment,
@@ -24,13 +30,18 @@ import {
 import { FileView, MainTabs } from "./file_view";
 import { AppStore } from "../stores";
 import { Button } from "./panels/widgets/controls";
-import { isInIFrame, readFileAsString } from "../utils";
-import { ChartTemplate, Specification } from "../../container";
+import { classNames, isInIFrame, readFileAsString } from "../utils";
+import {
+  ChartTemplate,
+  primaryButtonStyles,
+  Specification,
+} from "../../container";
 import { TableType } from "../../core/dataset";
 import { FileViewImport, MappingMode } from "./file_view/import_view";
 import { strings } from "../../strings";
 import { PositionsLeftRight, UndoRedoLocation } from "../main_view";
 import { getConfig } from "../config";
+import { EditorType } from "../stores/app_store";
 
 export class HelpButton extends React.Component<
   {
@@ -122,18 +133,40 @@ export interface MenuBarHandlers {
   onExportTemplateClick?: () => void;
 }
 
+export interface MenubarTabButton {
+  icon: string;
+  tooltip: string;
+  text: string;
+  active: boolean;
+  onClick: () => void;
+}
+
 export interface MenuBarProps {
   undoRedoLocation: UndoRedoLocation;
   alignButtons: PositionsLeftRight;
   alignSaveButton: PositionsLeftRight;
   name?: string;
   handlers: MenuBarHandlers;
+  tabButtons?: MenubarTabButton[];
 }
 
-export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
+export class MenuBar extends ContextedComponent<
+  MenuBarProps,
+  {
+    showSaveDialog: boolean;
+  }
+> {
   protected editor: EventSubscription;
   protected graphics: EventSubscription;
   private popupController: PopupController = new PopupController();
+
+  constructor(props: MenuBarProps, context: MainContextInterface) {
+    super(props, context);
+    this.state = {
+      showSaveDialog: false,
+    };
+  }
+
   public componentDidMount() {
     window.addEventListener("keydown", this.onKeyDown);
     this.editor = this.context.store.addListener(
@@ -190,8 +223,9 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           case "save":
             {
               if (
-                this.context.store.editorType == "nested" ||
-                this.context.store.editorType == "embedded"
+                this.context.store.editorType == EditorType.Nested ||
+                this.context.store.editorType == EditorType.Embedded ||
+                this.context.store.editorType == EditorType.NestedEmbedded
               ) {
                 this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
               } else {
@@ -260,14 +294,74 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
 
   public renderSaveNested() {
     return (
-      <MenuButton
-        url={R.getSVGIcon("toolbar/save")}
-        text={strings.menuBar.saveNested}
-        title={strings.menuBar.save}
-        onClick={() => {
-          this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
-        }}
-      />
+      <>
+        <Dialog
+          dialogContentProps={{
+            title: strings.dialogs.saveChanges.saveChangesTitle,
+            subText: strings.dialogs.saveChanges.saveChanges("chart"),
+          }}
+          hidden={!this.state.showSaveDialog}
+          minWidth="80%"
+          onDismiss={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+          }}
+        >
+          <DialogFooter>
+            <PrimaryButton
+              styles={primaryButtonStyles}
+              onClick={() => {
+                this.setState({
+                  showSaveDialog: false,
+                });
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+                setTimeout(() =>
+                  this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE)
+                );
+              }}
+              text={strings.menuBar.saveButton}
+            />
+            <DefaultButton
+              onClick={() => {
+                this.setState({
+                  showSaveDialog: false,
+                });
+                this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+              }}
+              text={strings.menuBar.dontSaveButton}
+            />
+          </DialogFooter>
+        </Dialog>
+        <MenuButton
+          url={R.getSVGIcon("toolbar/save")}
+          text={strings.menuBar.saveNested}
+          title={strings.menuBar.save}
+          onClick={() => {
+            this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_EDIT);
+
+            this.setState({
+              showSaveDialog: false,
+            });
+          }}
+        />
+        <MenuButton
+          url={R.getSVGIcon("toolbar/cross")}
+          text={strings.menuBar.closeNested}
+          title={strings.menuBar.closeNested}
+          onClick={() => {
+            if (this.store.chartManager.hasUnsavedChanges()) {
+              this.setState({
+                showSaveDialog: true,
+              });
+            } else {
+              this.context.store.emit(AppStore.EVENT_NESTED_EDITOR_CLOSE);
+              this.setState({
+                showSaveDialog: false,
+              });
+            }
+          }}
+        />
+        <span className="charticulator__menu-bar-separator" />
+      </>
     );
   }
 
@@ -566,17 +660,18 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
   public toolbarButtons(props: MenuBarProps) {
     return (
       <>
-        {this.context.store.editorType === "nested"
+        {/* {this.context.store.editorType === EditorType.Nested || this.context.store.editorType === EditorType.NestedEmbedded
           ? this.renderSaveNested()
-          : null}
-        {this.context.store.editorType === "chart"
+          : null} */}
+        {this.context.store.editorType === EditorType.Chart
           ? this.renderNewOpenSave()
           : null}
-        {this.context.store.editorType === "embedded" &&
+        {this.context.store.editorType === EditorType.Embedded &&
         props.alignSaveButton === props.alignButtons
           ? this.renderSaveEmbedded()
           : null}
-        {this.context.store.editorType === "embedded" ? (
+        {this.context.store.editorType === EditorType.Embedded ||
+        this.context.store.editorType === EditorType.NestedEmbedded ? (
           <>
             <span className="charticulator__menu-bar-separator" />
             {this.renderImportButton(props)}
@@ -584,7 +679,7 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
           </>
         ) : null}
         <span className="charticulator__menu-bar-separator" />
-        {this.props.undoRedoLocation === "menubar" ? (
+        {this.props.undoRedoLocation === UndoRedoLocation.MenuBar ? (
           <>
             <MenuButton
               url={R.getSVGIcon("Undo")}
@@ -614,13 +709,36 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
     );
   }
 
+  public toolbarTabButtons(props: MenuBarProps) {
+    return (
+      <>
+        {props.tabButtons?.map((button) => {
+          return (
+            <>
+              <span className="charticulator__menu-bar-separator" />
+              <MenuButton
+                url={R.getSVGIcon(button.icon)}
+                title={button.tooltip}
+                onClick={button.onClick}
+                text={button.text}
+                disabled={!button.active}
+              />
+            </>
+          );
+        })}
+      </>
+    );
+  }
+
   public render() {
     return (
       <>
         <PopupContainer controller={this.popupController} />
         <section className="charticulator__menu-bar">
           <div className="charticulator__menu-bar-left">
-            {this.context.store.editorType === "embedded" ? null : (
+            {this.context.store.editorType === EditorType.Embedded ||
+            this.context.store.editorType ===
+              EditorType.NestedEmbedded ? null : (
               <AppButton
                 name={this.props.name}
                 title={strings.menuBar.home}
@@ -633,16 +751,30 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 {this.toolbarButtons(this.props)}
               </>
             ) : null}
-            {this.context.store.editorType === "embedded" &&
+            {this.context.store.editorType === EditorType.Embedded &&
             this.props.alignSaveButton == PositionsLeftRight.Left &&
             this.props.alignSaveButton !== this.props.alignButtons
               ? this.renderSaveEmbedded()
               : null}
+            {this.context.store.editorType === EditorType.Embedded &&
+            this.props.tabButtons
+              ? this.toolbarTabButtons(this.props)
+              : null}
+            {this.context.store.editorType === EditorType.Nested ||
+            this.context.store.editorType === EditorType.NestedEmbedded
+              ? this.renderSaveNested()
+              : null}
           </div>
           <div className="charticulator__menu-bar-center el-text">
-            <p>
+            <p
+              className={classNames("charticulator__menu-bar-center", [
+                "nested-chart",
+                this.context.store.editorType === EditorType.NestedEmbedded,
+              ])}
+            >
               {`${this.context.store.chart?.properties.name}${
-                this.context.store.editorType === "embedded"
+                this.context.store.editorType === EditorType.Embedded ||
+                this.context.store.editorType === EditorType.NestedEmbedded
                   ? " - " + this.props.name || strings.app.name
                   : ""
               }`}
@@ -655,7 +787,8 @@ export class MenuBar extends ContextedComponent<MenuBarProps, {}> {
                 <span className="charticulator__menu-bar-separator" />
               </>
             ) : null}
-            {this.context.store.editorType === "embedded" &&
+            {(this.context.store.editorType === EditorType.Embedded ||
+              this.context.store.editorType === EditorType.NestedEmbedded) &&
             this.props.alignSaveButton == PositionsLeftRight.Right &&
             this.props.alignSaveButton !== this.props.alignButtons
               ? this.renderSaveEmbedded()

@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+@use 'sass:math';
+
 .el-svg-icon {
   vertical-align: top;
   width: 24px;
@@ -320,7 +322,7 @@
     $button-size: 20px;
     width: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
     .el-svg-icon {
@@ -354,7 +356,7 @@
     $button-size: 20px;
     line-height: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
 
@@ -409,7 +411,7 @@
     $button-size: 20px;
     line-height: $button-size;
     height: $button-size;
-    padding: (32px - $button-size) / 2;
+    padding: math.div((32px - $button-size), 2);
     vertical-align: top;
     display: inline-block;
 

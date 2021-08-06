@@ -1,6 +1,8 @@
 /* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+/* eslint-disable max-lines-per-function */
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -36,14 +38,16 @@ import { MainTabs } from "./views/file_view";
 import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
-import { MenuBarHandlers } from "./views/menubar";
-import { TelemetryRecorder } from "./components";
-import { MappingType } from "../core/specification";
 
 // Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
 import { initializeIcons } from "../fabric-icons/src/index";
 initializeIcons();
 import { defaultVersionOfTemplate } from "./stores/defaults";
+import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
+import { TelemetryRecorder } from "./components";
+import { AttributeMap, MappingType } from "../core/specification";
+import { NestedChartEditorOptions } from "../core/prototypes/controls";
+import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";
 
 export class ApplicationExtensionContext implements ExtensionContext {
@@ -62,6 +66,36 @@ export class ApplicationExtensionContext implements ExtensionContext {
     return this.app;
   }
 }
+export const enum NestedEditorMessageType {
+  Save = "save",
+  Initialized = "initialized",
+}
+export interface NestedEditorMessage {
+  id: string;
+  type: NestedEditorMessageType;
+  specification?: Specification.Chart;
+  template?: Specification.Template.ChartTemplate;
+}
+
+export enum NestedEditorEventType {
+  Load = "load",
+  Save = "save",
+}
+
+export interface NestedEditorData {
+  id: string;
+  type: NestedEditorEventType;
+  dataset: Dataset.Dataset;
+  specification: Specification.Chart;
+  originSpecification?: Specification.Chart;
+  template: Specification.Template.ChartTemplate;
+  width: number;
+  height: number;
+  filterCondition: {
+    column: string;
+    value: any;
+  };
+}
 
 export class Application {
   public worker: CharticulatorWorkerInterface;
@@ -71,6 +105,14 @@ export class Application {
 
   private config: CharticulatorAppConfig;
   private containerID: string;
+
+  private nestedEditor: {
+    onOpenEditor: (
+      options: Prototypes.Controls.NestedChartEditorOptions,
+      object: Specification.Object<AttributeMap>,
+      property: Prototypes.Controls.Property
+    ) => void;
+  };
 
   public destroy() {
     ReactDOM.unmountComponentAtNode(document.getElementById(this.containerID));
@@ -87,7 +129,15 @@ export class Application {
     handlers?: {
       menuBarHandlers?: MenuBarHandlers;
       telemetry?: TelemetryRecorder;
-    },
+      tabButtons?: MenubarTabButton[];
+      nestedEditor?: {
+        onOpenEditor: (
+          options: Prototypes.Controls.NestedChartEditorOptions,
+          object: Specification.Object<AttributeMap>,
+          property: Prototypes.Controls.Property
+        ) => void;
+      };
+    }
   ) {
     this.config = config;
     this.containerID = containerID;
@@ -101,6 +151,23 @@ export class Application {
     await this.worker.initialize(config);
 
     this.appStore = new AppStore(this.worker, makeDefaultDataset());
+
+    if (handlers?.nestedEditor) {
+      this.nestedEditor = handlers?.nestedEditor;
+      if (handlers?.nestedEditor.onOpenEditor) {
+        this.appStore.addListener(
+          AppStore.EVENT_OPEN_NESTED_EDITOR,
+          (
+            options: NestedChartEditorOptions,
+            object: Specification.Object<AttributeMap>,
+            property: Prototypes.Controls.Property
+          ) => {
+            this.nestedEditor.onOpenEditor(options, object, property);
+          }
+        );
+      }
+    }
+
     try {
       const CurrencySymbol = parseSafe(
         window.localStorage.getItem(LocalStorageKeys.CurrencySymbol),
@@ -129,7 +196,7 @@ export class Application {
           decimal: NumberFormatRemove === "," ? "." : ",",
           remove: NumberFormatRemove === "," ? "," : ".",
         },
-      });   
+      });
       setFormatOptions({
         currency: parseSafe(CurrencySymbol, defaultCurrency),
         grouping: parseSafe(GroupSymbol, defaultDigitsGroup),
@@ -138,10 +205,11 @@ export class Application {
       });
     } catch (ex) {
       setFormatOptions({
-        currency: [localizaiton?.currency, ''] ?? defaultCurrency,
+        currency: [localizaiton?.currency, ""] ?? defaultCurrency,
         grouping: defaultDigitsGroup,
         decimal: localizaiton?.decemalDelimiter ?? defaultNumberFormat.decimal,
-        thousands: localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
+        thousands:
+          localizaiton?.thousandsDelimiter ?? defaultNumberFormat.decimal,
       });
       console.warn("Loadin localization settings failed");
     }
@@ -153,6 +221,7 @@ export class Application {
         ref={(e) => (this.mainView = e)}
         viewConfiguration={this.config.MainView}
         menuBarHandlers={handlers?.menuBarHandlers}
+        tabButtons={handlers?.tabButtons}
         telemetry={handlers?.telemetry}
       />,
       document.getElementById(containerID)
@@ -185,23 +254,17 @@ export class Application {
   // eslint-disable-next-line
   public setupNestedEditor(
     id: string,
-    onInitialized?: (id: string, load: (data: any) => void) => void,
-    onSave?: (data: any) => void
+    onInitialized?: (
+      id: string,
+      load: (data: NestedEditorData) => void
+    ) => void,
+    onSave?: (data: any) => void,
+    onClose?: () => void,
+    editorMode?: EditorType
   ) {
     const appStore = this.appStore;
     const setupCallback = ((data: any) => {
-      const info: {
-        dataset: Dataset.Dataset;
-        specification: Specification.Chart;
-        originSpecification?: Specification.Chart;
-        template: Specification.Template.ChartTemplate;
-        width: number;
-        height: number;
-        filterCondition: {
-          column: string;
-          value: any;
-        };
-      } = data;
+      const info: NestedEditorData = data;
       info.specification.mappings.width = {
         type: MappingType.value,
         value: info.width,
@@ -229,12 +292,11 @@ export class Application {
           chart: chartManager.chart,
           chartState: chartManager.chartState,
           dataset: chartManager.dataset,
-          version: info.template?.version,
+          version: info.template?.version || defaultVersionOfTemplate,
           originDataset: appStore.originDataset,
         },
         CHARTICULATOR_PACKAGE.version
       );
-      // appStore.loadState(newState);
       appStore.dispatcher.dispatch(
         new Actions.ImportChartAndDataset(
           info.specification,
@@ -246,52 +308,60 @@ export class Application {
         )
       );
 
-      info.template.version = newState.version;
-      // appStore.chartManager?.resetDifference();
-      appStore.setupNestedEditor(
-        (newSpecification) => {
-          const template = deepClone(appStore.buildChartTemplate());
-          if (window.opener) {
-            window.opener.postMessage(
+      if (info.template) {
+        info.template.version = newState.version;
+      }
+      if (onClose) {
+        appStore.addListener(AppStore.EVENT_NESTED_EDITOR_CLOSE, () => {
+          onClose();
+        });
+      }
+
+      let type =
+        this.config.CorsPolicy && this.config.CorsPolicy.Embedded
+          ? EditorType.Embedded
+          : EditorType.Nested;
+
+      // settings from outside overrides the configuration
+      if (editorMode) {
+        type = editorMode;
+      }
+
+      appStore.setupNestedEditor((newSpecification) => {
+        const template = deepClone(appStore.buildChartTemplate());
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              id,
+              type: NestedEditorMessageType.Save,
+              specification: newSpecification,
+              template,
+            } as NestedEditorMessage,
+            document.location.origin
+          );
+        } else {
+          if (this.config.CorsPolicy && this.config.CorsPolicy.TargetOrigins) {
+            window.parent.postMessage(
               {
                 id,
-                type: "save",
+                type: NestedEditorMessageType.Save,
                 specification: newSpecification,
                 template,
-              },
-              document.location.origin
-            );
-          } else {
-            if (
-              this.config.CorsPolicy &&
+              } as NestedEditorMessage,
               this.config.CorsPolicy.TargetOrigins
-            ) {
-              window.parent.postMessage(
-                {
-                  id,
-                  type: "save",
-                  specification: newSpecification,
-                  template,
-                },
-                this.config.CorsPolicy.TargetOrigins
-              );
-            }
-            if (
-              this.config.CorsPolicy &&
-              this.config.CorsPolicy.Embedded &&
-              onSave
-            ) {
-              onSave({
-                specification: newSpecification,
-                template,
-              });
-            }
+            );
           }
-        },
-        this.config.CorsPolicy && this.config.CorsPolicy.Embedded
-          ? "embedded"
-          : "nested"
-      );
+          if (
+            (this.config.CorsPolicy && this.config.CorsPolicy.Embedded) ||
+            onSave
+          ) {
+            onSave({
+              specification: newSpecification,
+              template,
+            } as NestedEditorMessage);
+          }
+        }
+      }, type);
     }).bind(this);
     window.addEventListener("message", (e: MessageEvent) => {
       if (e.data.id != id) {
@@ -303,8 +373,8 @@ export class Application {
       window.opener.postMessage(
         {
           id,
-          type: "initialized",
-        },
+          type: NestedEditorMessageType.Initialized,
+        } as NestedEditorMessage,
         document.location.origin
       );
     } else {
@@ -312,13 +382,14 @@ export class Application {
         window.parent.postMessage(
           {
             id,
-            type: "initialized",
-          },
+            type: NestedEditorMessageType.Initialized,
+          } as NestedEditorMessage,
           this.config.CorsPolicy.TargetOrigins
         );
       } else if (
-        this.config.CorsPolicy &&
-        this.config.CorsPolicy.Embedded &&
+        (this.config.CorsPolicy &&
+          this.config.CorsPolicy.Embedded &&
+          onInitialized) ||
         onInitialized
       ) {
         onInitialized(id, (data: any) => {
