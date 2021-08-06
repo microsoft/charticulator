@@ -1092,7 +1092,7 @@ export class AppStore extends BaseStore {
     this.currentTool = null;
     this.currentToolOptions = null;
 
-    this.chart = createDefaultChart(this.dataset);
+    this.chart = createDefaultChart(this.dataset, this.editorType === EditorType.Chart);
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset

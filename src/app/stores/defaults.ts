@@ -134,7 +134,7 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
 }
 
 /** Create a default chart */
-export function createDefaultChart(dataset: Dataset.Dataset) {
+export function createDefaultChart(dataset: Dataset.Dataset, createTitle: boolean) {
   const table = dataset.tables[0];
   const glyph = createDefaultGlyph(table.name);
   return {
@@ -156,8 +156,8 @@ export function createDefaultChart(dataset: Dataset.Dataset) {
     glyphs: [glyph],
     elements: [
       createDefaultPlotSegment(table, glyph),
-      createDefaultTitle(dataset),
-    ],
+      createTitle ? createDefaultTitle(dataset) : null,
+    ].filter(elem => elem != null),
     scales: [],
     scaleMappings: [],
     constraints: [],
