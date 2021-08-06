@@ -14,9 +14,7 @@ import {
   GradientPicker,
   GradientView,
 } from "../../../../components";
-import {
-  PopupView,
-} from "../../../../controllers/popup_controller";
+import { PopupView } from "../../../../controllers/popup_controller";
 
 import { AppStore } from "../../../../stores";
 
@@ -30,6 +28,7 @@ export interface InputColorProps {
   label?: string;
   onEnter: (value: Color) => boolean;
   store?: AppStore;
+  noDefaultMargin?: boolean;
 }
 
 export class FluentInputColor extends React.Component<
@@ -73,16 +72,17 @@ export class FluentInputColor extends React.Component<
         </FluentTextField>
         <span
           className="el-color-display"
-          style={{ backgroundColor: hex == "" ? "transparent" : hex }}
+          style={{
+            backgroundColor: hex == "" ? "transparent" : hex,
+            marginTop: this.props.noDefaultMargin ? 5 : null,
+          }}
           id={this.props.label}
           onClick={() => {
-             this.setState({ open: !this.state.open });
+            this.setState({ open: !this.state.open });
           }}
         />
         {this.state.open && (
-          <Callout
-            target={`#${this.props.label}`}
-            >
+          <Callout target={`#${this.props.label}`}>
             <ColorPicker
               store={this.props.store}
               allowNull={true}
