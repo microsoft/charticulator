@@ -42,6 +42,7 @@ export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   fontSize: defaultFontSize,
   tickSize: 5,
   wordWrap: false,
+  verticalText: false,
   gridlineStyle: "none",
   gridlineColor: <Color>{
     r: 234,
@@ -470,8 +471,12 @@ export class AxisRenderer {
               0,
               0,
               AxisRenderer.textMeasurer.measure(textContent[index]),
-              side * sin < 0 ? "right" : "left",
-              "middle",
+              style.verticalText ? "middle" : side * sin < 0 ? "right" : "left",
+              style.verticalText
+                ? side * sin < 0
+                  ? "bottom"
+                  : "top"
+                : "middle",
               0
             );
             const text = makeText(
@@ -494,7 +499,7 @@ export class AxisRenderer {
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: 0,
+            angle: style.verticalText ? angle : 0,
           };
           g.elements.push(gText);
         } else {
@@ -515,7 +520,7 @@ export class AxisRenderer {
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: 0,
+            angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
           };
           g.elements.push(gText);
         }
@@ -536,7 +541,7 @@ export class AxisRenderer {
         gText.transform = {
           x: tx + dx,
           y: ty + dy,
-          angle: 0,
+          angle: style.verticalText ? (sin > 0 ? angle - 90 : angle + 90) : 0,
         };
         g.elements.push(gText);
       } else {
@@ -549,8 +554,22 @@ export class AxisRenderer {
             0,
             0,
             tick.measure,
-            side * cos > 0 ? "right" : "left",
-            side * cos > 0 ? "top" : "bottom",
+            style.verticalText
+              ? side * cos > 0
+                ? "right"
+                : "left"
+              : style.wordWrap
+              ? "middle"
+              : side * cos > 0
+              ? "right"
+              : "left",
+            style.verticalText
+              ? "middle"
+              : style.wordWrap
+              ? "middle"
+              : side * cos > 0
+              ? "top"
+              : "bottom",
             0
           );
           const gText = makeGroup([
@@ -561,7 +580,13 @@ export class AxisRenderer {
           gText.transform = {
             x: tx + dx,
             y: ty + dy,
-            angle: cos > 0 ? 36 + angle : 36 + angle - 180,
+            angle: style.verticalText
+              ? cos > 0
+                ? 90 + angle
+                : 90 + angle - 180
+              : cos > 0
+              ? 36 + angle
+              : 36 + angle - 180,
           };
           g.elements.push(gText);
         } else {
@@ -606,10 +631,17 @@ export class AxisRenderer {
               lines.push(text);
             }
             const gText = makeGroup(lines);
+
             gText.transform = {
               x: tx + dx,
               y: ty + dy,
-              angle: style.wordWrap
+              angle: style.verticalText
+                ? style.wordWrap
+                  ? 0
+                  : cos > 0
+                  ? 90 + angle
+                  : 90 + angle - 180
+                : style.wordWrap
                 ? 0
                 : cos > 0
                 ? 36 + angle
@@ -621,8 +653,12 @@ export class AxisRenderer {
               0,
               0,
               tick.measure,
-              "middle",
-              side * cos > 0 ? "top" : "bottom",
+              style.verticalText
+                ? side * cos > 0
+                  ? "right"
+                  : "left"
+                : "middle",
+              style.verticalText ? "middle" : side * cos > 0 ? "top" : "bottom",
               0
             );
             const gText = makeGroup([
@@ -633,7 +669,7 @@ export class AxisRenderer {
             gText.transform = {
               x: tx + dx,
               y: ty + dy,
-              angle: 0,
+              angle: style.verticalText ? 90 + angle : 0,
             };
             g.elements.push(gText);
           }
@@ -958,12 +994,28 @@ export function getNumericalInterpolate(
   }
 }
 
+interface AxisAppearanceWidgets {
+  isVisible: boolean;
+  wordWrap: boolean;
+}
+
 export function buildAxisAppearanceWidgets(
-  isVisible: boolean,
   axisProperty: string,
-  manager: Controls.WidgetManager
+  manager: Controls.WidgetManager,
+  options: AxisAppearanceWidgets
 ) {
-  if (isVisible) {
+  if (options.isVisible) {
+    let vertical = null;
+    if (!options.wordWrap) {
+      vertical = manager.inputBoolean(
+        { property: axisProperty, field: ["style", "verticalText"] },
+        {
+          type: "checkbox",
+          label: "Vertical text",
+        }
+      );
+    }
+
     return [
       manager.vertical(
         manager.verticalGroup(
@@ -1045,6 +1097,7 @@ export function buildAxisAppearanceWidgets(
                 label: "Wrap text",
               }
             ),
+            vertical,
           ]
         )
       ),
@@ -1080,7 +1133,10 @@ export function buildAxisWidgets(
     },
   };
   const makeAppearance = () => {
-    return buildAxisAppearanceWidgets(data.visible, axisProperty, manager);
+    return buildAxisAppearanceWidgets(axisProperty, manager, {
+      isVisible: data.visible,
+      wordWrap: data.style.wordWrap,
+    });
   };
   if (data != null) {
     switch (data.type) {
