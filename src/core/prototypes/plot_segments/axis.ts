@@ -1051,6 +1051,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: "Line Color",
+                labelKey: "Line Color",
               }
             ),
             manager.inputColor(
@@ -1060,6 +1061,7 @@ export function buildAxisAppearanceWidgets(
               },
               {
                 label: "Tick Color",
+                labelKey: "Tick Color",
               }
             ),
             manager.inputNumber(
