@@ -669,7 +669,7 @@ export class FluentUIWidgetManager
         defaultValue={color}
         allowNull={options.allowNull}
         noDefaultMargin={options.noDefaultMargin}
-        labelKey={options.key}
+        labelKey={options.labelKey}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
