@@ -638,6 +638,7 @@ export class FluentUIWidgetManager
           this.emitSetProperty(property, value);
           return true;
         }}
+        labelKey={options.labelKey}
       />
     );
   }

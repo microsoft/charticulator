@@ -327,6 +327,7 @@ export class CategoricalScaleColor extends ScaleClass<
                 // label: key,
                 noDefaultMargin: true,
                 stopPropagation: true,
+                labelKey: key,
               }
             )
           )
