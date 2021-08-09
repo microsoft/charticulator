@@ -16,38 +16,34 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
   refineColumnName,
   getById,
 } from "../../../../core";
-import {Actions, DragData} from "../../../actions";
-import {ButtonRaised, GradientPicker} from "../../../components";
-import {SVGImageIcon} from "../../../components/icons";
-import {getAlignment, PopupView} from "../../../controllers";
+import { Actions, DragData } from "../../../actions";
+import { ButtonRaised, GradientPicker } from "../../../components";
+import { SVGImageIcon } from "../../../components/icons";
+import { getAlignment, PopupView } from "../../../controllers";
 import {
   DragContext,
   DragModifiers,
   Droppable,
 } from "../../../controllers/drag_controller";
 
-import {AppStore} from "../../../stores";
+import { AppStore } from "../../../stores";
 import {
   classNames,
   showOpenFileDialog,
   readFileAsString,
 } from "../../../utils/index";
-import {
-  DataFieldSelector,
-  DataFieldSelectorValue,
-} from "../../dataset/data_field_selector";
-import {ReorderListView} from "../object_list_editor";
+import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
+import { ReorderListView } from "../object_list_editor";
 import {
   Button,
   InputColorGradient,
   FluentComboBoxFontFamily,
 } from "./controls";
-import {FilterEditor} from "./filter_editor";
-import {GroupByEditor} from "./groupby_editor";
+import { FilterEditor } from "./filter_editor";
+import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
   getFormat,
@@ -58,9 +54,9 @@ import {
   FunctionCall,
   Variable,
 } from "../../../../core/expression";
-import {getDateFormat} from "../../../../core/dataset/datetime";
-import {AttributeMap, ScaleMapping} from "../../../../core/specification";
-import {ScaleValueSelector} from "../scale_value_selector";
+import { getDateFormat } from "../../../../core/dataset/datetime";
+import { AttributeMap, ScaleMapping } from "../../../../core/specification";
+import { ScaleValueSelector } from "../scale_value_selector";
 
 import {
   IconButton,
@@ -77,12 +73,12 @@ import {
   getTheme,
   TooltipHost,
 } from "@fluentui/react";
-import {FluentMappingEditor} from "./fluent_mapping_editor";
-import {CharticulatorPropertyAccessors} from "./manager";
-import {FluentInputColor} from "./controls/fluentui_input_color";
-import {FluentInputExpression} from "./controls/fluentui_input_expression";
+import { FluentMappingEditor } from "./fluent_mapping_editor";
+import { CharticulatorPropertyAccessors } from "./manager";
+import { FluentInputColor } from "./controls/fluentui_input_color";
+import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
-import {Icon} from "@fluentui/react/lib/Icon";
+import { Icon } from "@fluentui/react/lib/Icon";
 import {
   defaultLabelStyle,
   FluentButton,
@@ -92,25 +88,25 @@ import {
   labelRender,
   NestedChartButtonsWrapper,
 } from "./controls/fluentui_customized_components";
-import {FluentInputNumber} from "./controls/fluentui_input_number";
+import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
   InputTextOptions,
 } from "../../../../core/prototypes/controls";
 
-import {mergeStyles} from "@fluentui/merge-styles";
-import {CSSProperties} from "react";
-import {strings} from "../../../../strings";
-import {InputImage, InputImageProperty} from "./controls/fluentui_image";
+import { mergeStyles } from "@fluentui/merge-styles";
+import { CSSProperties } from "react";
+import { strings } from "../../../../strings";
+import { InputImage, InputImageProperty } from "./controls/fluentui_image";
 import {
   Director,
   IDefaultValue,
   MenuItemBuilder,
 } from "../../dataset/data_field_binding_builder";
-import {FluentInputFormat} from "./controls/fluentui_input_format";
+import { FluentInputFormat } from "./controls/fluentui_input_format";
 
-import {CollapsiblePanel} from "./controls/collapsiblePanel";
-import {OpenNestedEditor} from "../../../actions/actions";
+import { CollapsiblePanel } from "./controls/collapsiblePanel";
+import { OpenNestedEditor } from "../../../actions/actions";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -163,7 +159,9 @@ export class FluentUIWidgetManager
         document
           .querySelectorAll(".ms-GroupHeader-expand")
           .forEach((expand: HTMLButtonElement) => {
-            expand.click();
+            if (expand.querySelector("i").classList.contains("is-collapsed")) {
+              expand.click();
+            }
           });
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);
@@ -456,7 +454,7 @@ export class FluentUIWidgetManager
   ) {
     const theme = getTheme();
     if (options.type == "dropdown") {
-      const iconStyles: CSSProperties = {marginRight: "8px"};
+      const iconStyles: CSSProperties = { marginRight: "8px" };
 
       const onRenderOption = (option: IDropdownOption): JSX.Element => {
         return (
@@ -807,7 +805,7 @@ export class FluentUIWidgetManager
                 </PopupView>
               );
             },
-            {anchor: mappingButton}
+            { anchor: mappingButton }
           );
         }}
       />
@@ -818,8 +816,6 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.OrderWidgetOptions
   ) {
-    let ref: DropZoneView;
-
     const onClick = (value: DataFieldSelectorValue) => {
       if (value != null) {
         this.emitSetProperty(property, {
@@ -839,7 +835,7 @@ export class FluentUIWidgetManager
     }
 
     const defaultValue: IDefaultValue = currentExpression
-      ? {table: options.table, expression: currentExpression}
+      ? { table: options.table, expression: currentExpression }
       : null;
 
     const menu = this.director.buildSectionHeaderFieldsMenu(
@@ -853,7 +849,7 @@ export class FluentUIWidgetManager
         key={this.getKeyFromProperty(property)}
         filter={(data) => data instanceof DragData.DataExpression}
         onDrop={(data: DragData.DataExpression) => {
-          this.emitSetProperty(property, {expression: data.expression});
+          this.emitSetProperty(property, { expression: data.expression });
         }}
         className={""}
       >
@@ -941,7 +937,7 @@ export class FluentUIWidgetManager
                     </PopupView>
                   );
                 },
-                {anchor: container}
+                { anchor: container }
               );
             }}
           />
@@ -1049,7 +1045,7 @@ export class FluentUIWidgetManager
   public icon(icon: string) {
     return (
       <span className="charticulator__widget-label" key={icon}>
-        <SVGImageIcon url={R.getSVGIcon(icon)}/>
+        <SVGImageIcon url={R.getSVGIcon(icon)} />
       </span>
     );
   }

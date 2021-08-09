@@ -138,7 +138,8 @@ export interface InputColorOptions {
   allowNull?: boolean;
   label?: string;
   noDefaultMargin?: boolean;
-  key?: string;
+  stopPropagation?: boolean;
+  labelKey?: string;
   width?: number;
   underline?: boolean;
 }
@@ -217,6 +218,16 @@ export interface ReOrderWidgetOptions {
   onConfirm?: (items: string[]) => void;
   onReset?: () => string[];
   items?: string[];
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
+}
+
+export interface InputFormatOptions {
+  blank?: string;
+  isDateField?: boolean;
 }
 
 export interface InputFormatOptions {

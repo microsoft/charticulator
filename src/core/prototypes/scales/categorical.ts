@@ -22,6 +22,8 @@ import { InferParametersOptions } from "./scale";
 import { color as d3color } from "d3-color";
 import { OrderMode } from "../../specification/types";
 import { ReservedMappingKeyNamePrefix } from "../legends/categorical_legend";
+import { strings } from "../../../strings";
+import { Specification } from "../..";
 
 function reuseMapping<T>(
   domain: Map<string, any>,
@@ -77,6 +79,12 @@ export class CategoricalScaleNumber extends ScaleClass<
       name: "rangeScale",
       type: AttributeType.Number,
     },
+  };
+
+  public static defaultProperties: Specification.AttributeMap = {
+    exposed: true,
+    autoDomainMin: true,
+    autoDomainMax: true,
   };
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
@@ -214,6 +222,8 @@ export class CategoricalScaleColor extends ScaleClass<
     const values = column.filter((x) => x != null).map((x) => x.toString());
     s.inferParameters(values, OrderMode.order);
 
+    props.autoDomainMin = true;
+    props.autoDomainMax = true;
     // If we shouldn't reuse the range, then reset the mapping
     if (!options.reuseRange) {
       props.mapping = null;
@@ -287,6 +297,20 @@ export class CategoricalScaleColor extends ScaleClass<
       }
     }
     return [
+      manager.inputBoolean(
+        [
+          {
+            property: "autoDomainMin",
+          },
+          {
+            property: "autoDomainMax",
+          },
+        ],
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.autoUpdateValues,
+        }
+      ),
       manager.sectionHeader("Color Mapping"),
       manager.scrollList(
         keys.map((key) =>
@@ -310,7 +334,8 @@ export class CategoricalScaleColor extends ScaleClass<
               {
                 // label: key,
                 noDefaultMargin: true,
-                key: key,
+                stopPropagation: true,
+                labelKey: key,
                 width: 100,
                 underline: true
               }

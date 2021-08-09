@@ -32,6 +32,7 @@ export interface InputColorProps {
   labelKey?: string; //key for color picker
   width?: number;
   underline?: boolean;
+  stopPropagation?: boolean;
 }
 
 export class FluentInputColor extends React.Component<
@@ -81,6 +82,11 @@ export class FluentInputColor extends React.Component<
                 return false;
               }
               return this.props.onEnter(color);
+            }}
+            onKeyDown={(e) => {
+              if (this.props.stopPropagation) {
+                e.stopPropagation();
+              }
             }}
             styles={{fieldGroup: {width: this.props.width}}}
             underlined={this.props.underline ?? false}
