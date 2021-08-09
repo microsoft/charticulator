@@ -162,7 +162,9 @@ export class FluentUIWidgetManager
         document
           .querySelectorAll(".ms-GroupHeader-expand")
           .forEach((expand: HTMLButtonElement) => {
-            expand.click();
+            if (expand.querySelector("i").classList.contains("is-collapsed")) {
+              expand.click();
+            }
           });
         this.store.dispatcher.dispatch(new Actions.FocusToMarkAttribute(null));
       }, 0);

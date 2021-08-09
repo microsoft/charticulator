@@ -29,6 +29,7 @@ export interface InputColorProps {
   onEnter: (value: Color) => boolean;
   store?: AppStore;
   noDefaultMargin?: boolean;
+  stopPropagation?: boolean;
 }
 
 export class FluentInputColor extends React.Component<
@@ -67,6 +68,11 @@ export class FluentInputColor extends React.Component<
                 return false;
               }
               return this.props.onEnter(color);
+            }}
+            onKeyDown={(e) => {
+              if (this.props.stopPropagation) {
+                e.stopPropagation();
+              }
             }}
           />
         </FluentTextField>
