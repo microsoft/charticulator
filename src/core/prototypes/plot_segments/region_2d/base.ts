@@ -513,23 +513,6 @@ export class Region2DConstraintBuilder {
         const rowContext = table.getGroupedContext(dataIndices[index]);
         const value = expr.getNumberValue(rowContext);
         const t = interp(value);
-
-        if (data.categories) {
-          solver.addLinear(
-            ConstraintStrength.HARD,
-            0,
-            [
-              [-1, x1],
-              [1, x2],
-            ],
-            [
-              [
-                data.categories?.length,
-                solver.attr(markState.attributes, "width"),
-              ],
-            ]
-          );
-        }
         solver.addLinear(
           ConstraintStrength.HARD,
           (1 - t) * props.marginX1 - t * props.marginX2,
