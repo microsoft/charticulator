@@ -29,6 +29,9 @@ export interface InputColorProps {
   onEnter: (value: Color) => boolean;
   store?: AppStore;
   noDefaultMargin?: boolean;
+  labelKey?: string; //key for color picker
+  width?: number;
+  underline?: boolean;
 }
 
 export class FluentInputColor extends React.Component<
@@ -47,6 +50,17 @@ export class FluentInputColor extends React.Component<
     }
     return (
       <span className="charticulator__widget-control-input-color">
+        <span
+          className="el-color-display"
+          style={{
+            backgroundColor: hex == "" ? "transparent" : hex,
+            marginTop: this.props.noDefaultMargin ? 5 : null,
+          }}
+          id={this.props.labelKey}
+          onClick={() => {
+            this.setState({ open: !this.state.open });
+          }}
+        />
         <FluentTextField>
           <TextField
             label={this.props.label}
@@ -68,21 +82,12 @@ export class FluentInputColor extends React.Component<
               }
               return this.props.onEnter(color);
             }}
+            styles={{fieldGroup: {width: this.props.width}}}
+            underlined={this.props.underline ?? false}
           />
         </FluentTextField>
-        <span
-          className="el-color-display"
-          style={{
-            backgroundColor: hex == "" ? "transparent" : hex,
-            marginTop: this.props.noDefaultMargin ? 5 : null,
-          }}
-          id={this.props.label}
-          onClick={() => {
-            this.setState({ open: !this.state.open });
-          }}
-        />
         {this.state.open && (
-          <Callout target={`#${this.props.label}`}>
+          <Callout target={`#${this.props.labelKey}`}>
             <ColorPicker
               store={this.props.store}
               allowNull={true}

@@ -5,6 +5,7 @@ import { DataMappingHints } from ".";
 import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
+import { CSSProperties } from "react";
 
 export type Widget = any;
 
@@ -49,6 +50,12 @@ export interface InputTextOptions {
   label?: string;
   placeholder?: string;
   tooltip?: string;
+  updateProperty?: boolean;
+  value?: string;
+  underline?: boolean;
+  borderless?: boolean;
+  styles?: CSSProperties;
+  emitMappingAction?: boolean;
 }
 
 export interface InputBooleanOptions {
@@ -131,6 +138,9 @@ export interface InputColorOptions {
   allowNull?: boolean;
   label?: string;
   noDefaultMargin?: boolean;
+  key?: string;
+  width?: number;
+  underline?: boolean;
 }
 
 // eslint-disable-next-line

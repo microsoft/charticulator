@@ -162,6 +162,7 @@ export class AppStore extends BaseStore {
 
   public currentSelection: Selection;
   public currentAttributeFocus: string;
+  public currentMappingAttributeFocus: string;
   public currentGlyph: Specification.Glyph;
   protected selectedGlyphIndex: { [id: string]: number } = {};
   protected localeFileFormat: LocaleFileFormat = {

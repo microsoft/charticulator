@@ -150,7 +150,7 @@ export class CategoricalScaleNumber extends ScaleClass<
           manager.horizontal(
             [2, 3],
             manager.text(key, "right"),
-            manager.inputNumber({ property: "mapping", field: key })
+            manager.inputNumber({property: "mapping", field: key})
           )
         )
       ),
@@ -291,8 +291,16 @@ export class CategoricalScaleColor extends ScaleClass<
       manager.scrollList(
         keys.map((key) =>
           manager.horizontal(
-            [2, 3],
-            manager.label(key),
+            [1, 0],
+            manager.inputText({property: "mapping"}, {
+              updateProperty: true,
+              value: key,
+              underline: true,
+              styles: {
+                textAlign: "right"
+              },
+              emitMappingAction: true
+            }),
             manager.inputColor(
               {
                 property: "mapping",
@@ -302,6 +310,9 @@ export class CategoricalScaleColor extends ScaleClass<
               {
                 // label: key,
                 noDefaultMargin: true,
+                key: key,
+                width: 100,
+                underline: true
               }
             )
           )
@@ -401,9 +412,16 @@ export class CategoricalScaleEnum extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.text(key, "right"),
+            manager.inputText({property: "mapping"}, {
+              updateProperty: true,
+              value: key,
+              underline: true,
+              styles: {
+                textAlign: "right"
+              }
+            }),
             manager.inputComboBox(
-              { property: "mapping", field: key },
+              {property: "mapping", field: key},
               {
                 defaultRange: props.defaultRange,
                 valuesOnly: false,
@@ -563,10 +581,14 @@ export class CategoricalScaleImage extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.tooltip(
-              manager.text(key, "right"),
-              manager.text(key, "right")
-            ),
+            manager.inputText({property: "mapping"}, {
+              updateProperty: true,
+              value: key,
+              underline: true,
+              styles: {
+                textAlign: "right"
+              }
+            }),
             manager.inputImageProperty({ property: "mapping", field: key }),
             manager.clearButton({ property: "mapping", field: key }, "", true)
           )

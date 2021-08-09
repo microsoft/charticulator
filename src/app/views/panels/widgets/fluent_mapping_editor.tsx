@@ -390,10 +390,15 @@ export class FluentMappingEditor extends React.Component<
                         );
                         this.openEditor(currentMapping, false);
                       },
+                      shouldFocusOnContainer: true,
+                      shouldFocusOnMount: true
                     }}
                     text={scaleMapping.expression}
                     iconProps={{
                       iconName: "ColumnFunction",
+                    }}
+                    onKeyPress={() => {
+                      console.log("down")
                     }}
                   />
                 </FluentActionButton>
