@@ -376,6 +376,8 @@ export const strings = {
       direction: "Direction",
       count: "Count",
       dataExpressions: "Data Expressions",
+      lineColor: "Line Color",
+      tickColor: "Tick Color",
     },
     plotSegment: {
       subLayout: "Sub-layout",

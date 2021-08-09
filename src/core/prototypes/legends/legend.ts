@@ -209,7 +209,10 @@ export abstract class LegendClass extends ChartElementClass {
           ),
           manager.inputColor(
             { property: "textColor" },
-            { label: strings.objects.color }
+            {
+              label: strings.objects.color,
+              labelKey: strings.objects.color,
+            }
           ),
           manager.inputSelect(
             { property: "markerShape" },

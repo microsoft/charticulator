@@ -1050,7 +1050,8 @@ export function buildAxisAppearanceWidgets(
                 field: ["style", "lineColor"],
               },
               {
-                label: "Line Color",
+                label: strings.objects.axes.lineColor,
+                labelKey: strings.objects.axes.lineColor,
               }
             ),
             manager.inputColor(
@@ -1059,7 +1060,8 @@ export function buildAxisAppearanceWidgets(
                 field: ["style", "tickColor"],
               },
               {
-                label: "Tick Color",
+                label: strings.objects.axes.tickColor,
+                labelKey: strings.objects.axes.tickColor,
               }
             ),
             manager.inputNumber(
