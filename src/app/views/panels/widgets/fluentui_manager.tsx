@@ -16,7 +16,6 @@ import {
   Point,
   Prototypes,
   Specification,
-  uniqueID,
   refineColumnName,
   getById,
 } from "../../../../core";
@@ -36,10 +35,7 @@ import {
   showOpenFileDialog,
   readFileAsString,
 } from "../../../utils/index";
-import {
-  DataFieldSelector,
-  DataFieldSelectorValue,
-} from "../../dataset/data_field_selector";
+import { DataFieldSelectorValue } from "../../dataset/data_field_selector";
 import { ReorderListView } from "../object_list_editor";
 import {
   Button,
@@ -776,8 +772,6 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.OrderWidgetOptions
   ) {
-    let ref: DropZoneView;
-
     const onClick = (value: DataFieldSelectorValue) => {
       if (value != null) {
         this.emitSetProperty(property, {
