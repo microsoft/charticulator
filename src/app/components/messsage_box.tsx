@@ -79,7 +79,7 @@ export class MessagePanel extends ContextedComponent<
                   }}
                 >
                   <span className="el-text">{message}</span>
-                  <SVGImageIcon url={R.getSVGIcon("general/cross")} />
+                  <SVGImageIcon url={R.getSVGIcon("ChromeClose")} />
                 </div>
               </div>
             );

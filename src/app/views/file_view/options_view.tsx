@@ -5,6 +5,8 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
+import { useContext } from "react";
+
 import {
   defaultCurrency,
   defaultDigitsGroup,
@@ -13,7 +15,7 @@ import {
 } from "../../../core/common";
 import { LocaleFileFormat } from "../../../core/dataset/dsv_parser";
 import { strings } from "../../../strings";
-import { MainContext } from "../../context_component";
+import { MainReactContext } from "../../context_component";
 import { LocalStorageKeys } from "../../globals";
 import { AppStore } from "../../stores";
 import { useLocalStorage } from "../../utils/hooks";
@@ -23,9 +25,9 @@ export interface FileViewOptionsProps {
 }
 
 // eslint-disable-next-line
-const FileViewOptionsView: React.FC<FileViewOptionsProps & MainContext> = ({
-  store,
-}) => {
+export const FileViewOptionsView: React.FC<FileViewOptionsProps> = () => {
+  const { store } = useContext(MainReactContext);
+
   const localeFileFormat: LocaleFileFormat = store.getLocaleFileFormat();
 
   const [numberFormatRemove, setNumberFormatRemove] = useLocalStorage<string>(
@@ -175,7 +177,7 @@ export class FileViewOptions extends React.Component<
     return (
       <FileViewOptionsView
         onClose={this.props.onClose}
-        store={this.props.store}
+        // store={this.props.store}
       />
     );
   }

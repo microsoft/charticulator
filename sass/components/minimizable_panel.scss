@@ -95,7 +95,7 @@
   border: 1px solid $gray-100;
   border-radius: 2px;
   box-sizing: border-box;
-  background: $theme-secondary-background;
+  background: $white;
   position: absolute;
   width: 322px;
   left: 100px;
@@ -132,13 +132,9 @@
 
     $header-height: 28px;
 
-    background-color: $gray-225;
+    background-color: $gray-230;
 
-    @include shadow-ambient;
-
-    // border-top: 1px solid $gray-160;
-    // border-bottom: 1px solid $gray-160;
-    color: $gray-100;
+    color: $gray-000;
     height: $header-height;
     line-height: $header-height;
     font-size: 16px;

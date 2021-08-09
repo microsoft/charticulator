@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 /* eslint-disable max-lines-per-function */
@@ -37,10 +38,14 @@ import { MainTabs } from "./views/file_view";
 import { makeDefaultDataset } from "./default_dataset";
 import { strings } from "../strings";
 import { LocalStorageKeys } from "./globals";
+
+// Also available from @uifabric/icons (7 and earlier) and @fluentui/font-icons-mdl2 (8+)
+import { initializeIcons } from "../fabric-icons/src/index";
+initializeIcons();
+import { defaultVersionOfTemplate } from "./stores/defaults";
 import { MenuBarHandlers, MenubarTabButton } from "./views/menubar";
 import { TelemetryRecorder } from "./components";
 import { AttributeMap, MappingType } from "../core/specification";
-import { defaultVersionOfTemplate } from "./stores/defaults";
 import { NestedChartEditorOptions } from "../core/prototypes/controls";
 import { EditorType } from "./stores/app_store";
 import { LocalizationConfig } from "../container/container";

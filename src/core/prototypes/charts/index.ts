@@ -518,30 +518,31 @@ export class RectangleChart extends ChartClass {
       manager.mappingEditor(strings.margins.top, "marginTop", {}),
       manager.mappingEditor(strings.margins.bottom, "marginBottom", {}),
       manager.sectionHeader(strings.objects.background),
-      manager.row(
-        strings.objects.color,
-        manager.inputColor({ property: "backgroundColor" }, { allowNull: true })
+      manager.inputColor(
+        { property: "backgroundColor" },
+        { allowNull: true, label: strings.objects.color }
       ),
       manager.sectionHeader(strings.objects.interactivity),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableContextMenu" },
-          {
-            type: "checkbox",
-            label: strings.objects.contextMenu,
-          }
-        )
+      manager.inputBoolean(
+        { property: "enableContextMenu" },
+        {
+          type: "checkbox",
+          label: strings.objects.contextMenu,
+        }
       ),
     ];
     if (this.object.properties.backgroundColor != null) {
       result.push(
-        manager.row(
-          strings.objects.opacity,
-          manager.inputNumber(
-            { property: "backgroundOpacity" },
-            { showSlider: true, sliderRange: [0, 1] }
-          )
+        manager.inputNumber(
+          { property: "backgroundOpacity" },
+          {
+            showSlider: true,
+            sliderRange: [0, 1],
+            label: strings.objects.opacity,
+            updownTick: 0.1,
+            percentage: true,
+            step: 0.1,
+          }
         )
       );
     }

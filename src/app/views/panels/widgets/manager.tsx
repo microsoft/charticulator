@@ -57,7 +57,6 @@ import { FilterEditor } from "./filter_editor";
 import { MappingEditor } from "./mapping_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
-  applyDateFormat,
   ChartTemplate,
   getFormat,
   getSortFunctionByData,
@@ -75,6 +74,11 @@ import {
 } from "../../../../core/dataset/datetime";
 import { AttributeMap, ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
+import {
+  InputComboboxOptions,
+  InputFontComboboxOptions,
+  InputTextOptions,
+} from "../../../../core/prototypes/controls";
 import { strings } from "../../../../strings";
 import { InputFormat } from "./controls/input_format";
 import { OpenNestedEditor } from "../../../actions/actions";
@@ -94,11 +98,33 @@ export type OnSetPropertyHandler = (
   value: Specification.AttributeValue
 ) => void;
 
-export class WidgetManager implements Prototypes.Controls.WidgetManager {
+export interface CharticulatorPropertyAccessors {
+  emitSetProperty: (
+    property: Prototypes.Controls.Property,
+    value: Specification.AttributeValue
+  ) => void;
+  store: AppStore;
+
+  getAttributeMapping: (attribute: string) => Specification.Mapping;
+  onEditMappingHandler: OnEditMappingHandler;
+  onMapDataHandler: OnMapDataHandler;
+}
+
+export class WidgetManager
+  implements Prototypes.Controls.WidgetManager, CharticulatorPropertyAccessors {
   constructor(
     public store: AppStore,
     public objectClass: Prototypes.ObjectClass
   ) {}
+
+  public tooltip(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    widget: JSX.Element,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tooltipContent: JSX.Element
+  ): JSX.Element {
+    throw new Error("Method not implemented.");
+  }
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
@@ -272,12 +298,12 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public inputText(
     property: Prototypes.Controls.Property,
-    placeholder?: string
+    options: InputTextOptions
   ) {
     return (
       <InputText
         defaultValue={this.getPropertyValue(property) as string}
-        placeholder={placeholder}
+        placeholder={options.placeholder}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
@@ -286,9 +312,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public inputFontFamily(property: Prototypes.Controls.Property) {
+  public inputFontFamily(
+    property: Prototypes.Controls.Property,
+    options: InputFontComboboxOptions
+  ) {
     return (
       <ComboBoxFontFamily
+        label={options.label}
         defaultValue={this.getPropertyValue(property) as string}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
@@ -300,14 +330,13 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public inputComboBox(
     property: Prototypes.Controls.Property,
-    values: string[],
-    valuesOnly: boolean = false
+    options: InputComboboxOptions
   ) {
     return (
       <ComboBox
         defaultValue={this.getPropertyValue(property) as string}
-        options={values}
-        optionsOnly={valuesOnly}
+        options={options.defaultRange}
+        optionsOnly={options.valuesOnly}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
@@ -430,17 +459,10 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     return (
       <InputFormat
         defaultValue={this.getPropertyValue(property) as string}
-        validate={(value) => {
+        validate={(value: string) => {
           if (value && value.trim() !== "") {
             try {
-              if (options.isDateField) {
-                applyDateFormat(
-                  new Date(),
-                  value?.replace(tickFormatParserExpression(), "$1")
-                );
-              } else {
-                getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
-              }
+              getFormat()(value?.replace(tickFormatParserExpression(), "$1"));
               return {
                 pass: true,
                 formatted: value,
@@ -457,7 +479,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           };
         }}
         placeholder={options.blank || strings.core.none}
-        onEnter={(value) => {
+        onEnter={(value: string) => {
           if (!value || value.trim() == "") {
             this.emitSetProperty(property, null);
           } else {
@@ -663,7 +685,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
           <>
             <div title={options.tooltip}>
               <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-              <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+              <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
             </div>
             <span className="el-text">
               {(this.getPropertyValue(property) as AttributeMap)?.expression ||
@@ -673,7 +695,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
         ) : (
           <div title={options.tooltip}>
             <SVGImageIcon url={R.getSVGIcon("general/sort")} />
-            <SVGImageIcon url={R.getSVGIcon("general/chevron-down")} />
+            <SVGImageIcon url={R.getSVGIcon("ChevronDown")} />
           </div>
         )}
       </DropZoneView>
@@ -682,7 +704,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
 
   public reorderWidget(
     property: Prototypes.Controls.Property,
-    allowReset: boolean
+    options: Prototypes.Controls.ReOrderWidgetOptions = {}
   ): JSX.Element {
     let container: HTMLSpanElement;
     return (
@@ -759,7 +781,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                         );
                         return categories;
                       }}
-                      allowReset={allowReset}
+                      {...options}
                     />
                   </PopupView>
                 );
@@ -814,7 +836,7 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
                 {options.allowDelete ? (
                   <span className="charticulator__widget-array-view-control">
                     <Button
-                      icon="general/cross"
+                      icon="ChromeClose"
                       onClick={() => {
                         items.splice(index, 1);
                         this.emitSetProperty(property, items);
@@ -984,10 +1006,6 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
     );
   }
 
-  public detailsButton(...widgets: JSX.Element[]): JSX.Element {
-    return <DetailsButton widgets={widgets} manager={this} />;
-  }
-
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
@@ -1137,6 +1155,21 @@ export class WidgetManager implements Prototypes.Controls.WidgetManager {
   }
 
   public vertical(...widgets: JSX.Element[]) {
+    return (
+      <div className="charticulator__widget-vertical">
+        {widgets.map((x, id) => (
+          <span className="el-layout-item" key={id}>
+            {x}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  public verticalGroup(
+    options: Prototypes.Controls.VerticalGroupOptions,
+    widgets: JSX.Element[]
+  ) {
     return (
       <div className="charticulator__widget-vertical">
         {widgets.map((x, id) => (
@@ -1329,7 +1362,7 @@ export class ReorderStringsValue extends React.Component<
         </div>
         <div className="el-row">
           <Button
-            icon={"general/order-reversed"}
+            icon={"Sort"}
             text="Reverse"
             onClick={() => {
               this.setState({ items: this.state.items.reverse() });
@@ -1371,60 +1404,6 @@ export class ReorderStringsValue extends React.Component<
             }}
           />
         </div>
-      </div>
-    );
-  }
-}
-
-export class DetailsButton extends React.Component<
-  {
-    widgets: JSX.Element[];
-    manager: WidgetManager;
-  },
-  {}
-> {
-  public inner: DetailsButtonInner;
-  public componentDidUpdate() {
-    if (this.inner) {
-      this.inner.forceUpdate();
-    }
-  }
-
-  public render() {
-    let btn: Element;
-    return (
-      <Button
-        icon={"general/more-horizontal"}
-        ref={(e) => (btn = ReactDOM.findDOMNode(e) as Element)}
-        onClick={() => {
-          globals.popupController.popupAt(
-            (context) => {
-              return (
-                <PopupView context={context}>
-                  <DetailsButtonInner
-                    parent={this}
-                    ref={(e) => (this.inner = e)}
-                  />
-                </PopupView>
-              );
-            },
-            { anchor: btn, alignX: getAligntment(btn).alignX }
-          );
-        }}
-      />
-    );
-  }
-}
-
-export class DetailsButtonInner extends React.Component<
-  { parent: DetailsButton },
-  {}
-> {
-  public render() {
-    const parent = this.props.parent;
-    return (
-      <div className="charticulator__widget-popup-details">
-        {parent.props.manager.vertical(...parent.props.widgets)}
       </div>
     );
   }

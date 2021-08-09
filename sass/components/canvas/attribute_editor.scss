@@ -20,12 +20,12 @@
     font-size: 14px;
     line-height: 24px;
     padding-bottom: 4px;
+    margin-top: 1px;
     margin-bottom: 0px;
-    border-bottom: 1px solid $gray-180;
+    border-bottom: 0px solid $gray-180;
     color: $black;
 
     .svg-image-icon {
-      padding: 2px;
       width: 20px;
       height: 20px;
       vertical-align: top;
@@ -341,10 +341,6 @@
       }
     }
   }
-
-  .is-active {
-    background: $gray-230;
-  }
 }
 
 .slider-control {
@@ -551,6 +547,7 @@
 
   &__widget {
     $line-height: 24px;
+    $line-header-height: 30px;
 
     // Vertical layout
     &-vertical {
@@ -674,6 +671,35 @@
       }
     }
 
+    &-row-fluentui {
+      display: flex;
+      flex-direction: column;
+      margin: 2px 0;
+
+      &-label {
+        word-break: keep-all;
+        white-space: nowrap;
+        font-size: 12px;
+        width: 70px;
+        flex: 0 0;
+        flex-basis: 70px;
+        line-height: $line-height;
+        text-align: right;
+        padding-right: 4px;
+        margin-right: 4px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        color: $gray-100;
+        transition: background-color $transition-default;
+      }
+
+      &-widget {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
     &-grid {
       display: flex;
       flex-direction: row;
@@ -681,6 +707,7 @@
 
     &-array-view {
       &-item {
+        margin: 2px;
         display: flex;
       }
 
@@ -723,8 +750,8 @@
     &-section-header {
       color: $gray-100;
       font-size: 12px;
-      height: $line-height;
-      line-height: $line-height;
+      height: $line-header-height;
+      line-height: $line-header-height;
       display: flex;
       flex-direction: row;
       margin: 2px 0;
@@ -853,6 +880,7 @@
           background: none;
           font-size: 14px;
 
+          margin-right: 5px;
           @include font-mono;
 
           height: $line-height;
@@ -997,6 +1025,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        margin-left: 1px;
 
         .el-color-display {
           cursor: pointer;
@@ -1006,8 +1035,9 @@
           width: $line-height - 4px;
           height: $line-height - 4px;
           vertical-align: top;
-          margin: 1px;
+          margin: 5px;
           margin-right: 8px;
+          margin-top: 28px;
           border: 1px solid $gray-080;
         }
       }
@@ -1016,9 +1046,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
-        cursor: pointer;
         border-radius: 2px;
-        height: $line-height;
         line-height: $line-height;
         overflow: hidden;
 
@@ -1062,8 +1090,6 @@
         }
 
         &:hover {
-          background: $color-primary;
-
           .el-image {
             border: 1px solid $color-primary-dark;
           }
@@ -1078,7 +1104,14 @@
           width: 100%;
           border: 1px solid $color-active;
           padding-left: 4px;
+          padding-top: 4px;
           background: lighten($color-active, 30%);
+          height: 26px;
+
+          &-attrubutes {
+            @extend .el-drag-over;
+            width: auto;
+          }
         }
       }
 
@@ -1267,6 +1300,7 @@
       &-slider {
         cursor: default;
         height: $line-height;
+        width: 100%;
 
         svg {
           pointer-events: all;
@@ -1638,19 +1672,16 @@
           background: $color-active;
           height: 100%;
 
-          & > * {
-            display: none;
-          }
-
           &:after {
             display: block;
             position: absolute;
+            right: 10px;
             left: 0;
             top: 0;
-            height: $line-height;
-            line-height: $line-height;
             padding-left: 4px;
+            padding-top: 4px;
             content: "Drop here to map data";
+            text-align: end;
             color: white;
           }
         }
@@ -1680,11 +1711,11 @@
             border-radius: 2px;
             flex-shrink: 0;
             display: inline-block;
-            width: $line-height - 4px;
-            height: $line-height - 4px;
+            width: $line-height;
+            height: $line-height;
             vertical-align: top;
-            margin: 1px;
-            margin-right: 8px;
+            margin-top: 26px;
+            margin-left: 8px;
             border: 1px solid $gray-200;
           }
         }

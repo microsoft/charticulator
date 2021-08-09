@@ -123,7 +123,7 @@ export abstract class LinksClass extends ChartElementClass {
   public readonly state: Specification.ObjectState;
 
   public static metadata: ObjectClassMetadata = {
-    iconPath: "link/tool",
+    iconPath: "CharticulatorLine",
   };
 
   public attributeNames: string[] = ["color", "opacity"];
@@ -651,52 +651,41 @@ export abstract class LinksClass extends ChartElementClass {
   ): Controls.Widget[] {
     const props = this.object.properties;
     const widgets = [
-      manager.sectionHeader(strings.objects.links.lineType),
-      manager.row(
-        strings.objects.links.type,
-        manager.inputSelect(
-          { property: "interpolationType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["line", "bezier", "circle"],
-            labels: [
-              strings.objects.links.line,
-              strings.objects.links.bezier,
-              strings.objects.links.arc,
-            ],
-          }
-        )
+      manager.inputSelect(
+        { property: "interpolationType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["line", "bezier", "circle"],
+          labels: [
+            strings.objects.links.line,
+            strings.objects.links.bezier,
+            strings.objects.links.arc,
+          ],
+          label: strings.objects.links.type,
+        }
       ),
-      manager.row(
-        strings.objects.links.linkMarkType,
-        manager.inputSelect(
-          { property: "linkMarkType" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            options: ["", "8", "1 10"],
-            labels: [
-              strings.objects.links.solid,
-              strings.objects.links.dashed,
-              strings.objects.links.dotted,
-            ],
-          }
-        )
+      manager.inputSelect(
+        { property: "linkMarkType" },
+        {
+          type: "dropdown",
+          showLabel: true,
+          options: ["", "8", "1 10"],
+          labels: ["Solid", "Dashed", "Dotted"],
+          label: strings.objects.links.linkMarkType,
+        }
       ),
     ];
     if (props.interpolationType == "bezier") {
       widgets.push(
-        manager.row(
-          strings.objects.links.curveness,
-          manager.inputNumber(
-            { property: "curveness" },
-            {
-              showSlider: true,
-              minimum: 0,
-              sliderRange: [0, 500],
-            }
-          )
+        manager.inputNumber(
+          { property: "curveness" },
+          {
+            showSlider: true,
+            minimum: 0,
+            sliderRange: [0, 500],
+            label: strings.objects.links.curveness,
+          }
         )
       );
     }
@@ -720,7 +709,7 @@ export abstract class LinksClass extends ChartElementClass {
       manager.mappingEditor(strings.objects.opacity, "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
         table: props.linkTable && props.linkTable.table,
       })
     );

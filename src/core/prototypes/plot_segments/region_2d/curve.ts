@@ -65,18 +65,18 @@ export interface CurveObject extends Specification.PlotSegment {
 }
 
 export const icons: Region2DConfigurationIcons = {
-  xMinIcon: "align/left",
-  xMiddleIcon: "align/x-middle",
-  xMaxIcon: "align/right",
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
+  xMaxIcon: "AlignHorizontalRight",
   yMiddleIcon: "align/y-middle",
-  yMinIcon: "align/bottom",
-  yMaxIcon: "align/top",
-  dodgeXIcon: "sublayout/dodge-x",
-  dodgeYIcon: "sublayout/dodge-y",
-  gridIcon: "sublayout/grid",
+  yMinIcon: "Bottom",
+  yMaxIcon: "Top",
+  dodgeXIcon: "HorizontalDistributeCenter",
+  dodgeYIcon: "VerticalDistributeCenter",
+  gridIcon: "GridViewSmall",
   packingIcon: "sublayout/packing",
   jitterIcon: "sublayout/jitter",
-  overlapIcon: "sublayout/overlap",
+  overlapIcon: "Stack",
 };
 
 export class CurvePlotSegment extends PlotSegmentClass<
@@ -582,22 +582,22 @@ export class CurvePlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      manager.sectionHeader("Curve Coordinates"),
-      manager.row(
-        "Normal",
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "normalStart" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "normalEnd" })
-        )
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.curveCoordinates,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.normal),
+            manager.horizontal(
+              [1, 0, 1],
+              manager.inputNumber({ property: "normalStart" }),
+              manager.label("-"),
+              manager.inputNumber({ property: "normalEnd" })
+            )
+          ),
+        ]
       ),
-      // manager.row("Radius", manager.horizontal([0, 1, 0, 1],
-      //     manager.label("Inner:"),
-      //     manager.inputNumber({ property: "innerRatio" }),
-      //     manager.label("Outer:"),
-      //     manager.inputNumber({ property: "outerRatio" })
-      // )),
       ...builder.buildPanelWidgets(manager),
     ];
   }

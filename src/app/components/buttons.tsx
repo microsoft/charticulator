@@ -8,6 +8,8 @@ import { SVGImageIcon } from "./icons";
 
 import * as R from "../resources";
 import { strings } from "../../strings";
+import { CommandBarButton } from "@fluentui/react";
+import { FluentButton } from "../views/panels/widgets/controls/fluentui_customized_components";
 
 export interface ToolButtonProps {
   icon?: string;
@@ -97,6 +99,70 @@ export class ToolButton extends React.Component<
             <span className="el-text">{this.props.text}</span>
           ) : null}
         </span>
+      );
+    }
+  }
+}
+
+export class FluentToolButton extends React.Component<
+  ToolButtonProps,
+  { dragging: boolean }
+> {
+  constructor(props: ToolButtonProps) {
+    super(props);
+    this.state = {
+      dragging: false,
+    };
+  }
+
+  public render() {
+    const onClick = () => {
+      if (this.props.onClick) {
+        this.props.onClick();
+      }
+    };
+
+    if (this.props.dragData) {
+      return (
+        <DraggableElement
+          dragData={this.props.dragData}
+          onDragStart={() => this.setState({ dragging: true })}
+          onDragEnd={() => this.setState({ dragging: false })}
+          renderDragElement={() => {
+            return [
+              <SVGImageIcon url={this.props.icon} width={32} height={32} />,
+              { x: -16, y: -16 },
+            ];
+          }}
+        >
+          <FluentButton marginTop={"0px"}>
+            <CommandBarButton
+              onClick={onClick}
+              checked={this.props.active || this.state.dragging}
+              disabled={this.props.disabled}
+              text={this.props.text}
+              title={this.props.title}
+              iconProps={{
+                iconName: this.props.icon,
+              }}
+            />
+          </FluentButton>
+        </DraggableElement>
+      );
+    } else {
+      return (
+        <FluentButton marginTop={"0px"}>
+          <CommandBarButton
+            onClick={onClick}
+            checked={this.props.active}
+            disabled={this.props.disabled}
+            text={this.props.text}
+            title={this.props.title}
+            iconProps={{
+              iconName: this.props.icon,
+            }}
+          />
+        </FluentButton>
       );
     }
   }

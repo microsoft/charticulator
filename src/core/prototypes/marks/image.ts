@@ -44,7 +44,7 @@ export class ImageElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Image",
-    iconPath: "mark/image",
+    iconPath: "FileImage",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -96,76 +96,101 @@ export class ImageElementClass extends EmphasizableMarkClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     const parentWidgets = super.getAttributePanelWidgets(manager);
-    let widgets: Controls.Widget[] = [
-      manager.sectionHeader(strings.objects.size),
-      manager.mappingEditor(strings.objects.width, "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor(strings.objects.height, "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.sectionHeader(strings.toolbar.image),
-      manager.mappingEditor(strings.objects.icon.image, "image", {}),
-      manager.row(
-        strings.objects.image.imageMode,
-        manager.inputSelect(
-          { property: "imageMode" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            labels: [
-              strings.objects.image.letterbox,
-              strings.objects.image.stretch,
-            ],
-            options: ["letterbox", "stretch"],
-          }
-        )
+    const widgets: Controls.Widget[] = [
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.mappingEditor(strings.objects.width, "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(strings.objects.height, "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
       ),
-      ...(this.object.properties.imageMode == "letterbox"
-        ? [
-            manager.row(
-              strings.alignment.align,
-              manager.horizontal(
-                [0, 1],
-                manager.inputSelect(
-                  { property: "alignX" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/left", "align/x-middle", "align/right"],
-                    labels: [
-                      strings.alignment.left,
-                      strings.alignment.middle,
-                      strings.alignment.right,
-                    ],
-                  }
+      // manager.sectionHeader(strings.objects.size),
+      manager.verticalGroup(
+        {
+          header: strings.toolbar.image,
+        },
+        [
+          manager.mappingEditor(strings.objects.icon.image, "image", {}),
+          manager.inputSelect(
+            { property: "imageMode" },
+            {
+              type: "dropdown",
+              showLabel: true,
+              labels: [
+                strings.objects.image.letterbox,
+                strings.objects.image.stretch,
+              ],
+              options: ["letterbox", "stretch"],
+              label: strings.objects.image.imageMode,
+            }
+          ),
+          ...(this.object.properties.imageMode == "letterbox"
+            ? [
+                manager.label(strings.alignment.align),
+                manager.horizontal(
+                  [0, 1],
+                  manager.inputSelect(
+                    { property: "alignX" },
+                    {
+                      type: "radio",
+                      options: ["start", "middle", "end"],
+                      icons: [
+                        "AlignHorizontalLeft",
+                        "AlignHorizontalCenter",
+                        "AlignHorizontalRight",
+                      ],
+                      labels: [
+                        strings.alignment.left,
+                        strings.alignment.middle,
+                        strings.alignment.right,
+                      ],
+                    }
+                  ),
+                  manager.inputSelect(
+                    { property: "alignY" },
+                    {
+                      type: "radio",
+                      options: ["start", "middle", "end"],
+                      icons: [
+                        "AlignVerticalBottom",
+                        "AlignVerticalCenter",
+                        "AlignVerticalTop",
+                      ],
+                      labels: [
+                        strings.alignment.bottom,
+                        strings.alignment.middle,
+                        strings.alignment.top,
+                      ],
+                    }
+                  )
                 ),
-                manager.inputSelect(
-                  { property: "alignY" },
-                  {
-                    type: "radio",
-                    options: ["start", "middle", "end"],
-                    icons: ["align/bottom", "align/y-middle", "align/top"],
-                    labels: [
-                      strings.alignment.bottom,
-                      strings.alignment.middle,
-                      strings.alignment.top,
-                    ],
-                  }
-                )
-              )
-            ),
-          ]
-        : []),
-      manager.row(
-        strings.alignment.padding,
-        manager.horizontal(
-          [0, 2, 0, 2],
-          manager.label("x:"),
+              ]
+            : []),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.alignment.padding,
+        },
+        [
+          manager.label(strings.coordinateSystem.x),
           manager.inputNumber(
             { property: "paddingX" },
             {
@@ -173,39 +198,46 @@ export class ImageElementClass extends EmphasizableMarkClass<
               showUpdown: true,
             }
           ),
-          manager.label("y:"),
+          manager.label(strings.coordinateSystem.y),
           manager.inputNumber(
             { property: "paddingY" },
             {
               updownTick: 1,
               showUpdown: true,
             }
-          )
-        )
+          ),
+        ]
       ),
-      manager.sectionHeader(strings.objects.style),
-      manager.mappingEditor(strings.objects.fill, "fill", {}),
-      manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor(strings.objects.fill, "fill", {}),
+          manager.mappingEditor(strings.objects.stroke, "stroke", {}),
+          this.object.mappings.stroke != null
+            ? manager.mappingEditor(
+                strings.objects.strokeWidth,
+                "strokeWidth",
+                {
+                  hints: { rangeNumber: [0, 5] },
+                  defaultValue: 1,
+                  numberOptions: {
+                    showSlider: true,
+                    sliderRange: [0, 5],
+                    minimum: 0,
+                  },
+                }
+              )
+            : null,
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
+      ),
     ];
-    if (this.object.mappings.stroke != null) {
-      widgets.push(
-        manager.mappingEditor(strings.objects.strokeWidth, "strokeWidth", {
-          hints: { rangeNumber: [0, 5] },
-          defaultValue: 1,
-          numberOptions: { showSlider: true, sliderRange: [0, 5], minimum: 0 },
-        })
-      );
-    }
-    widgets = widgets.concat([
-      manager.mappingEditor(strings.objects.opacity, "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor(strings.objects.visibleOn.visibility, "visible", {
-        defaultValue: true,
-      }),
-    ]);
     return widgets.concat(parentWidgets);
   }
 

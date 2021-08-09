@@ -18,9 +18,10 @@ import {
 import { deepClone, EventSubscription } from "../../core";
 import { Actions } from "../actions";
 import { AppButton, MenuButton } from "../components";
-import { ContextedComponent, MainContext } from "../context_component";
+import { ContextedComponent, MainContextInterface } from "../context_component";
 import {
   ModalView,
+  PopupAlignment,
   PopupContainer,
   PopupController,
   PopupView,
@@ -117,7 +118,7 @@ export class HelpButton extends React.Component<
             },
             {
               anchor: ReactDOM.findDOMNode(this.refs.helpButton) as Element,
-              alignX: "end-inner",
+              alignX: PopupAlignment.EndInner,
             }
           );
         }}
@@ -159,7 +160,7 @@ export class MenuBar extends ContextedComponent<
   protected graphics: EventSubscription;
   private popupController: PopupController = new PopupController();
 
-  constructor(props: MenuBarProps, context: MainContext) {
+  constructor(props: MenuBarProps, context: MainContextInterface) {
     super(props, context);
     this.state = {
       showSaveDialog: false,
@@ -681,7 +682,7 @@ export class MenuBar extends ContextedComponent<
         {this.props.undoRedoLocation === UndoRedoLocation.MenuBar ? (
           <>
             <MenuButton
-              url={R.getSVGIcon("toolbar/undo")}
+              url={R.getSVGIcon("Undo")}
               title={strings.menuBar.undo}
               disabled={
                 this.context.store.historyManager.statesBefore.length === 0
@@ -691,7 +692,7 @@ export class MenuBar extends ContextedComponent<
               }
             />
             <MenuButton
-              url={R.getSVGIcon("toolbar/redo")}
+              url={R.getSVGIcon("Redo")}
               title={strings.menuBar.redo}
               disabled={
                 this.context.store.historyManager.statesAfter.length === 0

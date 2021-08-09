@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
@@ -6,9 +7,8 @@ import * as R from "../../resources";
 import { EventSubscription, Specification, Expression } from "../../../core";
 import { Actions } from "../../actions";
 import { ButtonRaised, EditableTextView } from "../../components";
-
 import { AppStore } from "../../stores";
-import { WidgetManager } from "./widgets/manager";
+import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
 import { FunctionCall, NumberValue } from "../../../core/expression";
 
 export interface ScaleValueSelectorProps {
@@ -55,7 +55,7 @@ export class ScaleValueSelector extends React.Component<
   public render() {
     const { scale, store, scaleMapping } = this.props;
     const scaleClass = store.chartManager.getClassById(scale._id);
-    const manager = new WidgetManager(this.props.store, scaleClass);
+    const manager = new FluentUIWidgetManager(this.props.store, scaleClass);
     manager.onEditMappingHandler = (
       attribute: string,
       mapping: Specification.Mapping
@@ -111,12 +111,19 @@ export class ScaleValueSelector extends React.Component<
                       >
                         {manager.horizontal(
                           [2, 3],
-                          manager.text(key, "right"),
-                          manager.inputColor({
-                            property: "mapping",
-                            field: key,
-                            noComputeLayout: true,
-                          })
+                          manager.label(key),
+                          manager.inputColor(
+                            {
+                              property: "mapping",
+                              field: key,
+                              noComputeLayout: true,
+                            },
+                            {
+                              // label: key,
+                              noDefaultMargin: true,
+                              stopPropagation: true,
+                            }
+                          )
                         )}
                       </div>
                     );
@@ -127,7 +134,7 @@ export class ScaleValueSelector extends React.Component<
             {canSelectValue ? (
               <div className="action-buttons">
                 <ButtonRaised
-                  url={R.getSVGIcon("legend/legend")}
+                  url={R.getSVGIcon("CharticulatorLegend")}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? "Remove Legend"

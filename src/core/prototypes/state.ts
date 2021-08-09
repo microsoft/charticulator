@@ -148,7 +148,6 @@ export class ChartStateManager {
     // if any object was added or removed to the chart it means chart has changes
     // don't need to compare in details
     if (chartElements.length != originElements.length) {
-      console.log("chartElements.length != originElements.length");
       return true;
     } else {
       for (let index = 0; index < chartElements.length; index++) {

@@ -166,31 +166,23 @@ export class CategoricalScaleNumber extends ScaleClass<
       manager.row(
         "",
         manager.vertical(
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto min value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMin",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMin",
+            },
+            {
+              type: "checkbox",
+              label: "Auto min value",
+            }
           ),
-          manager.horizontal(
-            [0, 1],
-            manager.label("Auto max value"),
-            null,
-            manager.inputBoolean(
-              {
-                property: "autoDomainMax",
-              },
-              {
-                type: "checkbox",
-              }
-            )
+          manager.inputBoolean(
+            {
+              property: "autoDomainMax",
+            },
+            {
+              type: "checkbox",
+              label: "Auto max value",
+            }
           )
         )
       ),
@@ -324,12 +316,20 @@ export class CategoricalScaleColor extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 3],
-            manager.text(key, "right"),
-            manager.inputColor({
-              property: "mapping",
-              field: key,
-              noComputeLayout: true,
-            })
+            manager.label(key),
+            manager.inputColor(
+              {
+                property: "mapping",
+                field: key,
+                noComputeLayout: true,
+              },
+              {
+                // label: key,
+                noDefaultMargin: true,
+                stopPropagation: true,
+                labelKey: key,
+              }
+            )
           )
         )
       ),
@@ -430,8 +430,10 @@ export class CategoricalScaleEnum extends ScaleClass<
             manager.text(key, "right"),
             manager.inputComboBox(
               { property: "mapping", field: key },
-              props.defaultRange,
-              false
+              {
+                defaultRange: props.defaultRange,
+                valuesOnly: false,
+              }
             )
           )
         )
@@ -587,9 +589,12 @@ export class CategoricalScaleImage extends ScaleClass<
         keys.map((key) =>
           manager.horizontal(
             [2, 5],
-            manager.text(key, "right"),
+            manager.tooltip(
+              manager.text(key, "right"),
+              manager.text(key, "right")
+            ),
             manager.inputImageProperty({ property: "mapping", field: key }),
-            manager.clearButton({ property: "mapping", field: key }, "")
+            manager.clearButton({ property: "mapping", field: key }, "", true)
           )
         )
       ),

@@ -102,7 +102,7 @@ export class InputImage extends ContextedComponent<
       });
     }
   };
-
+  
   public render() {
     const isNone = this.props.value == null;
     const image = isNone ? null : this.resolveImage(this.props.value);
@@ -133,7 +133,7 @@ export class InputImage extends ContextedComponent<
             <img
               key="image"
               className="el-image"
-              src={isNone ? R.getSVGIcon("mark/image") : image.src}
+              src={isNone ? R.getSVGIcon("FileImage") : image.src}
             />,
             <span key="text" className="el-text-wrapper">
               <span className="el-text">
@@ -399,7 +399,7 @@ export class InputImageProperty extends InputImage {
             <img
               key="image"
               className="el-image2"
-              src={isNone ? R.getSVGIcon("mark/image") : image.src}
+              src={isNone ? R.getSVGIcon("FileImage") : image.src}
             />,
             <ImageUploader
               key={0}

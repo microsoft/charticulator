@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as React from "react";
-import { ButtonFlat } from "./buttons";
-import * as R from "../resources";
+import {
+  FluentTextField,
+  labelRender,
+} from "../views/panels/widgets/controls/fluentui_customized_components";
+import { TextField } from "@fluentui/react";
 
 export interface EditableTextViewProps {
   text: string;
@@ -57,32 +60,26 @@ export class EditableTextView extends React.Component<
     });
   }
 
-  public componentDidMount() {
-    if (this.props.autofocus) {
-      this.refs.input.select();
-    }
-  }
-
-  public componentDidUpdate(
-    prevProps: EditableTextViewProps,
-    prevState: EditableTextViewState
-  ) {
-    if (prevState.editing == false && this.state.editing == true) {
-      this.refs.input.select();
-    }
-  }
-
   public render() {
-    if (this.state.editing) {
-      return (
-        <div className="editable-text-view editable-text-view-editing">
-          <input
-            type="text"
-            ref="input"
+    return (
+      <div>
+        <FluentTextField>
+          <TextField
             value={this.state.currentText}
-            onChange={() =>
-              this.setState({ currentText: this.refs.input.value })
-            }
+            onRenderLabel={labelRender}
+            type="text"
+            onChange={(event, newValue) => {
+              this.setState({ currentText: newValue });
+            }}
+            onBlur={() => {
+              if (this.state.currentText == this.props.text) {
+                this.cancelEdit();
+              } else {
+                this.setState({
+                  currentText: this.props.text,
+                });
+              }
+            }}
             onKeyDown={(e) => {
               if (e.key == "Enter") {
                 this.confirmEdit();
@@ -91,26 +88,15 @@ export class EditableTextView extends React.Component<
                 this.cancelEdit();
               }
             }}
-            autoFocus={true}
-            onBlur={() => {
-              if (this.state.currentText == this.props.text) {
-                this.cancelEdit();
-              }
+            autoFocus={false}
+            styles={{
+              fieldGroup: {
+                border: !this.state.editing && "none",
+              },
             }}
           />
-          <ButtonFlat
-            url={R.getSVGIcon("general/confirm")}
-            onClick={this.confirmEdit}
-            stopPropagation={true}
-          />
-        </div>
-      );
-    } else {
-      return (
-        <div className="editable-text-view" onClick={this.startEdit}>
-          <span className="text">{this.props.text}</span>
-        </div>
-      );
-    }
+        </FluentTextField>
+      </div>
+    );
   }
 }

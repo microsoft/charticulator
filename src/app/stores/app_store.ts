@@ -1092,7 +1092,7 @@ export class AppStore extends BaseStore {
     this.currentTool = null;
     this.currentToolOptions = null;
 
-    this.chart = createDefaultChart(this.dataset);
+    this.chart = createDefaultChart(this.dataset, this.editorType === EditorType.Chart);
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset
@@ -1820,6 +1820,12 @@ export class AppStore extends BaseStore {
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Linear;
             }
+            const { categories } = this.getCategoriesForDataBinding(
+              dataExpression.metadata,
+              dataExpression.valueType,
+              values
+            );
+            dataBinding.categories = categories;
           }
           break;
         case Specification.DataKind.Temporal:

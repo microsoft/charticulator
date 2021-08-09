@@ -5,10 +5,10 @@ import { Expression, Prototypes, Specification } from "../../../../core";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
 import { Button, InputExpression, Select, CheckBox } from "./controls";
-import { WidgetManager } from "./manager";
+import { CharticulatorPropertyAccessors } from "./manager";
 
 export interface FilterEditorProps {
-  manager: WidgetManager;
+  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
   options: Prototypes.Controls.FilterEditorOptions;
   value: Specification.Types.Filter;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
@@ -5,8 +6,11 @@ import {
   defaultFont,
   defaultFontSizeLegend,
 } from "../../../app/stores/defaults";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
+import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
+import { ValueType } from "../../expression/classes";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
@@ -47,7 +51,7 @@ export abstract class LegendClass extends ChartElementClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
   };
 
   public static defaultProperties: LegendProperties = {
@@ -167,77 +171,136 @@ export abstract class LegendClass extends ChartElementClass {
     return [10, 10];
   }
 
+  private getOrderingObjects(): string[] {
+    const scale = this.getScale();
+    if (scale) {
+      const [scaleObject] = scale;
+      const mapping = <
+        {
+          [name: string]: Color;
+        }
+      >scaleObject.properties.mapping;
+      return Object.keys(mapping);
+    }
+    return [];
+  }
+
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = [
-      manager.sectionHeader(strings.objects.legend.labels),
-      manager.row(
-        strings.objects.font,
-        manager.inputFontFamily({ property: "fontFamily" })
-      ),
-      manager.row(
-        strings.objects.size,
-        manager.inputNumber(
-          { property: "fontSize" },
-          { showUpdown: true, updownStyle: "font", updownTick: 2 }
-        )
-      ),
-      manager.row(
-        strings.objects.color,
-        manager.inputColor({ property: "textColor" })
-      ),
-      manager.row(
-        strings.objects.legend.markerShape,
-        manager.inputSelect(
-          { property: "markerShape" },
-          {
-            type: "dropdown",
-            showLabel: true,
-            icons: ["mark/rect", "mark/triangle", "mark/ellipse"],
-            labels: [
-              strings.toolbar.rectangle,
-              strings.toolbar.triangle,
-              strings.toolbar.ellipse,
-            ],
-            options: ["rectangle", "triangle", "circle"],
-          }
-        )
-      ),
-      manager.sectionHeader(strings.objects.legend.layout),
-      manager.row(
-        strings.alignment.alignment,
-        manager.horizontal(
-          [0, 0],
-          null,
-          manager.inputSelect(
-            { property: "alignX" },
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.labels,
+        },
+        [
+          manager.inputFontFamily(
+            { property: "fontFamily" },
+            { label: strings.objects.font }
+          ),
+          manager.inputNumber(
+            { property: "fontSize" },
             {
-              type: "radio",
-              icons: ["align/left", "align/x-middle", "align/right"],
-              labels: [
-                strings.alignment.left,
-                strings.alignment.middle,
-                strings.alignment.right,
-              ],
-              options: ["start", "middle", "end"],
+              showUpdown: true,
+              updownStyle: "font",
+              updownTick: 2,
+              label: strings.objects.size,
             }
           ),
+          manager.inputColor(
+            { property: "textColor" },
+            { label: strings.objects.color }
+          ),
           manager.inputSelect(
-            { property: "alignY" },
+            { property: "markerShape" },
             {
-              type: "radio",
-              options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              type: "dropdown",
+              showLabel: true,
+              icons: ["RectangleShape", "TriangleShape", "Ellipse"],
               labels: [
-                strings.alignment.bottom,
-                strings.alignment.middle,
-                strings.alignment.top,
+                strings.toolbar.rectangle,
+                strings.toolbar.triangle,
+                strings.toolbar.ellipse,
               ],
+              options: ["rectangle", "triangle", "circle"],
+              label: strings.objects.legend.markerShape,
             }
           ),
-          null
-        )
+          manager.label("Ordering"),
+          manager.reorderWidget(
+            {
+              property: "order",
+            },
+            {
+              items: this.getOrderingObjects(),
+              onConfirm: (items: string[]) => {
+                const scale = this.getScale()[0];
+                const newMap: { [name: string]: ValueType } = {};
+                items.forEach((item) => {
+                  newMap[item] = (<Specification.AttributeMap>(
+                    scale.properties.mapping
+                  ))[item];
+                });
+                Prototypes.setProperty(scale, "mapping", newMap);
+                manager.emitSetProperty(
+                  {
+                    property: "mapping",
+                    field: null,
+                  },
+                  <Specification.AttributeValue>newMap
+                );
+              },
+            }
+          ),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.legend.layout,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.alignment.alignment),
+            manager.horizontal(
+              [0, 0],
+              manager.inputSelect(
+                { property: "alignX" },
+                {
+                  type: "radio",
+                  icons: [
+                    "AlignHorizontalLeft",
+                    "AlignHorizontalCenter",
+                    "AlignHorizontalRight",
+                  ],
+                  labels: [
+                    strings.alignment.left,
+                    strings.alignment.middle,
+                    strings.alignment.right,
+                  ],
+                  options: ["start", "middle", "end"],
+                }
+              ),
+              manager.inputSelect(
+                { property: "alignY" },
+                {
+                  type: "radio",
+                  options: ["start", "middle", "end"],
+                  icons: [
+                    "AlignVerticalBottom",
+                    "AlignVerticalCenter",
+                    "AlignVerticalTop",
+                  ],
+                  labels: [
+                    strings.alignment.bottom,
+                    strings.alignment.middle,
+                    strings.alignment.top,
+                  ],
+                }
+              ),
+              null
+            )
+          ),
+        ]
       ),
     ];
 

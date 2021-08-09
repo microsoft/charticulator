@@ -16,6 +16,7 @@ import {
   Controls,
   DropZones,
   Handles,
+  ObjectClass,
   ObjectClassMetadata,
   SnappingGuides,
   TemplateParameters,
@@ -31,6 +32,7 @@ import {
   DataAxisProperties,
   DataAxisExpression,
 } from "./data_axis.attrs";
+import React = require("react");
 import { strings } from "../../../strings";
 
 export { DataAxisAttributes, DataAxisProperties };
@@ -52,6 +54,7 @@ export class DataAxisClass extends MarkClass<
   };
 
   public static defaultProperties: Partial<DataAxisProperties> = {
+    ...ObjectClass.defaultProperties,
     dataExpressions: [],
     axis: null,
     visible: true,
@@ -331,46 +334,62 @@ export class DataAxisClass extends MarkClass<
       manager,
       strings.toolbar.dataAxis
     );
-    const r = [...axisWidgets];
-    r.push(
-      manager.row(
-        strings.objects.visibleOn.label,
-        manager.inputSelect(
-          { property: "visibleOn" },
-          {
-            labels: [
-              strings.objects.visibleOn.all,
-              strings.objects.visibleOn.first,
-              strings.objects.visibleOn.last,
-            ],
-            showLabel: true,
-            options: ["all", "first", "last"],
-            type: "dropdown",
-          }
-        )
-      )
-    );
+    const r = [
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
+        },
+        [
+          manager.inputSelect(
+            { property: "visibleOn" },
+            {
+              labels: [
+                strings.objects.visibleOn.all,
+                strings.objects.visibleOn.first,
+                strings.objects.visibleOn.last,
+              ],
+              showLabel: true,
+              options: ["all", "first", "last"],
+              type: "dropdown",
+              label: strings.objects.visibleOn.label,
+            }
+          ),
+        ]
+      ),
+      ...axisWidgets,
+    ];
     if (props.dataExpressions.length > 0) {
-      r.push(manager.sectionHeader("Data Expressions"));
       r.push(
-        manager.arrayWidget(
-          { property: "dataExpressions" },
-          (item) => {
-            return manager.inputExpression(
-              {
-                property: "dataExpressions",
-                field:
-                  item.field instanceof Array
-                    ? [...item.field, "expression"]
-                    : [item.field, "expression"],
-              },
-              { table: this.getGlyphClass().object.table }
-            );
-          },
+        manager.verticalGroup(
           {
-            allowDelete: true,
-            allowReorder: true,
-          }
+            header: strings.objects.axes.dataExpressions,
+          },
+          [
+            manager.arrayWidget(
+              { property: "dataExpressions" },
+              (item, index) => {
+                const expressionInput = manager.inputExpression(
+                  {
+                    property: "dataExpressions",
+                    field:
+                      item.field instanceof Array
+                        ? [...item.field, "expression"]
+                        : [item.field, "expression"],
+                  },
+                  { table: this.getGlyphClass().object.table }
+                );
+                return React.createElement(
+                  "fragment",
+                  { key: index },
+                  expressionInput
+                );
+              },
+              {
+                allowDelete: true,
+                allowReorder: true,
+              }
+            ),
+          ]
         )
       );
     }

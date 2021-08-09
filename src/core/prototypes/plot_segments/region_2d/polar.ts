@@ -78,18 +78,18 @@ export interface PolarObject extends Specification.PlotSegment {
 }
 
 export const icons: Region2DConfigurationIcons = {
-  xMinIcon: "align/left",
-  xMiddleIcon: "align/x-middle",
+  xMinIcon: "AlignHorizontalLeft",
+  xMiddleIcon: "AlignHorizontalCenter",
   xMaxIcon: "align/right",
-  yMiddleIcon: "align/y-middle",
-  yMinIcon: "align/bottom",
-  yMaxIcon: "align/top",
-  dodgeXIcon: "sublayout/dodge-angular",
-  dodgeYIcon: "sublayout/dodge-radial",
+  yMiddleIcon: "AlignHorizontalRight",
+  yMinIcon: "AlignVerticalBottom",
+  yMaxIcon: "AlignVerticalTop",
+  dodgeXIcon: "CharticulatorArrangePolar",
+  dodgeYIcon: "CharticulatorStackRadial",
   gridIcon: "sublayout/polar-grid",
   packingIcon: "sublayout/packing",
   overlapIcon: "sublayout/overlap",
-  jitterIcon: "sublayout/jitter",
+  jitterIcon: "Stack",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
@@ -773,32 +773,39 @@ export class PolarPlotSegment extends PlotSegmentClass<
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
-      manager.sectionHeader("Polar Coordinates"),
-      manager.row(
-        "Angle",
-        manager.horizontal(
-          [1, 0, 1],
-          manager.inputNumber({ property: "startAngle" }),
-          manager.label("-"),
-          manager.inputNumber({ property: "endAngle" })
-        )
-      ),
-      manager.row(
-        "Radius",
-        manager.horizontal(
-          [0, 1, 0, 1],
-          manager.label("Inner:"),
-          manager.inputNumber({ property: "innerRatio" }),
-          manager.label("Outer:"),
-          manager.inputNumber({ property: "outerRatio" })
-        )
-      ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "equalizeArea" },
-          { type: "checkbox", label: "Height to Area" }
-        )
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.polarCoordinates,
+        },
+        [
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.angle),
+            manager.horizontal(
+              [1, 0, 1],
+              manager.inputNumber({ property: "startAngle" }),
+              manager.label("-"),
+              manager.inputNumber({ property: "endAngle" })
+            )
+          ),
+          manager.vertical(
+            manager.label(strings.objects.plotSegment.radius),
+            manager.horizontal(
+              [0, 1, 0, 1],
+              manager.label(strings.objects.plotSegment.inner),
+              manager.inputNumber({ property: "innerRatio" }),
+              manager.label(strings.objects.plotSegment.outer),
+              manager.inputNumber({ property: "outerRatio" })
+            )
+          ),
+          manager.inputBoolean(
+            { property: "equalizeArea" },
+            {
+              type: "checkbox",
+              label: strings.objects.plotSegment.heightToArea,
+              headerLabel: strings.objects.plotSegment.equalizeArea,
+            }
+          ),
+        ]
       ),
       ...builder.buildPanelWidgets(manager),
     ];

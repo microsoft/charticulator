@@ -37,7 +37,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "NestedChart",
-    iconPath: "mark/nested-chart",
+    iconPath: "BarChartVerticalFilter",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -95,7 +95,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
       manager.mappingEditor("Opacity", "opacity", {
         hints: { rangeNumber: [0, 1] },
         defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+        numberOptions: { showSlider: true, minimum: 0, maximum: 1, step: 0.1 },
       }),
       manager.mappingEditor("Visibility", "visible", {
         defaultValue: true,

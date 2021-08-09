@@ -1,7 +1,9 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
+import { strings } from "../../../strings";
 import {
   Point,
   replaceNewLineBySymbol,
@@ -46,7 +48,7 @@ export class TextElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Text",
-    iconPath: "mark/text",
+    iconPath: "FontColorA",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
@@ -54,6 +56,7 @@ export class TextElementClass extends EmphasizableMarkClass<
   };
 
   public static defaultMappingValues: Partial<TextElementAttributes> = {
+    ...ObjectClass.defaultProperties,
     text: "Text",
     fontFamily: defaultFont,
     fontSize: defaultFontSize,
@@ -290,98 +293,111 @@ export class TextElementClass extends EmphasizableMarkClass<
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const props = this.object.properties;
     return [
-      manager.sectionHeader("Text"),
-      manager.mappingEditor("Text", "text", {}),
-      manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: defaultFont,
-      }),
-      manager.mappingEditor("Size", "fontSize", {
-        hints: { rangeNumber: [0, 36] },
-        defaultValue: defaultFontSize,
-        numberOptions: {
-          showUpdown: true,
-          updownStyle: "font",
-          minimum: 0,
-          updownTick: 2,
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
         },
-      }),
-      manager.sectionHeader("Anchor & Rotation"),
-      manager.row(
-        "Anchor X",
-        manager.horizontal(
-          [0, 1],
+        [
+          manager.mappingEditor(strings.toolbar.text, "text", {}),
+          manager.mappingEditor(strings.objects.font, "fontFamily", {
+            defaultValue: defaultFont,
+          }),
+          manager.mappingEditor(strings.objects.size, "fontSize", {
+            hints: { rangeNumber: [0, 36] },
+            defaultValue: defaultFontSize,
+            numberOptions: {
+              showUpdown: true,
+              updownStyle: "font",
+              minimum: 0,
+              updownTick: 2,
+            },
+          }),
+          manager.mappingEditor(
+            strings.objects.visibleOn.visibility,
+            "visible",
+            {
+              defaultValue: true,
+            }
+          ),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.anchorAndRotation,
+        },
+        [
           manager.inputSelect(
             { property: "alignment", field: "x" },
             {
               type: "radio",
               icons: [
-                "text-align/left",
-                "text-align/x-middle",
-                "text-align/right",
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
               ],
               labels: ["Left", "Middle", "Right"],
               options: ["left", "middle", "right"],
+              label: strings.objects.anchorX,
             }
           ),
           props.alignment.x != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "xMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+            ? manager.inputNumber(
+                { property: "alignment", field: "xMargin" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                  label: "Margin",
+                }
               )
-            : null
-        )
-      ),
-      manager.row(
-        "Anchor Y",
-        manager.horizontal(
-          [0, 1],
+            : null,
           manager.inputSelect(
             { property: "alignment", field: "y" },
             {
               type: "radio",
               icons: [
-                "text-align/top",
-                "text-align/y-middle",
-                "text-align/bottom",
+                "AlignVerticalTop",
+                "AlignVerticalCenter",
+                "AlignVerticalBottom",
               ],
               labels: ["Top", "Middle", "Bottom"],
               options: ["top", "middle", "bottom"],
+              label: strings.objects.anchorY,
             }
           ),
           props.alignment.y != "middle"
-            ? manager.horizontal(
-                [0, 1],
-                manager.label("Margin:"),
-                manager.inputNumber(
-                  { property: "alignment", field: "yMargin" },
-                  {
-                    updownTick: 1,
-                    showUpdown: true,
-                  }
-                )
+            ? manager.inputNumber(
+                { property: "alignment", field: "yMargin" },
+                {
+                  updownTick: 1,
+                  showUpdown: true,
+                  label: strings.objects.text.margin,
+                }
               )
-            : null
-        )
+            : null,
+          manager.inputNumber(
+            { property: "rotation" },
+            {
+              label: strings.objects.rotation,
+              showUpdown: true,
+              updownTick: 1,
+            }
+          ),
+        ]
       ),
-      // manager.row("Rotation", manager.inputNumber({ property: "rotation" })),
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Color", "color", {}),
-      manager.mappingEditor("Outline", "outline", {}),
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+      manager.verticalGroup(
+        {
+          header: "Style",
+        },
+        [
+          manager.mappingEditor(strings.objects.color, "color", {}),
+          manager.mappingEditor(strings.objects.outline, "outline", {}),
+          manager.mappingEditor(strings.objects.opacity, "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
+      ),
     ].concat(parentWidgets);
   }
 

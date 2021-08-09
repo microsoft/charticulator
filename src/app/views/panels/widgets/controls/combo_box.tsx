@@ -10,7 +10,13 @@ import * as globals from "../../../../globals";
 import { SVGImageIcon } from "../../../../components";
 import { PopupView } from "../../../../controllers";
 import { classNames } from "../../../../utils";
+import {
+  IComboBoxOption,
+  ComboBox as FluentCombobox,
+  Label,
+} from "@fluentui/react";
 import { fontList } from "../../../../../core";
+import { defaultLabelStyle } from "./fluentui_customized_components";
 
 export interface ComboBoxOptionProps {
   onClick: () => void;
@@ -163,6 +169,7 @@ export class ComboBox extends React.Component<ComboBoxProps, ComboBoxState> {
 
 export interface ComboBoxFontFamilyProps {
   defaultValue: string;
+  label?: string;
   onEnter?: (value: string) => boolean;
   onCancel?: () => void;
 }
@@ -193,3 +200,52 @@ export class ComboBoxFontFamily extends React.Component<
     );
   }
 }
+
+export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
+  props
+) => {
+  const [currentValue, setCurrentValue] = React.useState<string>(props.defaultValue);
+
+  const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
+    IComboBoxOption[]
+  >(() => {
+    const cuurentFontList = [...new Set([...fontList, currentValue])];
+    
+    return cuurentFontList.map((fontName: string) => ({
+      key: fontName,
+      text: fontName,
+      styles: {
+        optionText: {
+          fontFamily: fontName,
+        },
+      },
+    }));
+  }, [currentValue]);
+
+
+  const onCancel = React.useCallback(() => props.onCancel?.(), [props]);
+  const onEnter = React.useCallback(
+    (event, value) => {
+      const currentInputValue: string = event.target.value;
+      const currentFontValue: string = value?.key?.toString() ?? (currentInputValue.length > 0 ? currentInputValue : props.defaultValue);
+      setCurrentValue(currentFontValue);
+      props.onEnter?.(currentFontValue);
+    },
+    [props]
+  );
+
+  return (
+    <FluentCombobox
+      selectedKey={currentValue}
+      label={props.label}
+      onRenderLabel={({ props }) => (
+        <Label styles={defaultLabelStyle}>{props.label}</Label>
+      )}
+      autoComplete="on"
+      options={optionsWithCustomStyling}
+      onChange={onEnter}
+      onAbort={onCancel}
+      allowFreeform
+    />
+  );
+};

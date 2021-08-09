@@ -516,7 +516,7 @@
 .editable-text-view {
   $font-size: 14px;
   $padding: 0;
-  $height: 24px;
+  $height: 32px;
 
   display: flex;
   flex-direction: row;
@@ -542,7 +542,7 @@
 
   transition: border-color $transition-default;
 
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid $gray-210;
 
   &:hover {
     border-bottom: 2px solid $gray-210;

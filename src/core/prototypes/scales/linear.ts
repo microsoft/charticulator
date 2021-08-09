@@ -148,43 +148,32 @@ export class LinearScale extends ScaleClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader(strings.objects.dataAxis.domain),
-      manager.row(
-        strings.objects.dataAxis.start,
-        manager.inputNumber({ property: "domainMin" })
+      manager.inputNumber(
+        { property: "domainMin" },
+        { label: strings.objects.dataAxis.start }
       ),
-      manager.row(
-        strings.objects.dataAxis.end,
-        manager.inputNumber({ property: "domainMax" })
+      manager.inputNumber(
+        { property: "domainMax" },
+        { label: strings.objects.dataAxis.end }
       ),
-      // manager.sectionHeader(""),
-      manager.row("", manager.label(strings.objects.dataAxis.autoUpdateValues)),
-      manager.row(
-        "",
-        manager.row(
-          strings.objects.dataAxis.start,
-          manager.inputBoolean(
-            {
-              property: "autoDomainMin",
-            },
-            {
-              type: "checkbox",
-            }
-          )
-        )
+      manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
+      manager.inputBoolean(
+        {
+          property: "autoDomainMin",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.start,
+        }
       ),
-      manager.row(
-        "",
-        manager.row(
-          strings.objects.dataAxis.end,
-          manager.inputBoolean(
-            {
-              property: "autoDomainMax",
-            },
-            {
-              type: "checkbox",
-            }
-          )
-        )
+      manager.inputBoolean(
+        {
+          property: "autoDomainMax",
+        },
+        {
+          type: "checkbox",
+          label: strings.objects.dataAxis.end,
+        }
       ),
       manager.sectionHeader(strings.objects.dataAxis.range),
       manager.mappingEditor(strings.objects.dataAxis.start, "rangeMin", {

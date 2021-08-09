@@ -194,6 +194,9 @@ export class LegendCreationPanel extends ContextedComponent<
                   allowSelectValue: true,
                 } as Specification.ScaleMapping;
 
+                if (!newLegend.mappings) {
+                  newLegend.mappings = {};
+                }
                 newLegend.mappings.mappingOptions = mappingOptions;
               } else {
                 const kind = (this.groupBySelector

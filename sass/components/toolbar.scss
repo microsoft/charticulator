@@ -30,7 +30,7 @@ $elements-margin: 4px;
   flex: 1;
   display: flex;
   flex-direction: row;
-  
+
   .el-text {
     margin: 0 0em;
   }
@@ -42,7 +42,6 @@ $elements-margin: 4px;
 
   &-group > * {
     height: $tool-icon-size;
-    margin-bottom: $elements-margin;
     margin-right: $elements-margin;
   }
 

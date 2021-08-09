@@ -191,13 +191,25 @@ export class ImportDataView extends React.Component<
     dataTableOrigin: null as Dataset.Table,
     linkTableOrigin: null as Dataset.Table,
   };
+  private isComponentMounted: boolean;
 
   constructor(props: ImportDataViewProps) {
     super(props);
-    this.props.store.addListener(AppStore.EVENT_GRAPHICS, () =>
-      this.forceUpdate()
-    );
+    this.props.store.addListener(AppStore.EVENT_GRAPHICS, () => {
+      if (this.isComponentMounted) {
+        this.forceUpdate();
+      }
+    });
   }
+
+  componentDidMount() {
+    this.isComponentMounted = true;
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
+
   private loadFileAsTable(file: File): Promise<Dataset.Table> {
     return readFileAsString(file).then((contents) => {
       const localeFileFormat = this.props.store.getLocaleFileFormat();
@@ -337,7 +349,7 @@ export class ImportDataView extends React.Component<
             )}
             <ButtonRaised
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
+              url={R.getSVGIcon("ChromeClose")}
               title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({
@@ -399,7 +411,7 @@ export class ImportDataView extends React.Component<
             )}
             <ButtonRaised
               text={strings.fileImport.removeButtonText}
-              url={R.getSVGIcon("general/cross")}
+              url={R.getSVGIcon("ChromeClose")}
               title={strings.fileImport.removeButtonTitle}
               onClick={() => {
                 this.setState({

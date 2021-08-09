@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
+import { strings } from "../../../strings";
 import {
   Point,
   replaceNewLineBySymbol,
@@ -45,7 +46,7 @@ export class TextboxElementClass extends EmphasizableMarkClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Textbox",
-    iconPath: "mark/textbox",
+    iconPath: "TextField",
     creatingInteraction: {
       type: "rectangle",
       mapping: { xMin: "x1", yMin: "y1", xMax: "x2", yMax: "y2" },
@@ -109,43 +110,64 @@ export class TextboxElementClass extends EmphasizableMarkClass<
     const props = this.object.properties;
     const parentWidgets = super.getAttributePanelWidgets(manager);
     const widgets: Controls.Widget[] = [
-      manager.sectionHeader("Size"),
-      manager.mappingEditor("Width", "width", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.mappingEditor("Height", "height", {
-        hints: { autoRange: true, startWithZero: "always" },
-        acceptKinds: [Specification.DataKind.Numerical],
-        defaultAuto: true,
-      }),
-      manager.sectionHeader("Text"),
-      manager.mappingEditor("Text", "text", {}),
-      manager.mappingEditor("Font", "fontFamily", {
-        defaultValue: defaultFont,
-      }),
-      manager.mappingEditor("Size", "fontSize", {
-        hints: { rangeNumber: [0, 36] },
-        defaultValue: defaultFontSize,
-        numberOptions: {
-          showUpdown: true,
-          updownStyle: "font",
-          minimum: 0,
-          updownTick: 2,
+      manager.verticalGroup(
+        {
+          header: strings.objects.general,
         },
-      }),
-      manager.row(
-        "Align X",
-        manager.horizontal(
-          [0, 1],
+        [
+          manager.mappingEditor("Width", "width", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor("Height", "height", {
+            hints: { autoRange: true, startWithZero: "always" },
+            acceptKinds: [Specification.DataKind.Numerical],
+            defaultAuto: true,
+          }),
+          manager.mappingEditor("Visibility", "visible", {
+            defaultValue: true,
+          }),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.toolbar.text,
+        },
+        [
+          manager.mappingEditor("Text", "text", {}),
+          manager.mappingEditor("Font", "fontFamily", {
+            defaultValue: defaultFont,
+          }),
+          manager.mappingEditor("Size", "fontSize", {
+            hints: { rangeNumber: [0, 36] },
+            defaultValue: defaultFontSize,
+            numberOptions: {
+              showUpdown: true,
+              updownStyle: "font",
+              minimum: 0,
+              updownTick: 2,
+            },
+          }),
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.layout,
+        },
+        [
           manager.inputSelect(
             { property: "alignX" },
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/left", "align/x-middle", "align/right"],
+              icons: [
+                "AlignHorizontalLeft",
+                "AlignHorizontalCenter",
+                "AlignHorizontalRight",
+              ],
               labels: ["Left", "Middle", "Right"],
+              label: strings.objects.alignX,
             }
           ),
           props.alignX != "middle"
@@ -157,23 +179,23 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   {
                     updownTick: 1,
                     showUpdown: true,
+                    label: strings.objects.text.margin,
                   }
                 )
               )
-            : null
-        )
-      ),
-      manager.row(
-        "Align Y",
-        manager.horizontal(
-          [0, 1],
+            : null,
           manager.inputSelect(
             { property: "alignY" },
             {
               type: "radio",
               options: ["start", "middle", "end"],
-              icons: ["align/bottom", "align/y-middle", "align/top"],
+              icons: [
+                "AlignVerticalBottom",
+                "AlignVerticalCenter",
+                "AlignVerticalTop",
+              ],
               labels: ["Bottom", "Middle", "Top"],
+              label: strings.objects.alignX,
             }
           ),
           props.alignY != "middle"
@@ -185,61 +207,68 @@ export class TextboxElementClass extends EmphasizableMarkClass<
                   {
                     updownTick: 1,
                     showUpdown: true,
+                    label: strings.objects.text.margin,
                   }
                 )
               )
-            : null
-        )
-      ),
-      manager.sectionHeader("Layout"),
-      manager.row(
-        "Wrap text",
-        manager.inputBoolean(
-          { property: "wordWrap" },
-          {
-            type: "checkbox",
-          }
-        )
-      ),
-      props.wordWrap
-        ? manager.row(
-            "Alignment",
-            manager.horizontal(
-              [0, 1],
-              manager.inputSelect(
-                { property: "alignText" },
-                {
-                  type: "radio",
-                  options: ["end", "middle", "start"],
-                  icons: ["align/bottom", "align/y-middle", "align/top"],
-                  labels: ["Bottom", "Middle", "Top"],
-                }
-              )
-            )
-          )
-        : null,
-      props.wordWrap
-        ? manager.row(
-            "Overflow",
+            : null,
+          manager.row(
+            "Wrap text",
             manager.inputBoolean(
-              { property: "overFlow" },
+              { property: "wordWrap" },
               {
                 type: "checkbox",
               }
             )
-          )
-        : null,
-      manager.sectionHeader("Style"),
-      manager.mappingEditor("Color", "color", {}),
-      manager.mappingEditor("Outline", "outline", {}),
-      manager.mappingEditor("Opacity", "opacity", {
-        hints: { rangeNumber: [0, 1] },
-        defaultValue: 1,
-        numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
-      }),
-      manager.mappingEditor("Visibility", "visible", {
-        defaultValue: true,
-      }),
+          ),
+          props.wordWrap
+            ? manager.row(
+                "Alignment",
+                manager.horizontal(
+                  [0, 1],
+                  manager.inputSelect(
+                    { property: "alignText" },
+                    {
+                      type: "radio",
+                      options: ["end", "middle", "start"],
+                      icons: [
+                        "AlignVerticalBottom",
+                        "AlignVerticalCenter",
+                        "AlignVerticalTop",
+                      ],
+                      labels: ["Bottom", "Middle", "Top"],
+                    }
+                  )
+                )
+              )
+            : null,
+          props.wordWrap
+            ? manager.row(
+                "Overflow",
+                manager.inputBoolean(
+                  { property: "overFlow" },
+                  {
+                    type: "checkbox",
+                  }
+                )
+              )
+            : null,
+        ]
+      ),
+      manager.verticalGroup(
+        {
+          header: strings.objects.style,
+        },
+        [
+          manager.mappingEditor("Color", "color", {}),
+          manager.mappingEditor("Outline", "outline", {}),
+          manager.mappingEditor("Opacity", "opacity", {
+            hints: { rangeNumber: [0, 1] },
+            defaultValue: 1,
+            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+          }),
+        ]
+      ),
     ];
     return widgets.concat(parentWidgets);
   }

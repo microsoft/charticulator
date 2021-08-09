@@ -41,6 +41,9 @@
     "*.{js,jsx}": "license-check-and-add"
   },
   "dependencies": {
+    "@fluentui/react": "^8.8.0",
+    "@uifabric/icons": "7.5.22",
+    "@uifabric/styling": "7.18.1",
     "d3-color": "^1.4.1",
     "d3-dsv": "^1.0.8",
     "d3-force": "^1.1.0",
@@ -51,7 +54,8 @@
     "hammerjs": "^2.0.8",
     "lscg-solver": "^1.2.1",
     "react": "16.14.0",
-    "react-dom": "16.14.0"
+    "react-dom": "16.14.0",
+    "styled-components": "5.2.0"
   },
   "license-check-and-add-config": {
     "folder": ".",
@@ -87,9 +91,9 @@
     "@types/node": "^13.13.4",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
+    "@types/styled-components": "5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "@fluentui/react": "^8.8.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "chai": "^4.2.0",
     "dts-bundle": "^0.7.3",
@@ -109,7 +113,7 @@
     "preact": "^8.3.1",
     "preact-compat": "^3.18.3",
     "prettier": "2.1.2",
-    "sass": "^1.32.4",
+    "sass": "^1.37.5",
     "typedoc": "^0.20.29",
     "typedoc-plugin-external-module-name": "^4.0.6",
     "typescript": "3.9.7",

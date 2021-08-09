@@ -92,36 +92,33 @@ export abstract class ObjectClass<
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
     return [
-      manager.sectionHeader("Interactivity"),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableTooltips" },
-          {
-            type: "checkbox",
-            label: "Tooltips",
-          }
-        )
-      ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableContextMenu" },
-          {
-            type: "checkbox",
-            label: "Context menu",
-          }
-        )
-      ),
-      manager.row(
-        "",
-        manager.inputBoolean(
-          { property: "enableSelection" },
-          {
-            type: "checkbox",
-            label: "Selection",
-          }
-        )
+      manager.verticalGroup(
+        {
+          header: "Interactivity",
+        },
+        [
+          manager.inputBoolean(
+            { property: "enableTooltips" },
+            {
+              type: "checkbox",
+              label: "Tooltips",
+            }
+          ),
+          manager.inputBoolean(
+            { property: "enableContextMenu" },
+            {
+              type: "checkbox",
+              label: "Context menu",
+            }
+          ),
+          manager.inputBoolean(
+            { property: "enableSelection" },
+            {
+              type: "checkbox",
+              label: "Selection",
+            }
+          ),
+        ]
       ),
     ];
   }

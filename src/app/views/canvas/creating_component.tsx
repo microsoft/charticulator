@@ -153,9 +153,11 @@ export class CreatingComponent extends React.Component<
   };
 
   public hammer: HammerManager;
+  private mode: string;
 
   constructor(props: CreatingComponentProps) {
     super(props);
+    this.mode = this.props.mode;
     this.state = {
       points: null,
       draggingPoint: null,
@@ -176,8 +178,9 @@ export class CreatingComponent extends React.Component<
 
   private isHammering = false;
 
-  public componentDidMount() {
-    this.hammer = new Hammer(this.refs.handler);
+  private initHammer() {
+    this.hammer.remove("tap");
+    this.hammer.remove("pan");
     switch (this.props.mode) {
       case "point":
       case "hline":
@@ -264,6 +267,20 @@ export class CreatingComponent extends React.Component<
         });
       }
     }
+  }
+
+  public componentDidUpdate() {
+    if (this.mode !== this.props.mode) {
+      this.mode = this.props.mode;
+      this.hammer?.destroy();
+      this.hammer = new Hammer(this.refs.handler);
+      this.initHammer();
+    }
+  }
+
+  public componentDidMount() {
+    this.hammer = new Hammer(this.refs.handler);
+    this.initHammer();
   }
 
   public componentWillUnmount() {

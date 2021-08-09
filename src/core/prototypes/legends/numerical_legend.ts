@@ -69,7 +69,7 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
   public static metadata: ObjectClassMetadata = {
     displayName: "Legend",
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
   };
 
   public static defaultProperties: NumericalNumberLegendProperties = {
@@ -359,7 +359,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
     return [
       manager.sectionHeader(strings.objects.axis),
-      buildAxisAppearanceWidgets(props.axis.visible, "axis", manager),
+      buildAxisAppearanceWidgets("axis", manager, {
+        isVisible: props.axis.visible,
+        wordWrap: props.axis.style.wordWrap,
+      }),
     ];
   }
 }

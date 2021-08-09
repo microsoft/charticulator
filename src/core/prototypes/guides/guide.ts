@@ -398,7 +398,12 @@ export class GuideClass extends ChartElementClass<
         strings.alignment.center,
         strings.alignment.right,
       ];
-      icons = ["align/left", "align/x-middle", "align/right"];
+
+      icons = [
+        "AlignHorizontalLeft",
+        "AlignHorizontalCenter",
+        "AlignHorizontalRight",
+      ];
     } else {
       const vOptions: Specification.baselineV[] = ["top", "middle", "bottom"];
       options = vOptions;
@@ -407,21 +412,19 @@ export class GuideClass extends ChartElementClass<
         strings.alignment.middle,
         strings.alignment.bottom,
       ];
-      icons = ["align/top", "align/y-middle", "align/bottom"];
+      icons = ["AlignVerticalTop", "align/y-middle", "AlignVerticalBottom"];
     }
     widgets.push(
-      manager.row(
-        strings.objects.guides.baseline,
-        manager.inputSelect(
-          { property: GuidePropertyNames.baseline },
-          {
-            type: "dropdown",
-            showLabel: true,
-            labels,
-            options,
-            icons,
-          }
-        )
+      manager.inputSelect(
+        { property: GuidePropertyNames.baseline },
+        {
+          type: "dropdown",
+          showLabel: true,
+          labels,
+          options,
+          icons,
+          label: strings.objects.guides.baseline,
+        }
       )
     );
 

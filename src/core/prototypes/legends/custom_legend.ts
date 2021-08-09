@@ -15,6 +15,7 @@ export type LegendOrientation = "horizontal" | "vertical";
 
 import { CategoricalLegendClass } from "./categorical_legend";
 import { strings } from "../../../strings";
+import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widgets/manager";
 
 export interface CustomLegendProperties extends LegendProperties {
   legendType: LegendType;
@@ -49,7 +50,7 @@ export class CustomLegendClass extends CategoricalLegendClass {
 
   public static metadata: ObjectClassMetadata = {
     displayName: strings.objects.legend.legend,
-    iconPath: "legend/legend",
+    iconPath: "CharticulatorLegend",
     creatingInteraction: {
       type: "point",
       mapping: { x: "x", y: "y" },
@@ -57,19 +58,23 @@ export class CustomLegendClass extends CategoricalLegendClass {
   };
 
   public getAttributePanelWidgets(
-    manager: Controls.WidgetManager
+    manager: Controls.WidgetManager & CharticulatorPropertyAccessors
   ): Controls.Widget[] {
     const widget = super.getAttributePanelWidgets(manager);
 
     const scale = this.getScale();
     if (scale) {
-      widget.push(manager.sectionHeader(strings.objects.colors));
       widget.push(
-        manager.row(
-          strings.objects.scale,
-          manager.scaleEditor(
-            "mappingOptions",
-            strings.objects.legend.editColors
+        manager.vertical(
+          manager.label(strings.objects.colors, {
+            addMargins: true,
+          }),
+          manager.horizontal(
+            [1],
+            manager.scaleEditor(
+              "mappingOptions",
+              strings.objects.legend.editColors
+            )
           )
         )
       );
