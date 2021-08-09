@@ -29,6 +29,7 @@ export interface InputColorProps {
   onEnter: (value: Color) => boolean;
   store?: AppStore;
   noDefaultMargin?: boolean;
+  labelKey?: string;
 }
 
 export class FluentInputColor extends React.Component<
@@ -76,13 +77,13 @@ export class FluentInputColor extends React.Component<
             backgroundColor: hex == "" ? "transparent" : hex,
             marginTop: this.props.noDefaultMargin ? 5 : null,
           }}
-          id={this.props.label}
+          id={this.props.labelKey}
           onClick={() => {
             this.setState({ open: !this.state.open });
           }}
         />
         {this.state.open && (
-          <Callout target={`#${this.props.label}`}>
+          <Callout target={`#${this.props.labelKey}`}>
             <ColorPicker
               store={this.props.store}
               allowNull={true}
