@@ -19,7 +19,7 @@ export const CollapsiblePanel: React.FunctionComponent<{
   isCollapsed?: boolean;
 }> = ({ header, widgets, isCollapsed }) => {
   const [groupState, setIsCollapsed] = React.useState<boolean>(
-    isCollapsed === undefined ? true : isCollapsed
+    isCollapsed === undefined ? false : isCollapsed
   );
   return (
     <FluentGroupedList>
