@@ -131,6 +131,7 @@ export interface InputColorOptions {
   allowNull?: boolean;
   label?: string;
   noDefaultMargin?: boolean;
+  labelKey?: string;
 }
 
 // eslint-disable-next-line
