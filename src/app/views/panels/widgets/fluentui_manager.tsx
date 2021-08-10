@@ -55,7 +55,7 @@ import {
   Variable,
 } from "../../../../core/expression";
 import { getDateFormat } from "../../../../core/dataset/datetime";
-import { AttributeMap, ScaleMapping } from "../../../../core/specification";
+import { ScaleMapping } from "../../../../core/specification";
 import { ScaleValueSelector } from "../scale_value_selector";
 
 import {
@@ -390,7 +390,6 @@ export class FluentUIWidgetManager
           options.updateProperty ? this.emitUpdateProperty(event, property, prevKey, value) : this.emitSetProperty(property, value);
           prevKey = value
           if (options.emitMappingAction) {
-            console.log("aa")
             new Actions.SetCurrentMappingAttribute(value).dispatch(this.store.dispatcher)
           }
         }}
