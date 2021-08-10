@@ -137,6 +137,11 @@ export const strings = {
     addLegend: "Add Legend",
     removeLegend: "Remove Legend",
   },
+  mappingEditor: {
+    bindData: "Bind data",
+    bindDataValue: "Bind data value",
+    remove: "Remove",
+  },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,
     notImplemented: "Not implemented yet",

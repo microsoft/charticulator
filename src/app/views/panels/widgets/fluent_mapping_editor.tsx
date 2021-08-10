@@ -14,9 +14,9 @@ import {
   Specification,
 } from "../../../../core";
 import { DragData } from "../../../actions";
-import { ColorPicker, SVGImageIcon } from "../../../components";
+import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { getAlignment, PopupAlignment, PopupView } from "../../../controllers";
+import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
@@ -36,7 +36,6 @@ import {
   ActionButton,
   Label,
   IContextualMenuItem,
-  IContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -72,10 +71,9 @@ export class FluentMappingEditor extends React.Component<
   MappingEditorProps,
   MappingEditorState
 > {
-  public mappingButton: Element;
+  public mappingButton: HTMLElement;
   public noneLabel: HTMLSpanElement;
   public scaleMappingDisplay: HTMLSpanElement;
-  private scaleMappingRef: IContextualMenu = null;
 
   public updateEvents = new EventEmitter();
 
@@ -221,21 +219,30 @@ export class FluentMappingEditor extends React.Component<
     }
     //fix
     return (
-      <FluentValueEditor
-        label={this.props.options.label}
-        value={value}
-        type={this.props.type}
-        placeholder={placeholderText}
-        onClear={() => this.clearMapping()}
-        onEmitValue={(value) => this.setValueMapping(value)}
-        onEmitMapping={(mapping) =>
-          this.props.parent.onEditMappingHandler(this.props.attribute, mapping)
-        }
-        onBeginDataFieldSelection={(ref) => this.scaleMappingDisplay.click()}
-        getTable={() => this.getTableOrDefault()}
-        hints={this.props.options.hints}
-        numberOptions={this.props.options.numberOptions}
-      />
+      <>
+        <FluentValueEditor
+          label={this.props.options.label}
+          value={value}
+          type={this.props.type}
+          placeholder={placeholderText}
+          onClear={() => this.clearMapping()}
+          onEmitValue={(value) => this.setValueMapping(value)}
+          onEmitMapping={(mapping) =>
+            this.props.parent.onEditMappingHandler(
+              this.props.attribute,
+              mapping
+            )
+          }
+          onBeginDataFieldSelection={() => {
+            if (this.mappingButton) {
+              this.mappingButton.click();
+            }
+          }}
+          getTable={() => this.getTableOrDefault()}
+          hints={this.props.options.hints}
+          numberOptions={this.props.options.numberOptions}
+        />
+      </>
     );
   }
 
@@ -359,10 +366,6 @@ export class FluentMappingEditor extends React.Component<
           );
 
           if (scaleMapping.scale) {
-            let scaleIcon = <span>f</span>;
-            if (this.props.type == "color") {
-              scaleIcon = <SVGImageIcon url={R.getSVGIcon("scale/color")} />;
-            }
             return (
               <>
                 {this.props.options.label ? (
@@ -372,18 +375,15 @@ export class FluentMappingEditor extends React.Component<
                 ) : null}
                 <FluentActionButton>
                   <ActionButton
-                    elementRef={(e) => (this.scaleMappingDisplay = e)}
+                    elementRef={(e) => (this.mappingButton = e)}
                     styles={{
                       menuIcon: {
                         display: "none !important",
                       },
                     }}
-                    title="Bind data"
+                    title={strings.mappingEditor.bindData}
                     menuProps={{
                       items: mainMenuItems,
-                      componentRef: (ref) => {
-                        this.scaleMappingRef = ref;
-                      },
                       onMenuOpened: () => {
                         const currentMapping = parent.getAttributeMapping(
                           attribute
@@ -410,6 +410,7 @@ export class FluentMappingEditor extends React.Component<
                 <FluentActionButton>
                   <ActionButton
                     text={scaleMapping.expression}
+                    elementRef={(e) => (this.mappingButton = e)}
                     iconProps={{
                       iconName: "ColumnFunction",
                     }}
@@ -508,7 +509,7 @@ export class FluentMappingEditor extends React.Component<
                       iconName: "EraseTool",
                     }}
                     checked={false}
-                    title="Remove"
+                    title={strings.mappingEditor.remove}
                     onClick={() => {
                       if (parent.getAttributeMapping(attribute)) {
                         this.clearMapping();
@@ -525,11 +526,12 @@ export class FluentMappingEditor extends React.Component<
                 <>
                   <FluentButton>
                     <DefaultButton
-                      elementRef={(e) =>
-                        (this.mappingButton = ReactDOM.findDOMNode(
-                          e
-                        ) as Element)
-                      }
+                      // elementRef={(e) =>
+                      //   (this.mappingButton = ReactDOM.findDOMNode(
+                      //     e
+                      //   ) as Element)
+                      // }
+                      elementRef={(e) => (this.mappingButton = e)}
                       iconProps={{
                         iconName: "Link",
                       }}
@@ -538,7 +540,7 @@ export class FluentMappingEditor extends React.Component<
                           display: "none !important",
                         },
                       }}
-                      title="Bind data"
+                      title={strings.mappingEditor.bindData}
                       checked={isDataMapping}
                       menuProps={{
                         items: mainMenuItems,
@@ -553,12 +555,10 @@ export class FluentMappingEditor extends React.Component<
                     iconProps={{
                       iconName: "Link",
                     }}
-                    title="Bind data value"
-                    ref={(e) =>
-                      (this.mappingButton = ReactDOM.findDOMNode(e) as Element)
-                    }
+                    title={strings.mappingEditor.bindDataValue}
+                    elementRef={(e) => (this.mappingButton = e)}
                     onClick={() => {
-                      this.beginDataFieldValueSelection();
+                      this.beginDataFieldValueSelection(this.mappingButton);
                     }}
                     checked={isDataMapping}
                   />
@@ -577,7 +577,7 @@ export class FluentMappingEditor extends React.Component<
   ) {
     setTimeout(() => {
       if (clickOnButton) {
-        this.scaleMappingDisplay?.click();
+        this.mappingButton?.click();
       }
       let expression = null;
       let expressionAggregation: string = null;

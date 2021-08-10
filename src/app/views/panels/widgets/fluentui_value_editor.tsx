@@ -45,7 +45,7 @@ export interface ValueEditorProps {
 
   /** In some cases the value editor can emit data mapping */
   onEmitMapping?: (mapping: Specification.Mapping) => void;
-  onBeginDataFieldSelection?: (anchor: Element) => void;
+  onBeginDataFieldSelection?: (anchor?: Element) => void;
   /** The table to use for data mapping */
   getTable?: () => string;
 
@@ -266,16 +266,16 @@ export class FluentValueEditor extends ContextedComponent<
       }
       case Specification.AttributeType.Boolean: {
         const boolean = value as boolean;
-        let ref: Element;
         if (this.props.onEmitMapping) {
           return (
             <>
-              <Label styles={defaultLabelStyle}>Visibility</Label>
+              <Label styles={defaultLabelStyle}>
+                {strings.objects.visibleOn.visibility}
+              </Label>
               <DefaultButton
                 text={strings.attributesPanel.conditionedBy}
-                elementRef={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
                 onClick={() => {
-                  this.props.onBeginDataFieldSelection(ref);
+                  this.props.onBeginDataFieldSelection();
                 }}
               />
             </>
@@ -283,13 +283,14 @@ export class FluentValueEditor extends ContextedComponent<
         } else {
           return (
             <>
-              <Label styles={defaultLabelStyle}>Visibility</Label>
+              <Label styles={defaultLabelStyle}>
+                {strings.objects.visibleOn.visibility}
+              </Label>
               <DefaultButton
                 checked={false}
                 iconProps={{
                   iconName: boolean ? "CheckboxComposite" : "Checkbox",
                 }}
-                elementRef={(e) => (ref = ReactDOM.findDOMNode(e) as Element)}
                 onClick={() => {
                   this.emitSetValue(!boolean);
                 }}
