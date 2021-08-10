@@ -142,6 +142,7 @@ export interface InputColorOptions {
   labelKey: string;
   width?: number;
   underline?: boolean;
+  pickerBeforeTextField?: boolean;
 }
 
 // eslint-disable-next-line
