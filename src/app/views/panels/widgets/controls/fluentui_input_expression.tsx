@@ -13,7 +13,6 @@ import {
 import { TextField } from "@fluentui/react";
 import { labelRender } from "./fluentui_customized_components";
 import { useEffect } from "react";
-import { set } from "d3";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
