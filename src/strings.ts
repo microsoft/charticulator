@@ -136,6 +136,7 @@ export const strings = {
     removeLast: "Remove the last",
     addLegend: "Add Legend",
     removeLegend: "Remove Legend",
+    removeSelected: "Remove"
   },
   error: {
     imageLoad: (url: string) => `failed to retrieve map image at url ${url}`,

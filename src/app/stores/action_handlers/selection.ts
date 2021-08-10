@@ -70,4 +70,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
     this.currentAttributeFocus = action.attributeName;
     this.emit(AppStore.EVENT_GRAPHICS);
   });
+
+  REG.add(Actions.SetCurrentMappingAttribute, function (action) {
+    this.currentMappingAttributeFocus = action.attributeName;
+    this.emit(AppStore.EVENT_GRAPHICS);
+  });
 }

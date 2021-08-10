@@ -890,6 +890,19 @@ export class FocusToMarkAttribute extends Action {
   }
 }
 
+export class SetCurrentMappingAttribute extends Action {
+  constructor(public attributeName: string) {
+    super();
+  }
+
+  public digest() {
+    return {
+      name: "SetCurrentMappingAttribute",
+      attributeName: this.attributeName,
+    };
+  }
+}
+
 export class SetCurrentTool extends Action {
   constructor(public tool: string, public options: string = null) {
     super();
