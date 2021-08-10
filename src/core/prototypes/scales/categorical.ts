@@ -337,7 +337,8 @@ export class CategoricalScaleColor extends ScaleClass<
                 stopPropagation: true,
                 labelKey: key,
                 width: 100,
-                underline: true
+                underline: true,
+                pickerBeforeTextField: true,
               }
             )
           )
