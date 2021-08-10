@@ -93,7 +93,7 @@ export class FluentInputColor extends React.Component<
           />
         </FluentTextField>
         {this.state.open && (
-          <Callout target={`#${this.props.labelKey}`}>
+          <Callout target={`#${this.props.labelKey.replace(/\W/g, "_")}`}>
             <ColorPicker
               store={this.props.store}
               allowNull={true}

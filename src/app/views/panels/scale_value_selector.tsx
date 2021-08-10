@@ -119,7 +119,7 @@ export class ScaleValueSelector extends React.Component<
                               noComputeLayout: true,
                             },
                             {
-                              // label: key,
+                              labelKey: key,
                               noDefaultMargin: true,
                               stopPropagation: true,
                             }

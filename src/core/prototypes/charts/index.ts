@@ -520,7 +520,11 @@ export class RectangleChart extends ChartClass {
       manager.sectionHeader(strings.objects.background),
       manager.inputColor(
         { property: "backgroundColor" },
-        { allowNull: true, label: strings.objects.color }
+        {
+          allowNull: true,
+          label: strings.objects.color,
+          labelKey: strings.objects.color,
+        }
       ),
       manager.sectionHeader(strings.objects.interactivity),
       manager.inputBoolean(

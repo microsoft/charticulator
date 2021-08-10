@@ -658,7 +658,7 @@ export class FluentUIWidgetManager
 
   public inputColor(
     property: Prototypes.Controls.Property,
-    options: Prototypes.Controls.InputColorOptions = {}
+    options: Prototypes.Controls.InputColorOptions
   ): JSX.Element {
     const color = this.getPropertyValue(property) as Color;
     return (

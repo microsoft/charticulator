@@ -139,7 +139,7 @@ export interface InputColorOptions {
   label?: string;
   noDefaultMargin?: boolean;
   stopPropagation?: boolean;
-  labelKey?: string;
+  labelKey: string;
   width?: number;
   underline?: boolean;
 }

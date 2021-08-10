@@ -127,6 +127,7 @@ export abstract class PlotSegmentClass<
             },
             {
               label: strings.objects.color,
+              labelKey: strings.objects.color,
             }
           ),
           manager.inputNumber(
