@@ -42,7 +42,6 @@ import {
   InputColorGradient,
   FluentComboBoxFontFamily,
 } from "./controls";
-import { FilterEditor } from "./filter_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -107,6 +106,7 @@ import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
+import { FilterPanel } from "./fluentui_filter";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -1195,66 +1195,15 @@ export class FluentUIWidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
-    let button: HTMLElement;
-    let text = "Filter by...";
-    switch (options.mode) {
-      case "button":
-        if (options.value) {
-          if (options.value.categories) {
-            text = "Filter by " + options.value.categories.expression;
-          }
-          if (options.value.expression) {
-            text = "Filter by " + options.value.expression;
-          }
-        }
-        return (
-          <FluentButton
-            marginTop={"0px"}
-            key={
-              this.getKeyFromProperty(options?.target?.property) +
-              options?.table +
-              options?.value
-            }
-          >
-            <DefaultButton
-              text={text}
-              elementRef={(e) => (button = e)}
-              iconProps={{
-                iconName: "Filter",
-              }}
-              onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => {
-                    return (
-                      <PopupView context={context}>
-                        <FilterEditor
-                          manager={this}
-                          value={options.value}
-                          options={options}
-                        />
-                      </PopupView>
-                    );
-                  },
-                  {anchor: ReactDOM.findDOMNode(button) as Element}
-                );
-              }}
-            />
-          </FluentButton>
-        );
-      case "panel":
-        return (
-          <FilterEditor
-            key={
-              this.getKeyFromProperty(options?.target?.property) +
-              options?.table +
-              options?.value
-            }
-            manager={this}
-            value={options.value}
-            options={options}
-          />
-        );
-    }
+    return (
+      <FilterPanel
+        options={{
+          ...options,
+          manager: this,
+        }}
+        text={strings.filter.filterBy}
+      />
+    );
   }
 
   public groupByEditor(

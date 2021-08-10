@@ -5,6 +5,7 @@ import { DataMappingHints } from ".";
 import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
+import { CharticulatorPropertyAccessors } from "../../app/views/panels/widgets/manager";
 import { CSSProperties } from "react";
 
 export type Widget = any;
@@ -153,6 +154,11 @@ export interface VerticalGroupOptions {
   header: string;
 }
 
+export const enum PanelMode {
+  Button = "button",
+  Panel = "panel",
+}
+
 export interface FilterEditorOptions {
   table: string;
   target: {
@@ -160,7 +166,8 @@ export interface FilterEditorOptions {
     property?: Property;
   };
   value: Specification.Types.Filter;
-  mode: "button" | "panel";
+  mode: PanelMode;
+  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
 }
 
 export interface GroupByEditorOptions {
@@ -170,7 +177,7 @@ export interface GroupByEditorOptions {
     property?: Property;
   };
   value: Specification.Types.GroupBy;
-  mode: "button" | "panel";
+  mode: PanelMode;
 }
 
 export interface NestedChartEditorOptions {
