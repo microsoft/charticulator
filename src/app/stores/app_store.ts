@@ -1031,18 +1031,19 @@ export class AppStore extends BaseStore {
       });
     }
 
-    const mappingOptions = {
-      type: MappingType.scale,
-      table: mapping.table,
-      expression: mapping.expression,
-      valueType: mapping.valueType,
-      scale: scaleObject._id,
-      allowSelectValue: mapping && mapping.valueIndex != undefined,
-    } as Specification.ScaleMapping;
+    if (newLegend) {
+      const mappingOptions = {
+        type: MappingType.scale,
+        table: mapping.table,
+        expression: mapping.expression,
+        valueType: mapping.valueType,
+        scale: scaleObject._id,
+        allowSelectValue: mapping && mapping.valueIndex != undefined,
+      } as Specification.ScaleMapping;
 
-    newLegend.mappings.mappingOptions = mappingOptions;
-
-    this.chartManager.addChartElement(newLegend);
+      newLegend.mappings.mappingOptions = mappingOptions;
+      this.chartManager.addChartElement(newLegend);
+    }
   }
 
   public getRepresentativeGlyphState(glyph: Specification.Glyph) {
@@ -1093,7 +1094,10 @@ export class AppStore extends BaseStore {
     this.currentTool = null;
     this.currentToolOptions = null;
 
-    this.chart = createDefaultChart(this.dataset, this.editorType === EditorType.Chart);
+    this.chart = createDefaultChart(
+      this.dataset,
+      this.editorType === EditorType.Chart
+    );
     this.chartManager = new Prototypes.ChartStateManager(
       this.chart,
       this.dataset
