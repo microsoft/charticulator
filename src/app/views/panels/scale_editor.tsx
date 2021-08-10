@@ -70,6 +70,7 @@ export class ScaleEditor extends React.Component<
     ) {
       canExtendLegend = true;
     }
+    const currentSelection = this.props.store.currentMappingAttributeFocus;
     return (
       <div
         className="scale-editor-view"
@@ -117,22 +118,18 @@ export class ScaleEditor extends React.Component<
                   />
                   <ButtonRaised
                     url={R.getSVGIcon("general/minus")}
-                    text={strings.scaleEditor.removeLast}
+                    text={strings.scaleEditor.removeSelected}
+                    disabled={(currentSelection?.length ?? 0) === 0}
                     onClick={() => {
-                      const mappingsKey = Object.keys(scale.properties.mapping);
-                      const theLastMapping: string = mappingsKey[
-                        mappingsKey.length - 1
-                      ] as string;
-                      if (
-                        theLastMapping.startsWith(ReservedMappingKeyNamePrefix)
-                      ) {
+                      if (currentSelection?.length > 0) {
                         new Actions.DeleteObjectProperty(
                           scale,
                           "mapping",
-                          theLastMapping,
-                          true,
+                          currentSelection,
+                          false,
                           true
                         ).dispatch(this.props.store.dispatcher);
+                        new Actions.SetCurrentMappingAttribute(null).dispatch(this.props.store.dispatcher);
                       }
                     }}
                   />
