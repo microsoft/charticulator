@@ -12,6 +12,8 @@ import {
 
 import { TextField } from "@fluentui/react";
 import { labelRender } from "./fluentui_customized_components";
+import { useEffect } from "react";
+import { set } from "d3";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
@@ -37,6 +39,12 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const [value, setValue] = React.useState(props.defaultValue);
   const [errorIndicator, setErrorIndicator] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
+
+  useEffect(() => {
+    if (props.value){
+      setValue(props.value)
+    }
+  }, [props.value])
 
   const doEnter = React.useCallback(() => {
     if (props.allowNull && value?.trim() == "") {
