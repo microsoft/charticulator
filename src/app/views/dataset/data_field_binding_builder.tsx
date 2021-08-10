@@ -15,11 +15,13 @@ import {
 } from "../panels/widgets/fluent_mapping_editor";
 import React = require("react");
 import { strings } from "../../../strings";
+import { MappingType } from "../../../core/specification";
 
 export interface IDefaultValue {
   table: string;
   // lambdaExpression?: string;
   expression?: string;
+  type?: MappingType;
 }
 
 interface Builder {
@@ -65,6 +67,7 @@ interface Builder {
 
   buildMenu(): void;
 }
+
 const DELIMITER = "-";
 
 class MenuItemsCreator {
@@ -238,49 +241,49 @@ class MenuItemsCreator {
 
       const subMenuProps = this.useAggregation
         ? {
-            items: Expression.getCompatibleAggregationFunctions(field.type).map(
-              (subMenuItem): IContextualMenuItem => {
-                const selectionKey: string =
-                  field.columnName + DELIMITER + subMenuItem.name;
-                const isSelected: boolean = this.checkSelection(selectionKey);
-                if (isSelected) {
-                  subMenuCheckedItem = subMenuItem.displayName;
-                }
-                const mapping = this.parent?.props?.parent?.getAttributeMapping(
-                  this.attribute
-                );
-                const isMappingEditor: boolean =
-                  mapping &&
-                  mapping.type == "scale" &&
-                  (mapping as Specification.ScaleMapping).scale
-                    ? true
-                    : false;
-
-                const scaleEditorSubMenuProps =
-                  isSelected && isMappingEditor
-                    ? {
-                        items: [
-                          {
-                            key: "mapping",
-                            onRender: () =>
-                              this.renderScaleEditor(this.parent, this.store),
-                          },
-                        ],
-                      }
-                    : null;
-
-                return {
-                  key: subMenuItem.name,
-                  text: subMenuItem.displayName,
-                  isChecked: isSelected,
-                  canCheck: true,
-                  onClick: onClickFn,
-                  split: isMappingEditor,
-                  subMenuProps: scaleEditorSubMenuProps,
-                };
+          items: Expression.getCompatibleAggregationFunctions(field.type).map(
+            (subMenuItem): IContextualMenuItem => {
+              const selectionKey: string =
+                field.columnName + DELIMITER + subMenuItem.name;
+              const isSelected: boolean = this.checkSelection(selectionKey);
+              if (isSelected) {
+                subMenuCheckedItem = subMenuItem.displayName;
               }
-            ),
-          }
+              const mapping = this.parent?.props?.parent?.getAttributeMapping(
+                this.attribute
+              );
+              const isMappingEditor: boolean =
+                mapping &&
+                mapping.type == "scale" &&
+                (mapping as Specification.ScaleMapping).scale
+                  ? true
+                  : false;
+
+              const scaleEditorSubMenuProps =
+                isSelected && isMappingEditor
+                  ? {
+                    items: [
+                      {
+                        key: "mapping",
+                        onRender: () =>
+                          this.renderScaleEditor(this.parent, this.store),
+                      },
+                    ],
+                  }
+                  : null;
+
+              return {
+                key: subMenuItem.name,
+                text: subMenuItem.displayName,
+                isChecked: isSelected,
+                canCheck: true,
+                onClick: onClickFn,
+                split: isMappingEditor,
+                subMenuProps: scaleEditorSubMenuProps,
+              };
+            }
+          ),
+        }
         : null;
       const selectionKey: string =
         field.columnName + DELIMITER + field.columnName;
@@ -368,13 +371,18 @@ class MenuItemsCreator {
 
   //todo: defaultValue without Aggregation
   public produceDefaultValue(defaultValue: IDefaultValue): void {
+    const mappingType = defaultValue?.type;
     this.defaultValue = defaultValue;
     let expression = null;
     let expressionAggregation = null;
     if (defaultValue != null) {
       if (defaultValue.expression != null) {
-        const parsed = Expression.parse(defaultValue.expression);
-
+        let parsed;
+        if (mappingType === MappingType.text) {
+          parsed = Expression.parseTextExpression(defaultValue.expression)?.parts[0]?.expression;
+        } else {
+          parsed = Expression.parse(defaultValue.expression);
+        }
         if (parsed instanceof Expression.FunctionCall) {
           expression = parsed.args[0].toString();
           expressionAggregation = parsed.name;

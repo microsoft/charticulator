@@ -55,6 +55,7 @@ import {
   MenuItemBuilder,
 } from "../../dataset/data_field_binding_builder";
 import { strings } from "../../../../strings";
+import { MappingType } from "../../../../core/specification";
 
 export interface MappingEditorProps {
   parent: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
@@ -790,13 +791,19 @@ function getMenuProps(
   };
 
   const mapping = parent.getAttributeMapping(attribute);
-  const currentExpression1: string =
-    mapping != null && mapping.type == "scale"
-      ? (mapping as Specification.ScaleMapping).expression
-      : null;
+  let currentExpression = null;
 
-  const defaultValue: IDefaultValue = currentExpression1
-    ? { table: options?.table ?? table, expression: currentExpression1 }
+  if (mapping != null) {
+    if (mapping.type == MappingType.text) {
+      currentExpression = (mapping as Specification.TextMapping).textExpression
+    }
+    if (mapping.type == MappingType.scale) {
+      currentExpression = (mapping as Specification.ScaleMapping).expression
+    }
+  }
+
+  const defaultValue: IDefaultValue = currentExpression
+    ? {table: options?.table ?? table, expression: currentExpression, type: mapping?.type}
     : null;
 
   return {
