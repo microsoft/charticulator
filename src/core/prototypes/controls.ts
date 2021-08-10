@@ -7,6 +7,7 @@ import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CharticulatorPropertyAccessors } from "../../app/views/panels/widgets/manager";
 import { CSSProperties } from "react";
+import { Prototypes } from "..";
 
 export type Widget = any;
 
@@ -167,7 +168,6 @@ export interface FilterEditorOptions {
   };
   value: Specification.Types.Filter;
   mode: PanelMode;
-  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
 }
 
 export interface GroupByEditorOptions {

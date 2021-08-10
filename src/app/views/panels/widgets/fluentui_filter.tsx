@@ -9,11 +9,13 @@ import { Prototypes } from "../../../../core";
 import { strings } from "../../../../strings";
 import { FluentButton } from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
+import { CharticulatorPropertyAccessors } from "./manager";
 
 export const FilterPanel: React.FC<{
   text: string;
   options: Prototypes.Controls.FilterEditorOptions;
-}> = ({ text, options }) => {
+  manager: Prototypes.Controls.WidgetManager & CharticulatorPropertyAccessors;
+}> = ({ text, options, manager }) => {
   const [isOpen, setOpen] = React.useState(false);
 
   switch (options.mode) {
@@ -46,7 +48,7 @@ export const FilterPanel: React.FC<{
               directionalHint={DirectionalHint.topCenter}
             >
               <FluentUIFilterEditor
-                manager={options.manager}
+                manager={manager}
                 value={options.value}
                 options={options}
               />
@@ -57,7 +59,7 @@ export const FilterPanel: React.FC<{
     case "panel":
       return (
         <FluentUIFilterEditor
-          manager={options.manager}
+          manager={manager}
           value={options.value}
           options={options}
         />

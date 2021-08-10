@@ -16,6 +16,7 @@ import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
 import { NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
+import { PanelMode } from "../controls";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -163,13 +164,13 @@ export abstract class PlotSegmentClass<
               table: this.object.table,
               target: { plotSegment: this.object },
               value: this.object.filter,
-              mode: "button",
+              mode: PanelMode.Button,
             }),
             manager.groupByEditor({
               table: this.object.table,
               target: { plotSegment: this.object },
               value: this.object.groupBy,
-              mode: "button",
+              mode: PanelMode.Button,
             }),
           ]
         )

@@ -1199,9 +1199,9 @@ export class FluentUIWidgetManager
       <FilterPanel
         options={{
           ...options,
-          manager: this,
         }}
         text={strings.filter.filterBy}
+        manager={this}
       />
     );
   }
