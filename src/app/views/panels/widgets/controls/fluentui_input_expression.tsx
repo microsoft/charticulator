@@ -38,6 +38,12 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const [errorIndicator, setErrorIndicator] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
 
+  React.useEffect(() => {
+    if (props.value){
+      setValue(props.value)
+    }
+  }, [props.value])
+
   const doEnter = React.useCallback(() => {
     if (props.allowNull && value?.trim() == "") {
       setValue("");
