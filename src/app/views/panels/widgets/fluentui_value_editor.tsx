@@ -4,7 +4,6 @@
 
 import { DefaultButton, Dropdown, Label, TextField } from "@fluentui/react";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {
   Color,
   colorFromHTMLColor,

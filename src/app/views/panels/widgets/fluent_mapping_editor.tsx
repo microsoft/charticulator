@@ -4,7 +4,6 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {
   EventEmitter,
   EventSubscription,
@@ -18,7 +17,6 @@ import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
-import * as R from "../../../resources";
 import { isKindAcceptable } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
@@ -526,11 +524,6 @@ export class FluentMappingEditor extends React.Component<
                 <>
                   <FluentButton>
                     <DefaultButton
-                      // elementRef={(e) =>
-                      //   (this.mappingButton = ReactDOM.findDOMNode(
-                      //     e
-                      //   ) as Element)
-                      // }
                       elementRef={(e) => (this.mappingButton = e)}
                       iconProps={{
                         iconName: "Link",
