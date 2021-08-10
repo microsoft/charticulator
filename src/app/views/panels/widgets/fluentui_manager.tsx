@@ -136,6 +136,7 @@ export class FluentUIWidgetManager
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
   private director: Director;
+
   private getKeyFromProperty(property: Prototypes.Controls.Property) {
     return `${property?.property}-${property?.field?.toString()}`;
   }
@@ -259,6 +260,28 @@ export class FluentUIWidgetManager
     ).dispatch(this.store.dispatcher);
   }
 
+  public emitUpdateProperty(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, property: Prototypes.Controls.Property, prevKey: string, newKey: string) {
+    console.log(prevKey, newKey);
+    event.preventDefault();
+    event.stopPropagation();
+    const validatedKey = newKey.length === 0 ? ' ' : newKey;
+    const oldPropertyValue = this.getPropertyValue(property) as Record<string, unknown>;
+    const changedValue: Record<string, unknown> = oldPropertyValue
+    const newValue = Object.keys(changedValue)
+      .reduce((obj: Record<string, unknown>, key) => {
+        obj[key === prevKey ? validatedKey : key] = oldPropertyValue[key];
+        return obj;
+      }, {});
+    new Actions.SetObjectProperty(
+      this.objectClass.object,
+      property.property,
+      property.field,
+      newValue as Specification.AttributeMap,
+      property.noUpdateState,
+      property.noComputeLayout
+    ).dispatch(this.store.dispatcher);
+  }
+
   public inputFormat(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputFormatOptions = {}
@@ -355,17 +378,30 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
+    let prevKey: string = options.value ?? '';
     return (
       <TextField
         key={this.getKeyFromProperty(property)}
-        value={this.getPropertyValue(property) as string}
+        value={options.value ? options.value : this.getPropertyValue(property) as string}
         placeholder={options.placeholder}
         label={options.label}
         onRenderLabel={labelRender}
         onChange={(event, value) => {
-          this.emitSetProperty(property, value);
+          options.updateProperty ? this.emitUpdateProperty(event, property, prevKey, value) : this.emitSetProperty(property, value);
+          prevKey = value
+          if (options.emitMappingAction) {
+            new Actions.SetCurrentMappingAttribute(value).dispatch(this.store.dispatcher)
+          }
+        }}
+        onClick={() => {
+          if (options.emitMappingAction) {
+            new Actions.SetCurrentMappingAttribute(prevKey).dispatch(this.store.dispatcher)
+          }
         }}
         type="text"
+        underlined={options.underline ?? false}
+        borderless={options.borderless ?? false}
+        style={options.styles}
       />
     );
   }
@@ -531,6 +567,7 @@ export class FluentUIWidgetManager
       );
     }
   }
+
   public inputBoolean(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputBooleanOptions
@@ -617,6 +654,7 @@ export class FluentUIWidgetManager
       />
     );
   }
+
   public inputColor(
     property: Prototypes.Controls.Property,
     options: Prototypes.Controls.InputColorOptions
@@ -630,14 +668,17 @@ export class FluentUIWidgetManager
         defaultValue={color}
         allowNull={options.allowNull}
         noDefaultMargin={options.noDefaultMargin}
+        labelKey={options.labelKey}
         onEnter={(value) => {
           this.emitSetProperty(property, value);
           return true;
         }}
-        labelKey={options.labelKey}
+        width={options.width}
+        underline={options.underline}
       />
     );
   }
+
   public inputColorGradient(
     property: Prototypes.Controls.Property,
     inline: boolean = false
@@ -668,6 +709,7 @@ export class FluentUIWidgetManager
       );
     }
   }
+
   public inputImage(property: Prototypes.Controls.Property) {
     return (
       <InputImage
@@ -680,6 +722,7 @@ export class FluentUIWidgetManager
       />
     );
   }
+
   public inputImageProperty(property: Prototypes.Controls.Property) {
     return (
       <InputImageProperty
@@ -859,7 +902,7 @@ export class FluentUIWidgetManager
                           const axisDataBinding = {
                             ...(this.objectClass.object.properties[
                               property.property
-                            ] as any),
+                              ] as any),
                           };
 
                           axisDataBinding.table = this.store.chartManager.getTable(
@@ -1005,6 +1048,7 @@ export class FluentUIWidgetManager
       </span>
     );
   }
+
   public label(title: string, options?: { addMargins: boolean }) {
     // return <span className="charticulator__widget-label">{title}</span>;
     return (
@@ -1017,19 +1061,21 @@ export class FluentUIWidgetManager
       </FluentLabelHeader>
     );
   }
+
   public text(title: string, align: "left" | "center" | "right" = "left") {
     return (
       <span
         className="charticulator__widget-text"
-        style={{ textAlign: align }}
+        style={{textAlign: align}}
         key={title + align}
       >
         {title}
       </span>
     );
   }
+
   public sep() {
-    return <span className="charticulator__widget-sep" />;
+    return <span className="charticulator__widget-sep"/>;
   }
 
   // Layout elements
@@ -1047,7 +1093,7 @@ export class FluentUIWidgetManager
 
       const onClick = (value: DataFieldSelectorValue) => {
         if (!value) {
-          this.emitSetProperty({ property: options.dropzone.property }, null);
+          this.emitSetProperty({property: options.dropzone.property}, null);
         } else {
           const data = new DragData.DataExpression(
             this.store.getTable(value.table),
@@ -1066,7 +1112,7 @@ export class FluentUIWidgetManager
       };
       const defaultValue: IDefaultValue =
         current && current.expression
-          ? { table: null, expression: current.expression }
+          ? {table: null, expression: current.expression}
           : null;
 
       const menu = this.director.buildSectionHeaderFieldsMenu(
@@ -1188,7 +1234,7 @@ export class FluentUIWidgetManager
                       </PopupView>
                     );
                   },
-                  { anchor: ReactDOM.findDOMNode(button) as Element }
+                  {anchor: ReactDOM.findDOMNode(button) as Element}
                 );
               }}
             />
@@ -1253,7 +1299,7 @@ export class FluentUIWidgetManager
                         </PopupView>
                       );
                     },
-                    { anchor: button as Element }
+                    {anchor: button as Element}
                   );
                 }}
               />
@@ -1276,7 +1322,7 @@ export class FluentUIWidgetManager
     };
 
     return (
-      <div style={{ display: "inline" }} ref={(e) => (button = e)}>
+      <div style={{display: "inline"}} ref={(e) => (button = e)}>
         {getControl()}
       </div>
     );
@@ -1339,11 +1385,11 @@ export class FluentUIWidgetManager
     return (
       <div className="charticulator__widget-row" key={title}>
         {title != null ? (
-          <span className="charticulator__widget-row-label el-layout-item">
+            <span className="charticulator__widget-row-label el-layout-item">
             {title}
           </span>
-        ) : // <Label>{title}</Label>
-        null}
+          ) : // <Label>{title}</Label>
+          null}
         {widget}
       </div>
     );
@@ -1382,15 +1428,15 @@ export class FluentUIWidgetManager
     return (
       <table className="charticulator__widget-table">
         <tbody>
-          {rows.map((row, index) => (
-            <tr key={index}>
-              {row.map((x, i) => (
-                <td key={i}>
-                  <span className="el-layout-item">{x}</span>
-                </td>
-              ))}
-            </tr>
-          ))}
+        {rows.map((row, index) => (
+          <tr key={index}>
+            {row.map((x, i) => (
+              <td key={i}>
+                <span className="el-layout-item">{x}</span>
+              </td>
+            ))}
+          </tr>
+        ))}
         </tbody>
       </table>
     );
@@ -1517,22 +1563,20 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-          ? this.props.draggingHint()
-          : this.props.children}
+            ? this.props.draggingHint()
+            : this.props.children}
       </div>
     );
   }
 }
 
-export class ReorderStringsValue extends React.Component<
-  {
-    items: string[];
-    onConfirm: (items: string[]) => void;
-    allowReset?: boolean;
-    onReset?: () => string[];
-  },
-  { items: string[] }
-> {
+export class ReorderStringsValue extends React.Component<{
+  items: string[];
+  onConfirm: (items: string[]) => void;
+  allowReset?: boolean;
+  onReset?: () => string[];
+},
+  { items: string[] }> {
   public state: { items: string[] } = {
     items: this.props.items.slice(),
   };
@@ -1546,7 +1590,7 @@ export class ReorderStringsValue extends React.Component<
             enabled={true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
-              this.setState({ items });
+              this.setState({items});
             }}
           >
             {items.map((x) => (
@@ -1561,14 +1605,14 @@ export class ReorderStringsValue extends React.Component<
             icon={"Sort"}
             text="Reverse"
             onClick={() => {
-              this.setState({ items: this.state.items.reverse() });
+              this.setState({items: this.state.items.reverse()});
             }}
           />{" "}
           <Button
             icon={"general/sort"}
             text="Sort"
             onClick={() => {
-              this.setState({ items: this.state.items.sort() });
+              this.setState({items: this.state.items.sort()});
             }}
           />
           {this.props.allowReset && (
@@ -1580,7 +1624,7 @@ export class ReorderStringsValue extends React.Component<
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
-                    this.setState({ items });
+                    this.setState({items});
                   }
                 }}
               />
@@ -1600,15 +1644,14 @@ export class ReorderStringsValue extends React.Component<
   }
 }
 
-export class FluentDetailsButton extends React.Component<
-  {
-    widgets: JSX.Element[];
-    manager: Prototypes.Controls.WidgetManager;
-    label?: string;
-  },
-  Record<string, unknown>
-> {
+export class FluentDetailsButton extends React.Component<{
+  widgets: JSX.Element[];
+  manager: Prototypes.Controls.WidgetManager;
+  label?: string;
+},
+  Record<string, unknown>> {
   public inner: DetailsButtonInner;
+
   public componentDidUpdate() {
     if (this.inner) {
       this.inner.forceUpdate();
@@ -1653,10 +1696,8 @@ export class FluentDetailsButton extends React.Component<
   }
 }
 
-export class DetailsButtonInner extends React.Component<
-  { parent: FluentDetailsButton },
-  Record<string, unknown>
-> {
+export class DetailsButtonInner extends React.Component<{ parent: FluentDetailsButton },
+  Record<string, unknown>> {
   public render() {
     const parent = this.props.parent;
     return (
