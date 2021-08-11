@@ -6,7 +6,10 @@ import { Expression, Prototypes, Specification } from "../../../../core";
 import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { FluentCheckbox } from "./controls/fluentui_customized_components";
+import {
+  FluentCheckbox,
+  labelRender,
+} from "./controls/fluentui_customized_components";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { CharticulatorPropertyAccessors } from "./manager";
 
@@ -220,6 +223,7 @@ export class FluentUIFilterEditor extends React.Component<
                   minWidth: 105,
                 },
               }}
+              onRenderLabel={labelRender}
               options={[
                 strings.filter.none,
                 strings.filter.categories,
