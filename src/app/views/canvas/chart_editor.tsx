@@ -977,6 +977,9 @@ export class ChartEditorView
                   x: controls.anchor.x,
                   y: -controls.anchor.y,
                 });
+                if (pt.x < 0 || pt.y < 0) {
+                  return null;
+                }
                 return (
                   <>
                     <div
