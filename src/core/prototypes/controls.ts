@@ -5,9 +5,7 @@ import { DataMappingHints } from ".";
 import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
-import { CharticulatorPropertyAccessors } from "../../app/views/panels/widgets/manager";
 import { CSSProperties } from "react";
-import { Prototypes } from "..";
 
 export type Widget = any;
 
