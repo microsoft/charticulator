@@ -5,6 +5,7 @@
 import { Callout, DefaultButton, DirectionalHint } from "@fluentui/react";
 import * as React from "react";
 import { Prototypes } from "../../../../core";
+import { PanelMode } from "../../../../core/prototypes/controls";
 
 import { strings } from "../../../../strings";
 import { FluentButton } from "./controls/fluentui_customized_components";
@@ -19,7 +20,7 @@ export const FilterPanel: React.FC<{
   const [isOpen, setOpen] = React.useState(false);
 
   switch (options.mode) {
-    case "button":
+    case PanelMode.Button:
       if (options.value) {
         if (options.value.categories) {
           text = strings.filter.filterBy + options.value.categories.expression;
@@ -56,7 +57,7 @@ export const FilterPanel: React.FC<{
           ) : null}
         </>
       );
-    case "panel":
+    case PanelMode.Panel:
       return (
         <FluentUIFilterEditor
           manager={manager}
