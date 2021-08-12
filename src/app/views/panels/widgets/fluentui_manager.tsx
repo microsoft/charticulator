@@ -261,7 +261,6 @@ export class FluentUIWidgetManager
   }
 
   public emitUpdateProperty(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, property: Prototypes.Controls.Property, prevKey: string, newKey: string) {
-    console.log(prevKey, newKey);
     event.preventDefault();
     event.stopPropagation();
     const validatedKey = newKey.length === 0 ? ' ' : newKey;

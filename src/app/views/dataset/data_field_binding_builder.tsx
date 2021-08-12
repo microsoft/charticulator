@@ -1,21 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import {
-  DataFieldSelectorValue,
-  DataFieldSelectorValueCandidate,
-} from "./fluent_ui_data_field_selector";
+import { DataFieldSelectorValue, DataFieldSelectorValueCandidate, } from "./fluent_ui_data_field_selector";
 import { Dataset, Expression, getById, Specification } from "../../../core";
 import { AppStore } from "../../stores";
 import { IContextualMenuItem } from "@fluentui/react";
 import { isKindAcceptable, type2DerivedColumns } from "./common";
 import { ScaleEditor } from "../panels/scale_editor";
-import {
-  FluentMappingEditor,
-  parentOfType,
-} from "../panels/widgets/fluent_mapping_editor";
-import React = require("react");
+import { FluentMappingEditor, parentOfType, } from "../panels/widgets/fluent_mapping_editor";
 import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
+import React = require("react");
+import { DerivedColumnDescription } from "../../../../dist/scripts/app/views/dataset/common";
+import { AggregationFunctionDescription } from "../../../../dist/scripts/core/expression";
 
 export interface IDefaultValue {
   table: string;
@@ -66,9 +62,17 @@ interface Builder {
   ): void;
 
   buildMenu(): void;
+
+  /**
+   * Add additional derived columns
+   * @see type2DerivedColumns
+   */
+  produceDerivedColumns(): void;
 }
 
 const DELIMITER = "-";
+const DERIVED_COLUMNS_POSTFIX = " Derived columns ";
+const DERIVED_COLUMNS_KEY_PREFIX = "_derived";
 
 class MenuItemsCreator {
   public menuItems: IContextualMenuItem[] = [];
@@ -79,8 +83,11 @@ class MenuItemsCreator {
     alert();
   };
   public useAggregation: boolean = false;
-
+  public useDerivedColumns: boolean = false;
+  private isDerivedColumns: boolean = false;
+  private derivedColumnsIdx: [number, DataFieldSelectorValue][] = [];
   private selectedKey: string = null;
+
 
   public defaultValue: IDefaultValue = null;
 
@@ -93,6 +100,19 @@ class MenuItemsCreator {
 
     if (item && field) {
       this.selectedKey = field.columnName + DELIMITER + item.key;
+    }
+  }
+
+  private onToggleDerivedSelect(
+    field: DataFieldSelectorValue,
+    derivedField: string,
+    ev?: React.MouseEvent<HTMLButtonElement>,
+    item?: IContextualMenuItem,
+  ): void {
+    ev && ev.preventDefault();
+
+    if (derivedField && field && item) {
+      this.selectedKey = field.columnName + DELIMITER + derivedField + DELIMITER + item.key;
     }
   }
 
@@ -218,6 +238,35 @@ class MenuItemsCreator {
     return r;
   }
 
+  private transformDerivedField(
+    item: DataFieldSelectorValue,
+    expression: string,
+    aggregation: string = null
+  ) {
+    if (aggregation == null) {
+      aggregation = Expression.getDefaultAggregationFunction(
+        item.type,
+        item.metadata?.kind
+      );
+    }
+    const r = {
+      table: item.table,
+      expression: item.expression + expression,
+      rawExpression: item.rawExpression + expression,
+      columnName: item.columnName,
+      type: item.type,
+      metadata: item.metadata,
+    };
+    if (this.useAggregation) {
+      r.expression = expression
+      r.rawExpression = Expression.functionCall(
+        aggregation,
+        Expression.parse(item.rawExpression)
+      ).toString();
+    }
+    return r;
+  }
+
   private checkSelection(key: string): boolean {
     return key.localeCompare(this.selectedKey) === 0;
   }
@@ -228,17 +277,27 @@ class MenuItemsCreator {
       this.attribute
     );
 
-    this.menuItems = this.fields.map((field) => {
+    this.menuItems = this.fields.map((field, idx) => {
       const onClickFn = (
         ev?: React.MouseEvent<HTMLButtonElement>,
         item?: IContextualMenuItem
       ) => {
-        this.onClick(this.transformField(field, item?.key));
+        const transformedField = this.transformField(field, item?.key);
+        if (mapping?.type === MappingType.scale) {
+          this.onClick(transformedField);
+        } else if (mapping?.type === MappingType.text) {
+          this.textMappingOnClick(transformedField.expression, field);
+        }
         this.onToggleSelect(field, ev, item);
       };
 
       let subMenuCheckedItem: string = null;
 
+      const derivedColumns = type2DerivedColumns[field.type];
+      if (derivedColumns) {
+        this.isDerivedColumns = true;
+        this.derivedColumnsIdx.push([idx, field]);
+      }
       const subMenuProps = this.useAggregation
         ? {
           items: Expression.getCompatibleAggregationFunctions(field.type).map(
@@ -249,28 +308,7 @@ class MenuItemsCreator {
               if (isSelected) {
                 subMenuCheckedItem = subMenuItem.displayName;
               }
-              const mapping = this.parent?.props?.parent?.getAttributeMapping(
-                this.attribute
-              );
-              const isMappingEditor: boolean =
-                mapping &&
-                mapping.type == "scale" &&
-                (mapping as Specification.ScaleMapping).scale
-                  ? true
-                  : false;
-
-              const scaleEditorSubMenuProps =
-                isSelected && isMappingEditor
-                  ? {
-                    items: [
-                      {
-                        key: "mapping",
-                        onRender: () =>
-                          this.renderScaleEditor(this.parent, this.store),
-                      },
-                    ],
-                  }
-                  : null;
+              const mappingConfig = this.scaleEditorMenu(isSelected);
 
               return {
                 key: subMenuItem.name,
@@ -278,8 +316,8 @@ class MenuItemsCreator {
                 isChecked: isSelected,
                 canCheck: true,
                 onClick: onClickFn,
-                split: isMappingEditor,
-                subMenuProps: scaleEditorSubMenuProps,
+                split: mappingConfig.isMappingEditor,
+                subMenuProps: mappingConfig.scaleEditorSubMenuProps,
               };
             }
           ),
@@ -295,7 +333,7 @@ class MenuItemsCreator {
           : "");
 
       return {
-        key: field.columnName,
+        key: field.columnName + (derivedColumns ? DERIVED_COLUMNS_KEY_PREFIX : ""),
         text: itemText,
         subMenuProps,
         canCheck: subMenuProps ? null : true,
@@ -318,7 +356,7 @@ class MenuItemsCreator {
       this.attribute
     );
 
-    if (mapping && mapping.type == "scale") {
+    if (mapping && mapping.type == MappingType.scale) {
       const scaleMapping = mapping as Specification.ScaleMapping;
       if (scaleMapping.scale) {
         const scaleObject = getById<Specification.Scale>(
@@ -328,13 +366,13 @@ class MenuItemsCreator {
 
         return (
           <ScaleEditor
-            scale={scaleObject}
-            scaleMapping={scaleMapping}
-            store={store}
-            plotSegment={parentOfType(
+            scale={ scaleObject }
+            scaleMapping={ scaleMapping }
+            store={ store }
+            plotSegment={ parentOfType(
               (parent.props.parent as any).objectClass.parent,
               "plot-segment"
-            )}
+            ) }
           />
         );
       }
@@ -364,9 +402,185 @@ class MenuItemsCreator {
     ];
   }
 
+  private scaleEditorMenu(isSelected: boolean) {
+    const mapping = this.parent?.props?.parent?.getAttributeMapping(
+      this.attribute
+    );
+    const isMappingEditor: boolean =
+      !!(mapping &&
+        mapping.type == MappingType.scale &&
+        (mapping as Specification.ScaleMapping).scale);
+
+    const scaleEditorSubMenuProps =
+      isSelected && isMappingEditor
+        ? {
+          items: [
+            {
+              key: "mapping",
+              onRender: () =>
+                this.renderScaleEditor(this.parent, this.store),
+            },
+          ],
+        }
+        : null;
+    return {scaleEditorSubMenuProps, isMappingEditor};
+  }
+
+  private textMappingOnClick(menuExpr: string, field: DataFieldSelectorValue) {
+    const newValue = '${' + menuExpr + '}';
+    if (
+      Expression.parseTextExpression(newValue).isTrivialString()
+    ) {
+      this?.parent?.props?.parent?.onEditMappingHandler(
+        this.attribute,
+        {
+          type: "value",
+          value: newValue,
+        } as Specification.ValueMapping
+      );
+    } else {
+      this?.parent?.props?.parent?.onEditMappingHandler(
+        this.attribute,
+        {
+          type: "text",
+          table: field.table,
+          textExpression: newValue,
+        } as Specification.TextMapping
+      );
+    }
+
+  }
+
+  private getDerivedColumnExpression(derivedColumn: DerivedColumnDescription, field: DataFieldSelectorValue, aggregationMenuItem: AggregationFunctionDescription) {
+    const expr = Expression.functionCall(
+      derivedColumn.function,
+      Expression.variable(field.columnName)
+    ).toString();
+    return `${ aggregationMenuItem.name }(${ expr })`
+  }
+
+  /**
+   * Add DerivedColumn
+   * @see derivedColumnsIdx
+   */
+  public appendDerivedColumn(): void {
+    const mapping = this.parent?.props?.parent?.getAttributeMapping(
+      this.attribute
+    );
+
+    if (this.useAggregation && this.isDerivedColumns) {
+      for (let i = 0; i < this.derivedColumnsIdx.length; i++) {
+        const menuIdx = this.derivedColumnsIdx[i][0];
+        const field = this.derivedColumnsIdx[i][1];
+        const derivedColumns = type2DerivedColumns[field.type];
+
+        let subMenuCheckedItem: string = null;
+        const subMenuProps = this.useAggregation
+          ? {
+            items: derivedColumns.map(
+              (derivedColumn): IContextualMenuItem => {
+                const subMenuProps = this.useAggregation
+                  ? {
+                    items: Expression.getCompatibleAggregationFunctions(derivedColumn.type).map(
+                      (aggregationMenuItem): IContextualMenuItem => {
+                        const onClickFn = (
+                          ev?: React.MouseEvent<HTMLButtonElement>,
+                          item?: IContextualMenuItem
+                        ) => {
+
+                          const menuExpr = this.getDerivedColumnExpression(derivedColumn, field, aggregationMenuItem)
+
+                          if (mapping?.type === MappingType.scale) {
+                            this.onClick(this.transformDerivedField(field, menuExpr, item?.key));
+                          } else if (mapping?.type === MappingType.text) {
+                            this.textMappingOnClick(menuExpr, field);
+                          }
+
+                          //update selection key
+                          this.onToggleDerivedSelect(field, derivedColumn.name, ev, item);
+                        };
+                        const selectionKey: string =
+                          field.columnName + DELIMITER + derivedColumn.name + DELIMITER + aggregationMenuItem.name;
+                        const isSelected: boolean = this.checkSelection(selectionKey);
+
+                        if (isSelected) {
+                          subMenuCheckedItem = derivedColumn.name + DELIMITER + aggregationMenuItem.name;
+                        }
+
+                        //function for mapping renderer
+                        const mapping = this.parent?.props?.parent?.getAttributeMapping(
+                          this.attribute
+                        );
+
+                        const mappingConfig = this.scaleEditorMenu(isSelected);
+
+                        return {
+                          key: aggregationMenuItem.name,
+                          text: aggregationMenuItem.displayName,
+                          isChecked: isSelected,
+                          canCheck: true,
+                          onClick: onClickFn,
+                          split: mappingConfig.isMappingEditor,
+                          subMenuProps: mappingConfig.scaleEditorSubMenuProps,
+                        };
+                      }
+                    ),
+                  }
+                  : null;
+                return {
+                  key: derivedColumn.name,
+                  text: derivedColumn.displayName,
+                  canCheck: true,
+                  subMenuProps,
+                };
+              }
+            ),
+          }
+          : null;
+
+        //key for no aggregation option
+        const selectionKey: string =
+          field.columnName + DELIMITER + field.columnName;
+
+        const itemText =
+          field.columnName + DERIVED_COLUMNS_POSTFIX +
+          (subMenuProps && subMenuCheckedItem && mapping
+            ? ` (${ subMenuCheckedItem })`
+            : "");
+
+        const derivedColumnsField = {
+          key: field.columnName,
+          text: itemText,
+          subMenuProps,
+          canCheck: subMenuProps ? null : true,
+          isChecked: this.checkSelection(selectionKey),
+          data: subMenuCheckedItem,
+        };
+        //add derived column field to menu
+        this.menuItems.splice(menuIdx + 1, 0, derivedColumnsField);
+      }
+      //we need clear array between renders
+      this.derivedColumnsIdx = []
+    }
+  }
+
+
   public buildMenu(): void {
     this.buildMenuFieldsItems();
+
+    if (this.useDerivedColumns) {
+      this.appendDerivedColumn();
+    }
     this.appendNull();
+  }
+
+  private parseDerivedColumnsExpression(expression: string): string {
+    const DATE_DERIVED_PREDIX: string = "date.";
+    if (expression.startsWith(DATE_DERIVED_PREDIX)) {
+      //data.year(DATE) -> DATE-year
+      return expression.match(/\(([^)]+)\)/)[1] + DELIMITER + expression.match(/\.([^(]+)\(/)[1]
+    }
+    return expression;
   }
 
   //todo: defaultValue without Aggregation
@@ -386,6 +600,9 @@ class MenuItemsCreator {
         if (parsed instanceof Expression.FunctionCall) {
           expression = parsed.args[0].toString();
           expressionAggregation = parsed.name;
+
+          //need to provide date.year() etc.
+          expression = this.parseDerivedColumnsExpression(expression)
         }
       }
       const value =
@@ -410,6 +627,10 @@ export class MenuItemBuilder implements Builder {
     parent: FluentMappingEditor
   ): void {
     this.menuItemsCreator.produceScaleEditor(store, attribute, parent);
+  }
+
+  produceDerivedColumns() {
+    this.menuItemsCreator.useDerivedColumns = true;
   }
 
   produceOnChange(fn: (value: DataFieldSelectorValue) => void): void {
@@ -477,6 +698,7 @@ export class Director {
     this.builder.produceUsingAggregation(true);
     this.builder.produceDefaultValue(defaultValue);
     this.builder.produceScaleEditor(datasetStore, attribute, parent);
+    this.builder.produceDerivedColumns();
     this.builder.buildMenu();
     return this.builder.getMenuItems();
   }

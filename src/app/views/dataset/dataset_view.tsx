@@ -392,7 +392,7 @@ export class ColumnView extends React.Component<
           ).toString();
           const type = desc.type;
           return this.renderColumnControl(
-            desc.name,
+            desc.displayName,
             R.getSVGIcon(kind2Icon[desc.metadata.kind]),
             expr,
             lambdaExpr,

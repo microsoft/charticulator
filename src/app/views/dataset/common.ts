@@ -47,6 +47,7 @@ export function isKindAcceptable(
 
 export interface DerivedColumnDescription {
   name: string;
+  displayName?: string;
   type: Dataset.DataType;
   function: string;
   metadata: Dataset.ColumnMetadata;
@@ -73,6 +74,7 @@ export const type2DerivedColumns: {
   date: [
     {
       name: "year",
+      displayName: "Year",
       type: Dataset.DataType.String,
       function: "date.year",
       metadata: {
@@ -82,6 +84,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "month",
+      displayName: "Month",
       type: Dataset.DataType.String,
       function: "date.month",
       metadata: {
@@ -91,6 +94,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "monthnumber",
+      displayName: "Month number",
       type: Dataset.DataType.String,
       function: "date.monthnumber",
       metadata: {
@@ -100,6 +104,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "day",
+      displayName: "Day",
       type: Dataset.DataType.String,
       function: "date.day",
       metadata: {
@@ -109,6 +114,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "weekOfYear",
+      displayName: "Week of year",
       type: Dataset.DataType.String,
       function: "date.weekOfYear",
       metadata: {
@@ -118,6 +124,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "dayOfYear",
+      displayName: "Day of year",
       type: Dataset.DataType.String,
       function: "date.dayOfYear",
       metadata: {
@@ -127,6 +134,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "weekday",
+      displayName: "Weekday",
       type: Dataset.DataType.String,
       function: "date.weekday",
       metadata: {
@@ -136,6 +144,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "hour",
+      displayName: "Hour",
       type: Dataset.DataType.String,
       function: "date.hour",
       metadata: {
@@ -145,6 +154,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "minute",
+      displayName: "Minute",
       type: Dataset.DataType.String,
       function: "date.minute",
       metadata: {
@@ -154,6 +164,7 @@ export const type2DerivedColumns: {
     },
     {
       name: "second",
+      displayName: "Second",
       type: Dataset.DataType.String,
       function: "date.second",
       metadata: {
