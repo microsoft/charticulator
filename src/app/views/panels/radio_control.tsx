@@ -5,11 +5,8 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
-import * as R from "../../resources";
-
-import { SVGImageIcon } from "../../components";
-
 import { classNames } from "../../utils";
+import { DefaultButton } from "@fluentui/react";
 
 export interface PanelRadioControlProps {
   options: string[];
@@ -33,7 +30,7 @@ export class PanelRadioControl extends React.Component<
       <span className={mainClass}>
         {this.props.options.map((option, index) => {
           return (
-            <span
+            <DefaultButton
               className={classNames("el-item", [
                 "is-active",
                 this.props.value == option,
@@ -44,14 +41,19 @@ export class PanelRadioControl extends React.Component<
                   this.props.onChange(option);
                 }
               }}
-            >
-              {this.props.icons ? (
-                <SVGImageIcon url={R.getSVGIcon(this.props.icons[index])} />
-              ) : null}
-              {this.props.labels && this.props.showText ? (
-                <span className="el-text">{this.props.labels[index]}</span>
-              ) : null}
-            </span>
+              iconProps={
+                this.props.icons
+                  ? {
+                      iconName: this.props.icons[index],
+                    }
+                  : null
+              }
+              text={
+                this.props.labels && this.props.showText
+                  ? this.props.labels[index]
+                  : null
+              }
+            />
           );
         })}
       </span>

@@ -45,6 +45,7 @@ export const FilterPanel: React.FC<{
           </FluentButton>
           {isOpen ? (
             <Callout
+              onDismiss={() => setOpen(false)}
               target="#filterTarget"
               directionalHint={DirectionalHint.topCenter}
             >

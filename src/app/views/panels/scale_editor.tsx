@@ -17,6 +17,7 @@ import { ReservedMappingKeyNamePrefix } from "../../../core/prototypes/legends/c
 import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
 import { ObjectClass } from "../../../core/prototypes";
+import { DefaultButton } from "@fluentui/react";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -96,8 +97,11 @@ export class ScaleEditor extends React.Component<
             <div className="action-buttons">
               {canExtendLegend ? (
                 <>
-                  <ButtonRaised
-                    url={R.getSVGIcon("general/plus")}
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "Add",
+                    }}
+                    disabled={(currentSelection?.length ?? 0) === 0}
                     text={strings.scaleEditor.add}
                     onClick={() => {
                       const mappingsKey = Object.keys(scale.properties.mapping);
@@ -116,10 +120,12 @@ export class ScaleEditor extends React.Component<
                       ).dispatch(this.props.store.dispatcher);
                     }}
                   />
-                  <ButtonRaised
-                    url={R.getSVGIcon("general/minus")}
-                    text={strings.scaleEditor.removeSelected}
+                  <DefaultButton
+                    iconProps={{
+                      iconName: "Remove",
+                    }}
                     disabled={(currentSelection?.length ?? 0) === 0}
+                    text={strings.scaleEditor.removeSelected}
                     onClick={() => {
                       if (currentSelection?.length > 0) {
                         new Actions.DeleteObjectProperty(
@@ -129,15 +135,19 @@ export class ScaleEditor extends React.Component<
                           false,
                           true
                         ).dispatch(this.props.store.dispatcher);
-                        new Actions.SetCurrentMappingAttribute(null).dispatch(this.props.store.dispatcher);
+                        new Actions.SetCurrentMappingAttribute(null).dispatch(
+                          this.props.store.dispatcher
+                        );
                       }
                     }}
                   />
                 </>
               ) : null}
               {canAddLegend ? (
-                <ButtonRaised
-                  url={R.getSVGIcon("CharticulatorLegend")}
+                <DefaultButton
+                  iconProps={{
+                    iconName: "CharticulatorLegend",
+                  }}
                   text={
                     store.isLegendExistForScale(scale._id)
                       ? strings.scaleEditor.removeLegend
