@@ -199,6 +199,18 @@ export const strings = {
     saveButton: "Save to My Charts",
     chartName: "Chart Name",
   },
+  filter: {
+    editFilter: "Edit Filter",
+    filterBy: "Filter by ",
+    filterType: "Filter Type",
+    none: "None",
+    categories: "Categories",
+    expression: "Expression",
+    selectAll: "Select All",
+    clear: "Clear",
+    values: "Values",
+    column: "Column",
+  },
   handles: {
     drawSpiral: "Draw Spiral",
     startAngle: "Start Angle",

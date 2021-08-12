@@ -153,6 +153,11 @@ export interface VerticalGroupOptions {
   header: string;
 }
 
+export const enum PanelMode {
+  Button = "button",
+  Panel = "panel",
+}
+
 export interface FilterEditorOptions {
   table: string;
   target: {
@@ -160,7 +165,7 @@ export interface FilterEditorOptions {
     property?: Property;
   };
   value: Specification.Types.Filter;
-  mode: "button" | "panel";
+  mode: PanelMode;
 }
 
 export interface GroupByEditorOptions {
@@ -170,7 +175,7 @@ export interface GroupByEditorOptions {
     property?: Property;
   };
   value: Specification.Types.GroupBy;
-  mode: "button" | "panel";
+  mode: PanelMode;
 }
 
 export interface NestedChartEditorOptions {

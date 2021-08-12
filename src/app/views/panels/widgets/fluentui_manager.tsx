@@ -42,7 +42,6 @@ import {
   InputColorGradient,
   FluentComboBoxFontFamily,
 } from "./controls";
-import { FilterEditor } from "./filter_editor";
 import { GroupByEditor } from "./groupby_editor";
 import {
   ChartTemplate,
@@ -92,6 +91,7 @@ import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
   InputTextOptions,
+  PanelMode,
 } from "../../../../core/prototypes/controls";
 
 import { mergeStyles } from "@fluentui/merge-styles";
@@ -107,6 +107,7 @@ import { FluentInputFormat } from "./controls/fluentui_input_format";
 
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
+import { FilterPanel } from "./fluentui_filter";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -260,18 +261,28 @@ export class FluentUIWidgetManager
     ).dispatch(this.store.dispatcher);
   }
 
-  public emitUpdateProperty(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, property: Prototypes.Controls.Property, prevKey: string, newKey: string) {
+  public emitUpdateProperty(
+    event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    property: Prototypes.Controls.Property,
+    prevKey: string,
+    newKey: string
+  ) {
     console.log(prevKey, newKey);
     event.preventDefault();
     event.stopPropagation();
-    const validatedKey = newKey.length === 0 ? ' ' : newKey;
-    const oldPropertyValue = this.getPropertyValue(property) as Record<string, unknown>;
-    const changedValue: Record<string, unknown> = oldPropertyValue
-    const newValue = Object.keys(changedValue)
-      .reduce((obj: Record<string, unknown>, key) => {
+    const validatedKey = newKey.length === 0 ? " " : newKey;
+    const oldPropertyValue = this.getPropertyValue(property) as Record<
+      string,
+      unknown
+    >;
+    const changedValue: Record<string, unknown> = oldPropertyValue;
+    const newValue = Object.keys(changedValue).reduce(
+      (obj: Record<string, unknown>, key) => {
         obj[key === prevKey ? validatedKey : key] = oldPropertyValue[key];
         return obj;
-      }, {});
+      },
+      {}
+    );
     new Actions.SetObjectProperty(
       this.objectClass.object,
       property.property,
@@ -378,24 +389,34 @@ export class FluentUIWidgetManager
     property: Prototypes.Controls.Property,
     options: InputTextOptions
   ) {
-    let prevKey: string = options.value ?? '';
+    let prevKey: string = options.value ?? "";
     return (
       <TextField
         key={this.getKeyFromProperty(property)}
-        value={options.value ? options.value : this.getPropertyValue(property) as string}
+        value={
+          options.value
+            ? options.value
+            : (this.getPropertyValue(property) as string)
+        }
         placeholder={options.placeholder}
         label={options.label}
         onRenderLabel={labelRender}
         onChange={(event, value) => {
-          options.updateProperty ? this.emitUpdateProperty(event, property, prevKey, value) : this.emitSetProperty(property, value);
-          prevKey = value
+          options.updateProperty
+            ? this.emitUpdateProperty(event, property, prevKey, value)
+            : this.emitSetProperty(property, value);
+          prevKey = value;
           if (options.emitMappingAction) {
-            new Actions.SetCurrentMappingAttribute(value).dispatch(this.store.dispatcher)
+            new Actions.SetCurrentMappingAttribute(value).dispatch(
+              this.store.dispatcher
+            );
           }
         }}
         onClick={() => {
           if (options.emitMappingAction) {
-            new Actions.SetCurrentMappingAttribute(prevKey).dispatch(this.store.dispatcher)
+            new Actions.SetCurrentMappingAttribute(prevKey).dispatch(
+              this.store.dispatcher
+            );
           }
         }}
         type="text"
@@ -903,7 +924,7 @@ export class FluentUIWidgetManager
                           const axisDataBinding = {
                             ...(this.objectClass.object.properties[
                               property.property
-                              ] as any),
+                            ] as any),
                           };
 
                           axisDataBinding.table = this.store.chartManager.getTable(
@@ -1067,7 +1088,7 @@ export class FluentUIWidgetManager
     return (
       <span
         className="charticulator__widget-text"
-        style={{textAlign: align}}
+        style={{ textAlign: align }}
         key={title + align}
       >
         {title}
@@ -1076,7 +1097,7 @@ export class FluentUIWidgetManager
   }
 
   public sep() {
-    return <span className="charticulator__widget-sep"/>;
+    return <span className="charticulator__widget-sep" />;
   }
 
   // Layout elements
@@ -1094,7 +1115,7 @@ export class FluentUIWidgetManager
 
       const onClick = (value: DataFieldSelectorValue) => {
         if (!value) {
-          this.emitSetProperty({property: options.dropzone.property}, null);
+          this.emitSetProperty({ property: options.dropzone.property }, null);
         } else {
           const data = new DragData.DataExpression(
             this.store.getTable(value.table),
@@ -1113,7 +1134,7 @@ export class FluentUIWidgetManager
       };
       const defaultValue: IDefaultValue =
         current && current.expression
-          ? {table: null, expression: current.expression}
+          ? { table: null, expression: current.expression }
           : null;
 
       const menu = this.director.buildSectionHeaderFieldsMenu(
@@ -1195,66 +1216,15 @@ export class FluentUIWidgetManager
   public filterEditor(
     options: Prototypes.Controls.FilterEditorOptions
   ): JSX.Element {
-    let button: HTMLElement;
-    let text = "Filter by...";
-    switch (options.mode) {
-      case "button":
-        if (options.value) {
-          if (options.value.categories) {
-            text = "Filter by " + options.value.categories.expression;
-          }
-          if (options.value.expression) {
-            text = "Filter by " + options.value.expression;
-          }
-        }
-        return (
-          <FluentButton
-            marginTop={"0px"}
-            key={
-              this.getKeyFromProperty(options?.target?.property) +
-              options?.table +
-              options?.value
-            }
-          >
-            <DefaultButton
-              text={text}
-              elementRef={(e) => (button = e)}
-              iconProps={{
-                iconName: "Filter",
-              }}
-              onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => {
-                    return (
-                      <PopupView context={context}>
-                        <FilterEditor
-                          manager={this}
-                          value={options.value}
-                          options={options}
-                        />
-                      </PopupView>
-                    );
-                  },
-                  {anchor: ReactDOM.findDOMNode(button) as Element}
-                );
-              }}
-            />
-          </FluentButton>
-        );
-      case "panel":
-        return (
-          <FilterEditor
-            key={
-              this.getKeyFromProperty(options?.target?.property) +
-              options?.table +
-              options?.value
-            }
-            manager={this}
-            value={options.value}
-            options={options}
-          />
-        );
-    }
+    return (
+      <FilterPanel
+        options={{
+          ...options,
+        }}
+        text={strings.filter.filterBy}
+        manager={this}
+      />
+    );
   }
 
   public groupByEditor(
@@ -1264,7 +1234,7 @@ export class FluentUIWidgetManager
     let text = strings.objects.plotSegment.groupBy;
     const getControl = () => {
       switch (options.mode) {
-        case "button":
+        case PanelMode.Button:
           if (options.value) {
             if (options.value.expression) {
               text =
@@ -1300,13 +1270,13 @@ export class FluentUIWidgetManager
                         </PopupView>
                       );
                     },
-                    {anchor: button as Element}
+                    { anchor: button as Element }
                   );
                 }}
               />
             </FluentButton>
           );
-        case "panel":
+        case PanelMode.Panel:
           return (
             <GroupByEditor
               key={
@@ -1323,7 +1293,7 @@ export class FluentUIWidgetManager
     };
 
     return (
-      <div style={{display: "inline"}} ref={(e) => (button = e)}>
+      <div style={{ display: "inline" }} ref={(e) => (button = e)}>
         {getControl()}
       </div>
     );
@@ -1386,11 +1356,11 @@ export class FluentUIWidgetManager
     return (
       <div className="charticulator__widget-row" key={title}>
         {title != null ? (
-            <span className="charticulator__widget-row-label el-layout-item">
+          <span className="charticulator__widget-row-label el-layout-item">
             {title}
           </span>
-          ) : // <Label>{title}</Label>
-          null}
+        ) : // <Label>{title}</Label>
+        null}
         {widget}
       </div>
     );
@@ -1429,15 +1399,15 @@ export class FluentUIWidgetManager
     return (
       <table className="charticulator__widget-table">
         <tbody>
-        {rows.map((row, index) => (
-          <tr key={index}>
-            {row.map((x, i) => (
-              <td key={i}>
-                <span className="el-layout-item">{x}</span>
-              </td>
-            ))}
-          </tr>
-        ))}
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((x, i) => (
+                <td key={i}>
+                  <span className="el-layout-item">{x}</span>
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     );
@@ -1564,20 +1534,22 @@ export class DropZoneView
         {this.props.draggingHint == null
           ? this.props.children
           : this.state.isInSession
-            ? this.props.draggingHint()
-            : this.props.children}
+          ? this.props.draggingHint()
+          : this.props.children}
       </div>
     );
   }
 }
 
-export class ReorderStringsValue extends React.Component<{
-  items: string[];
-  onConfirm: (items: string[]) => void;
-  allowReset?: boolean;
-  onReset?: () => string[];
-},
-  { items: string[] }> {
+export class ReorderStringsValue extends React.Component<
+  {
+    items: string[];
+    onConfirm: (items: string[]) => void;
+    allowReset?: boolean;
+    onReset?: () => string[];
+  },
+  { items: string[] }
+> {
   public state: { items: string[] } = {
     items: this.props.items.slice(),
   };
@@ -1591,7 +1563,7 @@ export class ReorderStringsValue extends React.Component<{
             enabled={true}
             onReorder={(a, b) => {
               ReorderListView.ReorderArray(items, a, b);
-              this.setState({items});
+              this.setState({ items });
             }}
           >
             {items.map((x) => (
@@ -1606,14 +1578,14 @@ export class ReorderStringsValue extends React.Component<{
             icon={"Sort"}
             text="Reverse"
             onClick={() => {
-              this.setState({items: this.state.items.reverse()});
+              this.setState({ items: this.state.items.reverse() });
             }}
           />{" "}
           <Button
             icon={"general/sort"}
             text="Sort"
             onClick={() => {
-              this.setState({items: this.state.items.sort()});
+              this.setState({ items: this.state.items.sort() });
             }}
           />
           {this.props.allowReset && (
@@ -1625,7 +1597,7 @@ export class ReorderStringsValue extends React.Component<{
                 onClick={() => {
                   if (this.props.onReset) {
                     const items = this.props.onReset();
-                    this.setState({items});
+                    this.setState({ items });
                   }
                 }}
               />
@@ -1645,12 +1617,14 @@ export class ReorderStringsValue extends React.Component<{
   }
 }
 
-export class FluentDetailsButton extends React.Component<{
-  widgets: JSX.Element[];
-  manager: Prototypes.Controls.WidgetManager;
-  label?: string;
-},
-  Record<string, unknown>> {
+export class FluentDetailsButton extends React.Component<
+  {
+    widgets: JSX.Element[];
+    manager: Prototypes.Controls.WidgetManager;
+    label?: string;
+  },
+  Record<string, unknown>
+> {
   public inner: DetailsButtonInner;
 
   public componentDidUpdate() {
@@ -1697,8 +1671,10 @@ export class FluentDetailsButton extends React.Component<{
   }
 }
 
-export class DetailsButtonInner extends React.Component<{ parent: FluentDetailsButton },
-  Record<string, unknown>> {
+export class DetailsButtonInner extends React.Component<
+  { parent: FluentDetailsButton },
+  Record<string, unknown>
+> {
   public render() {
     const parent = this.props.parent;
     return (

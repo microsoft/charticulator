@@ -270,8 +270,8 @@
   }
   .el-field-item {
     padding: 10px;
-    height: 24px;
-    line-height: 24px;
+    height: 14px;
+    line-height: 14px;
     cursor: not-allowed;
     &.is-selectable {
       cursor: pointer;
@@ -283,10 +283,10 @@
       padding-right: 8px;
     }
     &:hover {
-      background: $gray-210;
+      background: $color-primary-light;
     }
     &.is-active {
-      background: $gray-080;
+      background: $color-active;
       color: $white;
       .el-svg-icon {
         filter: invert(100%);
