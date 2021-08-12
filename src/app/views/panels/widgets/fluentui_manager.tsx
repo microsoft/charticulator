@@ -80,6 +80,9 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { Icon } from "@fluentui/react/lib/Icon";
 import {
   defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
   FluentDropdown,
@@ -450,6 +453,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <ComboBox
+        styles={defaultStyle as any}
         key={this.getKeyFromProperty(property)}
         selectedKey={this.getPropertyValue(property) as string}
         label={options.label}
@@ -542,7 +546,9 @@ export class FluentUIWidgetManager
             return true;
           }}
           styles={{
+            ...defaultStyle,
             title: {
+              ...defultComponentsHeight,
               borderWidth: options.hideBorder ? "0px" : null,
             },
             dropdownItemsWrapper: {
@@ -769,6 +775,11 @@ export class FluentUIWidgetManager
         marginTop={isHeader ? "0px" : null}
       >
         <DefaultButton
+          styles={{
+            root: {
+              ...defultBindButtonSize,
+            },
+          }}
           iconProps={{
             iconName: icon || "EraseTool",
           }}
@@ -903,6 +914,11 @@ export class FluentUIWidgetManager
       >
         <FluentButton marginTop={"0px"}>
           <DefaultButton
+            styles={{
+              root: {
+                ...defultComponentsHeight,
+              },
+            }}
             iconProps={{
               iconName: "SortLines",
             }}
@@ -1181,6 +1197,9 @@ export class FluentUIWidgetManager
                 menuIcon: {
                   display: "none !important",
                 },
+                root: {
+                  ...defultBindButtonSize,
+                },
               }}
             />
           </FluentButton>
@@ -1252,6 +1271,11 @@ export class FluentUIWidgetManager
               }
             >
               <DefaultButton
+                styles={{
+                  root: {
+                    ...defultComponentsHeight,
+                  },
+                }}
                 text={text}
                 elementRef={(e) => (button = e)}
                 iconProps={{

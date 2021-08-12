@@ -23,6 +23,8 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { strings } from "../../../../strings";
 import {
   defaultLabelStyle,
+  defaultStyle,
+  defultComponentsHeight,
   FluentTextField,
   labelRender,
 } from "./controls/fluentui_customized_components";
@@ -113,6 +115,7 @@ export class FluentValueEditor extends ContextedComponent<
           <span className="el-color-value">
             <FluentTextField>
               <TextField
+                styles={defaultStyle}
                 label={this.props.label}
                 placeholder={this.props.placeholder}
                 defaultValue={hex}
@@ -233,6 +236,7 @@ export class FluentValueEditor extends ContextedComponent<
                   }
                   return true;
                 }}
+                styles={defaultStyle}
               />
             </>
           );
@@ -243,6 +247,7 @@ export class FluentValueEditor extends ContextedComponent<
         const strings = this.props.hints.rangeEnum;
         return (
           <Dropdown
+            styles={defaultStyle as any}
             label={this.props.label}
             onRenderLabel={labelRender}
             selectedKey={str}
@@ -272,6 +277,11 @@ export class FluentValueEditor extends ContextedComponent<
                 {strings.objects.visibleOn.visibility}
               </Label>
               <DefaultButton
+                styles={{
+                  root: {
+                    ...defultComponentsHeight,
+                  },
+                }}
                 text={strings.attributesPanel.conditionedBy}
                 onClick={() => {
                   this.props.onBeginDataFieldSelection();

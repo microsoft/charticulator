@@ -8,7 +8,10 @@ import { Prototypes } from "../../../../core";
 import { PanelMode } from "../../../../core/prototypes/controls";
 
 import { strings } from "../../../../strings";
-import { FluentButton } from "./controls/fluentui_customized_components";
+import {
+  defultComponentsHeight,
+  FluentButton,
+} from "./controls/fluentui_customized_components";
 import { FluentUIFilterEditor } from "./fluentui_filter_editor";
 import { CharticulatorPropertyAccessors } from "./manager";
 
@@ -40,6 +43,11 @@ export const FilterPanel: React.FC<{
               }}
               onClick={() => {
                 setOpen(!isOpen);
+              }}
+              styles={{
+                root: {
+                  ...defultComponentsHeight,
+                },
               }}
             />
           </FluentButton>

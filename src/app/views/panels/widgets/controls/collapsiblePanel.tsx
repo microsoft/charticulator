@@ -70,7 +70,9 @@ export const CollapsiblePanel: React.FunctionComponent<{
           },
         ]}
         compact={true}
-        styles={groupStyles}
+        styles={{
+          ...groupStyles,
+        }}
       />
     </FluentGroupedList>
   );

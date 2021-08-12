@@ -10,7 +10,7 @@ import {
   replaceSymbolByNewLine,
   replaceTabBySymbol,
 } from "../../../../../core";
-import { labelRender } from "./fluentui_customized_components";
+import { defaultStyle, labelRender } from "./fluentui_customized_components";
 import { InputExpressionProps } from "./fluentui_input_expression";
 
 export interface InputFormatProps {
@@ -59,6 +59,7 @@ export const FluentInputFormat: React.FC<InputExpressionProps> = (
   return (
     <span className="charticulator__widget-control-input-expression">
       <TextField
+        styles={defaultStyle}
         label={props.label}
         onRenderLabel={labelRender}
         placeholder={props.placeholder}

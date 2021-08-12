@@ -19,7 +19,12 @@ import { PopupView } from "../../../../controllers/popup_controller";
 import { AppStore } from "../../../../stores";
 
 import { Callout, TextField } from "@fluentui/react";
-import { FluentTextField, labelRender } from "./fluentui_customized_components";
+import {
+  defaultStyle,
+  defultComponentsHeight,
+  FluentTextField,
+  labelRender,
+} from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
 
 export interface InputColorProps {
@@ -93,7 +98,19 @@ export class FluentInputColor extends React.Component<
                 e.stopPropagation();
               }
             }}
-            styles={{ fieldGroup: { width: this.props.width } }}
+            styles={{
+              ...defaultStyle,
+              fieldGroup: {
+                ...defultComponentsHeight,
+                width: this.props.width,
+              },
+              field: {
+                ...defultComponentsHeight,
+              },
+              root: {
+                ...defultComponentsHeight,
+              },
+            }}
             underlined={this.props.underline ?? false}
           />
         </FluentTextField>

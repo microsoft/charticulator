@@ -10,8 +10,11 @@ import {
   IGroupHeaderStyles,
   ILabelStyles,
   IRenderFunction,
+  IStyle,
   IStyleFunctionOrObject,
   ITextFieldProps,
+  ITextFieldStyleProps,
+  ITextFieldStyles,
   Label,
 } from "@fluentui/react";
 import styled from "styled-components";
@@ -39,7 +42,6 @@ export const FluentLabelHeader = styled.div<{
 export const FluentActionButton = styled.div`
   button {
     border: 1px solid;
-    height: 32px;
     width: 100%;
     overflow: hidden;
   }
@@ -53,7 +55,6 @@ export const FluentTextField = styled.div`
 `;
 
 export const FluentCheckbox = styled.div`
-  margin-top: 2px;
   margin-bottom: 2px;
 `;
 
@@ -95,9 +96,19 @@ export const FluentGroupedList = styled.div`
   }
 
   .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 `;
+
+export const defultBindButtonSize = {
+  height: "24px",
+  width: "24px",
+};
+
+export const defultComponentsHeight = {
+  height: "24px",
+  lineHeight: "24px",
+};
 
 export const groupHeaderStyles: IStyleFunctionOrObject<
   IGroupHeaderStyleProps,
@@ -108,6 +119,12 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   headerCount: {
     display: "none",
+  },
+  groupHeaderContainer: {
+    ...defultComponentsHeight,
+  },
+  expand: {
+    ...defultBindButtonSize,
   },
 };
 
@@ -147,3 +164,24 @@ export const FluentDropdown = styled.div`
   }
   display: inline;
 `;
+
+export const defaultStyle: any = {
+  field: defultComponentsHeight,
+  fieldGroup: defultComponentsHeight,
+  dropdown: defultComponentsHeight,
+  // dropdownItems: defultComponentnsHeight,
+  dropdownOptionText: defultComponentsHeight,
+  dropdownItem: {
+    minHeight: "24px",
+    ...defultComponentsHeight,
+  },
+  dropdownItemHeader: defultComponentsHeight,
+  dropdownItemSelected: {
+    minHeight: "24px",
+    lineHeight: "24px",
+    ...defultComponentsHeight,
+  },
+  caretDown: defultComponentsHeight,
+  caretDownWrapper: defultComponentsHeight,
+  title: defultComponentsHeight,
+};

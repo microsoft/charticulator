@@ -37,6 +37,9 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  defultComponentsHeight,
   FluentActionButton,
   FluentButton,
   labelRender,
@@ -268,6 +271,7 @@ export class FluentMappingEditor extends React.Component<
           if (options.defaultAuto) {
             return (
               <TextField
+                styles={defaultStyle}
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
                 placeholder={strings.core.auto}
@@ -281,6 +285,7 @@ export class FluentMappingEditor extends React.Component<
           } else {
             return (
               <TextField
+                styles={defaultStyle}
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
                 placeholder={strings.core.none}
@@ -378,6 +383,10 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       menuIcon: {
                         display: "none !important",
+                        ...defultComponentsHeight,
+                      },
+                      root: {
+                        ...defultComponentsHeight,
                       },
                     }}
                     title={strings.mappingEditor.bindData}
@@ -507,6 +516,11 @@ export class FluentMappingEditor extends React.Component<
                     iconProps={{
                       iconName: "EraseTool",
                     }}
+                    styles={{
+                      root: {
+                        ...defultBindButtonSize,
+                      },
+                    }}
                     checked={false}
                     title={strings.mappingEditor.remove}
                     onClick={() => {
@@ -533,6 +547,9 @@ export class FluentMappingEditor extends React.Component<
                         menuIcon: {
                           display: "none !important",
                         },
+                        root: {
+                          ...defultBindButtonSize,
+                        },
                       }}
                       title={strings.mappingEditor.bindData}
                       checked={isDataMapping}
@@ -548,6 +565,11 @@ export class FluentMappingEditor extends React.Component<
                   <DefaultButton
                     iconProps={{
                       iconName: "Link",
+                    }}
+                    styles={{
+                      root: {
+                        ...defultBindButtonSize,
+                      },
                     }}
                     title={strings.mappingEditor.bindDataValue}
                     elementRef={(e) => (this.mappingButton = e)}
@@ -788,15 +810,19 @@ function getMenuProps(
 
   if (mapping != null) {
     if (mapping.type == MappingType.text) {
-      currentExpression = (mapping as Specification.TextMapping).textExpression
+      currentExpression = (mapping as Specification.TextMapping).textExpression;
     }
     if (mapping.type == MappingType.scale) {
-      currentExpression = (mapping as Specification.ScaleMapping).expression
+      currentExpression = (mapping as Specification.ScaleMapping).expression;
     }
   }
 
   const defaultValue: IDefaultValue = currentExpression
-    ? {table: options?.table ?? table, expression: currentExpression, type: mapping?.type}
+    ? {
+        table: options?.table ?? table,
+        expression: currentExpression,
+        type: mapping?.type,
+      }
     : null;
 
   return {
