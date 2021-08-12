@@ -1,11 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+import { Checkbox, DefaultButton, Dropdown } from "@fluentui/react";
 import * as React from "react";
 import { Expression, Prototypes, Specification } from "../../../../core";
 import { strings } from "../../../../strings";
 import { Actions } from "../../../actions";
 import { DataFieldSelector } from "../../dataset/data_field_selector";
-import { Button, InputExpression, Select, CheckBox } from "./controls";
+import {
+  FluentCheckbox,
+  labelRender,
+} from "./controls/fluentui_customized_components";
+import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { CharticulatorPropertyAccessors } from "./manager";
 
 export interface FilterEditorProps {
@@ -17,7 +22,7 @@ export interface FilterEditorState {
   type: string;
   currentValue: Specification.Types.Filter;
 }
-export class FilterEditor extends React.Component<
+export class FluentUIFilterEditor extends React.Component<
   FilterEditorProps,
   FilterEditorState
 > {
@@ -64,25 +69,30 @@ export class FilterEditor extends React.Component<
       case "expression":
         {
           typedControls = [
-            manager.row(
-              "Expression",
-              <InputExpression
-                validate={(newValue) =>
-                  manager.store.verifyUserExpressionWithTable(
+            <FluentInputExpression
+              validate={(newValue) => {
+                if (newValue) {
+                  return manager.store.verifyUserExpressionWithTable(
                     newValue,
                     options.table,
                     { expectedTypes: ["boolean"] }
-                  )
+                  );
+                } else {
+                  return {
+                    pass: true,
+                  };
                 }
-                defaultValue={this.state.currentValue.expression}
-                onEnter={(newValue) => {
-                  this.emitUpdateFilter({
-                    expression: newValue,
-                  });
-                  return true;
-                }}
-              />
-            ),
+              }}
+              allowNull={true}
+              value={this.state.currentValue.expression}
+              onEnter={(newValue) => {
+                this.emitUpdateFilter({
+                  expression: newValue,
+                });
+                return true;
+              }}
+              label={strings.filter.expression}
+            />,
           ];
         }
         break;
@@ -99,8 +109,8 @@ export class FilterEditor extends React.Component<
             keysSorted.sort((a, b) => (a < b ? -1 : 1));
           }
           typedControls = [
-            manager.row(
-              "Column",
+            manager.vertical(
+              manager.label(strings.filter.column),
               <div className="charticulator__filter-editor-column-selector">
                 <DataFieldSelector
                   defaultValue={{
@@ -134,12 +144,12 @@ export class FilterEditor extends React.Component<
               </div>
             ),
             keysSorted.length > 0
-              ? manager.row(
-                  "Values",
+              ? manager.vertical(
+                  manager.label(strings.filter.values),
                   <div className="charticulator__filter-editor-values-selector">
                     <div className="el-buttons">
-                      <Button
-                        text="Select All"
+                      <DefaultButton
+                        text={strings.filter.selectAll}
                         onClick={() => {
                           for (const key in value.categories.values) {
                             // eslint-disable-next-line
@@ -155,8 +165,8 @@ export class FilterEditor extends React.Component<
                           });
                         }}
                       />{" "}
-                      <Button
-                        text="Clear"
+                      <DefaultButton
+                        text={strings.filter.clear}
                         onClick={() => {
                           for (const key in value.categories.values) {
                             // eslint-disable-next-line
@@ -173,23 +183,24 @@ export class FilterEditor extends React.Component<
                         }}
                       />
                     </div>
-                    <div className="el-list">
+                    <div>
                       {keysSorted.map((key) => (
                         <div key={key}>
-                          <CheckBox
-                            value={value.categories.values[key]}
-                            text={key}
-                            fillWidth={true}
-                            onChange={(newValue) => {
-                              value.categories.values[key] = newValue;
-                              this.emitUpdateFilter({
-                                categories: {
-                                  expression: value.categories.expression,
-                                  values: value.categories.values,
-                                },
-                              });
-                            }}
-                          />
+                          <FluentCheckbox>
+                            <Checkbox
+                              checked={value.categories.values[key]}
+                              label={key}
+                              onChange={(ev, newValue) => {
+                                value.categories.values[key] = newValue;
+                                this.emitUpdateFilter({
+                                  categories: {
+                                    expression: value.categories.expression,
+                                    values: value.categories.values,
+                                  },
+                                });
+                              }}
+                            />
+                          </FluentCheckbox>
                         </div>
                       ))}
                     </div>
@@ -205,33 +216,44 @@ export class FilterEditor extends React.Component<
         <div className="attribute-editor">
           <div className="header">{strings.filter.editFilter}</div>
           {manager.vertical(
-            manager.row(
-              strings.filter.filterType,
-              <Select
-                onChange={(newValue) => {
-                  if (this.state.type != newValue) {
-                    if (newValue == "none") {
-                      this.emitUpdateFilter(null);
-                    } else {
-                      this.setState({
-                        type: newValue,
-                        currentValue: {
+            <Dropdown
+              label={strings.filter.filterType}
+              styles={{
+                root: {
+                  minWidth: 105,
+                },
+              }}
+              onRenderLabel={labelRender}
+              options={[
+                strings.filter.none,
+                strings.filter.categories,
+                strings.filter.expression,
+              ].map((type) => {
+                return {
+                  key: type.toLowerCase(),
+                  text: type,
+                };
+              })}
+              selectedKey={this.state.type}
+              onChange={(event, newValue) => {
+                if (this.state.type != newValue.key) {
+                  if (newValue.key == "none") {
+                    this.emitUpdateFilter(null);
+                  } else {
+                    this.setState({
+                      type: newValue.key as string,
+                      currentValue: {
+                        expression: "",
+                        categories: {
                           expression: "",
-                          categories: {
-                            expression: "",
-                            values: {},
-                          },
+                          values: {},
                         },
-                      });
-                    }
+                      },
+                    });
                   }
-                }}
-                value={this.state.type}
-                options={["none", "categories", "expression"]}
-                labels={["None", "Categories", "Expression"]}
-                showText={true}
-              />
-            ),
+                }
+              }}
+            />,
             ...typedControls
           )}
         </div>

@@ -217,11 +217,15 @@ export class LinkCreationPanel extends ContextedComponent<
     let candidates2: Prototypes.LinkAnchor.Description[] = [];
     for (const mark of glyphState1.marks) {
       const c = manager.getMarkClass(mark);
-      candidates1 = candidates1.concat(c.getLinkAnchors("begin"));
+      if (c.getLinkAnchors) {
+        candidates1 = candidates1.concat(c.getLinkAnchors("begin"));
+      }
     }
     for (const mark of glyphState2.marks) {
       const c = manager.getMarkClass(mark);
-      candidates2 = candidates2.concat(c.getLinkAnchors("end"));
+      if (c.getLinkAnchors) {
+        candidates2 = candidates2.concat(c.getLinkAnchors("end"));
+      }
     }
     // Filter based on link type
     switch (this.state.linkType) {
