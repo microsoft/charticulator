@@ -136,7 +136,7 @@ export const strings = {
     removeLast: "Remove the last",
     addLegend: "Add Legend",
     removeLegend: "Remove Legend",
-    removeSelected: "Remove"
+    removeSelected: "Remove",
   },
   mappingEditor: {
     bindData: "Bind data",
@@ -503,6 +503,19 @@ export const strings = {
         triangle: "Triangle",
         ellipse: "Ellipse",
       },
+    },
+    derivedColumns: {
+      year: "Year",
+      month: "Month",
+      monthNumber: "Month number",
+      day: "Day",
+      weekOfYear: "Week of year",
+      dayOfYear: "Day of year",
+      weekday: "Weekday",
+      hour: "Hour",
+      minute: "Minute",
+      second: "Second",
+      menuSuffix: " Derived columns ",
     },
   },
 };

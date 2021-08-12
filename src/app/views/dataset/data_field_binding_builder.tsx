@@ -80,7 +80,6 @@ interface Builder {
 }
 
 const DELIMITER = "-";
-const DERIVED_COLUMNS_POSTFIX = " Derived columns ";
 const DERIVED_COLUMNS_KEY_PREFIX = "_derived";
 
 class MenuItemsCreator {
@@ -468,6 +467,8 @@ class MenuItemsCreator {
    * Add DerivedColumn
    * @see derivedColumnsIdx
    */
+
+  // eslint-disable-next-line max-lines-per-function
   public appendDerivedColumn(): void {
     const mapping = this.parent?.props?.parent?.getAttributeMapping(
       this.attribute
@@ -577,7 +578,7 @@ class MenuItemsCreator {
 
         const itemText =
           field.columnName +
-          DERIVED_COLUMNS_POSTFIX +
+          strings.objects.derivedColumns.menuSuffix +
           (subMenuProps && subMenuCheckedItem && mapping
             ? ` (${subMenuCheckedItem})`
             : "");
