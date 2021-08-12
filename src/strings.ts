@@ -136,7 +136,12 @@ export const strings = {
     removeLast: "Remove the last",
     addLegend: "Add Legend",
     removeLegend: "Remove Legend",
-    removeSelected: "Remove"
+    removeSelected: "Remove",
+  },
+  legendCreator: {
+    legendType: "Legend type:",
+    connectBy: "Connect by:",
+    createLegend: "Create Legend",
   },
   mappingEditor: {
     bindData: "Bind data",
