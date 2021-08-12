@@ -365,7 +365,9 @@ export class EditingLink extends React.Component<
             glyphState.marks[elementIndex]
           );
           const mode: "begin" | "end" = glyphIndex == 0 ? "begin" : "end";
-          let anchors = markClass.getLinkAnchors(mode);
+          let anchors = markClass.getLinkAnchors
+            ? markClass.getLinkAnchors(mode)
+            : [];
           anchors = anchors.filter((anchor) => {
             if (lineMode == "line") {
               return anchor.points.length == 1;
