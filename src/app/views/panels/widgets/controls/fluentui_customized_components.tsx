@@ -95,7 +95,7 @@ export const FluentGroupedList = styled.div`
     margin-bottom: 5px;
   }
 
-  .ms-List-surface .ms-List-cell .ms-List-cell\ {
+  .ms-List-surface .ms-List-page .ms-List-cell {
     min-height: 24px;
   }
 `;
@@ -169,10 +169,9 @@ export const defaultStyle: any = {
   field: defultComponentsHeight,
   fieldGroup: defultComponentsHeight,
   dropdown: defultComponentsHeight,
-  // dropdownItems: defultComponentnsHeight,
   dropdownOptionText: defultComponentsHeight,
   dropdownItem: {
-    minHeight: "24px",
+    minHeight: "25px",
     ...defultComponentsHeight,
   },
   dropdownItemHeader: defultComponentsHeight,
