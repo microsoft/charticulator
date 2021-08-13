@@ -400,7 +400,8 @@ export class ColumnView extends React.Component<
             null,
             desc.metadata,
             undefined,
-            expr
+            expr,
+            desc.displayName
           );
         })}
       </div>
@@ -424,7 +425,8 @@ export class ColumnView extends React.Component<
     additionalElement: JSX.Element = null,
     metadata: Dataset.ColumnMetadata,
     onColumnKindChanged?: (column: string, type: string) => void,
-    rawColumnExpr?: string
+    rawColumnExpr?: string,
+    displayLabel?: string
   ) {
     let anchor: HTMLDivElement;
     return (
@@ -496,7 +498,7 @@ export class ColumnView extends React.Component<
           ]}
         >
           <SVGImageIcon url={icon} />
-          <span className="el-text">{label}</span>
+          <span className="el-text">{displayLabel ?? label}</span>
           {additionalElement}
         </DraggableElement>
       </div>
@@ -540,7 +542,8 @@ export class ColumnView extends React.Component<
                 new Actions.UpdatePlotSegments()
               );
             },
-            Expression.variable(c.metadata.rawColumnName || c.name).toString()
+            Expression.variable(c.metadata.rawColumnName || c.name).toString(),
+            c.displayName
           )}
           {this.state.isExpanded ? derivedColumnsControl : null}
         </div>
@@ -564,7 +567,8 @@ export class ColumnView extends React.Component<
           );
           this.forceUpdate();
         },
-        Expression.variable(c.metadata.rawColumnName || c.name).toString()
+        Expression.variable(c.metadata.rawColumnName || c.name).toString(),
+        c.displayName
       );
     }
   }

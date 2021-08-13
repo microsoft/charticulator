@@ -5,11 +5,10 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 
 import * as React from "react";
-import * as R from "../../resources";
 
 import { EventSubscription, Specification, uniqueID } from "../../../core";
 import { Actions } from "../../actions";
-import { ButtonRaised, EditableTextView } from "../../components";
+import { EditableTextView } from "../../components";
 
 import { AppStore } from "../../stores";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";

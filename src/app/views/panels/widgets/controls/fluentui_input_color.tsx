@@ -36,6 +36,8 @@ export interface InputColorProps {
   pickerBeforeTextField?: boolean;
 }
 
+const ID_PREFIX = "id_";
+
 export class FluentInputColor extends React.Component<
   InputColorProps,
   Record<string, unknown>
@@ -58,7 +60,7 @@ export class FluentInputColor extends React.Component<
           backgroundColor: hex == "" ? "transparent" : hex,
           marginTop: this.props.noDefaultMargin ? 5 : null,
         }}
-        id={pickerId}
+        id={ID_PREFIX + pickerId}
         onClick={() => {
           this.setState({ open: !this.state.open });
         }}
@@ -100,9 +102,10 @@ export class FluentInputColor extends React.Component<
         {!this.props.pickerBeforeTextField && picker}
         {this.state.open && (
           <Callout
-            target={`#${pickerId}`}
+            target={`#${ID_PREFIX}${pickerId}`}
             onDismiss={() => this.setState({ open: !this.state.open })}
           >
+
             <ColorPicker
               store={this.props.store}
               allowNull={true}

@@ -509,5 +509,18 @@ export const strings = {
         ellipse: "Ellipse",
       },
     },
+    derivedColumns: {
+      year: "Year",
+      month: "Month",
+      monthNumber: "Month number",
+      day: "Day",
+      weekOfYear: "Week of year",
+      dayOfYear: "Day of year",
+      weekday: "Weekday",
+      hour: "Hour",
+      minute: "Minute",
+      second: "Second",
+      menuSuffix: " Derived columns ",
+    },
   },
 };

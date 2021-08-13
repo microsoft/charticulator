@@ -17,7 +17,7 @@ import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
-import { isKindAcceptable } from "../../dataset/common";
+import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
@@ -565,6 +565,42 @@ export class FluentMappingEditor extends React.Component<
     );
   }
 
+  private menuKeyClick(derivedExpression: string) {
+    setTimeout(() => {
+      const aggContainer = document.querySelector("body :last-child.ms-Layer");
+      const button: HTMLButtonElement = aggContainer?.querySelector(
+        "button.ms-ContextualMenu-splitMenu"
+      );
+      if (button == null) {
+        const derColumnsContainer = document.querySelector(
+          "body :last-child.ms-Layer"
+        );
+        const derColumnsContainerXpath = `//span[text()="${derivedExpression}"]`;
+        const derMenuItem = document.evaluate(
+          derColumnsContainerXpath,
+          derColumnsContainer,
+          null,
+          XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null
+        ).singleNodeValue as HTMLSpanElement;
+        setTimeout(() => {
+          derMenuItem?.click();
+          setTimeout(() => {
+            const aggContainer = document.querySelector(
+              "body :last-child.ms-Layer"
+            );
+            const splitButton: HTMLButtonElement = aggContainer?.querySelector(
+              "button.ms-ContextualMenu-splitMenu"
+            );
+            splitButton?.click();
+          }, 100);
+        }, 100);
+      } else {
+        button?.click();
+      }
+    }, 100);
+  }
+
   private openEditor(
     currentMapping: Specification.Mapping,
     clickOnButton: boolean
@@ -573,8 +609,9 @@ export class FluentMappingEditor extends React.Component<
       if (clickOnButton) {
         this.mappingButton?.click();
       }
-      let expression = null;
+      let expression: string = null;
       let expressionAggregation: string = null;
+      let derivedExpression: string = null;
       if (currentMapping != null) {
         if ((currentMapping as Specification.ScaleMapping).expression != null) {
           const parsed = Expression.parse(
@@ -584,6 +621,12 @@ export class FluentMappingEditor extends React.Component<
           if (parsed instanceof Expression.FunctionCall) {
             expression = parsed.args[0].toString();
             expressionAggregation = parsed.name;
+
+            if (expression.startsWith("date.")) {
+              derivedExpression = type2DerivedColumns.date.find((item) =>
+                expression.startsWith(item.function)
+              )?.displayName;
+            }
           }
 
           const aggName = aggregationFunctions.find(
@@ -598,17 +641,27 @@ export class FluentMappingEditor extends React.Component<
             XPathResult.FIRST_ORDERED_NODE_TYPE,
             null
           ).singleNodeValue as HTMLSpanElement;
-          menuItem?.click();
 
-          setTimeout(() => {
-            const container = document.querySelector(
-              "body :last-child.ms-Layer"
-            );
-            const button: HTMLButtonElement = container.querySelector(
-              "button.ms-ContextualMenu-splitMenu"
-            );
-            button?.click();
-          }, 100);
+          if (menuItem == null) {
+            // const derSubXpath = `//div[class="ms-ContextualMenu-linkContent"]/span[contains(text(), "${derivedExpression}")]`;
+            const derSubXpath = `//span[contains(text(), "${derivedExpression}")]`;
+            const derElement = document.evaluate(
+              derSubXpath,
+              document,
+              null,
+              XPathResult.FIRST_ORDERED_NODE_TYPE,
+              null
+            ).singleNodeValue as HTMLSpanElement;
+            setTimeout(() => {
+              derElement?.click();
+              this.menuKeyClick(derivedExpression);
+            });
+          } else {
+            setTimeout(() => {
+              menuItem?.click();
+              this.menuKeyClick(derivedExpression);
+            }, 100);
+          }
         }
       }
     }, 100);
@@ -788,15 +841,19 @@ function getMenuProps(
 
   if (mapping != null) {
     if (mapping.type == MappingType.text) {
-      currentExpression = (mapping as Specification.TextMapping).textExpression
+      currentExpression = (mapping as Specification.TextMapping).textExpression;
     }
     if (mapping.type == MappingType.scale) {
-      currentExpression = (mapping as Specification.ScaleMapping).expression
+      currentExpression = (mapping as Specification.ScaleMapping).expression;
     }
   }
 
   const defaultValue: IDefaultValue = currentExpression
-    ? {table: options?.table ?? table, expression: currentExpression, type: mapping?.type}
+    ? {
+        table: options?.table ?? table,
+        expression: currentExpression,
+        type: mapping?.type,
+      }
     : null;
 
   return {
