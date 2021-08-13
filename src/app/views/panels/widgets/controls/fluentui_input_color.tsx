@@ -53,17 +53,19 @@ export class FluentInputColor extends React.Component<
       hex = colorToHTMLColorHEX(this.props.defaultValue);
     }
     const pickerId = this.props.labelKey.replace(/\W/g, "_");
-    const picker: JSX.Element = (<span
-      className="el-color-display"
-      style={{
-        backgroundColor: hex == "" ? "transparent" : hex,
-        marginTop: this.props.noDefaultMargin ? 5 : null,
-      }}
-      id={ID_PREFIX + pickerId}
-      onClick={() => {
-        this.setState({open: !this.state.open});
-      }}
-    />)
+    const picker: JSX.Element = (
+      <span
+        className="el-color-display"
+        style={{
+          backgroundColor: hex == "" ? "transparent" : hex,
+          marginTop: this.props.noDefaultMargin ? 5 : null,
+        }}
+        id={ID_PREFIX + pickerId}
+        onClick={() => {
+          this.setState({ open: !this.state.open });
+        }}
+      />
+    );
     return (
       <span className="charticulator__widget-control-input-color">
         {this.props.pickerBeforeTextField && picker}
@@ -93,13 +95,17 @@ export class FluentInputColor extends React.Component<
                 e.stopPropagation();
               }
             }}
-            styles={{fieldGroup: {width: this.props.width}}}
+            styles={{ fieldGroup: { width: this.props.width } }}
             underlined={this.props.underline ?? false}
           />
         </FluentTextField>
-        {(!this.props.pickerBeforeTextField) && picker}
+        {!this.props.pickerBeforeTextField && picker}
         {this.state.open && (
-          <Callout target={`#${ID_PREFIX}${pickerId}`}>
+          <Callout
+            target={`#${ID_PREFIX}${pickerId}`}
+            onDismiss={() => this.setState({ open: !this.state.open })}
+          >
+
             <ColorPicker
               store={this.props.store}
               allowNull={true}
@@ -109,7 +115,7 @@ export class FluentInputColor extends React.Component<
                 } else {
                   this.props.onEnter(color);
                 }
-                this.setState({open: !this.state.open});
+                this.setState({ open: !this.state.open });
               }}
             />
           </Callout>

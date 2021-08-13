@@ -20,7 +20,13 @@ import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
-import { Dialog, getTheme, IconButton } from "@fluentui/react";
+import {
+  Callout,
+  Dialog,
+  DirectionalHint,
+  getTheme,
+  IconButton,
+} from "@fluentui/react";
 import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
 const theme = getTheme();
@@ -801,7 +807,7 @@ export const LinkButton: React.FC<{
   const [isOpen, openDialog] = React.useState(false);
 
   return (
-    <span>
+    <span id="linkCreator">
       <IconButton
         title={strings.toolbar.link}
         text={props.label ? strings.toolbar.link : ""}
@@ -813,48 +819,50 @@ export const LinkButton: React.FC<{
           openDialog(true);
         }}
       />
-      <Dialog
-        hidden={!isOpen}
-        onDismiss={() => openDialog(false)}
-        dialogContentProps={{
-          title: "Create link",
-          showCloseButton: true,
-          onDismiss: () => openDialog(false),
-        }}
-      >
-        <LinkCreationPanel onFinish={() => openDialog(false)} />
-      </Dialog>
+      {isOpen ? (
+        <Callout
+          target={"#linkCreator"}
+          hidden={!isOpen}
+          onDismiss={() => openDialog(false)}
+        >
+          <LinkCreationPanel onFinish={() => openDialog(false)} />
+        </Callout>
+      ) : null}
     </span>
   );
 };
 
 export const LegendButton: React.FC = () => {
   const { store } = React.useContext(MainReactContext);
-  const [isOpen, openDialog] = React.useState(false);
+  const [isOpen, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    return () => {
+      setOpen(false);
+    };
+  }, [setOpen]);
 
   return (
-    <span>
+    <span id="createLegend">
       <IconButton
+        title={strings.toolbar.legend}
         iconProps={{
           iconName: "CharticulatorLegend",
         }}
         checked={store.currentTool == "legend"}
         onClick={() => {
-          openDialog(true);
+          setOpen(!isOpen);
         }}
       />
-      <Dialog
-        hidden={!isOpen}
-        onDismiss={() => openDialog(false)}
-        maxWidth={600}
-        dialogContentProps={{
-          title: "Create legend",
-          showCloseButton: true,
-          onDismiss: () => openDialog(false),
-        }}
-      >
-        <LegendCreationPanel onFinish={() => openDialog(false)} />
-      </Dialog>
+      {isOpen ? (
+        <Callout
+          onDismiss={() => setOpen(false)}
+          target="#createLegend"
+          directionalHint={DirectionalHint.bottomLeftEdge}
+        >
+          <LegendCreationPanel onFinish={() => setOpen(false)} />
+        </Callout>
+      ) : null}
     </span>
   );
 };

@@ -26,6 +26,7 @@ import {
 import { ReorderListView } from "./object_list_editor";
 import { PanelRadioControl } from "./radio_control";
 import { MappingType } from "../../../core/specification";
+import { PrimaryButton } from "@fluentui/react";
 
 export interface LinkCreationPanelProps {
   onFinish?: () => void;
@@ -140,7 +141,7 @@ export class LinkCreationPanel extends ContextedComponent<
           </div>
         ) : null}
         <div className="el-row">
-          <ButtonRaised
+          <PrimaryButton
             text="Create Links"
             onClick={() => {
               const links = this.getLinkObject();

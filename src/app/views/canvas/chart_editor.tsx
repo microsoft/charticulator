@@ -70,6 +70,7 @@ export interface ChartEditorViewState {
       }
     | false;
   isSolving: boolean;
+  canvasToolbar: boolean;
 }
 
 /**
@@ -105,6 +106,7 @@ export class ChartEditorView
       viewWidth: 100,
       viewHeight: 100,
       isSolving: false,
+      canvasToolbar: true,
     };
 
     this.tokens = [];
@@ -977,7 +979,7 @@ export class ChartEditorView
                   x: controls.anchor.x,
                   y: -controls.anchor.y,
                 });
-                if (pt.x < 0 || pt.y < 0) {
+                if (pt.x < 0 || pt.y < 0 || !this.state.canvasToolbar) {
                   return null;
                 }
                 return (
@@ -1003,6 +1005,11 @@ export class ChartEditorView
                           overflow: "hidden",
                         },
                       }}
+                      onDismiss={() =>
+                        this.setState({
+                          canvasToolbar: false,
+                        })
+                      }
                     >
                       {manager.horizontal(
                         controls.widgets.map(() => 0),

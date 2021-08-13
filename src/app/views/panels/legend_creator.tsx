@@ -13,6 +13,8 @@ import {
 import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
 import { AttributeType, MappingType } from "../../../core/specification";
+import { DefaultButton, Label, PrimaryButton } from "@fluentui/react";
+import { strings } from "../../../strings";
 
 export interface LegendCreationPanelProps {
   onFinish?: () => void;
@@ -45,7 +47,8 @@ export class LegendCreationPanel extends ContextedComponent<
     return (
       <div className="charticulator__link-type-table">
         <div className="el-row">
-          <h2>Legend type:</h2>
+          {/* <h2>Legend type:</h2> */}
+          <Label>{strings.legendCreator.legendType}</Label>
           <PanelRadioControl
             options={["columnValues", "columnNames"]}
             labels={["Column values", "Column names"]}
@@ -58,7 +61,8 @@ export class LegendCreationPanel extends ContextedComponent<
         </div>
         {this.state.legendDataSource == "columnValues" ? (
           <div>
-            <h2>Connect by:</h2>
+            {/* <h2>Connect by:</h2> */}
+            <Label>{strings.legendCreator.connectBy}</Label>
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={false}
@@ -76,7 +80,8 @@ export class LegendCreationPanel extends ContextedComponent<
           </div>
         ) : (
           <div>
-            <h2>Connect by:</h2>
+            {/* <h2>Connect by:</h2> */}
+            <Label>{strings.legendCreator.connectBy}</Label>
             <div className="el-row">
               <DataFieldSelector
                 multiSelect={true}
@@ -94,8 +99,8 @@ export class LegendCreationPanel extends ContextedComponent<
           </div>
         )}
         <div className="el-row">
-          <ButtonRaised
-            text="Create Legend"
+          <PrimaryButton
+            text={strings.legendCreator.createLegend}
             // eslint-disable-next-line
             onClick={() => {
               const columns = this.groupBySelector
