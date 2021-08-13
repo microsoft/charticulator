@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { getById, Prototypes, Specification, Expression } from "../../../core";
-import { ButtonRaised } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import {
@@ -13,7 +12,7 @@ import {
 import { PanelRadioControl } from "./radio_control";
 import { DataKind, TableType } from "../../../core/dataset";
 import { AttributeType, MappingType } from "../../../core/specification";
-import { DefaultButton, Label, PrimaryButton } from "@fluentui/react";
+import { Label, PrimaryButton } from "@fluentui/react";
 import { strings } from "../../../strings";
 
 export interface LegendCreationPanelProps {
