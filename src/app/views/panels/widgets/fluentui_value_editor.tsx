@@ -247,7 +247,9 @@ export class FluentValueEditor extends ContextedComponent<
         const strings = this.props.hints.rangeEnum;
         return (
           <Dropdown
-            styles={defaultStyle as any}
+            styles={{
+              ...(defaultStyle as any),
+            }}
             label={this.props.label}
             onRenderLabel={labelRender}
             selectedKey={str}

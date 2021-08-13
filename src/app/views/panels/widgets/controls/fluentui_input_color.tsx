@@ -104,9 +104,6 @@ export class FluentInputColor extends React.Component<
                 ...defultComponentsHeight,
                 width: this.props.width,
               },
-              field: {
-                ...defultComponentsHeight,
-              },
               root: {
                 ...defultComponentsHeight,
               },

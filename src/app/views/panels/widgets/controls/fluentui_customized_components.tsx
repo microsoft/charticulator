@@ -166,21 +166,46 @@ export const FluentDropdown = styled.div`
 `;
 
 export const defaultStyle: any = {
-  field: defultComponentsHeight,
+  field: {
+    defultComponentsHeight,
+    height: "20px",
+  },
   fieldGroup: defultComponentsHeight,
-  dropdown: defultComponentsHeight,
-  dropdownOptionText: defultComponentsHeight,
+  dropdown: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  dropdownOptionText: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
   dropdownItem: {
+    boxSizing: "unset",
     minHeight: "25px",
     ...defultComponentsHeight,
   },
-  dropdownItemHeader: defultComponentsHeight,
+  dropdownItemHeader: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
   dropdownItemSelected: {
+    boxSizing: "unset",
     minHeight: "24px",
     lineHeight: "24px",
     ...defultComponentsHeight,
   },
-  caretDown: defultComponentsHeight,
-  caretDownWrapper: defultComponentsHeight,
-  title: defultComponentsHeight,
+  caretDown: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  caretDownWrapper: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  title: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+    height: "22px",
+    lineHeight: "22px",
+  },
 };
