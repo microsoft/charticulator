@@ -417,6 +417,9 @@ export const strings = {
       normal: "Normal",
       groupBy: "Group by...",
       groupByCategory: "Group by ",
+      distribution: "Distribution",
+      gravity: "Gravity",
+      order: "Order",
     },
     visibleOn: {
       visibility: "Visibility",

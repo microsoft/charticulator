@@ -567,7 +567,7 @@ export class FluentUIWidgetManager
             options.type
           }`}
         >
-          {options.label ? (
+          {options.label && options.label.length > 0 ? (
             <Label styles={defaultLabelStyle}>{options.label}</Label>
           ) : null}
           {options.options.map((option, index) => {
