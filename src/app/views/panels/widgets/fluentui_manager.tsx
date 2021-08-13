@@ -1205,11 +1205,7 @@ export class FluentUIWidgetManager
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          <FluentLabelHeader
-            marginBottom={"5px"}
-            marginTop={"-5px"}
-            marginRight={"4px"}
-          >
+          <FluentLabelHeader>
             <Label>{title}</Label>
           </FluentLabelHeader>
           {widget}
@@ -1238,7 +1234,7 @@ export class FluentUIWidgetManager
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
+          <FluentLabelHeader>
             <Label>{title}</Label>
           </FluentLabelHeader>
           {widget}
