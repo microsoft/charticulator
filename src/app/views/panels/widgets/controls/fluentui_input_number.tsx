@@ -14,6 +14,7 @@ import {
   defaultFontWeight,
   defaultLabelStyle,
   defaultStyle,
+  defultComponentsHeight,
   FluentLayoutItem,
   FluentRowLayout,
   labelRender,
@@ -108,7 +109,14 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     }
     return (
       <Slider
-        styles={defaultStyle}
+        styles={{
+          root: {
+            ...defultComponentsHeight,
+          },
+          slideBox: {
+            ...defultComponentsHeight,
+          },
+        }}
         min={sliderMin}
         max={sliderMax}
         value={+value}
