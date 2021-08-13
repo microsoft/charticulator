@@ -582,6 +582,12 @@ export class FluentUIWidgetManager
                 style={{
                   stroke: `${theme.palette.themePrimary} !important`,
                 }}
+                styles={{
+                  label: null,
+                  root: {
+                    ...defultBindButtonSize,
+                  },
+                }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
                 onClick={() => {
@@ -613,6 +619,9 @@ export class FluentUIWidgetManager
                 label={options.label}
                 styles={{
                   label: defaultLabelStyle,
+                  root: {
+                    ...defultComponentsHeight,
+                  },
                 }}
                 onChange={(event, v) => {
                   this.emitSetProperty(property, v);
@@ -632,7 +641,11 @@ export class FluentUIWidgetManager
             title={options.label}
             label={options.label}
             styles={{
+              ...defultBindButtonSize,
               label: defaultLabelStyle,
+              root: {
+                ...defultBindButtonSize,
+              },
             }}
             text={options.label}
             ariaLabel={options.label}
@@ -887,6 +900,12 @@ export class FluentUIWidgetManager
       >
         <FluentButton marginTop={"0px"}>
           <IconButton
+            styles={{
+              root: {
+                ...defultBindButtonSize,
+              },
+              label: null,
+            }}
             key={property.property}
             checked={this.getPropertyValue(property) != null}
             iconProps={{

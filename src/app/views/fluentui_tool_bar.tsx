@@ -29,6 +29,7 @@ import {
 } from "@fluentui/react";
 import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
+import { defultBindButtonSize } from "./panels/widgets/controls/fluentui_customized_components";
 const theme = getTheme();
 
 export const FluentUIToolbar: React.FC<{
@@ -733,9 +734,6 @@ export class MultiObjectButton extends ContextedComponent<
         }}
       >
         <IconButton
-          style={{
-            stroke: theme.palette.themePrimary,
-          }}
           split={true}
           menuProps={{
             items: this.props.tools.map((tool, index) => {

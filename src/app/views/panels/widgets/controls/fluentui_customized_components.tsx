@@ -10,17 +10,14 @@ import {
   IGroupHeaderStyles,
   ILabelStyles,
   IRenderFunction,
-  IStyle,
   IStyleFunctionOrObject,
   ITextFieldProps,
-  ITextFieldStyleProps,
-  ITextFieldStyles,
   Label,
 } from "@fluentui/react";
 import styled from "styled-components";
 
 export const FluentButton = styled.div<{ marginTop?: string }>`
-  margin-top: ${({ marginTop }) => marginTop || "24px"};
+  margin-top: ${({ marginTop }) => marginTop || "23.5px"};
   display: inline-block;
   padding: 0px 4px 0px 0px;
   button {
@@ -90,13 +87,17 @@ export const NestedChartButtonsWrapper = styled.div`
 
 export const FluentGroupedList = styled.div`
   .charticulator__widget-collapsible-panel-item {
-    margin-left: 15px;
+    margin-left: 25px;
     margin-right: 15px;
     min-width: 270px;
   }
 
   .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
     margin-bottom: 5px;
+  }
+
+  .ms-List-surface .ms-List-cell .ms-List-cell\ {
+    min-height: 24px;
   }
 `;
 
