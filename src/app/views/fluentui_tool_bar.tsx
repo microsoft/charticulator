@@ -22,7 +22,6 @@ import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
 import {
   Callout,
-  Dialog,
   DirectionalHint,
   getTheme,
   IconButton,
