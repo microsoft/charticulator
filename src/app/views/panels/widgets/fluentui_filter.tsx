@@ -46,6 +46,7 @@ export const FilterPanel: React.FC<{
               }}
               styles={{
                 root: {
+                  minWidth: "unset",
                   ...defultComponentsHeight,
                 },
               }}

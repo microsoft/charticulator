@@ -518,6 +518,7 @@ export class FluentMappingEditor extends React.Component<
                     }}
                     styles={{
                       root: {
+                        minWidth: "unset",
                         ...defultBindButtonSize,
                       },
                     }}
@@ -548,6 +549,7 @@ export class FluentMappingEditor extends React.Component<
                           display: "none !important",
                         },
                         root: {
+                          minWidth: "unset",
                           ...defultBindButtonSize,
                         },
                       }}
@@ -568,6 +570,7 @@ export class FluentMappingEditor extends React.Component<
                     }}
                     styles={{
                       root: {
+                        minWidth: "unset",
                         ...defultBindButtonSize,
                       },
                     }}

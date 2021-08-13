@@ -21,7 +21,6 @@ export const FluentButton = styled.div<{ marginTop?: string }>`
   display: inline-block;
   padding: 0px 4px 0px 0px;
   button {
-    min-width: unset;
     padding: 4px;
   }
 `;

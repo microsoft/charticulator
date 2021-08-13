@@ -11,8 +11,17 @@ import { ContextedComponent } from "../../../../context_component";
 import { PopupView } from "../../../../controllers/popup_controller";
 import { classNames } from "../../../../utils";
 import { strings } from "../../../../../strings";
-import { ActionButton, Label, Image as FluentUIImage, DefaultButton } from "@fluentui/react"
-import { defaultLabelStyle, FluentActionButton, FluentButton } from "./fluentui_customized_components";
+import {
+  ActionButton,
+  Label,
+  Image as FluentUIImage,
+  DefaultButton,
+} from "@fluentui/react";
+import {
+  defaultLabelStyle,
+  FluentActionButton,
+  FluentButton,
+} from "./fluentui_customized_components";
 
 export interface ImageDescription {
   src: string;
@@ -95,7 +104,7 @@ export class InputImage extends ContextedComponent<
         .then((r) => {
           this.emitOnChange(r);
         })
-        .catch(() => { });
+        .catch(() => {});
     }
     if (e.dataTransfer.files.length > 0) {
       ImageUploader.ParseFiles(e.dataTransfer.files).then((r) => {
@@ -125,40 +134,39 @@ export class InputImage extends ContextedComponent<
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
         onClick={this.startChooseImage}
-        style={{ marginBottom: '5px' }}
+        style={{ marginBottom: "5px" }}
       >
         {this.state.dragOver ? (
-
-          <div style={{ width: '100%' }}>
+          <div style={{ width: "100%" }}>
             {this.props.label ? (
               <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
                 {this.props.label}
               </Label>
             ) : null}
-            <span className="el-drag-over-attrubutes">{strings.objects.image.dropImage}</span>
+            <span className="el-drag-over-attrubutes">
+              {strings.objects.image.dropImage}
+            </span>
           </div>
-
         ) : (
-
-          <div style={{ width: '100%' }}>
+          <div style={{ width: "100%" }}>
             {this.props.label ? (
               <Label styles={defaultLabelStyle} style={{ padding: 0 }}>
                 {this.props.label}
               </Label>
             ) : null}
-            <FluentActionButton style={{ width: '100%' }}>
+            <FluentActionButton style={{ width: "100%" }}>
               <ActionButton
                 text={isNone ? strings.core.none : imageDisplayURL}
                 iconProps={{
                   imageProps: {
                     src: isNone ? R.getSVGIcon("FileImage") : image.src,
                     style: {
-                      height: '16px',
-                      width: '16px'
-                    }
-                  }
-                }} />
-
+                      height: "16px",
+                      width: "16px",
+                    },
+                  },
+                }}
+              />
             </FluentActionButton>
           </div>
         )}
@@ -224,7 +232,7 @@ export class ImageUploader extends React.Component<
       this.refInput.focus();
     }
   }
-  public componentWillUnmount() { }
+  public componentWillUnmount() {}
 
   public static ReadFileAsImage(
     name: string,
@@ -377,20 +385,27 @@ export class ImageUploader extends React.Component<
               className="el-input"
               onPaste={this.handlePaste}
               value=""
-              onChange={() => { }}
+              onChange={() => {}}
               type="text"
-              placeholder={this.props.placeholder || strings.objects.image.defaultPlaceholder}
+              placeholder={
+                this.props.placeholder ||
+                strings.objects.image.defaultPlaceholder
+              }
               disabled={true}
             />
             <FluentButton marginTop="0px">
               <DefaultButton
+                styles={{
+                  root: {
+                    minWidht: "unset",
+                  },
+                }}
                 iconProps={{
-                  iconName: "OpenFolderHorizontal"
+                  iconName: "OpenFolderHorizontal",
                 }}
                 onClick={this.handleOpenFile}
               />
             </FluentButton>
-
           </span>
         )}
       </div>
@@ -422,7 +437,9 @@ export class InputImageProperty extends InputImage {
         onDrop={this.handleDrop}
       >
         {this.state.dragOver ? (
-          <span className="el-drag-over">{strings.objects.image.dropImage}</span>
+          <span className="el-drag-over">
+            {strings.objects.image.dropImage}
+          </span>
         ) : (
           [
             <FluentUIImage

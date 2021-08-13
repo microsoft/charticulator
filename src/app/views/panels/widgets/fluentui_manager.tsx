@@ -585,6 +585,7 @@ export class FluentUIWidgetManager
                 styles={{
                   label: null,
                   root: {
+                    minWidth: "unset",
                     ...defultBindButtonSize,
                   },
                 }}
@@ -644,6 +645,7 @@ export class FluentUIWidgetManager
               ...defultBindButtonSize,
               label: defaultLabelStyle,
               root: {
+                minWidth: "unset",
                 ...defultBindButtonSize,
               },
             }}
@@ -790,6 +792,7 @@ export class FluentUIWidgetManager
         <DefaultButton
           styles={{
             root: {
+              minWidth: "unset",
               ...defultBindButtonSize,
             },
           }}
@@ -902,6 +905,7 @@ export class FluentUIWidgetManager
           <IconButton
             styles={{
               root: {
+                minWidth: "unset",
                 ...defultBindButtonSize,
               },
               label: null,
@@ -935,6 +939,7 @@ export class FluentUIWidgetManager
           <DefaultButton
             styles={{
               root: {
+                minWidth: "unset",
                 ...defultComponentsHeight,
               },
             }}
@@ -1055,6 +1060,11 @@ export class FluentUIWidgetManager
                   <span className="charticulator__widget-array-view-control">
                     <FluentButton marginTop={"0px"}>
                       <DefaultButton
+                        styles={{
+                          root: {
+                            minWidth: "unset",
+                          },
+                        }}
                         iconProps={{
                           iconName: "Delete",
                         }}
@@ -1217,6 +1227,7 @@ export class FluentUIWidgetManager
                   display: "none !important",
                 },
                 root: {
+                  minWidth: "unset",
                   ...defultBindButtonSize,
                 },
               }}
@@ -1292,6 +1303,7 @@ export class FluentUIWidgetManager
               <DefaultButton
                 styles={{
                   root: {
+                    minWidth: "unset",
                     ...defultComponentsHeight,
                   },
                 }}
