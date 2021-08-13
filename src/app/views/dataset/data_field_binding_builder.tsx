@@ -533,9 +533,9 @@ class MenuItemsCreator {
 
                             if (isSelected) {
                               subMenuCheckedItem =
-                                derivedColumn.name +
+                                derivedColumn.displayName +
                                 DELIMITER +
-                                aggregationMenuItem.name;
+                                aggregationMenuItem.displayName;
                             }
 
                             //function for mapping renderer
