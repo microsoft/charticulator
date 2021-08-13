@@ -168,6 +168,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           styles={{
             ...defaultStyle,
             label: {
+              lineHeight: "unset",
               fontWeight: defaultFontWeight,
               height: 25,
             },

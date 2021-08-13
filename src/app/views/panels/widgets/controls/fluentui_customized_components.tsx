@@ -73,6 +73,7 @@ export const defaultFontWeight = 400;
 export const defaultLabelStyle: ILabelStyles = {
   root: {
     fontWeight: defaultFontWeight,
+    lineHeight: "unset",
   },
 };
 
@@ -165,6 +166,13 @@ export const FluentDropdown = styled.div`
   display: inline;
 `;
 
+export const FluentDropdownWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+`;
+
 export const defaultStyle: any = {
   field: {
     defultComponentsHeight,
@@ -206,6 +214,9 @@ export const defaultStyle: any = {
     boxSizing: "unset",
     ...defultComponentsHeight,
     height: "22px",
-    lineHeight: "22px",
+    lineHeight: "unset",
+  },
+  label: {
+    lineHeight: "unset",
   },
 };

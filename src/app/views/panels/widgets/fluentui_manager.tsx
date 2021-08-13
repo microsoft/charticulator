@@ -86,6 +86,7 @@ import {
   FluentButton,
   FluentCheckbox,
   FluentDropdown,
+  FluentDropdownWrapper,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
@@ -502,7 +503,7 @@ export class FluentUIWidgetManager
         const option = options[0];
 
         return (
-          <div>
+          <FluentDropdownWrapper>
             {option.data && option.data.icon && (
               <FluentDropdown>
                 <Icon
@@ -514,7 +515,7 @@ export class FluentUIWidgetManager
               </FluentDropdown>
             )}
             <span>{option.text}</span>
-          </div>
+          </FluentDropdownWrapper>
         );
       };
 
