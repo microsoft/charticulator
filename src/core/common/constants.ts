@@ -74,6 +74,7 @@ export const fontList = [
   "Segoe UI",
   "Segoe UI Light",
   "Segoe UI Semibold",
+  "Segoe UI Bold",
   "Tahoma",
   "Times",
   "Trebuchet MS",

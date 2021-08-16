@@ -26,6 +26,13 @@ body {
   @include font-main;
 }
 
+@font-face {
+  font-family: "Segoe UI Bold";
+  src: local("Segoe UI bold"), local("Segoe bold"), local("Segoe WP bold");
+  font-weight: normal;
+  font-style: normal;
+}
+
 // CSS Rule format:
 // module__element-subelement--variant
 

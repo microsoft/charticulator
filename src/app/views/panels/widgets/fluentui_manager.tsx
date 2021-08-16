@@ -80,9 +80,13 @@ import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import { Icon } from "@fluentui/react/lib/Icon";
 import {
   defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
   FluentDropdown,
+  FluentDropdownWrapper,
   FluentLabelHeader,
   labelRender,
   NestedChartButtonsWrapper,
@@ -449,6 +453,7 @@ export class FluentUIWidgetManager
   ) {
     return (
       <ComboBox
+        styles={defaultStyle as any}
         key={this.getKeyFromProperty(property)}
         selectedKey={this.getPropertyValue(property) as string}
         label={options.label}
@@ -497,7 +502,7 @@ export class FluentUIWidgetManager
         const option = options[0];
 
         return (
-          <div>
+          <FluentDropdownWrapper>
             {option.data && option.data.icon && (
               <FluentDropdown>
                 <Icon
@@ -509,7 +514,7 @@ export class FluentUIWidgetManager
               </FluentDropdown>
             )}
             <span>{option.text}</span>
-          </div>
+          </FluentDropdownWrapper>
         );
       };
 
@@ -541,7 +546,9 @@ export class FluentUIWidgetManager
             return true;
           }}
           styles={{
+            ...defaultStyle,
             title: {
+              ...defultComponentsHeight,
               borderWidth: options.hideBorder ? "0px" : null,
             },
             dropdownItemsWrapper: {
@@ -560,7 +567,7 @@ export class FluentUIWidgetManager
             options.type
           }`}
         >
-          {options.label ? (
+          {options.label && options.label.length > 0 ? (
             <Label styles={defaultLabelStyle}>{options.label}</Label>
           ) : null}
           {options.options.map((option, index) => {
@@ -574,6 +581,13 @@ export class FluentUIWidgetManager
                 }}
                 style={{
                   stroke: `${theme.palette.themePrimary} !important`,
+                }}
+                styles={{
+                  label: null,
+                  root: {
+                    minWidth: "unset",
+                    ...defultBindButtonSize,
+                  },
                 }}
                 title={options.labels[index]}
                 checked={option === (this.getPropertyValue(property) as string)}
@@ -606,6 +620,9 @@ export class FluentUIWidgetManager
                 label={options.label}
                 styles={{
                   label: defaultLabelStyle,
+                  root: {
+                    ...defultComponentsHeight,
+                  },
                 }}
                 onChange={(event, v) => {
                   this.emitSetProperty(property, v);
@@ -625,7 +642,12 @@ export class FluentUIWidgetManager
             title={options.label}
             label={options.label}
             styles={{
+              ...defultBindButtonSize,
               label: defaultLabelStyle,
+              root: {
+                minWidth: "unset",
+                ...defultBindButtonSize,
+              },
             }}
             text={options.label}
             ariaLabel={options.label}
@@ -770,6 +792,12 @@ export class FluentUIWidgetManager
         marginTop={isHeader ? "0px" : null}
       >
         <DefaultButton
+          styles={{
+            root: {
+              minWidth: "unset",
+              ...defultBindButtonSize,
+            },
+          }}
           iconProps={{
             iconName: icon || "EraseTool",
           }}
@@ -877,6 +905,13 @@ export class FluentUIWidgetManager
       >
         <FluentButton marginTop={"0px"}>
           <IconButton
+            styles={{
+              root: {
+                minWidth: "unset",
+                ...defultBindButtonSize,
+              },
+              label: null,
+            }}
             key={property.property}
             checked={this.getPropertyValue(property) != null}
             iconProps={{
@@ -904,6 +939,12 @@ export class FluentUIWidgetManager
       >
         <FluentButton marginTop={"0px"}>
           <DefaultButton
+            styles={{
+              root: {
+                minWidth: "unset",
+                ...defultComponentsHeight,
+              },
+            }}
             iconProps={{
               iconName: "SortLines",
             }}
@@ -1021,6 +1062,11 @@ export class FluentUIWidgetManager
                   <span className="charticulator__widget-array-view-control">
                     <FluentButton marginTop={"0px"}>
                       <DefaultButton
+                        styles={{
+                          root: {
+                            minWidth: "unset",
+                          },
+                        }}
                         iconProps={{
                           iconName: "Delete",
                         }}
@@ -1161,11 +1207,7 @@ export class FluentUIWidgetManager
             <span className="el-dropzone-hint">{options.dropzone.prompt}</span>
           )}
         >
-          <FluentLabelHeader
-            marginBottom={"5px"}
-            marginTop={"-5px"}
-            marginRight={"4px"}
-          >
+          <FluentLabelHeader>
             <Label>{title}</Label>
           </FluentLabelHeader>
           {widget}
@@ -1182,6 +1224,10 @@ export class FluentUIWidgetManager
                 menuIcon: {
                   display: "none !important",
                 },
+                root: {
+                  minWidth: "unset",
+                  ...defultBindButtonSize,
+                },
               }}
             />
           </FluentButton>
@@ -1190,7 +1236,7 @@ export class FluentUIWidgetManager
     } else {
       return (
         <div className="charticulator__widget-section-header">
-          <FluentLabelHeader marginBottom={"5px"} marginTop={"-5px"}>
+          <FluentLabelHeader>
             <Label>{title}</Label>
           </FluentLabelHeader>
           {widget}
@@ -1253,6 +1299,12 @@ export class FluentUIWidgetManager
               }
             >
               <DefaultButton
+                styles={{
+                  root: {
+                    minWidth: "unset",
+                    ...defultComponentsHeight,
+                  },
+                }}
                 text={text}
                 elementRef={(e) => (button = e)}
                 iconProps={{
