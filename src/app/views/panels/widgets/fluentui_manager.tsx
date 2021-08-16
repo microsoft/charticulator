@@ -690,6 +690,8 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
+            this.store.updateDataAxes()
+            this.store.updatePlotSegments()
           }
           return true;
         }}
