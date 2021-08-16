@@ -15,7 +15,7 @@ import {
   uniqueID,
 } from "../../../core";
 import { Actions } from "../../actions";
-import { ButtonRaised, SVGImageIcon } from "../../components";
+import { SVGImageIcon } from "../../components";
 import { ContextedComponent } from "../../context_component";
 
 import { classNames } from "../../utils";

@@ -268,7 +268,6 @@ export class FluentUIWidgetManager
     prevKey: string,
     newKey: string
   ) {
-    console.log(prevKey, newKey);
     event.preventDefault();
     event.stopPropagation();
     const validatedKey = newKey.length === 0 ? " " : newKey;
