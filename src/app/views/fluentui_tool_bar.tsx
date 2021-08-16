@@ -20,15 +20,9 @@ import { AppStore } from "../stores";
 import { strings } from "../../strings";
 import { LayoutDirection, UndoRedoLocation } from "../main_view";
 import { useContext } from "react";
-import {
-  Callout,
-  DirectionalHint,
-  getTheme,
-  IconButton,
-} from "@fluentui/react";
+import { Callout, DirectionalHint, IconButton } from "@fluentui/react";
 import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
-const theme = getTheme();
 
 export const FluentUIToolbar: React.FC<{
   layout: LayoutDirection;
@@ -732,9 +726,6 @@ export class MultiObjectButton extends ContextedComponent<
         }}
       >
         <IconButton
-          style={{
-            stroke: theme.palette.themePrimary,
-          }}
           split={true}
           menuProps={{
             items: this.props.tools.map((tool, index) => {

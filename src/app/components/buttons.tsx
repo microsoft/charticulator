@@ -145,6 +145,11 @@ export class FluentToolButton extends React.Component<
               iconProps={{
                 iconName: this.props.icon,
               }}
+              styles={{
+                root: {
+                  minWidth: "unset",
+                },
+              }}
             />
           </FluentButton>
         </DraggableElement>
@@ -160,6 +165,11 @@ export class FluentToolButton extends React.Component<
             title={this.props.title}
             iconProps={{
               iconName: this.props.icon,
+            }}
+            styles={{
+              root: {
+                minWidth: "unset",
+              },
             }}
           />
         </FluentButton>

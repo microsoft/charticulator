@@ -2451,7 +2451,11 @@ export class Region2DConstraintBuilder {
                 "AlignVerticalCenter",
                 "AlignVerticalTop",
               ],
-              labels: ["Bottom", "Middle", "Top"],
+              labels: [
+                strings.alignment.bottom,
+                strings.alignment.middle,
+                strings.alignment.top,
+              ],
               tooltip: strings.canvas.alignItemsOnY,
             }
           )
@@ -2469,24 +2473,27 @@ export class Region2DConstraintBuilder {
                 "AlignHorizontalCenter",
                 "AlignHorizontalRight",
               ],
-              labels: ["Left", "Middle", "Right"],
+              labels: [
+                strings.alignment.left,
+                strings.alignment.middle,
+                strings.alignment.right,
+              ],
               tooltip: strings.canvas.alignItemsOnX,
             }
           )
         );
       }
-      alignmentWidgets.push(null);
 
       extra.push(
         m.vertical(
-          m.label("Alignment"),
-          m.horizontal([0, 0], ...alignmentWidgets.reverse())
+          m.label(strings.alignment.alignment),
+          m.horizontal([0, 0, 0], ...alignmentWidgets.reverse(), null)
         )
       );
       if (type == Region2DSublayoutType.Grid) {
         extra.push(
           m.vertical(
-            m.label("Gap"),
+            m.label(strings.objects.axes.gap),
             m.vertical(
               m.label("x: "),
               m.inputNumber(
@@ -2513,7 +2520,7 @@ export class Region2DConstraintBuilder {
               maximum: 1,
               percentage: true,
               showSlider: true,
-              label: "Gap",
+              label: strings.objects.axes.gap,
             }
           )
         );
@@ -2522,7 +2529,7 @@ export class Region2DConstraintBuilder {
         const { terminology } = this.config;
         extra.push(
           m.vertical(
-            m.label("Direction"),
+            m.label(strings.objects.axes.direction),
             m.horizontal(
               [0, 0, 1],
               m.inputSelect(
@@ -2547,7 +2554,7 @@ export class Region2DConstraintBuilder {
                     : ["grid", "yCount"],
               },
               {
-                label: "Count",
+                label: strings.objects.axes.count,
               }
             )
           )
@@ -2556,7 +2563,7 @@ export class Region2DConstraintBuilder {
       if (type != Region2DSublayoutType.Overlap) {
         extra.push(
           m.vertical(
-            m.label("Order"),
+            m.label(strings.objects.plotSegment.order),
             m.horizontal(
               [0, 0],
               m.orderByWidget(
@@ -2575,7 +2582,7 @@ export class Region2DConstraintBuilder {
     if (type == Region2DSublayoutType.Packing) {
       extra.push(
         m.vertical(
-          m.label("Gravity"),
+          m.label(strings.objects.plotSegment.gravity),
           m.inputNumber(
             { property: "sublayout", field: ["packing", "gravityX"] },
             { minimum: 0.1, maximum: 15, label: "X" }
@@ -2588,7 +2595,7 @@ export class Region2DConstraintBuilder {
       );
     }
     if (type == Region2DSublayoutType.Jitter) {
-      extra.push(m.label("Distribution"));
+      extra.push(m.label(strings.objects.plotSegment.distribution));
       extra.push(
         m.horizontal(
           [0, 1, 1],
@@ -2610,15 +2617,30 @@ export class Region2DConstraintBuilder {
           header: strings.objects.plotSegment.subLayout,
         },
         [
-          m.inputSelect(
-            { property: "sublayout", field: "type" },
-            {
-              type: "radio",
-              options: options.map((x) => x.value),
-              icons: options.map((x) => x.icon),
-              labels: options.map((x) => x.label),
-              label: strings.objects.plotSegment.type,
-            }
+          m.vertical(
+            m.horizontal(
+              [0, 0],
+              m.inputSelect(
+                { property: "sublayout", field: "type" },
+                {
+                  type: "radio",
+                  options: options.map((x) => x.value),
+                  icons: options.map((x) => x.icon),
+                  labels: options.map((x) => x.label),
+                  label: strings.objects.plotSegment.type,
+                }
+              ),
+              // for alignment
+              m.inputSelect(
+                { property: "sublayout", field: "type" },
+                {
+                  type: "radio",
+                  options: [],
+                  icons: [],
+                  labels: [],
+                }
+              )
+            )
           ),
           ...extra,
         ]

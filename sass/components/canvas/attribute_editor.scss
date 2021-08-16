@@ -548,7 +548,7 @@
 
   &__widget {
     $line-height: 24px;
-    $line-header-height: 30px;
+    $line-header-height: 24px;
 
     // Vertical layout
     &-vertical {
@@ -560,10 +560,11 @@
       flex: 1 1;
       display: flex;
       flex-direction: row;
+      align-items: center;
 
       .el-layout-item {
         &:not(:last-child) {
-          margin-right: 4px;
+          margin-right: 2px;
         }
       }
 
@@ -756,6 +757,7 @@
       display: flex;
       flex-direction: row;
       margin: 2px 0;
+      align-items: center;
 
       &-title {
         flex: 1 1;
@@ -1033,13 +1035,13 @@
           border-radius: 2px;
           flex-shrink: 0;
           display: inline-block;
-          width: $line-height - 4px;
-          height: $line-height - 4px;
+          width: $line-height - 2px;
+          height: $line-height - 2px;
           vertical-align: top;
           margin: 5px;
           margin-right: 8px;
-          margin-top: 28px;
-          border: 1px solid $gray-080;
+          margin-top: 34px;
+          border: 1px solid $gray-095;
         }
       }
 
@@ -1708,16 +1710,20 @@
           flex-direction: row;
 
           .el-color-item {
+            $border-width: 1px;
             cursor: pointer;
             border-radius: 2px;
             flex-shrink: 0;
             display: inline-block;
-            width: $line-height;
-            height: $line-height;
+            width: $line-height - $border-width - $border-width;
+            height: $line-height - $border-width - $border-width;
+            max-width: $line-height - $border-width - $border-width;
+            max-height: $line-height - $border-width - $border-width;
             vertical-align: top;
-            margin-top: 26px;
+            margin-top: 24px;
             margin-left: 8px;
             border: 1px solid $gray-200;
+            border-radius: 2px;
           }
         }
 

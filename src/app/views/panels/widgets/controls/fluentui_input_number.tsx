@@ -13,6 +13,8 @@ import { prettyNumber } from "../../../../../core";
 import {
   defaultFontWeight,
   defaultLabelStyle,
+  defaultStyle,
+  defultComponentsHeight,
   FluentLayoutItem,
   FluentRowLayout,
   labelRender,
@@ -107,6 +109,14 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
     }
     return (
       <Slider
+        styles={{
+          root: {
+            ...defultComponentsHeight,
+          },
+          slideBox: {
+            ...defultComponentsHeight,
+          },
+        }}
         min={sliderMin}
         max={sliderMax}
         value={+value}
@@ -156,9 +166,15 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
             }
           }}
           styles={{
+            ...defaultStyle,
             label: {
+              lineHeight: "unset",
               fontWeight: defaultFontWeight,
               height: 25,
+            },
+            spinButtonWrapper: {
+              height: (defaultStyle as any).fieldGroup.height,
+              lineHeight: (defaultStyle as any).fieldGroup.lineHeight,
             },
           }}
         />
@@ -181,6 +197,7 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
           ) : (
             <PlaceholderStyle>
               <TextField
+                styles={defaultStyle}
                 onRenderLabel={labelRender}
                 label={!props.showSlider ? props.label : null}
                 placeholder={props.placeholder}
