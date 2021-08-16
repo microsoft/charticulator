@@ -669,11 +669,8 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
-            if(property.property === PlotSegmentAxisPropertyNames.axis){
-              this.store.updateDataAxes()
-            }else {
-              this.store.updatePlotSegments()
-            }
+            this.store.updateDataAxes()
+            this.store.updatePlotSegments()
           }
           return true;
         }}
