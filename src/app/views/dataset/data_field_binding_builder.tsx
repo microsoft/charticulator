@@ -291,10 +291,11 @@ class MenuItemsCreator {
         item?: IContextualMenuItem
       ) => {
         const transformedField = this.transformField(field, item?.key);
-        if (mapping?.type === MappingType.scale) {
+
+        if (mapping?.type === MappingType.text) {
+          this.textMappingOnClick(transformedField.expression, field)
+        } else {
           this.onClick(transformedField);
-        } else if (mapping?.type === MappingType.text) {
-          this.textMappingOnClick(transformedField.expression, field);
         }
         this.onToggleSelect(field, ev, item);
       };

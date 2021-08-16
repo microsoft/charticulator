@@ -575,7 +575,7 @@ export class FluentMappingEditor extends React.Component<
         const derColumnsContainer = document.querySelector(
           "body :last-child.ms-Layer"
         );
-        const derColumnsContainerXpath = `//span[text()="${derivedExpression}"]`;
+        const derColumnsContainerXpath = `//ul//span[text()="${derivedExpression}"]`;
         const derMenuItem = document.evaluate(
           derColumnsContainerXpath,
           derColumnsContainer,
@@ -609,62 +609,80 @@ export class FluentMappingEditor extends React.Component<
       if (clickOnButton) {
         this.mappingButton?.click();
       }
-      let expression: string = null;
-      let expressionAggregation: string = null;
-      let derivedExpression: string = null;
-      if (currentMapping != null) {
-        if ((currentMapping as Specification.ScaleMapping).expression != null) {
-          const parsed = Expression.parse(
-            (currentMapping as Specification.ScaleMapping).expression
-          );
+      setTimeout(() => {
+        let expression: string = null;
+        let expressionAggregation: string = null;
+        let derivedExpression: string = null;
+        if (currentMapping != null) {
+          console.log(currentMapping)
+          if ((currentMapping as Specification.ScaleMapping).expression != null) {
+            const parsed = Expression.parse(
+              (currentMapping as Specification.ScaleMapping).expression
+            );
 
-          if (parsed instanceof Expression.FunctionCall) {
-            expression = parsed.args[0].toString();
-            expressionAggregation = parsed.name;
+            if (parsed instanceof Expression.FunctionCall) {
+              expression = parsed.args[0].toString();
+              expressionAggregation = parsed.name;
+              console.log(expression)
+              console.log(expressionAggregation)
 
-            if (expression.startsWith("date.")) {
-              derivedExpression = type2DerivedColumns.date.find((item) =>
-                expression.startsWith(item.function)
-              )?.displayName;
+
+              if (expressionAggregation.startsWith("get")) {
+                console.log("aaaa")
+                return;
+              }
+
+
+              //derived columns
+              if (expression.startsWith("date.")) {
+                derivedExpression = type2DerivedColumns.date.find((item) =>
+                  expression.startsWith(item.function)
+                )?.displayName;
+              }
             }
-          }
 
-          const aggName = aggregationFunctions.find(
-            (agg) => agg.name.localeCompare(expressionAggregation) === 0
-          );
+            const aggName = aggregationFunctions.find(
+              (agg) => agg.name.localeCompare(expressionAggregation) === 0
+            );
 
-          const xpath = `//span[contains(text(), "${expression} (${aggName.displayName})")]`;
-          const menuItem = document.evaluate(
-            xpath,
-            document,
-            null,
-            XPathResult.FIRST_ORDERED_NODE_TYPE,
-            null
-          ).singleNodeValue as HTMLSpanElement;
-
-          if (menuItem == null) {
-            // const derSubXpath = `//div[class="ms-ContextualMenu-linkContent"]/span[contains(text(), "${derivedExpression}")]`;
-            const derSubXpath = `//span[contains(text(), "${derivedExpression}")]`;
-            const derElement = document.evaluate(
-              derSubXpath,
-              document,
+            expression = expression?.split("`").join("");
+            console.log(expression)
+            const aggContainer = document.querySelector("body :last-child.ms-Layer");
+            const xpath = `//ul//span[contains(text(), "${expression}")]`;
+            // const xpath = `//span[contains(text(), "${expression}") | @class="ms-ContextualMenu-itemText"]`;
+            const menuItem = document.evaluate(
+              xpath,
+              aggContainer,
               null,
               XPathResult.FIRST_ORDERED_NODE_TYPE,
               null
             ).singleNodeValue as HTMLSpanElement;
-            setTimeout(() => {
-              derElement?.click();
-              this.menuKeyClick(derivedExpression);
-            });
-          } else {
-            setTimeout(() => {
-              menuItem?.click();
-              this.menuKeyClick(derivedExpression);
-            }, 100);
+
+            if (menuItem == null) {
+              // const derSubXpath = `//div[class="ms-ContextualMenu-linkContent"]/span[contains(text(), "${derivedExpression}")]`;
+              const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
+              const derElement = document.evaluate(
+                derSubXpath,
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+              ).singleNodeValue as HTMLSpanElement;
+              setTimeout(() => {
+                derElement?.click();
+                this.menuKeyClick(derivedExpression);
+              });
+            } else {
+              setTimeout(() => {
+                menuItem?.click();
+                this.menuKeyClick(derivedExpression);
+              }, 100);
+            }
           }
         }
-      }
-    }, 100);
+      }, 100);
+      })
+
   }
 }
 
