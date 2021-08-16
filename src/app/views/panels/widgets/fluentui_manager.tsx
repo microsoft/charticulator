@@ -669,6 +669,7 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
+            this.store.updatePlotSegments()
           }
           return true;
         }}
@@ -1124,6 +1125,8 @@ export class FluentUIWidgetManager
             value.metadata,
             value.rawExpression
           );
+          console.log(data)
+          console.log(options.dropzone.property)
           new Actions.BindDataToAxis(
             this.objectClass.object as Specification.PlotSegment,
             options.dropzone.property,
