@@ -20,6 +20,7 @@ import { AppStore } from "../../../../stores";
 
 import { Callout, TextField } from "@fluentui/react";
 import {
+  defaultLabelStyle,
   defaultStyle,
   defultComponentsHeight,
   FluentTextField,
@@ -109,6 +110,11 @@ export class FluentInputColor extends React.Component<
               root: {
                 ...defultComponentsHeight,
               },
+              subComponentStyles: {
+                label: {
+                  ...defaultLabelStyle,
+                },
+              },
             }}
             underlined={this.props.underline ?? false}
           />
@@ -119,7 +125,6 @@ export class FluentInputColor extends React.Component<
             target={`#${ID_PREFIX}${pickerId}`}
             onDismiss={() => this.setState({ open: !this.state.open })}
           >
-
             <ColorPicker
               store={this.props.store}
               allowNull={true}

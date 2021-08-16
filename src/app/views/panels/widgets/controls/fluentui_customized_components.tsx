@@ -108,7 +108,7 @@ export const defultBindButtonSize = {
 
 export const defultComponentsHeight = {
   height: "24px",
-  lineHeight: "24px",
+  lineHeight: "unset",
 };
 
 export const groupHeaderStyles: IStyleFunctionOrObject<
@@ -208,6 +208,7 @@ export const defaultStyle: any = {
   },
   caretDownWrapper: {
     boxSizing: "unset",
+    marginTop: "5px",
     ...defultComponentsHeight,
   },
   title: {
