@@ -108,6 +108,7 @@ import { FluentInputFormat } from "./controls/fluentui_input_format";
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
+import { PlotSegmentAxisPropertyNames } from "../../../../core/prototypes/plot_segments/region_2d/base";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -669,7 +670,11 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
-            this.store.updatePlotSegments()
+            if(property.property === PlotSegmentAxisPropertyNames.axis){
+              this.store.updateDataAxes()
+            }else {
+              this.store.updatePlotSegments()
+            }
           }
           return true;
         }}
