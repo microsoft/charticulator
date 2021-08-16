@@ -108,7 +108,6 @@ import { FluentInputFormat } from "./controls/fluentui_input_format";
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
-import { PlotSegmentAxisPropertyNames } from "../../../../core/prototypes/plot_segments/region_2d/base";
 
 export type OnEditMappingHandler = (
   attribute: string,
