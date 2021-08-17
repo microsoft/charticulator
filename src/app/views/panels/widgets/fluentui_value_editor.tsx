@@ -13,7 +13,7 @@ import {
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
-import { ColorPicАker } from "../../../components";
+import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
