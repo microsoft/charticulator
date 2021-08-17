@@ -85,6 +85,7 @@ import {
   defultComponentsHeight,
   FluentButton,
   FluentCheckbox,
+  FluentDatePickerWrapper,
   FluentDropdown,
   FluentDropdownWrapper,
   FluentLabelHeader,
@@ -367,24 +368,26 @@ export class FluentUIWidgetManager
     const format = this.getDateFormat(property) as string;
 
     return (
-      <DatePicker
-        key={this.getKeyFromProperty(property)}
-        firstDayOfWeek={DayOfWeek.Sunday}
-        placeholder={options.placeholder}
-        ariaLabel={options.placeholder}
-        defaultValue={format}
-        value={new Date(value)}
-        label={options.label}
-        onSelectDate={(value: Date) => {
-          if (value == null) {
-            this.emitSetProperty(property, null);
-            return true;
-          } else {
-            this.emitSetProperty(property, value as any);
-            return true;
-          }
-        }}
-      />
+      <FluentDatePickerWrapper>
+        <DatePicker
+          key={this.getKeyFromProperty(property)}
+          firstDayOfWeek={DayOfWeek.Sunday}
+          placeholder={options.placeholder}
+          ariaLabel={options.placeholder}
+          defaultValue={format}
+          value={new Date(value)}
+          label={options.label}
+          onSelectDate={(value: Date) => {
+            if (value == null) {
+              this.emitSetProperty(property, null);
+              return true;
+            } else {
+              this.emitSetProperty(property, value as any);
+              return true;
+            }
+          }}
+        />
+      </FluentDatePickerWrapper>
     );
   }
 

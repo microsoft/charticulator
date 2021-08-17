@@ -176,6 +176,16 @@ export const FluentDropdownWrapper = styled.div`
   height: 20px;
 `;
 
+export const FluentDatePickerWrapper = styled.div`
+  .ms-TextField-fieldGroup {
+    height: 24px;
+  }
+  i {
+    padding: 4px 5px 5px;
+    line-height: unset;
+  }
+`;
+
 export const defaultStyle: any = {
   field: {
     defultComponentsHeight,
