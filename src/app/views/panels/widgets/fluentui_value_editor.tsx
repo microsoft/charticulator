@@ -24,6 +24,7 @@ import { strings } from "../../../../strings";
 import {
   defaultLabelStyle,
   defaultStyle,
+  defultBindButtonSize,
   defultComponentsHeight,
   FluentTextField,
   labelRender,
@@ -262,6 +263,10 @@ export class FluentValueEditor extends ContextedComponent<
           <Dropdown
             styles={{
               ...(defaultStyle as any),
+              title: {
+                ...defaultStyle.title,
+                lineHeight: defultBindButtonSize.height,
+              },
             }}
             label={this.props.label}
             onRenderLabel={labelRender}

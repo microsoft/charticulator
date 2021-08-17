@@ -193,9 +193,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         <Label styles={defaultLabelStyle}>{props.label}</Label>
       ) : null}
       <FluentRowLayout>
-        {props.showSlider ? (
-          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
-        ) : null}
         <FluentLayoutItem flex={1}>
           {props.showUpdown ? (
             renderUpdown()
@@ -231,6 +228,9 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
             </PlaceholderStyle>
           )}
         </FluentLayoutItem>
+        {props.showSlider ? (
+          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
+        ) : null}
       </FluentRowLayout>
     </>
   );
