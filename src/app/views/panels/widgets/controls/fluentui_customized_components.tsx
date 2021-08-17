@@ -19,7 +19,7 @@ import styled from "styled-components";
 export const FluentButton = styled.div<{ marginTop?: string }>`
   margin-top: ${({ marginTop }) => marginTop || "24px"};
   display: inline-block;
-  padding: 0px 4px 0px 0px;
+  padding: 0px 0px 0px 0px;
   button {
     padding: 4px;
   }
