@@ -100,7 +100,6 @@ export class ScaleEditor extends React.Component<
                     iconProps={{
                       iconName: "Add",
                     }}
-                    disabled={(currentSelection?.length ?? 0) === 0}
                     text={strings.scaleEditor.add}
                     onClick={() => {
                       const mappingsKey = Object.keys(scale.properties.mapping);
