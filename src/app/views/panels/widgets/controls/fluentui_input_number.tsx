@@ -42,14 +42,15 @@ export interface InputNumberProps {
   updownStyle?: "normal" | "font";
 
   label?: string;
+  stopPropagation?: boolean;
 }
 
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
   const [value, setValue] = React.useState<string | number>(props.defaultValue);
 
   React.useEffect(() => {
-    setValue(props.defaultValue)
-  }, [props.defaultValue])
+    setValue(props.defaultValue);
+  }, [props.defaultValue]);
 
   const formatNumber = (value: number) => {
     if (value == null) {
@@ -192,9 +193,6 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
         <Label styles={defaultLabelStyle}>{props.label}</Label>
       ) : null}
       <FluentRowLayout>
-        {props.showSlider ? (
-          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
-        ) : null}
         <FluentLayoutItem flex={1}>
           {props.showUpdown ? (
             renderUpdown()
@@ -221,10 +219,18 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     }
                   }
                 }}
+                onKeyDown={(e) => {
+                  if (props.stopPropagation) {
+                    e.stopPropagation();
+                  }
+                }}
               />
             </PlaceholderStyle>
           )}
         </FluentLayoutItem>
+        {props.showSlider ? (
+          <FluentLayoutItem flex={2}>{renderSlider()}</FluentLayoutItem>
+        ) : null}
       </FluentRowLayout>
     </>
   );

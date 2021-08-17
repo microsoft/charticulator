@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { DefaultButton, Dropdown, Label, TextField } from "@fluentui/react";
+import { DefaultButton, Dropdown, IContextualMenuItem, Label, TextField } from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -24,6 +24,7 @@ import { strings } from "../../../../strings";
 import {
   defaultLabelStyle,
   defaultStyle,
+  defultBindButtonSize,
   defultComponentsHeight,
   FluentTextField,
   labelRender,
@@ -52,6 +53,8 @@ export interface ValueEditorProps {
 
   hints?: DataMappingHints;
   numberOptions?: InputNumberOptions;
+  stopPropagation?: boolean;
+  mainMenuItems?: IContextualMenuItem[];
 }
 
 export class FluentValueEditor extends ContextedComponent<
@@ -72,7 +75,6 @@ export class FluentValueEditor extends ContextedComponent<
 
   public render() {
     const value = this.props.value;
-
     let placeholderText = this.props.placeholder || strings.core.none;
     if (this.props.defaultValue != null) {
       placeholderText = this.props.defaultValue.toString();
@@ -89,6 +91,7 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <FluentInputNumber
             label={this.props.label}
+            stopPropagation={this.props.stopPropagation}
             placeholder={this.props.placeholder}
             defaultValue={this.props.value as number}
             onEnter={(newValue: number) => {
@@ -133,6 +136,11 @@ export class FluentValueEditor extends ContextedComponent<
                     } else {
                       return false;
                     }
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (this.props.stopPropagation) {
+                    e.stopPropagation();
                   }
                 }}
               />
@@ -218,6 +226,7 @@ export class FluentValueEditor extends ContextedComponent<
                 }
                 return true;
               }}
+              stopPropagation={this.props.stopPropagation}
             />
           );
         } else {
@@ -237,6 +246,11 @@ export class FluentValueEditor extends ContextedComponent<
                   return true;
                 }}
                 styles={defaultStyle}
+                onKeyDown={(e) => {
+                  if (this.props.stopPropagation) {
+                    e.stopPropagation();
+                  }
+                }}
               />
             </>
           );
@@ -249,6 +263,10 @@ export class FluentValueEditor extends ContextedComponent<
           <Dropdown
             styles={{
               ...(defaultStyle as any),
+              title: {
+                ...defaultStyle.title,
+                lineHeight: defultBindButtonSize.height,
+              },
             }}
             label={this.props.label}
             onRenderLabel={labelRender}
@@ -283,10 +301,11 @@ export class FluentValueEditor extends ContextedComponent<
                   root: {
                     ...defultComponentsHeight,
                   },
+                  menuIcon: { display: "none !important",}
                 }}
                 text={strings.attributesPanel.conditionedBy}
-                onClick={() => {
-                  this.props.onBeginDataFieldSelection();
+                menuProps={{
+                  items: this.props.mainMenuItems ?? []
                 }}
               />
             </>
