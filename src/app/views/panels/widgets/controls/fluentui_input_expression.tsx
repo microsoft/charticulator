@@ -11,7 +11,7 @@ import {
 } from "../../../../../core";
 
 import { TextField } from "@fluentui/react";
-import { labelRender } from "./fluentui_customized_components";
+import { defaultStyle, labelRender } from "./fluentui_customized_components";
 
 export interface InputExpressionProps {
   validate?: (value: string) => Expression.VerifyUserExpressionReport;
@@ -39,10 +39,10 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   const [errorMessage, setErrorMessage] = React.useState(null);
 
   React.useEffect(() => {
-    if (props.value){
-      setValue(props.value)
+    if (props.value) {
+      setValue(props.value);
     }
-  }, [props.value])
+  }, [props.value]);
 
   const doEnter = React.useCallback(() => {
     if (props.allowNull && value?.trim() == "") {
@@ -76,6 +76,7 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
   return (
     <span className="charticulator__widget-control-input-expression">
       <TextField
+        styles={defaultStyle}
         label={props.label}
         onRenderLabel={labelRender}
         placeholder={props.placeholder}

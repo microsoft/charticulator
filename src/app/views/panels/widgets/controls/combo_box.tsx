@@ -16,7 +16,11 @@ import {
   Label,
 } from "@fluentui/react";
 import { fontList } from "../../../../../core";
-import { defaultLabelStyle } from "./fluentui_customized_components";
+import {
+  defaultLabelStyle,
+  defaultStyle,
+  defultComponentsHeight,
+} from "./fluentui_customized_components";
 
 export interface ComboBoxOptionProps {
   onClick: () => void;
@@ -204,13 +208,15 @@ export class ComboBoxFontFamily extends React.Component<
 export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
   props
 ) => {
-  const [currentValue, setCurrentValue] = React.useState<string>(props.defaultValue);
+  const [currentValue, setCurrentValue] = React.useState<string>(
+    props.defaultValue
+  );
 
   const optionsWithCustomStyling: IComboBoxOption[] = React.useMemo<
     IComboBoxOption[]
   >(() => {
     const cuurentFontList = [...new Set([...fontList, currentValue])];
-    
+
     return cuurentFontList.map((fontName: string) => ({
       key: fontName,
       text: fontName,
@@ -218,16 +224,21 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
         optionText: {
           fontFamily: fontName,
         },
+        root: {
+          ...defultComponentsHeight,
+          minHeight: defultComponentsHeight.height,
+        },
       },
     }));
   }, [currentValue]);
-
 
   const onCancel = React.useCallback(() => props.onCancel?.(), [props]);
   const onEnter = React.useCallback(
     (event, value) => {
       const currentInputValue: string = event.target.value;
-      const currentFontValue: string = value?.key?.toString() ?? (currentInputValue.length > 0 ? currentInputValue : props.defaultValue);
+      const currentFontValue: string =
+        value?.key?.toString() ??
+        (currentInputValue.length > 0 ? currentInputValue : props.defaultValue);
       setCurrentValue(currentFontValue);
       props.onEnter?.(currentFontValue);
     },
@@ -236,6 +247,12 @@ export const FluentComboBoxFontFamily: React.FC<ComboBoxFontFamilyProps> = (
 
   return (
     <FluentCombobox
+      styles={{
+        ...defaultStyle,
+        root: {
+          ...defultComponentsHeight,
+        },
+      }}
       selectedKey={currentValue}
       label={props.label}
       onRenderLabel={({ props }) => (

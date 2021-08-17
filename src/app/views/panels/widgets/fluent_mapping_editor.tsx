@@ -35,6 +35,9 @@ import {
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  defultComponentsHeight,
   FluentActionButton,
   FluentButton,
   labelRender,
@@ -271,6 +274,7 @@ export class FluentMappingEditor extends React.Component<
           if (options.defaultAuto) {
             return (
               <TextField
+                styles={defaultStyle}
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
                 placeholder={strings.core.auto}
@@ -284,6 +288,7 @@ export class FluentMappingEditor extends React.Component<
           } else {
             return (
               <TextField
+                styles={defaultStyle}
                 label={this.props.options.label}
                 onRenderLabel={labelRender}
                 placeholder={strings.core.none}
@@ -381,6 +386,10 @@ export class FluentMappingEditor extends React.Component<
                     styles={{
                       menuIcon: {
                         display: "none !important",
+                        ...defultComponentsHeight,
+                      },
+                      root: {
+                        ...defultComponentsHeight,
                       },
                     }}
                     title={strings.mappingEditor.bindData}
@@ -516,6 +525,12 @@ export class FluentMappingEditor extends React.Component<
                     iconProps={{
                       iconName: "EraseTool",
                     }}
+                    styles={{
+                      root: {
+                        minWidth: "unset",
+                        ...defultBindButtonSize,
+                      },
+                    }}
                     checked={false}
                     title={strings.mappingEditor.remove}
                     onClick={() => {
@@ -542,6 +557,10 @@ export class FluentMappingEditor extends React.Component<
                         menuIcon: {
                           display: "none !important",
                         },
+                        root: {
+                          minWidth: "unset",
+                          ...defultBindButtonSize,
+                        },
                       }}
                       title={strings.mappingEditor.bindData}
                       checked={isDataMapping}
@@ -559,6 +578,12 @@ export class FluentMappingEditor extends React.Component<
                       iconName: "Link",
                     }}
                     id="dataFieldValueSelection"
+                    styles={{
+                      root: {
+                        minWidth: "unset",
+                        ...defultBindButtonSize,
+                      },
+                    }}
                     title={strings.mappingEditor.bindDataValue}
                     elementRef={(e) => (this.mappingButton = e)}
                     onClick={() => {

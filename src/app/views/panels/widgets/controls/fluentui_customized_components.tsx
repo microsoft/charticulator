@@ -21,7 +21,6 @@ export const FluentButton = styled.div<{ marginTop?: string }>`
   display: inline-block;
   padding: 0px 4px 0px 0px;
   button {
-    min-width: unset;
     padding: 4px;
   }
 `;
@@ -32,14 +31,13 @@ export const FluentLabelHeader = styled.div<{
   marginRight?: string;
 }>`
   margin-bottom: ${({ marginBottom }) => marginBottom || "24px"};
-  margin-top: ${({ marginTop }) => marginTop || "24px"};
-  margin-right: ${({ marginRight: marginLeft }) => marginLeft || "0px"};
+  margin-top: ${({ marginTop }) => marginTop || "20px"};
+  margin-right: ${({ marginRight: marginLeft }) => marginLeft || "2px"};
 `;
 
 export const FluentActionButton = styled.div`
   button {
     border: 1px solid;
-    height: 32px;
     width: 100%;
     overflow: hidden;
   }
@@ -53,7 +51,6 @@ export const FluentTextField = styled.div`
 `;
 
 export const FluentCheckbox = styled.div`
-  margin-top: 2px;
   margin-bottom: 2px;
 `;
 
@@ -76,6 +73,7 @@ export const defaultFontWeight = 400;
 export const defaultLabelStyle: ILabelStyles = {
   root: {
     fontWeight: defaultFontWeight,
+    lineHeight: "unset",
   },
 };
 
@@ -89,15 +87,29 @@ export const NestedChartButtonsWrapper = styled.div`
 
 export const FluentGroupedList = styled.div`
   .charticulator__widget-collapsible-panel-item {
-    margin-left: 15px;
+    margin-left: 25px;
     margin-right: 15px;
     min-width: 270px;
   }
 
   .ms-List-surface .ms-List-cell .ms-List-cell:last-child {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+  }
+
+  .ms-List-surface .ms-List-page .ms-List-cell {
+    min-height: 24px;
   }
 `;
+
+export const defultBindButtonSize = {
+  height: "24px",
+  width: "24px",
+};
+
+export const defultComponentsHeight = {
+  height: "24px",
+  lineHeight: "24px",
+};
 
 export const groupHeaderStyles: IStyleFunctionOrObject<
   IGroupHeaderStyleProps,
@@ -108,6 +120,12 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   headerCount: {
     display: "none",
+  },
+  groupHeaderContainer: {
+    ...defultComponentsHeight,
+  },
+  expand: {
+    ...defultBindButtonSize,
   },
 };
 
@@ -147,3 +165,58 @@ export const FluentDropdown = styled.div`
   }
   display: inline;
 `;
+
+export const FluentDropdownWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+`;
+
+export const defaultStyle: any = {
+  field: {
+    defultComponentsHeight,
+    height: "20px",
+  },
+  fieldGroup: defultComponentsHeight,
+  dropdown: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  dropdownOptionText: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  dropdownItem: {
+    boxSizing: "unset",
+    minHeight: "25px",
+    ...defultComponentsHeight,
+  },
+  dropdownItemHeader: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  dropdownItemSelected: {
+    boxSizing: "unset",
+    minHeight: "24px",
+    lineHeight: "24px",
+    ...defultComponentsHeight,
+  },
+  caretDown: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  caretDownWrapper: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+  },
+  title: {
+    boxSizing: "unset",
+    ...defultComponentsHeight,
+    height: "22px",
+    lineHeight: "unset",
+  },
+  label: {
+    lineHeight: "unset",
+  },
+};
