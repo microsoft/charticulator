@@ -107,6 +107,7 @@ export interface MappingEditorOptions {
   allowSelectValue?: boolean;
   /** Text lael of input */
   label?: string;
+  stopPropagation?: boolean;
 }
 
 export interface InputNumberOptions {
@@ -125,6 +126,7 @@ export interface InputNumberOptions {
   updownRange?: [number, number];
   updownStyle?: "normal" | "font";
   label?: string;
+  stopPropagation?: boolean;
 }
 
 export interface InputDateOptions {

@@ -150,11 +150,11 @@ export class LinearScale extends ScaleClass<
       manager.sectionHeader(strings.objects.dataAxis.domain),
       manager.inputNumber(
         { property: "domainMin" },
-        { label: strings.objects.dataAxis.start }
+        { label: strings.objects.dataAxis.start, stopPropagation: true }
       ),
       manager.inputNumber(
         { property: "domainMax" },
-        { label: strings.objects.dataAxis.end }
+        { label: strings.objects.dataAxis.end, stopPropagation: true }
       ),
       manager.sectionHeader(strings.objects.dataAxis.autoUpdateValues),
       manager.inputBoolean(
@@ -178,9 +178,11 @@ export class LinearScale extends ScaleClass<
       manager.sectionHeader(strings.objects.dataAxis.range),
       manager.mappingEditor(strings.objects.dataAxis.start, "rangeMin", {
         defaultValue: 0,
+        stopPropagation: true,
       }),
       manager.mappingEditor(strings.objects.dataAxis.end, "rangeMax", {
         defaultAuto: true,
+        stopPropagation: true,
       }),
     ];
   }
@@ -315,11 +317,17 @@ export class LinearColorScale extends ScaleClass<
       manager.sectionHeader(strings.objects.dataAxis.domain),
       manager.row(
         strings.objects.dataAxis.start,
-        manager.inputNumber({ property: "domainMin" })
+        manager.inputNumber(
+          { property: "domainMin" },
+          { stopPropagation: true }
+        )
       ),
       manager.row(
         strings.objects.dataAxis.end,
-        manager.inputNumber({ property: "domainMax" })
+        manager.inputNumber(
+          { property: "domainMax" },
+          { stopPropagation: true }
+        )
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(
@@ -446,7 +454,10 @@ export class LinearBooleanScale extends ScaleClass<
           props.inclusive ? ">=" : ">",
           this.object.inputType === Specification.DataType.Date
             ? manager.inputDate({ property: "min" })
-            : manager.inputNumber({ property: "min" })
+            : manager.inputNumber(
+                { property: "min" },
+                { stopPropagation: true }
+              )
         )
       );
     }
@@ -456,7 +467,10 @@ export class LinearBooleanScale extends ScaleClass<
           props.inclusive ? "<=" : "<",
           this.object.inputType === Specification.DataType.Date
             ? manager.inputDate({ property: "max" })
-            : manager.inputNumber({ property: "max" })
+            : manager.inputNumber(
+                { property: "max" },
+                { stopPropagation: true }
+              )
         )
       );
     }

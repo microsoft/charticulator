@@ -42,6 +42,7 @@ export interface InputNumberProps {
   updownStyle?: "normal" | "font";
 
   label?: string;
+  stopPropagation?: boolean;
 }
 
 export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
@@ -216,6 +217,11 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                     if (reportValue(num)) {
                       setValue(num);
                     }
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (props.stopPropagation) {
+                    e.stopPropagation();
                   }
                 }}
               />
