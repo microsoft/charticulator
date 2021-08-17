@@ -467,7 +467,7 @@ class MenuItemsCreator {
    * Add DerivedColumn
    * @see derivedColumnsIdx
    */
-
+  // eslint-disable-next-line max-lines-per-function
   public appendDerivedColumn(): void {
     const mapping = this.parent?.props?.parent?.getAttributeMapping(
       this.attribute
