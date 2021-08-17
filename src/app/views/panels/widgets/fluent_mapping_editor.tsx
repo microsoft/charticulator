@@ -15,17 +15,14 @@ import {
 import { DragData } from "../../../actions";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { getAlignment, PopupView } from "../../../controllers";
+import { PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
 import { isKindAcceptable, type2DerivedColumns } from "../../dataset/common";
 import { ScaleEditor } from "../scale_editor";
 import { CharticulatorPropertyAccessors, DropZoneView } from "./manager";
 import { AppStore } from "../../../stores";
 import { ScaleValueSelector } from "../scale_value_selector";
-import {
-  aggregationFunctions,
-  FunctionCall,
-} from "../../../../core/expression";
+import { FunctionCall } from "../../../../core/expression";
 import { FluentValueEditor } from "./fluentui_value_editor";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 import {
@@ -34,6 +31,7 @@ import {
   ActionButton,
   Label,
   IContextualMenuItem,
+  Callout,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -64,6 +62,7 @@ export interface MappingEditorProps {
 
 export interface MappingEditorState {
   showNoneAsValue: boolean;
+  isDataFieldValueSelectionOpen: boolean;
 }
 
 export class FluentMappingEditor extends React.Component<
@@ -78,31 +77,35 @@ export class FluentMappingEditor extends React.Component<
 
   public state: MappingEditorState = {
     showNoneAsValue: false,
+    isDataFieldValueSelectionOpen: false,
   };
 
   public director: Director = null;
 
-  private beginDataFieldValueSelection(anchor: Element = this.mappingButton) {
+  private changeDataFieldValueSelectionState() {
+    this.setState({
+      ...this.state,
+      isDataFieldValueSelectionOpen: !this.state.isDataFieldValueSelectionOpen,
+    });
+  }
+
+  private openDataFieldValueSelection(): JSX.Element {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
-    const options = this.props.options;
     const mapping = parent.getAttributeMapping(attribute);
-
-    const { alignX }: { alignLeft: boolean; alignX: any } = getAlignment(
-      anchor
-    );
-
-    globals.popupController.popupAt(
-      (context) => {
-        const scaleMapping = mapping as Specification.ScaleMapping;
-        if (scaleMapping.scale) {
-          const scaleObject = getById(
-            this.props.store.chart.scales,
-            scaleMapping.scale
-          );
-
-          return (
-            <PopupView context={context}>
+    const scaleMapping = mapping as Specification.ScaleMapping;
+    if (scaleMapping?.scale) {
+      const scaleObject = getById(
+        this.props.store.chart.scales,
+        scaleMapping.scale
+      );
+      return (
+        <>
+          {this.state.isDataFieldValueSelectionOpen && (
+            <Callout
+              target={`#dataFieldValueSelection`}
+              onDismiss={() => this.changeDataFieldValueSelectionState()}
+            >
               <ScaleValueSelector
                 scale={scaleObject}
                 scaleMapping={mapping as any}
@@ -118,15 +121,15 @@ export class FluentMappingEditor extends React.Component<
                     this.props.attribute,
                     scaleMapping
                   );
-                  context.close();
+                  this.changeDataFieldValueSelectionState();
                 }}
               />
-            </PopupView>
-          );
-        }
-      },
-      { anchor, alignX }
-    );
+            </Callout>
+          )}
+        </>
+      );
+    }
+    return null;
   }
 
   private initiateValueEditor() {
@@ -394,6 +397,12 @@ export class FluentMappingEditor extends React.Component<
                     iconProps={{
                       iconName: "ColumnFunction",
                     }}
+                    onMenuClick={(event) => {
+                      if (scaleMapping.expression.startsWith("get")) {
+                        event.preventDefault();
+                        this.changeDataFieldValueSelectionState();
+                      }
+                    }}
                   />
                 </FluentActionButton>
               </>
@@ -549,15 +558,17 @@ export class FluentMappingEditor extends React.Component<
                     iconProps={{
                       iconName: "Link",
                     }}
+                    id="dataFieldValueSelection"
                     title={strings.mappingEditor.bindDataValue}
                     elementRef={(e) => (this.mappingButton = e)}
                     onClick={() => {
-                      this.beginDataFieldValueSelection(this.mappingButton);
+                      this.changeDataFieldValueSelectionState();
                     }}
                     checked={isDataMapping}
                   />
                 </FluentButton>
               ) : null}
+              {this.openDataFieldValueSelection()}
             </span>
           )}
         </DropZoneView>
@@ -614,8 +625,9 @@ export class FluentMappingEditor extends React.Component<
         let expressionAggregation: string = null;
         let derivedExpression: string = null;
         if (currentMapping != null) {
-          console.log(currentMapping)
-          if ((currentMapping as Specification.ScaleMapping).expression != null) {
+          if (
+            (currentMapping as Specification.ScaleMapping).expression != null
+          ) {
             const parsed = Expression.parse(
               (currentMapping as Specification.ScaleMapping).expression
             );
@@ -623,15 +635,11 @@ export class FluentMappingEditor extends React.Component<
             if (parsed instanceof Expression.FunctionCall) {
               expression = parsed.args[0].toString();
               expressionAggregation = parsed.name;
-              console.log(expression)
-              console.log(expressionAggregation)
 
-
+              //dataFieldValueSelection
               if (expressionAggregation.startsWith("get")) {
-                console.log("aaaa")
                 return;
               }
-
 
               //derived columns
               if (expression.startsWith("date.")) {
@@ -641,15 +649,11 @@ export class FluentMappingEditor extends React.Component<
               }
             }
 
-            const aggName = aggregationFunctions.find(
-              (agg) => agg.name.localeCompare(expressionAggregation) === 0
-            );
-
             expression = expression?.split("`").join("");
-            console.log(expression)
-            const aggContainer = document.querySelector("body :last-child.ms-Layer");
+            const aggContainer = document.querySelector(
+              "body :last-child.ms-Layer"
+            );
             const xpath = `//ul//span[contains(text(), "${expression}")]`;
-            // const xpath = `//span[contains(text(), "${expression}") | @class="ms-ContextualMenu-itemText"]`;
             const menuItem = document.evaluate(
               xpath,
               aggContainer,
@@ -659,7 +663,6 @@ export class FluentMappingEditor extends React.Component<
             ).singleNodeValue as HTMLSpanElement;
 
             if (menuItem == null) {
-              // const derSubXpath = `//div[class="ms-ContextualMenu-linkContent"]/span[contains(text(), "${derivedExpression}")]`;
               const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
               const derElement = document.evaluate(
                 derSubXpath,
@@ -681,8 +684,7 @@ export class FluentMappingEditor extends React.Component<
           }
         }
       }, 100);
-      })
-
+    });
   }
 }
 

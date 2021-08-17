@@ -291,7 +291,6 @@ class MenuItemsCreator {
         item?: IContextualMenuItem
       ) => {
         const transformedField = this.transformField(field, item?.key);
-
         if (mapping?.type === MappingType.text) {
           this.textMappingOnClick(transformedField.expression, field)
         } else {
@@ -469,7 +468,6 @@ class MenuItemsCreator {
    * @see derivedColumnsIdx
    */
 
-  // eslint-disable-next-line max-lines-per-function
   public appendDerivedColumn(): void {
     const mapping = this.parent?.props?.parent?.getAttributeMapping(
       this.attribute
@@ -640,7 +638,7 @@ class MenuItemsCreator {
         if (parsed instanceof Expression.FunctionCall) {
           expression = parsed.args[0].toString();
           expressionAggregation = parsed.name;
-
+          expression = expression?.split("`").join("");
           //need to provide date.year() etc.
           expression = this.parseDerivedColumnsExpression(expression);
         }
