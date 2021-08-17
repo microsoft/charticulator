@@ -690,8 +690,8 @@ export class FluentUIWidgetManager
             this.emitSetProperty(property, null);
           } else {
             this.emitSetProperty(property, value);
-            this.store.updateDataAxes()
-            this.store.updatePlotSegments()
+            this.store.updateDataAxes();
+            this.store.updatePlotSegments();
           }
           return true;
         }}
@@ -937,7 +937,7 @@ export class FluentUIWidgetManager
         ref={(e) => (container = e)}
         key={this.getKeyFromProperty(property)}
       >
-        <FluentButton marginTop={"0px"}>
+        <FluentButton marginTop={"0px"} paddingRight={"0px"}>
           <DefaultButton
             styles={{
               root: {
