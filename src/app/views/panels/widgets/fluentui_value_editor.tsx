@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { DefaultButton, Dropdown, Label, TextField } from "@fluentui/react";
+import { DefaultButton, Dropdown, IContextualMenuItem, Label, TextField } from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -13,7 +13,7 @@ import {
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
-import { ColorPicker } from "../../../components";
+import { ColorPicАker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
 import { getAlignment, PopupView } from "../../../controllers";
 import * as globals from "../../../globals";
@@ -30,6 +30,7 @@ import {
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
+import { Director, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
@@ -52,6 +53,7 @@ export interface ValueEditorProps {
 
   hints?: DataMappingHints;
   numberOptions?: InputNumberOptions;
+  mainMenuItems?: IContextualMenuItem[];
 }
 
 export class FluentValueEditor extends ContextedComponent<
@@ -72,7 +74,6 @@ export class FluentValueEditor extends ContextedComponent<
 
   public render() {
     const value = this.props.value;
-
     let placeholderText = this.props.placeholder || strings.core.none;
     if (this.props.defaultValue != null) {
       placeholderText = this.props.defaultValue.toString();
@@ -283,10 +284,11 @@ export class FluentValueEditor extends ContextedComponent<
                   root: {
                     ...defultComponentsHeight,
                   },
+                  menuIcon: { display: "none !important",}
                 }}
                 text={strings.attributesPanel.conditionedBy}
-                onClick={() => {
-                  this.props.onBeginDataFieldSelection();
+                menuProps={{
+                  items: this.props.mainMenuItems ?? []
                 }}
               />
             </>
