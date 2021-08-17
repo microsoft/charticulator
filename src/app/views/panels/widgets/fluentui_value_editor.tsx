@@ -52,6 +52,7 @@ export interface ValueEditorProps {
 
   hints?: DataMappingHints;
   numberOptions?: InputNumberOptions;
+  stopPropagation?: boolean;
 }
 
 export class FluentValueEditor extends ContextedComponent<
@@ -89,6 +90,7 @@ export class FluentValueEditor extends ContextedComponent<
         return (
           <FluentInputNumber
             label={this.props.label}
+            stopPropagation={this.props.stopPropagation}
             placeholder={this.props.placeholder}
             defaultValue={this.props.value as number}
             onEnter={(newValue: number) => {
@@ -133,6 +135,11 @@ export class FluentValueEditor extends ContextedComponent<
                     } else {
                       return false;
                     }
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (this.props.stopPropagation) {
+                    e.stopPropagation();
                   }
                 }}
               />
@@ -218,6 +225,7 @@ export class FluentValueEditor extends ContextedComponent<
                 }
                 return true;
               }}
+              stopPropagation={this.props.stopPropagation}
             />
           );
         } else {
@@ -237,6 +245,11 @@ export class FluentValueEditor extends ContextedComponent<
                   return true;
                 }}
                 styles={defaultStyle}
+                onKeyDown={(e) => {
+                  if (this.props.stopPropagation) {
+                    e.stopPropagation();
+                  }
+                }}
               />
             </>
           );

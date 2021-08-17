@@ -23,6 +23,7 @@ export interface InputExpressionProps {
   textExpression?: boolean;
   allowNull?: boolean;
   label?: string;
+  stopPropagation?: boolean;
 }
 
 export interface InputExpressionState {
@@ -118,6 +119,9 @@ export const FluentInputExpression: React.FC<InputExpressionProps> = (
           }
           if (e.key == "Escape") {
             doCancel();
+          }
+          if (props.stopPropagation) {
+            e.stopPropagation();
           }
         }}
       />
