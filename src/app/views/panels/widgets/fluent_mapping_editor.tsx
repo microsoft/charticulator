@@ -262,6 +262,7 @@ export class FluentMappingEditor extends React.Component<
           getTable={() => this.getTableOrDefault()}
           hints={this.props.options.hints}
           numberOptions={this.props.options.numberOptions}
+          stopPropagation={this.props.options.stopPropagation}
           mainMenuItems={mainMenuItems}
         />
       </>
