@@ -222,7 +222,23 @@ export class FluentMappingEditor extends React.Component<
     if (this.props.options.defaultValue != null) {
       placeholderText = this.props.options.defaultValue.toString();
     }
-    //fix
+    const parent = this.props.parent;
+    const attribute = this.props.attribute;
+    const options = this.props.options;
+    const mapping = parent.getAttributeMapping(attribute);
+
+    const table = mapping ? (mapping as any).table : options.table;
+    const builderProps = getMenuProps.bind(this)(parent, attribute, options);
+    const mainMenuItems: IContextualMenuItem[] = this.director.buildFieldsMenu(
+      builderProps.onClick,
+      builderProps.defaultValue,
+      parent.store,
+      this,
+      attribute,
+      table,
+      options.acceptKinds
+    );
+
     return (
       <>
         <FluentValueEditor
@@ -247,6 +263,7 @@ export class FluentMappingEditor extends React.Component<
           hints={this.props.options.hints}
           numberOptions={this.props.options.numberOptions}
           stopPropagation={this.props.options.stopPropagation}
+          mainMenuItems={mainMenuItems}
         />
       </>
     );
