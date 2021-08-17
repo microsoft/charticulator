@@ -85,7 +85,7 @@ export class ExportImageView extends React.Component<
             text={strings.fileExport.typePNG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
-              this.context.store.dispatcher.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.Export("png", { scale: this.getScaler() })
               );
             }}
@@ -94,7 +94,7 @@ export class ExportImageView extends React.Component<
             text={strings.fileExport.typeJPEG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
-              this.context.store.dispatcher.dispatch(
+              this.props.store.dispatcher.dispatch(
                 new Actions.Export("jpeg", { scale: this.getScaler() })
               );
             }}
@@ -103,7 +103,7 @@ export class ExportImageView extends React.Component<
             text={strings.fileExport.typeSVG}
             url={R.getSVGIcon("toolbar/export")}
             onClick={() => {
-              this.context.store.dispatcher.dispatch(new Actions.Export("svg"));
+              this.props.store.dispatcher.dispatch(new Actions.Export("svg"));
             }}
           />
         </div>
