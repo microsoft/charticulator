@@ -16,10 +16,13 @@ import {
 } from "@fluentui/react";
 import styled from "styled-components";
 
-export const FluentButton = styled.div<{ marginTop?: string }>`
+export const FluentButton = styled.div<{
+  marginTop?: string;
+  paddingRight?: string;
+}>`
   margin-top: ${({ marginTop }) => marginTop || "24px"};
   display: inline-block;
-  padding: 0px 4px 0px 0px;
+  padding: 0px ${({ paddingRight }) => paddingRight || "4px"} 0px 0px;
   button {
     padding: 4px;
   }
@@ -108,7 +111,7 @@ export const defultBindButtonSize = {
 
 export const defultComponentsHeight = {
   height: "24px",
-  lineHeight: "24px",
+  lineHeight: "unset",
 };
 
 export const groupHeaderStyles: IStyleFunctionOrObject<
@@ -208,6 +211,7 @@ export const defaultStyle: any = {
   },
   caretDownWrapper: {
     boxSizing: "unset",
+    marginTop: "5px",
     ...defultComponentsHeight,
   },
   title: {
