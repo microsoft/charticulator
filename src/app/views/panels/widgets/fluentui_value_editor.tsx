@@ -30,7 +30,6 @@ import {
 } from "./controls/fluentui_customized_components";
 import { InputImage } from "./controls/fluentui_image";
 import { FluentInputNumber } from "./controls/fluentui_input_number";
-import { Director, MenuItemBuilder } from "../../dataset/data_field_binding_builder";
 
 export interface ValueEditorProps {
   value: Specification.AttributeValue;
