@@ -784,8 +784,7 @@ export const ScaffoldButton: React.FC<{
       active={props.currentTool == props.type}
       title={props.title}
       onClick={() => {
-        //this.dispatch(new Actions.SetCurrentTool(this.props.type));
-        // new Actions.SetCurrentTool(this.props.type).
+        // this.dispatch(new Actions.SetCurrentTool(this.props.type));
       }}
       dragData={() => {
         return new DragData.ScaffoldType(props.type);
