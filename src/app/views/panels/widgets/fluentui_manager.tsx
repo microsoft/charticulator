@@ -923,6 +923,9 @@ export class FluentUIWidgetManager
             menuProps={{
               items: menu,
               gapSpace: options.shiftCallout ? options.shiftCallout : 0,
+              onMenuOpened: () => {
+                FluentMappingEditor.openEditor(currentExpression, false, null);
+              },
             }}
           />
         </FluentButton>
