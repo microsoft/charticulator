@@ -923,6 +923,9 @@ export class FluentUIWidgetManager
             menuProps={{
               items: menu,
               gapSpace: options.shiftCallout ? options.shiftCallout : 0,
+              onMenuOpened: () => {
+                FluentMappingEditor.openEditor(currentExpression, false, null);
+              },
             }}
           />
         </FluentButton>
@@ -1178,7 +1181,8 @@ export class FluentUIWidgetManager
             this.objectClass.object as Specification.PlotSegment,
             options.dropzone.property,
             null,
-            data
+            data,
+            false
           ).dispatch(this.store.dispatcher);
         }
       };
@@ -1202,7 +1206,8 @@ export class FluentUIWidgetManager
               this.objectClass.object as Specification.PlotSegment,
               options.dropzone.property,
               null,
-              data
+              data,
+              true
             ).dispatch(this.store.dispatcher);
           }}
           className="charticulator__widget-section-header charticulator__widget-section-header-dropzone"

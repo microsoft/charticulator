@@ -326,6 +326,9 @@ export class ChartEditorView
 
   protected updateSelection() {
     this.setState({ currentSelection: this.props.store.currentSelection });
+    this.setState({
+      canvasToolbar: true,
+    });
   }
 
   protected updateGraphics() {
@@ -1289,7 +1292,8 @@ export class ChartEditorView
                   layout,
                   dropAction.axisInference.property,
                   dropAction.axisInference.appendToProperty,
-                  data
+                  data,
+                  true
                 ).dispatch(this.props.store.dispatcher);
                 return true;
               };
