@@ -1390,6 +1390,7 @@ export function buildAxisInference(
       orderMode: axis.orderMode,
       rawExpression: axis.rawExpression,
       property,
+      defineCategories: true,
     },
   };
 }
