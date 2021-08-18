@@ -2,7 +2,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { DefaultButton, Dropdown, IContextualMenuItem, Label, TextField } from "@fluentui/react";
+import {
+  Callout,
+  DefaultButton,
+  Dropdown,
+  IContextualMenuItem,
+  Label,
+  TextField,
+} from "@fluentui/react";
 import * as React from "react";
 import {
   Color,
@@ -15,8 +22,6 @@ import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
 import { ColorPicker } from "../../../components";
 import { ContextedComponent } from "../../../context_component";
-import { getAlignment, PopupView } from "../../../controllers";
-import * as globals from "../../../globals";
 import { FluentComboBoxFontFamily } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
 
@@ -64,6 +69,9 @@ export class FluentValueEditor extends ContextedComponent<
   public emitClearValue() {
     this.props.onClear();
   }
+  public state: Record<string, unknown> = {
+    open: false,
+  };
 
   public emitSetValue(value: Specification.AttributeValue) {
     this.props.onEmitValue(value);
@@ -149,29 +157,30 @@ export class FluentValueEditor extends ContextedComponent<
               className="el-color-item"
               ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
+              id="color_picker"
               onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => (
-                    <PopupView context={context}>
-                      <ColorPicker
-                        store={this.store}
-                        defaultValue={color}
-                        allowNull={true}
-                        onPick={(color) => {
-                          if (color == null) {
-                            this.emitClearValue();
-                            context.close();
-                          } else {
-                            this.emitSetValue(color);
-                          }
-                        }}
-                      />
-                    </PopupView>
-                  ),
-                  { anchor: colorItem, alignX: getAlignment(colorItem).alignX }
-                );
+                this.setState({ open: !this.state.open });
               }}
             />
+            {this.state.open && (
+              <Callout
+                target={`#color_picker`}
+                onDismiss={() => this.setState({ open: !this.state.open })}
+              >
+                <ColorPicker
+                  store={this.store}
+                  allowNull={true}
+                  onPick={(color) => {
+                    if (color == null) {
+                      this.emitClearValue();
+                    } else {
+                      this.emitSetValue(color);
+                    }
+                    this.setState({ open: !this.state.open });
+                  }}
+                />
+              </Callout>
+            )}
           </span>
         );
       }
@@ -301,11 +310,11 @@ export class FluentValueEditor extends ContextedComponent<
                   root: {
                     ...defultComponentsHeight,
                   },
-                  menuIcon: { display: "none !important",}
+                  menuIcon: { display: "none !important" },
                 }}
                 text={strings.attributesPanel.conditionedBy}
                 menuProps={{
-                  items: this.props.mainMenuItems ?? []
+                  items: this.props.mainMenuItems ?? [],
                 }}
               />
             </>
