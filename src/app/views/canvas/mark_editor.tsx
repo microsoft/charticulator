@@ -1168,7 +1168,8 @@ export class SingleMarkView
                         element as PlotSegment,
                         zone.dropAction.axisInference.property,
                         zone.dropAction.axisInference.appendToProperty,
-                        data
+                        data,
+                        false
                       )
                     );
                     return true;

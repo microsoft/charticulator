@@ -5,6 +5,7 @@
 import {
   Dataset,
   deepClone,
+  defineCategories,
   Expression,
   getById,
   makeRange,
@@ -468,7 +469,9 @@ export class ChartTemplate {
             if (inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
             }
-            axisDataBinding.categories = vector;
+            if (axis.defineCategories) {
+              axisDataBinding.categories = defineCategories(vector);
+            }
           }
         }
       }

@@ -1289,7 +1289,8 @@ export class ChartEditorView
                   layout,
                   dropAction.axisInference.property,
                   dropAction.axisInference.appendToProperty,
-                  data
+                  data,
+                  true
                 ).dispatch(this.props.store.dispatcher);
                 return true;
               };
