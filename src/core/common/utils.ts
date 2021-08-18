@@ -574,21 +574,23 @@ export function getSortFunctionByData(values: string[]) {
     }
     return false;
   };
-  const testResult = values
-    .map((val) => testToRange(val))
-    .reduceRight((a, b) => a && b);
-  if (testResult) {
-    return (a: any, b: any) => {
-      if (a && b) {
-        const aNum = a.match(/\d+/)[0];
-        const bNum = b.match(/\d+/)[0];
-        return +aNum < +bNum
-          ? 1
-          : +a.split("-").pop() < +b.split("-").pop()
-          ? 1
-          : -1;
-      }
-    };
+  if (values.length > 0){
+    const testResult = values
+      .map((val) => testToRange(val))
+      .reduceRight((a, b) => a && b);
+    if (testResult) {
+      return (a: any, b: any) => {
+        if (a && b) {
+          const aNum = a.match(/\d+/)[0];
+          const bNum = b.match(/\d+/)[0];
+          return +aNum < +bNum
+            ? 1
+            : +a.split("-").pop() < +b.split("-").pop()
+              ? 1
+              : -1;
+        }
+      };
+    }
   }
 
   return (a: any, b: any) => (a < b ? -1 : 1);
