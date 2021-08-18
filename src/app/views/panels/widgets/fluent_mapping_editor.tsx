@@ -66,6 +66,7 @@ export interface MappingEditorProps {
 export interface MappingEditorState {
   showNoneAsValue: boolean;
   isDataFieldValueSelectionOpen: boolean;
+  isColorPickerOpen: boolean;
 }
 
 export class FluentMappingEditor extends React.Component<
@@ -81,6 +82,7 @@ export class FluentMappingEditor extends React.Component<
   public state: MappingEditorState = {
     showNoneAsValue: false,
     isDataFieldValueSelectionOpen: false,
+    isColorPickerOpen: false,
   };
 
   public director: Director = null;
@@ -89,6 +91,13 @@ export class FluentMappingEditor extends React.Component<
     this.setState({
       ...this.state,
       isDataFieldValueSelectionOpen: !this.state.isDataFieldValueSelectionOpen,
+    });
+  }
+
+  private changeColorPickerState() {
+    this.setState({
+      ...this.state,
+      isColorPickerOpen: !this.state.isColorPickerOpen,
     });
   }
 
@@ -142,6 +151,7 @@ export class FluentMappingEditor extends React.Component<
       case "text":
         {
           this.setState({
+            ...this.state,
             showNoneAsValue: true,
           });
         }
@@ -151,26 +161,7 @@ export class FluentMappingEditor extends React.Component<
           if (this.noneLabel == null) {
             return;
           }
-          globals.popupController.popupAt(
-            (context) => (
-              <PopupView context={context}>
-                <ColorPicker
-                  store={this.props.store}
-                  defaultValue={null}
-                  allowNull={true}
-                  onPick={(color) => {
-                    if (color == null) {
-                      this.clearMapping();
-                      context.close();
-                    } else {
-                      this.setValueMapping(color);
-                    }
-                  }}
-                />
-              </PopupView>
-            ),
-            { anchor: this.noneLabel }
-          );
+          this.changeColorPickerState();
         }
         break;
     }
@@ -186,6 +177,7 @@ export class FluentMappingEditor extends React.Component<
   public clearMapping() {
     this.props.parent.onEditMappingHandler(this.props.attribute, null);
     this.setState({
+      ...this.state,
       showNoneAsValue: false,
     });
   }
@@ -269,6 +261,33 @@ export class FluentMappingEditor extends React.Component<
     );
   }
 
+  private renderColorPicker(): JSX.Element {
+    return (
+      <>
+        {this.state.isColorPickerOpen && (
+          <Callout
+            target={`#id_${this.props.options.label}`}
+            onDismiss={() => this.changeColorPickerState()}
+          >
+            <ColorPicker
+              store={this.props.store}
+              defaultValue={null}
+              allowNull={true}
+              onPick={(color) => {
+                if (color == null) {
+                  this.clearMapping();
+                } else {
+                  this.setValueMapping(color);
+                }
+                this.changeColorPickerState();
+              }}
+            />
+          </Callout>
+        )}
+      </>
+    );
+  }
+
   private renderCurrentAttributeMapping() {
     const parent = this.props.parent;
     const attribute = this.props.attribute;
@@ -291,31 +310,38 @@ export class FluentMappingEditor extends React.Component<
         } else {
           if (options.defaultAuto) {
             return (
-              <TextField
-                styles={defaultStyle}
-                label={this.props.options.label}
-                onRenderLabel={labelRender}
-                placeholder={strings.core.auto}
-                onClick={() => {
-                  if (!mapping || (mapping as any).valueIndex == undefined) {
-                    this.initiateValueEditor();
-                  }
-                }}
-              />
+              <>
+                {this.renderColorPicker()}
+                <TextField
+                  styles={defaultStyle}
+                  label={this.props.options.label}
+                  onRenderLabel={labelRender}
+                  placeholder={strings.core.auto}
+                  onClick={() => {
+                    if (!mapping || (mapping as any).valueIndex == undefined) {
+                      this.initiateValueEditor();
+                    }
+                  }}
+                />
+              </>
             );
           } else {
             return (
-              <TextField
-                styles={defaultStyle}
-                label={this.props.options.label}
-                onRenderLabel={labelRender}
-                placeholder={strings.core.none}
-                onClick={() => {
-                  if (!mapping || (mapping as any).valueIndex == undefined) {
-                    this.initiateValueEditor();
-                  }
-                }}
-              />
+              <>
+                {this.renderColorPicker()}
+                <TextField
+                  id={`id_${this.props.options.label}`}
+                  styles={defaultStyle}
+                  label={this.props.options.label}
+                  onRenderLabel={labelRender}
+                  placeholder={strings.core.none}
+                  onClick={() => {
+                    if (!mapping || (mapping as any).valueIndex == undefined) {
+                      this.initiateValueEditor();
+                    }
+                  }}
+                />
+              </>
             );
           }
         }
@@ -556,6 +582,7 @@ export class FluentMappingEditor extends React.Component<
                         this.clearMapping();
                       }
                       this.setState({
+                        ...this.state,
                         showNoneAsValue: false,
                       });
                     }}
