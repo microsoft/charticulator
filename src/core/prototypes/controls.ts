@@ -70,6 +70,7 @@ export interface RowOptions {
     type: "axis-data-binding";
     prompt?: string;
     property?: string;
+    defineCategories?: boolean;
   };
 }
 

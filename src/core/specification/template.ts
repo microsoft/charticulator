@@ -102,6 +102,7 @@ export interface AxisInference {
   orderMode?: Types.OrderMode;
   order?: string[];
   rawExpression?: string;
+  defineCategories?: boolean;
 }
 
 /** Infer scale parameter, set to scale's domain property */

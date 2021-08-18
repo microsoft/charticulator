@@ -642,6 +642,7 @@ export class BindDataToAxis extends Action {
     public property: string,
     public appendToProperty: string,
     public dataExpression: DragData.DataExpression,
+    public defineCategories: boolean,
     public type?: AxisDataBindingType,
     public numericalMode?: NumericalMode
   ) {

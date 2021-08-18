@@ -2,8 +2,21 @@
 // Licensed under the MIT license.
 
 import {
-  compareMarkAttributeNames, Dataset, deepClone, Expression, getById, getByName, MessageType, Prototypes, Scale,
-  setField, Solver, Specification, uniqueID, zipArray,
+  compareMarkAttributeNames,
+  Dataset,
+  deepClone,
+  defineCategories,
+  Expression,
+  getById,
+  getByName,
+  MessageType,
+  Prototypes,
+  Scale,
+  setField,
+  Solver,
+  Specification,
+  uniqueID,
+  zipArray,
 } from "../../core";
 import { BaseStore } from "../../core/store/base";
 import { CharticulatorWorkerInterface } from "../../worker";
@@ -11,30 +24,60 @@ import { Actions, DragData } from "../actions";
 import { AbstractBackend } from "../backend/abstract";
 import { IndexedDBBackend } from "../backend/indexed_db";
 import { ChartTemplateBuilder, ExportTemplateTarget } from "../template";
-import { b64EncodeUnicode, renderDataURLToPNG, stringToDataURL, } from "../utils";
-import { renderChartToLocalString, renderChartToString, } from "../views/canvas/chart_display";
-import { ActionHandlerRegistry, registerActionHandlers, } from "./action_handlers";
+import {
+  b64EncodeUnicode,
+  renderDataURLToPNG,
+  stringToDataURL,
+} from "../utils";
+import {
+  renderChartToLocalString,
+  renderChartToString,
+} from "../views/canvas/chart_display";
+import {
+  ActionHandlerRegistry,
+  registerActionHandlers,
+} from "./action_handlers";
 import { createDefaultChart } from "./defaults";
 import { HistoryManager } from "./history_manager";
 import { Migrator } from "./migrator";
-import { ChartElementSelection, GlyphSelection, MarkSelection, Selection, } from "./selection";
+import {
+  ChartElementSelection,
+  GlyphSelection,
+  MarkSelection,
+  Selection,
+} from "./selection";
 import { LocaleFileFormat } from "../../core/dataset/dsv_parser";
 import { TableType } from "../../core/dataset";
 import { ValueType } from "../../core/expression/classes";
 import {
-  DataKind, DataType, MappingType, ObjectProperties, ScaleMapping, ValueMapping,
+  DataKind,
+  DataType,
+  MappingType,
+  ObjectProperties,
+  ScaleMapping,
+  ValueMapping,
 } from "../../core/specification";
 import { RenderEvents } from "../../core/graphics";
-import { AxisDataBindingType, AxisRenderingStyle, NumericalMode, OrderMode, } from "../../core/specification/types";
 import {
-  NumericalNumberLegendAttributeNames, NumericalNumberLegendProperties,
+  AxisDataBindingType,
+  AxisRenderingStyle,
+  NumericalMode,
+  OrderMode,
+} from "../../core/specification/types";
+import {
+  NumericalNumberLegendAttributeNames,
+  NumericalNumberLegendProperties,
 } from "../../core/prototypes/legends/numerical_legend";
 
-import { defaultAxisStyle, Region2DProperties, } from "../../core/prototypes/plot_segments";
+import {
+  defaultAxisStyle,
+  Region2DProperties,
+} from "../../core/prototypes/plot_segments";
 import { isType, ObjectClass } from "../../core/prototypes";
 import { LinearScaleProperties } from "../../core/prototypes/scales/linear";
 import {
-  PlotSegmentAxisPropertyNames, Region2DSublayoutType,
+  PlotSegmentAxisPropertyNames,
+  Region2DSublayoutType,
 } from "../../core/prototypes/plot_segments/region_2d/base";
 import { LineGuideProperties } from "../../core/prototypes/plot_segments/line";
 import { DataAxisProperties } from "../../core/prototypes/marks/data_axis.attrs";
@@ -811,8 +854,12 @@ export class AppStore extends BaseStore {
 
     // Infer a new scale for this item
     const scaleClassID = Prototypes.Scales.inferScaleType(
-      (values?.length > 0 && typeof values[0] === "string") ? DataType.String : options.valueType,
-      (values?.length > 0 && typeof values[0] === "string") ? DataKind.Categorical : options.valueKind,
+      values?.length > 0 && typeof values[0] === "string"
+        ? DataType.String
+        : options.valueType,
+      values?.length > 0 && typeof values[0] === "string"
+        ? DataKind.Categorical
+        : options.valueKind,
 
       // options.valueKind,
       options.outputType
@@ -1386,6 +1433,7 @@ export class AppStore extends BaseStore {
           autoDomainMin: xDataProperty.autoDomainMin,
           domainMin: xDataProperty.domainMin,
           domainMax: xDataProperty.domainMax,
+          defineCategories: true,
         });
       }
 
@@ -1427,6 +1475,7 @@ export class AppStore extends BaseStore {
           autoDomainMin: yDataProperty.autoDomainMin,
           domainMin: yDataProperty.domainMin,
           domainMax: yDataProperty.domainMax,
+          defineCategories: true,
         });
       }
 
@@ -1470,6 +1519,7 @@ export class AppStore extends BaseStore {
           autoDomainMin: axisProperty.autoDomainMin,
           domainMin: axisProperty.domainMin,
           domainMax: axisProperty.domainMax,
+          defineCategories: true,
         });
       }
     });
@@ -1523,6 +1573,7 @@ export class AppStore extends BaseStore {
         autoDomainMin: axisProperty.autoDomainMin,
         domainMin: axisProperty.domainMin,
         domainMax: axisProperty.domainMax,
+        defineCategories: false,
       });
     };
 
@@ -1597,6 +1648,7 @@ export class AppStore extends BaseStore {
     autoDomainMin: boolean;
     domainMin: number;
     domainMax: number;
+    defineCategories: boolean;
   }) {
     const { object, property, appendToProperty, dataExpression } = options;
 
@@ -1791,12 +1843,9 @@ export class AppStore extends BaseStore {
               dataBinding.type = AxisDataBindingType.Numerical;
               dataBinding.numericalMode = NumericalMode.Linear;
             }
-            const { categories } = this.getCategoriesForDataBinding(
-              dataExpression.metadata,
-              dataExpression.valueType,
-              values
-            );
-            dataBinding.categories = categories;
+            if (options.defineCategories) {
+              dataBinding.categories = defineCategories(values);
+            }
           }
           break;
         case Specification.DataKind.Temporal:

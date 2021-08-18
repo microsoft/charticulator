@@ -5,6 +5,8 @@ import { Color } from "./color";
 import { utcFormat } from "d3-time-format";
 
 import { formatLocale, FormatLocaleDefinition } from "d3-format";
+import { Scale } from ".";
+import { OrderMode } from "../specification/types";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -698,4 +700,15 @@ export function parseSafe(value: string, defaultValue: any = null) {
 export function getRandom(startRange: number, endRange: number) {
   // eslint-disable-next-line
   return startRange + Math.random() * (endRange - startRange);
+}
+
+export function defineCategories(vector: any[]) {
+  const scale = new Scale.CategoricalScale();
+  vector = (vector as number[]).sort((a, b) => a - b);
+  scale.inferParameters(vector as string[], OrderMode.order);
+  const categories = new Array<string>(scale.length);
+  scale.domain.forEach(
+    (index: any, x: any) => (categories[index] = x.toString())
+  );
+  return categories;
 }

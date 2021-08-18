@@ -432,6 +432,7 @@ export class DataAxisClass extends MarkClass<
               ),
               type: props.axis.type,
               property: "axis",
+              defineCategories: false,
             },
           },
           ...props.dataExpressions.map((x, i) => {
