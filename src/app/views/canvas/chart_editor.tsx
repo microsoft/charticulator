@@ -326,6 +326,9 @@ export class ChartEditorView
 
   protected updateSelection() {
     this.setState({ currentSelection: this.props.store.currentSelection });
+    this.setState({
+      canvasToolbar: true,
+    });
   }
 
   protected updateGraphics() {
