@@ -388,7 +388,12 @@ export class IconElementClass extends EmphasizableMarkClass<
           manager.mappingEditor(strings.objects.opacity, "opacity", {
             hints: { rangeNumber: [0, 1] },
             defaultValue: 1,
-            numberOptions: { showSlider: true, minimum: 0, maximum: 1 },
+            numberOptions: {
+              showSlider: true,
+              minimum: 0,
+              maximum: 1,
+              step: 0.1,
+            },
           }),
         ]
       ),
