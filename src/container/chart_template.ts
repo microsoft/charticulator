@@ -5,6 +5,7 @@
 import {
   Dataset,
   deepClone,
+  defineCategories,
   Expression,
   getById,
   makeRange,
@@ -469,14 +470,7 @@ export class ChartTemplate {
               axisDataBinding.domainMax = scale.domainMax;
             }
             if (axis.defineCategories) {
-              const scale = new Scale.CategoricalScale();
-              vector = (vector as number[]).sort((a, b) => a - b);
-              scale.inferParameters(vector as string[], OrderMode.order);
-              const categories = new Array<string>(scale.length);
-              scale.domain.forEach(
-                (index: any, x: any) => (categories[index] = x.toString())
-              );
-              axisDataBinding.categories = categories;
+              axisDataBinding.categories = defineCategories(vector);
             }
           }
         }

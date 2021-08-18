@@ -5,6 +5,7 @@ import {
   compareMarkAttributeNames,
   Dataset,
   deepClone,
+  defineCategories,
   Expression,
   getById,
   getByName,
@@ -1843,14 +1844,7 @@ export class AppStore extends BaseStore {
               dataBinding.numericalMode = NumericalMode.Linear;
             }
             if (options.defineCategories) {
-              const scale = new Scale.CategoricalScale();
-              values = (values as number[]).sort((a, b) => a - b);
-              scale.inferParameters(values as string[], OrderMode.order);
-              const categories = new Array<string>(scale.length);
-              scale.domain.forEach(
-                (index: any, x: any) => (categories[index] = x.toString())
-              );
-              dataBinding.categories = categories;
+              dataBinding.categories = defineCategories(values);
             }
           }
           break;
