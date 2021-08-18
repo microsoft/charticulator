@@ -64,7 +64,8 @@ export class FluentInputColor extends React.Component<
         className="el-color-display"
         style={{
           backgroundColor: hex == "" ? "transparent" : hex,
-          marginTop: this.props.noDefaultMargin ? 5 : null,
+          marginTop: this.props.noDefaultMargin ? 0 : null,
+          marginRight: 5,
         }}
         id={ID_PREFIX + pickerId}
         onClick={() => {
