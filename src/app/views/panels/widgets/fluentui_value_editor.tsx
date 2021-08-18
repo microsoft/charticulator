@@ -121,7 +121,6 @@ export class FluentValueEditor extends ContextedComponent<
       case Specification.AttributeType.Color: {
         const color = value as Color;
         const hex = colorToHTMLColorHEX(color);
-        let colorItem: Element;
         return (
           <span className="el-color-value">
             <FluentTextField>
@@ -155,7 +154,6 @@ export class FluentValueEditor extends ContextedComponent<
             </FluentTextField>
             <span
               className="el-color-item"
-              ref={(e) => (colorItem = e)}
               style={{ backgroundColor: hex }}
               id="color_picker"
               onClick={() => {
