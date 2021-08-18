@@ -417,7 +417,12 @@ export class FluentMappingEditor extends React.Component<
                         const currentMapping = parent.getAttributeMapping(
                           attribute
                         );
-                        this.openEditor(currentMapping, false);
+                        FluentMappingEditor.openEditor(
+                          (currentMapping as Specification.ScaleMapping)
+                            ?.expression,
+                          false,
+                          this.mappingButton
+                        );
                       },
                     }}
                     text={scaleMapping.expression}
@@ -476,7 +481,11 @@ export class FluentMappingEditor extends React.Component<
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
-      this.openEditor(currentMapping, true);
+      FluentMappingEditor.openEditor(
+        (currentMapping as Specification.ScaleMapping)?.expression,
+        true,
+        this.mappingButton
+      );
     }
 
     const table = currentMapping
@@ -619,7 +628,7 @@ export class FluentMappingEditor extends React.Component<
     );
   }
 
-  private menuKeyClick(derivedExpression: string) {
+  public static menuKeyClick(derivedExpression: string) {
     setTimeout(() => {
       const aggContainer = document.querySelector("body :last-child.ms-Layer");
       const button: HTMLButtonElement = aggContainer?.querySelector(
@@ -655,75 +664,70 @@ export class FluentMappingEditor extends React.Component<
     }, 100);
   }
 
-  private openEditor(
-    currentMapping: Specification.Mapping,
-    clickOnButton: boolean
+  public static openEditor(
+    expressionString: string,
+    clickOnButton: boolean,
+    mappingButton: HTMLElement
   ) {
     setTimeout(() => {
       if (clickOnButton) {
-        this.mappingButton?.click();
+        mappingButton?.click();
       }
       setTimeout(() => {
         let expression: string = null;
         let expressionAggregation: string = null;
         let derivedExpression: string = null;
-        if (currentMapping != null) {
-          if (
-            (currentMapping as Specification.ScaleMapping).expression != null
-          ) {
-            const parsed = Expression.parse(
-              (currentMapping as Specification.ScaleMapping).expression
-            );
+        if (expressionString != null) {
+          const parsed = Expression.parse(expressionString);
 
-            if (parsed instanceof Expression.FunctionCall) {
-              expression = parsed.args[0].toString();
-              expressionAggregation = parsed.name;
+          if (parsed instanceof Expression.FunctionCall) {
+            expression = parsed.args[0].toString();
+            expressionAggregation = parsed.name;
 
-              //dataFieldValueSelection
-              if (expressionAggregation.startsWith("get")) {
-                return;
-              }
-
-              //derived columns
-              if (expression.startsWith("date.")) {
-                derivedExpression = type2DerivedColumns.date.find((item) =>
-                  expression.startsWith(item.function)
-                )?.displayName;
-              }
+            //dataFieldValueSelection
+            if (expressionAggregation.startsWith("get")) {
+              return;
             }
 
-            expression = expression?.split("`").join("");
-            const aggContainer = document.querySelector(
-              "body :last-child.ms-Layer"
-            );
-            const xpath = `//ul//span[contains(text(), "${expression}")]`;
-            const menuItem = document.evaluate(
-              xpath,
-              aggContainer,
+            //derived columns
+            if (expression.startsWith("date.")) {
+              derivedExpression = type2DerivedColumns.date.find((item) =>
+                expression.startsWith(item.function)
+              )?.displayName;
+            }
+          }
+
+          expression = expression?.split("`").join("");
+          const aggContainer = document.querySelector(
+            "body :last-child.ms-Layer"
+          );
+          const xpath = `//ul//span[contains(text(), "${expression}")]`;
+          const menuItem = document.evaluate(
+            xpath,
+            aggContainer,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue as HTMLSpanElement;
+
+          if (menuItem == null) {
+            const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
+            const derElement = document.evaluate(
+              derSubXpath,
+              document,
               null,
               XPathResult.FIRST_ORDERED_NODE_TYPE,
               null
             ).singleNodeValue as HTMLSpanElement;
-
-            if (menuItem == null) {
-              const derSubXpath = `//ul//span[contains(text(), "${derivedExpression}")]`;
-              const derElement = document.evaluate(
-                derSubXpath,
-                document,
-                null,
-                XPathResult.FIRST_ORDERED_NODE_TYPE,
-                null
-              ).singleNodeValue as HTMLSpanElement;
-              setTimeout(() => {
-                derElement?.click();
-                this.menuKeyClick(derivedExpression);
-              });
-            } else {
-              setTimeout(() => {
-                menuItem?.click();
-                this.menuKeyClick(derivedExpression);
-              }, 100);
-            }
+            setTimeout(() => {
+              derElement?.click();
+              FluentMappingEditor.menuKeyClick(derivedExpression);
+            });
+          } else {
+            setTimeout(() => {
+              menuItem?.click();
+              FluentMappingEditor.menuKeyClick(derivedExpression);
+            }, 100);
           }
         }
       }, 100);
