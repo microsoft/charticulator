@@ -247,28 +247,28 @@ export const FluentUIToolbar: React.FC<{
             compact={props.layout === LayoutDirection.Vertical}
             tools={[
               {
-                classID: "",
+                classID: "scaffold/cartesian-x",
                 title: strings.toolbar.lineH,
                 icon: "scaffold/cartesian-x",
                 onClick: () => null,
                 onDrag: () => new DragData.ScaffoldType("cartesian-x"),
               },
               {
-                classID: "",
+                classID: "scaffold/cartesian-y",
                 title: strings.toolbar.lineV,
                 icon: "scaffold/cartesian-y",
                 onClick: () => null,
                 onDrag: () => new DragData.ScaffoldType("cartesian-y"),
               },
               {
-                classID: "",
+                classID: "scaffold/circle",
                 title: strings.toolbar.polar,
                 icon: "scaffold/circle",
                 onClick: () => null,
                 onDrag: () => new DragData.ScaffoldType("polar"),
               },
               {
-                classID: "",
+                classID: "scaffold/curve",
                 title: strings.toolbar.curve,
                 icon: "scaffold/curve",
                 onClick: () => null,
@@ -707,6 +707,9 @@ export class MultiObjectButton extends ContextedComponent<
     return (
       <DraggableElement
         dragData={() => {
+          if (currentTool?.onDrag){
+            return currentTool?.onDrag();
+          }
           return new DragData.ObjectType(
             currentTool.classID,
             currentTool.options
