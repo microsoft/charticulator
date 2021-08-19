@@ -1185,16 +1185,11 @@ export function buildAxisWidgets(
                         label: strings.objects.axes.from,
                         observerConfig: {
                           isObserver: true,
-                          properties: [
-                            {
-                              property: axisProperty,
-                              field: "autoDomainMin",
-                            },
-                            {
-                              property: axisProperty,
-                              field: "autoDomainMax",
-                            },
-                          ],
+                          properties: {
+                            property: axisProperty,
+                            field: "autoDomainMin",
+                          },
+
                           value: false,
                         },
                       }
@@ -1207,16 +1202,10 @@ export function buildAxisWidgets(
                         label: strings.objects.axes.to,
                         observerConfig: {
                           isObserver: true,
-                          properties: [
-                            {
-                              property: axisProperty,
-                              field: "autoDomainMin",
-                            },
-                            {
-                              property: axisProperty,
-                              field: "autoDomainMax",
-                            },
-                          ],
+                          properties: {
+                            property: axisProperty,
+                            field: "autoDomainMax",
+                          },
                           value: false,
                         },
                       }
