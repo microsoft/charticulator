@@ -88,8 +88,8 @@ export const icons: Region2DConfigurationIcons = {
   dodgeYIcon: "CharticulatorStackRadial",
   gridIcon: "sublayout/polar-grid",
   packingIcon: "sublayout/packing",
-  overlapIcon: "sublayout/overlap",
-  jitterIcon: "Stack",
+  overlapIcon: "Stack",
+  jitterIcon: "sublayout/jitter",
 };
 
 export class PolarPlotSegment extends PlotSegmentClass<
