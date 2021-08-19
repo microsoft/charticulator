@@ -352,6 +352,23 @@ export class FluentUIWidgetManager
         key={this.getKeyFromProperty(property)}
         defaultValue={value}
         onEnter={(value) => {
+          if (options.observerConfig?.isObserver) {
+            if (options.observerConfig?.properties instanceof Array) {
+              options.observerConfig?.properties.forEach((property) =>
+                this.eventManager.notify(
+                  EventType.UPDATE_FIELD,
+                  property,
+                  options.observerConfig?.value
+                )
+              );
+            } else {
+              this.eventManager.notify(
+                EventType.UPDATE_FIELD,
+                options.observerConfig?.properties,
+                options.observerConfig?.value
+              );
+            }
+          }
           if (value == null) {
             this.emitSetProperty(property, null);
             return true;
@@ -617,6 +634,7 @@ export class FluentUIWidgetManager
       properties instanceof Array ? properties[0] : properties;
     this.eventListener = new UIManagerListener(this);
     this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
+    console.log(properties);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {

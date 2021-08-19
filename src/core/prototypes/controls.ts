@@ -128,6 +128,12 @@ export interface InputNumberOptions {
   updownStyle?: "normal" | "font";
   label?: string;
   stopPropagation?: boolean;
+
+  observerConfig?: {
+    isObserver: boolean,
+    properties: Property | Property[],
+    value: Specification.AttributeValue,
+  };
 }
 
 export interface InputDateOptions {

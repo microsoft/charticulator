@@ -1181,13 +1181,45 @@ export function buildAxisWidgets(
                 data.valueType !== "date"
                   ? manager.inputNumber(
                       { property: axisProperty, field: "domainMin" },
-                      { label: strings.objects.axes.from }
+                      {
+                        label: strings.objects.axes.from,
+                        observerConfig: {
+                          isObserver: true,
+                          properties: [
+                            {
+                              property: axisProperty,
+                              field: "autoDomainMin",
+                            },
+                            {
+                              property: axisProperty,
+                              field: "autoDomainMax",
+                            },
+                          ],
+                          value: false,
+                        },
+                      }
                     )
                   : null,
                 data.valueType !== "date"
                   ? manager.inputNumber(
                       { property: axisProperty, field: "domainMax" },
-                      { label: strings.objects.axes.to }
+                      {
+                        label: strings.objects.axes.to,
+                        observerConfig: {
+                          isObserver: true,
+                          properties: [
+                            {
+                              property: axisProperty,
+                              field: "autoDomainMin",
+                            },
+                            {
+                              property: axisProperty,
+                              field: "autoDomainMax",
+                            },
+                          ],
+                          value: false,
+                        },
+                      }
                     )
                   : null,
                 data.numericalMode != "temporal"
