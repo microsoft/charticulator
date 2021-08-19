@@ -24,7 +24,12 @@ import {
 } from "./nested_chart.attrs";
 import { TableType } from "../../dataset";
 import { MappingType } from "../../specification";
-import { Region2DSublayoutType } from "../plot_segments/region_2d/base";
+import {
+  GridDirection,
+  GridFlipDirection,
+  Region2DSublayoutType,
+  SublayoutAlignment,
+} from "../plot_segments/region_2d/base";
 
 export { NestedChartElementAttributes, NestedChartElementProperties };
 
@@ -512,13 +517,14 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
               ratioX: 0.1,
               ratioY: 0.1,
               align: {
-                x: "start",
-                y: "start",
+                x: SublayoutAlignment.Start,
+                y: SublayoutAlignment.Start,
               },
               grid: {
-                direction: "x",
+                direction: GridDirection.X,
                 xCount: null,
                 yCount: null,
+                flipDirection: GridFlipDirection.Direct,
               },
             },
           },
