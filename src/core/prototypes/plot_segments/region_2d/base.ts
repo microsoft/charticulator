@@ -2537,7 +2537,7 @@ export class Region2DConstraintBuilder {
                 {
                   type: "radio",
                   options: [GridDirection.X, GridDirection.Y],
-                  icons: ["GripperBarHorizontal", "GripperBarVertical"],
+                  icons: ["CharticulatorOrderRow", "CharticulatorOrderColumn"],
                   labels: [
                     terminology.gridDirectionX,
                     terminology.gridDirectionY,
@@ -2751,7 +2751,7 @@ export class Region2DConstraintBuilder {
                 showLabel: true,
                 labelPosition: LabelPosition.Bottom,
                 options: [GridDirection.X, GridDirection.Y],
-                icons: ["GripperBarHorizontal", "GripperBarVertical"],
+                icons: ["CharticulatorOrderRow", "CharticulatorOrderColumn"],
                 labels: [
                   terminology.gridDirectionX,
                   terminology.gridDirectionY,

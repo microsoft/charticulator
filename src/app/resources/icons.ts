@@ -156,11 +156,11 @@ addSVGIcon(
   require("resources/icons/icons_scaffold-spiral.svg")
 );
 addSVGIcon(
-  "GripperBarHorizontal",
+  "CharticulatorOrderRow",
   require("resources/icons/icons_scaffold-xwrap.svg")
 );
 addSVGIcon(
-  "GripperBarVertical",
+  "CharticulatorOrderColumn",
   require("resources/icons/icons_scaffold-ywrap.svg")
 );
 addSVGIcon("scaffold/map", require("resources/icons/icons_scaffold-map.svg"));
