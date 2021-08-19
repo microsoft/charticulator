@@ -2,7 +2,12 @@
 // Licensed under the MIT license.
 
 import { Dataset, Specification, uniqueID } from "../../core";
-import { Region2DSublayoutType } from "../../core/prototypes/plot_segments/region_2d/base";
+import {
+  GridDirection,
+  GridFlipDirection,
+  Region2DSublayoutType,
+  SublayoutAlignment,
+} from "../../core/prototypes/plot_segments/region_2d/base";
 import { MappingType } from "../../core/specification";
 
 /** Create a default glyph */
@@ -76,15 +81,14 @@ export function createDefaultPlotSegment(
         ratioX: 0.1,
         ratioY: 0.1,
         align: {
-          x: "start",
-          y: "start",
+          x: SublayoutAlignment.Start,
+          y: SublayoutAlignment.Start,
         },
         grid: {
-          direction: "x",
+          direction: GridDirection.X,
           xCount: null,
           yCount: null,
-          flipX: false,
-          flipY: false,
+          flipDirection: GridFlipDirection.Direct,
         },
         packing: {
           gravityX: 0.1,

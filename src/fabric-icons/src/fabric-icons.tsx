@@ -2606,6 +2606,10 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
         >
           <path d="M1664 0L960 704 256 0h1408zM256 1920l704-704 704 704H256zm309-128h790l-395-395-395 395zm75-768H512V896h128v128zm-256 0H256V896h128v128zm512 0H768V896h128v128zm256 0h-128V896h128v128zm256 0h-128V896h128v128zm128-128h128v128h-128V896z" />
         </svg>
@@ -2616,8 +2620,68 @@ export function initializeIcons(
           viewBox="0 0 2048 2048"
           width="16"
           height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
         >
           <path d="M0 1664V256l704 704L0 1664zm1216-704l704-704v1408l-704-704zm576 395V565l-395 395 395 395zM896 640V512h128v128H896zm0-256V256h128v128H896zm0 512V768h128v128H896zm0 256v-128h128v128H896zm0 256v-128h128v128H896zm0 256v-128h128v128H896z" />
+        </svg>
+      ),
+      ArrowRight12: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
+        >
+          <path d="M1084 110l829 829-829 828-120-121 622-622H0V853h1586L964 231l120-121z" />
+        </svg>
+      ),
+      ArrowUp12: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
+        >
+          <path d="M1767 964l-121 120-622-622v1586H853V462l-622 622-121-120 829-829 828 829z" />
+        </svg>
+      ),
+      ArrowDown12: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
+        >
+          <path d="M1646 964l121 120-828 829-829-829 121-120 622 622V0h171v1586l622-622z" />
+        </svg>
+      ),
+      ArrowLeft12: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+          style={{
+            fill: "#0078d4",
+            strokeWidth: 0.1,
+          }}
+        >
+          <path d="M2048 853v171H462l622 622-120 121-829-828 829-829 120 121-622 622h1586z" />
         </svg>
       ),
     },

@@ -18,6 +18,7 @@ import {
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   GridDirection,
+  GridFlipDirection,
   PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
@@ -111,8 +112,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         direction: GridDirection.X,
         xCount: null,
         yCount: null,
-        flipX: false,
-        flipY: false,
+        flipDirection: GridFlipDirection.Direct,
       },
       jitter: {
         horizontal: true,
