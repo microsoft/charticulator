@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Expression from "../../../expression";
@@ -60,6 +61,10 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
     xCount?: number;
     /** Number of glyphs in Y direction (direction == "x") */
     yCount?: number;
+    /** Flip start side of grid horizontally */
+    flipX: boolean;
+    /** Flip start side of grid vertically */
+    flipY: boolean;
   };
 
   /** Order in sublayout objects */
@@ -1619,9 +1624,11 @@ export class Region2DConstraintBuilder {
         }
         break;
     }
-
     const gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
     const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
+
+    const flipX: boolean = props.sublayout.grid.flipX;
+    const flipY: boolean = props.sublayout.grid.flipY;
 
     groups.forEach((group) => {
       const markStates = group.group.map((index) => state.glyphs[index]);
@@ -1656,7 +1663,9 @@ export class Region2DConstraintBuilder {
         xMinFitter,
         xMaxFitter,
         yMinFitter,
-        yMaxFitter
+        yMaxFitter,
+        flipX,
+        flipY
       );
     });
     xMinFitter.addConstraint(ConstraintStrength.MEDIUM);
@@ -1685,7 +1694,9 @@ export class Region2DConstraintBuilder {
     xMinFitter: CrossFitter,
     xMaxFitter: CrossFitter,
     yMinFitter: CrossFitter,
-    yMaxFitter: CrossFitter
+    yMaxFitter: CrossFitter,
+    flipX: boolean,
+    flipY: boolean
   ) {
     for (let i = 0; i < markStates.length; i++) {
       let xi: number, yi: number;
@@ -1697,12 +1708,18 @@ export class Region2DConstraintBuilder {
         } else {
           yi = yMax - 1 - Math.floor(i / xCount);
         }
+        if (flipX) {
+          xi = xCount - 1 - xi; // flip X
+        }
       } else {
         yi = yMax - 1 - (i % yCount);
         xi = Math.floor(i / yCount);
         if (alignX == "end") {
           yi = (markStates.length - 1 - i) % yCount;
           xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
+        }
+        if (flipY) {
+          yi = yCount - 1 - yi; // flip Y
         }
       }
       // Adjust xi, yi based on alignment settings
@@ -2556,6 +2573,28 @@ export class Region2DConstraintBuilder {
               {
                 label: strings.objects.axes.count,
               }
+            )
+          ),
+          m.vertical(
+            m.label(strings.objects.plotSegment.flipGrid),
+            m.horizontal(
+              [0, 0, 1],
+              m.inputBoolean(
+                {
+                  property: "sublayout",
+                  field:
+                    props.sublayout.grid.direction == "x"
+                      ? ["grid", "flipX"]
+                      : ["grid", "flipY"],
+                },
+                {
+                  type: "highlight",
+                  icon:
+                    props.sublayout.grid.direction == "x"
+                      ? "FlipHorizontal"
+                      : "FlipVertical",
+                }
+              )
             )
           )
         );

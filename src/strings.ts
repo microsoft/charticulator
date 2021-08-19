@@ -420,6 +420,7 @@ export const strings = {
       distribution: "Distribution",
       gravity: "Gravity",
       order: "Order",
+      flipGrid: "Flip grid",
     },
     visibleOn: {
       visibility: "Visibility",

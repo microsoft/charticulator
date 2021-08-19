@@ -2600,6 +2600,26 @@ export function initializeIcons(
           </g>
         </svg>
       ),
+      FlipVertical: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+        >
+          <path d="M1664 0L960 704 256 0h1408zM256 1920l704-704 704 704H256zm309-128h790l-395-395-395 395zm75-768H512V896h128v128zm-256 0H256V896h128v128zm512 0H768V896h128v128zm256 0h-128V896h128v128zm256 0h-128V896h128v128zm128-128h128v128h-128V896z" />
+        </svg>
+      ),
+      FlipHorizontal: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 2048 2048"
+          width="16"
+          height="16"
+        >
+          <path d="M0 1664V256l704 704L0 1664zm1216-704l704-704v1408l-704-704zm576 395V565l-395 395 395 395zM896 640V512h128v128H896zm0-256V256h128v128H896zm0 512V768h128v128H896zm0 256v-128h128v128H896zm0 256v-128h128v128H896zm0 256v-128h128v128H896z" />
+        </svg>
+      ),
     },
   };
 

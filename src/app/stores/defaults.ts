@@ -83,6 +83,8 @@ export function createDefaultPlotSegment(
           direction: "x",
           xCount: null,
           yCount: null,
+          flipX: false,
+          flipY: false,
         },
         packing: {
           gravityX: 0.1,
@@ -134,7 +136,10 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
 }
 
 /** Create a default chart */
-export function createDefaultChart(dataset: Dataset.Dataset, createTitle: boolean) {
+export function createDefaultChart(
+  dataset: Dataset.Dataset,
+  createTitle: boolean
+) {
   const table = dataset.tables[0];
   const glyph = createDefaultGlyph(table.name);
   return {
@@ -157,7 +162,7 @@ export function createDefaultChart(dataset: Dataset.Dataset, createTitle: boolea
     elements: [
       createDefaultPlotSegment(table, glyph),
       createTitle ? createDefaultTitle(dataset) : null,
-    ].filter(elem => elem != null),
+    ].filter((elem) => elem != null),
     scales: [],
     scaleMappings: [],
     constraints: [],
