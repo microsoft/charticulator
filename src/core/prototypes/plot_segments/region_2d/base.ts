@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import * as Expression from "../../../expression";
@@ -40,6 +41,11 @@ export enum GridDirection {
   Y = "y",
 }
 
+export enum GridFlipDirection {
+  Direct = "direct",
+  Flip = "flip",
+}
+
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
   type: Region2DSublayoutType;
 
@@ -60,6 +66,8 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
     xCount?: number;
     /** Number of glyphs in Y direction (direction == "x") */
     yCount?: number;
+    /** Flip start side of grid horizontally */
+    flipDirection: GridFlipDirection;
   };
 
   /** Order in sublayout objects */
@@ -1205,11 +1213,19 @@ export class Region2DConstraintBuilder {
         }
         // Stack X
         if (props.sublayout.type == Region2DSublayoutType.DodgeX) {
-          this.sublayoutDodging(groups, "x", context.xAxisPrePostGap);
+          this.sublayoutDodging(
+            groups,
+            GridDirection.X,
+            context.xAxisPrePostGap
+          );
         }
         // Stack Y
         if (props.sublayout.type == Region2DSublayoutType.DodgeY) {
-          this.sublayoutDodging(groups, "y", context.yAxisPrePostGap);
+          this.sublayoutDodging(
+            groups,
+            GridDirection.Y,
+            context.yAxisPrePostGap
+          );
         }
         // Grid layout
         if (props.sublayout.type == Region2DSublayoutType.Grid) {
@@ -1230,7 +1246,7 @@ export class Region2DConstraintBuilder {
   // eslint-disable-next-line
   public sublayoutDodging(
     groups: SublayoutGroup[],
-    direction: "x" | "y",
+    direction: GridDirection,
     enablePrePostGap: boolean
   ) {
     const solver = this.solver;
@@ -1619,9 +1635,10 @@ export class Region2DConstraintBuilder {
         }
         break;
     }
-
     const gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
     const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
+
+    const flipDirection: GridFlipDirection = props.sublayout.grid.flipDirection;
 
     groups.forEach((group) => {
       const markStates = group.group.map((index) => state.glyphs[index]);
@@ -1656,7 +1673,8 @@ export class Region2DConstraintBuilder {
         xMinFitter,
         xMaxFitter,
         yMinFitter,
-        yMaxFitter
+        yMaxFitter,
+        flipDirection
       );
     });
     xMinFitter.addConstraint(ConstraintStrength.MEDIUM);
@@ -1685,7 +1703,8 @@ export class Region2DConstraintBuilder {
     xMinFitter: CrossFitter,
     xMaxFitter: CrossFitter,
     yMinFitter: CrossFitter,
-    yMaxFitter: CrossFitter
+    yMaxFitter: CrossFitter,
+    flipDirection: GridFlipDirection
   ) {
     for (let i = 0; i < markStates.length; i++) {
       let xi: number, yi: number;
@@ -1697,12 +1716,18 @@ export class Region2DConstraintBuilder {
         } else {
           yi = yMax - 1 - Math.floor(i / xCount);
         }
+        if (flipDirection === GridFlipDirection.Flip) {
+          xi = xCount - 1 - xi; // flip X
+        }
       } else {
         yi = yMax - 1 - (i % yCount);
         xi = Math.floor(i / yCount);
         if (alignX == "end") {
           yi = (markStates.length - 1 - i) % yCount;
           xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
+        }
+        if (flipDirection === GridFlipDirection.Flip) {
+          yi = yCount - 1 - yi; // flip Y
         }
       }
       // Adjust xi, yi based on alignment settings
@@ -2529,7 +2554,7 @@ export class Region2DConstraintBuilder {
         const { terminology } = this.config;
         extra.push(
           m.vertical(
-            m.label(strings.objects.axes.direction),
+            m.label(strings.objects.plotSegment.orientation),
             m.horizontal(
               [0, 0, 1],
               m.inputSelect(
@@ -2545,18 +2570,37 @@ export class Region2DConstraintBuilder {
                 }
               )
             ),
-            m.inputNumber(
+            m.inputSelect(
               {
                 property: "sublayout",
-                field:
-                  props.sublayout.grid.direction == "x"
-                    ? ["grid", "xCount"]
-                    : ["grid", "yCount"],
+                field: ["grid", "flipDirection"],
               },
               {
-                label: strings.objects.axes.count,
+                type: "radio",
+                icons:
+                  props.sublayout.grid.direction == "x"
+                    ? ["ArrowRight12", "ArrowLeft12"]
+                    : ["ArrowDown12", "ArrowUp12"],
+                options: [GridFlipDirection.Direct, GridFlipDirection.Flip],
+                label: strings.objects.plotSegment.direction,
+                labels:
+                  props.sublayout.grid.direction == "x"
+                    ? ["Left to right", "Right to left"]
+                    : ["Top to bottom", "Bottom to top"],
               }
             )
+          ),
+          m.inputNumber(
+            {
+              property: "sublayout",
+              field:
+                props.sublayout.grid.direction == "x"
+                  ? ["grid", "xCount"]
+                  : ["grid", "yCount"],
+            },
+            {
+              label: strings.objects.axes.count,
+            }
           )
         );
       }
@@ -2759,6 +2803,27 @@ export class Region2DConstraintBuilder {
                 tooltip: strings.canvas.gridDirection,
                 hideBorder: true,
                 shiftCallout: 15,
+              }
+            )
+          );
+          extra.push(
+            m.inputSelect(
+              {
+                property: "sublayout",
+                field: ["grid", "flipDirection"],
+              },
+              {
+                type: "dropdown",
+                icons:
+                  props.sublayout.grid.direction == "x"
+                    ? ["ArrowRight12", "ArrowLeft12"]
+                    : ["ArrowDown12", "ArrowUp12"],
+                options: [GridFlipDirection.Direct, GridFlipDirection.Flip],
+                labels:
+                  props.sublayout.grid.direction == "x"
+                    ? ["Left to right", "Right to left"]
+                    : ["Top to bottom", "Bottom to top"],
+                hideBorder: true,
               }
             )
           );

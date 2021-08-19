@@ -17,6 +17,8 @@ import {
 } from "../../common";
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
+  GridDirection,
+  GridFlipDirection,
   PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
@@ -111,9 +113,10 @@ export class CurvePlotSegment extends PlotSegmentClass<
         y: "start",
       },
       grid: {
-        direction: "x",
+        direction: GridDirection.X,
         xCount: null,
         yCount: null,
+        flipDirection: GridFlipDirection.Direct,
       },
     },
     curve: [
