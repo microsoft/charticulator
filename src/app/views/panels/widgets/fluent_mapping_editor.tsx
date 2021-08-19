@@ -32,6 +32,8 @@ import {
   Label,
   IContextualMenuItem,
   Callout,
+  Dropdown,
+  ContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -40,6 +42,9 @@ import {
   defultComponentsHeight,
   FluentActionButton,
   FluentButton,
+  FluentDataBindingMenuItem,
+  FluentDataBindingMenuLabel,
+  FluentRowLayout,
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
@@ -529,6 +534,7 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
       <div ref={(e) => (this.noneLabel = e)}>
@@ -620,6 +626,7 @@ export class FluentMappingEditor extends React.Component<
                       checked={isDataMapping}
                       menuProps={{
                         items: mainMenuItems,
+                        onRenderMenuList: menuRender,
                       }}
                     />
                   </FluentButton>

@@ -62,6 +62,23 @@ export const FluentRowLayout = styled.div`
   flex-direction: row;
 `;
 
+export const FluentDataBindingMenuItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  height: 26px;
+  line-height: unset;
+  ::hover: {
+    background-color: rgb(237, 235, 233);
+  }
+`;
+
+export const FluentDataBindingMenuLabel = styled.div`
+  flex: 1;
+  margin-left: 5px;
+`;
+
 export const FluentColumnLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,6 +146,9 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   expand: {
     ...defultBindButtonSize,
+  },
+  dropIcon: {
+    display: "none",
   },
 };
 

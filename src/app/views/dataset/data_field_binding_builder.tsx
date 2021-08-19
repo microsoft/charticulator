@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
@@ -6,7 +7,14 @@ import {
 } from "./fluent_ui_data_field_selector";
 import { Dataset, Expression, getById, Specification } from "../../../core";
 import { AppStore } from "../../stores";
-import { IContextualMenuItem } from "@fluentui/react";
+import {
+  ContextualMenu,
+  Dropdown,
+  IContextualMenuItem,
+  IContextualMenuListProps,
+  IRenderFunction,
+  Label,
+} from "@fluentui/react";
 import {
   DerivedColumnDescription,
   isKindAcceptable,
@@ -21,6 +29,15 @@ import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
 import React = require("react");
 import { AggregationFunctionDescription } from "../../../core/expression";
+import {
+  defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  FluentDataBindingMenuItem,
+  FluentDataBindingMenuLabel,
+} from "../panels/widgets/controls/fluentui_customized_components";
+import { useState } from "react";
+import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 
 export interface IDefaultValue {
   table: string;
@@ -292,7 +309,7 @@ class MenuItemsCreator {
       ) => {
         const transformedField = this.transformField(field, item?.key);
         if (mapping?.type === MappingType.text) {
-          this.textMappingOnClick(transformedField.expression, field)
+          this.textMappingOnClick(transformedField.expression, field);
         } else {
           this.onClick(transformedField);
         }
@@ -755,5 +772,109 @@ export class Director {
     this.builder.produceDefaultValue(defaultValue);
     this.builder.buildMenu();
     return this.builder.getMenuItems();
+  }
+
+  public getMenuRender(): IRenderFunction<IContextualMenuListProps> {
+    const CustomMenuRender: React.FC<{
+      item: IContextualMenuItem;
+      defaultKey: string;
+    }> = ({ item, defaultKey }) => {
+      if (item.subMenuProps) {
+        const currentFunction = item.subMenuProps.items.find(
+          (i) => i.isChecked
+        );
+        if (currentFunction) {
+          defaultKey = currentFunction.key;
+        }
+      }
+      const [currentKey, setCurrentKey] = useState(defaultKey);
+      return (
+        <FluentDataBindingMenuItem>
+          <FluentDataBindingMenuLabel>
+            <Label
+              onClick={(e) => {
+                const agr = item.subMenuProps.items.find(
+                  (item) => item.key === currentKey
+                );
+                agr.onClick(e as any, agr);
+              }}
+              styles={defaultLabelStyle}
+            >
+              {item.text}
+            </Label>
+          </FluentDataBindingMenuLabel>
+          {item.subMenuProps ? (
+            <Dropdown
+              styles={{
+                ...(defaultStyle as any),
+                title: {
+                  ...defaultStyle.title,
+                  lineHeight: defultBindButtonSize.height,
+                  borderWidth: "0px",
+                },
+                dropdownOptionText: {
+                  boxSizing: "unset",
+                  lineHeight: "24px",
+                },
+              }}
+              selectedKey={currentKey}
+              options={item.subMenuProps.items.map((i) => ({
+                key: i.key,
+                text: i.text,
+              }))}
+              onChange={(e, opt) => {
+                setCurrentKey(opt.key as string);
+                const agr = item.subMenuProps.items.find(
+                  (item) => item.key === opt.key
+                );
+                agr.onClick(e as any, agr);
+              }}
+            />
+          ) : null}
+        </FluentDataBindingMenuItem>
+      );
+    };
+
+    return (props) => {
+      if (
+        !props.items.find((item) => item.key === "first" || item.key === "avg")
+      ) {
+        return (
+          <>
+            {props.items.map((item) => {
+              if (item.subMenuProps?.items.find((i) => i.key === "year")) {
+                return (
+                  <CollapsiblePanel
+                    header={item.text}
+                    isCollapsed={true}
+                    widgets={item.subMenuProps.items.map((item) => {
+                      const currentKey = item.subMenuProps?.items[0].key;
+                      return (
+                        <CustomMenuRender
+                          key={item.key}
+                          item={item}
+                          defaultKey={currentKey}
+                        />
+                      );
+                    })}
+                  />
+                );
+              } else {
+                const currentKey = item.subMenuProps?.items[0].key;
+                return (
+                  <CustomMenuRender
+                    key={item.key}
+                    item={item}
+                    defaultKey={currentKey}
+                  />
+                );
+              }
+            })}
+          </>
+        );
+      } else {
+        return <ContextualMenu {...props} />;
+      }
+    };
   }
 }

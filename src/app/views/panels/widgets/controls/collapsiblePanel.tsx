@@ -4,10 +4,12 @@ import {
   GroupedList,
   GroupHeader,
   IGroupHeaderProps,
+  Label,
   SelectionMode,
 } from "@fluentui/react";
 import * as React from "react";
 import {
+  defaultLabelStyle,
   FluentGroupedList,
   groupHeaderStyles,
   groupStyles,
@@ -33,6 +35,13 @@ export const CollapsiblePanel: React.FunctionComponent<{
                 styles={groupHeaderStyles}
                 onToggleCollapse={(group) => {
                   setIsCollapsed(!group.isCollapsed);
+                }}
+                onGroupHeaderClick={(group) => {
+                  props.onToggleCollapse(group);
+                  setIsCollapsed(group.isCollapsed);
+                }}
+                onRenderTitle={() => {
+                  return <Label styles={defaultLabelStyle}>{header}</Label>;
                 }}
               />
             );
