@@ -111,6 +111,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         direction: GridDirection.X,
         xCount: null,
         yCount: null,
+        flipX: false,
+        flipY: false,
       },
       jitter: {
         horizontal: true,
