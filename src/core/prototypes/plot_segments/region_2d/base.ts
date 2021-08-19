@@ -2806,6 +2806,27 @@ export class Region2DConstraintBuilder {
               }
             )
           );
+          extra.push(
+            m.inputSelect(
+              {
+                property: "sublayout",
+                field: ["grid", "flipDirection"],
+              },
+              {
+                type: "dropdown",
+                icons:
+                  props.sublayout.grid.direction == "x"
+                    ? ["ArrowRight12", "ArrowLeft12"]
+                    : ["ArrowDown12", "ArrowUp12"],
+                options: [GridFlipDirection.Direct, GridFlipDirection.Flip],
+                labels:
+                  props.sublayout.grid.direction == "x"
+                    ? ["Left to right", "Right to left"]
+                    : ["Top to bottom", "Bottom to top"],
+                hideBorder: true,
+              }
+            )
+          );
         }
         if (type != Region2DSublayoutType.Overlap) {
           extra.push(m.sep());
