@@ -165,6 +165,7 @@ export const PlaceholderStyle = styled.div<{ color?: string }>`
 export const FluentDropdown = styled.div`
   & svg {
     stroke: rgb(128, 128, 128) !important;
+    fill: rgb(128, 128, 128) !important;
   }
   display: inline;
 `;
