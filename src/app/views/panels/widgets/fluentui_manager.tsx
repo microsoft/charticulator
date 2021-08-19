@@ -113,6 +113,7 @@ import { FluentInputFormat } from "./controls/fluentui_input_format";
 import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
+import { EventManager, EventType, UIManagerListener } from "./observer";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -137,11 +138,14 @@ export class FluentUIWidgetManager
   ) {
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
+    this.eventManager = new EventManager();
   }
 
   public onMapDataHandler: OnMapDataHandler;
   public onEditMappingHandler: OnEditMappingHandler;
   private director: Director;
+  public eventManager: EventManager;
+  public eventListener: UIManagerListener;
 
   private getKeyFromProperty(property: Prototypes.Controls.Property) {
     return `${property?.property}-${property?.field?.toString()}`;
@@ -606,9 +610,13 @@ export class FluentUIWidgetManager
   }
 
   public inputBoolean(
-    property: Prototypes.Controls.Property,
+    properties: Prototypes.Controls.Property | Prototypes.Controls.Property[],
     options: Prototypes.Controls.InputBooleanOptions
   ) {
+    const property: Prototypes.Controls.Property =
+      properties instanceof Array ? properties[0] : properties;
+    this.eventListener = new UIManagerListener(this);
+    this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -627,8 +635,14 @@ export class FluentUIWidgetManager
                     ...defultComponentsHeight,
                   },
                 }}
-                onChange={(event, v) => {
-                  this.emitSetProperty(property, v);
+                onChange={(ev, v) => {
+                  if (properties instanceof Array) {
+                    properties.forEach((property) =>
+                      this.emitSetProperty(property, v)
+                    );
+                  } else {
+                    this.emitSetProperty(property, v);
+                  }
                 }}
               />
             </FluentCheckbox>

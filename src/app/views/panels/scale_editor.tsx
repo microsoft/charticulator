@@ -17,6 +17,7 @@ import { strings } from "../../../strings";
 import { AttributeMap } from "../../../core/specification";
 import { ObjectClass } from "../../../core/prototypes";
 import { DefaultButton } from "@fluentui/react";
+import { EventType } from "./widgets/observer";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -102,6 +103,20 @@ export class ScaleEditor extends React.Component<
                     }}
                     text={strings.scaleEditor.add}
                     onClick={() => {
+                      manager.eventManager.notify(
+                        EventType.UPDATE_FIELD,
+                        {
+                          property: "autoDomainMin",
+                        },
+                        false
+                      );
+                      manager.eventManager.notify(
+                        EventType.UPDATE_FIELD,
+                        {
+                          property: "autoDomainMax",
+                        },
+                        false
+                      );
                       const mappingsKey = Object.keys(scale.properties.mapping);
                       const theLastMapping: string =
                         mappingsKey[mappingsKey.length - 1];
