@@ -801,10 +801,11 @@ export class Director {
       if (agr) {
         mapping = agr.subMenuProps?.items.find((i) => i.key === "mapping");
       }
+      const calloutKey = item.key.replace(/\W/g, "_");
 
       return (
         <FluentDataBindingMenuItem
-          id={item.key}
+          id={calloutKey}
           backgroundColor={
             currentFunction
               ? theme.semanticColors.buttonBackgroundChecked
@@ -814,7 +815,7 @@ export class Director {
         >
           {currentFunction && mapping ? (
             <Callout
-              target={`#${item.key}`}
+              target={`#${calloutKey}`}
               directionalHint={DirectionalHint.leftCenter}
             >
               {mapping.onRender(mapping, () => null)}
