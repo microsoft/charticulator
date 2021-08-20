@@ -516,11 +516,13 @@ export class FluentMappingEditor extends React.Component<
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
-      FluentMappingEditor.openEditor(
-        (currentMapping as Specification.ScaleMapping)?.expression,
-        true,
-        this.mappingButton
-      );
+      setTimeout(() => {
+        FluentMappingEditor.openEditor(
+          (currentMapping as Specification.ScaleMapping)?.expression,
+          true,
+          this.mappingButton
+        );
+      }, 100);
     }
 
     const table = currentMapping
