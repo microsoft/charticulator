@@ -792,11 +792,10 @@ export class Director {
           defaultKey = currentFunction.key;
         }
       }
-      const [currentKey, setCurrentKey] = useState(defaultKey);
 
       let mapping = null;
       const agr = item.subMenuProps?.items.find(
-        (item) => item.key === currentKey
+        (item) => item.key === defaultKey
       );
       if (agr) {
         mapping = agr.subMenuProps?.items.find((i) => i.key === "mapping");
@@ -825,7 +824,7 @@ export class Director {
             <Label
               onClick={(e) => {
                 const agr = item.subMenuProps?.items.find(
-                  (item) => item.key === currentKey
+                  (item) => item.key === defaultKey
                 );
                 if (agr) {
                   agr.onClick(e as any, agr);
@@ -852,13 +851,12 @@ export class Director {
                   lineHeight: "24px",
                 },
               }}
-              selectedKey={currentKey}
+              selectedKey={defaultKey}
               options={item.subMenuProps.items.map((i) => ({
                 key: i.key,
                 text: i.text,
               }))}
               onChange={(e, opt) => {
-                setCurrentKey(opt.key as string);
                 const agr = item.subMenuProps.items.find(
                   (item) => item.key === opt.key
                 );
