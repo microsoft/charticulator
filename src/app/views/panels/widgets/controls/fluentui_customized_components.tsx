@@ -62,15 +62,23 @@ export const FluentRowLayout = styled.div`
   flex-direction: row;
 `;
 
-export const FluentDataBindingMenuItem = styled.div`
+export const FluentDataBindingMenuItem = styled.div<{
+  backgroundColor?: string;
+  backgroundColorHover?: string;
+}>`
   display: flex;
   flex-direction: row;
   align-items: stretch;
   justify-content: center;
   height: 26px;
   line-height: unset;
-  ::hover: {
-    background-color: rgb(237, 235, 233);
+  background-color: ${({ backgroundColor }) => backgroundColor || null};
+  &:hover {
+    background-color: ${({ backgroundColorHover }) =>
+      backgroundColorHover || null};
+  }
+  .ms-Dropdown-container {
+    margin-top: 2px;
   }
 `;
 

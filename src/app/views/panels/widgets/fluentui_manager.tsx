@@ -896,6 +896,7 @@ export class FluentUIWidgetManager
       defaultValue,
       this.store
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
       <DropZoneView
@@ -926,6 +927,7 @@ export class FluentUIWidgetManager
               onMenuOpened: () => {
                 FluentMappingEditor.openEditor(currentExpression, false, null);
               },
+              onRenderMenuList: menuRender,
             }}
           />
         </FluentButton>
@@ -1196,6 +1198,7 @@ export class FluentUIWidgetManager
         defaultValue,
         this.store
       );
+      const menuRender = this.director.getMenuRender();
 
       return (
         <DropZoneView
@@ -1227,6 +1230,7 @@ export class FluentUIWidgetManager
               }}
               menuProps={{
                 items: menu,
+                onRenderMenuList: menuRender,
               }}
               styles={{
                 menuIcon: {

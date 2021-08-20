@@ -8,7 +8,9 @@ import {
 import { Dataset, Expression, getById, Specification } from "../../../core";
 import { AppStore } from "../../stores";
 import {
+  Callout,
   ContextualMenu,
+  DirectionalHint,
   Dropdown,
   IContextualMenuItem,
   IContextualMenuListProps,
@@ -38,6 +40,8 @@ import {
 } from "../panels/widgets/controls/fluentui_customized_components";
 import { useState } from "react";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
+
+import { getTheme } from "@fluentui/react";
 
 export interface IDefaultValue {
   table: string;
@@ -517,7 +521,9 @@ class MenuItemsCreator {
                                 aggregationMenuItem
                               );
 
-                              if (mapping?.type === MappingType.scale) {
+                              if (mapping?.type === MappingType.text) {
+                                this.textMappingOnClick(menuExpr, field);
+                              } else {
                                 this.onClick(
                                   this.transformDerivedField(
                                     field,
@@ -525,8 +531,6 @@ class MenuItemsCreator {
                                     item?.key
                                   )
                                 );
-                              } else if (mapping?.type === MappingType.text) {
-                                this.textMappingOnClick(menuExpr, field);
                               }
 
                               //update selection key
@@ -775,28 +779,58 @@ export class Director {
   }
 
   public getMenuRender(): IRenderFunction<IContextualMenuListProps> {
+    const theme = getTheme();
+
     const CustomMenuRender: React.FC<{
       item: IContextualMenuItem;
       defaultKey: string;
     }> = ({ item, defaultKey }) => {
+      let currentFunction: IContextualMenuItem;
       if (item.subMenuProps) {
-        const currentFunction = item.subMenuProps.items.find(
-          (i) => i.isChecked
-        );
+        currentFunction = item.subMenuProps.items.find((i) => i.isChecked);
         if (currentFunction) {
           defaultKey = currentFunction.key;
         }
       }
       const [currentKey, setCurrentKey] = useState(defaultKey);
+
+      let mapping = null;
+      const agr = item.subMenuProps?.items.find(
+        (item) => item.key === currentKey
+      );
+      if (agr) {
+        mapping = agr.subMenuProps?.items.find((i) => i.key === "mapping");
+      }
+
       return (
-        <FluentDataBindingMenuItem>
+        <FluentDataBindingMenuItem
+          id={item.key}
+          backgroundColor={
+            currentFunction
+              ? theme.semanticColors.buttonBackgroundChecked
+              : null
+          }
+          backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
+        >
+          {currentFunction && mapping ? (
+            <Callout
+              target={`#${item.key}`}
+              directionalHint={DirectionalHint.leftCenter}
+            >
+              {mapping.onRender(mapping, () => null)}
+            </Callout>
+          ) : null}
           <FluentDataBindingMenuLabel>
             <Label
               onClick={(e) => {
-                const agr = item.subMenuProps.items.find(
+                const agr = item.subMenuProps?.items.find(
                   (item) => item.key === currentKey
                 );
-                agr.onClick(e as any, agr);
+                if (agr) {
+                  agr.onClick(e as any, agr);
+                } else {
+                  item.onClick(e as any, item);
+                }
               }}
               styles={defaultLabelStyle}
             >
@@ -827,7 +861,11 @@ export class Director {
                 const agr = item.subMenuProps.items.find(
                   (item) => item.key === opt.key
                 );
-                agr.onClick(e as any, agr);
+                if (agr) {
+                  agr.onClick(e as any, agr);
+                } else {
+                  item.onClick(e as any, item);
+                }
               }}
             />
           ) : null}
@@ -845,7 +883,9 @@ export class Director {
               if (item.subMenuProps?.items.find((i) => i.key === "year")) {
                 return (
                   <CollapsiblePanel
-                    header={item.text}
+                    header={() => (
+                      <Label styles={defaultLabelStyle}>{item.text}</Label>
+                    )}
                     isCollapsed={true}
                     widgets={item.subMenuProps.items.map((item) => {
                       const currentKey = item.subMenuProps?.items[0].key;

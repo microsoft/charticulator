@@ -235,6 +235,7 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
       <>
@@ -261,6 +262,7 @@ export class FluentMappingEditor extends React.Component<
           numberOptions={this.props.options.numberOptions}
           stopPropagation={this.props.options.stopPropagation}
           mainMenuItems={mainMenuItems}
+          menuRender={menuRender}
         />
       </>
     );
@@ -420,6 +422,7 @@ export class FluentMappingEditor extends React.Component<
             table,
             options.acceptKinds
           );
+          const menuRender = this.director.getMenuRender();
 
           if (scaleMapping.scale) {
             return (
@@ -444,6 +447,7 @@ export class FluentMappingEditor extends React.Component<
                     title={strings.mappingEditor.bindData}
                     menuProps={{
                       items: mainMenuItems,
+                      onRenderMenuList: menuRender,
                       onMenuOpened: () => {
                         const currentMapping = parent.getAttributeMapping(
                           attribute
