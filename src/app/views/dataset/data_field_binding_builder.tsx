@@ -848,7 +848,7 @@ export class Director {
                 },
                 dropdownOptionText: {
                   boxSizing: "unset",
-                  lineHeight: "24px",
+                  lineHeight: defultBindButtonSize.height,
                 },
               }}
               selectedKey={defaultKey}
