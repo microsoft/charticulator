@@ -420,6 +420,7 @@ export const strings = {
       distribution: "Distribution",
       gravity: "Gravity",
       order: "Order",
+      reverseGlyphs: "Reverse glyphs order",
       flipGrid: "Flip grid",
       orientation: "Orientation",
       direction: "Direction",

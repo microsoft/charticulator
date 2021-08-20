@@ -89,6 +89,7 @@ export function createDefaultPlotSegment(
           xCount: null,
           yCount: null,
           flipDirection: GridFlipDirection.Direct,
+          reverseGlyphsOrder: false,
         },
         packing: {
           gravityX: 0.1,

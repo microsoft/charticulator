@@ -68,6 +68,8 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
     yCount?: number;
     /** Flip start side of grid horizontally */
     flipDirection: GridFlipDirection;
+    /** Reverse glyph orders */
+    reverseGlyphsOrder: boolean;
   };
 
   /** Order in sublayout objects */
@@ -1639,6 +1641,7 @@ export class Region2DConstraintBuilder {
     const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
 
     const flipDirection: GridFlipDirection = props.sublayout.grid.flipDirection;
+    const reverseGlyphsOrder: boolean = props.sublayout.grid.reverseGlyphsOrder;
 
     groups.forEach((group) => {
       const markStates = group.group.map((index) => state.glyphs[index]);
@@ -1674,7 +1677,8 @@ export class Region2DConstraintBuilder {
         xMaxFitter,
         yMinFitter,
         yMaxFitter,
-        flipDirection
+        flipDirection,
+        reverseGlyphsOrder
       );
     });
     xMinFitter.addConstraint(ConstraintStrength.MEDIUM);
@@ -1704,8 +1708,12 @@ export class Region2DConstraintBuilder {
     xMaxFitter: CrossFitter,
     yMinFitter: CrossFitter,
     yMaxFitter: CrossFitter,
-    flipDirection: GridFlipDirection
+    flipDirection: GridFlipDirection,
+    reverseGlyphsOrder: boolean
   ) {
+    if (reverseGlyphsOrder) {
+      markStates = markStates.reverse();
+    }
     for (let i = 0; i < markStates.length; i++) {
       let xi: number, yi: number;
       if (direction == "x" || direction == "x1") {
@@ -1716,7 +1724,8 @@ export class Region2DConstraintBuilder {
         } else {
           yi = yMax - 1 - Math.floor(i / xCount);
         }
-        if (flipDirection === GridFlipDirection.Flip) {
+
+        if (flipDirection === GridFlipDirection.Direct) {
           xi = xCount - 1 - xi; // flip X
         }
       } else {
@@ -1726,7 +1735,7 @@ export class Region2DConstraintBuilder {
           yi = (markStates.length - 1 - i) % yCount;
           xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
         }
-        if (flipDirection === GridFlipDirection.Flip) {
+        if (flipDirection === GridFlipDirection.Direct) {
           yi = yCount - 1 - yi; // flip Y
         }
       }
@@ -2570,6 +2579,21 @@ export class Region2DConstraintBuilder {
                 }
               )
             ),
+            m.vertical(
+              m.label(strings.objects.plotSegment.reverseGlyphs),
+              m.inputBoolean(
+                {
+                  property: "sublayout",
+                  field: ["grid", "reverseGlyphsOrder"],
+                },
+                {
+                  type: "highlight",
+                  icon: "Sort",
+                  headerLabel: strings.objects.plotSegment.reverseGlyphs,
+                  label: strings.objects.plotSegment.reverseGlyphs,
+                }
+              )
+            ),
             m.inputSelect(
               {
                 property: "sublayout",
@@ -2581,7 +2605,9 @@ export class Region2DConstraintBuilder {
                   props.sublayout.grid.direction == "x"
                     ? ["ArrowRight12", "ArrowLeft12"]
                     : ["ArrowDown12", "ArrowUp12"],
-                options: [GridFlipDirection.Direct, GridFlipDirection.Flip],
+                options: props.sublayout.grid.reverseGlyphsOrder
+                  ? [GridFlipDirection.Direct, GridFlipDirection.Flip]
+                  : [GridFlipDirection.Flip, GridFlipDirection.Direct],
                 label: strings.objects.plotSegment.direction,
                 labels:
                   props.sublayout.grid.direction == "x"

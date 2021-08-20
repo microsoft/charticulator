@@ -32,6 +32,7 @@ import { PlotSegmentClass } from "../plot_segment";
 import { getSortDirection } from "../../..";
 import { strings } from "../../../../strings";
 import { AxisDataBinding } from "../../../specification/types";
+import { boolean } from "../../../expression";
 
 export type CartesianAxisMode =
   | "null"
@@ -113,6 +114,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
         flipDirection: GridFlipDirection.Direct,
+        reverseGlyphsOrder: false,
       },
       jitter: {
         horizontal: true,
