@@ -2,7 +2,12 @@
 // Licensed under the MIT license.
 
 import { Dataset, Specification, uniqueID } from "../../core";
-import { Region2DSublayoutType } from "../../core/prototypes/plot_segments/region_2d/base";
+import {
+  GridDirection,
+  GridFlipDirection,
+  Region2DSublayoutType,
+  SublayoutAlignment,
+} from "../../core/prototypes/plot_segments/region_2d/base";
 import { MappingType } from "../../core/specification";
 
 /** Create a default glyph */
@@ -76,13 +81,14 @@ export function createDefaultPlotSegment(
         ratioX: 0.1,
         ratioY: 0.1,
         align: {
-          x: "start",
-          y: "start",
+          x: SublayoutAlignment.Start,
+          y: SublayoutAlignment.Start,
         },
         grid: {
-          direction: "x",
+          direction: GridDirection.X,
           xCount: null,
           yCount: null,
+          flipDirection: GridFlipDirection.Direct,
         },
         packing: {
           gravityX: 0.1,
@@ -134,7 +140,10 @@ export function createDefaultTitle(dataset: Dataset.Dataset) {
 }
 
 /** Create a default chart */
-export function createDefaultChart(dataset: Dataset.Dataset, createTitle: boolean) {
+export function createDefaultChart(
+  dataset: Dataset.Dataset,
+  createTitle: boolean
+) {
   const table = dataset.tables[0];
   const glyph = createDefaultGlyph(table.name);
   return {
@@ -157,7 +166,7 @@ export function createDefaultChart(dataset: Dataset.Dataset, createTitle: boolea
     elements: [
       createDefaultPlotSegment(table, glyph),
       createTitle ? createDefaultTitle(dataset) : null,
-    ].filter(elem => elem != null),
+    ].filter((elem) => elem != null),
     scales: [],
     scaleMappings: [],
     constraints: [],
