@@ -2591,6 +2591,16 @@ export class Region2DConstraintBuilder {
                   icon: "Sort",
                   headerLabel: strings.objects.plotSegment.reverseGlyphs,
                   label: strings.objects.plotSegment.reverseGlyphs,
+                  observerConfig: {
+                    isObserver: true,
+                    properties: {
+                      property: "sublayout",
+                      field: ["grid", "flipDirection"],
+                    },
+                    value: props.sublayout.grid.reverseGlyphsOrder
+                      ? GridFlipDirection.Flip
+                      : GridFlipDirection.Direct,
+                  },
                 }
               )
             ),

@@ -63,6 +63,7 @@ export interface InputBooleanOptions {
   icon?: string;
   headerLabel?: string;
   label?: string;
+  observerConfig?: ObserverConfig;
 }
 
 export interface RowOptions {
@@ -111,6 +112,12 @@ export interface MappingEditorOptions {
   stopPropagation?: boolean;
 }
 
+export interface ObserverConfig {
+  isObserver: boolean;
+  properties: Property | Property[];
+  value: Specification.AttributeValue;
+}
+
 export interface InputNumberOptions {
   digits?: number;
   minimum?: number;
@@ -129,11 +136,7 @@ export interface InputNumberOptions {
   label?: string;
   stopPropagation?: boolean;
 
-  observerConfig?: {
-    isObserver: boolean,
-    properties: Property | Property[],
-    value: Specification.AttributeValue,
-  };
+  observerConfig?: ObserverConfig;
 }
 
 export interface InputDateOptions {
