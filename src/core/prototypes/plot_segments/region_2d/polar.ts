@@ -130,6 +130,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
         flipDirection: GridFlipDirection.Direct,
+        reverseGlyphsOrder: false,
       },
     },
     startAngle: 0,

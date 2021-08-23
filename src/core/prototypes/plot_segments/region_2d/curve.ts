@@ -117,6 +117,7 @@ export class CurvePlotSegment extends PlotSegmentClass<
         xCount: null,
         yCount: null,
         flipDirection: GridFlipDirection.Direct,
+        reverseGlyphsOrder: false,
       },
     },
     curve: [
