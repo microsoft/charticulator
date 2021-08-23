@@ -635,7 +635,6 @@ export class FluentUIWidgetManager
       properties instanceof Array ? properties[0] : properties;
     this.eventListener = new UIManagerListener(this);
     this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
-    console.log(properties);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -951,6 +950,7 @@ export class FluentUIWidgetManager
       defaultValue,
       this.store
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
       <DropZoneView
@@ -981,6 +981,7 @@ export class FluentUIWidgetManager
               onMenuOpened: () => {
                 FluentMappingEditor.openEditor(currentExpression, false, null);
               },
+              onRenderMenuList: menuRender,
             }}
           />
         </FluentButton>
@@ -1251,6 +1252,7 @@ export class FluentUIWidgetManager
         defaultValue,
         this.store
       );
+      const menuRender = this.director.getMenuRender();
 
       return (
         <DropZoneView
@@ -1282,6 +1284,7 @@ export class FluentUIWidgetManager
               }}
               menuProps={{
                 items: menu,
+                onRenderMenuList: menuRender,
               }}
               styles={{
                 menuIcon: {

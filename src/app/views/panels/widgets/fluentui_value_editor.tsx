@@ -7,6 +7,8 @@ import {
   DefaultButton,
   Dropdown,
   IContextualMenuItem,
+  IContextualMenuListProps,
+  IRenderFunction,
   Label,
   TextField,
 } from "@fluentui/react";
@@ -60,6 +62,7 @@ export interface ValueEditorProps {
   numberOptions?: InputNumberOptions;
   stopPropagation?: boolean;
   mainMenuItems?: IContextualMenuItem[];
+  menuRender: IRenderFunction<IContextualMenuListProps>;
 }
 
 export class FluentValueEditor extends ContextedComponent<
@@ -313,6 +316,7 @@ export class FluentValueEditor extends ContextedComponent<
                 text={strings.attributesPanel.conditionedBy}
                 menuProps={{
                   items: this.props.mainMenuItems ?? [],
+                  onRenderMenuList: this.props.menuRender ?? null,
                 }}
               />
             </>

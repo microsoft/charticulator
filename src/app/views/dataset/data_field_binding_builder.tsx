@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
@@ -6,7 +7,16 @@ import {
 } from "./fluent_ui_data_field_selector";
 import { Dataset, Expression, getById, Specification } from "../../../core";
 import { AppStore } from "../../stores";
-import { IContextualMenuItem } from "@fluentui/react";
+import {
+  Callout,
+  ContextualMenu,
+  DirectionalHint,
+  Dropdown,
+  IContextualMenuItem,
+  IContextualMenuListProps,
+  IRenderFunction,
+  Label,
+} from "@fluentui/react";
 import {
   DerivedColumnDescription,
   isKindAcceptable,
@@ -21,6 +31,16 @@ import { strings } from "../../../strings";
 import { MappingType } from "../../../core/specification";
 import React = require("react");
 import { AggregationFunctionDescription } from "../../../core/expression";
+import {
+  defaultLabelStyle,
+  defaultStyle,
+  defultBindButtonSize,
+  FluentDataBindingMenuItem,
+  FluentDataBindingMenuLabel,
+} from "../panels/widgets/controls/fluentui_customized_components";
+import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
+
+import { getTheme } from "@fluentui/react";
 
 export interface IDefaultValue {
   table: string;
@@ -103,7 +123,7 @@ class MenuItemsCreator {
     ev?: React.MouseEvent<HTMLButtonElement>,
     item?: IContextualMenuItem
   ): void {
-    ev && ev.preventDefault();
+    ev && ev.preventDefault && ev.preventDefault();
 
     if (item && field) {
       this.selectedKey = field.columnName + DELIMITER + item.key;
@@ -292,7 +312,7 @@ class MenuItemsCreator {
       ) => {
         const transformedField = this.transformField(field, item?.key);
         if (mapping?.type === MappingType.text) {
-          this.textMappingOnClick(transformedField.expression, field)
+          this.textMappingOnClick(transformedField.expression, field);
         } else {
           this.onClick(transformedField);
         }
@@ -336,9 +356,7 @@ class MenuItemsCreator {
 
       const itemText =
         field.columnName +
-        (subMenuProps && subMenuCheckedItem && mapping
-          ? ` (${subMenuCheckedItem})`
-          : "");
+        (subMenuProps && subMenuCheckedItem && mapping ? `` : "");
 
       return {
         key:
@@ -500,7 +518,9 @@ class MenuItemsCreator {
                                 aggregationMenuItem
                               );
 
-                              if (mapping?.type === MappingType.scale) {
+                              if (mapping?.type === MappingType.text) {
+                                this.textMappingOnClick(menuExpr, field);
+                              } else {
                                 this.onClick(
                                   this.transformDerivedField(
                                     field,
@@ -508,8 +528,6 @@ class MenuItemsCreator {
                                     item?.key
                                   )
                                 );
-                              } else if (mapping?.type === MappingType.text) {
-                                this.textMappingOnClick(menuExpr, field);
                               }
 
                               //update selection key
@@ -578,9 +596,7 @@ class MenuItemsCreator {
         const itemText =
           field.columnName +
           strings.objects.derivedColumns.menuSuffix +
-          (subMenuProps && subMenuCheckedItem && mapping
-            ? ` (${subMenuCheckedItem})`
-            : "");
+          (subMenuProps && subMenuCheckedItem && mapping ? `` : "");
 
         const derivedColumnsField = {
           key: field.columnName,
@@ -755,5 +771,176 @@ export class Director {
     this.builder.produceDefaultValue(defaultValue);
     this.builder.buildMenu();
     return this.builder.getMenuItems();
+  }
+
+  public getMenuRender(): IRenderFunction<IContextualMenuListProps> {
+    const theme = getTheme();
+
+    const CustomMenuRender: React.FC<{
+      item: IContextualMenuItem;
+      defaultKey: string;
+    }> = ({ item, defaultKey }) => {
+      let currentFunction: IContextualMenuItem;
+      if (item.subMenuProps) {
+        currentFunction = item.subMenuProps.items.find((i) => i.isChecked);
+        if (currentFunction) {
+          defaultKey = currentFunction.key;
+        }
+      }
+
+      return (
+        <FluentDataBindingMenuItem
+          key={item.key}
+          backgroundColor={
+            currentFunction
+              ? theme.semanticColors.buttonBackgroundChecked
+              : null
+          }
+          backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
+        >
+          <FluentDataBindingMenuLabel>
+            <Label
+              onClick={(e) => {
+                const agr = item.subMenuProps?.items.find(
+                  (item) => item.key === defaultKey
+                );
+                if (agr) {
+                  agr.onClick(e as any, agr);
+                } else {
+                  item.onClick(e as any, item);
+                }
+              }}
+              styles={defaultLabelStyle}
+            >
+              {item.text}
+            </Label>
+          </FluentDataBindingMenuLabel>
+          {item.subMenuProps ? (
+            <Dropdown
+              styles={{
+                ...(defaultStyle as any),
+                title: {
+                  ...defaultStyle.title,
+                  lineHeight: defultBindButtonSize.height,
+                  borderWidth: "0px",
+                },
+                dropdownOptionText: {
+                  boxSizing: "unset",
+                  lineHeight: defultBindButtonSize.height,
+                },
+              }}
+              selectedKey={defaultKey}
+              options={item.subMenuProps.items.map((i) => ({
+                key: i.key,
+                text: i.text,
+              }))}
+              onChange={(e, opt) => {
+                const agr = item.subMenuProps.items.find(
+                  (item) => item.key === opt.key
+                );
+                if (agr) {
+                  agr.onClick(e as any, agr);
+                } else {
+                  item.onClick(e as any, item);
+                }
+              }}
+            />
+          ) : null}
+        </FluentDataBindingMenuItem>
+      );
+    };
+
+    return (props) => {
+      const calloutKey = "mappingMenuAnchor";
+
+      // find current mapping
+      let mapping = null;
+      const currentColumn = props.items
+        .filter((item) => item.subMenuProps) // exclude None
+        .flatMap((items) => {
+          if (
+            items.subMenuProps &&
+            items.subMenuProps.items.find((i) => i.key === "year")
+          ) {
+            return items.subMenuProps.items;
+          } else {
+            return items;
+          }
+        })
+        .find(
+          (item) =>
+            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+              .length > 0
+        ); // Exclude unselected columns
+
+      if (currentColumn) {
+        const aggregationFunction = currentColumn.subMenuProps.items.find(
+          (i) => i.isChecked && i.subMenuProps
+        );
+
+        const currentMapping = aggregationFunction.subMenuProps.items.find(
+          (i) => i.key === "mapping"
+        ); // Select mapping of column
+
+        // set current mapping
+        mapping = currentMapping;
+      }
+
+      return (
+        <div id={calloutKey}>
+          {mapping ? (
+            <Callout
+              target={`#${calloutKey}`}
+              directionalHint={DirectionalHint.leftCenter}
+            >
+              {mapping.onRender(mapping, () => null)}
+            </Callout>
+          ) : null}
+          {!props.items.find(
+            (item) => item.key === "first" || item.key === "avg"
+          ) ? (
+            <>
+              {props.items.map((item) => {
+                if (item.subMenuProps?.items.find((i) => i.key === "year")) {
+                  const expand = item.subMenuProps.items.find((columns) =>
+                    columns.subMenuProps.items.find((func) => func.isChecked)
+                  );
+                  return (
+                    <CollapsiblePanel
+                      key={item.key}
+                      header={() => (
+                        <Label styles={defaultLabelStyle}>{item.text}</Label>
+                      )}
+                      isCollapsed={expand === null}
+                      widgets={item.subMenuProps.items.map((item) => {
+                        const currentKey = item.subMenuProps?.items[0].key;
+                        return (
+                          <CustomMenuRender
+                            key={item.key}
+                            item={item}
+                            defaultKey={currentKey}
+                          />
+                        );
+                      })}
+                    />
+                  );
+                } else {
+                  const currentKey = item.subMenuProps?.items[0].key;
+                  return (
+                    <CustomMenuRender
+                      key={item.key}
+                      item={item}
+                      defaultKey={currentKey}
+                    />
+                  );
+                }
+              })}
+            </>
+          ) : (
+            <ContextualMenu {...props} />
+          )}
+        </div>
+      );
+    };
   }
 }

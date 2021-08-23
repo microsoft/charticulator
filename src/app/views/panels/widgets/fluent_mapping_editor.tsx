@@ -32,6 +32,8 @@ import {
   Label,
   IContextualMenuItem,
   Callout,
+  Dropdown,
+  ContextualMenu,
 } from "@fluentui/react";
 import {
   defaultLabelStyle,
@@ -40,6 +42,9 @@ import {
   defultComponentsHeight,
   FluentActionButton,
   FluentButton,
+  FluentDataBindingMenuItem,
+  FluentDataBindingMenuLabel,
+  FluentRowLayout,
   labelRender,
 } from "./controls/fluentui_customized_components";
 import { ObjectClass } from "../../../../core/prototypes";
@@ -230,6 +235,7 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
       <>
@@ -256,6 +262,7 @@ export class FluentMappingEditor extends React.Component<
           numberOptions={this.props.options.numberOptions}
           stopPropagation={this.props.options.stopPropagation}
           mainMenuItems={mainMenuItems}
+          menuRender={menuRender}
         />
       </>
     );
@@ -415,6 +422,7 @@ export class FluentMappingEditor extends React.Component<
             table,
             options.acceptKinds
           );
+          const menuRender = this.director.getMenuRender();
 
           if (scaleMapping.scale) {
             return (
@@ -439,6 +447,7 @@ export class FluentMappingEditor extends React.Component<
                     title={strings.mappingEditor.bindData}
                     menuProps={{
                       items: mainMenuItems,
+                      onRenderMenuList: menuRender,
                       onMenuOpened: () => {
                         const currentMapping = parent.getAttributeMapping(
                           attribute
@@ -507,11 +516,13 @@ export class FluentMappingEditor extends React.Component<
     const valueIndex = currentMapping && (currentMapping as any).valueIndex;
 
     if (this.props.options.openMapping) {
-      FluentMappingEditor.openEditor(
-        (currentMapping as Specification.ScaleMapping)?.expression,
-        true,
-        this.mappingButton
-      );
+      setTimeout(() => {
+        FluentMappingEditor.openEditor(
+          (currentMapping as Specification.ScaleMapping)?.expression,
+          true,
+          this.mappingButton
+        );
+      }, 0);
     }
 
     const table = currentMapping
@@ -529,9 +540,10 @@ export class FluentMappingEditor extends React.Component<
       table,
       options.acceptKinds
     );
+    const menuRender = this.director.getMenuRender();
 
     return (
-      <div ref={(e) => (this.noneLabel = e)}>
+      <div ref={(e) => (this.noneLabel = e)} key={attribute}>
         <DropZoneView
           filter={(data) => {
             if (!shouldShowBindData) {
@@ -620,6 +632,7 @@ export class FluentMappingEditor extends React.Component<
                       checked={isDataMapping}
                       menuProps={{
                         items: mainMenuItems,
+                        onRenderMenuList: menuRender,
                       }}
                     />
                   </FluentButton>
@@ -754,10 +767,10 @@ export class FluentMappingEditor extends React.Component<
             setTimeout(() => {
               menuItem?.click();
               FluentMappingEditor.menuKeyClick(derivedExpression);
-            }, 100);
+            }, 0);
           }
         }
-      }, 100);
+      }, 0);
     });
   }
 }
