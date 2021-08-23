@@ -62,6 +62,31 @@ export const FluentRowLayout = styled.div`
   flex-direction: row;
 `;
 
+export const FluentDataBindingMenuItem = styled.div<{
+  backgroundColor?: string;
+  backgroundColorHover?: string;
+}>`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  height: 26px;
+  line-height: unset;
+  background-color: ${({ backgroundColor }) => backgroundColor || null};
+  &:hover {
+    background-color: ${({ backgroundColorHover }) =>
+      backgroundColorHover || null};
+  }
+  .ms-Dropdown-container {
+    margin-top: 2px;
+  }
+`;
+
+export const FluentDataBindingMenuLabel = styled.div`
+  flex: 1;
+  margin-left: 5px;
+`;
+
 export const FluentColumnLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,6 +154,9 @@ export const groupHeaderStyles: IStyleFunctionOrObject<
   },
   expand: {
     ...defultBindButtonSize,
+  },
+  dropIcon: {
+    display: "none",
   },
 };
 
