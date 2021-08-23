@@ -284,7 +284,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         domainMax
       );
     } else {
-      return this.getLineAxisGraphics(rangeMin, rangeMax, domainMin, domainMax);
+      return Graphics.makeGroup([
+        this.getLineAxisGraphics(rangeMin, rangeMax, domainMin, domainMax),
+        this.getGridLineGraphics(rangeMin, rangeMax, domainMin, domainMax),
+      ]);
     }
   }
 
@@ -352,6 +355,111 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     );
   }
 
+  public getGridLineGraphics(
+    rangeMin: number,
+    rangeMax: number,
+    domainMin: number,
+    domainMax: number
+  ): Graphics.Element {
+    const legendId = this.object._id;
+    const chartConstrains = this.parent.object.constraints;
+
+    if (chartConstrains.length > 0) {
+      //x1, y1, x2, y2
+      //check if 4 constrain for legend
+      const amountLegendConstrain = chartConstrains.filter(
+        (elem) => elem.attributes?.element === legendId
+      );
+      if (amountLegendConstrain.length === 4) {
+        const targetConstrain = chartConstrains?.find(
+          (constant) => constant?.attributes?.element === legendId
+        );
+        const targetId = targetConstrain?.attributes?.targetElement;
+        const plotSIdx = this.parent.object.elements.findIndex(
+          (element) => element._id === targetId
+        );
+        const plotSAttributes = this.parent.state.elements[plotSIdx]
+          ?.attributes;
+
+        const x1 = this.state.attributes.x1;
+        const x2 = this.state.attributes.x2;
+        const y1 = this.state.attributes.y1;
+        const y2 = this.state.attributes.y2;
+
+        const isXEquals = Math.abs(<number>x2 - <number>x1) < 1e-3;
+        const isYEquals = Math.abs(<number>y2 - <number>y1) < 1e-3;
+
+        if (!isXEquals && !isYEquals) {
+          return null;
+        }
+
+        const angle = isYEquals ? 0 : 90;
+
+        console.log("X: ", isXEquals);
+        console.log("Y: ", isYEquals);
+        const dx = <number>plotSAttributes?.x2 - <number>plotSAttributes?.x1;
+        const dy = <number>plotSAttributes?.y2 - <number>plotSAttributes?.y1;
+
+        const length = isYEquals ? dx : dy;
+        const renderer = new AxisRenderer();
+
+        const scaling = (rangeMax - rangeMin) / (domainMax - domainMin);
+        renderer.setLinearScale(
+          domainMin,
+          domainMin + (length - rangeMin) / scaling,
+          rangeMin,
+          length,
+          null
+        );
+        renderer.setStyle({
+          ...defaultAxisStyle,
+          ...this.object.properties?.axis?.style,
+        });
+
+        let side = 1;
+        if (isXEquals) {
+          if (y1 > y2) {
+            if (Math.abs(x1 - <number>plotSAttributes?.x1) < 1e-3) {
+              side = -1;
+            } else {
+              side = 1;
+            }
+          } else {
+            if (Math.abs(x1 - <number>plotSAttributes?.x1) < 1e-3) {
+              side = -1;
+            } else {
+              side = 1;
+            }
+          }
+        }
+        if (isYEquals) {
+          if (x1 > x2) {
+            if (Math.abs(y1 - <number>plotSAttributes?.y1) < 1e-3) {
+              side = 1;
+            } else {
+              side = -1;
+            }
+          } else {
+            if (Math.abs(y1 - <number>plotSAttributes?.y1) < 1e-3) {
+              side = 1;
+            } else {
+              side = -1;
+            }
+          }
+        }
+
+        return renderer.renderGridLine(
+          <number>x1 > <number>x2 ? <number>x2 : <number>x1,
+          <number>y1 > <number>y2 ? <number>y2 : <number>y1,
+          angle,
+          side,
+          isYEquals ? dy : dx
+        );
+      }
+    }
+    return null;
+  }
+
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
@@ -363,6 +471,54 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         isVisible: props.axis.visible,
         wordWrap: props.axis.style.wordWrap,
       }),
+      manager.verticalGroup(
+        {
+          header: strings.objects.plotSegment.gridline,
+        },
+        [
+          manager.inputSelect(
+            {
+              property: "axis",
+              field: ["style", "gridlineStyle"],
+            },
+            {
+              type: "dropdown",
+              showLabel: true,
+              icons: [
+                "ChromeClose",
+                "stroke/solid",
+                "stroke/dashed",
+                "stroke/dotted",
+              ],
+              options: ["none", "solid", "dashed", "dotted"],
+              labels: ["None", "Solid", "Dashed", "Dotted"],
+              label: strings.objects.style,
+            }
+          ),
+          manager.inputColor(
+            {
+              property: "axis",
+              field: ["style", "gridlineColor"],
+            },
+            {
+              label: strings.objects.color,
+              labelKey: strings.objects.color,
+            }
+          ),
+          manager.inputNumber(
+            {
+              property: "axis",
+              field: ["style", "gridlineWidth"],
+            },
+            {
+              minimum: 0,
+              maximum: 100,
+              showUpdown: true,
+              label: strings.objects.width,
+            }
+          ),
+        ]
+      ),
     ];
   }
 }

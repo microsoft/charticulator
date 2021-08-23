@@ -634,7 +634,6 @@ export class FluentUIWidgetManager
       properties instanceof Array ? properties[0] : properties;
     this.eventListener = new UIManagerListener(this);
     this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
-    console.log(properties);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
