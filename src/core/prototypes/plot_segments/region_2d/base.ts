@@ -2606,10 +2606,10 @@ export class Region2DConstraintBuilder {
                   GridStartPosition.RigtBottom,
                 ],
                 labels: [
-                  "Left to down",
-                  "Right to down",
-                  "Right to top",
-                  "Left to top",
+                  strings.objects.plotSegment.directionDownRight,
+                  strings.objects.plotSegment.directionDownLeft,
+                  strings.objects.plotSegment.directionUpLeft,
+                  strings.objects.plotSegment.directionUpRight,
                 ],
                 label: strings.objects.plotSegment.direction,
               }
@@ -2853,12 +2853,11 @@ export class Region2DConstraintBuilder {
                   GridStartPosition.RigtBottom,
                 ],
                 labels: [
-                  "Left to down",
-                  "Right to down",
-                  "Right to top",
-                  "Left to top",
+                  strings.objects.plotSegment.directionDownRight,
+                  strings.objects.plotSegment.directionDownLeft,
+                  strings.objects.plotSegment.directionUpLeft,
+                  strings.objects.plotSegment.directionUpRight,
                 ],
-                // label: strings.objects.plotSegment.direction,
                 hideBorder: true,
               }
             )
