@@ -96,6 +96,7 @@ import { FluentInputNumber } from "./controls/fluentui_input_number";
 import {
   InputFontComboboxOptions,
   InputTextOptions,
+  ObserverConfig,
   PanelMode,
 } from "../../../../core/prototypes/controls";
 
@@ -654,6 +655,7 @@ export class FluentUIWidgetManager
                   },
                 }}
                 onChange={(ev, v) => {
+                  this.defaultNotification(options.observerConfig);
                   if (properties instanceof Array) {
                     properties.forEach((property) =>
                       this.emitSetProperty(property, v)
@@ -688,10 +690,31 @@ export class FluentUIWidgetManager
             ariaLabel={options.label}
             checked={this.getPropertyValue(property) as boolean}
             onClick={() => {
+              this.defaultNotification(options.observerConfig);
               const v = this.getPropertyValue(property) as boolean;
               this.emitSetProperty(property, !v);
             }}
           />
+        );
+      }
+    }
+  }
+
+  private defaultNotification(observerConfig: ObserverConfig) {
+    if (observerConfig?.isObserver) {
+      if (observerConfig?.properties instanceof Array) {
+        observerConfig?.properties.forEach((property) =>
+          this.eventManager.notify(
+            EventType.UPDATE_FIELD,
+            property,
+            observerConfig?.value
+          )
+        );
+      } else {
+        this.eventManager.notify(
+          EventType.UPDATE_FIELD,
+          observerConfig?.properties,
+          observerConfig?.value
         );
       }
     }
