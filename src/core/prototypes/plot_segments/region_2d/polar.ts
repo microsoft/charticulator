@@ -21,7 +21,7 @@ import {
 import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
 import {
   GridDirection,
-  GridFlipDirection,
+  GridStartPosition,
   PlotSegmentAxisPropertyNames,
   Region2DAttributes,
   Region2DConfiguration,
@@ -129,8 +129,7 @@ export class PolarPlotSegment extends PlotSegmentClass<
         direction: GridDirection.X,
         xCount: null,
         yCount: null,
-        flipDirection: GridFlipDirection.Direct,
-        reverseGlyphsOrder: false,
+        gridStartPosition: GridStartPosition.LeftTop,
       },
     },
     startAngle: 0,

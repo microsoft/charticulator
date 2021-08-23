@@ -26,7 +26,7 @@ import { TableType } from "../../dataset";
 import { MappingType } from "../../specification";
 import {
   GridDirection,
-  GridFlipDirection,
+  GridStartPosition,
   Region2DSublayoutType,
   SublayoutAlignment,
 } from "../plot_segments/region_2d/base";
@@ -524,7 +524,7 @@ export class NestedChartElementClass extends EmphasizableMarkClass<
                 direction: GridDirection.X,
                 xCount: null,
                 yCount: null,
-                flipDirection: GridFlipDirection.Direct,
+                gridStartPosition: GridStartPosition.LeftTop,
               },
             },
           },
