@@ -522,7 +522,7 @@ export class FluentMappingEditor extends React.Component<
           true,
           this.mappingButton
         );
-      }, 100);
+      }, 0);
     }
 
     const table = currentMapping
@@ -767,10 +767,10 @@ export class FluentMappingEditor extends React.Component<
             setTimeout(() => {
               menuItem?.click();
               FluentMappingEditor.menuKeyClick(derivedExpression);
-            }, 100);
+            }, 0);
           }
         }
-      }, 100);
+      }, 0);
     });
   }
 }

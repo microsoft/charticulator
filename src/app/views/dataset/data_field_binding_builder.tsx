@@ -599,9 +599,7 @@ class MenuItemsCreator {
         const itemText =
           field.columnName +
           strings.objects.derivedColumns.menuSuffix +
-          (subMenuProps && subMenuCheckedItem && mapping
-            ? ` (${subMenuCheckedItem})`
-            : "");
+          (subMenuProps && subMenuCheckedItem && mapping ? `` : "");
 
         const derivedColumnsField = {
           key: field.columnName,
@@ -793,18 +791,8 @@ export class Director {
         }
       }
 
-      let mapping = null;
-      const agr = item.subMenuProps?.items.find(
-        (item) => item.key === defaultKey
-      );
-      if (agr) {
-        mapping = agr.subMenuProps?.items.find((i) => i.key === "mapping");
-      }
-      const calloutKey = item.key.replace(/\W/g, "_");
-
       return (
         <FluentDataBindingMenuItem
-          id={calloutKey}
           backgroundColor={
             currentFunction
               ? theme.semanticColors.buttonBackgroundChecked
@@ -812,14 +800,6 @@ export class Director {
           }
           backgroundColorHover={theme.semanticColors.buttonBackgroundHovered}
         >
-          {currentFunction && mapping ? (
-            <Callout
-              target={`#${calloutKey}`}
-              directionalHint={DirectionalHint.leftCenter}
-            >
-              {mapping.onRender(mapping, () => null)}
-            </Callout>
-          ) : null}
           <FluentDataBindingMenuLabel>
             <Label
               onClick={(e) => {
@@ -873,47 +853,82 @@ export class Director {
     };
 
     return (props) => {
-      if (
-        !props.items.find((item) => item.key === "first" || item.key === "avg")
-      ) {
-        return (
-          <>
-            {props.items.map((item) => {
-              if (item.subMenuProps?.items.find((i) => i.key === "year")) {
-                return (
-                  <CollapsiblePanel
-                    header={() => (
-                      <Label styles={defaultLabelStyle}>{item.text}</Label>
-                    )}
-                    isCollapsed={true}
-                    widgets={item.subMenuProps.items.map((item) => {
-                      const currentKey = item.subMenuProps?.items[0].key;
-                      return (
-                        <CustomMenuRender
-                          key={item.key}
-                          item={item}
-                          defaultKey={currentKey}
-                        />
-                      );
-                    })}
-                  />
-                );
-              } else {
-                const currentKey = item.subMenuProps?.items[0].key;
-                return (
-                  <CustomMenuRender
-                    key={item.key}
-                    item={item}
-                    defaultKey={currentKey}
-                  />
-                );
-              }
-            })}
-          </>
+      const calloutKey = "mappingMenuAnchor";
+
+      // find current mapping
+      let mapping = null;
+      const currentColumn = props.items
+        .filter((item) => item.subMenuProps) // exclude None
+        .find(
+          (item) =>
+            item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
+              .length > 0
+        ); // Exclude unselected columns
+
+      if (currentColumn) {
+        const aggregationFunction = currentColumn.subMenuProps.items.find(
+          (i) => i.isChecked && i.subMenuProps
         );
-      } else {
-        return <ContextualMenu {...props} />;
+
+        const currentMapping = aggregationFunction.subMenuProps.items.find(
+          (i) => i.key === "mapping"
+        ); // Select mapping of column
+
+        // set current mapping
+        mapping = currentMapping;
       }
+
+      return (
+        <div id={calloutKey}>
+          {mapping ? (
+            <Callout
+              target={`#${calloutKey}`}
+              directionalHint={DirectionalHint.leftCenter}
+            >
+              {mapping.onRender(mapping, () => null)}
+            </Callout>
+          ) : null}
+          {!props.items.find(
+            (item) => item.key === "first" || item.key === "avg"
+          ) ? (
+            <>
+              {props.items.map((item) => {
+                if (item.subMenuProps?.items.find((i) => i.key === "year")) {
+                  return (
+                    <CollapsiblePanel
+                      header={() => (
+                        <Label styles={defaultLabelStyle}>{item.text}</Label>
+                      )}
+                      isCollapsed={true}
+                      widgets={item.subMenuProps.items.map((item) => {
+                        const currentKey = item.subMenuProps?.items[0].key;
+                        return (
+                          <CustomMenuRender
+                            key={item.key}
+                            item={item}
+                            defaultKey={currentKey}
+                          />
+                        );
+                      })}
+                    />
+                  );
+                } else {
+                  const currentKey = item.subMenuProps?.items[0].key;
+                  return (
+                    <CustomMenuRender
+                      key={item.key}
+                      item={item}
+                      defaultKey={currentKey}
+                    />
+                  );
+                }
+              })}
+            </>
+          ) : (
+            <ContextualMenu {...props} />
+          )}
+        </div>
+      );
     };
   }
 }
