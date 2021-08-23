@@ -543,7 +543,7 @@ export class FluentMappingEditor extends React.Component<
     const menuRender = this.director.getMenuRender();
 
     return (
-      <div ref={(e) => (this.noneLabel = e)}>
+      <div ref={(e) => (this.noneLabel = e)} key={attribute}>
         <DropZoneView
           filter={(data) => {
             if (!shouldShowBindData) {

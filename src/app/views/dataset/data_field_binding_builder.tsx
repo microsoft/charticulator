@@ -124,7 +124,7 @@ class MenuItemsCreator {
     ev?: React.MouseEvent<HTMLButtonElement>,
     item?: IContextualMenuItem
   ): void {
-    ev && ev.preventDefault();
+    ev && ev.preventDefault && ev.preventDefault();
 
     if (item && field) {
       this.selectedKey = field.columnName + DELIMITER + item.key;
@@ -357,9 +357,7 @@ class MenuItemsCreator {
 
       const itemText =
         field.columnName +
-        (subMenuProps && subMenuCheckedItem && mapping
-          ? ` (${subMenuCheckedItem})`
-          : "");
+        (subMenuProps && subMenuCheckedItem && mapping ? `` : "");
 
       return {
         key:
@@ -793,6 +791,7 @@ export class Director {
 
       return (
         <FluentDataBindingMenuItem
+          key={item.key}
           backgroundColor={
             currentFunction
               ? theme.semanticColors.buttonBackgroundChecked
@@ -859,6 +858,16 @@ export class Director {
       let mapping = null;
       const currentColumn = props.items
         .filter((item) => item.subMenuProps) // exclude None
+        .flatMap((items) => {
+          if (
+            items.subMenuProps &&
+            items.subMenuProps.items.find((i) => i.key === "year")
+          ) {
+            return items.subMenuProps.items;
+          } else {
+            return items;
+          }
+        })
         .find(
           (item) =>
             item.subMenuProps.items.filter((i) => i.isChecked && i.subMenuProps)
@@ -894,12 +903,16 @@ export class Director {
             <>
               {props.items.map((item) => {
                 if (item.subMenuProps?.items.find((i) => i.key === "year")) {
+                  const expand = item.subMenuProps.items.find((columns) =>
+                    columns.subMenuProps.items.find((func) => func.isChecked)
+                  );
                   return (
                     <CollapsiblePanel
+                      key={item.key}
                       header={() => (
                         <Label styles={defaultLabelStyle}>{item.text}</Label>
                       )}
-                      isCollapsed={true}
+                      isCollapsed={expand === null}
                       widgets={item.subMenuProps.items.map((item) => {
                         const currentKey = item.subMenuProps?.items[0].key;
                         return (
