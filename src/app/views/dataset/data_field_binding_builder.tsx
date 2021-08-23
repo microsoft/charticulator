@@ -38,7 +38,6 @@ import {
   FluentDataBindingMenuItem,
   FluentDataBindingMenuLabel,
 } from "../panels/widgets/controls/fluentui_customized_components";
-import { useState } from "react";
 import { CollapsiblePanel } from "../panels/widgets/controls/collapsiblePanel";
 
 import { getTheme } from "@fluentui/react";
