@@ -44,7 +44,7 @@ import {
   GuideProperties,
 } from "../../../core/prototypes/guides";
 import { strings } from "../../../strings";
-import { MappingType } from "../../../core/specification";
+import { MappingType, ValueMapping } from "../../../core/specification";
 import { SnappingGuidesVisualTypes } from "../../../core/prototypes";
 import { classNames } from "../../utils";
 import { FluentUIWidgetManager } from "../panels/widgets/fluentui_manager";
@@ -453,7 +453,15 @@ export class ChartEditorView
         };
         new Actions.AddChartElement(
           "guide.guide",
-          { value },
+          {
+            value: [
+              value[0],
+              {
+                type: MappingType.value,
+                value: value[0],
+              } as ValueMapping,
+            ],
+          },
           guideProperties
         ).dispatch(this.props.store.dispatcher);
       };
