@@ -34,6 +34,7 @@ export interface LegendProperties extends Specification.AttributeMap {
   fontFamily: string;
   fontSize: number;
   textColor: Color;
+  order: string[];
   markerShape: "rectangle" | "circle" | "triangle";
 }
 
@@ -237,20 +238,12 @@ export abstract class LegendClass extends ChartElementClass {
             {
               items: this.getOrderingObjects(),
               onConfirm: (items: string[]) => {
-                const scale = this.getScale()[0];
-                const newMap: { [name: string]: ValueType } = {};
-                items.forEach((item) => {
-                  newMap[item] = (<Specification.AttributeMap>(
-                    scale.properties.mapping
-                  ))[item];
-                });
-                Prototypes.setProperty(scale, "mapping", newMap);
                 manager.emitSetProperty(
                   {
-                    property: "mapping",
+                    property: "order",
                     field: null,
                   },
-                  <Specification.AttributeValue>newMap
+                  items
                 );
               },
             }
