@@ -10,7 +10,6 @@ import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widget
 import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
-import { ValueType } from "../../expression/classes";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
@@ -66,6 +65,7 @@ export abstract class LegendClass extends ChartElementClass {
     dataSource: "columnValues",
     dataExpressions: [],
     markerShape: "circle",
+    order: null,
   };
 
   public attributeNames: string[] = ["x", "y"];
