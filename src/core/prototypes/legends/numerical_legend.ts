@@ -460,17 +460,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     return null;
   }
 
-  public getAttributePanelWidgets(
+  public getGridLineAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
-    const props = this.object.properties;
-
     return [
-      manager.sectionHeader(strings.objects.axis),
-      buildAxisAppearanceWidgets("axis", manager, {
-        isVisible: props.axis.visible,
-        wordWrap: props.axis.style.wordWrap,
-      }),
       manager.verticalGroup(
         {
           header: strings.objects.plotSegment.gridline,
@@ -519,6 +512,21 @@ export class NumericalNumberLegendClass extends ChartElementClass<
           ),
         ]
       ),
+    ];
+  }
+
+  public getAttributePanelWidgets(
+    manager: Controls.WidgetManager
+  ): Controls.Widget[] {
+    const props = this.object.properties;
+
+    return [
+      manager.sectionHeader(strings.objects.axis),
+      buildAxisAppearanceWidgets("axis", manager, {
+        isVisible: props.axis.visible,
+        wordWrap: props.axis.style.wordWrap,
+      }),
+      ...this.getGridLineAttributePanelWidgets(manager),
     ];
   }
 }
