@@ -59,6 +59,7 @@ export interface NumericalNumberLegendProperties
   };
   polarAngularMode?: boolean;
 }
+const PRECISION = 1e-3;
 
 export class NumericalNumberLegendClass extends ChartElementClass<
   NumericalNumberLegendProperties,
@@ -386,8 +387,8 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         const y1 = this.state.attributes.y1;
         const y2 = this.state.attributes.y2;
 
-        const isXEquals = Math.abs(<number>x2 - <number>x1) < 1e-3;
-        const isYEquals = Math.abs(<number>y2 - <number>y1) < 1e-3;
+        const isXEquals = Math.abs(<number>x2 - <number>x1) < PRECISION;
+        const isYEquals = Math.abs(<number>y2 - <number>y1) < PRECISION;
 
         if (!isXEquals && !isYEquals) {
           return null;
@@ -395,8 +396,6 @@ export class NumericalNumberLegendClass extends ChartElementClass<
 
         const angle = isYEquals ? 0 : 90;
 
-        console.log("X: ", isXEquals);
-        console.log("Y: ", isYEquals);
         const dx = <number>plotSAttributes?.x2 - <number>plotSAttributes?.x1;
         const dy = <number>plotSAttributes?.y2 - <number>plotSAttributes?.y1;
 
@@ -416,16 +415,17 @@ export class NumericalNumberLegendClass extends ChartElementClass<
           ...this.object.properties?.axis?.style,
         });
 
+        //gridline should be in PlotSegment
         let side = 1;
         if (isXEquals) {
           if (y1 > y2) {
-            if (Math.abs(x1 - <number>plotSAttributes?.x1) < 1e-3) {
+            if (Math.abs(x1 - <number>plotSAttributes?.x1) < PRECISION) {
               side = -1;
             } else {
               side = 1;
             }
           } else {
-            if (Math.abs(x1 - <number>plotSAttributes?.x1) < 1e-3) {
+            if (Math.abs(x1 - <number>plotSAttributes?.x1) < PRECISION) {
               side = -1;
             } else {
               side = 1;
@@ -434,13 +434,13 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         }
         if (isYEquals) {
           if (x1 > x2) {
-            if (Math.abs(y1 - <number>plotSAttributes?.y1) < 1e-3) {
+            if (Math.abs(y1 - <number>plotSAttributes?.y1) < PRECISION) {
               side = 1;
             } else {
               side = -1;
             }
           } else {
-            if (Math.abs(y1 - <number>plotSAttributes?.y1) < 1e-3) {
+            if (Math.abs(y1 - <number>plotSAttributes?.y1) < PRECISION) {
               side = 1;
             } else {
               side = -1;

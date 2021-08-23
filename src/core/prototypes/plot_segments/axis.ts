@@ -346,7 +346,6 @@ export class AxisRenderer {
       return;
     }
 
-    //todo: remove from attributes pane
     if (this.axisDataBindingType === AxisDataBindingType.Categorical) {
       return;
     }
