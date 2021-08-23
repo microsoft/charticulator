@@ -2812,6 +2812,7 @@ export class Region2DConstraintBuilder {
           );
         }
         if (type == "grid") {
+          extra.push(m.sep());
           extra.push(
             m.inputSelect(
               { property: "sublayout", field: ["grid", "direction"] },
@@ -2828,6 +2829,37 @@ export class Region2DConstraintBuilder {
                 tooltip: strings.canvas.gridDirection,
                 hideBorder: true,
                 shiftCallout: 15,
+              }
+            )
+          );
+          extra.push(
+            m.inputSelect(
+              {
+                property: "sublayout",
+                field: ["grid", "gridStartPosition"],
+              },
+              {
+                type: "dropdown",
+                icons: [
+                  "ArrowTallDownRight",
+                  "ArrowTallDownLeft",
+                  "ArrowTallUpLeft",
+                  "ArrowTallUpRight",
+                ],
+                options: [
+                  GridStartPosition.LeftTop,
+                  GridStartPosition.RightTop,
+                  GridStartPosition.LeftBottom,
+                  GridStartPosition.RigtBottom,
+                ],
+                labels: [
+                  "Left to down",
+                  "Right to down",
+                  "Right to top",
+                  "Left to top",
+                ],
+                // label: strings.objects.plotSegment.direction,
+                hideBorder: true,
               }
             )
           );
