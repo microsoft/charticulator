@@ -461,61 +461,6 @@ export class NumericalNumberLegendClass extends ChartElementClass<
     return null;
   }
 
-  public getGridLineAttributePanelWidgets(
-    manager: Controls.WidgetManager
-  ): Controls.Widget[] {
-    return [
-      manager.verticalGroup(
-        {
-          header: strings.objects.plotSegment.gridline,
-        },
-        [
-          manager.inputSelect(
-            {
-              property: "axis",
-              field: ["style", "gridlineStyle"],
-            },
-            {
-              type: "dropdown",
-              showLabel: true,
-              icons: [
-                "ChromeClose",
-                "stroke/solid",
-                "stroke/dashed",
-                "stroke/dotted",
-              ],
-              options: ["none", "solid", "dashed", "dotted"],
-              labels: ["None", "Solid", "Dashed", "Dotted"],
-              label: strings.objects.style,
-            }
-          ),
-          manager.inputColor(
-            {
-              property: "axis",
-              field: ["style", "gridlineColor"],
-            },
-            {
-              label: strings.objects.color,
-              labelKey: strings.objects.color,
-            }
-          ),
-          manager.inputNumber(
-            {
-              property: "axis",
-              field: ["style", "gridlineWidth"],
-            },
-            {
-              minimum: 0,
-              maximum: 100,
-              showUpdown: true,
-              label: strings.objects.width,
-            }
-          ),
-        ]
-      ),
-    ];
-  }
-
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
