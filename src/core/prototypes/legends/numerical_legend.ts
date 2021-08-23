@@ -19,6 +19,7 @@ import {
   buildAxisAppearanceWidgets,
   defaultAxisStyle,
 } from "../plot_segments/axis";
+import { PlotSegmentClass } from "../plot_segments";
 
 export enum NumericalNumberLegendAttributeNames {
   x1 = "x1",
@@ -526,7 +527,10 @@ export class NumericalNumberLegendClass extends ChartElementClass<
         isVisible: props.axis.visible,
         wordWrap: props.axis.style.wordWrap,
       }),
-      ...this.getGridLineAttributePanelWidgets(manager),
+      ...PlotSegmentClass.getGridLineAttributePanelWidgets(
+        manager,
+        "axis"
+      ),
     ];
   }
 }

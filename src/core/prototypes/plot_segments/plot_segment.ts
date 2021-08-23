@@ -104,6 +104,16 @@ export abstract class PlotSegmentClass<
       return [];
     }
 
+    return PlotSegmentClass.getGridLineAttributePanelWidgets(
+      manager,
+      axisProperty
+    );
+  }
+
+  public static getGridLineAttributePanelWidgets(
+    manager: Controls.WidgetManager,
+    axisProperty: string
+  ) {
     return [
       manager.verticalGroup(
         {
