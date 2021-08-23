@@ -10,7 +10,6 @@ import { CharticulatorPropertyAccessors } from "../../../app/views/panels/widget
 import { Prototypes } from "../../../container";
 import { strings } from "../../../strings";
 import { Color, indexOf, rgbToHex } from "../../common";
-import { ValueType } from "../../expression/classes";
 import * as Specification from "../../specification";
 import { ChartElementClass } from "../chart_element";
 import {
@@ -34,6 +33,7 @@ export interface LegendProperties extends Specification.AttributeMap {
   fontFamily: string;
   fontSize: number;
   textColor: Color;
+  order: string[];
   markerShape: "rectangle" | "circle" | "triangle";
 }
 
@@ -65,6 +65,7 @@ export abstract class LegendClass extends ChartElementClass {
     dataSource: "columnValues",
     dataExpressions: [],
     markerShape: "circle",
+    order: null,
   };
 
   public attributeNames: string[] = ["x", "y"];
@@ -237,20 +238,12 @@ export abstract class LegendClass extends ChartElementClass {
             {
               items: this.getOrderingObjects(),
               onConfirm: (items: string[]) => {
-                const scale = this.getScale()[0];
-                const newMap: { [name: string]: ValueType } = {};
-                items.forEach((item) => {
-                  newMap[item] = (<Specification.AttributeMap>(
-                    scale.properties.mapping
-                  ))[item];
-                });
-                Prototypes.setProperty(scale, "mapping", newMap);
                 manager.emitSetProperty(
                   {
-                    property: "mapping",
+                    property: "order",
                     field: null,
                   },
-                  <Specification.AttributeValue>newMap
+                  items
                 );
               },
             }

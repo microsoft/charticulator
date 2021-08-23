@@ -273,6 +273,8 @@
     height: 14px;
     line-height: 14px;
     cursor: not-allowed;
+    flex-direction: row;
+    align-items: center;
     &.is-selectable {
       cursor: pointer;
     }
