@@ -37,6 +37,8 @@ import { ChartTemplate } from "../../../container";
 import { FileViewImport, MappingMode } from "../file_view/import_view";
 import { strings } from "../../../strings";
 import { EditorType } from "../../stores/app_store";
+import { Callout, DefaultButton } from "@fluentui/react";
+import { defultBindButtonSize } from "../panels/widgets/controls/fluentui_customized_components";
 
 export interface DatasetViewProps {
   store: AppStore;
@@ -89,7 +91,18 @@ export interface ColumnsViewProps {
 
 export interface ColumnsViewState {
   selectedColumn: string;
+  tableViewIsOpened: boolean;
 }
+
+const buttonStyles = {
+  root: {
+    height: `${defultBindButtonSize}px`,
+    width: `${defultBindButtonSize}px`,
+    minWidth: `${defultBindButtonSize}px`,
+    padding: "0px",
+    border: "none",
+  },
+};
 
 export class ColumnsView extends React.Component<
   ColumnsViewProps,
@@ -101,20 +114,17 @@ export class ColumnsView extends React.Component<
     super(props);
     this.state = {
       selectedColumn: null,
+      tableViewIsOpened: false,
     };
   }
 
   // eslint-disable-next-line
   public render() {
     const table = this.props.table;
-    let anchor: HTMLDivElement;
     return (
       <>
         <PopupContainer controller={this.popupController} />
-        <div
-          className="charticulator__dataset-view-columns"
-          ref={(e) => (anchor = e)}
-        >
+        <div className="charticulator__dataset-view-columns">
           <h2 className="el-title">
             <span className="el-text">
               {this.props.table.type === TableType.Links
@@ -122,10 +132,12 @@ export class ColumnsView extends React.Component<
                 : strings.dataset.tableTitleColumns}
             </span>
             {this.props.store.editorType === EditorType.Chart ? (
-              <Button
-                icon="general/replace"
+              <DefaultButton
+                iconProps={{
+                  iconName: "general/replace",
+                }}
+                styles={buttonStyles}
                 title={strings.dataset.replaceWithCSV}
-                active={false}
                 // eslint-disable-next-line
                 onClick={() => {
                   // eslint-disable-next-line
@@ -281,51 +293,58 @@ export class ColumnsView extends React.Component<
                 }}
               />
             ) : null}
-            <Button
-              icon="general/more-horizontal"
+            <DefaultButton
+              iconProps={{
+                iconName: "More",
+              }}
+              styles={buttonStyles}
+              id="charticulator__dataset-view-detail"
               title={strings.dataset.showDataValues}
-              active={false}
+              // ={false}
               onClick={() => {
-                globals.popupController.popupAt(
-                  (context) => (
-                    <PopupView context={context}>
-                      <div className="charticulator__dataset-view-detail">
-                        <h2>{table.displayName || table.name}</h2>
-                        <p>
-                          {strings.dataset.dimensions(
-                            table.rows.length,
-                            table.columns.length
-                          )}
-                        </p>
-                        <TableView
-                          table={table}
-                          onTypeChange={
-                            this.props.store.editorType === EditorType.Chart
-                              ? (column, type) => {
-                                  const store = this.props.store;
-
-                                  store.dispatcher.dispatch(
-                                    new Actions.ConvertColumnDataType(
-                                      table.name,
-                                      column,
-                                      type as DataType
-                                    )
-                                  );
-                                }
-                              : null
-                          }
-                        />
-                      </div>
-                    </PopupView>
-                  ),
-                  {
-                    anchor,
-                    alignX: PopupAlignment.Outer,
-                    alignY: PopupAlignment.StartInner,
-                  }
-                );
+                this.setState({
+                  tableViewIsOpened: !this.state.tableViewIsOpened,
+                });
               }}
             />
+            {this.state.tableViewIsOpened ? (
+              <Callout
+                target="#charticulator__dataset-view-detail"
+                onDismiss={() => {
+                  this.setState({
+                    tableViewIsOpened: false,
+                  });
+                }}
+              >
+                <div className="charticulator__dataset-view-detail">
+                  <h2>{table.displayName || table.name}</h2>
+                  <p>
+                    {strings.dataset.dimensions(
+                      table.rows.length,
+                      table.columns.length
+                    )}
+                  </p>
+                  <TableView
+                    table={table}
+                    onTypeChange={
+                      this.props.store.editorType === EditorType.Chart
+                        ? (column, type) => {
+                            const store = this.props.store;
+
+                            store.dispatcher.dispatch(
+                              new Actions.ConvertColumnDataType(
+                                table.name,
+                                column,
+                                type as DataType
+                              )
+                            );
+                          }
+                        : null
+                    }
+                  />
+                </div>
+              </Callout>
+            ) : null}
           </h2>
           <p className="el-details">{table.displayName || table.name}</p>
           {table.columns
