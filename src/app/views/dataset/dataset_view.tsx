@@ -27,7 +27,7 @@ import {
   getFileNameWithoutExtension,
   getConvertableDataKind,
 } from "../../utils";
-import { Button, DropdownListView } from "../panels/widgets/controls";
+import { DropdownListView } from "../panels/widgets/controls";
 import { kind2Icon, type2DerivedColumns } from "./common";
 import { TableView } from "./table_view";
 import { TableType } from "../../../core/dataset";
