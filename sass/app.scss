@@ -33,6 +33,13 @@ body {
   font-style: normal;
 }
 
+li::marker {
+  list-style: none;
+  background-image: none;
+  background-repeat: none;
+  background-position: 0;
+}
+
 // CSS Rule format:
 // module__element-subelement--variant
 

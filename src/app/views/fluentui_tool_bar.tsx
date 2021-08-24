@@ -23,6 +23,14 @@ import { useContext } from "react";
 import { Callout, DirectionalHint, IconButton } from "@fluentui/react";
 import { getSVGIcon } from "../resources";
 import { EditorType } from "../stores/app_store";
+import { useState } from "react";
+import { useEffect } from "react";
+
+const minWidthToColapseButtons = Object.freeze({
+  guides: 1090,
+  plotSegments: 1120,
+  scaffolds: 1211,
+});
 
 export const FluentUIToolbar: React.FC<{
   layout: LayoutDirection;
@@ -30,6 +38,19 @@ export const FluentUIToolbar: React.FC<{
   toolbarLabels: boolean;
 }> = (props) => {
   const { store } = useContext(MainReactContext);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  const resizeListener = () => {
+    setInnerWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, [setInnerWidth]);
 
   const getGlyphToolItems = (labels: boolean = true) => {
     return [
@@ -281,8 +302,88 @@ export const FluentUIToolbar: React.FC<{
     ];
   };
 
+  const renderScaffoldButton = () => {
+    return (
+      <MultiObjectButton
+        compact={props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "scaffold/cartesian-x",
+            title: strings.toolbar.lineH,
+            icon: "scaffold/cartesian-x",
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("cartesian-x"),
+          },
+          {
+            classID: "scaffold/cartesian-y",
+            title: strings.toolbar.lineV,
+            icon: "scaffold/cartesian-y",
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("cartesian-y"),
+          },
+          {
+            classID: "scaffold/circle",
+            title: strings.toolbar.polar,
+            icon: "scaffold/circle",
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("polar"),
+          },
+          {
+            classID: "scaffold/curve",
+            title: strings.toolbar.curve,
+            icon: "scaffold/curve",
+            onClick: () => null,
+            onDrag: () => new DragData.ScaffoldType("curve"),
+          },
+        ]}
+      />
+    );
+  };
+
+  const renderGuidesButton = () => {
+    return (
+      <MultiObjectButton
+        compact={props.layout === LayoutDirection.Vertical}
+        tools={[
+          {
+            classID: "guide-y",
+            title: strings.toolbar.guideY,
+            icon: "guide/x",
+          },
+          {
+            classID: "guide-x",
+            title: strings.toolbar.guideX,
+            icon: "guide/y",
+            options: "",
+          },
+          {
+            classID: "guide-coordinator-x",
+            title: strings.toolbar.guideX,
+            icon: "CharticulatorGuideX",
+            options: "",
+          },
+          {
+            classID: "guide-coordinator-y",
+            title: strings.toolbar.guideY,
+            icon: "CharticulatorGuideY",
+            options: "",
+          },
+          {
+            classID: "guide-coordinator-polar",
+            title: strings.toolbar.guidePolar,
+            icon: "CharticulatorGuideCoordinator",
+            options: "",
+          },
+        ]}
+      />
+    );
+  };
+
   // eslint-disable-next-line max-lines-per-function
-  const getToolItems = (labels: boolean = true) => {
+  const getToolItems = (
+    labels: boolean = true,
+    innerWidth: number = window.innerWidth
+  ) => {
     return (
       <>
         {props.undoRedoLocation === UndoRedoLocation.ToolBar ? (
@@ -394,41 +495,37 @@ export const FluentUIToolbar: React.FC<{
             {strings.toolbar.guides}
           </span>
         )}
-        <MultiObjectButton
-          compact={props.layout === LayoutDirection.Vertical}
-          tools={[
-            {
-              classID: "guide-y",
-              title: strings.toolbar.guideY,
-              icon: "guide/x",
-              options: '{"shape":"rectangle"}',
-            },
-            {
-              classID: "guide-x",
-              title: strings.toolbar.guideX,
-              icon: "guide/y",
-              options: '{"shape":"ellipse"}',
-            },
-            {
-              classID: "guide-coordinator-x",
-              title: strings.toolbar.guideX,
-              icon: "CharticulatorGuideX",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-y",
-              title: strings.toolbar.guideY,
-              icon: "CharticulatorGuideY",
-              options: '{"shape":"triangle"}',
-            },
-            {
-              classID: "guide-coordinator-polar",
-              title: strings.toolbar.guidePolar,
-              icon: "CharticulatorGuideCoordinator",
-              options: "",
-            },
-          ]}
-        />
+        {innerWidth > minWidthToColapseButtons.guides ? (
+          <>
+            <ObjectButton
+              classID="guide-y"
+              title={strings.toolbar.guideY}
+              icon="guide/x"
+            />
+            <ObjectButton
+              classID="guide-x"
+              title={strings.toolbar.guideX}
+              icon="guide/y"
+            />
+            <ObjectButton
+              classID="guide-coordinator-x"
+              title={strings.toolbar.guideX}
+              icon="CharticulatorGuideX"
+            />
+            <ObjectButton
+              classID="guide-coordinator-y"
+              title={strings.toolbar.guideY}
+              icon="CharticulatorGuideY"
+            />
+            <ObjectButton
+              classID="guide-coordinator-polar"
+              title={strings.toolbar.guidePolar}
+              icon="CharticulatorGuideCoordinator"
+            />
+          </>
+        ) : (
+          renderGuidesButton()
+        )}
         <span className={"charticulator__toolbar-horizontal-separator"} />
         {labels && (
           <>
@@ -469,30 +566,36 @@ export const FluentUIToolbar: React.FC<{
             {strings.toolbar.scaffolds}
           </span>
         )}
-        <ScaffoldButton
-          type="cartesian-x"
-          title={strings.toolbar.lineH}
-          icon="scaffold/cartesian-x"
-          currentTool={store.currentTool}
-        />
-        <ScaffoldButton
-          type="cartesian-y"
-          title={strings.toolbar.lineV}
-          icon="scaffold/cartesian-y"
-          currentTool={store.currentTool}
-        />
-        <ScaffoldButton
-          type="polar"
-          title={strings.toolbar.polar}
-          icon="scaffold/circle"
-          currentTool={store.currentTool}
-        />
-        <ScaffoldButton
-          type="curve"
-          title={strings.toolbar.curve}
-          icon="scaffold/curve"
-          currentTool={store.currentTool}
-        />
+        {innerWidth > minWidthToColapseButtons.scaffolds ? (
+          <>
+            <ScaffoldButton
+              type="cartesian-x"
+              title={strings.toolbar.lineH}
+              icon="scaffold/cartesian-x"
+              currentTool={store.currentTool}
+            />
+            <ScaffoldButton
+              type="cartesian-y"
+              title={strings.toolbar.lineV}
+              icon="scaffold/cartesian-y"
+              currentTool={store.currentTool}
+            />
+            <ScaffoldButton
+              type="polar"
+              title={strings.toolbar.polar}
+              icon="scaffold/circle"
+              currentTool={store.currentTool}
+            />
+            <ScaffoldButton
+              type="curve"
+              title={strings.toolbar.curve}
+              icon="scaffold/curve"
+              currentTool={store.currentTool}
+            />
+          </>
+        ) : (
+          renderScaffoldButton()
+        )}
       </>
     );
   };
@@ -503,7 +606,7 @@ export const FluentUIToolbar: React.FC<{
     const glyphToolItems = getGlyphToolItems(props.toolbarLabels);
     tooltipsItems = [...chartToolItems, ...glyphToolItems];
   } else {
-    tooltipsItems = [getToolItems(props.toolbarLabels)];
+    tooltipsItems = [getToolItems(props.toolbarLabels, innerWidth)];
   }
   return (
     <>
@@ -707,7 +810,7 @@ export class MultiObjectButton extends ContextedComponent<
     return (
       <DraggableElement
         dragData={() => {
-          if (currentTool?.onDrag){
+          if (currentTool?.onDrag) {
             return currentTool?.onDrag();
           }
           return new DragData.ObjectType(

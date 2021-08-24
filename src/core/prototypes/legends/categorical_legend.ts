@@ -67,7 +67,21 @@ export class CategoricalLegendClass extends LegendClass {
           }
         }
       }
-      return items;
+      if (this.object.properties.order) {
+        if (this.object.properties.order.length != items.length) {
+          return items;
+        } else {
+          return this.object.properties.order.map((orderItem) => {
+            return {
+              type: "color",
+              label: orderItem,
+              value: mapping[orderItem],
+            };
+          });
+        }
+      } else {
+        return items;
+      }
     } else {
       return [];
     }

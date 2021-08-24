@@ -4,6 +4,8 @@ import {
   GroupedList,
   GroupHeader,
   IGroupHeaderProps,
+  IRenderFunction,
+  Label,
   SelectionMode,
 } from "@fluentui/react";
 import * as React from "react";
@@ -14,7 +16,7 @@ import {
 } from "./fluentui_customized_components";
 
 export const CollapsiblePanel: React.FunctionComponent<{
-  header: string;
+  header: string | IRenderFunction<IGroupHeaderProps>;
   widgets: JSX.Element[];
   isCollapsed?: boolean;
 }> = ({ header, widgets, isCollapsed }) => {
@@ -34,6 +36,15 @@ export const CollapsiblePanel: React.FunctionComponent<{
                 onToggleCollapse={(group) => {
                   setIsCollapsed(!group.isCollapsed);
                 }}
+                onGroupHeaderClick={(group) => {
+                  props.onToggleCollapse(group);
+                  setIsCollapsed(group.isCollapsed);
+                }}
+                onRenderTitle={
+                  typeof header === "string"
+                    ? () => <Label>{header}</Label>
+                    : header
+                }
               />
             );
           },
@@ -64,7 +75,7 @@ export const CollapsiblePanel: React.FunctionComponent<{
             count: widgets.length,
             key: "group",
             level: 0,
-            name: header,
+            name: typeof header === "string" ? header : "",
             startIndex: 0,
             isCollapsed: groupState,
           },
