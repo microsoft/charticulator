@@ -33,7 +33,7 @@ import { Controls, strokeStyleToDashArray } from "../common";
 import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
-import { NumericalMode } from "../../specification/types";
+import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -70,6 +70,7 @@ export class AxisRenderer {
   public rangeMax: number = 1;
   public valueToPosition: (value: any) => number;
   public oppositeSide: boolean = false;
+  private axisDataBindingType: AxisDataBindingType = null;
 
   private static textMeasurer = new TextMeasurer();
 
@@ -96,6 +97,7 @@ export class AxisRenderer {
     if (!data) {
       return this;
     }
+    this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     switch (data.type) {
@@ -343,6 +345,11 @@ export class AxisRenderer {
     if (style.gridlineStyle === "none") {
       return;
     }
+
+    if (this.axisDataBindingType === AxisDataBindingType.Categorical) {
+      return;
+    }
+
     const g = makeGroup([]);
     const cos = Math.cos(Geometry.degreesToRadians(angle));
     const sin = Math.sin(Geometry.degreesToRadians(angle));
