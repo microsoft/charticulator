@@ -14,7 +14,7 @@ import {
 } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
-import { NumericalMode } from "../../specification/types";
+import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
 import { PanelMode } from "../controls";
 
@@ -99,6 +99,21 @@ export abstract class PlotSegmentClass<
     if (!data) {
       return [];
     }
+
+    if (data.type === AxisDataBindingType.Categorical) {
+      return [];
+    }
+
+    return PlotSegmentClass.getGridLineAttributePanelWidgets(
+      manager,
+      axisProperty
+    );
+  }
+
+  public static getGridLineAttributePanelWidgets(
+    manager: Controls.WidgetManager,
+    axisProperty: string
+  ) {
     return [
       manager.verticalGroup(
         {
