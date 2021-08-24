@@ -4,7 +4,7 @@
 import { Dataset, Specification, uniqueID } from "../../core";
 import {
   GridDirection,
-  GridFlipDirection,
+  GridStartPosition,
   Region2DSublayoutType,
   SublayoutAlignment,
 } from "../../core/prototypes/plot_segments/region_2d/base";
@@ -88,8 +88,7 @@ export function createDefaultPlotSegment(
           direction: GridDirection.X,
           xCount: null,
           yCount: null,
-          flipDirection: GridFlipDirection.Direct,
-          reverseGlyphsOrder: false,
+          gridStartPosition: GridStartPosition.LeftTop,
         },
         packing: {
           gravityX: 0.1,

@@ -41,9 +41,11 @@ export enum GridDirection {
   Y = "y",
 }
 
-export enum GridFlipDirection {
-  Direct = "direct",
-  Flip = "flip",
+export enum GridStartPosition {
+  LeftTop = "LT",
+  RightTop = "RT",
+  LeftBottom = "LB",
+  RigtBottom = "RB",
 }
 
 export interface Region2DSublayoutOptions extends Specification.AttributeMap {
@@ -66,10 +68,8 @@ export interface Region2DSublayoutOptions extends Specification.AttributeMap {
     xCount?: number;
     /** Number of glyphs in Y direction (direction == "x") */
     yCount?: number;
-    /** Flip start side of grid horizontally */
-    flipDirection: GridFlipDirection;
-    /** Reverse glyph orders */
-    reverseGlyphsOrder: boolean;
+    /** Position of the first glyph in grid */
+    gridStartPosition: GridStartPosition;
   };
 
   /** Order in sublayout objects */
@@ -1640,8 +1640,8 @@ export class Region2DConstraintBuilder {
     const gapRatioX = xCount > 1 ? props.sublayout.ratioX / (xCount - 1) : 0;
     const gapRatioY = yCount > 1 ? props.sublayout.ratioY / (yCount - 1) : 0;
 
-    const flipDirection: GridFlipDirection = props.sublayout.grid.flipDirection;
-    const reverseGlyphsOrder: boolean = props.sublayout.grid.reverseGlyphsOrder;
+    const gridStartPosition: GridStartPosition =
+      props.sublayout.grid.gridStartPosition;
 
     groups.forEach((group) => {
       const markStates = group.group.map((index) => state.glyphs[index]);
@@ -1677,8 +1677,7 @@ export class Region2DConstraintBuilder {
         xMaxFitter,
         yMinFitter,
         yMaxFitter,
-        flipDirection,
-        reverseGlyphsOrder
+        gridStartPosition
       );
     });
     xMinFitter.addConstraint(ConstraintStrength.MEDIUM);
@@ -1708,10 +1707,12 @@ export class Region2DConstraintBuilder {
     xMaxFitter: CrossFitter,
     yMinFitter: CrossFitter,
     yMaxFitter: CrossFitter,
-    flipDirection: GridFlipDirection,
-    reverseGlyphsOrder: boolean
+    gridStartPosition: GridStartPosition
   ) {
-    if (reverseGlyphsOrder) {
+    if (
+      gridStartPosition === GridStartPosition.LeftBottom ||
+      gridStartPosition === GridStartPosition.RigtBottom
+    ) {
       markStates = markStates.reverse();
     }
     for (let i = 0; i < markStates.length; i++) {
@@ -1725,7 +1726,10 @@ export class Region2DConstraintBuilder {
           yi = yMax - 1 - Math.floor(i / xCount);
         }
 
-        if (flipDirection === GridFlipDirection.Direct) {
+        if (
+          gridStartPosition === GridStartPosition.RightTop ||
+          gridStartPosition === GridStartPosition.RigtBottom
+        ) {
           xi = xCount - 1 - xi; // flip X
         }
       } else {
@@ -1735,7 +1739,10 @@ export class Region2DConstraintBuilder {
           yi = (markStates.length - 1 - i) % yCount;
           xi = xMax - 1 - Math.floor((markStates.length - 1 - i) / yCount);
         }
-        if (flipDirection === GridFlipDirection.Direct) {
+        if (
+          gridStartPosition === GridStartPosition.LeftTop ||
+          gridStartPosition === GridStartPosition.LeftBottom
+        ) {
           yi = yCount - 1 - yi; // flip Y
         }
       }
@@ -2579,50 +2586,32 @@ export class Region2DConstraintBuilder {
                 }
               )
             ),
-            m.vertical(
-              m.label(strings.objects.plotSegment.reverseGlyphs),
-              m.inputBoolean(
-                {
-                  property: "sublayout",
-                  field: ["grid", "reverseGlyphsOrder"],
-                },
-                {
-                  type: "highlight",
-                  icon: "Sort",
-                  headerLabel: strings.objects.plotSegment.reverseGlyphs,
-                  label: strings.objects.plotSegment.reverseGlyphs,
-                  observerConfig: {
-                    isObserver: true,
-                    properties: {
-                      property: "sublayout",
-                      field: ["grid", "flipDirection"],
-                    },
-                    value: props.sublayout.grid.reverseGlyphsOrder
-                      ? GridFlipDirection.Flip
-                      : GridFlipDirection.Direct,
-                  },
-                }
-              )
-            ),
             m.inputSelect(
               {
                 property: "sublayout",
-                field: ["grid", "flipDirection"],
+                field: ["grid", "gridStartPosition"],
               },
               {
                 type: "radio",
-                icons:
-                  props.sublayout.grid.direction == "x"
-                    ? ["ArrowRight12", "ArrowLeft12"]
-                    : ["ArrowDown12", "ArrowUp12"],
-                options: props.sublayout.grid.reverseGlyphsOrder
-                  ? [GridFlipDirection.Direct, GridFlipDirection.Flip]
-                  : [GridFlipDirection.Flip, GridFlipDirection.Direct],
+                icons: [
+                  "ArrowTallDownRight",
+                  "ArrowTallDownLeft",
+                  "ArrowTallUpLeft",
+                  "ArrowTallUpRight",
+                ],
+                options: [
+                  GridStartPosition.LeftTop,
+                  GridStartPosition.RightTop,
+                  GridStartPosition.LeftBottom,
+                  GridStartPosition.RigtBottom,
+                ],
+                labels: [
+                  strings.objects.plotSegment.directionDownRight,
+                  strings.objects.plotSegment.directionDownLeft,
+                  strings.objects.plotSegment.directionUpLeft,
+                  strings.objects.plotSegment.directionUpRight,
+                ],
                 label: strings.objects.plotSegment.direction,
-                labels:
-                  props.sublayout.grid.direction == "x"
-                    ? ["Left to right", "Right to left"]
-                    : ["Top to bottom", "Bottom to top"],
               }
             )
           ),
@@ -2823,6 +2812,7 @@ export class Region2DConstraintBuilder {
           );
         }
         if (type == "grid") {
+          extra.push(m.sep());
           extra.push(
             m.inputSelect(
               { property: "sublayout", field: ["grid", "direction"] },
@@ -2846,19 +2836,28 @@ export class Region2DConstraintBuilder {
             m.inputSelect(
               {
                 property: "sublayout",
-                field: ["grid", "flipDirection"],
+                field: ["grid", "gridStartPosition"],
               },
               {
                 type: "dropdown",
-                icons:
-                  props.sublayout.grid.direction == "x"
-                    ? ["ArrowRight12", "ArrowLeft12"]
-                    : ["ArrowDown12", "ArrowUp12"],
-                options: [GridFlipDirection.Direct, GridFlipDirection.Flip],
-                labels:
-                  props.sublayout.grid.direction == "x"
-                    ? ["Left to right", "Right to left"]
-                    : ["Top to bottom", "Bottom to top"],
+                icons: [
+                  "ArrowTallDownRight",
+                  "ArrowTallDownLeft",
+                  "ArrowTallUpLeft",
+                  "ArrowTallUpRight",
+                ],
+                options: [
+                  GridStartPosition.LeftTop,
+                  GridStartPosition.RightTop,
+                  GridStartPosition.LeftBottom,
+                  GridStartPosition.RigtBottom,
+                ],
+                labels: [
+                  strings.objects.plotSegment.directionDownRight,
+                  strings.objects.plotSegment.directionDownLeft,
+                  strings.objects.plotSegment.directionUpLeft,
+                  strings.objects.plotSegment.directionUpRight,
+                ],
                 hideBorder: true,
               }
             )

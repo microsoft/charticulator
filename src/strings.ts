@@ -424,6 +424,10 @@ export const strings = {
       flipGrid: "Flip grid",
       orientation: "Orientation",
       direction: "Direction",
+      directionDownRight: "Down Right",
+      directionDownLeft: "Down Left",
+      directionUpLeft: "Up Left",
+      directionUpRight: "Up Right",
     },
     visibleOn: {
       visibility: "Visibility",
