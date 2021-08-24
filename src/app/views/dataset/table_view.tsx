@@ -9,7 +9,6 @@
 
 import * as React from "react";
 import { Dataset } from "../../../core";
-import { Select } from "../panels/widgets/controls";
 import { getConvertableTypes } from "../../utils";
 import { Dropdown } from "@fluentui/react";
 
