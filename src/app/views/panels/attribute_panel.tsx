@@ -18,7 +18,6 @@ import {
   MarkSelection,
 } from "../../stores";
 import { FluentUIWidgetManager } from "./widgets/fluentui_manager";
-import { WidgetManager } from "./widgets/manager";
 import { strings } from "../../../strings";
 
 function getObjectIcon(classID: string) {
