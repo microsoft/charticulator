@@ -12,6 +12,7 @@ import { classNames } from "../utils";
 import { Point } from "../../core";
 
 import * as Hammer from "hammerjs";
+import { CSSProperties } from "react";
 
 export interface DraggableElementProps {
   className?: string;
@@ -20,6 +21,7 @@ export interface DraggableElementProps {
   onDragEnd?: () => void;
   dragData: () => any;
   renderDragElement?: () => [JSX.Element, Point];
+  styles?: CSSProperties;
 }
 
 export interface DraggableElementState {
@@ -82,7 +84,7 @@ export class DraggableElement extends React.Component<
           "dragging",
           this.state.dragging,
         ])}
-        style={{ display: "inline-block", cursor: "pointer" }}
+        style={{ display: "inline-block", cursor: "pointer", ...this.props.styles }}
       >
         {this.props.children}
       </span>

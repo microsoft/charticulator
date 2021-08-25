@@ -27,6 +27,7 @@ import { strings } from "../strings";
 import { FluentUIToolbar } from "./views/fluentui_tool_bar";
 import { MainReactContext } from "./context_component";
 import { EditorPanels } from "./editor_panels";
+import { FluentUIToolbarV2 } from "./views/fluentui_tool_bar_v2";
 
 export enum UndoRedoLocation {
   MenuBar = "menubar",
@@ -123,14 +124,23 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       toolbarLabels: boolean;
     }) => {
       return (
-        <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
-          {/* <Toolbar toolbarLabels={config.toolbarLabels} undoRedoLocation={config.undoRedoLocation} layout={config.layout} /> */}
-          <FluentUIToolbar
-            toolbarLabels={config.toolbarLabels}
-            undoRedoLocation={config.undoRedoLocation}
-            layout={config.layout}
-          />
-        </div>
+        <>
+          <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
+            {/* <Toolbar toolbarLabels={config.toolbarLabels} undoRedoLocation={config.undoRedoLocation} layout={config.layout} /> */}
+            <FluentUIToolbar
+              toolbarLabels={config.toolbarLabels}
+              undoRedoLocation={config.undoRedoLocation}
+              layout={config.layout}
+            />
+          </div>
+          <div className={`charticulator__panel-editor-toolbar-${config.layout}`}>
+            <FluentUIToolbarV2
+              toolbarLabels={config.toolbarLabels}
+              undoRedoLocation={config.undoRedoLocation}
+              layout={config.layout}
+            />
+          </div>
+        </>
       );
     };
 
