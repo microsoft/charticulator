@@ -17,7 +17,6 @@ import { utcFormat } from "d3-time-format";
 import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
 import { PanelMode } from "../controls";
-import { NumericalMode } from "../../specification/types";
 import { ReactElement } from "react";
 
 export abstract class PlotSegmentClass<
