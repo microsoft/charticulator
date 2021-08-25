@@ -14,6 +14,7 @@ import {
   Geometry,
   getFormat,
   tickFormatParserExpression,
+  ZoomInfo,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -971,14 +972,23 @@ export class AxisRenderer {
     y: number,
     axis: AxisMode,
     scrollPosition: number,
-    onScroll: (position: number) => void
+    onScroll: (position: number) => void,
+    zoom: ZoomInfo
   ) {
     switch (axis) {
       case AxisMode.X: {
-        return this.renderScrollBar(x, y, 0, 1, scrollPosition, onScroll);
+        return this.renderScrollBar(x, y, 0, 1, scrollPosition, onScroll, zoom);
       }
       case AxisMode.Y: {
-        return this.renderScrollBar(x, y, 90, -1, scrollPosition, onScroll);
+        return this.renderScrollBar(
+          x,
+          y,
+          90,
+          -1,
+          scrollPosition,
+          onScroll,
+          zoom
+        );
       }
     }
   }
@@ -989,7 +999,8 @@ export class AxisRenderer {
     angle: number,
     side: number,
     handlePosition: number,
-    onScroll: (position: number) => void
+    onScroll: (position: number) => void,
+    zoom: ZoomInfo
   ): React.ReactElement<any> {
     if (!this.scrollRequired) {
       return null;
@@ -1041,6 +1052,7 @@ export class AxisRenderer {
       y: y1,
       initialPosition: handlePosition,
       vertical: angle === 90,
+      zoom,
     });
   }
 }

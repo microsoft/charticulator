@@ -347,7 +347,8 @@ export class ChartEditorView
         <g className="canvas-chart-controls">
           {renderer.renderControls(
             this.props.store.chart,
-            this.props.store.chartState
+            this.props.store.chartState,
+            this.state.zoom
           )}
         </g>
       </>

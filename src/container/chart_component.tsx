@@ -322,7 +322,12 @@ export class ChartComponent extends React.Component<
         {gfx}
         {this.renderer.renderControls(
           this.manager.chart,
-          this.manager.chartState
+          this.manager.chartState,
+          {
+            centerX: 0,
+            centerY: 0,
+            scale: 1,
+          }
         )}
         {this.state.working ? (
           <rect

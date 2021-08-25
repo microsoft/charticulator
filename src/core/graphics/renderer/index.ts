@@ -15,6 +15,7 @@ import {
   Point,
   transpose,
   zipArray,
+  ZoomInfo,
 } from "../../common";
 import * as Dataset from "../../dataset";
 import * as Prototypes from "../../prototypes";
@@ -237,7 +238,8 @@ export class ChartRenderer {
 
   public renderControls(
     chart: Specification.Chart,
-    chartState: Specification.ChartState
+    chartState: Specification.ChartState,
+    zoom: ZoomInfo
   ) {
     const elementsAndStates = zipArray(chart.elements, chartState.elements);
 
@@ -255,7 +257,8 @@ export class ChartRenderer {
           plotSegmentState
         );
         const plotSegmentBackgroundControlElements = plotSegmentClass.renderControls(
-          this.manager
+          this.manager,
+          zoom
         );
 
         controls = controls.concat(plotSegmentBackgroundControlElements);

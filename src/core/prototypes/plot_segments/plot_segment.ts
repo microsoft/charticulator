@@ -11,6 +11,7 @@ import {
   getSortFunctionByData,
   refineColumnName,
   tickFormatParserExpression,
+  ZoomInfo,
 } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
@@ -70,7 +71,10 @@ export abstract class PlotSegmentClass<
 
   // Renders interactable elements of plotsegment;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public renderControls(manager: ChartStateManager): ReactElement<any>[] {
+  public renderControls(
+    manager: ChartStateManager,
+    zoom: ZoomInfo
+  ): ReactElement<any>[] {
     return null;
   }
 

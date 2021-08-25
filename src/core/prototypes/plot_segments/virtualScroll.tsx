@@ -3,6 +3,7 @@
 // Licensed under the MIT license.
 
 import * as React from "react";
+import { ZoomInfo } from "../..";
 
 export interface VirtualScrollBarPropertes {
   initialPosition: number;
@@ -13,6 +14,7 @@ export interface VirtualScrollBarPropertes {
   height: number;
   handlerBarWidth: number;
   vertical: boolean;
+  zoom: ZoomInfo;
 }
 
 export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
@@ -24,6 +26,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
   width,
   x,
   y,
+  zoom,
 }) => {
   let trackSize = width;
 
@@ -87,14 +90,27 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       }
 
       const trackElement = track.current.getBoundingClientRect();
-      const deltaX = e.clientX - trackElement.left;
-      const deltaY = e.clientY - trackElement.top;
+      let deltaX = e.clientX - trackElement.left;
+      let deltaY = e.clientY - trackElement.top;
+
+      const handlerElement = handler.current.getBoundingClientRect();
+      const deltaXHandler = e.clientX - handlerElement.left;
+      const deltaYHandler = e.clientY - handlerElement.top;
+
+      if (deltaXHandler > 0 && deltaXHandler < handleSize * zoom.scale) {
+        deltaX = deltaX - deltaXHandler;
+      }
+      if (deltaYHandler > 0 && deltaYHandler < handleSize * zoom.scale) {
+        deltaY = deltaY - deltaYHandler;
+      }
 
       let newPosition = position;
       if (vertical) {
-        newPosition = 100 - (deltaY / height) * 100;
+        const trackSize = Math.abs(trackElement.bottom - trackElement.top);
+        newPosition = 100 - (deltaY / trackSize) * 100;
       } else {
-        newPosition = (deltaX / width) * 100;
+        const trackSize = Math.abs(trackElement.right - trackElement.left);
+        newPosition = 100 - (deltaX / trackSize) * 100;
       }
 
       if (newPosition > 100) {
@@ -107,7 +123,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
       setPosition(newPosition);
       onScroll(newPosition);
     },
-    [height, isActive, onScroll, position, vertical, width]
+    [handleSize, isActive, onScroll, position, vertical, zoom.scale]
   );
 
   return (

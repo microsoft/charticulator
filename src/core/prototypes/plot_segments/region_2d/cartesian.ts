@@ -35,7 +35,7 @@ import {
   SublayoutAlignment,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
-import { getSortDirection } from "../../..";
+import { getSortDirection, ZoomInfo } from "../../..";
 import { strings } from "../../../../strings";
 import {
   AxisDataBinding,
@@ -381,7 +381,10 @@ export class CartesianPlotSegment extends PlotSegmentClass<
     return g;
   }
 
-  public renderControls(manager: ChartStateManager): React.ReactElement<any>[] {
+  public renderControls(
+    manager: ChartStateManager,
+    zoom: ZoomInfo
+  ): React.ReactElement<any>[] {
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const g = [];
@@ -434,7 +437,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
-          }
+          },
+          zoom
         )
       );
     }
@@ -460,7 +464,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.Y,
           props.yData.scrollPosition ? props.yData.scrollPosition : 0,
           (position) => {
-            if (props.xData.type === AxisDataBindingType.Categorical) {
+            if (props.xData?.type === AxisDataBindingType.Categorical) {
               if (!props.yData.allCategories) {
                 return;
               }
@@ -491,7 +495,8 @@ export class CartesianPlotSegment extends PlotSegmentClass<
             }
             manager.remapPlotSegmentGlyphs(this.object);
             manager.solveConstraints();
-          }
+          },
+          zoom
         )
       );
     }

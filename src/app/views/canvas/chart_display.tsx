@@ -48,7 +48,12 @@ export class ChartDisplayView extends React.Component<
           <GraphicalElementDisplay element={graphics} />
           {renderer.renderControls(
             this.props.manager.chart,
-            this.props.manager.chartState
+            this.props.manager.chartState,
+            {
+              centerX: 0,
+              centerY: 0,
+              scale: 1,
+            }
           )}
         </g>
       </svg>
