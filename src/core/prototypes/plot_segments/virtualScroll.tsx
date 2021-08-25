@@ -71,13 +71,19 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
 
   let handlerWidth = 0;
   let handlerHeight = 0;
+  let buttonsWidth = 0;
+  let buttonsHeight = 0;
 
   if (vertical) {
     handlerHeight += handleSize;
     handlerWidth = handlerBarWidth;
+    buttonsHeight += handleSize / 3;
+    buttonsWidth = handlerBarWidth;
   } else {
     handlerWidth += handleSize;
     handlerHeight = handlerBarWidth;
+    buttonsHeight += handleSize / 3;
+    buttonsWidth = handlerBarWidth;
   }
 
   const track = React.useRef<SVGRectElement>(null);
@@ -110,7 +116,7 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         newPosition = 100 - (deltaY / trackSize) * 100;
       } else {
         const trackSize = Math.abs(trackElement.right - trackElement.left);
-        newPosition = 100 - (deltaX / trackSize) * 100;
+        newPosition = (deltaX / trackSize) * 100;
       }
 
       if (newPosition > 100) {
@@ -167,29 +173,81 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         />
         {/* pseudo interaction for mouse move */}
         {vertical ? (
-          <rect
-            className={"interaction-handler"}
-            x={Math.min(x, x + width) - height}
-            y={-Math.max(y, y + height) - height}
-            width={Math.abs(width) + width * 2}
-            height={Math.abs(height) + width * 2}
-            onMouseMove={onMouseMove}
-            onMouseOut={() => {
-              setActive(false);
-            }}
-          />
+          <>
+            {/* back */}
+            <rect
+              ref={handler}
+              x={Math.min(x, x + buttonsWidth)}
+              y={-Math.max(y, y + buttonsHeight)}
+              width={Math.abs(buttonsWidth)}
+              height={Math.abs(buttonsHeight)}
+              style={{
+                fill: "red",
+                opacity: 0.7,
+              }}
+            />
+            {/* forward */}
+            <rect
+              ref={handler}
+              x={Math.min(x, x + width)}
+              y={-Math.max(y, y + height)}
+              width={Math.abs(buttonsWidth)}
+              height={Math.abs(buttonsHeight)}
+              style={{
+                fill: "red",
+                opacity: 0.7,
+              }}
+            />
+            <rect
+              className={"interaction-handler"}
+              x={Math.min(x, x + width) - height}
+              y={-Math.max(y, y + height) - height}
+              width={Math.abs(width) + width * 2}
+              height={Math.abs(height) + width * 2}
+              onMouseMove={onMouseMove}
+              onMouseOut={() => {
+                setActive(false);
+              }}
+            />
+          </>
         ) : (
-          <rect
-            className={"interaction-handler"}
-            x={Math.min(x, x + width) - width}
-            y={-Math.max(y, y + height) - width}
-            width={Math.abs(width) + height * 2}
-            height={Math.abs(height) + height * 2}
-            onMouseMove={onMouseMove}
-            onMouseOut={() => {
-              setActive(false);
-            }}
-          />
+          <>
+            {/* back */}
+            <rect
+              ref={handler}
+              x={Math.min(x, x + width)}
+              y={-Math.max(y, y + height)}
+              width={Math.abs(buttonsWidth)}
+              height={Math.abs(height)}
+              style={{
+                fill: "green",
+                opacity: 0.7,
+              }}
+            />
+            {/* forward */}
+            <rect
+              ref={handler}
+              x={Math.max(x, x + width) - buttonsWidth}
+              y={-Math.max(y, y + height)}
+              width={Math.abs(buttonsWidth)}
+              height={Math.abs(height)}
+              style={{
+                fill: "green",
+                opacity: 0.7,
+              }}
+            />
+            <rect
+              className={"interaction-handler"}
+              x={Math.min(x, x + width) - width}
+              y={-Math.max(y, y + height) - width}
+              width={Math.abs(width) + height * 2}
+              height={Math.abs(height) + height * 2}
+              onMouseMove={onMouseMove}
+              onMouseOut={() => {
+                setActive(false);
+              }}
+            />
+          </>
         )}
       </g>
     </>
