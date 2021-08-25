@@ -1275,20 +1275,24 @@ export function buildAxisWidgets(
                     label: "Data",
                   }
                 ),
-                data.valueType === "date" ? manager.label("Range") : null,
+                data.valueType === "date"
+                  ? manager.label(strings.objects.dataAxis.range)
+                  : null,
                 data.valueType === "date"
                   ? manager.inputDate(
                       { property: axisProperty, field: "domainMin" },
-                      { label: "Start" }
+                      { label: strings.objects.dataAxis.start }
                     )
                   : null,
                 data.valueType === "date"
                   ? manager.inputDate(
                       { property: axisProperty, field: "domainMax" },
-                      { label: "End" }
+                      { label: strings.objects.dataAxis.end }
                     )
                   : null,
-                data.valueType !== "date" ? manager.label("Range") : null,
+                data.valueType !== "date"
+                  ? manager.label(strings.objects.dataAxis.range)
+                  : null,
                 data.valueType !== "date"
                   ? manager.inputNumber(
                       { property: axisProperty, field: "domainMin" },
@@ -1340,7 +1344,7 @@ export function buildAxisWidgets(
                     field: "tickDataExpression",
                   },
                   {
-                    label: "Tick Data",
+                    label: strings.objects.axes.tickData,
                   }
                 ),
                 manager.inputFormat(
@@ -1425,7 +1429,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + ": Categorical",
+                header: axisName + strings.objects.axes.categoricalSuffix,
               },
               [
                 manager.sectionHeader(
@@ -1463,11 +1467,11 @@ export function buildAxisWidgets(
                           field: "tickDataExpression",
                         },
                         {
-                          label: "Tick Data",
+                          label: strings.objects.axes.tickData,
                         }
                       ),
                       manager.row(
-                        "Tick Format",
+                        strings.objects.axes.tickFormat,
                         manager.inputFormat(
                           {
                             property: axisProperty,
@@ -1520,11 +1524,11 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + ": Stacking",
+                header: axisName + strings.objects.axes.stackingSuffix,
               },
               [
                 manager.sectionHeader(
-                  axisName + ": Stacking",
+                  axisName + strings.objects.axes.stackingSuffix,
                   manager.clearButton({ property: axisProperty }, null, true),
                   dropzoneOptions
                 ),

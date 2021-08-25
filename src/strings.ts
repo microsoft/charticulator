@@ -392,7 +392,9 @@ export const strings = {
     axes: {
       numericalSuffix: ": Numerical",
       categoricalSuffix: ": Categorical",
+      stackingSuffix: ": Stacking",
       tickFormat: "Tick Format",
+      tickData: "Tick Data",
       from: "from",
       to: "to",
       gap: "Gap",
