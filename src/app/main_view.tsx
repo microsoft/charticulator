@@ -26,6 +26,7 @@ import { ScalesPanel } from "./views/panels/scales_panel";
 import { strings } from "../strings";
 import { FluentUIToolbar } from "./views/fluentui_tool_bar";
 import { MainReactContext } from "./context_component";
+import { EditorPanels } from "./editor_panels";
 
 export enum UndoRedoLocation {
   MenuBar = "menubar",
@@ -102,8 +103,6 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
       attributeViewMaximized: false,
       scaleViewMaximized: false,
     };
-
-    props.store.addListener(AppStore.EVENT_GRAPHICS, () => this.forceUpdate());
   }
 
   public static childContextTypes = {
@@ -166,56 +165,12 @@ export class MainView extends React.Component<MainViewProps, MainViewState> {
 
     const editorPanels = () => {
       return (
-        <div
-          className="charticulator__panel-editor-panel charticulator__panel-editor-panel-panes"
-          style={{
-            display:
-              this.state.glyphViewMaximized &&
-              this.state.attributeViewMaximized &&
-              this.state.layersViewMaximized
-                ? "none"
-                : undefined,
-          }}
-        >
-          <MinimizablePanelView>
-            {this.state.glyphViewMaximized ? null : (
-              <MinimizablePane
-                title={strings.mainView.glyphPaneltitle}
-                scroll={false}
-                onMaximize={() => this.setState({ glyphViewMaximized: true })}
-              >
-                <ErrorBoundary telemetryRecorder={this.props.telemetry}>
-                  <MarkEditorView height={300} />
-                </ErrorBoundary>
-              </MinimizablePane>
-            )}
-            {this.state.layersViewMaximized ? null : (
-              <MinimizablePane
-                title={strings.mainView.layersPanelTitle}
-                scroll={true}
-                maxHeight={200}
-                onMaximize={() => this.setState({ layersViewMaximized: true })}
-              >
-                <ErrorBoundary telemetryRecorder={this.props.telemetry}>
-                  <ObjectListEditor />
-                </ErrorBoundary>
-              </MinimizablePane>
-            )}
-            {this.state.attributeViewMaximized ? null : (
-              <MinimizablePane
-                title={strings.mainView.attributesPaneltitle}
-                scroll={true}
-                onMaximize={() =>
-                  this.setState({ attributeViewMaximized: true })
-                }
-              >
-                <ErrorBoundary telemetryRecorder={this.props.telemetry}>
-                  <AttributePanel store={this.props.store} />
-                </ErrorBoundary>
-              </MinimizablePane>
-            )}
-          </MinimizablePanelView>
-        </div>
+        <EditorPanels
+          state={this.state}
+          setState={this.setState}
+          telemetry={this.props.telemetry}
+          store={this.props.store}
+        />
       );
     };
 
