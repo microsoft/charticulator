@@ -1046,9 +1046,9 @@ export class ChartEditorView
                   </>
                 );
               }
-            )}
-        </div>
-      </>
+            }
+          )}
+      </div>
     );
   }
 

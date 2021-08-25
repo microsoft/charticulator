@@ -1356,7 +1356,8 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
-                m.inputBoolean(
+                manager.label(strings.objects.dataAxis.scrolling),
+                manager.inputBoolean(
                   {
                     property: axisProperty,
                     field: "allowScrolling",
@@ -1366,27 +1367,29 @@ export function buildAxisWidgets(
                     label: strings.objects.dataAxis.allowScrolling,
                   }
                 ),
-                data.allowScrolling ? (
-                  m.row(
-                    strings.objects.dataAxis.windowSize,
-                    m.inputNumber(
-                      {
-                        property: axisProperty,
-                        field: "windowSize",
-                      },
-                      {
-                        maximum: 1000000,
-                        minimum: 1,
-                      }
+                data.allowScrolling
+                  ? manager.row(
+                      strings.objects.dataAxis.windowSize,
+                      manager.inputNumber(
+                        {
+                          property: axisProperty,
+                          field: "windowSize",
+                        },
+                        {
+                          maximum: 1000000,
+                          minimum: 1,
+                        }
+                      )
                     )
-                  )
-                ) : null
+                  : null,
               ]
             )
           );
-          widgets.push(m.sectionHeader(strings.objects.dataAxis.scrolling));
           widgets.push(
-            m.inputBoolean(
+            manager.sectionHeader(strings.objects.dataAxis.scrolling)
+          );
+          widgets.push(
+            manager.inputBoolean(
               {
                 property: axisProperty,
                 field: "allowScrolling",
@@ -1399,9 +1402,9 @@ export function buildAxisWidgets(
           );
           if (data.allowScrolling) {
             widgets.push(
-              m.row(
+              manager.row(
                 strings.objects.dataAxis.windowSize,
-                m.inputNumber(
+                manager.inputNumber(
                   {
                     property: axisProperty,
                     field: "windowSize",
@@ -1478,6 +1481,32 @@ export function buildAxisWidgets(
                           }
                         )
                       ))
+                    : null,
+                  manager.label(strings.objects.dataAxis.scrolling),
+                  manager.inputBoolean(
+                    {
+                      property: axisProperty,
+                      field: "allowScrolling",
+                    },
+                    {
+                      type: "checkbox",
+                      label: strings.objects.dataAxis.allowScrolling,
+                    }
+                  ),
+                  data.allowScrolling
+                    ? manager.row(
+                        strings.objects.dataAxis.windowSize,
+                        manager.inputNumber(
+                          {
+                            property: axisProperty,
+                            field: "windowSize",
+                          },
+                          {
+                            maximum: 1000000,
+                            minimum: 1,
+                          }
+                        )
+                      )
                     : null
                 ),
               ]
