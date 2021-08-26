@@ -147,10 +147,10 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/* track */}
         <rect
           ref={track}
-          x={Math.min(x, x + width)}
-          y={-Math.max(y, y + height)}
-          width={Math.abs(width)}
-          height={Math.abs(height)}
+          x={Math.min(x, x + width) + (vertical ? 0 : buttonsWidth)}
+          y={-Math.max(y, y + height) + (vertical ? buttonsHeight : 0)}
+          width={Math.abs(width) - (vertical ? 0 : buttonsWidth * 2)}
+          height={Math.abs(height) - (vertical ? buttonsHeight * 2 : 0)}
           onMouseUp={() => {
             setActive(false);
           }}
