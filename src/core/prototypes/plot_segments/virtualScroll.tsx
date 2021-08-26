@@ -132,6 +132,15 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
     [handleSize, isActive, onScroll, position, vertical, zoom.scale]
   );
 
+  const onClick = React.useCallback(
+    (sign: number) => {
+      const newPosition = position + sign * 5;
+      setPosition(newPosition);
+      onScroll(newPosition);
+    },
+    [onScroll, position]
+  );
+
   return (
     <>
       <g className={"controls"}>
@@ -142,12 +151,12 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
           y={-Math.max(y, y + height)}
           width={Math.abs(width)}
           height={Math.abs(height)}
-          style={{
-            fill: "black",
-            opacity: 0.3,
-          }}
           onMouseUp={() => {
             setActive(false);
+          }}
+          style={{
+            fill: "#e1e1e1",
+            opacity: 1,
           }}
           onMouseMove={onMouseMove}
         />
@@ -161,8 +170,8 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
           width={Math.abs(handlerWidth)}
           height={Math.abs(handlerHeight)}
           style={{
-            fill: "black",
-            opacity: 0.7,
+            fill: "#b3b0ad",
+            opacity: 1,
           }}
           onMouseDown={() => {
             setActive(true);
@@ -174,30 +183,53 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
         {/* pseudo interaction for mouse move */}
         {vertical ? (
           <>
-            {/* back */}
-            <rect
-              ref={handler}
-              x={Math.min(x, x + buttonsWidth)}
-              y={-Math.max(y, y + buttonsHeight)}
-              width={Math.abs(buttonsWidth)}
-              height={Math.abs(buttonsHeight)}
-              style={{
-                fill: "red",
-                opacity: 0.7,
-              }}
-            />
-            {/* forward */}
-            <rect
-              ref={handler}
-              x={Math.min(x, x + width)}
-              y={-Math.max(y, y + height)}
-              width={Math.abs(buttonsWidth)}
-              height={Math.abs(buttonsHeight)}
-              style={{
-                fill: "red",
-                opacity: 0.7,
-              }}
-            />
+            {/* down */}
+            <g>
+              <rect
+                ref={handler}
+                x={Math.min(x, x + buttonsWidth)}
+                y={-Math.max(y, y + buttonsHeight)}
+                width={Math.abs(buttonsWidth)}
+                height={Math.abs(buttonsHeight)}
+                style={{
+                  fill: "#b3b0ad",
+                }}
+                onClick={() => {
+                  onClick(-1);
+                }}
+              />
+              <path
+                transform={`translate(${
+                  Math.min(x, x + buttonsWidth) + buttonsWidth
+                }, ${
+                  -Math.max(y, y + buttonsHeight) + buttonsWidth
+                }) scale(0.005) rotate(180)`}
+                d="M1955 1533l-931-930-931 930-90-90L1024 421l1021 1022-90 90z"
+              />
+            </g>
+            {/* up */}
+            <g>
+              <rect
+                ref={handler}
+                x={Math.min(x, x + width)}
+                y={-Math.max(y, y + height)}
+                width={Math.abs(buttonsWidth)}
+                height={Math.abs(buttonsHeight)}
+                style={{
+                  fill: "#b3b0ad",
+                }}
+                onClick={() => {
+                  onClick(1);
+                }}
+              />
+              <path
+                transform={`translate(${Math.min(x, x + width)}, ${-Math.max(
+                  y,
+                  y + height
+                )}) scale(0.005)`}
+                d="M1955 1533l-931-930-931 930-90-90L1024 421l1021 1022-90 90z"
+              />
+            </g>
             <rect
               className={"interaction-handler"}
               x={Math.min(x, x + width) - height}
@@ -212,30 +244,51 @@ export const VirtualScrollBar: React.FC<VirtualScrollBarPropertes> = ({
           </>
         ) : (
           <>
-            {/* back */}
-            <rect
-              ref={handler}
-              x={Math.min(x, x + width)}
-              y={-Math.max(y, y + height)}
-              width={Math.abs(buttonsWidth)}
-              height={Math.abs(height)}
-              style={{
-                fill: "green",
-                opacity: 0.7,
-              }}
-            />
-            {/* forward */}
-            <rect
-              ref={handler}
-              x={Math.max(x, x + width) - buttonsWidth}
-              y={-Math.max(y, y + height)}
-              width={Math.abs(buttonsWidth)}
-              height={Math.abs(height)}
-              style={{
-                fill: "green",
-                opacity: 0.7,
-              }}
-            />
+            {/* left */}
+            <g>
+              <rect
+                ref={handler}
+                x={Math.min(x, x + width)}
+                y={-Math.max(y, y + height)}
+                width={Math.abs(buttonsWidth)}
+                height={Math.abs(height)}
+                style={{
+                  fill: "#b3b0ad",
+                }}
+                onClick={() => {
+                  onClick(-1);
+                }}
+              />
+              <path
+                transform={`translate(${Math.min(x, x + width)}, ${
+                  -Math.max(y, y + height) + buttonsWidth
+                }) scale(0.005) rotate(-90)`}
+                d="M1955 1533l-931-930-931 930-90-90L1024 421l1021 1022-90 90z"
+              />
+            </g>
+            {/* right */}
+            <g>
+              <rect
+                ref={handler}
+                x={Math.max(x, x + width) - buttonsWidth}
+                y={-Math.max(y, y + height)}
+                width={Math.abs(buttonsWidth)}
+                height={Math.abs(height)}
+                style={{
+                  fill: "#b3b0ad",
+                }}
+                onClick={() => {
+                  onClick(1);
+                }}
+              />
+              <path
+                transform={`translate(${Math.max(x, x + width)}, ${-Math.max(
+                  y,
+                  y + height
+                )}) scale(0.005) rotate(90)`}
+                d="M1955 1533l-931-930-931 930-90-90L1024 421l1021 1022-90 90z"
+              />
+            </g>
             <rect
               className={"interaction-handler"}
               x={Math.min(x, x + width) - width}

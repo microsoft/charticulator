@@ -23,6 +23,7 @@ export function getSVGIcon(path: string): string {
   }
 }
 
+addSVGIcon("ChevronUp", require("resources/icons/icons_chevron_up.svg"));
 addSVGIcon("ChevronDown", require("resources/icons/icons_chevron_down.svg"));
 addSVGIcon("ChevronRight", require("resources/icons/icons_chevron_right.svg"));
 addSVGIcon("ChevronLeft", require("resources/icons/icons_chevron_left.svg"));
