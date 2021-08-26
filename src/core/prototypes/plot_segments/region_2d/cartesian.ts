@@ -464,7 +464,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
           AxisMode.Y,
           props.yData.scrollPosition ? props.yData.scrollPosition : 0,
           (position) => {
-            if (props.xData?.type === AxisDataBindingType.Categorical) {
+            if (props.yData?.type === AxisDataBindingType.Categorical) {
               if (!props.yData.allCategories) {
                 return;
               }
