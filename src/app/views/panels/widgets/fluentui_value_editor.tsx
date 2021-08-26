@@ -22,7 +22,7 @@ import {
 } from "../../../../core";
 import { DataMappingHints } from "../../../../core/prototypes";
 import { InputNumberOptions } from "../../../../core/prototypes/controls";
-import { ColorPicker } from "../../../components";
+import { ColorPicker } from "../../../components/fluentui_color_picker";
 import { ContextedComponent } from "../../../context_component";
 import { FluentComboBoxFontFamily } from "./controls";
 import { FluentInputExpression } from "./controls/fluentui_input_expression";
@@ -171,6 +171,7 @@ export class FluentValueEditor extends ContextedComponent<
                 <ColorPicker
                   store={this.store}
                   allowNull={true}
+                  defaultValue={colorFromHTMLColor(hex)}
                   onPick={(color) => {
                     if (color == null) {
                       this.emitClearValue();

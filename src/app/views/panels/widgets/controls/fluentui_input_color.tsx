@@ -9,12 +9,9 @@ import {
   ColorGradient,
   colorToHTMLColorHEX,
 } from "../../../../../core";
-import {
-  ColorPicker,
-  GradientPicker,
-  GradientView,
-} from "../../../../components";
+import { GradientPicker, GradientView } from "../../../../components";
 import { PopupView } from "../../../../controllers/popup_controller";
+import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
@@ -137,6 +134,7 @@ export class FluentInputColor extends React.Component<
                 }
                 this.setState({ open: !this.state.open });
               }}
+              defaultValue={colorFromHTMLColor(hex)}
             />
           </Callout>
         )}
