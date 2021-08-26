@@ -6,7 +6,11 @@
 
 import * as React from "react";
 import { Color, getColorConverter } from "../../core";
-import { ColorPalette, predefinedPalettes } from "../resources";
+import {
+  ColorPalette,
+  addPowerBIThemeColors,
+  predefinedPalettes,
+} from "../resources";
 import { classNames } from "../utils";
 import { Button } from "../views/panels/widgets/controls";
 import { ColorSpaceDescription, ColorSpacePicker } from "./color_space_picker";
@@ -308,6 +312,7 @@ export class ColorPicker extends React.Component<
 > {
   constructor(props: ColorPickerProps) {
     super(props);
+    addPowerBIThemeColors();
     if (this.props.defaultValue) {
       const colorCSS = colorToCSS(this.props.defaultValue);
       let matchedPalette: ColorPalette = null;
