@@ -93,7 +93,7 @@ export class ColorPicker extends React.Component<
   }
 
   public render() {
-    const editorType = this.props.store.editorType;
+    const editorType = this.props?.store?.editorType ?? EditorType.Chart;
 
     const isWeb =
       editorType === EditorType.Chart || editorType === EditorType.Nested;

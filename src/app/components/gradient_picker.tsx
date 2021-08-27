@@ -3,20 +3,20 @@
 
 import * as React from "react";
 import {
+  Color,
   colorFromHTMLColor,
   ColorGradient,
   colorToHTMLColorHEX,
   deepClone,
   interpolateColors,
 } from "../../core";
-import { PopupView } from "../controllers";
-import * as globals from "../globals";
 import { ColorPalette, predefinedPalettes } from "../resources";
-import { ColorPicker, colorToCSS } from "./color_picker";
+import { ColorPicker, colorToCSS } from "./fluentui_color_picker";
 import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
 import { Select, Button } from "../views/panels/widgets/controls";
+import { Callout } from "@fluentui/react";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -26,6 +26,10 @@ export interface GradientPickerProps {
 export interface GradientPickerState {
   currentTab: string;
   currentGradient: ColorGradient;
+  isPickerOpen: boolean;
+  currentItemId: string;
+  currentColor: Color;
+  currentItemIdx: number;
 }
 
 export class GradientPicker extends React.Component<
@@ -48,6 +52,10 @@ export class GradientPicker extends React.Component<
           { r: 255, g: 255, b: 255 },
         ],
       },
+      isPickerOpen: false,
+      currentItemId: "",
+      currentColor: null,
+      currentItemIdx: null,
     };
   }
 
@@ -116,6 +124,40 @@ export class GradientPicker extends React.Component<
       </section>
     );
   }
+  private changeColorPickerState(id: string, color: Color, idx: number) {
+    this.setState({
+      ...this.state,
+      isPickerOpen: !this.state.isPickerOpen,
+      currentItemId: id,
+      currentColor: color,
+      currentItemIdx: idx,
+    });
+  }
+
+  private renderColorPicker(): JSX.Element {
+    return (
+      <>
+        {this.state.isPickerOpen && (
+          <Callout
+            target={`#${this.state.currentItemId}`}
+            onDismiss={() =>
+              this.changeColorPickerState(this.state.currentItemId, null, null)
+            }
+            alignTargetEdge
+          >
+            <ColorPicker
+              defaultValue={this.state.currentColor}
+              onPick={(color) => {
+                const newGradient = deepClone(this.state.currentGradient);
+                newGradient.colors[this.state.currentItemIdx] = color;
+                this.selectGradient(newGradient, true);
+              }}
+            />
+          </Callout>
+        )}
+      </>
+    );
+  }
 
   // eslint-disable-next-line
   public render() {
@@ -151,27 +193,11 @@ export class GradientPicker extends React.Component<
                   return (
                     <div className="color-row" key={`m${i}`}>
                       <span
+                        id={`color_${i}`}
                         className="color-item"
                         style={{ background: colorToCSS(color) }}
-                        onClick={(e) => {
-                          globals.popupController.popupAt(
-                            (context) => (
-                              <PopupView context={context}>
-                                <ColorPicker
-                                  defaultValue={color}
-                                  onPick={(color) => {
-                                    const newGradient = deepClone(
-                                      this.state.currentGradient
-                                    );
-                                    newGradient.colors[i] = color;
-                                    this.selectGradient(newGradient, true);
-                                  }}
-                                />
-                              </PopupView>
-                            ),
-                            { anchor: e.currentTarget }
-                          );
-                          return;
+                        onClick={() => {
+                          this.changeColorPickerState(`color_${i}`, color, i);
                         }}
                       />
                       <InputField
@@ -201,6 +227,7 @@ export class GradientPicker extends React.Component<
                     </div>
                   );
                 })}
+                {this.renderColorPicker()}
               </ReorderListView>
             </div>
             <div className="row">
