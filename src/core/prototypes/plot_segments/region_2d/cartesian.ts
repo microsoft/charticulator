@@ -42,6 +42,8 @@ import {
   AxisDataBindingType,
 } from "../../../specification/types";
 import { scaleLinear } from "d3-scale";
+import { FluentUIWidgetManager } from "../../../../app/views/panels/widgets/fluentui_manager";
+import { EventType } from "../../../../app/views/panels/widgets/observer";
 
 export type CartesianAxisMode =
   | "null"
@@ -249,6 +251,22 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const fluentUIManager = manager as FluentUIWidgetManager;
+    fluentUIManager.eventManager.subscribe(EventType.UPDATE_FIELD, {
+      update: (property: Controls.Property | Controls.Property[]) => {
+        if (
+          typeof property === "object" &&
+          ((property as Controls.Property).property === "xData" ||
+            (property as Controls.Property).property === "yData" ||
+            (property as Controls.Property).property === "axis") &&
+          (property as Controls.Property).field === "windowSize"
+        ) {
+          fluentUIManager.store.updatePlotSegments();
+          fluentUIManager.store.emit("graphics");
+        }
+      },
+    });
+
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),

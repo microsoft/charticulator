@@ -6,6 +6,7 @@ import { Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
 import { CSSProperties } from "react";
+import { CharticulatorPropertyAccessors } from "../../app/views/panels/widgets/manager";
 
 export type Widget = any;
 

@@ -114,9 +114,6 @@ export class AxisRenderer {
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
-    //&&
-    // data.allCategories &&
-    // data.allCategories.length > data.windowSize;
     switch (data.type) {
       case "numerical":
         {
