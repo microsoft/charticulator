@@ -1381,6 +1381,14 @@ export function buildAxisWidgets(
                   {
                     type: "checkbox",
                     label: strings.objects.dataAxis.allowScrolling,
+                    observerConfig: {
+                      isObserver: true,
+                      properties: {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      value: 10,
+                    },
                   }
                 ),
                 data.allowScrolling
@@ -1413,6 +1421,14 @@ export function buildAxisWidgets(
               {
                 type: "checkbox",
                 label: strings.objects.dataAxis.allowScrolling,
+                observerConfig: {
+                  isObserver: true,
+                  properties: {
+                    property: axisProperty,
+                    field: "windowSize",
+                  },
+                  value: 10,
+                },
               }
             )
           );
@@ -1507,6 +1523,14 @@ export function buildAxisWidgets(
                     {
                       type: "checkbox",
                       label: strings.objects.dataAxis.allowScrolling,
+                      observerConfig: {
+                        isObserver: true,
+                        properties: {
+                          property: axisProperty,
+                          field: "windowSize",
+                        },
+                        value: 10,
+                      },
                     }
                   ),
                   data.allowScrolling
