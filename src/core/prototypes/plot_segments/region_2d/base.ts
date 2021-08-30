@@ -13,6 +13,7 @@ import { BuildConstraintsContext, Controls } from "../../common";
 import { LabelPosition } from "../../controls";
 import { DataflowTable } from "../../dataflow";
 import {
+  AxisMode,
   buildAxisWidgets,
   getCategoricalAxis,
   getNumericalInterpolate,
@@ -98,7 +99,7 @@ export interface Region2DHandleDescription {
   type: "gap";
   gap?: {
     property: Controls.Property;
-    axis: "x" | "y";
+    axis: AxisMode;
     reference: number;
     value: number;
     span: [number, number];
@@ -419,7 +420,7 @@ export class Region2DConstraintBuilder {
   /**
    * Map elements according to numerical/categorical mapping
    */
-  public numericalMapping(axis: "x" | "y"): void {
+  public numericalMapping(axis: AxisMode): void {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const props = this.plotSegment.object.properties;
@@ -891,7 +892,7 @@ export class Region2DConstraintBuilder {
               property: PlotSegmentAxisPropertyNames.xData,
               field: "gapRatio",
             },
-            axis: "x",
+            axis: AxisMode.X,
             reference: p1 * (x2 - x1) + x1,
             value: data.gapRatio,
             scale: axis.gapScale * (x2 - x1),
@@ -912,7 +913,7 @@ export class Region2DConstraintBuilder {
               property: PlotSegmentAxisPropertyNames.yData,
               field: "gapRatio",
             },
-            axis: "y",
+            axis: AxisMode.Y,
             reference: p1 * (y2 - y1) + y1,
             value: data.gapRatio,
             scale: axis.gapScale * (y2 - y1),
@@ -924,7 +925,7 @@ export class Region2DConstraintBuilder {
     return handles;
   }
 
-  public stacking(axis: "x" | "y"): void {
+  public stacking(axis: AxisMode): void {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const attrs = state.attributes;
@@ -1203,9 +1204,15 @@ export class Region2DConstraintBuilder {
       const props = this.plotSegment.object.properties;
       if (context.mode == "x-only" || context.mode == "y-only") {
         if (props.sublayout.type == Region2DSublayoutType.Packing) {
-          this.sublayoutPacking(groups, context.mode == "x-only" ? "x" : "y");
+          this.sublayoutPacking(
+            groups,
+            context.mode == "x-only" ? AxisMode.X : AxisMode.Y
+          );
         } else if (props.sublayout.type == Region2DSublayoutType.Jitter) {
-          this.sublayoutJitter(groups, context.mode == "x-only" ? "x" : "y");
+          this.sublayoutJitter(
+            groups,
+            context.mode == "x-only" ? AxisMode.X : AxisMode.Y
+          );
         } else {
           this.fitGroups(groups, axis);
         }
@@ -1882,7 +1889,7 @@ export class Region2DConstraintBuilder {
           handles.push({
             type: "gap",
             gap: {
-              axis: "x",
+              axis: AxisMode.X,
               property: { property: "sublayout", field: "ratioX" },
               reference: p1,
               value: props.sublayout.ratioX,
@@ -1916,7 +1923,7 @@ export class Region2DConstraintBuilder {
           handles.push({
             type: "gap",
             gap: {
-              axis: "y",
+              axis: AxisMode.Y,
               property: { property: "sublayout", field: "ratioY" },
               reference: p1,
               value: props.sublayout.ratioY,
@@ -1935,7 +1942,7 @@ export class Region2DConstraintBuilder {
     return handles;
   }
 
-  public sublayoutPacking(groups: SublayoutGroup[], axisOnly?: "x" | "y") {
+  public sublayoutPacking(groups: SublayoutGroup[], axisOnly?: AxisMode) {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const packingProps = this.plotSegment.object.properties.sublayout.packing;
@@ -2013,7 +2020,7 @@ export class Region2DConstraintBuilder {
     });
   }
 
-  public sublayoutJitter(groups: SublayoutGroup[], axisOnly?: "x" | "y") {
+  public sublayoutJitter(groups: SublayoutGroup[], axisOnly?: AxisMode) {
     const solver = this.solver;
     const state = this.plotSegment.state;
     const jitterProps = this.plotSegment.object.properties.sublayout.jitter;
@@ -2205,13 +2212,13 @@ export class Region2DConstraintBuilder {
         break;
       case "default":
         {
-          this.stacking("y");
+          this.stacking(AxisMode.Y);
           this.categoricalMapping("x", { mode: "disabled" });
         }
         break;
       case "numerical":
         {
-          this.numericalMapping("y");
+          this.numericalMapping(AxisMode.Y);
           this.categoricalMapping("x", { mode: "x-only" });
         }
         break;
@@ -2233,7 +2240,7 @@ export class Region2DConstraintBuilder {
       case "null":
         {
           // numerical, null
-          this.numericalMapping("x");
+          this.numericalMapping(AxisMode.X);
           this.applySublayout(
             [
               {
@@ -2253,21 +2260,21 @@ export class Region2DConstraintBuilder {
         break;
       case "default":
         {
-          this.stacking("y");
-          this.numericalMapping("x");
+          this.stacking(AxisMode.Y);
+          this.numericalMapping(AxisMode.X);
         }
         break;
       case "numerical":
         {
           // numerical, numerical
-          this.numericalMapping("x");
-          this.numericalMapping("y");
+          this.numericalMapping(AxisMode.X);
+          this.numericalMapping(AxisMode.Y);
         }
         break;
       case "categorical":
         {
           // numerical, categorical
-          this.numericalMapping("x");
+          this.numericalMapping(AxisMode.X);
           this.categoricalMapping("y", { mode: "y-only" });
         }
         break;
@@ -2283,7 +2290,7 @@ export class Region2DConstraintBuilder {
     switch (yMode) {
       case "null":
         {
-          this.stacking("x");
+          this.stacking(AxisMode.X);
           this.applySublayout(
             [
               {
@@ -2303,19 +2310,19 @@ export class Region2DConstraintBuilder {
         break;
       case "default":
         {
-          this.stacking("x");
-          this.stacking("y");
+          this.stacking(AxisMode.X);
+          this.stacking(AxisMode.Y);
         }
         break;
       case "numerical":
         {
-          this.stacking("x");
-          this.numericalMapping("y");
+          this.stacking(AxisMode.X);
+          this.numericalMapping(AxisMode.Y);
         }
         break;
       case "categorical":
         {
-          this.stacking("x");
+          this.stacking(AxisMode.X);
           this.categoricalMapping("y", { mode: "disabled" });
         }
         break;
@@ -2353,7 +2360,7 @@ export class Region2DConstraintBuilder {
         break;
       case "default":
         {
-          this.stacking("y");
+          this.stacking(AxisMode.Y);
           this.applySublayout(
             [
               {
@@ -2374,7 +2381,7 @@ export class Region2DConstraintBuilder {
       case "numerical":
         {
           // null, numerical
-          this.numericalMapping("y");
+          this.numericalMapping(AxisMode.Y);
           this.applySublayout(
             [
               {
