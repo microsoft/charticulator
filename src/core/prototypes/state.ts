@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
@@ -859,36 +860,8 @@ export class ChartStateManager {
       }
     }
     let filteredIndices = table.rows.map((r, i) => i);
-    if (plotSegment.filter) {
-      const filter = new CompiledFilter(
-        plotSegment.filter,
-        this.dataflow.cache
-      );
-      filteredIndices = filteredIndices.filter((i) => {
-        return filter.filter(table.getRowContext(i));
-      });
-    }
-    if (plotSegment.groupBy) {
-      if (plotSegment.groupBy.expression) {
-        const expr = this.dataflow.cache.parse(plotSegment.groupBy.expression);
-        const groups = new Map<string, number[]>();
-        plotSegmentState.dataRowIndices = [];
-        for (const i of filteredIndices) {
-          const groupBy = expr.getStringValue(table.getRowContext(i));
-          if (groups.has(groupBy)) {
-            groups.get(groupBy).push(i);
-          } else {
-            const g = [i];
-            groups.set(groupBy, g);
-            plotSegmentState.dataRowIndices.push(g);
-          }
-        }
-      } else {
-        // TODO: emit error
-      }
-    } else {
-      plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
-    }
+
+    // scrolling filters
     if (plotSegment.properties.xData && plotSegment.properties.yData) {
       const dataX = plotSegment.properties.xData as AxisDataBinding;
       const filteredIndicesX = this.applyScrollingFilter(
@@ -920,6 +893,37 @@ export class ChartStateManager {
       filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
     }
     plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
+
+    if (plotSegment.filter) {
+      const filter = new CompiledFilter(
+        plotSegment.filter,
+        this.dataflow.cache
+      );
+      filteredIndices = filteredIndices.filter((i) => {
+        return filter.filter(table.getRowContext(i));
+      });
+    }
+    if (plotSegment.groupBy) {
+      if (plotSegment.groupBy.expression) {
+        const expr = this.dataflow.cache.parse(plotSegment.groupBy.expression);
+        const groups = new Map<string, number[]>();
+        plotSegmentState.dataRowIndices = [];
+        for (const i of filteredIndices) {
+          const groupBy = expr.getStringValue(table.getRowContext(i));
+          if (groups.has(groupBy)) {
+            groups.get(groupBy).push(i);
+          } else {
+            const g = [i];
+            groups.set(groupBy, g);
+            plotSegmentState.dataRowIndices.push(g);
+          }
+        }
+      } else {
+        // TODO: emit error
+      }
+    } else {
+      plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
+    }
     // Resolve filter
     plotSegmentState.glyphs = plotSegmentState.dataRowIndices.map(
       (rowIndex) => {
