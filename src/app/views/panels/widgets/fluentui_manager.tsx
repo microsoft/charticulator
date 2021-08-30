@@ -1705,7 +1705,19 @@ export class ReorderStringsValue extends React.Component<
             icon={"general/sort"}
             text="Sort"
             onClick={() => {
-              this.setState({ items: this.state.items.sort() });
+              this.setState({
+                items: this.state.items.sort((a, b) => {
+                  if (a < b) {
+                    return -1;
+                  }
+
+                  if (a > b) {
+                    return 1;
+                  }
+
+                  return 0;
+                }),
+              });
             }}
           />
           {this.props.allowReset && (
