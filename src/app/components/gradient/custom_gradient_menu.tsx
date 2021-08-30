@@ -12,7 +12,7 @@ import {
 } from "../../../core";
 import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
 import { Callout, DefaultButton, TextField } from "@fluentui/react";
-import { ColorCell, ColorRowWrapper, deleteColorStyles } from "./styles";
+import { ColorCell, ColorRowWrapper, colorTextInputStyles, deleteColorStyles } from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";
 
@@ -86,15 +86,7 @@ export class CustomGradientMenu extends React.Component<
                       }
                     }}
                     underlined
-                    styles={{
-                      root: {
-                        display: "inline-block",
-                        height: "unset",
-                      },
-                      fieldGroup: {
-                        height: "unset",
-                      },
-                    }}
+                    styles={colorTextInputStyles}
                   />
                   <DefaultButton
                     iconProps={{

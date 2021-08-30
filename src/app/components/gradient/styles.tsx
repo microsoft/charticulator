@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-import { IButtonStyles, IDropdownStyles, ILabelStyles } from "@fluentui/react";
+import { IButtonStyles, IDropdownStyles, ILabelStyles, ITextFieldStyles } from "@fluentui/react";
 import styled from "styled-components";
 
 export const defaultActionButtonsStyles: IButtonStyles = {
@@ -46,6 +46,18 @@ export const dropdownStyles: Partial<IDropdownStyles> = {
   caretDown: {
     lineHeight: 24,
     height: 24,
+  },
+};
+
+export const colorTextInputStyles: Partial<ITextFieldStyles> = {
+  root: {
+    display: "inline-block",
+    height: "unset",
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  fieldGroup: {
+    height: "unset",
   },
 };
 
