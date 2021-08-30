@@ -25,6 +25,7 @@
  * @preferred
  */
 
+import * as React from "react";
 import { Color, Geometry, Point } from "../common";
 import * as Specification from "../specification";
 import * as Dataset from "../dataset";
@@ -77,6 +78,14 @@ export interface Style {
   textAnchor?: "start" | "middle" | "end";
 }
 
+export interface Interactable {
+  onClick?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousedown?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMouseup?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousewheel?: (event: React.MouseEvent<globalThis.Element>) => void;
+  onMousemove?: (event: React.MouseEvent<globalThis.Element>) => void;
+}
+
 export interface Selectable {
   plotSegment: Specification.PlotSegment;
   glyphIndex: number;
@@ -90,6 +99,7 @@ export interface Element {
   type: string;
   style?: Style;
   selectable?: Selectable;
+  interactable?: Interactable;
 }
 
 export interface ChartContainerElement {

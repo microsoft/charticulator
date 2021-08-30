@@ -99,15 +99,15 @@ export type OnSetPropertyHandler = (
 ) => void;
 
 export interface CharticulatorPropertyAccessors {
-  emitSetProperty: (
+  emitSetProperty?: (
     property: Prototypes.Controls.Property,
     value: Specification.AttributeValue
   ) => void;
   store: AppStore;
 
-  getAttributeMapping: (attribute: string) => Specification.Mapping;
-  onEditMappingHandler: OnEditMappingHandler;
-  onMapDataHandler: OnMapDataHandler;
+  getAttributeMapping?: (attribute: string) => Specification.Mapping;
+  onEditMappingHandler?: OnEditMappingHandler;
+  onMapDataHandler?: OnMapDataHandler;
 }
 
 export class WidgetManager

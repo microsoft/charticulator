@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import { ChartStateManager } from "../..";
@@ -15,7 +16,12 @@ import {
   SnappingGuides,
   TemplateParameters,
 } from "../../common";
-import { AxisRenderer, buildAxisInference, buildAxisProperties } from "../axis";
+import {
+  AxisMode,
+  AxisRenderer,
+  buildAxisInference,
+  buildAxisProperties,
+} from "../axis";
 import {
   GridDirection,
   GridStartPosition,
@@ -29,9 +35,15 @@ import {
   SublayoutAlignment,
 } from "./base";
 import { PlotSegmentClass } from "../plot_segment";
-import { getSortDirection } from "../../..";
+import { getSortDirection, ZoomInfo } from "../../..";
 import { strings } from "../../../../strings";
-import { AxisDataBinding } from "../../../specification/types";
+import {
+  AxisDataBinding,
+  AxisDataBindingType,
+} from "../../../specification/types";
+import { scaleLinear } from "d3-scale";
+import { FluentUIWidgetManager } from "../../../../app/views/panels/widgets/fluentui_manager";
+import { EventType } from "../../../../app/views/panels/widgets/observer";
 
 export type CartesianAxisMode =
   | "null"
@@ -239,6 +251,22 @@ export class CartesianPlotSegment extends PlotSegmentClass<
   public getAttributePanelWidgets(
     manager: Controls.WidgetManager
   ): Controls.Widget[] {
+    const fluentUIManager = manager as FluentUIWidgetManager;
+    fluentUIManager.eventManager.subscribe(EventType.UPDATE_FIELD, {
+      update: (property: Controls.Property | Controls.Property[]) => {
+        if (
+          typeof property === "object" &&
+          ((property as Controls.Property).property === "xData" ||
+            (property as Controls.Property).property === "yData" ||
+            (property as Controls.Property).property === "axis") &&
+          (property as Controls.Property).field === "windowSize"
+        ) {
+          fluentUIManager.store.updatePlotSegments();
+          fluentUIManager.store.emit("graphics");
+        }
+      },
+    });
+
     const builder = this.createBuilder();
     return [
       ...super.getAttributePanelWidgets(manager),
@@ -296,7 +324,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x"
+          AxisMode.X
         )
       );
     }
@@ -316,7 +344,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderCartesian(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y"
+          AxisMode.Y
         )
       );
     }
@@ -343,7 +371,7 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           attrs.x1,
           props.xData.side != "default" ? attrs.y2 : attrs.y1,
-          "x",
+          AxisMode.X,
           attrs.y2 - attrs.y1
         )
       );
@@ -362,8 +390,139 @@ export class CartesianPlotSegment extends PlotSegmentClass<
         axisRenderer.renderGridlinesForAxes(
           props.yData.side != "default" ? attrs.x2 : attrs.x1,
           attrs.y1,
-          "y",
+          AxisMode.Y,
           attrs.x2 - attrs.x1
+        )
+      );
+    }
+
+    return g;
+  }
+
+  public renderControls(
+    manager: ChartStateManager,
+    zoom: ZoomInfo
+  ): React.ReactElement<any>[] {
+    const attrs = this.state.attributes;
+    const props = this.object.properties;
+    const g = [];
+    // TODO optimize axis render;
+    if (props.xData && props.xData.visible && props.xData.allowScrolling) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.xData,
+        0,
+        attrs.x2 - attrs.x1,
+        false,
+        false,
+        this.getDisplayFormat(props.xData, props.xData.tickFormat, manager)
+      );
+      g.push(
+        axisRenderer.renderVirtualScrollBar(
+          attrs.x1,
+          (props.xData.side != "default" ? attrs.y2 : attrs.y1) +
+            (props.xData.barOffset
+              ? (props.xData.side === "default" ? -1 : 1) *
+                <number>props.xData.barOffset
+              : 0),
+          AxisMode.X,
+          props.xData.scrollPosition ? props.xData.scrollPosition : 0,
+          (position) => {
+            if (props.xData.type === AxisDataBindingType.Categorical) {
+              if (!props.xData.allCategories) {
+                return;
+              }
+              props.xData.scrollPosition = position;
+
+              const start = Math.floor(
+                ((props.xData.allCategories.length - props.xData.windowSize) /
+                  100) *
+                  position
+              );
+              props.xData.categories = props.xData.allCategories.slice(
+                start,
+                start + props.xData.windowSize
+              );
+
+              if (props.xData.categories.length === 0) {
+                props.xData.allCategories
+                  .reverse()
+                  .slice(start - 1, start + props.xData.windowSize);
+              }
+            } else if (props.xData.type === AxisDataBindingType.Numerical) {
+              const scale = scaleLinear()
+                .domain([0, 100])
+                .range([props.xData.dataDomainMin, props.xData.dataDomainMax]);
+              props.xData.scrollPosition = position;
+              const start = scale(position);
+              props.xData.domainMin = start;
+              props.xData.domainMax = start + props.xData.windowSize;
+            }
+            manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
+          },
+          zoom
+        )
+      );
+    }
+    if (
+      props.yData &&
+      props.yData.visible &&
+      props.yData.allowScrolling &&
+      props.yData.allCategories &&
+      props.yData.allCategories.length > props.yData.windowSize
+    ) {
+      const axisRenderer = new AxisRenderer().setAxisDataBinding(
+        props.yData,
+        0,
+        attrs.y2 - attrs.y1,
+        false,
+        true,
+        this.getDisplayFormat(props.yData, props.yData.tickFormat, manager)
+      );
+      g.push(
+        axisRenderer.renderVirtualScrollBar(
+          (props.yData.side != "default" ? attrs.x2 : attrs.x1) +
+            (props.yData.barOffset
+              ? (props.yData.side === "default" ? -1 : 1) *
+                <number>props.yData.barOffset
+              : 0),
+          attrs.y1,
+          AxisMode.Y,
+          props.yData.scrollPosition ? props.yData.scrollPosition : 0,
+          (position) => {
+            if (props.yData?.type === AxisDataBindingType.Categorical) {
+              if (!props.yData.allCategories) {
+                return;
+              }
+              props.yData.scrollPosition = position;
+              const start = Math.floor(
+                ((props.yData.allCategories.length - props.yData.windowSize) /
+                  100) *
+                  position
+              );
+              props.yData.categories = props.yData.allCategories
+                .reverse()
+                .slice(start, start + props.yData.windowSize)
+                .reverse();
+
+              if (props.yData.categories.length === 0) {
+                props.yData.allCategories
+                  .reverse()
+                  .slice(start - 1, start + props.yData.windowSize);
+              }
+            } else if (props.yData.type === AxisDataBindingType.Numerical) {
+              const scale = scaleLinear()
+                .domain([0, 100])
+                .range([props.yData.dataDomainMin, props.yData.dataDomainMax]);
+              props.yData.scrollPosition = position;
+              const start = scale(position);
+              props.yData.domainMin = start;
+              props.yData.domainMax = start + props.yData.windowSize;
+            }
+            manager.remapPlotSegmentGlyphs(this.object);
+            manager.solveConstraints();
+          },
+          zoom
         )
       );
     }

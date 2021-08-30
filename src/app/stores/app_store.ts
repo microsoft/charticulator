@@ -279,6 +279,9 @@ export class AppStore extends BaseStore {
       {},
       this.chartManager.getOriginChart()
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
 
     this.emit(AppStore.EVENT_DATASET);
     this.emit(AppStore.EVENT_GRAPHICS);
@@ -1115,6 +1118,9 @@ export class AppStore extends BaseStore {
       this.chart,
       this.dataset
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
     this.chartState = this.chartManager.chartState;
   }
 
@@ -1389,6 +1395,7 @@ export class AppStore extends BaseStore {
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
+
     // eslint-disable-next-line
     plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
@@ -1733,6 +1740,14 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.domainMax !== undefined
           ? <number>objectProperties?.domainMax
           : null,
+      dataDomainMin:
+        <number>objectProperties?.domainMin !== undefined
+          ? <number>objectProperties?.domainMin
+          : null,
+      dataDomainMax:
+        <number>objectProperties?.domainMax !== undefined
+          ? <number>objectProperties?.domainMax
+          : null,
       enablePrePostGap:
         <boolean>objectProperties?.enablePrePostGap !== undefined
           ? <boolean>objectProperties?.enablePrePostGap
@@ -1741,6 +1756,28 @@ export class AppStore extends BaseStore {
         <string[]>objectProperties?.categories !== undefined
           ? <string[]>objectProperties?.categories
           : null,
+      allCategories:
+        <string[]>objectProperties?.allCategories !== undefined
+          ? <string[]>objectProperties?.allCategories
+          : <string[]>objectProperties?.categories !== undefined
+          ? <string[]>objectProperties?.categories
+          : null,
+      scrollPosition:
+        <number>objectProperties?.scrollPosition !== undefined
+          ? <number>objectProperties?.scrollPosition
+          : 0,
+      allowScrolling:
+        <boolean>objectProperties?.allowScrolling !== undefined
+          ? <boolean>objectProperties?.allowScrolling
+          : false,
+      windowSize:
+        <number>objectProperties?.windowSize !== undefined
+          ? <number>objectProperties?.windowSize
+          : 10,
+      barOffset:
+        <number>objectProperties?.barOffset !== undefined
+          ? <number>objectProperties?.barOffset
+          : 0,
     };
 
     let expressions = [groupExpression];
@@ -1805,8 +1842,22 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
-            dataBinding.categories = categories;
             dataBinding.order = order != undefined ? order : null;
+            dataBinding.allCategories = deepClone(categories);
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize = Math.ceil(categories.length / 10);
+            }
+            dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
+            }
           }
 
           break;
@@ -1846,6 +1897,13 @@ export class AppStore extends BaseStore {
             if (options.defineCategories) {
               dataBinding.categories = defineCategories(values);
             }
+
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize =
+                (dataBinding.domainMax - dataBinding.domainMin) / 10;
+              dataBinding.dataDomainMin = dataBinding.domainMin;
+              dataBinding.dataDomainMax = dataBinding.domainMax;
+            }
           }
           break;
         case Specification.DataKind.Temporal:
@@ -1869,7 +1927,18 @@ export class AppStore extends BaseStore {
               dataExpression.valueType,
               values
             );
+            dataBinding.allCategories = deepClone(categories);
             dataBinding.categories = categories;
+            if (dataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((categories.length - dataBinding.windowSize) / 100) *
+                  dataBinding.scrollPosition
+              );
+              dataBinding.categories = categories.slice(
+                start,
+                start + dataBinding.windowSize
+              );
+            }
           }
           break;
       }

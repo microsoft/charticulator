@@ -460,14 +460,32 @@ export class ChartTemplate {
                 axisDataBinding.categories[index] = key;
               });
             }
+            axisDataBinding.allCategories = deepClone(
+              axisDataBinding.categories
+            );
+
+            if (axisDataBinding.allowScrolling) {
+              const start = Math.floor(
+                ((axisDataBinding.categories.length -
+                  axisDataBinding.windowSize) /
+                  100) *
+                  axisDataBinding.scrollPosition
+              );
+              axisDataBinding.categories = axisDataBinding.categories.slice(
+                start,
+                start + axisDataBinding.windowSize
+              );
+            }
           } else if (axis.type == "numerical") {
             const scale = new Scale.LinearScale();
             scale.inferParameters(vector);
             if (inference.autoDomainMin) {
               axisDataBinding.domainMin = scale.domainMin;
+              axisDataBinding.dataDomainMin = scale.domainMin;
             }
             if (inference.autoDomainMax) {
               axisDataBinding.domainMax = scale.domainMax;
+              axisDataBinding.dataDomainMax = scale.domainMax;
             }
             if (axis.defineCategories) {
               axisDataBinding.categories = defineCategories(vector);

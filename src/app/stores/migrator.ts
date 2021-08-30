@@ -395,6 +395,7 @@ export class Migrator {
     axis: Specification.Types.AxisDataBinding
   ): Specification.Types.AxisDataBinding {
     return {
+      ...axis,
       side: replaceUndefinedByNull(axis.side),
       type: replaceUndefinedByNull(axis.type),
       visible: replaceUndefinedByNull(axis.visible),
@@ -415,6 +416,9 @@ export class Migrator {
       tickDataExpression: replaceUndefinedByNull(axis.tickDataExpression),
       tickFormat: replaceUndefinedByNull(axis.tickFormat),
       valueType: replaceUndefinedByNull(axis.valueType),
+      allowScrolling: replaceUndefinedByNull(axis.allowScrolling),
+      windowSize: replaceUndefinedByNull(axis.windowSize),
+      barOffset: replaceUndefinedByNull(axis.barOffset),
     };
   }
 
