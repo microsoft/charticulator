@@ -461,7 +461,11 @@ export class AxisRenderer {
         dy = -side * (tickSize + offset) * cos;
 
       if (Math.abs(cos) < 0.5) {
-        if (style.wordWrap || splitStringByNewLine(tick.label).length > 1) {
+        if (
+          style.wordWrap ||
+          (typeof tick.label === "string" &&
+            splitStringByNewLine(tick.label).length > 1)
+        ) {
           let textContent: string[] = splitByWidth(
             replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
             maxTickDistance,
@@ -555,6 +559,7 @@ export class AxisRenderer {
         if (
           !style.wordWrap &&
           maxTextWidth > maxTickDistance &&
+          typeof tick.label === "string" &&
           splitStringByNewLine(tick.label).length === 1
         ) {
           const [px, py] = TextMeasurer.ComputeTextPosition(
@@ -597,7 +602,11 @@ export class AxisRenderer {
           };
           g.elements.push(gText);
         } else {
-          if (style.wordWrap || splitStringByNewLine(tick.label).length > 1) {
+          if (
+            style.wordWrap ||
+            (typeof tick.label === "string" &&
+              splitStringByNewLine(tick.label).length > 1)
+          ) {
             let textContent = [
               replaceSymbolByTab(replaceSymbolByNewLine(tick.label)),
             ];
@@ -821,7 +830,9 @@ export class AxisRenderer {
         tick.label && replaceSymbolByTab(replaceSymbolByNewLine(tick.label));
       if (
         lablel &&
-        (style.wordWrap || splitStringByNewLine(lablel).length > 1)
+        (style.wordWrap ||
+          (typeof tick.label === "string" &&
+            splitStringByNewLine(lablel).length > 1))
       ) {
         let textContent = [lablel];
         if (style.wordWrap) {
