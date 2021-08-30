@@ -72,8 +72,10 @@ export abstract class PlotSegmentClass<
   // Renders interactable elements of plotsegment;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public renderControls(
-    manager: ChartStateManager,
-    zoom: ZoomInfo
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _manager: ChartStateManager,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _zoom: ZoomInfo
   ): ReactElement<any>[] {
     return null;
   }
