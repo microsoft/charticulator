@@ -283,6 +283,7 @@ export class FluentMappingEditor extends React.Component<
                 }
                 this.changeColorPickerState();
               }}
+              parent={this}
             />
           </Callout>
         )}

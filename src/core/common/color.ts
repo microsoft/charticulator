@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 import { Geometry } from "./math";
+import { Colorspace } from "../../app/components/fluent_ui_gradient_picker";
 
 /** Color in RGB */
 export interface Color {
@@ -12,7 +13,7 @@ export interface Color {
 
 /** Color gradient */
 export interface ColorGradient {
-  colorspace: "hcl" | "lab";
+  colorspace: Colorspace;
   colors: Color[];
 }
 

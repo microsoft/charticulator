@@ -180,6 +180,7 @@ export class FluentValueEditor extends ContextedComponent<
                     }
                     this.setState({ open: !this.state.open });
                   }}
+                  parent={this}
                 />
               </Callout>
             )}

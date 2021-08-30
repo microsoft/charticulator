@@ -137,6 +137,7 @@ export const strings = {
     addLegend: "Add Legend",
     removeLegend: "Remove Legend",
     removeSelected: "Remove",
+    reverse: "Reverse",
   },
   legendCreator: {
     legendType: "Legend type:",

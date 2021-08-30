@@ -35,6 +35,7 @@ export interface ColorPickerProps {
   allowNull?: boolean;
   onPick?: (color: Color) => void;
   store?: AppStore;
+  parent?: React.Component;
 }
 
 export interface ColorPickerState {
@@ -78,7 +79,7 @@ export class ColorPicker extends React.Component<
       } else {
         this.state = {
           currentPalette: null,
-          currentPicker: "hcl",
+          currentPicker: PickerType.HCL,
           currentColor: this.props.defaultValue,
         };
       }
@@ -128,6 +129,7 @@ export class ColorPicker extends React.Component<
               selected={this.state.currentPalette}
               onClick={(p) => {
                 this.setState({ currentPalette: p, currentPicker: null });
+                this.props.parent?.forceUpdate();
               }}
             />
           </PickersSection>

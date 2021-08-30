@@ -15,8 +15,9 @@ import { ColorPicker, colorToCSS } from "./fluentui_color_picker";
 import { InputField } from "./color_space_picker";
 import { TabsView } from "./tabs_view";
 import { ReorderListView } from "../views/panels/object_list_editor";
-import { Select, Button } from "../views/panels/widgets/controls";
-import { Callout } from "@fluentui/react";
+import { Button } from "../views/panels/widgets/controls";
+import { Callout, Dropdown } from "@fluentui/react";
+import { Colorspace } from "./fluent_ui_gradient_picker";
 
 export interface GradientPickerProps {
   defaultValue?: ColorGradient;
@@ -46,7 +47,7 @@ export class GradientPicker extends React.Component<
     this.state = {
       currentTab: "palettes",
       currentGradient: this.props.defaultValue || {
-        colorspace: "lab",
+        colorspace: Colorspace.LAB,
         colors: [
           { r: 0, g: 0, b: 0 },
           { r: 255, g: 255, b: 255 },
@@ -103,7 +104,7 @@ export class GradientPicker extends React.Component<
                   {group[1].map((x) => {
                     const gradient: ColorGradient = {
                       colors: x.colors[0],
-                      colorspace: "lab",
+                      colorspace: Colorspace.LAB,
                     };
                     return (
                       <li
@@ -152,6 +153,7 @@ export class GradientPicker extends React.Component<
                 newGradient.colors[this.state.currentItemIdx] = color;
                 this.selectGradient(newGradient, true);
               }}
+              parent={this}
             />
           </Callout>
         )}
@@ -249,15 +251,17 @@ export class GradientPicker extends React.Component<
                   this.selectGradient(newGradient, true);
                 }}
               />{" "}
-              <Select
-                value={this.state.currentGradient.colorspace}
-                options={["hcl", "lab"]}
-                labels={["HCL", "Lab"]}
-                showText={true}
-                onChange={(v: "hcl" | "lab") => {
-                  const newGradient = deepClone(this.state.currentGradient);
-                  newGradient.colorspace = v;
-                  this.selectGradient(newGradient, true);
+              <Dropdown
+                options={[
+                  { key: Colorspace.HCL, text: "HCL" },
+                  { key: Colorspace.LAB, text: "Lab" },
+                ]}
+                onChange={(event, option) => {
+                  if (option) {
+                    const newGradient = deepClone(this.state.currentGradient);
+                    newGradient.colorspace = option.key as Colorspace;
+                    this.selectGradient(newGradient, true);
+                  }
                 }}
               />
             </div>

@@ -36,7 +36,7 @@ export class PaletteList extends React.PureComponent<
       <ul>
         {groups.map((group, index) => {
           return (
-            <>
+            <React.Fragment key={`palette-group-wrapper-${index}`}>
               <Label key={`palette-label-${index}`}>{group[0]}</Label>
               {group[1].map((x) => (
                 <DefaultButton
@@ -47,7 +47,7 @@ export class PaletteList extends React.PureComponent<
                   checked={this.props.selected == x}
                 />
               ))}
-            </>
+            </React.Fragment>
           );
         })}
       </ul>
