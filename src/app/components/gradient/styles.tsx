@@ -41,6 +41,7 @@ export const dropdownStyles: Partial<IDropdownStyles> = {
   title: {
     lineHeight: 24,
     height: 24,
+    fontWeight: 600,
   },
   caretDown: {
     lineHeight: 24,
@@ -63,6 +64,7 @@ export const TabWrapper = styled.div`
 
 export const ColorRowWrapper = styled.div`
   margin-top: 5px;
+  display: flex;
 `;
 
 interface ColorCellProps {

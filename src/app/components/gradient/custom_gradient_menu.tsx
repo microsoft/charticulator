@@ -11,13 +11,8 @@ import {
   deepClone,
 } from "../../../core";
 import { ColorPicker, colorToCSS } from "../fluentui_color_picker";
-import { InputField } from "../color_space_picker";
-import { Callout, DefaultButton } from "@fluentui/react";
-import {
-  ColorCell,
-  ColorRowWrapper,
-  deleteColorStyles,
-} from "./styles";
+import { Callout, DefaultButton, TextField } from "@fluentui/react";
+import { ColorCell, ColorRowWrapper, deleteColorStyles } from "./styles";
 import { GradientView } from "./gradient_palettes";
 import { CustomGradientButtons } from "./custom_gradient_buttons";
 
@@ -71,21 +66,34 @@ export class CustomGradientMenu extends React.Component<
             {currentGradient.colors.map((color, i) => {
               return (
                 <ColorRowWrapper key={`m${i}`}>
-                  <ColorCell
-                    id={`color_${i}`}
-                    onClick={() => {
-                      this.changeColorPickerState(`color_${i}`, color, i);
-                    }}
-                    $color={colorToCSS(color)}
-                  />
-                  <InputField
+                  <div>
+                    <ColorCell
+                      id={`color_${i}`}
+                      onClick={() => {
+                        this.changeColorPickerState(`color_${i}`, color, i);
+                      }}
+                      $color={colorToCSS(color)}
+                    />
+                  </div>
+                  <TextField
                     defaultValue={colorToHTMLColorHEX(color)}
-                    onEnter={(value) => {
-                      const newColor = colorFromHTMLColor(value);
-                      const newGradient = deepClone(currentGradient);
-                      newGradient.colors[i] = newColor;
-                      this.props.selectGradient(newGradient, true);
-                      return true;
+                    onChange={(event, value) => {
+                      if (value) {
+                        const newColor = colorFromHTMLColor(value);
+                        const newGradient = deepClone(currentGradient);
+                        newGradient.colors[i] = newColor;
+                        this.props.selectGradient(newGradient, true);
+                      }
+                    }}
+                    underlined
+                    styles={{
+                      root: {
+                        display: "inline-block",
+                        height: "unset",
+                      },
+                      fieldGroup: {
+                        height: "unset",
+                      },
                     }}
                   />
                   <DefaultButton
@@ -109,7 +117,10 @@ export class CustomGradientMenu extends React.Component<
             {this.renderColorPicker()}
           </ReorderListView>
         </div>
-        <CustomGradientButtons selectGradient={this.props.selectGradient} currentGradient={currentGradient} />
+        <CustomGradientButtons
+          selectGradient={this.props.selectGradient}
+          currentGradient={currentGradient}
+        />
       </div>
     );
   }
