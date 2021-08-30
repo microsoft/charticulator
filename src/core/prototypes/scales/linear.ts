@@ -315,19 +315,13 @@ export class LinearColorScale extends ScaleClass<
   ): Controls.Widget[] {
     return [
       manager.sectionHeader(strings.objects.dataAxis.domain),
-      manager.row(
-        strings.objects.dataAxis.start,
-        manager.inputNumber(
-          { property: "domainMin" },
-          { stopPropagation: true }
-        )
+      manager.inputNumber(
+        { property: "domainMin" },
+        { stopPropagation: true, label: strings.objects.dataAxis.start }
       ),
-      manager.row(
-        strings.objects.dataAxis.end,
-        manager.inputNumber(
-          { property: "domainMax" },
-          { stopPropagation: true }
-        )
+      manager.inputNumber(
+        { property: "domainMax" },
+        { stopPropagation: true, label: strings.objects.dataAxis.end }
       ),
       manager.sectionHeader(strings.objects.dataAxis.gradient),
       manager.inputColorGradient(

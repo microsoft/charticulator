@@ -18,6 +18,7 @@ import { AttributeMap } from "../../../core/specification";
 import { ObjectClass } from "../../../core/prototypes";
 import { DefaultButton } from "@fluentui/react";
 import { EventType } from "./widgets/observer";
+import { ScaleEditorWrapper } from "./panel_styles";
 
 export interface ScaleEditorProps {
   scale: Specification.Scale;
@@ -73,9 +74,8 @@ export class ScaleEditor extends React.Component<
     }
     const currentSelection = this.props.store.currentMappingAttributeFocus;
     return (
-      <div
+      <ScaleEditorWrapper
         className="scale-editor-view"
-        style={{ width: "550px", padding: "10px" }}
       >
         <div className="attribute-editor">
           <section className="attribute-editor-element">
@@ -178,7 +178,7 @@ export class ScaleEditor extends React.Component<
             </div>
           </section>
         </div>
-      </div>
+      </ScaleEditorWrapper>
     );
   }
 }
