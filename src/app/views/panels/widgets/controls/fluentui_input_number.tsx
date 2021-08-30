@@ -205,12 +205,19 @@ export const FluentInputNumber: React.FC<InputNumberProps> = (props) => {
                 placeholder={props.placeholder}
                 value={
                   typeof value === "string" &&
-                  (value as string).indexOf(".") === value.length - 1
+                  ((value as string).indexOf(".") === value.length - 1 ||
+                    ((value as string).indexOf("-") === 0 &&
+                      value.length === 1))
                     ? value
-                    : (value == null ? null : formatNumber(+value))
+                    : value == null
+                    ? null
+                    : formatNumber(+value)
                 }
                 onChange={(event, str) => {
-                  if (str.indexOf(".") === str.length - 1) {
+                  if (
+                    str.indexOf(".") === str.length - 1 ||
+                    (str.indexOf("-") === 0 && str.length === 1)
+                  ) {
                     setValue(str);
                   } else {
                     const num = parseNumber(str);

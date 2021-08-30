@@ -1395,6 +1395,7 @@ export class AppStore extends BaseStore {
     const plotSegments: Specification.PlotSegment[] = this.chart.elements.filter(
       (element) => Prototypes.isType(element.classID, "plot-segment")
     ) as Specification.PlotSegment[];
+
     // eslint-disable-next-line
     plotSegments.forEach((plot: Specification.PlotSegment) => {
       const table = this.dataset.tables.find(
@@ -1773,6 +1774,10 @@ export class AppStore extends BaseStore {
         <number>objectProperties?.windowSize !== undefined
           ? <number>objectProperties?.windowSize
           : 10,
+      barOffset:
+        <number>objectProperties?.barOffset !== undefined
+          ? <number>objectProperties?.barOffset
+          : 0,
     };
 
     let expressions = [groupExpression];
@@ -1839,7 +1844,9 @@ export class AppStore extends BaseStore {
             );
             dataBinding.order = order != undefined ? order : null;
             dataBinding.allCategories = deepClone(categories);
-            dataBinding.windowSize = Math.ceil(categories.length / 10);
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize = Math.ceil(categories.length / 10);
+            }
             dataBinding.categories = categories;
             if (dataBinding.allowScrolling) {
               const start = Math.floor(
@@ -1891,10 +1898,12 @@ export class AppStore extends BaseStore {
               dataBinding.categories = defineCategories(values);
             }
 
-            dataBinding.windowSize =
-              (dataBinding.domainMax - dataBinding.domainMin) / 10;
-            dataBinding.dataDomainMin = dataBinding.domainMin;
-            dataBinding.dataDomainMax = dataBinding.domainMax;
+            if (dataBinding.windowSize == null) {
+              dataBinding.windowSize =
+                (dataBinding.domainMax - dataBinding.domainMin) / 10;
+              dataBinding.dataDomainMin = dataBinding.domainMin;
+              dataBinding.dataDomainMax = dataBinding.domainMax;
+            }
           }
           break;
         case Specification.DataKind.Temporal:

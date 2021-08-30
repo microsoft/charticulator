@@ -491,6 +491,7 @@ export const strings = {
       scrolling: "Scrolling",
       allowScrolling: "Allow scrolling",
       windowSize: "Window size",
+      barOffset: "Scrollbar offset",
     },
     icon: {
       label: "Icon",

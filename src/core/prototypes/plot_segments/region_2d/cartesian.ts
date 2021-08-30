@@ -419,7 +419,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       g.push(
         axisRenderer.renderVirtualScrollBar(
           attrs.x1,
-          props.xData.side != "default" ? attrs.y2 : attrs.y1,
+          (props.xData.side != "default" ? attrs.y2 : attrs.y1) +
+            (props.xData.barOffset
+              ? (props.xData.side === "default" ? -1 : 1) *
+                <number>props.xData.barOffset
+              : 0),
           AxisMode.X,
           props.xData.scrollPosition ? props.xData.scrollPosition : 0,
           (position) => {
@@ -477,7 +481,11 @@ export class CartesianPlotSegment extends PlotSegmentClass<
       );
       g.push(
         axisRenderer.renderVirtualScrollBar(
-          props.yData.side != "default" ? attrs.x2 : attrs.x1,
+          (props.yData.side != "default" ? attrs.x2 : attrs.x1) +
+            (props.yData.barOffset
+              ? (props.yData.side === "default" ? -1 : 1) *
+                <number>props.yData.barOffset
+              : 0),
           attrs.y1,
           AxisMode.Y,
           props.yData.scrollPosition ? props.yData.scrollPosition : 0,

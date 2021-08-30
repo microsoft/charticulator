@@ -70,6 +70,7 @@ export interface AxisDataBinding extends AttributeMap {
   allCategories?: string[];
   scrollPosition?: number;
   windowSize?: number;
+  barOffset?: number;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

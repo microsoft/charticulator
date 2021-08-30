@@ -86,6 +86,7 @@ export class AxisRenderer {
   private static textMeasurer = new TextMeasurer();
 
   private scrollRequired: boolean = false;
+  private shiftAxis: boolean = true;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -114,6 +115,7 @@ export class AxisRenderer {
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
     this.scrollRequired = data.allowScrolling;
+    this.shiftAxis = data.barOffset == null || data.barOffset === 0;
     switch (data.type) {
       case "numerical":
         {
@@ -431,7 +433,7 @@ export class AxisRenderer {
       side = -side;
     }
     //shift axis for scrollbar space
-    if (this.scrollRequired) {
+    if (this.scrollRequired && this.shiftAxis) {
       if (angle === 90) {
         x += side * AxisRenderer.SCROLL_BAR_SIZE;
       }
@@ -1389,18 +1391,29 @@ export function buildAxisWidgets(
                   }
                 ),
                 data.allowScrolling
-                  ? manager.row(
-                      strings.objects.dataAxis.windowSize,
-                      manager.inputNumber(
-                        {
-                          property: axisProperty,
-                          field: "windowSize",
-                        },
-                        {
-                          maximum: 1000000,
-                          minimum: 1,
-                        }
-                      )
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: 1,
+                        label: strings.objects.dataAxis.windowSize,
+                      }
+                    )
+                  : null,
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "barOffset",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: -1000000,
+                        label: strings.objects.dataAxis.barOffset,
+                      }
                     )
                   : null,
               ]
@@ -1431,18 +1444,29 @@ export function buildAxisWidgets(
           );
           if (data.allowScrolling) {
             widgets.push(
-              manager.row(
-                strings.objects.dataAxis.windowSize,
-                manager.inputNumber(
-                  {
-                    property: axisProperty,
-                    field: "windowSize",
-                  },
-                  {
-                    maximum: 1000,
-                    minimum: 1,
-                  }
-                )
+              manager.inputNumber(
+                {
+                  property: axisProperty,
+                  field: "windowSize",
+                },
+                {
+                  maximum: 1000,
+                  minimum: 1,
+                  label: strings.objects.dataAxis.windowSize,
+                }
+              )
+            );
+            widgets.push(
+              manager.inputNumber(
+                {
+                  property: axisProperty,
+                  field: "barOffset",
+                },
+                {
+                  maximum: 1000,
+                  minimum: -1000000,
+                  label: strings.objects.dataAxis.barOffset,
+                }
               )
             );
           }
@@ -1531,18 +1555,29 @@ export function buildAxisWidgets(
                     }
                   ),
                   data.allowScrolling
-                    ? manager.row(
-                        strings.objects.dataAxis.windowSize,
-                        manager.inputNumber(
-                          {
-                            property: axisProperty,
-                            field: "windowSize",
-                          },
-                          {
-                            maximum: 1000000,
-                            minimum: 1,
-                          }
-                        )
+                    ? manager.inputNumber(
+                        {
+                          property: axisProperty,
+                          field: "windowSize",
+                        },
+                        {
+                          maximum: 1000000,
+                          minimum: 1,
+                          label: strings.objects.dataAxis.windowSize,
+                        }
+                      )
+                    : null,
+                  data.allowScrolling
+                    ? manager.inputNumber(
+                        {
+                          property: axisProperty,
+                          field: "barOffset",
+                        },
+                        {
+                          maximum: 1000000,
+                          minimum: -1000000,
+                          label: strings.objects.dataAxis.barOffset,
+                        }
                       )
                     : null
                 ),
