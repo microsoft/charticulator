@@ -20,7 +20,7 @@ import {
   getById,
 } from "../../../../core";
 import { Actions, DragData } from "../../../actions";
-import { ButtonRaised, GradientPicker } from "../../../components";
+import { ButtonRaised } from "../../../components";
 import { SVGImageIcon } from "../../../components/icons";
 import { getAlignment, PopupView } from "../../../controllers";
 import {
@@ -115,6 +115,7 @@ import { CollapsiblePanel } from "./controls/collapsiblePanel";
 import { OpenNestedEditor } from "../../../actions/actions";
 import { FilterPanel } from "./fluentui_filter";
 import { EventManager, EventType, UIManagerListener } from "./observer";
+import { FluentUIGradientPicker } from "../../../components/fluent_ui_gradient_picker";
 
 export type OnEditMappingHandler = (
   attribute: string,
@@ -788,7 +789,7 @@ export class FluentUIWidgetManager
     if (inline) {
       return (
         <span className="charticulator__widget-control-input-color-gradient-inline">
-          <GradientPicker
+          <FluentUIGradientPicker
             key={this.getKeyFromProperty(property)}
             defaultValue={gradient}
             onPick={(value: any) => {

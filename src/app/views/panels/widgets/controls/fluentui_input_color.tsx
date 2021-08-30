@@ -9,12 +9,9 @@ import {
   ColorGradient,
   colorToHTMLColorHEX,
 } from "../../../../../core";
-import {
-  ColorPicker,
-  GradientPicker,
-  GradientView,
-} from "../../../../components";
+import { GradientView } from "../../../../components";
 import { PopupView } from "../../../../controllers/popup_controller";
+import { ColorPicker } from "../../../../components/fluentui_color_picker";
 
 import { AppStore } from "../../../../stores";
 
@@ -27,6 +24,7 @@ import {
   labelRender,
 } from "./fluentui_customized_components";
 import { strings } from "../../../../../strings";
+import { FluentUIGradientPicker } from "../../../../components/fluent_ui_gradient_picker";
 
 export interface InputColorProps {
   defaultValue: Color;
@@ -137,6 +135,8 @@ export class FluentInputColor extends React.Component<
                 }
                 this.setState({ open: !this.state.open });
               }}
+              defaultValue={colorFromHTMLColor(hex)}
+              parent={this}
             />
           </Callout>
         )}
@@ -166,7 +166,7 @@ export class InputColorGradient extends React.Component<
               (context) => {
                 return (
                   <PopupView context={context}>
-                    <GradientPicker
+                    <FluentUIGradientPicker
                       defaultValue={this.props.defaultValue}
                       onPick={(gradient) => {
                         this.props.onEnter(gradient);
