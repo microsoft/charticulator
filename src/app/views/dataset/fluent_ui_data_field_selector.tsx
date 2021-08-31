@@ -372,10 +372,10 @@ export class DataFieldSelector extends React.Component<
           this.isValueEqual(this.state.currentSelection, item) ? (
             <Select
               value={this.state.currentSelectionAggregation}
-              options={Expression.getCompatibleAggregationFunctions(
+              options={Expression.getCompatibleAggregationFunctionsByDataType(
                 item.type
               ).map((x) => x.name)}
-              labels={Expression.getCompatibleAggregationFunctions(
+              labels={Expression.getCompatibleAggregationFunctionsByDataType(
                 item.type
               ).map((x) => x.displayName)}
               showText={true}
