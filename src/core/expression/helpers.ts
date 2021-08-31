@@ -77,9 +77,9 @@ export const aggregationFunctions: AggregationFunctionDescription[] = [
   { name: "max", displayName: "Max", inputTypes: ["number"] },
   { name: "stdev", displayName: "Standard Deviation", inputTypes: ["number"] },
   { name: "variance", displayName: "Variance", inputTypes: ["number"] },
-  { name: "first", displayName: "First" },
-  { name: "last", displayName: "Last" },
-  { name: "count", displayName: "Count" },
+  { name: "first", displayName: "First", inputTypes: ["string"] },
+  { name: "last", displayName: "Last", inputTypes: ["string"] },
+  { name: "count", displayName: "Count", inputTypes: ["string"] },
   { name: "quartile1", displayName: "1st Quartile", inputTypes: ["number"] },
   { name: "quartile3", displayName: "3rd Quartile", inputTypes: ["number"] },
   {
