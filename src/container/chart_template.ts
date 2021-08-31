@@ -387,9 +387,6 @@ export class ChartTemplate {
           axis.property
         ) as Specification.Types.AxisDataBinding;
         axisDataBinding.expression = expression;
-        if (axisDataBinding.tickDataExpression) {
-          axisDataBinding.tickDataExpression = null; // TODO: fixme
-        }
         if (inference.autoDomainMin || inference.autoDomainMax) {
           // disableAuto flag responsible for disabling/enabling configulration scale domains when new data is coming
           // If disableAuto is true, the same scales will be used for data
