@@ -101,7 +101,7 @@ export class CategoricalScaleNumber extends ScaleClass<
   ) {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const k = props.mapping[data.toString()];
+    const k = props.mapping[data?.toString()];
     solver.addLinear(
       ConstraintStrength.HARD,
       0,
@@ -207,7 +207,7 @@ export class CategoricalScaleColor extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
   // eslint-disable-next-line
@@ -383,7 +383,7 @@ export class CategoricalScaleEnum extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
   // eslint-disable-next-line
@@ -472,7 +472,7 @@ export class CategoricalScaleBoolean extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
   // eslint-disable-next-line
@@ -555,7 +555,7 @@ export class CategoricalScaleImage extends ScaleClass<
 
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const props = this.object.properties;
-    return props.mapping[data.toString()];
+    return props.mapping[data?.toString()];
   }
 
   // eslint-disable-next-line
