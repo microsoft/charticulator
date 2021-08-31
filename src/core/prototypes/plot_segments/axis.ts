@@ -14,6 +14,7 @@ import {
   Geometry,
   getFormat,
   tickFormatParserExpression,
+  ZoomInfo,
 } from "../../common";
 import {
   CoordinateSystem,
@@ -34,6 +35,9 @@ import { AttributeMap, DataType } from "../../specification";
 import { strings } from "../../../strings";
 import { defaultFont, defaultFontSize } from "../../../app/stores/defaults";
 import { AxisDataBindingType, NumericalMode } from "../../specification/types";
+
+import { VirtualScrollBar, VirtualScrollBarPropertes } from "./virtualScroll";
+import React = require("react");
 
 export const defaultAxisStyle: Specification.Types.AxisRenderingStyle = {
   tickColor: { r: 0, g: 0, b: 0 },
@@ -63,6 +67,11 @@ export interface TickDescription {
   label: string;
 }
 
+export enum AxisMode {
+  X = "x",
+  Y = "y",
+}
+
 export class AxisRenderer {
   public ticks: TickDescription[] = [];
   public style: Specification.Types.AxisRenderingStyle = defaultAxisStyle;
@@ -72,7 +81,12 @@ export class AxisRenderer {
   public oppositeSide: boolean = false;
   private axisDataBindingType: AxisDataBindingType = null;
 
+  public static SCROLL_BAR_SIZE = 10;
+
   private static textMeasurer = new TextMeasurer();
+
+  private scrollRequired: boolean = false;
+  private shiftAxis: boolean = true;
 
   public setStyle(style?: Partial<Specification.Types.AxisRenderingStyle>) {
     if (!style) {
@@ -100,6 +114,8 @@ export class AxisRenderer {
     this.axisDataBindingType = data.type;
     this.setStyle(data.style);
     this.oppositeSide = data.side == "opposite";
+    this.scrollRequired = data.allowScrolling;
+    this.shiftAxis = data.barOffset == null || data.barOffset === 0;
     switch (data.type) {
       case "numerical":
         {
@@ -328,6 +344,7 @@ export class AxisRenderer {
         return 0;
       }
     };
+
     this.ticks = r;
     this.rangeMin = rangeMin;
     this.rangeMax = rangeMax;
@@ -386,14 +403,14 @@ export class AxisRenderer {
   public renderGridlinesForAxes(
     x: number,
     y: number,
-    axis: "x" | "y",
+    axis: AxisMode,
     size: number
   ): Group {
     switch (axis) {
-      case "x": {
+      case AxisMode.X: {
         return this.renderGridLine(x, y, 0, 1, size);
       }
-      case "y": {
+      case AxisMode.Y: {
         return this.renderGridLine(x, y, 90, -1, size);
       }
     }
@@ -414,6 +431,15 @@ export class AxisRenderer {
     AxisRenderer.textMeasurer.setFontSize(style.fontSize);
     if (this.oppositeSide) {
       side = -side;
+    }
+    //shift axis for scrollbar space
+    if (this.scrollRequired && this.shiftAxis) {
+      if (angle === 90) {
+        x += side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
+      if (angle === 0) {
+        y += -side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
     }
 
     const cos = Math.cos(Geometry.degreesToRadians(angle));
@@ -695,12 +721,12 @@ export class AxisRenderer {
     return g;
   }
 
-  public renderCartesian(x: number, y: number, axis: "x" | "y"): Group {
+  public renderCartesian(x: number, y: number, axis: AxisMode): Group {
     switch (axis) {
-      case "x": {
+      case AxisMode.X: {
         return this.renderLine(x, y, 0, 1);
       }
-      case "y": {
+      case AxisMode.Y: {
         return this.renderLine(x, y, 90, -1);
       }
     }
@@ -950,6 +976,95 @@ export class AxisRenderer {
     }
     return g;
   }
+
+  public renderVirtualScrollBar(
+    x: number,
+    y: number,
+    axis: AxisMode,
+    scrollPosition: number,
+    onScroll: (position: number) => void,
+    zoom: ZoomInfo
+  ) {
+    switch (axis) {
+      case AxisMode.X: {
+        return this.renderScrollBar(x, y, 0, 1, scrollPosition, onScroll, zoom);
+      }
+      case AxisMode.Y: {
+        return this.renderScrollBar(
+          x,
+          y,
+          90,
+          -1,
+          scrollPosition,
+          onScroll,
+          zoom
+        );
+      }
+    }
+  }
+
+  private renderScrollBar(
+    x: number,
+    y: number,
+    angle: number,
+    side: number,
+    handlePosition: number,
+    onScroll: (position: number) => void,
+    zoom: ZoomInfo
+  ): React.ReactElement<any> {
+    if (!this.scrollRequired) {
+      return null;
+    }
+
+    const cos = Math.cos(Geometry.degreesToRadians(angle));
+    const sin = Math.sin(Geometry.degreesToRadians(angle));
+    const rangeMin = this.rangeMin;
+    const rangeMax = this.rangeMax;
+
+    let x1 = x + rangeMin * cos;
+    let y1 = y + rangeMin * sin;
+    let x2 = x + rangeMax * cos;
+    let y2 = y + rangeMax * sin;
+
+    if (this.oppositeSide) {
+      side = -side;
+    }
+
+    if (!this.oppositeSide) {
+      if (angle === 90) {
+        x1 += side * AxisRenderer.SCROLL_BAR_SIZE;
+        x2 += side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
+      if (angle === 0) {
+        y1 += -side * AxisRenderer.SCROLL_BAR_SIZE;
+        y2 += -side * AxisRenderer.SCROLL_BAR_SIZE;
+      }
+    }
+
+    let width = 0;
+    let height = 0;
+
+    if (angle === 90) {
+      height += Math.abs(y2 - y1);
+      width = AxisRenderer.SCROLL_BAR_SIZE;
+    }
+    if (angle === 0) {
+      width += Math.abs(x2 - x1);
+      height = AxisRenderer.SCROLL_BAR_SIZE;
+    }
+
+    return React.createElement(VirtualScrollBar, <VirtualScrollBarPropertes>{
+      onScroll,
+      handlerBarWidth: AxisRenderer.SCROLL_BAR_SIZE,
+      height,
+      width,
+      x: x1,
+      y: y1,
+      initialPosition: handlePosition,
+      vertical: angle === 90,
+      zoom,
+    });
+  }
 }
 
 export function getCategoricalAxis(
@@ -1182,20 +1297,24 @@ export function buildAxisWidgets(
                     label: "Data",
                   }
                 ),
-                data.valueType === "date" ? manager.label("Range") : null,
+                data.valueType === "date"
+                  ? manager.label(strings.objects.dataAxis.range)
+                  : null,
                 data.valueType === "date"
                   ? manager.inputDate(
                       { property: axisProperty, field: "domainMin" },
-                      { label: "Start" }
+                      { label: strings.objects.dataAxis.start }
                     )
                   : null,
                 data.valueType === "date"
                   ? manager.inputDate(
                       { property: axisProperty, field: "domainMax" },
-                      { label: "End" }
+                      { label: strings.objects.dataAxis.end }
                     )
                   : null,
-                data.valueType !== "date" ? manager.label("Range") : null,
+                data.valueType !== "date"
+                  ? manager.label(strings.objects.dataAxis.range)
+                  : null,
                 data.valueType !== "date"
                   ? manager.inputNumber(
                       { property: axisProperty, field: "domainMin" },
@@ -1247,7 +1366,7 @@ export function buildAxisWidgets(
                     field: "tickDataExpression",
                   },
                   {
-                    label: "Tick Data",
+                    label: strings.objects.axes.tickData,
                   }
                 ),
                 manager.inputFormat(
@@ -1263,9 +1382,105 @@ export function buildAxisWidgets(
                     label: strings.objects.axes.tickFormat,
                   }
                 ),
+                manager.label(strings.objects.dataAxis.scrolling),
+                manager.inputBoolean(
+                  {
+                    property: axisProperty,
+                    field: "allowScrolling",
+                  },
+                  {
+                    type: "checkbox",
+                    label: strings.objects.dataAxis.allowScrolling,
+                    observerConfig: {
+                      isObserver: true,
+                      properties: {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      value: 10,
+                    },
+                  }
+                ),
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "windowSize",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: 1,
+                        label: strings.objects.dataAxis.windowSize,
+                      }
+                    )
+                  : null,
+                data.allowScrolling
+                  ? manager.inputNumber(
+                      {
+                        property: axisProperty,
+                        field: "barOffset",
+                      },
+                      {
+                        maximum: 1000000,
+                        minimum: -1000000,
+                        label: strings.objects.dataAxis.barOffset,
+                      }
+                    )
+                  : null,
               ]
             )
           );
+          widgets.push(
+            manager.sectionHeader(strings.objects.dataAxis.scrolling)
+          );
+          widgets.push(
+            manager.inputBoolean(
+              {
+                property: axisProperty,
+                field: "allowScrolling",
+              },
+              {
+                type: "checkbox",
+                label: strings.objects.dataAxis.allowScrolling,
+                observerConfig: {
+                  isObserver: true,
+                  properties: {
+                    property: axisProperty,
+                    field: "windowSize",
+                  },
+                  value: 10,
+                },
+              }
+            )
+          );
+          if (data.allowScrolling) {
+            widgets.push(
+              manager.inputNumber(
+                {
+                  property: axisProperty,
+                  field: "windowSize",
+                },
+                {
+                  maximum: 1000,
+                  minimum: 1,
+                  label: strings.objects.dataAxis.windowSize,
+                }
+              )
+            );
+            widgets.push(
+              manager.inputNumber(
+                {
+                  property: axisProperty,
+                  field: "barOffset",
+                },
+                {
+                  maximum: 1000,
+                  minimum: -1000000,
+                  label: strings.objects.dataAxis.barOffset,
+                }
+              )
+            );
+          }
           widgets.push(makeAppearance());
         }
         break;
@@ -1274,7 +1489,7 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + ": Categorical",
+                header: axisName + strings.objects.axes.categoricalSuffix,
               },
               [
                 manager.sectionHeader(
@@ -1312,11 +1527,11 @@ export function buildAxisWidgets(
                           field: "tickDataExpression",
                         },
                         {
-                          label: "Tick Data",
+                          label: strings.objects.axes.tickData,
                         }
                       ),
                       manager.row(
-                        "Tick Format",
+                        strings.objects.axes.tickFormat,
                         manager.inputFormat(
                           {
                             property: axisProperty,
@@ -1330,6 +1545,51 @@ export function buildAxisWidgets(
                           }
                         )
                       ))
+                    : null,
+                  manager.label(strings.objects.dataAxis.scrolling),
+                  manager.inputBoolean(
+                    {
+                      property: axisProperty,
+                      field: "allowScrolling",
+                    },
+                    {
+                      type: "checkbox",
+                      label: strings.objects.dataAxis.allowScrolling,
+                      observerConfig: {
+                        isObserver: true,
+                        properties: {
+                          property: axisProperty,
+                          field: "windowSize",
+                        },
+                        value: 10,
+                      },
+                    }
+                  ),
+                  data.allowScrolling
+                    ? manager.inputNumber(
+                        {
+                          property: axisProperty,
+                          field: "windowSize",
+                        },
+                        {
+                          maximum: 1000000,
+                          minimum: 1,
+                          label: strings.objects.dataAxis.windowSize,
+                        }
+                      )
+                    : null,
+                  data.allowScrolling
+                    ? manager.inputNumber(
+                        {
+                          property: axisProperty,
+                          field: "barOffset",
+                        },
+                        {
+                          maximum: 1000000,
+                          minimum: -1000000,
+                          label: strings.objects.dataAxis.barOffset,
+                        }
+                      )
                     : null
                 ),
               ]
@@ -1343,11 +1603,11 @@ export function buildAxisWidgets(
           widgets.push(
             manager.verticalGroup(
               {
-                header: axisName + ": Stacking",
+                header: axisName + strings.objects.axes.stackingSuffix,
               },
               [
                 manager.sectionHeader(
-                  axisName + ": Stacking",
+                  axisName + strings.objects.axes.stackingSuffix,
                   manager.clearButton({ property: axisProperty }, null, true),
                   dropzoneOptions
                 ),

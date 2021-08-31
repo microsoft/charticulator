@@ -336,7 +336,23 @@ export class ChartEditorView
   }
 
   public renderGraphics() {
-    return <GraphicalElementDisplay element={this.state.graphics} />;
+    const renderer = new Graphics.ChartRenderer(
+      this.props.store.chartManager,
+      this.props.store.renderEvents
+    );
+
+    return (
+      <>
+        <GraphicalElementDisplay element={this.state.graphics} />
+        <g className="canvas-chart-controls">
+          {renderer.renderControls(
+            this.props.store.chart,
+            this.props.store.chartState,
+            this.state.zoom
+          )}
+        </g>
+      </>
+    );
   }
 
   public renderEditingLink() {
@@ -957,6 +973,7 @@ export class ChartEditorView
   public renderControls() {
     const elements = this.props.store.chart.elements;
     const elementStates = this.props.store.chartState.elements;
+
     return (
       <div className="canvas-popups">
         {zipArray(elements, elementStates)

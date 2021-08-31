@@ -182,6 +182,13 @@ export class ChartComponent extends React.Component<
       this.manager,
       props.renderEvents
     );
+    this.manager.onUpdate(() => {
+      this.manager.solveConstraints();
+      this.setState({
+        graphics: this.renderer.render(),
+      });
+      this.scheduleUpdate();
+    });
   }
 
   protected timer: any;
@@ -313,6 +320,15 @@ export class ChartComponent extends React.Component<
           />
         ) : null}
         {gfx}
+        {this.renderer.renderControls(
+          this.manager.chart,
+          this.manager.chartState,
+          {
+            centerX: 0,
+            centerY: 0,
+            scale: 1,
+          }
+        )}
         {this.state.working ? (
           <rect
             x={-this.props.width / 2}

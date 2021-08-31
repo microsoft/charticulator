@@ -38,8 +38,13 @@ export interface AxisDataBinding extends AttributeMap {
 
   /** Domain for linear/logarithm types */
   numericalMode?: NumericalMode;
+  // current domain for scrolling
   domainMin?: number;
   domainMax?: number;
+
+  // origin domain from dataset
+  dataDomainMin?: number;
+  dataDomainMax?: number;
 
   /** Export properties of axis for auto scale ranges */
   autoDomainMin?: boolean;
@@ -58,6 +63,14 @@ export interface AxisDataBinding extends AttributeMap {
   dataKind?: DataKind;
   order?: string[];
   orderMode?: OrderMode;
+
+  /** scrolling options */
+  // allCategories contsins all data set and categories property uses to display current content
+  allowScrolling?: boolean;
+  allCategories?: string[];
+  scrollPosition?: number;
+  windowSize?: number;
+  barOffset?: number;
 }
 
 export interface AxisRenderingStyle extends AttributeMap {

@@ -393,7 +393,9 @@ export const strings = {
     axes: {
       numericalSuffix: ": Numerical",
       categoricalSuffix: ": Categorical",
+      stackingSuffix: ": Stacking",
       tickFormat: "Tick Format",
+      tickData: "Tick Data",
       from: "from",
       to: "to",
       gap: "Gap",
@@ -487,6 +489,10 @@ export const strings = {
       domain: "Domain",
       range: "Range",
       gradient: "Gradient",
+      scrolling: "Scrolling",
+      allowScrolling: "Allow scrolling",
+      windowSize: "Window size",
+      barOffset: "Scrollbar offset",
     },
     icon: {
       label: "Icon",

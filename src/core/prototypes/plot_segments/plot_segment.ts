@@ -11,12 +11,14 @@ import {
   getSortFunctionByData,
   refineColumnName,
   tickFormatParserExpression,
+  ZoomInfo,
 } from "../..";
 import { AxisRenderer } from "./axis";
 import { utcFormat } from "d3-time-format";
 import { AxisDataBindingType, NumericalMode } from "../../specification/types";
 import { strings } from "../../../strings";
 import { PanelMode } from "../controls";
+import { ReactElement } from "react";
 
 export abstract class PlotSegmentClass<
   PropertiesType extends Specification.AttributeMap = Specification.AttributeMap,
@@ -59,11 +61,22 @@ export abstract class PlotSegmentClass<
     return Graphics.makeGroup([glyphGraphics, this.getGraphics(manager)]);
   }
 
-  /** Get the graphics that represent this layout */
+  /** Get the graphics that represent this layout of elements in background*/
   public getPlotSegmentBackgroundGraphics(
     // eslint-disable-next-line
     manager: ChartStateManager
   ): Graphics.Element {
+    return null;
+  }
+
+  // Renders interactable elements of plotsegment;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public renderControls(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _manager: ChartStateManager,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _zoom: ZoomInfo
+  ): ReactElement<any>[] {
     return null;
   }
 

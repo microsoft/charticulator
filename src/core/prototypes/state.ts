@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 import {
@@ -29,6 +30,7 @@ import { ValueType } from "../expression/classes";
 import { MappingType } from "../specification";
 import { forEachObject, ObjectItemKind } from "./index";
 import { expect_deep_approximately_equals } from "../../app/utils";
+import { AxisDataBinding, AxisDataBindingType } from "../specification/types";
 
 /**
  * Represents a set of default attributes
@@ -64,6 +66,8 @@ export class ChartStateManager {
   public options: {
     [key: string]: any;
   };
+
+  private onUpdateListeners: ((chart: Specification.Chart) => void)[] = [];
 
   constructor(
     chart: Specification.Chart,
@@ -105,6 +109,23 @@ export class ChartStateManager {
 
   public resetDifference() {
     this.chartOrigin = deepClone(this.chart);
+  }
+
+  public onUpdate(callback: (chart: Specification.Chart) => void) {
+    this.onUpdateListeners.push(callback);
+  }
+
+  public clearOnUpdateListener(callback: (chart: Specification.Chart) => void) {
+    const index = this.onUpdateListeners.findIndex((func) => func === callback);
+    if (index != -1) {
+      this.onUpdateListeners = [
+        ...this.onUpdateListeners.slice(0, index),
+        ...this.onUpdateListeners.slice(
+          index + 1,
+          this.onUpdateListeners.length
+        ),
+      ];
+    }
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -778,6 +799,41 @@ export class ChartStateManager {
     this.reorderArray(glyph.marks, fromIndex, toIndex);
   }
 
+  private applyScrollingFilter(data: AxisDataBinding, tableName: string) {
+    const filteredIndices: number[] = [];
+    // TODO fix expression (get column name from expression properly)
+    const parsed = (Expression.parse(
+      data.expression
+    ) as Expression.FunctionCall).args[0];
+
+    const table = this.getTable(tableName);
+
+    if (data.type === AxisDataBindingType.Categorical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+
+        if (
+          data.categories.find(
+            (category) => category === parsed.getStringValue(rowContext)
+          ) !== undefined ||
+          !data.allCategories
+        ) {
+          filteredIndices.push(i);
+        }
+      }
+    } else if (data.type === AxisDataBindingType.Numerical) {
+      for (let i = 0; i < table.rows.length; i++) {
+        const rowContext = table.getRowContext(i);
+        const value = parsed.getValue(rowContext);
+        if (value >= data.domainMin && value <= data.domainMax) {
+          filteredIndices.push(i);
+        }
+      }
+    }
+
+    return filteredIndices;
+  }
+
   /**
    * Map/remap plot segment glyphs
    * @param plotSegment
@@ -804,6 +860,40 @@ export class ChartStateManager {
       }
     }
     let filteredIndices = table.rows.map((r, i) => i);
+
+    // scrolling filters
+    if (plotSegment.properties.xData && plotSegment.properties.yData) {
+      const dataX = plotSegment.properties.xData as AxisDataBinding;
+      const filteredIndicesX = this.applyScrollingFilter(
+        dataX,
+        plotSegment.table
+      );
+
+      const dataY = plotSegment.properties.yData as AxisDataBinding;
+      const filteredIndicesY = this.applyScrollingFilter(
+        dataY,
+        plotSegment.table
+      );
+
+      filteredIndices = filteredIndicesX.filter((value) =>
+        filteredIndicesY.includes(value)
+      );
+    } else {
+      if (plotSegment.properties.xData) {
+        const data = plotSegment.properties.xData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
+      if (plotSegment.properties.yData) {
+        const data = plotSegment.properties.yData as AxisDataBinding;
+        filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+      }
+    }
+    if (plotSegment.properties.axis) {
+      const data = plotSegment.properties.axis as AxisDataBinding;
+      filteredIndices = this.applyScrollingFilter(data, plotSegment.table);
+    }
+    plotSegmentState.dataRowIndices = filteredIndices.map((i) => [i]);
+
     if (plotSegment.filter) {
       const filter = new CompiledFilter(
         plotSegment.filter,
@@ -897,6 +987,9 @@ export class ChartStateManager {
     }
   }
 
+  private triggerUpdateListeners() {
+    this.onUpdateListeners.forEach((listener) => listener(this.chart));
+  }
   /** Remove a chart element */
   public removeChartElement(element: Specification.ChartElement) {
     const idx = this.chart.elements.indexOf(element);
@@ -922,6 +1015,8 @@ export class ChartStateManager {
     );
     this.mapPlotSegmentState(plotSegment, plotSegmentState);
     this.initializePlotSegmentCache(plotSegment, plotSegmentState);
+    this.solveConstraints();
+    this.triggerUpdateListeners();
   }
 
   /** Add a new scale */

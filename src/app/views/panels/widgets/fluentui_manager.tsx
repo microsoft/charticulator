@@ -141,6 +141,8 @@ export class FluentUIWidgetManager
     this.director = new Director();
     this.director.setBuilder(new MenuItemBuilder());
     this.eventManager = new EventManager();
+    this.eventListener = new UIManagerListener(this);
+    this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
   }
 
   public onMapDataHandler: OnMapDataHandler;
@@ -354,6 +356,11 @@ export class FluentUIWidgetManager
         key={this.getKeyFromProperty(property)}
         defaultValue={value}
         onEnter={(value) => {
+          if (value == null) {
+            this.emitSetProperty(property, null);
+          } else {
+            this.emitSetProperty(property, value);
+          }
           if (options.observerConfig?.isObserver) {
             if (options.observerConfig?.properties instanceof Array) {
               options.observerConfig?.properties.forEach((property) =>
@@ -371,13 +378,7 @@ export class FluentUIWidgetManager
               );
             }
           }
-          if (value == null) {
-            this.emitSetProperty(property, null);
-            return true;
-          } else {
-            this.emitSetProperty(property, value);
-            return true;
-          }
+          return true;
         }}
       />
     );
@@ -634,8 +635,6 @@ export class FluentUIWidgetManager
   ) {
     const property: Prototypes.Controls.Property =
       properties instanceof Array ? properties[0] : properties;
-    this.eventListener = new UIManagerListener(this);
-    this.eventManager.subscribe(EventType.UPDATE_FIELD, this.eventListener);
     switch (options.type) {
       case "checkbox-fill-width":
       case "checkbox": {
@@ -655,7 +654,6 @@ export class FluentUIWidgetManager
                   },
                 }}
                 onChange={(ev, v) => {
-                  this.defaultNotification(options.observerConfig);
                   if (properties instanceof Array) {
                     properties.forEach((property) =>
                       this.emitSetProperty(property, v)
@@ -663,6 +661,7 @@ export class FluentUIWidgetManager
                   } else {
                     this.emitSetProperty(property, v);
                   }
+                  this.defaultNotification(options.observerConfig);
                 }}
               />
             </FluentCheckbox>

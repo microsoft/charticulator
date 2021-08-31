@@ -253,6 +253,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
         ? deepClone(action.originSpecification)
         : this.chartManager.getOriginChart()
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
     this.chartState = this.chartManager.chartState;
 
     this.emit(AppStore.EVENT_DATASET);
@@ -281,6 +284,9 @@ export default function (REG: ActionHandlerRegistry<AppStore, Actions.Action>) {
       {},
       action.keepState ? this.chartManager.getOriginChart() : null
     );
+    this.chartManager.onUpdate(() => {
+      this.solveConstraintsAndUpdateGraphics();
+    });
     this.chartState = this.chartManager.chartState;
     this.updatePlotSegments();
     this.updateDataAxes();

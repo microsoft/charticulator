@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-import { FluentUIWidgetManager } from "./fluentui_manager";
 import { Prototypes, Specification } from "../../../../core";
+import { CharticulatorPropertyAccessors } from "./manager";
 
 interface EventListener {
   update(
@@ -43,7 +43,7 @@ export class EventManager {
 }
 
 export class UIManagerListener implements EventListener {
-  constructor(private manager: FluentUIWidgetManager) {}
+  constructor(private manager: CharticulatorPropertyAccessors) {}
 
   update(
     property: Prototypes.Controls.Property,
