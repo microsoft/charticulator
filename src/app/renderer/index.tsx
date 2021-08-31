@@ -319,8 +319,6 @@ export function renderGraphicalElementSVG(
     }
   }
 
-
-
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
