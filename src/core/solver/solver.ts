@@ -89,7 +89,11 @@ export class ChartConstraintSolver {
           if (scaleMapping.scale != null) {
             // Apply the scale
             const expr = this.expressionCache.parse(scaleMapping.expression);
-            const dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+            let dataValue = <Dataset.DataValue>expr.getValue(rowContext);
+
+            if (isNaN(<number>dataValue)) {
+              dataValue = null;
+            }
             const scaleClass = <Prototypes.Scales.ScaleClass>(
               this.manager.getClassById(scaleMapping.scale)
             );

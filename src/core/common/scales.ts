@@ -24,6 +24,7 @@ export namespace Scale {
     public domainMax: number;
 
     public inferParameters(values: number[]) {
+      values = values.filter(v => !isNaN(v))
       const scale = scaleLinear()
         .domain([Math.min(...values), Math.max(...values)])
         .nice();

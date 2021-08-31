@@ -103,7 +103,7 @@ export class LinearScale extends ScaleClass<
     const attrs = this.state.attributes;
     const props = this.object.properties;
     const s = new Scale.LinearScale();
-    const values = <number[]>column.filter((x) => typeof x == "number");
+    const values = <number[]>column.filter((x) => typeof x == "number" && !isNaN(x));
     s.inferParameters(values);
     s.adjustDomain(options);
 
