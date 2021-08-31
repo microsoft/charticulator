@@ -63,6 +63,8 @@ export class TextElementClass extends EmphasizableMarkClass<
     color: { r: 0, g: 0, b: 0 },
     opacity: 1,
     visible: true,
+    yMargin: 0,
+    xMargin: 0,
   };
 
   public static defaultProperties: Partial<TextElementProperties> = {
@@ -85,6 +87,8 @@ export class TextElementClass extends EmphasizableMarkClass<
     const attrs = <TextElementAttributes>this.state.attributes;
     attrs.x = 0;
     attrs.y = 0;
+    attrs.xMargin = 0;
+    attrs.yMargin = 0;
     attrs.text = "Text";
     attrs.fontFamily = defaultFont;
     attrs.fontSize = defaultFontSize;
@@ -128,8 +132,8 @@ export class TextElementClass extends EmphasizableMarkClass<
       metrics,
       props.alignment.x,
       props.alignment.y,
-      props.alignment.xMargin,
-      props.alignment.yMargin
+      attrs.xMargin || props.alignment.xMargin,
+      attrs.yMargin || props.alignment.yMargin
     );
     const p = cs.getLocalTransform(attrs.x + offset.x, attrs.y + offset.y);
     p.angle += props.rotation;
@@ -245,8 +249,8 @@ export class TextElementClass extends EmphasizableMarkClass<
       metrics,
       props.alignment.x,
       props.alignment.y,
-      props.alignment.xMargin,
-      props.alignment.yMargin
+      attrs.xMargin || props.alignment.xMargin,
+      attrs.yMargin || props.alignment.yMargin
     );
     const cx = dx + metrics.width / 2;
     const cy = dy + metrics.middle;
@@ -341,14 +345,25 @@ export class TextElementClass extends EmphasizableMarkClass<
             }
           ),
           props.alignment.x != "middle"
-            ? manager.inputNumber(
-                { property: "alignment", field: "xMargin" },
-                {
+            ? // ? manager.inputNumber(
+              //     { property: "alignment", field: "xMargin" },
+              //     {
+              //       updownTick: 1,
+              //       showUpdown: true,
+              //       label: "Margin",
+              //     }
+              //   )
+              manager.mappingEditor(strings.objects.text.margin, "xMargin", {
+                hints: { rangeNumber: [-1000, 1000] },
+                label: strings.objects.text.margin,
+                numberOptions: {
                   updownTick: 1,
                   showUpdown: true,
-                  label: "Margin",
-                }
-              )
+                  label: strings.objects.text.margin,
+                },
+                acceptKinds: [Specification.DataKind.Numerical],
+                defaultValue: 0,
+              })
             : null,
           manager.inputSelect(
             { property: "alignment", field: "y" },
@@ -365,14 +380,25 @@ export class TextElementClass extends EmphasizableMarkClass<
             }
           ),
           props.alignment.y != "middle"
-            ? manager.inputNumber(
-                { property: "alignment", field: "yMargin" },
-                {
+            ? // ? manager.inputNumber(
+              //     { property: "alignment", field: "yMargin" },
+              //     {
+              //       updownTick: 1,
+              //       showUpdown: true,
+              //       label: strings.objects.text.margin,
+              //     }
+              //   )
+              manager.mappingEditor(strings.objects.text.margin, "yMargin", {
+                hints: { rangeNumber: [-1000, 1000] },
+                label: strings.objects.text.margin,
+                numberOptions: {
                   updownTick: 1,
                   showUpdown: true,
                   label: strings.objects.text.margin,
-                }
-              )
+                },
+                acceptKinds: [Specification.DataKind.Numerical],
+                defaultValue: 0,
+              })
             : null,
           manager.inputNumber(
             { property: "rotation" },
