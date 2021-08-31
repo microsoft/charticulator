@@ -319,6 +319,11 @@ export function renderGraphicalElementSVG(
     }
   }
 
+  const replaceNan = (value: number) => {
+    return isNaN(value) ? 0 : value;
+  };
+
+
   switch (element.type) {
     case "rect": {
       const rect = element as Graphics.Rect;
@@ -329,9 +334,9 @@ export function renderGraphicalElementSVG(
           className={options.className || null}
           style={style}
           x={Math.min(rect.x1, rect.x2)}
-          y={-Math.max(rect.y1, rect.y2)}
-          width={Math.abs(rect.x1 - rect.x2)}
-          height={Math.abs(rect.y1 - rect.y2)}
+          y={replaceNan(-Math.max(rect.y1, rect.y2))}
+          width={replaceNan(Math.abs(rect.x1 - rect.x2))}
+          height={replaceNan(Math.abs(rect.y1 - rect.y2))}
         />
       );
     }
