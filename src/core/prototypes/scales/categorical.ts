@@ -90,7 +90,7 @@ export class CategoricalScaleNumber extends ScaleClass<
   public mapDataToAttribute(data: DataValue): AttributeValue {
     const attrs = this.state.attributes;
     const props = this.object.properties;
-    const number = props.mapping[data ? data.toString() : null];
+    const number = props.mapping[data ? data?.toString() : null];
     return (number ?? 0) * attrs.rangeScale;
   }
 
