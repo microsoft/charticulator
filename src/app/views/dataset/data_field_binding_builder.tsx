@@ -830,6 +830,9 @@ export class Director {
                   boxSizing: "unset",
                   lineHeight: defultBindButtonSize.height,
                 },
+                callout: {
+                  minWidth: 180,
+                },
               }}
               selectedKey={defaultKey}
               options={item.subMenuProps.items.map((i) => ({
